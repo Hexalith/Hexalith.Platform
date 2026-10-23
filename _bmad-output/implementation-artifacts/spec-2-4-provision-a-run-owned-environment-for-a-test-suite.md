@@ -2,7 +2,7 @@
 title: '2.4 Provision a run-owned environment for a test suite'
 type: 'feature'
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '543ea182bd83c813609c7df0491d1419b7f1f99e'
@@ -295,3 +295,69 @@ Evidence: [final index](evidence/2-4/workflow-final/README.md), [machine-readabl
 - All 59 final source fingerprints match; the approved frozen fingerprint remains `1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852`. Six findings concerning independently delivered or release-dependent work were deferred. Workflow completion records local commits in Builds and Platform; no push, package/tool/catalog pin change or unrelated lifecycle operation is performed.
 
 The explicit Platform-declaration prerequisite and local source/Debug qualification limits above still apply. No general ordinary-closure, package-mode live, CI, attachment or candidate qualification is claimed.
+
+
+## Code review round 3, 2026-10-23
+
+Scope: Platform `543ea182..ae932d0` and Builds `66b9136a..8c9caa7` (current gitlink), restricted to the 58 story source files recorded in `evidence/2-4/workflow-final/source-fingerprints.json` (evidence excluded; `PlatformDaprDiagnosticsTests.cs` excluded because all of its hunks come from Story 4.27); 5,261 diff lines, +3,235/−183. Shared files still carry concurrent Story 2.2/2.3/4.27 hunks that are not judged here. Mode `full` against this spec, `epic-2-context.md` and `docs/contracts/test-environment-v1.md`. All four layers completed (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor); 53 raw findings were verified individually, then grouped. `B/` means `references/Hexalith.Builds/`.
+
+### Review Findings
+
+**Decision needed**
+
+- [x] [Review][Decision] (resolved 2026-10-23: option 1, the selected module's declaration owns shared infrastructure; now tracked as the first patch below) Ordinary closures can never receive a descriptor: shared infrastructure ownership requires a declaration whose `moduleId` is `platform`, and only the synthetic qualification fixture declares one — `PlatformAppModel` gives Redis, sentry, placement and scheduler an owner only when the closure contains a module with ID `platform` (`src/Hexalith.Platform.Composition/PlatformAppModel.cs:347`); otherwise the owner is null and `TestEnvironmentDescriptorWriter` refuses with HXT009. A repository-wide search finds `"moduleId": "platform"` only in `eng/test-environment-provisioning/manifest.v2.json`. At baseline `66b9136a`, a v2 selected suite reached `NativeTestExecutor` after a ready start. Now Memories `functional-retention`, the only real declared suite, spends the full startup and is then refused. Stories 2.9 and 2.10 also need real closures to receive descriptors. The refusal is found only at handoff, after services start, never before provisioning (Blind Hunter). The round-2 decision (a) says "runner infrastructure → the composition's actual platform declaration". In this project's vocabulary a "Platform declaration" is any module declaration that conforms to the Platform declaration schema (Story 1.1), so the implementation's reading — a module literally named `platform` — may not be what the owner intended. Options: (1) attribute shared runner infrastructure to the composition's active selected-module declaration, so real closures qualify; update the contract paragraph and the Tenants null-owner test; (2) keep the `platform` requirement, add a pre-provisioning refusal now, and track a real Platform module declaration auto-included in every closure as follow-up work; (3) accept as documented and record the Memories regression as deferred.
+
+**Patch**
+
+- [ ] [Review][Patch] Attribute shared runner infrastructure to the selected module's declaration (decision option 1) — in `PlatformAppModel`, take the infrastructure owner from `options.ActiveModule`, falling back to the selected suite's module, instead of looking for a module named `platform`; servers and Memories stores keep their declaring owners. Update the Tenants test that expects `null`, rewrite the contract paragraph that says ordinary EventStore/Tenants/Memories closures refuse handoff, and verify that a Memories closure gets an owner on every resource. [src/Hexalith.Platform.Composition/PlatformAppModel.cs:347]
+- [ ] [Review][Patch] Platform owner annotation crosses assemblies by type-name reflection, and the only non-gated test uses a Builds-local stand-in type — renaming the Platform record or its `ModuleId` property silently makes every resource unowned, so every real handoff refuses, while all normal tests stay green. Add a Platform test that runs the same name-plus-property lookup on resources composed by `ComposeRun` and asserts their owners. [B/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs:458]
+- [ ] [Review][Patch] The engine-computed `CompositionContentIdentity` is never verified — every handoff test receives it from `TestEnvironmentProvisioningFixture`, which computes it with the writer's own function. Deleting or mis-computing the engine assignment passes every test but refuses every real suite with "Composition or suite sources changed before handoff." Assert it from a ready fake-AppHost start with `SelectedTest` set. [B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:327]
+- [ ] [Review][Patch] The repeated `--profile` refusal outside a v2 `test` is untested — dropping it lets v1 `test --profile a --profile b` run only `a` and report success. Add CLI cases for `run` and v1 `test` that expect HXC002 and start nothing. [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:141]
+- [ ] [Review][Patch] The terminal record's `Selection` for later batch entries is unasserted — reverting to `state?.SelectedTest ?? _options.SelectedTest` would record entry `first` next to entry `second`'s timing. Extend `TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync` with state holding `first` and options holding `second`. [B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:539]
+- [ ] [Review][Patch] v1 `test` setup now uses the startup clock, but no test covers it — `MappingConsumesOriginalDefaultDeadlineAsync` covers run/debug only. If the startup request were restricted to v2, a stalled v1 `test` setup would hang without bound, because the budget no longer cancels itself before `Activate`. Add a `("test", "v1")` row that asserts a bounded HXR021. [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:89]
+- [ ] [Review][Patch] The engine's selected-suite startup-timeout branch (HXR021 with preserved summary) is never reached — the only `SelectedExecutionOwnerToken` test expires inside readiness waiting. Add a `SelectedTest` start whose startup token cancels during `PlatformModelBuildOverride`, and assert HXR021 plus `summary.json`. [B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:393]
+- [ ] [Review][Patch] Memories store ownership is never asserted — if the `memories-vectors`/`memories-graph`/`memories-retention-postgresql` branch is deleted, those stores fall to the infrastructure owner and all tests still pass. Assert owner `memories` in `IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync`. [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:81]
+- [ ] [Review][Patch] The versioned contract points readers at a process-artifact path ("Evidence belongs under `_bmad-output/implementation-artifacts/evidence/2-4/`"), following the same rule as the round-2 removal of the story-named heading. Evidence directories can be pruned, as the Builds archive removal shows. Drop the sentence. The `tree/main` samples link in the same file comes from Story 2.2 and is out of scope. [docs/contracts/test-environment-v1.md:287]
+
+**Deferred**
+
+- [x] [Review][Defer] `RunEndpoints.Observe` throws for a healthy resource with an unallocated endpoint on every run path [B/src/hosts/Hexalith.Builds.Module.AppHost/RunEndpoints.cs:64] — deferred: maybe-false, medium if true; re-raised by three layers this round and already in the round-2 ledger. New corroboration toward false: the Story 2.3 round-3 live check found that Aspire 13.6.3 `DcpExecutor.PrepareServices` allocates every proxyless endpoint port before resources start. Settle it by observing the reference composition's progress snapshots under run/debug, or by confirming that no 13.6 resource type can report `Healthy` with an unallocated endpoint.
+
+**Rejected**
+
+- `false` — v1 contract changed without a version bump (integer spellings, outcome/cause coupling, `not-yet-populated` identities, HXT106→HXT103): these hunks come from Story 2.2 commits (`dcb01b1`, `01aede5`) on the contract that story owns, made while it was being finalized; none is Story 2.4 code.
+- `low` — Closed run-evidence v1 schema widened in place: the owner adopted option (a) on 2026-10-23, and the Builds README documents it.
+- `false` — Schema accepts any number of `selections` while the validator refuses more than one: refusing multi-entry evidence is the round-1 decision (batches refuse `--evidence` before provisioning); the extra coherence checks are redundant, not wrong.
+- `false` — Memories store names hard-coded in ownership: Platform itself composes those stores only when `hasMemories`, so attributing them to the declared `memories` module is truthful; the missing assertion is a patch above.
+- `low` — `memories/functional-retention` special case in batch compatibility: it reflects the only profile-specific resource requirement that exists today (the retention profile); generalizing it is new design.
+- `low` — A malformed claim file breaks every `ClaimedPorts` call, and `ReleaseOwned` is unguarded in teardown: claims publish atomically, so corruption needs disk damage or a foreign file; the fix adds guards (teardown part carried from round 2).
+- `low` — Claims orphaned by a crash before the first state write: `down --run-id` releases them; the leak needs repeated crashes inside a millisecond window, and reclamation is new handling.
+- `false` — Batch teardown uses the last entry's stop limit: the contract documents active-entry stopping, and the shared environment is the same one that entry would get when run alone.
+- `false` — `PreStartValidityCeiling` single-entry/600 s/null branches (two layers): the Platform test path always populates `SelectedTests` and `StartupDeadlineUtc`, so those fallbacks are unreachable there; validity beyond credential expiry is the spec-directed pre-start ceiling, with the gate deadline retained.
+- `false` — Live proof data is tautological: `suite.py` writes `peerKeyVisible: false` only after `GET` of the peer key asserted `None`; masking in `finally` was rejected as low in round 2.
+- `low` — `suite.py` layout rendezvous, fixed 80 s wait, and persistence shown by `SAVE`: an opt-in gated proof that fails loudly (carried from round 2); the AC's "persist" means stored in the owned store, not durable across restarts.
+- `false` — Startup verifier proves nothing: the fixture task exists to exercise the required-task gate (carried from round 2).
+- `false` — Regression assertions removed without replacement: the stop-bound timing check became a durable-state assertion, with a rationale about OS process-tree termination; whether the setup-timeout workspace is still absent is unverified and would only be low.
+- `low` — Batch children can write runner-trusted workspace files: plan and readiness come from the in-memory session, and tampering with the catalog snapshot only causes a fail-closed HXT009 (as the batch test shows).
+- `false` — Invented catalog `instanceId`/`attemptSequence`/plan identities: the runner issues run-scoped identities, there are no retries, and the catalog commit comes from the verified snapshot (carried from round 2).
+- `low` — Content identities hash default serializer output: deterministic for a given tool version; drift needs a code change, and canonicalization is new design.
+- `false` — Live proof reuses a stale `suite-proof` directory: each run creates a fresh temporary workspace and deletes it after the cleanup audit (round-2 patch).
+- `low` — Peers ready more than 80 s apart: observed startups differ by under 7 s; this is an opt-in proof (carried from round 2).
+- `false` — Descriptor endpoint without a port: observed endpoints are Aspire-allocated URLs that always carry their port.
+- `false` — 64th allocation conflict reported as HXR031 with an unreachable final throw (two layers): HXR031 for claims that cannot be reallocated is the round-2 decision, and the trailing throw is required for compilation.
+- `low` — Lock contention over 2 s surfaces as a generic failure with no owner (two layers): the lock guards only millisecond file operations; the fix adds an exception type.
+- `low` — An I/O failure while creating the temporary claim is misreported as a conflict: needs ENOSPC-type failure while a peer holds the path; the fix restructures classification.
+- `low` — Owner `unknown` → HXR022 text: carried from round 2.
+- `low` — Readiness is not re-observed between batch entries: carried from round 2.
+- `low` — A symlinked `native-tests` lets entry N delete files outside the workspace: the child already runs as the same user with the same write access, so no boundary is crossed; an accidental link is implausible.
+- `low` — I/O failures before the handoff `try` become HXT007 instead of HXT009: both refuse before launch and neither claims a pass; the classification difference is negligible.
+- `low` — Cancellation mid-batch loses the HXI002 summary: the result is already a withdrawal/HXT007; the fix adds try/finally.
+- `false` — The descriptor re-reads CI variables instead of the runner's override: `ContinuousIntegrationOverride` is an internal test hook, and the production expressions are identical.
+- `low` — Evidence-directory reuse in the live proof: carried from round 2.
+- `low` — Story 2.3 commit claims the certificate parent is validated before claims and writes: the claim belongs to Story 2.3's wording; a late refusal still tears down and releases owned claims.
+- `low` — Any manifest declaring `moduleId: platform` receives infrastructure ownership: only the fixture does; it becomes moot under decision options 1 or 2, and a canonical pin needs a real declaration first.
+- `low` — `startup-task-results.json` is copied from the child-writable workspace at terminal recording: forging it requires test code to tamper with runner files; round 2 already bounds the read; replacing it with in-memory serialization is more than a direct correction.
+- `low` — Composition identity is not cross-checked against composed resources: identity is computed from the closure that drives composition, and the descriptor lists the actually observed resources; resource-set matching is new design.
+- `low` — Spec `status: done` while sprint status says `review`: settled by this review's status sync.
+
+Outcome: decision resolved as option 1 (selected-module infrastructure ownership). The user chose to keep all 9 patch findings as action items; the story returns to `in-progress`. One finding is deferred, which repeats the existing round-2 ledger item; 39 were rejected.

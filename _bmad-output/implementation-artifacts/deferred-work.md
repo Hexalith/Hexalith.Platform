@@ -1217,3 +1217,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-27-recovery-execution-boundary.md`
   summary: Resolve the actual Platform checkout root when a nested Works AppHost also has normal AppHost markers.
   evidence: Pre-existing concurrent composition change, outside Story 4.27 driver implementation. WorksPreviewModel.LocatePlatformRoot chooses the nearest apphost.cs/aspire.config.json ancestor; nested markers can exclude only the nested host and permit certificate storage elsewhere inside the real checkout. Resolve checkout identity independently and cover the nested-marker case.
+
+## Deferred from: code review of spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md (2026-10-23, round 3)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Same open item as the round-2 `RunEndpoints.Observe` entry above (healthy resource with an unallocated endpoint); re-raised by three layers, not a new defect.
+  evidence: Unverified (maybe-false; medium if true). New corroboration toward false: the Story 2.3 round-3 live check showed Aspire 13.6.3 `DcpExecutor.PrepareServices` allocates every proxyless endpoint port before resources start. Settle by observing reference-composition progress snapshots under run/debug, or by confirming no 13.6 resource type can report `Healthy` with an unallocated endpoint.
