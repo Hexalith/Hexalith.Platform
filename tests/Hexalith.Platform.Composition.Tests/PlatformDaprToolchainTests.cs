@@ -135,4 +135,34 @@ public sealed partial class PlatformAppModelTests
             Directory.Delete(workspace, recursive: true);
         }
     }
+
+    [Fact]
+    public async Task EndpointSubscriberRetainsDiagnosticsForAnyStartupFailureAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-subscriber-failure-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspace);
+        try
+        {
+            var builder = Builder();
+            // A sidecar annotation whose generated CLI is absent makes the CLI lookup throw InvalidOperationException.
+            builder.AddExecutable("orphan", "sleep", workspace).WithDaprSidecar();
+            var model = new DistributedApplicationModel(builder.Resources);
+            using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
+            var eventing = new DistributedApplicationEventing();
+            await new PlatformDaprEndpointSubscriber([], workspace: workspace).SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+            var failure = await Should.ThrowAsync<InvalidOperationException>(async () => await eventing.PublishAsync(new BeforeStartEvent(services, model), TestContext.Current.CancellationToken));
+            File.ReadAllText(Path.Combine(workspace, PlatformCompositionWorkspace.FailureMarker)).ShouldBe(failure.Message);
+            new PlatformCompositionWorkspace(workspace).Dispose();
+            Directory.Exists(workspace).ShouldBeTrue("a marked failure must survive registered-service disposal");
+        }
+        finally { Directory.Delete(workspace, recursive: true); }
+    }
+
+    [Fact]
+    public void FailureMarkerWriteNeverReplacesTheCompositionFailure()
+    {
+        string missing = Path.Combine(Path.GetTempPath(), "platform-missing-workspace-" + Guid.NewGuid().ToString("N"));
+        Should.NotThrow(() => PlatformCompositionWorkspace.MarkFailed(missing, "original failure"));
+        Directory.Exists(missing).ShouldBeFalse();
+    }
 }

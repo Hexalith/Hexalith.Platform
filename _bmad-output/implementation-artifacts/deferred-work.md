@@ -1155,6 +1155,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Confirm the Works preview starts now that its sidecar endpoints are forced proxyless.
   evidence: Unverified (maybe-false; high if true). `PlatformDaprEndpointSubscriber.Apply` with `servers=[]` now sets `TargetPort = Port` and `IsProxied = false` on every Works sidecar http/grpc/metrics endpoint, and Works sets no Dapr ports. Aspire 13.6.1 contains both proxyless port allocation and the "needs to specify a port ... since it isn't using a proxy" refusal. Settle by starting the Works preview once (`Platform:Works:Enabled`) or running the explicit Works Platform-target lane; if refused, skip endpoints without explicit ports.
+  status: resolved
+  resolution: False positive (2026-10-23, round-3 follow-up). Aspire 13.6.3 `DcpExecutor.PrepareServices` calls `EnsureProxylessEndpointPort`, which allocates and assigns `Port` and `TargetPort` for a proxyless executable endpoint that has none, before the "needs to specify a port" check runs. A live AppHost on the pinned Aspire 13.6.3 and CommunityToolkit Dapr 13.6.1-beta.935 applied the same mutation to a port-less sidecar: its http/grpc/metrics endpoints were allocated distinct ports, the CLI reached Running, and daprd answered `/v1.0/healthz/outbound` with 204 on the allocated port. See evidence/2-3/proxyless-sidecar-check-20261023/.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify `ComposeRun` claims its secondary ports when the plan carries a claim directory.

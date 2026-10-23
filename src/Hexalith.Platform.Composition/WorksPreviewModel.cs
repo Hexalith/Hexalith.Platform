@@ -93,10 +93,15 @@ public static class WorksPreviewModel
         }
 
         string workspace = Path.Combine(Path.GetTempPath(), "hexalith-works-preview", Guid.NewGuid().ToString("N"));
+        // The whole Platform checkout stays excluded even when the AppHost directory is nested inside it.
+        string platformRoot = LocatePlatformRoot(builder.AppHostDirectory);
+        string[] checkouts = [builder.AppHostDirectory, worksRoot, eventStoreRoot];
+        // Refuse a misplaced certificate parent before this preview creates its workspace.
+        _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, platformRoot, workspace, checkouts);
         CompositionWorkspace.CreatePrivateDirectory(workspace);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
         CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
-        var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, builder.AppHostDirectory, workspace, controlPorts.PlacementHealth, checkoutRoots: [worksRoot, eventStoreRoot]);
+        var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, platformRoot, workspace, controlPorts.PlacementHealth, checkoutRoots: checkouts);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificateDirectory));
         IResourceBuilder<ContainerResource>? placement = null;
         IResourceBuilder<ContainerResource>? scheduler = null;
@@ -274,6 +279,18 @@ public static class WorksPreviewModel
                 .WithEnvironment("Authentication__JwtBearer__ValidAudiences__0", HexalithEventStoreSecurityOptions.DefaultAudience)
                 .WithEnvironment("Authentication__JwtBearer__SigningKey", devSigningKey)
                 .WithEnvironment("Authentication__JwtBearer__RequireHttpsMetadata", "false");
+        }
+
+        static string LocatePlatformRoot(string appHostDirectory)
+        {
+            for (DirectoryInfo? directory = new(appHostDirectory); directory is not null; directory = directory.Parent)
+            {
+                if (File.Exists(Path.Combine(directory.FullName, "apphost.cs"))
+                    && File.Exists(Path.Combine(directory.FullName, "aspire.config.json")))
+                    return directory.FullName;
+            }
+
+            return Path.GetFullPath(appHostDirectory);
         }
 
         static IDaprSidecarResource? SidecarOf(ProjectResource project)

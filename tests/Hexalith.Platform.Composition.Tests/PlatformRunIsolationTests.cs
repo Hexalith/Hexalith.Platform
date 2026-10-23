@@ -269,6 +269,56 @@ public sealed partial class PlatformAppModelTests
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
+
+    [Fact]
+    public void CertificateParentRejectsLinksThroughLinkedAncestorsIntoTheCheckout()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-certificate-chain-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        string name = "uncreated-certificates-" + Guid.NewGuid().ToString("N");
+        try
+        {
+            // "outer" names a target that only reaches the checkout through the linked ancestor "checkout".
+            string checkout = Path.Combine(directory, "checkout");
+            Directory.CreateSymbolicLink(checkout, Root);
+            string outer = Path.Combine(directory, "outer");
+            Directory.CreateSymbolicLink(outer, Path.Combine(checkout, name));
+            var builder = Builder();
+            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(outer, "certs");
+            var failure = Should.Throw<InvalidOperationException>(() => DaprSelfHostedMtls.AddSentry(builder, "/unused/sentry.yaml", Root, directory, 24001));
+            failure.Message.ShouldContain("must resolve outside the repository");
+            failure.Message.ShouldContain(Path.Combine(Root, name, "certs"));
+            builder.Resources.ShouldBeEmpty();
+            Directory.Exists(Path.Combine(Root, name)).ShouldBeFalse();
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    [Fact]
+    public async Task MisplacedCertificateParentLeavesNoRunStateOrClaimsAsync()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-misplaced-parent-" + Guid.NewGuid().ToString("N"));
+        CompositionWorkspace.CreatePrivateDirectory(directory);
+        string target = Path.Combine(Root, "uncreated-certificates-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var builder = Builder();
+            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = target;
+            string workspace = Path.Combine(directory, "run");
+            var mapping = Options().Mapping with { Entries = [.. Options().Mapping.Entries, new Hexalith.Builds.Tooling.Workspace.SourceMappingEntry("Hexalith.Platform", "source", Root)] };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, directory,
+                CompositionPortAllocator.Allocate(1), [], [], mapping,
+                [Path.Combine(Root, "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json")], "tenants", typeof(PlatformAppModel).Assembly.Location) with { ResourceClaimStateDirectory = Path.Combine(directory, "state") };
+            await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+            Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null))
+                .Message.ShouldContain("must resolve outside the repository");
+            builder.Resources.ShouldBeEmpty();
+            Directory.Exists(Path.Combine(workspace, "platform-components")).ShouldBeFalse();
+            new CompositionResourceClaimStore(plan.ResourceClaimStateDirectory!).ClaimedPorts().ShouldBeEmpty();
+            Directory.Exists(target).ShouldBeFalse();
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

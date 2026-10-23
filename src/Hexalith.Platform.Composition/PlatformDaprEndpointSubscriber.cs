@@ -15,9 +15,9 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
         _ = eventing.Subscribe<BeforeStartEvent>((startup, _) =>
         {
             try { Apply(startup.Model, servers, certificateDirectory, sentryAddress, workspace); }
-            catch (InvalidDataException failure)
+            catch (Exception failure) when (workspace is not null)
             {
-                if (workspace is not null) File.WriteAllText(Path.Combine(workspace, "composition-failure.txt"), failure.Message);
+                PlatformCompositionWorkspace.MarkFailed(workspace, failure.Message);
                 throw;
             }
             return Task.CompletedTask;

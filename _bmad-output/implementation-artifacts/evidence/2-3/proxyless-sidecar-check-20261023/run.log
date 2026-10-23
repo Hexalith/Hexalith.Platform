@@ -1,0 +1,12 @@
+MUTATED probe-dapr-cli/grpc port=null
+MUTATED probe-dapr-cli/http port=null
+MUTATED probe-dapr-cli/metrics port=null
+Aspire AppHost version: 13.6.3+38294b1b31552dae42a516cffa0cbc737ec08976
+STATE probe-dapr-cli Starting
+STATE probe-dapr-cli 
+STATE probe-dapr-cli Running
+EP grpc port=27362 target=27362 proxied=False allocated=27362
+EP http port=27363 target=27363 proxied=False allocated=27363
+EP metrics port=27364 target=27364 proxied=False allocated=27364
+HEALTHZ 27363 204
+exit=0

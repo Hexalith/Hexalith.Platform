@@ -132,6 +132,9 @@ public static class PlatformAppModel
         bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
         bool hasTimesheets = servers.Any(server => server.ResourceId == "timesheets");
         string rendered = options.RunPlan is null ? Path.Combine(Path.GetTempPath(), "hexalith-platform", Guid.NewGuid().ToString("N")) : Path.Combine(options.RunPlan.Workspace, "platform-components");
+        string[] checkouts = options.Mapping.Entries.Select(entry => entry.Path).OfType<string>().ToArray();
+        // Refuse a misplaced certificate parent before this attempt claims ports or writes run state.
+        _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, options.PlatformRoot, rendered, checkouts);
         CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(rendered)!);
         CompositionWorkspace.CreatePrivateDirectory(rendered);
         try
@@ -173,7 +176,7 @@ public static class PlatformAppModel
             string? gatewayContentRoot = servers.FirstOrDefault(server => server.ResourceId == "eventstore")?.ProjectPath is { } gatewayProject
                 ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
-            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, rendered, sentryPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, options.Mapping.Entries.Select(entry => entry.Path).OfType<string>().ToArray());
+            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, rendered, sentryPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, checkouts);
             // An explicitly selected parent can live outside the workspace. Dispose only this run's child.
             if (builder.Configuration["Dapr:Mtls:CertificateDirectory"] is not null)
                 builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificates));
@@ -380,7 +383,7 @@ public static class PlatformAppModel
         catch (Exception failure)
         {
             // The private workspace belongs to this attempt. Retain startup diagnostics for inspection.
-            File.WriteAllText(Path.Combine(rendered, "composition-failure.txt"), failure.Message);
+            PlatformCompositionWorkspace.MarkFailed(rendered, failure.Message);
             throw;
         }
     }

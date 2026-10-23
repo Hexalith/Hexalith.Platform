@@ -281,7 +281,9 @@ public static class DaprSelfHostedMtls
             lastFailure);
     }
 
-    private static string ResolveCertificateParent(IDistributedApplicationBuilder builder, string platformRoot, string runDirectory, IReadOnlyList<string>? checkoutRoots)
+    /// <summary>Resolves the issuer parent, refusing one that resolves inside any mapped checkout.</summary>
+    /// <remarks>Composition calls this before it creates run state, so a misplaced parent leaves nothing behind.</remarks>
+    internal static string ResolveCertificateParent(IDistributedApplicationBuilder builder, string platformRoot, string runDirectory, IReadOnlyList<string>? checkoutRoots)
     {
         string configured = builder.Configuration[CertificateDirectoryConfigurationKey] ?? runDirectory;
         string resolved = ResolveExistingLinks(Path.GetFullPath(configured));
@@ -302,8 +304,11 @@ public static class DaprSelfHostedMtls
         return resolved;
     }
 
-    private static string ResolveExistingLinks(string path)
+    private static string ResolveExistingLinks(string path, int depth = 0)
     {
+        // Linux refuses deeper chains with ELOOP; a cycle would otherwise recurse forever.
+        if (depth > 40)
+            throw new InvalidOperationException($"Path '{path}' has too many nested symbolic links.");
         string resolved = Path.GetFullPath(path);
         string root = Path.GetPathRoot(resolved)
             ?? throw new InvalidOperationException($"Path '{resolved}' has no filesystem root.");
@@ -321,7 +326,8 @@ public static class DaprSelfHostedMtls
             {
                 FileSystemInfo target = entry.ResolveLinkTarget(returnFinalTarget: true)
                     ?? throw new InvalidOperationException($"Could not resolve symbolic link '{candidate}'.");
-                current = target.FullName;
+                // The final target can itself pass through linked ancestors.
+                current = ResolveExistingLinks(target.FullName, depth + 1);
             }
             else
             {
