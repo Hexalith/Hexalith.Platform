@@ -2,7 +2,7 @@
 title: '2.3 Make local composition resources run-scoped'
 type: 'feature'
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
@@ -65,6 +65,56 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 - Given ordinary signed and file-entry runs, when their graph and executable callbacks are evaluated, then Sentry, placement and scheduler use allocated host ports, run-owned writable storage and matching sidecar addresses; no global scheduler volume is selected.
 - Given the resource inventory, when reference composition starts, then every mutable dependency is owned by that run and any shared input is explicitly read-only; legacy Redis, fixture-lock and Keycloak assumptions are excluded by the actual graph.
 - Given two reference runs on one machine, when both reach declared readiness and write distinct values under identical test keys, then each store retains its own value, discovery and credentials remain separate, and stopping one leaves the other healthy.
+
+### Review Findings
+
+Code review 2026-10-23 (round 3; Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the story-owned files from baseline `6fbe5a0` to `7c37f3f`, plus Builds renderer `2210aaa..d49834d` and EventStore props `cb41453..85f0bd9`.
+
+- [ ] [Review][Patch] Document checkout build outputs as a shared developer input; runner test suites keep private outputs (D1 → B, Administrator 2026-10-23) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:238]
+- [ ] [Review][Patch] Works harness reads issuer credentials from the composed `dapr-sentry` credential mount, not the configured parent (D2 → A, Administrator 2026-10-23) [references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformTrustChecks.cs:45]
+- [ ] [Review][Patch] Keep the Docker-boundary occupied-port proof and state precisely what it proves; real allocation probes skip occupied ports (D3 → A, Administrator 2026-10-23) [docs/platform-apphost-form.md:178]
+- [ ] [Review][Patch] Ordinary model test depends on the developer's `~/.dapr/bin/daprd` [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:188]
+- [ ] [Review][Patch] Assert the composed graph's rendered components target only the run's Redis, with no residual `localhost:6379`/`127.0.0.1:6379` (AC2) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
+- [ ] [Review][Patch] Assert rendered `spec.mtls.sentryAddress` equals the allocated Sentry listener, and that sidecar listeners are disjoint across identical file-entry selections (AC1, matrix row 1) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
+- [ ] [Review][Patch] Assert the store persistence wiring: Redis `--dir /data --appendonly yes`, `REDIS_ARGS`, `FALKORDB_DATA_PATH=/data` [src/Hexalith.Platform.Composition/PlatformAppModel.cs:186]
+- [ ] [Review][Patch] Assert the callback-written native listener receipt in a non-live model test [src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs:68]
+- [ ] [Review][Patch] Test refusal of a symlinked per-run credential child [DaprSelfHostedMtls.cs:39]
+- [ ] [Review][Patch] Assert the Works preview's selected `RuntimePath` and control-plane addresses before the test substitutes its fixture runtime [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:249]
+- [ ] [Review][Patch] Document where failed file-entry workspaces (with `composition-failure.txt` and run secrets) are retained and how to remove them [src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs:15]
+- [ ] [Review][Patch] Correct the occupied-port docs: raw Docker output (not redacted), written to fixed `evidence/2-3/occupied-port` (not the concurrent evidence override) [docs/platform-apphost-form.md:184]
+- [ ] [Review][Patch] Replace the stale "control-plane ports 50001, 51005 and 51006 must be available" sentence [docs/works-host-parity.md:191]
+- [ ] [Review][Patch] Complete the concurrent-proof command block (Builds Module AppHost Debug build), remove doubled blank lines, align "descriptor migration/adoption" wording with README [docs/platform-apphost-form.md:156]
+- [ ] [Review][Patch] Correct the evidence index: EventStore relies on catalog pins (both pinned Builds catalogs declare all five packages at 10.0.13); no conditional older-catalog fallback exists [_bmad-output/implementation-artifacts/evidence/2-3/README.md:20]
+- [x] [Review][Defer] Works preview sidecar endpoints made proxyless without ports [src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs:75] — deferred: maybe-false, high if true. With `servers=[]`, `Apply` now sets `TargetPort = Port` (null for Works sidecars, which set no Dapr ports) and `IsProxied = false`. Aspire 13.6.1 contains both proxyless port allocation and the "needs to specify a port… since it isn't using a proxy" refusal. Settle by starting the Works preview once (`Platform:Works:Enabled`) or running the explicit Works Platform-target lane.
+- [x] [Review][Defer] `ComposeRun` secondary-port claim acquisition untested [src/Hexalith.Platform.Composition/PlatformAppModel.cs:376] — deferred: Story 2.4 resource-claim work. Only the helper is tested; the signed isolation plan sets no `ResourceClaimStateDirectory`, so reverting `Compose` to `AllocateSecondaryPorts` passes every test.
+
+**Rejected (round 3):**
+
+- false — BH5 adapter rejects Platform `localhost:` launches: the isolated-daprd adapter is selected only by the Works lane; Platform runs never use it, and the G2 bound-loopback spelling is deliberate.
+- false — BH6 launch flag/config Sentry mismatch: `--sentry-address` overrides config, and production never rewrites the model port after composition. The fatal receipt check fires only on argument shapes the toolkit is not shown to produce.
+- false — BH11 circular Works adapter assertion: it checks that Works-generated endpoints match the adapter's bound spelling, and `originalSentryAddress` still records the input.
+- false — BH12 unrelated work: an artifact of filtering shared commits (2.4/4.5 hunks), not of this story's change.
+- false — BH13 public API break: `DaprSelfHostedMtls.cs` compiles only into Composition (via `Link`); the removed members are referenced only by an archived Agents evidence snapshot.
+- false — BH3/EC12 claim conflict aborts startup: failing with the blocking owner identified is the epic's specified "or identify the blocking run" behaviour (2.4 code).
+- false — EC4 Sentry address without a colon: every caller passes a `host:port` literal.
+- false — EC19 Works `AppHostDirectory` boundary: Works is reached only from the root `apphost.cs`, whose directory is the Platform checkout.
+- false — AA4 fixture-lock part: the composed graph has no fixture-lock code path to exclude; legacy fixtures are outside it.
+- low — BH2/EC2/EC3/EC7 thin failure markers: callback-time failures stay in Aspire logs while the host runs (cf. R2-B1); a non-`InvalidDataException` from `Apply` is not shown reachable.
+- low — BH7 native runtime version unattested: duplicate of deferred R2-B4.
+- low — BH8/EC10 reuse of an existing credential child: the child name derives from a random run path; would need a racing local user.
+- low — BH9 hard-coded run label: equals `CompositionEnvironment.ContainerRunLabel`; a rename fails loudly.
+- low — BH13 Sentry stored in the `PlacementHealth` slot: no other Platform use of that slot; renaming needs a Builds contract change.
+- low — BH14 MergeRunDiscovery stringifies scalars, test naming, Windows cross-drive paths: SQLite discovery uses strings only; Linux/WSL target.
+- low — AA5/EC8 external credential child after a compose failure: an empty private directory under an explicitly configured parent; the crash case is already deferred (B5/R2-B3).
+- low — AA6 `localhost:50001` fallback in `PlatformDaprBindings.Render`: no production caller passes null.
+- low — EC5/EC11 empty `HEXALITH_DAPR_HOME` or certificate setting: loud failures on unlikely input.
+- low — EC6/EC15 hosted (Story 4.5) parsing and unknown-appId errors: outside this story and loud.
+- low — EC13/EC14 Works preview temp parent mode and failed-composition temp leak: multi-user or rare dev-preview paths; the fix adds guards.
+- low — EC16 survivor refresh after the startup deadline: test-only, with the default deadline well beyond the measured 225 s.
+- low — EC17 skipped `aspire stop` after a failed start: gated smoke; stopping unconditionally risks the preserved developer AppHost.
+- low — EC21 non-BMP surrogate escapes in discovery paths: improbable in temp paths; the fix needs a custom encoder.
+- low — EC23 run data inside a checkout: default runner workspaces live under LocalApplicationData, and the default certificate check rejects in-checkout run directories.
+- spec edit — AA8 status disagreement across spec/sprint artifacts: resolved by this workflow's status sync.
 
 ## Implementation Notes
 

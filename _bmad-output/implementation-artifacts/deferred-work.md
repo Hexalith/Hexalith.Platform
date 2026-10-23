@@ -1145,3 +1145,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify parent translation and validation of child HXR031 blocking-owner failures.
   evidence: R2-G2: the verification-gap reviewer found only direct AppHostRunner serialization coverage; removing HXR031 from CompositionEngine.ReadStartupFailuresAsync passes existing tests. Add public parent startup assertions including malformed BlockingRunId to independent Builds claim lifecycle tests.
+
+## Deferred from: code review of spec-2-3-make-local-composition-resources-run-scoped.md (2026-10-23, round 3)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Confirm the Works preview starts now that its sidecar endpoints are forced proxyless.
+  evidence: Unverified (maybe-false; high if true). `PlatformDaprEndpointSubscriber.Apply` with `servers=[]` now sets `TargetPort = Port` and `IsProxied = false` on every Works sidecar http/grpc/metrics endpoint, and Works sets no Dapr ports. Aspire 13.6.1 contains both proxyless port allocation and the "needs to specify a port ... since it isn't using a proxy" refusal. Settle by starting the Works preview once (`Platform:Works:Enabled`) or running the explicit Works Platform-target lane; if refused, skip endpoints without explicit ports.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Verify `ComposeRun` claims its secondary ports when the plan carries a claim directory.
+  evidence: Story 2.4 resource-claim work. `SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation` calls `AllocateOwnedSecondaryPorts` directly; the signed isolation test's plan sets no `ResourceClaimStateDirectory`. Reverting `PlatformAppModel.cs:138` to `AllocateSecondaryPorts` passes every test. Add a `ComposeRun` assertion that a peer `Acquire` of the composed Sentry gRPC port throws `CompositionResourceClaimConflictException` with `OwnerRunId == plan.RunId`.

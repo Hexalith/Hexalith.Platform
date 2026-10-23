@@ -1,0 +1,59 @@
+{
+  "attemptId": "20261023t085443z-recovery-preflight-preparation",
+  "checks": {
+    "all16RecordChecksumsMatch": true,
+    "allPrivateFilesMode0600": true,
+    "allRecordsUnsignedAndNonAuthorizing": true,
+    "bothHopCommandListsEmpty": true,
+    "bothHopGatesClosed": true,
+    "bothUncordonAuthorizationsFalse": true,
+    "historicalMaintenanceUnchanged": true,
+    "privateDirectoryMode0700": true,
+    "runnerIncludedInPendingFinalOutcomes": true
+  },
+  "classification": "sanitized unsigned local preparation",
+  "documentationAppendedAfterPrivateAttempt": true,
+  "gateState": "closed",
+  "mutationAuthorized": false,
+  "operationalAcceptance": "incomplete; all existing prerequisites and actual upgrades remain required",
+  "operations": {
+    "kubeadmUpgrade": false,
+    "liveProofsCollected": 0,
+    "packageOrBinaryMutation": false,
+    "quiesceCordonDrain": false,
+    "reboot": false,
+    "remoteRequests": 0,
+    "signingAttempts": 0
+  },
+  "private16RecordLedgerSha256": "bf027046267c6379e760e908a79ee677d1bcea98b247d65a12f48ce46095cd04",
+  "privateAttemptPath": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261023t085443z-recovery-preflight-preparation",
+  "recordedAt": "2026-10-23T08:56:12.669151+00:00",
+  "retainedRecovery": {
+    "cryptographicValidationThisAttempt": "not-run",
+    "freshnessEstablishedThisAttempt": false,
+    "previouslyEstablishedExpiry": "2026-10-15T11:40:42+00:00",
+    "priorReceipt": "_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261023t065418z-local-preparation/verification.json",
+    "priorReceiptSha256": "162f195e0a78d6478da5f90ada22026be6a0c323172a1b0711cce59bb3ba6a84",
+    "recoveryId": "20261014t112353z",
+    "remoteReadbackThisAttempt": "not-run"
+  },
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceSha256": {
+    "eng/kubernetes-upgrade/prepare.py": "f63aca400715ff924bd6a4d588ac4bf1a89d5da1a03fa9096ab41c5ff2878db7",
+    "eng/kubernetes-upgrade/test_prepare.py": "a14b7a2d71a82a35541017a7205f80c34b466a7b3ef20d75fef269aa5ae5eaba"
+  },
+  "sourceStatuses": {
+    "4.0": "done",
+    "4.1": "in-progress",
+    "4.27": "in-progress"
+  },
+  "storyState": "in-progress",
+  "tests": {
+    "command": "/usr/bin/python3 -I -S -B -m unittest discover -s eng/kubernetes-upgrade -p 'test_*.py'",
+    "exitCode": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 44
+  }
+}

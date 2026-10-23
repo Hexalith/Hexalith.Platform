@@ -39,12 +39,34 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         return new(head, checkpoint);
     }
     public async Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken token)
+        => await PutAtAsync(bytes, category, category + "/" + Guid.NewGuid().ToString("N") + "/" + CustodyJson.Hash(bytes.Span), token);
+    public Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken token)
+    {
+        if (!locator.StartsWith("journal/native-result/", StringComparison.Ordinal)) throw new AuthorityUnavailableException("Invalid native-result locator.");
+        return PutAtAsync(bytes, "journal", locator, token);
+    }
+    public async Task<ObjectVersion?> FindIntentResultAsync(string locator, CancellationToken token)
+    {
+        if (!locator.StartsWith("journal/native-result/", StringComparison.Ordinal)) throw new AuthorityUnavailableException("Invalid native-result locator.");
+        try
+        {
+            using var result = await s3.GetObjectAsync(new GetObjectRequest { BucketName = profile.Originals.Name,
+                ExpectedBucketOwner = profile.Originals.OwnerAccountId, Key = locator }, token);
+            if (result.ContentLength is <= 0 or > CustodyBindingContract.MaximumOriginalBytes) throw new AuthorityUnavailableException("Result bounds invalid.");
+            using var output = new MemoryStream(); await result.ResponseStream.CopyToAsync(output, token);
+            if (output.Length != result.ContentLength) throw new AuthorityUnavailableException("Native result length mismatch.");
+            var version = new ObjectVersion(locator, result.VersionId, CustodyJson.Hash(output.ToArray()), (int)output.Length, profile.RetainUntil);
+            _ = await ReadObjectAsync(profile.Originals, version, token);
+            return version;
+        }
+        catch (AmazonS3Exception e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound) { return null; }
+    }
+    private async Task<ObjectVersion> PutAtAsync(ReadOnlyMemory<byte> bytes, string category, string key, CancellationToken token)
     {
         if (category is not ("checkpoint" or "original" or "journal") || bytes.Length is 0 or > CustodyBindingContract.MaximumOriginalBytes
             || profile.RetainUntil <= clock.GetUtcNow()) throw new AuthorityUnavailableException("Immutable retention or bounds unavailable.");
         BucketIdentity bucket = category == "checkpoint" ? profile.Checkpoints : profile.Originals;
         string hash = CustodyJson.Hash(bytes.Span);
-        string key = category + "/" + Guid.NewGuid().ToString("N") + "/" + hash;
         using var input = new MemoryStream(bytes.ToArray(), writable: false);
         // No multipart writes and no retries: an unacknowledged version is an orphan journal, never current.
         var result = await s3.PutObjectAsync(new PutObjectRequest {
@@ -87,7 +109,10 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
             || next.Revision != checked(expected.Head.Revision + 1) || next.PredecessorDigest != expected.Head.Digest)
             throw new AuthorityUnavailableException("Invalid forward authority transition.");
         byte[] bytes = CustodyJson.Bytes(next);
-        if (next.Registrations.Count > 1000 || next.Originals.Count > 10000 || bytes.Length > 32 * 1024 * 1024 - profile.CompletionReserveBytes)
+        bool admission = next.Originals.Count > expected.Checkpoint.Originals.Count || next.Deliveries.Count > expected.Checkpoint.Deliveries.Count
+            || next.NativeIntents.Count > expected.Checkpoint.NativeIntents.Count || next.AllocationExclusions.Count > expected.Checkpoint.AllocationExclusions.Count;
+        long ceiling = 32 * 1024 * 1024 - (admission ? profile.CompletionReserveBytes : 0);
+        if (next.Registrations.Count > 1000 || next.Originals.Count > 10000 || next.Deliveries.Count > 10000 || next.NativeIntents.Count > 10000 || bytes.Length > ceiling)
             throw new AuthorityUnavailableException("Finite capacity exhausted; retained facts cannot be evicted.");
         var version = await PutImmutableAsync(bytes, "checkpoint", token);
         var head = new AuthorityHead(next.Revision, version.Sha256, version, profile.EnrollmentDigest);

@@ -796,3 +796,16 @@ No survivors are deferred and frozen intent is unchanged. Status remains
 `in-progress`. The sealed original receipt stays historical and unchanged;
 the [supporting review verification](evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/review-verification.json)
 binds corrected final document hashes.
+
+## Current source and recovery adapter preparation — 2026-10-23
+
+The separate [preparation spec](spec-4-27-recovery-adapter-preparation.md) and
+[sanitized receipt](evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/README.md)
+record current bounded read-only investigation, new guarded adapter primitives
+and a private exact-input technical review proposal. The original frozen intent,
+baseline, production tasks and signed originals are unchanged. Offline success
+supplies no live authorization, complete system driver, new recovery freshness
+or runtime acceptance. The handoff names missing executable preparation and
+actual execution qualifications before a separately covered new attempt and
+exact operational approval. **4.27 stays in-progress, 4.1 closed and Timesheets
+3.6 open/FAIL**; all original production acceptance remains pending.

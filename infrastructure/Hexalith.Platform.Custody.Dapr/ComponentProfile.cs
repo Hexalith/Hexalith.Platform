@@ -31,7 +31,13 @@ internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string
         { throw new AuthorityUnavailableException("Incomplete pre-enrolled component profile; startup cannot enroll resources."); }
         foreach (string purpose in new[] { "private-operation", "control", "independent-observer" })
             if (Trust.Count(t => t.Purpose == purpose) != 1) throw new AuthorityUnavailableException("Independent trust role missing.");
-        if (Trust.Select(t => t.PublicKeyPem).Append(ComponentPublicKeyPem).Distinct(StringComparer.Ordinal).Count() != Trust.Length + 1)
+        string Fingerprint(string pem)
+        {
+            using var key = System.Security.Cryptography.ECDsa.Create(); key.ImportFromPem(pem);
+            if (key.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7") throw new AuthorityUnavailableException("P-256 public trust required.");
+            return CustodyJson.Hash(key.ExportSubjectPublicKeyInfo());
+        }
+        if (Trust.Select(t => Fingerprint(t.PublicKeyPem)).Append(Fingerprint(ComponentPublicKeyPem)).Distinct(StringComparer.Ordinal).Count() != Trust.Length + 1)
             throw new AuthorityUnavailableException("Signing roles must be independent.");
     }
     internal static ComponentProfile Load(string path) => CustodyJson.Read<ComponentProfile>(File.ReadAllBytes(path));
@@ -47,7 +53,12 @@ internal sealed record QualificationClaim(string ProfileDigest, string ArtifactD
     string ClosureProfileDigest, string CapacityMeasurementDigest, long CompletionReserveBytes,
     string IndependentPlacementEvidenceDigest, string NativeAuthorizationDigest);
 internal sealed record ControlClaim(string ControlProofSha256, string GuardOriginalSha256, string ProtectionOriginalSha256,
-    string CurrentRevocationSha256, long CurrentGuardRevision, long? EffectiveDispatchRevision, string? EffectiveDispatchReceiptId);
+    string CurrentRevocationSha256, long CurrentGuardRevision, long? EffectiveDispatchRevision, string? EffectiveDispatchReceiptId,
+    HoldReservation? HoldReservation = null);
+// The control owner durably excludes dispatch until this exact reservation is reconciled. It cannot
+// expire on a timer or be canceled from a local app restore. Its signed current claim is not a read-then-write check.
+internal sealed record HoldReservation(string ReservationId, string HoldId, string TargetDigest, long RegisteredGuardRevision,
+    string RegisteredGuardReceiptId, string State);
 internal sealed record PreparationClaim(string ManifestDigest, string SourceEpoch, string SuccessorEpoch,
     string InventoryDigest, string SurvivorCheckpointDigest, string ProducerClosureDigest, string HolderClosureDigest,
     string[] PermanentlyDeletedAlternateEpochs, string[] SurvivorOpaqueReferences, string[] TargetOpaqueReferences,

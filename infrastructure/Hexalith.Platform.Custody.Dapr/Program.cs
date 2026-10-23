@@ -41,7 +41,7 @@ try
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");
         var packet = CustodyJson.Read<WorkerPacket>(File.ReadAllBytes(args[2]));
-        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier), packet, CancellationToken.None);
+        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier), packet, CancellationToken.None, exchange);
         Console.WriteLine("Worker command retained; only independently verified final publication establishes a terminal original."); return 0;
     }
     var provider = new SemanticProvider(profile, store, verifier, signer, exchange);

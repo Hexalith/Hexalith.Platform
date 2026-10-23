@@ -37,7 +37,15 @@ internal sealed class StatementVerifier(ComponentProfile profile, TimeProvider c
         if (facts.ControlProofSha256 != control.SubjectSha256 || !CustodyBindingContract.Digest(facts.GuardOriginalSha256)
             || !CustodyBindingContract.Digest(facts.CurrentRevocationSha256) || facts.CurrentGuardRevision < e.Proof.DispatchRevision) return false;
         // A later hold is denied even if custody has not yet seen the protection reservation.
-        if (e.Operation == "pin") return false; // No installed guard/custody atomic handoff; snapshot freshness is insufficient.
+        if (e.Operation == "pin")
+        {
+            var h = facts.HoldReservation;
+            if (h is null || h.State != "RegisteredDispatchBlocked" || !CustodyBindingContract.Text(h.ReservationId)
+                || h.HoldId != e.Proof.HoldId || h.RegisteredGuardRevision != e.Proof.GuardRevision
+                || h.RegisteredGuardReceiptId != e.Proof.GuardReceiptId || h.TargetDigest != e.Proof.TargetVectorDigest
+                || facts.CurrentGuardRevision < h.RegisteredGuardRevision || facts.EffectiveDispatchRevision is not null)
+                return false;
+        }
         if (e.Operation == "destroy-manifest" && (facts.EffectiveDispatchRevision != e.Proof.DispatchRevision
             || facts.EffectiveDispatchReceiptId != e.Proof.DispatchReceiptId || !CustodyBindingContract.Digest(facts.ProtectionOriginalSha256))) return false;
         return true;

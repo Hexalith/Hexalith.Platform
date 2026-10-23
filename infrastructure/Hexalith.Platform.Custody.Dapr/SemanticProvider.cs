@@ -9,13 +9,20 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
     internal async Task<CustodyBindingResponseV1> InvokeAsync(byte[] exactBytes, SignedStatement operation, SignedStatement control, CancellationToken token, SignedStatement? keyAdmission = null)
     {
         var request = CustodyBindingContract.Decode(exactBytes) ?? throw new AuthorityUnavailableException("Invalid closed request.");
+        try { return await InvokeDecodedAsync(request, exactBytes, operation, control, token, keyAdmission); }
+        finally { if (request.WrapInput is { } input) CryptographicOperations.ZeroMemory(input.RootKey); }
+    }
+    private async Task<CustodyBindingResponseV1> InvokeDecodedAsync(CustodyBindingRequestV1 request, byte[] exactBytes,
+        SignedStatement operation, SignedStatement control, CancellationToken token, SignedStatement? keyAdmission)
+    {
         var e = request.Envelope;
         CurrentState current = await store.ReadAsync(e.TenantId, token); // Every call, including duplicate read-current, reads fresh.
         if (!verifier.Authorize(request, exactBytes, operation, control, current)) throw new AuthorityUnavailableException("Current exact authorization missing.");
         CustodyBindingResponseV1 Reply() => new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest);
         if (e.Operation == "read-current")
         {
-            var read = new CustodyBindingCurrentReadV1(e.RequestAttemptId, e.Challenge, profile.Enrollment, current.Head.Revision, current.Head.Digest, []);
+            current.Checkpoint.Anchors.TryGetValue(e.OwnerPurposeScope, out var owner);
+            var read = new CustodyBindingCurrentReadV1(e.RequestAttemptId, e.Challenge, profile.Enrollment, current.Head.Revision, current.Head.Digest, [], owner?.Revision, owner?.Digest, e.TenantId, e.OwnerPurposeScope);
             return Reply() with { Current = read with { Signature = Sign(CustodyJson.Bytes(read)) } };
         }
         if (e.Operation == "read-original-page")
@@ -31,6 +38,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             byte[] slice = original.AsSpan(page.Offset, page.Length).ToArray();
             return Reply() with { Page = new(header, page.Offset, slice.Length, CustodyJson.Hash(slice), slice) };
         }
+        if (request.Transition is not null) return await TransitionAsync(request, current, token);
         if (e.Operation != "unwrap" && current.Checkpoint.Originals.TryGetValue(e.OperationId, out var originalOperation))
         {
             if (originalOperation.RequestDigest != e.RequestDigest) throw new AuthorityUnavailableException("Permanent original operation conflict.");
@@ -48,6 +56,11 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             if (keyExchange is null || keyAdmission is null) throw new AuthorityUnavailableException("Key execution installation missing.");
             return await keyExchange.ExecuteAsync(request, current, keyAdmission, token);
         }
+        if (e.Operation == "complete-key-use")
+        {
+            if (keyExchange is null || keyAdmission is null) throw new AuthorityUnavailableException("Independent completion missing.");
+            return await keyExchange.CompleteAsync(request, current, keyAdmission, token);
+        }
         if (e.Operation is "lookup-original" or "lookup-transition" or "verify-transition")
             return Pending(request); // No synthetic NotStarted proof.
         // Key effects and B1 require qualified current installation, measured completion reserve and closure.
@@ -55,9 +68,28 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         if (e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest)
             throw new AuthorityConflictException();
         if (current.Checkpoint.Originals.Count >= 10000) throw new AuthorityUnavailableException("Lifecycle original capacity exhausted.");
+        if (request.Lifecycle is { } lifecycleTarget && e.Proof.TargetVectorDigest != Hexalith.EventStore.Contracts.Security.DeletionBatchCapabilityIdentity.TargetManifestDigest(
+            [new(e.TenantId, lifecycleTarget.Identity.ObjectId, lifecycleTarget.Identity.KeyAlias)]))
+            throw new AuthorityUnavailableException("Lifecycle target-vector digest mismatch.");
         var next = Clone(current);
         switch (e.Operation)
         {
+            case "pin":
+                var holding = request.Lifecycle!;
+                if (next.Frozen || !next.Registrations.TryGetValue(request.Registration!.OpaqueWrappedKeyReference, out var held)
+                    || held.Registration != request.Registration || held.Epoch != next.CurrentEpoch
+                    || next.Cycle is { } active && active.Manifest.Manifest!.Original.Targets.Any(t => t.AgentInteractionId == holding.Identity.ObjectId
+                        && t.TargetProtectionKeyAlias == holding.Identity.KeyAlias))
+                    throw new AuthorityUnavailableException("Frozen, reserved, erased or unknown target cannot acquire a pin.");
+                string heldId = CustodyJson.Target(holding.Identity) + ":" + holding.HoldId;
+                if (!next.Pins.TryAdd(heldId, new(holding.HoldId!, CustodyJson.Target(holding.Identity), e.Proof.GuardRevision!.Value, e.Proof.GuardReceiptId!)))
+                    throw new AuthorityUnavailableException("Hold already has a different original.");
+                var pinned = Reply() with { Lifecycle = new(holding.Identity, e.OperationId, e.RequestDigest,
+                    CustodyKeyLifecycleStatus.Pinned, "pin-" + Guid.NewGuid().ToString("N"), null) };
+                var pinOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(pinned), "original", token);
+                next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, pinOriginal, null));
+                await store.CommitAsync(current, next, token);
+                return pinned;
             case "destroy-manifest":
                 if (next.Cycle is not null || next.Frozen) throw new AuthorityUnavailableException("One physical cycle per tenant.");
                 var manifest = request.Manifest!;
@@ -69,7 +101,8 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                         throw new AuthorityUnavailableException("Unknown target or effective pin blocks complete reservation.");
                 }
                 next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, null, request));
-                next = next with { Cycle = new(e.OperationId, request, next.CurrentEpoch, null, CyclePhase.Reserved, [], [], null, null) };
+                next = next with { Cycle = new(e.OperationId, request, next.CurrentEpoch, null, CyclePhase.Reserved,
+                    profile.Epochs.Where(epoch => epoch.TenantId == e.TenantId && epoch.OpaqueId != next.CurrentEpoch).Select(epoch => epoch.OpaqueId).ToArray(), [], null, null) };
                 await store.CommitAsync(current, next, token);
                 return Pending(request);
             case "unpin":
@@ -90,6 +123,47 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 // Anchor scope revisions cannot be reinterpreted as tenant-head revisions.
                 throw new AuthorityUnavailableException("This effect has no qualified implementation and remains closed.");
         }
+    }
+    private async Task<CustodyBindingResponseV1> TransitionAsync(CustodyBindingRequestV1 request, CurrentState current, CancellationToken token)
+    {
+        var e = request.Envelope; var t = request.Transition!;
+        // Every owner scope, including revision-zero genesis, must be independently enrolled ahead of startup.
+        // Absent/restored local state is never permission to create this entry.
+        if (!current.Checkpoint.Anchors.TryGetValue(t.ScopeId, out var anchor))
+            throw new AuthorityUnavailableException("Owner scope has no authenticated installation/genesis enrollment.");
+        bool same = anchor.Admitted is { } a && CustodyJson.Bytes(a).AsSpan().SequenceEqual(CustodyJson.Bytes(t));
+        bool atTarget = anchor.Revision == t.TargetRevision && anchor.Digest == t.TargetDigest;
+        bool predecessor = anchor.Revision == t.ExpectedRevision && anchor.Digest == t.PredecessorDigest;
+        bool read = e.Operation is "verify-transition" or "lookup-transition";
+        bool accepted = atTarget && same;
+        if (!read && !accepted)
+        {
+            if (!verifier.Qualified(current) || e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest
+                || !predecessor || anchor.Admitted is { } pending && anchor.Revision < pending.TargetRevision && !same)
+                throw new AuthorityUnavailableException("Owner predecessor/admitted original comparison failed.");
+            var next = Clone(current);
+            if (e.Operation == "admit-transition")
+            {
+                if (next.Originals.Count >= 10000) throw new AuthorityUnavailableException("Owner original capacity exhausted.");
+                string originalId = "anchor:" + CustodyJson.Hash(PlatformCanonicalBytes.Components([t.ScopeId, t.TargetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture), t.TargetDigest]));
+                if (!next.Originals.ContainsKey(originalId))
+                {
+                    var retained = await store.PutImmutableAsync(CustodyJson.Bytes(request), "journal", token);
+                    next.Originals.Add(originalId, new(e.RequestDigest, e.Operation, retained, null));
+                }
+                next.Anchors[t.ScopeId] = anchor with { Admitted = t, AdmissionOperationId = e.OperationId };
+            }
+            else if (e.Operation is "record-transition" or "recover-transition" && same)
+                next.Anchors[t.ScopeId] = anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
+            else throw new AuthorityUnavailableException("Record/recover requires the retained admitted original.");
+            await store.CommitAsync(current, next, token); accepted = true;
+        }
+        var observed = read || !accepted ? anchor : e.Operation == "admit-transition" ? anchor : anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
+        var proof = new CustodyBindingTransitionProofV1(e.RequestAttemptId, e.Challenge, profile.Enrollment, e.Operation, t.ScopeId,
+            observed.Revision, observed.Digest, CustodyJson.Hash(CustodyJson.Bytes(t)),
+            accepted ? observed.Revision == t.TargetRevision ? "Recorded" : "Admitted" : "Unknown", []);
+        return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, TransitionVerified: accepted,
+            TransitionProof: proof with { Signature = Sign(CustodyJson.Bytes(proof)) });
     }
     internal static Checkpoint Clone(CurrentState current) => CustodyJson.Read<Checkpoint>(CustodyJson.Bytes(current.Checkpoint)) with {
         Revision = checked(current.Head.Revision + 1), PredecessorDigest = current.Head.Digest };

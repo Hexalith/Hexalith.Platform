@@ -34,6 +34,8 @@ internal interface IAuthorityStore
     Task<CurrentState> ReadAsync(string tenant, CancellationToken cancellationToken);
     Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken cancellationToken);
     Task<byte[]> ReadImmutableAsync(ObjectVersion version, CancellationToken cancellationToken);
+    Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken cancellationToken);
+    Task<ObjectVersion?> FindIntentResultAsync(string locator, CancellationToken cancellationToken);
     Task<CurrentState> CommitAsync(CurrentState expected, Checkpoint next, CancellationToken cancellationToken);
 }
 internal static class CustodyJson
@@ -47,4 +49,5 @@ internal static class CustodyJson
     internal static string Hash(ReadOnlySpan<byte> bytes) => Convert.ToHexString(SHA256.HashData(bytes));
     internal static string Target(CustodyKeyObjectIdentity i) => CustodyJson.Hash(PlatformCanonicalBytes.Components([i.TenantId, i.ObjectId, i.KeyAlias]));
     internal static string Interaction(CustodyKeyObjectIdentity i) => CustodyJson.Hash(PlatformCanonicalBytes.Components([i.TenantId, i.ObjectId]));
+    internal static string IntentLocator(string tenant, string intent) => "journal/native-result/" + Hash(PlatformCanonicalBytes.Components([tenant, intent]));
 }

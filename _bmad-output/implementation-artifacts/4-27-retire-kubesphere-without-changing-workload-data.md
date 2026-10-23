@@ -541,3 +541,19 @@ binds checked hashes, expiry and preservation under HEAD
 unchanged suite, new recovery allocation or timestamp change occurred. Original
 production acceptance remains pending: **4.27 in-progress, 4.1 closed and
 Timesheets 3.6 open/FAIL**.
+
+## Current source and recovery adapter preparation — 2026-10-23
+
+The [new preparation receipt](evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/README.md)
+and [current handoff](../../eng/cluster-management/NEXT-OPERATOR-ACTION.md#current-source-and-recovery-adapter-preparation--2026-10-23)
+bind new read-only source/provider observations separately from offline adapter
+tests. The private technical review bundle names exact available tools/inputs,
+proposed isolated targets, effects/stops and guarded resume/cleanup procedures.
+Added source storage has explicit coverage treatment; historical completeness
+and old operational approval are not inherited. Missing system drivers and
+actual runtime qualifications remain explicit closed prerequisites. No fresh
+recovery RID/policy, signature, upload, capture, quiescence, restore, permission
+change, retirement, upgrade or deployment was produced. Original production
+acceptance remains pending; **4.27 in-progress, 4.1 closed, Timesheets 3.6
+open/FAIL**. The historical frozen intent and checked original evidence/bound
+execution bytes remain preserved.

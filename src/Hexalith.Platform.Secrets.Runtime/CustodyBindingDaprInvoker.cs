@@ -10,7 +10,10 @@ using Hexalith.Platform.Custody;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 internal sealed record CustodyBindingCurrentReadV1(string RequestAttemptId, string Challenge, AuthorityEnrollmentV1 Authority,
-    long ObservedRevision, string CheckpointDigest, byte[] Signature);
+    long ObservedRevision, string CheckpointDigest, byte[] Signature, long? OwnerRevision = null, string? OwnerDigest = null,
+    string? TenantId = null, string? OwnerPurposeScope = null);
+internal sealed record CustodyBindingTransitionProofV1(string RequestAttemptId, string Challenge, AuthorityEnrollmentV1 Authority,
+    string Operation, string ScopeId, long OwnerRevision, string OwnerDigest, string TransitionDigest, string State, byte[] Signature);
 internal sealed record CustodyBindingManifestStatusV1(DeletionManifestProviderResult Result, AuthorityEnrollmentV1 Authority,
     string ManifestDigest, byte[] Signature);
 
@@ -19,12 +22,23 @@ internal sealed record CustodyBindingResponseV1(string ProtocolVersion, string O
     CustodyBindingCurrentReadV1? Current = null, bool? TransitionVerified = null, CustodyBindingOriginalPageV1? Page = null,
     CustodyBindingManifestStatusV1? ManifestStatus = null,
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyKeyRegistration? WrappedRegistration = null,
-    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingKeyDeliveryV1? KeyDelivery = null);
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingKeyDeliveryV1? KeyDelivery = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingDeliveryV1? Delivery = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingTransitionProofV1? TransitionProof = null);
 
 internal sealed record CustodyBindingKeyDeliveryV1(CustodyBindingKeyUseV1 KeyUse, byte[] RootKey);
 
 internal enum CustodyBindingTransportState { Unknown, Refused, ReceivedUnverified }
 internal sealed record CustodyBindingTransportResult(CustodyBindingTransportState State, CustodyBindingResponseV1? Response = null);
+
+// Installed implementation must verify the signed complete transport/holder profile and issue exact
+// private-operation/control statements. Merely configuring a larger SDK channel grants no capability.
+internal sealed record CustodyBindingTransportAuthorization(IReadOnlyDictionary<string, string> Metadata,
+    int MaximumRequestMessageBytes, string TransportProfileDigest, string? KeyClosureProfileDigest);
+internal interface ICustodyBindingTransportAuthority : ICustodyBindingCurrentAuthority
+{
+    Task<CustodyBindingTransportAuthorization?> PrepareTransportAsync(CustodyBindingRequestV1 exact, CancellationToken token);
+}
 
 /// <summary>Unbound one-attempt raw SDK binding call. Transport receipt never establishes physical success.</summary>
 internal sealed class CustodyBindingDaprInvoker
@@ -56,14 +70,29 @@ internal sealed class CustodyBindingDaprInvoker
             budget.Token.ThrowIfCancellationRequested();
             if (Stopwatch.GetElapsedTime(started) >= timeout) { throw new OperationCanceledException(budget.Token); }
         }
+        byte[] data = [];
+        CustodyBindingRequestV1? request = null;
+        CustodyBindingResponseV1? response = null;
+        BindingResponse? bindingResponse = null;
+        bool transferred = false;
         try
         {
             CheckBudget();
-            byte[] data = CustodyBindingContract.Encode(original);
-            var request = CustodyBindingContract.Decode(data);
-            if (request is null || request.Envelope.Operation is "wrap" or "unwrap"
-                || ApiRequestSize(_binding, request.Envelope.Operation, data.Length) > CustodyBindingContract.DefaultMessageBytes
-                || ComponentRequestUpperBound(request.Envelope.Operation, data.Length) > CustodyBindingContract.DefaultMessageBytes)
+            data = CustodyBindingContract.Encode(original);
+            request = CustodyBindingContract.Decode(data);
+            var transport = request is not null && _authority is ICustodyBindingTransportAuthority installed
+                ? await installed.PrepareTransportAsync(request, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false) : null;
+            int limit = transport?.MaximumRequestMessageBytes ?? CustodyBindingContract.DefaultMessageBytes;
+            bool keys = request?.Envelope.Operation is "wrap" or "unwrap";
+            if (request is null || limit is < CustodyBindingContract.DefaultMessageBytes or > CustodyBindingContract.CandidateRequestMessageBytes
+                || transport is not null && (!CustodyBindingContract.Digest(transport.TransportProfileDigest)
+                    || !transport.Metadata.ContainsKey("custody-operation-proof") || !transport.Metadata.ContainsKey("custody-control-proof")
+                    || transport.Metadata.Count > MaximumForwardedMetadataEntries
+                    || transport.Metadata.Sum(p => Encoding.UTF8.GetByteCount(p.Key) + Encoding.UTF8.GetByteCount(p.Value)) > MaximumForwardedMetadataBytes)
+                || keys && (transport is null || !CustodyBindingContract.Digest(transport.KeyClosureProfileDigest)
+                    || !transport.Metadata.ContainsKey("custody-key-admission"))
+                || ApiRequestSize(_binding, request.Envelope.Operation, data.Length, transport?.Metadata) > limit
+                || ComponentRequestUpperBound(request.Envelope.Operation, data.Length) > limit)
             { return new(CustodyBindingTransportState.Refused); }
             CheckBudget();
             // Key delivery is unsupported until SDK/sidecar/component holder/buffer closure can be qualified.
@@ -81,19 +110,22 @@ internal sealed class CustodyBindingDaprInvoker
             }
             CheckBudget();
             var bindingRequest = new BindingRequest(_binding, request.Envelope.Operation) { Data = data };
+            if (transport is not null) foreach (var pair in transport.Metadata) bindingRequest.Metadata.Add(pair.Key, pair.Value);
             // No retry loop. Runtime/proxy/component retry disablement still requires deployment evidence.
             BindingResponse result = await _client.InvokeBindingAsync(bindingRequest, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            bindingResponse = result;
             CheckBudget();
             if (result.Data.Length == 0 || ResponseWireSize(result.Data.Length, result.Metadata) >= CustodyBindingContract.MaximumPageFrameBytes)
             { return new(CustodyBindingTransportState.Unknown); }
             CustodyBindingContract.RejectDuplicateProperties(result.Data.Span);
-            var response = JsonSerializer.Deserialize<CustodyBindingResponseV1>(result.Data.Span, CustodyBindingContract.Json);
+            response = JsonSerializer.Deserialize<CustodyBindingResponseV1>(result.Data.Span, CustodyBindingContract.Json);
             if (response is null || response.ProtocolVersion != CustodyBindingContract.Protocol
                 || response.OperationId != request.Envelope.OperationId || response.RequestDigest != request.Envelope.RequestDigest)
             { return new(CustodyBindingTransportState.Unknown); }
             int branches = (response.OriginalHeader is null ? 0 : 1) + (response.Lifecycle is null ? 0 : 1)
                 + (response.Current is null ? 0 : 1) + (response.TransitionVerified is null ? 0 : 1) + (response.Page is null ? 0 : 1)
-                + (response.ManifestStatus is null ? 0 : 1);
+                + (response.ManifestStatus is null ? 0 : 1) + (response.WrappedRegistration is null ? 0 : 1)
+                + (response.KeyDelivery is null ? 0 : 1) + (response.Delivery is null ? 0 : 1);
             if (branches != 1) { return new(CustodyBindingTransportState.Unknown); }
             if (request.Manifest is { } manifest)
             {
@@ -111,6 +143,23 @@ internal sealed class CustodyBindingDaprInvoker
                     || h.RequestDigest != request.Envelope.RequestDigest || h.BatchId != manifest.Original.Capability.BatchId
                     || h.ReservationReceiptId != manifest.ProtectionReservationReceiptId || h.ManifestDigest != manifest.Original.Capability.ManifestDigest
                     || h.TargetCount != manifest.Original.Targets.Count) { return new(CustodyBindingTransportState.Unknown); }
+            }
+            else if (keys)
+            {
+                var use = request.WrapInput?.KeyUse ?? request.KeyUse;
+                bool valid = request.Envelope.Operation == "wrap"
+                    ? response.WrappedRegistration is { } wrapped && request.WrapInput is { } input
+                        && wrapped.Identity == input.Identity && wrapped.OperationId == input.OperationId
+                        && wrapped.ExpectedRevision == input.ExpectedRevision && wrapped.KekVersion == input.KekVersion
+                        && wrapped.OpaqueWrappedKeyReference == input.OpaqueWrappedKeyReference && CustodyBindingContract.Text(wrapped.WrapReceiptId)
+                    : response.KeyDelivery is { } delivery && delivery.KeyUse == use && delivery.RootKey is { Length: 32 }
+                        || response.Delivery is { } status && status.KeyUse == use;
+                if (!valid) { if (response.KeyDelivery is { } rejected) System.Security.Cryptography.CryptographicOperations.ZeroMemory(rejected.RootKey);
+                    return new(CustodyBindingTransportState.Unknown); }
+            }
+            else if (request.Envelope.Operation == "complete-key-use")
+            {
+                if (response.Delivery is not { } completed || completed.KeyUse != request.KeyUse) return new(CustodyBindingTransportState.Unknown);
             }
             else if (request.Registration is { } registration)
             {
@@ -135,10 +184,19 @@ internal sealed class CustodyBindingDaprInvoker
             { return new(CustodyBindingTransportState.Unknown); }
             // Consumers still need independently current signed result verification. No bool here implements an authority port.
             CheckBudget();
+            transferred = true;
             return new(CustodyBindingTransportState.ReceivedUnverified, response);
         }
         catch (ArgumentException) { return new(CustodyBindingTransportState.Refused); }
         catch (Exception) { return new(CustodyBindingTransportState.Unknown); }
+        finally
+        {
+            System.Security.Cryptography.CryptographicOperations.ZeroMemory(data);
+            if (request?.WrapInput is { } input) System.Security.Cryptography.CryptographicOperations.ZeroMemory(input.RootKey);
+            if (!transferred && response?.KeyDelivery is { } rejected) System.Security.Cryptography.CryptographicOperations.ZeroMemory(rejected.RootKey);
+            if (bindingResponse is not null && System.Runtime.InteropServices.MemoryMarshal.TryGetArray(bindingResponse.Data, out var array))
+                System.Security.Cryptography.CryptographicOperations.ZeroMemory(array.AsSpan());
+        }
     }
 
     private static bool ValidLifecycleResult(CustodyBindingRequestV1 request, CustodyKeyLifecycleOutcome result)

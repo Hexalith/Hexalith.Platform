@@ -79,7 +79,12 @@ internal static class CustodyBindingContract
     // signed JCS bytes are carried separately; transport escaping never changes their signing identity.
     internal static string OriginalRequestDigest(CustodyBindingRequestV1 request)
     {
-        if (request.WrapInput is { } wrap) { return Hash(JsonSerializer.SerializeToUtf8Bytes(wrap)); }
+        if (request.WrapInput is { } wrap)
+        {
+            byte[] ephemeral = JsonSerializer.SerializeToUtf8Bytes(wrap);
+            try { return Hash(ephemeral); }
+            finally { CryptographicOperations.ZeroMemory(ephemeral); }
+        }
         if (request.Manifest is { } manifest) { return Hash(JsonSerializer.SerializeToUtf8Bytes(manifest.Original)); }
         if (request.Lifecycle is { } lifecycle) { return Hash(JsonSerializer.SerializeToUtf8Bytes(lifecycle)); }
         if (request.Transition is { } transition) { return Hash(JsonSerializer.SerializeToUtf8Bytes(transition)); }
@@ -167,9 +172,9 @@ internal static class CustodyBindingContract
             {
                 case "admit-transition": case "record-transition": case "recover-transition": case "verify-transition": case "lookup-transition":
                     return branches == 1 && r.Transition is { } t && r.Lifecycle is null && r.KeyUse is null
-                        && t.ScopeId == e.OwnerPurposeScope && t.ExpectedRevision == e.ExpectedCustodyRevision
+                        && t.ScopeId == e.OwnerPurposeScope && t.ExpectedRevision >= 0
                         && t.ExpectedRevision < long.MaxValue && t.TargetRevision == t.ExpectedRevision + 1
-                        && t.PredecessorDigest == e.CheckpointDigest && Digest(t.TargetDigest)
+                        && Digest(t.PredecessorDigest) && Digest(t.TargetDigest)
                         && t.TargetBytes is { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }
                         && Hash(t.TargetBytes) == t.TargetDigest && p.TargetVectorDigest == t.TargetDigest;
                 case "read-current":

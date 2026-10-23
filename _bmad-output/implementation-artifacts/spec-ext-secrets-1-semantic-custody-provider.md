@@ -7,6 +7,8 @@ route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 543ea182bd83c813609c7df0491d1419b7f1f99e
 context:
+  - ../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md
+  - ../agents/_bmad-output/planning-artifacts/external-dependency-register.md
   - docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md
   - docs/implementation/ext-secrets-1-erasure-authority-2026-10-20/OWNER-APPROVAL.md
   - _bmad-output/specs/spec-ext-secrets-1-interaction-custody/custody-binding-contract.md
@@ -62,6 +64,8 @@ Acceptance: Given the implementation, when locally verified, then actual source/
 ## Implementation Notes
 
 The existing dirty work is explicitly preserved under the user's instruction. No intent gap blocks reversible source implementation; actual account/location/identities and expenditure require the final concrete provisioning approval. No source change is permission to run its native methods. If a primitive cannot safely implement an invariant, keep that capability closed and report the exact unresolved implementation gap rather than substituting a fixture.
+
+Resume instruction (2026-10-23): finish executable key delivery, hold pin/unpin, atomic manifest destruction, exact-original recovery, independently surviving current authority, and transport/buffer closure. Supply EventStore with the authenticated installation/genesis/current-owner protocol and its concrete adapter handback. Protection-owner and governance-guard revisions are independent; absent or restored local state cannot authorize genesis. Read the complete relevant EXT-SECRETS-1, EXT-PROTECTION-1, EXT-HOST-1 v21/v23 and OQ-5.4-1 register contracts. Preserve every existing artifact and journal. Return reviewed implementation, meaningful component tests, exact remaining installation gaps, and a concrete bounded F2/F3 approval packet under OWNER-APPROVAL.md. Do not provision, run physical experiments or the cohort, execute consuming Agents seams, change acceptance/registers, or advance availability. The independent EventStore checkout is context; deliver the provider-neutral adapter/protocol handback here unless repository-local instructions explicitly authorize a scoped change there.
 
 ## Spec Change Log
 

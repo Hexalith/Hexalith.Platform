@@ -901,3 +901,33 @@ binds the corrected documents and exact local audit provenance separately.
 Only local reads and documentation/audit writes occurred; unchanged suites and
 fixtures were not rerun. **4.27 remains in-progress, 4.1's operational gate
 closed and Timesheets 3.6 open/FAIL.**
+
+## Current source and recovery adapter preparation — 2026-10-23
+
+The [new preparation receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/README.md)
+records bounded current source/provider investigation and new guarded offline
+[adapter primitives](../recovery-preparation/RECOVERY-ADAPTERS.md). Exact available
+tool/input hashes, source/target proposals, expected effects, stop conditions and
+source-resume/target-cleanup procedures are assembled in restricted private
+review custody. Read-only observations are separate from synthetic tests and
+unperformed execution qualifications. New source coverage is explicit; an old
+paired-store proof supplies no completeness claim for added storage.
+
+The proposal renderer accepts current measured bindings with explicit missing
+prerequisites. It creates no policy/signature/artifact versions, target UIDs or
+recovery RID, and reports zero backend requests and a closed operational gate.
+Remaining system drivers and actual-run qualifications are named rather than
+represented by fake tool paths or successful offline results. The packet is
+technical review material; it is not ready for operational approval or capture.
+Complete missing executable preparation, resolve the exact source coverage,
+then allocate a separately covered fresh attempt and rebind its exact current
+policy/tools/identities before seeking operational approval. Original-policy
+authentication and independent immutable policy/signature readback still
+precede capture; complete actual recovery/resume/cleanup and signed acceptance
+precede dependent gates.
+
+Existing owner decisions remain within their exact scope. Expired attempts,
+signed originals, retained failures, frozen intent and checked bound retirement/
+procedure/maintenance bytes remain preserved. No capture, quiescence, restore,
+signing, upload, permission change, retirement, upgrade or deployment occurred.
+**4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
