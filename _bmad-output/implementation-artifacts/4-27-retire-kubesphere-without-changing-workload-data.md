@@ -5,6 +5,7 @@ epic: 4
 story: 27
 created: 2026-10-01
 status: in-progress
+baseline_commit: '3b09b03317d6486ec02d84942616ecb2b73595cd'
 route: dispatch
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
