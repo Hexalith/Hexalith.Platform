@@ -1,0 +1,91 @@
+{
+  "scope": "Four parent-requested review fixes only; parent owns broad verification.",
+  "build": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "seconds": 50.14
+  },
+  "handoff": {
+    "total": "49",
+    "passed": "49",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0",
+    "time": "8.952"
+  },
+  "archiveLinks": {
+    "total": "5",
+    "passed": "5",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0",
+    "time": "1.453"
+  },
+  "reportSafety": {
+    "total": "13",
+    "passed": "13",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0",
+    "time": "1.253"
+  },
+  "retainedInitialFailure": {
+    "handoff": {
+      "total": "49",
+      "passed": "22",
+      "failed": "27",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "5.219"
+    },
+    "observation": "27 manifest/Git fixture lookup failures occurred before affected native execution; no source changes between initial run and 49/49 rerun. Isolated archive theory also passed 5/5. Cause unconfirmed."
+  },
+  "changes": {
+    "archiveOwnedPaths": {
+      "test": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync",
+      "cases": [
+        "workspace-entry",
+        "durable-root",
+        "durable-entries",
+        "durable-entry",
+        "durable-file"
+      ],
+      "result": "5/5; all outside sentinel bytes unchanged"
+    },
+    "metadataFifo": {
+      "test": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync",
+      "result": "Real Python-created FIFO skipped; normal plan retained; terminal recording completes within original stopping allowance"
+    },
+    "perEntryObservations": {
+      "test": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchArchivesEachEntriesInspectedFunctionalObservationsAsync",
+      "result": "Two actual children; both entries retain distinct inspected observations beside reports in workspace and durable archives"
+    },
+    "attemptedDiagnostics": {
+      "test": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync",
+      "cases": [
+        "child failure",
+        "middle entry descriptor refusal after first child deletes catalog"
+      ],
+      "result": "2/2; refusal has first child only; attempted first/second, failed second, not attempted third"
+    }
+  },
+  "sourceSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "d6a185fbdb6643cdf6f8a1997e6d8b429ad70a9d22338afe9e8a60fed84284bc",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "3f59b19cf32b482704779d82af6e7e0f5d6ef3a46df4591643268bc34fd5e10b",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "b2d4f13064ab91c365ae9af936a090264739b669067c3cdac9a7270955a6e4e6",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs": "a20c201eaef5e1adca427375ebabcac01af5cb9d6e8768af562d4a82482cac1e",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs": "1f7724fffb582dbdaeb0117d6d2774712af2593a66d4f174bfb394de9fc111cd"
+  },
+  "commands": [
+    "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false --no-restore --nologo",
+    "dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests -result-xml /tmp/story24-review-fix-handoff.xml",
+    "dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -method '*TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync' -result-xml /tmp/story24-review-fix-links.xml",
+    "dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -method '*ModuleRunnerReviewRegressionTests.UnsafeReportOutputNeverTouchesForeignTargetsAsync' -method '*ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync' -result-xml /tmp/story24-review-fix-report-safety.xml"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+}

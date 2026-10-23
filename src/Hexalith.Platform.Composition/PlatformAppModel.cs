@@ -115,6 +115,7 @@ public static class PlatformAppModel
         if (options.RetentionProfile is not null && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source || options.RunPlan is null))
             throw new InvalidDataException("The PostgreSQL retention experiment requires a runner-owned Development source run.");
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
+        HashSet<IResource> existingResources = [.. builder.Resources];
         var declarations = PlatformDeclarationSet.Load(options);
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
@@ -340,6 +341,20 @@ public static class PlatformAppModel
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
                 else containers[server.ResourceId].WaitFor(containers[target.ResourceId]);
             }
+            string? infrastructureOwner = declarations.SingleOrDefault(module => PlatformDeclarationSet.Id(module.Declaration) == "platform")?.Declaration.GetProperty("identity").GetProperty("moduleId").GetString();
+            foreach (IResource resource in builder.Resources.Where(resource => !existingResources.Contains(resource)))
+            {
+                string name = resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal) ? resource.Name[..^"-dapr-cli".Length] : resource.Name;
+                PlatformServerBinding? declaringServer = servers.SingleOrDefault(server => server.ResourceId == name)
+                    ?? builder.Resources.FirstOrDefault(candidate => candidate.Annotations.OfType<DaprSidecarAnnotation>().Any(annotation => ReferenceEquals(annotation.Sidecar, resource)))?.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault()?.Binding;
+                string? owner = declaringServer is not null ? PlatformDeclarationSet.Id(declaringServer.Module.Declaration)
+                    : name is "memories-vectors" or "memories-graph" or "memories-retention-postgresql" ? declarations.Where(module => PlatformDeclarationSet.Id(module.Declaration) == "memories").Select(module => PlatformDeclarationSet.Id(module.Declaration)).SingleOrDefault()
+                    : infrastructureOwner;
+                resource.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
+                if (resource.Annotations.OfType<DaprSidecarAnnotation>().SingleOrDefault()?.Sidecar is { } ownedSidecar
+                    && !builder.Resources.Contains(ownedSidecar))
+                    ownedSidecar.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
+            }
             builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered));
             if (options.RunPlan is null)
             {
@@ -375,10 +390,20 @@ public static class PlatformAppModel
 
     internal static CompositionRunPorts AllocateOwnedSecondaryPorts(int count, CompositionRunPlan? plan, Func<int, CompositionRunPorts>? allocator = null)
     {
-        CompositionRunPorts accepted = AllocateSecondaryPorts(count, plan?.Ports, allocator);
-        if (plan is { ResourceClaimStateDirectory: { } claims })
-            new CompositionResourceClaimStore(claims).Acquire(plan.RunId, accepted.ToList().Select(port => "tcp:127.0.0.1:" + port.ToString(System.Globalization.CultureInfo.InvariantCulture)));
-        return accepted;
+        if (plan is not { ResourceClaimStateDirectory: { } claims })
+            return AllocateSecondaryPorts(count, plan?.Ports, allocator);
+        CompositionResourceClaimStore store = new(claims);
+        for (int attempt = 0; attempt < 64; attempt++)
+        {
+            CompositionRunPorts accepted = AllocateSecondaryPorts(count, plan.Ports, allocator ?? (slots => CompositionPortAllocator.Allocate(slots, includeSecondEventStore: false, excludedPorts: store.ClaimedPorts())));
+            try
+            {
+                store.Acquire(plan.RunId, accepted.ToList().Select(port => "tcp:127.0.0.1:" + port.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                return accepted;
+            }
+            catch (CompositionResourceClaimConflictException) when (attempt < 63) { }
+        }
+        throw new InvalidOperationException("No independent secondary runner port allocation is available.");
     }
 
     internal static CompositionRunPorts AllocateSecondaryPorts(int count, CompositionRunPorts? persisted, Func<int, CompositionRunPorts>? allocator = null)

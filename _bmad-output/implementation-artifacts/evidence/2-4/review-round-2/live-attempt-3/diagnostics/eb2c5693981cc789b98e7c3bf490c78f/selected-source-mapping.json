@@ -1,0 +1,124 @@
+{
+  "Mode": "source",
+  "Root": "/home/administrator/projects/hexalith/platform",
+  "ActiveModule": "platform",
+  "Entries": [
+    {
+      "Identity": "Hexalith.AI.Tools",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools"
+    },
+    {
+      "Identity": "Hexalith.Agents",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Agents"
+    },
+    {
+      "Identity": "Hexalith.Builds",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+    },
+    {
+      "Identity": "Hexalith.ChatBot",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot"
+    },
+    {
+      "Identity": "Hexalith.Commons",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons"
+    },
+    {
+      "Identity": "Hexalith.Conversations",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations"
+    },
+    {
+      "Identity": "Hexalith.EventStore",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore"
+    },
+    {
+      "Identity": "Hexalith.Folders",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders"
+    },
+    {
+      "Identity": "Hexalith.FrontComposer",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer"
+    },
+    {
+      "Identity": "Hexalith.McpCli",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli"
+    },
+    {
+      "Identity": "Hexalith.Memories",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories"
+    },
+    {
+      "Identity": "Hexalith.Parties",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties"
+    },
+    {
+      "Identity": "Hexalith.PolymorphicSerializations",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations"
+    },
+    {
+      "Identity": "Hexalith.Projects",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Projects"
+    },
+    {
+      "Identity": "Hexalith.Tenants",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants"
+    },
+    {
+      "Identity": "Hexalith.Timesheets",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets"
+    },
+    {
+      "Identity": "Hexalith.Works",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Works"
+    },
+    {
+      "Identity": "platform",
+      "Origin": "source",
+      "Path": "/home/administrator/projects/hexalith/platform"
+    }
+  ],
+  "HasGit": true,
+  "PlatformIdentity": {
+    "Commit": "5e0d46397798ab84894c7791aab3be0537e52b0a",
+    "CompositionCommit": "5e0d46397798ab84894c7791aab3be0537e52b0a",
+    "CheckoutCommit": "5e0d46397798ab84894c7791aab3be0537e52b0a",
+    "PlatformPath": "/home/administrator/projects/hexalith/platform",
+    "ReleaseTag": null,
+    "CatalogCommit": "70ead608ac01f66dfcd80c13bb71152dac6c128e",
+    "ToolVersionRange": "[4.35.2, 5.0.0-0)",
+    "RecordPath": "/home/administrator/projects/hexalith/platform/hexalith-platform.json",
+    "IsPlatformRepository": true
+  },
+  "IdentityFindings": [
+    {
+      "RuleId": "HXW009",
+      "Message": "Builds catalog \u0027/home/administrator/projects/hexalith/platform/references/Hexalith.Builds\u0027 is staged 70ead608ac01f66dfcd80c13bb71152dac6c128e, checked out 70ead608ac01f66dfcd80c13bb71152dac6c128e, dirty; Platform 5e0d46397798ab84894c7791aab3be0537e52b0a pins 70ead608ac01f66dfcd80c13bb71152dac6c128e.",
+      "Path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "Hint": null
+    },
+    {
+      "RuleId": "HXW010",
+      "Message": "Tool version 1.0.0-20261023120837 is outside Platform range [4.35.2, 5.0.0-0) at \u0027/home/administrator/projects/hexalith/platform/hexalith-platform.json\u0027.",
+      "Path": "/home/administrator/projects/hexalith/platform/hexalith-platform.json",
+      "Hint": null
+    }
+  ],
+  "ContentHash": "95e6f9b5bb39b65f13ed1b5393131c0e1eccd44aa734bd762c14c36417c55d8b"
+}

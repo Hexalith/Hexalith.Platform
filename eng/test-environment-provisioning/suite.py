@@ -54,7 +54,8 @@ key = "platform-story-2-4-identical-key"
 own_key = "platform-story-2-4-owner-" + run_id
 assert redis(endpoint, "SET", key, run_id) == "OK"
 assert redis(endpoint, "SET", own_key, run_id) == "OK"
-assert redis(endpoint, "SAVE") == "OK"
+persisted = redis(endpoint, "SAVE") == "OK"
+assert persisted
 receipt = evidence / (run_id + ".descriptor.json")
 temporary = receipt.with_suffix(".tmp")
 temporary.write_text(json.dumps(descriptor, indent=2), encoding="utf-8")
@@ -79,7 +80,7 @@ assert redis(endpoint, "GET", "platform-story-2-4-owner-" + peer_id) is None
     "peerRunId": peer_id,
     "peerKeyVisible": False,
     "endpoint": endpoint,
-    "persisted": True,
+    "persisted": persisted,
     "qualificationCredit": False,
 }, indent=2), encoding="utf-8")
 pathlib.Path(os.environ["HEXALITH_G4_TEST_REPORT_PATH"]).write_text(

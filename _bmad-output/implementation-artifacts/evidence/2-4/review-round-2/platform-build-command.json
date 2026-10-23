@@ -1,0 +1,15 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "-p:UseSharedCompilation=false",
+    "--nologo"
+  ],
+  "exitCode": 0,
+  "seconds": 74.407
+}

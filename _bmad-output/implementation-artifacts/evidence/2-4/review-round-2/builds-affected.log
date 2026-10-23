@@ -1,0 +1,70 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: "timeout") [FAIL]
+      Shouldly.ShouldAssertException : Stopwatch.GetElapsedTime(stoppingAt)
+          should be less than
+      00:00:01.5000000
+          but was
+      00:00:01.5008334
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(98,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.3799ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 5.4528ms with message 'Redis did not answer PING.'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0061ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0088ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0083ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.019ms with message '(null)'
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 540, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 287.779s

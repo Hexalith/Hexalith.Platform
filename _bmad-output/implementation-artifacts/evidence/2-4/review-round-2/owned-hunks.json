@@ -1,0 +1,76 @@
+{
+  "Builds": [
+    "README.md",
+    "src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs",
+    "src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPortAllocator.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+    "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionResourceClaimStoreTests.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs",
+    "test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs",
+    "test/Hexalith.Builds.Module.Tests/PlatformResourceOwnerAnnotation.cs",
+    "test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs",
+    "test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs",
+    "test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs",
+    "test/Hexalith.Builds.Module.Tests/Workspace/AppHostRunnerValidationTests.cs"
+  ],
+  "Platform": {
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": [
+      "existingResources snapshot before declaration loading",
+      "explicit resource and sidecar attribution using PlatformResourceOwnerAnnotation",
+      "AllocateOwnedSecondaryPorts claim-aware allocation/retry"
+    ],
+    "src/Hexalith.Platform.Composition/PlatformResourceOwnerAnnotation.cs": [
+      "new annotation type"
+    ],
+    "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": [
+      "PreStartValidityCeiling batch sum includes each stopping allowance"
+    ],
+    "eng/test-environment-provisioning/suite.py": [
+      "derive persisted from the real SAVE reply"
+    ],
+    "docs/contracts/test-environment-v1.md": [
+      "Runner handoff section heading, proof wording, combined bound and actual Platform declaration prerequisite"
+    ],
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs": [
+      "nonempty ProjectResource assertion before checking private outputs"
+    ],
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs": [
+      "certificate ceiling theory covers batch sum"
+    ],
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs": [
+      "signed plan ResourceClaimStateDirectory",
+      "ComposeRun Sentry claim/peer refusal assertion",
+      "explicit server attribution and absent infrastructure owner assertion",
+      "SecondaryAllocationRetriesAClaimedUnboundPeerPort",
+      "TechnicalSuiteAttributesInfrastructureToItsActualPlatformDeclarationAsync"
+    ],
+    "tests/Hexalith.Platform.Composition.Tests/PlatformTestEnvironmentProvisioningTests.cs": [
+      "validate runner archived descriptor snapshots",
+      "remove private fixture workspace after successful cleanup audit",
+      "retain runner descriptor/timing/report/selection/readiness/task/mapping metadata before deleting the private fixture workspace"
+    ]
+  },
+  "preservedIndependentWork": [
+    "spec-4-27 recovery files and Python adapter/tests",
+    "PlatformDaprDiagnostics registration in PlatformAppModel.cs",
+    "PlatformDaprDiagnosticFile/Redactor/Resource/Diagnostics.cs and PlatformDaprDiagnosticsTests.cs"
+  ],
+  "publication": "No staging, commits, pushes, dependency updates, gitlink updates, or tool/catalog pin changes.",
+  "authorizedPrerequisiteRepair": {
+    "file": "tests/Hexalith.Platform.Composition.Tests/PlatformDaprDiagnosticsTests.cs",
+    "hunk": "Evaluate the exit-code Any predicate in a bool before Shouldly assertion, preserving the independent diagnostic assertion and avoiding CS8198.",
+    "authorization": "Parent explicitly authorized this narrow independent build repair."
+  },
+  "trackingAndEvidence": {
+    "_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md": "All 32 round-2 patch checkboxes completed, verification appended, status review; frozen intent unchanged.",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "Only Story 2.4 moved to review.",
+    "_bmad-output/implementation-artifacts/deferred-work.md": "Only the three corresponding Story 2.3 verification-gap entries marked resolved.",
+    "evidence/2-4/review-round-2/": "Implementation evidence and mappings; parent-acceptance-audit.json is parent-authored."
+  }
+}

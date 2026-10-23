@@ -1,0 +1,131 @@
+{
+  "buildsFullRun": {
+    "total": 540,
+    "passed": 539,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 287.779
+  },
+  "buildsFocusedRerun": {
+    "total": 49,
+    "passed": 49,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 9.044
+  },
+  "buildsCoverageUnion": {
+    "distinctCases": 540,
+    "passing": 540,
+    "failed": 0
+  },
+  "handoff": {
+    "total": 41,
+    "passed": 41,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 7.599
+  },
+  "startup": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 32.573
+  },
+  "platform": {
+    "total": 42,
+    "passed": 41,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1,
+    "not-run": 0,
+    "seconds": 29.563
+  },
+  "live": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 101.14
+  },
+  "liveObservations": [
+    {
+      "runId": "eb2c5693981cc789b98e7c3bf490c78f",
+      "environmentId": "94f3f18b22524d769d64ebdc70a89723",
+      "resourceCount": 6,
+      "startupSeconds": 95.3011549,
+      "executionSeconds": 120,
+      "timing": {
+        "startedAtUtc": "2026-10-23T12:19:36.7830032+00:00",
+        "deadlineUtc": "2026-10-23T12:21:36.7830032+00:00",
+        "effectiveSeconds": 120,
+        "configurationContentIdentity": "sha256:01e019443bd49ff39d2059b5c1d79e787a5129da17b504c97c877c66b8920d55",
+        "actualDurationSeconds": 0.0892242,
+        "credentialExpiryUtc": "2026-10-23T12:21:37+00:00"
+      },
+      "data": {
+        "runId": "eb2c5693981cc789b98e7c3bf490c78f",
+        "environmentId": "94f3f18b22524d769d64ebdc70a89723",
+        "identicalKey": "platform-story-2-4-identical-key",
+        "observedValue": "eb2c5693981cc789b98e7c3bf490c78f",
+        "peerRunId": "0d85ae12fe7f68f5b60a7a3e8a8664be",
+        "peerKeyVisible": false,
+        "endpoint": "tcp://localhost:14814/",
+        "persisted": true,
+        "qualificationCredit": false
+      }
+    },
+    {
+      "runId": "0d85ae12fe7f68f5b60a7a3e8a8664be",
+      "environmentId": "7b9063744b0c4de1921269d48630811c",
+      "resourceCount": 6,
+      "startupSeconds": 89.6045875,
+      "executionSeconds": 120,
+      "timing": {
+        "startedAtUtc": "2026-10-23T12:19:31.071239+00:00",
+        "deadlineUtc": "2026-10-23T12:21:31.071239+00:00",
+        "effectiveSeconds": 120,
+        "configurationContentIdentity": "sha256:01e019443bd49ff39d2059b5c1d79e787a5129da17b504c97c877c66b8920d55",
+        "actualDurationSeconds": 5.858003200000001,
+        "credentialExpiryUtc": "2026-10-23T12:21:32+00:00"
+      },
+      "data": {
+        "runId": "0d85ae12fe7f68f5b60a7a3e8a8664be",
+        "environmentId": "7b9063744b0c4de1921269d48630811c",
+        "identicalKey": "platform-story-2-4-identical-key",
+        "observedValue": "0d85ae12fe7f68f5b60a7a3e8a8664be",
+        "peerRunId": "eb2c5693981cc789b98e7c3bf490c78f",
+        "peerKeyVisible": false,
+        "endpoint": "tcp://localhost:13866/",
+        "persisted": true,
+        "qualificationCredit": false
+      }
+    }
+  ],
+  "noHxr003": true,
+  "cleanupVerified": true,
+  "sourceFiles": 58,
+  "heads": {
+    "Platform": "5e0d46397798ab84894c7791aab3be0537e52b0a",
+    "Builds": "70ead608ac01f66dfcd80c13bb71152dac6c128e",
+    "EventStore": "b6c903d0d8460e545cff4ffe0b93959619aa3a51",
+    "Tenants": "25e3bf827a7963ec79b57b4918290b3fed728706",
+    "Memories": "b55db82c060caf917a142fdb6585fa7340b01647"
+  },
+  "frozenIntentSha256": "1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852",
+  "limitations": [
+    "Only the technical closure with an actual selected Platform declaration is qualified. Ordinary EventStore/Tenants/Memories closures omit that declaration and refuse descriptor handoff.",
+    "Package-mode live execution, CI orchestration, attachment admission and candidate acceptance are not qualified.",
+    "The initial independent Tenants AppHost is absent at final observation; continuity is unconfirmed and no lifecycle action targeted it."
+  ]
+}

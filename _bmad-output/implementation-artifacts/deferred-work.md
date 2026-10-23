@@ -1141,10 +1141,14 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify startup acquires all persisted listener claims and teardown releases them.
   evidence: R2-G1: the verification-gap reviewer traced ReadyRunRecordsDeadlineAndDebugProcessIdsAsync and confirmed it does not assert ownership of Session.Plan.Ports; manually seeded teardown/store tests cannot detect removal of startup acquisition. Independent Builds claim lifecycle work.
+  status: resolved
+  resolution: Resolved by Story 2.4 round-2 ReadyRunRecordsDeadlineAndDebugProcessIdsAsync: actual primary ports are claimed after readiness and released by down; passing coverage is retained in evidence/2-4/review-round-2/builds-affected.xml and builds-coverage-union.json.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify parent translation and validation of child HXR031 blocking-owner failures.
   evidence: R2-G2: the verification-gap reviewer found only direct AppHostRunner serialization coverage; removing HXR031 from CompositionEngine.ReadStartupFailuresAsync passes existing tests. Add public parent startup assertions including malformed BlockingRunId to independent Builds claim lifecycle tests.
+  status: resolved
+  resolution: Resolved by Story 2.4 round-2 ParentStartupTranslatesExclusiveClaimFailuresAsync: public startup reads actual child HXR031 documents and checks both valid and malformed blocking owners; see evidence/2-4/review-round-2/builds-affected.xml.
 
 ## Deferred from: code review of spec-2-3-make-local-composition-resources-run-scoped.md (2026-10-23, round 3)
 
@@ -1155,6 +1159,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify `ComposeRun` claims its secondary ports when the plan carries a claim directory.
   evidence: Story 2.4 resource-claim work. `SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation` calls `AllocateOwnedSecondaryPorts` directly; the signed isolation test's plan sets no `ResourceClaimStateDirectory`. Reverting `PlatformAppModel.cs:138` to `AllocateSecondaryPorts` passes every test. Add a `ComposeRun` assertion that a peer `Acquire` of the composed Sentry gRPC port throws `CompositionResourceClaimConflictException` with `OwnerRunId == plan.RunId`.
+  status: resolved
+  resolution: Resolved by Story 2.4 round-2 signed IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync: ComposeRun owns the composed Sentry port and a peer Acquire names that run; see evidence/2-4/review-round-2/platform-affected.xml.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Preserve a runner workspace when owned resource removal leaves survivors or cannot verify absence.
@@ -1177,3 +1183,27 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
   summary: Confirm `RunEndpoints.Observe` cannot throw for a healthy resource with an unallocated endpoint.
   evidence: Unverified (maybe-false; medium if true). `RunReadiness.Observe` now calls `RunEndpoints.Observe` for every healthy resource on all run paths, including `CurrentUnready`, `ReportObservedFailureAsync` and progress writes; any unallocated endpoint throws `InvalidDataException`, which would suppress the failure document for run/debug/test. Settle by confirming whether Aspire 13.6 can report a resource `Healthy` before every endpoint is allocated (proxyless or sidecar endpoints); if it can, return only allocated endpoints from `Observe` and refuse unallocated ones only in `TestEnvironmentDescriptorWriter`.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Reject special files before opening test-environment contracts.
+  evidence: R3-B7: the independently delivered Story 2.2 TestEnvironmentContractReader.Read opens File.OpenRead before CanSeek/cancellation, so a Unix FIFO can block. Reuse its owner nonblocking primitive and add refusal coverage.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Suppress native diagnostic PEM blocks across independently emitted lines.
+  evidence: R3-B8: concurrent PlatformDaprDiagnosticRedactor has no multiline state; short body lines below its opaque-value threshold survive after the PEM header is redacted. Define and test block suppression in the diagnostics change.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Bound aggregate checkpoint payload memory before reconstructing custody state.
+  evidence: R3-B9: independent CheckpointArchive.DecodeAsync keeps every loaded byte array after bounded concurrent reads; 21,001 individually valid payloads can exceed process memory. Add an aggregate budget and exhaustion test in the custody owner.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Verify whether native-result response streams can exceed advertised object length.
+  evidence: R3-B10: unverified, medium if true. Independent AwsAuthorityStore.FindIntentResultAsync copies its response stream before comparing ContentLength. Establish whether the supported AWS transport permits oversized stream reads, then use bounded streaming if needed.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Exercise a successful package-mode suite descriptor handoff after v2 declaration publication.
+  evidence: R3-V1: filed regression gap: successful provisioning fixtures use source mapping and package selection coverage stops before a ready session. Current authoritative DefaultReleaseSnapshotHashes is empty, so a valid package closure is unavailable; add the positive native-child/descriptor test when released v2 declarations and pins exist, without bypassing authority checks.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Assert retained diagnostics through the actual retention composition registration.
+  evidence: R3-V2: filed regression gap in concurrent diagnostics work: dedicated tests register capture manually; the real ComposeRun retention test publishes BeforeStart but only checks arguments/environment. Observe console and final state files through production registration.

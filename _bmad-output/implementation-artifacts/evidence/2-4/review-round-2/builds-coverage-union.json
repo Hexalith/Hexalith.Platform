@@ -1,0 +1,2194 @@
+{
+  "baseRun": {
+    "path": "builds-affected.xml",
+    "counts": {
+      "total": "540",
+      "passed": "539",
+      "failed": "1",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "287.779"
+    }
+  },
+  "focusedRerun": {
+    "path": "builds-review-final.xml",
+    "counts": {
+      "total": "49",
+      "passed": "49",
+      "failed": "0",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "9.044"
+    }
+  },
+  "latestCoverage": {
+    "distinctCases": 540,
+    "passing": 540,
+    "failed": 0
+  },
+  "note": "Coverage union, not a claim that one 540-case invocation passed. The only Builds change after the full run was the test-only stopping assertion correction; its entire 49-case class passed on rerun.",
+  "passingCases": [
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.PlatformModelBuildIsolationTests.ConcurrentProviderBuildsOwnAllGraphOutputsAsync(mode: Source)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.PlatformModelBuildIsolationTests.ConcurrentProviderBuildsOwnAllGraphOutputsAsync(mode: Package)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.ConcurrentAcquisitionsHaveExactlyOneWinnerAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.ConflictNamesOwnerAndRollsBackOnlyTheRejectedAcquisition",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.ChildConflictPreservesTheBlockingOwnerAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RetainedReportPathFollowsEvidencePath",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ArgumentsSelectTheNativeReportOfEachPlatform",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: \\\"<TestRun>run-token-value</TestRun>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: \\\"<TestRun><StdOut>Authorization: Bearer abcdefghijk\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: \\\"<TestRun><StdOut>password=hunter22</StdOut></TestR\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.TimeoutAndUnavailableProcessNeverPass",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.HandoffCarriesRunScopedEndpointsAndIdentity",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReportMetadataWithoutCredentialsIsRetained",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT001\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT002\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT003\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT004\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT005\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: \\\"HXT006\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PassingReportAndExitBindCounts",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NonzeroExitFailsEvenWithPassingReport",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: \\\"ready-no-pid\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: \\\"ready-partial-pid\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.RunningTaskDeadlineReturnsElapsedWithoutFailureAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskReadyRequiresItsArgumentsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DefaultDeadlineIsSixHundredSeconds",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineStartsBeforePrerequisitesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineBeforeTaskStartIsNotNamedAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: \\\"v1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: \\\"v2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PreservedStreamMirrorKeepsOnlyTokensAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: \\\"model\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: \\\"preflight\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DescriptorLoadingUsesRemainingDeadlineAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DownStopsOnlyTaggedResourcesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: \\\"tools/missing.sh\\\", rule: \\\"HXM005\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: \\\"../invalid.sh\\\", rule: \\\"HXM004\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.LargestFiniteOverrideWins",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeclaredOverrideReplacesFallbackDeadlineAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.CallerCancellationIsNotAFailedStartupTaskAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugIsRegisteredAndRefusesPackageModeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.MissingRequiredOptionWritesStableJsonUsageDiagnosticAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RunWithDescriptorAbiUnavailableAndInvalidEvidenceRetainsPrerequisiteExitCodeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.SecretBearingProfileIsRedactedFromEvidenceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.BlankManifestValueWritesStableJsonUsageDiagnosticAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.DownWithValidManifestReturnsSuccessAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.CancelledDownWritesCancelledEvidenceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.TestWithUnknownProfileReturnsUsageExitCodeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.DownWithInvalidEvidenceReturnsEvidenceExitCodeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.CancellationRegistrationPropagatesAndUnregistersAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RunWithMissingManifestReturnsUsageExitCodeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RunWithApprovedG6ManifestRetainsDescriptorAbiBlockerAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.AspireMismatchPrecedesPublicDescriptorDiscoveryAsync(command: \\\"run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.AspireMismatchPrecedesPublicDescriptorDiscoveryAsync(command: \\\"test\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RunWithInvalidExecutableDescriptorFailsBeforeRuntimeAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.MultipleManifestErrorsExposeTheFirstDeterministicRuleAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.HumanDiagnosticRenderingIncludesMetadataAndEscapesControlsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.DownWithEscapingEvidenceSymlinkReturnsEvidenceFailureAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncWritesCanonicalArtifactAtomicallyAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncRejectsNonCanonicalPathsAsync(evidencePath: \\\"/rooted/evidence.json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncRejectsNonCanonicalPathsAsync(evidencePath: \\\"../escape/evidence.json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncRejectsNonCanonicalPathsAsync(evidencePath: \\\"evidence\\\\\\\\windows.json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncRejectsNonCanonicalPathsAsync(evidencePath: \\\"evidence/output.txt\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceWriterTests.WriteAsyncRejectsNonCanonicalPathsAsync(evidencePath: \\\"evidence/${SECRET}.json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FailuresResolveItemOrResourceIds(kind: \\\"termination\\\", identity: \\\"sample-work\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FailuresResolveItemOrResourceIds(kind: \\\"termination\\\", identity: \\\"sample-access\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FailuresResolveItemOrResourceIds(kind: \\\"cleanup\\\", identity: \\\"eventstore\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerBoundariesRemainConsumable(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerBoundariesRemainConsumable(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"\\\\0sample\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"sample\\\\0\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"\u007fsample\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"sample\u007f\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"\u0080sample\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"sample\u009f\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"sam\\\\x1fple\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\" sample\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.BoundaryControlCharactersAndWhitespaceAreRefusedForBothContracts(identity: \\\"sample \\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidDiagnosticBindingsAreAtomicForBothContracts(fault: \\\"dangling\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidDiagnosticBindingsAreAtomicForBothContracts(fault: \\\"duplicate\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:30:00Z\\\", endReason: null, valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:30:00Z\\\", endReason: \\\"expired\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"failed\\\", cause: \\\"test-failure\\\", recordedAt: \\\"2026-10-22T12:10:00Z\\\", endReason: \\\"expired\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:05:00Z\\\", endReason: null, valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:02:00Z\\\", endReason: \\\"owner-cancelled\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"hold-expired\\\", recordedAt: \\\"2026-10-22T12:01:00Z\\\", endReason: null, valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"hold-expired\\\", recordedAt: \\\"2026-10-22T12:05:00Z\\\", endReason: \\\"terminal-outcome\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"owner-cancelled\\\", recordedAt: \\\"2026-10-22T12:05:00Z\\\", endReason: null, valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"developer-stop\\\", recordedAt: \\\"2026-10-22T12:01:00Z\\\", endReason: \\\"owner-cancelled\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:04:59.9999999Z\\\", endReason: null, valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\", recordedAt: \\\"2026-10-22T12:01:00Z\\\", endReason: \\\"terminal-outcome\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"cancelled\\\", cause: \\\"run-cancelled\\\", recordedAt: \\\"2026-10-22T12:01:00Z\\\", endReason: \\\"terminal-outcome\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"hold-expired\\\", recordedAt: \\\"2026-10-22T12:05:00Z\\\", endReason: null, valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"hold-expired\\\", recordedAt: \\\"2026-10-22T12:05:00Z\\\", endReason: \\\"expired\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedOutcomeAgreesWithItsOwnHold(outcome: \\\"withdrawn\\\", cause: \\\"owner-cancelled\\\", recordedAt: \\\"2026-10-22T12:01:00Z\\\", endReason: \\\"owner-cancelled\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.DiagnosticIdsResolveWithoutFetchingOpaqueContents(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.DiagnosticIdsResolveWithoutFetchingOpaqueContents(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExactDeadlineBudgetsAreAcceptedForBothContracts(seconds: \\\"0.57\\\", expiry: \\\"2026-10-22T12:00:00.5700000Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExactDeadlineBudgetsAreAcceptedForBothContracts(seconds: \\\"5.7e-1\\\", expiry: \\\"2026-10-22T12:00:00.5700000Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExactDeadlineBudgetsAreAcceptedForBothContracts(seconds: \\\"0.5700000000000000000000000000000\\\", expiry: \\\"2026-10-22T12:00:00.5700000Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExactDeadlineBudgetsAreAcceptedForBothContracts(seconds: \\\"0.0000001\\\", expiry: \\\"2026-10-22T12:00:00.0000001Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"3e2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"300.0\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"1800e-4294967296\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"1e-4294967296\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"1e308\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"2147483648\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.IntegerFieldsRefuseNonPlainOrOutOfRangeNumbers(number: \\\"-2147483649\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InputByteBoundAndBomAreEnforced",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ResultDiagnosticReferencesRefuseDanglingIds(scope: \\\"terminal\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ResultDiagnosticReferencesRefuseDanglingIds(scope: \\\"ownedWork\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ResultDiagnosticReferencesRefuseDanglingIds(scope: \\\"environmentAccess\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ResultDiagnosticReferencesRefuseDanglingIds(scope: \\\"cleanup\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.MismatchedTinyStartupOverridesAreRefused(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.MismatchedTinyStartupOverridesAreRefused(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"http\\\", endpointValue: \\\"http://:1234/\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"http\\\", endpointValue: \\\"http://127.0.0.1:999999/\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"http\\\", endpointValue: \\\"http://127.0.0.1:8080/health\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"https\\\", endpointValue: \\\"https://localhost:8443/path\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"http\\\", endpointValue: \\\"http://[::1]:8080/\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"grpc\\\", endpointValue: \\\"grpc://127.0.0.1:5000/\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointUrisRemainRepresentableForBothContracts(protocol: \\\"hexalith-custom\\\", endpointValue: \\\"hexalith-custom://module/endpoint\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AttachedRunIdsRemainUniqueAcrossHoldLineages",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"expired\\\", endedAt: \\\"2026-10-22T12:04:59Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"expired\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"terminal-outcome\\\", endedAt: \\\"2026-10-22T11:59:59Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"terminal-outcome\\\", endedAt: \\\"2026-10-22T12:00:00Z\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"terminal-outcome\\\", endedAt: \\\"2026-10-22T12:04:59.9999999Z\\\", valid: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"terminal-outcome\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"terminal-outcome\\\", endedAt: \\\"2026-10-22T15:00:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"owner-cancelled\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"developer-stop\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"cleanup\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"ci-job-completed\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.HoldEndRespectsAcceptanceAndExpiryForBothContracts(reason: \\\"ci-job-cancelled\\\", endedAt: \\\"2026-10-22T12:05:00Z\\\", valid: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableDeadlineBudgetsAreRefusedForBothContracts(seconds: \\\"1e-40\\\", expiry: \\\"2026-10-22T12:00:00Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableDeadlineBudgetsAreRefusedForBothContracts(seconds: \\\"0.00000001\\\", expiry: \\\"2026-10-22T12:00:00Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableDeadlineBudgetsAreRefusedForBothContracts(seconds: \\\"0.00000011\\\", expiry: \\\"2026-10-22T12:00:00.0000001Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableDeadlineBudgetsAreRefusedForBothContracts(seconds: \\\"0.5700000000000000000000000000001\\\", expiry: \\\"2026-10-22T12:00:00.5700000Z\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ActualHoldEndAndIndependentExecutionDeadlineRemainSeparate",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: False, policy: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: True, policy: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: False, policy: \\\"null\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: True, policy: \\\"42\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: False, policy: \\\"\\\\\\\"other-policy\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PolicyRefusalsAreAtomic(result: True, policy: \\\"\\\\\\\"other-policy\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExecutionDeadlineExpiryMismatchIsAtomic(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExecutionDeadlineExpiryMismatchIsAtomic(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CompositionAndCatalogCanRemainExplicitlyUnpopulated(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CompositionAndCatalogCanRemainExplicitlyUnpopulated(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ScopedProducerIdentitiesAreValidated(scope: \\\"tasks\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ScopedProducerIdentitiesAreValidated(scope: \\\"readiness\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ScopedProducerIdentitiesAreValidated(scope: \\\"unknown-readiness\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ScopedProducerIdentitiesAreValidated(scope: \\\"holds\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ScopedProducerIdentitiesAreValidated(scope: \\\"completion\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AmbiguousEndpointIdentitiesAreAtomicForBothContracts(scope: \\\"resource\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.AmbiguousEndpointIdentitiesAreAtomicForBothContracts(scope: \\\"endpoint\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InconsistentTimingIsRefused(path: \\\"bindings.attachments.holds\\\", json: \\\"[{\\\\\\\"originalAttachmentRequestId\\\\\\\":\\\\\\\"request\\\\\\\",\\\\\\\"environ\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InconsistentTimingIsRefused(path: \\\"bindings.deadlines.startup.expiresAt\\\", json: \\\"\\\\\\\"2026-10-22T12:11:00Z\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InconsistentTimingIsRefused(path: \\\"bindings.deadlines.startup.override\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"declared\\\\\\\",\\\\\\\"requestedSeconds\\\\\\\":700,\\\\\\\"justif\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CleanupAttemptIdentityTracksActualCleanup(disposition: \\\"not-requested\\\", validWithoutAttempt: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CleanupAttemptIdentityTracksActualCleanup(disposition: \\\"pending\\\", validWithoutAttempt: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CleanupAttemptIdentityTracksActualCleanup(disposition: \\\"in-progress\\\", validWithoutAttempt: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CleanupAttemptIdentityTracksActualCleanup(disposition: \\\"incomplete\\\", validWithoutAttempt: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.CleanupAttemptIdentityTracksActualCleanup(disposition: \\\"complete\\\", validWithoutAttempt: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"tests-completed\\\", expectedOutcome: \\\"passed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"test-failure\\\", expectedOutcome: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"startup-failure\\\", expectedOutcome: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"startup-timeout\\\", expectedOutcome: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"execution-timeout\\\", expectedOutcome: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"run-cancelled\\\", expectedOutcome: \\\"cancelled\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"hold-expired\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"owner-cancelled\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"developer-stop\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"cleanup\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"ci-job-completed\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminalOutcomeAndCauseMustAgree(cause: \\\"ci-job-cancelled\\\", expectedOutcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PrMergeDecisionRequiresStructuredPr(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PrMergeDecisionRequiresStructuredPr(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UndeclaredExecutionDeadlinePreservesTimingObservations(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UndeclaredExecutionDeadlinePreservesTimingObservations(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableStartupOverrideIsRefused(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableStartupOverrideIsRefused(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"null\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"0\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"-1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"1.5\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"14401\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"\\\\\\\"\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"\\\\\\\"300\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"true\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"{}\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidHoldRequestsFailForBothContracts(request: \\\"1e100\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PopulatedOperationalBindingsAreConsumed(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PopulatedOperationalBindingsAreConsumed(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.LeapSecondsAreRefusedBySchemaAndReader(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.LeapSecondsAreRefusedBySchemaAndReader(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.DefaultStartupBudgetCannotBeRelabelled(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.DefaultStartupBudgetCannotBeRelabelled(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.DescriptorAndResultSharedDefinitionsStayAligned",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.WronglyTypedVersionsAreMetadataOnly(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.WronglyTypedVersionsAreMetadataOnly(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PublishedEmbeddedSchemasAndDetachedSamplesAgree(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.PublishedEmbeddedSchemasAndDetachedSamplesAgree(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"duplicate-root\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"duplicate-nested\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"comment\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"trailing-comma\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"malformed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"invalid-utf8\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"deep\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"non-finite\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"invalid-unicode-name\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidStrictJsonIsAtomicAndMetadataOnly(fault: \\\"invalid-unicode-value\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.OmittedHoldRequestRequiresTheSchemaDefault(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.OmittedHoldRequestRequiresTheSchemaDefault(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: \\\"success\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: \\\"failure\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: \\\"timeout\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: \\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidTerminalOutcomesAreRefused(outcome: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: False, kind: \\\"pr-merge\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: True, kind: \\\"pr-merge\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: False, kind: \\\"release\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: True, kind: \\\"release\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: False, kind: \\\"baseline-only\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FuturePopulatedBindingsRemainV1WithoutGrantingQualification(result: True, kind: \\\"baseline-only\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminationItemIdsAreUnique(scope: \\\"ownedWork\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminationItemIdsAreUnique(scope: \\\"environmentAccess\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.TerminationItemIdsAreUnique(scope: \\\"cross-list\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableTimingTimestampsUseHxt103(kind: \\\"hold\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableTimingTimestampsUseHxt103(kind: \\\"startup\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnrepresentableTimingTimestampsUseHxt103(kind: \\\"execution\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FourOutcomesRemainIndependentOfCleanup(outcome: \\\"passed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FourOutcomesRemainIndependentOfCleanup(outcome: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FourOutcomesRemainIndependentOfCleanup(outcome: \\\"cancelled\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FourOutcomesRemainIndependentOfCleanup(outcome: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FileErrorsAreMetadataOnlyAndCancellationIsHonored",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.OwnerOutcomeIsIndependentOfAttachedHolds",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointCredentialsAndQueriesAreRefused(endpointValue: \\\"http://user:secret@host/\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointCredentialsAndQueriesAreRefused(endpointValue: \\\"http://user@host/\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointCredentialsAndQueriesAreRefused(endpointValue: \\\"http://host/?token=secret\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointCredentialsAndQueriesAreRefused(endpointValue: \\\"http://host/?page=1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointCredentialsAndQueriesAreRefused(endpointValue: \\\"http://host/#secret\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: False, requested: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: True, requested: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: False, requested: 1)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: True, requested: 1)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: False, requested: 300)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: True, requested: 1800)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: False, requested: 14400)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ValidHoldRequestsPreserveOriginalAcceptanceAndExpiry(result: True, requested: 14400)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"owner-run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"attached-run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"attached-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"hold-environment\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"hold-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"hold-attached-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.RunAndHoldIdentityMismatchesAreAtomic(fault: \\\"missing-current-hold\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.run.runId\\\", json: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.deadlines.startup.originAt\\\", json: \\\"\\\\\\\"2026-10-22T12:00:00+00:00\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.deadlines.startup.override\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"declared\\\\\\\",\\\\\\\"requestedSeconds\\\\\\\":600,\\\\\\\"justif\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.reuseLineage\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"populated\\\\\\\",\\\\\\\"producingRunId\\\\\\\":\\\\\\\"run\\\\\\\",\\\\\\\"produ\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.reuseLineage\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"populated\\\\\\\",\\\\\\\"producingRunId\\\\\\\":\\\\\\\"run\\\\\\\",\\\\\\\"produ\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.suite.declared\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"populated\\\\\\\"}\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.artifacts.loaded\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"populated\\\\\\\",\\\\\\\"items\\\\\\\":[{}]}\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.candidate\\\", json: \\\"{\\\\\\\"state\\\\\\\":\\\\\\\"not-yet-populated\\\\\\\",\\\\\\\"classification\\\\\\\":\\\\\\\"can\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.candidate\\\", json: \\\"null\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.deadlines.startup.originAt\\\", json: \\\"\\\\\\\"2026-02-30T12:00:00Z\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.tool\\\", json: \\\"{}\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.environment.resources\\\", json: \\\"{}\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.environment.mode\\\", json: \\\"\\\\\\\"hosted\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.environment.composition.contentIdentity\\\", json: \\\"\\\\\\\"sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.environment.composition.contentIdentity\\\", json: \\\"\\\\\\\"1.2.3\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"bindings.environment.catalog.commit\\\", json: \\\"\\\\\\\"main\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"terminal\\\", json: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: True, path: \\\"cleanup\\\", json: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.decision\\\", json: \\\"<missing>\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"bindings.environment.resources\\\", json: \\\"[{\\\\\\\"resourceId\\\\\\\":\\\\\\\"api\\\\\\\",\\\\\\\"moduleId\\\\\\\":\\\\\\\"module\\\\\\\",\\\\\\\"endpoint\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.InvalidShapesNeverExposePartialDocumentsOrInputMetadata(result: False, path: \\\"private-input-key\\\", json: \\\"\\\\\\\"private-input-value\\\\\\\"\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointNamesAreScopedToTheirResource(result: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.EndpointNamesAreScopedToTheirResource(result: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.NestedPoliciesFailClosed(binding: \\\"buildsAdoption\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.NestedPoliciesFailClosed(binding: \\\"platformAcceptance\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.NestedPoliciesFailClosed(binding: \\\"integrationQualification\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.NestedPoliciesFailClosed(binding: \\\"decision\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: False, version: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: True, version: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: False, version: \\\"hexalith.test-environment.v2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: True, version: \\\"hexalith.test-result.v2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: False, version: \\\"hexalith.test-result.v1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: True, version: \\\"hexalith.test-environment.v1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnsupportedVersionsNameSupportedVersions(result: False, version: \\\"private-input-value\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.ExplicitDownAfterManifestDriftPreservesFailureAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"pass\\\", expectedExit: 0, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"cleanup-unverified\\\", expectedExit: 3, expectedCleanup: 1, disposition: \\\"unknown\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"cleanup-throws\\\", expectedExit: 3, expectedCleanup: 1, disposition: \\\"unknown\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"ci-failure\\\", expectedExit: 4, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"manifest-drift\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"entry-drift\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"dapr-secret\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"app-secret\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"secret\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"skipped\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"failed\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"missing\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"nonzero\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"observed-identities\\\", expectedExit: 0, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"detail-malformed\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"detail-secret\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"gate-failure-nonzero\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"gate-failure-pass\\\", expectedExit: 3, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"detail-no-report\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"memories-missing-detail\\\", expectedExit: 6, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"memories-detail-pass\\\", expectedExit: 0, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"detail-pass\\\", expectedExit: 0, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"cancel\\\", expectedExit: 130, expectedCleanup: 1, disposition: \\\"removed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: \\\"timeout\\\", expectedExit: 4, expectedCleanup: 0, disposition: \\\"retained\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.ExpiredSelectionNeverInvokesChildAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.SymlinkEntriesAreNotOwnedTests",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.LongLifetimeAndExpiredSelectionRemainBound",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.RetainedInputEofSurvivesUntilExplicitStopAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PartialStartupFailureRetainsOwnedProcessAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"missing\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"unknown\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"duplicate\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"executor\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"lifetime\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"stop\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"mode\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"dependency\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"secret\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"filter\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.InvalidSelectionNeverStartsAsync(scenario: \\\"attachment\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.DriftBetweenValidationAndSelectionRefuses",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.InitialReadinessRechecksEarlierHealthBeforePublishingAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ElapsedStartupDeadlineReportsStallWithoutWaitingAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshRechecksModuleHealthBeforeAcknowledgingAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshRefusesMissingModuleHealthAsync(name: \\\"module\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshRefusesMissingModuleHealthAsync(name: \\\"module-dapr-cli\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshesProgressBeforeInvocationAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ElapsedStartupDeadlineReturnsWithStandardInputOpenAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.HealthyReadinessWritesMetadataAndFinalProgressAsync(processId: 4242, moduleId: \\\"declared-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.HealthyReadinessWritesMetadataAndFinalProgressAsync(processId: 4242, moduleId: \\\"declared-owner\\\")",
+      "occurrence": 2
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.HealthyReadinessWritesMetadataAndFinalProgressAsync(processId: \\\"4242\\\", moduleId: \\\"declared-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.HealthyReadinessWritesMetadataAndFinalProgressAsync(processId: 4242, moduleId: null)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.CutoverFailureWritesEveryUnreadyResourceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ResourceProbeUsesDeadlineAndWritesEveryUnreadyResourceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshRequiresInfrastructureProtocolHealthAsync(infrastructureHealthy: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessRefreshRequiresInfrastructureProtocolHealthAsync(infrastructureHealthy: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ResourceControlRefreshReturnsCorrelatedResponseAndContinuesAsync(outcome: \\\"ok\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ResourceControlRefreshReturnsCorrelatedResponseAndContinuesAsync(outcome: \\\"module-unready\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ResourceControlRefreshReturnsCorrelatedResponseAndContinuesAsync(outcome: \\\"expiry\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ReadinessProgressAndStallRecordProcessIdAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ValidPreflightReturnsWithoutStartingResourcesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ValidationReportsEveryNonFatalCompositionFailureAsync(kind: \\\"json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ValidationReportsEveryNonFatalCompositionFailureAsync(kind: \\\"provenance\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ValidationReportsEveryNonFatalCompositionFailureAsync(kind: \\\"io\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.AppHostRunnerValidationTests.ValidationReportsEveryNonFatalCompositionFailureAsync(kind: \\\"format\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.ImmutableRuntimeRequiresMatchingImageLayersAndNativeBytes",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.NativeInterruptionDistinguishesOwnerFromGateFailure",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"expired\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"schema-overflow\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"expiry-overflow\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"expiry-string\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"expiry-missing\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"negative\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"extended\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"disabled\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"malformed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalRefusesReplacedAuthorityWithoutReopeningAsync(replacement: \\\"fifo\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.SelectedGateClosesOnOwnerWithdrawalWithoutExtendingDeadlineAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.ObservationPropertyNamesCannotRetainRandomCredentialAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalAdvancesCapsAndFailsClosedAsync(foreign: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.RenewalAdvancesCapsAndFailsClosedAsync(foreign: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.AccessCredentialsCannotSurviveAnyReportOutcomeAsync(outcome: \\\"Passed\\\", tokenName: \\\"APP_API_TOKEN\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.AccessCredentialsCannotSurviveAnyReportOutcomeAsync(outcome: \\\"Failed\\\", tokenName: \\\"DAPR_API_TOKEN\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.SelectedObservationTests.AccessCredentialsCannotSurviveAnyReportOutcomeAsync(outcome: \\\"Aborted\\\", tokenName: \\\"APP_API_TOKEN\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: \\\"run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: \\\"debug\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyTaskDescendantIsOwnedAndForeignProcessesSurviveAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyDeadlineIsDiscoveredBeforeShortActiveOverrideIsArmedAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: \\\"run\\\", kind: \\\"v1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: \\\"debug\\\", kind: \\\"v1\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: \\\"run\\\", kind: \\\"v2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: \\\"debug\\\", kind: \\\"v2\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ShortSelectedDeadlineStillBoundsSourceMappingAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.DownSignalsOnlyTheRecordedProcessInstanceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"missing\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"malformed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"different\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"empty\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: \\\"timeout\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"exit\\\", expectedRuleId: \\\"HXR020\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"never\\\", expectedRuleId: \\\"HXR021\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"foreign\\\", expectedRuleId: \\\"HXR022\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"cause\\\", expectedRuleId: \\\"HXR027\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-name\\\", expectedRuleId: \\\"HXR022\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-detail\\\", expectedRuleId: \\\"HXR022\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-task\\\", expectedRuleId: \\\"HXR022\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"diagnostics-io\\\", expectedRuleId: \\\"HXR027\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.InvalidManifestFailsBeforePrerequisitesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingPrerequisitesStopBeforeAnyResourceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UncleanTeardownAfterReadinessFailureReportsAndPersistsHxr023Async",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PlatformPreflightPreservesFailureStateAndDiagnosticsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PreRunTimeoutSurvivesDiagnosticsIoFailureAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAspireOrchestrationIsUnavailableBeforeAnyResourceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PlatformPreflightPassesDevelopmentAndScrubsAmbientEnvironmentAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAppHostIsUnavailableBeforeAnyResourceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.DownReportsBlockedStdinListenerAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AppHostReceivesLocalAspireOrchestrationAndRunPrivateDirectoriesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PlatformModelBuildFailureKeepsCauseAndDeletesWorkspaceAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.SelectedFallbackRefusesBeforeAllocationAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.IncompleteCleanupKeepsOwnerAndPeerClaimsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.DownIsKeyedByRunIdAndIdempotentAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(command: \\\"run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(command: \\\"test\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"run\\\", format: \\\"json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"run\\\", format: \\\"human\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"debug\\\", format: \\\"json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"debug\\\", format: \\\"human\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"test\\\", format: \\\"json\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: \\\"test\\\", format: \\\"human\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.CancelledStartReturnsCancellationAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"other-ci\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"missing-job\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"bad-attempt\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"invalid-repository\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"unsupported-runner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"github-hosted\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: \\\"self-hosted\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.NextEntryDoesNotInheritFunctionalObservationsAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: \\\"mode\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: \\\"runtime\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: \\\"duplicate\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: \\\"missing\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: \\\"changed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: \\\"fifo\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchBudgetActivatesOnceAndIncludesInterEntryAllowancesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"catalog\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"unhealthy\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"module-owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"endpoint\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"endpoint-userinfo\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"endpoint-query\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"endpoint-fragment\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"task\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"source-drift\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"dependency-drift\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"catalog-drift\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"descriptor\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: \\\"missing-endpoints\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(expired: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(expired: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchLegacyEvidenceRefusesBeforeProvisioningAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesExecutedFailedAndUnexecutedEntriesAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(executor: \\\"vstest\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(executor: \\\"mtp\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchResourceMixAndOverflowRefuseDuringSelection(scenario: \\\"retention\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchResourceMixAndOverflowRefuseDuringSelection(scenario: \\\"overflow\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateTestEvidenceMatchesReadinessCanonicalBindingCommand",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateEvidenceCapturesSourceControlAndSdkMetadata",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.400\\\", expected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.401\\\", expected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.402\\\", expected: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.499\\\", expected: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.399\\\", expected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"10.0.500\\\", expected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.LatestPatchRollForwardAcceptsOnlyNewerPatchesInThePinnedFeatureBand(sdkVersion: \\\"11.0.400\\\", expected: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateEvidenceRejectsFixtureSymlinkRetargetedAfterValidation",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.SerializeCanonicalOrdersArtifactHashesAndTerminatesWithNewline",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateDebugEvidenceUsesDebugCommand",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.CancellationDuringCleanupPreservesCommittedOutcomeAsync(fails: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.CancellationDuringCleanupPreservesCommittedOutcomeAsync(fails: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"token-hang\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-token\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-malformed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf32-comment\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-pi\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-failed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-password\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"malformed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.EveryExitInspectsEncodedReportsAsync(scenario: \\\"utf16-safe\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedStartupDoesNotRenewStoppingBudgetAsync",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.OverflowingCountersAreRejected(components: \\\"failed='2147483647' error='2147483647' timeout='2'\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.OverflowingCountersAreRejected(components: \\\"failed='0' notExecuted='2147483647' inconclusive='\\\"\u00b7\u00b7\u00b7)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"run\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"owner\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"withdrawn\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"profile\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"manifest\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"counts\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"report\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"artifact\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"execution-deadline\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"execution-seconds\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"execution-configuration\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"execution-start\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"credential-expiry\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ConflictingSelectedEvidenceIsRejected(mutation: \\\"credential-invalid\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"observed\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"io\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"timeout\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"legacy\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.PreciseDeadlineAndCaseInsensitiveOwnershipAreEnforced",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SelectedProcessStoppingUsesInitialSignalAsync(ownerCancels: False)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SelectedProcessStoppingUsesInitialSignalAsync(ownerCancels: True)",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: \\\"early-mapping\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: \\\"mapping\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: \\\"startup\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"deleted\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"corrupt\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"foreign\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"malformed-id\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"lock\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"diagnostics\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"startup-diagnostics\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.UnsafeReportOutputNeverTouchesForeignTargetsAsync(scenario: \\\"link\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.UnsafeReportOutputNeverTouchesForeignTargetsAsync(scenario: \\\"parent-link\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.UnsafeReportOutputNeverTouchesForeignTargetsAsync(scenario: \\\"oversize\\\")",
+      "occurrence": 1
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.UnsafeReportOutputNeverTouchesForeignTargetsAsync(scenario: \\\"fifo\\\")",
+      "occurrence": 1
+    }
+  ]
+}

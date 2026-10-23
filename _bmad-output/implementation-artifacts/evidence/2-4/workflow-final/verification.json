@@ -1,0 +1,127 @@
+{
+  "builds": {
+    "total": 548,
+    "passed": 548,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 194.231
+  },
+  "platform": {
+    "total": 42,
+    "passed": 41,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1,
+    "not-run": 0,
+    "seconds": 29.33
+  },
+  "live": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 68.917
+  },
+  "matrix": {
+    "ready suite/batch": {
+      "passedCases": 1,
+      "methods": [
+        "ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync"
+      ]
+    },
+    "invalid/incompatible": {
+      "passedCases": 6,
+      "methods": [
+        "IncompatibleBatchNeverStartsAsync",
+        "BatchResourceMixAndOverflowRefuseDuringSelection"
+      ]
+    },
+    "exclusive claim": {
+      "passedCases": 4,
+      "methods": [
+        "ConflictNamesOwnerAndRollsBackOnlyTheRejectedAcquisition",
+        "ParentStartupTranslatesExclusiveClaimFailuresAsync",
+        "SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync"
+      ]
+    },
+    "readiness/task failure or timeout": {
+      "passedCases": 5,
+      "methods": [
+        "StartupTaskIsStoppedAtTheDeadlineAsync",
+        "SetupUsesInitialFiniteLifetimeAsync"
+      ]
+    },
+    "missing proof": {
+      "passedCases": 14,
+      "methods": [
+        "MissingProofNeverLaunchesAChildAsync"
+      ]
+    },
+    "archive destination links": {
+      "passedCases": 5,
+      "methods": [
+        "ArchiveRejectsChildCreatedParentAndFileLinksAsync"
+      ]
+    },
+    "bounded metadata": {
+      "passedCases": 1,
+      "methods": [
+        "TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync"
+      ]
+    },
+    "entry observations": {
+      "passedCases": 1,
+      "methods": [
+        "BatchArchivesEachEntriesInspectedFunctionalObservationsAsync"
+      ]
+    },
+    "accurate attempts": {
+      "passedCases": 2,
+      "methods": [
+        "FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "runId": "929bdb18cf8400a07ea154e00f3a9028",
+      "environmentId": "cc6ace3cba4c4ea6b520954105deadc0",
+      "startupSeconds": 63.7527978,
+      "executionSeconds": 120,
+      "persisted": true,
+      "peerKeyVisible": false,
+      "containerIds": [],
+      "processIds": [],
+      "descriptorSha256": "1c33a9ec734389b02952852f7c0e47ee05ad6d92f173a020b1e558a593aed75a"
+    },
+    {
+      "runId": "eaba106ee9884e9e9d819913a4fe115f",
+      "environmentId": "7f882d59ea2f4afbac53c076263b336e",
+      "startupSeconds": 57.3650247,
+      "executionSeconds": 120,
+      "persisted": true,
+      "peerKeyVisible": false,
+      "containerIds": [],
+      "processIds": [],
+      "descriptorSha256": "ca004753c5d1169eda910d1c320cf71d2025e2747fdb27fbdd48041e9d294969"
+    }
+  ],
+  "cleanupVerified": true,
+  "fixtureWorkspaceDeleted": true,
+  "noHxr003": true,
+  "sourceFiles": 59,
+  "frozenIntentSha256": "1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852",
+  "heads": {
+    "Platform": "5e0d46397798ab84894c7791aab3be0537e52b0a",
+    "Builds": "70ead608ac01f66dfcd80c13bb71152dac6c128e",
+    "EventStore": "b6c903d0d8460e545cff4ffe0b93959619aa3a51",
+    "Tenants": "25e3bf827a7963ec79b57b4918290b3fed728706",
+    "Memories": "b55db82c060caf917a142fdb6585fa7340b01647"
+  },
+  "deferredFindings": 6,
+  "scope": "Local source/Debug technical composition with explicit Platform declaration; no package-mode live, CI, attachment, or candidate qualification."
+}

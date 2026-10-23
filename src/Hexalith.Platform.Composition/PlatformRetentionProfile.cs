@@ -240,7 +240,7 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
 
     /// <summary>Gets a pre-start certificate ceiling; actual access still obeys the activated gate deadline.</summary>
     internal DateTimeOffset PreStartValidityCeiling => (_plan.StartupDeadlineUtc ?? _plan.SelectedTest!.RequestedAtUtc.AddSeconds(600))
-        .AddSeconds(_plan.SelectedTests.Count > 0 ? _plan.SelectedTests.Sum(entry => entry.ExecutionTimeoutSeconds) : _plan.SelectedTest!.ExecutionTimeoutSeconds).AddSeconds(1);
+        .AddSeconds(_plan.SelectedTests.Count > 0 ? _plan.SelectedTests.Sum(entry => (long)entry.ExecutionTimeoutSeconds + entry.StopTimeoutSeconds) : _plan.SelectedTest!.ExecutionTimeoutSeconds).AddSeconds(1);
 
     private static bool IsRequestedPostgres(string? reference) => reference == PostgresImage || reference == PostgresImage.Replace(":18.6-trixie@", "@", StringComparison.Ordinal);
 

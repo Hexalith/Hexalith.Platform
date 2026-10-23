@@ -65,7 +65,22 @@ public sealed class PlatformTestEnvironmentProvisioningTests
                     File.Copy(receipt, Path.Combine(evidence, Path.GetFileName(receipt)), overwrite: false);
             }
             exits.ShouldAllBe(exit => exit == 0);
-            string[] descriptors = Directory.GetFiles(evidence, "*.descriptor.json");
+            string[] descriptors = allocatedRunIds.Select(runId =>
+            {
+                string archived = Path.Combine(workspace, "state", "diagnostics", runId, "test-environment.json");
+                File.Exists(archived).ShouldBeTrue("The runner must retain its validated descriptor snapshot.");
+                string retained = Path.Combine(evidence, runId + ".archived-descriptor.json");
+                File.Copy(archived, retained);
+                string diagnostics = Path.Combine(evidence, "diagnostics", runId);
+                Directory.CreateDirectory(diagnostics);
+                foreach (string name in new[] { "test-environment.json", "execution-timing.json", "native.trx", "selected-test.json", "selected-readiness.json", "startup-task-results.json", "selected-plan.json", "selected-source-mapping.json" })
+                {
+                    string source = Path.Combine(Path.GetDirectoryName(archived)!, name);
+                    File.Exists(source).ShouldBeTrue("The runner must retain its validated provisioning observations.");
+                    File.Copy(source, Path.Combine(diagnostics, name));
+                }
+                return retained;
+            }).ToArray();
             descriptors.Length.ShouldBe(2);
             foreach (string descriptor in descriptors)
             {
@@ -115,6 +130,7 @@ public sealed class PlatformTestEnvironmentProvisioningTests
             failures.ShouldBeEmpty("Every owned environment must have verified cleanup.");
             remainingClaims.ShouldBeEmpty();
             remainingWorkspaces.ShouldBeEmpty();
+            if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true);
         }
     }
 }

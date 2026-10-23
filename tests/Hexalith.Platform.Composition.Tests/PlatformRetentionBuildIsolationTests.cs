@@ -54,6 +54,7 @@ public sealed partial class PlatformAppModelTests
             CompositionRunPlan plan = initial with { SelectedTest = initial.SelectedTest! with { Name = "generic-integration", DaprRuntimeVersion = null } };
             IDistributedApplicationBuilder builder = Builder();
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            builder.Resources.OfType<ProjectResource>().ShouldNotBeEmpty();
             foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>())
             {
                 string[] arguments = await BuildIsolationArgumentsAsync(project);

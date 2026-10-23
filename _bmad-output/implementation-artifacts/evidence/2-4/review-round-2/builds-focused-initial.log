@@ -1,0 +1,118 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.NextEntryDoesNotInheritFunctionalObservationsAsync [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(62,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.NextEntryDoesNotInheritFunctionalObservationsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchResourceMixAndOverflowRefuseDuringSelection(scenario: "overflow") [FAIL]
+      Shouldly.ShouldAssertException : validation.IsValid
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(124,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchResourceMixAndOverflowRefuseDuringSelection(String scenario)
+           at InvokeStub_TestEnvironmentProvisioningTests.BatchResourceMixAndOverflowRefuseDuringSelection(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: "timeout") [FAIL]
+      Shouldly.ShouldAssertException : Stopwatch.GetElapsedTime(stoppingAt)
+          should be less than
+      00:00:01.5000000
+          but was
+      00:00:01.6410411
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(98,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: "early-mapping") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: "mapping") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(phase: "startup") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.SetupUsesInitialFiniteLifetimeAsync(String phase)
+        --- End of stack trace from previous location ---
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.4626ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 8.0886ms with message 'Redis did not answer PING.'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0067ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0096ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0135ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0097ms with message '(null)'
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 118, Errors: 0, Failed: 6, Skipped: 0, Not Run: 0, Time: 38.032s

@@ -244,39 +244,46 @@ checks, catalog/composition identity and loaded-artifact proof. Existing native
 environment-variable handoff and internal run records remain separate transports;
 this contract does not migrate them or the executable module descriptor ABI.
 
+## Runner handoff
 
-## Story 2.4 runner handoff
-
-For declared v2 suites, `hexalith-module test --profile <suite>` now provisions a
-fresh owned environment, observes readiness and successful required startup tasks,
-and writes a private validated descriptor before launching tests. Repeated
-`--profile` values from one manifest share that environment only when mode,
-composition and profile-specific resource/runtime requirements agree; execution
-is sequential. Multi-entry batches refuse legacy `--evidence` export before
-provisioning because that format represents only one timing/report/count set;
-normal batch execution retains each inspected diagnostic report. Tests consume absolute `HEXALITH_TEST_ENVIRONMENT_PATH` and the
-observed endpoint list. Credentials remain in the existing separate private
-channel and never enter this descriptor.
+For declared v2 suites, `hexalith-module test --profile <suite>` now provisions
+a fresh owned environment, observes readiness and successful required startup
+tasks, and writes a private validated descriptor before launching tests.
+Repeated `--profile` values from one manifest share that environment only when
+mode, composition and profile-specific resource/runtime requirements agree;
+execution is sequential. Multi-entry batches refuse legacy `--evidence` export
+before provisioning because that format represents only one timing/report/count
+set; normal batch execution retains each inspected diagnostic report. Tests
+consume absolute `HEXALITH_TEST_ENVIRONMENT_PATH` and the observed endpoint
+list. Credentials remain in the existing separate private channel and never
+enter this descriptor. Every resource needs explicit ownership from an actual
+declaration. Shared runner infrastructure is attributed only to an actual
+selected Platform declaration; ordinary EventStore, Tenants and Memories
+closures currently omit that declaration and therefore refuse descriptor
+handoff. Their run/debug paths remain available. The qualified technical fixture
+below includes the required Platform declaration.
 
 The startup clock begins at the environment request (600 seconds by default,
 with justified finite declaration overrides). A non-600 caller fallback requires
 an existing justified declaration override before provisioning. Unsupported or
 incomplete actual CI metadata also refuses before services start; this handoff
 supports local context and complete actual GitHub Actions context without
-inventing metadata. Actual execution timing activates
-and is persisted after readiness, separately for each entry; a compatible batch
-also has a finite combined limit. Immutable source selection and legacy evidence
-bindings are preserved. Stopping and cleanup use the active entry's declared
-bound; descriptor/report archives use bounded validated snapshots within that
-same original budget. A missing verified catalog identity, source drift,
-invalid endpoint observation or descriptor validation failure prevents child
-launch. Managed exclusive-resource conflicts identify the blocking owner;
-independent fresh runs can coexist. No implicit attachment is performed.
+inventing metadata. Actual execution timing activates and is persisted after
+readiness, separately for each entry; a compatible batch also has a finite
+combined limit covering execution and each entry's stopping/processing
+allowance. Immutable source selection and legacy evidence bindings are
+preserved. Stopping and cleanup use the active entry's declared bound;
+descriptor/report archives use bounded validated snapshots within that same
+original budget. A missing verified catalog identity, source drift, invalid
+endpoint observation or descriptor validation failure prevents child launch.
+Managed exclusive-resource conflicts identify the blocking owner; independent
+fresh runs can coexist. No implicit attachment is performed.
 
 The source qualification fixture is
-`eng/test-environment-provisioning/manifest.v2.json`. Its gated Platform test runs
-two declared suites, consumes each validated descriptor, persists identical keys
-through each owned Redis endpoint, verifies its own value and absence of the
-peer's unique key, and cleans only its recorded run identities. Evidence belongs
-under `_bmad-output/implementation-artifacts/evidence/2-4/`. This local proof
-supplies no package-mode CI, candidate or tool acceptance credit.
+`eng/test-environment-provisioning/manifest.v2.json`. Its gated Platform test
+runs one declared suite in two concurrent fresh environments, consumes each
+validated descriptor, persists identical keys through each owned Redis endpoint,
+verifies its own value and absence of the peer's unique key, and cleans only its
+recorded run identities. Evidence belongs under
+`_bmad-output/implementation-artifacts/evidence/2-4/`. This local proof supplies
+no package-mode CI, candidate or tool acceptance credit.

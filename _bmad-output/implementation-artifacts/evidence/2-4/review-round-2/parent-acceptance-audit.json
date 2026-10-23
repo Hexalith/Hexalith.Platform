@@ -1,0 +1,66 @@
+{
+  "buildsDistinctCases": 540,
+  "buildsAllLatestResultsPass": true,
+  "matrix": {
+    "ready suite/batch": {
+      "passedCases": 1,
+      "methods": [
+        "ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync"
+      ]
+    },
+    "invalid/incompatible": {
+      "passedCases": 6,
+      "methods": [
+        "IncompatibleBatchNeverStartsAsync",
+        "BatchResourceMixAndOverflowRefuseDuringSelection"
+      ]
+    },
+    "exclusive claim": {
+      "passedCases": 4,
+      "methods": [
+        "ConflictNamesOwnerAndRollsBackOnlyTheRejectedAcquisition",
+        "ParentStartupTranslatesExclusiveClaimFailuresAsync",
+        "SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync"
+      ]
+    },
+    "readiness/task failure or timeout": {
+      "passedCases": 5,
+      "methods": [
+        "StartupTaskIsStoppedAtTheDeadlineAsync",
+        "SetupUsesInitialFiniteLifetimeAsync"
+      ]
+    },
+    "missing proof": {
+      "passedCases": 14,
+      "methods": [
+        "MissingProofNeverLaunchesAChildAsync"
+      ]
+    }
+  },
+  "platformCounts": {
+    "Pass": 41,
+    "Skip": 1
+  },
+  "live": [
+    {
+      "runId": "0d85ae12fe7f68f5b60a7a3e8a8664be",
+      "environmentId": "7b9063744b0c4de1921269d48630811c",
+      "startupSeconds": 89.6045875,
+      "executionSeconds": 120,
+      "descriptorSha256": "60d40c6814b48aace9db3d4ac4fe19adf753dd759c7cbad2b68ce2ced4dd80e4",
+      "persisted": true,
+      "peerKeyVisible": false
+    },
+    {
+      "runId": "eb2c5693981cc789b98e7c3bf490c78f",
+      "environmentId": "94f3f18b22524d769d64ebdc70a89723",
+      "startupSeconds": 95.3011549,
+      "executionSeconds": 120,
+      "descriptorSha256": "660f792fac9f3be21eccd0daf884a67eb22c67a5b8cc51162d0a21e619a04064",
+      "persisted": true,
+      "peerKeyVisible": false
+    }
+  ],
+  "allThreeFixtureWorkspacesDeleted": true,
+  "scope": "Resumption patch inspected against prior implementation and frozen spec; full baseline diff retained separately, including unrelated commits and evidence."
+}

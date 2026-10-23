@@ -39,7 +39,7 @@ public sealed partial class PlatformAppModelTests
                     var mapping = Options().Mapping with { Entries = [.. Options().Mapping.Entries, new Hexalith.Builds.Tooling.Workspace.SourceMappingEntry("Hexalith.Platform", "source", Root)] };
                     plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, directory,
                         CompositionPortAllocator.Allocate(1), [], [], mapping,
-                        [Path.Combine(Root, "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json")], "tenants", typeof(PlatformAppModel).Assembly.Location);
+                        [Path.Combine(Root, "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json")], "tenants", typeof(PlatformAppModel).Assembly.Location) with { ResourceClaimStateDirectory = Path.Combine(directory, "state") };
                     await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
                     PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
                 }
@@ -78,6 +78,16 @@ public sealed partial class PlatformAppModelTests
                     }
                 }
                 int sentryPort = sentry.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+                foreach (var server in servers)
+                    server.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe(PlatformDeclarationSet.Id(server.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.Module.Declaration));
+                // No platform declaration is in this domain closure; infrastructure ownership stays unavailable.
+                sentry.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBeNull();
+                if (plan is not null)
+                {
+                    var claims = new CompositionResourceClaimStore(plan.ResourceClaimStateDirectory!);
+                    claims.ClaimedPorts().ShouldContain(sentryPort);
+                    Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(CompositionRunPlanFactory.NewRunId(), ["tcp:127.0.0.1:" + sentryPort])).OwnerRunId.ShouldBe(plan.RunId);
+                }
                 int redisPort = builder.Resources.Single(resource => resource.Name == "redis").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "tcp").Port!.Value;
                 int vectorPort = builder.Resources.Single(resource => resource.Name == "memories-vectors").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "tcp").Port!.Value;
                 foreach (string name in new[] { "redis", "memories-vectors", "memories-graph" })
@@ -189,6 +199,54 @@ public sealed partial class PlatformAppModelTests
             Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(peer, ["tcp:127.0.0.1:" + independent.Redis])).OwnerRunId.ShouldBe(owner);
         }
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public void SecondaryAllocationRetriesAClaimedUnboundPeerPort()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-peer-claims-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            string owner = CompositionRunPlanFactory.NewRunId();
+            string peer = CompositionRunPlanFactory.NewRunId();
+            CompositionRunPorts primary = CompositionPortAllocator.AllocateOwned(1, owner, directory);
+            CompositionRunPorts held = CompositionPortAllocator.AllocateOwned(1, peer, directory);
+            CompositionRunPorts free = CompositionPortAllocator.Allocate(1);
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(owner, Path.Combine(directory, "run"), directory, primary, [], [], platformDeclarationPaths: [Path.Combine(directory, "manifest.json")]) with { ResourceClaimStateDirectory = directory };
+            int attempts = 0;
+            PlatformAppModel.AllocateOwnedSecondaryPorts(1, plan, _ => ++attempts == 1 ? held : free).ShouldBe(free);
+            attempts.ShouldBe(2);
+            var claims = new CompositionResourceClaimStore(directory);
+            Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(owner, ["tcp:127.0.0.1:" + held.Redis])).OwnerRunId.ShouldBe(peer);
+            Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(peer, ["tcp:127.0.0.1:" + free.Redis])).OwnerRunId.ShouldBe(owner);
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public async Task TechnicalSuiteAttributesInfrastructureToItsActualPlatformDeclarationAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-explicit-owner-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            CompositionRunPlan initial = await BuildIsolationPlanAsync(workspace, selected: false);
+            CompositionRunPlan plan = initial with
+            {
+                PlatformDeclarationPaths = [Path.Combine(Root, "eng/test-environment-provisioning/manifest.v2.json")],
+                PlatformActiveModule = "platform",
+            };
+            var builder = Builder();
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            builder.Resources.ShouldNotBeEmpty();
+            foreach (IResource resource in builder.Resources)
+            {
+                PlatformServerAnnotation? server = resource.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault()
+                    ?? builder.Resources.FirstOrDefault(candidate => candidate.Annotations.OfType<DaprSidecarAnnotation>().Any(annotation => ReferenceEquals(annotation.Sidecar, resource)))?.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault();
+                string expected = server is null ? "platform" : PlatformDeclarationSet.Id(server.Binding.Module.Declaration);
+                resource.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe(expected, resource.Name);
+            }
+        }
+        finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
     }
 
     [Fact]

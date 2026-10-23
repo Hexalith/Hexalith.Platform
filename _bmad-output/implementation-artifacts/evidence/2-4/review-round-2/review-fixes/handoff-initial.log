@@ -1,0 +1,233 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: "mode") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-3241c960e5654a6bbc9f750203a3f8c8/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-3241c960e5654a6bbc9f750203a3f8c8/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(138,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: "runtime") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-b14601f75e7742da94731e9ab379cf8e/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-b14601f75e7742da94731e9ab379cf8e/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(138,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: "duplicate") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-4f412f72b5ea4af9b970499a526c1527/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-4f412f72b5ea4af9b970499a526c1527/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(138,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(scenario: "missing") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-a32f882ef67c43de8452ccb227edc310/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-a32f882ef67c43de8452ccb227edc310/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(138,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.IncompatibleBatchNeverStartsAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "changed") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(352,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "fifo") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(352,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchBudgetActivatesOnceAndIncludesInterEntryAllowancesAsync [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(133,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.SelectBatch(IReadOnlyList`1 declarations, IReadOnlyList`1 names, String manifestPath, DateTimeOffset requestedAt, String& refusal)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(106,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.SelectBatch(IReadOnlyList`1 declarations, IReadOnlyList`1 names, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(87,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchBudgetActivatesOnceAndIncludesInterEntryAllowancesAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(133,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.SelectBatch(IReadOnlyList`1 declarations, IReadOnlyList`1 names, String manifestPath, DateTimeOffset requestedAt, String& refusal)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(106,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.SelectBatch(IReadOnlyList`1 declarations, IReadOnlyList`1 names, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(194,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "catalog") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "unhealthy") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "owner") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "module-owner") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "endpoint") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "endpoint-userinfo") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "endpoint-query") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "endpoint-fragment") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "task") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "source-drift") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "dependency-drift") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "catalog-drift") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "descriptor") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(scenario: "missing-endpoints") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(165,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.MissingProofNeverLaunchesAChildAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "workspace-entry") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(260,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-root") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(260,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entries") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(260,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entry") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(260,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-file") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(260,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 49, Errors: 0, Failed: 27, Skipped: 0, Not Run: 0, Time: 5.219s

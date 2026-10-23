@@ -32,20 +32,27 @@ public sealed partial class PlatformAppModelTests
         };
     }
 
-    [Fact]
-    public void RetentionCertificateCoversStartupCeilingAndFullExecutionBudget()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void RetentionCertificateCoversStartupCeilingAndFullExecutionBudget(bool batch)
     {
         CompositionRunPlan initial = RetentionPlan();
-        CompositionRunPlan plan = initial with { StartupDeadlineUtc = initial.SelectedTest!.RequestedAtUtc.AddHours(2) };
+        CompositionRunPlan plan = initial with
+        {
+            StartupDeadlineUtc = initial.SelectedTest!.RequestedAtUtc.AddHours(2),
+            SelectedTests = batch ? [initial.SelectedTest, initial.SelectedTest with { Name = "other", ExecutionTimeoutSeconds = 120 }] : [],
+        };
+        long executionSeconds = batch ? plan.SelectedTests.Sum(entry => (long)entry.ExecutionTimeoutSeconds + entry.StopTimeoutSeconds) : plan.SelectedTest!.ExecutionTimeoutSeconds;
         PlatformRetentionProfile profile = PlatformRetentionProfile.Select(plan, Root).ShouldNotBeNull();
-        profile.PreStartValidityCeiling.ShouldBe(plan.StartupDeadlineUtc!.Value.AddSeconds(plan.SelectedTest!.ExecutionTimeoutSeconds + 1));
-        profile.PreStartValidityCeiling.ShouldBeGreaterThan(plan.SelectedTest.CredentialExpiryUtc);
+        profile.PreStartValidityCeiling.ShouldBe(plan.StartupDeadlineUtc!.Value.AddSeconds(executionSeconds + 1));
+        profile.PreStartValidityCeiling.ShouldBeGreaterThan(plan.SelectedTest!.CredentialExpiryUtc);
         string directory = Path.Combine(Path.GetTempPath(), "retention-startup-cert-" + Guid.NewGuid().ToString("N"));
         try
         {
             profile.Prepare(directory, 12345);
             using X509Certificate2 certificate = X509Certificate2.CreateFromPemFile(Path.Combine(directory, "retention", "server.crt"), Path.Combine(directory, "retention", "server.key"));
-            new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ShouldBeGreaterThanOrEqualTo(plan.StartupDeadlineUtc.Value.AddSeconds(plan.SelectedTest.ExecutionTimeoutSeconds));
+            new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ShouldBeGreaterThanOrEqualTo(plan.StartupDeadlineUtc.Value.AddSeconds(executionSeconds));
         }
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true); }
     }
