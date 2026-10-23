@@ -4,10 +4,10 @@ type: 'feature'
 epic: 4
 story: 27
 created: '2026-10-23'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 baseline_commit: '7c37f3f2c5e7e55693db70baa8885bdb10bd9ff6'
-review_loop_iteration: 1
+review_loop_iteration: 2
 context: []
 ---
 
@@ -24,6 +24,8 @@ context: []
 **Always:** Preserve the original Story 4.27 frozen intent, expired attempts, signed originals, bound retirement/procedure/maintenance bytes and original production acceptance. Retain scoped owner decisions, including sole-owner documentary self-review, existing destination/principal/key, roles, incident channel and October 7–31 window. Treat current authentication, grant lineage, provider protections and runtime success as separate facts. Use distinct validator credentials for immutable exact-version byte/hash/retention readback. Authenticate and independently read back a new policy and signature before any future capture. Bind source/target identity, exact tool bytes, stop behavior and source-resume/target-cleanup procedures. Keep raw source/provider/custody details encrypted privately; public output is a neutral sanitized projection.
 
 **Never:** Capture, quiesce, restore, sign, upload, change permissions, retire, upgrade or deploy in this preparation. Never select a historical executor through a new RID, allocate a fresh recovery RID merely to refresh dates, reopen an old attempt or accept self-reported booleans as operational qualification. Keep 4.27 in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.
+
+**Owner scope decision, 2026-10-23:** Include telemetry PostgreSQL recovery in the proposal. This is preparation only and authorizes no recovery execution. Preserve the original Story 4.27 frozen intent; this is a new explicit source-coverage decision.
 
 ## I/O & Edge-Case Matrix
 
@@ -69,6 +71,18 @@ Implementation dispatch owns the three new adapter/code-test/documentation files
 
 ## Spec Change Log
 
+2026-10-23 integrated review 2 — re-derive common files from the newest exact source snapshot at `/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-2/source-recovery_adapters.py`, `source-test_recovery_adapters.py` and `source-RECOVERY-ADAPTERS.md` (not the older review-1 source). Parent owns telemetry correction/integration sequentially after this dispatch. KEEP every existing 76-test behavior, typed source volumes, external fence guards, exact signature bytes, no-change watcher path, source protection, no live dispatcher, null qualifications and all archived packets.
+
+Common re-derivation requirements for this review:
+- Separate complete read-only cleanup census from destructive authority. Add a required fully bound `cleanupCensus` Resource list for cleanup (null for other operations), including every owned deletion root plus normal generated children. Add bounded read-only kinds for Pod, ConfigMap, ServiceAccount, ReplicaSet, ControllerRevision, Job/CronJob, Role/RoleBinding, Endpoints/EndpointSlice, coordination Lease, PodDisruptionBudget and VolumeSnapshot/VolumeSnapshotContent. These extra kinds are GET-only census identities: their recognition cannot expand the existing deletion-root kind allowlist. Unsupported kinds must stop completeness before deletion, not be silently omitted. Qualified fence observation precedes complete census/identity readbacks. Compare actual inventory with the whole census and require independent exact absence of every census object before completion. Keep explicit source exclusions and cluster control/fence objects outside delete scope. Tests must include representative generated objects and distinguish full census from authorized roots, including unknown/extra-object failures and deletion-scope refusal.
+- Reject non-null metadata.deletionTimestamp for protected source, target binding, paused and resume/watcher identity checks. Allow valid terminating resource bodies only as DELETE acceptance responses; actual absence is still separate.
+- Capture must re-read protected source identities after its stage before primitive completion, with drift/no-completion regression. Capture's own already-approved controlled changes are outside this primitive, so no changed-source skip or weak success shortcut.
+- Proposal must reject duplicate API paths with different UIDs, matching fully bound identity consistency.
+- Namespace names specifically must obey Kubernetes DNS-label max63/no dots (both proposed and bound); other resource names retain their correct type profile.
+- Clamp each backend deadline to remaining policy validity at dispatch, in addition to the request timeout, so a request is never given permission to run beyond expiry. Retain uncertain-effect failure semantics and the qualified driver's cancellation requirement; do not promise that local cancellation rolls back a server-side write. Add near-expiry deadline assertions.
+- Add distinct source/target cluster fixtures covering capture, restore, resume and cleanup target GET/deletion routes, plus source preservation/watcher routes. They must fail under the review mutation forcing every _get target=False. This is a tests-only verification gap in the current correctly routed implementation.
+
+
 2026-10-23 review 1 — non-frozen implementation contract needs explicit source-volume ownership and namespace-creation fencing. All seventeen findings below are verified against the retained diff. Re-derive the three implementation files from the exact private `review-1-source` snapshot, preserving its positive behavior and fixing the complete set below. Parent owns final packet rebinding/index and public tracking. No frozen text changes.
 
 KEEP: offline-only CLI, unqualified/null acceptance, all 53 existing passing adversarial tests, exact readback bytes passed to signature verification, no historical executor or ambient credential loader, create-only records, semantic stops and source/target proposal separation. Existing snapshots and initial tool/input measurements remain unchanged; final revised hashes require a distinct explicit relation.
@@ -86,6 +100,25 @@ Re-derivation requirements:
 
 
 ## Review Triage Log
+
+| Integrated finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | high | Complete census schema cannot represent ordinary generated children; bad_spec requires separate read-only census and deletion authority. |
+| Blind 2 | high | Identity response with deletionTimestamp reaches primitive completion; reject terminating source/target inputs. |
+| Blind 3 | medium | Capture lacks final source preservation checks; add checks and actual drift regression. |
+| Blind 4 | medium | Proposal permits same API path with two different UIDs; require unique paths. |
+| Blind 5 | medium | Telemetry restore artifact aliases caller binding; separate telemetry patch/re-derivation. |
+| Blind 6 | high | Telemetry restore accepts retention year2000 without independent retention; bind retained policy and real readback fields. |
+| Blind 7 | high | Equal row counts with different data pass proposed canaries; add deterministic full-table content checks. |
+| Blind 8 | medium | Sequence view omits direct is_called/last_value; propose direct stable sequence-state observations. |
+| Blind 9 | medium | Unescaped tuples-only output permits ambiguous result framing; emit typed tagged JSON. |
+| Blind 10 | medium | CPU/memory requests exceeding limits render; normalize supported units and enforce limits. |
+| Edge 1 | high | Per-request deadline exceeds remaining policy validity; clamp dispatch deadline and preserve unknown side-effect handling. |
+| Edge 2 | medium | Dotted/overlength Namespace names accepted; type-specific DNS-label guard. |
+| Edge 3 | medium | Same telemetry aliasing root cause as Blind5. |
+| Verification 1 | medium | Forcing every target GET to source endpoint leaves all76 tests passing; add distinct-cluster route regressions. |
+
+No findings are deferred. The full-census contract gap routes to bad_spec; remaining verified common corrections are retained re-derivation requirements and telemetry findings are handled sequentially in its separate spec. Parent must preserve revision-2 unchanged and explicitly rebind a new final packet after all code changes.
 
 | Finding | Verdict | Verified evidence / route |
 | --- | --- | --- |
@@ -113,3 +146,24 @@ All findings are this preparation's issue; none are deferred. Source-volume/fenc
 
 - `/usr/bin/python3.14 -I -S -B eng/recovery-preparation/test_recovery_adapters.py` -- all meaningful offline cases pass, no live I/O.
 - Compare preservation inventory and frozen block before/after; verify private checksums and exact public projections; `git diff --check`.
+
+### Integrated review 3
+
+| Finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | high | Content SQL uses to_jsonb(record), which normalizes native json duplicate keys/lexical representation; replace with native-preserving row JSON in existing content query. PostgreSQL runtime qualification remains separate. |
+| Blind 2 | high | Parent pure reproduction accepts empty relations/columns with nonempty table census; require catalog references and table coverage. |
+| Blind 3 | medium | Sequence definitions pass only string checks, so nonsensical numeric/range/cache values pass; validate supported native numeric profile and sampled range. |
+| Blind 4 | medium | Parent pure reproduction accepts contentBytes16000000 for two one-byte rows; enforce count/maximum/total feasibility. |
+| Blind 5 | high | Cleanup target_paths maps ownedTargets PVs, while cleanupCensus allows extra PV; reject census PV outside deletion-root inventory before request construction. |
+| Blind 6 | medium | First fence observation can age across up to64 census GETs; refresh after identity binding before any deletion, while retaining per-dispatch freshness. |
+| Blind 7 | high | Target role query checks only login/superuser although role SQL strips more authority; require full relevant authority flags/membership observations and explicit source/target profile. |
+| Blind 8 | medium | View definitions are not observed; fail closed on unsupported views/materialized/foreign/partitioned relation profiles rather than imply their recovery verification. |
+| Blind 9 | medium | User functions/triggers are not observed; explicitly census unsupported non-extension function/trigger objects and refuse them, retaining only pinned extension-owned objects as the limited profile. |
+| Blind 10 | medium | Telemetry cleanup includes Pod as owned deletion root and has no separate census; align with common root/census contract and keep all future identities null. |
+| Edge 1 | high | Same extra-PV path gap as Blind5, independently reproduced; small reject guard and regression. |
+| Edge 2 | high | Same missing-catalog gap as Blind2, independently reproduced; schema completeness contract correction. |
+| Verification 1 | medium | Pre-verified mutant removing source/target sequence equality passes34 tests; add stable target lastValue/isCalled disagreement regression. |
+| Verification 2 | medium | Pre-verified mutant replacing set inventory comparison with ordered tuple passes90 tests; add reordered complete-census success regression. |
+
+All fourteen findings are retained. Common PV/fence/order findings are patch corrections to existing demonstrated state and interfaces. Telemetry coverage/profile/authority contract corrections require re-derivation from the exact review-3-source snapshot, outside unchanged frozen intent; no finding is deferred. No real qualification or operational approval follows from this review.

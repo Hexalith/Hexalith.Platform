@@ -1171,3 +1171,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Exercise the real AwsKeyAccess adapter's rejection of a mismatched KMS decrypt response ARN.
   evidence: R4-V1; the verification review found only production wiring references the adapter and key tests use FakeNative, so deleting DecryptResponse.KeyId validation would pass the existing suite; use a native API double in the hosted provider's conformance harness.
+
+## Deferred from: code review of spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md (2026-10-23, round 2)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Confirm `RunEndpoints.Observe` cannot throw for a healthy resource with an unallocated endpoint.
+  evidence: Unverified (maybe-false; medium if true). `RunReadiness.Observe` now calls `RunEndpoints.Observe` for every healthy resource on all run paths, including `CurrentUnready`, `ReportObservedFailureAsync` and progress writes; any unallocated endpoint throws `InvalidDataException`, which would suppress the failure document for run/debug/test. Settle by confirming whether Aspire 13.6 can report a resource `Healthy` before every endpoint is allocated (proxyless or sidecar endpoints); if it can, return only allocated endpoints from `Observe` and refuse unallocated ones only in `TestEnvironmentDescriptorWriter`.

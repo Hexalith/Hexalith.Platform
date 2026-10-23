@@ -134,6 +134,15 @@ class Cluster:
         return cls(text(value['uid']), endpoint, sha(value['caSha256']))
 
 
+# Native recognition is broader than direct deletion authority. Census-only
+# children are read by exact identity and must never become deletion roots.
+DELETE_ROOT_KINDS = {
+    ('v1', 'Namespace'), ('v1', 'PersistentVolume'), ('v1', 'PersistentVolumeClaim'),
+    ('v1', 'Secret'), ('v1', 'Service'), ('apps/v1', 'Deployment'),
+    ('apps/v1', 'StatefulSet'), ('networking.k8s.io/v1', 'NetworkPolicy'),
+    ('postgresql.cnpg.io/v1', 'Cluster'),
+}
+
 KINDS = {
     ('v1', 'Namespace'): ('/api/v1', 'namespaces', False),
     ('v1', 'PersistentVolume'): ('/api/v1', 'persistentvolumes', False),
@@ -144,6 +153,22 @@ KINDS = {
     ('apps/v1', 'StatefulSet'): ('/apis/apps/v1', 'statefulsets', True),
     ('networking.k8s.io/v1', 'NetworkPolicy'): ('/apis/networking.k8s.io/v1', 'networkpolicies', True),
     ('postgresql.cnpg.io/v1', 'Cluster'): ('/apis/postgresql.cnpg.io/v1', 'clusters', True),
+    ('v1', 'Pod'): ('/api/v1', 'pods', True),
+    ('v1', 'ConfigMap'): ('/api/v1', 'configmaps', True),
+    ('v1', 'ServiceAccount'): ('/api/v1', 'serviceaccounts', True),
+    ('v1', 'Endpoints'): ('/api/v1', 'endpoints', True),
+    ('apps/v1', 'ReplicaSet'): ('/apis/apps/v1', 'replicasets', True),
+    ('apps/v1', 'ControllerRevision'): ('/apis/apps/v1', 'controllerrevisions', True),
+    ('batch/v1', 'Job'): ('/apis/batch/v1', 'jobs', True),
+    ('batch/v1', 'CronJob'): ('/apis/batch/v1', 'cronjobs', True),
+    ('rbac.authorization.k8s.io/v1', 'Role'): ('/apis/rbac.authorization.k8s.io/v1', 'roles', True),
+    ('rbac.authorization.k8s.io/v1', 'RoleBinding'): ('/apis/rbac.authorization.k8s.io/v1', 'rolebindings', True),
+    ('discovery.k8s.io/v1', 'EndpointSlice'): ('/apis/discovery.k8s.io/v1', 'endpointslices', True),
+    ('snapshot.storage.k8s.io/v1', 'VolumeSnapshot'): ('/apis/snapshot.storage.k8s.io/v1', 'volumesnapshots', True),
+    ('snapshot.storage.k8s.io/v1', 'VolumeSnapshotContent'):
+        ('/apis/snapshot.storage.k8s.io/v1', 'volumesnapshotcontents', False),
+    ('coordination.k8s.io/v1', 'Lease'): ('/apis/coordination.k8s.io/v1', 'leases', True),
+    ('policy/v1', 'PodDisruptionBudget'): ('/apis/policy/v1', 'poddisruptionbudgets', True),
     ('admissionregistration.k8s.io/v1', 'ValidatingAdmissionPolicyBinding'):
         ('/apis/admissionregistration.k8s.io/v1', 'validatingadmissionpolicybindings', False),
 }
@@ -172,7 +197,9 @@ class Resource:
             text(namespace, 63, r'[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?')
         else:
             require(namespace == '')
-        name = text(value['name'], 253, r'[a-z0-9](?:[a-z0-9.\-]*[a-z0-9])?')
+        name = (text(value['name'], 63, r'[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?')
+                if key == ('v1', 'Namespace') else
+                text(value['name'], 253, r'[a-z0-9](?:[a-z0-9.\-]*[a-z0-9])?'))
         uid, rv = value['uid'], value['resourceVersion']
         if proposed and uid is None and rv is None:
             require(key == ('v1', 'Namespace'))
@@ -277,6 +304,7 @@ class Binding:
     protected_paths: tuple
     target_paths: tuple
     creation_fence: CreationFence | None
+    cleanup_census: tuple | None
     policy: Artifact
     signature: Artifact
     restore_input: Artifact | None
@@ -299,7 +327,7 @@ def _parse_binding(value):
                 'validatorPrincipal signerSha256 retainedDecisionsSha256 sourceCluster targetCluster '
                 'sourceNamespace targetNamespace protectedSources ownedTargets pausedWorkload sourceStores '
                 'previousReplicas watcher watcherBefore watcherDuring protectedPaths targetPaths policy '
-                'signature restoreInput tools creationFence').split()
+                'signature restoreInput tools creationFence cleanupCensus').split()
     require(type(value) is dict and set(required) <= set(value) <=
             set(required + ['watcherContainerIndex', 'watcherEnvironmentIndex']))
     require(type(value['schemaVersion']) is int and value['schemaVersion'] == 1)
@@ -309,6 +337,8 @@ def _parse_binding(value):
                   'watcherDuring', 'protectedPaths', 'targetPaths'):
         require(type(value[field]) is list and len(value[field]) <= 64)
     fields(value['tools'], ('kubectl', 'artifactReader', 'signatureVerifier', 'stageRunner'))
+    require(value['cleanupCensus'] is None or
+            type(value['cleanupCensus']) is list and 0 < len(value['cleanupCensus']) <= 64)
     result = Binding(operation, text(value['policyId']), value['validFrom'], value['expiresAt'],
         value['retainUntil'], text(value['operatorPrincipal']), text(value['validatorPrincipal']),
         sha(value['signerSha256']), sha(value['retainedDecisionsSha256']),
@@ -321,6 +351,7 @@ def _parse_binding(value):
         tuple(VolumePath.parse(v) for v in value['protectedPaths']),
         tuple(VolumePath.parse(v) for v in value['targetPaths']),
         None if value['creationFence'] is None else CreationFence.parse(value['creationFence']),
+        None if value['cleanupCensus'] is None else tuple(Resource.parse(v) for v in value['cleanupCensus']),
         Artifact.parse(value['policy']),
         Artifact.parse(value['signature']), None if value['restoreInput'] is None else Artifact.parse(value['restoreInput']),
         tuple((k, Tool.parse(v)) for k, v in sorted(value['tools'].items())),
@@ -374,7 +405,8 @@ def _validate_binding(b):
     require(len({r.uid for r in b.owned_targets}) == len(b.owned_targets))
     require(len({r.path() for r in b.owned_targets}) == len(b.owned_targets))
     require(not ({r.uid for r in b.protected_sources} & {r.uid for r in b.owned_targets}))
-    require(all(r.namespace in ('', b.target_namespace.name) and
+    require(all((r.api_version, r.kind) in DELETE_ROOT_KINDS and
+                r.namespace in ('', b.target_namespace.name) and
                 (r.kind != 'Namespace' or r == b.target_namespace) and
                 (r.namespace != '' or r.kind in ('Namespace', 'PersistentVolume')) for r in b.owned_targets))
     require(not same_cluster or not ({r.path() for r in b.protected_sources} & {r.path() for r in b.owned_targets}))
@@ -391,15 +423,34 @@ def _validate_binding(b):
                 b.creation_fence.namespace_uid == b.target_namespace.uid and
                 all(r.uid != b.creation_fence.resource.uid and
                     r.path() != b.creation_fence.resource.path() for r in b.owned_targets))
+        require(type(b.cleanup_census) is tuple and 0 < len(b.cleanup_census) <= 64)
+        for r in b.cleanup_census:
+            require(type(r) is Resource and Resource.parse(r.wire()) == r and
+                    (r.api_version, r.kind) != FENCE_KIND and
+                    r.namespace in ('', b.target_namespace.name) and
+                    (r.kind != 'Namespace' or r == b.target_namespace) and
+                    (r.kind != 'PersistentVolume' or r in b.owned_targets) and
+                    (r.namespace != '' or r.kind in
+                        ('Namespace', 'PersistentVolume', 'VolumeSnapshotContent')) and
+                    r.uid != b.watcher.uid and r.path() != b.watcher.path() and
+                    r.uid != b.creation_fence.resource.uid and
+                    r.path() != b.creation_fence.resource.path())
+        require(len({r.uid for r in b.cleanup_census}) == len(b.cleanup_census) and
+                len({r.path() for r in b.cleanup_census}) == len(b.cleanup_census) and
+                set(b.owned_targets) <= set(b.cleanup_census) and
+                not ({r.uid for r in b.protected_sources} & {r.uid for r in b.cleanup_census}) and
+                (not same_cluster or not ({r.path() for r in b.protected_sources} &
+                                          {r.path() for r in b.cleanup_census})))
     else:
-        require(b.creation_fence is None)
+        require(b.creation_fence is None and b.cleanup_census is None)
     integer(b.previous_replicas, 1, 64)
     integer(b.watcher_container_index, 0, 31)
     integer(b.watcher_environment_index, 0, 127)
     require(0 < len(b.watcher_before) <= 32 and len(set(b.watcher_before)) == len(b.watcher_before))
     for name in (*b.watcher_before, *b.watcher_during):
         text(name, 63, r'[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?')
-    require(tuple(b.watcher_before) + (b.target_namespace.name,) == tuple(b.watcher_during))
+    require(tuple(b.watcher_during) in (tuple(b.watcher_before),
+            tuple(b.watcher_before) + (b.target_namespace.name,)))
     for path in (*b.protected_paths, *b.target_paths):
         require(type(path) is VolumePath and VolumePath.parse({'pvUid': path.pv_uid,
                 'nodeUid': path.node_uid, 'path': path.path}) == path)
@@ -512,6 +563,7 @@ def _stage(b, name, expected, effect='read-only'):
          'targetNamespace': b.target_namespace.wire(), 'protectedSources': [r.wire() for r in b.protected_sources],
          'protectedPaths': [asdict(p) for p in b.protected_paths],
          'ownedTargets': [r.wire() for r in b.owned_targets],
+         'cleanupCensus': None if b.cleanup_census is None else [r.wire() for r in b.cleanup_census],
          'creationFence': None if b.creation_fence is None else b.creation_fence.wire(),
          'restoreInput': None if b.restore_input is None else b.restore_input.wire(),
          'targetPaths': [asdict(p) for p in b.target_paths]}, expected, effect)
@@ -537,8 +589,10 @@ def build_requests(b):
     if b.operation == 'capture':
         result.append(_get(b, 'proposed-target-absent', b.target_namespace, True, 'absence'))
         result.append(_stage(b, 'capture', {'check': 'capture'}, 'bounded-source-capture'))
+        result.extend(_get(b, 'preserve-source-' + str(i), r) for i, r in enumerate(b.protected_sources))
     else:
-        result.extend(_get(b, 'bind-target-' + str(i), r, True) for i, r in enumerate(b.owned_targets))
+        if b.operation != 'cleanup':
+            result.extend(_get(b, 'bind-target-' + str(i), r, True) for i, r in enumerate(b.owned_targets))
         if b.operation in ('restore', 'resume'):
             a = b.restore_input
             result.append(_request(b, 'recovery-input-readback', 'artifactReader', 'READ_EXACT_VERSION', a.key,
@@ -563,6 +617,8 @@ def build_requests(b):
         elif b.operation == 'cleanup':
             result.append(_stage(b, 'verify-creation-fence-before-inventory', {'check': 'creation-fence'}))
             result.append(_stage(b, 'owned-target-inventory', {'check': 'inventory'}))
+            result.extend(_get(b, 'bind-target-' + str(i), r, True) for i, r in enumerate(b.cleanup_census))
+            result.append(_stage(b, 'verify-creation-fence-before-deletes', {'check': 'creation-fence'}))
             # All identities are read before the first delete. Namespace last.
             rank = {'PersistentVolumeClaim': 2, 'PersistentVolume': 3, 'Namespace': 4}
             ordered = sorted(b.owned_targets, key=lambda r: (rank.get(r.kind, 1), r.path()))
@@ -573,36 +629,103 @@ def build_requests(b):
                         'preconditions': {'uid': r.uid, 'resourceVersion': r.resource_version}}
                 result.append(_request(b, 'delete-owned-' + str(i), 'kubectl', 'DELETE', r.path(), body,
                     {'check': 'deleted', 'resource': r.wire()}, 'delete-recorded-owned-target', b.target_cluster))
-            result.extend(_get(b, 'independent-absence-' + str(i), r, True, 'absence') for i, r in enumerate(ordered))
+            census = sorted(b.cleanup_census, key=lambda r: (rank.get(r.kind, 1), r.path()))
+            result.extend(_get(b, 'independent-absence-' + str(i), r, True, 'absence') for i, r in enumerate(census))
             for i, p in enumerate(b.target_paths):
                 result.append(_request(b, 'independent-path-absence-' + str(i), 'stageRunner', 'PROTOCOL',
-                    'verify-path-absence', asdict(p), {'check': 'path-absence', 'volume': asdict(p)}, 'read-only'))
+                    'verify-path-absence', {'volume': asdict(p),
+                        'protectedPaths': [asdict(source) for source in b.protected_paths]},
+                    {'check': 'path-absence', 'volume': asdict(p)}, 'read-only'))
             result.append(_get(b, 'watcher-before-restoration', b.watcher, expected='watcher-current'))
-            base = '/spec/template/spec/containers/' + str(b.watcher_container_index)
-            env = base + '/env/' + str(b.watcher_environment_index)
-            patch = [{'op': 'test', 'path': '/metadata/uid', 'value': b.watcher.uid},
-                     {'op': 'test', 'path': '/metadata/resourceVersion', 'value': b.watcher.resource_version},
-                     {'op': 'test', 'path': env + '/name', 'value': 'WATCH_NAMESPACE'},
-                     {'op': 'test', 'path': env + '/value', 'value': ','.join(b.watcher_during)},
-                     {'op': 'replace', 'path': env + '/value', 'value': ','.join(b.watcher_before)}]
-            result.append(_request(b, 'restore-watcher', 'kubectl', 'PATCH', b.watcher.path(), patch,
-                {'check': 'watcher-restored', 'resource': b.watcher.wire()}, 'restore-exact-watcher-scope', b.source_cluster))
-            result.append(_get(b, 'independent-watcher-readback', b.watcher, expected='watcher-restored'))
+            restoration_required = tuple(b.watcher_before) != tuple(b.watcher_during)
+            if restoration_required:
+                base = '/spec/template/spec/containers/' + str(b.watcher_container_index)
+                env = base + '/env/' + str(b.watcher_environment_index)
+                patch = [{'op': 'test', 'path': '/metadata/uid', 'value': b.watcher.uid},
+                         {'op': 'test', 'path': '/metadata/resourceVersion', 'value': b.watcher.resource_version},
+                         {'op': 'test', 'path': env + '/name', 'value': 'WATCH_NAMESPACE'},
+                         {'op': 'test', 'path': env + '/value', 'value': ','.join(b.watcher_during)},
+                         {'op': 'replace', 'path': env + '/value', 'value': ','.join(b.watcher_before)}]
+                result.append(_request(b, 'restore-watcher', 'kubectl', 'PATCH', b.watcher.path(), patch,
+                    {'check': 'watcher-restored', 'resource': b.watcher.wire()}, 'restore-exact-watcher-scope', b.source_cluster))
+            watcher_check = 'watcher-restored' if restoration_required else 'watcher-current'
+            result.append(_get(b, 'independent-watcher-readback', b.watcher, expected=watcher_check))
             result.extend(_get(b, 'preserve-source-' + str(i), r,
-                expected='watcher-restored' if r.uid == b.watcher.uid and r.path() == b.watcher.path()
+                expected=watcher_check if r.uid == b.watcher.uid and r.path() == b.watcher.path()
                 else 'identity') for i, r in enumerate(b.protected_sources))
     require(len(result) <= 256)
     return tuple(result)
 
 
-def _identity(value, r, exact_version=True):
+def _identity(value, r, exact_version=True, allow_terminating=False):
     require(type(value) is dict and value.get('apiVersion') == r.api_version and value.get('kind') == r.kind)
     metadata = value.get('metadata')
     require(type(metadata) is dict and metadata.get('name') == r.name and
             metadata.get('namespace', '') == r.namespace and metadata.get('uid') == r.uid)
     text(metadata.get('resourceVersion'), 64, r'[0-9]+')
+    terminating = metadata.get('deletionTimestamp')
+    if terminating is not None:
+        require(allow_terminating and type(terminating) is str and re.fullmatch(
+            r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?'
+            r'(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)', terminating))
+        try:
+            require(datetime.fromisoformat(terminating).tzinfo is not None)
+        except Exception:
+            raise Refusal(FAILURE) from None
     if exact_version:
         require(metadata['resourceVersion'] == r.resource_version)
+
+
+def _api_group(resource):
+    return resource.api_version.split('/')[0] if '/' in resource.api_version else ''
+
+
+def _native_status(value):
+    """Validate metav1.Status v0.34 fields without exact-dict fixture coupling."""
+    require(type(value) is dict and value.get('kind') == 'Status' and
+            set(value) <= {'apiVersion', 'kind', 'metadata', 'status', 'message', 'reason', 'details', 'code'} and
+            value.get('apiVersion', 'v1') in ('v1', 'meta.k8s.io/v1'))
+    for key in ('status', 'message', 'reason'):
+        if key in value:
+            require(type(value[key]) is str)
+    if 'code' in value:
+        integer(value['code'], 0, 599)
+    if 'metadata' in value:
+        meta = value['metadata']
+        require(type(meta) is dict and set(meta) <= {'selfLink', 'resourceVersion', 'continue', 'remainingItemCount'})
+        for key in ('selfLink', 'resourceVersion', 'continue'):
+            if key in meta:
+                require(type(meta[key]) is str)
+        if 'remainingItemCount' in meta:
+            integer(meta['remainingItemCount'])
+    details = value.get('details')
+    if details is not None:
+        require(type(details) is dict and
+                set(details) <= {'name', 'group', 'kind', 'uid', 'causes', 'retryAfterSeconds'})
+        for key in ('name', 'group', 'kind', 'uid'):
+            if key in details:
+                require(type(details[key]) is str)
+        if 'retryAfterSeconds' in details:
+            integer(details['retryAfterSeconds'])
+        if 'causes' in details:
+            require(type(details['causes']) is list and len(details['causes']) <= 64)
+            for cause in details['causes']:
+                require(type(cause) is dict and set(cause) <= {'reason', 'message', 'field'} and
+                        all(type(v) is str for v in cause.values()))
+    return details
+
+
+def _status_identity(details, resource, absence=False):
+    plural = KINDS[(resource.api_version, resource.kind)][1]
+    if absence:
+        require(type(details) is dict and details.get('name') == resource.name and
+                details.get('kind') == plural and details.get('group', '') == _api_group(resource))
+    if details is not None:
+        for key, expected in (('name', resource.name), ('group', _api_group(resource)), ('uid', resource.uid)):
+            if key in details:
+                require(details[key] == expected)
+        if 'kind' in details:
+            require(details['kind'] in (resource.kind, plural))
 
 
 def _semantic(b, request, response, now):
@@ -624,10 +747,23 @@ def _semantic(b, request, response, now):
         return
     value = strict_json(response.body)
     if check == 'absence':
-        require(response.status == 404 and type(value) is dict and value.get('kind') == 'Status' and
-                value.get('reason') == 'NotFound' and value.get('code') == 404 and
-                value.get('details') == {'name': expected['resource']['name'],
-                                         'kind': KINDS[(expected['resource']['apiVersion'], expected['resource']['kind'])][1]})
+        require(response.status == 404)
+        details = _native_status(value)
+        require(value.get('status') == 'Failure' and value.get('reason') == 'NotFound' and value.get('code') == 404)
+        _status_identity(details, Resource.parse(expected['resource'], True), absence=True)
+        return
+    if check == 'deleted':
+        require(response.status in (200, 202))
+        r = Resource.parse(expected['resource'])
+        if type(value) is dict and value.get('kind') == 'Status':
+            details = _native_status(value)
+            require(value.get('status') == 'Success' and value.get('reason', '') == '' and
+                    value.get('code', 0) in (0, response.status))
+            _status_identity(details, r)
+        else:
+            # Native DELETE may return the resource, including a newer RV while
+            # finalizers complete. This is acceptance, never proof of absence.
+            _identity(value, r, exact_version=False, allow_terminating=True)
         return
     require(response.status == 200)
     if check == 'authentication':
@@ -654,12 +790,17 @@ def _semantic(b, request, response, now):
                     b.watcher_during if check == 'watcher-current' else b.watcher_before)})
             except Exception:
                 raise Refusal(FAILURE) from None
-    elif check == 'deleted':
-        r = Resource.parse(expected['resource'])
-        require(value == {'kind': 'Status', 'status': 'Success', 'details': {'uid': r.uid, 'name': r.name}})
+    elif check == 'creation-fence':
+        require(type(value) is dict and value == {'creationFence': b.creation_fence.wire(),
+                'namespaceUid': b.target_namespace.uid, 'observation': 'creation-blocked',
+                'observedAt': value.get('observedAt')})
+        require(0 <= (now - timestamp(value['observedAt'])).total_seconds() <= 30)
     elif check == 'inventory':
-        require(value == {'namespaceUid': b.target_namespace.uid,
-                          'resources': [r.wire() for r in b.owned_targets]})
+        fields(value, ('namespaceUid', 'resources'))
+        require(value['namespaceUid'] == b.target_namespace.uid and type(value['resources']) is list and
+                len(value['resources']) == len(b.cleanup_census))
+        actual = tuple(Resource.parse(r) for r in value['resources'])
+        require(len(set(actual)) == len(actual) and set(actual) == set(b.cleanup_census))
     elif check == 'path-absence':
         require(value == {'volume': expected['volume'], 'observation': 'path-not-found',
                           'nodeUid': expected['volume']['node_uid']})
@@ -718,6 +859,8 @@ def run(b, backend, receipts, now=lambda: datetime.now(timezone.utc), monotonic=
         receipts.create(run_id + '-intent', canonical({'scopeSha256': b.scope_sha256(),
             'operation': b.operation, 'state': 'prepared', 'operationalQualification': None}))
         drain_at = None
+        fence_at = None
+        previous_request = None
         immutable = {}
         for index, request in enumerate(requests):
             _window(b, now())
@@ -733,7 +876,22 @@ def run(b, backend, receipts, now=lambda: datetime.now(timezone.utc), monotonic=
                 require(drain_at is not None and 0 <= (now() - drain_at).total_seconds() <= 30)
             key = run_id + '-' + str(index).zfill(3)
             receipts.create(key + '-intent', canonical({'requestSha256': request.sha256(), 'state': 'pending'}))
-            deadline = monotonic() + request.timeout_seconds
+            # Persistence can be arbitrarily slow. Recheck immediately before
+            # dispatch rather than relying on the pre-intent window/drain test.
+            dispatch_at = now()
+            _window(b, dispatch_at)
+            deadline = monotonic() + min(request.timeout_seconds,
+                (timestamp(b.expires_at) - dispatch_at).total_seconds())
+            if request.name == 'resume-replicas':
+                require(drain_at is not None and 0 <= (dispatch_at - drain_at).total_seconds() <= 30)
+            if b.operation == 'cleanup' and (request.method == 'DELETE' or request.name == 'owned-target-inventory'):
+                require(fence_at is not None and 0 <= (dispatch_at - fence_at).total_seconds() <= 30)
+                if request.name == 'owned-target-inventory':
+                    require(previous_request == 'verify-creation-fence-before-inventory')
+                elif request.path == b.target_namespace.path():
+                    require(previous_request == 'verify-creation-fence-before-namespace-delete')
+                elif request.name == 'delete-owned-0':
+                    require(previous_request == 'verify-creation-fence-before-deletes')
             count += 1
             response = backend.exchange(request, deadline)
             require(monotonic() < deadline)
@@ -743,9 +901,12 @@ def run(b, backend, receipts, now=lambda: datetime.now(timezone.utc), monotonic=
                 immutable[request.name] = response.body
             if request.name == 'fresh-clean-drain':
                 drain_at = timestamp(strict_json(response.body)['observedAt'])
+            if strict_json(request.expected)['check'] == 'creation-fence':
+                fence_at = timestamp(strict_json(response.body)['observedAt'])
             receipts.create(key + '-result', canonical({'requestSha256': request.sha256(),
                 'responseSha256': digest(response.body), 'state': 'semantic-check-passed',
                 'operationalQualification': None}))
+            previous_request = request.name
         state = b.operation + '-primitive-complete-unqualified'
         receipts.create(run_id + '-complete', canonical({'state': state, 'requests': count,
             'operationalQualification': None, 'recoveryAcceptance': None}))
@@ -891,13 +1052,16 @@ def _render_proposal(value):
     require(source_ns in protected and workload in protected and all(r in protected for r in stores) and
             workload.kind == watcher.kind == 'Deployment' and workload.namespace == source_ns.name and
             len({r.uid for r in protected}) == len(protected) and
+            len({r.path() for r in protected}) == len(protected) and
             all(not r.namespace or r.namespace in {n.name for n in protected if n.kind == 'Namespace'} for r in protected) and
             target_ns.name not in {n.name for n in protected if n.kind == 'Namespace'})
+    require(all((r.api_version, r.kind) in STORE_KINDS and r.namespace == source_ns.name for r in stores) and
+            len({r.uid for r in stores}) == len(stores) and len({r.path() for r in stores}) == len(stores))
     integer(value['previousReplicas'], 1, 64)
     before, during = value['watcherBefore'], value['watcherDuring']
     for namespace in (*before, *during):
         text(namespace, 63, r'[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?')
-    require(len(set(before)) == len(before) and before + [target_ns.name] == during)
+    require(len(set(before)) == len(before) and during in (before, before + [target_ns.name]))
     fields(value['tools'], ('kubectl', 'artifactReader', 'signatureVerifier', 'stageRunner'))
     tools = {k: Tool.parse(v) for k, v in value['tools'].items()}
     preparation = [Tool.parse(t) for t in value['preparationTools']]
@@ -915,7 +1079,8 @@ def _render_proposal(value):
         'providerProtectionQualification', 'exactExecutableAndCredentialDeliveryQualification',
         'fullStoreOrchestrationQualification', 'captureImmutableVersionAndReadback',
         'createdIsolatedTargetUidAndResourceVersions', 'sourcePauseAndRestartObservations',
-        'freshCleanDrainAndReconciliation', 'ownedStorageAndNodePathAbsence')}
+        'freshCleanDrainAndReconciliation', 'ownedStorageAndNodePathAbsence',
+        'qualifiedNamespaceCreationFence')}
     shapes = [
         {'operation': 'capture', 'method': 'PROTOCOL', 'path': 'capture', 'argv': None,
          'body': {'sourceCluster': asdict(source), 'protectedSources': [r.wire() for r in protected],
@@ -930,9 +1095,11 @@ def _render_proposal(value):
         {'operation': 'cleanup', 'method': 'DELETE', 'endpoint': target.endpoint,
          'path': target_ns.path(), 'body': {'apiVersion': 'v1', 'kind': 'DeleteOptions',
              'propagationPolicy': 'Foreground', 'preconditions': {'uid': None, 'resourceVersion': None}},
-         'ownedStorageIdentities': None, 'watcherIdentity': watcher.wire(),
-         'watcherRestoreValue': ','.join(before), 'argv': None,
-         'effect': 'delete-only-recorded-owned-targets-then-independent-absence-and-exact-watcher-restoration',
+         'ownedStorageIdentities': None, 'creationFence': None, 'cleanupCensus': None,
+         'watcherIdentity': watcher.wire(),
+         'watcherRestoreValue': ','.join(before), 'restorationRequired': before != during, 'argv': None,
+         'effect': 'delete-only-recorded-owned-targets-then-independent-absence-and-' +
+             ('exact-watcher-restoration' if before != during else 'exact-unchanged-watcher-scope-verification'),
          'state': 'blocked'}]
     return {'kind': 'hexalith.offline-recovery-adapter-proposal', 'schemaVersion': 1,
         'proposalInputSha256': digest(canonical(value)), 'knownReadOnlyRequests': known,

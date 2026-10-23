@@ -34,3 +34,8 @@ and bound execution/procedure bytes retain their meaning.
 **4.27 remains in-progress; 4.1's operational gate stays closed; Timesheets 3.6
 remains open/FAIL.** Final checksums, test counts and review outcomes are recorded
 in `verification.json` after review.
+
+The owner subsequently explicitly included telemetry PostgreSQL recovery in the
+proposal. New read-only catalog/peer metadata and a separate offline planner
+bind that additional dataset; the decision authorizes preparation only. It
+does not authorize a dump, snapshot, restore or source pause.

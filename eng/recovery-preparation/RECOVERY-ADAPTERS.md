@@ -60,21 +60,25 @@ Its schema has exactly these fields:
 | `sourceNamespace` | Bound Namespace Resource |
 | `targetNamespace` | Proposed Namespace Resource with both `uid` and `resourceVersion` null |
 | `protectedSources` | Nonempty complete explicitly protected Resource list, including the source Namespace, paused workload and stores |
-| `pausedWorkload`, `sourceStores`, `previousReplicas` | Bound Deployment, nonempty bound store Resource list, integer 1–64 recorded before pause |
-| `watcher`, `watcherBefore`, `watcherDuring` | Bound controller Deployment and exact ordered WATCH_NAMESPACE lists; during equals before plus the proposed target name |
+| `pausedWorkload`, `sourceStores`, `previousReplicas` | Bound Deployment, distinct source-namespace store UID/path identities of kind StatefulSet, Deployment or CNPG Cluster, integer 1–64 recorded before pause |
+| `watcher`, `watcherBefore`, `watcherDuring` | Bound controller Deployment and exact ordered WATCH_NAMESPACE lists; during equals before for no change, or before plus the proposed target name for a scoped extension |
 | `operatorPrincipal`, `validatorPrincipal`, `signerSha256` | Retained principal label, independently qualified validator label or null, public signer digest or null |
 | `retainedDecisionsSha256` | Exact retained owner decisions digest; no authority is inferred |
 | `tools` | Exactly `kubectl`, `artifactReader`, `signatureVerifier`, `stageRunner`; each Tool or null |
 | `preparationTools` | Nonempty array of actual preparation Tool identities |
 
 A Cluster is `{uid, endpoint, caSha256}`. The endpoint must use HTTPS, an exact
-IPv4 address and explicit port; DNS, context aliases, insecure transport and
+IPv4 address and explicit canonically spelled numeric port; leading zeros,
+DNS, context aliases, insecure transport and
 ambiguous same-endpoint cluster identities are refused. A Resource is
 `{apiVersion, kind, namespace, name, uid, resourceVersion}`. Cluster-scoped
 resources use an empty namespace. Bound Resources require exact nonempty UIDs
 and numeric resourceVersions. Proposed Namespace identity is the only allowed
-null identity. A Tool is `{path, sha256, size}` with an absolute canonical path
-and exact byte digest/size. These references do not establish current executable
+null identity. Namespace names are DNS labels of at most 63 characters, without
+dots; other resource names retain the bounded DNS-subdomain profile. Duplicate
+protected API paths are refused even if they carry different UIDs. A Tool is
+`{path, sha256, size}` with an absolute canonical path and exact byte digest/size.
+These references do not establish current executable
 custody or runtime qualification.
 
 The private proposal contains concrete known source GETs and the exact proposed
@@ -87,10 +91,20 @@ values are null, and the proposal schema is deliberately rejected by
 recovery identity is fabricated to obtain a passing render. Observation time
 records a fact; it does not refresh an expired recovery candidate.
 
+The common Memories proposal and stock telemetry PostgreSQL recovery require no
+CNPG watch change: `watcherDuring` explicitly equals `watcherBefore`. Their
+cleanup proposal discloses `restorationRequired: false`; cleanup independently
+verifies the unchanged exact watcher scope without a watcher PATCH. The private
+parent bundle carries the separate Keycloak-specific proposed namespace/watch
+extension. A CNPG-scoped proposal may retain the existing before-plus-target
+case, which discloses `restorationRequired: true` and requires exact restoration.
+These are offline preparation choices and perform no controller operation.
+
 ## Fully bound request schema
 
 `parse_binding` converts a separate closed JSON schema into immutable typed
-`Binding`, `Cluster`, `Resource`, `Artifact`, `Tool` and `VolumePath` objects.
+`Binding`, `Cluster`, `Resource`, `Artifact`, `Tool`, `VolumePath` and
+`CreationFence` objects.
 Direct dataclass instances are checked again when building requests or running.
 The complete schema is exercised by the synthetic fixture in
 [test_recovery_adapters.py](test_recovery_adapters.py). It uses these fields:
@@ -103,10 +117,12 @@ The complete schema is exercised by the synthetic fixture in
 | `signerSha256`, `retainedDecisionsSha256` | Independently pinned public signer and retained owner decisions digests |
 | `sourceCluster`, `targetCluster`, `sourceNamespace`, `targetNamespace` | Typed exact source and target identities |
 | `protectedSources`, `ownedTargets` | Exact distinct Resource inventories; protected and target UIDs/paths cannot overlap |
-| `pausedWorkload`, `sourceStores`, `previousReplicas` | Explicit source Deployment, store identities and recorded replicas |
-| `watcher`, `watcherBefore`, `watcherDuring` | Exact controller identity and ordered before/during watch lists |
+| `pausedWorkload`, `sourceStores`, `previousReplicas` | Explicit source Deployment, distinct source-namespace StatefulSet/Deployment/CNPG Cluster UID/path identities and recorded replicas |
+| `watcher`, `watcherBefore`, `watcherDuring` | Exact controller identity and ordered watch lists; during equals before or before plus the target namespace |
 | `watcherContainerIndex`, `watcherEnvironmentIndex` | Optional explicit integer positions, default 0; reads/tests must match WATCH_NAMESPACE exactly or refuse |
-| `protectedPaths`, `targetPaths` | Exact source local-volume paths and target `{pvUid,nodeUid,path}` records |
+| `protectedPaths`, `targetPaths` | Source and target `{pvUid,nodeUid,path}` records; each protected source PV and each owned target PV requires exactly one mapping |
+| `creationFence` | Required external `CreationFence` reference for cleanup; required null for capture/restore/resume |
+| `cleanupCensus` | Required nonempty fully bound Resource list for cleanup, including all owned deletion roots and generated children; required null for capture/restore/resume |
 | `policy`, `signature`, `restoreInput` | Immutable Artifact objects; restore input may be null for capture/cleanup |
 | `tools` | Exactly the four Tool roles above; null renders an explicit missing-driver gate and prevents `run` |
 
@@ -126,11 +142,65 @@ resources after separately guarded target creation. Restore/resume also require
 an exact immutable recovery input. Target creation and source quiesce are not
 implemented here. A proposed target name never substitutes for its future UID.
 
-Every owned PV requires one exact node UID/path binding. Paths are bounded to
-`/var/openebs/local/`, cannot overlap protected paths, and are checked independently
-for absence. Other storage providers and larger unqualified input profiles are
+Every protected source PV and owned target PV requires one exact node UID/path
+binding, with no missing or duplicate mappings. Source and target paths are
+bounded to `/var/openebs/local/`. Target paths cannot equal, contain or be
+contained by any protected source path. Bound source volume records accompany
+every dependent stage protocol request (typed field names serialize as
+`pv_uid`, `node_uid`, `path`, consistently with target volume records). Target
+paths are checked independently for absence. Other storage providers and larger unqualified input profiles are
 refused. Current capacity, extraction, images, stdin and mount layout remain
 separate runtime gates.
+
+A `CreationFence` is `{resource, namespaceUid, qualificationSha256}`. `resource`
+is the exact cluster-scoped `admissionregistration.k8s.io/v1`
+`ValidatingAdmissionPolicyBinding` Resource, including UID/resourceVersion;
+`namespaceUid` must equal the owned target Namespace UID. The independently
+assessed qualification digest must cover the referenced admission policy,
+binding/dependencies, namespace selection, fail-closed behavior and sustained
+creation prevention for that exact namespace UID throughout cleanup. Merely
+observing a binding does not prove those properties. The future qualified
+stage driver must independently observe the full enforced fence and return the
+exact reference, namespace UID, `creation-blocked` observation and `observedAt`.
+The adapter never creates, installs or qualifies a fence. A NetworkPolicy does
+not fence API object creation and is refused as this reference. The fence
+reference is never an owned target; cluster-scoped owned cleanup resources are
+restricted to Namespace and PersistentVolume. Recognizing the admission
+reference adds no admission-control deletion authority.
+
+`cleanupCensus` separates the complete read-only object census from
+`ownedTargets`, the existing direct-deletion roots. Both lists require distinct
+UIDs and API paths, and each deletion root must appear with its exact identity
+in the census. The census also recognizes Pod, ConfigMap, ServiceAccount,
+ReplicaSet, ControllerRevision, Job, CronJob, Role, RoleBinding, Endpoints,
+EndpointSlice, VolumeSnapshot, VolumeSnapshotContent, Lease and
+PodDisruptionBudget. These additional kinds receive exact GETs and independent
+absence checks only. They are refused in
+`ownedTargets`; recognizing a kind adds no direct DELETE authority. Census
+objects must belong to the target namespace, except its bound Namespace,
+PersistentVolumes and generated VolumeSnapshotContents. Every census PV must
+also be an owned deletion root, with the required exact node/path mapping and
+independent path-absence check. Source UID/path
+exclusions and watcher/fence identity exclusions apply to the census too.
+Cluster controls and the external fence are never deletion roots.
+
+The qualified stage driver's complete API discovery/census must include every
+object in that target scope, including generated children and cluster-scoped
+storage dependents. An unsupported kind, omitted object, extra object or changed
+identity fails completeness before any deletion. The adapter compares the
+observed inventory against the whole census, independent of list order, then
+reads every bound census identity and later requires exact independent NotFound
+for every census object. A driver must never filter unknown resources from its
+observation to fit this bounded profile. More than 64 census objects or more than
+256 total requests requires separate qualification and is refused here.
+
+The proposal input schema remains unchanged: it contains no source paths or
+fence identity or census. Its dependent cleanup shape has `creationFence: null`,
+`cleanupCensus: null`, and its `qualifiedNamespaceCreationFence` unresolved gate
+remains null. Typed complete source volume mappings, a complete cleanup census
+and an independently qualified creation fence are
+additional future fully bound input dependencies, never fabricated proposal
+facts.
 
 The new policy envelope must exactly contain:
 
@@ -170,10 +240,14 @@ is imported, run, copied into an executor role or selected through a new RID.
 `run(binding, backend, receipts, now, monotonic)` calls only the injected
 `backend.exchange(request, absolute_deadline)`. Synthetic tests provide every
 backend observation. There is no built-in backend. A separately reviewed and
-approved driver must enforce one absolute 15-second deadline per request,
+approved driver must enforce an absolute deadline for every request, clamped to
+the smaller of its 15-second timeout and remaining policy validity at dispatch,
 maximum body/error bytes, no redirects, no retries and bounded argv/stdin.
 The runner checks elapsed time after a returned call, but cannot interrupt a
 hung injected Python function; enforced cancellation is a required driver gate.
+Local cancellation does not roll back a server-side write. Timeout or expired
+validity after dispatch leaves the effect uncertain and requires independent
+incident-owner assessment; the adapter issues no compensating operation.
 JSON input/stdin/API replies are bounded to 2 MiB; exact recovery readback is
 bounded to 64 MiB. Combined policy/signature bytes are bounded to 1 MiB so their
 base64-authentication stdin stays below 2 MiB. Larger captures/transfers need a
@@ -199,22 +273,61 @@ The transitions are:
    and require isolated identity, default-deny networking, no host mounts and
    no source mounts. Restore and verification must return the exact input digest,
    source UIDs and target UID. Unknown or failed semantic outcomes stop even if
-   the process exited zero. Restore checks protected sources again afterward.
+   the process exited zero. Both capture and restore re-read every protected
+   source UID/resourceVersion after their stages before primitive completion.
+   Capture's separately approved controlled source changes are outside this
+   primitive and cannot justify skipping its final preservation checks.
 3. Resume first requires verified restore/isolation, healthy stores with observed
    changed runtime identity, a fresh clean drain and a still-paused exact source
    Deployment. Drain must have zero pending/in-flight/missing/duplicate work and
-   an unchanged stream digest; age is checked again immediately before PATCH.
+   an unchanged stream digest; age and policy validity are checked again after
+   the create-only request intent is persisted, immediately before PATCH.
    JSON Patch tests UID, resourceVersion and replicas 0, then restores only the
    recorded previous replica count. A subsequent GET must show matching desired,
    updated, ready and available replicas and observed generation. A sent PATCH
    without that reconciliation remains uncertain and requires the incident owner.
-4. Cleanup checks every target identity and an exact complete owned inventory
-   before any deletion. It deletes only inventoried resources with both UID and
-   resourceVersion preconditions; Namespace is last. It then requires fresh exact
-   NotFound reads for every target and explicit same-node path-not-found
+4. Cleanup independently observes the bound external creation fence immediately
+   before the complete census inventory, then checks every census identity
+   and refreshes the same qualified fence immediately before the deletion loop.
+   The census includes direct roots and generated children;
+   only the separately authorized `ownedTargets` roots receive direct DELETEs.
+   It requires another independent observation of the unchanged fence immediately
+   before Namespace DELETE. Failed, unknown, changed or older-than-30-second
+   fence observations stop the sequence. Freshness is checked again after intent
+   persistence before inventory or each DELETE; no unrelated backend call may
+   intervene between the fence and inventory, first DELETE or Namespace DELETE. The external
+   qualification must establish continuous creation prevention between checks.
+   Cleanup deletes only authorized roots with both UID and resourceVersion
+   preconditions; Namespace is last. Native HTTP 200/202 DELETE acceptance may
+   contain a standard metav1.Status or the matching resource. Every supplied
+   name, UID, group and kind must match; a returned resource may have an updated
+   resourceVersion while finalizers complete. Acceptance does not establish
+   deletion. Cleanup then requires fresh exact
+   NotFound reads for every census object and explicit same-node path-not-found
    observations. A 403, timeout, remaining PV or unobserved host path cannot mean
-   absence. It restores the watcher with exact UID/resourceVersion/value tests,
-   independently reads back its original ordered scope, and rechecks sources.
+   absence. When the scope was extended, it restores the watcher with exact
+   UID/resourceVersion/value tests. Equal before/during scopes omit the watcher
+   PATCH. Both cases independently read back the original ordered scope and
+   recheck sources; the no-change case also retains the exact resourceVersion.
+   A watcher included in protectedSources must retain its UID/path and exact
+   restored watch scope; its authorized PATCH may legitimately change its
+   resourceVersion. All other protected source UID/resourceVersions remain exact.
+
+Every protected, target, paused-workload, resume and watcher identity response
+must have absent or null `metadata.deletionTimestamp`. A non-null timestamp
+means the object is terminating and stops the primitive. Only a native DELETE
+acceptance resource response may carry a valid terminating timestamp; it still
+requires the later independent exact absence check.
+
+Native response fixtures follow the primary Kubernetes v0.34 sources:
+[metav1.Status/StatusDetails](https://github.com/kubernetes/apimachinery/blob/v0.34.0/pkg/apis/meta/v1/types.go#L692),
+[NewNotFound](https://github.com/kubernetes/apimachinery/blob/v0.34.0/pkg/api/errors/errors.go#L133),
+[DELETE handler](https://github.com/kubernetes/apiserver/blob/v0.34.0/pkg/endpoints/handlers/delete.go#L163)
+and [registry finalizeDelete](https://github.com/kubernetes/apiserver/blob/v0.34.0/pkg/registry/generic/registry/store.go#L1287).
+Status optional metadata, message, code and details are validated by their
+native shapes. Grouped NotFound requires the exact requested API group,
+resource plural and name, allowing standard optional Status fields; wrong
+groups, malformed responses, forbidden results and timeouts still refuse.
 
 `receipts.create(key, bytes)` must be create-only. `LocalReceipts` implements
 0700-directory/0600-file no-follow descriptor custody, exclusive creation and
@@ -223,6 +336,8 @@ request; only response hashes and fixed semantic states are recorded. Existing
 records are preserved. Reusing a scope/operation refuses before another backend
 request. Failure retains partial effects, pending intents and earlier results.
 No automatic retry, rollback, resume, target cleanup or multipart abort follows.
+Policy validity is rechecked after every request-intent write immediately before
+dispatch, so a slow persistence operation cannot carry a request past expiry.
 
 ## Stops, recovery and qualification limits
 
@@ -256,7 +371,20 @@ The synthetic suite covers every frozen matrix row:
 | Matrix row | Representative executed tests |
 | --- | --- |
 | Offline plan | `test_offline_plan_is_deterministic_and_never_calls_backend`, `test_proposal_cli_only_local_and_public_projection_is_neutral`, `test_live_activation_refused_before_any_local_read` |
-| Unsafe input | `test_expired_future_and_24_hour_overrun_refuse_before_backend`, `test_source_target_name_uid_and_path_collision_refuse`, `test_identity_uid_and_resource_version_drift_stop` |
+| Unsafe input | `test_expired_future_and_24_hour_overrun_refuse_before_backend`, `test_source_volume_mapping_is_typed_complete_and_one_to_one`, `test_target_volume_equal_ancestor_and_descendant_source_paths_refuse`, `test_source_stores_reject_namespace_duplicate_and_unrelated_resources`, `test_noncanonical_numeric_ports_refuse_before_endpoint_identity_comparison` |
 | Capture/restore boundary | `test_authentication_consumes_the_exact_independently_verified_readback_bytes`, `test_immutable_restore_input_corruption_stops_before_restore`, `test_process_success_does_not_override_semantic_failure`, `test_restore_isolation_source_mount_host_mount_and_network_failures_stop` |
-| Source resume | `test_resume_dirty_stale_future_or_changed_stream_drain_leaves_pause`, `test_drain_that_ages_before_patch_is_rechecked`, `test_resume_only_patches_recorded_identity_zero_and_prior_replicas`, `test_resume_requires_actual_reconciliation_after_patch` |
-| Target cleanup | `test_cleanup_deletes_only_owned_uids_rv_and_namespace_last`, `test_cleanup_403_timeout_and_remaining_resource_are_not_absence`, `test_cleanup_remaining_path_and_wrong_node_are_not_absence`, `test_cleanup_watcher_restoration_tests_exact_uid_rv_and_original_scope` |
+| Source resume | `test_resume_dirty_stale_future_or_changed_stream_drain_leaves_pause`, `test_slow_resume_intent_cannot_dispatch_after_clean_drain_ages`, `test_resume_only_patches_recorded_identity_zero_and_prior_replicas`, `test_resume_requires_actual_reconciliation_after_patch` |
+| Target cleanup | `test_failed_unknown_stale_or_changed_fence_stops_before_destructive_request`, `test_creation_fence_and_other_cluster_controls_cannot_be_owned_targets`, `test_native_delete_accepts_v034_status_200_202_and_resource_shapes`, `test_grouped_native_notfound_accepts_standard_optional_fields`, `test_cleanup_protected_watcher_allows_restored_rv_and_requires_exact_original_scope`, `test_final_source_drift_after_restore_and_cleanup_prevents_completion` |
+
+The revised suite preserves all 76 revision-2 test methods and adds adversarial
+regressions for the complete review correction set. Full-census tests include
+every newly recognized generated kind, independent child identity/absence,
+unknown/extra/missing inventory and direct-deletion-scope refusal. Terminating
+identity and capture post-stage drift tests require failure without completion.
+Distinct source/target cluster fixtures cover all four operations, including
+target GET/DELETE and source preservation, replica and watcher routes; they fail
+if target GETs are forced to the source endpoint. Near-expiry assertions require
+backend deadlines within remaining policy validity. Slow-intent tests establish
+the post-persistence policy/drain/fence checks. Post-restore and post-cleanup
+source UID/resourceVersion drift must fail without a completion receipt; those
+regressions fail if all final source-preservation requests are removed.
