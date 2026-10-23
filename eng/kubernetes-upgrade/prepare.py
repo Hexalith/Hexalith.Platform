@@ -51,6 +51,34 @@ OPERATIONAL_FILES = (
     "pre-upgrade-health.json",
     "post-upgrade-health.json",
 )
+COMPATIBILITY_COMPONENTS = (
+    "Calico/CNI", "CoreDNS", "kube-proxy", "OpenEBS/CSI/storage",
+    "CloudNativePG", "Dapr", "Traefik", "cert-manager",
+)
+PROTECTED_WORKLOAD_CHECKS = {
+    "keycloak": {
+        "resources": ["keycloak/Cluster/keycloak-postgres", "keycloak/Keycloak pods"],
+        "checks": ["database readiness and native replication health", "approved login/OIDC smoke"],
+    },
+    "openbao": {
+        "resources": ["openbao/StatefulSet/hexalith-keys"],
+        "checks": ["custodian-authenticated raft peers and unsealed status", "approved read/write canary without values"],
+    },
+    "memories": {
+        "resources": ["hexalith-memories/StatefulSet/redis-stack", "hexalith-memories/StatefulSet/falkordb",
+                      "hexalith-memories/Memories deployments", "hexalith-memories/StatefulSet/access-telemetry-postgresql"],
+        "checks": ["Redis/FalkorDB persistence and telemetry database health", "API/MCP health",
+                   "approved representative authenticated search expectation"],
+    },
+    "forgejo": {
+        "resources": ["Forgejo namespace/kind/UID from fresh census"],
+        "checks": ["repository/UI and native database health", "accountable disposition of source consistency findings"],
+    },
+    "forgejo-runner": {
+        "resources": ["forgejo-runner/Deployment/forgejo-runner"],
+        "checks": ["runner placement and status match fresh baseline", "all tracked jobs/workflows terminal before outage"],
+    },
+}
 
 
 def sha256(path):
@@ -143,6 +171,47 @@ def write_record(directory, name, record):
         os.chmod(path, 0o600)
         json.dump(record, stream, indent=2, sort_keys=True)
         stream.write("\n")
+
+
+def collection_requirements(name, hops):
+    """Make missing collection scope reviewable without inventing observations."""
+    per_hop = [{"fromMinor": hop["from"], "toMinor": hop["to"],
+                "datedSelectedTargetPatch": hop["targetPatch"], "acceptedTargetPatch": None,
+                "evidenceSha256": None, "verificationResult": "not-run"} for hop in hops]
+    common = {"instructionsOnly": True, "freshEvidenceRequiredForEveryHop": True,
+              "perHopEvidence": per_hop}
+    if name == "api-addon-compatibility.json":
+        return {**common, "minimumComponents": list(COMPATIBILITY_COMPONENTS),
+                "additionalInstalledOperatorsAddonsAndWebhooks": None,
+                "completeLiveAndDesiredInventoryEstablished": False,
+                "requiredChecks": [
+                    "fresh post-retirement census of live and all desired sources, including non-Helm resources and hooks",
+                    "deprecated/removed API scans for all served-version clients and exact target schemas",
+                    "field/schema/semantic checks, CRD stored/storage versions and conversion/admission dependencies",
+                    "primary-source support and exact target-runtime clearance for every installed component",
+                    "KubeSphere runtime, blocking admission dependencies and public route absent; qualified owner for retained/replaced dependencies",
+                    "complete finding dispositions; version presence or a partial fixture cannot clear compatibility",
+                ], "componentResults": {component: {"installedVersion": None, "qualifiedOwner": None,
+                    "primarySourceEvidenceSha256": None, "targetRuntimeEvidenceSha256": None,
+                    "verificationResult": "not-run"} for component in COMPATIBILITY_COMPONENTS}}
+    if name in ("pre-upgrade-health.json", "post-upgrade-health.json"):
+        return {**common, "workloads": {workload: {**requirements,
+                    "ownerApprovedExpectationSha256": None, "resourceUidAndPvcBindingCensusSha256": None,
+                    "versionsAndImageDigestsSha256": None, "nativeHealthEvidenceSha256": None,
+                    "authenticatedSmokeEvidenceSha256": None, "verificationResult": "not-run"}
+                    for workload, requirements in PROTECTED_WORKLOAD_CHECKS.items()},
+                "additionalWorkloadsFromFreshOutageCensus": None,
+                "preOutageBaselineSha256": None,
+                "requiredChecks": ["compare concrete resource/PVC identities, readiness and data health before/after",
+                    "record every workload outcome and approved recovery outcome if needed; retain no credentials or payloads"]}
+    if name == "dynamic-storage-proof.json":
+        return {**common, "requiredDynamicStorageClassesFromFreshCensus": None,
+                "requiredChecks": ["scheduler-managed disposable PVC/pod for every required dynamic StorageClass",
+                    "provision, non-secret write, independent read, deletion and direct provider-volume absence",
+                    "record PVC/PV UIDs, provider handle, timestamps and command exits",
+                    "before hop and after hop while cordoned; approved tolerations and WaitForFirstConsumer scheduling",
+                    "explicit Retain-class provider cleanup; preserve all workload PVCs"]}
+    return {}
 
 
 def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=None):
@@ -270,6 +339,7 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
             write_record(directory, name, {
                 **base, "verificationResult": "not-run", "status": "pending-live-execution",
                 "reason": "Operational evidence is unavailable during local-only preparation",
+                "collectionRequirements": collection_requirements(name, hops),
             })
         for index, hop in enumerate(hops):
             suffix = f"{hop['from']}-to-{hop['to']}"
@@ -305,6 +375,16 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
             "quiesce": {"state": "not-started", "allTrackedWorkflowsTerminal": None},
             "cordon": {"state": "not-started", "observedUnschedulable": None},
             "drain": {"state": "not-started", "exitCode": None, "approvedExceptions": []},
+            "collectionRequirements": {
+                "instructionsOnly": True, "approvedSuccessorProcedureSha256": None,
+                "requiredTerminalStates": ["approved application quiesce and every tracked workflow terminal",
+                    "independently observed node1 spec.unschedulable=true",
+                    "drain terminal exit 0 with exact approved exceptions"],
+                "accountableStopRecoveryDecisionSha256": None,
+                "stopOn": ["pending, failed or ambiguous transition", "any failed or stale hop prerequisite",
+                    "unhealthy API, node, CNI, DNS, storage, etcd or protected workload after a hop"],
+                "recovery": "Stop, preserve diagnostics and follow the exact approved control-plane/etcd/workload procedure; no kubeadm downgrade or PVC replacement",
+            },
         })
         write_record(directory, "upgrade-result.json", {
             **base, "verificationResult": "blocked", "state": "blocked-before-mutation",

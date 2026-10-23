@@ -239,6 +239,44 @@ class PreparationTests(unittest.TestCase):
             self.assertEqual(hop["prerequisites"]["fresh-per-hop-target-currency-and-compatibility"], "not-validated")
             self.assertEqual(hop["procedureLineage"]["successorMaintenance"]["approval"], "not-approved")
 
+    def test_collection_scope_requires_fresh_complete_evidence_for_both_hops(self):
+        directory = self.run_preparation()
+        for name in ("api-addon-compatibility.json", "dynamic-storage-proof.json",
+                     "pre-upgrade-health.json", "post-upgrade-health.json"):
+            with self.subTest(record=name):
+                record = json.loads((directory / name).read_text())
+                plan = record["collectionRequirements"]
+                self.assertTrue(plan["instructionsOnly"])
+                self.assertTrue(plan["freshEvidenceRequiredForEveryHop"])
+                self.assertEqual([(item["fromMinor"], item["toMinor"]) for item in plan["perHopEvidence"]],
+                                 [("1.34", "1.35"), ("1.35", "1.36")])
+                # A retained review claiming accepted pins never supplies live target or proof acceptance.
+                for item in plan["perHopEvidence"]:
+                    self.assertIsNone(item["acceptedTargetPatch"])
+                    self.assertIsNone(item["evidenceSha256"])
+                    self.assertEqual(item["verificationResult"], "not-run")
+                self.assertEqual(record["verificationResult"], "not-run")
+                self.assertFalse(record["mutationAuthorized"])
+        compatibility = json.loads((directory / "api-addon-compatibility.json").read_text())["collectionRequirements"]
+        self.assertFalse(compatibility["completeLiveAndDesiredInventoryEstablished"])
+        self.assertIsNone(compatibility["additionalInstalledOperatorsAddonsAndWebhooks"])
+        self.assertEqual(set(compatibility["componentResults"]),
+                         {"Calico/CNI", "CoreDNS", "kube-proxy", "OpenEBS/CSI/storage",
+                          "CloudNativePG", "Dapr", "Traefik", "cert-manager"})
+        for phase in ("pre", "post"):
+            health = json.loads((directory / f"{phase}-upgrade-health.json").read_text())["collectionRequirements"]
+            self.assertEqual(set(health["workloads"]), {"keycloak", "openbao", "memories", "forgejo", "forgejo-runner"})
+            self.assertIsNone(health["additionalWorkloadsFromFreshOutageCensus"])
+            self.assertTrue(all(item["verificationResult"] == "not-run" and
+                                item["ownerApprovedExpectationSha256"] is None
+                                for item in health["workloads"].values()))
+        storage = json.loads((directory / "dynamic-storage-proof.json").read_text())["collectionRequirements"]
+        self.assertIsNone(storage["requiredDynamicStorageClassesFromFreshCensus"])
+        transition = json.loads((directory / "maintenance-transition.json").read_text())
+        self.assertEqual(transition["quiesce"]["state"], "not-started")
+        self.assertIsNone(transition["collectionRequirements"]["approvedSuccessorProcedureSha256"])
+        self.assertIsNone(transition["collectionRequirements"]["accountableStopRecoveryDecisionSha256"])
+
     def test_malformed_and_expired_inputs_do_not_expose_values(self):
         bundle = self.root / "bundle"
         path = bundle / "gate/backup-gate.json"

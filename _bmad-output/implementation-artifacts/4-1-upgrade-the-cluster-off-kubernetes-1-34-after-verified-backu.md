@@ -25,6 +25,8 @@ So that the single-node outage occurs before new workloads depend on it and befo
 
 This story owns upgrade preparation, the sequential kubeadm mutation and post-upgrade verification. Story 4.0 exclusively owns the off-node backup and isolated-restore proofs.
 
+The resumed bmad-build invocation on 2026-10-23 is constrained by its implementation workflow to sequential, local-only work: no push or remote operations. Inspect retained evidence and complete useful local preparation within that boundary. Do not substitute local checks for fresh operational proofs, sign an open hop gate, advance operational checkboxes without their required evidence, or claim the actual upgrade complete.
+
 At 2026-09-28T12:51:19Z, context `jpiquot@local` served Kubernetes v1.34.9 from control-plane/worker `node1` on Ubuntu 24.04.3 LTS with containerd 2.3.3. Kubeadm configuration names external etcd at `192.168.1.30:2379`. Keycloak, OpenBao, Memories and Forgejo all run on `node1`, so the upgrade is a planned full-workload outage.
 
 Current supported branches are 1.35–1.37. Resolve each exact current patch and package/image digest immediately before the maintenance window; do not freeze a stale patch in this artifact. Traverse minor versions one at a time.
@@ -192,3 +194,11 @@ This instruction updates the maintenance dates. Fresh signed backup/restore vali
 ## Current prerequisite checkpoint — 2026-10-22
 
 The [unsigned checkpoint](evidence/epic-4/4-1/20261022t175352z-prerequisite-check/summary.md) authenticates all eight retained signatures and exact bindings for recovery `20261014t112353z`, whose signed-policy deadline was **2026-10-15T11:40:42Z**. It supplies historical integrity, not current freshness; Story 4.27 also remains `in-progress`. All 43 existing preparation/recovery tests passed. Official publication still selects v1.35.9 then v1.36.5; target runtime compatibility remains unvalidated. Both new preparation hop gates are closed/unsigned, no production operation occurred, and no operational checkbox or status changed. Resume requires fresh accepted 4.0 recovery/readback, accepted 4.27 retirement and every remaining per-hop prerequisite; the month-end window extends none of these proofs.
+
+## Local preparation continuation — 2026-10-23
+
+The [unsigned local preparation receipt](evidence/epic-4/4-1/20261023t065418z-local-preparation/summary.md) records attempt `20261023t065418z-local-preparation`. The existing recorder now emits concrete collection requirements for the minimum API/add-on matrix, complete live/desired/schema/runtime coverage, protected resource/native/authenticated-smoke expectations, storage/provider cleanup and terminal quiesce/cordon/drain with accountable stop/recovery evidence. Each hop still needs its own fresh evidence and accepted exact target; all new result fields remain null or `not-run`. Unknown additional controllers, admissions, workloads and StorageClasses require a fresh census.
+
+All **44** local preparation/recovery tests passed. Local verification authenticated the same eight original Administrator signatures and exact final-validation bindings again and confirmed every original unchanged. Recovery `20261014t112353z` still expired at **2026-10-15T11:40:42Z**; all current freshness checks fail. Both hop gates are closed/unsigned. This sequential local-only continuation made no remote request, collected no fresh operational proof, performed no signing and changed no installed component or workload. Historical `MAINTENANCE.md` is unchanged.
+
+Fresh accepted 4.0 recovery/readback, accepted 4.27 retirement/private native access, post-retirement etcd/node recovery, full compatibility and authenticated workload clearance, exact successor procedure/outage/stop/recovery approval, live preflight/target identities and before/after storage proofs remain required. No operational checkbox advances; Story 4.1 remains `in-progress`, and actual sequential hops and signed workload/upgrade outcomes remain incomplete.

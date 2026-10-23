@@ -1,0 +1,99 @@
+{
+  "attemptId": "20261023t065418z-local-preparation",
+  "classification": "sanitized unsigned local preparation",
+  "documentationAppendChangesOperationalAcceptance": false,
+  "documentationAppendedAfterPreparation": {
+    "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md": "9588887bf798beeb82fffba70176278383a5101cdad545317a2bd38f2ac946b1",
+    "eng/kubernetes-upgrade/README.md": "c9b523422883f90f7e059234a9172775072b841f3adc46293df60240d895b011"
+  },
+  "gateState": "closed",
+  "historicalMaintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "kind": "kubernetes-upgrade-local-preparation",
+  "liveSourceVersionThisAttempt": null,
+  "liveWorkloadHealthThisAttempt": "not-collected",
+  "mutationAuthorized": false,
+  "operations": {
+    "clusterRequests": 0,
+    "kubeadmUpgrade": false,
+    "packageOrBinaryMutation": false,
+    "providerRequests": 0,
+    "publicUpstreamDownloads": 0,
+    "quiesceCordonDrain": false,
+    "reboots": false,
+    "remoteRequests": 0,
+    "signingAttempts": 0,
+    "sshRequests": 0
+  },
+  "preparationInputHashes": {
+    "_bmad-output/implementation-artifacts/4-0-prove-off-node-backups-and-isolated-restores.md": "d7f34027e8b0fd8a7450f395185d9690782b1c770b24aa8e01dcdbc67bf334b2",
+    "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md": "5a2352db683ad97117b4a0f319e40fa7ffe36f82d7f524a49d8942c2b728245d",
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "f3755ab9b9085a5befd3e6c71c6aac842c290899046ea7d3e5c24bb5581549ff",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "b06f9ededbdfd0bc547b592ac5a35c07f8ac1a5c67fef6009bec8fefb5d60568",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t095137z-target-review/target-review.json": "29342d36b3c859eeab2e597b495b4deaa907108411bcb2a485634cc8bed4e10b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "012b4368535fcc7eb18231eac62bf130cbcadd336456b76104741de752f76f8f",
+    "eng/cluster-management/README.md": "ea85b1348e3b79fb936958efdd576d5209503e9bff3b1174cb00782bd1b265a5",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60",
+    "eng/cluster-management/retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "eng/kubernetes-upgrade/README.md": "3bd17ab031d3513093e85cf7f29cbd157ba5eb672143b7ecdbd0c7f13ff36e41",
+    "eng/kubernetes-upgrade/prepare.py": "d72e6d6567db8c89e262a34ed58610a031e57746c423a57dec51d16a8a0a4de4"
+  },
+  "privateEvidence": {
+    "inspectedLocalDiagnosticSourceSha256": "639886a8088dcf1c243ba40e14995659f7d7019f72ab37928b47b0f7912a67f2",
+    "original16RecordLedgerSha256": "61a1a43152886c04eb21561b601c707c8a8ef5cd5e9cfb444d51f0465a6b351e",
+    "path": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261023t065418z-local-preparation",
+    "retainedBackupDiagnosticSha256": "f58b928e95d51a5247e13a6c03111ad182b025e387bd32fc20c59964290f0243"
+  },
+  "receiptSigned": false,
+  "recordedAt": "2026-10-23T06:57:15.312881+00:00",
+  "retainedRecovery": {
+    "allHistoricalIntegrityAndBindingsPass": true,
+    "allOriginalInputsUnchanged": true,
+    "currentFreshness": {
+      "allProofsWithinSignedAgeAndExpiry": false,
+      "finalValidationWithinConservativeSignedAge": false,
+      "gateUnexpired": false
+    },
+    "earliestExpiry": "2026-10-15T11:40:42+00:00",
+    "expiryBasis": "policy.preparedAt",
+    "independentRemoteReadbackThisAttempt": "not-run",
+    "originalSignaturesVerifiedNow": 8,
+    "recoveryId": "20261014t112353z",
+    "signatureFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "trustRootSha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247"
+  },
+  "schemaVersion": 1,
+  "sourceStatuses": {
+    "4.0": "done",
+    "4.1": "in-progress",
+    "4.27": "in-progress"
+  },
+  "storyState": "in-progress",
+  "targetCurrencyThisAttempt": "not-refreshed; dated selection only",
+  "unmetOperationalAcceptance": [
+    "fresh signed Story 4.0 proof/final validation with exact bindings and independent immutable readback",
+    "accepted signed Story 4.27 retirement/preservation and private native-access evidence",
+    "fresh post-retirement external-etcd point/isolated restore and matching node/configuration recovery",
+    "complete API/add-on/admission clearance, Forgejo consistency disposition and authenticated workload expectations",
+    "exact successor maintenance/outage and accountable stop/recovery approval",
+    "fresh per-hop live preflight, supported exact target identities, skew, workload health and dynamic-storage proof",
+    "signed-open per-hop gates, terminal quiesce/cordon/drain, actual sequential upgrades and pre-uncordon verification",
+    "signed final actual component versions and all protected workload/restore outcomes"
+  ],
+  "verification": {
+    "allHopCommandsNotRun": true,
+    "allPrivateFilesMode0600": true,
+    "bothHopGatesClosedAndUnsigned": true,
+    "historicalMaintenanceUnchanged": true,
+    "original16PreparationRecordChecksumsPass": true,
+    "preparationAndRecoveryTests": {
+      "command": "/usr/bin/python3 -I -S -B -m unittest discover -s eng/kubernetes-upgrade -p 'test_*.py'",
+      "exitCode": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 44
+    },
+    "privateAttemptDirectoryMode0700": true
+  }
+}

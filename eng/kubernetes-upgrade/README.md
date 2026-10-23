@@ -10,6 +10,11 @@ Use `--backup-bundle /absolute/path/to/final-bundle` only to inventory a selecte
 
 The [2026-10-22 checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261022t175352z-prerequisite-check/summary.md) independently authenticates all eight retained recovery signatures/bindings but finds their signed-policy deadline expired on October 15. Story 4.27 remains in progress. Its unsigned preparation leaves both hops closed; it records no current live health or operational acceptance. Follow its restart prerequisites before attempting a hop.
 
+The [2026-10-23 local preparation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261023t065418z-local-preparation/summary.md)
+adds concrete per-hop collection requirements and verifies all 44 local safety
+tests plus the same eight retained signatures/bindings. All freshness checks
+still fail; no upstream publication, provider or cluster observation was refreshed.
+
 ## Retained two-hop preparation
 
 The recorder reads `workloadHop.tag` and `workloadTarget.tag` from the
@@ -27,6 +32,16 @@ and fresh-prerequisite requirements. Live source and actual resulting/final
 versions remain unknown. The second gate additionally requires the accepted
 first-hop outcome and newly collected recovery, preflight and approval after
 that outcome. These pending records never approve an automatic chained upgrade.
+
+The compatibility, pre/post workload-health and storage records include explicit
+`collectionRequirements` for both hops. They name the minimum component matrix,
+concrete protected workloads, authenticated owner expectations, complete API/schema/
+runtime coverage and provider cleanup. Additional installed controllers, admission
+webhooks, workloads and dynamic StorageClasses still require a fresh complete census.
+Every per-hop accepted target and evidence hash starts null; selected dated patches
+and collection instructions establish no live result. The transition record also
+names terminal quiesce/cordon/drain and accountable stop/recovery evidence, leaving
+the exact successor-procedure and recovery-decision hashes null until approved.
 
 Both gates explicitly require accepted 4.27 signed retirement/preservation and
 private native access, fresh post-retirement external-etcd/isolated-restore and
