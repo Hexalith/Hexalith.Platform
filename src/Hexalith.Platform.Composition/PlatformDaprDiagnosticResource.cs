@@ -14,7 +14,6 @@ internal sealed class PlatformDaprDiagnosticResource
     private readonly PlatformDaprDiagnosticFile _states;
     private readonly PlatformDaprDiagnosticRedactor _redactor;
     private readonly long _origin = Stopwatch.GetTimestamp();
-    private int _lastLine;
     private int? _pid;
     private bool _captureFailed;
     private bool _terminalStateObserved;
@@ -33,16 +32,19 @@ internal sealed class PlatformDaprDiagnosticResource
     /// <summary>Gets the exact model resource whose public events are observed.</summary>
     internal IResource Resource { get; }
 
+    /// <summary>Gets the last safe public instance identity retained with its snapshot.</summary>
+    internal string? InstanceId { get; private set; }
+
     /// <summary>Copies a public console batch without retaining configuration or secrets.</summary>
-    internal void RecordLogs(IReadOnlyList<LogLine> lines)
+    internal void RecordLogs(string instance, IReadOnlyList<LogLine> lines, ref int lastLine)
     {
         foreach (LogLine line in lines)
         {
-            if (line.LineNumber <= _lastLine) continue;
-            _logs.Add(new { Kind = "native-console", Resource = Resource.Name, ObservedUtc = DateTimeOffset.UtcNow,
+            if (line.LineNumber <= lastLine) continue;
+            _logs.Add(new { Kind = "native-console", Resource = Resource.Name, ResourceId = instance, ObservedUtc = DateTimeOffset.UtcNow,
                 ElapsedMilliseconds = Stopwatch.GetElapsedTime(_origin).TotalMilliseconds, line.LineNumber,
                 line.IsErrorMessage, Message = _redactor.Redact(line.Content) });
-            _lastLine = line.LineNumber;
+            lastLine = line.LineNumber;
         }
         _logs.Flush();
     }
@@ -61,6 +63,7 @@ internal sealed class PlatformDaprDiagnosticResource
         _exitCodeObserved = snapshot.ExitCode.HasValue;
         string instance = update.ResourceId.Length <= 128 && update.ResourceId.All(character => char.IsAsciiLetterOrDigit(character) || character is '-' or '_' or '.')
             ? update.ResourceId : "unavailable";
+        if (instance != "unavailable") InstanceId = instance;
         _states.Add(new { Kind = "resource-state", Resource = Resource.Name, ResourceId = instance, ObservedUtc = DateTimeOffset.UtcNow,
             ElapsedMilliseconds = Stopwatch.GetElapsedTime(_origin).TotalMilliseconds, State = state, ReportedPid = currentPid,
             LastObservedPid = _pid, snapshot.ExitCode, ReportedStartUtc = snapshot.StartTimeStamp, ReportedStopUtc = snapshot.StopTimeStamp,

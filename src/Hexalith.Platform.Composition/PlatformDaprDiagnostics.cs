@@ -11,7 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<string> applications, IEnumerable<string> secrets) : IDistributedApplicationEventingSubscriber, IAsyncDisposable, IDisposable
 {
     private readonly CancellationTokenSource _stop = new();
-    private readonly List<Task> _watchers = [];
+    private readonly Dictionary<string, Task> _watchers = new(StringComparer.Ordinal);
+    private readonly object _watcherGate = new();
+    private bool _stopping;
     private readonly Dictionary<string, PlatformDaprDiagnosticResource> _resources = new(StringComparer.Ordinal);
     private ResourceLoggerService? _logs;
     private ResourceNotificationService? _notifications;
@@ -39,20 +41,35 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
             }
             _logs = startup.Services.GetRequiredService<ResourceLoggerService>();
             _notifications = startup.Services.GetRequiredService<ResourceNotificationService>();
-            // Calling the async readers here installs subscriptions before BeforeStart returns.
-            foreach (PlatformDaprDiagnosticResource resource in _resources.Values) _watchers.Add(WatchLogsAsync(resource));
+            // Public notifications supply the allocated producer key after early registration.
             _stateWatcher = WatchStatesAsync();
             return Task.CompletedTask;
         });
         return Task.CompletedTask;
     }
 
-    private async Task WatchLogsAsync(PlatformDaprDiagnosticResource resource)
+    private void WatchInstance(PlatformDaprDiagnosticResource resource, string instance)
+    {
+        // Only the exact owned model object may supply its safe logical/allocated instance key.
+        if (instance.Length > 128 || instance.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not '-' and not '_' and not '.')
+            || (instance != resource.Resource.Name && !instance.StartsWith(resource.Resource.Name + "-", StringComparison.Ordinal)))
+        {
+            Status(resource, "console-instance-failed");
+            return;
+        }
+        lock (_watcherGate)
+        {
+            if (!_stopping && !_watchers.ContainsKey(instance)) _watchers.Add(instance, WatchLogsAsync(resource, instance));
+        }
+    }
+
+    private async Task WatchLogsAsync(PlatformDaprDiagnosticResource resource, string instance)
     {
         try
         {
-            await foreach (IReadOnlyList<LogLine> batch in _logs!.WatchAsync(resource.Resource).WithCancellation(_stop.Token).ConfigureAwait(false))
-                resource.RecordLogs(batch);
+            int lastLine = -1;
+            await foreach (IReadOnlyList<LogLine> batch in _logs!.WatchAsync(instance).WithCancellation(_stop.Token).ConfigureAwait(false))
+                resource.RecordLogs(instance, batch, ref lastLine);
             resource.RecordStatus("log-stream-completed");
         }
         catch (OperationCanceledException) when (_stop.IsCancellationRequested) { }
@@ -68,7 +85,10 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
         {
             await foreach (ResourceEvent update in _notifications!.WatchAsync(_stop.Token).ConfigureAwait(false))
                 if (_resources.TryGetValue(update.Resource.Name, out PlatformDaprDiagnosticResource? resource) && ReferenceEquals(resource.Resource, update.Resource))
+                {
+                    WatchInstance(resource, update.ResourceId);
                     resource.RecordState(update);
+                }
         }
         catch (OperationCanceledException) when (_stop.IsCancellationRequested) { }
         catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or ObjectDisposedException)
@@ -88,9 +108,15 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
         // Do not cancel at ApplicationStopping: retain evidence while public producers still run.
         // DCP stops its watchers before native cleanup, so disposal can drain only delivered
         // batches. A final nonterminal snapshot must remain explicitly incomplete evidence.
-        foreach (PlatformDaprDiagnosticResource resource in _resources.Values) _logs?.Complete(resource.Resource);
+        Task[] watchers;
+        lock (_watcherGate)
+        {
+            _stopping = true;
+            foreach (string instance in _watchers.Keys) _logs?.Complete(instance);
+            watchers = [.. _watchers.Values];
+        }
         _stop.CancelAfter(TimeSpan.FromSeconds(3));
-        await Task.WhenAll(_watchers).ConfigureAwait(false);
+        await Task.WhenAll(watchers).ConfigureAwait(false);
         bool drainTimedOut = _stop.IsCancellationRequested;
         await _stop.CancelAsync().ConfigureAwait(false);
         if (_stateWatcher is not null) await _stateWatcher.ConfigureAwait(false);
@@ -99,7 +125,9 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
             try
             {
                 if (drainTimedOut) resource.RecordStatus("console-drain-failed");
-                if (_notifications is not null && _notifications.TryGetCurrentState(resource.Resource.Name, out ResourceEvent? final)) resource.RecordState(final);
+                if (_notifications is not null && resource.InstanceId is string instance
+                    && _notifications.TryGetCurrentState(instance, out ResourceEvent? final) && ReferenceEquals(resource.Resource, final.Resource)
+                    && final.ResourceId == instance) resource.RecordState(final);
                 else resource.RecordStatus("final-state-unavailable");
                 resource.RecordStatus("capture-stopped");
             }

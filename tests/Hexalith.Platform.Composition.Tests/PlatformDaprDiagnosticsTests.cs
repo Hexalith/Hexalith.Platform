@@ -42,6 +42,60 @@ public sealed class PlatformDaprDiagnosticsTests
         finally { Directory.Delete(root, recursive: true); }
     }
 
+    [Fact]
+    public async Task LateAllocatedPublicInstanceRetainsBacklogAndLiveOutputAndDrainsTheSubscribedKeyAsync()
+    {
+        string root = TemporaryDirectory();
+        try
+        {
+            IDistributedApplicationBuilder builder = Builder();
+            ExecutableResource native = builder.AddExecutable("memories-dapr-cli", "daprd", root).Resource;
+            ExecutableResource foreign = builder.AddExecutable("foreign-dapr-cli", "daprd", root).Resource;
+            await using DistributedApplication app = builder.Build();
+            string directory = Path.Combine(root, "evidence");
+            PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            await StartCaptureAsync(app, builder, capture);
+            ResourceLoggerService logs = app.Services.GetRequiredService<ResourceLoggerService>();
+            ResourceNotificationService notifications = app.Services.GetRequiredService<ResourceNotificationService>();
+            string consolePath = Path.Combine(directory, native.Name + ".console.jsonl");
+            logs.GetLogger(native).LogInformation("logical stream line one");
+            await WaitForAsync(() => File.ReadAllText(consolePath).Contains("logical stream line one", StringComparison.Ordinal));
+
+            // DCP assigns a distinct public ResourceId after BeforeStart. Its first log line
+            // can already be in the real logger backlog when that notification is delivered.
+            string instance = native.Name + "-allocated";
+            ILogger allocated = logs.GetLogger(instance);
+            allocated.LogInformation("allocated stream backlog line one");
+            logs.GetLogger(foreign.Name + "-allocated").LogInformation("foreign allocated output");
+            await notifications.PublishUpdateAsync(foreign, foreign.Name + "-allocated", snapshot => snapshot with { State = new(KnownResourceStates.Running, null) });
+            await notifications.PublishUpdateAsync(native, instance, snapshot => snapshot with
+            {
+                State = new(KnownResourceStates.Running, null), Properties = [new("executable.pid", 1729)],
+            });
+            await WaitForAsync(() => StateRecords(directory).Any(record => record.TryGetProperty("ResourceId", out JsonElement id) && id.GetString() == instance));
+            allocated.LogError("allocated stream live final line");
+            await notifications.PublishUpdateAsync(native, instance, snapshot => snapshot with { State = new("Terminated", null), ExitCode = 23 });
+            await WaitForAsync(() => StateRecords(directory).Any(record => record.TryGetProperty("ResourceId", out JsonElement id) && id.GetString() == instance
+                && record.TryGetProperty("ExitCode", out JsonElement code) && code.ValueKind == JsonValueKind.Number && code.GetInt32() == 23));
+            await capture.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
+            string console = File.ReadAllText(consolePath);
+            console.ShouldContain("logical stream line one");
+            console.ShouldContain("allocated stream backlog line one");
+            console.ShouldContain("allocated stream live final line");
+            console.ShouldContain(instance);
+            console.ShouldNotContain("foreign allocated output");
+            JsonElement final = StateRecords(directory).Last();
+            final.GetProperty("Kind").GetString().ShouldBe("capture-stopped");
+            final.GetProperty("CaptureFailed").GetBoolean().ShouldBeFalse();
+            StateRecords(directory).Count(record => record.GetProperty("Kind").GetString() == "log-stream-completed").ShouldBe(2);
+            final.GetProperty("TerminalStateObserved").GetBoolean().ShouldBeTrue();
+            final.GetProperty("ExitCodeObserved").GetBoolean().ShouldBeTrue();
+            final.GetProperty("TerminalEvidence").GetString().ShouldBe("reported-state-and-exit-code");
+        }
+        finally { Directory.Delete(root, recursive: true); }
+    }
+
     [Theory]
     [InlineData("Exited")]
     [InlineData("Terminated")]
@@ -274,6 +328,10 @@ public sealed class PlatformDaprDiagnosticsTests
         IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
         await capture.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
         await eventing.PublishAsync(new BeforeStartEvent(app.Services, app.Services.GetRequiredService<DistributedApplicationModel>()), TestContext.Current.CancellationToken);
+        // Real DCP allocation publishes a public instance notification after BeforeStart.
+        ResourceNotificationService notifications = app.Services.GetRequiredService<ResourceNotificationService>();
+        foreach (IResource resource in app.Services.GetRequiredService<DistributedApplicationModel>().Resources)
+            await notifications.PublishUpdateAsync(resource, snapshot => snapshot);
     }
 
     private static JsonElement[] StateRecords(string directory) => File.ReadAllLines(Path.Combine(directory, "memories-dapr-cli.state.jsonl"))
