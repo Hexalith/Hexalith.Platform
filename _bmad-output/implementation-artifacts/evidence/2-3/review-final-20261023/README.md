@@ -1,0 +1,23 @@
+# Story 2.3 final review verification — 2026-10-23
+
+All sixteen accepted Patch findings are implemented, including the final review's requirement to compare actual project HTTP endpoints across the concurrent sessions. The user subsequently approved the five-directive Aspire 13.6.3 alignment, and the final file-entry smoke passes in 152.089 seconds. Story 2.3 is `done` in its spec and `review` in sprint tracking. See [approved upgrade and final file-entry result](approved-aspire-13-6-3/README.md).
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Final normal Composition build | Zero warnings/errors | [build](../review-patches-20261023/build-project-listener-patch-final.log) |
+| Normal Builds Module test build | Passed; zero warnings/errors | [build](build-builds-module.log) |
+| Normal Builds Module AppHost build | Passed; zero warnings/errors | [build](build-builds-host.log) |
+| Final affected Platform/Timesheets suite | 198 passed; zero failed; six gated skips; 204 total | [tests](tests-platform-ordinary.log) |
+| Builds renderer/ports/plan/paths/workspace subset | 22 passed; zero failed/skipped | [tests](tests-builds-runtime.log) |
+| Focused patches, Works build/harness and occupied Docker boundary | Eight focused cases, thirteen Works cases and one live occupied-port case passed | [patch verification](../review-patches-20261023/README.md) |
+| Strengthened concurrent six-server proof | One passed; zero skipped; 258.577 seconds | [test](tests-live-concurrent-qualified.log), [receipts](live-concurrent-qualified/), [result](live-qualified-result.json) |
+| File-entry smoke before approval | Failed NU1605 before resources; existing AppHosts unchanged | [test](tests-file-entry.log), [result](file-entry-result.json) |
+| Final file-entry smoke after approved alignment | One passed; zero skipped; 152.089 seconds; existing AppHosts unchanged | [test](approved-aspire-13-6-3/file-entry.log), [result](approved-aspire-13-6-3/result.json) |
+
+The passing concurrent proof observes six healthy projects and 24 native sidecar listeners per run. It now includes every project's observed HTTP endpoint in the overlap comparison, alongside plan, native and Docker ports. The stores retain distinct values under identical keys; the survivor remains healthy with its own values after peer shutdown. Both owned sessions clean up successfully, and no containers with either run's label remain. See the [ownership/listener audit](cleanup-audit.json), [readiness 0](live-concurrent-qualified/readiness-0.json), [readiness 1](live-concurrent-qualified/readiness-1.json), [persisted values](live-concurrent-qualified/persisted-values.txt) and [survivor readiness](live-concurrent-qualified/survivor-readiness.json).
+
+The first concurrent attempt correctly refused the installed Aspire 13.6.1 because the current catalog requires 13.6.3 ([HXR015](live-concurrent/startup-0.json)). A private temporary installation of the exact catalog-selected CLI resolved that prerequisite. The next attempt correctly refused the old Dapr directory, which contained only daprd ([HXR013](live-concurrent-13-6-3/startup-0.json)). A new private tool home reused CLI/daprd and extracted placement/scheduler from the already cached Dapr 1.18.7 image. Only a stopped, labelled extraction container was created and then removed. No global tool or repository pin changed. See [CLI version](pinned-aspire-version.txt), [CLI hash](pinned-aspire-sha256.txt), [runtime source/cleanup](private-dapr-tool-inputs.json) and [runtime hashes](dapr-tool-sha256.json).
+
+Before approval, the file AppHost selected SDK/integration versions 13.6.1 while its Composition project received Aspire 13.6.3 integrations from the Builds catalog. NuGet rejected the Kubernetes, Keycloak and Redis downgrade graph. The user approved the [exact five-directive alignment](proposed-file-entry-pin-alignment.diff), which is now applied and passes the direct file-entry smoke. The frozen intent records this narrow exception; all other pins and verification checks were preserved.
+
+[Commands](commands.txt), [timings](results.json), [source before](source-before-live.json) and [source after](source-after-qualified-live.json) bind the passing proof to unchanged composition source and the strengthened test. The two original AppHosts remain present with the same identities in [before](file-applications-before.json) and [after](file-applications-after.json) inventories. Independent recovery/Custody edits were preserved; no gitlinks were staged and nothing was pushed. Works preview live qualification and independent lifecycle/provider findings remain separately deferred.

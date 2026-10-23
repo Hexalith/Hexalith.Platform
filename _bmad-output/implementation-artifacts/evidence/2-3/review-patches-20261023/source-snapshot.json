@@ -1,0 +1,46 @@
+{
+  "captured_utc": "2026-10-23T09:49:01.295464+00:00",
+  "revisions": {
+    "Platform": "1516a6be0e3b9500cbcaeb14da1c0101f88caafa",
+    "Works": "4900d8135f78bd468639f92450f6a7ad66ad1f54",
+    "Builds": "70ead608ac01f66dfcd80c13bb71152dac6c128e",
+    "EventStore": "b6c903d0d8460e545cff4ffe0b93959619aa3a51",
+    "Tenants": "25e3bf827a7963ec79b57b4918290b3fed728706",
+    "Memories": "b55db82c060caf917a142fdb6585fa7340b01647"
+  },
+  "production": {
+    "DaprSelfHostedMtls.cs": {
+      "sha256": "831314aa1fd6e640020cd6476832e82d1c92a69aaadaa700035ff6b3775adae1",
+      "unchanged_from_HEAD": true
+    },
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": {
+      "sha256": "fdf60f4f4db0ccd03767b88ed087b30615afc53275a193441775a7726a9d09b6",
+      "unchanged_from_HEAD": true
+    },
+    "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs": {
+      "sha256": "18a0a7535ee3827e9c98d559079d53761e702463c96b57a63e3c24dd7d3a0db8",
+      "unchanged_from_HEAD": true
+    },
+    "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": {
+      "sha256": "ccfaefc80b47855858c1c4d71daff13ae11316aa1d6693587a41fab03f8728a8",
+      "unchanged_from_HEAD": true
+    },
+    "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": {
+      "sha256": "8d75ce41eaf9be13f85d3c253fab4452a0635f617797ccf510a6a192dd459fe1",
+      "unchanged_from_HEAD": true
+    },
+    "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": {
+      "sha256": "8b9cbcb30547956ffbfe74cc0435e4c0c3d38b58400c563163f3a19043ac6049",
+      "unchanged_from_HEAD": true
+    }
+  },
+  "tested_files": {
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "ea912e066ef745f8b54dbc82e2a9889634ed110dba15f949baa166b2a52eee9d",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs": "59c80718ab7e576411d013d2bf53298b8e5796a02304fe267b9e56f9a4f29271",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprToolchainTests.cs": "0702de5d665923f09fe56397a4aa36104cebe27dc954ffdf3695fe39a6cc8152",
+    "references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformTrustChecks.cs": "024ef711768beebd1e3623f3d08a37aa3e5a2e14a18ac789e4bf48616e32b1d0",
+    "references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformHaPipelineSmokeTests.cs": "59fdbedbed87708ee8bed68db6750de7ce734f11c476bfa3e9be478da4127ed3",
+    "references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformHostingCompositionTests.cs": "654ca882ff64d22c47419f9f51fa9e3812bc5db2422532d2633401c1dae91269"
+  },
+  "dotnet_sdk": "10.0.402"
+}

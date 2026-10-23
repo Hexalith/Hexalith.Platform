@@ -129,7 +129,6 @@ component reads a stream using the requested topic value, so concrete projection
 notification delivery is a separate provider limitation, not a qualified result of
 this story's rendering or startup tests.
 
-
 Local reference runs use run-owned ports, private issuer credentials, SQLite name
 resolution, secrets, Redis data, scheduler data, and Memories vector/graph data.
 Sentry/placement/scheduler gRPC endpoints bind directly to the allocated host
@@ -139,24 +138,40 @@ Container target ports and mTLS trust domains remain unchanged. Every receiver
 retains deny-default ACLs and selected component scopes.
 Allocated host addresses reach both rendered policy and the actual native `daprd`
 command. Native startup avoids the Dapr CLI's fixed Sentry-address behavior.
-Selected binaries and source templates are read-only shared inputs. Allocation
+Selected binaries and source templates are read-only shared inputs. Ordinary
+file-entry and runner `debug`/`run` launches use shared developer build outputs in
+the checkout (`bin`, `obj` and configured `artifacts` paths), which can be updated
+by compilation and contend across launches. Runner test suites put project outputs
+under `<run-workspace>/project-builds/<resource>`; the retention experiment keeps
+its existing owner `artifacts/retention/<run-id>/build/<resource>` placement.
+Build outputs are inputs to the composition; run-owned runtime state is listed above.
+Allocation
 probes release sockets before startup and are not cross-process reservations;
 bind conflicts fail and must leave foreign resources alone.
 
 `Dapr:Mtls:CertificateDirectory` is an external parent, with one private child per
-run. Paths resolving through symlinks into the Platform checkout fail before
-resources are added. Missing native runtime reports its selected path and refuses
-startup. A failed composition retains its private workspace diagnostics. Explicit
-runner teardown and file-host disposal clean only owned children and data.
+run. Paths resolving through symlinks into Platform or a mapped owner checkout fail
+before resources are added. Missing native runtime reports its selected path and refuses
+startup. A failed composition that writes `composition-failure.txt` retains its
+private file-entry workspace at `<system-temp>/hexalith-platform/<random-run-id>/`,
+including rendered configuration, discovery, data, secrets and default issuer
+credentials. The selected sidecar configuration path identifies that workspace.
+After its owned AppHost has stopped and diagnostics have been inspected, remove
+only that run directory (for example, `rm -rf -- /tmp/hexalith-platform/<random-run-id>`
+when the system temporary directory is `/tmp`). An explicitly configured certificate
+parent holds a separate private issuer child; normal host disposal removes that child,
+while forced-termination cleanup remains runner lifecycle work. Explicit runner teardown and file-host disposal clean only owned children and data.
 Reference runs create Redis themselves; they do not use dapr-init Redis, exported
 fixture locks or Keycloak. Legacy technical module fixtures remain outside Platform
-integration evidence; descriptor adoption is Story 2.9. Works uses the revised
+integration evidence; descriptor migration is Story 2.9. Works uses the revised
 shared allocation helper and remains a development preview.
 
 Build each test project in Debug with `-m:1`, then run the xUnit executable:
 
 ```bash
 dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -m:1
+dotnet build references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1
+dotnet build references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj -c Debug -m:1
 dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*PlatformAppModelTests'
 HEXALITH_PLATFORM_CONCURRENT_LIVE=1 HEXALITH_DAPR_HOME=/absolute/pinned-dapr-home dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*PlatformConcurrentRunTests'
 ```
@@ -174,12 +189,16 @@ checkout revisions match the staged root gitlinks. Identity mismatches are live
 blockers; no model-only or skipped result qualifies concurrent readiness. Do not
 stage independent gitlinks to manufacture a passing mapping.
 
-
 For the bounded occupied-listener matrix case, set
 `HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1` and select
 `-method '*OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync'`.
 It holds a separately labelled Redis listener, attempts the model's actual Sentry
 Docker binding, records the refusal, then verifies the listener and its marker
 survive candidate-only cleanup. Fixture teardown removes both task-created
-containers only after checking their separate run labels. Its redacted diagnostics
-are saved alongside the two-session evidence.
+containers only after checking their separate run labels. This proves refusal at
+the Docker publish boundary and preservation of the separately owned listener;
+it does not exercise an AppHost startup failure or force a normal allocator to
+select an occupied port. Real allocation probes skip occupied ports and release
+their sockets before binding. The proof writes raw Docker output and cleanup logs
+to the fixed `_bmad-output/implementation-artifacts/evidence/2-3/occupied-port/`
+directory; `HEXALITH_PLATFORM_CONCURRENT_EVIDENCE` does not redirect these files.

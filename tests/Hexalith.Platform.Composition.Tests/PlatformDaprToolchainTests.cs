@@ -10,6 +10,7 @@ using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
+using System.Text.Json.Nodes;
 
 public sealed partial class PlatformAppModelTests
 {
@@ -73,6 +74,16 @@ public sealed partial class PlatformAppModelTests
                 commandLine[Array.IndexOf(commandLine, "--placement-host-address") + 1].ShouldBe(options.PlacementHostAddress);
                 commandLine[Array.IndexOf(commandLine, "--scheduler-host-address") + 1].ShouldBe(options.SchedulerHostAddress);
                 commandLine[Array.IndexOf(commandLine, "--config") + 1].ShouldBe(options.Config);
+                string receiptPath = PlatformDaprEndpointSubscriber.ListenerInventoryPath(Path.GetDirectoryName(options.Config!)!, server.Name);
+                JsonObject receipt = JsonNode.Parse(File.ReadAllText(receiptPath))!.AsObject();
+                receipt.Select(property => property.Key).ShouldBe(["Resource", "Listeners"]);
+                receipt["Resource"]!.GetValue<string>().ShouldBe(server.Name);
+                JsonObject listeners = receipt["Listeners"]!.AsObject();
+                listeners.Count.ShouldBe(4);
+                listeners["--dapr-http-port"]!.GetValue<int>().ShouldBe(options.DaprHttpPort!.Value);
+                listeners["--dapr-grpc-port"]!.GetValue<int>().ShouldBe(options.DaprGrpcPort!.Value);
+                listeners["--dapr-internal-grpc-port"]!.GetValue<int>().ShouldBe(options.DaprInternalGrpcPort!.Value);
+                listeners["--metrics-port"]!.GetValue<int>().ShouldBe(options.MetricsPort!.Value);
                 string configuration = File.ReadAllText(options.Config!);
                 configuration.ShouldContain("nameResolution");
                 configuration.ShouldContain("name-resolution.db");

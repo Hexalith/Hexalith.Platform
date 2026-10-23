@@ -6,6 +6,7 @@ using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 using Shouldly;
 using System.Text.Json.Nodes;
+using YamlDotNet.RepresentationModel;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,16 +77,46 @@ public sealed partial class PlatformAppModelTests
                         File.WriteAllText(Path.Combine(mount.Source!, "same-key"), "run-" + index);
                     }
                 }
+                int sentryPort = sentry.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+                int redisPort = builder.Resources.Single(resource => resource.Name == "redis").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "tcp").Port!.Value;
+                int vectorPort = builder.Resources.Single(resource => resource.Name == "memories-vectors").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "tcp").Port!.Value;
+                foreach (string name in new[] { "redis", "memories-vectors", "memories-graph" })
+                {
+                    var store = builder.Resources.Single(resource => resource.Name == name);
+                    if (name == "redis")
+                    {
+                        List<object> arguments = [];
+                        foreach (var callback in store.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                            await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+                        arguments[arguments.IndexOf("--dir") + 1].ShouldBe("/data");
+                        arguments[arguments.IndexOf("--appendonly") + 1].ShouldBe("yes");
+                    }
+                    else
+                    {
+                        Dictionary<string, object> environment = [];
+                        foreach (var callback in store.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, store, environment, TestContext.Current.CancellationToken));
+                        environment["REDIS_ARGS"].ShouldBe("--appendonly yes");
+                        if (name == "memories-graph") environment["FALKORDB_DATA_PATH"].ShouldBe("/data");
+                    }
+                }
                 int placement = builder.Resources.Single(resource => resource.Name == "dapr-placement-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
                 int scheduler = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
                 if (plan is not null) { placement.ShouldBe(plan.Ports.Placement); scheduler.ShouldBe(plan.Ports.Scheduler); }
                 foreach (var resource in servers)
                 {
                     var sidecar = resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+                    foreach (int? port in new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort })
+                    {
+                        port.ShouldNotBeNull(resource.Name);
+                        listeners.ShouldNotContain(port.Value);
+                        listeners.Add(port.Value);
+                    }
                     sidecar.PlacementHostAddress.ShouldBe("localhost:" + placement);
                     sidecar.SchedulerHostAddress.ShouldBe("localhost:" + scheduler);
                     var configuration = JsonNode.Parse(File.ReadAllText(sidecar.Config!))!;
                     configuration["spec"]!["mtls"]!["enabled"]!.GetValue<bool>().ShouldBeTrue();
+                    configuration["spec"]!["mtls"]!["sentryAddress"]!.GetValue<string>().ShouldBe("localhost:" + sentryPort);
                     configuration["spec"]!["accessControl"]!["defaultAction"]!.GetValue<string>().ShouldBe("deny");
                     string registry = configuration["spec"]!["nameResolution"]!["configuration"]!["connectionString"]!.GetValue<string>();
                     if (resource == servers[0])
@@ -96,6 +127,25 @@ public sealed partial class PlatformAppModelTests
                     }
                     else registry.ShouldBe(registries[^1]);
                 }
+                string rendered = Path.GetDirectoryName(servers[0].Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config)!;
+                int redisComponents = 0;
+                foreach (string path in Directory.GetFiles(rendered, "*.yaml"))
+                {
+                    string content = File.ReadAllText(path);
+                    content.Contains("localhost:6379", StringComparison.Ordinal).ShouldBeFalse(path);
+                    content.Contains("127.0.0.1:6379", StringComparison.Ordinal).ShouldBeFalse(path);
+                    YamlStream yaml = new();
+                    yaml.Load(new StringReader(content));
+                    var document = (YamlMappingNode)yaml.Documents[0].RootNode;
+                    if (document.Children[new YamlScalarNode("kind")].ToString() != "Component") continue;
+                    var spec = (YamlMappingNode)document.Children[new YamlScalarNode("spec")];
+                    if (!spec.Children[new YamlScalarNode("type")].ToString().EndsWith(".redis", StringComparison.Ordinal)) continue;
+                    var metadata = (YamlSequenceNode)spec.Children[new YamlScalarNode("metadata")];
+                    var host = metadata.Children.OfType<YamlMappingNode>().Single(item => item.Children[new YamlScalarNode("name")].ToString() == "redisHost");
+                    host.Children[new YamlScalarNode("value")].ToString().ShouldBe("127.0.0.1:" + (Path.GetFileName(path) == "telemetry-state.yaml" ? vectorPort : redisPort), path);
+                    redisComponents++;
+                }
+                redisComponents.ShouldBe(5);
             }
             foreach (string registry in registries) File.ReadAllText(registry).ShouldBe("run-" + registries.IndexOf(registry));
             File.ReadAllText(Path.Combine(writable[0], "issuer.key")).ShouldBe("run-0");
@@ -161,6 +211,38 @@ public sealed partial class PlatformAppModelTests
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void CertificateChildRejectsSymlinksBeforeAddingResources(bool dangling)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-certificate-child-" + Guid.NewGuid().ToString("N"));
+        string parent = Path.Combine(directory, "parent");
+        string run = Path.Combine(directory, "run");
+        string target = Path.Combine(directory, "foreign");
+        Directory.CreateDirectory(parent);
+        if (!dangling)
+        {
+            Directory.CreateDirectory(target);
+            File.WriteAllText(Path.Combine(target, "marker"), "untouched");
+        }
+        string identity = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Path.GetFullPath(run))))[..32];
+        string child = Path.Combine(parent, "dapr-credentials-" + identity);
+        Directory.CreateSymbolicLink(child, target);
+        try
+        {
+            var builder = Builder();
+            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = parent;
+            Should.Throw<InvalidOperationException>(() => DaprSelfHostedMtls.AddSentry(builder, "/unused/sentry.yaml", Root, run, 24001))
+                .Message.ShouldContain("must not be a symbolic link");
+            builder.Resources.ShouldBeEmpty();
+            new DirectoryInfo(child).LinkTarget.ShouldBe(target);
+            if (dangling) Directory.Exists(target).ShouldBeFalse();
+            else Directory.GetFiles(target).Select(Path.GetFileName).ShouldBe(["marker"]);
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

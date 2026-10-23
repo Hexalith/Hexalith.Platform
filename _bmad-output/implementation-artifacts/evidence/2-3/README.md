@@ -1,6 +1,22 @@
 # Story 2.3 verification
 
-## Current qualification status — 2026-10-23
+## Current qualification after approved Aspire alignment — 2026-10-23
+
+**The required current qualification gate passes.** The user approved aligning the five root file AppHost directives with the catalog's Aspire 13.6.3 versions. The direct file-entry smoke passes in 152.089 seconds with all six servers ready, owned shutdown successful, stable source hashes and both pre-existing AppHosts preserved. Normal builds, 233 ordinary Platform/Builds/Works cases, the occupied-port proof and strengthened 258.577-second concurrent proof also pass.
+
+The spec is `done`, and sprint story 2.3 is `review` per the Build workflow. Independent owner findings and Works live qualification remain deferred. See [approved upgrade evidence](review-final-20261023/approved-aspire-13-6-3/README.md) and [complete final verification](review-final-20261023/README.md).
+
+## Pre-approval qualification status after final review — 2026-10-23
+
+All sixteen accepted review patches are implemented. Clean normal builds, 198 Platform/Timesheets cases, 22 Builds runtime cases, thirteen Works harness cases and the occupied-port proof pass. The strengthened concurrent six-server proof passes in 258.577 seconds, including actual project HTTP listeners, independent persisted values, survivor health and complete owned cleanup.
+
+**The current file-entry gate is blocked.** Its unchanged 13.6.1 integration directives conflict with the catalog's current 13.6.3 versions, causing NU1605 before resources start. The earlier passing file-entry receipt below is historical. Story 2.3 remains in review; a concrete pin-alignment proposal is saved but unapplied to honor the frozen pin constraint. See [current evidence, cleanup and proposal](review-final-20261023/README.md).
+
+## Round-3 review patch verification — 2026-10-23
+
+All fifteen requested patches are implemented. Normal Composition and Works harness Debug builds pass; 143 affected ordinary Composition cases, eight focused cases, thirteen Works harness cases and the bounded occupied-port live proof pass. Four broader live cases remain gated in the ordinary suite. No production composition source changed; the Works preview live deferral remains explicit. See [patch verification and current source hashes](review-patches-20261023/README.md).
+
+## Earlier qualification status — 2026-10-23
 
 **The required local composition qualification now passes.** Normal Composition and Builds Module builds pass with zero warnings/errors. The affected Platform/Timesheets group has 196 passing tests; the Builds runtime subset has 22. The direct file-entry smoke passes in 115.514 seconds, the occupied-port proof in 1.762 seconds, and the final expanded two-session proof in 225.417 seconds with complete owned cleanup and 24 disjoint native listeners per run.
 
@@ -17,7 +33,7 @@ See the [resumed verification index](resume-20261023T065107Z/README.md) for comm
 - [Occupied-port proof](final-occupied-port.log): **one passed**, no skip, 2.623 seconds. The foreign listener and marker survived candidate cleanup; task fixtures were removed.
 - [Latest concurrent proof](final-live-qualified.log): executed, not skipped; fails **HXR027**, `cutover-timeout;health-HTTP-503`, before first-session readiness. [Startup diagnostics](live-concurrent-qualified/startup-failure.json) are retained. The expanded cross-run native-listener assertions remain unexecuted. The earlier complete 403.261-second concurrency pass remains historical evidence and does not qualify the final code state. No readiness or security check was weakened.
 - [Latest file-entry smoke](final-file-entry-qualified.log): executed, not skipped; fails before AppHost resources start on the new Builds analyzer errors. The [previous file-entry attempt](final-file-entry.log) reached its owned host and reported the earlier NuGet conflict; its finally teardown passed.
-- The earlier NU1506 blocker was repaired without changing package versions: the clean EventStore owner props now update existing cryptography pins, with conditional additions for older catalogs. [Both catalog evaluation cases passed](package-catalog-compatibility.json); [the exact owner compatibility diff](eventstore-package-compatibility.diff) is retained. No tool was published or repinned and no gitlink was staged by this workflow.
+- The earlier NU1506 blocker was repaired without changing package versions. Current EventStore owner props rely on the Builds catalog pins: both pinned catalogs declare all five cryptography packages at 10.0.13. No conditional older-catalog fallback exists in the current owner file. [The earlier evaluation receipts](package-catalog-compatibility.json) and [compatibility diff](eventstore-package-compatibility.diff) describe a historical intermediate correction, not the current implementation. No tool was published or repinned and no gitlink was staged by this workflow.
 - [Cleanup audit](final-cleanup-audit.json): both failed concurrent attempts have no labelled containers, recorded project processes or AppHost PID left. No foreign-resource cleanup was performed.
 - [Exact final source revisions/hashes](final-source-revisions.json), [workspace status](final-dirty-status.txt). The source tree continued changing independently during verification; passing results are tied to their recorded attempts.
 

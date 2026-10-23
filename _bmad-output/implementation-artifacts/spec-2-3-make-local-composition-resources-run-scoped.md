@@ -2,7 +2,7 @@
 title: '2.3 Make local composition resources run-scoped'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
@@ -24,6 +24,8 @@ Preserve mTLS, deny-default ACLs, component scopes, declared readiness, catalog 
 Record that reference runs create their own Redis, never consume dapr-init Redis or acquire exported fixture locks, and instantiate no Keycloak. Installed binaries and source templates may be shared read-only. Existing technical own-repository fixtures remain outside Platform integration evidence; descriptor migration belongs to Story 2.9. Adapt Works preview helper callers as necessary without expanding its qualification claim.
 
 Preserve independent workspace edits and running applications. Do not stage gitlinks, publish/repin tools, change the legacy dapr-init action, implement descriptor/attachment/lifecycle policy, or access hosted data. Only stop/delete resources created by these verification runs.
+
+User-approved exception (2026-10-23): align the root file AppHost SDK and Docker, Kubernetes, Redis and Keycloak directives to the catalog's existing Aspire 13.6.3 versions. Preserve all other pins.
 
 ## I/O & Edge-Case Matrix
 
@@ -59,6 +61,7 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 
 - [x] `references/Hexalith.EventStore/Directory.Packages.props` — preserve identical cryptography versions while avoiding duplicate catalog entries; retain the older-catalog fallback and verify both evaluation cases.
 - [x] Final required qualification — pass normal builds after the independent Builds lifecycle work stabilizes, diagnose the gateway HXR027/HTTP-503 cutover failure, and rerun the expanded concurrent-native-listener proof plus file-entry smoke.
+- [x] `apphost.cs` — apply the user-approved Aspire 13.6.3 directive alignment and pass the current direct file-entry live smoke.
 
 **Acceptance Criteria:**
 
@@ -70,21 +73,22 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 
 Code review 2026-10-23 (round 3; Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the story-owned files from baseline `6fbe5a0` to `7c37f3f`, plus Builds renderer `2210aaa..d49834d` and EventStore props `cb41453..85f0bd9`.
 
-- [ ] [Review][Patch] Document checkout build outputs as a shared developer input; runner test suites keep private outputs (D1 → B, Administrator 2026-10-23) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:238]
-- [ ] [Review][Patch] Works harness reads issuer credentials from the composed `dapr-sentry` credential mount, not the configured parent (D2 → A, Administrator 2026-10-23) [references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformTrustChecks.cs:45]
-- [ ] [Review][Patch] Keep the Docker-boundary occupied-port proof and state precisely what it proves; real allocation probes skip occupied ports (D3 → A, Administrator 2026-10-23) [docs/platform-apphost-form.md:178]
-- [ ] [Review][Patch] Ordinary model test depends on the developer's `~/.dapr/bin/daprd` [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:188]
-- [ ] [Review][Patch] Assert the composed graph's rendered components target only the run's Redis, with no residual `localhost:6379`/`127.0.0.1:6379` (AC2) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
-- [ ] [Review][Patch] Assert rendered `spec.mtls.sentryAddress` equals the allocated Sentry listener, and that sidecar listeners are disjoint across identical file-entry selections (AC1, matrix row 1) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
-- [ ] [Review][Patch] Assert the store persistence wiring: Redis `--dir /data --appendonly yes`, `REDIS_ARGS`, `FALKORDB_DATA_PATH=/data` [src/Hexalith.Platform.Composition/PlatformAppModel.cs:186]
-- [ ] [Review][Patch] Assert the callback-written native listener receipt in a non-live model test [src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs:68]
-- [ ] [Review][Patch] Test refusal of a symlinked per-run credential child [DaprSelfHostedMtls.cs:39]
-- [ ] [Review][Patch] Assert the Works preview's selected `RuntimePath` and control-plane addresses before the test substitutes its fixture runtime [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:249]
-- [ ] [Review][Patch] Document where failed file-entry workspaces (with `composition-failure.txt` and run secrets) are retained and how to remove them [src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs:15]
-- [ ] [Review][Patch] Correct the occupied-port docs: raw Docker output (not redacted), written to fixed `evidence/2-3/occupied-port` (not the concurrent evidence override) [docs/platform-apphost-form.md:184]
-- [ ] [Review][Patch] Replace the stale "control-plane ports 50001, 51005 and 51006 must be available" sentence [docs/works-host-parity.md:191]
-- [ ] [Review][Patch] Complete the concurrent-proof command block (Builds Module AppHost Debug build), remove doubled blank lines, align "descriptor migration/adoption" wording with README [docs/platform-apphost-form.md:156]
-- [ ] [Review][Patch] Correct the evidence index: EventStore relies on catalog pins (both pinned Builds catalogs declare all five packages at 10.0.13); no conditional older-catalog fallback exists [_bmad-output/implementation-artifacts/evidence/2-3/README.md:20]
+- [x] [Review][Patch] Document checkout build outputs as a shared developer input; runner test suites keep private outputs (D1 → B, Administrator 2026-10-23) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:238]
+- [x] [Review][Patch] Works harness reads issuer credentials from the composed `dapr-sentry` credential mount, not the configured parent (D2 → A, Administrator 2026-10-23) [references/Hexalith.Works/tests/Hexalith.Works.IntegrationTests/WorksPlatformTrustChecks.cs:45]
+- [x] [Review][Patch] Keep the Docker-boundary occupied-port proof and state precisely what it proves; real allocation probes skip occupied ports (D3 → A, Administrator 2026-10-23) [docs/platform-apphost-form.md:178]
+- [x] [Review][Patch] Ordinary model test depends on the developer's `~/.dapr/bin/daprd` [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:188]
+- [x] [Review][Patch] Assert the composed graph's rendered components target only the run's Redis, with no residual `localhost:6379`/`127.0.0.1:6379` (AC2) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
+- [x] [Review][Patch] Assert rendered `spec.mtls.sentryAddress` equals the allocated Sentry listener, and that sidecar listeners are disjoint across identical file-entry selections (AC1, matrix row 1) [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:19]
+- [x] [Review][Patch] Assert the store persistence wiring: Redis `--dir /data --appendonly yes`, `REDIS_ARGS`, `FALKORDB_DATA_PATH=/data` [src/Hexalith.Platform.Composition/PlatformAppModel.cs:186]
+- [x] [Review][Patch] Assert the callback-written native listener receipt in a non-live model test [src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs:68]
+- [x] [Review][Patch] Test refusal of a symlinked per-run credential child [DaprSelfHostedMtls.cs:39]
+- [x] [Review][Patch] Assert the Works preview's selected `RuntimePath` and control-plane addresses before the test substitutes its fixture runtime [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:249]
+- [x] [Review][Patch] Document where failed file-entry workspaces (with `composition-failure.txt` and run secrets) are retained and how to remove them [src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs:15]
+- [x] [Review][Patch] Correct the occupied-port docs: raw Docker output (not redacted), written to fixed `evidence/2-3/occupied-port` (not the concurrent evidence override) [docs/platform-apphost-form.md:184]
+- [x] [Review][Patch] Replace the stale "control-plane ports 50001, 51005 and 51006 must be available" sentence [docs/works-host-parity.md:191]
+- [x] [Review][Patch] Complete the concurrent-proof command block (Builds Module AppHost Debug build), remove doubled blank lines, align "descriptor migration/adoption" wording with README [docs/platform-apphost-form.md:156]
+- [x] [Review][Patch] Correct the evidence index: EventStore relies on catalog pins (both pinned Builds catalogs declare all five packages at 10.0.13); no conditional older-catalog fallback exists [_bmad-output/implementation-artifacts/evidence/2-3/README.md:20]
+- [x] [Review][Patch] Include actual project HTTP endpoints from readiness in the concurrent proof's cross-run listener comparison [tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:90]
 - [x] [Review][Defer] Works preview sidecar endpoints made proxyless without ports [src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs:75] — deferred: maybe-false, high if true. With `servers=[]`, `Apply` now sets `TargetPort = Port` (null for Works sidecars, which set no Dapr ports) and `IsProxied = false`. Aspire 13.6.1 contains both proxyless port allocation and the "needs to specify a port… since it isn't using a proxy" refusal. Settle by starting the Works preview once (`Platform:Works:Enabled`) or running the explicit Works Platform-target lane.
 - [x] [Review][Defer] `ComposeRun` secondary-port claim acquisition untested [src/Hexalith.Platform.Composition/PlatformAppModel.cs:376] — deferred: Story 2.4 resource-claim work. Only the helper is tested; the signed isolation plan sets no `ResourceClaimStateDirectory`, so reverting `Compose` to `AllocateSecondaryPorts` passes every test.
 
@@ -127,6 +131,8 @@ Code review 2026-10-23 (round 3; Blind Hunter, Edge Case Hunter, Verification Ga
 
 ## Spec Change Log
 
+- 2026-10-23 — The user approved the prepared five-directive Aspire 13.6.3 alignment after the current file-entry restore failed NU1605 against the catalog's 13.6.3 dependencies. Add this narrow exception to the frozen pin constraint; preserve all other pins, trust/readiness checks, independent edits, successful concurrent proof and owned cleanup behavior.
+
 ## Review Triage Log
 
 | Finding | Verdict | Route | Evidence |
@@ -167,6 +173,18 @@ Code review 2026-10-23 (round 3; Blind Hunter, Edge Case Hunter, Verification Ga
 | R2-G1 — startup claim ownership test gap | medium | defer | The verification reviewer confirmed startup acquisition can be removed without failing existing readiness/teardown assertions. This tests independent Builds resource-claim lifecycle implementation from db5abf96d730d82fd6c1ccfa20ffd9c2262b9838; defer its targeted startup/peer assertions. |
 | R2-G2 — parent HXR031 translation gap | medium | defer | The verification reviewer confirmed child conflict serialization is covered but parent startup translation and malformed blocking-owner IDs are untested. This is independent Builds resource-claim lifecycle policy, explicitly excluded from this change. |
 | R2-V1 — Timesheets subscriber fixture lacks application | low | patch | The full ordinary suite reproduces a Single lookup failure because its model contains only timesheets-dapr-cli. Resolved by adding the expected application resource and selecting the sidecar explicitly; the affected Timesheets group passed. |
+| R4-B1 — claim conflict allocation retry | false | reject | carried BH3/EC12: claim conflicts identify the blocking run, which is the epic's permitted failure behavior; retry policy belongs to the excluded Story 2.4 claim lifecycle. |
+| R4-B2 — workspace removed with cleanup survivors | medium | defer | Builds CompositionEngine.TearDownAsync calls TryDeleteAsync after Scanner.RemoveAsync even when Remaining is nonempty or unverified. Surviving owned containers may lose bind-mounted data; runner lifecycle policy is explicitly excluded from this intent. |
+| R4-B3 — retained failure workspace includes secrets | false | reject | The retained directory is private run-owned state, deliberately preserved for diagnosis, and the accepted documentation patch names its secrets and manual removal after owned shutdown. No credential disclosure or foreign write path was demonstrated; automatic secret deletion would introduce a different retention policy. |
+| R4-B4 — FIFO contract open | medium | defer | carried R2-B7: the independent Builds reader opens synchronously before regular-file/cancellation checks; nonblocking special-file refusal remains recorded with that owner. |
+| R4-B5 — future invocation extends local timeout | medium | defer | checks/reference/runner.py bounds deadlineAt minus startedAt but Context.remaining and SIGALRM use deadlineAt against current time. A future startedAt extends this local bound; the trusted executor retains its own timeout. This independent hosted check payload is outside local composition and descriptor policy is excluded. |
+| R4-B6 — serving socket prevents worker | medium | defer | carried R2-B8: Program checks socket absence before selecting the worker branch. Independent hosted Custody behavior is excluded from this intent. |
+| R4-B7 — duplicate tenant KEK coverage | medium | defer | ComponentProfile.Validate checks two distinct protector ARNs but permits both KEKs for one enrolled tenant. AwsKeyAccess.ReadTenantKekAsync then refuses the uncovered tenant at use time; this independent hosted Custody profile requires owner-side tenant coverage validation. |
+| R4-B8 — actual project listeners omitted from proof | medium | patch | Resolved by requiring valid observed HTTP(S) endpoints for every project and adding their ports to the cross-run comparison. The strengthened six-server live proof passed in 258.577 seconds with six project endpoints and 24 native listeners per run, zero overlap and complete cleanup. |
+| R4-B9 — no persistence reload after own restart | false | reject | The claimed own-process-restart guarantee is not part of this story's proof. Its required behavior is separate persisted state and survivor health after peer shutdown: the test writes distinct same-key values, saves separate on-disk snapshots, and rereads both stores and the survivor. Persistence wiring is also asserted by the executed model tests. |
+| R4-B10 — late startup diagnostics erased | false | reject | carried R2-B1: the demonstrated actual startup failure retains its cutover and health diagnostics in Aspire logs and run evidence; missing-native marker retention is separately covered. Workspace retention for every later callback is not the only diagnostic channel. |
+| R4-E1 — obsolete older-catalog fallback claim | false | reject | Both supported pinned catalogs supply Pkcs and Xml at 10.0.13; the accepted round-3 correction explicitly records catalog-only pins and no fallback. The obsolete historical task wording does not establish a failure under a supported catalog; a spec-only correction is rejected by this review workflow. |
+| R4-V1 — native KMS identity rejection untested | medium | defer | The verification reviewer confirmed only production Program instantiates AwsKeyAccess; existing key tests use FakeNative, so removing the DecryptResponse.KeyId comparison would remain undetected. This independent hosted Custody provider is explicitly outside local reference composition; add an adapter test with a mismatched response ARN in its owner work. |
 
 
 ## Design Notes
@@ -208,3 +226,23 @@ The direct file-entry smoke passes all six servers and owned shutdown in 115.514
 The final expanded concurrent proof passes in 225.417 seconds: both six-server sessions ready together; all 24 native listeners per run inventoried and disjoint; separate credentials/discovery/storage; distinct persisted values under identical keys; fresh survivor readiness and values after peer shutdown; both final owned cleanups successful. The first cleanup-harness revision exposed by-ID shutdown's missing live-session stdin channel. Successful sessions now retain their original shutdown path, while failed starts are tracked by ID for retry; the final proof covers that correction.
 
 The original running AppHost is unchanged, no labelled proof containers remain, and source hashes stayed stable during the final proof. No gitlinks were staged, independent edits adopted, checks disabled or tools repinned. The initial broader suite's unrelated release-pin and unchanged test-host content-root failures remain explicitly recorded, separate from the passing story gate. See the [complete resumed verification](evidence/2-3/resume-20261023T065107Z/README.md) and [cleanup audit](evidence/2-3/resume-20261023T065107Z/cleanup-audit.json).
+
+### Round-3 review patch verification — 2026-10-23
+
+All fifteen Patch findings are implemented and verified. The normal Composition and Works integration Debug builds pass with zero warnings/errors. The affected ordinary Composition suite passes 143 cases (147 total, four expected live skips); eight focused matrix cases and thirteen Works hosting/harness cases pass without skips. The bounded occupied-port proof passes in 2.410 seconds with both task containers removed and the separately owned listener/marker preserved through candidate cleanup.
+
+No production composition source changed. Works test-harness trust and replica setup now read the composed Sentry credential mount. Model coverage asserts Redis ownership, rendered Sentry identity, disjoint native listener ports, persistence flags, callback-written receipts, credential-child symlink refusal and original Works runtime/control-plane selection. Documentation now identifies shared developer build outputs, failure-retained file-entry workspaces, fixed raw occupied-port evidence, complete proof builds and the current catalog-only cryptography pins. The existing deferred Works preview live qualification remains deferred. Commands, revisions, hashes and full results are in [round-3 patch evidence](evidence/2-3/review-patches-20261023/README.md).
+
+### Final review and current qualification — 2026-10-23
+
+All sixteen accepted Patch findings are implemented. The final Composition, Builds Module test/AppHost and Works integration builds pass without warnings or errors. The final Platform/Timesheets suite passes 198 cases (204 total, six gated live skips); the Builds runtime subset passes 22 cases. The strengthened concurrent proof executes and passes in 258.577 seconds: six healthy projects per run, six observed project HTTP endpoints plus 24 native listeners per run, independent store values, survivor health and complete owned cleanup. Source hashes remained stable and both pre-existing AppHosts were preserved. Four independent owner findings were appended to deferred-work; carried dispositions were retained.
+
+The current file-entry gate is blocked before resource creation. The Builds catalog now selects Aspire 13.6.3, while the unchanged file AppHost directives still select 13.6.1 integrations; NuGet refuses the Kubernetes, Keycloak and Redis downgrades (NU1605). The earlier passing file-entry receipt remains historical and does not qualify this changed dependency state. No pin or readiness check was weakened. The spec remains `in-review`, and sprint story 2.3 remains `in-progress`.
+
+A private Aspire 13.6.3 installation and a private Dapr 1.18.7 tool home resolved the concurrent runner's prerequisite failures without changing global tools or repository pins. The latter reused binaries from the already cached pinned image; its stopped extraction container was removed. The file-entry pin-alignment proposal is saved but unapplied because the frozen intent preserves tool pins. See [current verification and proposed correction](evidence/2-3/review-final-20261023/README.md).
+
+### Completed after approved Aspire alignment — 2026-10-23
+
+The user approved the prepared upgrade to Aspire 13.6.3. The five root file AppHost SDK/integration directives now match the existing catalog selections; all other pins remain unchanged. The direct file-entry smoke passes without skips in 152.089 seconds, asserting readiness for all six servers and successful owned shutdown. Source hashes remained stable and both pre-existing AppHosts were preserved.
+
+The current qualification gate is complete: the ordinary suites, normal builds, occupied-port proof, strengthened concurrent proof and direct file-entry smoke all pass. The spec is `done`; sprint story 2.3 is `review` per the Build workflow. Independent lifecycle/provider findings and Works preview live qualification remain explicitly deferred. See [approved alignment evidence](evidence/2-3/review-final-20261023/approved-aspire-13-6-3/README.md).

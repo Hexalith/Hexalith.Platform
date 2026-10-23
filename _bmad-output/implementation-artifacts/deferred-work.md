@@ -1155,3 +1155,19 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Verify `ComposeRun` claims its secondary ports when the plan carries a claim directory.
   evidence: Story 2.4 resource-claim work. `SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation` calls `AllocateOwnedSecondaryPorts` directly; the signed isolation test's plan sets no `ResourceClaimStateDirectory`. Reverting `PlatformAppModel.cs:138` to `AllocateSecondaryPorts` passes every test. Add a `ComposeRun` assertion that a peer `Acquire` of the composed Sentry gRPC port throws `CompositionResourceClaimConflictException` with `OwnerRunId == plan.RunId`.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Preserve a runner workspace when owned resource removal leaves survivors or cannot verify absence.
+  evidence: R4-B2; CompositionEngine.TearDownAsync currently invokes workspace deletion after Scanner.RemoveAsync regardless of Remaining, risking bind-mounted data for surviving owned containers; lifecycle policy is excluded from Story 2.3.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Bound the reference check payload's local deadline against actual invocation time.
+  evidence: R4-B5; validate_invocation bounds deadlineAt minus startedAt but Context.remaining and SIGALRM use deadlineAt against current time, so a future startedAt enlarges the payload-local budget; retain the independent executor deadline.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Require exactly one enrolled KEK for each tenant in the hosted Custody component profile.
+  evidence: R4-B7; ComponentProfile.Validate permits two different protector ARNs attached to one tenant, while AwsKeyAccess.ReadTenantKekAsync later refuses the uncovered tenant; hosted Custody is excluded from Story 2.3.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Exercise the real AwsKeyAccess adapter's rejection of a mismatched KMS decrypt response ARN.
+  evidence: R4-V1; the verification review found only production wiring references the adapter and key tests use FakeNative, so deleting DecryptResponse.KeyId validation would pass the existing suite; use a native API double in the hosted provider's conformance harness.

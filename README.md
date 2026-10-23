@@ -213,7 +213,12 @@ a competing bind fails startup instead of selecting shared resources.
 Set `HEXALITH_DAPR_HOME` to an installation containing the catalog-pinned CLI at
 `tools/dapr` and native runtime at `.dapr/bin/daprd` (plus placement/scheduler for
 Builds prerequisite checks). Installed binaries and component templates can be
-shared read-only. The file entry also accepts the user's installed native runtime
+shared read-only. Ordinary file-entry and runner `debug`/`run` project launches
+use the checkout's shared developer build outputs (`bin`, `obj` and configured
+`artifacts` paths); concurrent builds can contend there. Runner test suites select
+private project outputs under their run workspace. Build outputs are developer
+inputs to composition; the runtime data and credentials listed above are run-owned.
+The file entry also accepts the user's installed native runtime
 when no home is selected. An unavailable selected runtime fails startup.
 `Dapr:Mtls:CertificateDirectory` selects an external parent for a private child per
 run; checkout paths, including symlinks into the checkout, are rejected.

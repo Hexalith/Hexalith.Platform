@@ -200,6 +200,15 @@ public sealed partial class PlatformAppModelTests : IDisposable
         PlatformAppModel.Compose(builder, Options() with { Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-only", ["tenants/domain/Tenants:AppChannelToken"] = "domain-only" } });
         string privateCredentials = builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials").Source!;
         foreach (string file in new[] { "ca.crt", "issuer.crt", "issuer.key" }) File.WriteAllText(Path.Combine(privateCredentials, file), "fixture-" + file);
+        // The model callbacks check runtime existence but never execute this fixture binary.
+        Directory.CreateDirectory(Path.Combine(certificateDirectory, ".dapr", "bin"));
+        File.WriteAllText(Path.Combine(certificateDirectory, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model-only runtime");
+        foreach (var application in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
+        {
+            var sidecar = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+            var runtime = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+            sidecar.Annotations[sidecar.Annotations.IndexOf(runtime)] = new DaprSidecarOptionsAnnotation(runtime.Options with { RuntimePath = certificateDirectory });
+        }
         await using DistributedApplication app = builder.Build();
         _ = app.Services.GetRequiredService<PlatformCompositionWorkspace>();
         DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
@@ -312,9 +321,12 @@ public sealed partial class PlatformAppModelTests : IDisposable
     {
         string directory = Path.Combine(Path.GetTempPath(), "works-graph-test-" + Guid.NewGuid().ToString("N"));
         string platform = Path.Combine(directory, "platform");
+        string? previousDaprHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+        string selectedDaprHome = Path.Combine(directory, "selected-runtime");
         Directory.CreateDirectory(platform);
         try
         {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", selectedDaprHome);
             File.WriteAllText(Path.Combine(platform, "apphost.cs"), "// fixture");
             File.WriteAllText(Path.Combine(platform, "aspire.config.json"), "{}");
             string[] projects = ["src/Hexalith.Works/Hexalith.Works.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server.Host/Hexalith.EventStore.Admin.Server.Host.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore.Operations/Hexalith.EventStore.Operations.csproj"];
@@ -352,6 +364,15 @@ public sealed partial class PlatformAppModelTests : IDisposable
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-sentry");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-placement-mtls");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-scheduler-mtls");
+            int placementPort = builder.Resources.Single(resource => resource.Name == "dapr-placement-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+            int schedulerPort = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+            foreach (var project in builder.Resources.OfType<ProjectResource>())
+            {
+                var selected = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+                selected.RuntimePath.ShouldBe(selectedDaprHome, project.Name);
+                selected.PlacementHostAddress.ShouldBe("localhost:" + placementPort, project.Name);
+                selected.SchedulerHostAddress.ShouldBe("localhost:" + schedulerPort, project.Name);
+            }
             string home = Path.Combine(directory, "qualified-runtime");
             Directory.CreateDirectory(Path.Combine(home, ".dapr", "bin"));
             File.WriteAllText(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model-only runtime");
@@ -395,7 +416,11 @@ public sealed partial class PlatformAppModelTests : IDisposable
             adapter.ExitCode.ShouldBe(0, adapter.Output + adapter.ErrorOutput);
 
         }
-        finally { Directory.Delete(directory, true); }
+        finally
+        {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", previousDaprHome);
+            Directory.Delete(directory, true);
+        }
     }
 
     [Fact]

@@ -1,0 +1,9 @@
+Shouldly.ShouldAssertException: started.IsReady
+    should be
+True
+    but was
+False
+
+Additional Info:
+    HXR015: Aspire CLI observed '13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8' (exit 0); expected Aspire.AppHost.Sdk/13.6.3.
+   at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync() in /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:line 52

@@ -1,0 +1,55 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : start.ExitCode
+          should be
+      0
+          but was
+      2
+      
+      Additional Info:
+          Starting Aspire AppHost in the background...
+      ❌ Failed to start the AppHost.
+      ℹ️ Recent AppHost startup output:
+      NativeCertificateToolRunner: The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+        Determining projects to restore...
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605: Warning As Error: Detected package downgrade: Aspire.Hosting.Kubernetes from 
+      13.6.3-preview.1.26521.2 to 13.6.1-preview.1.26506.6. Reference the package directly from the project to select a different version. 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Hexalith.Platform.Composition -> Aspire.Hosting.Kubernetes (>= 
+      13.6.3-preview.1.26521.2) 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Aspire.Hosting.Kubernetes (>= 13.6.1-preview.1.26506.6)
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605: Warning As Error: Detected package downgrade: Aspire.Hosting.Keycloak from 
+      13.6.3-preview.1.26521.2 to 13.6.1-preview.1.26506.6. Reference the package directly from the project to select a different version. 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Hexalith.Platform.Composition -> Aspire.Hosting.Keycloak (>= 
+      13.6.3-preview.1.26521.2) 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Aspire.Hosting.Keycloak (>= 13.6.1-preview.1.26506.6)
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605: Warning As Error: Detected package downgrade: Aspire.Hosting.Redis from 13.6.3 
+      to 13.6.1. Reference the package directly from the project to select a different version. 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Hexalith.Platform.Composition -> Aspire.Hosting.Redis (>= 13.6.3) 
+      /home/administrator/projects/hexalith/platform/apphost.cs.csproj : error NU1605:  apphost -> Aspire.Hosting.Redis (>= 13.6.1)
+        Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 351 ms).
+        Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 351 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 
+      351 ms).
+        Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 362 ms).
+        Failed to restore /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 383 ms).
+      ❌ AppHost failed to build.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261023T101921_e4f774b6.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261023T101921437_detach-child_1007d48545474f55903584c7aecf9142.log
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(590,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(611,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 2.849s

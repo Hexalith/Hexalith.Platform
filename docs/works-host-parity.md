@@ -198,9 +198,10 @@ commit, tree and `v<version>` tag receipts from `api.github.com`. It restores an
 published EventStore package missing from the local NuGet cache from nuget.org
 (`https://api.nuget.org/v3/index.json`), the provenance source every restored
 package must record. Without that access the run fails with a recorded failure.
-The control-plane
-ports 50001, 51005 and 51006 must be available for this serialized topology.
-Application and sidecar endpoints are isolated from unrelated running sessions.
+The preview allocates private Sentry, placement and scheduler host ports; the
+harness binds its selected control-plane listeners for each owned topology.
+Occupied bindings fail startup. Application and sidecar endpoints are isolated
+from unrelated running sessions.
 Each live start also gives every sidecar a run-owned SQLite name-resolution
 registry derived from its exact configuration. Default mDNS discovery would
 round-robin app IDs such as `eventstore` with an unrelated local session's

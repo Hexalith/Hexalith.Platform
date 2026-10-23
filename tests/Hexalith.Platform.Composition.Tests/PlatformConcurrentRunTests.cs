@@ -82,7 +82,14 @@ public sealed class PlatformConcurrentRunTests
                 var native = NativeListenerInventory(runs[index].Session.Plan.Workspace,
                     runs[index].Session.Readiness.Resources.Where(resource => resource.Kind == "project").Select(resource => resource.Name));
                 File.WriteAllText(Path.Combine(evidence, "native-listeners-" + index + ".json"), JsonSerializer.Serialize(native));
-                HashSet<int> boundPorts = runs[index].Session.Plan.Ports.ToList().Concat(native.Values.SelectMany(ports => ports.Values)).ToHashSet();
+                CompositionResourceReadiness[] projects = runs[index].Session.Readiness.Resources.Where(resource => resource.Kind == "project").ToArray();
+                projects.ShouldNotBeEmpty();
+                projects.ShouldAllBe(project => project.Endpoints.Any(endpoint => (endpoint.Protocol == "http" || endpoint.Protocol == "https")));
+                CompositionResourceEndpoint[] projectEndpoints = projects.SelectMany(project => project.Endpoints)
+                    .Where(endpoint => (endpoint.Protocol == "http" || endpoint.Protocol == "https")).ToArray();
+                projectEndpoints.ShouldAllBe(endpoint => endpoint.Uri.IsAbsoluteUri && (endpoint.Uri.Scheme == "http" || endpoint.Uri.Scheme == "https") && endpoint.Uri.Port >= 1 && endpoint.Uri.Port <= 65535);
+                HashSet<int> boundPorts = runs[index].Session.Plan.Ports.ToList().Concat(native.Values.SelectMany(ports => ports.Values))
+                    .Concat(projectEndpoints.Select(endpoint => endpoint.Uri.Port)).ToHashSet();
                 foreach (var container in inventory.RootElement.EnumerateArray())
                 foreach (var port in container.GetProperty("Ports").EnumerateObject().Where(port => port.Value.ValueKind == JsonValueKind.Array))
                 foreach (var binding in port.Value.EnumerateArray())
