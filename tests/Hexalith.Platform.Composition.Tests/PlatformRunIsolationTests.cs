@@ -59,6 +59,8 @@ public sealed partial class PlatformAppModelTests
                 foreach (string name in new[] { "dapr-sentry", "dapr-placement-mtls", "dapr-scheduler-mtls", "redis", "memories-vectors", "memories-graph" })
                 {
                     var resource = builder.Resources.Single(resource => resource.Name == name);
+                    if (name is "dapr-sentry" or "dapr-placement-mtls" or "dapr-scheduler-mtls")
+                        resource.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").IsProxied.ShouldBeFalse();
                     foreach (int port in resource.Annotations.OfType<EndpointAnnotation>().Select(endpoint => endpoint.Port).OfType<int>())
                     {
                         listeners.ShouldNotContain(port);

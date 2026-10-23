@@ -1,0 +1,91 @@
+[
+  {
+    "displayName": "dapr-placement-mtls",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:33775"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:40721"
+      }
+    ],
+    "listenerArguments": {}
+  },
+  {
+    "displayName": "dapr-scheduler-mtls",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:46475"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:37001"
+      }
+    ],
+    "listenerArguments": {}
+  },
+  {
+    "displayName": "dapr-sentry",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:33235"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:25395"
+      }
+    ],
+    "listenerArguments": {}
+  },
+  {
+    "displayName": "eventstore-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:13599"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:28328"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:13106"
+      }
+    ],
+    "listenerArguments": {
+      "--dapr-http-port": "28328",
+      "--dapr-grpc-port": "13106",
+      "--dapr-internal-grpc-port": "28311",
+      "--metrics-port": "13599",
+      "--placement-host-address": "localhost:28591",
+      "--scheduler-host-address": "localhost:27633",
+      "--sentry-address": "localhost:25395",
+      "--app-port": "38079"
+    }
+  },
+  {
+    "displayName": "eventstore",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:38079"
+      }
+    ],
+    "listenerArguments": {}
+  }
+]

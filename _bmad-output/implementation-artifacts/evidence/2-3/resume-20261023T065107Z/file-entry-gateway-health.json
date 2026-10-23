@@ -1,0 +1,42 @@
+{
+  "httpStatus": 503,
+  "status": "Unhealthy",
+  "results": {
+    "self": {
+      "status": "Healthy",
+      "description": null
+    },
+    "dapr-sidecar": {
+      "status": "Unhealthy",
+      "description": "Dapr sidecar is not responsive."
+    },
+    "dapr-actor-placement": {
+      "status": "Unhealthy",
+      "description": "DAPR actor host not ready (placement: disconnected, runtimeStatus=RUNNING). Actor invocations (projection queries, command aggregates) will hang until timeout. Check the DAPR placement service."
+    },
+    "dapr-statestore": {
+      "status": "Healthy",
+      "description": "Dapr state store 'statestore' is accessible."
+    },
+    "dapr-pubsub": {
+      "status": "Healthy",
+      "description": "Dapr pub/sub component 'pubsub' is available (type: pubsub.redis)."
+    },
+    "dapr-configstore": {
+      "status": "Healthy",
+      "description": "Dapr config store 'configstore' is accessible (type: configuration.redis)."
+    },
+    "dapr-app-channel-token": {
+      "status": "Healthy",
+      "description": null
+    },
+    "projection-delivery-writer-protocol": {
+      "status": "Unhealthy",
+      "description": "Projection delivery writer protocol v2 is not active."
+    },
+    "projection-delivery-unresolved-conflict": {
+      "status": "Healthy",
+      "description": "Projection delivery has no unresolved durable conflict evidence."
+    }
+  }
+}

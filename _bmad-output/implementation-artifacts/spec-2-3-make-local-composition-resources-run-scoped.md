@@ -2,7 +2,7 @@
 title: '2.3 Make local composition resources run-scoped'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
@@ -58,7 +58,7 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 - [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` — update only this story as implementation progresses. Save verification under `_bmad-output/implementation-artifacts/evidence/2-3/`.
 
 - [x] `references/Hexalith.EventStore/Directory.Packages.props` — preserve identical cryptography versions while avoiding duplicate catalog entries; retain the older-catalog fallback and verify both evaluation cases.
-- [ ] Final required qualification — pass normal builds after the independent Builds lifecycle work stabilizes, diagnose the gateway HXR027/HTTP-503 cutover failure, and rerun the expanded concurrent-native-listener proof plus file-entry smoke.
+- [x] Final required qualification — pass normal builds after the independent Builds lifecycle work stabilizes, diagnose the gateway HXR027/HTTP-503 cutover failure, and rerun the expanded concurrent-native-listener proof plus file-entry smoke.
 
 **Acceptance Criteria:**
 
@@ -100,6 +100,25 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 
 
 
+
+| R2-B1 — late startup disposal | false | reject | The demonstrated file-host startup failure retained its actual cutover exception and health diagnostics in Aspire logs and this attempt's evidence, even after workspace disposal. The claim does not establish loss of the diagnostic output; missing-native-runtime marker retention remains covered by B3. |
+| R2-B2 — failed starts excluded from harness cleanup | medium | patch | StartAsync can return RunId without Session after incomplete teardown; the harness records only successful sessions. Resolved by tracking each returned owned ID and session before readiness assertions; session-based shutdown is preserved for successful starts, with by-ID retries for failed starts. Final live cleanup passed. |
+| R2-B3 — external issuer crash cleanup | medium | defer | carried B5: external issuer children still rely on AppHost disposal; forced-termination retention policy is explicitly excluded and remains recorded for runner lifecycle cleanup. |
+| R2-B4 — direct native version attestation | medium | defer | The new native command selects the same runtime home previously selected by Dapr CLI; direct entry already lacked runtime-version attestation. Current proof uses the verified catalog runtime; record the pre-existing validation gap without changing pins. |
+| R2-B5 — expanded concurrent proof absent | false | reject | Current normal-build proof passed 265.071 seconds with both six-server sessions ready, all native listeners inventoried, independent persisted values, survivor readiness and complete cleanup. The cited prior failure is historical. |
+| R2-B6 — file-entry qualification absent | medium | patch | The current smoke starts actual resources but fails on gateway health: actor placement disconnected and writer protocol inactive. Resolved by direct placement/scheduler gRPC bindings: actual isolated listeners now match native addresses and scheduler advertisements. File-entry smoke passed all six servers and teardown. |
+| R2-B7 — FIFO contract open | medium | defer | TestEnvironmentContractReader opens the path before CanSeek/cancellation. This is independent Builds contract work introduced by its test-environment implementation; preserve it and record the nonblocking-open requirement. |
+| R2-B8 — Custody worker socket prerequisite | medium | defer | Program checks socket absence before the worker branch, so an active serving socket rejects a separately launched worker. Independent hosted Custody implementation is excluded from local composition and remains unchanged. |
+| R2-B9 — Custody exceptional buffer cleanup | medium | defer | BindingService zeroes key-bearing buffers only after successful provider/serialization calls; exceptions bypass cleanup. This independent hosted Custody path is excluded from local reference-run work. |
+| R2-B10 — oversized independent evidence | low | defer | The full baseline snapshot includes about 599 MB across 9,271 sections, dominated by independent EventStore receipts. These immutable own-repository fixtures are excluded from Platform integration evidence and are not rewritten. |
+| R2-E1 — external issuer child after crash | medium | defer | carried B5 and R2-B3: same AppHost-disposal-only ownership path and excluded forced-termination lifecycle policy. |
+| R2-E2 — claim release throws during teardown | medium | defer | ReleaseOwned obtains a filesystem transaction that can throw IOException after two seconds; it runs outside the teardown catches. Independent Builds resource-claim lifecycle work was introduced by db5abf96d730d82fd6c1ccfa20ffd9c2262b9838, outside the frozen local-composition change. |
+| R2-E3 — retention fixture mounts credential parent | low | patch | The fixture discards AddSentry's returned private child and mounts its parent for placement/scheduler. Resolved by passing the returned child and asserting both read-only control-plane credential mounts; ordinary checks passed. |
+| R2-G1 — startup claim ownership test gap | medium | defer | The verification reviewer confirmed startup acquisition can be removed without failing existing readiness/teardown assertions. This tests independent Builds resource-claim lifecycle implementation from db5abf96d730d82fd6c1ccfa20ffd9c2262b9838; defer its targeted startup/peer assertions. |
+| R2-G2 — parent HXR031 translation gap | medium | defer | The verification reviewer confirmed child conflict serialization is covered but parent startup translation and malformed blocking-owner IDs are untested. This is independent Builds resource-claim lifecycle policy, explicitly excluded from this change. |
+| R2-V1 — Timesheets subscriber fixture lacks application | low | patch | The full ordinary suite reproduces a Single lookup failure because its model contains only timesheets-dapr-cli. Resolved by adding the expected application resource and selecting the sidecar explicitly; the affected Timesheets group passed. |
+
+
 ## Design Notes
 
 No unresolved intent gaps or irreversible changes. This spans shared hosting, rendering, tests and documentation, so dispatch is appropriate. Allocation probes currently release sockets before startup: do not describe them as cross-process reservations. Bind conflicts must fail safely; two-run qualification must exercise real allocation and binding.
@@ -129,3 +148,13 @@ The normal Composition Debug build passed with zero warnings/errors after a narr
 The latest Builds normal build now fails 37 analyzer checks in that independent lifecycle work. Latest file-entry smoke was executed and failed before AppHost resources started on those same errors. Latest concurrent proof was executed and failed HXR027, `cutover-timeout;health-HTTP-503`, before first-session readiness. Its final native-listener overlap assertions remain unexecuted. The earlier 403.261-second concurrency pass is retained as historical evidence, not final-tree qualification.
 
 The required current build/live gate is unresolved, so this spec remains `in-review` and sprint story 2.3 remains `in-progress`. Descriptor/attachment/lifecycle policy is explicitly outside the frozen intent; no changes were made to that independent work and no readiness, source-identity or mTLS guard was weakened. Both failed concurrent runs have no labelled containers or recorded processes remaining. See the [verification index](evidence/2-3/README.md), [startup diagnostics](evidence/2-3/live-concurrent-qualified/startup-failure.json), and [cleanup audit](evidence/2-3/final-cleanup-audit.json).
+
+### Resumed final verification gate — 2026-10-23
+
+The required normal builds now pass with zero warnings/errors. The affected Platform/Timesheets group passes 196 cases (202 total, six gated skips); Builds runtime verification passes 22 cases. The cleanup-focused checks pass three cases with the live case gated separately.
+
+The direct file-entry smoke passes all six servers and owned shutdown in 115.514 seconds. Its former gateway HTTP 503 was traced to isolated mode randomizing the proxied placement/scheduler listeners while native arguments and scheduler advertisements retained allocated ports. Direct gRPC bindings align the actual addresses without changing trust, readiness, container target ports or persisted plan values. The occupied-port proof passes in 1.762 seconds.
+
+The final expanded concurrent proof passes in 225.417 seconds: both six-server sessions ready together; all 24 native listeners per run inventoried and disjoint; separate credentials/discovery/storage; distinct persisted values under identical keys; fresh survivor readiness and values after peer shutdown; both final owned cleanups successful. The first cleanup-harness revision exposed by-ID shutdown's missing live-session stdin channel. Successful sessions now retain their original shutdown path, while failed starts are tracked by ID for retry; the final proof covers that correction.
+
+The original running AppHost is unchanged, no labelled proof containers remain, and source hashes stayed stable during the final proof. No gitlinks were staged, independent edits adopted, checks disabled or tools repinned. The initial broader suite's unrelated release-pin and unchanged test-host content-root failures remain explicitly recorded, separate from the passing story gate. See the [complete resumed verification](evidence/2-3/resume-20261023T065107Z/README.md) and [cleanup audit](evidence/2-3/resume-20261023T065107Z/cleanup-audit.json).

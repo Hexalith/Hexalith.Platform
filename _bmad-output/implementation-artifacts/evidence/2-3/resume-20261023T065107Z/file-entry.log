@@ -1,0 +1,32 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : ready.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          eventstore: Waiting for resource 'eventstore' to be healthy...
+      ❌ An unexpected error occurred: The JSON-RPC connection with the remote party was lost before the request could complete.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261023T065655_2dc12d9f.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log
+      ℹ️ No AppHost is currently running for 'apphost.cs'. Use 'aspire run' to start it first.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(575,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(586,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 140.804s

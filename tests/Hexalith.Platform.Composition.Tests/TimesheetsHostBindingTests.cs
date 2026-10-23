@@ -463,9 +463,10 @@ public sealed class TimesheetsHostBindingTests
 
             PlatformServerBinding binding = host.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
             IDistributedApplicationBuilder cliBuilder = Builder();
+            cliBuilder.AddExecutable("timesheets", "dotnet", Root);
             cliBuilder.AddExecutable("timesheets-dapr-cli", "dapr", Root).WithEndpoint(port: 20101, targetPort: 20202, name: "http");
             PlatformDaprEndpointSubscriber.Apply(new DistributedApplicationModel(cliBuilder.Resources), [binding]);
-            Dictionary<string, object> cliEnvironment = await EnvironmentAsync(cliBuilder, cliBuilder.Resources.Single());
+            Dictionary<string, object> cliEnvironment = await EnvironmentAsync(cliBuilder, cliBuilder.Resources.Single(resource => resource.Name == "timesheets-dapr-cli"));
             cliEnvironment["APP_API_TOKEN"].ShouldBe(hostEnvironment["APP_API_TOKEN"]);
         }
         finally { CleanWorkspace(builder); }

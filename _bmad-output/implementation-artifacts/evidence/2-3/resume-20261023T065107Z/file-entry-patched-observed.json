@@ -1,0 +1,269 @@
+[
+  {
+    "displayName": "dapr-placement-mtls",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:41275"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:17691"
+      }
+    ]
+  },
+  {
+    "displayName": "dapr-scheduler-mtls",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:37593"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:18910"
+      }
+    ]
+  },
+  {
+    "displayName": "dapr-sentry",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:36385"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:11286"
+      }
+    ]
+  },
+  {
+    "displayName": "eventstore-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:13569"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:17045"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:28063"
+      }
+    ],
+    "listenerArguments": {
+      "--dapr-http-port": "17045",
+      "--dapr-grpc-port": "28063",
+      "--dapr-internal-grpc-port": "11769",
+      "--metrics-port": "13569",
+      "--placement-host-address": "localhost:17691",
+      "--scheduler-host-address": "localhost:18910",
+      "--sentry-address": "localhost:11286"
+    }
+  },
+  {
+    "displayName": "eventstore",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:42385"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-access-telemetry-clock-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:14287"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:16742"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:21682"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-access-telemetry-clock",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:35467"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-access-telemetry",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:39167"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-access-telemetry-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:26736"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:12353"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:17130"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:11428"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:11654"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:20489"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-graph",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:34269"
+      }
+    ]
+  },
+  {
+    "displayName": "memories-vectors",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:23450"
+      }
+    ]
+  },
+  {
+    "displayName": "memories",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:38129"
+      }
+    ]
+  },
+  {
+    "displayName": "redis",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:23774"
+      }
+    ]
+  },
+  {
+    "displayName": "tenants-api-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:22356"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:27309"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:24344"
+      }
+    ]
+  },
+  {
+    "displayName": "tenants-api",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:39877"
+      }
+    ]
+  },
+  {
+    "displayName": "tenants-dapr-cli",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:11599"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:29597"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:16944"
+      }
+    ]
+  },
+  {
+    "displayName": "tenants",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:37245"
+      }
+    ]
+  }
+]

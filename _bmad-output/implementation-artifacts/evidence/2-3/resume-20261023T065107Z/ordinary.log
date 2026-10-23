@@ -1,0 +1,250 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformTestEnvironmentProvisioningTests.DeclaredSuitesPersistIdenticalKeysWithoutObservingPeerDataAsync [SKIP]
+      Set HEXALITH_PLATFORM_PROVISIONING_LIVE=1 and HEXALITH_DAPR_HOME for two owned real-service suite commands.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [SKIP]
+      Set HEXALITH_PLATFORM_CONCURRENT_LIVE=1 and HEXALITH_DAPR_HOME to qualify two real six-server Builds sessions.
+    Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False) [FAIL]
+      System.IO.DirectoryNotFoundException : /home/administrator/projects/hexalith/platform/Hexalith.Platform.EventStoreHost/
+      Stack Trace:
+           at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+           at Microsoft.Extensions.Hosting.HostBuilder.CreateHostingEnvironment(IConfiguration hostConfiguration)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder.Initialize(HostApplicationBuilderSettings settings, HostBuilderContext& hostBuilderContext, IHostEnvironment& environment, LoggingBuilder& logging, MetricsBuilder& metrics)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder..ctor(HostApplicationBuilderSettings settings)
+           at Microsoft.AspNetCore.Builder.WebApplicationBuilder..ctor(WebApplicationOptions options, Action`1 configureDefaults)
+           at Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(String[] args)
+        src/Hexalith.Platform.EventStoreHost/Program.cs(15,0): at Program.<Main>$(String[] args)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        --- End of stack trace from previous location ---
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.CreateHost()
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.<>c__DisplayClass10_0.<ResolveHostFactory>b__0(String[] args)
+           at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.Build()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(59,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(74,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True) [FAIL]
+      System.IO.DirectoryNotFoundException : /home/administrator/projects/hexalith/platform/Hexalith.Platform.EventStoreHost/
+      Stack Trace:
+           at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+           at Microsoft.Extensions.Hosting.HostBuilder.CreateHostingEnvironment(IConfiguration hostConfiguration)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder.Initialize(HostApplicationBuilderSettings settings, HostBuilderContext& hostBuilderContext, IHostEnvironment& environment, LoggingBuilder& logging, MetricsBuilder& metrics)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder..ctor(HostApplicationBuilderSettings settings)
+           at Microsoft.AspNetCore.Builder.WebApplicationBuilder..ctor(WebApplicationOptions options, Action`1 configureDefaults)
+           at Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(String[] args)
+        src/Hexalith.Platform.EventStoreHost/Program.cs(15,0): at Program.<Main>$(String[] args)
+           at InvokeStub_Program.<Main>$(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.CreateHost()
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.<>c__DisplayClass10_0.<ResolveHostFactory>b__0(String[] args)
+           at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.Build()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(59,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(74,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False) [FAIL]
+      System.IO.DirectoryNotFoundException : /home/administrator/projects/hexalith/platform/Hexalith.Builds.Module.EventStoreHost/
+      Stack Trace:
+           at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+           at Microsoft.Extensions.Hosting.HostBuilder.CreateHostingEnvironment(IConfiguration hostConfiguration)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder.Initialize(HostApplicationBuilderSettings settings, HostBuilderContext& hostBuilderContext, IHostEnvironment& environment, LoggingBuilder& logging, MetricsBuilder& metrics)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder..ctor(HostApplicationBuilderSettings settings)
+           at Microsoft.AspNetCore.Builder.WebApplicationBuilder..ctor(WebApplicationOptions options, Action`1 configureDefaults)
+           at Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(String[] args)
+        references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs(20,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        --- End of stack trace from previous location ---
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.CreateHost()
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.<>c__DisplayClass10_0.<ResolveHostFactory>b__0(String[] args)
+           at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.Build()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(59,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(74,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True) [FAIL]
+      System.IO.DirectoryNotFoundException : /home/administrator/projects/hexalith/platform/Hexalith.Builds.Module.EventStoreHost/
+      Stack Trace:
+           at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+           at Microsoft.Extensions.Hosting.HostBuilder.CreateHostingEnvironment(IConfiguration hostConfiguration)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder.Initialize(HostApplicationBuilderSettings settings, HostBuilderContext& hostBuilderContext, IHostEnvironment& environment, LoggingBuilder& logging, MetricsBuilder& metrics)
+           at Microsoft.Extensions.Hosting.HostApplicationBuilder..ctor(HostApplicationBuilderSettings settings)
+           at Microsoft.AspNetCore.Builder.WebApplicationBuilder..ctor(WebApplicationOptions options, Action`1 configureDefaults)
+           at Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(String[] args)
+        references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs(20,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.CreateHost()
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.<>c__DisplayClass10_0.<ResolveHostFactory>b__0(String[] args)
+           at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.Build()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(59,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs(74,0): at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: "human") [FAIL]
+      Shouldly.ShouldAssertException : versionIdentity[1]
+          should be
+      "90d364d413139da157c6dbd21cb4e5bf1e4bbb60"
+          but was
+      "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |         |    |         |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | 9    0    d    3    6    4    d    4    1    3    1    3    9    d    a    1    5    7    c    6    d    ...  
+      Actual Value   | 4    2    4    8    b    8    c    7    0    c    b    3    5    b    a    7    9    f    d    d    7    ...  
+      Expected Code  | 57   48   100  51   54   52   100  52   49   51   49   51   57   100  97   49   53   55   99   54   100  ...  
+      Actual Code    | 52   50   52   56   98   56   99   55   48   99   98   51   53   98   97   55   57   102  100  100  55   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   
+      Expected Value | ...  6    d    b    d    2    1    c    b    4    e    5    b    f    1    e    4    b    b    b    6    0    
+      Actual Value   | ...  d    7    e    4    d    d    6    3    0    4    9    d    4    c    7    3    2    1    1    a    0    
+      Expected Code  | ...  54   100  98   100  50   49   99   98   52   101  53   98   102  49   101  52   98   98   98   54   48   
+      Actual Code    | ...  100  55   101  52   100  100  54   51   48   52   57   100  52   99   55   51   50   49   49   97   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs(116,0): at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: "json") [FAIL]
+      Shouldly.ShouldAssertException : versionIdentity[1]
+          should be
+      "90d364d413139da157c6dbd21cb4e5bf1e4bbb60"
+          but was
+      "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |         |    |         |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | 9    0    d    3    6    4    d    4    1    3    1    3    9    d    a    1    5    7    c    6    d    ...  
+      Actual Value   | 4    2    4    8    b    8    c    7    0    c    b    3    5    b    a    7    9    f    d    d    7    ...  
+      Expected Code  | 57   48   100  51   54   52   100  52   49   51   49   51   57   100  97   49   53   55   99   54   100  ...  
+      Actual Code    | 52   50   52   56   98   56   99   55   48   99   98   51   53   98   97   55   57   102  100  100  55   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   
+      Expected Value | ...  6    d    b    d    2    1    c    b    4    e    5    b    f    1    e    4    b    b    b    6    0    
+      Actual Value   | ...  d    7    e    4    d    d    6    3    0    4    9    d    4    c    7    3    2    1    1    a    0    
+      Expected Code  | ...  54   100  98   100  50   49   99   98   52   101  53   98   102  49   101  52   98   98   98   54   48   
+      Actual Code    | ...  100  55   101  52   100  100  54   51   48   52   57   100  52   99   55   51   50   49   49   97   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs(116,0): at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync [FAIL]
+      Shouldly.ShouldAssertException : recordedBuilds
+          should be
+      "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0"
+          but was
+      "90d364d413139da157c6dbd21cb4e5bf1e4bbb60"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |         |    |         |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | 4    2    4    8    b    8    c    7    0    c    b    3    5    b    a    7    9    f    d    d    7    ...  
+      Actual Value   | 9    0    d    3    6    4    d    4    1    3    1    3    9    d    a    1    5    7    c    6    d    ...  
+      Expected Code  | 52   50   52   56   98   56   99   55   48   99   98   51   53   98   97   55   57   102  100  100  55   ...  
+      Actual Code    | 57   48   100  51   54   52   100  52   49   51   49   51   57   100  97   49   53   55   99   54   100  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   
+      Expected Value | ...  d    7    e    4    d    d    6    3    0    4    9    d    4    c    7    3    2    1    1    a    0    
+      Actual Value   | ...  6    d    b    d    2    1    c    b    4    e    5    b    f    1    e    4    b    b    b    6    0    
+      Expected Code  | ...  100  55   101  52   100  100  54   51   48   52   57   100  52   99   55   51   50   49   49   97   48   
+      Actual Code    | ...  54   100  98   100  50   49   99   98   52   101  53   98   102  49   101  52   98   98   98   54   48   
+      
+      Additional Info:
+          The Platform gitlink must identify the exact pinned published Builds release.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs(61,0): at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync [FAIL]
+      System.InvalidOperationException : Sequence contains no matching element
+      Stack Trace:
+           at System.Linq.ThrowHelper.ThrowNoMatchException()
+           at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+        src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs(33,0): at Hexalith.Platform.Composition.PlatformDaprEndpointSubscriber.<>c__DisplayClass6_0.<Apply>b__1(PlatformServerBinding server)
+           at System.Linq.Enumerable.IListSelectIterator`2.Fill(IList`1 source, Span`1 results, Func`2 func)
+           at System.Linq.Enumerable.IListSelectIterator`2.ToArray()
+        src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs(34,0): at Hexalith.Platform.Composition.PlatformDaprEndpointSubscriber.Apply(DistributedApplicationModel model, IReadOnlyList`1 servers, String certificateDirectory, String sentryAddress, String workspace)
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(467,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync [SKIP]
+      Set HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1 for the bounded Docker listener-conflict proof.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check redis-redis-ping with status Unhealthy completed after 21.0327ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-vectors-redis-ping with status Unhealthy completed after 20.8743ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-graph-redis-ping with status Unhealthy completed after 17.0516ms with message 'Redis did not answer PING.'
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 256, Errors: 0, Failed: 8, Skipped: 10, Not Run: 0, Time: 92.422s

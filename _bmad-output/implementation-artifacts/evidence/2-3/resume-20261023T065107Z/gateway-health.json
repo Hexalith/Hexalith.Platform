@@ -1,0 +1,33 @@
+{
+  "httpStatus": 200,
+  "status": "Healthy",
+  "results": {
+    "self": {
+      "status": "Healthy"
+    },
+    "dapr-sidecar": {
+      "status": "Healthy"
+    },
+    "dapr-actor-placement": {
+      "status": "Healthy"
+    },
+    "dapr-statestore": {
+      "status": "Healthy"
+    },
+    "dapr-pubsub": {
+      "status": "Healthy"
+    },
+    "dapr-configstore": {
+      "status": "Healthy"
+    },
+    "dapr-app-channel-token": {
+      "status": "Healthy"
+    },
+    "projection-delivery-writer-protocol": {
+      "status": "Healthy"
+    },
+    "projection-delivery-unresolved-conflict": {
+      "status": "Healthy"
+    }
+  }
+}

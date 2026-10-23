@@ -1,0 +1,16 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [FAIL]
+      System.AggregateException : Owned cleanup attempts completed with failures. (Owned cleanup was incomplete for 507c55cd3a7b1292ba958c386c090fb6)
+      ---- System.InvalidOperationException : Owned cleanup was incomplete for 507c55cd3a7b1292ba958c386c090fb6
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs(263,0): at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.CleanupAllAsync(IEnumerable`1 runs, String evidence)
+        tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs(166,0): at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs(251,0): at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.CleanupAllAsync(IEnumerable`1 runs, String evidence)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 255.515s

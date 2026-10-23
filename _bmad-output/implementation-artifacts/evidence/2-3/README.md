@@ -1,6 +1,14 @@
 # Story 2.3 verification
 
-## Current qualification status
+## Current qualification status — 2026-10-23
+
+**The required local composition qualification now passes.** Normal Composition and Builds Module builds pass with zero warnings/errors. The affected Platform/Timesheets group has 196 passing tests; the Builds runtime subset has 22. The direct file-entry smoke passes in 115.514 seconds, the occupied-port proof in 1.762 seconds, and the final expanded two-session proof in 225.417 seconds with complete owned cleanup and 24 disjoint native listeners per run.
+
+The file-entry failure was traced to Aspire isolated mode moving proxied control-plane listeners away from the allocated native addresses. Direct placement/scheduler bindings now preserve those addresses. Test fixtures and failed-start cleanup tracking were corrected. The original running application was preserved, and no gitlinks or tool pins were changed by this work.
+
+See the [resumed verification index](resume-20261023T065107Z/README.md) for commands, revisions/hashes, before/after listener evidence, every live receipt and cleanup audit. Its broader-suite section records the unrelated release-pin and test-host fixture failures from the initial full run; those are not claimed as a passing repository-wide suite. The older gate failures below remain historical evidence.
+
+## Previous qualification status — 2026-10-22
 
 **Story 2.3 remains in review: final live qualification is incomplete.**
 

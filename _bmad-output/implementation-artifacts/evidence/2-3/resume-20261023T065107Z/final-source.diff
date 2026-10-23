@@ -1,0 +1,129 @@
+diff --git a/DaprSelfHostedMtls.cs b/DaprSelfHostedMtls.cs
+index 2fbc2f3..f56c182 100644
+--- a/DaprSelfHostedMtls.cs
++++ b/DaprSelfHostedMtls.cs
+@@ -103,7 +103,8 @@ public static class DaprSelfHostedMtls
+             .WithEndpoint(
+                 port: placementHostPort,
+                 targetPort: PlacementContainerPort,
+-                name: "grpc")
++                name: "grpc",
++                isProxied: false)
+             .WithHttpEndpoint(targetPort: 8080, name: "health")
+             .WithHttpHealthCheck("/healthz", endpointName: "health")
+             .WithLifetime(ContainerLifetime.Session)
+@@ -125,7 +126,8 @@ public static class DaprSelfHostedMtls
+             .WithEndpoint(
+                 port: schedulerHostPort,
+                 targetPort: SchedulerContainerPort,
+-                name: "grpc")
++                name: "grpc",
++                isProxied: false)
+             .WithHttpEndpoint(targetPort: 8080, name: "health")
+             .WithHttpHealthCheck("/healthz", endpointName: "health")
+             .WithLifetime(ContainerLifetime.Session)
+diff --git a/docs/platform-apphost-form.md b/docs/platform-apphost-form.md
+index 502ecba..1929423 100644
+--- a/docs/platform-apphost-form.md
++++ b/docs/platform-apphost-form.md
+@@ -132,8 +132,11 @@ this story's rendering or startup tests.
+ 
+ Local reference runs use run-owned ports, private issuer credentials, SQLite name
+ resolution, secrets, Redis data, scheduler data, and Memories vector/graph data.
+-Sentry/placement/scheduler container target ports and mTLS trust domains are
+-unchanged. Every receiver retains deny-default ACLs and selected component scopes.
++Sentry/placement/scheduler gRPC endpoints bind directly to the allocated host
++ports, including under `aspire start --isolated`. This keeps native sidecar
++addresses and scheduler advertisements aligned with the actual listeners.
++Container target ports and mTLS trust domains remain unchanged. Every receiver
++retains deny-default ACLs and selected component scopes.
+ Allocated host addresses reach both rendered policy and the actual native `daprd`
+ command. Native startup avoids the Dapr CLI's fixed Sentry-address behavior.
+ Selected binaries and source templates are read-only shared inputs. Allocation
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs
+index abfd70a..8046e84 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs
+@@ -24,6 +24,7 @@ public sealed class PlatformConcurrentRunTests
+         string workspace = Path.Combine(Path.GetTempPath(), "platform-two-runs-" + Guid.NewGuid().ToString("N"));
+         string manifest = Path.Combine(root, "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json");
+         List<(CompositionEngine Engine, CompositionRunSession Session)> runs = [];
++        List<(CompositionEngine Engine, string RunId, CompositionRunSession? Session)> owners = [];
+         try
+         {
+             foreach (string owner in new[] { root, Path.Combine(root, "references/Hexalith.Builds"), Path.Combine(root, "references/Hexalith.EventStore"), Path.Combine(root, "references/Hexalith.Tenants"), Path.Combine(root, "references/Hexalith.Memories") })
+@@ -46,6 +47,7 @@ public sealed class PlatformConcurrentRunTests
+                 });
+                 CompositionStartResult started = await engine.StartAsync(manifest, TestContext.Current.CancellationToken);
+                 File.WriteAllText(Path.Combine(evidence, "startup-" + index + ".json"), JsonSerializer.Serialize(started.Result));
++                if (started.RunId is { } ownedRunId) owners.Add((engine, ownedRunId, started.Session));
+                 if (started.Session is { } session) runs.Add((engine, session));
+                 started.IsReady.ShouldBeTrue(string.Join(Environment.NewLine, started.Result.Diagnostics.Select(diagnostic => diagnostic.RuleId + ": " + diagnostic.Message)));
+                 started.Session.ShouldNotBeNull();
+@@ -161,7 +163,9 @@ public sealed class PlatformConcurrentRunTests
+         }
+         finally
+         {
+-            await CleanupAllAsync(runs.Select(run => (run.Session.RunId, (Func<Task<CompositionDownResult>>)(() => run.Engine.DownAsync(run.Session, CancellationToken.None)))), evidence);
++            await CleanupAllAsync(owners.Select(run => (run.RunId, (Func<Task<CompositionDownResult>>)(() => run.Session is { } session
++                ? run.Engine.DownAsync(session, CancellationToken.None)
++                : run.Engine.DownAsync(run.RunId, CancellationToken.None)))), evidence);
+         }
+     }
+ 
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs
+index 50b0161..e1fcb6d 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs
+@@ -329,11 +329,19 @@ public sealed partial class PlatformAppModelTests
+                 string certificates = Path.Combine(directory, run.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                 builder.Configuration["Dapr:Mtls:CertificateDirectory"] = certificates;
+                 CompositionRunPorts ports = CompositionPortAllocator.Allocate(1);
+-                var (sentry, _) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, certificates, ports.PlacementHealth, "1.18.1");
+-                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, Path.Combine(directory, "scheduler-" + run), ports.Placement, ports.Scheduler, "1.18.1");
++                var (sentry, credentials) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, certificates, ports.PlacementHealth, "1.18.1");
++                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, credentials, Path.Combine(directory, "scheduler-" + run), ports.Placement, ports.Scheduler, "1.18.1");
++                foreach (var control in new[] { placement.Resource, scheduler.Resource })
++                {
++                    var mount = control.Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials");
++                    mount.Source.ShouldBe(credentials);
++                    mount.IsReadOnly.ShouldBeTrue();
++                }
+                 foreach (var pair in new[] { (sentry.Resource, ports.PlacementHealth), (placement.Resource, ports.Placement), (scheduler.Resource, ports.Scheduler) })
+                 {
+-                    pair.Item1.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(pair.Item2);
++                    EndpointAnnotation endpoint = pair.Item1.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc");
++                    endpoint.Port.ShouldBe(pair.Item2);
++                    endpoint.IsProxied.ShouldBeFalse();
+                     observed.ShouldNotContain(pair.Item2);
+                     observed.Add(pair.Item2);
+                 }
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs
+index 42af56e..82490fa 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs
+@@ -59,6 +59,8 @@ public sealed partial class PlatformAppModelTests
+                 foreach (string name in new[] { "dapr-sentry", "dapr-placement-mtls", "dapr-scheduler-mtls", "redis", "memories-vectors", "memories-graph" })
+                 {
+                     var resource = builder.Resources.Single(resource => resource.Name == name);
++                    if (name is "dapr-sentry" or "dapr-placement-mtls" or "dapr-scheduler-mtls")
++                        resource.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").IsProxied.ShouldBeFalse();
+                     foreach (int port in resource.Annotations.OfType<EndpointAnnotation>().Select(endpoint => endpoint.Port).OfType<int>())
+                     {
+                         listeners.ShouldNotContain(port);
+diff --git a/tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs b/tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs
+index 917e421..93cfc39 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs
+@@ -463,9 +463,10 @@ public sealed class TimesheetsHostBindingTests
+ 
+             PlatformServerBinding binding = host.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+             IDistributedApplicationBuilder cliBuilder = Builder();
++            cliBuilder.AddExecutable("timesheets", "dotnet", Root);
+             cliBuilder.AddExecutable("timesheets-dapr-cli", "dapr", Root).WithEndpoint(port: 20101, targetPort: 20202, name: "http");
+             PlatformDaprEndpointSubscriber.Apply(new DistributedApplicationModel(cliBuilder.Resources), [binding]);
+-            Dictionary<string, object> cliEnvironment = await EnvironmentAsync(cliBuilder, cliBuilder.Resources.Single());
++            Dictionary<string, object> cliEnvironment = await EnvironmentAsync(cliBuilder, cliBuilder.Resources.Single(resource => resource.Name == "timesheets-dapr-cli"));
+             cliEnvironment["APP_API_TOKEN"].ShouldBe(hostEnvironment["APP_API_TOKEN"]);
+         }
+         finally { CleanWorkspace(builder); }

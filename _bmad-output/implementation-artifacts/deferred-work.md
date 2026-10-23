@@ -1113,3 +1113,35 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
   summary: Define which attempt kinds may issue qualification and production-promoted records, and enforce it in `RecordTransitionValidator.ValidateIssuer`.
   evidence: `ValidateIssuer` (Builds `RecordTransitionValidator.cs:253`) accepts any `AttemptKind`, so a `rotation` or `in-place-restore` attempt can issue either record. The spine's Production profile rule legitimately lets release, environment-layer and shared-infrastructure attempts issue qualification (and renew production-promoted in production), so the allowed-kind matrix needs lifecycle design. Deferred to Story 4.7 or the lifecycle work by the Administrator decision of 2026-10-23 (review decision D2).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Attest the selected native runtime version for direct file AppHost runs.
+  evidence: R2-B4: direct entry historically selects the configured Dapr home without comparing native daprd --version to the catalog; the current local proof uses catalog-verified 1.18.7. Preserve existing source/package pins.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Reject FIFOs before opening test-environment contracts.
+  evidence: R2-B7: independent Builds TestEnvironmentContractReader.Read uses File.OpenRead before CanSeek and cancellation checks, so opening a Unix FIFO can block; use the owner nonblocking-open primitive and add the refusal test.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Allow Custody lifecycle workers while their component serves its existing socket.
+  evidence: R2-B8: independent infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs checks socket absence before branching to --worker, rejecting that invocation whenever --serve owns its UDS. Limit listener prerequisites to serving.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Zero Custody request, decoded key and delivery buffers on exceptional paths.
+  evidence: R2-B9: independent BindingService.Invoke clears arrays only after successful decode/provider/serialization; a finally path must clear every produced key-bearing buffer.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Bound independent EventStore qualification snapshots for future reviews.
+  evidence: R2-B10: the all-baseline review artifact is 599335081 bytes across 9271 diff sections; repeated 20–61 MB EventStore source evidence snapshots dominate it. Preserve immutable existing evidence; consider bounded manifests for future owner receipts.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Record a cleanup outcome if releasing independent Builds resource claims fails.
+  evidence: R2-E2: CompositionEngine.TearDownAsync calls Claims.ReleaseOwned outside its teardown catches; CompositionResourceClaimStore.OpenTransaction throws IOException after a lock remains held for two seconds. Introduced by independent test-environment commit db5abf96d730d82fd6c1ccfa20ffd9c2262b9838.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Verify startup acquires all persisted listener claims and teardown releases them.
+  evidence: R2-G1: the verification-gap reviewer traced ReadyRunRecordsDeadlineAndDebugProcessIdsAsync and confirmed it does not assert ownership of Session.Plan.Ports; manually seeded teardown/store tests cannot detect removal of startup acquisition. Independent Builds claim lifecycle work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Verify parent translation and validation of child HXR031 blocking-owner failures.
+  evidence: R2-G2: the verification-gap reviewer found only direct AppHostRunner serialization coverage; removing HXR031 from CompositionEngine.ReadStartupFailuresAsync passes existing tests. Add public parent startup assertions including malformed BlockingRunId to independent Builds claim lifecycle tests.

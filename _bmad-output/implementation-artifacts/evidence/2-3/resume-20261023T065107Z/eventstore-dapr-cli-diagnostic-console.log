@@ -1,0 +1,121 @@
+Getting logs...
+[eventstore-dapr-cli] [sys] Starting process...: Cmd = /tmp/platform-2-3-tool-inputs-y9ophakd/.dapr/bin/daprd, Args = ["--app-id", "eventstore", "--config", 
+"/tmp/hexalith-platform/b9b3a147574e44f79f4ca46930159357/accesscontrol.eventstore.yaml", "--dapr-internal-grpc-port", "28311", "--placement-host-address", 
+"localhost:28591", "--resources-path", "/tmp/hexalith-platform/b9b3a147574e44f79f4ca46930159357/subscriptions", "--resources-path", 
+"/tmp/hexalith-platform/b9b3a147574e44f79f4ca46930159357", "--scheduler-host-address", "localhost:27633", "--app-port", "38079", "--dapr-grpc-port", "13106", 
+"--dapr-http-port", "28328", "--metrics-port", "13599", "--app-channel-address", "localhost", "--app-protocol", "http", "--enable-mtls", "--sentry-address", 
+"localhost:25395"]
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.194346424+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.451247661+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.451585717+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.852474117+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.852840803+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:34.97772191+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:35.513215095+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:35.513563711+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:35.533467949+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:35.784039152+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:35.784361542+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.133811519+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.167790596+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.168099214+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.481958428+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.482269551+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.851938358+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:36.852284614+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.246054392+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.246410643+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.479337413+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.635285303+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.635575982+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.997098616+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.998283158+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:37.998546734+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:38.324525088+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:38.324821963+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:38.821050385+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:38.821442311+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.102439908+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.102705027+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.283067776+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.58273596+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.583071966+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.956951092+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:39.957303846+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.262234193+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.299791569+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.300080925+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.516239278+02:00" level=warning msg="redis key ratelimit:tenants does not exist, ignore it\n" app_id=eventstore 
+component="configstore (configuration.redis/v1)" instance=DESKTOP-VIOG240 scope=dapr.contrib type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.894381812+02:00" level=error msg="Failed to connect to scheduler host: failed to watch scheduler hosts: rpc 
+error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:27633: connect: connection refused\"" 
+app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.920693194+02:00" level=info msg="Connected to placement localhost:28591" app_id=eventstore 
+instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.manager.connector.static type=log ver=1.18.7
+[eventstore-dapr-cli] time="2026-10-23T09:02:40.921040999+02:00" level=error msg="Failed to connect to placement service: failed to open stream to placement 
+service: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial tcp 127.0.0.1:28591: connect: connection 
+refused\". Retrying..." app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.actors.placement.loops.placement type=log ver=1.18.7

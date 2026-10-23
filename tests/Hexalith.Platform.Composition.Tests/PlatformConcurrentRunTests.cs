@@ -24,6 +24,7 @@ public sealed class PlatformConcurrentRunTests
         string workspace = Path.Combine(Path.GetTempPath(), "platform-two-runs-" + Guid.NewGuid().ToString("N"));
         string manifest = Path.Combine(root, "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json");
         List<(CompositionEngine Engine, CompositionRunSession Session)> runs = [];
+        List<(CompositionEngine Engine, string RunId, CompositionRunSession? Session)> owners = [];
         try
         {
             foreach (string owner in new[] { root, Path.Combine(root, "references/Hexalith.Builds"), Path.Combine(root, "references/Hexalith.EventStore"), Path.Combine(root, "references/Hexalith.Tenants"), Path.Combine(root, "references/Hexalith.Memories") })
@@ -46,6 +47,7 @@ public sealed class PlatformConcurrentRunTests
                 });
                 CompositionStartResult started = await engine.StartAsync(manifest, TestContext.Current.CancellationToken);
                 File.WriteAllText(Path.Combine(evidence, "startup-" + index + ".json"), JsonSerializer.Serialize(started.Result));
+                if (started.RunId is { } ownedRunId) owners.Add((engine, ownedRunId, started.Session));
                 if (started.Session is { } session) runs.Add((engine, session));
                 started.IsReady.ShouldBeTrue(string.Join(Environment.NewLine, started.Result.Diagnostics.Select(diagnostic => diagnostic.RuleId + ": " + diagnostic.Message)));
                 started.Session.ShouldNotBeNull();
@@ -161,7 +163,9 @@ public sealed class PlatformConcurrentRunTests
         }
         finally
         {
-            await CleanupAllAsync(runs.Select(run => (run.Session.RunId, (Func<Task<CompositionDownResult>>)(() => run.Engine.DownAsync(run.Session, CancellationToken.None)))), evidence);
+            await CleanupAllAsync(owners.Select(run => (run.RunId, (Func<Task<CompositionDownResult>>)(() => run.Session is { } session
+                ? run.Engine.DownAsync(session, CancellationToken.None)
+                : run.Engine.DownAsync(run.RunId, CancellationToken.None)))), evidence);
         }
     }
 

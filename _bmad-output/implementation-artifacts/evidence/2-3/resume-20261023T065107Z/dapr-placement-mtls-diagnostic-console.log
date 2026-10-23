@@ -1,0 +1,37 @@
+Getting logs...
+[dapr-placement-mtls] Waiting for resource 'dapr-sentry' to enter the 'Running' state.
+[dapr-placement-mtls] Waiting for resource 'dapr-sentry' to become healthy.
+[dapr-placement-mtls] Waiting for resource ready to execute for 'dapr-sentry'.
+[dapr-placement-mtls] Finished waiting for resource 'dapr-sentry'.
+[dapr-placement-mtls] 41a3e6cf1d67641ab2f31c744760b08ab37b561708360814d45bc86222584e55
+[dapr-placement-mtls] time="2026-10-23T07:01:52.225396442Z" level=info msg="Starting Dapr Placement Service -- version 1.18.7 -- commit 
+b32a815fa2260983e181b95272ea555fe17d3895" instance=41a3e6cf1d67 scope=dapr.placement type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.225493331Z" level=info msg="Log level set to: info" instance=41a3e6cf1d67 scope=dapr.placement type=log 
+ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.225974023Z" level=info msg="Fetching initial identity" instance=41a3e6cf1d67 scope=dapr.runtime.security 
+type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.226013425Z" level=info msg="Trust anchors file '/var/run/dapr/credentials/ca.crt' found" instance=41a3e6cf1d67 
+scope=dapr.runtime.security type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.22615473Z" level=info msg="Watching trust anchors file '/var/run/dapr/credentials/ca.crt' for changes" 
+instance=41a3e6cf1d67 scope=dapr.runtime.security type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.227952409Z" level=info msg="Healthz server is listening on [::]:8080" instance=41a3e6cf1d67 scope=dapr.placement
+type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.227995729Z" level=info msg="metrics server started on :9090/" instance=41a3e6cf1d67 scope=dapr.placement 
+type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231329776Z" level=info msg="Security is initialized successfully" instance=41a3e6cf1d67 
+scope=dapr.runtime.security type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231367299Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-24 07:01:52 
++0000 UTC, renewal at: 2026-10-23 18:54:22 +0000 UTC" instance=41a3e6cf1d67 scope=dapr.runtime.security type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231385809Z" level=info msg="Placement service is starting..." instance=41a3e6cf1d67 scope=dapr.placement.server 
+type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231461085Z" level=info msg="Placement service started on port 50005" instance=41a3e6cf1d67 
+scope=dapr.placement.server type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231558073Z" level=info msg="Node id=dapr-placement-0 is waiting for leadership" instance=41a3e6cf1d67 
+scope=dapr.placement.server type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.231600244Z" level=info msg="Running Placement gRPC server on [::]:50005" instance=41a3e6cf1d67 
+scope=dapr.placement.server type=log ver=1.18.7
+[dapr-placement-mtls] time="2026-10-23T07:01:52.239176823Z" level=info msg="Node id=dapr-placement-0 has acquired leadership" instance=41a3e6cf1d67 
+scope=dapr.placement.server type=log ver=1.18.7
+[dapr-placement-mtls] 
+[dapr-placement-mtls] 41a3e6cf1d67641ab2f31c744760b08ab37b561708360814d45bc86222584e55
+[dapr-placement-mtls] [sys] Added new ContainerNetworkConnection: ContainerName = dapr-placement-mtls-unstrxjk

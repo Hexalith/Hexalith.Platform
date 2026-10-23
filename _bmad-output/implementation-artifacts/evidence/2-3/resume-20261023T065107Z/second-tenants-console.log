@@ -1,0 +1,24 @@
+Getting logs...
+[tenants] Waiting for resource 'redis' to enter the 'Running' state.
+[tenants] Waiting for resource 'dapr-sentry' to enter the 'Running' state.
+[tenants] Waiting for resource 'dapr-placement-mtls' to enter the 'Running' state.
+[tenants] Waiting for resource 'dapr-scheduler-mtls' to enter the 'Running' state.
+[tenants] Waiting for resource 'eventstore' to enter the 'Running' state.
+[tenants] Waiting for resource 'redis' to become healthy.
+[tenants] Waiting for resource ready to execute for 'redis'.
+[tenants] Finished waiting for resource 'redis'.
+[tenants] Waiting for resource 'dapr-sentry' to become healthy.
+[tenants] Waiting for resource ready to execute for 'dapr-sentry'.
+[tenants] Finished waiting for resource 'dapr-sentry'.
+[tenants] Waiting for resource 'dapr-placement-mtls' to become healthy.
+[tenants] Waiting for resource ready to execute for 'dapr-placement-mtls'.
+[tenants] Finished waiting for resource 'dapr-placement-mtls'.
+[tenants] Waiting for resource 'dapr-scheduler-mtls' to become healthy.
+[tenants] Waiting for resource ready to execute for 'dapr-scheduler-mtls'.
+[tenants] Finished waiting for resource 'dapr-scheduler-mtls'.
+[tenants] Waiting for resource 'eventstore' to become healthy.
+[tenants] Waiting for resource ready to execute for 'eventstore'.
+[tenants] Finished waiting for resource 'eventstore'.
+[tenants] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+"/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj", "--configuration", "Debug", 
+"--no-launch-profile"]

@@ -1,0 +1,25 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformTestEnvironmentProvisioningTests.DeclaredSuitesPersistIdenticalKeysWithoutObservingPeerDataAsync [SKIP]
+      Set HEXALITH_PLATFORM_PROVISIONING_LIVE=1 and HEXALITH_DAPR_HOME for two owned real-service suite commands.
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [SKIP]
+      Set HEXALITH_PLATFORM_CONCURRENT_LIVE=1 and HEXALITH_DAPR_HOME to qualify two real six-server Builds sessions.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync [SKIP]
+      Set HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1 for the bounded Docker listener-conflict proof.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check redis-redis-ping with status Unhealthy completed after 20.8896ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-vectors-redis-ping with status Unhealthy completed after 20.8089ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-graph-redis-ping with status Unhealthy completed after 20.7501ms with message 'Redis did not answer PING.'
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 202, Errors: 0, Failed: 0, Skipped: 6, Not Run: 0, Time: 51.722s

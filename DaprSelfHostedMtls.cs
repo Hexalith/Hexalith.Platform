@@ -103,7 +103,8 @@ public static class DaprSelfHostedMtls
             .WithEndpoint(
                 port: placementHostPort,
                 targetPort: PlacementContainerPort,
-                name: "grpc")
+                name: "grpc",
+                isProxied: false)
             .WithHttpEndpoint(targetPort: 8080, name: "health")
             .WithHttpHealthCheck("/healthz", endpointName: "health")
             .WithLifetime(ContainerLifetime.Session)
@@ -125,7 +126,8 @@ public static class DaprSelfHostedMtls
             .WithEndpoint(
                 port: schedulerHostPort,
                 targetPort: SchedulerContainerPort,
-                name: "grpc")
+                name: "grpc",
+                isProxied: false)
             .WithHttpEndpoint(targetPort: 8080, name: "health")
             .WithHttpHealthCheck("/healthz", endpointName: "health")
             .WithLifetime(ContainerLifetime.Session)

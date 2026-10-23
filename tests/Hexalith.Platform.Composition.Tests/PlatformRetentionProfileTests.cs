@@ -329,11 +329,19 @@ public sealed partial class PlatformAppModelTests
                 string certificates = Path.Combine(directory, run.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 builder.Configuration["Dapr:Mtls:CertificateDirectory"] = certificates;
                 CompositionRunPorts ports = CompositionPortAllocator.Allocate(1);
-                var (sentry, _) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, certificates, ports.PlacementHealth, "1.18.1");
-                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, Path.Combine(directory, "scheduler-" + run), ports.Placement, ports.Scheduler, "1.18.1");
+                var (sentry, credentials) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, certificates, ports.PlacementHealth, "1.18.1");
+                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, credentials, Path.Combine(directory, "scheduler-" + run), ports.Placement, ports.Scheduler, "1.18.1");
+                foreach (var control in new[] { placement.Resource, scheduler.Resource })
+                {
+                    var mount = control.Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials");
+                    mount.Source.ShouldBe(credentials);
+                    mount.IsReadOnly.ShouldBeTrue();
+                }
                 foreach (var pair in new[] { (sentry.Resource, ports.PlacementHealth), (placement.Resource, ports.Placement), (scheduler.Resource, ports.Scheduler) })
                 {
-                    pair.Item1.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(pair.Item2);
+                    EndpointAnnotation endpoint = pair.Item1.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc");
+                    endpoint.Port.ShouldBe(pair.Item2);
+                    endpoint.IsProxied.ShouldBeFalse();
                     observed.ShouldNotContain(pair.Item2);
                     observed.Add(pair.Item2);
                 }

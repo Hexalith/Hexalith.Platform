@@ -1,0 +1,1216 @@
+﻿[2026-10-23 06:56:34.558] [INFO] [Cli] Aspire CLI version: 13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8
+[2026-10-23 06:56:34.558] [INFO] [Cli] Aspire CLI build ID: 13.600.126.50606
+[2026-10-23 06:56:34.558] [INFO] [Cli] Aspire CLI path: /home/administrator/.aspire/bin/aspire
+[2026-10-23 06:56:34.558] [INFO] [Cli] Aspire CLI channel: stable
+[2026-10-23 06:56:34.558] [INFO] [Cli] Working directory: /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:34.558] [INFO] [Cli] Log file: /home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log
+[2026-10-23 06:56:34.558] [INFO] [Cli] CLI process ID: 4172958
+[2026-10-23 06:56:34.568] [DBUG] [Host] Hosting starting
+[2026-10-23 06:56:34.573] [DBUG] [Host] Hosting started
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature aspireSkillsRemoteFetchEnabled = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature defaultWatchEnabled = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature experimentalPolyglot:go = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature experimentalPolyglot:java = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature experimentalPolyglot:python = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature experimentalPolyglot:rust = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature nugetSignatureVerificationEnabled = True (default: True)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature polyglotIntegrationFilterEnabled = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature showAllTemplates = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature showDeprecatedPackages = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature stagingChannelEnabled = False (default: False)
+[2026-10-23 06:56:34.573] [DBUG] [Features] Feature updateNotificationsEnabled = True (default: True)
+[2026-10-23 06:56:34.582] [INFO] [Cli] Command: aspire run --non-interactive --apphost /home/administrator/projects/hexalith/platform/apphost.cs --log-file /home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log --isolated
+[2026-10-23 06:56:34.582] [DBUG] [Cli] Parsing arguments: run --non-interactive --apphost /home/administrator/projects/hexalith/platform/apphost.cs --log-file /home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log --isolated
+[2026-10-23 06:56:34.582] [DBUG] [Cli] Executing command: aspire run
+[2026-10-23 06:56:34.582] [DBUG] [AuxiliaryBackchannelMonitor] Current command is not MCP start command. Auxiliary backchannel monitoring disabled.
+[2026-10-23 06:56:34.582] [DBUG] [ProjectLocator] Finding project file in /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:34.582] [DBUG] [AppHostProjectFactory] TryGetProject called for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:34.582] [DBUG] [AppHostProjectFactory] Language detected: csharp for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:34.582] [DBUG] [ProjectLocator] Using C# (.NET) apphost /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:34.583] [DBUG] [ProjectLocator] Config at /home/administrator/projects/hexalith/platform/aspire.config.json already references apphost /home/administrator/projects/hexalith/platform/apphost.cs, skipping creation
+[2026-10-23 06:56:34.583] [DBUG] [AppHostProjectFactory] TryGetProject called for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:34.583] [DBUG] [AppHostProjectFactory] Language detected: csharp for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:34.583] [DBUG] [RunCommand] Detached child: watching launcher process 4172930 until the AppHost is ready.
+[2026-10-23 06:56:34.587] [INFO] [Stdout] 🔑 Copying user secrets for isolated mode...
+[2026-10-23 06:56:34.588] [INFO] [DotNetAppHostProject] Aspire run isolated. Isolated UserSecretsId: 7aa75e86-44ff-489d-9607-9c5a147b57d9
+[2026-10-23 06:56:34.588] [INFO] [Stdout] [yellow]:locked_with_key:[/] Trusting certificates...
+[2026-10-23 06:56:34.697] [INFO] [NativeCertificateToolRunner] For OpenSSL trust to take effect, '$HOME/.aspnet/dev-certs/trust' must be listed in the SSL_CERT_DIR environment variable. For example, `export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs"`. See https://aka.ms/dev-certs-trust for more information.
+[2026-10-23 06:56:35.020] [INFO] [Stdout] ⚠️ Developer certificates may not be fully trusted (trust exit code was: PartiallyFailedToTrustTheCertificate).
+[2026-10-23 06:56:35.031] [WARN] [NativeCertificateToolRunner] The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryDiscoverRelativeLayout: CLI at /home/administrator/.aspire/bin, checking for layout...
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryInferLayout: Checking layout at /home/administrator/.aspire/bin
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/managed/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dashboard/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dcp/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   managed/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   dashboard/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   dcp/: MISSING
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryInferLayout: Layout rejected - missing required directories
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryDiscoverRelativeLayout: Checking parent directory /home/administrator/.aspire...
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryInferLayout: Checking layout at /home/administrator/.aspire
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/managed/: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dashboard/: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dcp/: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/managed/aspire-managed: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dashboard/Aspire.Dashboard: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery]   bundle/dcp/dcp: exists
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] TryInferLayout: New bundle/ layout is valid
+[2026-10-23 06:56:35.034] [DBUG] [LayoutDiscovery] Discovered layout relative to CLI: /home/administrator/.aspire
+[2026-10-23 06:56:35.034] [DBUG] [BundleService] Bundle already extracted and up to date (version: 13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8|192226920|639269290230000000).
+[2026-10-23 06:56:35.037] [INFO] [Stdout] :hammer_and_wrench: Building AppHost... apphost.cs
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] Running dotnet in /home/administrator/projects/hexalith/platform with args: build /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: DcpPublisher__RandomizePorts=true
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: DOTNET_USER_SECRETS_ID=7aa75e86-44ff-489d-9607-9c5a147b57d9
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_LOGLEVEL=Debug
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: SSL_CERT_DIR=/usr/lib/ssl/certs:/home/administrator/.aspnet/dev-certs/trust
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: AspireCliBundlePath=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_TERMINAL_HOST_PATH=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7/managed/aspire-managed
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_TERMINAL_HOST_INVOCATION_ARGS=terminalhost
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_BUNDLE_VERSION_DIR=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_SUPPRESS_CLI_RUN_HOOK=true
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_PID=4172958
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_STARTED=1792738594
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_STARTED_STABLE=176831280
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_LOG_FILE=/home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: MSBUILDTERMINALLOGGER=false
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: DOTNET_NOLOGO=1
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet env: AspireCliPath=/home/administrator/.aspire/bin/aspire
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet(4173029) started in /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:35.037] [DBUG] [ProcessExecutionFactory] dotnet(4173029) waiting for exit
+[2026-10-23 06:56:35.445] [INFO] [Build]   Determining projects to restore...
+[2026-10-23 06:56:36.166] [INFO] [Build]   Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 325 ms).
+[2026-10-23 06:56:36.166] [INFO] [Build]   Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 325 ms).
+[2026-10-23 06:56:36.166] [INFO] [Build]   Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 325 ms).
+[2026-10-23 06:56:36.167] [INFO] [Build]   Restored /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 335 ms).
+[2026-10-23 06:56:36.169] [INFO] [Build]   Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 345 ms).
+[2026-10-23 06:56:36.202] [INFO] [Build] /home/administrator/.nuget/packages/aspire.hosting.apphost/13.6.1/build/Aspire.Hosting.AppHost.targets(157,5): warning ASPIRE010: apphost.cs is configured with AspireUseCliBundle=false. Some Aspire features require the Aspire CLI bundle. Set AspireUseCliBundle=true to enable those features, or suppress ASPIRE010 to continue without the bundle. See https://aka.ms/aspire/diagnostics/aspire010 for more information.
+[2026-10-23 06:56:40.418] [INFO] [Build]   Platform version catalog validated: Hexalith.EventStore.Aspire/3.126.1, CommunityToolkit.Aspire.Hosting.Dapr/13.6.1-beta.935, required range 13.6.1-beta.935 for net10.0.
+[2026-10-23 06:56:49.715] [INFO] [Build]   Hexalith.Builds.Tooling -> /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+[2026-10-23 06:56:49.910] [INFO] [Build]   Hexalith.Platform.Works.Runtime -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+[2026-10-23 06:56:50.234] [INFO] [Build]   Hexalith.Platform.Custody -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/bin/Debug/net10.0/Hexalith.Platform.Custody.dll
+[2026-10-23 06:56:50.630] [INFO] [Build]   Hexalith.Platform.Composition -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.dll
+[2026-10-23 06:56:50.785] [INFO] [Build]   apphost.cs -> /home/administrator/.local/share/dotnet/runfile/apphost-64d78ff15c60f908966809cab1c0259fcef00a20caa68f4e7fe68119e055a4f4/bin/debug/apphost.dll
+[2026-10-23 06:56:50.837] [DBUG] [ProcessExecutionFactory] dotnet(4173029) exited with code: 0
+[2026-10-23 06:56:50.837] [DBUG] [ProcessExecutionFactory] dotnet(4173029) output drained
+[2026-10-23 06:56:50.838] [INFO] [Stdout] Connecting to AppHost...
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] Running dotnet in /home/administrator/projects/hexalith/platform with args: run --no-build --file /home/administrator/projects/hexalith/platform/apphost.cs --
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: DcpPublisher__RandomizePorts=true
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: DOTNET_USER_SECRETS_ID=7aa75e86-44ff-489d-9607-9c5a147b57d9
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_LOGLEVEL=Debug
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: SSL_CERT_DIR=/usr/lib/ssl/certs:/home/administrator/.aspnet/dev-certs/trust
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: AspireCliBundlePath=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_TERMINAL_HOST_PATH=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7/managed/aspire-managed
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_TERMINAL_HOST_INVOCATION_ARGS=terminalhost
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_BUNDLE_VERSION_DIR=/home/administrator/.aspire/versions/13.6.1_3751e615ad660621f2a7aa4c390ef48e08a0eed8-50b61dfaaa4e74c7
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: DCP_WORKLOAD_ID=apphost-7072ce2a7ec23200
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_SUPPRESS_CLI_RUN_HOOK=true
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_BACKCHANNEL_PATH=/home/administrator/.aspire/cli/bch/cvTBYjt9E
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_PID=4172958
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_STARTED=1792738594
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_STARTED_STABLE=176831280
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: ASPIRE_CLI_LOG_FILE=/home/administrator/.aspire/logs/cli_20261023T065634483_detach-child_f0f78ab63ca5448097113a96f7cfd2c9.log
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: MSBUILDTERMINALLOGGER=false
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: DOTNET_NOLOGO=1
+[2026-10-23 06:56:50.838] [DBUG] [ProcessExecutionFactory] dotnet env: AspireCliPath=/home/administrator/.aspire/bin/aspire
+[2026-10-23 06:56:50.839] [DBUG] [ProcessExecutionFactory] dotnet(4177914) started in /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:50.839] [DBUG] [DotNetCliRunner] Starting backchannel connection to AppHost at /home/administrator/.aspire/cli/bch/cvTBYjt9E
+[2026-10-23 06:56:50.839] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=0)
+[2026-10-23 06:56:50.839] [DBUG] [ProcessExecutionFactory] dotnet(4177914) waiting for exit
+[2026-10-23 06:56:51.028] [INFO] [AppHost] Using launch settings from /home/administrator/projects/hexalith/platform/apphost.run.json...
+[2026-10-23 06:56:51.337] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=10)
+[2026-10-23 06:56:51.836] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=20)
+[2026-10-23 06:56:52.338] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=30)
+[2026-10-23 06:56:52.840] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=40)
+[2026-10-23 06:56:53.337] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=50)
+[2026-10-23 06:56:53.838] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=60)
+[2026-10-23 06:56:54.257] [INFO] [AppHost] dbug: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.257] [INFO] [AppHost]       Dashboard endpoint 'https' configured: https://localhost:17223
+[2026-10-23 06:56:54.258] [INFO] [AppHost] dbug: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.258] [INFO] [AppHost]       Dashboard endpoint 'http' configured: http://localhost:15200
+[2026-10-23 06:56:54.258] [INFO] [AppHost] dbug: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.258] [INFO] [AppHost]       Dashboard endpoint 'otlp-grpc' configured: https://localhost:21018
+[2026-10-23 06:56:54.264] [INFO] [AppHost] dbug: Aspire.Hosting.DeveloperCertificateService[0]
+[2026-10-23 06:56:54.264] [INFO] [AppHost]       Developer certificate HTTPS/TLS termination support: True
+[2026-10-23 06:56:54.288] [INFO] [AppHost] dbug: Microsoft.Extensions.Hosting.Internal.Host[1]
+[2026-10-23 06:56:54.288] [INFO] [AppHost]       Hosting starting
+[2026-10-23 06:56:54.312] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.312] [INFO] [AppHost]       Aspire AppHost version: 13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8
+[2026-10-23 06:56:54.312] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.312] [INFO] [AppHost]       Distributed application starting.
+[2026-10-23 06:56:54.312] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:54.312] [INFO] [AppHost]       Application host directory is: /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:54.314] [INFO] [AppHost] dbug: Microsoft.Extensions.Hosting.Internal.Host[1]
+[2026-10-23 06:56:54.314] [INFO] [AppHost]       Hosting starting
+[2026-10-23 06:56:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Cli.CliOrphanDetector[0]
+[2026-10-23 06:56:54.315] [INFO] [AppHost]       Starting orphan detection for CLI process 4172958.
+[2026-10-23 06:56:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Cli.CliOrphanDetector[0]
+[2026-10-23 06:56:54.315] [INFO] [AppHost]       Using stable start time verification. Expected start time: 176831280.
+[2026-10-23 06:56:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Cli.CliOrphanDetector[0]
+[2026-10-23 06:56:54.315] [INFO] [AppHost]       Starting detection loop.
+[2026-10-23 06:56:54.318] [INFO] [AppHost] dbug: Aspire.Hosting.VersionChecking.VersionCheckService[0]
+[2026-10-23 06:56:54.318] [INFO] [AppHost]       Last version check was performed 13:08:50.6240336 ago on 2026-10-22T17:48:03.6932267+00:00, skipping version check.
+[2026-10-23 06:56:54.319] [INFO] [AppHost] dbug: Aspire.Hosting.VersionChecking.VersionCheckService[0]
+[2026-10-23 06:56:54.319] [INFO] [AppHost]       Using stored known latest version 13.6.3.
+[2026-10-23 06:56:54.319] [INFO] [AppHost] dbug: Aspire.Hosting.VersionChecking.VersionCheckService[0]
+[2026-10-23 06:56:54.319] [INFO] [AppHost]       Current version: 13.6.1
+[2026-10-23 06:56:54.319] [INFO] [AppHost]       Newest stable version: 13.6.3
+[2026-10-23 06:56:54.319] [INFO] [AppHost]       Newest prerelease version: (null)
+[2026-10-23 06:56:54.321] [INFO] [AppHost] dbug: Aspire.Hosting.Cli.BackchannelService[0]
+[2026-10-23 06:56:54.321] [INFO] [AppHost]       Listening for backchannel connection on socket path: /home/administrator/.aspire/cli/bch/cvTBYjt9E
+[2026-10-23 06:56:54.321] [INFO] [AppHost] info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+[2026-10-23 06:56:54.321] [INFO] [AppHost]       User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2026-10-23 06:56:54.322] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:56:54.322] [INFO] [AppHost]       Starting auxiliary backchannel service on socket path: /home/administrator/.aspire/cli/bch/cHLOKn7CMgA2bxQj05W.4178141
+[2026-10-23 06:56:54.322] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:56:54.322] [INFO] [AppHost]       Auxiliary backchannel listening on /home/administrator/.aspire/cli/bch/cHLOKn7CMgA2bxQj05W.4178141
+[2026-10-23 06:56:54.324] [INFO] [AppHost] dbug: Aspire.Hosting.VersionChecking.VersionCheckService[0]
+[2026-10-23 06:56:54.324] [INFO] [AppHost]       Current version 13.6.1 is stable and older than newest stable version 13.6.3.
+[2026-10-23 06:56:54.326] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[37]
+[2026-10-23 06:56:54.326] [INFO] [AppHost]       Reading data from file '/home/administrator/.aspnet/DataProtection-Keys/key-07af6626-4d12-41bf-949b-40e4f78c24e8.xml'.
+[2026-10-23 06:56:54.327] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[37]
+[2026-10-23 06:56:54.327] [INFO] [AppHost]       Reading data from file '/home/administrator/.aspnet/DataProtection-Keys/key-0c9d6f7f-6302-4c54-9b01-77ae8825a6d2.xml'.
+[2026-10-23 06:56:54.329] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[18]
+[2026-10-23 06:56:54.329] [INFO] [AppHost]       Found key {07af6626-4d12-41bf-949b-40e4f78c24e8}.
+[2026-10-23 06:56:54.331] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[18]
+[2026-10-23 06:56:54.331] [INFO] [AppHost]       Found key {0c9d6f7f-6302-4c54-9b01-77ae8825a6d2}.
+[2026-10-23 06:56:54.335] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.KeyManagement.DefaultKeyResolver[13]
+[2026-10-23 06:56:54.335] [INFO] [AppHost]       Considering key {07af6626-4d12-41bf-949b-40e4f78c24e8} with expiration date 2026-11-20 08:27:33Z as default key.
+[2026-10-23 06:56:54.336] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.TypeForwardingActivator[0]
+[2026-10-23 06:56:54.336] [INFO] [AppHost]       Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=10.0.0.0, Culture=neutral, PublicKeyToken=[redacted] to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=[redacted]
+[2026-10-23 06:56:54.337] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ManagedAuthenticatedEncryptorFactory[11]
+[2026-10-23 06:56:54.337] [INFO] [AppHost]       Using managed symmetric algorithm 'System.Security.Cryptography.Aes'.
+[2026-10-23 06:56:54.337] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ManagedAuthenticatedEncryptorFactory[10]
+[2026-10-23 06:56:54.337] [INFO] [AppHost]       Using managed keyed hash algorithm 'System.Security.Cryptography.HMACSHA256'.
+[2026-10-23 06:56:54.337] [DBUG] [AppHostCliBackchannel] Connecting to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (autoReconnect=False, retryCount=70)
+[2026-10-23 06:56:54.337] [DBUG] [AppHostCliBackchannel] Connected to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E (retryCount=70)
+[2026-10-23 06:56:54.337] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider[2]
+[2026-10-23 06:56:54.337] [INFO] [AppHost]       Using key {07af6626-4d12-41bf-949b-40e4f78c24e8} as the default key.
+[2026-10-23 06:56:54.337] [INFO] [AppHost] dbug: Microsoft.AspNetCore.DataProtection.Internal.DataProtectionHostedService[65]
+[2026-10-23 06:56:54.337] [INFO] [AppHost]       Key ring with default key {07af6626-4d12-41bf-949b-40e4f78c24e8} was loaded during application startup.
+[2026-10-23 06:56:54.346] [INFO] [AppHost] dbug: Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware[7]
+[2026-10-23 06:56:54.346] [INFO] [AppHost]       Middleware configuration started with options: {AllowedHosts = *, AllowEmptyHosts = True, IncludeFailureMessage = True}
+[2026-10-23 06:56:54.347] [INFO] [AppHost] dbug: Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware[0]
+[2026-10-23 06:56:54.347] [INFO] [AppHost]       Wildcard detected, all requests with hosts will be allowed.
+[2026-10-23 06:56:54.356] [INFO] [AppHost] dbug: Microsoft.AspNetCore.Hosting.Diagnostics[13]
+[2026-10-23 06:56:54.356] [INFO] [AppHost]       Loaded hosting startup assembly apphost
+[2026-10-23 06:56:54.356] [INFO] [AppHost] dbug: Microsoft.Extensions.Hosting.Internal.Host[2]
+[2026-10-23 06:56:54.356] [INFO] [AppHost]       Hosting started
+[2026-10-23 06:56:54.438] [DBUG] [AppHostCliBackchannel] Requesting AppHost log entries
+[2026-10-23 06:56:54.438] [INFO] [Stdout] Starting dashboard...
+[2026-10-23 06:56:54.439] [DBUG] [AppHostCliBackchannel] Requesting dashboard URL
+[2026-10-23 06:56:54.439] [DBUG] [DotNetCliRunner] Connected to AppHost backchannel at /home/administrator/.aspire/cli/bch/cvTBYjt9E
+[2026-10-23 06:56:54.446] [DBUG] [AppHostCliBackchannel] Received AppHost log entries async enumerable
+[2026-10-23 06:56:54.448] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.448] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:56:54.257] [DBUG] [AppHost/DistributedApplication] Dashboard endpoint 'https' configured: https://localhost:17223
+[2026-10-23 06:56:54.258] [DBUG] [AppHost/DistributedApplication] Dashboard endpoint 'http' configured: http://localhost:15200
+[2026-10-23 06:56:54.258] [DBUG] [AppHost/DistributedApplication] Dashboard endpoint 'otlp-grpc' configured: https://localhost:21018
+[2026-10-23 06:56:54.264] [DBUG] [AppHost/DeveloperCertificateService] Developer certificate HTTPS/TLS termination support: True
+[2026-10-23 06:56:54.288] [DBUG] [AppHost/Host] Hosting starting
+[2026-10-23 06:56:54.312] [INFO] [AppHost/DistributedApplication] Aspire AppHost version: 13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8
+[2026-10-23 06:56:54.312] [INFO] [AppHost/DistributedApplication] Distributed application starting.
+[2026-10-23 06:56:54.312] [INFO] [AppHost/DistributedApplication] Application host directory is: /home/administrator/projects/hexalith/platform
+[2026-10-23 06:56:54.314] [DBUG] [AppHost/Host] Hosting starting
+[2026-10-23 06:56:54.314] [DBUG] [AppHost/CliOrphanDetector] Starting orphan detection for CLI process 4172958.
+[2026-10-23 06:56:54.315] [DBUG] [AppHost/CliOrphanDetector] Using stable start time verification. Expected start time: 176831280.
+[2026-10-23 06:56:54.315] [DBUG] [AppHost/CliOrphanDetector] Starting detection loop.
+[2026-10-23 06:56:54.317] [DBUG] [AppHost/VersionCheckService] Last version check was performed 13:08:50.6240336 ago on 2026-10-22T17:48:03.6932267+00:00, skipping version check.
+[2026-10-23 06:56:54.318] [DBUG] [AppHost/VersionCheckService] Using stored known latest version 13.6.3.
+[2026-10-23 06:56:54.319] [DBUG] [AppHost/VersionCheckService] Current version: 13.6.1
+Newest stable version: 13.6.3
+Newest prerelease version: (null)
+[2026-10-23 06:56:54.321] [DBUG] [AppHost/BackchannelService] Listening for backchannel connection on socket path: /home/administrator/.aspire/cli/bch/cvTBYjt9E
+[2026-10-23 06:56:54.321] [INFO] [AppHost/XmlKeyManager] User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2026-10-23 06:56:54.322] [DBUG] [AppHost/AuxiliaryBackchannelService] Starting auxiliary backchannel service on socket path: /home/administrator/.aspire/cli/bch/cHLOKn7CMgA2bxQj05W.4178141
+[2026-10-23 06:56:54.322] [DBUG] [AppHost/AuxiliaryBackchannelService] Auxiliary backchannel listening on /home/administrator/.aspire/cli/bch/cHLOKn7CMgA2bxQj05W.4178141
+[2026-10-23 06:56:54.324] [DBUG] [AppHost/VersionCheckService] Current version 13.6.1 is stable and older than newest stable version 13.6.3.
+[2026-10-23 06:56:54.326] [DBUG] [AppHost/FileSystemXmlRepository] Reading data from file '/home/administrator/.aspnet/DataProtection-Keys/key-07af6626-4d12-41bf-949b-40e4f78c24e8.xml'.
+[2026-10-23 06:56:54.327] [DBUG] [AppHost/FileSystemXmlRepository] Reading data from file '/home/administrator/.aspnet/DataProtection-Keys/key-0c9d6f7f-6302-4c54-9b01-77ae8825a6d2.xml'.
+[2026-10-23 06:56:54.329] [DBUG] [AppHost/XmlKeyManager] Found key {07af6626-4d12-41bf-949b-40e4f78c24e8}.
+[2026-10-23 06:56:54.331] [DBUG] [AppHost/XmlKeyManager] Found key {0c9d6f7f-6302-4c54-9b01-77ae8825a6d2}.
+[2026-10-23 06:56:54.335] [DBUG] [AppHost/DefaultKeyResolver] Considering key {07af6626-4d12-41bf-949b-40e4f78c24e8} with expiration date 2026-11-20 08:27:33Z as default key.
+[2026-10-23 06:56:54.336] [DBUG] [AppHost/TypeForwardingActivator] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=10.0.0.0, Culture=neutral, PublicKeyToken=[redacted] to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=[redacted]
+[2026-10-23 06:56:54.337] [DBUG] [AppHost/ManagedAuthenticatedEncryptorFactory] Using managed symmetric algorithm 'System.Security.Cryptography.Aes'.
+[2026-10-23 06:56:54.337] [DBUG] [AppHost/ManagedAuthenticatedEncryptorFactory] Using managed keyed hash algorithm 'System.Security.Cryptography.HMACSHA256'.
+[2026-10-23 06:56:54.337] [DBUG] [AppHost/KeyRingProvider] Using key {07af6626-4d12-41bf-949b-40e4f78c24e8} as the default key.
+[2026-10-23 06:56:54.337] [DBUG] [AppHost/DataProtectionHostedService] Key ring with default key {07af6626-4d12-41bf-949b-40e4f78c24e8} was loaded during application startup.
+[2026-10-23 06:56:54.346] [DBUG] [AppHost/HostFilteringMiddleware] Middleware configuration started with options: {AllowedHosts = *, AllowEmptyHosts = True, IncludeFailureMessage = True}
+[2026-10-23 06:56:54.348] [DBUG] [AppHost/HostFilteringMiddleware] Wildcard detected, all requests with hosts will be allowed.
+[2026-10-23 06:56:54.355] [DBUG] [AppHost/Diagnostics] Loaded hosting startup assembly apphost
+[2026-10-23 06:56:54.356] [DBUG] [AppHost/Host] Hosting started
+[2026-10-23 06:56:54.447] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:56:54.515] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpHost[0]
+[2026-10-23 06:56:54.515] [INFO] [AppHost]       Prepared DCP TLS certificate files for thumbprint ED6C9438F604A23BCB61B2E08EE0F6E33DD3CA06.
+[2026-10-23 06:56:54.515] [DBUG] [AppHost/DcpHost] Prepared DCP TLS certificate files for thumbprint ED6C9438F604A23BCB61B2E08EE0F6E33DD3CA06.
+[2026-10-23 06:56:54.517] [INFO] [AppHost] dbug: Aspire.Hosting.FileSystemService[0]
+[2026-10-23 06:56:54.517] [INFO] [AppHost]       Allocated temporary directory: /tmp/aspire-dcpEItDiH
+[2026-10-23 06:56:54.517] [INFO] [AppHost] info: Aspire.Hosting.Dcp.DcpHost[0]
+[2026-10-23 06:56:54.517] [INFO] [AppHost]       Starting DCP with arguments: start-apiserver --monitor 4178141 --detach --kubeconfig "/tmp/aspire-dcpEItDiH/kubeconfig" --tls-cert-thumbprint "ED6C9438F604A23BCB61B2E08EE0F6E33DD3CA06" --tls-cert-file "/home/administrator/.aspire/dev-certs/https/B574B914F76DCDEA2E5B39D008818B6436BDD657F3619ECEB1BF89052DCFD148.crt" --tls-key-file "/home/administrator/.aspire/dev-certs/https/B574B914F76DCDEA2E5B39D008818B6436BDD657F3619ECEB1BF89052DCFD148.key"
+[2026-10-23 06:56:54.516] [DBUG] [AppHost/FileSystemService] Allocated temporary directory: /tmp/aspire-dcpEItDiH
+[2026-10-23 06:56:54.517] [INFO] [AppHost/DcpHost] Starting DCP with arguments: start-apiserver --monitor 4178141 --detach --kubeconfig "/tmp/aspire-dcpEItDiH/kubeconfig" --tls-cert-thumbprint "ED6C9438F604A23BCB61B2E08EE0F6E33DD3CA06" --tls-cert-file "/home/administrator/.aspire/dev-certs/https/B574B914F76DCDEA2E5B39D008818B6436BDD657F3619ECEB1BF89052DCFD148.crt" --tls-key-file "/home/administrator/.aspire/dev-certs/https/B574B914F76DCDEA2E5B39D008818B6436BDD657F3619ECEB1BF89052DCFD148.key"
+[2026-10-23 06:56:54.525] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.525] [INFO] [AppHost]       Preparing services. Ports randomized: True
+[2026-10-23 06:56:54.524] [DBUG] [AppHost/DcpExecutor] Preparing services. Ports randomized: True
+[2026-10-23 06:56:54.548] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.548] [INFO] [AppHost]       Resource statestore/statestore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.548] [DBUG] [AppHost/ResourceNotificationService] Resource statestore/statestore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.550] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.550] [INFO] [AppHost]       Resource statestore/statestore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Starting health monitoring for resource 'statestore'.
+[2026-10-23 06:56:54.550] [DBUG] [AppHost/ResourceNotificationService] Resource statestore/statestore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource pubsub/pubsub changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource pubsub/pubsub changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource configstore/configstore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource configstore/configstore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource secretstore/secretstore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource secretstore/secretstore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-store/access-telemetry-store changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Starting health monitoring for resource 'pubsub'.
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Starting health monitoring for resource 'configstore'.
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-store/access-telemetry-store changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Starting health monitoring for resource 'secretstore'.
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Starting health monitoring for resource 'access-telemetry-store'.
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-secrets/access-telemetry-secrets changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-secrets/access-telemetry-secrets changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-config/access-telemetry-config changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource access-telemetry-config/access-telemetry-config changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource llm/llm changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.551] [INFO] [AppHost]       Resource llm/llm changed state: Starting -> Running
+[2026-10-23 06:56:54.550] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'statestore'.
+[2026-10-23 06:56:54.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.552] [INFO] [AppHost]       Starting health monitoring for resource 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.552] [INFO] [AppHost]       Starting health monitoring for resource 'access-telemetry-config'.
+[2026-10-23 06:56:54.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.552] [INFO] [AppHost]       Starting health monitoring for resource 'llm'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource pubsub/pubsub changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'statestore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'secretstore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'llm' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-config' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'configstore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-store' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-secrets' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'pubsub' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'pubsub' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-config' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'llm' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'secretstore' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'configstore' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'statestore' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-store' is ready.
+[2026-10-23 06:56:54.553] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.553] [INFO] [AppHost]       Resource 'access-telemetry-secrets' is ready.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource pubsub/pubsub changed state: Starting -> Running
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.554] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.554] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource configstore/configstore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'access-telemetry-secrets' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'pubsub' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'configstore' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'secretstore' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'statestore' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'llm' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'access-telemetry-config' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       ResourceReadyEvent for 'access-telemetry-store' completed.
+[2026-10-23 06:56:54.555] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:54.555] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource configstore/configstore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource secretstore/secretstore changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource secretstore/secretstore changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-store/access-telemetry-store changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.558] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.558] [INFO] [AppHost]       Watching over DCP ContainerExec resources.
+[2026-10-23 06:56:54.558] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.558] [INFO] [AppHost]       Watching over DCP Endpoint resources.
+[2026-10-23 06:56:54.558] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.558] [INFO] [AppHost]       Watching over DCP Executable resources.
+[2026-10-23 06:56:54.558] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.558] [INFO] [AppHost]       Watching over DCP Container resources.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'pubsub'.
+[2026-10-23 06:56:54.558] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:54.558] [INFO] [AppHost]       Watching over DCP Service resources.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'configstore'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-store/access-telemetry-store changed state: Starting -> Running
+[2026-10-23 06:56:54.560] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.monitor[0]
+[2026-10-23 06:56:54.560] [INFO] [AppHost]       Started monitoring process	{"PID": 4178141}
+[2026-10-23 06:56:54.561] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:56:54.561] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'secretstore'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'access-telemetry-store'.
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-secrets/access-telemetry-secrets changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.597] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.monitor[0]
+[2026-10-23 06:56:54.597] [INFO] [AppHost]       Started monitoring process	{"PID": 4178141}
+[2026-10-23 06:56:54.597] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.api-server[0]
+[2026-10-23 06:56:54.597] [INFO] [AppHost]       Starting API server...
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-secrets/access-telemetry-secrets changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-config/access-telemetry-config changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource access-telemetry-config/access-telemetry-config changed state: Starting -> Running
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource llm/llm changed state: NotStarted -> Starting
+[2026-10-23 06:56:54.551] [DBUG] [AppHost/ResourceNotificationService] Resource llm/llm changed state: Starting -> Running
+[2026-10-23 06:56:54.552] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.600] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelRpcTarget[0]
+[2026-10-23 06:56:54.600] [INFO] [AppHost]       GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:56:54.600] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:54.600] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:56:54.552] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'access-telemetry-config'.
+[2026-10-23 06:56:54.552] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'llm'.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'secretstore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'llm' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-config' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'configstore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'statestore' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-store' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-secrets' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'pubsub' has no health checks to monitor.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'pubsub' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'llm' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-config' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'secretstore' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'configstore' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'statestore' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-store' is ready.
+[2026-10-23 06:56:54.553] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'access-telemetry-secrets' is ready.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.554] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'access-telemetry-secrets' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'pubsub' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'configstore' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'access-telemetry-secrets'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'pubsub'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'configstore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'secretstore' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'secretstore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'statestore' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'statestore'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'llm' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'llm'.
+[2026-10-23 06:56:54.625] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.api-server[0]
+[2026-10-23 06:56:54.625] [INFO] [AppHost]       API server started	{"Address": "127.0.0.1", "Port": 43247}
+[2026-10-23 06:56:54.625] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.dcp-host[0]
+[2026-10-23 06:56:54.625] [INFO] [AppHost]       Starting DCP controller host
+[2026-10-23 06:56:54.625] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.start-apiserver.dcp-host[0]
+[2026-10-23 06:56:54.625] [INFO] [AppHost]       Started all services	{"count": 1}
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'access-telemetry-config' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'access-telemetry-config'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'access-telemetry-store' completed.
+[2026-10-23 06:56:54.555] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'access-telemetry-store'.
+[2026-10-23 06:56:54.558] [DBUG] [AppHost/DcpExecutor] Watching over DCP ContainerExec resources.
+[2026-10-23 06:56:54.558] [DBUG] [AppHost/DcpExecutor] Watching over DCP Endpoint resources.
+[2026-10-23 06:56:54.558] [DBUG] [AppHost/DcpExecutor] Watching over DCP Container resources.
+[2026-10-23 06:56:54.558] [DBUG] [AppHost/DcpExecutor] Watching over DCP Executable resources.
+[2026-10-23 06:56:54.558] [DBUG] [AppHost/DcpExecutor] Watching over DCP Service resources.
+[2026-10-23 06:56:54.560] [DBUG] [AppHost/monitor] Started monitoring process	{"PID": 4178141}
+[2026-10-23 06:56:54.561] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:56:54.597] [DBUG] [AppHost/monitor] Started monitoring process	{"PID": 4178141}
+[2026-10-23 06:56:54.597] [DBUG] [AppHost/api-server] Starting API server...
+[2026-10-23 06:56:54.600] [DBUG] [AppHost/AuxiliaryBackchannelRpcTarget] GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:56:54.600] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:56:54.625] [DBUG] [AppHost/api-server] API server started	{"Address": "127.0.0.1", "Port": 43247}
+[2026-10-23 06:56:54.625] [DBUG] [AppHost/dcp-host] Starting DCP controller host
+[2026-10-23 06:56:54.625] [DBUG] [AppHost/dcp-host] Started all services	{"count": 1}
+[2026-10-23 06:56:54.658] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp[0]
+[2026-10-23 06:56:54.658] [INFO] [AppHost]       Started monitoring process	{"PID": 4179757}
+[2026-10-23 06:56:54.657] [DBUG] [AppHost/dcp] Started monitoring process	{"PID": 4179757}
+[2026-10-23 06:56:54.771] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.IdeExecutableRunner[0]
+[2026-10-23 06:56:54.772] [INFO] [AppHost]       Executables cannot be started via IDE: missing required environment variable 'DEBUG_SESSION_PORT'
+[2026-10-23 06:56:54.771] [DBUG] [AppHost/IdeExecutableRunner] Executables cannot be started via IDE: missing required environment variable 'DEBUG_SESSION_PORT'
+[2026-10-23 06:56:54.773] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp[0]
+[2026-10-23 06:56:54.773] [INFO] [AppHost]       Starting controller manager
+[2026-10-23 06:56:54.773] [DBUG] [AppHost/dcp] Starting controller manager
+[2026-10-23 06:56:54.829] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.KubernetesService[0]
+[2026-10-23 06:56:54.829] [INFO] [AppHost]       Successfully read Kubernetes configuration from '/tmp/aspire-dcpEItDiH/kubeconfig' after 242 milliseconds.
+[2026-10-23 06:56:54.829] [DBUG] [AppHost/KubernetesService] Successfully read Kubernetes configuration from '/tmp/aspire-dcpEItDiH/kubeconfig' after 242 milliseconds.
+[2026-10-23 06:56:55.116] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.116] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4179985, "PID": 4179785}
+[2026-10-23 06:56:55.116] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.116] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4179985, "PID": 4179985}
+[2026-10-23 06:56:55.115] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4179985, "PID": 4179785}
+[2026-10-23 06:56:55.115] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4179985, "PID": 4179985}
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource tenants-api/tenants-api-ttsnfxmj changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource tenants/tenants-yhwrgnue changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories/memories-dmgebrnd changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-access-telemetry/memories-access-telemetry-nnjyybkn changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource tenants-api-dapr-cli/tenants-api-dapr-cli-fummanma changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-access-telemetry-dapr-cli/memories-access-telemetry-dapr-cli-yjjkxjnf changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource aspire-dashboard/aspire-dashboard-pukxkwhm changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-access-telemetry-clock/memories-access-telemetry-clock-mnccacer changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource eventstore/eventstore-vtudtcpd changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-dapr-cli/memories-dapr-cli-zqwmggdt changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting
+[2026-10-23 06:56:55.125] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.125] [INFO] [AppHost]       Resource redis/redis-bwrrcynf changed state: Starting
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'memories-access-telemetry-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'tenants-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'eventstore-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'tenants-api-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'dapr-scheduler-mtls' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'tenants-api' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'memories-access-telemetry-clock-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'tenants' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'dapr-placement-mtls' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'memories-access-telemetry' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'memories-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.126] [INFO] [AppHost]       Waiting for resource 'memories-access-telemetry-clock' to match predicate.
+[2026-10-23 06:56:55.127] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.127] [INFO] [AppHost]       Waiting for resource 'memories' to match predicate.
+[2026-10-23 06:56:55.127] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.127] [INFO] [AppHost]       Waiting for resource 'eventstore' to match predicate.
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource tenants-api-dapr-cli/tenants-api-dapr-cli-fummanma changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories-access-telemetry-dapr-cli/memories-access-telemetry-dapr-cli-yjjkxjnf changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories-access-telemetry-clock/memories-access-telemetry-clock-mnccacer changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource eventstore/eventstore-vtudtcpd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource tenants/tenants-yhwrgnue changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories/memories-dmgebrnd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource tenants-api/tenants-api-ttsnfxmj changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories-dapr-cli/memories-dapr-cli-zqwmggdt changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.130] [INFO] [AppHost]       Resource memories-access-telemetry/memories-access-telemetry-nnjyybkn changed state: Starting -> Waiting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-api/tenants-api-ttsnfxmj changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource tenants/tenants-yhwrgnue changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories/memories-dmgebrnd changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry/memories-access-telemetry-nnjyybkn changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-api-dapr-cli/tenants-api-dapr-cli-fummanma changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-dapr-cli/memories-access-telemetry-dapr-cli-yjjkxjnf changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource aspire-dashboard/aspire-dashboard-pukxkwhm changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-clock/memories-access-telemetry-clock-mnccacer changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore/eventstore-vtudtcpd changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-dapr-cli/memories-dapr-cli-zqwmggdt changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting
+[2026-10-23 06:56:55.125] [DBUG] [AppHost/ResourceNotificationService] Resource redis/redis-bwrrcynf changed state: Starting
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'tenants-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories-access-telemetry-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'eventstore-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'tenants-api-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'dapr-scheduler-mtls' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories-access-telemetry-clock-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'tenants-api' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'tenants' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'dapr-placement-mtls' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories-access-telemetry' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories-dapr-cli' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories-access-telemetry-clock' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'memories' to match predicate.
+[2026-10-23 06:56:55.126] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'eventstore' to match predicate.
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-api-dapr-cli/tenants-api-dapr-cli-fummanma changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-dapr-cli/memories-access-telemetry-dapr-cli-yjjkxjnf changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-clock/memories-access-telemetry-clock-mnccacer changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore/eventstore-vtudtcpd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource tenants/tenants-yhwrgnue changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories/memories-dmgebrnd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-api/tenants-api-ttsnfxmj changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories-dapr-cli/memories-dapr-cli-zqwmggdt changed state: Starting -> Waiting
+[2026-10-23 06:56:55.130] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry/memories-access-telemetry-nnjyybkn changed state: Starting -> Waiting
+[2026-10-23 06:56:55.226] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ExecutableReconciler[0]
+[2026-10-23 06:56:55.226] [INFO] [AppHost]       Starting process...	{"Executable": "/aspire-dashboard-pukxkwhm", "Reconciliation": 2, "Cmd": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.1/tools/Aspire.Dashboard", "Args": []}
+[2026-10-23 06:56:55.226] [DBUG] [AppHost/ExecutableReconciler] Starting process...	{"Executable": "/aspire-dashboard-pukxkwhm", "Reconciliation": 2, "Cmd": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.1/tools/Aspire.Dashboard", "Args": []}
+[2026-10-23 06:56:55.234] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:55.234] [INFO] [AppHost]       Service aspire-dashboard-otlp-grpc is now in state Ready	{"Service": "/aspire-dashboard-otlp-grpc", "Reconciliation": 109}
+[2026-10-23 06:56:55.234] [DBUG] [AppHost/ServiceReconciler] Service aspire-dashboard-otlp-grpc is now in state Ready	{"Service": "/aspire-dashboard-otlp-grpc", "Reconciliation": 109}
+[2026-10-23 06:56:55.236] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:55.236] [INFO] [AppHost]       Service aspire-dashboard-http is now in state Ready	{"Service": "/aspire-dashboard-http", "Reconciliation": 110}
+[2026-10-23 06:56:55.235] [DBUG] [AppHost/ServiceReconciler] Service aspire-dashboard-http is now in state Ready	{"Service": "/aspire-dashboard-http", "Reconciliation": 110}
+[2026-10-23 06:56:55.237] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.237] [INFO] [AppHost]       Resource aspire-dashboard/aspire-dashboard-pukxkwhm changed state: Running
+[2026-10-23 06:56:55.237] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.237] [INFO] [AppHost]       Starting health monitoring for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.237] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.237] [INFO] [AppHost]       Resource 'aspire-dashboard' has no health checks to monitor.
+[2026-10-23 06:56:55.237] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.237] [INFO] [AppHost]       Resource 'aspire-dashboard' is ready.
+[2026-10-23 06:56:55.237] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.237] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.238] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:55.238] [INFO] [AppHost]       Service aspire-dashboard-https is now in state Ready	{"Service": "/aspire-dashboard-https", "Reconciliation": 111}
+[2026-10-23 06:56:55.236] [DBUG] [AppHost/ResourceNotificationService] Resource aspire-dashboard/aspire-dashboard-pukxkwhm changed state: Running
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Starting log streaming for aspire-dashboard-pukxkwhm.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Now listening on: https://localhost:44403
+[2026-10-23 06:56:55.241] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Login to the dashboard at https://localhost:44403/login?t=[redacted]
+[2026-10-23 06:56:55.241] [INFO] [AppHost] info: Aspire.Hosting.DistributedApplication[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Aspire Dashboard
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       
+[2026-10-23 06:56:55.241] [INFO] [AppHost]             - Dashboard:  https://localhost:44403
+[2026-10-23 06:56:55.241] [INFO] [AppHost]             - Login URL:  https://localhost:44403/login?t=[redacted]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]             - OTLP/gRPC:  https://localhost:39921
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       ResourceReadyEvent for 'aspire-dashboard' completed.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.236] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.241] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.243] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.243] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.236] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'aspire-dashboard' has no health checks to monitor.
+[2026-10-23 06:56:55.236] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'aspire-dashboard' is ready.
+[2026-10-23 06:56:55.236] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.253] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.253] [INFO] [AppHost]       Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting
+[2026-10-23 06:56:55.253] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.253] [INFO] [AppHost]       Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting
+[2026-10-23 06:56:55.253] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.253] [INFO] [AppHost]       Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting
+[2026-10-23 06:56:55.253] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:55.253] [INFO] [AppHost]       Resource redis/redis-bwrrcynf changed state: Starting
+[2026-10-23 06:56:55.237] [DBUG] [AppHost/ServiceReconciler] Service aspire-dashboard-https is now in state Ready	{"Service": "/aspire-dashboard-https", "Reconciliation": 111}
+[2026-10-23 06:56:55.238] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:56:55.238] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:56:55.239] [DBUG] [AppHost/DcpExecutor] Starting log streaming for aspire-dashboard-pukxkwhm.
+[2026-10-23 06:56:55.240] [INFO] [AppHost/DistributedApplication] Now listening on: https://localhost:44403
+[2026-10-23 06:56:55.241] [INFO] [AppHost/DistributedApplication] Login to the dashboard at https://localhost:44403/login?t=[redacted]
+[2026-10-23 06:56:55.241] [INFO] [AppHost/DistributedApplication] Aspire Dashboard
+
+      - Dashboard:  https://localhost:44403
+      - Login URL:  https://localhost:44403/login?t=[redacted]
+      - OTLP/gRPC:  https://localhost:39921
+
+[2026-10-23 06:56:55.241] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'aspire-dashboard' completed.
+[2026-10-23 06:56:55.241] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'aspire-dashboard'.
+[2026-10-23 06:56:55.241] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.242] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:56:55.252] [DBUG] [AppHost/ResourceNotificationService] Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting
+[2026-10-23 06:56:55.252] [DBUG] [AppHost/ResourceNotificationService] Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting
+[2026-10-23 06:56:55.252] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting
+[2026-10-23 06:56:55.252] [DBUG] [AppHost/ResourceNotificationService] Resource redis/redis-bwrrcynf changed state: Starting
+[2026-10-23 06:56:55.265] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.265] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180018, "PID": 4179785}
+[2026-10-23 06:56:55.265] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.265] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180018, "PID": 4180018}
+[2026-10-23 06:56:55.264] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180018, "PID": 4179785}
+[2026-10-23 06:56:55.264] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180018, "PID": 4180018}
+[2026-10-23 06:56:55.273] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.273] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180020, "PID": 4179785}
+[2026-10-23 06:56:55.273] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:55.273] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180020, "PID": 4180020}
+[2026-10-23 06:56:55.273] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180020, "PID": 4179785}
+[2026-10-23 06:56:55.273] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4180020, "PID": 4180020}
+[2026-10-23 06:56:55.461] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:56:55.461] [INFO] [AppHost]       Client disconnected from auxiliary backchannel
+[2026-10-23 06:56:55.461] [DBUG] [AppHost/AuxiliaryBackchannelService] Client disconnected from auxiliary backchannel
+[2026-10-23 06:56:55.495] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:55.495] [INFO] [AppHost]       Network created	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 2, "NetworkName": "aspire-session-network-ywkajpru-apphost"}
+[2026-10-23 06:56:55.495] [DBUG] [AppHost/NetworkReconciler] Network created	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 2, "NetworkName": "aspire-session-network-ywkajpru-apphost"}
+[2026-10-23 06:56:55.517] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:56:55.517] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:56:55.517] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:56:56.744] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:56.744] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "f3b83b3acbcd1bbccb0fa4a6ffb25e25bffea93d6ae12b9f8d9d2fd162c751df", "PID": 4179785}
+[2026-10-23 06:56:56.744] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "f3b83b3acbcd1bbccb0fa4a6ffb25e25bffea93d6ae12b9f8d9d2fd162c751df", "PID": 4179785}
+[2026-10-23 06:56:56.764] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:56.764] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "0cbdde05b704362dd481282dd21936fdd1a28796060a3f65782892e0b7dc3c37", "PID": 4179785}
+[2026-10-23 06:56:56.764] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "0cbdde05b704362dd481282dd21936fdd1a28796060a3f65782892e0b7dc3c37", "PID": 4179785}
+[2026-10-23 06:56:56.796] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:56.796] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "7deb1e9d3a5262f88295547a5e726d9932daf5f13929aee6e8b1c2220a9c7a96", "PID": 4179785}
+[2026-10-23 06:56:56.796] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:56.796] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "8a2b5afb0ae75d72420993da8b88ac76cc94e1ae41a5ead892c5c07ed695be15", "PID": 4179785}
+[2026-10-23 06:56:56.796] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "7deb1e9d3a5262f88295547a5e726d9932daf5f13929aee6e8b1c2220a9c7a96", "PID": 4179785}
+[2026-10-23 06:56:56.796] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "8a2b5afb0ae75d72420993da8b88ac76cc94e1ae41a5ead892c5c07ed695be15", "PID": 4179785}
+[2026-10-23 06:56:57.245] [DBUG] [AppHostCliBackchannel] Notifying AppHost startup readiness
+[2026-10-23 06:56:57.770] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:57.770] [INFO] [AppHost]       Service memories-graph is now in state Ready	{"Service": "/memories-graph", "Reconciliation": 115}
+[2026-10-23 06:56:57.770] [DBUG] [AppHost/ServiceReconciler] Service memories-graph is now in state Ready	{"Service": "/memories-graph", "Reconciliation": 115}
+[2026-10-23 06:56:57.772] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:57.772] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/memories-graph-xqxgcpyp", "Reconciliation": 25, "ContainerName": "memories-graph-xqxgcpyp", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.772] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/memories-graph-xqxgcpyp", "Reconciliation": 25, "ContainerName": "memories-graph-xqxgcpyp", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.776] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.776] [INFO] [AppHost]       Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting -> Running
+[2026-10-23 06:56:57.776] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.776] [INFO] [AppHost]       Starting health monitoring for resource 'memories-graph'.
+[2026-10-23 06:56:57.776] [DBUG] [AppHost/ResourceNotificationService] Resource memories-graph/memories-graph-xqxgcpyp changed state: Starting -> Running
+[2026-10-23 06:56:57.778] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.778] [INFO] [AppHost]       Resource 'memories-graph' health checks to monitor: memories-graph-redis-ping
+[2026-10-23 06:56:57.776] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'memories-graph'.
+[2026-10-23 06:56:57.777] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'memories-graph' health checks to monitor: memories-graph-redis-ping
+[2026-10-23 06:56:57.785] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.785] [INFO] [AppHost]       Resource 'memories-graph' is ready.
+[2026-10-23 06:56:57.785] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.785] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.785] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.785] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.785] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.785] [INFO] [AppHost]       ResourceReadyEvent for 'memories-graph' completed.
+[2026-10-23 06:56:57.785] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.785] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.785] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'memories-graph' is ready.
+[2026-10-23 06:56:57.785] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.785] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.785] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'memories-graph' completed.
+[2026-10-23 06:56:57.785] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'memories-graph'.
+[2026-10-23 06:56:57.824] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:57.824] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 6, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 1, "Found": 1}
+[2026-10-23 06:56:57.824] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 6, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 1, "Found": 1}
+[2026-10-23 06:56:57.825] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:57.825] [INFO] [AppHost]       Service redis is now in state Ready	{"Service": "/redis", "Reconciliation": 117}
+[2026-10-23 06:56:57.825] [DBUG] [AppHost/ServiceReconciler] Service redis is now in state Ready	{"Service": "/redis", "Reconciliation": 117}
+[2026-10-23 06:56:57.826] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:57.826] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/redis-bwrrcynf", "Reconciliation": 27, "ContainerName": "redis-bwrrcynf", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.826] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/redis-bwrrcynf", "Reconciliation": 27, "ContainerName": "redis-bwrrcynf", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.829] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.829] [INFO] [AppHost]       Resource redis/redis-bwrrcynf changed state: Starting -> Running
+[2026-10-23 06:56:57.829] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.829] [INFO] [AppHost]       Starting health monitoring for resource 'redis'.
+[2026-10-23 06:56:57.829] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.829] [INFO] [AppHost]       Resource 'redis' health checks to monitor: redis-redis-ping
+[2026-10-23 06:56:57.829] [DBUG] [AppHost/ResourceNotificationService] Resource redis/redis-bwrrcynf changed state: Starting -> Running
+[2026-10-23 06:56:57.829] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'redis'.
+[2026-10-23 06:56:57.831] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.831] [INFO] [AppHost]       Resource 'redis' is ready.
+[2026-10-23 06:56:57.831] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.831] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.831] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.831] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.831] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.831] [INFO] [AppHost]       ResourceReadyEvent for 'redis' completed.
+[2026-10-23 06:56:57.831] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.831] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.829] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'redis' health checks to monitor: redis-redis-ping
+[2026-10-23 06:56:57.830] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'redis' is ready.
+[2026-10-23 06:56:57.831] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.831] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.831] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'redis' completed.
+[2026-10-23 06:56:57.831] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'redis'.
+[2026-10-23 06:56:57.877] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:57.877] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 7, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 2, "Found": 2}
+[2026-10-23 06:56:57.877] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 7, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 2, "Found": 2}
+[2026-10-23 06:56:57.922] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:57.922] [INFO] [AppHost]       Service dapr-sentry-health is now in state Ready	{"Service": "/dapr-sentry-health", "Reconciliation": 119}
+[2026-10-23 06:56:57.922] [DBUG] [AppHost/ServiceReconciler] Service dapr-sentry-health is now in state Ready	{"Service": "/dapr-sentry-health", "Reconciliation": 119}
+[2026-10-23 06:56:57.923] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:57.923] [INFO] [AppHost]       Service dapr-sentry-grpc is now in state Ready	{"Service": "/dapr-sentry-grpc", "Reconciliation": 120}
+[2026-10-23 06:56:57.923] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:57.924] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/dapr-sentry-hdwzbskr", "Reconciliation": 30, "ContainerName": "dapr-sentry-hdwzbskr", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.923] [DBUG] [AppHost/ServiceReconciler] Service dapr-sentry-grpc is now in state Ready	{"Service": "/dapr-sentry-grpc", "Reconciliation": 120}
+[2026-10-23 06:56:57.923] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/dapr-sentry-hdwzbskr", "Reconciliation": 30, "ContainerName": "dapr-sentry-hdwzbskr", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.926] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.926] [INFO] [AppHost]       Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting -> Running
+[2026-10-23 06:56:57.926] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.926] [INFO] [AppHost]       Starting health monitoring for resource 'dapr-sentry'.
+[2026-10-23 06:56:57.926] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.926] [INFO] [AppHost]       Resource 'dapr-sentry' health checks to monitor: dapr-sentry_health_/healthz_200_check
+[2026-10-23 06:56:57.925] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-sentry/dapr-sentry-hdwzbskr changed state: Starting -> Running
+[2026-10-23 06:56:57.925] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'dapr-sentry'.
+[2026-10-23 06:56:57.926] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-sentry' health checks to monitor: dapr-sentry_health_/healthz_200_check
+[2026-10-23 06:56:57.935] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.935] [INFO] [AppHost]       Resource 'dapr-sentry' is ready.
+[2026-10-23 06:56:57.935] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-sentry' is ready.
+[2026-10-23 06:56:57.936] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.936] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.936] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.936] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.936] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.936] [INFO] [AppHost]       ResourceReadyEvent for 'dapr-sentry' completed.
+[2026-10-23 06:56:57.936] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.936] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.936] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.936] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.936] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'dapr-sentry' completed.
+[2026-10-23 06:56:57.936] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'dapr-sentry'.
+[2026-10-23 06:56:57.946] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.946] [INFO] [AppHost]       Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting
+[2026-10-23 06:56:57.947] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.947] [INFO] [AppHost]       Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting
+[2026-10-23 06:56:57.946] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting
+[2026-10-23 06:56:57.947] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting
+[2026-10-23 06:56:57.962] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:57.962] [INFO] [AppHost]       Service memories-vectors is now in state Ready	{"Service": "/memories-vectors", "Reconciliation": 123}
+[2026-10-23 06:56:57.963] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:57.963] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/memories-vectors-hyzbkvaj", "Reconciliation": 31, "ContainerName": "memories-vectors-hyzbkvaj", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.962] [DBUG] [AppHost/ServiceReconciler] Service memories-vectors is now in state Ready	{"Service": "/memories-vectors", "Reconciliation": 123}
+[2026-10-23 06:56:57.963] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/memories-vectors-hyzbkvaj", "Reconciliation": 31, "ContainerName": "memories-vectors-hyzbkvaj", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:57.965] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:57.965] [INFO] [AppHost]       Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting -> Running
+[2026-10-23 06:56:57.965] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.965] [INFO] [AppHost]       Starting health monitoring for resource 'memories-vectors'.
+[2026-10-23 06:56:57.965] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.965] [INFO] [AppHost]       Resource 'memories-vectors' health checks to monitor: memories-vectors-redis-ping
+[2026-10-23 06:56:57.965] [DBUG] [AppHost/ResourceNotificationService] Resource memories-vectors/memories-vectors-hyzbkvaj changed state: Starting -> Running
+[2026-10-23 06:56:57.965] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'memories-vectors'.
+[2026-10-23 06:56:57.966] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.966] [INFO] [AppHost]       Resource 'memories-vectors' is ready.
+[2026-10-23 06:56:57.965] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'memories-vectors' health checks to monitor: memories-vectors-redis-ping
+[2026-10-23 06:56:57.966] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.966] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.966] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.966] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.966] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.966] [INFO] [AppHost]       ResourceReadyEvent for 'memories-vectors' completed.
+[2026-10-23 06:56:57.966] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:57.966] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.966] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'memories-vectors' is ready.
+[2026-10-23 06:56:57.966] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.966] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.966] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'memories-vectors' completed.
+[2026-10-23 06:56:57.966] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'memories-vectors'.
+[2026-10-23 06:56:57.987] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:57.987] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 8, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 3, "Found": 3}
+[2026-10-23 06:56:57.986] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 8, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 3, "Found": 3}
+[2026-10-23 06:56:58.039] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:58.039] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 9, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 4, "Found": 4}
+[2026-10-23 06:56:58.038] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 9, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 4, "Found": 4}
+[2026-10-23 06:56:58.445] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:58.445] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "74c1e9c77746c229ce377a58ca32a502213384d8321b704333071bef9daf30c3", "PID": 4179785}
+[2026-10-23 06:56:58.444] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "74c1e9c77746c229ce377a58ca32a502213384d8321b704333071bef9daf30c3", "PID": 4179785}
+[2026-10-23 06:56:58.457] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerMonitor[0]
+[2026-10-23 06:56:58.457] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "Container": "457d350c07d0611ac88b7c663dc266ed1da81ea3111a95e1db293e3ae3e38aab", "PID": 4179785}
+[2026-10-23 06:56:58.457] [DBUG] [AppHost/ContainerMonitor] Started monitoring process	{"MonitorPID": 4179785, "Container": "457d350c07d0611ac88b7c663dc266ed1da81ea3111a95e1db293e3ae3e38aab", "PID": 4179785}
+[2026-10-23 06:56:59.456] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.456] [INFO] [AppHost]       Service dapr-placement-mtls-health is now in state Ready	{"Service": "/dapr-placement-mtls-health", "Reconciliation": 125}
+[2026-10-23 06:56:59.455] [DBUG] [AppHost/ServiceReconciler] Service dapr-placement-mtls-health is now in state Ready	{"Service": "/dapr-placement-mtls-health", "Reconciliation": 125}
+[2026-10-23 06:56:59.457] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.457] [INFO] [AppHost]       Service dapr-placement-mtls-grpc is now in state Ready	{"Service": "/dapr-placement-mtls-grpc", "Reconciliation": 126}
+[2026-10-23 06:56:59.457] [DBUG] [AppHost/ServiceReconciler] Service dapr-placement-mtls-grpc is now in state Ready	{"Service": "/dapr-placement-mtls-grpc", "Reconciliation": 126}
+[2026-10-23 06:56:59.458] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:59.458] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/dapr-placement-mtls-grsgtkcy", "Reconciliation": 43, "ContainerName": "dapr-placement-mtls-grsgtkcy", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:59.458] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/dapr-placement-mtls-grsgtkcy", "Reconciliation": 43, "ContainerName": "dapr-placement-mtls-grsgtkcy", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:59.460] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:59.460] [INFO] [AppHost]       Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting -> Running
+[2026-10-23 06:56:59.460] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.460] [INFO] [AppHost]       Starting health monitoring for resource 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.460] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.460] [INFO] [AppHost]       Resource 'dapr-placement-mtls' health checks to monitor: dapr-placement-mtls_health_/healthz_200_check
+[2026-10-23 06:56:59.460] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-placement-mtls/dapr-placement-mtls-grsgtkcy changed state: Starting -> Running
+[2026-10-23 06:56:59.460] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.460] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-placement-mtls' health checks to monitor: dapr-placement-mtls_health_/healthz_200_check
+[2026-10-23 06:56:59.463] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.463] [INFO] [AppHost]       Resource 'dapr-placement-mtls' is ready.
+[2026-10-23 06:56:59.463] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.463] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.463] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.463] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.463] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.463] [INFO] [AppHost]       ResourceReadyEvent for 'dapr-placement-mtls' completed.
+[2026-10-23 06:56:59.463] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.463] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.463] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-placement-mtls' is ready.
+[2026-10-23 06:56:59.463] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.463] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.463] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'dapr-placement-mtls' completed.
+[2026-10-23 06:56:59.463] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'dapr-placement-mtls'.
+[2026-10-23 06:56:59.509] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:59.509] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 12, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 5, "Found": 5}
+[2026-10-23 06:56:59.508] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 12, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 5, "Found": 5}
+[2026-10-23 06:56:59.519] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.519] [INFO] [AppHost]       Service dapr-scheduler-mtls-health is now in state Ready	{"Service": "/dapr-scheduler-mtls-health", "Reconciliation": 129}
+[2026-10-23 06:56:59.519] [DBUG] [AppHost/ServiceReconciler] Service dapr-scheduler-mtls-health is now in state Ready	{"Service": "/dapr-scheduler-mtls-health", "Reconciliation": 129}
+[2026-10-23 06:56:59.520] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.520] [INFO] [AppHost]       Service dapr-scheduler-mtls-grpc is now in state Ready	{"Service": "/dapr-scheduler-mtls-grpc", "Reconciliation": 130}
+[2026-10-23 06:56:59.520] [DBUG] [AppHost/ServiceReconciler] Service dapr-scheduler-mtls-grpc is now in state Ready	{"Service": "/dapr-scheduler-mtls-grpc", "Reconciliation": 130}
+[2026-10-23 06:56:59.521] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ContainerReconciler[0]
+[2026-10-23 06:56:59.521] [INFO] [AppHost]       Added new ContainerNetworkConnection	{"Container": "/dapr-scheduler-mtls-tdetwjme", "Reconciliation": 45, "ContainerName": "dapr-scheduler-mtls-tdetwjme", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:59.521] [DBUG] [AppHost/ContainerReconciler] Added new ContainerNetworkConnection	{"Container": "/dapr-scheduler-mtls-tdetwjme", "Reconciliation": 45, "ContainerName": "dapr-scheduler-mtls-tdetwjme", "Network": "/aspire-container-network"}
+[2026-10-23 06:56:59.523] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:59.523] [INFO] [AppHost]       Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting -> Running
+[2026-10-23 06:56:59.523] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.523] [INFO] [AppHost]       Starting health monitoring for resource 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.523] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.523] [INFO] [AppHost]       Resource 'dapr-scheduler-mtls' health checks to monitor: dapr-scheduler-mtls_health_/healthz_200_check
+[2026-10-23 06:56:59.523] [DBUG] [AppHost/ResourceNotificationService] Resource dapr-scheduler-mtls/dapr-scheduler-mtls-tdetwjme changed state: Starting -> Running
+[2026-10-23 06:56:59.523] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.523] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-scheduler-mtls' health checks to monitor: dapr-scheduler-mtls_health_/healthz_200_check
+[2026-10-23 06:56:59.526] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.526] [INFO] [AppHost]       Resource 'dapr-scheduler-mtls' is ready.
+[2026-10-23 06:56:59.526] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.526] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.526] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.526] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.526] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.526] [INFO] [AppHost]       ResourceReadyEvent for 'dapr-scheduler-mtls' completed.
+[2026-10-23 06:56:59.526] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.526] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.526] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'dapr-scheduler-mtls' is ready.
+[2026-10-23 06:56:59.526] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.526] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.526] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'dapr-scheduler-mtls' completed.
+[2026-10-23 06:56:59.526] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'dapr-scheduler-mtls'.
+[2026-10-23 06:56:59.544] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ExecutableReconciler[0]
+[2026-10-23 06:56:59.544] [INFO] [AppHost]       Starting process...	{"Executable": "/eventstore-dapr-cli-xyyuzpfb", "Reconciliation": 9, "Cmd": "/home/administrator/.dapr/bin/daprd", "Args": ["--app-id", "eventstore", "--config", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1/accesscontrol.eventstore.yaml", "--dapr-internal-grpc-port", "14741", "--placement-host-address", "localhost:10875", "--resources-path", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1/subscriptions", "--resources-path", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1", "--scheduler-host-address", "localhost:20122", "--app-port", "45383", "--dapr-grpc-port", "16445", "--dapr-http-port", "15998", "--metrics-port", "20660", "--app-channel-address", "localhost", "--app-protocol", "http", "--enable-mtls", "--sentry-address", "localhost:26880"]}
+[2026-10-23 06:56:59.544] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ExecutableReconciler[0]
+[2026-10-23 06:56:59.544] [INFO] [AppHost]       Starting process...	{"Executable": "/eventstore-vtudtcpd", "Reconciliation": 10, "Cmd": "/home/administrator/.dotnet/dotnet", "Args": ["run", "--project", "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj", "--configuration", "Debug", "--no-launch-profile"]}
+[2026-10-23 06:56:59.544] [DBUG] [AppHost/ExecutableReconciler] Starting process...	{"Executable": "/eventstore-dapr-cli-xyyuzpfb", "Reconciliation": 9, "Cmd": "/home/administrator/.dapr/bin/daprd", "Args": ["--app-id", "eventstore", "--config", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1/accesscontrol.eventstore.yaml", "--dapr-internal-grpc-port", "14741", "--placement-host-address", "localhost:10875", "--resources-path", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1/subscriptions", "--resources-path", "/tmp/hexalith-platform/623b62a9df314951afe3e6f6d8b717d1", "--scheduler-host-address", "localhost:20122", "--app-port", "45383", "--dapr-grpc-port", "16445", "--dapr-http-port", "15998", "--metrics-port", "20660", "--app-channel-address", "localhost", "--app-protocol", "http", "--enable-mtls", "--sentry-address", "localhost:26880"]}
+[2026-10-23 06:56:59.544] [DBUG] [AppHost/ExecutableReconciler] Starting process...	{"Executable": "/eventstore-vtudtcpd", "Reconciliation": 10, "Cmd": "/home/administrator/.dotnet/dotnet", "Args": ["run", "--project", "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj", "--configuration", "Debug", "--no-launch-profile"]}
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Running
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Starting health monitoring for resource 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Resource 'eventstore-dapr-cli' has no health checks to monitor.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Resource 'eventstore-dapr-cli' is ready.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Publishing ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Waiting for ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       ResourceReadyEvent for 'eventstore-dapr-cli' completed.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Publishing the result of ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Resource eventstore/eventstore-vtudtcpd changed state: Running
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Starting health monitoring for resource 'eventstore'.
+[2026-10-23 06:56:59.552] [INFO] [AppHost] dbug: Aspire.Hosting.Health.ResourceHealthCheckService[0]
+[2026-10-23 06:56:59.552] [INFO] [AppHost]       Resource 'eventstore' health checks to monitor: eventstore_http_/ready_200_check
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore-dapr-cli/eventstore-dapr-cli-xyyuzpfb changed state: Running
+[2026-10-23 06:56:59.554] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.554] [INFO] [AppHost]       Service eventstore-dapr-cli-metrics is now in state Ready	{"Service": "/eventstore-dapr-cli-metrics", "Reconciliation": 134}
+[2026-10-23 06:56:59.554] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.554] [INFO] [AppHost]       Service eventstore is now in state Ready	{"Service": "/eventstore", "Reconciliation": 133}
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'eventstore-dapr-cli' has no health checks to monitor.
+[2026-10-23 06:56:59.556] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.556] [INFO] [AppHost]       Service eventstore-dapr-cli-http is now in state Ready	{"Service": "/eventstore-dapr-cli-http", "Reconciliation": 135}
+[2026-10-23 06:56:59.556] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ServiceReconciler[0]
+[2026-10-23 06:56:59.556] [INFO] [AppHost]       Service eventstore-dapr-cli-grpc is now in state Ready	{"Service": "/eventstore-dapr-cli-grpc", "Reconciliation": 137}
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'eventstore-dapr-cli' is ready.
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Publishing ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Waiting for ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] ResourceReadyEvent for 'eventstore-dapr-cli' completed.
+[2026-10-23 06:56:59.551] [DBUG] [AppHost/ResourceHealthCheckService] Publishing the result of ResourceReadyEvent for 'eventstore-dapr-cli'.
+[2026-10-23 06:56:59.552] [DBUG] [AppHost/ResourceNotificationService] Resource eventstore/eventstore-vtudtcpd changed state: Running
+[2026-10-23 06:56:59.552] [DBUG] [AppHost/ResourceHealthCheckService] Starting health monitoring for resource 'eventstore'.
+[2026-10-23 06:56:59.552] [DBUG] [AppHost/ResourceHealthCheckService] Resource 'eventstore' health checks to monitor: eventstore_http_/ready_200_check
+[2026-10-23 06:56:59.553] [DBUG] [AppHost/ServiceReconciler] Service eventstore-dapr-cli-metrics is now in state Ready	{"Service": "/eventstore-dapr-cli-metrics", "Reconciliation": 134}
+[2026-10-23 06:56:59.553] [DBUG] [AppHost/ServiceReconciler] Service eventstore is now in state Ready	{"Service": "/eventstore", "Reconciliation": 133}
+[2026-10-23 06:56:59.556] [DBUG] [AppHost/ServiceReconciler] Service eventstore-dapr-cli-http is now in state Ready	{"Service": "/eventstore-dapr-cli-http", "Reconciliation": 135}
+[2026-10-23 06:56:59.556] [DBUG] [AppHost/ServiceReconciler] Service eventstore-dapr-cli-grpc is now in state Ready	{"Service": "/eventstore-dapr-cli-grpc", "Reconciliation": 137}
+[2026-10-23 06:56:59.576] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.NetworkReconciler[0]
+[2026-10-23 06:56:59.576] [INFO] [AppHost]       All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 13, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 6, "Found": 6}
+[2026-10-23 06:56:59.575] [DBUG] [AppHost/NetworkReconciler] All expected containers are connected to the network	{"ContainerNetwork": "/aspire-container-network", "Reconciliation": 13, "NetworkName": "aspire-session-network-ywkajpru-apphost", "NetworkID": "60d6f91e967d", "Expected": 6, "Found": 6}
+[2026-10-23 06:56:59.577] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:59.577] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182178, "PID": 4179785}
+[2026-10-23 06:56:59.577] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:59.577] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182178, "PID": 4182178}
+[2026-10-23 06:56:59.576] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182178, "PID": 4179785}
+[2026-10-23 06:56:59.576] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182178, "PID": 4182178}
+[2026-10-23 06:56:59.580] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:59.581] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182177, "PID": 4179785}
+[2026-10-23 06:56:59.581] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.dcp.ProcessMonitor[0]
+[2026-10-23 06:56:59.581] [INFO] [AppHost]       Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182177, "PID": 4182177}
+[2026-10-23 06:56:59.580] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182177, "PID": 4179785}
+[2026-10-23 06:56:59.580] [DBUG] [AppHost/ProcessMonitor] Started monitoring process	{"MonitorPID": 4179785, "ChildPID": 4182177, "PID": 4182177}
+[2026-10-23 06:57:43.925] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:57:43.925] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:57:43.925] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:57:43.933] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelRpcTarget[0]
+[2026-10-23 06:57:43.933] [INFO] [AppHost]       GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:57:43.933] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:57:43.933] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:57:43.933] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:57:43.933] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:57:43.933] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:57:43.933] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:57:43.933] [DBUG] [AppHost/AuxiliaryBackchannelRpcTarget] GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:57:43.933] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:57:43.933] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:57:43.933] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:57:44.157] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:57:44.157] [INFO] [AppHost]       Client disconnected from auxiliary backchannel
+[2026-10-23 06:57:44.156] [DBUG] [AppHost/AuxiliaryBackchannelService] Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:20.137] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:20.137] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:58:20.137] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:58:20.142] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelRpcTarget[0]
+[2026-10-23 06:58:20.142] [INFO] [AppHost]       GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:58:20.142] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:20.142] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:20.142] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:20.142] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:20.142] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:20.142] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:20.142] [DBUG] [AppHost/AuxiliaryBackchannelRpcTarget] GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:58:20.142] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:20.142] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:20.142] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:20.455] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:20.455] [INFO] [AppHost]       Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:20.455] [DBUG] [AppHost/AuxiliaryBackchannelService] Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:33.995] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:33.995] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:58:33.994] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:58:34.000] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:34.000] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:34.000] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:34.000] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:34.000] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:34.000] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:34.000] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:34.000] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:34.000] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:34.275] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:34.275] [INFO] [AppHost]       Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:34.275] [DBUG] [AppHost/AuxiliaryBackchannelService] Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:46.715] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:46.715] [INFO] [AppHost]       Client connected to auxiliary backchannel.
+[2026-10-23 06:58:46.714] [DBUG] [AppHost/AuxiliaryBackchannelService] Client connected to auxiliary backchannel.
+[2026-10-23 06:58:46.719] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelRpcTarget[0]
+[2026-10-23 06:58:46.719] [INFO] [AppHost]       GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:58:46.719] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:46.719] [INFO] [AppHost]       Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:46.719] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:46.719] [INFO] [AppHost]       Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:46.719] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:46.719] [INFO] [AppHost]       Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:46.719] [DBUG] [AppHost/AuxiliaryBackchannelRpcTarget] GetDashboardUrlsAsync called on auxiliary backchannel
+[2026-10-23 06:58:46.719] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource 'aspire-dashboard' to enter the 'Healthy' state.
+[2026-10-23 06:58:46.719] [DBUG] [AppHost/ResourceNotificationService] Waiting for resource ready to execute for 'aspire-dashboard'.
+[2026-10-23 06:58:46.719] [DBUG] [AppHost/ResourceNotificationService] Finished waiting for resource 'aspire-dashboard'.
+[2026-10-23 06:58:46.969] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:46.969] [INFO] [AppHost]       Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:46.969] [DBUG] [AppHost/AuxiliaryBackchannelService] Client disconnected from auxiliary backchannel
+[2026-10-23 06:58:54.311] [INFO] [AppHost] fail: Microsoft.Extensions.Hosting.Internal.Host[9]
+[2026-10-23 06:58:54.311] [INFO] [AppHost]       BackgroundService failed
+[2026-10-23 06:58:54.311] [INFO] [AppHost]       System.TimeoutException: cutover-timeout;health-HTTP-503
+[2026-10-23 06:58:54.311] [INFO] [AppHost]          at Hexalith.Builds.Tooling.Runtime.CompositionWriterProtocolCutover.ActivateAsync(Func`2 endpointResolver, String runId, String signingKey, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs:line 85
+[2026-10-23 06:58:54.311] [INFO] [AppHost]          at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-10-23 06:58:54.311] [INFO] [AppHost] crit: Microsoft.Extensions.Hosting.Internal.Host[10]
+[2026-10-23 06:58:54.311] [INFO] [AppHost]       The HostOptions.BackgroundServiceExceptionBehavior is configured to StopHost. A BackgroundService has thrown an unhandled exception, and the IHost instance is stopping. To avoid this behavior, configure this to Ignore; however the BackgroundService will not be restarted.
+[2026-10-23 06:58:54.311] [INFO] [AppHost]       System.TimeoutException: cutover-timeout;health-HTTP-503
+[2026-10-23 06:58:54.311] [INFO] [AppHost]          at Hexalith.Builds.Tooling.Runtime.CompositionWriterProtocolCutover.ActivateAsync(Func`2 endpointResolver, String runId, String signingKey, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs:line 85
+[2026-10-23 06:58:54.311] [INFO] [AppHost]          at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-10-23 06:58:54.311] [FAIL] [AppHost/Host] BackgroundService failed
+System.TimeoutException: cutover-timeout;health-HTTP-503
+   at Hexalith.Builds.Tooling.Runtime.CompositionWriterProtocolCutover.ActivateAsync(Func`2 endpointResolver, String runId, String signingKey, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs:line 85
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Cancellation received while watching Service resources.
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Stopped watching Service resources.
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource tenants/tenants-yhwrgnue changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource tenants-api/tenants-api-ttsnfxmj changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories-access-telemetry/memories-access-telemetry-nnjyybkn changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories-dapr-cli/memories-dapr-cli-zqwmggdt changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories/memories-dmgebrnd changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories-access-telemetry-dapr-cli/memories-access-telemetry-dapr-cli-yjjkxjnf changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource tenants-api-dapr-cli/tenants-api-dapr-cli-fummanma changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Cancellation received while watching Executable resources.
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Stopped watching Executable resources.
+[2026-10-23 06:58:54.314] [INFO] [AppHost] dbug: Aspire.Hosting.ApplicationModel.ResourceNotificationService[0]
+[2026-10-23 06:58:54.314] [INFO] [AppHost]       Resource memories-access-telemetry-clock/memories-access-telemetry-clock-mnccacer changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.311] [CRIT] [AppHost/Host] The HostOptions.BackgroundServiceExceptionBehavior is configured to StopHost. A BackgroundService has thrown an unhandled exception, and the IHost instance is stopping. To avoid this behavior, configure this to Ignore; however the BackgroundService will not be restarted.
+System.TimeoutException: cutover-timeout;health-HTTP-503
+   at Hexalith.Builds.Tooling.Runtime.CompositionWriterProtocolCutover.ActivateAsync(Func`2 endpointResolver, String runId, String signingKey, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs:line 85
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-10-23 06:58:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.315] [INFO] [AppHost]       Cancellation received while watching Endpoint resources.
+[2026-10-23 06:58:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.315] [INFO] [AppHost]       Stopped watching Endpoint resources.
+[2026-10-23 06:58:54.313] [DBUG] [AppHost/DcpExecutor] Cancellation received while watching Service resources.
+[2026-10-23 06:58:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.315] [INFO] [AppHost]       Cancellation received while watching Container resources.
+[2026-10-23 06:58:54.315] [INFO] [AppHost] dbug: Aspire.Hosting.Dcp.DcpExecutor[0]
+[2026-10-23 06:58:54.315] [INFO] [AppHost]       Stopped watching Container resources.
+[2026-10-23 06:58:54.313] [DBUG] [AppHost/DcpExecutor] Stopped watching Service resources.
+[2026-10-23 06:58:54.314] [DBUG] [AppHost/ResourceNotificationService] Resource tenants/tenants-yhwrgnue changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.316] [INFO] [AppHost] fail: Microsoft.Extensions.Hosting.Internal.Host[11]
+[2026-10-23 06:58:54.316] [INFO] [AppHost]       Hosting failed to start
+[2026-10-23 06:58:54.316] [INFO] [AppHost]       System.Threading.Tasks.TaskCanceledException: A task was canceled.
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Aspire.Hosting.Dcp.DcpExecutor.CreateRenderedResourcesAsync[TDcpResource,TContext](IObjectCreator`2 creator, IEnumerable`1 resources, TContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/Dcp/DcpExecutor.cs:line 950
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Aspire.Hosting.Dcp.DcpExecutor.<>c__DisplayClass36_1.<<RunApplicationAsync>b__5>d.MoveNext() in /_/src/Aspire.Hosting/Dcp/DcpExecutor.cs:line 262
+[2026-10-23 06:58:54.316] [INFO] [AppHost]       --- End of stack trace from previous location ---
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Aspire.Hosting.Dcp.DcpExecutor.RunApplicationAsync(CancellationToken ct) in /_/src/Aspire.Hosting/Dcp/DcpExecutor.cs:line 273
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Aspire.Hosting.Orchestrator.ApplicationOrchestrator.RunApplicationAsync(CancellationToken cancellationToken) in /_/src/Aspire.Hosting/Orchestrator/ApplicationOrchestrator.cs:line 628
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Aspire.Hosting.Orchestrator.OrchestratorHostService.StartAsync(CancellationToken cancellationToken) in /_/src/Aspire.Hosting/Orchestrator/OrchestratorHostService.cs:line 41
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+[2026-10-23 06:58:54.316] [INFO] [AppHost]          at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2026-10-23 06:58:54.314] [DBUG] [AppHost/ResourceNotificationService] Resource memories-access-telemetry-clock-dapr-cli/memories-access-telemetry-clock-dapr-cli-efrynvwd changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.314] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-dapr-cli/tenants-dapr-cli-byucxswr changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.317] [INFO] [AppHost] dbug: Aspire.Hosting.Backchannel.AuxiliaryBackchannelService[0]
+[2026-10-23 06:58:54.317] [INFO] [AppHost]       Client connection handler was cancelled
+[2026-10-23 06:58:54.314] [DBUG] [AppHost/ResourceNotificationService] Resource tenants-api/tenants-api-ttsnfxmj changed state: Waiting -> FailedToStart
+[2026-10-23 06:58:54.338] [DBUG] [AppHostCliBackchannel] Backchannel disconnected: RemotePartyTerminated
+[2026-10-23 06:58:54.424] [DBUG] [ProcessExecutionFactory] dotnet(4177914) exited with code: 0
+[2026-10-23 06:58:54.424] [DBUG] [ProcessExecutionFactory] dotnet(4177914) output drained
+[2026-10-23 06:58:54.424] [INFO] [Cli] Exit code: 0
+[2026-10-23 06:58:54.424] [DBUG] [Host] Hosting stopping
+[2026-10-23 06:58:54.424] [DBUG] [Host] Hosting stopped

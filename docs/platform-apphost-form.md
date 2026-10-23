@@ -132,8 +132,11 @@ this story's rendering or startup tests.
 
 Local reference runs use run-owned ports, private issuer credentials, SQLite name
 resolution, secrets, Redis data, scheduler data, and Memories vector/graph data.
-Sentry/placement/scheduler container target ports and mTLS trust domains are
-unchanged. Every receiver retains deny-default ACLs and selected component scopes.
+Sentry/placement/scheduler gRPC endpoints bind directly to the allocated host
+ports, including under `aspire start --isolated`. This keeps native sidecar
+addresses and scheduler advertisements aligned with the actual listeners.
+Container target ports and mTLS trust domains remain unchanged. Every receiver
+retains deny-default ACLs and selected component scopes.
 Allocated host addresses reach both rendered policy and the actual native `daprd`
 command. Native startup avoids the Dapr CLI's fixed Sentry-address behavior.
 Selected binaries and source templates are read-only shared inputs. Allocation
