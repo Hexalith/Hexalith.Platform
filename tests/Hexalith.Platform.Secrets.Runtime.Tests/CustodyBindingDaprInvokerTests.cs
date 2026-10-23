@@ -20,6 +20,24 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 public sealed class CustodyBindingDaprInvokerTests
 {
     [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RegistrationOnlyWrapLookupCorrelatesOriginalReceiptWithoutRootInput(bool changedReceipt)
+    {
+        var registration = CustodyBindingFixture.Registration;
+        var envelope = CustodyBindingFixture.Envelope("lookup-original") with { OperationId = registration.OperationId };
+        var request = CustodyBindingFixture.Bind(new(envelope, registration));
+        var handler = new CaptureHandler { ResponseChange = (_, response) => response with { Lifecycle = response.Lifecycle! with {
+            Status = CustodyKeyLifecycleStatus.Wrapped, ReceiptId = changedReceipt ? "substituted-receipt" : registration.WrapReceiptId } } };
+        using DaprClient client = Client(handler);
+        var result = await Invoker(client, new CustodyBindingFixture.Authority()).InvokeAsync(request, TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        result.State.ShouldBe(changedReceipt ? CustodyBindingTransportState.Unknown : CustodyBindingTransportState.ReceivedUnverified);
+        handler.Calls.ShouldBe(1);
+        CustodyBindingContract.Decode(handler.Data)!.WrapInput.ShouldBeNull();
+        if (!changedReceipt) result.Response!.Lifecycle!.RequestDigest.ShouldBe(CustodyBindingContract.OriginalRequestDigest(request));
+    }
+
+    [Theory]
     [InlineData(false, false)]
     [InlineData(true, false)]
     [InlineData(false, true)]

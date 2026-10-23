@@ -1,0 +1,19 @@
+PASS missing-qualification-and-enrollment-close-effects
+PASS ephemeral-key-delivery-duplicate-and-holder-completion
+PASS lost-wrap-result-recovers-without-native-resend
+FAIL registration-only-original-lookup-and-substitution-denial System.ArgumentException: Invalid closed custody binding request.
+   at Hexalith.Platform.Secrets.Runtime.CustodyBindingContract.Encode(CustodyBindingRequestV1 request) in /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs:line 108
+   at Fixture.Call(CustodyBindingRequestV1 request, Boolean qualified, SignedStatement evidence) in /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs:line 302
+   at Program.<<Main>$>g__Closed|0_1(Func`1 action) in /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs:line 38
+   at Program.<<Main>$>g__RegistrationLookup|0_5() in /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs:line 100
+   at Program.<Main>$(String[] args) in /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs:line 32
+PASS independent-owner-genesis-and-consecutive-transitions
+PASS hold-pin-release-and-complete-manifest-reservation
+PASS single-head-cas-and-app-restore-exclusions
+PASS complete-protobuf-unknown-field-and-metadata-bounds
+retainedSourceOriginal=/tmp/hexalith-semantic-original-sUE0MC/prepared-original.json
+PASS shared-cut-independent-closure-and-exact-original-pages
+PASS public-owner-adapter-real-sdk-signed-genesis-and-transition-wire
+PASS real-native-store-identity-immutable-cas-and-loss
+PASS uncertain-successor-retirement-abandonment-and-replacement
+sourceComponentOnly=true physicalQualification=false passed=11 failed=1

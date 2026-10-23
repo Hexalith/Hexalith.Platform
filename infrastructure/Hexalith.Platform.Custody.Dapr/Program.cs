@@ -20,11 +20,7 @@ try
     var nativeRegion = RegionEndpoint.GetBySystemName(profile.Region);
     var kmsConfig = new AmazonKeyManagementServiceConfig { RegionEndpoint = nativeRegion, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
     using var kms = new AmazonKeyManagementServiceClient(kmsConfig);
-    if (!OperatingSystem.IsLinux()) throw new AuthorityUnavailableException("Linux protected UDS required.");
-    string directory = Path.GetDirectoryName(profile.SocketPath)!;
-    if (!Directory.Exists(directory) || File.Exists(profile.SocketPath)
-        || (File.GetUnixFileMode(directory) & (UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute)) != 0)
-        throw new AuthorityUnavailableException("Pre-owned private socket directory required; stale sockets are never removed automatically.");
+    StartupGuard.Validate(args[0], profile.SocketPath);
     using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(profile.ComponentSigningKeyPath));
     using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(profile.ComponentPublicKeyPem);
     if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(publicSigner.ExportSubjectPublicKeyInfo()))
@@ -41,7 +37,7 @@ try
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");
         var packet = CustodyJson.Read<WorkerPacket>(File.ReadAllBytes(args[2]));
-        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier), packet, CancellationToken.None, exchange);
+        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier, signer), packet, CancellationToken.None, exchange);
         Console.WriteLine("Worker command retained; only independently verified final publication establishes a terminal original."); return 0;
     }
     var provider = new SemanticProvider(profile, store, verifier, signer, exchange);
@@ -54,7 +50,7 @@ try
     builder.Services.AddGrpcReflection();
     var app = builder.Build(); app.MapGrpcService<BindingService>(); app.MapGrpcReflectionService();
     await app.StartAsync();
-    File.SetUnixFileMode(profile.SocketPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.GroupWrite);
+    if (OperatingSystem.IsLinux()) File.SetUnixFileMode(profile.SocketPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.GroupWrite);
     await app.WaitForShutdownAsync(); return 0;
 }
 catch { Console.Error.WriteLine("Custody component closed: profile, trust, authority or socket initialization failed."); return 1; }

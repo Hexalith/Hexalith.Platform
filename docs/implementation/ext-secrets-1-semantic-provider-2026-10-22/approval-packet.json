@@ -1,0 +1,174 @@
+{
+  "schema": "ext-secrets-1-f2f3-approval/v1",
+  "disposition": "ProposedNotAuthorized",
+  "dependencyAvailable": false,
+  "liveReady": false,
+  "operationsExecuted": [],
+  "referenceProvider": "replaceable-component-internal-aws",
+  "currency": "USD",
+  "maximumTotalExpenditure": 100,
+  "tenants": [
+    "custody-f2f3-small",
+    "custody-f2f3-large"
+  ],
+  "originalSchedules": 1,
+  "maximumAttemptsPerAcceptedTargetSet": 1,
+  "resourceCaps": {
+    "erasureEpochsIncludingTainted": 5,
+    "kekProtectors": 2,
+    "authorityTables": 1,
+    "archiveBuckets": 2,
+    "controlInstances": 2,
+    "storedExperimentBytes": 1073741824
+  },
+  "proposedResources": [
+    {
+      "id": "custody-f2f3-small-source",
+      "kind": "epoch",
+      "lane": "small"
+    },
+    {
+      "id": "custody-f2f3-small-candidate",
+      "kind": "epoch",
+      "lane": "small",
+      "taintedCandidateOnly": true
+    },
+    {
+      "id": "custody-f2f3-small-successor",
+      "kind": "epoch",
+      "lane": "small"
+    },
+    {
+      "id": "custody-f2f3-large-source",
+      "kind": "epoch",
+      "lane": "large"
+    },
+    {
+      "id": "custody-f2f3-large-successor",
+      "kind": "epoch",
+      "lane": "large"
+    },
+    {
+      "id": "custody-f2f3-small-kek-protector",
+      "kind": "kek-protector"
+    },
+    {
+      "id": "custody-f2f3-large-kek-protector",
+      "kind": "kek-protector"
+    },
+    {
+      "id": "hexalith-custody-f2f3-20261023-current",
+      "kind": "dynamodb-authority"
+    },
+    {
+      "id": "hexalith-custody-f2f3-20261023-checkpoints",
+      "kind": "s3-archive"
+    },
+    {
+      "id": "hexalith-custody-f2f3-20261023-originals",
+      "kind": "s3-archive"
+    },
+    {
+      "id": "custody-f2f3-executor",
+      "kind": "control-instance"
+    },
+    {
+      "id": "custody-f2f3-observer",
+      "kind": "control-instance"
+    }
+  ],
+  "proposedNativeOperations": {
+    "enrollmentOnly": [
+      "kms:CreateKey (7 maximum total)",
+      "kms:Encrypt (tenant KEK establishment)",
+      "dynamodb:CreateTable (1 maximum)",
+      "s3:CreateBucket (2 maximum)",
+      "s3:PutBucketVersioning",
+      "s3:PutObjectLockConfiguration",
+      "ec2:RunInstances (2 maximum)",
+      "independent exact authority/genesis enrollment"
+    ],
+    "restrictedRuntime": [
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem ConsistentRead=true",
+      "dynamodb:UpdateItem full-head conditional compare",
+      "s3:GetBucketVersioning",
+      "s3:GetObject exact version/expected owner",
+      "s3:PutObject IfNoneMatch=*/compliance/versioned",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt",
+      "kms:ScheduleKeyDeletion seven-day minimum"
+    ],
+    "runtimeDenied": [
+      "authority restore/recreate",
+      "CreateKey",
+      "CancelKeyDeletion",
+      "ImportKeyMaterial",
+      "replication/export",
+      "DeleteObject/DeleteObjectVersion",
+      "direct application native grants",
+      "substitute epoch allocation"
+    ]
+  },
+  "retentionProposal": {
+    "minimumNewObjectLockDays": 120,
+    "extensionReviewDaysBeforeExpiry": 30,
+    "releaseCondition": "No referenced batch/outcome/backup/public verifier remains live; explicit owner disposition required",
+    "authorityAndAllocationTtl": null,
+    "automaticJournalDeletion": false
+  },
+  "duration": {
+    "activeEngineeringDays": 6,
+    "nativeDeletionMinimumDays": 7,
+    "reviewAfterBusinessDaysWithoutFinalProof": 15,
+    "fixedCompletionSla": null
+  },
+  "proposedStart": "First business day after exact approval and all installations; no accepted date",
+  "installed": {
+    "awsAccountId": null,
+    "region": null,
+    "authorityTableArn": null,
+    "authorityTableId": null,
+    "checkpointBucketOwnerAndEnrollmentVersion": null,
+    "originalBucketOwnerAndEnrollmentVersion": null,
+    "epochKeyArnsAndIds": null,
+    "kekProtectorArnsAndIds": null,
+    "independentPlacementAndRestoreCut": null,
+    "executorIdentityAndCredentialReference": null,
+    "observerIdentityAndCredentialReference": null,
+    "enrollmentIdentityAndCredentialReference": null,
+    "publishedPublicTrustAndCurrentRevocation": null,
+    "installedComponentArtifactDigest": null,
+    "installedDaprTransportProfileDigest": null,
+    "installedClosureAndTerminationVerifierDigests": null,
+    "measuredCompletionReserveBytes": null,
+    "approvedRetentionSchedule": null,
+    "itemizedCurrentProviderQuote": null,
+    "explicitNativeApproval": null
+  },
+  "missingInputs": [
+    "awsAccountId",
+    "region",
+    "authorityTableArn",
+    "authorityTableId",
+    "checkpointBucketOwnerAndEnrollmentVersion",
+    "originalBucketOwnerAndEnrollmentVersion",
+    "epochKeyArnsAndIds",
+    "kekProtectorArnsAndIds",
+    "independentPlacementAndRestoreCut",
+    "executorIdentityAndCredentialReference",
+    "observerIdentityAndCredentialReference",
+    "enrollmentIdentityAndCredentialReference",
+    "publishedPublicTrustAndCurrentRevocation",
+    "installedComponentArtifactDigest",
+    "installedDaprTransportProfileDigest",
+    "installedClosureAndTerminationVerifierDigests",
+    "measuredCompletionReserveBytes",
+    "approvedRetentionSchedule",
+    "itemizedCurrentProviderQuote",
+    "explicitNativeApproval"
+  ],
+  "cleanup": "Independently observed; retain original journals, public trust, allocation exclusions and every referenced immutable original; no cleanup before lock/reference obligations permit."
+}

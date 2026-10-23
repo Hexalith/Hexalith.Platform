@@ -32,11 +32,13 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         if (result.Item is null || !result.Item.TryGetValue("head", out var value) || string.IsNullOrWhiteSpace(value.S))
             throw new AuthorityUnavailableException("Surviving authority missing; genesis is never bootstrapped.");
         var head = CustodyJson.Read<AuthorityHead>(System.Text.Encoding.UTF8.GetBytes(value.S));
-        var checkpoint = CustodyJson.Read<Checkpoint>(await ReadImmutableAsync(head.Checkpoint, token));
+        byte[] archiveBytes = await ReadImmutableAsync(head.Checkpoint, token);
+        var archive = CustodyJson.Read<CheckpointArchiveV1>(archiveBytes);
+        var checkpoint = await CheckpointArchive.DecodeAsync(archiveBytes, ReadImmutableAsync, token);
         if (head.EnrollmentDigest != profile.EnrollmentDigest || checkpoint.EnrollmentDigest != profile.EnrollmentDigest
             || head.Revision != checkpoint.Revision || head.Digest != head.Checkpoint.Sha256 || checkpoint.TenantId != tenant)
             throw new AuthorityUnavailableException("Current authority binding mismatch.");
-        return new(head, checkpoint);
+        return new(head, checkpoint, value.S, archive);
     }
     public async Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken token)
         => await PutAtAsync(bytes, category, category + "/" + Guid.NewGuid().ToString("N") + "/" + CustodyJson.Hash(bytes.Span), token);
@@ -90,7 +92,7 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
             Key = version.Key, VersionId = version.VersionId }, token);
         if (result.VersionId != version.VersionId || result.ContentLength is <= 0 or > CustodyBindingContract.MaximumOriginalBytes
             || version.Bytes >= 0 && result.ContentLength != version.Bytes || result.ObjectLockMode != ObjectLockMode.Compliance
-            || result.ObjectLockRetainUntilDate < version.RetainUntil.UtcDateTime || version.RetainUntil <= clock.GetUtcNow())
+            || result.ObjectLockRetainUntilDate < version.RetainUntil.UtcDateTime || result.ObjectLockRetainUntilDate <= clock.GetUtcNow().UtcDateTime)
             throw new AuthorityUnavailableException("Immutable version/retention verification failed.");
         using var output = new MemoryStream();
         var buffer = new byte[64 * 1024]; int read;
@@ -108,12 +110,15 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         if (next.TenantId != expected.Checkpoint.TenantId || next.EnrollmentDigest != profile.EnrollmentDigest
             || next.Revision != checked(expected.Head.Revision + 1) || next.PredecessorDigest != expected.Head.Digest)
             throw new AuthorityUnavailableException("Invalid forward authority transition.");
-        byte[] bytes = CustodyJson.Bytes(next);
+        if (string.IsNullOrWhiteSpace(expected.ExactHeadAttribute) || expected.Archive is null)
+            throw new AuthorityUnavailableException("Exact previously read authority head/archive required.");
         bool admission = next.Originals.Count > expected.Checkpoint.Originals.Count || next.Deliveries.Count > expected.Checkpoint.Deliveries.Count
             || next.NativeIntents.Count > expected.Checkpoint.NativeIntents.Count || next.AllocationExclusions.Count > expected.Checkpoint.AllocationExclusions.Count;
         long ceiling = 32 * 1024 * 1024 - (admission ? profile.CompletionReserveBytes : 0);
-        if (next.Registrations.Count > 1000 || next.Originals.Count > 10000 || next.Deliveries.Count > 10000 || next.NativeIntents.Count > 10000 || bytes.Length > ceiling)
+        if (next.Registrations.Count > 1000 || next.Originals.Count > 10000 || next.Deliveries.Count > 10000 || next.NativeIntents.Count > 10000 || next.Anchors.Count > 10000)
             throw new AuthorityUnavailableException("Finite capacity exhausted; retained facts cannot be evicted.");
+        var plan = CheckpointArchive.Prepare(next, expected.Archive, ceiling);
+        byte[] bytes = await CheckpointArchive.WriteAsync(plan, PutImmutableAsync, token);
         var version = await PutImmutableAsync(bytes, "checkpoint", token);
         var head = new AuthorityHead(next.Revision, version.Sha256, version, profile.EnrollmentDigest);
         await VerifyIdentityAsync(token);
@@ -122,13 +127,13 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
             await dynamo.UpdateItemAsync(new UpdateItemRequest {
                 TableName = profile.TableArn, Key = Key(next.TenantId), ConditionExpression = "#head = :previous",
                 UpdateExpression = "SET #head = :next", ExpressionAttributeNames = new() { ["#head"] = "head" },
-                ExpressionAttributeValues = new() { [":previous"] = new AttributeValue { S = System.Text.Encoding.UTF8.GetString(CustodyJson.Bytes(expected.Head)) },
+                ExpressionAttributeValues = new() { [":previous"] = new AttributeValue { S = expected.ExactHeadAttribute },
                     [":next"] = new AttributeValue { S = System.Text.Encoding.UTF8.GetString(CustodyJson.Bytes(head)) } },
             }, token);
         }
         catch (ConditionalCheckFailedException) { throw new AuthorityConflictException(); }
         // Lost acknowledgement is not retried. The next invocation reads the surviving head.
-        return new(head, next);
+        return new(head, next, System.Text.Encoding.UTF8.GetString(CustodyJson.Bytes(head)), CustodyJson.Read<CheckpointArchiveV1>(bytes));
     }
     private Dictionary<string, AttributeValue> Key(string tenant) => new() {
         ["authorityTenant"] = new AttributeValue { S = profile.Enrollment.AuthorityId + ":" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(tenant)) } };

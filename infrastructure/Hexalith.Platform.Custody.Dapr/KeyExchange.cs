@@ -29,9 +29,12 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
                 || string.IsNullOrWhiteSpace(h.ProcessIncarnation) || h.TransportIncarnation != keyUse.TransportIncarnation)
             || !admission.Holders.Any(h => h.Role == "caller" && h.ProcessIncarnation == keyUse.RecipientProcessIncarnation))
             throw new AuthorityUnavailableException("Exact pre-admitted key copy/holder inventory missing.");
-        string deliveryId = keyUse.KeyUseLeaseId + ":" + keyUse.DeliveryAttemptId;
-        if (current.Checkpoint.Deliveries.ContainsKey(deliveryId))
-            return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, Delivery: current.Checkpoint.Deliveries[deliveryId]);
+        string deliveryId = CustodyJson.DeliveryId(keyUse);
+        if (current.Checkpoint.Deliveries.TryGetValue(deliveryId, out var retainedDelivery))
+        {
+            if (retainedDelivery.KeyUse != keyUse) throw new AuthorityUnavailableException("Permanent delivery identity conflict.");
+            return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, Delivery: retainedDelivery);
+        }
         var next = SemanticProvider.Clone(current);
         next.Deliveries.Add(deliveryId, new(keyUse, CustodyBindingIntentPhase.SendCommitted, false, false, false, false));
         var admissionOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(evidence), "journal", token);
@@ -126,7 +129,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
     internal async Task<CustodyBindingResponseV1> CompleteAsync(CustodyBindingRequestV1 request, CurrentState current,
         SignedStatement evidence, CancellationToken token)
     {
-        var e = request.Envelope; var use = request.KeyUse!; string id = use.KeyUseLeaseId + ":" + use.DeliveryAttemptId;
+        var e = request.Envelope; var use = request.KeyUse!; string id = CustodyJson.DeliveryId(use);
         string intentId = "key-" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(id));
         var completion = CustodyJson.Read<KeyCompletion>(CustodyJson.Bytes(evidence.Payload));
         if (e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest

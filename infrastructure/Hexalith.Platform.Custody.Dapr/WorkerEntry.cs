@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody.Dapr;
-internal sealed record WorkerPacket(string Action, string TenantId, WorkerOperation? Operation, SignedStatement Evidence, byte[]? ExactOriginal);
+internal sealed record WorkerPacket(string Action, string TenantId, WorkerOperation? Operation, SignedStatement Evidence, byte[]? ExactOriginal,
+    string? OutputPath = null);
 internal static class WorkerEntry
 {
     internal static Task ExecuteAsync(RecoverableLifecycle worker, WorkerPacket packet, CancellationToken token, KeyExchange? exchange = null) => packet.Action switch {
@@ -9,10 +10,19 @@ internal static class WorkerEntry
         "close-native-intent" => worker.CloseNativeIntentAsync(packet.TenantId, packet.Evidence, token),
         "recover-native-result" => worker.RecoverNativeResultAsync(packet.TenantId, packet.Evidence, token),
         "retire-alternate" when packet.Operation is not null => worker.RetireAlternateAsync(packet.TenantId, packet.Operation, packet.Evidence, token),
+        "retire-successor" when packet.Operation is not null => worker.RetireAlternateAsync(packet.TenantId, packet.Operation, packet.Evidence, token),
         "abandon-successor" => worker.AbandonSuccessorAsync(packet.TenantId, packet.Evidence, token),
         "arm" => worker.ArmAsync(packet.TenantId, packet.Evidence, token),
         "schedule-cut" when packet.Operation is not null => worker.ScheduleCutAsync(packet.TenantId, packet.Operation, packet.Evidence, token),
+        "prepare-original" when packet.OutputPath is not null => RetainPreparedOriginalAsync(worker, packet, token),
         "publish" when packet.ExactOriginal is not null => worker.PublishAsync(packet.TenantId, packet.Evidence, packet.ExactOriginal, token),
         _ => throw new AuthorityUnavailableException("Unknown or incomplete worker command."),
     };
+    private static async Task RetainPreparedOriginalAsync(RecoverableLifecycle worker, WorkerPacket packet, CancellationToken token)
+    {
+        if (!Path.IsPathFullyQualified(packet.OutputPath!)) throw new AuthorityUnavailableException("Absolute new original output path required.");
+        byte[] bytes = await worker.PrepareOriginalAsync(packet.TenantId, packet.Evidence, token);
+        using var output = new FileStream(packet.OutputPath!, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+        await output.WriteAsync(bytes, token); output.Flush(flushToDisk: true);
+    }
 }

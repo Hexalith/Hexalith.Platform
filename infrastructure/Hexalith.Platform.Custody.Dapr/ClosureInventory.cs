@@ -46,6 +46,8 @@ internal static class ClosureRules
             || !inventory.NativeIntentIds.Order(StringComparer.Ordinal).SequenceEqual(state.NativeIntents.Keys.Order(StringComparer.Ordinal))) return false;
         if (state.Deliveries.Values.Any(d => d.Phase != CustodyBindingIntentPhase.Closed)
             || state.NativeIntents.Values.Any(i => i.Phase != CustodyBindingIntentPhase.Closed)) return false;
+        if (state.NativeIntents.Values.Any(i => !CustodyBindingContract.Text(i.ProducerIncarnation)
+            || !inventory.ProducerIncarnations.Contains(i.ProducerIncarnation, StringComparer.Ordinal))) return false;
         // An independently signed inventory cannot contradict material already known to this checkpoint.
         foreach (var registration in state.Registrations.Values)
         {

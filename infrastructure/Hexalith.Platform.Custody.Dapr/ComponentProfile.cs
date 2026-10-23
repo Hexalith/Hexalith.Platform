@@ -29,6 +29,13 @@ internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string
             || CompletionReserveBytes <= 0 || CompletionReserveBytes >= 32 * 1024 * 1024 || !Path.IsPathFullyQualified(SocketPath)
             || Trust.Length < 3 || Trust.Select(t => t.KeyId).Distinct(StringComparer.Ordinal).Count() != Trust.Length)
         { throw new AuthorityUnavailableException("Incomplete pre-enrolled component profile; startup cannot enroll resources."); }
+        if (Tenants.Any(tenant => Epochs.Count(e => e.TenantId == tenant) < 2 || Keks.Count(k => k.TenantId == tenant) != 1))
+            throw new AuthorityUnavailableException("Each tenant requires independent source/successor epochs and exactly one KEK mapping.");
+        var nativeKeys = Epochs.Select(e => (Arn: e.KeyArn, Id: e.KeyId)).Concat(Keks.Select(k => (Arn: k.ProtectorArn, Id: k.ProtectorKeyId))).ToArray();
+        if (nativeKeys.Any(k => string.IsNullOrWhiteSpace(k.Id) || !k.Arn.StartsWith("arn:aws:kms:", StringComparison.Ordinal))
+            || nativeKeys.Select(k => k.Arn).Distinct(StringComparer.Ordinal).Count() != nativeKeys.Length
+            || nativeKeys.Select(k => k.Id).Distinct(StringComparer.Ordinal).Count() != nativeKeys.Length)
+            throw new AuthorityUnavailableException("Native epoch and KEK identities must be disjoint across every lane.");
         foreach (string purpose in new[] { "private-operation", "control", "independent-observer" })
             if (Trust.Count(t => t.Purpose == purpose) != 1) throw new AuthorityUnavailableException("Independent trust role missing.");
         string Fingerprint(string pem)

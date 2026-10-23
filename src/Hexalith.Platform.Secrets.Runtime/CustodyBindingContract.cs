@@ -118,9 +118,16 @@ internal static class CustodyBindingContract
             if (bytes.Length is 0 or > MaximumRequestBytes) { return null; }
             RejectDuplicateProperties(bytes);
             var request = JsonSerializer.Deserialize<CustodyBindingRequestV1>(bytes, Json);
-            return request is not null && Validate(request) ? request : null;
+            return ValidateDecoded(request);
         }
         catch (Exception e) when (e is JsonException or ArgumentException or InvalidOperationException or OverflowException) { return null; }
+    }
+
+    internal static CustodyBindingRequestV1? ValidateDecoded(CustodyBindingRequestV1? request)
+    {
+        if (request is not null && Validate(request)) return request;
+        if (request?.WrapInput is { } wrap) CryptographicOperations.ZeroMemory(wrap.RootKey);
+        return null;
     }
 
     internal static void RejectDuplicateProperties(ReadOnlySpan<byte> bytes)

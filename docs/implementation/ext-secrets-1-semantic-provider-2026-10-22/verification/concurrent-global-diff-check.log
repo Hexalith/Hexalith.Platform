@@ -1,0 +1,55 @@
+{"argv": ["git", "diff", "--check"], "exitCode": 2}
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:203: trailing whitespace.
++        // The model callbacks check runtime existence but never execute this fixture binary.
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:204: trailing whitespace.
++        Directory.CreateDirectory(Path.Combine(certificateDirectory, ".dapr", "bin"));
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:205: trailing whitespace.
++        File.WriteAllText(Path.Combine(certificateDirectory, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model-only runtime");
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:206: trailing whitespace.
++        foreach (var application in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:207: trailing whitespace.
++        {
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:208: trailing whitespace.
++            var sidecar = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:209: trailing whitespace.
++            var runtime = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:210: trailing whitespace.
++            sidecar.Annotations[sidecar.Annotations.IndexOf(runtime)] = new DaprSidecarOptionsAnnotation(runtime.Options with { RuntimePath = certificateDirectory });
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:211: trailing whitespace.
++        }
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:324: trailing whitespace.
++        string? previousDaprHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:325: trailing whitespace.
++        string selectedDaprHome = Path.Combine(directory, "selected-runtime");
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:329: trailing whitespace.
++            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", selectedDaprHome);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:367: trailing whitespace.
++            int placementPort = builder.Resources.Single(resource => resource.Name == "dapr-placement-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:368: trailing whitespace.
++            int schedulerPort = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:369: trailing whitespace.
++            foreach (var project in builder.Resources.OfType<ProjectResource>())
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:370: trailing whitespace.
++            {
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:371: trailing whitespace.
++                var selected = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:372: trailing whitespace.
++                selected.RuntimePath.ShouldBe(selectedDaprHome, project.Name);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:373: trailing whitespace.
++                selected.PlacementHostAddress.ShouldBe("localhost:" + placementPort, project.Name);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:374: trailing whitespace.
++                selected.SchedulerHostAddress.ShouldBe("localhost:" + schedulerPort, project.Name);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:375: trailing whitespace.
++            }
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:419: trailing whitespace.
++        finally
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:420: trailing whitespace.
++        {
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:421: trailing whitespace.
++            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", previousDaprHome);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:422: trailing whitespace.
++            Directory.Delete(directory, true);
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:423: trailing whitespace.
++        }
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files

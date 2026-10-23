@@ -11,6 +11,23 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class CustodyBindingContractTests
 {
+    [Fact]
+    public void RejectedDecodedWrapClearsOnlyItsOwnedRootBuffer()
+    {
+        var envelope = CustodyBindingFixture.Envelope("wrap");
+        var input = new CustodyBindingWrapInputV1(CustodyBindingFixture.Identity, envelope.OperationId, envelope.ExpectedCustodyRevision,
+            "kek", "wrapped", Enumerable.Repeat((byte)7,32).ToArray(), new("lease", "attempt", "recipient", "transport", "wrapped"));
+        var request = CustodyBindingFixture.Bind(new(envelope, WrapInput: input));
+        var invalid = request with { Envelope = request.Envelope with { Challenge = "" } };
+        byte[] bytes = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(invalid,CustodyBindingContract.Json);
+        var decoded = System.Text.Json.JsonSerializer.Deserialize<CustodyBindingRequestV1>(bytes,CustodyBindingContract.Json)!;
+        byte[] owned = decoded.WrapInput!.RootKey;
+        CustodyBindingContract.ValidateDecoded(decoded).ShouldBeNull();
+        owned.ShouldAllBe(value => value == 0);
+        input.RootKey.ShouldAllBe(value => value == 7);
+        CustodyBindingContract.Decode(bytes).ShouldBeNull();
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

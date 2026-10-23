@@ -1,0 +1,65 @@
+{
+  "schema": "ext-secrets-1-followup-source-inventory/v1",
+  "observedHead": "1516a6be0e3b9500cbcaeb14da1c0101f88caafa",
+  "classification": "SourceComponentOnly",
+  "physicalQualification": false,
+  "componentScenariosPassed": 12,
+  "runtimeTestsPassed": 102,
+  "sourceBlocker": "Large immutable payload extraction/legal maximum checkpoint admission pending parent continuation",
+  "sources": [
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs",
+      "sha256": "edb24d636a678f998bb4acc95c89d550c6418ca60ba866178fe39e7afa0095fd"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsAuthorityStore.cs",
+      "sha256": "d740a2b0b15dfb29287a9884907b454444f097e77ff826b652982405b28fbb04"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs",
+      "sha256": "71c6e44c8a1186740597a71db948ccb461862d4abfbae2459b312fff7c6256db"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs",
+      "sha256": "726e078284bacc3fc344b58b4e6867382dda29e7fd77a83e4407ab24671bd3c6"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/WorkerEntry.cs",
+      "sha256": "8b9e8da9889a061fdd3037d77c1c17dd3da9da126180cea582399766f01dce46"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs",
+      "sha256": "3bf8e0f5371ee3a6b02bef82a73fcd6da50f44b24cdaf51b5eb4d80d322a9c7e"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs",
+      "sha256": "d44f6a07e44acb9c5191be95798edc3d17d32393b2ec2923e92339a8860f2011"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeStoreTests.cs",
+      "sha256": "185a0a4db931b298cb129cc8932a843115f21f65c657a92e4c4964ed948f0d55"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingDaprInvokerTests.cs",
+      "sha256": "788639d347bab2934770d250b9bd5b1a40373a02816d5c0e8d98ea4409cefa67"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-followup/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.dll",
+      "sha256": "794eef85e1589364b46ff4d799b36c5319c3240c05c7e802b776dd2987e26135"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-followup/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "sha256": "1ee646b070c60e7789d549519ef384f0da064d53e7ee75f5014825e6644b6947"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-runtime-followup/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "sha256": "de51b9592c55f33aaf5c8fc9454fd76338ababaaf069942a6aee6f7f98d0473f"
+    }
+  ],
+  "reportSha256": "e22288cb84769b89e9011da09225dd6c49bf4d2d0fb1dee491058d42018bc578",
+  "installedTrustSha256": null,
+  "installedProfileSha256": null,
+  "acceptedTargetCommit": null
+}

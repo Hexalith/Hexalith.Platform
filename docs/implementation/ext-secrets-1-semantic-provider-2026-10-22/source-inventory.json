@@ -1,0 +1,416 @@
+{
+  "schema": "ext-secrets-1-source-inventory/v1",
+  "classification": "SourceComponentOnly",
+  "platformObservedHead": "1516a6be0e3b9500cbcaeb14da1c0101f88caafa",
+  "eventstoreObservedHead": "93be37d26c15ba1bb951f23d13d7e1dd9df1ddde",
+  "sources": [
+    {
+      "path": ".gitattributes",
+      "sha256": "8907d98c6f6eb5006fb0c02fbfa96b34148bde381526ab887f471306bd5d278b"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "e07baf3cf5b11bf417590e268087202935b0f07d81f041d3d9a541f70e3bd20f"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "71bbbb3b3bf472b00e24c0fa29130ee60851f9c929b8e2e0f32ae19c6c1c8b29"
+    },
+    {
+      "path": "infrastructure/Directory.Packages.props",
+      "sha256": "bb4fd2fbe1a9f6ed5dc64a59d50e9990f347399f24bfeca6164cdb22b3054367"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs",
+      "sha256": "87182a2df60b2cf747fe64f825b9afbac8ec89f42b9607c338043df7cc2b0395"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsAuthorityStore.cs",
+      "sha256": "9da50f224d90b72148c4e6595b10b9dbfd4d9886da27ef2d41372c6276c88a39"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsEpochOperations.cs",
+      "sha256": "e61a80a1207f0f0ceac9a030a8ef9013392fbccc6ca5ed73a667d16149c8abd0"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsKeyAccess.cs",
+      "sha256": "4b968cd9a49e55b85eacb5865ab76e4a2af67c41a5b5987b4543bafddee996fb"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/BindingService.cs",
+      "sha256": "a3721df101d030a2cf04e32f4442abcf2c703e19b64b798bb52409b667eab076"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/ClosureInventory.cs",
+      "sha256": "3a847beea71373fe7bf4c2b8c360c0dfdae784cdf2d655483080cf51d4661952"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs",
+      "sha256": "97187d4b84fd82c5dc5081fd2822e02826193dabdeee581ab952550b909e9ca5"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj",
+      "sha256": "196b038cdfdf7b02ae7ca5d257d6fd434802e2dcf4f0b28e1c5a5b53d1d51ce6"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/KeyEnvelopeBuilder.cs",
+      "sha256": "bab2ca5a4d2b8774d282951544a733d6c96cd402f6f28cbaf12f7faed952515a"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs",
+      "sha256": "d39dc38e70c1f5627661c8b841e8a9512af5035bb2ada825a52d4a20cb60c356"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs",
+      "sha256": "fb5c7c061856ebe2105909cd4e81d8fbfe148279095e8935bfa5e79ef62feccf"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/SHA256SUMS",
+      "sha256": "31b8365dffcb8018d9afe9c965bfca5bd513b45114be7dcdbbb323fef89bd6e4"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/dapr/proto/components/v1/bindings.proto",
+      "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/dapr/proto/components/v1/common.proto",
+      "sha256": "b1f7bfbd62f76fd6b91d52969a5dea66f2615c3ed847fe9ed49f7229b1a9555d"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs",
+      "sha256": "61311801e3cd49c463338a1bf4678e24d7070491d4261bd55a0227cd0b30f363"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs",
+      "sha256": "02f50761a39342f1c0128b600a82bf20351c96973fa51ec9697fe7e66c252019"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/StatementVerifier.cs",
+      "sha256": "bec177d82bc317438f2111f30040c8bd0d96b9a7ed5216242d17a880a5605270"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/WorkerEntry.cs",
+      "sha256": "74f16606685ed16782fed181ecdf918397b18d4585e1c354ba2d34c60fc867ed"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json",
+      "sha256": "f0e90b4ae40f1ca12276765cc82ff3830070124a59e5d1ecdf504f736f15acab"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+      "sha256": "2d0c1c7cf0388b930a27c3d8305fa19b3f8579ece5051f51cba9b1d8d4e8d7de"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeStoreTests.cs",
+      "sha256": "fbc5e7a100d04f3970c19b6d48cba21a8ad0fa12065005a12b04e1c5e6668acc"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionBatch.cs",
+      "sha256": "3b24b5d10531b3b2d0377a27f80d2bf93d55a49badccb09b9a956f01f954e140"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionLedger.cs",
+      "sha256": "d2ba867b9af09f7d9515448d7d891c7477ca36b0f2f736b2636e4cb3da535fb8"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionOperation.cs",
+      "sha256": "8c44c1455d542344555fc5e21f4d2ed4ca732be3fb77a35d98531648eea5399f"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs",
+      "sha256": "17401a77bd24d2fba17770449d425d1631c9674c30a7ddf1ff94149ac6e08983"
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json",
+      "sha256": "c06eccb6ec1177d55e2291c4a0314b2217d56dfeba8ccdf81addf9ea46be7fea"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs",
+      "sha256": "5ef589932b1b5d8f0474d9b30cfd72bb60a9c4abae53a09cb3793e10e174b437"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprCall.cs",
+      "sha256": "0e923bebfe309ae5917186c7548918468eb90d01dee165ba8b7c571ea83b3bbf"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs",
+      "sha256": "a8b783d74a9534352c6a287880bb4e8cc7a99f477f72984d4993056b5cdca639"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingEnvelopeBytes.cs",
+      "sha256": "2075ba4b0061282e66594e6246ee039d5273a78769bfcf6d9976accdd117145a"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingIntent.cs",
+      "sha256": "d4ad0a16f372fb5f59b7cdb82427d15df8fa4bba17b4de7c91066f9ddae48a18"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingOriginals.cs",
+      "sha256": "4a8cb0d9882d17c365c8e8a3c64184dd129eebd0dc324190ce3a9d7a19827cb5"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingOwnerAdapter.cs",
+      "sha256": "f3e9c9e3dbc85b543b6dc880e10ccb27c534c71b330c2a96508d16b35125eab0"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyComponentBindingCall.cs",
+      "sha256": "8782836da6be40817e0f21bd4735a62f1c1e8d267dbc6a4d7d2fb7d3ba8c8387"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyInstalledGuard.cs",
+      "sha256": "5b7fe77e397359ce95c7635ebfa04300607b6408d1856c6859b411b38d27391b"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingAuthority.cs",
+      "sha256": "893f9ee9ae9180928fdc70dda68beed876d0e6b177225d44319d76fedd2413c7"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingProvider.cs",
+      "sha256": "952d3ae049335d95fb90066bfad0d58acc09133b5dd5d9bedcb8487c98349bbc"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleBindingCommand.cs",
+      "sha256": "1793293ffd1b7cf9dad2f5236ff0f5676030fdf96b0d5fa715ef7310750d4dcb"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleBindingReply.cs",
+      "sha256": "aa691a0955edbc6a8eeb566937706d78f316feb9e1bf43032b7b483ea5ce727a"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyNonrollbackJournal.cs",
+      "sha256": "e942910797826a1aabffe393a14687b8d669ee0fbd291538439fef6a4474715d"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyOwnerAuthority.cs",
+      "sha256": "fb3861aab60b29c4216a463fa3c1a01f8b227f4ec97a36c53b621a10fd79e734"
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyProtectionOwnerIdentity.cs",
+      "sha256": "e65b8b82da53d69a6e8a334a2338bc2f041242c2ac8d4e03517bacf833d965b7"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.dll",
+      "sha256": "6e285391e14e998e221b07059f83c99636d994fe566d3e02137bc9251c980aa4"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "sha256": "7c91cfda114e92f0730af2d37039f2809aa5d5edc2c38c21928599364d25cd80"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "aa8d43c48e85c2d762af54e95edb85c03df556821b91c7ad6c7ae4d4d6a4cc37"
+    }
+  ],
+  "proposalConfigurationSha256": "2ffd1423b07cdf7fb792ef81b0307735327ac887075cb951c81fab8af1c96140",
+  "proposedPlanSha256": "de48845e2128f58a5ffa1ad0c2294c49cf65bef684577e8f572ae3dd61ce26d9",
+  "approvalPacketSha256": "25d935ea892d534cafa3d425333f87e623f80371026edccb8b946818f4e78dbb",
+  "installedConfigurationSha256": null,
+  "installedTrustAnchorSha256": null,
+  "acceptedTargetCommit": null,
+  "installedArtifactSha256": null,
+  "dependencyAvailable": false,
+  "componentRuntimeFiles": [
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/AWSSDK.Core.dll",
+      "sha256": "b2666db4677a56a3ecca9d37d3b9eeccf91f096bba570b730b050a0906304a65"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/AWSSDK.DynamoDBv2.dll",
+      "sha256": "c278471c457d2b599369541038db5055525d303575b774f940ced025fab12594"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/AWSSDK.KeyManagementService.dll",
+      "sha256": "9dce9ca72292cb9a98cc94c40da509e6c7691a6a58b126ed866146080ff3728f"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/AWSSDK.S3.dll",
+      "sha256": "63b6cb529413457cb6c15f9f9eb0a929e4c01c0e3a3e94d89f8f9eafbc9aca13"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/ByteAether.Ulid.dll",
+      "sha256": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Dapr.Actors.dll",
+      "sha256": "98d77fb28b39fe6832e06cb2bd66d58024b9587411b04965da385909f32a9dfa"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Dapr.Client.dll",
+      "sha256": "cc7b8e629416c52be2569d7610c5c830b19ba690d4f54300ffdee901dec99115"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Dapr.Common.dll",
+      "sha256": "9c10b91825371c10e469e91627080414bde4e8fa5acd894a2dbe398af03e1893"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Dapr.Protos.dll",
+      "sha256": "659938b9475b4951bd49086a66d8ad24f89ac6c1c33d6888adfefb8420edf03c"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Google.Api.CommonProtos.dll",
+      "sha256": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Google.Protobuf.dll",
+      "sha256": "8997a69619b59db587a45e75a03c164a44afb613f82db138d35e1636e4cbdc73"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.AspNetCore.Server.ClientFactory.dll",
+      "sha256": "579a1994227bbb4690d5966d6eb9fb8e4dcf09f4967bf148307c37ded0b6f902"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.AspNetCore.Server.Reflection.dll",
+      "sha256": "96488bade75efb401840d54d89a76b7e93d32f8fad466789c966ec1376fa89ab"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.AspNetCore.Server.dll",
+      "sha256": "6b33ed917a92bffe968de41b2e1e9c65eb71cfebffe17060a9b81e1eb725dce5"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.Core.Api.dll",
+      "sha256": "16b1ff898b9a2c1ffac0e22035c8280728967e7041bfe8a382bcb1f99a9a530b"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.Net.Client.dll",
+      "sha256": "71454959f95469ea1a4abfbbb2ccb71487f6bfe50714277e73d2f7665c89244e"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.Net.ClientFactory.dll",
+      "sha256": "52a981845704edf969120f10e6a0a65fce858adf45412b5c10571a1b07222380"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.Net.Common.dll",
+      "sha256": "2fe0acf1042d43af95cc33f610a5c7d4d70ae65e3d5f4ce8707a3e2bf95df823"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Grpc.Reflection.dll",
+      "sha256": "26603f2d1f6b1b051886738b5ffd14213be1a9defc1e8cc5f5dd788b32307a21"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Commons.UniqueIds.dll",
+      "sha256": "73db021277a5c3cc2af66a0ac117d108ec2b9f1708199984880772a575018b8e"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.EventStore.Contracts.dll",
+      "sha256": "6a94476a4e7cd59f2f3aaf02d7f508249bbdf33a012e72eb5149759aa8d8d1ab"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9534e939012269d3d8797fbc15a2e29d064ea53076d9d36a0d6e2f951a61d28d"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Component.pdb",
+      "sha256": "36efe48228915e46359b1a79a46e9b1c0e52c031d299e004a10de3e383457974"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Component.xml",
+      "sha256": "0382d8be2341e476b752cf27f077d95ca55c650286333c06c550bec719d61b3d"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr",
+      "sha256": "a91149de4c35cfc940198719ecaec6b8c76f3f9cc5edfd1eb535cdff636dc19f"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.deps.json",
+      "sha256": "e0011079fdea9939d237ab444fc2d5c09616d1db17f6b95aaa4fbd6822311d2e"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.dll",
+      "sha256": "6e285391e14e998e221b07059f83c99636d994fe566d3e02137bc9251c980aa4"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.pdb",
+      "sha256": "0f9f298c771c5a4a4df31559fd75615833f85600e589b19a193d4ad48c90f7ea"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.runtimeconfig.json",
+      "sha256": "2854c873c21edc9fa7c2056f9d4744054aeb11f009d271702daa7794b74e895f"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.staticwebassets.endpoints.json",
+      "sha256": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "b43d168f0bbc22480d39c187c41a4eb989a2620d0532a50f24dc1385399934c7"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.pdb",
+      "sha256": "cfa5ea06fd292a45240c880ff1d4add985102db65167894076ff5334f42f868b"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.xml",
+      "sha256": "de8e9cf09d574c8b0d436def8ba4c5c815291ee6be4d7e8d5f799c4753ec301c"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "aa8d43c48e85c2d762af54e95edb85c03df556821b91c7ad6c7ae4d4d6a4cc37"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Secrets.Runtime.pdb",
+      "sha256": "029f02bf8724d557576fcd7cd1fb4d55c50eb1c9b54e861484ddf1127370666d"
+    },
+    {
+      "path": "/tmp/hexalith-semantic-provider-20261023-build/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Secrets.Runtime.xml",
+      "sha256": "e3e9147678c657c7c1c58ad21c1debdfbfde0f04087feb0423dc556cbbe453e5"
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/DELIVERY.md",
+      "sha256": "c1cafb3a0cab247f24fb94ee949eb9c9264837f7c5c5011e99d6514b015a0f91"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/EVENTSTORE-HANDBACK.md",
+      "sha256": "29290c1bb1f65f1044c44a10b471a037cd789a650fb9fe1b1ad9c17a2c42068c"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/OWNER-APPROVAL.md",
+      "sha256": "00e12dadad4de7be5e4bb020017fafe54ca5d14389bac9355c0a9e5894a8218c"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/approval-packet.json",
+      "sha256": "25d935ea892d534cafa3d425333f87e623f80371026edccb8b946818f4e78dbb"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/f2-f3-schedule.json",
+      "sha256": "de48845e2128f58a5ffa1ad0c2294c49cf65bef684577e8f572ae3dd61ce26d9"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/installation.template.json",
+      "sha256": "2ffd1423b07cdf7fb792ef81b0307735327ac887075cb951c81fab8af1c96140"
+    }
+  ],
+  "context": [
+    {
+      "path": "../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md",
+      "sha256": "1d4798876cfe0082efc6c580cc90e3139680c74b3e3c362c140470375bdd3467"
+    },
+    {
+      "path": "../agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "sha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md",
+      "sha256": "c87423bf1af0757a6fb4be60b634d5a7d527458a8576573b92bfbdf6e51ca044"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-erasure-authority-2026-10-20/OWNER-APPROVAL.md",
+      "sha256": "e7a5387aff07074090f529c341484c5ffdf6f1989cf001b04d0e1920e484e692"
+    },
+    {
+      "path": "_bmad-output/specs/spec-ext-secrets-1-interaction-custody/custody-binding-contract.md",
+      "sha256": "c56bf504a546bc5d1a0bc83eb615189db0633f7d5fcc2f0bd9b7adc051dc7e40"
+    },
+    {
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-ext-protection-1-custody-2026-10-18/ARCHITECTURE-SPINE.md",
+      "sha256": "d47bf79537d02516dca56bebf1aa5783ae1cfdfb6be6622c18dbf976d8cb7d70"
+    },
+    {
+      "path": "docs/implementation/ext-secrets-1-f1-2026-10-20/f2-f3-prerequisites.md",
+      "sha256": "f2ff0ef6d54da8e84bfbab417d73b9253c477a95b1f2a52c22721788742c586a"
+    }
+  ]
+}

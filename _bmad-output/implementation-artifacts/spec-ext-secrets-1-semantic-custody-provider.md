@@ -2,7 +2,7 @@
 title: 'Implement the semantic Dapr custody provider and surviving authority'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 543ea182bd83c813609c7df0491d1419b7f1f99e
@@ -53,11 +53,11 @@ Never promote disposable models, HMAC custody, restored tombstones, successful S
 
 ## Tasks & Acceptance
 
-- [ ] New infrastructure project and scoped Runtime contract extension — implement executable semantic Dapr host, closed authentication and key-exchange framing, durable current authority/originals/native intents, real backend primitives and B0–B5 lifecycle. Exact current operation and independently signed control/observer evidence are mandatory; a caller boolean is never proof.
-- [ ] New component verification — build and exercise persistence/CAS/loss/restore/substitution/hold/original tests; test doubles are explicitly source evidence only. No synthetic test can satisfy physical qualification.
-- [ ] New approval packet — prepare exact proposed resources, operations, cost ceiling, independent observer, retention/journals and cleanup with missing account/placement/trust identities explicit. Enforce original five-epoch/two-KEK/one-authority/two-archive/two-control cap for this reference profile and one schedule/two tenants. No operation is executed.
-- [ ] New delivery report — actual source/artifact/configuration/plan/trust hashes, executable commands, precise missing installations and conditional proposed dates; distinguish available bytes from null installed facts.
-- [ ] Independently review changes and repair material findings; retain verification failures and all original journals.
+- [x] New infrastructure project and scoped Runtime contract extension — implement executable semantic Dapr host, closed authentication and key-exchange framing, durable current authority/originals/native intents, real backend primitives and B0–B5 lifecycle. Exact current operation and independently signed control/observer evidence are mandatory; a caller boolean is never proof.
+- [x] New component verification — build and exercise persistence/CAS/loss/restore/substitution/hold/original tests; test doubles are explicitly source evidence only. No synthetic test can satisfy physical qualification.
+- [x] New approval packet — prepare exact proposed resources, operations, cost ceiling, independent observer, retention/journals and cleanup with missing account/placement/trust identities explicit. Enforce original five-epoch/two-KEK/one-authority/two-archive/two-control cap for this reference profile and one schedule/two tenants. No operation is executed.
+- [x] New delivery report — actual source/artifact/configuration/plan/trust hashes, executable commands, precise missing installations and conditional proposed dates; distinguish available bytes from null installed facts.
+- [x] Independently review changes and repair material findings; retain verification failures and all original journals.
 
 Acceptance: Given the implementation, when locally verified, then actual source/component capabilities and remaining installation/physical blockers are independently reviewable, with no unsupported physical claim or consumer activation. Given missing external approval, when preparation finishes, then only a concrete bounded resource/experiment packet is submitted for approval.
 
@@ -71,6 +71,36 @@ Resume instruction (2026-10-23): finish executable key delivery, hold pin/unpin,
 
 ## Review Triage Log
 
+All three independent layers reviewed the custody-scoped since-baseline diff at `/tmp/semantic-custody-review-32307sa8/custody-scoped.diff` (SHA-256 `1b8ad409884a2aaca7caf8e2ef38a4851df82db5337d97266a8208e4a76d2ddb`). The complete since-baseline artifact is retained alongside it; unrelated concurrent changes are excluded from custody review. Every filed finding is retained separately below before grouping. Each confirmed correction concerns an existing invariant and adds no public application surface; route is patch. No frozen intent or pre-existing work is reverted.
+
+| ID / layer | Verdict / route | Evidence |
+| --- | --- | --- |
+| B1 blind | high / patch | Program checks socket existence before worker dispatch; a serving socket therefore rejects every worker action. Restrict existing socket checks to serve. |
+| B2 blind | high / patch | Profile accepts two opaque epochs for one native ARN/ID, so source deletion can also delete the successor. Require distinct native keys. |
+| B3 blind | high / patch | Profile permits a KEK protector to overlap an epoch; deleting that epoch can strand survivor KEKs. Require disjoint native identities. |
+| B4 blind | medium / patch | Empty/incomplete per-tenant epoch and KEK mappings pass profile validation, despite the required two-tenant lanes. Validate each lane before startup. |
+| B5 blind | high / patch | Worker native intents use the permission signer's key ID as ProducerIncarnation. That does not identify the worker whose buffers need closure. Bind the authenticated executor incarnation and require it in inventory. |
+| B6 blind | medium / patch | Unrestricted lease/attempt strings joined with a colon collide; duplicate delivery also lacks exact KeyUse comparison. Use the existing canonical tuple primitive and reject changed retained uses. |
+| B7 blind | medium / patch | Archive encoding reuses payloads only within one commit and rewrites every registration on later commits, causing unnecessary retained growth. Reuse immutable references from the exact preceding archive. |
+| B8 blind | high / patch | Commit extracts/writes payloads before capacity checks; an exhausted head can accumulate unselected objects. Preflight collection and bounded index capacity before any archive write. |
+| B9 blind | medium / patch | Parsed heads are reserialized for a string equality condition, so valid externally formatted enrollment heads cannot advance. Preserve the exact read attribute for CAS. |
+| B10 blind | medium / patch | Decode loses the decoded RootKey reference when validation returns false. Clear that owned allocation on rejection. |
+| E1 edge | high / patch | Independently confirms B1: an online component's socket blocks worker execution. |
+| E2 edge | high / patch | Independently confirms B2/B3: epoch/protector native aliasing can delete surviving material. |
+| E3 edge | medium / patch | Independently confirms B6 with lease/attempt pairs (a:b,c) and (a,b:c). |
+| E4 edge | medium / patch | A successor admission replaces Anchor.Admitted, making an earlier retained recorded transition unverifiable. Exact historical lookup must read its retained original without moving current authority. |
+| V1 verification | medium / patch | Filed regression evidence: all crypto/lifecycle fixtures bypass real KMS adapters, so incompatible encryption contexts or substituted native responses would escape tests. Add native API-double coverage of those actual adapters. |
+| V2 verification | medium / patch | Filed regression evidence: SDK fixture bypasses BindingService.Init/Invoke, so missing initialization would escape interoperability tests. Exercise the registered service boundary and refusal cases. |
+| V3 verification | medium / patch | Filed regression evidence: existing late-pin test is also blocked by Frozen and cannot detect removal of the pre-custody dispatch check. Exercise signed invalid reservations before a custody cycle. |
+
+Grouping for implementation: B1/E1; B2/B3/E2; B4; B5; B6/E3; B7; B8; B9; B10; E4; V1; V2; V3. No finding is deferred or silently discarded.
+
+Post-repair verification: blind hunter confirmed all ten original findings resolved; edge-case hunter confirmed all four resolved; verification reviewer confirmed all three gaps resolved and the additional archive/native-store tests meaningful. These follow-ups were static inspections. The parent executed the final tests below. No concrete new defect was filed and nothing was deferred. The final lifecycle fixture additionally exercises two destruction targets, a surviving third root, ordered complete receipts and no partial reservation when the second target is pinned.
+
 ## Verification
 
 Build/test the isolated infrastructure component with pinned dependencies and fresh external outputs. Retain exact commands and hashes. Run targeted existing Runtime wire/codec tests when changed. Review the scoped diff and audit every matrix row. No owner Live/Full command runs.
+
+Final executed verification: both fresh builds passed with zero warnings/errors; 18/18 executable component scenarios and 103/103 targeted Runtime tests passed, with no failure/skip/unrun. Commands, retained logs, source/artifact/configuration/plan hashes and the per-row matrix audit are in the [final verification report](../../docs/implementation/ext-secrets-1-semantic-provider-2026-10-22/FINAL-VERIFICATION.md). Production source did not drift during verification; the intentional final two-target fixture extension was rebuilt and rerun successfully.
+
+Completion is the bounded source/component delivery and approval preparation described by this spec. EventStore source integration, private issuers, installations and physical qualification remain explicitly blocked; no accepted target, provisioning/experiment permission, dependency availability or cohort execution is created by this status.

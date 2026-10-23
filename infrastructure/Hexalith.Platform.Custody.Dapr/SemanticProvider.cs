@@ -39,6 +39,26 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             return Reply() with { Page = new(header, page.Offset, slice.Length, CustodyJson.Hash(slice), slice) };
         }
         if (request.Transition is not null) return await TransitionAsync(request, current, token);
+        if (e.Operation == "lookup-original" && request.Registration is { } requestedRegistration && request.Lifecycle is null)
+        {
+            // This lookup has the registration projection's digest, not the ephemeral wrap-input
+            // digest. Authenticate both against the independently retained original before returning
+            // its unchanged receipt. Lookup never reconstructs a root or invokes a native method.
+            if (!current.Checkpoint.Registrations.TryGetValue(requestedRegistration.OpaqueWrappedKeyReference, out var stored)
+                || stored.Registration != requestedRegistration
+                || !current.Checkpoint.Originals.TryGetValue(requestedRegistration.OperationId, out var wrapOriginal)
+                || wrapOriginal.Operation != "wrap" || wrapOriginal.Manifest is not null || wrapOriginal.Response is null)
+                throw new AuthorityUnavailableException("Exact original wrapped registration unavailable.");
+            var original = CustodyJson.Read<CustodyBindingResponseV1>(await store.ReadImmutableAsync(wrapOriginal.Response, token));
+            if (original.ProtocolVersion != CustodyBindingContract.Protocol || original.OperationId != requestedRegistration.OperationId
+                || original.RequestDigest != wrapOriginal.RequestDigest || original.WrappedRegistration != requestedRegistration
+                || original.OriginalHeader is not null || original.Lifecycle is not null || original.Current is not null
+                || original.TransitionVerified is not null || original.Page is not null || original.ManifestStatus is not null
+                || original.KeyDelivery is not null || original.Delivery is not null || original.TransitionProof is not null)
+                throw new AuthorityUnavailableException("Retained wrap original binding mismatch.");
+            return Reply() with { Lifecycle = new(requestedRegistration.Identity, e.OperationId, e.RequestDigest,
+                CustodyKeyLifecycleStatus.Wrapped, requestedRegistration.WrapReceiptId, null) };
+        }
         if (e.Operation != "unwrap" && current.Checkpoint.Originals.TryGetValue(e.OperationId, out var originalOperation))
         {
             if (originalOperation.RequestDigest != e.RequestDigest) throw new AuthorityUnavailableException("Permanent original operation conflict.");
@@ -119,8 +139,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 await store.CommitAsync(current, next, token);
                 return response;
             default:
-                // Pin awaits cross-owner atomic dispatch handoff. Key paths await real holder admission/execution.
-                // Anchor scope revisions cannot be reinterpreted as tenant-head revisions.
+                // No unsupported effect is inferred from a successful transport/authentication check.
                 throw new AuthorityUnavailableException("This effect has no qualified implementation and remains closed.");
         }
     }
@@ -136,6 +155,16 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         bool predecessor = anchor.Revision == t.ExpectedRevision && anchor.Digest == t.PredecessorDigest;
         bool read = e.Operation is "verify-transition" or "lookup-transition";
         bool accepted = atTarget && same;
+        string originalId = "anchor:" + CustodyJson.Hash(PlatformCanonicalBytes.Components([t.ScopeId, t.TargetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture), t.TargetDigest]));
+        bool historical = false;
+        if (anchor.Revision >= t.TargetRevision && current.Checkpoint.Originals.TryGetValue(originalId, out var original)
+            && original.Operation == "admit-transition" && original.RequestDigest == e.RequestDigest && original.Response is not null)
+        {
+            var retained = CustodyBindingContract.Decode(await store.ReadImmutableAsync(original.Response, token));
+            historical = retained?.Transition is { } exact && CustodyJson.Bytes(exact).AsSpan().SequenceEqual(CustodyJson.Bytes(t));
+            if (!historical) throw new AuthorityUnavailableException("Retained owner transition substitution.");
+            accepted = true;
+        }
         if (!read && !accepted)
         {
             if (!verifier.Qualified(current) || e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest
@@ -145,7 +174,6 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             if (e.Operation == "admit-transition")
             {
                 if (next.Originals.Count >= 10000) throw new AuthorityUnavailableException("Owner original capacity exhausted.");
-                string originalId = "anchor:" + CustodyJson.Hash(PlatformCanonicalBytes.Components([t.ScopeId, t.TargetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture), t.TargetDigest]));
                 if (!next.Originals.ContainsKey(originalId))
                 {
                     var retained = await store.PutImmutableAsync(CustodyJson.Bytes(request), "journal", token);
@@ -158,7 +186,8 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             else throw new AuthorityUnavailableException("Record/recover requires the retained admitted original.");
             await store.CommitAsync(current, next, token); accepted = true;
         }
-        var observed = read || !accepted ? anchor : e.Operation == "admit-transition" ? anchor : anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
+        var observed = historical ? anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest }
+            : read || !accepted ? anchor : e.Operation == "admit-transition" ? anchor : anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
         var proof = new CustodyBindingTransitionProofV1(e.RequestAttemptId, e.Challenge, profile.Enrollment, e.Operation, t.ScopeId,
             observed.Revision, observed.Digest, CustodyJson.Hash(CustodyJson.Bytes(t)),
             accepted ? observed.Revision == t.TargetRevision ? "Recorded" : "Admitted" : "Unknown", []);

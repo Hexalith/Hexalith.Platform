@@ -1,0 +1,30 @@
+{
+  "classification": "IndependentStaticReviewWithExecutedParentVerification",
+  "initialFindings": {
+    "blind_hunter": 10,
+    "edge_case_hunter": 4,
+    "verification_gap": 3
+  },
+  "triage": "Every original finding has a separate verdict in the spec; duplicates grouped after verdicts.",
+  "followup": {
+    "blind_hunter": "All ten resolved; no concrete new defect.",
+    "edge_case_hunter": "All four resolved; historical verification does not make old state current.",
+    "verification_gap": "All three resolved; actual adapter/service/hold and additional archive tests are meaningful."
+  },
+  "deferred": [],
+  "parentExecuted": {
+    "component": {
+      "passed": 18,
+      "failed": 0
+    },
+    "runtime": {
+      "passed": 103,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  },
+  "nativeExecuted": false,
+  "physicalQualified": false,
+  "cohortExecuted": false
+}

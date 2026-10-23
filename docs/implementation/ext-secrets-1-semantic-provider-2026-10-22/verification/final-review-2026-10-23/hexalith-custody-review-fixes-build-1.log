@@ -1,0 +1,18 @@
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj (in 207 ms).
+  Restored /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj (in 207 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 207 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 207 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 207 ms).
+  Hexalith.Platform.Custody -> /tmp/hexalith-custody-review-fixes-20261023/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> /tmp/hexalith-custody-review-fixes-20261023/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.Component.dll
+  Hexalith.Platform.Secrets.Runtime -> /tmp/hexalith-custody-review-fixes-20261023/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Secrets.Runtime.dll
+/home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs(53,5): error CA1416: This call site is reachable on all platforms. 'File.SetUnixFileMode(string, UnixFileMode)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj]
+
+Build FAILED.
+
+/home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs(53,5): error CA1416: This call site is reachable on all platforms. 'File.SetUnixFileMode(string, UnixFileMode)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:02.10
