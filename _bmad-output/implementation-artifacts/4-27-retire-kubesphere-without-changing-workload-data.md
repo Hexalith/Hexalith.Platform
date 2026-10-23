@@ -585,3 +585,42 @@ host's root-owned multicall env hardlink; revision 4 corrects only that runtime
 inventory check, with private/tool single-link checks retained. Actual positive,
 wrong-anchor and fabricated-qualification checks pass. Adapter/input bytes and
 all 164 offline unit results are unchanged. No source/provider action followed.
+
+
+## Authenticated execution boundary implementation — 2026-10-23
+
+The [execution-boundary interface and fixture handoff](../../eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md) and
+[separate implementation verification](evidence/epic-4/4-27/20261023-recovery-execution-boundary/verification.json) record the new dormant native
+execution, independent immutable-readback and original-buffer policy
+authentication drivers. The new suites pass 37 offline cases: all four runner
+operations compose with inert transports and distinct cluster/principal
+bindings; real local processes exercise sealed fd 3, partial/stalled I/O,
+bounded cancellation, and a pre-existing public OpenSSH signature verifies
+without key generation or signing. The unchanged common/telemetry suites pass
+all 164 cases (94 + 70); no skips or external test requests occurred.
+
+These results qualify the documented fixtures only. Concrete independent
+provider transport, actual credential/authority and runtime qualification,
+store/system and isolated-target drivers, proof-consumer integration and actual
+recovery/resume/cleanup acceptance remain prerequisites. Public activation
+stays disabled; no credentials or production endpoints were accessed and no
+recovery, infrastructure, signing or upload action occurred. The historical
+prefixes, revision-4 packet, signed originals, frozen intent and retained scoped
+decisions remain preserved; new evidence is bound separately. **4.27 remains
+in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
+
+Parent verification found and corrected child credential delivery when the parent already owns fd 3. The final new suite has 38 cases; the occupied-descriptor regression also verifies the parent descriptor and its flags remain unchanged. Earlier 37-case results remain the initial implementation checkpoint.
+
+
+## Reviewed execution-boundary correction — 2026-10-23
+
+The [separate corrected-source verification](evidence/epic-4/4-27/20261023-recovery-execution-boundary/review-1/verification.json) records 61 new driver cases and all 164 unchanged adapter cases passing (225 total, no skips). The initial 38-case packet remains byte-preserved as historical fixture evidence. The corrected boundary atomically owns each exchange, requires completed authentication, rechecks drain/fence freshness at dispatch, poisons cancellation and verifies time after final scans and cleanup. Process fixtures cover closed standard descriptors, credential fd 3, signal-before-reap ownership, independent cleanup and construction failures; wire/envelope tests check exact native mutation preconditions and original synthetic credentials.
+
+These are offline fixtures only. Public live activation remains disabled. No actual credential, source/provider operation, signature generation or new recovery RID/policy was used. Concrete provider/system/target/proof-consumer integration and actual authority/runtime/recovery qualification remain open. Original signed material, revision-4 packet, approved frozen intent, measured historical files and prior handoff prefixes remain preserved. **4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
+
+
+## Final offline execution-boundary verification — 2026-10-23
+
+The [final patched-source receipt](evidence/epic-4/4-27/20261023-recovery-execution-boundary/review-1/final/verification.json) binds 233 passing tests (69 driver cases plus 164 unchanged adapter cases), no skips, and positive detection of in-memory wrong-bearer/empty-CA regressions. Both earlier candidate packets retain their original bytes and meaning. Immutable request dispatch, independently checked input bytes, local request/policy budgets, credential/CA wire assertions, cancellation ownership and cleanup regressions are verified offline.
+
+The approved offline continuation is complete. Public activation stays disabled. Concrete independent provider transport, applicable native credential delivery, full system/target/proof-consumer integration and actual authority/runtime/recovery qualification remain open; non-daemonizing tools require separate qualification. No actual credential, production/provider request, signing, upload, recovery, retirement, upgrade or deployment occurred. Original Story 4.27 and sprint remain **in-progress**; 4.1 stays **closed** and Timesheets 3.6 **open/FAIL**.

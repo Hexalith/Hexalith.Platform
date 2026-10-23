@@ -1,0 +1,216 @@
+{
+  "actualCredentialAccess": false,
+  "approvedContinuationStatus": "complete-offline-only",
+  "baselineCommit": "858d02c05eb837a4ee85c5215430201f117dc24d",
+  "dependentGates": {
+    "4.1": "closed",
+    "Timesheets3.6": "open/FAIL"
+  },
+  "handoffWrittenAt": "2026-10-23T16:15:16.788597+00:00",
+  "kind": "hexalith.story427.execution-boundary-reviewed-fixture-verification",
+  "matrixCoverage": {
+    "Composition": "test_all_operation_compositions_preserve_existing_runner_semantics_and_distinct_clusters",
+    "Identity drift": "test_wrong_request_tool_dependency_cluster_ca_principal_and_custody_refuse_before_dispatch",
+    "Immutable input": "test_each_unknown_or_changed_metadata_field_stops_and_closes_handle",
+    "Live request": "test_public_live_config_and_activation_selectors_refuse_before_access",
+    "Partial I/O": "test_output_and_error_overflow_stall_drip_stdin_and_descendant_pipes_are_bounded; test_uncertain_patch_keeps_intents_and_prior_results_without_retry_or_compensation",
+    "Signature": "test_real_verifier_accepts_public_openssh_vector_and_rejects_changed_message_signature_and_namespace; test_scope_dates_decisions_checked_after_verification_and_no_reserialization"
+  },
+  "mutationVerification": {
+    "bytes": 598,
+    "file": "mutation-verification.json",
+    "sha256": "6f9412cd0e1e2c66095062c8e8c2b96cc7c738b569ddc6f0aef63cf5772ddea7"
+  },
+  "newOperationalPolicyAllocated": false,
+  "newRecoveryRidAllocated": false,
+  "newSuiteExternalRequests": 0,
+  "newTestCount": 69,
+  "observedAt": "2026-10-23T16:12:48.257140+00:00",
+  "operationalQualification": null,
+  "originalCandidate": {
+    "bytes": 7330,
+    "file": "../../verification.json",
+    "sha256": "3277fa0346573a420300f110dedbedd43355a311d8ae3994b129aea329ce0c0a"
+  },
+  "policyCompositionVerifier": "explicitly-inert-unqualified-fixture",
+  "preservation": {
+    "allHashesAndLengthsMatch": true,
+    "appendOnlyPrefixes": {
+      "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": true,
+      "eng/cluster-management/NEXT-OPERATOR-ACTION.md": true
+    },
+    "approvedFrozenBlockUnchanged": true,
+    "checkedFiles": 157,
+    "historicalEntriesUnavailableAtBaseline": 1,
+    "inventory": {
+      "bytes": 38177,
+      "sha256": "f3bf15f40229a4fb592f232a0852914615f939511fa9c4f60f9922c67844fdf3"
+    },
+    "scope": "Only inventoried files, original document prefixes, frozen intent and preserved prior candidate; no whole-history or submodule claim."
+  },
+  "priorCandidate": {
+    "bytes": 8039,
+    "file": "../verification.json",
+    "meaning": "Earlier corrected-source fixture results; subsequently reviewed and patched, not operational authority.",
+    "sha256": "ce30e360f4fdef717bf3b6c22342cc9467c43aeadb3dbf9bfaa855113572a24a"
+  },
+  "publicActivation": "disabled-before-configuration-access",
+  "realCryptographicFixture": "Existing public OpenSSH Ed25519 regression signature; positive verification and message/signature/namespace/trust negatives; no policy qualification.",
+  "recoveryAcceptance": null,
+  "remaining": [
+    "Concrete independent provider transport",
+    "Native client-certificate delivery if required by the retained source profile",
+    "Actual credential custody/IAM and current authority/grant lineage",
+    "Complete tool/runtime dependency and cancellation qualification",
+    "Store/system orchestration including telemetry PostgreSQL",
+    "Isolated capture/restore target drivers and ownership identities",
+    "Proof-consumer integration",
+    "Fresh exact attempt/policy bindings and operational approval",
+    "Actual recovery, source resume, target cleanup, preservation and signed/non-dry/manual acceptance"
+  ],
+  "review": {
+    "allRetainedCorrectionsVerified": true,
+    "correctedCurrentScopeFindings": 29,
+    "deferredPreExisting": 2,
+    "parentAdditionalChecks": "descriptor construction and final semantic budget checks covered",
+    "rejectedLow": 3,
+    "reportedFindings": 34,
+    "rounds": 2
+  },
+  "reviewIteration": 2,
+  "schemaVersion": 1,
+  "signingOrKeyGeneration": false,
+  "sourceFiles": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 61132,
+      "sha256": "21b9a2a12113d130c633dab2d363bac5fa7ab110694e9542046b0a443a9d2e6b"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 76017,
+      "sha256": "48691a02ff934de34aca639caa596b9396f59693427d39b18edc3dc5a9ce4108"
+    },
+    "eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md": {
+      "bytes": 16234,
+      "sha256": "5af2ae74e9a18274e171e42b9b3b20425cae3ee25285dc0ee2048212b455b8ba"
+    },
+    "eng/recovery-preparation/_execution_boundary_fixtures.py": {
+      "bytes": 16716,
+      "sha256": "bda405ff4288fb0ad903526a13b0297d3e479e48820f772555d5dd6fe263cfbb"
+    },
+    "eng/recovery-preparation/immutable_readback_driver.py": {
+      "bytes": 9112,
+      "sha256": "d651a673a1bd591f59bcd59ee25acb43c72a5e79597bcfcae470f5f3ee17e000"
+    },
+    "eng/recovery-preparation/policy_authentication_driver.py": {
+      "bytes": 8223,
+      "sha256": "b4cf0239b2733b95939e92f54eb8b94a9bae3c33236153f04fc4bf38a4c48038"
+    },
+    "eng/recovery-preparation/recovery_execution_boundary.py": {
+      "bytes": 33549,
+      "sha256": "580950e40b326441b37ad8f01cfa6e59ce56e015274755d20d84578bc0c5c4bb"
+    },
+    "eng/recovery-preparation/test_immutable_readback_driver.py": {
+      "bytes": 11754,
+      "sha256": "d87ae73d25afe673c2fc2b67bee63ec764768b16632e7af90142e0821db5cc1a"
+    },
+    "eng/recovery-preparation/test_policy_authentication_driver.py": {
+      "bytes": 12724,
+      "sha256": "8aab4de5900fb9c3b43881505a516a464cfb5aa10818a66e037ace4692470a83"
+    },
+    "eng/recovery-preparation/test_recovery_execution_boundary.py": {
+      "bytes": 62176,
+      "sha256": "4b52a79b9b491137ce287c4aafac8c2a02fb43082c6a07116949c88ee19e3c5f"
+    }
+  },
+  "sourceProviderOperationalActions": false,
+  "storyStatus": "in-progress",
+  "testSuites": {
+    "test_immutable_readback_driver.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_immutable_readback_driver.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 2337,
+        "file": "test_immutable_readback_driver.py.txt",
+        "sha256": "9953c2485e816908f4d079cdd274a807bd45f53068564f0a2c44ef72d45e322f"
+      },
+      "skipped": 0,
+      "tests": 12
+    },
+    "test_policy_authentication_driver.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_policy_authentication_driver.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 2485,
+        "file": "test_policy_authentication_driver.py.txt",
+        "sha256": "382f40cb444c68674ad4aa530a46fb21fff91ee78c535c4272364d1353c32918"
+      },
+      "skipped": 0,
+      "tests": 13
+    },
+    "test_recovery_adapters.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_recovery_adapters.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 15164,
+        "file": "test_recovery_adapters.py.txt",
+        "sha256": "e3a75c91a0c99828ad3dc9ecd5e9a3b41eebe1d8926e8eaf6f4164416cd08ce4"
+      },
+      "skipped": 0,
+      "tests": 94
+    },
+    "test_recovery_execution_boundary.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_recovery_execution_boundary.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 8435,
+        "file": "test_recovery_execution_boundary.py.txt",
+        "sha256": "c15a5119830d5b1cfcfeb5f01f5a6c39bdbeaafe520090e5e0b2c77f6463340c"
+      },
+      "skipped": 0,
+      "tests": 44
+    },
+    "test_telemetry_postgres_adapter.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 12899,
+        "file": "test_telemetry_postgres_adapter.py.txt",
+        "sha256": "eb97642a621bda7a6a34be4fa6852849db0a2e63d12a635df893481094bbf019"
+      },
+      "skipped": 0,
+      "tests": 70
+    }
+  },
+  "unchangedRegressionTestCount": 164,
+  "verificationCheckoutHead": "f7c62ca1007f5218dc52d6856395324704564e3a"
+}

@@ -1,0 +1,201 @@
+{
+  "actualCredentialAccess": false,
+  "baselineCommit": "858d02c05eb837a4ee85c5215430201f117dc24d",
+  "dependentGates": {
+    "4.1": "closed",
+    "Timesheets3.6": "open/FAIL"
+  },
+  "handoffWrittenAt": "2026-10-23T15:35:27.241087+00:00",
+  "kind": "hexalith.story427.execution-boundary-reviewed-fixture-verification",
+  "matrixCoverage": {
+    "Composition": "test_all_operation_compositions_preserve_existing_runner_semantics_and_distinct_clusters",
+    "Identity drift": "test_wrong_request_tool_dependency_cluster_ca_principal_and_custody_refuse_before_dispatch",
+    "Immutable input": "test_each_unknown_or_changed_metadata_field_stops_and_closes_handle",
+    "Live request": "test_public_live_config_and_activation_selectors_refuse_before_access",
+    "Partial I/O": "test_output_and_error_overflow_stall_drip_stdin_and_descendant_pipes_are_bounded; test_uncertain_patch_keeps_intents_and_prior_results_without_retry_or_compensation",
+    "Signature": "test_real_verifier_accepts_public_openssh_vector_and_rejects_changed_message_signature_and_namespace; test_scope_dates_decisions_checked_after_verification_and_no_reserialization"
+  },
+  "newSuiteExternalRequests": 0,
+  "newTestCount": 61,
+  "observedAt": "2026-10-23T15:35:27.238131+00:00",
+  "operationalQualification": null,
+  "policyCompositionVerifier": "explicitly-inert-unqualified-fixture",
+  "preservation": {
+    "allHashesAndLengthsMatch": true,
+    "appendOnlyPrefixes": {
+      "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": true,
+      "eng/cluster-management/NEXT-OPERATOR-ACTION.md": true
+    },
+    "approvedFrozenBlockUnchanged": true,
+    "checkedFiles": 157,
+    "historicalEntriesUnavailableAtBaseline": 1,
+    "inventory": {
+      "bytes": 38177,
+      "sha256": "f3bf15f40229a4fb592f232a0852914615f939511fa9c4f60f9922c67844fdf3"
+    },
+    "scope": "Only inventoried files, original document prefixes, frozen intent and preserved prior candidate; no whole-history or submodule claim."
+  },
+  "priorCandidate": {
+    "bytes": 7330,
+    "file": "../verification.json",
+    "meaning": "Earlier unqualified fixture results; subsequently reviewed and corrected, not current authority.",
+    "sha256": "3277fa0346573a420300f110dedbedd43355a311d8ae3994b129aea329ce0c0a"
+  },
+  "publicActivation": "disabled-before-configuration-access",
+  "realCryptographicFixture": "Existing public OpenSSH Ed25519 regression signature; positive verification and message/signature/namespace/trust negatives; no policy qualification.",
+  "recoveryAcceptance": null,
+  "remaining": [
+    "Concrete independent provider transport",
+    "Actual credential custody/IAM and current authority/grant lineage",
+    "Complete tool/runtime dependency and cancellation qualification",
+    "Store/system orchestration including telemetry PostgreSQL",
+    "Isolated capture/restore target drivers and ownership identities",
+    "Proof-consumer integration",
+    "Fresh exact attempt/policy bindings and operational approval",
+    "Actual recovery, source resume, target cleanup, preservation and signed/non-dry/manual acceptance"
+  ],
+  "review": {
+    "deferred": 0,
+    "firstPassFindings": 19,
+    "independentFollowupReview": "pending",
+    "iteration": 1,
+    "lowFindingsRejected": 1,
+    "verifiedCorrectionSetImplemented": true
+  },
+  "reviewIteration": 1,
+  "schemaVersion": 1,
+  "signingOrKeyGeneration": false,
+  "sourceFiles": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 59957,
+      "sha256": "2342ab1eb204946549b65f4d67dc85fcbcce7243e32ddb2ee62e2798eb944230"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 74798,
+      "sha256": "024511ea3015be21894cee4abad3d707e0e26530d2a1cf706822c094dd1994b9"
+    },
+    "eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md": {
+      "bytes": 15116,
+      "sha256": "2f0fdcd0f5afbd5d380c423007c0fd79e5e541bd84fd3ad4daa415cb046061a3"
+    },
+    "eng/recovery-preparation/_execution_boundary_fixtures.py": {
+      "bytes": 16716,
+      "sha256": "bda405ff4288fb0ad903526a13b0297d3e479e48820f772555d5dd6fe263cfbb"
+    },
+    "eng/recovery-preparation/immutable_readback_driver.py": {
+      "bytes": 7601,
+      "sha256": "7b627affc51335792e98b7ecaec316c5647ade5c7cce690c35b0dc91e67ad75d"
+    },
+    "eng/recovery-preparation/policy_authentication_driver.py": {
+      "bytes": 6952,
+      "sha256": "3b9418d2384c39a29f9a900a1c6809efd5488f5fb435d584971b8fa00bb861ff"
+    },
+    "eng/recovery-preparation/recovery_execution_boundary.py": {
+      "bytes": 32012,
+      "sha256": "4c7a73a0d07d5e1639882e4b9ea6908d0f6a44f7e7bb2249a898f5347e112b6b"
+    },
+    "eng/recovery-preparation/test_immutable_readback_driver.py": {
+      "bytes": 9349,
+      "sha256": "7466d5d90b58bb1a587fd20329cb51fbeb3d3fd6972ebcc18e5763b5669c976c"
+    },
+    "eng/recovery-preparation/test_policy_authentication_driver.py": {
+      "bytes": 10801,
+      "sha256": "4f18f52fc0b13a2d528bdd1f686498371cdc9f27f6ca67c14d1ac793c719d63e"
+    },
+    "eng/recovery-preparation/test_recovery_execution_boundary.py": {
+      "bytes": 51146,
+      "sha256": "209c75248a0ebd287f9b52a7a9aba533ddaa7b42cacb924d8ff43ee87407ff07"
+    }
+  },
+  "sourceProviderOperationalActions": false,
+  "storyStatus": "in-progress",
+  "testSuites": {
+    "test_immutable_readback_driver.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_immutable_readback_driver.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 1941,
+        "file": "test_immutable_readback_driver.py.txt",
+        "sha256": "1653bb998263890706906cdf242aa09deef12797bea66a4c02731374141814a1"
+      },
+      "skipped": 0,
+      "tests": 10
+    },
+    "test_policy_authentication_driver.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_policy_authentication_driver.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 2285,
+        "file": "test_policy_authentication_driver.py.txt",
+        "sha256": "f975ad7460b2124bab5e8697464f8088470540fea692636f69a637be1bcc445d"
+      },
+      "skipped": 0,
+      "tests": 12
+    },
+    "test_recovery_adapters.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_recovery_adapters.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 15164,
+        "file": "test_recovery_adapters.py.txt",
+        "sha256": "24c4a1e429ac4df7d1170f7ec2afba99c8c2bcbb01ce6374f03ae14d5904a41c"
+      },
+      "skipped": 0,
+      "tests": 94
+    },
+    "test_recovery_execution_boundary.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_recovery_execution_boundary.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 7420,
+        "file": "test_recovery_execution_boundary.py.txt",
+        "sha256": "2eebcf884a9f8dfb82317f223fe067067ed8be0a0c9c39314dce8fa1968f607d"
+      },
+      "skipped": 0,
+      "tests": 39
+    },
+    "test_telemetry_postgres_adapter.py": {
+      "command": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+      ],
+      "exitCode": 0,
+      "log": {
+        "bytes": 12899,
+        "file": "test_telemetry_postgres_adapter.py.txt",
+        "sha256": "21a5f40392917c7237d774430d4d712db83438d2e0fe87342d02eaebb6c981df"
+      },
+      "skipped": 0,
+      "tests": 70
+    }
+  },
+  "unchangedRegressionTestCount": 164,
+  "verificationCheckoutHead": "f7c62ca1007f5218dc52d6856395324704564e3a"
+}

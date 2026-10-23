@@ -1209,3 +1209,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
   summary: Assert retained diagnostics through the actual retention composition registration.
   evidence: R3-V2: filed regression gap in concurrent diagnostics work: dedicated tests register capture manually; the real ComposeRun retention test publishes BeforeStart but only checks arguments/environment. Observe console and final state files through production registration.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-recovery-execution-boundary.md`
+  summary: Preserve a failed composition workspace even when its diagnostic marker cannot be written.
+  evidence: Pre-existing concurrent composition change, outside Story 4.27 driver implementation. PlatformCompositionWorkspace.MarkFailed suppresses IOException/UnauthorizedAccessException, while Dispose checks only FailureMarker existence; an existing failed workspace with a failed marker write is therefore deleted. Retain failure state independently and cover a write-refused existing workspace.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-recovery-execution-boundary.md`
+  summary: Resolve the actual Platform checkout root when a nested Works AppHost also has normal AppHost markers.
+  evidence: Pre-existing concurrent composition change, outside Story 4.27 driver implementation. WorksPreviewModel.LocatePlatformRoot chooses the nearest apphost.cs/aspire.config.json ancestor; nested markers can exclude only the nested host and permit certificate storage elsewhere inside the real checkout. Resolve checkout identity independently and cover the nested-marker case.
