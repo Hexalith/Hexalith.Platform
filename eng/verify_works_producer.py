@@ -29,6 +29,33 @@ def source_files(root):
     return paths
 
 
+def builds_input_snapshot(root):
+    """Bind the first catalog imported by the SDK's ordered central-props lookup, including its resolved target."""
+    root = Path(root).resolve()
+    # EventStore's Directory.Build.props and Directory.Packages.props use these paths in this order.
+    # They do not consume Platform's HexalithBuildsRoot environment override.
+    candidates = (root / "references/Hexalith.Builds", root.parent / "references/Hexalith.Builds",
+                  root.parent.parent / "references/Hexalith.Builds")
+    selected = next((path for path in candidates if (path / "Props/Directory.Packages.props").is_file()), None)
+    if selected is None:
+        raise ValueError("Selected SDK root lacks its imported Builds catalog")
+    resolved = selected.resolve()
+    props = resolved / "Props"
+    if props.is_symlink():
+        raise ValueError("Selected SDK Builds inputs contain a symbolic link: Props")
+    inventory = {}
+    for path in sorted(props.rglob("*")):
+        relative = path.relative_to(resolved)
+        if {"bin", "obj"}.intersection(relative.parts):
+            continue
+        if path.is_symlink():
+            raise ValueError("Selected SDK Builds inputs contain a symbolic link: " + str(relative))
+        if path.is_file():
+            inventory[relative.as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return {"selectedRoot": str(selected), "resolvedRoot": str(resolved), "sourceFiles": inventory,
+            "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+
+
 def runtime_source_snapshot(root):
     """Record actual runtime bytes; an archive directory has no invented checkout commit."""
     root = Path(root).resolve()
@@ -38,7 +65,18 @@ def runtime_source_snapshot(root):
     paths += [root / name for name in BUILD_FILES]
     inventory = {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}
     return {"root": str(root), "commit": None, "provenance": "explicit-source-root; requires-public-producer-qualification",
-            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest(),
+            "buildsInputs": builds_input_snapshot(root)}
+
+
+def require_unchanged_runtime_source(snapshot):
+    """Re-read complete runtime and imported Builds memberships, bytes and link targets against their baseline."""
+    current = runtime_source_snapshot(snapshot["root"])
+    if current["sourceFiles"] != snapshot["sourceFiles"] or current["inventorySha256"] != snapshot["inventorySha256"]:
+        raise ValueError("Selected SDK source changed during execution: " + snapshot["root"])
+    if current["buildsInputs"] != snapshot["buildsInputs"]:
+        raise ValueError("Selected SDK Builds inputs changed during execution: " + snapshot["root"])
+    return current
 
 
 def _fetch(url):
@@ -136,9 +174,7 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
         expected["src/" + name] = entry["sha"]
     if len(expected) <= len(BUILD_FILES):
         raise ValueError("Official producer has no runtime source files")
-    current = runtime_source_snapshot(snapshot["root"])
-    if current["sourceFiles"] != snapshot["sourceFiles"] or current["inventorySha256"] != snapshot["inventorySha256"]:
-        raise ValueError("Selected SDK source changed during public producer qualification")
+    current = require_unchanged_runtime_source(snapshot)
     actual = {}
     for name in current["sourceFiles"]:
         data = (Path(current["root"]) / name).read_bytes()
@@ -151,4 +187,5 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
     return {"repositoryCommit": commit, "repositoryUrl": REPOSITORY_URL, "checkoutCommit": None,
             "sourceInventorySha256": current["inventorySha256"], "matchesPublishedProducer": True,
             "qualification": "official-commit-tree-and-exact-git-blob-identities", "runtimeFileCount": len(actual),
-            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt], "namedTag": named_tag}
+            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt], "namedTag": named_tag,
+            "buildsInputs": current["buildsInputs"]}

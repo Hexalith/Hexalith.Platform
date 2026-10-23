@@ -10,6 +10,17 @@ Both profiles execute the same live recovery, callback, historical lifecycle/sec
 
 Agents Full component probes receive the same selected configuration through `verify-agents-host.sh` and `ext-host-1/verify_full.py`. Their custody and EventStore guard `dotnet test` calls explicitly select that configuration and its matching source/package flags; CI never relies on the implicit Debug default. Component evidence records the actual configuration and dependency mode, and each suite retains its exact `command.json`. Release attempt identity includes that mode, so a retained Debug component attempt cannot qualify a Release request. The default Debug attempt identity remains compatible with historical local attempts. These nested helpers and their regression tests are explicitly hash-bound before execution and checked at final closure.
 
+Fixture binding includes the complete IntegrationTests and Testing project inputs, copied golden resources,
+and root runner configuration, excluding generated outputs relative to each owning source tree and refusing
+symbolic links. The complete consumer output, including copied resources, runner settings and compiled test
+dependencies, is bound before supporting tests execute and re-enumerated at final closure. SDK source
+exports separately record the selected Builds catalog location, its resolved target and all Props bytes;
+these inputs are checked again during producer qualification and final closure. Final closure executes
+regressions for source membership, artifacts, helpers, fixtures and host port reservations. Verifier commands
+run in owned POSIX process groups; timeout, cancellation and completion clean surviving members of that group.
+Processes that explicitly detach into another session require their caller's separate lifecycle cleanup.
+These deterministic controls do not replace a fresh complete live qualification.
+
 The Works-owned CI bootstrap supplies root-declared dependencies and an exact public SDK export to this verifier; it owns no topology or proof implementation. For isolated execution, `works_host_snapshot.create(..., upstream_origin=...)` additionally binds the original owner working overlay to a run-owned Git origin and its execution export. Admission and final closure verify all three ordinary source inventories and selected revisions, while the existing dependency-link/catalog binding remains on the isolated origin/export. Any relevant original-owner, isolated-origin or execution-export drift refuses qualification. Default snapshot callers retain their existing binding contract.
 
 The qualification records below preserve their exact historical revisions and profiles. New source or profile changes require fresh complete runs; these older packets are not relabeled.

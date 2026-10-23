@@ -1,5 +1,6 @@
 """Evidence gates reject successful exits with incomplete or substituted execution."""
 import copy
+from contextlib import ExitStack
 import hashlib
 import http.client
 import io
@@ -202,6 +203,43 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     self.assertNotEqual(before['sourceFiles'][str(path)], after['sourceFiles'][str(path)])
                     path.write_text(original)
 
+    def test_linked_fixture_sources_remain_bound_below_output_named_workspace_parents(self):
+        for parent in ('bin', 'obj'):
+            with self.subTest(parent=parent):
+                workspace = self.directory() / parent
+                works, platform = workspace / 'works', workspace / 'platform'
+                identity = works / 'references/Hexalith.Platform/src/Hexalith.Platform.Identity'
+                composition = platform / 'src/Hexalith.Platform.Composition'
+                parties = works / 'references/Hexalith.Parties'
+                for directory, name in ((identity, 'Identity'), (composition, 'Composition')):
+                    directory.mkdir(parents=True)
+                    (directory / 'Adapter.cs').write_text('// source')
+                    (directory / ('Hexalith.Platform.' + name + '.csproj')).write_text('<Project />')
+                    for output in ('bin', 'obj'):
+                        (directory / output).mkdir()
+                        (directory / output / 'Generated.cs').write_text('// excluded')
+                (composition / 'Hexalith.Platform.Composition.csproj').write_text(
+                    '<Project><Compile Include="../../Linked.cs" /><Compile Include="../../obj/Generated.cs" /></Project>')
+                (platform / 'Linked.cs').write_text('// linked')
+                project = works / 'tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj'
+                project.parent.mkdir(parents=True)
+                project.write_text('<Project><Compile Include="$(HexalithPartiesRoot)/src/Authority.cs" />'
+                                   '<Compile Include="$(HexalithPartiesRoot)/obj/Generated.cs" /></Project>')
+                authority = parties / 'src/Authority.cs'
+                authority.parent.mkdir(parents=True)
+                authority.write_text('// authority')
+                with patch('verify_works_host.subprocess.check_output', return_value='a' * 40 + '\n'):
+                    before = verify_works_host.linked_fixture_snapshot(works, platform)
+                    expected = {str(identity / 'Adapter.cs'), str(identity / 'Hexalith.Platform.Identity.csproj'),
+                                str(composition / 'Adapter.cs'), str(composition / 'Hexalith.Platform.Composition.csproj'),
+                                str(platform / 'Linked.cs'), str(authority)}
+                    self.assertEqual(set(before['sourceFiles']), expected)
+                    for path in (identity / 'Adapter.cs', composition / 'Adapter.cs', platform / 'Linked.cs', authority):
+                        original = path.read_text()
+                        path.write_text('// changed')
+                        self.assertNotEqual(before, verify_works_host.linked_fixture_snapshot(works, platform))
+                        path.write_text(original)
+
     def test_ci_execution_records_release_checks_without_claiming_absent_debug_success(self):
         works = self.directory()
         artifacts = self.directory() / 'evidence'
@@ -224,7 +262,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.linked_fixture_snapshot', return_value={}) as linked, \
                 patch('verify_works_host.sha256', return_value=DIGEST), \
                 patch('verify_works_host.require_passed_tests', return_value={'total': 1, 'passed': 1, 'skipped': 0}), \
-                patch('verify_works_host.subprocess.run', side_effect=command):
+                patch('verify_works_host.run_owned', side_effect=command):
             self.assertEqual(verify_works_host.run_verification(args), 1)
         # The Composition exception is bound from the Platform tree passed to the consumer as PlatformWorksRuntimeRoot.
         platform = Path(verify_works_host.__file__).resolve().parents[1]
@@ -243,8 +281,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
 
-    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None):
-        """Drive the real gate sequence through toolchain qualification; stop at the first live command."""
+    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None):
+        """Drive the real gate sequence through toolchain qualification and optionally final acceptance."""
         works = self.directory()
         for _, _, _, consumer in ROWS.values():
             if not consumer.startswith('P/'):
@@ -264,8 +302,17 @@ class WorksEvidenceGateTests(unittest.TestCase):
 
         def command(arguments, **kwargs):
             name = Path(kwargs['stdout'].name).stem
-            if verify_works_host.target_commands([{'name': name}]):
+            if verify_works_host.target_commands([{'name': name}]) and not finish:
                 raise RuntimeError('stopped at live lane ' + name)
+            if name == 'works-consumer-release':
+                output = artifacts / 'consumer/bin/Hexalith.Works.IntegrationTests/release'
+                output.mkdir(parents=True)
+                for suffix in ('', '.dll', '.deps.json', '.runtimeconfig.json'):
+                    (output / ('Hexalith.Works.IntegrationTests' + suffix)).write_text('qualified output')
+            if name == 'works-consumer-supporting':
+                consumer = json.loads((artifacts / 'ledger.json').read_text())['consumer']
+                self.assertEqual(Path(consumer['root']), Path(arguments[0]).parent)
+                self.assertEqual(len(consumer['artifacts']), 4)
             if name == 'agents-full-refusal':
                 kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
                 return subprocess.CompletedProcess(arguments, 1)
@@ -277,7 +324,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
             binding = prepare(directory, path, port)
             return binding | ({'runtimeSha256': isolated_hash} if isolated_hash else {})
 
-        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+        with ExitStack() as final_checks, \
+                patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
                 patch('verify_works_host.require_consumer_pins', return_value={}), \
                 patch('verify_works_host.require_host_package_pins', return_value={}), \
                 patch('verify_works_host.source_snapshot', return_value=snapshot), \
@@ -286,18 +334,43 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
                 patch('verify_works_host.sha256', return_value=DIGEST), \
                 patch('verify_works_host.require_passed_tests', return_value={'total': 1, 'passed': 1, 'skipped': 0}), \
-                patch('verify_works_host.require_identical_runtime', return_value={}), \
                 patch('verify_works_host.published_producers', return_value=producers), \
                 patch('verify_works_host.require_published_runtime_source', return_value={}), \
-                patch('verify_works_host.retained_works_host.prepare', return_value={}), \
+                patch('verify_works_host.ET.parse', return_value=verify_works_host.ET.ElementTree(verify_works_host.ET.fromstring(
+                    '<Project><HexalithAspireHostingDaprVersion>1.0.0</HexalithAspireHostingDaprVersion></Project>'))), \
                 patch('verify_works_host.select_control_plane_ports', return_value={'sentry': 41001, 'placement': 41002, 'scheduler': 41003}), \
                 patch('verify_works_host.isolated_daprd.prepare', side_effect=isolated), \
                 patch('works_toolchain.load', return_value=pins), \
                 patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
                 patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
-                patch('verify_works_host.subprocess.run', side_effect=command):
-            self.assertEqual(verify_works_host.run_verification(args), 1)
+                patch('verify_works_host.run_owned', side_effect=command):
+            for target, value in (('require_identical_runtime', {}), ('retained_works_host.prepare', {}),
+                                  ('verify_host_records', []), ('isolated_daprd.verify', {})):
+                final_checks.enter_context(patch('verify_works_host.' + target, return_value=value))
+            closure = final_checks.enter_context(patch('verify_works_host.require_unchanged_inputs', side_effect=final_error))
+            outcomes = final_checks.enter_context(patch('verify_works_host.bind_persisted_outcomes', return_value={'complete': True}))
+            self.assertEqual(verify_works_host.run_verification(args), 0 if finish and final_error is None else 1)
+            if finish:
+                closure.assert_called_once()
+                self.assertEqual(closure.call_args.args[1:4], (works, platform, None))
+                if final_error is None:
+                    outcomes.assert_called_once()
+                else:
+                    outcomes.assert_not_called()
         return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
+
+    def test_complete_pipeline_checks_final_inputs_before_accepting_persisted_evidence(self):
+        ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', finish=True)
+        self.assertEqual(ledger['status'], 'passed-disposable-synthetic-parity-and-rollback')
+        self.assertEqual(ledger['rollback'], {'complete': True})
+        self.assertNotIn('failure', ledger)
+
+    def test_final_input_refusal_prevents_pipeline_acceptance_and_persisted_evidence_binding(self):
+        ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', finish=True,
+                                                final_error=ValueError('Final source input drift'))
+        self.assertEqual(ledger['status'], 'incomplete')
+        self.assertEqual(ledger['failure'], 'Final source input drift')
+        self.assertFalse(ledger['rollback']['complete'])
 
     def test_unqualified_runtime_refuses_before_any_live_platform_lane(self):
         ledger, artifacts, _ = self.run_until_live_lanes(b'unqualified runtime')
@@ -1010,7 +1083,57 @@ class WorksEvidenceGateTests(unittest.TestCase):
         (works / 'src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs').write_text('// paths')
         self.assertEqual(sorted(fixture_sources(works)), ['src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs',
                                                           'tests/Hexalith.Works.IntegrationTests/Nested/WorksSdkProofProducer.cs',
-                                                          'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs'])
+                                                          'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs',
+                                                          'tests/Hexalith.Works.IntegrationTests/notes.md'])
+
+    def test_fixture_projects_runner_helpers_and_copied_resources_are_bound(self):
+        works = self.directory() / 'bin/obj/works'
+        names = ['tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj',
+                 'tests/Hexalith.Works.IntegrationTests/SchemaEvolution/Golden/event.json',
+                 'tests/Hexalith.Works.IntegrationTests/xunit.runner.json',
+                 'tests/Hexalith.Works.Testing/WorkItemStateBuilder.cs',
+                 'tests/Hexalith.Works.Testing/Hexalith.Works.Testing.csproj', 'xunit.runner.json']
+        for name in [*names, 'tests/Hexalith.Works.Testing/obj/Generated.cs',
+                     'tests/Hexalith.Works.IntegrationTests/bin/copied.json']:
+            path = works / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('original fixture')
+        baseline = fixture_sources(works)
+        self.assertEqual(set(baseline), set(names))
+        for name in names:
+            path = works / name
+            for change in ('mutation', 'removal'):
+                with self.subTest(name=name, change=change):
+                    if change == 'removal':
+                        path.unlink()
+                    else:
+                        path.write_text('changed fixture')
+                    with self.assertRaisesRegex(ValueError, 'Qualified fixtures changed'):
+                        require_unchanged_fixture_sources(works, baseline)
+                    path.write_text('original fixture')
+        for name in ('tests/Hexalith.Works.Testing/Added.cs',
+                     'tests/Hexalith.Works.IntegrationTests/SchemaEvolution/Golden/Added.json'):
+            path = works / name
+            path.write_text('new input')
+            with self.assertRaisesRegex(ValueError, 'Qualified fixtures changed'):
+                require_unchanged_fixture_sources(works, baseline)
+            path.unlink()
+        require_unchanged_fixture_sources(works, baseline)
+
+    def test_fixture_inventory_refuses_linked_source_files_and_directories(self):
+        works = self.directory()
+        root = works / 'tests/Hexalith.Works.IntegrationTests'
+        root.mkdir(parents=True)
+        outside = self.directory()
+        (outside / 'Fixture.cs').write_text('// linked fixture')
+        for kind in ('file', 'directory'):
+            link = root / ('Linked.cs' if kind == 'file' else 'Linked')
+            target = outside / 'Fixture.cs' if kind == 'file' else outside
+            with self.subTest(kind=kind):
+                link.symlink_to(target, target_is_directory=kind == 'directory')
+                with self.assertRaisesRegex(ValueError, 'symbolic link'):
+                    fixture_sources(works)
+                link.unlink()
 
     def test_fixture_inventory_refuses_additions_removals_and_changed_bytes(self):
         works = self.directory()
@@ -1122,7 +1245,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
                 patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
                 patch('verify_works_host.sha256', return_value=DIGEST), \
-                patch('verify_works_host.subprocess.run', side_effect=command):
+                patch('verify_works_host.run_owned', side_effect=command):
             self.assertEqual(verify_works_host.run_verification(args), 1)
         self.assertIn('pre-command inventory', json.loads((artifacts / 'ledger.json').read_text())['failure'])
 
@@ -1146,8 +1269,10 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     patch('verify_works_host.require_host_package_pins', return_value={}), \
                     patch('verify_works_host.source_snapshot', return_value=snapshot | {'root': str(works)}, side_effect=failures.get('snapshot')), \
                     patch('verify_works_host.fixture_sources', return_value={}), \
+                    patch('verify_works_host.canonical_source_snapshot', return_value=snapshot | {'root': str(works)}), \
+                    patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
                     patch('verify_works_host.sha256', return_value=DIGEST), \
-                    patch('verify_works_host.subprocess.run', side_effect=failures.get('run', AssertionError('no command expected'))):
+                    patch('verify_works_host.run_owned', side_effect=failures.get('run', AssertionError('no command expected'))):
                 self.assertEqual(verify_works_host.run_verification(args), 1)
                 ledger = json.loads((artifacts / 'ledger.json').read_text())
                 self.assertEqual(ledger['failure'], expected)

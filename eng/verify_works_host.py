@@ -18,8 +18,10 @@ import isolated_daprd
 import retained_works_host
 import works_host_snapshot
 import works_toolchain
+from works_verifier_command import run_owned
 
-from verify_works_producer import qualify_runtime_source, runtime_source_snapshot, source_files
+from verify_works_producer import (builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
+                                   runtime_source_snapshot, source_files)
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 VERIFIER_HELPERS = (
@@ -30,6 +32,7 @@ VERIFIER_HELPERS = (
     "test_verify_platform_pins.py", "test_local_dapr_security_cleanup.py", "test-local-dapr-security.py",
     "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
     "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py",
+    "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
 )
 
 ROWS = {
@@ -216,12 +219,25 @@ def require_identical_runtime(host_runtime, consumer_runtime):
 
 
 def fixture_sources(works):
-    """Bind every Works IntegrationTests C# source outside build outputs, plus the retained host's path resolver."""
-    root = works / "tests/Hexalith.Works.IntegrationTests"
-    files = [path for path in root.rglob("*.cs") if not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
-    resolver = works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs"
-    if resolver.is_file():
-        files.append(resolver)
+    """Bind test projects, helper sources, copied resources and runner settings outside build outputs."""
+    works = Path(works)
+    files = []
+    for name in ("Hexalith.Works.IntegrationTests", "Hexalith.Works.Testing"):
+        root = works / "tests" / name
+        if root.is_symlink():
+            raise ValueError("Fixture input cannot be a symbolic link: " + str(root))
+        for path in root.rglob("*"):
+            if {"bin", "obj", "__pycache__", "TestResults"}.intersection(path.relative_to(root).parts):
+                continue
+            if path.is_symlink():
+                raise ValueError("Fixture input cannot be a symbolic link: " + str(path))
+            if path.is_file():
+                files.append(path)
+    for path in (works / "xunit.runner.json", works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs"):
+        if path.is_symlink():
+            raise ValueError("Fixture input cannot be a symbolic link: " + str(path))
+        if path.is_file():
+            files.append(path)
     return {str(path.relative_to(works)): sha256(path) for path in sorted(files)}
 
 
@@ -833,8 +849,11 @@ def source_snapshot(root, allow_archive=False, producer=False):
     except (subprocess.CalledProcessError, ValueError):
         if not allow_archive:
             raise ValueError("Source directory requires an owning Git checkout unless an explicit archive root was selected: " + str(root))
-    return {"root": str(root), "commit": commit, "provenance": "owning Git checkout" if commit else "explicit filesystem archive; no Git HEAD",
-            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+    snapshot = {"root": str(root), "commit": commit, "provenance": "owning Git checkout" if commit else "explicit filesystem archive; no Git HEAD",
+                "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+    if producer:
+        snapshot["buildsInputs"] = builds_input_snapshot(root)
+    return snapshot
 
 
 def require_published_runtime_source(snapshot, published_producers):
@@ -962,22 +981,92 @@ def linked_fixture_snapshot(works, composition_root):
     parties = works / "references/Hexalith.Parties"
     identity = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
     composition = Path(composition_root) / "src/Hexalith.Platform.Composition"
-    files = set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}
-    files |= set(composition.rglob("*.cs")) | {composition / "Hexalith.Platform.Composition.csproj"}
+    def inputs(paths, owner):
+        return {path for path in paths if not {"bin", "obj"}.intersection(path.relative_to(owner).parts)}
+
+    files = inputs(set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}, identity)
+    files |= inputs(set(composition.rglob("*.cs")) | {composition / "Hexalith.Platform.Composition.csproj"}, composition)
     # Composition also compiles explicitly linked Platform sources (for example ../../DaprSelfHostedMtls.cs).
     for item in ET.parse(composition / "Hexalith.Platform.Composition.csproj").getroot().iter("Compile"):
         include = item.get("Include", "")
         if include and "$(" not in include and "*" not in include:
-            files.add(Path(os.path.normpath(composition / include.replace("\\", "/"))))
+            files |= inputs({Path(os.path.normpath(composition / include.replace("\\", "/")))}, Path(composition_root))
     project = works / "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj"
     for item in ET.parse(project).getroot().iter("Compile"):
         include = item.get("Include", "")
         if include.startswith("$(HexalithPartiesRoot)/"):
-            files.add(parties / include.removeprefix("$(HexalithPartiesRoot)/"))
-    return {"sourceFiles": {str(path): sha256(path) for path in sorted(files) if not {"bin", "obj"}.intersection(path.parts)},
+            files |= inputs({parties / include.removeprefix("$(HexalithPartiesRoot)/")}, parties)
+    return {"sourceFiles": {str(path): sha256(path) for path in sorted(files)},
             "compositionRoot": str(composition_root),
             "commits": {str(root): subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
                         for root in (parties, identity.parents[1])}}
+
+
+def platform_consumer_sources(platform):
+    """Bind complete source membership as well as bytes for the Platform consumer."""
+    paths = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
+             *sorted((platform / "src").rglob("*.csproj"))]
+    return {str(path.relative_to(platform)): sha256(path) for path in paths
+            if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
+
+
+def consumer_artifacts(root):
+    """Bind the executed consumer, copied resources, runner configuration and compiled test dependencies."""
+    root = Path(root)
+    if not root.is_dir() or root.is_symlink():
+        raise ValueError("Consumer artifacts require an ordinary output directory: " + str(root))
+    name = "Hexalith.Works.IntegrationTests"
+    paths = {root / (name + suffix) for suffix in ("", ".dll", ".deps.json", ".runtimeconfig.json")}
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise ValueError("Consumer artifact cannot be a symbolic link: " + str(path))
+        if path.is_file():
+            paths.add(path)
+    return {str(path): sha256(path) for path in sorted(paths)}
+
+
+def require_unchanged_inputs(summary, works, platform, snapshot_manifest, ephemeral_range, reserved_ranges):
+    """Recheck every qualified input and artifact before accepting live evidence."""
+    for source in summary["sourceProducers"].values():
+        current = require_unchanged_runtime_source(source) if source["commit"] is None else source_snapshot(source["root"], producer=True)
+        if current != source:
+            raise ValueError("A qualified SDK source graph changed during execution: " + source["root"])
+    works_source = source_snapshot(works)
+    if works_source["commit"] != summary["worksConsumerSource"]["commit"] or works_source["inventorySha256"] != summary["worksConsumerSource"]["inventorySha256"]:
+        raise ValueError("The qualified Works consumer source graph changed during execution")
+    if platform_consumer_sources(platform) != summary["platformConsumerSources"]:
+        raise ValueError("The qualified Platform consumer source membership or bytes changed during execution")
+    for binary, digest in summary["runtimeArtifacts"].items():
+        if sha256(binary) != digest:
+            raise ValueError("A qualified runtime artifact changed during execution: " + binary)
+    if consumer_artifacts(summary["consumer"]["root"]) != summary["consumer"]["artifacts"]:
+        raise ValueError("A qualified Works consumer artifact membership or bytes changed during execution")
+    for binary, digest in summary["platformAdapterAssemblies"].items():
+        if sha256(binary) != digest:
+            raise ValueError("A qualified Platform adapter assembly changed during execution: " + binary)
+    if sha256(Path(__file__)) != summary["verifierSha256"]:
+        raise ValueError("The verifier changed during execution")
+    for name, digest in summary["verifierHelpers"].items():
+        if sha256(Path(__file__).parent / name) != digest:
+            raise ValueError("A verifier helper changed during execution: " + name)
+    require_unchanged_fixture_sources(works, summary["fixtureSources"])
+    retained_works_host.verify(summary["retainedHostSource"])
+    if linked_fixture_snapshot(works, platform) != summary["linkedFixtureSources"]:
+        raise ValueError("Explicit linked test-only Identity or Parties fixture sources changed during execution")
+    for name, baseline in summary["canonicalSources"].items():
+        if name == "Platform" and snapshot_manifest:
+            observed = works_host_snapshot.verify(snapshot_manifest, platform)
+            if observed["manifestSha256"] != summary["platformSourceSnapshot"]["manifestSha256"]:
+                raise ValueError("The Platform snapshot manifest changed during execution")
+            summary["platformSourceSnapshotFinal"] = observed
+            continue
+        current = canonical_source_snapshot(Path(baseline["root"]))
+        if current != baseline:
+            raise ValueError("Canonical " + name + " revision or ordinary build/source/test/verifier inputs changed during execution")
+    if host_ephemeral_port_range() != ephemeral_range:
+        raise ValueError("The host ephemeral application-port range changed during execution")
+    if host_reserved_port_ranges() != reserved_ranges:
+        raise ValueError("The host reserved-port ranges changed during execution")
 
 
 def run_verification(args):
@@ -1013,7 +1102,7 @@ def run_verification(args):
         save()
         print(name + ": " + str(log), flush=True)
         with log.open("w") as output:
-            result = subprocess.run(entry["command"], cwd=cwd, env=environment, stdout=output, stderr=subprocess.STDOUT, timeout=1800)
+            result = run_owned(entry["command"], cwd=cwd, env=environment, stdout=output, timeout=1800)
         entry["exitCode"] = result.returncode
         entry["sha256"] = sha256(log)
         save()
@@ -1041,10 +1130,7 @@ def run_verification(args):
         summary["sourceProducers"] = {runtime_source_key: runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk, producer=True)}
         if profile["name"] == "full":
             summary["sourceProducers"]["platformDebugSdk"] = runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore", producer=True)
-        platform_consumers = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
-                              *sorted((platform / "src").rglob("*.csproj"))]
-        summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
-            if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
+        summary["platformConsumerSources"] = platform_consumer_sources(platform)
         summary["worksConsumerSource"] = source_snapshot(works)
         summary["fixtureSources"] = fixture_sources(works)
         snapshot_manifest = getattr(args, "platform_source_binding", None)
@@ -1058,7 +1144,7 @@ def run_verification(args):
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs"], platform / "eng")
         run("component-evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_full", "test_prepare_acceptance"], platform / "eng/ext-host-1")
         agents_configuration = ["--configuration", profile["agentsConfiguration"]]
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", *agents_configuration, "--artifacts-path", str(artifacts / "agents-full")],
@@ -1097,6 +1183,9 @@ def run_verification(args):
         host_runtime = host_output / "bin/release" / (PLATFORM_RUNTIME + ".dll")
         summary["platformRuntimeIdentity"] = require_identical_runtime(
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))
+        consumer_directory = consumer_output / "bin/Hexalith.Works.IntegrationTests/release"
+        summary["consumer"] = {"configuration": "Release", "root": str(consumer_directory),
+                               "artifacts": consumer_artifacts(consumer_directory)}
         save()
         supporting_xml = artifacts / "works-consumer-supporting.xml"
         supporting_classes = list(SUPPORTING_CLASSES)
@@ -1109,10 +1198,6 @@ def run_verification(args):
         if "Debug" in profile["consumerConfigurations"]:
             summary["worksDebugSdkAssemblies"] = {path.name: sha256(path) for path in
                 sorted((artifacts / "consumer-debug/bin/Hexalith.Works.IntegrationTests/debug").glob("Hexalith.EventStore.*.dll"))}
-        consumer_directory = consumer_output / "bin/Hexalith.Works.IntegrationTests/release"
-        summary["consumer"] = {"configuration": "Release", "artifacts": {str(path): sha256(path) for path in
-            [consumer_directory / "Hexalith.Works.IntegrationTests", consumer_directory / "Hexalith.Works.IntegrationTests.dll",
-             consumer_directory / "Hexalith.Works.IntegrationTests.deps.json", consumer_directory / "Hexalith.Works.IntegrationTests.runtimeconfig.json"]}}
         assembly = host_output / "bin/release/apphost.dll"
         summary["host"] = {"source": str(platform / "apphost.cs"), "sourceSha256": sha256(platform / "apphost.cs"),
                            "assembly": str(assembly), "sha256": sha256(assembly), "configuration": "Release"}
@@ -1258,48 +1343,7 @@ def run_verification(args):
         summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
             row["targetCommands"] = target_commands(summary["commands"])
-        for source in summary["sourceProducers"].values():
-            current = runtime_source_snapshot(source["root"]) if source["commit"] is None else source_snapshot(source["root"], producer=True)
-            if current["commit"] != source["commit"] or current["inventorySha256"] != source["inventorySha256"]:
-                raise ValueError("A qualified SDK source graph changed during execution: " + source["root"])
-        works_source = source_snapshot(works)
-        if works_source["commit"] != summary["worksConsumerSource"]["commit"] or works_source["inventorySha256"] != summary["worksConsumerSource"]["inventorySha256"]:
-            raise ValueError("The qualified Works consumer source graph changed during execution")
-        for source, digest in summary["platformConsumerSources"].items():
-            if sha256(platform / source) != digest:
-                raise ValueError("A qualified Platform consumer changed during execution: " + source)
-        for binary, digest in summary["runtimeArtifacts"].items():
-            if sha256(binary) != digest:
-                raise ValueError("A qualified runtime artifact changed during execution: " + binary)
-        for binary, digest in summary["consumer"]["artifacts"].items():
-            if sha256(binary) != digest:
-                raise ValueError("A qualified Works consumer artifact changed during execution: " + binary)
-        for binary, digest in summary["platformAdapterAssemblies"].items():
-            if sha256(binary) != digest:
-                raise ValueError("A qualified Platform adapter assembly changed during execution: " + binary)
-        if sha256(Path(__file__)) != summary["verifierSha256"]:
-            raise ValueError("The verifier changed during execution")
-        for name, digest in summary["verifierHelpers"].items():
-            if sha256(Path(__file__).parent / name) != digest:
-                raise ValueError("A verifier helper changed during execution: " + name)
-        require_unchanged_fixture_sources(works, summary["fixtureSources"])
-        retained_works_host.verify(summary["retainedHostSource"])
-        if linked_fixture_snapshot(works, platform) != summary["linkedFixtureSources"]:
-            raise ValueError("Explicit linked test-only Identity or Parties fixture sources changed during execution")
-        for name, baseline in summary["canonicalSources"].items():
-            if name == "Platform" and snapshot_manifest:
-                observed = works_host_snapshot.verify(snapshot_manifest, platform)
-                if observed["manifestSha256"] != summary["platformSourceSnapshot"]["manifestSha256"]:
-                    raise ValueError("The Platform snapshot manifest changed during execution")
-                summary["platformSourceSnapshotFinal"] = observed
-                continue
-            current = canonical_source_snapshot(Path(baseline["root"]))
-            if current != baseline:
-                raise ValueError("Canonical " + name + " revision or ordinary build/source/test/verifier inputs changed during execution")
-        if host_ephemeral_port_range() != ephemeral_range:
-            raise ValueError("The host ephemeral application-port range changed during execution")
-        if host_reserved_port_ranges() != reserved_ranges:
-            raise ValueError("The host reserved-port ranges changed during execution")
+        require_unchanged_inputs(summary, works, platform, snapshot_manifest, ephemeral_range, reserved_ranges)
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0

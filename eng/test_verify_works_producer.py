@@ -1,11 +1,15 @@
 """Proof fixtures reject source substitution, incomplete inventories and foreign producer authority."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from verify_works_producer import API, COMMITS_API, BUILD_FILES, REPOSITORY_URL, TAG_REFS_API, TAGS_API, qualify_runtime_source, runtime_source_snapshot
+from verify_works_producer import (API, COMMITS_API, BUILD_FILES, REPOSITORY_URL, TAG_REFS_API, TAGS_API,
+                                   builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
+                                   runtime_source_snapshot)
 
 COMMIT = "a" * 40
 SOURCE_TREE = "b" * 40
@@ -22,6 +26,10 @@ class ProducerQualificationTests(unittest.TestCase):
         (self.root / "src/Example").mkdir(parents=True)
         for name in [*BUILD_FILES, "src/Example/Example.cs", "src/Example/Example.csproj"]:
             (self.root / name).write_bytes((name + "\n").encode())
+        self.builds = self.root / "references/Hexalith.Builds"
+        (self.builds / "Props").mkdir(parents=True)
+        (self.builds / "Props/Directory.Packages.props").write_bytes(b"<Project />\n")
+        (self.builds / "Props/Hexalith.Build.props").write_bytes(b"<Project />\n")
         entry = self.entry
         self.documents = {
             COMMITS_API + COMMIT: {"sha": COMMIT, "tree": {"sha": ROOT_TREE}},
@@ -52,6 +60,84 @@ class ProducerQualificationTests(unittest.TestCase):
         self.assertIsNone(result["checkoutCommit"])
         self.assertEqual(5, result["runtimeFileCount"])
         self.assertEqual(2, len(result["officialTrees"]))
+        self.assertEqual(result["buildsInputs"], builds_input_snapshot(self.root))
+        self.assertFalse(any(name.startswith("references/") for name in runtime_source_snapshot(self.root)["sourceFiles"]))
+
+    def test_builds_props_changed_added_and_removed_after_snapshot_are_rejected(self):
+        for kind in ("changed", "added", "removed"):
+            with self.subTest(kind=kind):
+                snapshot = runtime_source_snapshot(self.root)
+                path = self.builds / ("Props/Added.props" if kind == "added" else "Props/Hexalith.Build.props")
+                original = path.read_bytes() if path.exists() else None
+                if kind == "removed":
+                    path.unlink()
+                else:
+                    path.write_bytes(b"<Project changed='true' />\n")
+                with self.assertRaisesRegex(ValueError, "SDK Builds inputs changed during"):
+                    require_unchanged_runtime_source(snapshot)
+                with self.assertRaisesRegex(ValueError, "SDK Builds inputs changed during"):
+                    qualify_runtime_source(snapshot, self.producers, self.fetch)
+                if original is None:
+                    path.unlink()
+                else:
+                    path.write_bytes(original)
+                self.assertEqual(snapshot, require_unchanged_runtime_source(snapshot))
+
+    def test_retargeted_catalog_link_is_rejected_even_with_identical_props(self):
+        selected = self.root / "references/Hexalith.Builds"
+        original = self.root / "first-builds"
+        replacement = self.root / "second-builds"
+        selected.rename(original)
+        (replacement / "Props").mkdir(parents=True)
+        for path in (original / "Props").iterdir():
+            (replacement / "Props" / path.name).write_bytes(path.read_bytes())
+        selected.symlink_to(original, target_is_directory=True)
+        snapshot = runtime_source_snapshot(self.root)
+        selected.unlink()
+        selected.symlink_to(replacement, target_is_directory=True)
+        self.assertEqual(snapshot["buildsInputs"]["sourceFiles"], builds_input_snapshot(self.root)["sourceFiles"])
+        with self.assertRaisesRegex(ValueError, "SDK Builds inputs changed during"):
+            require_unchanged_runtime_source(snapshot)
+
+    def test_sdk_catalog_lookup_uses_import_order_and_ignores_unconsumed_platform_override(self):
+        workspace = self.root / "workspace"
+        sdk = workspace / "nested/references/Hexalith.EventStore"
+        sdk.mkdir(parents=True)
+        candidates = (sdk / "references/Hexalith.Builds", sdk.parent / "references/Hexalith.Builds",
+                      sdk.parent.parent / "references/Hexalith.Builds")
+        for catalog in reversed(candidates):
+            (catalog / "Props").mkdir(parents=True)
+            (catalog / "Props/Directory.Packages.props").write_text("<Project />")
+            self.assertEqual(str(catalog), builds_input_snapshot(sdk)["selectedRoot"])
+        with patch.dict(os.environ, {"HexalithBuildsRoot": str(self.builds)}):
+            self.assertEqual(str(candidates[0]), builds_input_snapshot(sdk)["selectedRoot"])
+        for index, candidate in enumerate(candidates[:-1]):
+            (candidate / "Props/Directory.Packages.props").unlink()
+            self.assertEqual(str(candidates[index + 1]), builds_input_snapshot(sdk)["selectedRoot"])
+
+    def test_missing_sdk_catalog_refuses_snapshot(self):
+        (self.builds / "Props/Directory.Packages.props").unlink()
+        with self.assertRaisesRegex(ValueError, "lacks its imported Builds catalog"):
+            runtime_source_snapshot(self.root)
+
+    def test_catalog_outside_sdk_import_locations_is_refused(self):
+        sdk = self.root / "workspace/nested/references/Hexalith.EventStore"
+        sdk.mkdir(parents=True)
+        unconsumed = sdk.parent.parent.parent / "references/Hexalith.Builds/Props/Directory.Packages.props"
+        unconsumed.parent.mkdir(parents=True)
+        unconsumed.write_text("<Project />")
+        with self.assertRaisesRegex(ValueError, "lacks its imported Builds catalog"):
+            builds_input_snapshot(sdk)
+
+    def test_builds_outputs_are_excluded_and_nested_links_are_refused(self):
+        snapshot = runtime_source_snapshot(self.root)
+        (self.builds / "Props/obj").mkdir()
+        (self.builds / "Props/obj/Generated.props").write_text("generated")
+        self.assertEqual(snapshot, require_unchanged_runtime_source(snapshot))
+        link = self.builds / "Props/Linked.props"
+        link.symlink_to(self.builds / "Props/Hexalith.Build.props")
+        with self.assertRaisesRegex(ValueError, "Builds inputs contain a symbolic link"):
+            require_unchanged_runtime_source(snapshot)
 
     def test_modified_added_and_missing_runtime_files_are_rejected(self):
         for kind in ["modified", "added", "missing"]:
