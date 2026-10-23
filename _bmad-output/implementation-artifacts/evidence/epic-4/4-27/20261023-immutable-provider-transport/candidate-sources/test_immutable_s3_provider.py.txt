@@ -1,0 +1,729 @@
+#!/usr/bin/env python3
+"""Synthetic S3 wire/stream tests. No credentials, configuration or live TLS."""
+import hashlib
+import hmac
+import importlib.util
+import io
+from contextlib import redirect_stdout
+from dataclasses import replace
+from datetime import datetime, timezone
+from http.client import parse_headers
+from pathlib import Path
+import socket
+import ssl
+import sys
+import tempfile
+import time
+import unittest
+from unittest.mock import patch
+from urllib.parse import quote, parse_qsl, urlsplit
+
+_spec = importlib.util.spec_from_file_location('s3_fixture_support', Path(__file__).with_name('_execution_boundary_fixtures.py'))
+f = importlib.util.module_from_spec(_spec)
+sys.modules[_spec.name] = f
+_spec.loader.exec_module(f)
+b, a, s3 = f.b, f.a, f.immutable
+
+# Deliberately public synthetic values, never discovered from the environment.
+ACCESS = 'SYNTHETIC-READER'
+SECRET = 'synthetic-only+/secret-key'
+SECRET_RAW = a.canonical({'accessKeyId': ACCESS, 'secretAccessKey': SECRET})
+ENDPOINT = 'https://s3.fr-par.scw.cloud'
+REGION = 'fr-par'
+STORE = 'hexalith-recovery-points'
+
+
+def binding(reader, writer=None, endpoint=ENDPOINT, ca=f.CA_SOURCE):
+    writer = writer or f.credential('synthetic-writer', reader.binding.audience)
+    return s3.ProviderBinding(reader.binding.audience, endpoint, a.digest(ca), reader.binding,
+        writer.binding.principal, writer.binding.identity_sha256,
+        writer.binding.custody_sha256, writer.binding.secret_sha256)
+
+
+def retention_xml(artifact, *, instant=None):
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<Retention xmlns="http://s3.amazonaws.com/doc/2006-03-01/">'
+        '<Mode>COMPLIANCE</Mode><RetainUntilDate>' + (instant or artifact.retain_until) +
+        '</RetainUntilDate></Retention>').encode('ascii')
+
+
+def http(body, headers, status='200 OK'):
+    return ('HTTP/1.1 ' + status + '\r\n' + ''.join(k + ': ' + str(v) + '\r\n'
+        for k, v in headers) + '\r\n').encode('ascii') + body
+
+
+def object_headers(artifact):
+    return [('Content-Length', artifact.size), ('x-amz-version-id', artifact.version),
+        ('x-amz-server-side-encryption', 'AES256'), ('x-amz-object-lock-mode', 'COMPLIANCE'),
+        ('x-amz-object-lock-retain-until-date', artifact.retain_until)]
+
+
+def responses(artifact, body):
+    xml = retention_xml(artifact)
+    return [http(body, object_headers(artifact)),
+        http(xml, [('Content-Length', len(xml)), ('Content-Type', 'application/xml')])]
+
+
+def oracle_signature(wire, secret=SECRET):
+    """Independent wire parser/canonicalizer; never calls provider sign/encode.
+
+    urllib determines path/query escaping and http.client determines headers.
+    The test constructs canonical bytes from the request that was actually sent.
+    This oracle also checks the empty-body digest and signed-header membership.
+    """
+    first, rest = bytes(wire).split(b'\r\n', 1)
+    method, target, protocol = first.decode('ascii').split(' ')
+    assert protocol == 'HTTP/1.1' and method == 'GET' and rest.endswith(b'\r\n\r\n')
+    headers = parse_headers(io.BytesIO(rest))
+    authorization = headers['Authorization']
+    algorithm, fields = authorization.split(' ', 1)
+    parts = dict(field.split('=', 1) for field in fields.split(', '))
+    access, day, region, service, terminal = parts['Credential'].split('/')
+    assert algorithm == 'AWS4-HMAC-SHA256' and access == ACCESS
+    assert region == REGION and service == 's3' and terminal == 'aws4_request'
+    assert headers['x-amz-date'] == '20261023T120000Z' and day == '20261023'
+    assert headers['x-amz-content-sha256'] == hashlib.sha256(b'').hexdigest()
+    assert parts['SignedHeaders'] == 'host;x-amz-content-sha256;x-amz-date'
+    target_parts = urlsplit(target)
+    # The wire must already be canonical. '+' cannot mean a query space.
+    query = '&'.join('='.join(quote(part, safe='-_.~') for part in pair)
+        for pair in sorted(parse_qsl(target_parts.query, keep_blank_values=True)))
+    assert target_parts.query == query
+    canonical_headers = ''.join(name + ':' + ' '.join(headers[name].split()) + '\n'
+        for name in parts['SignedHeaders'].split(';'))
+    canonical_request = '\n'.join((method, target_parts.path, query, canonical_headers,
+        parts['SignedHeaders'], hashlib.sha256(b'').hexdigest())).encode('ascii')
+    scope = '/'.join((day, region, service, terminal))
+    to_sign = '\n'.join((algorithm, headers['x-amz-date'], scope,
+        hashlib.sha256(canonical_request).hexdigest())).encode('ascii')
+    signing_key = ('AWS4' + secret).encode('ascii')
+    for scope_part in scope.split('/'):
+        signing_key = hmac.new(signing_key, scope_part.encode('ascii'), hashlib.sha256).digest()
+    expected = hmac.new(signing_key, to_sign, hashlib.sha256).hexdigest()
+    return expected, parts['Signature']
+
+
+class Stream(f.Stream):
+    def __init__(self, raw, **kwargs):
+        super().__init__(raw, **kwargs)
+        self.close_calls = 0
+        self.actions = []
+        self.hook = None
+
+    def action(self, operation, value=None):
+        self.actions.append((operation, value))
+        if self.hook:
+            return self.hook(operation, value)
+
+    def settimeout(self, value):
+        self.action('settimeout', value)
+        return super().settimeout(value)
+
+    def send(self, raw):
+        self.action('send', raw)
+        return super().send(raw)
+
+    def recv(self, maximum):
+        self.action('recv', maximum)
+        return super().recv(maximum)
+
+    def close(self):
+        self.close_calls += 1
+        self.action('close')
+        return super().close()
+
+
+class Connector:
+    def __init__(self, streams):
+        self.streams = streams
+        self.calls = []
+        self.hook = None
+
+    def __call__(self, context, endpoint, deadline):
+        index = len(self.calls)
+        self.calls.append((context, endpoint, deadline))
+        if self.hook:
+            self.hook(index)
+        return self.streams[index]
+
+
+class S3Tests(unittest.TestCase):
+    def setUp(self):
+        self.reader = f.credential('synthetic-validator', STORE, SECRET_RAW)
+        self.p = binding(self.reader)
+        self.body = b'synthetic immutable content'
+        self.artifact = a.Artifact(STORE, 'evidence/a+@:/object.bin', 'version/+@:',
+            a.digest(self.body), len(self.body), '2026-12-01T12:00:00Z')
+        self.deadline = time.monotonic() + 10
+        # Prevent every external socket allocation, including accidental SDK,
+        # DNS, proxy or fallback paths. All HTTP/TLS observations are inert.
+        self.network = patch.object(socket, 'socket', side_effect=AssertionError('external sockets forbidden'))
+        self.network.start()
+        self.addCleanup(self.network.stop)
+        self.setup_provider()
+
+    def setup_provider(self, raw=None, *, p=None, ca=f.CA_SOURCE, region=REGION):
+        self.streams = [Stream(value) for value in (raw or responses(self.artifact, self.body))]
+        self.connector = Connector(self.streams)
+        self.provider = s3.S3ImmutableProvider(p or self.p, ca, region,
+            connector=self.connector, now=lambda: f.NOW)
+        return self.provider
+
+    def open(self, deadline=None, artifact=None, credential=None):
+        return self.provider.open_exact(artifact or self.artifact, credential or self.reader,
+            self.deadline if deadline is None else deadline)
+
+    def drain(self, handle, deadline=None):
+        result = bytearray()
+        while True:
+            value = handle.read(7, self.deadline if deadline is None else deadline)
+            if not value:
+                return bytes(result)
+            result.extend(value)
+
+    def refused(self, action):
+        with self.assertRaisesRegex(b.Refusal, '^' + b.FAILURE + '$'):
+            action()
+
+    def assert_closed(self, count=None):
+        self.assertTrue(all(s.closed for s in self.streams[:count or len(self.connector.calls)]))
+
+    def test_exact_get_and_independent_retention_return_owned_metadata_then_verified_closed_eof(self):
+        handle = self.open()
+        self.assertEqual(len(self.connector.calls), 2)
+        self.assertFalse(self.streams[0].closed)
+        self.assertTrue(self.streams[1].closed)
+        # Metadata validation never consumes object body before retention.
+        self.assertEqual(self.streams[0].raw, self.body)
+        metadata = a.strict_json(handle.metadata)
+        self.assertEqual(metadata['sha256'], self.artifact.sha256)
+        self.assertEqual(metadata['version'], self.artifact.version)
+        self.assertEqual(metadata['principal'], self.reader.binding.principal)
+        self.assertEqual(self.drain(handle), self.body)
+        self.assert_closed()
+        handle.close()
+        self.assertEqual([s.close_calls for s in self.streams], [1, 1])
+        self.refused(lambda: handle.read(7, self.deadline))
+
+    def test_wire_sigv4_matches_independent_parser_and_hmac_oracle_for_both_requests(self):
+        handle = self.open()
+        self.drain(handle)
+        for index, stream in enumerate(self.streams):
+            expected, actual = oracle_signature(stream.sent)
+            self.assertEqual(actual, expected)
+            target = bytes(stream.sent).split(b' ', 2)[1]
+            self.assertEqual(target, b'/hexalith-recovery-points/evidence/a%2B%40%3A/object.bin?' +
+                (b'retention=&' if index else b'') + b'versionId=version%2F%2B%40%3A')
+            self.assertIn(b'Accept-Encoding: identity\r\nConnection: close\r\n', stream.sent)
+            self.assertNotIn(SECRET.encode(), stream.sent)
+            self.assertEqual(stream.timeouts, sorted(stream.timeouts, reverse=True))
+        self.assertNotEqual(bytes(self.streams[0].sent).split(b'Signature=')[1][:64],
+            bytes(self.streams[1].sent).split(b'Signature=')[1][:64])
+
+    def test_wire_authentication_uses_fixed_manually_assembled_canonical_vector(self):
+        handle = self.open()
+        handle.close()
+        # Independently derived once with OpenSSL HMAC-SHA256, using the literal
+        # canonical target /hexalith-recovery-points/evidence/a%2B%40%3A/object.bin
+        # and versionId=version%2F%2B%40%3A, fixed date 20261023T120000Z, fr-par/s3,
+        # the three signed headers and public synthetic secret above. Runtime
+        # verification has no OpenSSL dependency and cannot change its oracle
+        # together with provider implementation or test HMAC derivation code.
+        expected = b'3d9694f400febd0af773b883d7f92ec338b1c1e449e210ebf96d118267ad0a3e'
+        self.assertIn(b'Signature=' + expected + b'\r\n', self.streams[0].sent)
+
+    def test_tls_uses_only_original_pinned_ca_and_explicit_region_endpoint(self):
+        with (patch.object(ssl.SSLContext, 'load_default_certs', side_effect=AssertionError('ambient CA forbidden')),
+                patch.object(ssl.SSLContext, 'set_default_verify_paths', side_effect=AssertionError('ambient CA forbidden'))):
+            handle = self.open()
+        self.drain(handle)
+        for context, endpoint, deadline in self.connector.calls:
+            self.assertIs(type(context), ssl.SSLContext)
+            self.assertEqual(endpoint, ENDPOINT)
+            self.assertEqual(deadline, self.deadline)
+            self.assertTrue(context.check_hostname)
+            self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
+            self.assertGreaterEqual(context.minimum_version, ssl.TLSVersion.TLSv1_2)
+            self.assertTrue(context.verify_flags & ssl.VERIFY_X509_STRICT)
+            self.assertEqual(context.cert_store_stats()['x509_ca'], 1)
+        self.assertIs(self.connector.calls[0][0], self.connector.calls[1][0])
+
+    def test_configuration_is_snapshotted_before_now_or_connector_callbacks(self):
+        for phase in ('now', 'connector'):
+            self.setup_provider()
+            original_connector = self.connector
+            def mutate():
+                self.provider.binding = replace(self.p, endpoint='https://changed.invalid',
+                    reader=replace(self.p.reader, principal='changed-validator'))
+                self.provider.ca = f.CA_TARGET
+                self.provider.region = 'changed-region'
+                self.provider.connector = lambda *args: self.fail('replacement connector selected')
+                return f.NOW
+            if phase == 'now':
+                self.provider.now = mutate
+            else:
+                original_connector.hook = lambda index: mutate()
+            handle = self.open()
+            metadata = a.strict_json(handle.metadata)
+            self.assertEqual(metadata['providerEndpoint'], ENDPOINT)
+            self.assertEqual(metadata['providerCaSha256'], self.p.ca_sha256)
+            self.assertEqual(metadata['principal'], self.p.reader.principal)
+            self.assertEqual(self.drain(handle), self.body)
+            self.assertEqual([call[1] for call in original_connector.calls], [ENDPOINT, ENDPOINT])
+            for stream in original_connector.streams:
+                self.assertEqual(*oracle_signature(stream.sent))
+            self.assert_closed()
+
+    def test_absent_connector_and_base_provider_refuse_before_credentials_or_tls(self):
+        for provider in (s3.ImmutableProvider(), s3.S3ImmutableProvider(self.p, f.CA_SOURCE, REGION)):
+            with (patch.object(b.Credential, 'descriptor', side_effect=AssertionError('credential access forbidden')),
+                    patch.object(ssl, 'SSLContext', side_effect=AssertionError('TLS forbidden'))):
+                self.refused(lambda: provider.open_exact(self.artifact, self.reader, self.deadline))
+        self.assertEqual(self.connector.calls, [])
+
+    def test_public_activation_stays_closed_without_configuration_or_credential_access(self):
+        output = io.StringIO()
+        with (patch('builtins.open', side_effect=AssertionError('configuration access forbidden')),
+                patch.object(b.Credential, 'descriptor', side_effect=AssertionError('credentials forbidden')),
+                redirect_stdout(output)):
+            self.assertEqual(b.main([]), 1)
+        self.assertEqual(a.strict_json(output.getvalue().encode()),
+            {'backendRequests': 0, 'operationalGate': 'closed', 'result': b.FAILURE})
+        self.assertEqual(self.connector.calls, [])
+
+    def test_binding_ca_reader_writer_store_and_endpoint_drift_refuse_without_dispatch(self):
+        p = self.p
+        variants = [replace(p, store='other-store'), replace(p, ca_sha256='f' * 64),
+            replace(p, writer_principal=p.reader.principal),
+            replace(p, writer_identity_sha256=p.reader.identity_sha256),
+            replace(p, writer_custody_sha256=p.reader.custody_sha256),
+            replace(p, writer_secret_sha256=p.reader.secret_sha256),
+            replace(p, reader=replace(p.reader, principal=p.writer_principal)),
+            replace(p, reader=replace(p.reader, audience='other-store'))]
+        variants += [replace(p, endpoint=v) for v in ('http://s3.invalid', 'https://user@s3.invalid',
+            'https://s3.invalid/path', 'https://s3.invalid?x', 'https://s3.invalid#x',
+            'https://s3.invalid:65536', 'https://s3..invalid', 'https://-bad.invalid')]
+        for candidate in variants:
+            with self.subTest(binding=candidate):
+                self.setup_provider(p=candidate)
+                self.refused(self.open)
+                self.assertEqual(self.connector.calls, [])
+        for ca, region in ((f.CA_TARGET, REGION), (b'invalid', REGION), (f.CA_SOURCE, ''),
+                (f.CA_SOURCE, 'fr-par/other'), (f.CA_SOURCE, 'FR-PAR')):
+            self.setup_provider(ca=ca, region=region)
+            self.refused(self.open)
+            self.assertEqual(self.connector.calls, [])
+
+    def test_credential_identity_custody_secret_and_malformed_envelopes_refuse_without_dispatch(self):
+        for credential in (replace(self.reader, identity=b'changed'), replace(self.reader, custody=b'changed'),
+                replace(self.reader, secret=b'changed'), f.credential('synthetic-writer', STORE, SECRET_RAW)):
+            self.refused(lambda: self.open(credential=credential))
+            self.assertEqual(self.connector.calls, [])
+        for raw in (b'{}', b'[]', b'null', b'{"accessKeyId":"a","accessKeyId":"b","secretAccessKey":"s"}',
+                a.canonical({'accessKeyId': ACCESS, 'secretAccessKey': SECRET, 'sessionToken': 'forbidden'}),
+                a.canonical({'accessKeyId': ACCESS, 'secretAccessKey': ''}),
+                a.canonical({'accessKeyId': 'bad\r\nheader', 'secretAccessKey': SECRET}),
+                a.canonical({'accessKeyId': ACCESS, 'secretAccessKey': 'bad\nsecret'}),
+                a.canonical({'accessKeyId': 12, 'secretAccessKey': SECRET}), b'x' * 4097):
+            with self.subTest(raw=raw[:80]):
+                reader = f.credential(self.reader.binding.principal, STORE, raw)
+                self.setup_provider(p=binding(reader))
+                self.refused(lambda: self.open(credential=reader))
+                self.assertEqual(self.connector.calls, [])
+
+    def test_alias_or_malformed_exact_artifact_refuses_before_connector(self):
+        variants = [replace(self.artifact, version=v) for v in ('latest', 'null', 'current', '', 'x?y')]
+        variants += [replace(self.artifact, key='evidence/../bad'), replace(self.artifact, size=True),
+            replace(self.artifact, sha256='F' * 64), replace(self.artifact, store='other-store')]
+        for artifact in variants:
+            self.refused(lambda: self.open(artifact=artifact))
+            self.assertEqual(self.connector.calls, [])
+
+    def test_get_metadata_missing_changed_or_ambiguous_rejects_before_retention_or_body(self):
+        fields = {'Content-Length': '1', 'x-amz-version-id': 'wrong-version',
+            'x-amz-server-side-encryption': 'aws:kms', 'x-amz-object-lock-mode': 'GOVERNANCE',
+            'x-amz-object-lock-retain-until-date': '2026-12-02T12:00:00Z'}
+        for name, value in fields.items():
+            for mode in ('changed', 'missing'):
+                with self.subTest(name=name, mode=mode):
+                    headers = [(k, value if k == name else v) for k, v in object_headers(self.artifact)
+                        if mode != 'missing' or k != name]
+                    self.setup_provider([http(self.body, headers)])
+                    self.refused(self.open)
+                    self.assertEqual(len(self.connector.calls), 1)
+                    self.assertEqual(self.streams[0].raw, self.body)
+                    self.assert_closed()
+        self.setup_provider([http(self.body, object_headers(self.artifact) + [('x-amz-delete-marker', 'true')])])
+        self.refused(self.open)
+        self.assert_closed()
+
+    def test_hostile_http_headers_status_encodings_and_lengths_have_bounded_sanitized_refusal(self):
+        good = responses(self.artifact, self.body)[0]
+        prefix = good.split(b'\r\n\r\n')[0]
+        hostile = [good.replace(b'200 OK', b'301 Moved'), good.replace(b'200 OK', b'206 Partial'),
+            good.replace(b'HTTP/1.1', b'HTTP/2.0'), good.replace(b'Content-Length:', b' Content-Length:'),
+            good.replace(b'Content-Length:', b'Content-Length :'),
+            good.replace(('Content-Length: ' + str(len(self.body))).encode(), b'Content-Length: +27')]
+        hostile += [prefix + b'\r\n' + header + b'\r\n\r\n' + self.body for header in (
+            b'content-length: 27', b'X-AMZ-VERSION-ID: duplicate', b'Transfer-Encoding: chunked',
+            b'Content-Encoding: gzip', b'Content-Encoding: identity', b'Location: https://private.invalid',
+            b'Connection: keep-alive', b'Trailer: x-checksum', b'Content-Range: bytes 0-26/27',
+            b'X-Bad: private\x00diagnostic', b'\tfolded', b'X-Invalid\xff: value')]
+        hostile += [b'HTTP/1.1 200 OK\r\nX-Large: ' + b'x' * b.MAX_HEADERS + b'\r\n\r\n',
+            b'HTTP/1.1 200 OK\r\n' + b''.join(('X-%s: a\r\n' % n).encode() for n in range(129)) + b'\r\n',
+            b'HTTP/1.1 200 OK\r\nContent-Length: 9999999999\r\n\r\n']
+        for raw in hostile:
+            with self.subTest(header=raw[:120]):
+                self.setup_provider([raw])
+                self.refused(self.open)
+                self.assertEqual(len(self.connector.calls), 1)
+                self.assert_closed()
+                self.assertGreaterEqual(len(self.streams[0].raw), max(0, len(raw) - b.MAX_HEADERS))
+
+    def test_retention_xml_disagreement_duplicates_dtd_entities_pi_and_malformed_content_refuse(self):
+        xml = retention_xml(self.artifact)
+        variants = [xml.replace(b'COMPLIANCE', b'GOVERNANCE'),
+            xml.replace(b'version="1.0"', b'version=\'1.0"'),
+            xml.replace(b'encoding="UTF-8"', b'encoding="UTF-16"'),
+            xml.replace(b'encoding="UTF-8"', b'encoding="ISO-8859-1"'),
+            xml.replace(b'2026-12-01', b'2026-12-02'), xml.replace(b'<Mode>', b'<Unknown>'),
+            xml.replace(b'</Mode>', b'</Mode><Mode>COMPLIANCE</Mode>'),
+            xml.replace(b'</Retention>', b'<Extra/></Retention>'), xml[:-3],
+            b'<!DOCTYPE Retention [<!ENTITY secret "private">]>' + xml,
+            xml.replace(b'COMPLIANCE', b'&secret;'), xml.replace(b'<Mode>', b'<?private data?><Mode>'),
+            xml.replace(b'<Mode>', b'<Mode private="data">'), xml.replace(b'<Mode>', b'<Mode><Nested/>'),
+            xml.replace(b'<Retention xmlns=', b'<Retention extra="data" xmlns='),
+            xml.replace(b'<Mode>', b'private<Mode>'), xml.replace(b'</Mode>', b'</Mode>private'),
+            xml.replace(b'http://s3.amazonaws.com/doc/2006-03-01/', b'http://wrong.invalid/'),
+            xml.replace(b'12:00:00Z', b'12:00:00.001Z'), xml.replace(b'12:00:00Z', b'12:00:00+00:00')]
+        # ElementTree auto-detects UTF-16; forbidden markup must not bypass the
+        # checks by interleaving NUL bytes or changing the XML declaration.
+        variants += [value.encode('utf-16') for value in (
+            '<!DOCTYPE Retention><Retention><Mode>COMPLIANCE</Mode>'
+            '<RetainUntilDate>' + self.artifact.retain_until + '</RetainUntilDate></Retention>',
+            '<Retention><?private data?><Mode>COMPLIANCE</Mode>'
+            '<RetainUntilDate>' + self.artifact.retain_until + '</RetainUntilDate></Retention>')]
+        for value in variants:
+            with self.subTest(xml=value[:100]):
+                self.setup_provider([responses(self.artifact, self.body)[0],
+                    http(value, [('Content-Length', len(value)), ('Content-Type', 'application/xml')])])
+                self.refused(self.open)
+                self.assert_closed()
+                self.assertEqual(self.streams[0].raw, self.body)
+                self.assertEqual(len(self.connector.calls), 2)
+
+    def test_retention_framing_content_type_version_and_terminal_eof_are_independent(self):
+        xml = retention_xml(self.artifact)
+        headers = [('Content-Length', len(xml)), ('Content-Type', 'application/xml')]
+        variants = [http(xml, headers + [('x-amz-version-id', 'wrong')]),
+            http(xml, [('Content-Length', len(xml)), ('Content-Type', 'application/json')]),
+            http(xml, headers) + b'surplus', http(xml[:-1], headers),
+            http(xml, [('Content-Length', b.MAX_HEADERS + 1), ('Content-Type', 'application/xml')]),
+            http(xml, headers + [('Content-Encoding', 'gzip')]), http(xml, headers, '307 Temporary Redirect')]
+        for raw in variants:
+            self.setup_provider([responses(self.artifact, self.body)[0], raw])
+            self.refused(self.open)
+            self.assert_closed()
+            self.assertEqual(len(self.connector.calls), 2)
+
+    def test_zero_fraction_retention_normalizes_without_requiring_undocumented_version_header(self):
+        for api_version_header in ([], [('x-amz-version-id', self.artifact.version)]):
+            instant = self.artifact.retain_until.replace('Z', '.000Z')
+            headers = [(k, instant if k.endswith('retain-until-date') else v)
+                for k, v in object_headers(self.artifact)]
+            xml = retention_xml(self.artifact, instant=instant)
+            self.setup_provider([http(self.body, headers), http(xml,
+                [('Content-Length', len(xml)), ('Content-Type', 'application/xml')] + api_version_header)])
+            handle = self.open()
+            self.assertEqual(a.strict_json(handle.metadata)['retainUntil'], self.artifact.retain_until)
+            self.assertEqual(self.drain(handle), self.body)
+            self.assert_closed()
+
+    def test_short_changed_surplus_nonbytes_and_oversized_object_poison_handle_and_release(self):
+        for mode in ('short', 'changed', 'surplus', 'nonbytes', 'oversized'):
+            self.setup_provider()
+            handle = self.open()
+            stream = self.streams[0]
+            if mode == 'short':
+                stream.raw = self.body[:-1]
+            elif mode == 'changed':
+                stream.raw = b'x' * len(self.body)
+            elif mode == 'surplus':
+                stream.raw = self.body + b'x'
+            elif mode == 'nonbytes':
+                stream.recv = lambda maximum: 'private diagnostic'
+            else:
+                stream.recv = lambda maximum: b'x' * (maximum + 1)
+            self.refused(lambda: self.drain(handle))
+            self.assert_closed()
+            self.refused(lambda: handle.read(7, self.deadline))
+            self.refused(handle.close)
+            self.assertEqual(len(self.connector.calls), 2)
+
+    def test_optional_checksum_claim_cannot_replace_streamed_sha256(self):
+        headers = object_headers(self.artifact) + [('x-amz-meta-sha256', self.artifact.sha256)]
+        raw = responses(self.artifact, self.body)
+        raw[0] = http(b'x' * len(self.body), headers)
+        self.setup_provider(raw)
+        handle = self.open()
+        self.refused(lambda: self.drain(handle))
+        self.assert_closed()
+
+    def test_partial_send_invalid_counts_and_write_failure_close_without_retry(self):
+        for result in (0, -1, True, 'private', 999999, OSError('private wire diagnostic')):
+            self.setup_provider()
+            def send(raw):
+                if isinstance(result, BaseException):
+                    raise result
+                return result
+            self.streams[0].send = send
+            self.refused(self.open)
+            self.assert_closed()
+            self.assertEqual(len(self.connector.calls), 1)
+
+    def test_header_nonbytes_or_oversized_recv_is_closed_without_body_exposure(self):
+        for result in ('private header', b'xx', b''):
+            self.setup_provider()
+            self.streams[0].recv = lambda maximum: result
+            self.refused(self.open)
+            self.assert_closed()
+            self.assertEqual(len(self.connector.calls), 1)
+
+    def test_original_deadline_caps_later_read_deadline_and_all_stream_timeouts(self):
+        clock = [100.0]
+        with patch.object(b.time, 'monotonic', side_effect=lambda: clock[0]):
+            handle = self.open(deadline=102.0)
+            clock[0] = 101.5
+            self.assertEqual(handle.read(7, 1000.0), self.body[:5])
+            self.assertEqual(self.streams[0].timeouts[-1], 0.5)
+            clock[0] = 102.0
+            self.refused(lambda: handle.read(7, 1000.0))
+        self.assert_closed()
+        self.assertEqual([call[2] for call in self.connector.calls], [102.0, 102.0])
+
+    def test_deadline_expiring_during_local_hash_work_never_returns_late_chunk(self):
+        clock = [100.0]
+        with patch.object(b.time, 'monotonic', side_effect=lambda: clock[0]):
+            handle = self.open(deadline=101.0)
+            class SlowHash:
+                def update(self, chunk):
+                    clock[0] = 102.0
+            handle._hash = SlowHash()
+            self.refused(lambda: handle.read(7, 1000.0))
+        self.assert_closed()
+
+    def test_expiry_during_connector_each_write_header_retention_body_eof_and_close_refuses(self):
+        for phase in ('connector-first', 'connector-second', 'settimeout', 'write', 'header',
+                'retention-body', 'retention-eof', 'retention-close', 'body', 'eof', 'close'):
+            with self.subTest(phase=phase):
+                clock = [100.0]
+                self.setup_provider()
+                def connector_hook(index):
+                    if phase == ('connector-first' if index == 0 else 'connector-second'):
+                        clock[0] = 102.0
+                self.connector.hook = connector_hook
+                def object_hook(operation, value):
+                    stream = self.streams[0]
+                    if (phase == 'settimeout' and operation == 'settimeout' or
+                            phase == 'write' and operation == 'send' or
+                            phase == 'header' and operation == 'recv' and stream.raw.startswith(b'HTTP') or
+                            phase == 'body' and operation == 'recv' and stream.raw == self.body or
+                            phase == 'eof' and operation == 'recv' and stream.raw == b'' or
+                            phase == 'close' and operation == 'close'):
+                        clock[0] = 102.0
+                def retention_hook(operation, value):
+                    stream = self.streams[1]
+                    if (phase == 'retention-body' and operation == 'recv' and stream.raw.startswith(b'<?xml') or
+                            phase == 'retention-eof' and operation == 'recv' and stream.raw == b'' or
+                            phase == 'retention-close' and operation == 'close'):
+                        clock[0] = 102.0
+                self.streams[0].hook, self.streams[1].hook = object_hook, retention_hook
+                with patch.object(b.time, 'monotonic', side_effect=lambda: clock[0]):
+                    def action():
+                        handle = self.open(deadline=101.0)
+                        self.drain(handle, deadline=1000.0)
+                    self.refused(action)
+                self.assert_closed()
+                self.assertLessEqual(len(self.connector.calls), 2)
+
+    def test_expired_budget_refuses_before_credentials_and_connector(self):
+        with patch.object(b.Credential, 'descriptor', side_effect=AssertionError('credential access forbidden')):
+            self.refused(lambda: self.open(deadline=time.monotonic() - 1))
+        self.assertEqual(self.connector.calls, [])
+
+    def test_connector_exception_owns_unreturned_stream_and_provider_releases_existing_object(self):
+        for failed_index in (0, 1):
+            self.setup_provider()
+            def hook(index):
+                if index == failed_index:
+                    self.streams[index].close()  # Contract: connector owns what it cannot return.
+                    raise OSError('private TLS diagnostic')
+            self.connector.hook = hook
+            self.refused(self.open)
+            self.assert_closed()
+            self.assertEqual(len(self.connector.calls), failed_index + 1)
+
+    def test_failing_close_gets_bounded_release_attempt_and_prevents_success(self):
+        for index in (0, 1):
+            self.setup_provider()
+            def hook(operation, value, index=index):
+                if operation == 'close' and self.streams[index].close_calls == 1:
+                    raise OSError('private close diagnostic')
+            self.streams[index].hook = hook
+            def action():
+                handle = self.open()
+                self.drain(handle)
+            self.refused(action)
+            self.assert_closed()
+            self.assertEqual(self.streams[index].close_calls, 2)
+
+    def test_permanently_failing_close_still_attempts_other_owned_stream(self):
+        self.setup_provider()
+        def hook(operation, value):
+            if operation == 'close':
+                raise OSError('private close diagnostic')
+        self.streams[1].hook = hook
+        self.refused(self.open)
+        self.assertTrue(self.streams[0].closed)
+        self.assertEqual(self.streams[1].close_calls, 2)
+
+    def test_primary_cancellation_survives_connector_write_header_retention_body_and_cleanup(self):
+        for phase in ('connector', 'write', 'header', 'retention', 'body', 'eof'):
+            self.setup_provider()
+            primary = KeyboardInterrupt('primary synthetic cancellation')
+            def hook(operation, value):
+                stream = self.streams[0]
+                if operation == 'close' and stream.close_calls == 1:
+                    raise KeyboardInterrupt('secondary cleanup cancellation')
+                if (phase == 'write' and operation == 'send' or
+                        phase == 'header' and operation == 'recv' and stream.raw.startswith(b'HTTP') or
+                        phase == 'body' and operation == 'recv' and stream.raw == self.body or
+                        phase == 'eof' and operation == 'recv' and stream.raw == b''):
+                    raise primary
+            self.streams[0].hook = hook
+            if phase == 'connector':
+                def cancel(index):
+                    self.streams[index].closed = True
+                    raise primary
+                self.connector.hook = cancel
+            if phase == 'retention':
+                def cancel_retention(operation, value):
+                    if operation == 'recv':
+                        raise primary
+                self.streams[1].hook = cancel_retention
+            with self.assertRaises(KeyboardInterrupt) as caught:
+                handle = self.open()
+                self.drain(handle)
+            self.assertIs(caught.exception, primary)
+            self.assert_closed()
+            self.assertLessEqual(len(self.connector.calls), 2)
+
+    def test_cancellation_only_during_close_refuses_and_preserves_it(self):
+        for index in (0, 1):
+            self.setup_provider()
+            primary = KeyboardInterrupt('close cancellation')
+            def hook(operation, value, index=index):
+                if operation == 'close' and self.streams[index].close_calls == 1:
+                    raise primary
+            self.streams[index].hook = hook
+            with self.assertRaises(KeyboardInterrupt) as caught:
+                handle = self.open()
+                self.drain(handle)
+            self.assertIs(caught.exception, primary)
+            self.assert_closed()
+
+    def test_explicit_close_is_terminal_and_invalid_read_requests_poison_handle(self):
+        for maximum, deadline in ((0, self.deadline), (True, self.deadline), (65537, self.deadline),
+                (7, float('inf')), (7, 'private')):
+            self.setup_provider()
+            handle = self.open()
+            self.refused(lambda: handle.read(maximum, deadline))
+            self.assert_closed()
+            self.refused(lambda: handle.read(7, self.deadline))
+        self.setup_provider()
+        handle = self.open()
+        handle.close()
+        self.assert_closed()
+        self.refused(lambda: handle.read(7, self.deadline))
+
+
+class CompositionTests(unittest.TestCase):
+    setUp = S3Tests.setUp
+    setup_provider = S3Tests.setup_provider
+    refused = S3Tests.refused
+    def compose(self, directory, operation='capture'):
+        boundary, old_provider, verifier, native = f.compose(directory, operation)
+        reader = f.credential(boundary.binding.validator, boundary.binding.policy.store, SECRET_RAW)
+        p = binding(reader)
+        artifacts = [boundary.binding.policy, boundary.binding.signature]
+        bodies = [old_provider.policy, old_provider.signature]
+        if boundary.binding.restore_input:
+            artifacts.append(boundary.binding.restore_input)
+            bodies.append(b'recovery')
+        streams = [Stream(raw) for artifact, body in zip(artifacts, bodies) for raw in responses(artifact, body)]
+        connector = Connector(streams)
+        provider = s3.S3ImmutableProvider(p, f.CA_SOURCE, REGION, connector=connector, now=lambda: f.NOW)
+        boundary.credentials = (reader,) + boundary.credentials[1:]
+        boundary.credential_bindings = tuple(value.binding for value in boundary.credentials)
+        boundary.immutable_driver = s3.ImmutableReadbackDriver(boundary.binding, p, provider, now=lambda: f.NOW)
+        boundary.process = f.StageProtocol(boundary.binding, verifier.policy, verifier.signature)
+        return boundary, provider, connector, verifier, native
+
+    def test_real_provider_composes_policy_signature_and_restore_input_with_existing_drivers(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory = Path(name)
+            directory.chmod(0o700)
+            for operation in ('capture', 'restore', 'resume', 'cleanup'):
+                boundary, provider, connector, verifier, native = self.compose(directory, operation)
+                result = a.run(boundary.binding, boundary, f.old.MemoryReceipts(), now=lambda: f.NOW)
+                self.assertIsNone(result.failure)
+                self.assertEqual(result.state, operation + '-primitive-complete-unqualified')
+                self.assertIsNone(result.operational_qualification)
+                self.assertIsNone(result.recovery_acceptance)
+                self.assertEqual(len(connector.calls),
+                    2 * len([request for request in boundary.requests if request.role == 'artifactReader']))
+                self.assertEqual(len(verifier.calls), 1)
+                self.assertTrue(all(stream.closed for stream in connector.streams))
+                self.assertTrue(all(stream.closed for stream in native.streams))
+                for stream in connector.streams:
+                    expected, actual = oracle_signature(stream.sent)
+                    self.assertEqual(actual, expected)
+
+    def test_driver_provider_binding_drift_refuses_before_connector(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory = Path(name)
+            directory.chmod(0o700)
+            boundary, provider, connector, _, _ = self.compose(directory)
+            driver = boundary.immutable_driver
+            driver.provider_binding = replace(driver.provider_binding, endpoint='https://other.invalid')
+            self.refused(lambda: driver.exchange(boundary.requests[0], self.deadline, boundary.credentials[0]))
+            self.assertEqual(connector.calls, [])
+
+    def test_no_bad_body_or_failed_close_survives_as_driver_response_or_recovery_input(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory = Path(name)
+            directory.chmod(0o700)
+            for mode in ('body', 'retention', 'close'):
+                boundary, provider, connector, verifier, _ = self.compose(directory, 'restore')
+                if mode == 'body':
+                    connector.streams[0].raw = connector.streams[0].raw[:-1] + b'x'
+                elif mode == 'retention':
+                    connector.streams[1].raw = connector.streams[1].raw.replace(b'COMPLIANCE', b'GOVERNANCE')
+                else:
+                    def close_hook(operation, value):
+                        if operation == 'close' and connector.streams[0].close_calls == 1:
+                            raise OSError('private close diagnostic')
+                    connector.streams[0].hook = close_hook
+                result = a.run(boundary.binding, boundary, f.old.MemoryReceipts(), now=lambda: f.NOW)
+                self.assertIsNotNone(result.failure)
+                self.assertIsNone(result.recovery_acceptance)
+                self.assertIsNone(result.operational_qualification)
+                self.assertEqual(verifier.calls, [])
+                self.assertEqual(boundary.index, 0)
+                self.assertEqual(boundary.immutable, {})
+                self.assertEqual(len(connector.calls), 2)
+                self.assertTrue(all(stream.closed for stream in connector.streams[:2]))
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

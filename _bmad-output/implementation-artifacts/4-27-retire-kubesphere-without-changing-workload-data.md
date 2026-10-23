@@ -625,3 +625,51 @@ These are offline fixtures only. Public live activation remains disabled. No act
 The [final patched-source receipt](evidence/epic-4/4-27/20261023-recovery-execution-boundary/review-1/final/verification.json) binds 233 passing tests (69 driver cases plus 164 unchanged adapter cases), no skips, and positive detection of in-memory wrong-bearer/empty-CA regressions. Both earlier candidate packets retain their original bytes and meaning. Immutable request dispatch, independently checked input bytes, local request/policy budgets, credential/CA wire assertions, cancellation ownership and cleanup regressions are verified offline.
 
 The approved offline continuation is complete. Public activation stays disabled. Concrete independent provider transport, applicable native credential delivery, full system/target/proof-consumer integration and actual authority/runtime/recovery qualification remain open; non-daemonizing tools require separate qualification. No actual credential, production/provider request, signing, upload, recovery, retirement, upgrade or deployment occurred. Original Story 4.27 and sprint remain **in-progress**; 4.1 stays **closed** and Timesheets 3.6 **open/FAIL**.
+
+## Independent immutable-provider transport implementation — 2026-10-23
+
+The [new scoped spec](spec-4-27-independent-immutable-provider-transport.md),
+[provider interface handoff](../../eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md#independent-s3-transport-implementation--2026-10-23)
+and [separate verification](evidence/epic-4/4-27/20261023-immutable-provider-transport/verification.json)
+record the next offline prerequisite: implemented `S3ImmutableProvider` behind
+`ImmutableProvider.open_exact`. Retained evidence resolves the Scaleway S3
+protocol, exact-version object/retention GETs and separate validator credentials.
+The implementation pins endpoint, CA, region and credential identity/custody;
+checks `AES256`, `COMPLIANCE`, both retention representations, streamed length
+and SHA-256; and enforces bounded framing, absolute deadlines and owned cleanup.
+
+All 32 focused inert-transport/synthetic-credential cases pass, including wrong
+versions, metadata drift, truncated/oversized responses, timeout/cleanup failures
+and composition with `ImmutableReadbackDriver` and all four boundary operations.
+The provider remains dormant without an injected connector. Fixture success
+continues to carry null operational qualification and recovery acceptance.
+
+Remaining work includes actual credential/IAM/authority and connector/runtime
+qualification; applicable native credential delivery; system/store, isolated
+target and proof-consumer integrations; fresh exact attempt/policy/tool bindings;
+and actual recovery/resume/cleanup and signed/non-dry/manual acceptance under
+separate operational scope. No actual credentials/production endpoints,
+recovery-attempt allocation, recovery-document signing, upload or recovery
+operation occurred. Prior evidence, original handoff prefixes, revision 4 and
+unrelated workspace changes remain preserved. **Story 4.27 stays in-progress,
+4.1 closed, Timesheets 3.6 open/FAIL; public activation and operational gates
+remain closed.**
+
+
+## Reviewed immutable-provider verification — 2026-10-23
+
+The [corrected-source verification](evidence/epic-4/4-27/20261023-immutable-provider-transport/review-1/verification.json) records **275 passing tests, zero
+skips**: 42 provider cases and 233 existing readback/boundary/authentication/
+common/telemetry cases. Full command transcripts and source hashes are retained.
+The initial 265-test candidate packet and both exact candidate source snapshots
+remain separate and unchanged.
+
+Review corrections cover dispatch binding after callbacks and inherited S3
+providers, persistent stream ownership through cancellation and handoff,
+standalone retention expiry/deadline clamping, exact TLS trust-anchor bytes,
+large streamed objects and hostile second responses. An in-memory wrong-CA
+substitution is now positively detected. All retained review items were resolved;
+no work was deferred by this review. Remaining live credential/authority/runtime,
+system/target/proof-consumer and actual recovery integrations stay as listed
+above. Public activation remains disabled; **4.27 stays in-progress, 4.1 closed,
+and Timesheets 3.6 open/FAIL**.

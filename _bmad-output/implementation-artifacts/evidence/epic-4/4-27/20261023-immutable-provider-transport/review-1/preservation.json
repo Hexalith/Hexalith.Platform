@@ -1,0 +1,19 @@
+{
+  "baselineReference": "../preservation.json",
+  "concurrentUnrelatedDrift": [
+    {
+      "afterSha256": "22acdaf5dfa586b331fe2f9f274bebaa7a9c63e911d2d82b59d05e9596204666",
+      "beforeSha256": "e14dcb6cd5d1275e290b2452e8ec717720732fcecca05480aaa7cb4906b55307",
+      "binding": "references/Hexalith.Builds:diff",
+      "explanation": "Unrelated concurrent workspace activity; this task made no writes there."
+    },
+    {
+      "afterSha256": "7eff73258fa90f527cffec81b338aa639e89118c9b3241862a3052062da76137",
+      "beforeSha256": "ca815fd8cd9f5d2ac91ef2f7efd1276c3a7fdb7d79583c75718f8eed9e673486",
+      "binding": "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+      "explanation": "Unrelated concurrent workspace activity; this task made no writes there."
+    }
+  ],
+  "historicalAndOriginalHandoffMismatches": [],
+  "taskWritesExcludedAllUnrelatedPaths": true
+}

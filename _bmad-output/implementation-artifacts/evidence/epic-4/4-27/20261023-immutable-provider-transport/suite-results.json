@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_immutable_readback_driver.py"
+    ],
+    "exitCode": 0,
+    "tests": 12,
+    "skips": 0,
+    "elapsedSeconds": 0.342,
+    "sourceSha256": "d87ae73d25afe673c2fc2b67bee63ec764768b16632e7af90142e0821db5cc1a",
+    "logSha256": "440be55cfc9f5ed06f2da81bfc349e6c17c2894b78c97902150bb83d5dfaa1f4"
+  },
+  {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_execution_boundary.py"
+    ],
+    "exitCode": 0,
+    "tests": 44,
+    "skips": 0,
+    "elapsedSeconds": 33.743,
+    "sourceSha256": "4b52a79b9b491137ce287c4aafac8c2a02fb43082c6a07116949c88ee19e3c5f",
+    "logSha256": "e1ccb413508e35aeab7b77a337473a22d5eb69edc31d4981a5105dd375a4ed55"
+  },
+  {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_policy_authentication_driver.py"
+    ],
+    "exitCode": 0,
+    "tests": 13,
+    "skips": 0,
+    "elapsedSeconds": 0.779,
+    "sourceSha256": "8aab4de5900fb9c3b43881505a516a464cfb5aa10818a66e037ace4692470a83",
+    "logSha256": "1d87ea255bb517c5884ce0afd26a376d74868dedb1a7de69aa0b4fe01c2d87d3"
+  },
+  {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_adapters.py"
+    ],
+    "exitCode": 0,
+    "tests": 94,
+    "skips": 0,
+    "elapsedSeconds": 0.935,
+    "sourceSha256": "42e1f48888aecf4d6000cb8230d7ff73dd560ad7b4e665b893101dfc15c12de4",
+    "logSha256": "259629f90f3680dba5685971c87d44770a6d560bbb9536d1d4d76d6986afbeec"
+  },
+  {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+    ],
+    "exitCode": 0,
+    "tests": 70,
+    "skips": 0,
+    "elapsedSeconds": 1.066,
+    "sourceSha256": "74283f4b5fd64de7b0e4a7f14e574a3a637bc4ff46313cbf442527edb8010563",
+    "logSha256": "b12b5e1c1dfe8c9c4f3070c0f80aa4834789227d61518eb55db2957f5df3611c"
+  }
+]

@@ -244,3 +244,77 @@ no recovery RID or policy and changes no expiry or retained owner decision.
 Actual recovery, source pause/resume, target cleanup and preservation acceptance
 have not occurred. Public invocation always returns a sanitized refusal with
 zero backend requests before configuration or credential access.
+
+## Independent S3 transport implementation — 2026-10-23
+
+This continuation addresses the concrete provider gap identified above. The
+scoped [implementation spec](../../_bmad-output/implementation-artifacts/spec-4-27-independent-immutable-provider-transport.md)
+records the resolved protocol and offline boundary. Historical fixture receipts,
+revision 4 and the preceding handoff text retain their original meaning.
+
+The retained [destination evidence](../../_bmad-output/implementation-artifacts/evidence/epic-4/recovery-destination-setup.md)
+identifies Scaleway S3 Object Storage in `fr-par` and the dedicated recovery
+bucket. The existing [readiness contract](../kubernetes-upgrade/recovery_readiness.py)
+and [guarded procedure](../kubernetes-upgrade/GUARDED-RECOVERY-PREPARATION.md)
+require object metadata and a separate retention API result to agree for the
+same immutable version. The implementation uses path-style `GetObject` with
+`versionId`, followed by `GetObjectRetention` with that same exact `versionId`.
+Both are read-only GETs; neither discovers nor substitutes the current version.
+These operations are supported by [Scaleway's API](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/)
+and follow the [S3 retention protocol](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectRetention.html).
+
+`S3ImmutableProvider` takes the exact `ProviderBinding`, original public CA
+bytes, explicit region and an explicitly injected connector. The connector
+receives a hostname-checking, `CERT_REQUIRED` TLS context containing only the
+pinned CA, the bound endpoint and one absolute monotonic deadline. It owns any
+connection/TLS resources it cannot return and must enforce that deadline within
+each blocking call. No live connector, default credential chain or public
+activation selector is supplied. Without a connector, `open_exact` refuses
+before credential inspection or network access.
+
+The independently bound reader credential's opaque secret bytes must contain
+exact JSON fields `accessKeyId` and `secretAccessKey`; the existing credential
+descriptor checks bind the entire envelope to its identity, custody and store
+audience. Writer credentials are unavailable to the transport. S3 request
+authentication uses region/service/date-bound [SigV4](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html).
+Only invented credentials authenticate inert fixture requests; no recovery
+policy, signature, acceptance document or production request is created.
+
+The provider checks exact object-version headers, length, `AES256`, `COMPLIANCE`
+and both retention representations before exposing body bytes. Header/XML
+framing is bounded. Streaming checks actual byte count and SHA-256, and requires
+bounded terminal EOF after the declared body. The normalized metadata's
+`sha256` is the bound expected hash, not a claimed S3 checksum: actual bytes must
+match it at EOF, and `ImmutableReadbackDriver` independently hashes those bytes
+again. Later reads can shorten the original deadline but cannot extend it.
+Owned streams close before successful completion; cleanup failure refuses
+success and cancellation retains its primary interrupt semantics.
+
+Remaining integrations are explicit credential acquisition/custody and current
+IAM/grant-lineage qualification; separately reviewed live connection/TLS/runtime
+qualification and activation; applicable native credential delivery; full
+store/system and isolated-target orchestration, including telemetry PostgreSQL;
+proof-consumer integration; fresh exact attempt/policy/tool bindings; and actual
+recovery, resume, cleanup and signed/non-dry/manual acceptance. The concrete
+offline transport does not establish any of these qualifications. Story 4.27
+remains **in-progress**, 4.1 **closed**, Timesheets 3.6 **open/FAIL**, and all
+public operational gates remain closed.
+
+
+## Reviewed immutable-provider verification — 2026-10-23
+
+The [corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023-immutable-provider-transport/review-1/verification.json) records **275 passing tests, zero
+skips**: 42 provider cases and 233 existing readback/boundary/authentication/
+common/telemetry cases. Full command transcripts and source hashes are retained.
+The initial 265-test candidate packet and both exact candidate source snapshots
+remain separate and unchanged.
+
+Review corrections cover dispatch binding after callbacks and inherited S3
+providers, persistent stream ownership through cancellation and handoff,
+standalone retention expiry/deadline clamping, exact TLS trust-anchor bytes,
+large streamed objects and hostile second responses. An in-memory wrong-CA
+substitution is now positively detected. All retained review items were resolved;
+no work was deferred by this review. Remaining live credential/authority/runtime,
+system/target/proof-consumer and actual recovery integrations stay as listed
+above. Public activation remains disabled; **4.27 stays in-progress, 4.1 closed,
+and Timesheets 3.6 open/FAIL**.

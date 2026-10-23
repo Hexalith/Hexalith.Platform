@@ -998,3 +998,56 @@ These are offline fixtures only. Public live activation remains disabled. No act
 The [final patched-source receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023-recovery-execution-boundary/review-1/final/verification.json) binds 233 passing tests (69 driver cases plus 164 unchanged adapter cases), no skips, and positive detection of in-memory wrong-bearer/empty-CA regressions. Both earlier candidate packets retain their original bytes and meaning. Immutable request dispatch, independently checked input bytes, local request/policy budgets, credential/CA wire assertions, cancellation ownership and cleanup regressions are verified offline.
 
 The approved offline continuation is complete. Public activation stays disabled. Concrete independent provider transport, applicable native credential delivery, full system/target/proof-consumer integration and actual authority/runtime/recovery qualification remain open; non-daemonizing tools require separate qualification. No actual credential, production/provider request, signing, upload, recovery, retirement, upgrade or deployment occurred. Original Story 4.27 and sprint remain **in-progress**; 4.1 stays **closed** and Timesheets 3.6 **open/FAIL**.
+
+## Independent immutable-provider transport — 2026-10-23
+
+The [scoped implementation spec](../../_bmad-output/implementation-artifacts/spec-4-27-independent-immutable-provider-transport.md)
+and [provider handoff](../recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md#independent-s3-transport-implementation--2026-10-23)
+record the implemented dormant `S3ImmutableProvider`. Existing destination and
+recovery-readiness evidence resolve the protocol to Scaleway S3 in `fr-par`:
+exact-version object GET plus separate exact-version retention GET, both through
+the distinct validator. The endpoint, original CA bytes/hash, region and complete
+reader credential binding are explicit inputs. No production values are loaded.
+
+The focused suite passes all 32 cases with inert streams and synthetic
+credentials, including independent wire-authentication checks, both retention
+representations, wrong versions/metadata, truncated/oversized bodies, absolute
+deadlines, cancellation, cleanup failures and composition through the existing
+driver/boundary for all four operation fixtures. Successful fixture receipts
+retain null operational qualification and recovery acceptance. The separate
+[verification packet](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023-immutable-provider-transport/verification.json)
+records command results and source identities without modifying prior packets.
+
+The next integrations are actual credential acquisition/custody and IAM/authority
+qualification; separately reviewed connection/TLS/runtime qualification and
+activation; applicable native credential delivery; complete system/store and
+isolated-target orchestration, including telemetry PostgreSQL; and proof-consumer
+integration. Fresh exact attempt/policy/tool bindings and operational approval,
+followed by actual recovery/resume/cleanup and signed/non-dry/manual acceptance,
+remain prerequisites to dependent gates. This implementation supplies no live
+connector and public activation remains disabled before credential/config access.
+
+No actual credential or production endpoint was accessed, no recovery attempt
+was allocated, and no recovery document signing, upload or recovery operation
+occurred. Historical evidence and handoff prefixes, revision 4, signed originals,
+frozen intent and unrelated workspace changes are preserved. **4.27 remains
+in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
+
+
+## Reviewed immutable-provider verification — 2026-10-23
+
+The [corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023-immutable-provider-transport/review-1/verification.json) records **275 passing tests, zero
+skips**: 42 provider cases and 233 existing readback/boundary/authentication/
+common/telemetry cases. Full command transcripts and source hashes are retained.
+The initial 265-test candidate packet and both exact candidate source snapshots
+remain separate and unchanged.
+
+Review corrections cover dispatch binding after callbacks and inherited S3
+providers, persistent stream ownership through cancellation and handoff,
+standalone retention expiry/deadline clamping, exact TLS trust-anchor bytes,
+large streamed objects and hostile second responses. An in-memory wrong-CA
+substitution is now positively detected. All retained review items were resolved;
+no work was deferred by this review. Remaining live credential/authority/runtime,
+system/target/proof-consumer and actual recovery integrations stay as listed
+above. Public activation remains disabled; **4.27 stays in-progress, 4.1 closed,
+and Timesheets 3.6 open/FAIL**.
