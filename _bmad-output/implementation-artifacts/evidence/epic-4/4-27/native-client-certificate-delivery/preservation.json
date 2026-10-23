@@ -1,0 +1,35 @@
+{
+  "baselineCommit": "693390a790d95a9bad9b1bd9cc0f0f3052f3fbef",
+  "diffCheckExitCode": 0,
+  "frozenIntentUnchanged": true,
+  "handoffPrefixes": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "baselineBytes": 64323,
+      "baselineSha256": "418827bb8dcfb73119ee95d580ee6462c2cfb00acfd01cf3656d47d2a032c943",
+      "exactPrefixPreserved": true
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "baselineBytes": 79622,
+      "baselineSha256": "b94bdc8f5f1cceff643fc8b9af3e8c7a9ee68f08681df82a2270caddc9582b86",
+      "exactPrefixPreserved": true
+    },
+    "eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md": {
+      "baselineBytes": 21315,
+      "baselineSha256": "6d4c099b27757528694762f26b2189178f818db2bf9d6c33947ea9c2d08371b5",
+      "exactPrefixPreserved": true
+    }
+  },
+  "historicalTransportEnrollmentCommonAndS3SourcesUnchanged": [
+    "recovery_adapters.py",
+    "immutable_readback_driver.py",
+    "policy_authentication_driver.py",
+    "native_enrollment_execution.py",
+    "native_https_transport.py",
+    "native_measurement_adapter.py",
+    "static_transport_preflight.py",
+    "telemetry_postgres_adapter.py"
+  ],
+  "indexUnchanged": true,
+  "trackedHistoricalEvidenceTree": "83167d655d4ec637a2f758098f7b79044b9f21de",
+  "trackedHistoricalEvidenceUnchanged": true
+}

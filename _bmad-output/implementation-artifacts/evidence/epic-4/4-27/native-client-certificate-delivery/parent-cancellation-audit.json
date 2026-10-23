@@ -1,0 +1,17 @@
+{
+  "classification": "Parent-reported independent probe; exact heredoc retained in parent tool transcript",
+  "correctedSource": {
+    "primaryInterruptPreserved": true,
+    "result": "passed",
+    "sameProbeRepeated": true,
+    "sourceSha256": "c40a6d033dad338ed2025230abe04ca18fafac16acb5bc8cce7d881f6ee6451b",
+    "unreleasedDescriptors": 0
+  },
+  "firstCandidate": {
+    "injection": "one sys.settrace KeyboardInterrupt on the first _install_certificate _close_owned line after real SSLContext loading",
+    "parentClosedProbeDescriptors": true,
+    "primaryInterruptPreserved": true,
+    "unreleasedDescriptors": 2
+  },
+  "focusedRegression": "CertificateTests.test_interrupt_on_first_installation_cleanup_line_retains_outer_descriptor_ownership"
+}

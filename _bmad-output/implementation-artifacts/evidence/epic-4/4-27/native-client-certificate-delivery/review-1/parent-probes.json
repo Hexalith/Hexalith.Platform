@@ -1,0 +1,47 @@
+{
+  "archiveInvocation": "original-parent-cancellation-probe.txt",
+  "archiveScope": "Initial helper cleanup-line selector; not claimed to execute unmodified against restructured helper",
+  "classification": "Parent-reported independent synthetic probes; exact original invocation retained as archive; current executable regressions retained in focused suite",
+  "currentRegressionNames": [
+    "test_allocator_return_and_return_opcode_interrupts_retain_registered_ownership",
+    "test_registration_entry_append_and_constructor_returns_retain_every_input",
+    "test_successful_owned_close_never_retries_a_reused_descriptor_number",
+    "test_loading_interrupt_survives_second_cleanup_transition_interrupt"
+  ],
+  "currentReproductionCommand": [
+    "/usr/bin/python3.14",
+    "-I",
+    "-S",
+    "-B",
+    "eng/recovery-preparation/test_native_client_certificate.py"
+  ],
+  "originalObserved": {
+    "fired": true,
+    "unreleasedDescriptors": 2
+  },
+  "priorCorrectionObserved": {
+    "unreleasedDescriptors": 0
+  },
+  "review1ParentReported": {
+    "completedCloseReturn": {
+      "primaryPreserved": true,
+      "sameNumberUnrelatedDescriptorPreserved": true
+    },
+    "loadingThenCleanupTransition": {
+      "loadingKeyboardInterruptPreservedAgainstSystemExit": true,
+      "unreleasedDescriptors": 0
+    },
+    "ownerConstructorReturn": {
+      "primaryPreserved": true,
+      "unreleasedDescriptors": 0
+    },
+    "registrationAppend": {
+      "primaryPreserved": true,
+      "unreleasedDescriptors": 0
+    },
+    "sealedReturn": {
+      "primaryPreserved": true,
+      "unreleasedDescriptors": 0
+    }
+  }
+}

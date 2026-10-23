@@ -1231,3 +1231,17 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
   summary: Define and enforce per-entry descendant completion for shared-environment batches without stopping shared run resources.
   evidence: Completion-review B2; CompositionProcess.RunCoreAsync is byte-equivalent to Builds baseline 66b9136a0b223925e51177a51eb48852e2f12787 and returns on a successful parent exit plus drained streams without descendant quiescence. Detached inherited children can remain while the next command runs. Final run ownership cleanup exists; stronger entry supervision needs a separate lifecycle/ownership policy and a detached-child regression.
+
+## Deferred from: code review of spec-2-3-make-local-composition-resources-run-scoped.md (2026-10-23, final-state)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Make `AllocateOwnedSecondaryPorts` exhaustion reachable or remove its dead throw.
+  evidence: Story 2.4 resource-claim code (`1622516`). At `src/Hexalith.Platform.Composition/PlatformAppModel.cs:417` the `when (attempt < 63)` filter lets the 64th `CompositionResourceClaimConflictException` escape, so the "No independent secondary runner port allocation is available." throw is unreachable; no test exhausts the claim retries.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Remove retention diagnostics written into the real Memories checkout by the retention composition test.
+  evidence: `RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync` publishes BeforeStart through the Story 4.27 `PlatformDaprDiagnostics` registration, which writes `references/Hexalith.Memories/artifacts/retention/<runId>/diagnostics/native-sidecars`; the test's `finally` deletes only its workspace. Nine gitignored run folders were present on 2026-10-23. Delete that run's diagnostics directory in the test cleanup.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Prove the activated retention gate refuses access after `ExecutionDeadlineUtc` while the extended certificate is still valid.
+  evidence: Unverified (maybe-false; medium if true). Story 2.4 `PlatformRetentionProfile.PreStartValidityCeiling` extends `AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc` and the server certificate past `ExecutionDeadlineUtc`; its comment relies on the gate deadline, but no Platform test exercises gate refusal with a still-valid certificate. Settle with a gate test past the execution deadline.

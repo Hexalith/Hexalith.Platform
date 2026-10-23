@@ -2,7 +2,7 @@
 title: '2.3 Make local composition resources run-scoped'
 type: 'feature'
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
@@ -119,6 +119,49 @@ Code review 2026-10-23 (round 3; Blind Hunter, Edge Case Hunter, Verification Ga
 - low — EC21 non-BMP surrogate escapes in discovery paths: improbable in temp paths; the fix needs a custom encoder.
 - low — EC23 run data inside a checkout: default runner workspaces live under LocalApplicationData, and the default certificate check rejects in-checkout run directories.
 - spec edit — AA8 status disagreement across spec/sprint artifacts: resolved by this workflow's status sync.
+
+### Review Findings — final-state review (2026-10-23)
+
+Code review 2026-10-23 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the story-owned files from baseline `6fbe5a0` to `95ee736`, plus Builds renderer `2210aaa..8c9caa7`, EventStore props `cb41453..f5d36b8` and Works `3fcaa32`. Uncommitted working-tree owner-attribution edits (Story 2.4 follow-up) were excluded.
+
+- [ ] [Review][Patch] Requalify the live gates on the current tree: the passing file-entry smoke and concurrent proof recorded pre-`09842f0` hashes for `apphost.cs`, `DaprSelfHostedMtls.cs`, `PlatformAppModel.cs`, `PlatformDaprEndpointSubscriber.cs` and `PlatformCompositionWorkspace.cs`; `09842f0` (this story's certificate-parent/failure-retention fixes), `1622516` (claimed secondary ports) and `3b09b03` (catalog EventStore 3.127.0) followed without a rerun [_bmad-output/implementation-artifacts/evidence/2-3/review-final-20261023/approved-aspire-13-6-3/source-after.json:1]
+- [ ] [Review][Patch] Re-assert run 0 readiness (refresh-readiness) while run 1 is up, before stopping the peer; only each run's own start snapshot and the survivor are checked today (AC3 "both reach declared readiness") [tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:135]
+- [ ] [Review][Patch] Test the default issuer location: with `Dapr:Mtls:CertificateDirectory` unset, the credential mount sits inside the run's rendered workspace for file-entry and `ComposeRun`, and file-entry disposal removes it [DaprSelfHostedMtls.cs:288]
+- [ ] [Review][Patch] Test the native runtime fallback: with `HEXALITH_DAPR_HOME` unset, file-entry and Works sidecars select the user-profile `RuntimePath` [src/Hexalith.Platform.Composition/PlatformAppModel.cs:130]
+- [ ] [Review][Patch] Test Works preview refusal of a certificate parent inside the Works, EventStore and enclosing Platform checkouts, with no resources or preview workspace created [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:97]
+- [ ] [Review][Patch] Register Works disposal of the issuer child only for a configured parent, as Platform does; the default child lives inside the workspace, so a failure-marked Works workspace currently loses its credentials [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
+- [ ] [Review][Patch] Compare checkout containment case-insensitively on macOS as well as Windows [DaprSelfHostedMtls.cs:290]
+- [x] [Review][Defer] Unreachable "No independent secondary runner port allocation" throw: the 64th claim conflict escapes the `attempt < 63` filter [src/Hexalith.Platform.Composition/PlatformAppModel.cs:417] — deferred: Story 2.4 resource-claim code (`1622516`), not caused by this story.
+- [x] [Review][Defer] Composed retention diagnostics subscriber's directory and redaction are not asserted [src/Hexalith.Platform.Composition/PlatformAppModel.cs:364] — deferred: Story 4.27 code (`858d02c`); already recorded in deferred-work as 2.4 round-3 R3-V2.
+- [x] [Review][Defer] Retention composition test leaves `references/Hexalith.Memories/artifacts/retention/<runId>/diagnostics` behind (nine gitignored folders present) [tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs:217] — deferred: produced by the Story 4.27 diagnostics subscriber; delete the run's diagnostics directory in the test's `finally`.
+- [x] [Review][Defer] Retention certificate and capability validity now extend to the pre-start ceiling, past `ExecutionDeadlineUtc`; no Platform test shows the activated gate refusing access after the deadline while the certificate is still valid [src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs:242] — deferred: Story 2.4 code; unverified (maybe-false, medium if true). Settle with a gate test past `ExecutionDeadlineUtc` with a still-valid certificate.
+
+**Rejected (final-state review):**
+
+- false — AA2/BH1 `apphost.cs` pins outside the exception: `Aspire.Hosting.Kubernetes` is an approved directive; the EventStore 3.126.1→3.127.0 bump is independent catalog-following work (`3b09b03`) matching Builds `HexalithEventStoreVersion` 3.127.0. Its qualification impact is covered by the requalification patch.
+- spec edit — AA4 EventStore fallback wording (carried R4-E1).
+- false — AA5 mixed-scope hunks (hosted 4.5, 2.4 claims/owners, retention ceiling): an artifact of filtering shared commits (carried BH12).
+- spec edit — AA6 stale deferred-item wording (claim acquisition now tested; proxyless resolved in deferred-work).
+- false — AA7 Works parity text: it describes the allocation in `WorksPreviewModel.cs:103-114` and replaces the accepted stale sentence; it adds no qualification claim.
+- false — BH3 repeated port claims across preflight and execution: Builds `AppHostRunner.cs:75` strips `ResourceClaimStateDirectory` for `--validate-platform`, so only execution claims.
+- low — BH4 an explicit parent skips the workspace's checkout check: requires TMPDIR or a runner workspace root inside a checkout (cf. EC23); the fix adds a guard.
+- low — BH5/EC14 pre-start ceiling formula (single test omits the stop timeout, 600-second fallback, formula-mirroring test): Story 2.4 code; maybe-false, low if true because the stop phase only terminates processes.
+- low — BH7 listener receipts are argument-derived and written non-atomically: daprd binds exactly its explicit flags or exits, and receipts are read after readiness.
+- low — BH8 peer-teardown residue and appended evidence: `Remaining` is asserted; claim/workspace release is Story 2.5 lifecycle; appends mix only under a reused evidence override.
+- low — BH9 a symlink cycle surfaces .NET's IOException and the depth guard is untested: a loud failure naming the path of a misconfigured parent.
+- false — BH10 `servers.Count == 0` mode switch: Platform adds sidecars only for its servers, so an empty Platform list selects nothing.
+- low — BH11 circular/dead owner attribution: Story 2.4 code under revision in the working tree; no wrong owner is shown.
+- false — BH14 `PlatformApplicationGraph.Resolve(options)` skips the Timesheets opt-in: its only caller is Story 4.5 hosted publishing with reference options.
+- low — VG-O3/EC16 model tests leave per-run temp workspaces (426 under `hexalith-platform`, 41 under `hexalith-works-preview`) and Works compose failures leave unmarked workspaces: test-generated contents; safe cleanup needs workspace-root plumbing because blanket deletion could remove a running developer AppHost's workspace.
+- low — EC1 the unconfigured refusal names `Dapr:Mtls:CertificateDirectory`: needs an in-checkout temp or runner root.
+- low — EC2, EC4, EC5, EC6, EC7, EC8, EC11, EC12, EC13, EC18: carried BH8/EC10, EC5/EC11, AA5/EC8, EC13/EC14, EC5/EC11, BH2/EC2, EC21, BH14, EC6/EC15 and EC17 dispositions.
+- false — EC9 Sentry address without a colon (carried EC4).
+- false — EC10 type-ambiguous plain configuration names: both callers prefix the name (`platform-`, `hexalith-g4-`).
+- low — EC15 eight-character redaction threshold: Story 4.27 code; generated server secrets exceed it.
+- low — EC19 the live harness loses a run when `StartAsync` throws: gated proof; recovery needs state-directory enumeration.
+- low — EC20 python3-dependent model test: python3 is present on the supported Linux/WSL hosts; the fix adds a guard.
+- low — EC21 "any BeforeStart failure" retention claim: carried R2-B1/R4-B10; other subscribers' failures remain in Aspire logs.
+- low — EC22 parent validated after runner-level claims: the runner releases its plan claims and config in its own teardown; the commit's claim covers the composition's own claims and writes.
 
 ## Implementation Notes
 

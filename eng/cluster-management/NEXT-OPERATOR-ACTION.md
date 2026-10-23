@@ -1051,3 +1051,68 @@ no work was deferred by this review. Remaining live credential/authority/runtime
 system/target/proof-consumer and actual recovery integrations stay as listed
 above. Public activation remains disabled; **4.27 stays in-progress, 4.1 closed,
 and Timesheets 3.6 open/FAIL**.
+
+
+## Native client-certificate delivery — 2026-10-23
+
+The [separate corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/verification.json) records 297
+passing offline tests, zero skips, including 21 focused certificate cases.
+The explicitly selected, custody-bound `client-certificate` profile now loads
+its exact PEM certificate/key envelope through sealed memory descriptors and
+omits Authorization. The default bearer profile preserves its wire behavior.
+Real socket-free mutual TLS checks exact source/target client identities and
+rejects no-op/wrong-certificate loaders. All four plan fixtures retain distinct
+cluster audiences, native requests and semantic guards; deadlines, cancellation,
+descriptor preservation and independent cleanup are covered. The parent audit's
+interruption-at-first-cleanup-line ownership gap is corrected and regressed.
+First-candidate transcripts remain separate from current-source evidence.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed. Historical evidence, earlier handoff
+prefixes, revision 4, signed originals and frozen intent remain preserved;
+**4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**.
+
+
+## Reviewed native client-certificate ownership — 2026-10-23
+
+The [review-1 corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-1/verification.json) records **305 passing tests, zero skips**: 29 certificate cases
+and the 276 existing boundary/readback/authentication/S3/common/telemetry cases.
+The initial 297-test packet, four exact candidate snapshots, first-candidate
+transcripts and original spec receipt remain unchanged historical evidence.
+The original spec receipt hash is reproducible from its retained
+`spec-implementation-checkpoint.md`; the new packet binds the reviewed state
+separately and retains the exact original parent probe invocation as an archive.
+
+Certificate inputs now register persistent owners inside allocation, before
+returning to installation. Registration itself retains ownership across entry,
+append and constructor-return interruptions. C-level descriptor close state
+prevents a completed close from retrying a reused descriptor number. Shared
+failure state preserves an original loading interrupt through a later cleanup
+transition interrupt, while the remaining owners receive cleanup attempts.
+Independent parent probes and direct regressions verify these boundaries.
+
+Real socket-free mutual TLS also covers traditional RSA and EC keys, a valid
+intermediate certificate chain, and an isolated count-limit refusal below the
+byte limits. Valid CRLF and missing-terminal-newline PEM forms retain their
+original installed bytes. The isolated fd 3 fixture explicitly checks its
+precondition, sentinel bytes and descriptor/status flags. All prior exact peer
+DER/CA, no-op/wrong-loader, four-plan, native-wire/precondition, bearer, semantic
+stop and null-qualification checks remain passing.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.

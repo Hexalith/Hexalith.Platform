@@ -318,3 +318,89 @@ no work was deferred by this review. Remaining live credential/authority/runtime
 system/target/proof-consumer and actual recovery integrations stay as listed
 above. Public activation remains disabled; **4.27 stays in-progress, 4.1 closed,
 and Timesheets 3.6 open/FAIL**.
+
+
+## Native client-certificate delivery — 2026-10-23
+
+The [scoped native-certificate spec](../../_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md)
+and [separate corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/verification.json)
+address the certificate-delivery gap recorded above. `NativeBinding` now pins an
+explicit `authentication_profile`: `bearer` remains the compatibility default;
+`client-certificate` must be selected explicitly. Certificate credentials contain
+an exact JSON envelope with only `certificatePem` and `privateKeyPem` string
+fields, inside the existing secret/identity/custody hash bindings. There is no
+profile discovery, fallback or combined authentication.
+
+`NativeTLS` loads the exact bounded PEM pair into the real TLS context using
+sealed, close-on-exec memory descriptors. It accepts unencrypted PKCS#8, RSA or
+EC PEM private keys; encrypted keys refuse without lookup or a password prompt.
+Certificate authentication omits Authorization entirely. Bearer wire bytes and
+exact per-cluster credential audiences remain unchanged. The exact CA trust,
+hostname checks, native methods/paths/bodies, one absolute deadline and existing
+semantic guards still apply. Exchange retains descriptor ownership through
+installation cleanup; loading/cleanup interruption closes all owned inputs and
+preserves the primary interrupt. Cleanup and elapsed-time checks precede success.
+The explicit inert connector remains mandatory, and all public selectors refuse
+before credential/configuration/network access.
+
+The focused suite passes 21 static synthetic cases. Real `SSLContext` loading
+and socket-free `MemoryBIO` mutual TLS verify the exact source/target client
+certificates, including positive detection of no-op and wrong-certificate
+loaders. All four plans compose with distinct identities, cluster audiences,
+original native mutation bodies and null operational/recovery acceptance.
+Additional cases cover mixed profiles, binding drift, malformed/missing/mismatched
+or encrypted keys, sealing, fd 3 and closed-standard-descriptor preservation,
+timeouts, cancellation and independent cleanup. A line-interruption regression
+covers the parent audit's first-cleanup-line ownership finding. The seven suites
+pass 297 tests, zero skips; commands, logs, matrix coverage and source hashes are
+retained separately from all historical evidence.
+
+Actual credential acquisition/custody, IAM/authority lineage and client identity
+qualification; separately reviewed live connector/TLS/runtime qualification and
+activation; complete store/system and isolated-target orchestration, including
+telemetry PostgreSQL; proof-consumer integration; fresh exact attempt/policy/tool
+bindings; and actual recovery/resume/cleanup with signed/non-dry/manual acceptance
+remain prerequisites. Synthetic certificate fixtures confer no authority. No
+actual credentials/configuration/endpoints, recovery-attempt allocation,
+operational certificate issuance, recovery-document signing, upload, recovery or
+infrastructure mutation occurred. Public operational gates remain closed;
+**4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**. Earlier handoff
+prefixes, revision 4, signed originals and historical evidence remain unchanged.
+
+
+## Reviewed native client-certificate ownership — 2026-10-23
+
+The [review-1 corrected-source verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-1/verification.json) records **305 passing tests, zero skips**: 29 certificate cases
+and the 276 existing boundary/readback/authentication/S3/common/telemetry cases.
+The initial 297-test packet, four exact candidate snapshots, first-candidate
+transcripts and original spec receipt remain unchanged historical evidence.
+The original spec receipt hash is reproducible from its retained
+`spec-implementation-checkpoint.md`; the new packet binds the reviewed state
+separately and retains the exact original parent probe invocation as an archive.
+
+Certificate inputs now register persistent owners inside allocation, before
+returning to installation. Registration itself retains ownership across entry,
+append and constructor-return interruptions. C-level descriptor close state
+prevents a completed close from retrying a reused descriptor number. Shared
+failure state preserves an original loading interrupt through a later cleanup
+transition interrupt, while the remaining owners receive cleanup attempts.
+Independent parent probes and direct regressions verify these boundaries.
+
+Real socket-free mutual TLS also covers traditional RSA and EC keys, a valid
+intermediate certificate chain, and an isolated count-limit refusal below the
+byte limits. Valid CRLF and missing-terminal-newline PEM forms retain their
+original installed bytes. The isolated fd 3 fixture explicitly checks its
+precondition, sentinel bytes and descriptor/status flags. All prior exact peer
+DER/CA, no-op/wrong-loader, four-plan, native-wire/precondition, bearer, semantic
+stop and null-qualification checks remain passing.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.

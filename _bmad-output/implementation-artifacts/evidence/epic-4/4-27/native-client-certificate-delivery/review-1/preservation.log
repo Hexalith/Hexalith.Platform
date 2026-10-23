@@ -1,0 +1,71 @@
+{
+  "allInitialPacketBytesUnchanged": true,
+  "baselineCommit": "693390a790d95a9bad9b1bd9cc0f0f3052f3fbef",
+  "correctedSourceSnapshotsEqualWorkingSources": [
+    "recovery_execution_boundary.py",
+    "_execution_boundary_fixtures.py",
+    "test_native_client_certificate.py",
+    "test_recovery_execution_boundary.py"
+  ],
+  "dispatchHandoffPrefixesUnchanged": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "sha256": "3637387a0bf7ca583f9b3f23b5fbbe26ddf4fb6a0b86a149271db5db48850fe1",
+      "size": 66135
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "sha256": "9faa397d4b413ae2226b04a0c8a49dff9a984962a1ac89959ecd733ffd1d9bc7",
+      "size": 81478
+    },
+    "eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md": {
+      "sha256": "0a72529a57e2de211cf8b594e13e068859980763d5ccd152cbe11945fd0c32e3",
+      "size": 24669
+    }
+  },
+  "frozenIntentUnchanged": true,
+  "indexHasNoChangesAgainstParentBaseline": true,
+  "initialPacketFilesChecked": 30,
+  "initialSpecReceiptHashReproduced": "ee2c4da3c479b3ef80b64a1cd977ac0cf8cfe7a0d46502c2b78a1fbedd17616e",
+  "originalTestNames": {
+    "test_native_client_certificate.py": {
+      "allOriginalTestNamesRetained": true,
+      "current": 29,
+      "initial": 21
+    },
+    "test_recovery_execution_boundary.py": {
+      "allOriginalTestNamesRetained": true,
+      "current": 45,
+      "initial": 45
+    }
+  },
+  "otherInventoriedSourcesEqualParentBaseline": [
+    "eng/recovery-preparation/fresh_prerequisite.py",
+    "eng/recovery-preparation/immutable_readback_driver.py",
+    "eng/recovery-preparation/native_enrollment_execution.py",
+    "eng/recovery-preparation/native_https_transport.py",
+    "eng/recovery-preparation/native_measurement_adapter.py",
+    "eng/recovery-preparation/policy_authentication_driver.py",
+    "eng/recovery-preparation/recovery_adapters.py",
+    "eng/recovery-preparation/static_transport_preflight.py",
+    "eng/recovery-preparation/telemetry_postgres_adapter.py",
+    "eng/recovery-preparation/test_fresh_prerequisite.py",
+    "eng/recovery-preparation/test_immutable_readback_driver.py",
+    "eng/recovery-preparation/test_immutable_s3_provider.py",
+    "eng/recovery-preparation/test_native_enrollment_execution.py",
+    "eng/recovery-preparation/test_native_https_transport.py",
+    "eng/recovery-preparation/test_native_measurement_adapter.py",
+    "eng/recovery-preparation/test_policy_authentication_driver.py",
+    "eng/recovery-preparation/test_recovery_adapters.py",
+    "eng/recovery-preparation/test_static_transport_preflight.py",
+    "eng/recovery-preparation/test_telemetry_postgres_adapter.py",
+    "eng/recovery-preparation/test_verify_enrollment_revision.py",
+    "eng/recovery-preparation/test_verify_native_supplement.py",
+    "eng/recovery-preparation/test_verify_packet.py",
+    "eng/recovery-preparation/verify_enrollment_revision.py",
+    "eng/recovery-preparation/verify_native_supplement.py",
+    "eng/recovery-preparation/verify_packet.py"
+  ],
+  "parentBaselineHandoffPrefixesUnchanged": true,
+  "trackedHistoricalEvidenceTree": "83167d655d4ec637a2f758098f7b79044b9f21de",
+  "trackedHistoricalEvidenceUnchanged": true,
+  "unrelatedWorkspaceEdits": "outside checked scope; no preservation claim inferred"
+}

@@ -1,0 +1,28 @@
+/usr/bin/python3.14 -I -S -B - <<'PY'
+import importlib.util, os, pathlib, sys
+path = pathlib.Path('eng/recovery-preparation/test_native_client_certificate.py').absolute()
+spec = importlib.util.spec_from_file_location('certificate_parent_probe', path)
+t = importlib.util.module_from_spec(spec); sys.modules[spec.name] = t; spec.loader.exec_module(t)
+case = t.CertificateTests('test_exact_certificate_and_key_authenticate_real_peer_without_authorization'); case.setUp()
+before = t.descriptors(); fired = [False]
+source = pathlib.Path(t.b.__file__).read_text().splitlines()
+target = next(i for i, line in enumerate(source, 1) if line.strip() == 'error = _close_owned(owned, error)' and i > 400)
+primary = KeyboardInterrupt('synthetic parent cancellation before descriptor cleanup')
+def trace(frame, event, arg):
+    if frame.f_code is t.b.NativeTLS._install_certificate.__code__ and event == 'line' and frame.f_lineno == target and not fired[0]:
+        fired[0] = True
+        raise primary
+    return trace
+try:
+    sys.settrace(trace)
+    try: case.exchange()
+    except KeyboardInterrupt as exc: assert exc is primary
+    finally: sys.settrace(None)
+    leaked = set(t.descriptors()) - set(before)
+    print({'probe': 'interrupt-before-install-cleanup', 'fired': fired[0], 'unreleasedDescriptors': len(leaked)})
+finally:
+    sys.settrace(None)
+    for fd in set(t.descriptors()) - set(before):
+        os.close(fd)
+    case.doCleanups()
+PY

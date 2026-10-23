@@ -1,0 +1,100 @@
+[
+  {
+    "name": "native-client-certificate",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_native_client_certificate.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 3.969,
+    "log": "native-client-certificate.log",
+    "logSha256": "0d775606e247d2225bc5f0bb4e95a124e76f06fab3819057d5807558206794e3"
+  },
+  {
+    "name": "execution-boundary",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_execution_boundary.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 30.239,
+    "log": "execution-boundary.log",
+    "logSha256": "ce160faf01286a92b089f6470dd4b0fd2a64a396f96f177dd83b978378321e3e"
+  },
+  {
+    "name": "immutable-readback",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_immutable_readback_driver.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.416,
+    "log": "immutable-readback.log",
+    "logSha256": "b6ec1f17cc30453f455a37bf9503b0e3676ab6376b2cde48aaf8668a4a08fd6f"
+  },
+  {
+    "name": "policy-authentication",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_policy_authentication_driver.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.737,
+    "log": "policy-authentication.log",
+    "logSha256": "200ddd0864eed17bfa42e7406f2fe5b75e3c3b27fb03102b9be1cd9d41391bcc"
+  },
+  {
+    "name": "immutable-s3-provider",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_immutable_s3_provider.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.558,
+    "log": "immutable-s3-provider.log",
+    "logSha256": "dd3a867cf1b50fc2e6339ff69b8dd06fcee429224eae186783a71d0fb126ae4a"
+  },
+  {
+    "name": "common-adapter",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_adapters.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.183,
+    "log": "common-adapter.log",
+    "logSha256": "fadf68642167db8703e9366d68b25e066ea71bd6f309d1f5ddd9f6585ec8b532"
+  },
+  {
+    "name": "telemetry-postgres",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.869,
+    "log": "telemetry-postgres.log",
+    "logSha256": "af674e966cfd5329c091b61445661e6f6fabbd59da48080b3ba30ea91de46571"
+  }
+]
