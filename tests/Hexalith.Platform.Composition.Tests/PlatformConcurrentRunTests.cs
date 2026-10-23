@@ -132,30 +132,19 @@ public sealed class PlatformConcurrentRunTests
             }
             containerIds[0].Intersect(containerIds[1]).ShouldBeEmpty();
             certificates[0].Intersect(certificates[1]).ShouldBeEmpty();
+            // The first session's startup snapshot predates its peer. Refresh both while they coexist.
+            for (int index = 0; index < runs.Count; index++)
+            {
+                CompositionReadiness concurrent = await RefreshReadinessAsync(runs[index].Session);
+                File.WriteAllText(Path.Combine(evidence, "concurrent-readiness-" + index + ".json"), JsonSerializer.Serialize(concurrent));
+            }
             var stopped = await runs[0].Engine.DownAsync(runs[0].Session, CancellationToken.None);
             File.WriteAllText(Path.Combine(evidence, "peer-cleanup.json"), JsonSerializer.Serialize(stopped));
             stopped.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.Success);
             stopped.Remaining.IsEmpty.ShouldBeTrue();
             var survivor = runs[1].Session;
-            string nonce = CompositionRunPlanFactory.NewRunId();
-            await CompositionDocumentStore.WriteAsync(CompositionControlRequest.PathFor(survivor.Plan.Workspace),
-                new CompositionControlRequest(CompositionControlRequest.SupportedSchema, survivor.RunId, nonce, "refresh-readiness"), TestContext.Current.CancellationToken);
-            using (CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken))
-            {
-                bound.CancelAfter(TimeSpan.FromSeconds(90));
-                CompositionControlResponse? response;
-                do
-                {
-                    await Task.Delay(TimeSpan.FromMilliseconds(200), bound.Token);
-                    response = await CompositionDocumentStore.TryReadAsync<CompositionControlResponse>(CompositionControlResponse.PathFor(survivor.Plan.Workspace), bound.Token);
-                } while (response?.Nonce != nonce);
-                response.RunId.ShouldBe(survivor.RunId);
-                response.Success.ShouldBeTrue(response.FailureStep);
-                CompositionReadiness refreshed = (await CompositionDocumentStore.TryReadAsync<CompositionReadiness>(survivor.Plan.ReadinessPath, bound.Token)).ShouldNotBeNull();
-                refreshed.RefreshId.ShouldBe(nonce);
-                refreshed.Resources.Where(resource => resource.Kind == "project").ShouldAllBe(resource => resource.State == "Healthy");
-                File.WriteAllText(Path.Combine(evidence, "survivor-readiness.json"), JsonSerializer.Serialize(refreshed));
-            }
+            CompositionReadiness refreshed = await RefreshReadinessAsync(survivor);
+            File.WriteAllText(Path.Combine(evidence, "survivor-readiness.json"), JsonSerializer.Serialize(refreshed));
             foreach (string store in stores[1])
             {
                 var survivorValue = await CommandAsync("docker", ["exec", store, "redis-cli", "GET", "platform-concurrent-same-key"], root);
@@ -228,6 +217,30 @@ public sealed class PlatformConcurrentRunTests
             Should.Throw<FileNotFoundException>(() => NativeListenerInventory(directory, ["eventstore", "secondary"]));
         }
         finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    private static async Task<CompositionReadiness> RefreshReadinessAsync(CompositionRunSession session)
+    {
+        using CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        bound.CancelAfter(TimeSpan.FromSeconds(90));
+        string nonce = CompositionRunPlanFactory.NewRunId();
+        await CompositionDocumentStore.WriteAsync(CompositionControlRequest.PathFor(session.Plan.Workspace),
+            new CompositionControlRequest(CompositionControlRequest.SupportedSchema, session.RunId, nonce, "refresh-readiness"), bound.Token);
+        CompositionControlResponse? response;
+        do
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(200), bound.Token);
+            response = await CompositionDocumentStore.TryReadAsync<CompositionControlResponse>(CompositionControlResponse.PathFor(session.Plan.Workspace), bound.Token);
+        } while (response?.Nonce != nonce);
+        response.RunId.ShouldBe(session.RunId);
+        response.Success.ShouldBeTrue(response.FailureStep);
+        CompositionReadiness refreshed = (await CompositionDocumentStore.TryReadAsync<CompositionReadiness>(session.Plan.ReadinessPath, bound.Token)).ShouldNotBeNull();
+        refreshed.RunId.ShouldBe(session.RunId);
+        refreshed.RefreshId.ShouldBe(nonce);
+        refreshed.Resources.Where(resource => resource.Kind == "project").Select(resource => resource.Name).Order()
+            .ShouldBe(session.Readiness.Resources.Where(resource => resource.Kind == "project").Select(resource => resource.Name).Order());
+        refreshed.Resources.Where(resource => resource.Kind == "project").ShouldAllBe(resource => resource.State == "Healthy");
+        return refreshed;
     }
 
     private static IReadOnlyDictionary<string, IReadOnlyDictionary<string, int>> NativeListenerInventory(string workspace, IEnumerable<string> resources)

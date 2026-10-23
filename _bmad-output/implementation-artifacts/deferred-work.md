@@ -1245,3 +1245,33 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Prove the activated retention gate refuses access after `ExecutionDeadlineUtc` while the extended certificate is still valid.
   evidence: Unverified (maybe-false; medium if true). Story 2.4 `PlatformRetentionProfile.PreStartValidityCeiling` extends `AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc` and the server certificate past `ExecutionDeadlineUtc`; its comment relies on the gate deadline, but no Platform test exercises gate refusal with a still-valid certificate. Settle with a gate test past the execution deadline.
+
+## Deferred from: Story 2.3 current-tree workflow review (2026-10-23)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Custody unpin authorization must bind the release revision to the attested current control revision.
+  evidence: R5-B2, high: StatementVerifier.Authorize checks CurrentGuardRevision only against DispatchRevision; SemanticProvider unpin accepts ReleaseGuardRevision above the registered pin without an upper bound against that signed current state. An internally inconsistent enrolled signed claim can remove a pin before its claimed release revision exists. Independent Custody provider code, unchanged by local run isolation; add CurrentGuardRevision >= ReleaseGuardRevision and a signed refusal case in its owner work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Determine whether native-result streams can exceed their advertised length and enforce a streaming ceiling if needed.
+  evidence: R5-B3, unverified medium: AwsAuthorityStore.FindIntentResultAsync uses CopyToAsync after a ContentLength check, unlike bounded ReadObjectAsync. Settle with an oversized injected native response plus the actual native SDK stream contract; no production overrun was demonstrated. Independent Custody provider work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Resolve hosted Dapr component version selection for accepted providers requiring versions beyond v1.
+  evidence: R5-B4, unverified medium: the Helm validator permits capability-prefixed provider types but templates/dapr.yaml always emits version v1. Establish an accepted hosted provider/version fixture before deciding whether to expose a version field or constrain supported bindings. Independent Story 4.5 export, not local composition.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Assert composed retention diagnostics receive the intended retained directory and redaction inputs.
+  evidence: R5-B9, medium: production PlatformAppModel.ComposeRun derives the directory and secrets, but existing composition tests do not inspect them; standalone helper tests cannot catch incorrect construction. Independent Story 4.27 diagnostics configuration.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Resolve the final secondary-port claim conflict diagnostic and unreachable exhaustion throw.
+  evidence: R5-B10, low: attempt 63 escapes the attempt < 63 catch filter in PlatformAppModel.AllocateOwnedSecondaryPorts. The following generic throw cannot execute, although the concrete blocking-owner exception remains useful. Independent Story 2.4 claim lifecycle policy.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Verify production ComposeRun diagnostics emit retained native console and final capture-stopped receipts.
+  evidence: R5-V1, medium, pre-verified: PlatformDaprDiagnosticsTests installs its own capture/eventing registrations, and PlatformRetentionProfileTests never asserts production capture output. Removing PlatformAppModel's production eventing registration leaves those tests passing. Independent Story 4.27 diagnostics wiring, distinct from constructor-input assertions.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Redact short PEM body lines across successive native console messages.
+  evidence: R5-V3, medium: PlatformDaprDiagnosticResource.RecordLogs redacts each line separately; PlatformDaprDiagnosticRedactor is stateless and its opaque matcher starts at 40 characters. A short base64 body line after a redacted header survives. Existing coverage supplies the whole PEM block in one message. Independent Story 4.27 diagnostics redaction.

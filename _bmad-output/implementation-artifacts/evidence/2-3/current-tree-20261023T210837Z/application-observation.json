@@ -1,0 +1,23 @@
+{
+  "same_apphost_paths_running": true,
+  "same_process_identities": false,
+  "before": [
+    {
+      "appHostPath": "/home/administrator/projects/hexalith/tenants/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj",
+      "appHostPid": 2279129,
+      "status": "running",
+      "sdkVersion": "13.6.1",
+      "cliPid": 2277996
+    }
+  ],
+  "after": [
+    {
+      "appHostPath": "/home/administrator/projects/hexalith/tenants/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj",
+      "appHostPid": 2773316,
+      "status": "running",
+      "sdkVersion": "13.6.1",
+      "cliPid": 2772738
+    }
+  ],
+  "lifecycle_target_scope": "The file-entry test explicitly starts/waits/stops platform/apphost.cs; concurrent cleanup uses only its own Builds sessions/run IDs. No lifecycle command targeted the separate tenants AppHost. Its observed PID change is retained rather than reported as unchanged."
+}

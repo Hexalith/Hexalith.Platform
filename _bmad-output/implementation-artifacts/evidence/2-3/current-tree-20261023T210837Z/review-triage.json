@@ -1,0 +1,86 @@
+[
+  {
+    "finding": "R5-B1 \u2014 future reference invocation timeout",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "carried R4-B5: checks/reference/runner.py still bounds deadlineAt-startedAt while execution uses the current clock. Independent hosted check policy remains outside local composition; do not re-defer."
+  },
+  {
+    "finding": "R5-B2 \u2014 unpin release revision exceeds attested control revision",
+    "verdict": "high",
+    "route": "defer",
+    "evidence": "StatementVerifier.Authorize bounds CurrentGuardRevision only against DispatchRevision. SemanticProvider unpin checks ReleaseGuardRevision against the pin but never against the signed current guard; an inconsistent enrolled signed claim can remove the pin before its stated release revision exists. This is independent Custody provider code already present at 1516a6be0e3b9500cbcaeb14da1c0101f88caafa, outside reference-run isolation."
+  },
+  {
+    "finding": "R5-B3 \u2014 native-result streaming bound",
+    "verdict": "maybe-false",
+    "route": "defer",
+    "evidence": "medium if true, unverified: AwsAuthorityStore.FindIntentResultAsync checks advertised ContentLength then copies the stream without a running byte ceiling. Surrounding code cannot establish whether the production native response can exceed that length; settle with an oversized injected response and the native SDK stream contract. Independent Custody provider work."
+  },
+  {
+    "finding": "R5-B4 \u2014 fixed hosted component version",
+    "verdict": "maybe-false",
+    "route": "defer",
+    "evidence": "medium if true, unverified: hosted chart validation admits capability-prefixed provider types while dapr.yaml emits v1 only. No accepted provider requiring v2 was demonstrated; settle with an accepted hosted binding and its version requirement. Independent Story 4.5 export at ec54e85098cae179125c23d770aa873a23055ff9; local reference components are unaffected."
+  },
+  {
+    "finding": "R5-B5 \u2014 direct native runtime attestation",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "carried R2-B4: direct native launches retain the existing runtime-home selection without version attestation. The current proof records exact CLI/runtime versions and digests; the pre-existing admission gap stays with its owner and is not re-deferred."
+  },
+  {
+    "finding": "R5-B6 \u2014 external issuer child after forced termination",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "carried B5/R2-B3: normal host disposal owns the explicitly configured child; forced termination cannot run it. Crash/lifecycle retention is explicitly excluded. A composition failure before resource startup can additionally leave an empty private child (the previously rejected AA5/EC8 case); no foreign write path is shown."
+  },
+  {
+    "finding": "R5-B7 \u2014 deferred callback workspace retention",
+    "verdict": "false",
+    "route": "reject",
+    "evidence": "carried R4-B10/R2-B1: later startup errors remain in Aspire logs and run evidence. The required startup diagnostics are not restricted to the temporary workspace; automatic workspace retention for every later callback was already rejected, and the code still matches that disposition."
+  },
+  {
+    "finding": "R5-B8 \u2014 Works proxyless endpoint allocation",
+    "verdict": "false",
+    "route": "reject",
+    "evidence": "The existing proxyless-sidecar-check-20261023 executable probe reproduces the exact null-port mutation under the same Aspire 13.6.3 and toolkit pin. Its run.log records allocated grpc/http/metrics ports, a Running sidecar, HTTP 204 health and exit 0. This disproves the proposed allocation failure without claiming full Works live qualification."
+  },
+  {
+    "finding": "R5-B9 \u2014 composed retention diagnostics configuration unasserted",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "The verification gap is real: production ComposeRun derives the retained directory and redaction input, while current model tests do not assert those constructor inputs. This is independent Story 4.27 diagnostics (858d02c05eb837a4ee85c5215430201f117dc24d), already acknowledged by the final-state review; preserve that work."
+  },
+  {
+    "finding": "R5-B10 \u2014 final secondary-claim conflict bypasses exhaustion message",
+    "verdict": "low",
+    "route": "defer",
+    "evidence": "At attempt 63 the claim-conflict filter does not catch the exception, so the following generic exhaustion throw cannot run. The caller still receives the concrete blocking owner. This is the existing Story 2.4 claim-policy issue explicitly deferred by the final-state review, not this story's allocation change."
+  },
+  {
+    "finding": "R5-E1 \u2014 stale older-catalog fallback claim",
+    "verdict": "false",
+    "route": "reject",
+    "evidence": "carried R4-E1: supported selected catalogs supply the cryptography pins; the current owner props intentionally rely on them. The historical task wording does not demonstrate failure under a supported catalog. Its proposed correction edits this build's spec, which this review workflow explicitly rejects."
+  },
+  {
+    "finding": "R5-V1 \u2014 production retention capture can be disconnected",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "Pre-verified gap: dedicated diagnostics tests register capture themselves; the production ComposeRun test never asserts console output or final capture-stopped receipts. Removing only the production eventing registration can therefore go undetected. This is independent Story 4.27 production wiring, separate from the directory/redaction-input gap."
+  },
+  {
+    "finding": "R5-V2 \u2014 KMS decrypt-response identity negative case",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "carried R4-V1: the new real-adapter tests now exercise AwsKeyAccess, but their DecryptResponse always copies request.KeyId. The unchanged response-ARN refusal still lacks the specific negative case. The filed evidence updates the existing independent Custody gap; do not re-defer it."
+  },
+  {
+    "finding": "R5-V3 \u2014 line-by-line PEM body redaction",
+    "verdict": "medium",
+    "route": "defer",
+    "evidence": "PlatformDaprDiagnosticResource passes each LogLine separately to a stateless redactor. A short base64 body line after a redacted PEM header matches neither sensitive configuration nor the 40-character opaque-value threshold, while the test supplies one complete multiline message. This is a verified independent Story 4.27 diagnostics defect, not part of the reference composition change."
+  }
+]

@@ -1,0 +1,13 @@
+# Working directory: /home/administrator/projects/hexalith/platform
+dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -m:1 --nologo
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -method '*DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync' -method '*FileEntryWithoutDaprHomeSelectsTheUserProfileForEverySidecarAsync' -method '*WorksPreviewRefusesCertificateParentsInsideEveryCheckoutBeforeCreatingRunState' -method '*WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync' -method '*CertificateParentContainmentUsesThePlatformPathCaseRules' -method '*WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers' -method '*SelectedDaprHomeConfiguresTheActualCliAndEverySidecarRuntimeAsync' -method '*IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync' -method '*MissingSelectedNativeRuntimeRefusesStartupAndPreservesOwnedDiagnosticsAsync' -method '*ConfiguredCertificateParentDisposalDeletesOnlyOwnedChildAsync' -method '*NativeInventoryIncludesEverySecondaryListenerAndOmitsOtherArguments' -method '*FinalCleanupAttemptsEveryOwnerAndSavesReceiptsBeforeReportingErrorsAsync' -json _bmad-output/implementation-artifacts/evidence/2-3/final-state-patches-20261023/focused-results.json
+# xUnit's -json reporter emits events on stdout; focused-tests.log preserves those events.
+# focused-summary.json extracts the test-assembly-finished event. No focused-results.json file was emitted.
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*PlatformAppModelTests' -class '*PlatformConcurrentRunTests'
+git -c core.whitespace=cr-at-eol diff --check
+
+# Tenants compatibility checks; working directory references/Hexalith.Tenants
+dotnet build tests/Hexalith.Tenants.Server.Tests/Hexalith.Tenants.Server.Tests.csproj -c Debug -m:1 -p:UseHexalithProjectReferences=true --nologo
+dotnet tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll -class '*TenantReadAuthorityQueryHandlerTests' -class '*GetTenantAuditQueryHandlerTests'
+dotnet build tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj -c Debug -m:1 -p:UseHexalithProjectReferences=true --nologo
+dotnet tests/Hexalith.Tenants.IntegrationTests/bin/Debug/net10.0/Hexalith.Tenants.IntegrationTests.dll -class '*AuditStreamPersistenceTests'

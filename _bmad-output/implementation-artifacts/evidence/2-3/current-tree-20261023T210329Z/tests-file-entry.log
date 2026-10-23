@@ -1,0 +1,73 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : ready.ExitCode
+          should be
+      0
+          but was
+      18
+      
+      Additional Info:
+          tenants: Waiting for resource 'tenants' to be healthy...
+      
+      ❌ Resource 'tenants' entered a failed state: Stopped waiting for resource 'tenants' to become healthy because it failed to start.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261023T210457_8c71cd22.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261023T210330505_detach-child_e93c449cc6f64b5f8ffe29c21cd2c387.log
+      Getting logs...
+      [tenants] Waiting for resource 'redis' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-sentry' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-placement-mtls' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-scheduler-mtls' to enter the 'Running' state.
+      [tenants] Waiting for resource 'eventstore' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-sentry' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-sentry'.
+      [tenants] Finished waiting for resource 'dapr-sentry'.
+      [tenants] Waiting for resource 'redis' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'redis'.
+      [tenants] Finished waiting for resource 'redis'.
+      [tenants] Waiting for resource 'dapr-placement-mtls' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-placement-mtls'.
+      [tenants] Finished waiting for resource 'dapr-placement-mtls'.
+      [tenants] Waiting for resource 'dapr-scheduler-mtls' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-scheduler-mtls'.
+      [tenants] Finished waiting for resource 'dapr-scheduler-mtls'.
+      [tenants] Waiting for resource 'eventstore' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'eventstore'.
+      [tenants] Finished waiting for resource 'eventstore'.
+      [tenants] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj", "--configuration", "Debug", 
+      "--no-launch-profile"]
+      [tenants] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs(55,44): 
+      error CS0618: 'QueryAdapterFailureReason.ActorException' is obsolete: 'Use QueryExecutionFailure; the legacy wire value is unchanged.' 
+      [/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj]
+      [tenants] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs(61,44): 
+      error CS0618: 'QueryAdapterFailureReason.ActorException' is obsolete: 'Use QueryExecutionFailure; the legacy wire value is unchanged.' 
+      [/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj]
+      [tenants] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs(67,44): 
+      error CS0618: 'QueryAdapterFailureReason.ActorException' is obsolete: 'Use QueryExecutionFailure; the legacy wire value is unchanged.' 
+      [/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj]
+      [tenants] /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/GetTenantAuditQueryHandler.cs(70,70):
+      error CS0618: 'QueryAdapterFailureReason.ActorResponseMismatch' is obsolete: 'Use ResponseMismatch; the legacy wire value is unchanged.' 
+      [/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj]
+      [tenants] 
+      [tenants] The build failed. Fix the build errors and run again.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(604,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(615,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 150.986s

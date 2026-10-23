@@ -287,7 +287,7 @@ public static class DaprSelfHostedMtls
     {
         string configured = builder.Configuration[CertificateDirectoryConfigurationKey] ?? runDirectory;
         string resolved = ResolveExistingLinks(Path.GetFullPath(configured));
-        StringComparison pathComparison = OperatingSystem.IsWindows()
+        StringComparison pathComparison = OperatingSystem.IsWindows() || OperatingSystem.IsMacOS()
             ? StringComparison.OrdinalIgnoreCase
             : StringComparison.Ordinal;
         foreach (string checkout in new[] { platformRoot }.Concat(checkoutRoots ?? []).Distinct(StringComparer.Ordinal))

@@ -1,6 +1,10 @@
 # Story 2.3 verification
 
-## Current qualification after approved Aspire alignment — 2026-10-23
+## Current-tree final-state qualification — 2026-10-23
+
+All seven final-state Patch findings are complete. The current concurrent proof passes in 312.595 seconds, with fresh readiness for both coexisting six-server sessions, independent state and complete owned cleanup. The direct file-entry smoke passes in 142.294 seconds. Normal builds, 230 ordinary Platform cases, 27 Builds runtime cases, 23 focused cases, the occupied-port proof and 404 Tenants compatibility cases pass. Source hashes and staged gitlinks stay unchanged. The separate Tenants AppHost is running before and after, with an observed PID change recorded as an inventory limitation. The spec is `done`; sprint story 2.3 is `review`. Independent review findings are recorded in the owner ledger. See [current qualification and complete receipts](current-tree-20261023T210837Z/README.md).
+
+## Historical qualification after approved Aspire alignment — 2026-10-23
 
 **The required current qualification gate passes.** The user approved aligning the five root file AppHost directives with the catalog's Aspire 13.6.3 versions. The direct file-entry smoke passes in 152.089 seconds with all six servers ready, owned shutdown successful, stable source hashes and both pre-existing AppHosts preserved. Normal builds, 233 ordinary Platform/Builds/Works cases, the occupied-port proof and strengthened 258.577-second concurrent proof also pass.
 

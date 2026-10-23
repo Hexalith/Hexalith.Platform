@@ -1,0 +1,9 @@
+Shouldly.ShouldAssertException: started.IsReady
+    should be
+True
+    but was
+False
+
+Additional Info:
+    HXR025: Unready resource 'tenants' last='state=Finished;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-40f61a5db20c4c7dba15c50c4dbd44cb/state/diagnostics/d93ab850f674910bd8a7e82bb01f741c'.
+   at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync() in /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:line 52

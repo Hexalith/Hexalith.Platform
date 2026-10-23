@@ -177,7 +177,8 @@ HEXALITH_PLATFORM_CONCURRENT_LIVE=1 HEXALITH_DAPR_HOME=/absolute/pinned-dapr-hom
 ```
 
 The concurrent proof creates two Builds sessions selecting Tenants' six-server
-reference closure. It checks declared readiness, disjoint listeners/container IDs,
+reference closure. It refreshes declared readiness for both sessions while they coexist,
+then checks disjoint listeners/container IDs,
 private discovery and certificate identities, different persisted values under
 identical keys in Redis/vector/graph stores, and fresh declared survivor readiness
 after peer teardown. It retains revisions, startup/readiness and resource inventories,

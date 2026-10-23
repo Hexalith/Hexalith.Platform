@@ -1,0 +1,35 @@
+[
+  {
+    "name": "tests-concurrent",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "*TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync"
+    ],
+    "environment": {
+      "HEXALITH_ASPIRE_CLI": "/tmp/platform-2-3-aspire-13-6-3-sfs0pj5f/aspire",
+      "HEXALITH_DAPR_HOME": "/tmp/platform-2-3-dapr-1-18-7-nijrvhbh",
+      "HEXALITH_PLATFORM_CONCURRENT_LIVE": "1",
+      "HEXALITH_PLATFORM_CONCURRENT_EVIDENCE": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-3/current-tree-20261023T210837Z/concurrent"
+    },
+    "exit_code": 0,
+    "seconds": 312.595
+  },
+  {
+    "name": "tests-file-entry",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"
+    ],
+    "environment": {
+      "HEXALITH_ASPIRE_CLI": "/tmp/platform-2-3-aspire-13-6-3-sfs0pj5f/aspire",
+      "HEXALITH_DAPR_HOME": "/tmp/platform-2-3-dapr-1-18-7-nijrvhbh",
+      "HEXALITH_PLATFORM_LIVE_SMOKE": "1"
+    },
+    "exit_code": 0,
+    "seconds": 142.294
+  }
+]

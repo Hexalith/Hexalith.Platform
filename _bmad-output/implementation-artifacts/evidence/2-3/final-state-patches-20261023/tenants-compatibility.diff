@@ -1,0 +1,73 @@
+diff --git a/src/Hexalith.Tenants/Queries/Handlers/GetTenantAuditQueryHandler.cs b/src/Hexalith.Tenants/Queries/Handlers/GetTenantAuditQueryHandler.cs
+index 32dfead4..ae7f126c 100644
+--- a/src/Hexalith.Tenants/Queries/Handlers/GetTenantAuditQueryHandler.cs
++++ b/src/Hexalith.Tenants/Queries/Handlers/GetTenantAuditQueryHandler.cs
+@@ -67,7 +67,7 @@ public sealed class GetTenantAuditQueryHandler(
+                 ReadModelStore, StateStoreName, query.Stream, cancellationToken).ConfigureAwait(false);
+             if (!available)
+             {
+-                return new QueryResult(false, default, ErrorMessage: QueryAdapterFailureReason.ActorResponseMismatch);
++                return new QueryResult(false, default, ErrorMessage: QueryAdapterFailureReason.ResponseMismatch);
+             }
+         }
+         else
+diff --git a/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs b/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs
+index 4e99f6bd..9c054c0e 100644
+--- a/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs
++++ b/src/Hexalith.Tenants/Queries/Handlers/TenantReadAuthorityQueryHandler.cs
+@@ -52,19 +52,19 @@ public sealed class TenantReadAuthorityQueryHandler([FromKeyedServices("native-t
+                 || !NativeSourceProofCodec.IsValid(proof, identity, source.Head, 1)
+                 || source.Head <= 0 || source.ObservedAt > clock.GetUtcNow()
+                 || !TenantOwnerAuthorityQueryHandler.TryFold(source, query.TenantId, out var state))
+-                return QueryResult.Failure(QueryAdapterFailureReason.ActorException);
++                return QueryResult.Failure(QueryAdapterFailureReason.QueryExecutionFailure);
+             bool allowed = state!.Status == TenantStatus.Active && state.HasMembershipHistory
+                 && state.Users.TryGetValue(query.UserId, out TenantRole role)
+                 && role is TenantRole.TenantReader or TenantRole.TenantContributor or TenantRole.TenantOwner;
+             var final = await metadata.ReadAsync(identity, cancellationToken).ConfigureAwait(false);
+             if (final is null || final.Proof != proof || final.ObservedAt > clock.GetUtcNow())
+-                return QueryResult.Failure(QueryAdapterFailureReason.ActorException);
++                return QueryResult.Failure(QueryAdapterFailureReason.QueryExecutionFailure);
+             cancellationToken.ThrowIfCancellationRequested();
+             return QueryResult.FromPayload(JsonSerializer.SerializeToElement(new TenantReadAuthorityResult(
+                 query.TenantId, query.UserId, allowed, proof, final.ObservedAt), JsonSerializerOptions.Web), QueryType);
+         }
+         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+-        catch { return QueryResult.Failure(QueryAdapterFailureReason.ActorException); }
++        catch { return QueryResult.Failure(QueryAdapterFailureReason.QueryExecutionFailure); }
+     }
+ 
+     private static bool Canonical(string? value) => !string.IsNullOrWhiteSpace(value) && value == value.Trim();
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/AuditStreamPersistenceTests.cs b/tests/Hexalith.Tenants.IntegrationTests/AuditStreamPersistenceTests.cs
+index 877bd054..5ac9f4e8 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/AuditStreamPersistenceTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/AuditStreamPersistenceTests.cs
+@@ -147,7 +147,7 @@ public sealed class AuditStreamPersistenceTests
+                 continue;
+             }
+             response.Success.ShouldBeFalse();
+-            response.ErrorMessage.ShouldBe(QueryAdapterFailureReason.ActorResponseMismatch);
++            response.ErrorMessage.ShouldBe(QueryAdapterFailureReason.ResponseMismatch);
+             response.PayloadBytes.ShouldBeNull();
+             response.Metadata.ShouldBeNull();
+         }
+@@ -167,8 +167,8 @@ public sealed class AuditStreamPersistenceTests
+         TenantAuditEntry global = Snapshot(store, TenantAuditStreams.GlobalAdministratorsKey).Entries.Single();
+         store.SeedRaw(StoreName, TenantAuditStreams.LegacySystemKey, Model([tenant, global, tenant, global]));
+ 
+-        (await Read(store)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ActorResponseMismatch);
+-        (await Read(store, category: AuditEventCategory.Access)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ActorResponseMismatch);
++        (await Read(store)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ResponseMismatch);
++        (await Read(store, category: AuditEventCategory.Access)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ResponseMismatch);
+         Page(await Read(store, TenantAuditStreams.Tenant)).Items.Single().EventId.ShouldBe("same");
+         Page(await Read(store, TenantAuditStreams.GlobalAdministrators)).Items.Single().EventId.ShouldBe("same");
+         Snapshot(store, TenantAuditStreams.SystemTenantKey).Entries.Single().EventId.ShouldBe("same");
+@@ -198,7 +198,7 @@ public sealed class AuditStreamPersistenceTests
+ 
+         legacy.Entries = [canonical with { AggregateSequence = 999 }];
+         store.SeedRaw(StoreName, TenantAuditStreams.LegacySystemKey, legacy);
+-        (await Read(store, TenantAuditStreams.GlobalAdministrators)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ActorResponseMismatch);
++        (await Read(store, TenantAuditStreams.GlobalAdministrators)).ErrorMessage.ShouldBe(QueryAdapterFailureReason.ResponseMismatch);
+     }
+ 
+     [Fact]

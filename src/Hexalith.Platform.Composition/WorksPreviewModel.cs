@@ -102,7 +102,9 @@ public static class WorksPreviewModel
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
         CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
         var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, platformRoot, workspace, controlPorts.PlacementHealth, checkoutRoots: checkouts);
-        builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificateDirectory));
+        // Default credentials belong to the workspace and survive with its failed-start diagnostics.
+        if (builder.Configuration["Dapr:Mtls:CertificateDirectory"] is not null)
+            builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificateDirectory));
         IResourceBuilder<ContainerResource>? placement = null;
         IResourceBuilder<ContainerResource>? scheduler = null;
         string placementAddress;

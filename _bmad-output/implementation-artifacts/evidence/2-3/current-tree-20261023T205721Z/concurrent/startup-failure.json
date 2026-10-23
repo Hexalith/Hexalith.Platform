@@ -1,0 +1,22 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "d93ab850f674910bd8a7e82bb01f741c",
+  "ruleId": "HXR025",
+  "resource": "tenants",
+  "appId": "tenants",
+  "status": "state=Finished;health=unknown",
+  "unreadyResources": [
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-23T21:02:41.2906418+00:00",
+      "processId": 2570529
+    }
+  ],
+  "failingTask": null,
+  "blockingRunId": null
+}

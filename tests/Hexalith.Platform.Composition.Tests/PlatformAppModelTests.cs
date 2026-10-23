@@ -316,17 +316,21 @@ public sealed partial class PlatformAppModelTests : IDisposable
         finally { Directory.Delete(directory, true); }
     }
 
-    [Fact]
-    public async Task WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(bool defaultRuntime)
     {
         string directory = Path.Combine(Path.GetTempPath(), "works-graph-test-" + Guid.NewGuid().ToString("N"));
         string platform = Path.Combine(directory, "platform");
         string? previousDaprHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
-        string selectedDaprHome = Path.Combine(directory, "selected-runtime");
+        string selectedDaprHome = defaultRuntime
+            ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            : Path.Combine(directory, "selected-runtime");
         Directory.CreateDirectory(platform);
         try
         {
-            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", selectedDaprHome);
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", defaultRuntime ? null : selectedDaprHome);
             File.WriteAllText(Path.Combine(platform, "apphost.cs"), "// fixture");
             File.WriteAllText(Path.Combine(platform, "aspire.config.json"), "{}");
             string[] projects = ["src/Hexalith.Works/Hexalith.Works.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server.Host/Hexalith.EventStore.Admin.Server.Host.csproj", "references/Hexalith.EventStore/src/Hexalith.EventStore.Operations/Hexalith.EventStore.Operations.csproj"];
