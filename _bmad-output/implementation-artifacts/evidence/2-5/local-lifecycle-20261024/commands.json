@@ -1,0 +1,107 @@
+[
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1"
+    ],
+    "log": "builds-debug-build.log",
+    "exitCode": 0
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*LocalRunLifecycleTests",
+      "-class",
+      "*TestResultWriterTests",
+      "-class",
+      "*CompositionRunListingTests",
+      "-class",
+      "*CompositionEngineTests",
+      "-class",
+      "*ModuleRunnerReviewRegressionTests",
+      "-class",
+      "*CompositionRedactionTests",
+      "-class",
+      "*ModuleTestSelectionTests",
+      "-class",
+      "*TestEnvironmentProvisioningTests",
+      "-class",
+      "*StartupReadinessTests",
+      "-class",
+      "*StartupCoordinationTests",
+      "-class",
+      "*CompositionStartupTaskOutputTests",
+      "-class",
+      "*NativeTestReportRedactorTests",
+      "-class",
+      "*NativeTestReportLoaderTests",
+      "-class",
+      "*TestEnvironmentContractReaderTests",
+      "-result-xml",
+      "/tmp/story25-final-green-tests.xml"
+    ],
+    "log": "builds-tests.log",
+    "xml": "builds-tests.xml",
+    "exitCode": 0
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1"
+    ],
+    "log": "platform-debug-build.log",
+    "exitCode": 0
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "environment": {
+      "PATHPrefix": "/tmp/hexalith-story25-aspire-13.6.3",
+      "HEXALITH_PLATFORM_LIFECYCLE_LIVE": "1",
+      "HEXALITH_DAPR_HOME": "/tmp/platform-2-3-dapr-1-18-7-nijrvhbh",
+      "HEXALITH_PLATFORM_LIFECYCLE_EVIDENCE": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/live"
+    },
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "*PlatformLocalRunLifecycleTests",
+      "-result-xml",
+      "/tmp/story25-final-live.xml"
+    ],
+    "log": "platform-live-tests.log",
+    "xml": "platform-live-tests.xml",
+    "status": "passed",
+    "exitCode": 0
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "python3",
+      "_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/audit.py"
+    ],
+    "output": "parsed-audit.json",
+    "status": "passed"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "python3",
+      "_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/test_audit.py"
+    ],
+    "result": "1/1 passed",
+    "purpose": "Relocated evidence with unavailable original runtime paths"
+  }
+]

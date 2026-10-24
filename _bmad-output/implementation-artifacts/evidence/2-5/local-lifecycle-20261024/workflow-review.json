@@ -1,0 +1,217 @@
+{
+  "layers": {
+    "blind": 11,
+    "edge": 3,
+    "verification": 2,
+    "parent-patch-audit": 5
+  },
+  "individualFindings": [
+    {
+      "id": "B1",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "cleanup-monotonicity",
+      "route": "patch",
+      "evidence": "The non-null disposition branch permits complete to become in-progress; concurrent down callers record before acquiring the provisioning lease and can recreate tracking.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B2",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "owner-recovery",
+      "route": "patch",
+      "evidence": "DownCore reads only active state while RecordTestOutcome already uses owner.json; missing/malformed active JSON skips durable cleanup updates despite successful deletion.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B3",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "cleanup-publication",
+      "route": "patch",
+      "evidence": "The result is marked complete before DeleteStateAfterCleanupAsync; a false return or lock failure writes incomplete only to active state, leaving inconsistent dispositions.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B4",
+      "layer": "blind",
+      "verdict": "high",
+      "group": "bounded-claims",
+      "route": "patch",
+      "evidence": "New FindOwned traversal calls synchronous File.OpenRead and unbounded JSON parsing; a FIFO blocks before cancellation can be observed. Existing nonblocking bounded primitives are available.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B5",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "known-leftovers",
+      "route": "patch",
+      "evidence": "RemoveAsync overwrites its last observation with a failed-discovery result, so known container IDs disappear without verified absence.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B6",
+      "layer": "blind",
+      "verdict": "high",
+      "group": "immutable-reports",
+      "route": "patch",
+      "evidence": "RecordTestOutcome rewrites native.trx and functional-observations.json with non-atomic byte writes after those files are referenced by published hashes; interruption can corrupt retained results.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B7",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "stopping-timestamp",
+      "route": "patch",
+      "evidence": "A callback exception prevents NativeTestExecutionResult from returning its timestamp; the service then starts a fresh stopping allowance instead of using the original observation.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B8",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "nested-state",
+      "route": "patch",
+      "evidence": "Typed JSON deserialization accepts a null nested terminalOutcome; enumeration checks only top-level fields, and listing dereferences it outside the structured refusal handler.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B9",
+      "layer": "blind",
+      "verdict": "low",
+      "group": "human-attempt",
+      "route": "patch",
+      "evidence": "Human formatting omits the documented attempt identity while JSON carries it; this is a direct output correction.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B10",
+      "layer": "blind",
+      "verdict": "low",
+      "group": "diagnostic-categories",
+      "route": "patch",
+      "evidence": "The referenced lifecycle diagnostic persists discoveryUnverified but drops the producer discovery categories; the versioned result cannot explain which observation failed.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "B11",
+      "layer": "blind",
+      "verdict": "medium",
+      "group": "portable-audit",
+      "route": "patch",
+      "evidence": "The advertised offline audit calls exists on the original absolute temporary result paths, so retained evidence alone cannot be audited from another checkout.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "E1",
+      "layer": "edge",
+      "verdict": "medium",
+      "group": "cleanup-monotonicity",
+      "route": "patch",
+      "evidence": "The external harness reproduced complete becoming in-progress and tracking reappearing after a stale cleanup callback; initial down records before lease acquisition make the overlap reachable.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "E2",
+      "layer": "edge",
+      "verdict": "medium",
+      "group": "expired-stop",
+      "route": "patch",
+      "evidence": "Both DownCore state reads can observe an expired shared stopping token; the initial read lost its exception handler, so bounded cleanup throws rather than returning retryable uncertainty.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "E3",
+      "layer": "edge",
+      "verdict": "medium",
+      "group": "owner-recovery",
+      "route": "patch",
+      "evidence": "The external harness removed active state and reproduced successful empty cleanup with the surviving result still not-requested/failure-retained; durable owner metadata is available.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "V1",
+      "layer": "verification",
+      "verdict": "medium",
+      "group": "package-command-test",
+      "route": "patch",
+      "evidence": "Pre-verified gap: restoring the source-only command condition escapes source-only command cases and package engine tests that force RetainOnFailure=true.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "V2",
+      "layer": "verification",
+      "verdict": "medium",
+      "group": "populated-bindings-test",
+      "route": "patch",
+      "evidence": "Pre-verified gap: deleting the executor snapshot assignment still yields reader-valid partial results, and no result assertion compares populated bindings to the original descriptor.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "R1",
+      "layer": "parent-patch-audit",
+      "verdict": "high",
+      "group": "owner-compatibility",
+      "route": "patch",
+      "evidence": "Patch audit: requiring CreatedAt/ExecutionContext rejected legitimate ordinary run/debug and legacy owner snapshots. InitializeState intentionally leaves test context unavailable for those runs. Optional identity validation preserves ownership without inventing fields.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "R2",
+      "layer": "parent-patch-audit",
+      "verdict": "high",
+      "group": "cleanup-metadata-failure",
+      "route": "patch",
+      "evidence": "Full post-review run: FailedBookkeepingStillStopsOwnedProcessAsync(diagnostics) loses HXT008 and exact-owner teardown because cleanup-lock directory publication fails before the sweep. The current bound must still protect best-effort runtime deletion and return recording failure.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "R3",
+      "layer": "parent-patch-audit",
+      "verdict": "low",
+      "group": "exact-workspace-fixture",
+      "route": "patch",
+      "evidence": "DownStopsOnlyTaggedResourcesAsync uses literal workspace w, which is invalid under the existing exact-owner path invariant. Correct the fixture path while retaining tagged/foreign process assertions.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "R4",
+      "layer": "parent-patch-audit",
+      "verdict": "low",
+      "group": "finished-tracking-assertions",
+      "route": "patch",
+      "evidence": "Three non-retaining selected startup tests require active tracking after verified cleanup. Their persistent summary, first cause and original deadline must instead be asserted through retained v1 results after tracking deletion; legacy assertions remain.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "id": "R5",
+      "layer": "parent-patch-audit",
+      "verdict": "low",
+      "group": "callback-deadline-test",
+      "route": "patch",
+      "evidence": "A full run exposed the token-at-delegate-entry timing assertion as scheduler-sensitive. A 500 ms cancellable operation distinguishes the original exhausted allowance from a renewed full allowance; the original timestamp and elapsed assertions remain. Five repeated focused runs passed.",
+      "resolution": "fixed and verified"
+    }
+  ],
+  "groupCount": 19,
+  "routing": "Each correction is local to existing behavior, adds no public surface and covers a demonstrated state. No intent gap, specification amendment or deferral is required.",
+  "patchStatus": "All corrections verified by the 534-case affected suite and fresh real-service lifecycle proof",
+  "verification": {
+    "fullAffectedTests": 534,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "finalLive": {
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scenarios": 4
+    }
+  },
+  "deferred": []
+}

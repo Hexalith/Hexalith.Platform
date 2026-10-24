@@ -1,0 +1,66 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: "diagnostics") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Diagnostics
+          should contain an element satisfying the condition
+      (diagnostic.RuleId == "HXT008")
+          but does not
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(459,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(464,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True) [FAIL]
+      Shouldly.ShouldAssertException : await engine.StateStore.TryReadAsync(result.RunId!, TestContext.Current.CancellationToken).ConfigureAwait(true)
+          should not be null but was
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(408,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(Boolean selected)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync [FAIL]
+      Shouldly.ShouldAssertException : await engine.StateStore.TryReadAsync(result.RunId!, TestContext.Current.CancellationToken).ConfigureAwait(true)
+          should not be null but was
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(837,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DownStopsOnlyTaggedResourcesAsync [FAIL]
+      Shouldly.ShouldAssertException : down.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.TopologyOrLifecycle
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(701,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DownStopsOnlyTaggedResourcesAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True) [FAIL]
+      Shouldly.ShouldAssertException : state
+          should not be null but was
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(291,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(Boolean selected)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 534, Errors: 0, Failed: 5, Skipped: 0, Not Run: 0, Time: 129.276s

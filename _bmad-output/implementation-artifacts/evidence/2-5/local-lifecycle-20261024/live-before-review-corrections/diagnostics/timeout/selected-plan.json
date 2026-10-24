@@ -1,0 +1,255 @@
+{
+  "schema": "hexalith.g4-run-plan.v1",
+  "runId": "03deaca54b31b62b96b1678e3b4172fe",
+  "tenantNamespace": "g4t-03deaca54b31",
+  "foreignTenantNamespace": "g4f-03deaca54b31",
+  "resourceNamespace": "g4r-03deaca54b31",
+  "workspace": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe",
+  "daprHome": "/tmp/platform-2-3-dapr-1-18-7-nijrvhbh",
+  "readinessPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/readiness.json",
+  "daprConfigPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/dapr/config.yaml",
+  "stateStoreComponentPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/dapr/components/statestore.yaml",
+  "pubSubComponentPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/dapr/components/pubsub.yaml",
+  "isolatedResourcesPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/dapr/isolated",
+  "redisImage": "docker.io/library/redis:7.4-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+  "ports": {
+    "redis": 29472,
+    "placement": 10688,
+    "placementHealth": 29537,
+    "placementMetrics": 12904,
+    "placementRaft": 21371,
+    "scheduler": 15703,
+    "schedulerHealth": 18618,
+    "schedulerMetrics": 10529,
+    "schedulerEtcdClient": 21733,
+    "schedulerEtcdPeer": 12401,
+    "eventStoreDaprHttp": 22915,
+    "eventStoreHttp": 22345,
+    "uiHttp": 25287,
+    "moduleHttp": [
+      11312
+    ],
+    "eventStoreDaprGrpc": 22039,
+    "eventStoreDaprInternalGrpc": 27499,
+    "eventStoreDaprMetrics": 28478,
+    "moduleDapr": [
+      {
+        "http": 18935,
+        "grpc": 25544,
+        "internalGrpc": 13893,
+        "metrics": 19606
+      }
+    ],
+    "secondEventStoreHttp": null,
+    "secondEventStoreDapr": null
+  },
+  "modules": [],
+  "uiMarkers": [],
+  "sourceMapping": {
+    "mode": "source",
+    "root": "/home/administrator/projects/hexalith/platform",
+    "activeModule": "platform",
+    "entries": [
+      {
+        "identity": "Hexalith.AI.Tools",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools"
+      },
+      {
+        "identity": "Hexalith.Agents",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Agents"
+      },
+      {
+        "identity": "Hexalith.Builds",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+      },
+      {
+        "identity": "Hexalith.ChatBot",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot"
+      },
+      {
+        "identity": "Hexalith.Commons",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons"
+      },
+      {
+        "identity": "Hexalith.Conversations",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations"
+      },
+      {
+        "identity": "Hexalith.EventStore",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore"
+      },
+      {
+        "identity": "Hexalith.Folders",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders"
+      },
+      {
+        "identity": "Hexalith.FrontComposer",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer"
+      },
+      {
+        "identity": "Hexalith.McpCli",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli"
+      },
+      {
+        "identity": "Hexalith.Memories",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories"
+      },
+      {
+        "identity": "Hexalith.Parties",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties"
+      },
+      {
+        "identity": "Hexalith.PolymorphicSerializations",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations"
+      },
+      {
+        "identity": "Hexalith.Projects",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Projects"
+      },
+      {
+        "identity": "Hexalith.Tenants",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants"
+      },
+      {
+        "identity": "Hexalith.Timesheets",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets"
+      },
+      {
+        "identity": "Hexalith.Works",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Works"
+      },
+      {
+        "identity": "platform",
+        "origin": "source",
+        "path": "/home/administrator/projects/hexalith/platform"
+      }
+    ],
+    "hasGit": true,
+    "platformIdentity": {
+      "commit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+      "compositionCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+      "checkoutCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+      "platformPath": "/home/administrator/projects/hexalith/platform",
+      "releaseTag": null,
+      "catalogCommit": "3052386abb54ff111f498a8f6424300ea7cdda93",
+      "toolVersionRange": "[4.35.2, 5.0.0-0)",
+      "recordPath": "/home/administrator/projects/hexalith/platform/hexalith-platform.json",
+      "isPlatformRepository": true
+    },
+    "identityFindings": [
+      {
+        "ruleId": "HXW009",
+        "message": "Builds catalog \u0027/home/administrator/projects/hexalith/platform/references/Hexalith.Builds\u0027 is staged 3052386abb54ff111f498a8f6424300ea7cdda93, checked out 3052386abb54ff111f498a8f6424300ea7cdda93, dirty; Platform 654d2299fbba59ea1998c0a2791e5b928131e38f pins 3052386abb54ff111f498a8f6424300ea7cdda93.",
+        "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "hint": null
+      },
+      {
+        "ruleId": "HXW010",
+        "message": "Tool version 1.0.0-20261024051044 is outside Platform range [4.35.2, 5.0.0-0) at \u0027/home/administrator/projects/hexalith/platform/hexalith-platform.json\u0027.",
+        "path": "/home/administrator/projects/hexalith/platform/hexalith-platform.json",
+        "hint": null
+      }
+    ],
+    "contentHash": "aa1644bab3a385186f10052436c9711c311ce48ac164d150b191fa333462e4c5"
+  },
+  "platformDeclarationPaths": [
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/live/manifest-timeout.json"
+  ],
+  "platformDeclarationHash": "EB2C2A43AC7EA6710D8F08D755A2B78674F2B3AEA70907E5A368E8C009CC9114",
+  "compositionContentIdentity": "sha256:4da620318a022ed91442dcd18f42f3fd44218c29d6ff1bfc40380c6e9ab0aec3",
+  "platformActiveModule": "platform",
+  "platformModelAssemblyPath": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/runs/03deaca54b31b62b96b1678e3b4172fe/hosts/platform-model/Hexalith.Platform.Composition.dll",
+  "mcpCliToolPath": null,
+  "isPlatformComposition": true,
+  "platformIdentity": {
+    "commit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+    "compositionCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+    "checkoutCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+    "platformPath": "/home/administrator/projects/hexalith/platform",
+    "releaseTag": null,
+    "catalogCommit": "3052386abb54ff111f498a8f6424300ea7cdda93",
+    "toolVersionRange": "[4.35.2, 5.0.0-0)",
+    "recordPath": "/home/administrator/projects/hexalith/platform/hexalith-platform.json",
+    "isPlatformRepository": true
+  },
+  "sourceMappingHash": "aa1644bab3a385186f10052436c9711c311ce48ac164d150b191fa333462e4c5",
+  "redisContainerName": "hexalith-g4-03deaca54b31b62b96b1678e3b4172fe-redis",
+  "startupDeadlineUtc": "2026-10-24T05:25:01.2931621+00:00",
+  "effectiveDeadline": {
+    "timeoutSeconds": 600,
+    "isOverride": false,
+    "justification": null,
+    "moduleId": null,
+    "timeout": "00:10:00"
+  },
+  "debugAttach": false,
+  "startupTasks": [
+    {
+      "moduleId": "platform",
+      "name": "verify-run-owner",
+      "executablePath": "/home/administrator/projects/hexalith/platform/eng/test-environment-provisioning/startup-verify.sh",
+      "arguments": [],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
+      "executableError": null
+    }
+  ],
+  "selectedTest": {
+    "moduleId": "platform",
+    "name": "lifecycle-timeout",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "EB2C2A43AC7EA6710D8F08D755A2B78674F2B3AEA70907E5A368E8C009CC9114",
+    "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+    "executionTimeoutSeconds": 2,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-24T05:15:01.2931621+00:00",
+    "executionDeadlineUtc": "2026-10-24T05:15:03.2931621+00:00",
+    "credentialExpiryUtc": "2026-10-24T05:15:04+00:00",
+    "mode": "source"
+  },
+  "selectedTests": [
+    {
+      "moduleId": "platform",
+      "name": "lifecycle-timeout",
+      "executor": "python3",
+      "entry": "eng/test-environment-provisioning/suite.py",
+      "manifestHash": "EB2C2A43AC7EA6710D8F08D755A2B78674F2B3AEA70907E5A368E8C009CC9114",
+      "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+      "executionTimeoutSeconds": 2,
+      "stopTimeoutSeconds": 90,
+      "requestedAtUtc": "2026-10-24T05:15:01.2931621+00:00",
+      "executionDeadlineUtc": "2026-10-24T05:15:03.2931621+00:00",
+      "credentialExpiryUtc": "2026-10-24T05:15:04+00:00",
+      "mode": "source"
+    }
+  ],
+  "executionTiming": {
+    "startedAtUtc": "2026-10-24T05:15:54.7899368+00:00",
+    "deadlineUtc": "2026-10-24T05:15:56.7899368+00:00",
+    "effectiveSeconds": 2,
+    "configurationContentIdentity": "sha256:a34eae47f6faf1e0debc3c1c19c35eb73ee9dbbc71e6ad38fe747f3c42e748a7",
+    "actualDurationSeconds": null,
+    "credentialExpiryUtc": "2026-10-24T05:15:57+00:00"
+  },
+  "environmentId": "473dff5ed4824a506bfc203e6bb47bca",
+  "attemptId": "cb547d059075e54bde52a88ce2d0ae67",
+  "resourceClaimStateDirectory": "/tmp/platform-local-lifecycle-74cf75d7c49042409d2b85ea81924d87/state",
+  "retainOnFailure": true
+}

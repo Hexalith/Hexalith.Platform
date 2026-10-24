@@ -1,0 +1,27 @@
+{
+  "validations": [
+    {
+      "repository": "/home/administrator/projects/hexalith/platform",
+      "message": "feat(testing): complete story 2.5 local run lifecycle\n",
+      "command": "./node_modules/.bin/commitlint --edit /tmp/story25-platform-commit-message.txt --verbose",
+      "pinnedCliVersion": "21.2.1",
+      "installedCliVersion": "21.2.1",
+      "exitCode": 0,
+      "log": "platform-commitlint.log"
+    },
+    {
+      "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "message": "feat(tooling): apply local run outcome retention and cleanup rules\n",
+      "command": "./node_modules/.bin/commitlint --edit /tmp/story25-builds-commit-message.txt --verbose",
+      "pinnedCliVersion": "21.2.4",
+      "installedCliVersion": "21.2.4",
+      "exitCode": 0,
+      "log": "builds-commitlint.log"
+    }
+  ],
+  "whitespaceCheck": {
+    "passed": true,
+    "command": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check -- . ':!*.log'",
+    "exclusion": "Verbatim tool output logs retain original whitespace; one historical failure log contains a whitespace-only line."
+  }
+}

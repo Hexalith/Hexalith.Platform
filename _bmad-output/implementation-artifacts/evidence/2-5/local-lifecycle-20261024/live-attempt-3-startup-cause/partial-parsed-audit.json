@@ -1,0 +1,57 @@
+{
+  "schemaParity": [
+    {
+      "schema": "hexalith.test-environment.v1.json",
+      "sha256": "8d98ce1bfa1b536a22b083050033d6ea67c088129ff1e575cee9121affa710ea",
+      "identical": true
+    },
+    {
+      "schema": "hexalith.test-result.v1.json",
+      "sha256": "b5d5055219e61646cc58cef9064f9190b139467a4c729b840686284f4a38ebfb",
+      "identical": true
+    }
+  ],
+  "unitTestsPassed": 501,
+  "matrixRowsCovered": 7,
+  "liveResults": [
+    {
+      "scenario": "success",
+      "runId": "83ab6be7359be8005acaa8b72f1ff052",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "resultStillAccessible": true,
+      "workspaceGone": true,
+      "diagnosticHashesVerified": [
+        "lifecycle-24512bbf0619e1c2cc61cd73bbf463f0a917d7981fca4628b66b60b26708b440.json",
+        "native.trx"
+      ],
+      "peerValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "6edce7bd9b51bf1fc959fcac8d50c0e8",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "resultStillAccessible": true,
+      "workspaceGone": true,
+      "diagnosticHashesVerified": [
+        "lifecycle-6d63d5df2e100a597a6bd4fb7b8b118da10e02695210cc83a311fe0dccd0feae.json",
+        "native.trx"
+      ],
+      "peerValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "2ebcf880a83801ba2c20b45498489493",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "resultStillAccessible": true,
+      "workspaceGone": true,
+      "diagnosticHashesVerified": [
+        "lifecycle-63f6a6cb3d40cd122d293a8d3a58f0de626f977a663e6c7eb05b0f273ad9a18b.json"
+      ],
+      "peerValue": "unchanged"
+    }
+  ],
+  "qualificationCredit": false
+}

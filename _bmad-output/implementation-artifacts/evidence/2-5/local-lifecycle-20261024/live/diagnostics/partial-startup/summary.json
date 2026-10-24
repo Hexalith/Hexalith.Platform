@@ -1,0 +1,134 @@
+{
+  "schema": "hexalith.g4-startup-report.v1",
+  "runId": "2660dbd6698807a876099039a9025c1d",
+  "ruleId": "HXR021",
+  "durationSeconds": 46.3367108,
+  "effectiveDeadlineSeconds": 600,
+  "effectiveDeadlineIsOverride": false,
+  "effectiveDeadlineJustification": null,
+  "effectiveDeadlineModuleId": null,
+  "failingTask": "platform/verify-run-owner",
+  "resources": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:22295"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:46817"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009767+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:10176"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:44489"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009852+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:19805"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:46511"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009915+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:35261"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009692+00:00",
+      "processId": 1041648
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:21086"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:17126"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:18298"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009999+00:00",
+      "processId": 1041644
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:20972"
+        }
+      ],
+      "observedAt": "2026-10-24T06:32:48.5009564+00:00",
+      "processId": null
+    }
+  ]
+}

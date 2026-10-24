@@ -1,0 +1,104 @@
+{
+  "schemaParity": [
+    {
+      "schema": "hexalith.test-environment.v1.json",
+      "sha256": "8d98ce1bfa1b536a22b083050033d6ea67c088129ff1e575cee9121affa710ea",
+      "recordedCheckoutParity": true,
+      "retainedBytesVerified": true
+    },
+    {
+      "schema": "hexalith.test-result.v1.json",
+      "sha256": "b5d5055219e61646cc58cef9064f9190b139467a4c729b840686284f4a38ebfb",
+      "recordedCheckoutParity": true,
+      "retainedBytesVerified": true
+    }
+  ],
+  "unitTestsPassed": 534,
+  "matrixRowsCovered": 7,
+  "liveResults": [
+    {
+      "scenario": "success",
+      "runId": "5820c294a12952c6984260aadc8fe8aa",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "recordedRuntimeObservations": {
+        "cleanupComplete": true,
+        "leftoversEmpty": true,
+        "idempotentCleanupPassed": true,
+        "originalResultPath": "/tmp/platform-local-lifecycle-1f34a8768f76450da376b71f543aed2f/state/diagnostics/5820c294a12952c6984260aadc8fe8aa/test-result.json"
+      },
+      "currentFilesystemChecks": {
+        "retainedResultAccessible": true,
+        "originalRuntimePathsChecked": false
+      },
+      "diagnosticHashesVerified": [
+        "lifecycle-17831332c6fef54f74caff257a5420dfcaac28c2af6a7ae5104f78fd21e78e54.json",
+        "native-76e95d47f821d26e55668a7cf9663c090c4bb71483c5e22a3fa98e8a290390c1.trx"
+      ],
+      "peerValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "4cd318927137d4811cc832f2b330a39e",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "recordedRuntimeObservations": {
+        "cleanupComplete": true,
+        "leftoversEmpty": true,
+        "idempotentCleanupPassed": true,
+        "originalResultPath": "/tmp/platform-local-lifecycle-1f34a8768f76450da376b71f543aed2f/state/diagnostics/4cd318927137d4811cc832f2b330a39e/test-result.json"
+      },
+      "currentFilesystemChecks": {
+        "retainedResultAccessible": true,
+        "originalRuntimePathsChecked": false
+      },
+      "diagnosticHashesVerified": [
+        "lifecycle-0c0b330cdb59367d27e38571d06ee9ae4a94edca53a5d1b235250fd204390ff6.json",
+        "native-c8acca9789f75e32adc5a25e44646832a7e151d91be4db49522c76c5e80284d7.trx"
+      ],
+      "peerValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "c1b24af251e72e477f30489405cb533b",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "recordedRuntimeObservations": {
+        "cleanupComplete": true,
+        "leftoversEmpty": true,
+        "idempotentCleanupPassed": true,
+        "originalResultPath": "/tmp/platform-local-lifecycle-1f34a8768f76450da376b71f543aed2f/state/diagnostics/c1b24af251e72e477f30489405cb533b/test-result.json"
+      },
+      "currentFilesystemChecks": {
+        "retainedResultAccessible": true,
+        "originalRuntimePathsChecked": false
+      },
+      "diagnosticHashesVerified": [
+        "lifecycle-b6dc13be1297cf8e7d3e7db6187d000e4e1df24d1c9f1deb0d39e178fce68ccf.json"
+      ],
+      "peerValue": "unchanged"
+    },
+    {
+      "scenario": "partial-startup",
+      "runId": "2660dbd6698807a876099039a9025c1d",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "recordedRuntimeObservations": {
+        "cleanupComplete": true,
+        "leftoversEmpty": true,
+        "idempotentCleanupPassed": true,
+        "originalResultPath": "/tmp/platform-local-lifecycle-1f34a8768f76450da376b71f543aed2f/state/diagnostics/2660dbd6698807a876099039a9025c1d/test-result.json"
+      },
+      "currentFilesystemChecks": {
+        "retainedResultAccessible": true,
+        "originalRuntimePathsChecked": false
+      },
+      "diagnosticHashesVerified": [
+        "lifecycle-224baa5471c9f7fff8258a2d4b9c56967049a59865434617224eb158b5fa8e52.json"
+      ],
+      "peerValue": "unchanged"
+    }
+  ],
+  "qualificationCredit": false,
+  "recordedLiveCleanupVerified": true
+}

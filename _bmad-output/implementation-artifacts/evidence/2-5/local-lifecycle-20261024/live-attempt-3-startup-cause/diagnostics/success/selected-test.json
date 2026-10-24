@@ -1,0 +1,441 @@
+{
+  "runId": "83ab6be7359be8005acaa8b72f1ff052",
+  "ownerId": "83ab6be7359be8005acaa8b72f1ff052",
+  "selection": {
+    "moduleId": "platform",
+    "name": "lifecycle-success",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "118559A835FE3F74E3772D8CB7999BBD6AD146F81058572723AFEFA3ADE2B584",
+    "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+    "executionTimeoutSeconds": 120,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-24T04:45:48.0951197+00:00",
+    "executionDeadlineUtc": "2026-10-24T04:47:48.0951197+00:00",
+    "credentialExpiryUtc": "2026-10-24T04:47:49+00:00",
+    "mode": "source"
+  },
+  "sourceMappingHash": "8140a8492a12f0fd25882ab47718ab8bd5137f0258fe965b0cc84ab86956c3e3",
+  "declaredPlatformCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+  "checkoutPlatformCommit": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+  "observedCandidateHash": null,
+  "observedBackendIdentity": null,
+  "qualificationCredit": false,
+  "resources": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:26949"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:41307"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478728+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:18245"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:42325"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478791+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:19119"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:45085"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478829+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:37463"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478683+00:00",
+      "processId": 3455575
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:12641"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:18045"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:29983"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478877+00:00",
+      "processId": 3455573
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:23231"
+        }
+      ],
+      "observedAt": "2026-10-24T04:46:44.6478623+00:00",
+      "processId": null
+    }
+  ],
+  "terminalStatus": "completed",
+  "terminalOutcome": {
+    "exitCode": "Success",
+    "phase": "None",
+    "category": "None",
+    "ruleId": null
+  },
+  "terminalAtUtc": "2026-10-24T04:46:45.0643135+00:00",
+  "resourceDisposition": "removed",
+  "remainingResources": {
+    "containerIds": [],
+    "processIds": [],
+    "unverified": false,
+    "isEmpty": true,
+    "workspaceIds": [],
+    "claimIds": [],
+    "discoveryFailures": [],
+    "resourceIds": []
+  },
+  "observationHash": null,
+  "environmentBindings": {
+    "run": {
+      "runId": "83ab6be7359be8005acaa8b72f1ff052",
+      "attemptId": "43d49fc6d4cf1eb0319eb5fb443a8eb5",
+      "attemptSequence": 1,
+      "ownerRunId": "83ab6be7359be8005acaa8b72f1ff052",
+      "environmentId": "0180d1ab0973b55247706ae8f585f266",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "id": "platform",
+        "contentIdentity": "sha256:ed313e09f2e803e5a2a038baf9623d86c1e5f4fc5fb0746c31caa8d2bfb2ab97"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "commit": "3052386abb54ff111f498a8f6424300ea7cdda93",
+        "instanceId": "0180d1ab0973b55247706ae8f585f266-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "g4t-83ab6be7359b",
+        "dataIsolationId": "g4r-83ab6be7359b",
+        "resourceScopeId": "0180d1ab0973b55247706ae8f585f266",
+        "catalogScopeId": "0180d1ab0973b55247706ae8f585f266-catalog"
+      },
+      "resources": [
+        {
+          "resourceId": "dapr-placement-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:26949/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:41307/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-scheduler-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:18245/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:42325/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-sentry",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:19119/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:45085/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:37463/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore-dapr-cli",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:12641/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:18045/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:29983/"
+            }
+          ]
+        },
+        {
+          "resourceId": "redis",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:23231/"
+            }
+          ]
+        }
+      ],
+      "readiness": {
+        "state": "populated",
+        "status": "ready",
+        "observedAt": "2026-10-24T04:46:44.6479443Z",
+        "resources": [
+          {
+            "resourceId": "dapr-placement-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478728Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-scheduler-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478791Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-sentry",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478829Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478683Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478877Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "redis",
+            "status": "ready",
+            "observedAt": "2026-10-24T04:46:44.6478623Z",
+            "diagnosticIds": []
+          }
+        ]
+      },
+      "startupTasks": {
+        "state": "populated",
+        "tasks": [
+          {
+            "taskId": "platform/verify-run-owner",
+            "required": true,
+            "status": "passed",
+            "startedAt": "2026-10-24T04:46:44.4645276Z",
+            "finishedAt": "2026-10-24T04:46:44.4656404Z",
+            "diagnosticIds": []
+          }
+        ]
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-24T04:45:48.0951197Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-24T04:55:48.0951197Z",
+        "actualDurationSeconds": 56.8718807,
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "populated",
+        "origin": "test-execution-started",
+        "originAt": "2026-10-24T04:46:44.9747095Z",
+        "effectiveSeconds": 120,
+        "expiresAt": "2026-10-24T04:48:44.9747095Z",
+        "configurationContentIdentity": "sha256:2a1ce89f524ef8723de0b826a9a91408784385c35af05960cc1aef3e427131e6"
+      }
+    }
+  },
+  "terminalCause": "tests-completed",
+  "failureRetained": false,
+  "cleanupDisposition": "complete",
+  "cleanupAttemptId": "6157cba40928dafdf94e21adb6d0bc37",
+  "diagnosticRuleIds": [
+    "HXC130",
+    "HXI005",
+    "HXI010"
+  ],
+  "executionTiming": {
+    "startedAtUtc": "2026-10-24T04:46:44.9747095+00:00",
+    "deadlineUtc": "2026-10-24T04:48:44.9747095+00:00",
+    "effectiveSeconds": 120,
+    "configurationContentIdentity": "sha256:2a1ce89f524ef8723de0b826a9a91408784385c35af05960cc1aef3e427131e6",
+    "actualDurationSeconds": 0.0787005,
+    "credentialExpiryUtc": "2026-10-24T04:48:45+00:00"
+  },
+  "selections": [
+    {
+      "moduleId": "platform",
+      "name": "lifecycle-success",
+      "executor": "python3",
+      "entry": "eng/test-environment-provisioning/suite.py",
+      "manifestHash": "118559A835FE3F74E3772D8CB7999BBD6AD146F81058572723AFEFA3ADE2B584",
+      "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+      "executionTimeoutSeconds": 120,
+      "stopTimeoutSeconds": 90,
+      "requestedAtUtc": "2026-10-24T04:45:48.0951197+00:00",
+      "executionDeadlineUtc": "2026-10-24T04:47:48.0951197+00:00",
+      "credentialExpiryUtc": "2026-10-24T04:47:49+00:00",
+      "mode": "source"
+    }
+  ],
+  "reportHash": "76E95D47F821D26E55668A7CF9663C090C4BB71483C5E22A3FA98E8A290390C1",
+  "testCounts": {
+    "reported": true,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0
+  }
+}

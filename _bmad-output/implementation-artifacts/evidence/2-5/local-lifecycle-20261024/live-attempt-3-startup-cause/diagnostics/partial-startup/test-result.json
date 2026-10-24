@@ -1,0 +1,132 @@
+{
+  "schema": "hexalith.test-result.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "37f8315b730151c2e2fd7f36c9db8e68",
+      "attemptId": "60dce980bbd8bd6085abb6edb30e68fb",
+      "attemptSequence": 1,
+      "ownerRunId": "37f8315b730151c2e2fd7f36c9db8e68",
+      "environmentId": "9e2d7c03b5ef7f7106d709c85c393e67",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "state": "not-yet-populated"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "state": "not-yet-populated"
+      },
+      "isolation": {
+        "state": "not-yet-populated"
+      },
+      "resources": [],
+      "readiness": {
+        "state": "not-yet-populated"
+      },
+      "startupTasks": {
+        "state": "not-yet-populated"
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-24T04:49:03.0845939Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-24T04:59:03.0845939Z",
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "not-yet-populated"
+      }
+    }
+  },
+  "terminal": {
+    "outcome": "failed",
+    "recordedAt": "2026-10-24T04:49:53.8077635Z",
+    "cause": "startup-timeout",
+    "diagnosticIds": [
+      "lifecycle"
+    ]
+  },
+  "termination": {
+    "state": "not-yet-populated"
+  },
+  "retention": {
+    "state": "populated",
+    "disposition": "released",
+    "failureRunIds": [
+      "37f8315b730151c2e2fd7f36c9db8e68"
+    ],
+    "retainedResourceIds": [],
+    "reason": "owned-cleanup-verified",
+    "recordedAt": "2026-10-24T04:49:58.9987314Z"
+  },
+  "cleanup": {
+    "state": "populated",
+    "disposition": "complete",
+    "observedAt": "2026-10-24T04:49:58.9987314Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis"
+    ],
+    "leftoverResourceIds": [],
+    "failures": [],
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "attemptId": "81c5ccd39c248eb8657664b00e02ea10"
+  },
+  "diagnostics": [
+    {
+      "id": "lifecycle",
+      "classification": "internal",
+      "redacted": true,
+      "reference": "lifecycle-d67dd2068d459c15c7cd67412691c5a15a357cb9e3a777cd0d65fcc1215dcc18.json",
+      "contentIdentity": "sha256:d67dd2068d459c15c7cd67412691c5a15a357cb9e3a777cd0d65fcc1215dcc18"
+    }
+  ]
+}

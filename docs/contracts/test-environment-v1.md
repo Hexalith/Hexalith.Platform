@@ -287,3 +287,41 @@ validated descriptor, persists identical keys through each owned Redis endpoint,
 verifies its own value and absence of the peer's unique key, and cleans only its
 recorded run identities. This local proof supplies
 no package-mode CI, candidate or tool acceptance credit.
+
+## Local lifecycle results and cleanup
+
+For declared suites in both local source/Debug and package/Release modes, the
+runner now publishes validated `test-result.json` before cleanup and optional
+archives. It reuses the immutable pre-launch descriptor bindings held by the
+runner; partial startup uses the original issued run/attempt/environment identities
+and explicit unavailable observations. The first outcome/cause/time survives
+cancellation, explicit stop, cleanup errors and retries. Owner cancellation is
+`cancelled`; `withdrawn` remains reserved for future attached runs.
+
+Successful local owners clean automatically. Test/startup failure and
+startup/execution timeout retain surviving owned resources until
+`hexalith-module down --run-id <owner-run-id>`. Cancellation without prior failure
+cleans up. CI retains its existing cleanup policy. Exact cleanup is bounded and
+retryable; separately started applications and other owners keep their resources
+and data. Resource, workspace, claim and discovery failures remain visible, and
+uncertain deletion is never `complete`.
+
+`hexalith-module list --output human|json` reads validated durable state without
+loading current manifests. It shows owner/environment/attempt, age from the original
+request, failed owners, retention, cleanup status and recorded independent
+deadlines. Legacy missing creation/identity fields stay unavailable. Attachment
+lists remain empty, and admission and hold deadlines are explicitly unavailable.
+
+Results, inspected native reports and classified redacted diagnostics remain in
+`<state-directory>/diagnostics/<run-id>/` after workspace deletion. The default
+state directory is `<local-application-data>/hexalith-builds/g4-runs`.
+`test-result.json` names immutable diagnostic files and their SHA-256 identities;
+no credential channel is retained in these snapshots. Unsupported termination or
+artifact observations remain `not-yet-populated` and grant no proof.
+
+The gated `PlatformLocalRunLifecycleTests` proof uses
+`HEXALITH_PLATFORM_LIFECYCLE_LIVE=1` and `HEXALITH_DAPR_HOME`, retains evidence under
+`_bmad-output/implementation-artifacts/evidence/2-5/`, and audits real success,
+failed/partial-startup retention, timeout, explicit cleanup/retry and an
+independently started peer's unchanged Redis data. Package runtime qualification
+still requires published authoritative artifacts; local source proof grants none.

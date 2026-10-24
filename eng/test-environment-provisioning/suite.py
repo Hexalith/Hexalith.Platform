@@ -4,6 +4,7 @@ import json
 import os
 import pathlib
 import socket
+import sys
 import time
 import urllib.parse
 
@@ -60,6 +61,27 @@ receipt = evidence / (run_id + ".descriptor.json")
 temporary = receipt.with_suffix(".tmp")
 temporary.write_text(json.dumps(descriptor, indent=2), encoding="utf-8")
 temporary.replace(receipt)
+# Local lifecycle profiles run independently; the isolation profile keeps its two-owner barrier.
+profile = os.environ.get("HEXALITH_G4_TEST_NAME", "")
+if profile.startswith("lifecycle-"):
+    (evidence / (run_id + ".data.json")).write_text(json.dumps({
+        "runId": run_id,
+        "environmentId": bindings["run"]["environmentId"],
+        "endpoint": endpoint,
+        "persisted": persisted,
+        "observedValue": redis(endpoint, "GET", own_key),
+        "qualificationCredit": False,
+    }, indent=2), encoding="utf-8")
+    if profile == "lifecycle-timeout":
+        time.sleep(120)
+    failed = profile == "lifecycle-failure"
+    pathlib.Path(os.environ["HEXALITH_G4_TEST_REPORT_PATH"]).write_text(
+        '<TestRun><ResultSummary outcome="Completed"><Counters total="1" passed="'
+        + ("0" if failed else "1") + '" failed="' + ("1" if failed else "0")
+        + '" /></ResultSummary></TestRun>', encoding="utf-8",
+    )
+    sys.exit(1 if failed else 0)
+
 deadline = time.monotonic() + 80
 while len(list(evidence.glob("*.descriptor.json"))) != 2:
     assert time.monotonic() < deadline, "Peer environment did not reach its declared suite"
