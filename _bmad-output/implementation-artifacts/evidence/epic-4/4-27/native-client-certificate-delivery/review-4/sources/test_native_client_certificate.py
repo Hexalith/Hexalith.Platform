@@ -724,7 +724,7 @@ class CertificateTests(unittest.TestCase):
 
     def test_loading_interrupt_survives_second_interrupt_at_fallback_descriptor_cleanup_entry(self):
         source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
-        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector, caller_context)')]
         self.assertEqual(len(lines), 3, 'inner, guarded fallback and last cleanup pass')
         primary = KeyboardInterrupt('synthetic loading interrupt reaches fallback')
         secondary = SystemExit('synthetic second interruption at fallback descriptor cleanup')
@@ -749,7 +749,7 @@ class CertificateTests(unittest.TestCase):
 
     def test_second_interrupt_at_fallback_stream_cleanup_entry_releases_open_peer_and_inputs(self):
         source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
-        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector, caller_context)')]
         self.assertEqual(len(lines), 3, 'inner, guarded fallback and last cleanup pass')
         primary = KeyboardInterrupt('synthetic cancellation before inner stream cleanup')
         secondary = SystemExit('synthetic second cancellation before fallback stream cleanup')
@@ -1231,15 +1231,20 @@ print(json.dumps(results))
     def test_caller_handled_interrupt_does_not_replace_current_loading_interrupt(self):
         source, start = inspect.getsourcelines(b.NativeTLS._acquire_exchange)
         line = start + next(i for i, text in enumerate(source) if text.strip() == 'owned.connector = self.connector')
-        for transition in ('loading', 'acquisition-entry'):
+        boundary_line = start + next(i for i, text in enumerate(source) if text.strip() == 'owned.caller_context = caller_context')
+        for transition in ('loading', 'acquisition-boundary', 'acquisition-entry'):
             with self.subTest(transition=transition):
                 old = KeyboardInterrupt('caller handled interruption')
                 primary = KeyboardInterrupt('current exchange ' + transition + ' interruption')
                 before, previous, fired = descriptors(), sys.gettrace(), []
                 stream = f.Stream(f.http(b'{}'))
                 def trace(frame, event, argument):
-                    if frame.f_code is b.NativeTLS._acquire_exchange.__code__ and event == 'line' and frame.f_lineno == line and not fired:
-                        self.assertIs(frame.f_locals['owned'].caller_context, old)
+                    target = boundary_line if transition == 'acquisition-boundary' else line
+                    if frame.f_code is b.NativeTLS._acquire_exchange.__code__ and event == 'line' and frame.f_lineno == target and not fired:
+                        if transition == 'acquisition-boundary':
+                            self.assertFalse(hasattr(frame.f_locals['owned'], 'caller_context'))
+                        else:
+                            self.assertIs(frame.f_locals['owned'].caller_context, old)
                         fired.append(True)
                         raise primary
                     return trace
@@ -1248,14 +1253,14 @@ print(json.dumps(results))
                 except KeyboardInterrupt:
                     with patch.object(ssl.SSLContext, 'load_cert_chain', side_effect=primary), self.assertRaises(KeyboardInterrupt) as caught:
                         try:
-                            if transition == 'acquisition-entry':
+                            if transition != 'loading':
                                 sys.settrace(trace)
                             self.exchange(connector=f.owned_connector(stream))
                         finally:
                             sys.settrace(previous)
                 self.assertIs(caught.exception, primary)
                 self.assertIs(primary.__context__, old)
-                self.assertEqual(fired, [True] if transition == 'acquisition-entry' else [])
+                self.assertEqual(fired, [True] if transition != 'loading' else [])
                 self.assertTrue(stream.closed)
                 self.assertEqual(stream.sent, b'')
                 self.assertEqual(descriptors(), before)
@@ -1551,7 +1556,7 @@ print(json.dumps(results))
 
     def test_two_cleanup_invocation_interruptions_preserve_peer_and_input_ownership(self):
         source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
-        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector, caller_context)')]
         self.assertEqual(len(lines), 3)
         primary, secondary = KeyboardInterrupt('synthetic first cleanup invocation'), SystemExit('synthetic second cleanup invocation')
         original, fired, extra = b._cleanup_native, [], []
@@ -1563,13 +1568,13 @@ print(json.dumps(results))
                 fired.append('primary')
                 raise primary
             return trace
-        def cleanup(owned, connector):
+        def cleanup(owned, connector, caller_context):
             if fired == ['primary']:
                 self.assertFalse(self.streams[-1].closed)
                 self.assertEqual(os.pread(extra[0], 100, 0), b'public synthetic cleanup handoff input')
                 fired.append('secondary')
                 raise secondary
-            return original(owned, connector)
+            return original(owned, connector, caller_context)
         before, previous = descriptors(), sys.gettrace()
         with patch.object(b, '_cleanup_native', cleanup), self.assertRaises(KeyboardInterrupt) as caught:
             try:

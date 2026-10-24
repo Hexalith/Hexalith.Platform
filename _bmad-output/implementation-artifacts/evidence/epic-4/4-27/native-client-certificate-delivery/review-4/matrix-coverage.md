@@ -17,7 +17,7 @@ Existing cleanup-entry tests are adapted to the explicit protected passes,
 including the first inline cleanup call and second descriptor/stream release
 transitions. Each preserved injection is reached and asserted, not replaced by
 an early refusal. The caller-history regression now additionally interrupts the
-first acquisition line inside handled caller cancellation and proves real TLS
+first boundary assignment and connector setup inside handled caller cancellation and proves real TLS
 success inside handled KeyboardInterrupt and ValueError contexts.
 
 All original matrix rows still run: exact certificate pair with no Authorization;
@@ -28,7 +28,7 @@ cleanup; default/public activation refusal before live access. Exact DER/CA and
 wire assertions, no-op/wrong-loader controls, source/target separation, semantic
 stop conditions, original native bodies and null operational acceptance remain.
 
-The current executable sweep separately covers 297 line, 2,298 opcode and 79
+The current executable sweep separately covers 299 line, 2,309 opcode and 81
 secondary-line targets, with zero leaks, swallowed cancellations or unraisable
 exceptions. Five terminal external interruptions are classified only after exact
 descriptor and peer release is proved. There is no guarantee for infinitely

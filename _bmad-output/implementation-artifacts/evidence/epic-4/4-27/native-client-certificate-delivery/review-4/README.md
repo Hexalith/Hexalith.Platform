@@ -24,7 +24,7 @@ OS/release/architecture without hostnames. `preparation-head.txt` records the
 full preparation HEAD separately from the original baseline in the receipt.
 
 `run-cancellation-sweeps.py` and `cancellation-sweeps.json` bind current finite
-synthetic controls: 297 single-line targets, 2,298 opcode targets and 79 secondary
+synthetic controls: 299 single-line targets, 2,309 opcode targets and 81 secondary
 line targets, with no resource leaks, swallowed cancellations or unraisable
 exceptions. The five secondary terminal exchange-propagation targets are listed
 separately and verify all descriptor/peer release before injection. Those new
@@ -46,6 +46,11 @@ failure and unexpected success. Their transcript bytes and all referring hashes
 are changed coherently, keeping original success claims unchanged, so a parser
 hardcoded to OK/zero skips cannot pass this self-test. These intentionally adverse
 parser controls are not passing qualification suites.
+`check-parser-mutant.py` additionally replaces only the imported checker
+function in memory with a parser hardcoded to OK/zero skips (preserving the
+actual test count). The ordinary receipt still passes, but the actual adverse
+transcript self-test rejects the mutant; `parser-mutant-control.json` records
+that result. No working file is mutated.
 
 `spec-dispatch-baseline.md` and `spec-verification-checkpoint.md` bind exact full
 historical spec bytes. Later workflow status/triage changes are separate; frozen
@@ -67,9 +72,15 @@ IAM/authority/client-identity qualification, live connector/TLS/runtime review a
 activation, full store/system and isolated-target orchestration including
 telemetry PostgreSQL, proof-consumer integration, fresh exact attempt/policy/tool
 bindings, separately scoped operational approval and actual recovery/resume/
-cleanup with signed/non-dry/manual acceptance. No actual credentials,
-configuration, endpoints, certificate issuance, recovery allocation, signing,
-upload, recovery, infrastructure mutation, staging, commit or push occurred.
+cleanup with signed/non-dry/manual acceptance. This offline pass accessed no actual credentials, configuration or endpoints
+and performed no certificate issuance, recovery allocation, signing, upload,
+recovery, infrastructure mutation, staging, commit or push.
 Unrelated Story 2.3/2.4, deferred-ledger, sprint-workflow and submodule work remains
 preserved and excluded. This receipt provides reproducibility, no external
 authenticity or operational authority.
+
+A concurrent shared-workspace operation recorded `b2ff52312b01db65aef3e8b60fb56681ae97d70a`
+(`fix: story 4.27`) while this pass was still running. That Git history remains
+preserved. `preparation-head.txt` keeps the task-start HEAD unchanged, while
+`current-head.txt` records this later observed HEAD separately from the original
+baseline. This pass performed no staging, commit or push.

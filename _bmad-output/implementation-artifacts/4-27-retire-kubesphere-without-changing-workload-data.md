@@ -870,7 +870,7 @@ Linear bounded PEM framing accepts TLS-valid compact base64 and leading blank
 lines, preserving original installed bytes. Real SSLContext loading and exact
 MemoryBIO peer/CA/wire checks remain, along with malformed/encrypted/mismatched
 material refusals and separate envelope/material/count limits. Current sweeps
-cover 297 line targets, 2,298 opcode targets and 79 secondary-cancellation targets:
+cover 299 line targets, 2,309 opcode targets and 81 secondary-cancellation targets:
 no leaks, swallowed cancellations or unraisable exceptions. Five secondary
 terminal-propagation sites are classified separately only after descriptor and
 peer release is verified; a new external interrupt there has no signal-atomic
@@ -897,4 +897,10 @@ signing, upload, recovery or infrastructure mutation occurred. Public activation
 and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
 Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved;
 unrelated Story 2.3/2.4, deferred-ledger, sprint-workflow and submodule work is
-excluded. No staging, commit, push or operational helper replay occurred.
+excluded. This offline pass performed no staging, commit, push or operational helper replay.
+
+Shared-workspace provenance: preparation HEAD remains
+`56c783bcd005e3ce0c728dc72e440a696a91d034`; a concurrent operation recorded
+`b2ff52312b01db65aef3e8b60fb56681ae97d70a` (`fix: story 4.27`) during this pass.
+That history is preserved and the observed current HEAD is separately bound in
+`review-4/current-head.txt`; this pass performed no Git staging/commit/push.

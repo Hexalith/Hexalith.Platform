@@ -274,11 +274,18 @@ def _close_owned(owned, error=None):
     return getattr(owned, 'error', None)
 
 
-def _cleanup_native(owned, connector):
+def _record_native(owned, caller_context):
+    # The boundary is passed separately from partially initialized metadata.
+    # If this assignment is interrupted, the next independent pass restores it.
+    owned.caller_context = caller_context
+    owned.remember(sys.exception())
+
+
+def _cleanup_native(owned, connector, caller_context):
     # Inline try statements avoid unprotected NOPs at cleanup entry in 3.14.
     # Every pass records the current lifetime exception before independent
     # stream and input cleanup. Partial custody construction is safe here.
-    try: owned.remember(sys.exception())
+    try: _record_native(owned, caller_context)
     finally:
         try: _close_native(owned, connector)
         finally: _close_owned(owned)
@@ -774,8 +781,7 @@ class NativeTLS:
         # custody initialization; cleanup can recover a prepared connector even
         # if constructor entry, partial initialization or return is interrupted.
         owned = object.__new__(_DescriptorCustody)
-        owned.caller_context = caller_context
-        try: response = self._guard_native(owned, request, deadline, binding, credential)
+        try: response = self._guard_native(owned, caller_context, request, deadline, binding, credential)
         except BaseException as exc: owned.remember(exc)
         # All known inputs and streams have had independent release attempts.
         # Raise outside an active handler so secondary.__context__ still names
@@ -788,7 +794,7 @@ class NativeTLS:
         remaining(deadline)
         return response
 
-    def _guard_native(self, owned, request, deadline, binding, credential):
+    def _guard_native(self, owned, caller_context, request, deadline, binding, credential):
         """Three independent cleanup passes, including their invocation handoff.
 
         Inline try statements avoid unprotected cleanup-entry NOPs. Each pass
@@ -796,14 +802,15 @@ class NativeTLS:
         acquisition or exchange. Terminal propagation follows resource release;
         a new cancellation there is a separate external interruption.
         """
-        try: return self._acquire_exchange(owned, request, deadline, binding, credential)
+        try: return self._acquire_exchange(owned, caller_context, request, deadline, binding, credential)
         finally:
-            try: _cleanup_native(owned, self.connector)
+            try: _cleanup_native(owned, self.connector, caller_context)
             finally:
-                try: _cleanup_native(owned, self.connector)
-                finally: _cleanup_native(owned, self.connector)
+                try: _cleanup_native(owned, self.connector, caller_context)
+                finally: _cleanup_native(owned, self.connector, caller_context)
 
-    def _acquire_exchange(self, owned, request, deadline, binding, credential):
+    def _acquire_exchange(self, owned, caller_context, request, deadline, binding, credential):
+        owned.caller_context = caller_context
         owned.connector = self.connector
         _DescriptorCustody.__init__(owned, self.connector)
         remaining(deadline)
