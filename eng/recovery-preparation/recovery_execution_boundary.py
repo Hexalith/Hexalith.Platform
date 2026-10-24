@@ -56,16 +56,21 @@ class _OwnedDescriptor:
     after the underlying close. Retrying this object can never close a later
     allocation that happens to reuse its old descriptor number.
     """
-    def __new__(cls, fd):
+    def __new__(cls, fd, expected=None):
         handle = super().__new__(cls)
         # The C owner exists before initialization can return or be interrupted.
         handle.file = io.FileIO.__new__(io.FileIO)
-        handle.original_fd = handle.pending_fd = fd
+        handle.original_fd = fd
+        handle.pending_fd = None
         info = os.fstat(fd)
         handle.identity = (info.st_dev, info.st_ino)
+        require(expected is None or handle.identity == expected)
+        handle.pending_fd = fd
         return handle
 
     def __init__(self, fd):
+        info = os.fstat(fd)
+        require((info.st_dev, info.st_ino) == self.identity)
         io.FileIO.__init__(self.file, fd, 'rb', closefd=True)
         self.pending_fd = None
 
@@ -80,6 +85,10 @@ class _OwnedDescriptor:
         # A constructor interrupted before initialization leaves an owned raw
         # input in this already-registered placeholder. Adopt it before release.
         if self.pending_fd is not None and self.file.closed:
+            info = os.fstat(self.pending_fd)
+            if (info.st_dev, info.st_ino) != self.identity:
+                self.pending_fd = None
+                raise Refusal(FAILURE)
             io.FileIO.__init__(self.file, self.pending_fd, 'rb', closefd=True)
         self.pending_fd = None
         self.file.close()
@@ -87,28 +96,46 @@ class _OwnedDescriptor:
 
 class _DescriptorCustody:
     """Shared ownership and primary failure across allocation and cleanup."""
-    def __init__(self):
+    def __init__(self, connector=None):
         self.handles = []
         self.allocations = []
         self.stream = None
+        self.connector = connector
         self.error = None
+        # Exception contexts older than this exchange are caller-owned history.
+        self.caller_context = sys.exception()
+
+    def construct(self, stream_type, *arguments):
+        """Register a resource-free placeholder before its constructor acquires.
+
+        Trusted private connectors use object.__new__; acquisition belongs in
+        __init__, with idempotent close safe on a partially initialized object.
+        No resource-returning factory handoff is accepted by this protocol.
+        """
+        require(self.stream is None and getattr(stream_type, '_native_owned_stream', False) is True)
+        self.stream = object.__new__(stream_type)
+        stream_type.__init__(self.stream, *arguments)
+        return self.stream
 
     def remember(self, error):
         # A second interrupt during the first exception handler retains the
         # active first interrupt as context, even before its assignment below.
         # Select the oldest interruption, preserving ordinary-error sanitizing.
+        if error is getattr(self, 'caller_context', None):
+            return
         candidate, seen = error, set()
-        while candidate is not None and id(candidate) not in seen:
+        while candidate is not None and candidate is not getattr(self, 'caller_context', None) and id(candidate) not in seen:
             seen.add(id(candidate))
             if not isinstance(candidate, Exception):
                 error = candidate
             candidate = candidate.__context__
-        if error is not None and (self.error is None or
-                isinstance(self.error, Exception) and not isinstance(error, Exception)):
+        previous = getattr(self, 'error', None)
+        if error is not None and (previous is None or
+                isinstance(previous, Exception) and not isinstance(error, Exception)):
             self.error = error
 
-    def register(self, fd):
-        handle = _OwnedDescriptor.__new__(_OwnedDescriptor, fd)
+    def register(self, fd, expected=None):
+        handle = _OwnedDescriptor.__new__(_OwnedDescriptor, fd, expected)
         try:
             # Register the uninitialized object before the constructor runs.
             self.handles.append(handle)
@@ -124,16 +151,21 @@ class _DescriptorCustody:
 
 
 class _MemoryAllocation:
-    """An allocator-specific identity registered before any raw syscall.
+    """Unique local allocation identity and pre-acquisition recovery resources.
 
-    A memfd and its duplicates share this unique kernel-visible name and inode.
-    Recovery enumerates only process-local descriptors with that exact identity;
-    it never adopts an old descriptor number or a similarly named allocation.
+    Scandir owns its directory stream in C. Reserve three independent scans
+    before creating any memory file, so raw-result recovery needs no new fd,
+    even at RLIMIT_NOFILE. Spare scans cover interrupted discovery/registration.
+    This is a bounded process-local protocol, not protection against arbitrary
+    hostile descriptor-table mutation between identity checks and adoption.
     """
     def __init__(self):
         self.name = 'recovery-fixture-input-' + uuid.uuid4().hex
         self.link = '/memfd:' + self.name + ' (deleted)'
         self.identity = None
+        self.scanners = []
+        for _ in range(3):
+            self.scanners.append(os.scandir('/proc/self/fd'))
 
     def observe(self, fd):
         require(os.readlink('/proc/self/fd/' + str(fd)) == self.link)
@@ -141,41 +173,97 @@ class _MemoryAllocation:
         self.identity = (info.st_dev, info.st_ino)
 
     def recover(self, custody):
-        # Enumeration may include its own already-closed directory descriptor.
-        for name in os.listdir('/proc/self/fd'):
-            fd = int(name)
+        for scanner in getattr(self, 'scanners', ()):
+            for entry in scanner:
+                fd = int(entry.name)
+                try:
+                    if os.readlink('/proc/self/fd/' + entry.name) != self.link:
+                        continue
+                    info = os.fstat(fd)
+                except OSError as exc:
+                    if exc.errno in (errno.ENOENT, errno.EBADF):
+                        continue
+                    raise
+                require(stat.S_ISREG(info.st_mode) and info.st_nlink == 0)
+                identity = (info.st_dev, info.st_ino)
+                if self.identity is None:
+                    self.identity = identity
+                if identity != self.identity:
+                    continue
+                registered = False
+                for handle in custody.handles:
+                    if handle.original_fd == fd and handle.identity == identity:
+                        registered = True
+                        break
+                if registered:
+                    continue
+                # Discovery identity is checked again at the adoption boundary.
+                custody.register(fd, identity)
+
+    def close(self):
+        for scanner in getattr(self, 'scanners', ()):
+            scanner.close()  # C-owned, idempotent even after interrupted return.
+
+
+class _OwnedConnector:
+    """Explicit private native acquisition contract; never selected implicitly.
+
+    acquire(custody, context, cluster, deadline) constructs via custody.construct
+    and returns no resource. A prepared fixture stream is already held here and
+    shared with custody before acquire is invoked. Trusted stream close must be
+    idempotent: real descriptors require C-level release state, and partial
+    construction must be safely closeable. Arbitrary third-party closers and
+    resource-returning callables are outside this qualification.
+    """
+    def __init__(self, acquire, *, prepared=None):
+        require(callable(acquire) and (prepared is None or
+                getattr(type(prepared), '_native_owned_stream', False) is True))
+        self.acquire = acquire
+        self.prepared = prepared
+
+    def __call__(self, custody, context, cluster, deadline):
+        result = self.acquire(custody, context, cluster, deadline)
+        require(result is None and custody.stream is not None and
+                getattr(type(custody.stream), '_native_owned_stream', False) is True and
+                all(callable(getattr(custody.stream, name, None)) for name in ('send', 'recv', 'settimeout', 'close')))
+
+
+def _close_native(owned, connector=None):
+    stream = getattr(owned, 'stream', None)
+    connector = getattr(owned, 'connector', connector)
+    prepared = connector.prepared if type(connector) is _OwnedConnector else None
+    streams = (stream,) if prepared is stream else (stream, prepared)
+    for stream in streams:
+        if stream is None:
+            continue
+        # Two interruptions before release still leave a third independent try.
+        for _ in range(3):
+            if getattr(stream, 'closed', False):
+                break
             try:
-                if os.readlink('/proc/self/fd/' + name) != self.link:
-                    continue
-                info = os.fstat(fd)
-            except OSError as exc:
-                if exc.errno in (errno.ENOENT, errno.EBADF):
-                    continue
-                raise
-            require(stat.S_ISREG(info.st_mode) and info.st_nlink == 0)
-            identity = (info.st_dev, info.st_ino)
-            if self.identity is None:
-                self.identity = identity
-            if identity != self.identity:
-                continue
-            # Existing stateful owners retain close authority. In particular,
-            # never re-adopt the raw number of a released owner.
-            if any(handle.original_fd == fd and handle.identity == identity
-                    for handle in custody.handles):
-                continue
-            custody.register(fd)
+                stream.close()
+            except BaseException as cleanup:
+                owned.remember(cleanup)
 
 
 def _close_owned(owned, error=None):
     """Close stateful owners independently, retaining their shared first error."""
     require(type(owned) is _DescriptorCustody)
     owned.remember(error)
-    for allocation in owned.allocations:
-        try:
-            allocation.recover(owned)
-        except BaseException as cleanup:
-            owned.remember(cleanup)
-    for handle in reversed(owned.handles):
+    for allocation in getattr(owned, 'allocations', ()):
+        for _ in range(3):
+            try:
+                allocation.recover(owned)
+                break
+            except BaseException as cleanup:
+                owned.remember(cleanup)
+        for _ in range(3):
+            try:
+                allocation.close()
+                break
+            except BaseException as cleanup:
+                owned.remember(cleanup)
+    for handle in reversed(getattr(owned, 'handles', ())):
         for _ in range(2):
             if handle.closed:
                 break
@@ -183,7 +271,17 @@ def _close_owned(owned, error=None):
                 handle.close()
             except BaseException as cleanup:
                 owned.remember(cleanup)
-    return owned.error
+    return getattr(owned, 'error', None)
+
+
+def _cleanup_native(owned, connector):
+    # Inline try statements avoid unprotected NOPs at cleanup entry in 3.14.
+    # Every pass records the current lifetime exception before independent
+    # stream and input cleanup. Partial custody construction is safe here.
+    try: owned.remember(sys.exception())
+    finally:
+        try: _close_native(owned, connector)
+        finally: _close_owned(owned)
 
 
 def _close_raw(owned, error=None):
@@ -326,18 +424,19 @@ def sealed(raw, executable=False, *, custody=None):
         require(custody is None or type(custody) is _DescriptorCustody)
         allocation = None
         if custody is not None:
-            allocation = _MemoryAllocation()
+            allocation = object.__new__(_MemoryAllocation)
             custody.allocations.append(allocation)
+            _MemoryAllocation.__init__(allocation)
         # The shared identity precedes the syscall, including an interruption
         # before STORE_FAST transfers its raw return value to low or fd.
         low = os.memfd_create('recovery-fixture-input' if allocation is None else allocation.name,
             os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
         if custody is not None:
             allocation.observe(low)
-            low_owner = custody.register(low)
+            low_owner = custody.register(low, allocation.identity)
         fd = fcntl.fcntl(low, fcntl.F_DUPFD_CLOEXEC, 4)
         if custody is not None:
-            high_owner = custody.register(fd)
+            high_owner = custody.register(fd, allocation.identity)
             low_owner.close()
         else:
             os.close(low)
@@ -553,6 +652,40 @@ class NativeBinding:
     authentication_profile: str = 'bearer'
 
 
+def _pem_blocks(raw, labels, maximum):
+    """Bounded linear framing check; SSLContext validates actual ASN.1/key data.
+
+    Accept LF/CRLF, compact base64 and blank separator lines without rewriting
+    the original material installed through sealed descriptors.
+    """
+    lines = raw.split(b'\n')
+    index = count = 0
+    while index < len(lines):
+        line = lines[index].removesuffix(b'\r')
+        index += 1
+        if not line:
+            continue
+        label = None
+        for supported in labels:
+            if line == b'-----BEGIN ' + supported + b'-----':
+                label = supported
+                break
+        require(label is not None and count < maximum)
+        body = 0
+        while index < len(lines):
+            line = lines[index].removesuffix(b'\r')
+            index += 1
+            if line == b'-----END ' + label + b'-----':
+                break
+            require(re.fullmatch(rb'[A-Za-z0-9+/=]+', line) is not None)
+            body += len(line)
+        else:
+            raise Refusal(FAILURE)
+        require(body > 0)
+        count += 1
+    require(count > 0)
+
+
 class NativeTLS:
     """Strict fixed-IP TLS. Only an explicitly injected inert connector is callable."""
     def __init__(self, connector=None):
@@ -582,14 +715,8 @@ class NativeTLS:
             certificate = envelope['certificatePem'].encode('ascii')
             key = envelope['privateKeyPem'].encode('ascii')
             require(0 < len(certificate) <= 49152 and 0 < len(key) <= 16384)
-            # Permit conventional LF/CRLF and an absent final newline without
-            # normalizing any bytes passed to the TLS library.
-            certificate_block = (rb'-----BEGIN CERTIFICATE-----\r?\n'
-                rb'(?:[A-Za-z0-9+/=]{1,76}\r?\n)+-----END CERTIFICATE-----')
-            require(re.fullmatch(rb'(?:' + certificate_block + rb'\r?\n){0,15}' +
-                    certificate_block + rb'(?:\r?\n)?', certificate) is not None)
-            require(re.fullmatch(rb'-----BEGIN (PRIVATE KEY|RSA PRIVATE KEY|EC PRIVATE KEY)-----\r?\n'
-                    rb'(?:[A-Za-z0-9+/=]{1,76}\r?\n)+-----END \1-----(?:\r?\n)?', key) is not None)
+            _pem_blocks(certificate, (b'CERTIFICATE',), 16)
+            _pem_blocks(key, (b'PRIVATE KEY', b'RSA PRIVATE KEY', b'EC PRIVATE KEY'), 1)
             paths = []
             for raw in (certificate, key):
                 remaining(deadline)
@@ -639,70 +766,67 @@ class NativeTLS:
             raise Refusal(FAILURE) from None
 
     def exchange(self, request, deadline, binding, credential):
-        owned = _DescriptorCustody()
-        response = error = None
-        # The outer guard spans the first error-recording handler, stream-close
-        # entry, descriptor cleanup, deadline checks and the exceptional return.
-        try:
-            try:
-                remaining(deadline)
-                require(self.connector is not None)
-                require(type(binding) is NativeBinding and type(credential) is Credential and
-                        type(request) is a.Request and
-                        type(binding.authentication_profile) is str and
-                        binding.authentication_profile in ('bearer', 'client-certificate') and
-                        request.endpoint == binding.cluster.endpoint and
-                        binding.credential.principal == request.principal and binding.credential.audience == binding.cluster.uid)
-                credential.descriptor(binding.credential)
-                context = self._context(binding)
-                bearer = None
-                if binding.authentication_profile == 'bearer':
-                    require(re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', credential.secret))
-                    bearer = credential.secret
-                else:
-                    self._install_certificate(context, credential.secret, deadline, owned)
-                remaining(deadline)
-                owned.stream = self.connector(context, binding.cluster, deadline)
-                response = self._exchange(request, owned.stream, deadline, bearer)
-            except BaseException as exc:
-                owned.remember(exc)
-            if owned.stream is not None:
-                try:
-                    owned.stream.close()
-                except BaseException as exc:
-                    owned.remember(exc)
-            error = _close_owned(owned)
-            if error is not None:
-                if not isinstance(error, Exception):
-                    raise error.with_traceback(error.__traceback__)
-                raise Refusal(FAILURE) from None
-            remaining(deadline)
-            return response
-        except BaseException as exc:
-            try:
-                owned.remember(exc)
-                # A cancellation at either inner cleanup entry must still
-                # attempt every known stream and descriptor release.
-                if owned.stream is not None:
-                    try:
-                        owned.stream.close()
-                    except BaseException as cleanup:
-                        owned.remember(cleanup)
-                error = _close_owned(owned)
-            except BaseException as cleanup:
-                # Protect the fallback's own entry transitions as well. This
-                # covers a primary interruption followed by a second during
-                # recording/cleanup, not indefinitely repeated cancellation.
-                owned.remember(cleanup)
-                if owned.stream is not None:
-                    try:
-                        owned.stream.close()
-                    except BaseException as release:
-                        owned.remember(release)
-                error = _close_owned(owned)
+        # Capture caller exception history before creating lifetime metadata.
+        # An interruption at acquisition's first line must not select that old
+        # caller exception merely because initialization has not stored it yet.
+        caller_context = sys.exception()
+        # The placeholder acquires no resource. The lifetime starts before any
+        # custody initialization; cleanup can recover a prepared connector even
+        # if constructor entry, partial initialization or return is interrupted.
+        owned = object.__new__(_DescriptorCustody)
+        owned.caller_context = caller_context
+        try: response = self._guard_native(owned, request, deadline, binding, credential)
+        except BaseException as exc: owned.remember(exc)
+        # All known inputs and streams have had independent release attempts.
+        # Raise outside an active handler so secondary.__context__ still names
+        # the primary, rather than creating and breaking an exception cycle.
+        error = getattr(owned, 'error', None)
+        if error is not None:
             if not isinstance(error, Exception):
                 raise error.with_traceback(error.__traceback__)
             raise Refusal(FAILURE) from None
+        remaining(deadline)
+        return response
+
+    def _guard_native(self, owned, request, deadline, binding, credential):
+        """Three independent cleanup passes, including their invocation handoff.
+
+        Inline try statements avoid unprotected cleanup-entry NOPs. Each pass
+        protects the next through two active interruptions, without retrying
+        acquisition or exchange. Terminal propagation follows resource release;
+        a new cancellation there is a separate external interruption.
+        """
+        try: return self._acquire_exchange(owned, request, deadline, binding, credential)
+        finally:
+            try: _cleanup_native(owned, self.connector)
+            finally:
+                try: _cleanup_native(owned, self.connector)
+                finally: _cleanup_native(owned, self.connector)
+
+    def _acquire_exchange(self, owned, request, deadline, binding, credential):
+        owned.connector = self.connector
+        _DescriptorCustody.__init__(owned, self.connector)
+        remaining(deadline)
+        require(type(self.connector) is _OwnedConnector)
+        owned.stream = self.connector.prepared
+        require(type(binding) is NativeBinding and type(credential) is Credential and
+                type(request) is a.Request and
+                type(binding.authentication_profile) is str and
+                binding.authentication_profile in ('bearer', 'client-certificate') and
+                request.endpoint == binding.cluster.endpoint and
+                binding.credential.principal == request.principal and binding.credential.audience == binding.cluster.uid)
+        credential.descriptor(binding.credential)
+        context = self._context(binding)
+        bearer = None
+        if binding.authentication_profile == 'bearer':
+            require(re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', credential.secret))
+            bearer = credential.secret
+        else:
+            self._install_certificate(context, credential.secret, deadline, owned)
+        remaining(deadline)
+        self.connector(owned, context, binding.cluster, deadline)
+        response = self._exchange(request, owned.stream, deadline, bearer)
+        return response
 
     def _exchange(self, request, stream, deadline, bearer):
         """One absolute deadline covers every partial write and header/body byte."""

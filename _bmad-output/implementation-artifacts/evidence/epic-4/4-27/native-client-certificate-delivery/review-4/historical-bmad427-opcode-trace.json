@@ -1,0 +1,38 @@
+{
+  "targets": 2049,
+  "findings": [
+    {
+      "target": [
+        "_MemoryAllocation.recover.<locals>.<genexpr>",
+        108
+      ],
+      "instruction": "     CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)\n",
+      "hit": true,
+      "exception": "NoneType",
+      "leaks": {},
+      "unclosed": 0
+    },
+    {
+      "target": [
+        "_MemoryAllocation.recover.<locals>.<genexpr>",
+        110
+      ],
+      "instruction": "     RERAISE                  1\n",
+      "hit": true,
+      "exception": "NoneType",
+      "leaks": {},
+      "unclosed": 0
+    },
+    {
+      "target": [
+        "NativeTLS.exchange",
+        1224
+      ],
+      "instruction": "     NOP\n",
+      "hit": true,
+      "exception": "KeyboardInterrupt",
+      "leaks": {},
+      "unclosed": 1
+    }
+  ]
+}

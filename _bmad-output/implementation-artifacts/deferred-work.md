@@ -1289,3 +1289,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Redact short PEM body lines across successive native console messages.
   evidence: R5-V3, medium: PlatformDaprDiagnosticResource.RecordLogs redacts each line separately; PlatformDaprDiagnosticRedactor is stateless and its opaque matcher starts at 40 characters. A short base64 body line after a redacted header survives. Existing coverage supplies the whole PEM block in one message. Independent Story 4.27 diagnostics redaction.
+
+## Deferred from: code review of spec-2-3-make-local-composition-resources-run-scoped.md (2026-10-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Move retention native-sidecar diagnostics out of the Memories checkout.
+  evidence: Medium, pre-existing Story 4.27 code (`858d02c`). `PlatformAppModel.ComposeRun` registers `PlatformDaprDiagnostics` at `Path.GetDirectoryName(Path.GetDirectoryName(RetentionArtifactsPath(...)))/diagnostics/native-sidecars`, i.e. `references/Hexalith.Memories/artifacts/retention/<runId>/diagnostics/native-sidecars`, for every retention run (not only the test). Story 2.3 requires mutable runtime files outside checkouts and documents only the retention build-output carve-out. Distinct from the final-state test-cleanup entry.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Confirm the file-entry smoke's path-targeted `aspire wait`/`aspire stop` cannot select a same-path developer AppHost.
+  evidence: Unverified (maybe-false; medium if true). `PlatformAppModelTests` starts `aspire start --apphost apphost.cs --isolated` but waits/stops with `--apphost <path>` only. Recorded smokes had no same-path Platform AppHost running. Settle by running the stop command against one non-isolated developer instance plus one isolated instance of the same `apphost.cs`; if ambiguous, target the started instance by its reported PID/identity.

@@ -791,3 +791,110 @@ recovery-attempt allocation, operational certificate issuance, recovery-document
 signing, upload, recovery or infrastructure mutation occurred. Public activation
 and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
 Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.
+
+
+## Review-3 native certificate handoffs and bounded release — 2026-10-24
+
+The [review-3 content-bound verification](evidence/epic-4/4-27/native-client-certificate-delivery/review-3/verification.json) records **325 passing tests,
+zero skips**: 49 certificate cases plus the existing 276 boundary/readback/
+authentication/S3/common/telemetry cases. All 315 review-2 behaviors, the 39 prior
+focused test names and all 24 registration subcases remain. Historical packets,
+including the review-2 checker and original adverse parent probes, are preserved.
+The original baseline and shared-workspace history remain unchanged.
+
+Native exchange now requires an explicitly supplied private owned connector.
+Trusted connectors register a resource-free stream placeholder in shared custody
+before constructor acquisition; prepared inert streams already have a shared
+owner before transfer. Raw resource-returning callbacks refuse before credential
+or context work. Safe partial construction and idempotent release are part of
+that private contract; real descriptor release state must be C-owned. Two close
+interruptions before release still receive an independent third attempt. Current
+exchange cancellation survives secondary recording/cleanup errors, while an
+already handled caller interruption cannot replace it. A completed C-level close
+never retries a reused unrelated descriptor. Fixture-owned cleanup also closes
+preallocated streams on invalid profile or CA refusal.
+
+Memory allocation registers its placeholder before reserving C-owned recovery
+scans and before creating a memory file. Recovery rechecks the expected allocator
+identity at descriptor adoption and needs no new directory descriptor after raw
+allocation. Isolated child tests exercise reservation failure and memfd/duplicate
+raw-result transitions at the actual last descriptor slot, restore the child's
+RLIMIT_NOFILE and preserve unrelated descriptor bytes/flags. This qualifies the
+tested bounded process-local protocol; arbitrary hostile descriptor-table
+mutation, unsupported/non-idempotent third-party closers, indefinitely repeated
+interruptions, kernel stalls and actual connector/runtime remain unqualified.
+
+The new checker binds sources/snapshots/logs and historical spec checkpoints by
+content, then parses actual unittest totals/skips/outcomes. Isolated coherent
+source/snapshot and count/skip/outcome metadata controls fail independently.
+Historical spec checkpoints remain separate from later workflow status/triage
+edits; frozen human intent is still compared exactly. The unsigned packet confers
+no external authenticity or operational authority. Runtime/interpreter/OpenSSL
+and OS/release/architecture are recorded without hostnames. Unrelated concurrent
+Story 2.3/2.4, deferred-ledger, sprint-workflow and submodule edits are excluded.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.
+
+
+## Review-4 native certificate lifetime and evidence controls — 2026-10-24
+
+The [review-4 content-bound verification](evidence/epic-4/4-27/native-client-certificate-delivery/review-4/verification.json) records **331 passing tests,
+zero skips**: 55 certificate cases plus the existing 276 boundary/readback/
+authentication/S3/common/telemetry cases. All 325 review-3 behaviors, all 49 prior
+focused names and the 24 registration subcases remain. Every earlier packet,
+including the review-3 checker and original adverse trace results, is preserved.
+The original baseline and full current preparation HEAD are recorded separately.
+
+The native lifetime guard starts before custody initialization and retains the
+prepared stream through constructor entry, partial initialization and return.
+Three independent idempotent cleanup passes protect their invocation handoffs
+and active stream/input cleanup through the tested finite cancellation patterns.
+Direct controls cover two cleanup-invocation interruptions, a lost raw syscall
+result followed by scan/registration interruption, and a trusted constructor
+failing after acquiring a C-owned descriptor. Caller exception history neither
+replaces current cancellation nor turns a successful exchange into refusal.
+Acquire must return None and produce a supported owned stream before dispatch;
+protocol violations release every known prepared/current stream. The cleanup
+identity check uses an explicit bounded loop instead of a generator.
+
+Linear bounded PEM framing accepts TLS-valid compact base64 and leading blank
+lines, preserving original installed bytes. Real SSLContext loading and exact
+MemoryBIO peer/CA/wire checks remain, along with malformed/encrypted/mismatched
+material refusals and separate envelope/material/count limits. Current sweeps
+cover 297 line targets, 2,298 opcode targets and 79 secondary-cancellation targets:
+no leaks, swallowed cancellations or unraisable exceptions. Five secondary
+terminal-propagation sites are classified separately only after descriptor and
+peer release is verified; a new external interrupt there has no signal-atomic
+primary-return guarantee. Arbitrary hostile descriptor mutation, unsupported
+closers, indefinitely repeated interruptions and kernel stalls remain unqualified.
+
+The new checker requires all seven named suites and their exact pinned command
+mapping, while keeping counts as recorded data. It rejects non-passing summaries.
+Its isolated self-test runs actual unittest failure, skip, expected-failure and
+unexpected-success transcripts with the same bound count and unchanged success
+claims, updates all referencing hashes coherently, and requires refusal. Coherent
+suite omission, command drift, source/snapshot drift and metadata drift also
+refuse. Historical checkers/receipts stay unchanged; the unsigned packet supplies
+reproducibility only, with no external authenticity or operational authority.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved;
+unrelated Story 2.3/2.4, deferred-ledger, sprint-workflow and submodule work is
+excluded. No staging, commit, push or operational helper replay occurred.

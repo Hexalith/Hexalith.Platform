@@ -408,10 +408,10 @@ Scope: Platform `543ea182..693390a` and Builds `66b9136a..37d98f6` (current gitl
 
 **Patch**
 
-- [ ] [Review][Patch] A retained batch's later `down` uses the active entry's stop limit, but no test checks this. `RecordTestOutcomeAsync` rewrites state with `SelectedTest = record.Selection`, and `DownAsync` builds `TeardownBound(state?.SelectedTest)` from it. `TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync` overwrites the state it just recorded with its own copy, and the batch tests never write run state. If the assignment is dropped, a retained failed batch is torn down within entry 1's stop limit and every test still passes. Read the state back before overwriting it and assert `SelectedTest == selections[1]`. [B/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs:216; B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:591]
-- [ ] [Review][Patch] Two evidence-validator timing checks are not pinned by any mutation: `effectiveSeconds == executionTimeoutSeconds` and `startedAtUtc <= terminalAtUtc`. The existing `execution-seconds` mutation is already rejected by the deadline-difference clause. Without the first check, a forged artifact with a consistently enlarged start/deadline/credential triple would validate. Add two `ConflictingSelectedEvidenceIsRejected` cases: one consistently enlarged budget, and one start after terminal. [B/test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs:526; B/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:490]
-- [ ] [Review][Patch] Retained execution-timing and startup-task archives are only asserted by the opt-in live proof. These cover the pre-launch `execution-timing.json`, the root and per-entry archived timing, `ActualDurationSeconds`, and the regular `startup-task-results.json` copy. Dropping any of them passes every normal test. Extend `ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync` to compare both archived timing files with the descriptor's `originAt`/`expiresAt` and to assert a non-null duration. Have `runner.py` assert that the pre-launch timing file exists. Add a regular-file companion to `TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync`. [B/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs:30; B/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:258; B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:777]
-- [ ] [Review][Patch] The Builds README says "A conflict returns `HXR031` naming the blocking run", but both production `Acquire` sites reallocate on conflict. `HXR031` appears only when 64 consecutive allocations conflict. Reword it to say that conflicting fresh allocations are retried and `HXR031` names the blocking run only when no independent allocation can be claimed. [B/README.md:441]
+- [x] [Review][Patch] A retained batch's later `down` uses the active entry's stop limit, but no test checks this. `RecordTestOutcomeAsync` rewrites state with `SelectedTest = record.Selection`, and `DownAsync` builds `TeardownBound(state?.SelectedTest)` from it. `TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync` overwrites the state it just recorded with its own copy, and the batch tests never write run state. If the assignment is dropped, a retained failed batch is torn down within entry 1's stop limit and every test still passes. Read the state back before overwriting it and assert `SelectedTest == selections[1]`. [B/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs:216; B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:591]
+- [x] [Review][Patch] Two evidence-validator timing checks are not pinned by any mutation: `effectiveSeconds == executionTimeoutSeconds` and `startedAtUtc <= terminalAtUtc`. The existing `execution-seconds` mutation is already rejected by the deadline-difference clause. Without the first check, a forged artifact with a consistently enlarged start/deadline/credential triple would validate. Add two `ConflictingSelectedEvidenceIsRejected` cases: one consistently enlarged budget, and one start after terminal. [B/test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs:526; B/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:490]
+- [x] [Review][Patch] Retained execution-timing and startup-task archives are only asserted by the opt-in live proof. These cover the pre-launch `execution-timing.json`, the root and per-entry archived timing, `ActualDurationSeconds`, and the regular `startup-task-results.json` copy. Dropping any of them passes every normal test. Extend `ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync` to compare both archived timing files with the descriptor's `originAt`/`expiresAt` and to assert a non-null duration. Have `runner.py` assert that the pre-launch timing file exists. Add a regular-file companion to `TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync`. [B/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs:30; B/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:258; B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:777]
+- [x] [Review][Patch] The Builds README says "A conflict returns `HXR031` naming the blocking run", but both production `Acquire` sites reallocate on conflict. `HXR031` appears only when 64 consecutive allocations conflict. Reword it to say that conflicting fresh allocations are retried and `HXR031` names the blocking run only when no independent allocation can be claimed. [B/README.md:441]
 
 **Deferred**
 
@@ -448,3 +448,33 @@ Scope: Platform `543ea182..693390a` and Builds `66b9136a..37d98f6` (current gitl
 - `reject` — A4, spec and sprint status disagree. Settled by this review's status sync.
 
 Outcome: 0 decision-needed, 4 patch, 3 defer (all extending existing ledger items), 29 raw findings rejected.
+
+### Round-4 implementation and verification, 2026-10-24
+
+All four patches are applied. They are test-only and documentation-only, with no production code change.
+- **Persisted batch selection.** `TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync` now reads the recorded run state back instead of overwriting it. It asserts that `SelectedTest` and `TestRun.Selection` hold the last entry and that its 4-second stop limit is the one later `down` will use.
+- **Validator timing clauses.** `ConflictingSelectedEvidenceIsRejected` gains `execution-enlarged`, a consistently enlarged effective/deadline/credential triple, and `execution-after-terminal`, a coherent clock that starts one second after terminal.
+- **Archived timing and startup-task files.**
+  - The shared `runner.py` fixture asserts that the pre-launch `execution-timing.json` exists, has no duration yet, and matches the descriptor's effective seconds, configuration identity and `originAt`.
+  - `ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync` checks each archived entry's timing against the child-observed start. It also checks the one-second bound and a measured duration of at least 0.15 s, and that the durable root copy equals the last entry's copy.
+  - `BatchArchivesEachEntriesInspectedFunctionalObservationsAsync` checks that the workspace root copy equals the durable root copy.
+  - The new `TerminalMetadataRetainsRegularStartupTaskResultsAsync` covers the regular-file `startup-task-results.json` copy.
+- **README.** The Builds README now says that conflicting claims are reallocated for up to 64 attempts, and that only exhausted attempts fail with `HXR031` naming the last blocking run.
+
+Verification:
+- The individual Debug build of `Hexalith.Builds.Module.Tests` passed with zero warnings and zero errors, analyzers enabled.
+- `TestEnvironmentProvisioningTests` and `ModuleRunnerReviewRegressionTests` passed **101/101**.
+- **Mutation checks.** Every new assertion was checked against a temporary production mutation, built with analyzers disabled; the sources were then restored and their SHA-256 values re-verified. Each mutation failed exactly its intended test, with no collateral failures. The seven mutations:
+  - drop `SelectedTest` from the state write;
+  - drop the `EffectiveSeconds` clause;
+  - drop the `StartedAtUtc <= TerminalAtUtc` clause;
+  - zero `ActualDurationSeconds`;
+  - drop the durable-root timing write;
+  - drop the workspace-root timing write;
+  - drop the `startup-task-results.json` copy entry.
+
+  An eighth mutation dropped the pre-launch timing write. The first child then failed the fixture's new assertion before writing its report (`HXT002`).
+- **Full assembly.** One full run of the assembly, before the final workspace-timing assertion was added, reported 2005/2015 passing. The 10 failures all came from classes this round did not touch: 8 `WorkspaceCommandModeTests`, 1 `McpCliRunBuildTests` deadline case and 1 `ReadinessDeadlineObservationSharesStoppingBudgetAsync(timeout)`. The run took 615 s under concurrent host load. Rerun in isolation against the final build, they passed 53/53 and 5/5. They are recorded as load-sensitive, not as regressions.
+- **Concurrent commit.** A concurrent `/pushall` committed the four edited files, as they stood then, to Builds `main` as `dd3b4cd` at 03:57:50; Platform `56c783b` restages that gitlink. That commit contains no production source change. The later workspace-timing assertion in `TestEnvironmentProvisioningReviewTests.cs` remains an uncommitted Builds working-tree change.
+
+No approved patch remains open. The three round-4 deferrals remain in the ledger.

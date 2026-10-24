@@ -165,6 +165,45 @@ Code review 2026-10-23 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - low — EC21 "any BeforeStart failure" retention claim: carried R2-B1/R4-B10; other subscribers' failures remain in Aspire logs.
 - low — EC22 parent validated after runner-level claims: the runner releases its plan claims and config in its own teardown; the commit's claim covers the composition's own claims and writes.
 
+### Review Findings — fresh-eyes review (2026-10-24)
+
+Code review 2026-10-24 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the story-owned files from baseline `6fbe5a0` to `7cbc258`, plus Builds renderer `2210aaa..37d98f6`, EventStore props `cb41453..f5d36b8`, Works `3fcaa32` and the then-uncommitted Tenants compatibility edits. Story-owned root files are unchanged at `56c783b`.
+
+- [ ] [Review][Patch] Assert the host `--user` runtime argument for the run-owned `redis`, `memories-vectors` and `memories-graph` stores; deleting it passes every non-gated test while the Redis entrypoint would re-own the private bind mount [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:20]
+- [ ] [Review][Patch] Missing-runtime failure test resolves `IHostedService` before BeforeStart, but Aspire 13.6.3 runs `ExecuteBeforeStartHooksAsync` before `_host.StartAsync`; exercise the real `app.StartAsync` ordering and correct the "just as host startup does" comment [tests/Hexalith.Platform.Composition.Tests/PlatformDaprToolchainTests.cs:117]
+- [ ] [Review][Patch] Document that a concurrent second direct file-entry run needs `--isolated`: `apphost.run.json` fixes Aspire dashboard, OTLP and resource-service ports [README.md:206]
+- [ ] [Review][Patch] State the Works harness default control-plane ports (50001, 51005, 51006) and the `WORKS_PLATFORM_SENTRY_PORT`/`_PLACEMENT_PORT`/`_SCHEDULER_PORT` overrides; "Occupied bindings fail startup" names no ports [docs/works-host-parity.md:201]
+- [ ] [Review][Patch] Document the failed Works preview workspace retained at `<system-temp>/hexalith-works-preview/<id>/` (issuer credentials, scheduler data) with the same manual-removal guidance [docs/platform-apphost-form.md:155]
+- [ ] [Review][Patch] Add a migration note: `Dapr:Mtls:CertificateDirectory` now names a parent; the former `~/.dapr/certs/hexalith-platform` issuer directory and `hexalith-platform-dapr-scheduler` Docker volume are unused and may be removed manually [docs/platform-apphost-form.md:152]
+- [ ] [Review][Patch] Fix the broken "Allocation / probes" wrap and the unwrapped ~230-character line [docs/platform-apphost-form.md:147]
+- [x] [Review][Defer] Retention runs write native-sidecar runtime diagnostics into the Memories checkout (`artifacts/retention/<runId>/diagnostics/native-sidecars`), contrary to "keep all mutable runtime files outside checkouts" [src/Hexalith.Platform.Composition/PlatformAppModel.cs:367] — deferred: pre-existing Story 4.27 diagnostics code (`858d02c`); relocate under the run workspace or the documented retention carve-out in that owner work.
+- [x] [Review][Defer] File-entry smoke `aspire wait`/`aspire stop --apphost <path>` select the AppHost by path, not the isolated instance it started [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:611] — deferred: unverified (maybe-false; medium if true). No same-path Platform AppHost ran during recorded smokes. Settle by running the stop command with a non-isolated developer instance and an isolated instance of the same `apphost.cs`.
+- [x] [Review][Defer] Unreachable secondary-claim exhaustion throw [src/Hexalith.Platform.Composition/PlatformAppModel.cs:417] — deferred: already recorded (final-state, R5-B10); no new ledger entry.
+
+**Rejected (fresh-eyes review):**
+
+- false — AA EventStore 3.127.0 directives outside the Aspire exception: carried AA2/BH1 (independent catalog-following work `3b09b03`).
+- false — AA/BH mixed-scope hunks and undefined referenced types: whole-file diffs of shared files carry other stories' hunks (carried BH12/AA5).
+- false — AA/BH no two-instance live file-entry proof: the spec's task and Verification define the live proof as two Builds sessions plus the file-entry smoke; file-entry disjointness is covered by `IdenticalSelections…(signed: false)`. The `--isolated` usage gap is the separate README patch.
+- false — BH concurrent proof starts sessions sequentially: AC3 requires both to reach readiness and coexist; sequential starts still exercise real allocation and binding. Simultaneous claim acquisition is Story 2.4 policy.
+- false — BH discovery isolation checked by path only: SQLite name resolution is file-backed; distinct per-run registry files, referenced by each run's own rendered configuration, cannot share entries.
+- false — BH live proof omits mount-location checks: the model test asserts private, outside-checkout writable mounts for signed and file entry through the same `Compose` path the live sessions use.
+- false — BH credential test cannot distinguish parent from child: `PlatformRetentionProfileTests` seeds only the private child and asserts the same subscriber's `DAPR_TRUST_ANCHORS`, so a regression to the parent fails there.
+- false — BH claim-store contradiction in the docs: the sentence describes probes, which still release sockets; the cross-process claim store is Story 2.4's separate mechanism.
+- false — BH evidence `.gitignore` re-includes unredacted logs: a scan of all 144 tracked `*.log` files finds no keys or tokens; raw occupied-port output is a Docker bind error.
+- false — EC Works external placement cannot trust a per-run CA: the Works harness (`3fcaa32`) reads the composed Sentry credential mount for its own placement/scheduler.
+- false — AA Works "Occupied bindings fail startup" expands qualification: carried AA7 (final-state); the sentence describes harness binding, not preview qualification.
+- low — BH no loopback `HostIp` assertion: all 18 recorded published ports are `127.0.0.1` under the pinned Aspire/DCP; a regression needs a repin, which requires requalification.
+- low — BH case rules by OS rather than filesystem (drvfs, case-sensitive APFS): needs a differently cased configured parent into a checkout; the fix needs filesystem probing.
+- low — EC occupied-port test `finally` leaks the foreign listener when candidate removal fails: gated proof, requires a failed `docker rm`; the fix restructures cleanup.
+- low — AA `Render` `localhost:50001`/null-discovery fallback: carried AA6.
+- low — VG-O1/EC configured-parent child and Works workspace orphaned after a later compose failure: carried AA5/EC8, R5-B6, VG-O3/EC16 (empty private child; no resources started).
+- low — VG-O2/EC launch-time callback failures leave no marker: carried BH2/EC2/EC3/EC7, R2-B1, R4-B10, R5-B7.
+- low — EC default issuer under shared `/tmp/hexalith-platform`, pre-existing child race, empty/whitespace settings, unconfigured refusal wording, empty `HEXALITH_DAPR_HOME`, non-BMP paths, failed `aspire start`, failed `StartAsync`, reused evidence override, python3: carried EC13/EC14, BH8/EC10, EC5/EC11, EC1, EC21, EC17, EC19, BH8, EC20.
+- low — EC hosted `Platform:Hosted:Enabled` parsing, unknown `AccessControl` appId, eight-character redaction threshold: carried EC6/EC15 and EC15 (Stories 4.5/4.27).
+- spec edit — AA older-catalog fallback wording: carried R4-E1/R5-E1.
+- decided — AA shared developer build outputs (D1 → B) and Docker-boundary occupied-port proof (D3 → A).
+
 ## Implementation Notes
 
 - Sentry, placement and scheduler require explicit allocated host ports; scheduler storage has no named-volume fallback. Ordinary signed plans retain persisted Redis/gateway-sidecar ports and now use persisted placement/scheduler ports; secondary allocations exclude all persisted ports.

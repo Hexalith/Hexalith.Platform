@@ -212,6 +212,7 @@ class StageProtocol:
 
 
 class Stream:
+    _native_owned_stream = True
     def __init__(self, raw, send_maximum=13, chunk=5, delay=0):
         self.raw, self.send_maximum, self.chunk, self.delay = raw, send_maximum, chunk, delay
         self.closed, self.sent, self.timeouts = False, bytearray(), []
@@ -234,6 +235,15 @@ class Stream:
 
     def close(self):
         self.closed = True
+
+
+def owned_connector(stream, check=None):
+    """Explicit pre-owned inert stream; close is idempotent, with no raw fd."""
+    def acquire(custody, context, cluster, deadline):
+        assert custody.stream is stream
+        if check is not None:
+            check(context, cluster, deadline)
+    return b._OwnedConnector(acquire, prepared=stream)
 
 
 def http(body, status=200, extra=b''):
@@ -260,8 +270,10 @@ class Native:
         def connector(context, cluster, limit):
             assert cluster == native_binding.cluster and limit == deadline
             self.contexts.append(context)
-            return stream
-        return b.NativeTLS(connector).exchange(request, deadline, native_binding, credential)
+        try:
+            return b.NativeTLS(owned_connector(stream, connector)).exchange(request, deadline, native_binding, credential)
+        finally:
+            stream.close()
 
 
 def compose(directory, operation='capture', process=None, *, native_profiles=None, native_secrets=None, native_cas=None):

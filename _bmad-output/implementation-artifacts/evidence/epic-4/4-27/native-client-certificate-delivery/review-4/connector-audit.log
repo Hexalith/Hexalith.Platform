@@ -1,0 +1,34 @@
+eng/recovery-preparation/test_immutable_s3_provider.py:643:                def connector_hook(index):
+eng/recovery-preparation/_execution_boundary_fixtures.py:240:def owned_connector(stream, check=None):
+eng/recovery-preparation/_execution_boundary_fixtures.py:270:        def connector(context, cluster, limit):
+eng/recovery-preparation/_execution_boundary_fixtures.py:274:            return b.NativeTLS(owned_connector(stream, connector)).exchange(request, deadline, native_binding, credential)
+eng/recovery-preparation/test_recovery_execution_boundary.py:103:                return b.NativeTLS()._exchange(request, stream, deadline, credential.secret)
+eng/recovery-preparation/test_recovery_execution_boundary.py:297:        response = b.NativeTLS()._exchange(request, stream, time.monotonic() + 2, b'synthetic')
+eng/recovery-preparation/test_recovery_execution_boundary.py:314:                    b.NativeTLS()._exchange(request, stream, time.monotonic() + .08, b'synthetic')
+eng/recovery-preparation/test_recovery_execution_boundary.py:322:        def connector(context, cluster, deadline):
+eng/recovery-preparation/test_recovery_execution_boundary.py:326:        native = b.NativeTLS(f.owned_connector(stream, connector))
+eng/recovery-preparation/test_recovery_execution_boundary.py:336:            b.NativeTLS().exchange(request, time.monotonic() + 1, binding, credential)
+eng/recovery-preparation/test_recovery_execution_boundary.py:997:        native = b.NativeTLS()
+eng/recovery-preparation/test_recovery_execution_boundary.py:1031:                def connector(context, cluster, limit):
+eng/recovery-preparation/test_recovery_execution_boundary.py:1037:                response = b.NativeTLS(f.owned_connector(stream, connector)).exchange(request, deadline, binding, credential)
+eng/recovery-preparation/test_recovery_execution_boundary.py:1055:            b.NativeTLS()._exchange(request, f.Stream(f.http(b'{}') + b'EXTRA_RESPONSE_BYTES'), time.monotonic() + 2, b'synthetic')
+eng/recovery-preparation/test_recovery_execution_boundary.py:1077:                    b.NativeTLS(f.owned_connector(stream)).exchange(request, future - 99, binding, credential)
+eng/recovery-preparation/test_recovery_execution_boundary.py:1089:                    b.NativeTLS()._exchange(request, stream, time.monotonic() + 3, b'synthetic')
+eng/recovery-preparation/test_native_client_certificate.py:141:    def connector(self, custody, context, cluster, deadline):
+eng/recovery-preparation/test_native_client_certificate.py:150:        return b.NativeTLS(b._OwnedConnector(self.connector) if connector is None else connector).exchange(self.request,
+eng/recovery-preparation/test_native_client_certificate.py:231:        def connector(custody, context, cluster, deadline):
+eng/recovery-preparation/test_native_client_certificate.py:267:            self.exchange(binding=binding, credential=credential, connector=f.owned_connector(stream))
+eng/recovery-preparation/test_native_client_certificate.py:343:            def connector(custody, context, cluster, deadline):
+eng/recovery-preparation/test_native_client_certificate.py:347:                b.NativeTLS(b._OwnedConnector(connector)).exchange(request, time.monotonic() + 5, binding, self.credential)
+eng/recovery-preparation/test_native_client_certificate.py:903:        def connector(*args):
+eng/recovery-preparation/test_native_client_certificate.py:907:            self.exchange(connector=f.owned_connector(stream, connector))
+eng/recovery-preparation/test_native_client_certificate.py:931:                            self.exchange(connector=f.owned_connector(stream), deadline=101.0)
+eng/recovery-preparation/test_native_client_certificate.py:934:                        self.assert_refused(connector=f.owned_connector(stream), deadline=101.0)
+eng/recovery-preparation/test_native_client_certificate.py:945:                    b.NativeTLS().exchange(self.request, time.monotonic() + 1, self.binding, self.credential)
+eng/recovery-preparation/test_native_client_certificate.py:1015:    def test_owned_connector_constructor_and_return_interruptions_close_registered_real_peer(self):
+eng/recovery-preparation/test_native_client_certificate.py:1071:                self.exchange(connector=f.owned_connector(stream))
+eng/recovery-preparation/test_native_client_certificate.py:1253:                            self.exchange(connector=f.owned_connector(stream))
+eng/recovery-preparation/test_native_client_certificate.py:1337:                    self.exchange(connector=f.owned_connector(stream))
+eng/recovery-preparation/test_native_client_certificate.py:1417:                        self.exchange(connector=f.owned_connector(stream))
+eng/recovery-preparation/test_native_client_certificate.py:1617:                        def connector(custody, context, cluster, limit):
+eng/recovery-preparation/test_native_client_certificate.py:1623:                        result = b.NativeTLS(b._OwnedConnector(connector)).exchange(request, deadline, binding, credential)

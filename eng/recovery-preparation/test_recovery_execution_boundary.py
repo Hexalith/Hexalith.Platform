@@ -323,8 +323,7 @@ class TLSTests(FixtureCase):
             calls.append(cluster)
             self.assertTrue(context.check_hostname)
             self.assertEqual(context.verify_mode, b.ssl.CERT_REQUIRED)
-            return stream
-        native = b.NativeTLS(connector)
+        native = b.NativeTLS(f.owned_connector(stream, connector))
         response = native.exchange(request, time.monotonic() + 2, binding, credential)
         self.assertEqual(response.body, b'{}')
         self.assertTrue(stream.closed)
@@ -1035,8 +1034,7 @@ class CorrectedTLSTests(FixtureCase):
                     test.assertEqual(context.verify_mode, b.ssl.CERT_REQUIRED)
                     der = b.ssl.PEM_cert_to_DER_cert(binding.ca.decode('ascii'))
                     test.assertEqual(context.get_ca_certs(binary_form=True), [der])
-                    return stream
-                response = b.NativeTLS(connector).exchange(request, deadline, binding, credential)
+                response = b.NativeTLS(f.owned_connector(stream, connector)).exchange(request, deadline, binding, credential)
                 headers = bytes(stream.sent).split(b'\r\n\r\n', 1)[0].split(b'\r\n')[1:]
                 authorization = dict(line.split(b': ', 1) for line in headers)[b'Authorization']
                 test.assertEqual(authorization, b'Bearer ' + credential.secret)
@@ -1076,7 +1074,7 @@ class CorrectedTLSTests(FixtureCase):
                 stream.close = close
             with patch.object(b.time, 'monotonic', side_effect=lambda: future if expired[0] else future - 100):
                 with self.assertRaises(b.Refusal):
-                    b.NativeTLS(lambda *args: stream).exchange(request, future - 99, binding, credential)
+                    b.NativeTLS(f.owned_connector(stream)).exchange(request, future - 99, binding, credential)
             self.assertTrue(expired[0])
             self.assertTrue(stream.closed)
 

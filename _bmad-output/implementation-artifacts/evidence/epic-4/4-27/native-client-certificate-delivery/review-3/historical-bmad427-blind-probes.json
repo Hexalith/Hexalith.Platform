@@ -1,0 +1,28 @@
+{
+  "stream_transfer": {
+    "injected": true,
+    "streamClosed": false
+  },
+  "recovery_registration_race": {
+    "replacementWronglyClosed": true
+  },
+  "exception_context": {
+    "oldResurfaced": true,
+    "currentPreserved": false
+  },
+  "two_close_interruptions": {
+    "closeAttempts": 2,
+    "streamClosed": false
+  },
+  "non_idempotent_stream_close": {
+    "closeAttempts": 2,
+    "replacementWronglyClosed": true
+  },
+  "descriptor_exhaustion": {
+    "injected": true,
+    "newDescriptors": [
+      3
+    ],
+    "registeredOwners": 0
+  }
+}

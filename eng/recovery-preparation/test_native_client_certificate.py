@@ -64,6 +64,7 @@ def server_context(label='SOURCE'):
 
 
 class MemoryStream:
+    _native_owned_stream = True
     """Real mutual TLS peer and HTTP bytes, entirely through four memory BIOs."""
     def __init__(self, client_context, server, hostname, expected_client, response, deadline):
         self.cin, self.cout, self.sin, self.sout = (ssl.MemoryBIO() for _ in range(4))
@@ -137,17 +138,16 @@ class CertificateTests(unittest.TestCase):
         self.streams, self.contexts = [], []
         self.server = server_context()
 
-    def connector(self, context, cluster, deadline):
+    def connector(self, custody, context, cluster, deadline):
         self.contexts.append(context)
         self.assertEqual(cluster, self.binding.cluster)
         self.assertEqual(context.get_ca_certs(binary_form=True), [ssl.PEM_cert_to_DER_cert(self.binding.ca.decode('ascii'))])
-        stream = MemoryStream(context, self.server, cluster.endpoint[8:].split(':')[0],
+        stream = custody.construct(MemoryStream, context, self.server, cluster.endpoint[8:].split(':')[0],
             f.CERT_SOURCE_CLIENT, f.http(b'{}'), deadline)
         self.streams.append(stream)
-        return stream
 
     def exchange(self, *, binding=None, credential=None, connector=None, deadline=None):
-        return b.NativeTLS(self.connector if connector is None else connector).exchange(self.request,
+        return b.NativeTLS(b._OwnedConnector(self.connector) if connector is None else connector).exchange(self.request,
             time.monotonic() + 5 if deadline is None else deadline, binding or self.binding, credential or self.credential)
 
     def assert_refused(self, **kwargs):
@@ -228,20 +228,19 @@ class CertificateTests(unittest.TestCase):
             envelope(chain, f.CERT_RSA_CLIENT_KEY))
         server = server_context()
         server.load_verify_locations(cadata=f.CERT_CHAIN_ROOT.decode())
-        def connector(context, cluster, deadline):
+        def connector(custody, context, cluster, deadline):
             self.assertEqual(context.get_ca_certs(binary_form=True),
                 [ssl.PEM_cert_to_DER_cert(self.binding.ca.decode())])
-            stream = MemoryStream(context, server, cluster.endpoint[8:].split(':')[0],
+            stream = custody.construct(MemoryStream, context, server, cluster.endpoint[8:].split(':')[0],
                 f.CERT_RSA_CLIENT, f.http(b'{}'), deadline)
             self.streams.append(stream)
-            return stream
-        self.exchange(binding=replace(self.binding, credential=credential.binding), credential=credential, connector=connector)
+        self.exchange(binding=replace(self.binding, credential=credential.binding), credential=credential, connector=b._OwnedConnector(connector))
         self.assertEqual(self.streams[-1].peer, ssl.PEM_cert_to_DER_cert(f.CERT_RSA_CLIENT.decode()))
         self.assertNotIn(b'Authorization:', self.streams[-1].sent)
         # Removing the intermediate must fail peer chain validation.
         missing = f.credential(self.request.principal, self.binding.cluster.uid,
             envelope(f.CERT_RSA_CLIENT, f.CERT_RSA_CLIENT_KEY))
-        self.assert_refused(binding=replace(self.binding, credential=missing.binding), credential=missing, connector=connector)
+        self.assert_refused(binding=replace(self.binding, credential=missing.binding), credential=missing, connector=b._OwnedConnector(connector))
 
     def test_certificate_count_limit_isolated_below_all_byte_limits(self):
         for count in (16, 17):
@@ -265,7 +264,7 @@ class CertificateTests(unittest.TestCase):
             if profile != 'default':
                 binding = replace(binding, authentication_profile=profile)
             stream = f.Stream(f.http(b'{}'), send_maximum=1)
-            self.exchange(binding=binding, credential=credential, connector=lambda *args: stream)
+            self.exchange(binding=binding, credential=credential, connector=f.owned_connector(stream))
             expected = (self.request.method + ' ' + self.request.path + ' HTTP/1.1\r\nHost: ' + self.request.endpoint[8:] +
                 '\r\nAccept: application/json\r\nAccept-Encoding: identity\r\nConnection: close\r\nContent-Type: ' +
                 self.request.content_type + '\r\nContent-Length: 0\r\nAuthorization: Bearer ').encode() + credential.secret + b'\r\n\r\n'
@@ -341,11 +340,11 @@ class CertificateTests(unittest.TestCase):
             ca = f.CERT_TARGET_CA if cluster.ca_sha256 == a.digest(f.CERT_TARGET_CA) else f.CERT_SOURCE_CA
             binding = replace(self.binding, cluster=cluster, ca=ca)
             request = replace(self.request, endpoint=cluster.endpoint)
-            def connector(context, cluster, deadline):
-                return MemoryStream(context, self.server, cluster.endpoint[8:].split(':')[0],
+            def connector(custody, context, cluster, deadline):
+                custody.construct(MemoryStream, context, self.server, cluster.endpoint[8:].split(':')[0],
                     f.CERT_SOURCE_CLIENT, f.http(b'{}'), deadline)
             with self.subTest(endpoint=cluster.endpoint), self.assertRaises(b.Refusal):
-                b.NativeTLS(connector).exchange(request, time.monotonic() + 5, binding, self.credential)
+                b.NativeTLS(b._OwnedConnector(connector)).exchange(request, time.monotonic() + 5, binding, self.credential)
 
     def test_loading_expiry_and_descriptor_cleanup_expiry_prevent_connector(self):
         original_load, original_seal, original_close = ssl.SSLContext.load_cert_chain, b.sealed, b._close_owned
@@ -675,13 +674,13 @@ class CertificateTests(unittest.TestCase):
         self.assertEqual(self.contexts, [])
 
     def test_final_descriptor_cleanup_entry_preserves_primary_loading_interrupt(self):
-        source, start = inspect.getsourcelines(b.NativeTLS.exchange)
-        line = start + next(i for i, text in enumerate(source) if text.strip() == 'error = _close_owned(owned)')
+        source, start = inspect.getsourcelines(b._cleanup_native)
+        line = start + next(i for i, text in enumerate(source) if text.strip() == 'finally: _close_owned(owned)')
         primary = KeyboardInterrupt('synthetic loading interrupt at final cleanup')
         secondary = SystemExit('synthetic interruption at outer descriptor cleanup')
         fired = []
         def trace(frame, event, argument):
-            if frame.f_code is b.NativeTLS.exchange.__code__ and event == 'line' and frame.f_lineno == line and not fired:
+            if frame.f_code is b._cleanup_native.__code__ and event == 'line' and frame.f_lineno == line and not fired:
                 self.assertIs(frame.f_locals['owned'].error, primary)
                 fired.append(True)
                 raise secondary
@@ -699,13 +698,13 @@ class CertificateTests(unittest.TestCase):
         self.assertEqual(self.contexts, [])
 
     def test_real_peer_success_interrupted_at_stream_cleanup_entry_still_closes_stream(self):
-        source, start = inspect.getsourcelines(b.NativeTLS.exchange)
-        line = start + next(i for i, text in enumerate(source) if text.strip() == 'if owned.stream is not None:')
+        source, start = inspect.getsourcelines(b._cleanup_native)
+        line = start + next(i for i, text in enumerate(source) if text.strip() == 'try: _close_native(owned, connector)')
         primary = KeyboardInterrupt('synthetic cancellation at stream cleanup entry')
         fired = []
         def trace(frame, event, argument):
-            if frame.f_code is b.NativeTLS.exchange.__code__ and event == 'line' and frame.f_lineno == line and not fired:
-                self.assertEqual(frame.f_locals['response'], a.Response(0, 200, b'{}'))
+            if frame.f_code is b._cleanup_native.__code__ and event == 'line' and frame.f_lineno == line and not fired:
+                self.assertTrue(self.streams[-1].sent)
                 self.assertIs(frame.f_locals['owned'].stream, self.streams[-1])
                 self.assertFalse(self.streams[-1].closed)
                 fired.append(True)
@@ -724,14 +723,14 @@ class CertificateTests(unittest.TestCase):
         self.assertEqual(descriptors(), before)
 
     def test_loading_interrupt_survives_second_interrupt_at_fallback_descriptor_cleanup_entry(self):
-        source, start = inspect.getsourcelines(b.NativeTLS.exchange)
-        lines = [start + i for i, text in enumerate(source) if text.strip() == 'error = _close_owned(owned)']
+        source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
         self.assertEqual(len(lines), 3, 'inner, guarded fallback and last cleanup pass')
         primary = KeyboardInterrupt('synthetic loading interrupt reaches fallback')
         secondary = SystemExit('synthetic second interruption at fallback descriptor cleanup')
         fired = []
         def trace(frame, event, argument):
-            if frame.f_code is b.NativeTLS.exchange.__code__ and event == 'line' and frame.f_lineno == lines[1] and not fired:
+            if frame.f_code is b.NativeTLS._guard_native.__code__ and event == 'line' and frame.f_lineno == lines[1] and not fired:
                 self.assertIs(frame.f_locals['owned'].error, primary)
                 fired.append(True)
                 raise secondary
@@ -749,16 +748,16 @@ class CertificateTests(unittest.TestCase):
         self.assertEqual(self.contexts, [])
 
     def test_second_interrupt_at_fallback_stream_cleanup_entry_releases_open_peer_and_inputs(self):
-        source, start = inspect.getsourcelines(b.NativeTLS.exchange)
-        lines = [start + i for i, text in enumerate(source) if text.strip() == 'if owned.stream is not None:']
+        source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
         self.assertEqual(len(lines), 3, 'inner, guarded fallback and last cleanup pass')
         primary = KeyboardInterrupt('synthetic cancellation before inner stream cleanup')
         secondary = SystemExit('synthetic second cancellation before fallback stream cleanup')
         fired, extra = [], []
         def trace(frame, event, argument):
-            if frame.f_code is b.NativeTLS.exchange.__code__ and event == 'line':
+            if frame.f_code is b.NativeTLS._guard_native.__code__ and event == 'line':
                 if frame.f_lineno == lines[0] and not fired:
-                    self.assertEqual(frame.f_locals['response'], a.Response(0, 200, b'{}'))
+                    self.assertTrue(self.streams[-1].sent)
                     self.assertFalse(self.streams[-1].closed)
                     extra.append(b.sealed(b'public synthetic still-owned cleanup input', custody=frame.f_locals['owned']))
                     fired.append('primary')
@@ -766,9 +765,11 @@ class CertificateTests(unittest.TestCase):
             return trace
         # Raising from a trace hook disables that trace. Re-arm it when the
         # outer guard records the first cancellation, before its own close line.
+        close_source, close_start = inspect.getsourcelines(b._cleanup_native)
+        close_line = close_start + next(i for i, text in enumerate(close_source) if text.strip() == 'try: _close_native(owned, connector)')
         original_remember = b._DescriptorCustody.remember
         def second_trace(frame, event, argument):
-            if frame.f_code is b.NativeTLS.exchange.__code__ and event == 'line' and frame.f_lineno == lines[1] and len(fired) == 1:
+            if frame.f_code is b._cleanup_native.__code__ and event == 'line' and frame.f_lineno == close_line and len(fired) == 1:
                 self.assertFalse(self.streams[-1].closed)
                 self.assertEqual(os.pread(extra[0], 100, 0), b'public synthetic still-owned cleanup input')
                 fired.append('secondary')
@@ -779,7 +780,9 @@ class CertificateTests(unittest.TestCase):
             if error is primary and fired == ['primary']:
                 sys.settrace(second_trace)
                 caller = sys._getframe(1)
-                caller.f_trace = second_trace
+                while caller is not None:
+                    caller.f_trace = second_trace
+                    caller = caller.f_back
             return result
         before, previous = descriptors(), sys.gettrace()
         with patch.object(b._DescriptorCustody, 'remember', remember), self.assertRaises(KeyboardInterrupt) as caught:
@@ -899,10 +902,9 @@ class CertificateTests(unittest.TestCase):
         calls = []
         def connector(*args):
             calls.append(args)
-            return stream
         before = descriptors()
         with self.assertRaises(KeyboardInterrupt) as caught:
-            self.exchange(connector=connector)
+            self.exchange(connector=f.owned_connector(stream, connector))
         self.assertIs(caught.exception, primary)
         self.assertTrue(stream.closed)
         self.assertEqual(len(calls), 1)
@@ -926,10 +928,10 @@ class CertificateTests(unittest.TestCase):
                 with self.subTest(stage=stage, interrupt=interrupt), patch.object(b.time, 'monotonic', side_effect=lambda: clock[0]):
                     if interrupt:
                         with self.assertRaises(KeyboardInterrupt) as caught:
-                            self.exchange(connector=lambda *args: stream, deadline=101.0)
+                            self.exchange(connector=f.owned_connector(stream), deadline=101.0)
                         self.assertIs(caught.exception, primary)
                     else:
-                        self.assert_refused(connector=lambda *args: stream, deadline=101.0)
+                        self.assert_refused(connector=f.owned_connector(stream), deadline=101.0)
                 self.assertTrue(stream.closed)
                 self.assertEqual(descriptors(), before)
 
@@ -1004,6 +1006,598 @@ finally:
                 self.assertEqual(result.returncode, 0, result.stderr.decode())
 
 
+    def test_private_connector_refuses_raw_factories_before_credential_or_context_access(self):
+        raw = lambda *args: self.fail('raw factory must never run')
+        with patch.object(b.Credential, 'descriptor', side_effect=AssertionError('credential access')), patch.object(
+                b.NativeTLS, '_context', side_effect=AssertionError('context access')):
+            self.assert_refused(connector=raw)
+
+    def test_owned_connector_constructor_and_return_interruptions_close_registered_real_peer(self):
+        source, start = inspect.getsourcelines(b._DescriptorCustody.construct)
+        entry = start + next(i for i, text in enumerate(source) if text.strip().startswith('stream_type.__init__'))
+        stages = ((b._DescriptorCustody.construct.__code__, 'line', entry),
+            (MemoryStream.__init__.__code__, 'return', None),
+            (b._DescriptorCustody.construct.__code__, 'return', None),
+            (self.connector.__func__.__code__, 'return', None),
+            (b._OwnedConnector.__call__.__code__, 'return', None))
+        for code, event, line in stages:
+            with self.subTest(function=code.co_name, event=event):
+                primary = KeyboardInterrupt('synthetic owned acquisition transition')
+                fired, owned_streams = [], []
+                original_close = MemoryStream.close
+                def close(stream):
+                    owned_streams.append(stream)
+                    original_close(stream)
+                def trace(frame, kind, argument):
+                    if frame.f_code is code and kind == event and (line is None or frame.f_lineno == line) and not fired:
+                        custody = frame.f_locals.get('custody', frame.f_locals.get('self'))
+                        if type(custody) is b._DescriptorCustody:
+                            self.assertIsNotNone(custody.stream)
+                        fired.append(True)
+                        raise primary
+                    return trace
+                before, previous = descriptors(), sys.gettrace()
+                with patch.object(MemoryStream, 'close', close), self.assertRaises(KeyboardInterrupt) as caught:
+                    try:
+                        sys.settrace(trace)
+                        self.exchange()
+                    finally:
+                        sys.settrace(previous)
+                self.assertIs(caught.exception, primary)
+                self.assertEqual(fired, [True])
+                self.assertEqual(len(owned_streams), 1)
+                self.assertTrue(owned_streams[0].closed)
+                self.assertEqual(descriptors(), before)
+
+    def test_prepared_stream_handoff_store_interrupt_preserves_shared_owner(self):
+        stream = f.Stream(f.http(b'{}'))
+        primary = KeyboardInterrupt('synthetic prepared handoff opcode')
+        target = next(i.offset for i in dis.get_instructions(b.NativeTLS._acquire_exchange)
+            if i.opname == 'STORE_ATTR' and i.argval == 'stream')
+        fired = []
+        def trace(frame, event, argument):
+            if frame.f_code is b.NativeTLS._acquire_exchange.__code__:
+                frame.f_trace_opcodes = True
+                if event == 'opcode' and frame.f_lasti == target and not fired:
+                    self.assertIsNone(frame.f_locals['owned'].stream)
+                    self.assertIs(frame.f_locals['owned'].connector.prepared, stream)
+                    fired.append(True)
+                    raise primary
+            return trace
+        before, previous = descriptors(), sys.gettrace()
+        with self.assertRaises(KeyboardInterrupt) as caught:
+            try:
+                sys.settrace(trace)
+                self.exchange(connector=f.owned_connector(stream))
+            finally:
+                sys.settrace(previous)
+        self.assertIs(caught.exception, primary)
+        self.assertEqual(fired, [True])
+        self.assertTrue(stream.closed)
+        self.assertEqual(descriptors(), before)
+
+    def test_recovery_registration_rechecks_expected_identity_before_adopting_replacement(self):
+        before = descriptors()
+        custody = b._DescriptorCustody()
+        allocation = b._MemoryAllocation()
+        custody.allocations.append(allocation)
+        fd = os.memfd_create(allocation.name, os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
+        allocation.observe(fd)
+        original, replacements, expected_identities = custody.register, [], []
+        def register(raw, expected=None):
+            expected_identities.append(expected)
+            os.close(raw)
+            replacement = os.open('/dev/null', os.O_RDONLY | os.O_CLOEXEC)
+            if replacement != raw:
+                os.dup2(replacement, raw, inheritable=False)
+                os.close(replacement)
+            replacements.append(raw)
+            return original(raw, expected)
+        custody.register = register
+        try:
+            self.assertIsInstance(b._close_owned(custody), b.Refusal)
+            self.assertEqual(expected_identities, [allocation.identity])
+            self.assertEqual(custody.handles, [])
+            self.assertEqual(os.read(fd, 1), b'')
+            self.assertTrue(b.fcntl.fcntl(fd, b.fcntl.F_GETFD) & b.fcntl.FD_CLOEXEC)
+        finally:
+            for raw in replacements:
+                os.close(raw)
+            b._close_owned(custody)
+        self.assertEqual(descriptors(), before)
+
+    def test_preacquired_recovery_scans_cover_isolated_descriptor_exhaustion_and_raw_results(self):
+        source = '''import dis, importlib.util, json, os, pathlib, resource, sys
+from unittest.mock import patch
+path = pathlib.Path(sys.argv[1])
+spec = importlib.util.spec_from_file_location('isolated_exhausted_certificate', path)
+t = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = t
+spec.loader.exec_module(t)
+b = t.b
+limit = resource.getrlimit(resource.RLIMIT_NOFILE)
+results = []
+sentinel = b.sealed(b'public unrelated descriptor-limit sentinel')
+try:
+    for mode in ('initial-refusal', 'raw-low', 'duplicate-refusal', 'raw-high'):
+        before = t.descriptors()
+        custody = b._DescriptorCustody()
+        primary = KeyboardInterrupt('isolated exhausted raw-result transition')
+        instructions = list(dis.get_instructions(b.sealed))
+        stores = {i.argval: i.offset for previous, i in zip(instructions, instructions[1:])
+            if previous.opname == 'CALL' and i.opname == 'STORE_FAST' and i.argval in ('low', 'fd')}
+        original_memory, original_fcntl = os.memfd_create, b.fcntl.fcntl
+        fired, reached = [], []
+        def memory(name, flags):
+            if mode in ('raw-low', 'duplicate-refusal'):
+                high = max(t.descriptors())
+                resource.setrlimit(resource.RLIMIT_NOFILE, (high + 2, limit[1]))
+            value = original_memory(name, flags)
+            reached.append('memory')
+            return value
+        def control(fd, command, *arguments):
+            if mode == 'raw-high' and command == b.fcntl.F_DUPFD_CLOEXEC:
+                high = max(t.descriptors())
+                resource.setrlimit(resource.RLIMIT_NOFILE, (high + 2, limit[1]))
+            if mode == 'duplicate-refusal' and command == b.fcntl.F_DUPFD_CLOEXEC:
+                try:
+                    return original_fcntl(fd, command, *arguments)
+                except OSError as error:
+                    assert error.errno == b.errno.EMFILE, 'must exhaust the actual final descriptor slot'
+                    raise
+            return original_fcntl(fd, command, *arguments)
+        def trace(frame, event, argument):
+            if frame.f_code is b.sealed.__code__:
+                frame.f_trace_opcodes = True
+                target = stores['fd' if mode == 'raw-high' else 'low']
+                if event == 'opcode' and frame.f_lasti == target and not fired:
+                    fired.append(True)
+                    assert frame.f_locals['custody'].allocations[-1].scanners
+                    raise primary
+            return trace
+        try:
+            if mode == 'initial-refusal':
+                resource.setrlimit(resource.RLIMIT_NOFILE, (max(before) + 1, limit[1]))
+            with patch.object(os, 'memfd_create', memory), patch.object(b.fcntl, 'fcntl', control):
+                if mode in ('raw-low', 'raw-high'):
+                    sys.settrace(trace)
+                try:
+                    b.sealed(b'public bounded memory input', custody=custody)
+                except BaseException as error:
+                    if mode in ('raw-low', 'raw-high'):
+                        assert error is primary
+                    else:
+                        assert isinstance(error, b.Refusal)
+                else:
+                    raise AssertionError('exhaustion/interrupt must refuse')
+                finally:
+                    sys.settrace(None)
+        finally:
+            resource.setrlimit(resource.RLIMIT_NOFILE, limit)
+        assert resource.getrlimit(resource.RLIMIT_NOFILE) == limit
+        assert t.descriptors() == before, (mode, t.descriptors(), before)
+        assert os.pread(sentinel, 100, 0) == b'public unrelated descriptor-limit sentinel'
+        if mode == 'initial-refusal':
+            assert reached == []
+            assert len(custody.allocations[0].scanners) == 1, 'must fail after reserving one scanner'
+        if mode != 'initial-refusal':
+            assert reached == ['memory']
+            assert custody.handles, 'must recover/adopt actual allocated memory'
+        if mode in ('raw-low', 'raw-high'):
+            assert fired == [True]
+        results.append({'mode': mode, 'noLeak': True, 'rawTransitionInjected': bool(fired)})
+finally:
+    resource.setrlimit(resource.RLIMIT_NOFILE, limit)
+    os.close(sentinel)
+print(json.dumps(results))
+'''
+        result = subprocess.run(('/usr/bin/python3.14', '-I', '-S', '-B', '-c', source, __file__),
+            stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr.decode())
+        report = json.loads(result.stdout)
+        self.assertEqual(len(report), 4)
+        self.assertTrue(all(item['noLeak'] for item in report))
+        self.assertEqual(sum(item['rawTransitionInjected'] for item in report), 2)
+
+    def test_recovery_reservation_constructor_and_return_interruptions_close_registered_scans(self):
+        source, start = inspect.getsourcelines(b._MemoryAllocation.__init__)
+        reserve = start + next(i for i, text in enumerate(source) if text.strip().startswith('self.scanners.append'))
+        for event, occurrence in (('line', 2), ('line', 3), ('return', 1)):
+            with self.subTest(event=event, occurrence=occurrence):
+                custody = b._DescriptorCustody()
+                primary = KeyboardInterrupt('synthetic recovery reservation cancellation')
+                visits, fired = [], []
+                def trace(frame, kind, argument):
+                    if frame.f_code is b._MemoryAllocation.__init__.__code__ and kind == event and (event == 'return' or frame.f_lineno == reserve):
+                        visits.append(True)
+                        if len(visits) == occurrence and not fired:
+                            self.assertIs(custody.allocations[-1], frame.f_locals['self'])
+                            self.assertGreater(len(custody.allocations[-1].scanners), 0)
+                            fired.append(True)
+                            raise primary
+                    return trace
+                before, previous = descriptors(), sys.gettrace()
+                with self.assertRaises(KeyboardInterrupt) as caught:
+                    try:
+                        sys.settrace(trace)
+                        b.sealed(b'public unacquired input', custody=custody)
+                    finally:
+                        sys.settrace(previous)
+                self.assertIs(caught.exception, primary)
+                self.assertEqual(fired, [True])
+                self.assertEqual(descriptors(), before)
+                self.assertEqual(custody.handles, [])
+
+    def test_caller_handled_interrupt_does_not_replace_current_loading_interrupt(self):
+        source, start = inspect.getsourcelines(b.NativeTLS._acquire_exchange)
+        line = start + next(i for i, text in enumerate(source) if text.strip() == 'owned.connector = self.connector')
+        for transition in ('loading', 'acquisition-entry'):
+            with self.subTest(transition=transition):
+                old = KeyboardInterrupt('caller handled interruption')
+                primary = KeyboardInterrupt('current exchange ' + transition + ' interruption')
+                before, previous, fired = descriptors(), sys.gettrace(), []
+                stream = f.Stream(f.http(b'{}'))
+                def trace(frame, event, argument):
+                    if frame.f_code is b.NativeTLS._acquire_exchange.__code__ and event == 'line' and frame.f_lineno == line and not fired:
+                        self.assertIs(frame.f_locals['owned'].caller_context, old)
+                        fired.append(True)
+                        raise primary
+                    return trace
+                try:
+                    raise old
+                except KeyboardInterrupt:
+                    with patch.object(ssl.SSLContext, 'load_cert_chain', side_effect=primary), self.assertRaises(KeyboardInterrupt) as caught:
+                        try:
+                            if transition == 'acquisition-entry':
+                                sys.settrace(trace)
+                            self.exchange(connector=f.owned_connector(stream))
+                        finally:
+                            sys.settrace(previous)
+                self.assertIs(caught.exception, primary)
+                self.assertIs(primary.__context__, old)
+                self.assertEqual(fired, [True] if transition == 'acquisition-entry' else [])
+                self.assertTrue(stream.closed)
+                self.assertEqual(stream.sent, b'')
+                self.assertEqual(descriptors(), before)
+
+        for old in (KeyboardInterrupt('handled caller cancellation before success'), ValueError('handled caller ordinary exception')):
+            with self.subTest(success_inside=type(old).__name__):
+                before = descriptors()
+                try:
+                    raise old
+                except BaseException:
+                    response = self.exchange()
+                self.assertEqual(response, a.Response(0, 200, b'{}'))
+                self.assertTrue(self.streams[-1].closed)
+                self.assertEqual(descriptors(), before)
+
+    def test_two_interruptions_inside_stream_close_preserve_first_and_release_all_inputs(self):
+        stream = f.Stream(f.http(b'{}'))
+        primary, secondary = KeyboardInterrupt('first close interruption'), SystemExit('second close interruption')
+        calls, extra = [], []
+        def close():
+            calls.append(True)
+            if len(calls) < 3:
+                raise primary if len(calls) == 1 else secondary
+            stream.closed = True
+        stream.close = close
+        def acquire(custody, context, cluster, deadline):
+            extra.append(b.sealed(b'public independent cleanup input', custody=custody))
+        before = descriptors()
+        with self.assertRaises(KeyboardInterrupt) as caught:
+            self.exchange(connector=b._OwnedConnector(acquire, prepared=stream))
+        self.assertIs(caught.exception, primary)
+        self.assertEqual(len(calls), 3)
+        self.assertTrue(stream.closed)
+        self.assertEqual(len(extra), 1)
+        self.assertEqual(descriptors(), before)
+
+    def test_idempotent_c_owned_stream_close_preserves_reused_unrelated_descriptor(self):
+        # The C FileIO state is authoritative even if Python bookkeeping has
+        # not run when cancellation follows the actual descriptor release.
+        class DescriptorStream(f.Stream):
+            def __init__(self):
+                super().__init__(f.http(b'{}'))
+                self.file = io.FileIO('/dev/null', 'rb')
+                self.original_fd = self.file.fileno()
+                self.calls = 0
+                self.bookkeeping = False
+            @property
+            def closed(self):
+                return hasattr(self, 'file') and self.file.closed
+            @closed.setter
+            def closed(self, value):
+                pass
+            def close(self):
+                self.calls += 1
+                self.file.close()
+                self.bookkeeping = True
+        before = descriptors()
+        stream = DescriptorStream()
+        fd, replacements, fired = stream.original_fd, [], []
+        primary = KeyboardInterrupt('after C-level stream release')
+        source, start = inspect.getsourcelines(DescriptorStream.close)
+        line = start + next(i for i, text in enumerate(source) if text.strip() == 'self.bookkeeping = True')
+        def trace(frame, event, argument):
+            if frame.f_code is DescriptorStream.close.__code__ and event == 'line' and frame.f_lineno == line and not fired:
+                self.assertTrue(stream.closed)
+                replacement = os.open('/dev/null', os.O_RDONLY | os.O_CLOEXEC)
+                if replacement != fd:
+                    os.dup2(replacement, fd, inheritable=False)
+                    os.close(replacement)
+                replacements.append(fd)
+                fired.append(True)
+                raise primary
+            return trace
+        previous = sys.gettrace()
+        try:
+            with self.assertRaises(KeyboardInterrupt) as caught:
+                try:
+                    sys.settrace(trace)
+                    self.exchange(connector=f.owned_connector(stream))
+                finally:
+                    sys.settrace(previous)
+            self.assertIs(caught.exception, primary)
+            self.assertEqual(fired, [True])
+            self.assertEqual(stream.calls, 1)
+            self.assertFalse(stream.bookkeeping)
+            self.assertEqual(os.read(fd, 1), b'')
+            self.assertTrue(b.fcntl.fcntl(fd, b.fcntl.F_GETFD) & b.fcntl.FD_CLOEXEC)
+        finally:
+            for raw in replacements:
+                os.close(raw)
+            if not stream.closed:
+                stream.file.close()
+        self.assertEqual(descriptors(), before)
+
+    def test_compact_base64_and_leading_blank_lines_authenticate_and_install_original_bytes(self):
+        def compact(raw):
+            lines = raw.splitlines()
+            return lines[0] + b'\n' + b''.join(lines[1:-1]) + b'\n' + lines[-1] + b'\n'
+        for form in ('compact', 'leading-blank', 'both'):
+            with self.subTest(form=form):
+                certificate, key = f.CERT_SOURCE_CLIENT, f.CERT_SOURCE_CLIENT_KEY
+                if form in ('compact', 'both'):
+                    certificate, key = compact(certificate), compact(key)
+                if form in ('leading-blank', 'both'):
+                    certificate, key = b'\n\r\n' + certificate, b'\r\n\n' + key
+                credential = f.credential(self.request.principal, self.binding.cluster.uid, envelope(certificate, key))
+                actual, original = [], ssl.SSLContext.load_cert_chain
+                def load(context, certfile, keyfile, password=None):
+                    actual.extend(Path(path).read_bytes() for path in (certfile, keyfile))
+                    return original(context, certfile, keyfile, password=password)
+                before = descriptors()
+                with patch.object(ssl.SSLContext, 'load_cert_chain', load):
+                    response = self.exchange(binding=replace(self.binding, credential=credential.binding), credential=credential)
+                self.assertEqual(response, a.Response(0, 200, b'{}'))
+                self.assertEqual(actual, [certificate, key])
+                self.assertEqual(self.streams[-1].peer, ssl.PEM_cert_to_DER_cert(f.CERT_SOURCE_CLIENT.decode('ascii')))
+                self.assertNotIn(b'Authorization:', self.streams[-1].sent)
+                self.assertTrue(self.streams[-1].closed)
+                self.assertEqual(descriptors(), before)
+
+    def test_custody_constructor_entry_partial_and_return_interruptions_close_prepared_c_owned_stream(self):
+        class DescriptorStream(f.Stream):
+            def __init__(self):
+                super().__init__(f.http(b'{}'))
+                self.file = io.FileIO(b.sealed(b'public synthetic prepared stream'), 'rb', closefd=True)
+                self.close_calls = 0
+            @property
+            def closed(self):
+                return hasattr(self, 'file') and self.file.closed
+            @closed.setter
+            def closed(self, value):
+                pass
+            def close(self):
+                self.close_calls += 1
+                self.file.close()
+        source, start = inspect.getsourcelines(b._DescriptorCustody.__init__)
+        partial = start + next(i for i, text in enumerate(source) if text.strip() == 'self.allocations = []')
+        for transition in ('entry', 'partial', 'return'):
+            with self.subTest(transition=transition):
+                before = descriptors()
+                stream = DescriptorStream()
+                primary, fired = KeyboardInterrupt('synthetic custody initialization ' + transition), []
+                def trace(frame, event, argument):
+                    if frame.f_code is b._DescriptorCustody.__init__.__code__ and not fired:
+                        hit = event == 'call' if transition == 'entry' else event == 'return' if transition == 'return' else event == 'line' and frame.f_lineno == partial
+                        if hit:
+                            self.assertFalse(stream.closed)
+                            if transition == 'partial':
+                                self.assertEqual(frame.f_locals['self'].handles, [])
+                                self.assertFalse(hasattr(frame.f_locals['self'], 'allocations'))
+                            fired.append(transition)
+                            raise primary
+                    return trace
+                previous = sys.gettrace()
+                with patch.object(b.Credential, 'descriptor', side_effect=AssertionError('no credential work')) as descriptor, patch.object(
+                        b.NativeTLS, '_exchange', side_effect=AssertionError('no native dispatch')) as dispatch, self.assertRaises(KeyboardInterrupt) as caught:
+                    try:
+                        sys.settrace(trace)
+                        self.exchange(connector=f.owned_connector(stream))
+                    finally:
+                        sys.settrace(previous)
+                self.assertIs(caught.exception, primary)
+                self.assertEqual(fired, [transition])
+                self.assertTrue(stream.closed)
+                self.assertEqual(stream.close_calls, 1)
+                descriptor.assert_not_called()
+                dispatch.assert_not_called()
+                self.assertEqual(descriptors(), before)
+
+    def test_trusted_stream_constructor_failure_after_c_owned_acquisition_releases_partial_stream(self):
+        for primary in (KeyboardInterrupt('synthetic partial constructor interruption'), ValueError('synthetic partial constructor failure')):
+            with self.subTest(error=type(primary).__name__):
+                partials = []
+                class PartialStream(f.Stream):
+                    def __init__(self):
+                        super().__init__(f.http(b'{}'))
+                        self.file = io.FileIO(b.sealed(b'public synthetic partial constructor'), 'rb', closefd=True)
+                        self.close_calls = 0
+                        partials.append(self)
+                        raise primary
+                    @property
+                    def closed(self):
+                        return hasattr(self, 'file') and self.file.closed
+                    @closed.setter
+                    def closed(self, value):
+                        pass
+                    def close(self):
+                        self.close_calls += 1
+                        file = getattr(self, 'file', None)
+                        if file is not None:
+                            file.close()
+                def acquire(custody, context, cluster, deadline):
+                    custody.construct(PartialStream)
+                before = descriptors()
+                expected = KeyboardInterrupt if isinstance(primary, KeyboardInterrupt) else b.Refusal
+                with patch.object(b.NativeTLS, '_exchange', side_effect=AssertionError('no native dispatch')) as dispatch, self.assertRaises(expected) as caught:
+                    self.exchange(connector=b._OwnedConnector(acquire))
+                if expected is KeyboardInterrupt:
+                    self.assertIs(caught.exception, primary)
+                self.assertEqual(len(partials), 1)
+                self.assertTrue(partials[0].closed)
+                self.assertEqual(partials[0].close_calls, 1)
+                self.assertEqual(partials[0].sent, b'')
+                dispatch.assert_not_called()
+                self.assertEqual(descriptors(), before)
+
+    def test_lost_raw_result_and_second_scan_or_registration_interrupt_preserve_exact_descriptors(self):
+        instructions = list(dis.get_instructions(b.sealed))
+        stores = {instruction.argval: instruction.offset for previous, instruction in zip(instructions, instructions[1:])
+            if previous.opname == 'CALL' and instruction.opname == 'STORE_FAST' and instruction.argval in ('low', 'fd')}
+        source, start = inspect.getsourcelines(b._MemoryAllocation.recover)
+        sites = {name: start + next(i for i, text in enumerate(source) if text.strip() == statement) for name, statement in
+            (('scan', 'fd = int(entry.name)'), ('registration', 'custody.register(fd, identity)'))}
+        for result in ('low', 'fd'):
+            for allocation in (1, 2):
+                for transition, line in sites.items():
+                    with self.subTest(result=result, allocation=allocation, transition=transition):
+                        sentinel = io.FileIO(b.sealed(b'public unrelated caller descriptor'), 'rb', closefd=True)
+                        before, previous = descriptors(), sys.gettrace()
+                        primary, secondary = KeyboardInterrupt('synthetic lost raw syscall result'), SystemExit('synthetic interrupted recovery ' + transition)
+                        fired, visited = [], []
+                        original = b._DescriptorCustody.remember
+                        def second_trace(frame, event, argument):
+                            if frame.f_code is b._MemoryAllocation.recover.__code__ and event == 'line' and frame.f_lineno == line and fired == ['primary']:
+                                if transition == 'registration':
+                                    fd = frame.f_locals['fd']
+                                    self.assertEqual(os.readlink('/proc/self/fd/' + str(fd)), frame.f_locals['self'].link)
+                                fired.append('secondary')
+                                raise secondary
+                            return second_trace
+                        def remember(custody, error):
+                            value = original(custody, error)
+                            if error is primary and fired == ['primary']:
+                                sys.settrace(second_trace)
+                                caller = sys._getframe(1)
+                                while caller is not None:
+                                    caller.f_trace = second_trace
+                                    caller = caller.f_back
+                            return value
+                        def trace(frame, event, argument):
+                            if frame.f_code is b.sealed.__code__ and frame.f_locals.get('custody') is not None:
+                                frame.f_trace_opcodes = True
+                                if event == 'opcode' and frame.f_lasti == stores[result]:
+                                    visited.append(True)
+                                    if len(visited) == allocation and not fired:
+                                        self.assertIsNone(frame.f_locals[result])
+                                        identity = frame.f_locals['custody'].allocations[-1]
+                                        self.assertTrue([fd for fd in descriptors() if os.readlink('/proc/self/fd/' + str(fd)) == identity.link])
+                                        fired.append('primary')
+                                        raise primary
+                            return trace
+                        try:
+                            with patch.object(b._DescriptorCustody, 'remember', remember), self.assertRaises(KeyboardInterrupt) as caught:
+                                try:
+                                    sys.settrace(trace)
+                                    self.exchange()
+                                finally:
+                                    sys.settrace(previous)
+                            self.assertIs(caught.exception, primary)
+                            self.assertEqual(fired, ['primary', 'secondary'])
+                            self.assertEqual(descriptors(), before)
+                            self.assertEqual(os.pread(sentinel.fileno(), 100, 0), b'public unrelated caller descriptor')
+                            self.assertEqual(self.contexts, [])
+                        finally:
+                            sentinel.close()
+
+    def test_private_acquire_postconditions_refuse_before_dispatch_and_close_all_known_streams(self):
+        class UnsupportedStream(f.Stream):
+            _native_owned_stream = False
+        for violation in ('return-object', 'unsupported-stream', 'missing-stream', 'missing-method'):
+            with self.subTest(violation=violation):
+                prepared = f.Stream(f.http(b'{}'))
+                unsupported = UnsupportedStream(f.http(b'{}'))
+                def acquire(custody, context, cluster, deadline):
+                    if violation == 'return-object':
+                        return object()
+                    if violation == 'unsupported-stream':
+                        custody.stream = unsupported
+                    elif violation == 'missing-stream':
+                        custody.stream = None
+                    else:
+                        prepared.send = None
+                before = descriptors()
+                with patch.object(b.NativeTLS, '_exchange', side_effect=AssertionError('no native dispatch')) as dispatch:
+                    self.assert_refused(connector=b._OwnedConnector(acquire, prepared=prepared))
+                dispatch.assert_not_called()
+                self.assertTrue(prepared.closed)
+                self.assertEqual(prepared.sent, b'')
+                if violation == 'unsupported-stream':
+                    self.assertTrue(unsupported.closed)
+                    self.assertEqual(unsupported.sent, b'')
+                self.assertEqual(descriptors(), before)
+
+    def test_two_cleanup_invocation_interruptions_preserve_peer_and_input_ownership(self):
+        source, start = inspect.getsourcelines(b.NativeTLS._guard_native)
+        lines = [start + i for i, text in enumerate(source) if text.strip().endswith('_cleanup_native(owned, self.connector)')]
+        self.assertEqual(len(lines), 3)
+        primary, secondary = KeyboardInterrupt('synthetic first cleanup invocation'), SystemExit('synthetic second cleanup invocation')
+        original, fired, extra = b._cleanup_native, [], []
+        def trace(frame, event, argument):
+            if frame.f_code is b.NativeTLS._guard_native.__code__ and event == 'line' and frame.f_lineno == lines[0] and not fired:
+                self.assertFalse(self.streams[-1].closed)
+                self.assertTrue(self.streams[-1].sent)
+                extra.append(b.sealed(b'public synthetic cleanup handoff input', custody=frame.f_locals['owned']))
+                fired.append('primary')
+                raise primary
+            return trace
+        def cleanup(owned, connector):
+            if fired == ['primary']:
+                self.assertFalse(self.streams[-1].closed)
+                self.assertEqual(os.pread(extra[0], 100, 0), b'public synthetic cleanup handoff input')
+                fired.append('secondary')
+                raise secondary
+            return original(owned, connector)
+        before, previous = descriptors(), sys.gettrace()
+        with patch.object(b, '_cleanup_native', cleanup), self.assertRaises(KeyboardInterrupt) as caught:
+            try:
+                sys.settrace(trace)
+                self.exchange()
+            finally:
+                sys.settrace(previous)
+        self.assertIs(caught.exception, primary)
+        self.assertIs(secondary.__context__, primary)
+        self.assertEqual(fired, ['primary', 'secondary'])
+        self.assertTrue(self.streams[-1].closed)
+        self.assertEqual(descriptors(), before)
+
+    def test_fixture_native_profile_and_ca_refusals_close_preallocated_stream(self):
+        for change in ({'authentication_profile': 'unknown'}, {'ca': b'invalid CA'}):
+            boundary, _, _, native = f.compose(self.directory)
+            binding = replace(boundary.native_bindings[0], **change)
+            request = boundary.requests[3]
+            credential = boundary._credential(request.principal, binding.cluster.uid)
+            before = descriptors()
+            with self.assertRaises(b.Refusal):
+                native.exchange(request, time.monotonic() + 5, binding, credential)
+            self.assertEqual(len(native.streams), 1)
+            self.assertTrue(native.streams[0].closed)
+            self.assertEqual(native.contexts, [])
+            self.assertEqual(descriptors(), before)
+
+
 class CompositionTests(unittest.TestCase):
     def test_all_four_plans_preserve_distinct_certificate_identities_audiences_native_requests_and_guards(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(socket, 'socket', side_effect=AssertionError('all sockets forbidden')):
@@ -1020,14 +1614,13 @@ class CompositionTests(unittest.TestCase):
                     def exchange(request, deadline, binding, credential):
                         expected = native.backend.exchange(request, deadline)
                         label = 'SOURCE' if binding.cluster == boundary.binding.source_cluster else 'TARGET'
-                        def connector(context, cluster, limit):
+                        def connector(custody, context, cluster, limit):
                             self.assertEqual(context.get_ca_certs(binary_form=True), [ssl.PEM_cert_to_DER_cert(binding.ca.decode())])
-                            stream = MemoryStream(context, servers[cluster.uid], cluster.endpoint[8:].split(':')[0],
+                            stream = custody.construct(MemoryStream, context, servers[cluster.uid], cluster.endpoint[8:].split(':')[0],
                                 getattr(f, 'CERT_' + label + '_CLIENT'), f.http(expected.body, expected.status), limit)
                             streams.append(stream)
                             peers.append((cluster.uid, credential.binding.principal, stream.peer))
-                            return stream
-                        result = b.NativeTLS(connector).exchange(request, deadline, binding, credential)
+                        result = b.NativeTLS(b._OwnedConnector(connector)).exchange(request, deadline, binding, credential)
                         header, body = bytes(streams[-1].sent).split(b'\r\n\r\n', 1)
                         self.assertNotIn(b'Authorization:', header)
                         self.assertEqual(header.split(b'\r\n')[0], (request.method + ' ' + request.path + ' HTTP/1.1').encode())
