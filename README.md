@@ -208,7 +208,10 @@ AppHost allocates its own Sentry, placement, scheduler and sidecar listeners;
 persisted runner ports are honored. Each run owns its Redis, scheduler data,
 Memories vector/graph data, issuer credentials, secrets and SQLite discovery registry
 outside the checkout. Allocation probes release their sockets before startup;
-a competing bind fails startup instead of selecting shared resources.
+a competing bind fails startup instead of selecting shared resources. A second
+concurrent direct file-entry run needs `aspire run --isolated` (or
+`aspire start --isolated`) because `apphost.run.json` fixes Aspire's own
+dashboard, OTLP and resource-service ports.
 
 Set `HEXALITH_DAPR_HOME` to an installation containing the catalog-pinned CLI at
 `tools/dapr` and native runtime at `.dapr/bin/daprd` (plus placement/scheduler for

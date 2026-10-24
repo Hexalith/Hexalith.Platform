@@ -200,8 +200,10 @@ published EventStore package missing from the local NuGet cache from nuget.org
 package must record. Without that access the run fails with a recorded failure.
 The preview allocates private Sentry, placement and scheduler host ports; the
 harness binds its selected control-plane listeners for each owned topology.
-Occupied bindings fail startup. Application and sidecar endpoints are isolated
-from unrelated running sessions.
+Those default to Sentry 50001, placement 51005 and scheduler 51006; set all of
+`WORKS_PLATFORM_SENTRY_PORT`, `WORKS_PLATFORM_PLACEMENT_PORT` and
+`WORKS_PLATFORM_SCHEDULER_PORT` to select others. Occupied bindings fail startup.
+Application and sidecar endpoints are isolated from unrelated running sessions.
 Each live start also gives every sidecar a run-owned SQLite name-resolution
 registry derived from its exact configuration. Default mDNS discovery would
 round-robin app IDs such as `eventstore` with an unrelated local session's

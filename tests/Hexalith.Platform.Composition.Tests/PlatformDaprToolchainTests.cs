@@ -8,7 +8,6 @@ using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Shouldly;
 using System.Text.Json.Nodes;
 
@@ -114,17 +113,12 @@ public sealed partial class PlatformAppModelTests
             string config = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config!;
             await using (var app = builder.Build())
             {
-                // Resolve the real registrations before failure, just as host startup does.
-                app.Services.GetServices<IHostedService>().OfType<PlatformCompositionWorkspace>().Count().ShouldBe(1);
-                var model = app.Services.GetRequiredService<DistributedApplicationModel>();
-                var eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
-                foreach (var subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
-                    await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
-                var failure = await Should.ThrowAsync<InvalidDataException>(async () => await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken));
+                // Aspire publishes BeforeStart before the host resolves hosted services, so the workspace is never disposed here.
+                var failure = await Should.ThrowAsync<InvalidDataException>(async () => await app.StartAsync(TestContext.Current.CancellationToken));
                 failure.Message.ShouldContain("selected Dapr native runtime is unavailable");
                 failure.Message.ShouldContain(Path.Combine(workspace, "missing-runtime"));
             }
-            File.Exists(config).ShouldBeTrue("registered-service disposal must retain failed-start diagnostics");
+            File.Exists(config).ShouldBeTrue("host disposal after a failed start must retain its diagnostics");
             File.ReadAllText(Path.Combine(Path.GetDirectoryName(config)!, "composition-failure.txt")).ShouldContain("selected Dapr native runtime is unavailable");
             File.ReadAllText(foreign).ShouldBe("untouched");
             await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(config)!, CancellationToken.None);

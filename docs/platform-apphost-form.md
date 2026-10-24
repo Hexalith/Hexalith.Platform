@@ -145,9 +145,11 @@ by compilation and contend across launches. Runner test suites put project outpu
 under `<run-workspace>/project-builds/<resource>`; the retention experiment keeps
 its existing owner `artifacts/retention/<run-id>/build/<resource>` placement.
 Build outputs are inputs to the composition; run-owned runtime state is listed above.
-Allocation
-probes release sockets before startup and are not cross-process reservations;
-bind conflicts fail and must leave foreign resources alone.
+Allocation probes release sockets before startup and are not cross-process
+reservations; bind conflicts fail and must leave foreign resources alone.
+A second concurrent direct file-entry run needs `--isolated` (`aspire run --isolated`
+or `aspire start --isolated`): `apphost.run.json` fixes Aspire's own dashboard, OTLP
+and resource-service ports.
 
 `Dapr:Mtls:CertificateDirectory` is an external parent, with one private child per
 run. Paths resolving through symlinks into Platform or a mapped owner checkout fail
@@ -156,11 +158,22 @@ startup. A failed composition that writes `composition-failure.txt` retains its
 private file-entry workspace at `<system-temp>/hexalith-platform/<random-run-id>/`,
 including rendered configuration, discovery, data, secrets and default issuer
 credentials. The selected sidecar configuration path identifies that workspace.
+A failed Works preview start likewise retains
+`<system-temp>/hexalith-works-preview/<random-run-id>/`, including its default issuer
+credentials and scheduler data.
 After its owned AppHost has stopped and diagnostics have been inspected, remove
 only that run directory (for example, `rm -rf -- /tmp/hexalith-platform/<random-run-id>`
 when the system temporary directory is `/tmp`). An explicitly configured certificate
 parent holds a separate private issuer child; normal host disposal removes that child,
-while forced-termination cleanup remains runner lifecycle work. Explicit runner teardown and file-host disposal clean only owned children and data.
+while forced-termination cleanup remains runner lifecycle work. Explicit runner
+teardown and file-host disposal clean only owned children and data.
+
+Earlier versions used the shared issuer directory `~/.dapr/certs/hexalith-platform`
+and the Docker volume `hexalith-platform-dapr-scheduler`. Neither is used any more.
+After stopping any older AppHost, remove them manually if they are no longer needed
+(`docker volume rm hexalith-platform-dapr-scheduler`). A
+`Dapr:Mtls:CertificateDirectory` value that still names the old issuer directory is
+now treated as a parent: each run creates a new private issuer child beneath it.
 Reference runs create Redis themselves; they do not use dapr-init Redis, exported
 fixture locks or Keycloak. Legacy technical module fixtures remain outside Platform
 integration evidence; descriptor migration is Story 2.9. Works uses the revised

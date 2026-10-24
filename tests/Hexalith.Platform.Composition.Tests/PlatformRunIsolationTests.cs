@@ -96,6 +96,16 @@ public sealed partial class PlatformAppModelTests
                 foreach (string name in new[] { "redis", "memories-vectors", "memories-graph" })
                 {
                     var store = builder.Resources.Single(resource => resource.Name == name);
+                    // The image entrypoint must not re-own the private host bind mount.
+                    if (DaprSelfHostedMtls.ResolveContainerUser() is { } user)
+                    {
+                        List<object> runtimeArguments = [];
+                        foreach (var callback in store.Annotations.OfType<ContainerRuntimeArgsCallbackAnnotation>())
+                            await callback.Callback(new ContainerRuntimeArgsCallbackContext(runtimeArguments, TestContext.Current.CancellationToken));
+                        int option = runtimeArguments.IndexOf("--user");
+                        option.ShouldBeGreaterThanOrEqualTo(0, name);
+                        runtimeArguments[option + 1].ShouldBe(user, name);
+                    }
                     if (name == "redis")
                     {
                         List<object> arguments = [];
