@@ -118,17 +118,32 @@ class _DescriptorCustody:
         return self.stream
 
     def remember(self, error):
-        # A second interrupt during the first exception handler retains the
-        # active first interrupt as context, even before its assignment below.
-        # Select the oldest interruption, preserving ordinary-error sanitizing.
-        if error is getattr(self, 'caller_context', None):
-            return
-        candidate, seen = error, set()
-        while candidate is not None and candidate is not getattr(self, 'caller_context', None) and id(candidate) not in seen:
+        # Only contexts raised within this invocation may supply an earlier
+        # primary. Exception objects can retain arbitrary previously handled
+        # history, including other interruptions, when reused by a loader.
+        frame = getattr(self, 'exchange_frame', None)
+        candidate, seen, selected = error, set(), None
+        while candidate is not None and id(candidate) not in seen:
             seen.add(id(candidate))
-            if not isinstance(candidate, Exception):
-                error = candidate
+            current = False
+            trace = candidate.__traceback__
+            while trace is not None and frame is not None:
+                origin = trace.tb_frame
+                # A handled loader-local error may have a live f_back chain
+                # into this call without ever crossing our owned boundary.
+                # Require an actual controlled traceback frame, not ancestry.
+                if origin is frame or (origin.f_code.co_filename == __file__ and
+                        (origin.f_locals.get('owned') is self or
+                         origin.f_locals.get('custody') is self or
+                         origin.f_locals.get('self') is self)):
+                    current = True
+                    break
+                trace = trace.tb_next
+            if current or frame is None and candidate is error:
+                if selected is None or not isinstance(candidate, Exception):
+                    selected = candidate
             candidate = candidate.__context__
+        error = selected
         previous = getattr(self, 'error', None)
         if error is not None and (previous is None or
                 isinstance(previous, Exception) and not isinstance(error, Exception)):
@@ -224,8 +239,9 @@ class _OwnedConnector:
     def __call__(self, custody, context, cluster, deadline):
         result = self.acquire(custody, context, cluster, deadline)
         require(result is None and custody.stream is not None and
-                getattr(type(custody.stream), '_native_owned_stream', False) is True and
-                all(callable(getattr(custody.stream, name, None)) for name in ('send', 'recv', 'settimeout', 'close')))
+                getattr(type(custody.stream), '_native_owned_stream', False) is True)
+        for name in ('send', 'recv', 'settimeout', 'close'):
+            require(callable(getattr(custody.stream, name, None)))
 
 
 def _close_native(owned, connector=None):
@@ -274,21 +290,39 @@ def _close_owned(owned, error=None):
     return getattr(owned, 'error', None)
 
 
-def _record_native(owned, caller_context):
-    # The boundary is passed separately from partially initialized metadata.
-    # If this assignment is interrupted, the next independent pass restores it.
-    owned.caller_context = caller_context
+def _record_native(owned, exchange_frame):
+    # This exact live invocation distinguishes current failures from saved
+    # exception-object history. Partial custody construction is safe here.
+    owned.exchange_frame = exchange_frame
     owned.remember(sys.exception())
 
 
-def _cleanup_native(owned, connector, caller_context):
-    # Inline try statements avoid unprotected NOPs at cleanup entry in 3.14.
-    # Every pass records the current lifetime exception before independent
-    # stream and input cleanup. Partial custody construction is safe here.
-    try: _record_native(owned, caller_context)
+def _cleanup_native(owned, connector, exchange_frame):
+    # A cancellation may precede even placeholder allocation or guard entry.
+    # The connector already owns a prepared stream; recover it independently
+    # of exchange metadata. A fallback error is re-raised while unwinding so
+    # the next independent pass can still recover its exact current primary.
+    fallback = owned is None
+    if fallback:
+        owned = object.__new__(_DescriptorCustody)
+    try: _record_native(owned, exchange_frame)
     finally:
         try: _close_native(owned, connector)
         finally: _close_owned(owned)
+    error = getattr(owned, 'error', None)
+    if error is not None and sys.exception() is not None:
+        if not isinstance(error, Exception):
+            active = sys.exception()
+            if active is error:
+                raise error.with_traceback(error.__traceback__)
+            # Raising an earlier primary inside secondary unwinding would
+            # otherwise rewrite its context and break the existing chain.
+            previous, context = error.__context__, active.__context__
+            try: raise error.with_traceback(error.__traceback__)
+            finally:
+                error.__context__ = previous
+                active.__context__ = context
+        raise Refusal(FAILURE) from None
 
 
 def _close_raw(owned, error=None):
@@ -773,19 +807,16 @@ class NativeTLS:
             raise Refusal(FAILURE) from None
 
     def exchange(self, request, deadline, binding, credential):
-        # Capture caller exception history before creating lifetime metadata.
-        # An interruption at acquisition's first line must not select that old
-        # caller exception merely because initialization has not stored it yet.
-        caller_context = sys.exception()
-        # The placeholder acquires no resource. The lifetime starts before any
-        # custody initialization; cleanup can recover a prepared connector even
-        # if constructor entry, partial initialization or return is interrupted.
-        owned = object.__new__(_DescriptorCustody)
-        try: response = self._guard_native(owned, caller_context, request, deadline, binding, credential)
-        except BaseException as exc: owned.remember(exc)
-        # All known inputs and streams have had independent release attempts.
-        # Raise outside an active handler so secondary.__context__ still names
-        # the primary, rather than creating and breaking an exception cycle.
+        # Inline entry avoids a traceable unprotected try-entry NOP. The
+        # connector owns a prepared stream even before metadata exists.
+        try: owned = object.__new__(_DescriptorCustody); response = self._guard_native(owned, sys._getframe(), request, deadline, binding, credential)
+        finally:
+            try: _cleanup_native(locals().get('owned'), self.connector, sys._getframe())
+            finally:
+                try: _cleanup_native(locals().get('owned'), self.connector, sys._getframe())
+                finally: _cleanup_native(locals().get('owned'), self.connector, sys._getframe())
+        # Terminal propagation follows all independent release attempts. A new
+        # external cancellation here has no signal-atomic return guarantee.
         error = getattr(owned, 'error', None)
         if error is not None:
             if not isinstance(error, Exception):
@@ -794,20 +825,11 @@ class NativeTLS:
         remaining(deadline)
         return response
 
-    def _guard_native(self, owned, caller_context, request, deadline, binding, credential):
-        """Three independent cleanup passes, including their invocation handoff.
-
-        Inline try statements avoid unprotected cleanup-entry NOPs. Each pass
-        protects the next through two active interruptions, without retrying
-        acquisition or exchange. Terminal propagation follows resource release;
-        a new cancellation there is a separate external interruption.
-        """
-        try: return self._acquire_exchange(owned, caller_context, request, deadline, binding, credential)
-        finally:
-            try: _cleanup_native(owned, self.connector, caller_context)
-            finally:
-                try: _cleanup_native(owned, self.connector, caller_context)
-                finally: _cleanup_native(owned, self.connector, caller_context)
+    def _guard_native(self, owned, exchange_frame, request, deadline, binding, credential):
+        """Acquisition entry remains inside exchange's complete lifetime guard."""
+        owned.exchange_frame = exchange_frame
+        caller_context = sys.exception()
+        return self._acquire_exchange(owned, caller_context, request, deadline, binding, credential)
 
     def _acquire_exchange(self, owned, caller_context, request, deadline, binding, credential):
         owned.caller_context = caller_context

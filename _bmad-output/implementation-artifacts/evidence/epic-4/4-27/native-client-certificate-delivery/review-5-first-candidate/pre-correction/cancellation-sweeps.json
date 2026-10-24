@@ -1,0 +1,61 @@
+{
+  "line": {
+    "findings": [],
+    "targets": 299,
+    "terminalExternalCancellations": [],
+    "unraisableExceptions": []
+  },
+  "opcode": {
+    "findings": [],
+    "targets": 2309,
+    "terminalExternalCancellations": [],
+    "unraisableExceptions": []
+  },
+  "secondary": {
+    "findings": [],
+    "targets": 81,
+    "terminalExternalCancellations": [
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          785
+        ]
+      },
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          789
+        ]
+      },
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          790
+        ]
+      },
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          791
+        ]
+      },
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          792
+        ]
+      }
+    ],
+    "unraisableExceptions": []
+  }
+}

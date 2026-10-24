@@ -904,3 +904,86 @@ Shared-workspace provenance: preparation HEAD remains
 `b2ff52312b01db65aef3e8b60fb56681ae97d70a` (`fix: story 4.27`) during this pass.
 That history is preserved and the observed current HEAD is separately bound in
 `review-4/current-head.txt`; this pass performed no Git staging/commit/push.
+
+
+## Review-5 native certificate entry and reproducibility — 2026-10-24
+
+The [review-5 content-bound verification](evidence/epic-4/4-27/native-client-certificate-delivery/review-5/verification.json) records **335 passing tests,
+zero skips**: 59 certificate cases plus the existing 276 boundary/readback/
+authentication/S3/common/telemetry cases. All 331 review-4 behaviors, all 55
+focused names and the 24 registration subcases remain. Earlier packets and
+handoff prefixes are preserved; the original parent probes and complete
+pre-correction independent run remain separate historical adverse evidence.
+
+Exchange cleanup now starts at its first protected body transition, before
+placeholder allocation and guard invocation/entry. Independent cleanup retains
+prepared C-owned streams even when custody metadata is unavailable. Exact
+current-call traceback provenance selects the loading interruption without
+following stale saved exception history; re-raising the active caller's same
+exception object is also a current failure. Direct no-dispatch regressions
+check exact descriptor/flag preservation and C-owned release. Real socket-free
+mutual TLS capped at TLS 1.2 verifies both negotiated versions, the original
+client identity and exact native PATCH headers/body; default negotiation stays
+covered.
+
+Current finite sweeps pass 307 line, 2,369 opcode, 93 secondary-line and 32
+prepared-entry targets, with no leaks, swallowed cancellations or unraisable
+exceptions. One final cleanup-invocation target is separately classified only
+after descriptor and peer release is verified. A new external cancellation
+after completed release has no signal-atomic primary-return guarantee. Arbitrary
+hostile descriptor mutation, unsupported/non-idempotent closers, indefinitely
+repeated interruptions, kernel stalls and actual runtime remain unqualified.
+
+The new receipt checker parses all bound sweep outcomes and reconciles counts,
+terminal release/propagation and verified flags with the receipt. Independently
+defined complete dependency-source and supporting-packet inventories prevent
+empty/omitted inventory acceptance. Verbose executed test identities must equal
+each required suite's source inventory, with no repeats. Isolated controls
+coherently rebind adverse sweep bytes/hashes, count/terminal mismatches, omitted
+dependency drift and same-count plain-OK unrelated/repeated transcripts and
+require refusal. Real FAILED/skipped/expected-failure/unexpected-success controls
+retain the expected test identities, keeping the hardcoded-parser mutation
+control independent. Historical checkers/receipts remain unchanged; this unsigned
+packet supplies reproducibility, not external authenticity or authority. Runtime,
+source snapshots, spec checkpoints and current full HEAD are separately bound.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Unrelated concurrent work is preserved and excluded.
+This pass performed no staging, commit, push or operational helper replay.
+
+
+## Final native-certificate prerequisite verification — 2026-10-24
+
+[Independent final verification](evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json).
+
+Independent final verification records **336 passing tests, zero skips** (60
+certificate plus 276 retained boundary/readback/authentication/S3/common/telemetry
+cases). All 335 prior positive behaviors and the 24 registration subcases remain.
+The invalid-method postcondition now uses an explicit bounded loop; its new
+regression rejects the old generator in an isolated in-memory mutation control.
+Descriptor snapshots include identity, descriptor flags and file status flags.
+
+Current finite sweeps pass **307 line, 2,341 opcode, 93 secondary and 32
+prepared-entry targets**, with zero findings/unraisable exceptions and one
+external cancellation classified only after verified release. The checker
+requires all five exact verification commands and independently pins 215
+preserved historical files. The complete 335-test candidate and original adverse
+probes remain separate and unchanged. Replay instructions use a fresh recorder
+copy so bound evidence is preserved. Three unrelated concurrent Story 2.5
+lifecycle findings are recorded separately in the deferred-work ledger.
+
+This completes the offline native-certificate prerequisite only. Actual
+credential/authority/runtime, system/target/proof-consumer integration and
+recovery qualification remain pending. Public activation stays disabled;
+**4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**. No actual
+credentials/configuration/endpoints, operational helper replay, recovery
+allocation/signing/upload/recovery or infrastructure mutation occurred. The
+scoped no-staging/commit/push instruction is retained.

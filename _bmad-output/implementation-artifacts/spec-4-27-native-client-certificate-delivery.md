@@ -4,10 +4,10 @@ type: 'feature'
 epic: 4
 story: 27
 created: '2026-10-23'
-status: 'in-review'
+status: 'done'
 baseline_commit: '693390a790d95a9bad9b1bd9cc0f0f3052f3fbef'
 route: 'dispatch'
-review_loop_iteration: 4
+review_loop_iteration: 5
 context:
   - '{project-root}/eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md'
 ---
@@ -67,6 +67,19 @@ No intent gaps or irreversible effects; local code/tests/docs only. Clean starti
 Implementation dispatch coordination: the parent session already rendered and owns the bmad-build workflow. This subagent task is its Step 3 handoff; implement from this file without recursively rendering or re-entering that workflow.
 
 ## Spec Change Log
+
+### Review 5 — exchange entry, current-error provenance and complete evidence checks
+
+Re-derive from exact `native-client-certificate-delivery/review-4/sources/`, preserving that complete 331-test candidate and every earlier packet. The four implementation/test files are returned to the original baseline before dispatch. KEEP all 331 positive behaviors, all 55 focused test names, all 24 registration subcases, every prior ownership/EMFILE/caller-history/cleanup regression, original-byte PEM and real TLS/CA/wire/composition controls, frozen intent, historical prefixes and closed operational gates. Adapt structural injection selectors only while preserving each actual reached transition and assertion.
+
+The parent independently reran the seven suites (331/0), receipt/parser controls and original sweeps (299 line, 2,309 opcode, 81 secondary). Those passing results do not cover the newly reproduced defects. Preserve `/tmp/bmad427-blind-probes.py`, `/tmp/bmad427-parent-guard-entry.py` and `/tmp/bmad427-independent-vhepcj6t/` as adverse/pre-correction material in a separate new `review-5/` packet. Do not relabel prior candidate success as current qualification.
+
+- Protect the earliest exchange-body transitions and lifetime-guard invocation for an already owned prepared stream. Parent C-owned probes interrupt placeholder allocation, the guard-call line and guard function entry; all currently leave the stream/file open. Retain independent cleanup and exact primary propagation even if metadata is unavailable or the helper never enters. Add direct no-dispatch, exact-descriptor and C-owned release regressions for each transition, and include a prepared-stream entry sweep/control alongside acquisition-created peers. The tested guarantee remains bounded; terminal interruptions after completed release remain separately classified.
+- Select the current exchange's primary failure independently of stale exception-object history. A saved/reused loading KeyboardInterrupt whose pre-existing `__context__` contains an older handled KeyboardInterrupt currently propagates the older object when no handler is active at exchange entry. Track provenance within this exchange rather than treating the oldest historical context as current. Preserve existing secondary-interrupt and caller-handler tests; add this saved-context regression with exact object assertions and cleanup checks.
+- Create a new receipt checker in `review-5/`; leave every historical checker/receipt unchanged. Parse all three bound cancellation-sweep results, require no findings/unraisable exceptions and reconcile target totals, terminal counts and verified release/propagation flags with receipt metadata. Add isolated hash-consistent adverse sweep and count/terminal mismatch controls. Require independently defined complete dependency-source and supporting-packet inventories; add coherent empty/omitted inventory controls and prove omitted dependencies cannot silently drift. Compare verbose executed test identities against each required suite's actual source test inventory; reject same-count plain-OK unrelated or repeated-test transcripts with coherently updated hashes and unchanged passing claims. These are reproducibility checks, not authenticity or operational authority.
+- Add a socket-free real mutual TLS positive with both client/server contexts capped at TLS 1.2, asserting the negotiated version, original client identity and native header/body behavior. Preserve default negotiated-protocol tests.
+
+Run all seven required suites after corrections, zero skips, plus updated finite cancellation controls and executable receipt self-tests. Bind new sources/snapshots/logs/runtime/checkpoints and current full HEAD separately from the original baseline. Append verified outcomes to the three handoffs. No actual credentials/configuration/endpoints, operational helpers, recovery allocation/signing/upload/recovery, activation, staging/commit/push or unrelated workspace edits. Original 4.27/sprint stay in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.
 
 ### Review 4 — protected lifetime entry and executable qualification controls
 
@@ -203,6 +216,42 @@ Verification Gap Reviewer found no gaps and independently ran all 39 focused tes
 
 All 12 findings have individual verdicts. The verification reviewer otherwise found the native paths covered; parent also reproduced B43/B44/B47/B48/B49 using inert/local fixture data. No finding is deferred. Ownership defects require the non-frozen coherent re-derivation above; frozen intent remains unchanged and all three candidate packets remain historical evidence.
 
+### Review 5 — review-4 candidate
+
+| Finding | Verdict | Evidence / route |
+| --- | --- | --- |
+| B51 stale saved exception context | medium | Parent reran the inert probe: an existing older context on the current loading KeyboardInterrupt replaces it outside an active caller handler (`propagatedOld=True`, `propagatedCurrent=False`). Current-exchange error provenance needs coherent repair; bad_spec. |
+| B52 exchange body before guard | medium | Parent C-owned probe interrupts placeholder allocation and guard invocation; exact cancellation propagates while both prepared stream and file remain open. Protect initial exchange ownership; bad_spec, shared root with E51. |
+| B53 unchecked adverse sweep outcome | medium | Parent isolated-copy probe inserted a descriptor-preservation failure and coherently rebound its log hashes; verifier still accepted zero-findings metadata. Parse/reconcile actual sweep outcomes in a new checker; bad_spec. |
+| B54 dependency inventory omission | low | Parent reproduced acceptance with empty sourceSha256; imported dependencies outside the four snapshots then lack their promised bindings. Direct fixed-inventory/checker controls included in re-derivation. |
+| B55 packet inventory omission | low | Parent reproduced acceptance with empty packetFileSha256; supporting checker/sweep/runtime files lose their advertised checks. Direct complete-inventory correction included in re-derivation. |
+| B56 same-count unrelated test identities | low | unittest_summary checks totals/plain OK, with no executed-name comparison; replacing only verbose test labels preserves acceptance. Direct suite-identity comparison and a same-count negative control included in re-derivation. |
+| B57 sweep invocation occurrences | low | Sweep intentionally records unique function/location targets, and direct tests independently reach both input allocations, all 24 registration subcases and later cleanup passes. No additional incorrect later-invocation behavior was demonstrated. Reject expanded occurrence-wide sweep machinery; add the specifically demonstrated prepared-entry control under B52. |
+| B58 TLS 1.2 positive | low | Both peers permit TLS 1.2 but no test caps negotiation there; the minimum-protocol authentication path lacks a positive control. Include one direct real-peer qualification test in re-derivation. |
+| B59 composition disposal test shape | low | The cited test now exercises actual startup before hosted-service resolution, so its single disposal assertion no longer exercises a resolved owner. The same file separately marks failure then explicitly disposes PlatformCompositionWorkspace, and PlatformRunIsolationReviewTests covers registered owned workspace disposal. No runtime failure is shown; reject an additional unrelated integration fixture as disproportionate to this narrow assertion gap. |
+| B60 macOS containment claim | maybe-false | The one-line macOS comparison change belongs to concurrent committed composition work, not certificate delivery. No failing macOS path was supplied and this Linux run cannot settle Path.GetRelativePath behavior on the proposed filesystem configurations. A native macOS reproduction is needed; reject this unverified low-impact documentation/implementation suggestion. |
+| E51 guard helper entry | medium | Parent injects at _guard_native call entry with a prepared io.FileIO-backed stream; the body/finally never runs, leaving its exact descriptor open. Same ownership defect as B52; bad_spec. |
+
+Verification Gap Reviewer found no gaps and independently passed all 55 focused cases and the receipt self-test. Every reported finding has its own verdict; nothing is deferred. Non-frozen implementation/evidence instructions are amended above and frozen intent stays exact.
+
+### Review 6 — corrected review-5 candidate
+
+| Finding | Verdict | Evidence / route |
+| --- | --- | --- |
+| B61 invalid-protocol generator finalization | medium | Parent reran the inert invalid-stream probe: GeneratorExit finalization receives KeyboardInterrupt, sys.unraisablehook records it and Refusal replaces the exact interrupt. Replace the existing bounded method-check generator with an equivalent explicit loop; same postconditions/state and no public surface, so direct patch with a regression. |
+| B62 destructive replay instructions | low | README directly invokes run-seven-suites.py, whose own-directory log/result writes change timing bytes and invalidate the receipt. Correct the replay instructions to preserve bound evidence; direct documentation patch. |
+| B63 omitted verification command records | low | Parent reproduced verificationCommands=[] being accepted while the recorded five commands disappear. Add the fixed existing command/log inventory and coherent omission control; direct metadata correction. |
+| B64 omitted historical preservation inventory | low | Parent replaced the preservation inventory with an empty object, rebound its hash and corrupted a review-4 source; verifier accepted. Pin the complete preserved inventory independently and add this exact omission/corruption control; direct receipt correction. |
+| B65 coherent sweep target reduction | low | Parent reproduced acceptance after coherently changing every recorded count and bound result to a smaller claimed run. The actual independent run reproduced all 307/2369/93/32 targets with no omissions. Proving arbitrary coherently rewritten execution histories would need another independently pinned trace enumeration or execution layer; reject that additional machinery for this rare unsigned-receipt scenario. Existing adverse-result and mismatched-count controls remain required. |
+| B66 descriptor status flag snapshot | low | descriptors() includes fstat and F_GETFD but omits F_GETFL, so broad preservation assertions miss status-flag drift. Include the existing status flags in that snapshot; direct test-helper correction. |
+| B67 peer ownership before readiness assertion | low | StartAsync normally attempts teardown on failed peer startup, but its returned RunId can still identify incomplete cleanup. The live test asserts readiness before adding that identity, losing its final retry when teardown is incomplete. Pre-existing concurrent Story 2.5 fixture; defer. |
+| B68 independent final lifecycle cleanup | medium | The current live test's finally loop awaits down and asserts emptiness without per-owner error collection; one failure bypasses every later owner. Pre-existing concurrent Story 2.5 fixture; defer with E61. |
+| B69 untyped peer container selection | medium | The scanner returns all containers labelled for a run; the live fixture calls redis-cli on the first ID without checking resource identity. The provisioning suite already selects resourceId=redis explicitly. Pre-existing concurrent Story 2.5 proof can fail on another container; defer. |
+| B70 extra live cancellation variants | low | The scenario list contains four outcomes and no cancellation variants; no cancellation defect was demonstrated. Reject expanding this unrelated live fixture for an optional coverage suggestion. |
+| E61 final cleanup abort | medium | The cited actual loop has no per-owner catch; an exception or leftover assertion skips later owners. Same pre-existing Story 2.5 defect as B68; defer together after preserving this separate verdict. |
+
+Verification Gap Reviewer found no gaps and independently passed all 59 focused cases and the review-5 receipt self-test. The parent independently passed 335/0, all six frozen matrix rows, all receipt/parser controls and the full finite sweeps with unchanged source hashes. Scoped survivors are direct corrections to demonstrated existing states, so no re-derivation or review-loop increment is required. Preserve the entire 335-test candidate before patches; current corrected-source verification must be bound separately. Frozen intent and operational gates remain unchanged.
+
 ## Verification
 
 - `/usr/bin/python3.14 -I -S -B eng/recovery-preparation/test_native_client_certificate.py` — all matrix rows pass; no skips/sockets/actual credentials.
@@ -261,3 +310,20 @@ Shared-workspace provenance: preparation HEAD remains
 `b2ff52312b01db65aef3e8b60fb56681ae97d70a` (`fix: story 4.27`) during this pass.
 That history is preserved and the observed current HEAD is separately bound in
 `review-4/current-head.txt`; this pass performed no Git staging/commit/push.
+
+
+### Review-5 re-derivation verification — 2026-10-24
+
+- Re-derived the four implementation/test sources from exact review-4 snapshots, preserving every prior packet, all 331 prior behaviors, all 55 focused names, all 24 registration subcases, historical handoff prefixes and frozen intent. Original parent probes and the complete independent pre-correction run remain byte-preserved in the new `native-client-certificate-delivery/review-5/` packet.
+- The first exchange-body transition now begins the protected lifetime. Prepared C-owned stream release survives placeholder allocation, guard invocation and guard function-entry interruption even without metadata. Current-call traceback provenance excludes stale saved exception context and recognizes the same active caller exception re-raised by loading. Direct regressions assert exact primary objects, no credential/context/native dispatch where applicable, descriptor identity/flag preservation and C-owned release.
+- Socket-free real mutual TLS capped at TLS 1.2 asserts both negotiated versions, original client identity and exact native PATCH headers/body. Default protocol negotiation and all earlier PEM/CA/wire/composition/deadline/cleanup controls remain. The seven required suites pass **335 tests, zero skips** (59 certificate plus 45 boundary, 12 readback, 13 authentication, 42 S3, 94 common and 70 telemetry).
+- Updated finite controls pass **307 line, 2,369 opcode, 93 secondary-line and 32 prepared-entry targets**, with no findings or unraisable exceptions. One final cleanup-invocation target is classified only after descriptor/peer release is verified; a new cancellation after completed release remains an external cancellation, with no signal-atomic return promise. Unsupported closers, arbitrary hostile descriptor mutation, indefinitely repeated interruptions, kernel stalls and actual connector/runtime remain unqualified.
+- The new receipt checker reconciles actual bound sweep outcomes/counts/terminal release/propagation flags, requires independent complete dependency-source/supporting-packet inventories and compares verbose executed identities with all seven actual source test inventories. Executable isolated controls reject hash-consistent adverse sweeps, count/terminal mismatches, empty/omitted inventories, omitted dependency drift and same-count plain-OK unrelated/repeated transcripts. Actual FAILED/skipped/expected-failure/unexpected-success controls retain required test identities, preserving an independent hardcoded-parser mutation control. Historical checkers/receipts remain unchanged. Full spec checkpoints, current full HEAD, source/snapshot/log and nonsensitive runtime bytes are separately bound. This unsigned packet confers reproducibility only, not authenticity or authority.
+- Three handoffs append verified outcomes and remaining prerequisites. Actual credential/authority/runtime, system/target/proof-consumer integration and recovery remain pending. Public activation stays disabled; **4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**. Unrelated concurrent work is preserved and excluded. No actual credentials/configuration/endpoints, operational helper replay, recovery allocation/signing/upload/recovery, staging/commit/push or infrastructure mutation occurred.
+
+
+### Final direct-patch verification — 2026-10-24
+
+- All scoped review survivors are corrected. Independent verification passes **336 tests, zero skips**, all six frozen matrix rows, all finite sweeps (307 line / 2,341 opcode / 93 secondary / 32 prepared-entry), receipt self-tests and both parser/invalid-protocol mutation controls. The invalid-protocol mutation is an intentionally adverse run and is not counted among passing qualification suites.
+- The exact 335-test candidate, 215 pinned historical files, original adverse probes, every prior test name/behavior and frozen intent are preserved. Full final command transcripts/source hashes and review outcomes are retained in [independent final evidence](evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json).
+- Three pre-existing concurrent Story 2.5 lifecycle findings are deferred; none blocks this native-certificate scope. The parent 4.27 story/sprint remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL. Actual operational prerequisites remain pending and public activation stays disabled. The scoped no-staging/commit/push instruction remains in force.

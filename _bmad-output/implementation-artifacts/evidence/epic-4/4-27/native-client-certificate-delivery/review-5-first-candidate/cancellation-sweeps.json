@@ -1,0 +1,213 @@
+{
+  "line": {
+    "allPeersClosed": true,
+    "allTargetsInjected": true,
+    "descriptorTablesPreserved": true,
+    "findings": [],
+    "primaryPropagationVerified": true,
+    "targets": 307,
+    "terminalExternalCancellations": [],
+    "unraisableExceptions": []
+  },
+  "opcode": {
+    "allPeersClosed": true,
+    "allTargetsInjected": true,
+    "descriptorTablesPreserved": true,
+    "findings": [],
+    "primaryPropagationVerified": true,
+    "targets": 2369,
+    "terminalExternalCancellations": [],
+    "unraisableExceptions": []
+  },
+  "preparedEntry": {
+    "allPeersClosed": true,
+    "allTargetsInjected": true,
+    "descriptorTablesPreserved": true,
+    "entryTransitions": [
+      [
+        "line",
+        "NativeTLS.exchange",
+        811
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        2
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        12
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        32
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        42
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        50
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        52
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        72
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        74
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        84
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        104
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        106
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        114
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        116
+      ],
+      [
+        "opcode",
+        "NativeTLS.exchange",
+        118
+      ],
+      [
+        "call",
+        "NativeTLS._guard_native",
+        827
+      ],
+      [
+        "line",
+        "NativeTLS._guard_native",
+        829
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        2
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        4
+      ],
+      [
+        "line",
+        "NativeTLS._guard_native",
+        830
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        14
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        24
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        44
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        46
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        54
+      ],
+      [
+        "line",
+        "NativeTLS._guard_native",
+        831
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        56
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        58
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        78
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        80
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        82
+      ],
+      [
+        "opcode",
+        "NativeTLS._guard_native",
+        84
+      ]
+    ],
+    "findings": [],
+    "primaryPropagationVerified": true,
+    "targets": 32,
+    "terminalExternalCancellations": [],
+    "unraisableExceptions": []
+  },
+  "secondary": {
+    "allPeersClosed": true,
+    "allTargetsInjected": true,
+    "descriptorTablesPreserved": true,
+    "findings": [],
+    "primaryPropagationVerified": true,
+    "targets": 93,
+    "terminalExternalCancellations": [
+      {
+        "externalCancellationPropagated": true,
+        "resourcesReleasedBeforeInjection": true,
+        "target": [
+          "NativeTLS.exchange",
+          816
+        ]
+      }
+    ],
+    "unraisableExceptions": []
+  }
+}

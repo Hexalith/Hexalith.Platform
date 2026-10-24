@@ -1,0 +1,176 @@
+[
+  {
+    "name": "native-client-certificate",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_native_client_certificate.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 6.519,
+    "log": "native-client-certificate.log",
+    "logSha256": "d15401f2a637e45eeeeb79e53e05a34aa1d4cf9e4cfc3e6c7e220f275c550e52",
+    "tests": 59,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "execution-boundary",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_execution_boundary.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 26.742,
+    "log": "execution-boundary.log",
+    "logSha256": "1bdf73d5b94aec7f2772c5ab9ee2cab799a97f6af5ffacfbb2c0b26f7046821a",
+    "tests": 45,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "immutable-readback",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_immutable_readback_driver.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.436,
+    "log": "immutable-readback.log",
+    "logSha256": "1d4cd60c2e12137e60493bfc45043b18ad20183961ffbc83cd8069992a53a34e",
+    "tests": 12,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "policy-authentication",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_policy_authentication_driver.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.843,
+    "log": "policy-authentication.log",
+    "logSha256": "3c601ca086d5c894807c35623d9c7e1a7835346e257f353b48beaadf90f2e947",
+    "tests": 13,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "immutable-s3-provider",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_immutable_s3_provider.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.646,
+    "log": "immutable-s3-provider.log",
+    "logSha256": "32f8615d55aae0cf06a84b42011e5c02aa3c165336d356e2c32a88e87b079ff9",
+    "tests": 42,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "common-adapter",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_recovery_adapters.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.164,
+    "log": "common-adapter.log",
+    "logSha256": "f31d1a851097f56ce62d5cfb63feb76620d680ca095ce184e589737bcf74ec8f",
+    "tests": 94,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "telemetry-postgres",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.786,
+    "log": "telemetry-postgres.log",
+    "logSha256": "f7cf440b958cbfe8854becaf054da76aa9b3e9c3032461a7e3fd5fea64fa4520",
+    "tests": 70,
+    "skips": 0,
+    "outcome": "OK"
+  },
+  {
+    "name": "receipt-self-test",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-5/verify-receipt.py",
+      "--self-test"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.956,
+    "log": "receipt-self-test.log",
+    "logSha256": "e177c3b4c01d71322969dfbbeee51148bc1ce9ae3eb1521383d7e56c4d47acf0"
+  },
+  {
+    "name": "parser-mutant",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-5/check-parser-mutant.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.588,
+    "log": "parser-mutant.log",
+    "logSha256": "f46e0199ac74736829867109353b21a8a58c051ce1c7d928ca108970b9e8ec04"
+  },
+  {
+    "name": "cancellation-sweeps",
+    "argv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-5/run-cancellation-sweeps.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 54.306,
+    "log": "cancellation-sweeps.log",
+    "logSha256": "8f8c237a7c9db177384200d3aada07c445bbdda0e5c19fa3c06836e73c04b325"
+  },
+  {
+    "name": "diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.154,
+    "log": "diff-check.log",
+    "logSha256": "4528e36906056c86a4b466bbc1857813499dbd78556f8e701aae4d5f01f38895"
+  }
+]

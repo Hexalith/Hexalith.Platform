@@ -1,0 +1,17 @@
+test_close_failure_prevents_returning_independently_checked_bytes (__main__.ReadbackTests.test_close_failure_prevents_returning_independently_checked_bytes) ... ok
+test_each_unknown_or_changed_metadata_field_stops_and_closes_handle (__main__.ReadbackTests.test_each_unknown_or_changed_metadata_field_stops_and_closes_handle) ... ok
+test_exact_version_independent_raw_metadata_and_bytes_return_existing_typed_response (__main__.ReadbackTests.test_exact_version_independent_raw_metadata_and_bytes_return_existing_typed_response) ... ok
+test_expired_deadline_and_slow_drip_stop_and_release_owned_handle (__main__.ReadbackTests.test_expired_deadline_and_slow_drip_stop_and_release_owned_handle) ... ok
+test_policy_expired_before_open_refuses_without_provider_request (__main__.ReadbackTests.test_policy_expired_before_open_refuses_without_provider_request) ... ok
+test_policy_or_deadline_expiry_only_during_owned_close_refuses_checked_bytes (__main__.ReadbackTests.test_policy_or_deadline_expiry_only_during_owned_close_refuses_checked_bytes) ... ok
+test_read_interrupt_keeps_primary_cancellation_when_owned_close_also_interrupts (__main__.ReadbackTests.test_read_interrupt_keeps_primary_cancellation_when_owned_close_also_interrupts) ... ok
+test_restore_input_is_read_by_distinct_validator_after_authentication (__main__.ReadbackTests.test_restore_input_is_read_by_distinct_validator_after_authentication) ... ok
+test_short_changed_overflow_and_nonbytes_content_stop_independent_of_metadata_claims (__main__.ReadbackTests.test_short_changed_overflow_and_nonbytes_content_stop_independent_of_metadata_claims) ... ok
+test_standalone_provider_budget_is_capped_to_request_and_policy_after_credential_work (__main__.ReadbackTests.test_standalone_provider_budget_is_capped_to_request_and_policy_after_credential_work) ... ok
+test_unavailable_provider_and_provider_diagnostics_are_sanitized_without_writer_fallback (__main__.ReadbackTests.test_unavailable_provider_and_provider_diagnostics_are_sanitized_without_writer_fallback) ... ok
+test_writer_principal_identity_custody_or_credential_substitution_refuses_before_provider (__main__.ReadbackTests.test_writer_principal_identity_custody_or_credential_substitution_refuses_before_provider) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.266s
+
+OK

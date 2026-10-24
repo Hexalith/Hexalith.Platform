@@ -1,0 +1,27 @@
+{
+  "matrixRows": {
+    "Client certificate": [
+      "test_exact_certificate_and_key_authenticate_real_peer_without_authorization"
+    ],
+    "Bearer": [
+      "test_bearer_default_and_explicit_profile_preserve_wire_and_audience"
+    ],
+    "Binding drift": [
+      "test_principal_audience_identity_custody_secret_and_ca_drift_refuse_before_dispatch",
+      "test_unknown_mixed_and_unselected_profiles_refuse_without_connector"
+    ],
+    "Invalid material": [
+      "test_malformed_missing_mismatched_encrypted_duplicate_and_oversized_material_refuse"
+    ],
+    "Timeout/cancellation": [
+      "test_loading_interrupt_preserved_while_every_owned_descriptor_closes_independently",
+      "test_exchange_and_stream_cleanup_expiry_or_interrupt_never_return_late_success"
+    ],
+    "Default invocation": [
+      "test_default_connector_and_public_activation_refuse_before_credential_context_or_network"
+    ]
+  },
+  "nativeLogSha256": "d15401f2a637e45eeeeb79e53e05a34aa1d4cf9e4cfc3e6c7e220f275c550e52",
+  "everyCoveringTestRanAndPassed": true,
+  "skips": 0
+}

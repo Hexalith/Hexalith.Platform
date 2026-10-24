@@ -1299,3 +1299,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Confirm the file-entry smoke's path-targeted `aspire wait`/`aspire stop` cannot select a same-path developer AppHost.
   evidence: Unverified (maybe-false; medium if true). `PlatformAppModelTests` starts `aspire start --apphost apphost.cs --isolated` but waits/stops with `--apphost <path>` only. Recorded smokes had no same-path Platform AppHost running. Settle by running the stop command against one non-isolated developer instance plus one isolated instance of the same `apphost.cs`; if ambiguous, target the started instance by its reported PID/identity.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md`
+  summary: Register a failed peer startup RunId before readiness assertions in the Story 2.5 live lifecycle proof.
+  evidence: PlatformLocalRunLifecycleTests.cs:47-50 asserts success before adding the returned run identity; incomplete startup teardown therefore misses the final cleanup retry. Observed in concurrent Story 2.5 work, not caused by certificate delivery.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md`
+  summary: Attempt final cleanup independently for every owned lifecycle-test run and aggregate failures afterward.
+  evidence: PlatformLocalRunLifecycleTests.cs:119-124 awaits down and asserts emptiness inside an unguarded foreach; the first exception or leftover assertion bypasses all later owners (B68 and E61). Concurrent Story 2.5 fixture, outside native certificate implementation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md`
+  summary: Select the Redis peer by explicit resource identity in the Story 2.5 live lifecycle proof.
+  evidence: PlatformLocalRunLifecycleTests.cs:53-54 calls redis-cli on peerBefore.ContainerIds.First(), while CompositionRunResourceScanner returns all containers bearing the run label; eng/test-environment-provisioning/suite.py already selects resourceId=redis. Concurrent Story 2.5 fixture, outside native certificate delivery.
