@@ -1246,6 +1246,20 @@
   summary: Prove the activated retention gate refuses access after `ExecutionDeadlineUtc` while the extended certificate is still valid.
   evidence: Unverified (maybe-false; medium if true). Story 2.4 `PlatformRetentionProfile.PreStartValidityCeiling` extends `AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc` and the server certificate past `ExecutionDeadlineUtc`; its comment relies on the gate deadline, but no Platform test exercises gate refusal with a still-valid certificate. Settle with a gate test past the execution deadline.
 
+## Deferred from: code review of spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md (2026-10-23, round 4)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Same open item as the round-2 and round-3 `RunEndpoints.Observe` entries (healthy resource with an unallocated endpoint). Re-raised again; not a new defect.
+  evidence: Unverified (maybe-false; medium if true). Blind Hunter, Edge Case Hunter and Verification Gap raised it again, naming progress (`RunReadiness.cs:314,343,352`) and failure-report (`:412`) call paths. The settling evidence is unchanged: observe reference-composition progress snapshots under run/debug, or confirm that no Aspire 13.6 resource type can report `Healthy` with an unallocated endpoint.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Add a regression for a healthy resource with an unallocated endpoint once the `RunEndpoints.Observe` behaviour is settled.
+  evidence: Round-4 Verification Gap finding. `AppHostRunnerValidationTests.HealthyReadinessWritesMetadataAndFinalProgressAsync` covers only allocated endpoints, and no test reaches the `RunEndpoints.Observe` throw. If `Observe` is changed to return only allocated endpoints, the suite still passes. The descriptor would then silently omit that endpoint instead of refusing handoff. Assert no-launch at whichever layer the settled behaviour places the refusal: readiness, or `TestEnvironmentDescriptorWriter`.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Same open item as the round-2 R3-V2 entry (retention `PlatformDaprDiagnostics` registration never asserted through `ComposeRun`). Re-raised; not a new defect.
+  evidence: Round-4 Verification Gap finding. `PlatformAppModel.cs:364-371` (Story 4.27, `858d02c`) registers the directory, server application IDs and secret values of 8 or more characters. Deleting the block or emptying the secret list passes every composition test. Assert the registered instance after a retention `ComposeRun`.
+
 ## Deferred from: Story 2.3 current-tree workflow review (2026-10-23)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
