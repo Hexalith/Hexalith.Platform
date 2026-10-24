@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 import fcntl
 import errno
 import hashlib
+import io
 import math
 import os
 from pathlib import Path
@@ -25,6 +26,7 @@ import sys
 import time
 import threading
 import types
+import uuid
 
 FAILURE = 'recovery-execution-boundary-refused'
 MAX_FILE = 128 * 1024 * 1024
@@ -47,8 +49,145 @@ def remaining(deadline):
     return value
 
 
+class _OwnedDescriptor:
+    """A close invalidates the C-level owner before returning to Python.
+
+    FileIO.close owns the release state even if a signal or a tracing hook runs
+    after the underlying close. Retrying this object can never close a later
+    allocation that happens to reuse its old descriptor number.
+    """
+    def __new__(cls, fd):
+        handle = super().__new__(cls)
+        # The C owner exists before initialization can return or be interrupted.
+        handle.file = io.FileIO.__new__(io.FileIO)
+        handle.original_fd = handle.pending_fd = fd
+        info = os.fstat(fd)
+        handle.identity = (info.st_dev, info.st_ino)
+        return handle
+
+    def __init__(self, fd):
+        io.FileIO.__init__(self.file, fd, 'rb', closefd=True)
+        self.pending_fd = None
+
+    def fileno(self):
+        return self.file.fileno()
+
+    @property
+    def closed(self):
+        return self.file.closed and self.pending_fd is None
+
+    def close(self):
+        # A constructor interrupted before initialization leaves an owned raw
+        # input in this already-registered placeholder. Adopt it before release.
+        if self.pending_fd is not None and self.file.closed:
+            io.FileIO.__init__(self.file, self.pending_fd, 'rb', closefd=True)
+        self.pending_fd = None
+        self.file.close()
+
+
+class _DescriptorCustody:
+    """Shared ownership and primary failure across allocation and cleanup."""
+    def __init__(self):
+        self.handles = []
+        self.allocations = []
+        self.stream = None
+        self.error = None
+
+    def remember(self, error):
+        # A second interrupt during the first exception handler retains the
+        # active first interrupt as context, even before its assignment below.
+        # Select the oldest interruption, preserving ordinary-error sanitizing.
+        candidate, seen = error, set()
+        while candidate is not None and id(candidate) not in seen:
+            seen.add(id(candidate))
+            if not isinstance(candidate, Exception):
+                error = candidate
+            candidate = candidate.__context__
+        if error is not None and (self.error is None or
+                isinstance(self.error, Exception) and not isinstance(error, Exception)):
+            self.error = error
+
+    def register(self, fd):
+        handle = _OwnedDescriptor.__new__(_OwnedDescriptor, fd)
+        try:
+            # Register the uninitialized object before the constructor runs.
+            self.handles.append(handle)
+            _OwnedDescriptor.__init__(handle, fd)
+            return handle
+        except BaseException as exc:
+            self.remember(exc)
+            # The append itself may have been interrupted. There is no live
+            # FileIO resource before that append; retain its pending raw input.
+            if handle not in self.handles:
+                self.handles.append(handle)
+            raise
+
+
+class _MemoryAllocation:
+    """An allocator-specific identity registered before any raw syscall.
+
+    A memfd and its duplicates share this unique kernel-visible name and inode.
+    Recovery enumerates only process-local descriptors with that exact identity;
+    it never adopts an old descriptor number or a similarly named allocation.
+    """
+    def __init__(self):
+        self.name = 'recovery-fixture-input-' + uuid.uuid4().hex
+        self.link = '/memfd:' + self.name + ' (deleted)'
+        self.identity = None
+
+    def observe(self, fd):
+        require(os.readlink('/proc/self/fd/' + str(fd)) == self.link)
+        info = os.fstat(fd)
+        self.identity = (info.st_dev, info.st_ino)
+
+    def recover(self, custody):
+        # Enumeration may include its own already-closed directory descriptor.
+        for name in os.listdir('/proc/self/fd'):
+            fd = int(name)
+            try:
+                if os.readlink('/proc/self/fd/' + name) != self.link:
+                    continue
+                info = os.fstat(fd)
+            except OSError as exc:
+                if exc.errno in (errno.ENOENT, errno.EBADF):
+                    continue
+                raise
+            require(stat.S_ISREG(info.st_mode) and info.st_nlink == 0)
+            identity = (info.st_dev, info.st_ino)
+            if self.identity is None:
+                self.identity = identity
+            if identity != self.identity:
+                continue
+            # Existing stateful owners retain close authority. In particular,
+            # never re-adopt the raw number of a released owner.
+            if any(handle.original_fd == fd and handle.identity == identity
+                    for handle in custody.handles):
+                continue
+            custody.register(fd)
+
+
 def _close_owned(owned, error=None):
-    """Attempt each owned close independently; never replace a primary interrupt."""
+    """Close stateful owners independently, retaining their shared first error."""
+    require(type(owned) is _DescriptorCustody)
+    owned.remember(error)
+    for allocation in owned.allocations:
+        try:
+            allocation.recover(owned)
+        except BaseException as cleanup:
+            owned.remember(cleanup)
+    for handle in reversed(owned.handles):
+        for _ in range(2):
+            if handle.closed:
+                break
+            try:
+                handle.close()
+            except BaseException as cleanup:
+                owned.remember(cleanup)
+    return owned.error
+
+
+def _close_raw(owned, error=None):
+    """Compatibility cleanup for the unchanged source-custody reader."""
     for fd in reversed(owned):
         for _ in range(2):
             try:
@@ -95,7 +234,7 @@ def read_custody(path, maximum=MAX_FILE):
                 ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns', 'st_mode', 'st_uid', 'st_nlink')))
     except BaseException as exc:
         error = exc
-    error = _close_owned(owned, error)
+    error = _close_raw(owned, error)
     if error is not None:
         if not isinstance(error, Exception):
             raise error.with_traceback(error.__traceback__)
@@ -178,14 +317,30 @@ class Credential:
                     secretBase64=base64.b64encode(self.secret).decode('ascii'))
 
 
-def sealed(raw, executable=False):
+def sealed(raw, executable=False, *, custody=None):
     require(type(raw) is bytes and 0 < len(raw) <= MAX_FILE)
     # Never allocate an executable/input at stdio or the credential destination.
     low = fd = None
+    low_owner = high_owner = None
     try:
-        low = os.memfd_create('recovery-fixture-input', os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
+        require(custody is None or type(custody) is _DescriptorCustody)
+        allocation = None
+        if custody is not None:
+            allocation = _MemoryAllocation()
+            custody.allocations.append(allocation)
+        # The shared identity precedes the syscall, including an interruption
+        # before STORE_FAST transfers its raw return value to low or fd.
+        low = os.memfd_create('recovery-fixture-input' if allocation is None else allocation.name,
+            os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
+        if custody is not None:
+            allocation.observe(low)
+            low_owner = custody.register(low)
         fd = fcntl.fcntl(low, fcntl.F_DUPFD_CLOEXEC, 4)
-        os.close(low)
+        if custody is not None:
+            high_owner = custody.register(fd)
+            low_owner.close()
+        else:
+            os.close(low)
         low = None
         os.fchmod(fd, 0o700 if executable else 0o600)
         offset = 0
@@ -199,6 +354,14 @@ def sealed(raw, executable=False):
         require(fcntl.fcntl(fd, fcntl.F_GET_SEALS) & flags == flags)
         return fd
     except BaseException as exc:
+        if custody is not None:
+            # Recover even a raw syscall result that never reached a local.
+            # Shared identities and owners also survive interrupted registration.
+            custody.remember(exc)
+            error = _close_owned(custody)
+            if not isinstance(error, Exception):
+                raise error.with_traceback(error.__traceback__)
+            raise Refusal(FAILURE) from None
         interrupt = exc if not isinstance(exc, Exception) else None
         for owned in (fd, low):
             if owned is not None:
@@ -387,6 +550,7 @@ class NativeBinding:
     cluster: a.Cluster
     ca: bytes
     credential: CredentialBinding
+    authentication_profile: str = 'bearer'
 
 
 class NativeTLS:
@@ -395,7 +559,10 @@ class NativeTLS:
         self.connector = connector
 
     def _context(self, binding):
-        require(type(binding) is NativeBinding and a.digest(binding.ca) == binding.cluster.ca_sha256)
+        require(type(binding) is NativeBinding and type(binding.ca) is bytes and
+                type(binding.authentication_profile) is str and
+                binding.authentication_profile in ('bearer', 'client-certificate') and
+                a.digest(binding.ca) == binding.cluster.ca_sha256)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.minimum_version = ssl.TLSVersion.TLSv1_2
         context.verify_mode = ssl.CERT_REQUIRED
@@ -403,6 +570,44 @@ class NativeTLS:
         context.verify_flags |= ssl.VERIFY_X509_STRICT
         context.load_verify_locations(cadata=binding.ca.decode('ascii'))
         return context
+
+    def _install_certificate(self, context, secret, deadline, owned):
+        """Install original bounded PEM bytes from registered sealed owners."""
+        try:
+            remaining(deadline)
+            require(type(secret) is bytes and 0 < len(secret) <= 65536)
+            envelope = a.strict_json(secret)
+            require(type(envelope) is dict and set(envelope) == {'certificatePem', 'privateKeyPem'} and
+                    all(type(value) is str for value in envelope.values()))
+            certificate = envelope['certificatePem'].encode('ascii')
+            key = envelope['privateKeyPem'].encode('ascii')
+            require(0 < len(certificate) <= 49152 and 0 < len(key) <= 16384)
+            # Permit conventional LF/CRLF and an absent final newline without
+            # normalizing any bytes passed to the TLS library.
+            certificate_block = (rb'-----BEGIN CERTIFICATE-----\r?\n'
+                rb'(?:[A-Za-z0-9+/=]{1,76}\r?\n)+-----END CERTIFICATE-----')
+            require(re.fullmatch(rb'(?:' + certificate_block + rb'\r?\n){0,15}' +
+                    certificate_block + rb'(?:\r?\n)?', certificate) is not None)
+            require(re.fullmatch(rb'-----BEGIN (PRIVATE KEY|RSA PRIVATE KEY|EC PRIVATE KEY)-----\r?\n'
+                    rb'(?:[A-Za-z0-9+/=]{1,76}\r?\n)+-----END \1-----(?:\r?\n)?', key) is not None)
+            paths = []
+            for raw in (certificate, key):
+                remaining(deadline)
+                fd = sealed(raw, custody=owned)
+                paths.append('/proc/self/fd/' + str(fd))
+                remaining(deadline)
+            def refuse_password():
+                raise Refusal(FAILURE)
+            context.load_cert_chain(*paths, password=refuse_password)
+            remaining(deadline)
+        except BaseException as exc:
+            owned.remember(exc)
+        error = _close_owned(owned)
+        if error is not None:
+            if not isinstance(error, Exception):
+                raise error.with_traceback(error.__traceback__)
+            raise Refusal(FAILURE) from None
+        remaining(deadline)
 
     def _connect(self, context, cluster, deadline):
         """Dormant native mechanics; exchange never selects this connector."""
@@ -434,32 +639,70 @@ class NativeTLS:
             raise Refusal(FAILURE) from None
 
     def exchange(self, request, deadline, binding, credential):
-        stream = None
+        owned = _DescriptorCustody()
         response = error = None
+        # The outer guard spans the first error-recording handler, stream-close
+        # entry, descriptor cleanup, deadline checks and the exceptional return.
         try:
-            remaining(deadline)
-            require(self.connector is not None and request.endpoint == binding.cluster.endpoint and
-                    binding.credential.principal == request.principal and binding.credential.audience == binding.cluster.uid)
-            credential.descriptor(binding.credential)
-            require(re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', credential.secret))
-            context = self._context(binding)
-            remaining(deadline)
-            stream = self.connector(context, binding.cluster, deadline)
-            response = self._exchange(request, stream, deadline, credential.secret)
-        except BaseException as exc:
-            error = exc
-        if stream is not None:
             try:
-                stream.close()
+                remaining(deadline)
+                require(self.connector is not None)
+                require(type(binding) is NativeBinding and type(credential) is Credential and
+                        type(request) is a.Request and
+                        type(binding.authentication_profile) is str and
+                        binding.authentication_profile in ('bearer', 'client-certificate') and
+                        request.endpoint == binding.cluster.endpoint and
+                        binding.credential.principal == request.principal and binding.credential.audience == binding.cluster.uid)
+                credential.descriptor(binding.credential)
+                context = self._context(binding)
+                bearer = None
+                if binding.authentication_profile == 'bearer':
+                    require(re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', credential.secret))
+                    bearer = credential.secret
+                else:
+                    self._install_certificate(context, credential.secret, deadline, owned)
+                remaining(deadline)
+                owned.stream = self.connector(context, binding.cluster, deadline)
+                response = self._exchange(request, owned.stream, deadline, bearer)
             except BaseException as exc:
-                if error is None or isinstance(error, Exception) and not isinstance(exc, Exception):
-                    error = exc
-        if error is not None:
+                owned.remember(exc)
+            if owned.stream is not None:
+                try:
+                    owned.stream.close()
+                except BaseException as exc:
+                    owned.remember(exc)
+            error = _close_owned(owned)
+            if error is not None:
+                if not isinstance(error, Exception):
+                    raise error.with_traceback(error.__traceback__)
+                raise Refusal(FAILURE) from None
+            remaining(deadline)
+            return response
+        except BaseException as exc:
+            try:
+                owned.remember(exc)
+                # A cancellation at either inner cleanup entry must still
+                # attempt every known stream and descriptor release.
+                if owned.stream is not None:
+                    try:
+                        owned.stream.close()
+                    except BaseException as cleanup:
+                        owned.remember(cleanup)
+                error = _close_owned(owned)
+            except BaseException as cleanup:
+                # Protect the fallback's own entry transitions as well. This
+                # covers a primary interruption followed by a second during
+                # recording/cleanup, not indefinitely repeated cancellation.
+                owned.remember(cleanup)
+                if owned.stream is not None:
+                    try:
+                        owned.stream.close()
+                    except BaseException as release:
+                        owned.remember(release)
+                error = _close_owned(owned)
             if not isinstance(error, Exception):
                 raise error.with_traceback(error.__traceback__)
             raise Refusal(FAILURE) from None
-        remaining(deadline)
-        return response
 
     def _exchange(self, request, stream, deadline, bearer):
         """One absolute deadline covers every partial write and header/body byte."""
@@ -467,11 +710,15 @@ class NativeTLS:
             require(type(request) is a.Request and request.method in ('GET', 'PATCH', 'DELETE') and
                     re.fullmatch(r'/[a-zA-Z0-9/._-]+', request.path) and
                     request.content_type in ('application/json', 'application/json-patch+json') and
-                    re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', bearer))
+                    (bearer is None or type(bearer) is bytes and
+                     re.fullmatch(rb'[A-Za-z0-9._~+/=-]{1,65536}', bearer)))
             body = b'' if request.method == 'GET' else request.stdin
             wire = (request.method + ' ' + request.path + ' HTTP/1.1\r\nHost: ' + request.endpoint[8:] +
                 '\r\nAccept: application/json\r\nAccept-Encoding: identity\r\nConnection: close\r\nContent-Type: ' +
-                request.content_type + '\r\nContent-Length: ' + str(len(body)) + '\r\nAuthorization: Bearer ').encode('ascii') + bearer + b'\r\n\r\n' + body
+                request.content_type + '\r\nContent-Length: ' + str(len(body)) + '\r\n').encode('ascii')
+            if bearer is not None:
+                wire += b'Authorization: Bearer ' + bearer + b'\r\n'
+            wire += b'\r\n' + body
             offset = 0
             while offset < len(wire):
                 stream.settimeout(remaining(deadline))

@@ -52,7 +52,12 @@ def credential(principal, audience, secret=None):
     return b.Credential(binding, identity, custody, secret)
 
 
-def fixture(directory, operation='capture', distinct=True):
+def certificate_secret(label='SOURCE'):
+    return a.canonical({'certificatePem': globals()['CERT_' + label + '_CLIENT'].decode('ascii'),
+        'privateKeyPem': globals()['CERT_' + label + '_CLIENT_KEY'].decode('ascii')})
+
+
+def fixture(directory, operation='capture', distinct=True, native_cas=None):
     value, _, _, _ = old.fixture(operation, distinct_clusters=distinct)
     tool = directory / 'fixture-process'
     expected_credentials = [credential(value['operatorPrincipal'], cluster['uid']).descriptor(
@@ -111,8 +116,11 @@ sys.stdout.write(json.dumps(result))
         for role in ('kubectl', 'artifactReader', 'stageRunner')}
     value['tools']['signatureVerifier'] = {'path': verifier.path, 'sha256': verifier.sha256, 'size': verifier.size}
     value['signerSha256'] = a.digest(KEY)
-    value['sourceCluster']['caSha256'] = a.digest(CA_SOURCE)
-    value['targetCluster']['caSha256'] = a.digest(CA_TARGET if distinct else CA_SOURCE)
+    native_cas = (CA_SOURCE, CA_TARGET if distinct else CA_SOURCE) if native_cas is None else native_cas
+    b.require(len(native_cas) == 2)
+    source_ca, target_ca = native_cas
+    value['sourceCluster']['caSha256'] = a.digest(source_ca)
+    value['targetCluster']['caSha256'] = a.digest(target_ca)
     initial = a.parse_binding(value)
     policy = a.canonical({'kind': 'hexalith.recovery-adapter-policy', 'schemaVersion': 1,
         'scopeSha256': initial.scope_sha256(), 'validFrom': initial.valid_from, 'expiresAt': initial.expires_at,
@@ -185,16 +193,18 @@ class Verifier:
 
 class StageProtocol:
     """Inert system protocol for matrix composition; no actual store operation."""
-    def __init__(self, binding, policy, signature):
+    def __init__(self, binding, policy, signature, credentials=None):
         self.binding = binding
         self.backend = old.FakeBackend(binding, policy, signature)
+        self.credentials = credentials
 
     def run(self, tool, arguments, stdin, credentials, deadline, maximum, error_maximum, files=()):
         envelope = a.strict_json(credentials)
         request = next(r for r in a.build_requests(self.binding) if r.name == envelope['name'])
         assert stdin == request.stdin and tool == request.tool and arguments == request.argv[1:]
-        expected_credentials = [credential(request.principal, cluster.uid) for cluster in
-            dict.fromkeys((self.binding.source_cluster, self.binding.target_cluster))]
+        expected_credentials = [next(c for c in self.credentials if c.binding.principal == request.principal and
+            c.binding.audience == cluster.uid) if self.credentials is not None else credential(request.principal, cluster.uid)
+            for cluster in dict.fromkeys((self.binding.source_cluster, self.binding.target_cluster))]
         assert envelope == {'requestSha256': request.sha256(), 'name': request.name, 'path': request.path,
             'method': request.method, 'credentials': [c.descriptor(c.binding) for c in expected_credentials]}
         result = self.backend.exchange(request, deadline)
@@ -236,6 +246,7 @@ class Native:
         self.backend = old.FakeBackend(binding, policy, signature)
         self.calls = []
         self.streams = []
+        self.contexts = []
         self.mutate = None
 
     def exchange(self, request, deadline, native_binding, credential):
@@ -246,14 +257,15 @@ class Native:
             response = self.mutate(response)
         stream = Stream(http(response.body, response.status))
         self.streams.append(stream)
-        try:
-            return b.NativeTLS()._exchange(request, stream, deadline, credential.secret)
-        finally:
-            stream.close()
+        def connector(context, cluster, limit):
+            assert cluster == native_binding.cluster and limit == deadline
+            self.contexts.append(context)
+            return stream
+        return b.NativeTLS(connector).exchange(request, deadline, native_binding, credential)
 
 
-def compose(directory, operation='capture', process=None):
-    binding, policy, signature, dependencies = fixture(directory, operation)
+def compose(directory, operation='capture', process=None, *, native_profiles=None, native_secrets=None, native_cas=None):
+    binding, policy, signature, dependencies = fixture(directory, operation, native_cas=native_cas)
     reader = credential(binding.validator, binding.policy.store)
     writer = credential(binding.operator, binding.policy.store)
     provider_binding = immutable.ProviderBinding(binding.policy.store, 'https://provider.invalid', 'c' * 64,
@@ -264,11 +276,37 @@ def compose(directory, operation='capture', process=None):
     auth = policy_driver.PolicyAuthenticationDriver(binding, TRUST, a.digest(TRUST), SIGNER, dependencies,
         process=verifier, now=lambda: NOW)
     native = Native(binding, policy, signature)
-    credentials = (reader,) + tuple(credential(binding.operator, c.uid) for c in
-        dict.fromkeys((binding.source_cluster, binding.target_cluster)))
-    natives = tuple(b.NativeBinding(c, CA_SOURCE if c == binding.source_cluster else CA_TARGET, next(v.binding for v in credentials
-        if v.binding.audience == c.uid)) for c in dict.fromkeys((binding.source_cluster, binding.target_cluster)))
+    clusters = tuple(dict.fromkeys((binding.source_cluster, binding.target_cluster)))
+    native_profiles = ('bearer',) * len(clusters) if native_profiles is None else native_profiles
+    native_secrets = (None,) * len(clusters) if native_secrets is None else native_secrets
+    native_cas = (CA_SOURCE, CA_TARGET) if native_cas is None else native_cas
+    b.require(len(native_profiles) == len(native_secrets) == len(native_cas) == len(clusters))
+    credentials = (reader,) + tuple(credential(binding.operator, c.uid, secret) for c, secret in zip(clusters, native_secrets))
+    natives = tuple(b.NativeBinding(c, ca, next(v.binding for v in credentials if v.binding.audience == c.uid), profile)
+        for c, ca, profile in zip(clusters, native_cas, native_profiles))
     boundary = b.RecoveryExecutionBoundary(binding, dependencies, credentials,
         tuple(v.binding for v in credentials), immutable_driver=readback, policy_driver=auth,
         native=native, native_bindings=natives, process=process, now=lambda: NOW)
     return boundary, provider, verifier, native
+
+
+# Static public synthetic TLS material for socket-free fixture handshakes only.
+# Created offline; these keys and certificates confer no operational authority.
+CERT_SOURCE_CA = b'-----BEGIN CERTIFICATE-----\nMIIB5DCCAYqgAwIBAgIUdl8F4XaPCtDnpFjU9KMJK+efmbkwCgYIKoZIzj0EAwIw\nPTE7MDkGA1UEAwwyUFVCTElDIFNZTlRIRVRJQyBIRVhBTElUSCBTT1VSQ0UgQ0Eg\nLSBOTyBBVVRIT1JJVFkwIBcNMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFa\nMD0xOzA5BgNVBAMMMlBVQkxJQyBTWU5USEVUSUMgSEVYQUxJVEggU09VUkNFIENB\nIC0gTk8gQVVUSE9SSVRZMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQNxmTBhn\nTrw+KlQp0PMYaa3GlvO7z8f2CcimZp9ySPu9znc+xaZI/8Su2j7l13kmm/trBRTm\nkSdhhMbeCoGl7aNmMGQwHQYDVR0OBBYEFFg5I1M4MFX7tzcKS4zi6fXuvetXMB8G\nA1UdIwQYMBaAFFg5I1M4MFX7tzcKS4zi6fXuvetXMBIGA1UdEwEB/wQIMAYBAf8C\nAQAwDgYDVR0PAQH/BAQDAgEGMAoGCCqGSM49BAMCA0gAMEUCIEeejJNp6kDVElua\nbq1HHttsve1zEOqGRApTSuF3oM/4AiEAk7o08u3xkopdQcdI2zMR69VgSTc943XN\n/lrkiMIvQdQ=\n-----END CERTIFICATE-----\n'
+CERT_SOURCE_SERVER = b'-----BEGIN CERTIFICATE-----\nMIIB7jCCAZWgAwIBAgICA+kwCgYIKoZIzj0EAwIwPTE7MDkGA1UEAwwyUFVCTElD\nIFNZTlRIRVRJQyBIRVhBTElUSCBTT1VSQ0UgQ0EgLSBOTyBBVVRIT1JJVFkwIBcN\nMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFaMDgxNjA0BgNVBAMMLVBVQkxJ\nQyBTWU5USEVUSUMgU09VUkNFIFNFUlZFUiAtIE5PIEFVVEhPUklUWTBZMBMGByqG\nSM49AgEGCCqGSM49AwEHA0IABEvj+544D34Lwq7HXZ/jadMzx0BhDuFw+f/WLN38\nNINDHrPHqxw9H9wndP60i5716TCJcnBNSqLmDAgMG35RUAujgYcwgYQwDAYDVR0T\nAQH/BAIwADAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwEwHQYD\nVR0OBBYEFCGs1VDVxP/mifsM+acRuU5Pz6xYMB8GA1UdIwQYMBaAFFg5I1M4MFX7\ntzcKS4zi6fXuvetXMA8GA1UdEQQIMAaHBMAAAgowCgYIKoZIzj0EAwIDRwAwRAIg\nIcu2rJR9LHeQ+D+OH4poY83ETHz7iW/QyRnSCYmdpIMCIH+Ug5D/bpsiierzfagC\nMKxJcr1WNCy+mv0j14WkCm0x\n-----END CERTIFICATE-----\n'
+CERT_SOURCE_SERVER_KEY = b'-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgkiVoz8nW3RibEKpn\npPtXanIRTTOc3eSqRwBUul6UrTihRANCAARL4/ueOA9+C8Kux12f42nTM8dAYQ7h\ncPn/1izd/DSDQx6zx6scPR/cJ3T+tIue9ekwiXJwTUqi5gwIDBt+UVAL\n-----END PRIVATE KEY-----\n'
+CERT_SOURCE_CLIENT = b'-----BEGIN CERTIFICATE-----\nMIIB3DCCAYKgAwIBAgICA+swCgYIKoZIzj0EAwIwPTE7MDkGA1UEAwwyUFVCTElD\nIFNZTlRIRVRJQyBIRVhBTElUSCBTT1VSQ0UgQ0EgLSBOTyBBVVRIT1JJVFkwIBcN\nMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFaMDgxNjA0BgNVBAMMLVBVQkxJ\nQyBTWU5USEVUSUMgU09VUkNFIENMSUVOVCAtIE5PIEFVVEhPUklUWTBZMBMGByqG\nSM49AgEGCCqGSM49AwEHA0IABNKsheUrJG3SrhmGAq2EmaNDdXjECkrV9kO8W9xM\nEzoLERejWw/wp7Fb6UaI9tXVxxjvevX4xLWFFTVPPNyDF8WjdTBzMAwGA1UdEwEB\n/wQCMAAwDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMCMB0GA1Ud\nDgQWBBQhe1JOcnOQ+JfZdRgrfEap0OZk5TAfBgNVHSMEGDAWgBRYOSNTODBV+7c3\nCkuM4un17r3rVzAKBggqhkjOPQQDAgNIADBFAiAcvZ2ffTGk4lmuq2aAbKJINbOF\np0LbVY1pj8ewOIf4nAIhAMcueEjsVz3IZWppZ0wsL9ghh3Oe96Vq2Y81GGzsfgN7\n-----END CERTIFICATE-----\n'
+CERT_SOURCE_CLIENT_KEY = b'-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgDluEd7foBUYgKgeC\ns0YjpG6Do06lfmdmKFnpWVxzKPGhRANCAATSrIXlKyRt0q4ZhgKthJmjQ3V4xApK\n1fZDvFvcTBM6CxEXo1sP8KexW+lGiPbV1ccY73r1+MS1hRU1TzzcgxfF\n-----END PRIVATE KEY-----\n'
+CERT_TARGET_CA = b'-----BEGIN CERTIFICATE-----\nMIIB5DCCAYqgAwIBAgIUGfhmfESwW202yn4E4HGINacUudEwCgYIKoZIzj0EAwIw\nPTE7MDkGA1UEAwwyUFVCTElDIFNZTlRIRVRJQyBIRVhBTElUSCBUQVJHRVQgQ0Eg\nLSBOTyBBVVRIT1JJVFkwIBcNMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFa\nMD0xOzA5BgNVBAMMMlBVQkxJQyBTWU5USEVUSUMgSEVYQUxJVEggVEFSR0VUIENB\nIC0gTk8gQVVUSE9SSVRZMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAfUNIXn5\n0lr/Jh7hgTO40yOG/UBDIAu5WgLRtVUrcH45RBssMmDiIIYNPqowPatVKqkFQsgm\nmUmBBJYk36VcPqNmMGQwHQYDVR0OBBYEFDxhV+CHz4bw6MxnulEtldvYOK3RMB8G\nA1UdIwQYMBaAFDxhV+CHz4bw6MxnulEtldvYOK3RMBIGA1UdEwEB/wQIMAYBAf8C\nAQAwDgYDVR0PAQH/BAQDAgEGMAoGCCqGSM49BAMCA0gAMEUCIBKSCl7WOyD6S88T\nLAlxyhlZf3Ff/n5VpFeyi8xbdMuhAiEAjfF2WDvjwz936tYxp2LoIXDpWgriU8BC\n4eyN3t0hVjk=\n-----END CERTIFICATE-----\n'
+CERT_TARGET_SERVER = b'-----BEGIN CERTIFICATE-----\nMIIB8DCCAZWgAwIBAgICA+4wCgYIKoZIzj0EAwIwPTE7MDkGA1UEAwwyUFVCTElD\nIFNZTlRIRVRJQyBIRVhBTElUSCBUQVJHRVQgQ0EgLSBOTyBBVVRIT1JJVFkwIBcN\nMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFaMDgxNjA0BgNVBAMMLVBVQkxJ\nQyBTWU5USEVUSUMgVEFSR0VUIFNFUlZFUiAtIE5PIEFVVEhPUklUWTBZMBMGByqG\nSM49AgEGCCqGSM49AwEHA0IABIhEBP8NJ7X4J2hDp7Pe3NxjEm6rv4CnKlD9ATGV\nY66rZTHTTwcFjRydUgf8vCc9OqQcwc/Yd0bGvBTxInwd7S2jgYcwgYQwDAYDVR0T\nAQH/BAIwADAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwEwHQYD\nVR0OBBYEFJM1ro4nCXkAGeu+nKzol5OR/G5FMB8GA1UdIwQYMBaAFDxhV+CHz4bw\n6MxnulEtldvYOK3RMA8GA1UdEQQIMAaHBMAAAhQwCgYIKoZIzj0EAwIDSQAwRgIh\nAJOx+Ml/i49WnCKcIKV1v2Uo0Jg4i7ZLkSbIJ1UELTEQAiEA0b8J/LA4WAECFO1n\nR3dzqkOl+Hn107wrCm4SNX7HK+U=\n-----END CERTIFICATE-----\n'
+CERT_TARGET_SERVER_KEY = b'-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgmBIB9s7w83SdWw8b\nsjGvQduzIr/doEAn2gdeA+HNQ5ChRANCAASIRAT/DSe1+CdoQ6ez3tzcYxJuq7+A\npypQ/QExlWOuq2Ux008HBY0cnVIH/LwnPTqkHMHP2HdGxrwU8SJ8He0t\n-----END PRIVATE KEY-----\n'
+CERT_TARGET_CLIENT = b'-----BEGIN CERTIFICATE-----\nMIIB3TCCAYKgAwIBAgICA/AwCgYIKoZIzj0EAwIwPTE7MDkGA1UEAwwyUFVCTElD\nIFNZTlRIRVRJQyBIRVhBTElUSCBUQVJHRVQgQ0EgLSBOTyBBVVRIT1JJVFkwIBcN\nMjYxMDIzMTk0MDAxWhgPMjEyNjA5MjkxOTQwMDFaMDgxNjA0BgNVBAMMLVBVQkxJ\nQyBTWU5USEVUSUMgVEFSR0VUIENMSUVOVCAtIE5PIEFVVEhPUklUWTBZMBMGByqG\nSM49AgEGCCqGSM49AwEHA0IABE4JnMFh19JDTwNKYmTMMp9F1jcfBa48b2tfDdnE\nR97+NzP1QPRwG6Siqo9gbfYleNTkh5739k0gG/dISbkE9h2jdTBzMAwGA1UdEwEB\n/wQCMAAwDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMCMB0GA1Ud\nDgQWBBQWG7xUPM02guZe5XmQ7NepIcxe7TAfBgNVHSMEGDAWgBQ8YVfgh8+G8OjM\nZ7pRLZXb2Dit0TAKBggqhkjOPQQDAgNJADBGAiEA+X1LLa6aj0RKcjrD8iIZtGaQ\n6064M5O0rShLyMik/+8CIQChNJ8vwNAckDqTpsxoqNyNF7rA9vfRFiAOt0PcQIi2\nrQ==\n-----END CERTIFICATE-----\n'
+CERT_TARGET_CLIENT_KEY = b'-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg9ll7+HiW0WJXe2Y9\nPbcz3tb1+gupimEIHinbAsf6VlehRANCAAROCZzBYdfSQ08DSmJkzDKfRdY3HwWu\nPG9rXw3ZxEfe/jcz9UD0cBukoqqPYG32JXjU5Iee9/ZNIBv3SEm5BPYd\n-----END PRIVATE KEY-----\n'
+
+# Additional static public synthetic chain and traditional-key fixtures.
+# Synthetic issuer keys were discarded; no operational certificate was issued.
+CERT_CHAIN_ROOT = b'-----BEGIN CERTIFICATE-----\nMIIB5zCCAYygAwIBAgIUCCfhjC3XOloK6y3hBQhMGpySXzMwCgYIKoZIzj0EAwIw\nPjE8MDoGA1UEAwwzUFVCTElDIFNZTlRIRVRJQyBIRVhBTElUSCBDSEFJTiBST09U\nIC0gTk8gQVVUSE9SSVRZMCAXDTI2MTAyMzIwMDMxMloYDzIxMjYwOTI5MjAwMzEy\nWjA+MTwwOgYDVQQDDDNQVUJMSUMgU1lOVEhFVElDIEhFWEFMSVRIIENIQUlOIFJP\nT1QgLSBOTyBBVVRIT1JJVFkwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR6vFQr\nDHql58wXkmtLu/HS108UUTPM3awTdVVACUDcgzz49ajhNR861+R04uCq+gOV8O09\nHu2JpwBELpuXBMrvo2YwZDAdBgNVHQ4EFgQUhoTE5VCMLspvFaOlMNtKD1SrH9gw\nHwYDVR0jBBgwFoAUhoTE5VCMLspvFaOlMNtKD1SrH9gwEgYDVR0TAQH/BAgwBgEB\n/wIBATAOBgNVHQ8BAf8EBAMCAQYwCgYIKoZIzj0EAwIDSQAwRgIhAPXVxqvbKaaX\nujJXskxuhZgvZjDbakjJdCP4z9qFnpraAiEA5fyDN/LTf+SWvRhjwvQxAoeuw0fk\nkv6cIwJ227850PA=\n-----END CERTIFICATE-----\n'
+CERT_CHAIN_INTERMEDIATE = b'-----BEGIN CERTIFICATE-----\nMIIB1zCCAX2gAwIBAgIDAKvhMAoGCCqGSM49BAMCMD4xPDA6BgNVBAMMM1BVQkxJ\nQyBTWU5USEVUSUMgSEVYQUxJVEggQ0hBSU4gUk9PVCAtIE5PIEFVVEhPUklUWTAg\nFw0yNjEwMjMyMDAzMTJaGA8yMTI2MDkyOTIwMDMxMlowQDE+MDwGA1UEAww1UFVC\nTElDIFNZTlRIRVRJQyBIRVhBTElUSCBJTlRFUk1FRElBVEUgLSBOTyBBVVRIT1JJ\nVFkwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQZUs6YP49eIn1VFyMqwCtMX2Mw\n28qdBmbOQAdfpLmOT7fY76O+pchUUj/htJRypZmOLzO2dl146tRXd/EyeLQ3o2Yw\nZDASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQU\n7uK287VIPxIDQVGdxV3S6SJ9Kj8wHwYDVR0jBBgwFoAUhoTE5VCMLspvFaOlMNtK\nD1SrH9gwCgYIKoZIzj0EAwIDSAAwRQIgFUerrN6R1WpofB5mMmeoTRW3LIi3o5Jo\nEQE56KSl8pACIQCHPQaG04hLdi8C7O/Ox2EMZB8GzR4xqpSX6mJkwhWKTw==\n-----END CERTIFICATE-----\n'
+CERT_RSA_CLIENT = b'-----BEGIN CERTIFICATE-----\nMIICsTCCAlegAwIBAgIDAKviMAoGCCqGSM49BAMCMEAxPjA8BgNVBAMMNVBVQkxJ\nQyBTWU5USEVUSUMgSEVYQUxJVEggSU5URVJNRURJQVRFIC0gTk8gQVVUSE9SSVRZ\nMCAXDTI2MTAyMzIwMDMxMloYDzIxMjYwOTI5MjAwMzEyWjA+MTwwOgYDVQQDDDNQ\nVUJMSUMgU1lOVEhFVElDIEhFWEFMSVRIIFJTQSBDTElFTlQgLSBOTyBBVVRIT1JJ\nVFkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDROTrD+3J+FvjIiCiu\nJ8DMK5+jWeDtwnAdqoBx0GDHqj2psELB3YtlU2foVLIvsyFJtaLWlUyNZ+uj/JNr\nlma5YPtfdmmyCn7eJ7S8gBxjO3mudq+QfkWhhQktjLRT+CGv99t4Q3sDNGPTkov5\ntHzhZ95xSxALO6kEBp+2w2gnIiE8pCKBZmP6Kpi0SQH/nRq5Yrd4WiywFTqR72EF\nGYAJS43W+Z9OZV1a+VZ/K45LCipPU1OUNZO4RClp4+cxI1rtEEs61Jfj290ETZaN\n7LmqvlKyWiSuA5dK77+/KjKAOsTmtgxKs8nTL1Xcpl9/Pj+2Yuam6b0xyji8nVOW\n1J/7AgMBAAGjdTBzMAwGA1UdEwEB/wQCMAAwDgYDVR0PAQH/BAQDAgeAMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMCMB0GA1UdDgQWBBTJ418OmhQrijm585IjSiIMilA6dTAf\nBgNVHSMEGDAWgBTu4rbztUg/EgNBUZ3FXdLpIn0qPzAKBggqhkjOPQQDAgNIADBF\nAiA6p7JWN/tP1TtUvhBMqVhZibt/yW3/3jjykqdQKA2MgwIhAPHD0bMF0tF67kA4\nwNdtq/tVCawGtdRT0waLfjQ2jc9K\n-----END CERTIFICATE-----\n'
+CERT_RSA_CLIENT_KEY = b'-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA0Tk6w/tyfhb4yIgorifAzCufo1ng7cJwHaqAcdBgx6o9qbBC\nwd2LZVNn6FSyL7MhSbWi1pVMjWfro/yTa5ZmuWD7X3Zpsgp+3ie0vIAcYzt5rnav\nkH5FoYUJLYy0U/ghr/fbeEN7AzRj05KL+bR84WfecUsQCzupBAaftsNoJyIhPKQi\ngWZj+iqYtEkB/50auWK3eFossBU6ke9hBRmACUuN1vmfTmVdWvlWfyuOSwoqT1NT\nlDWTuEQpaePnMSNa7RBLOtSX49vdBE2Wjey5qr5SslokrgOXSu+/vyoygDrE5rYM\nSrPJ0y9V3KZffz4/tmLmpum9Mco4vJ1TltSf+wIDAQABAoIBADvxahlJWsmuWjPV\n8tXGtPGqE/AwqYVlHksZlPhGy9uYtlb+FXpGt4/dwBjr3ytUZpagMBnLp6Wh3vza\nOgBqlF7LXunAWtL0N9n9RUZ2a+uwWBH4lh9PVjLLE1CWDfo6zqgEWsBPkRhfc7Rj\nua/emqLX5/7Mkzmsq6VoIm0x+g6vr3mvltQ5duhHyLdSWOlqmZJg7R7gA1iwwJLK\ncAgkVDpqj03ReVHZa8AOBfcrS8XwnitCLdyw7hY2lnLcgJq1r4sEG1IK718zr4qw\n4uSHqmkxQrnoPbtauyAjPLQxq36N+OonIK3YCh/rH/GSZ8TNKmWSjpo4R2kuIDQ/\n2S0kWfECgYEA6DAT6qb9mLfe9eFlywvcjKcs9XTjwWgGVlqsNQJ88qRthM3IUxNS\nrnFbRrfMHC87NO1BcCWyX0q6X2JecYDS1ZHUJg9stb1lMd8jdo4CaVyKnSGtkuYR\ng8mKK44sQEfT4ueBwe1jERBogaJSMInJRrX33MfsQ37ml/fraZoDszECgYEA5q49\n9PQOzq9Bm7SSRBr9p/ujihNfKAWY+wEuxxw33BYj66Y7lTIjrv6k7RWUwXZlBvWG\nO6jUB9J0iA4KAPUyWiP13SOFlhx4EA10tYFQvYsk16eiYgbD22OyZTWWn+pMsvGr\n//a8iJQhkolHaRW3TLfmL5Q/9Atr5S3QGdDkwusCgYEAzhAVLPSlLktJCijPAYP2\nabHYecMSesxKi4sPOECMCYAaXnmPJwOIJp8d5cYq1HyqbA+AOvqJsn6MpyiTLuKo\nurggcuLPlP+QdtFVFNt1knJ55nhEJpIeyzorcPpNlYLprn/NrgFzIWrRhPM9RCyU\nwDew0XVw3noaRpbVi7QPQpECgYEAqXwFq26RXovnYVY3TPCjw4MgMfdvp4ENWAYT\nb1ktNXfS5nVZO5H+I7mWRVbg1498RLOp7zVoq2KWGcxuzytX1mCraNGLebHrCKhK\nQn0DbG/KHuRcazdbOVqznKbVxyKnPaZQYBzRgmuLixVvsSayaRyIdBaxMkYd/OE/\nD2iqWwcCgYAillMzqR2Hj4JqrnlcptcL4fFBjYMoQOwkpIJf33CBid3Y1mKZKfue\nlj+myH2fTKacj+TfwQ/rnCaHtWG5a1qXtMHR22uW7EcyTZR6OpXGgQE9/scBV/oI\n3e65ylxLonsSHCuGINsbYcQXbvuQdNabeT6Y7ZaNfWSHV6OMW58o8Q==\n-----END RSA PRIVATE KEY-----\n'
+CERT_SOURCE_CLIENT_EC_KEY = b'-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIA5bhHe36AVGICoHgrNGI6Rug6NOpX5nZihZ6VlccyjxoAoGCCqGSM49\nAwEHoUQDQgAE0qyF5SskbdKuGYYCrYSZo0N1eMQKStX2Q7xb3EwTOgsRF6NbD/Cn\nsVvpRoj21dXHGO969fjEtYUVNU883IMXxQ==\n-----END EC PRIVATE KEY-----\n'

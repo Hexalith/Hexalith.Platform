@@ -339,6 +339,26 @@ class TLSTests(FixtureCase):
 
 
 class CorrectedBoundaryTests(FixtureCase):
+    def test_certificate_profiles_keep_stale_and_future_drain_and_fence_guards_closed(self):
+        from datetime import timedelta
+        for operation, target in (('resume', 'resume-replicas'), ('cleanup', 'owned-target-inventory'),
+                ('cleanup', 'delete-owned-0'), ('cleanup', 'delete-owned-1'), ('cleanup', 'delete-owned-2')):
+            for seconds in (31, -1):
+                with self.subTest(operation=operation, target=target, age=seconds):
+                    boundary, _, verifier, native = f.compose(self.directory, operation,
+                        native_profiles=('client-certificate', 'client-certificate'),
+                        native_secrets=(f.certificate_secret(), f.certificate_secret('TARGET')),
+                        native_cas=(f.CERT_SOURCE_CA, f.CERT_TARGET_CA))
+                    stage = f.StageProtocol(boundary.binding, verifier.policy, verifier.signature, boundary.credentials)
+                    boundary.process = stage
+                    request = self.advance(boundary, target)
+                    before = len(native.calls), len(stage.backend.requests)
+                    boundary.now = lambda: f.NOW + timedelta(seconds=seconds)
+                    with self.assertRaises(b.Refusal):
+                        boundary.exchange(request, time.monotonic() + 3)
+                    self.assertEqual((len(native.calls), len(stage.backend.requests)), before)
+                    self.assertTrue(boundary.stopped)
+
     def materialize(self, boundary, request):
         if request.name == 'authenticate-policy':
             value = a.strict_json(request.stdin)

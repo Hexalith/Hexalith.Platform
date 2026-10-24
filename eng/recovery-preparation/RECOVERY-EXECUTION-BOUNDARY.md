@@ -404,3 +404,56 @@ recovery-attempt allocation, operational certificate issuance, recovery-document
 signing, upload, recovery or infrastructure mutation occurred. Public activation
 and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
 Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.
+
+
+## Review-2 native certificate allocation and cleanup — 2026-10-24
+
+The [review-2 content-bound verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-2/verification.json) records **315 passing
+tests, zero skips**: 39 certificate cases and the 276 existing boundary/readback/
+authentication/S3/common/telemetry cases. All 305 review-1 tests and every one of
+the 24 registration subcases remain covered. Both historical candidate packets,
+source snapshots, logs and spec receipt checkpoints retain their original bytes.
+
+Each custody-backed allocator now registers a unique process-local memory-file
+identity before the raw memfd syscall. Recovery of an interrupted syscall result
+matches that exact memory-file identity, including its pinned inode once known;
+closed owners from an earlier allocation cannot suppress a new allocation that
+reuses their descriptor number. Stateful close ownership prevents re-closing a
+released raw number. Direct opcode regressions cover memfd and duplicate results
+before assignment for both certificate/key inputs, while unrelated, similarly
+named and reused descriptors remain open and unchanged. Legacy raw allocator
+callers retain their compatibility behavior without inheriting this custody
+qualification.
+
+The whole native exchange retains stream/error custody through final cleanup.
+The original interruption survives a second interruption during initial error
+recording, inner cleanup or the guarded outer fallback. Direct real-MemoryBIO
+regressions also interrupt both stream-close entries with an open peer and an
+owned memory input. Independent release attempts complete before any success;
+the tested guarantee covers these two-interrupt patterns, not indefinitely
+repeated asynchronous exceptions. New regressions reach custody-backed duplicate,
+write, chmod and seal failures, isolate material/count bounds with no loader
+dispatch, and reject empty/mismatched fixture collections instead of defaulting
+or truncating them.
+
+The executable receipt checker verifies recorded source, snapshot, log and spec
+checkpoint hashes by content, without requiring a particular Git HEAD or index.
+Its isolated self-test proves that matching changes to working source and its
+snapshot still fail the receipt's source hash. The prior review-1 preservation
+checker is unchanged: it deliberately requires the preparation HEAD and an
+unchanged index, so it is a historical precommit check, not a later content-only
+receipt verifier. Python patch/interpreter identity, OpenSSL and OS/release/
+architecture are recorded without hostnames. Unrelated concurrent Story 2.3,
+deferred-ledger and submodule edits are outside this scoped implementation and
+were preserved.
+
+Actual credential/custody/IAM/authority and client identity qualification,
+live connector/TLS/runtime qualification and activation, complete store/system
+and isolated-target orchestration including telemetry PostgreSQL, proof-consumer
+integration, fresh exact attempt/policy/tool bindings, and actual recovery,
+resume/cleanup plus signed/non-dry/manual acceptance remain pending. Synthetic
+fixtures confer no authority. No actual credentials/configuration/endpoints,
+recovery-attempt allocation, operational certificate issuance, recovery-document
+signing, upload, recovery or infrastructure mutation occurred. Public activation
+and operational gates remain closed; **4.27 stays in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**. Earlier handoff prefixes and evidence are preserved.

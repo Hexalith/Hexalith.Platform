@@ -1,0 +1,283 @@
+{
+  "actualConfigurationAccessed": false,
+  "actualCredentialsAccessed": false,
+  "all24RegistrationSubcasesRetained": true,
+  "allInitialPacketBytesUnchanged": true,
+  "allOriginal297TestBehaviorsAndNamesRetained": true,
+  "allOriginal305TestBehaviorsAndNamesRetained": true,
+  "allPriorPacketBytesUnchanged": true,
+  "baselineCommit": "693390a790d95a9bad9b1bd9cc0f0f3052f3fbef",
+  "classification": "unsigned offline review-2 re-derivation verification; static public synthetic credentials, real SSLContext loading and socket-free mutual TLS only",
+  "externalSocketsUsed": false,
+  "frozenSpecSha256": "508384a626e8c872c8e98fe78f06a6d723c788cb5602fcbffddc652d9a34bb49",
+  "handoffSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "6938426f8c30231846619fb030449c215ee2a3cb89c0ba4a67b77263afe27fe9",
+    "_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md": "a8302ce5eb93ff019b53e2aefdaf91af31ce316be9eda12f1faa61b125401f81",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "106177575fe4f5f0e9faeb987ca71250c222ef43e1056dd12f68a6b064ecf7c5",
+    "eng/recovery-preparation/RECOVERY-EXECUTION-BOUNDARY.md": "611484f5f10e00f3a4366b657509f29734360c70048d681c818146157a2c3109"
+  },
+  "independentParentProbe": {
+    "exitCode": 0,
+    "originalArgv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "/tmp/bmad-427-parent-raw-transfer-probe.py"
+    ],
+    "originalStdout": "/tmp/bmad-427-parent-raw-transfer-result.json",
+    "result": "parent-raw-transfer-result.json",
+    "source": "parent-raw-transfer-probe.py"
+  },
+  "infrastructureMutation": false,
+  "initialCandidate": "../verification.json",
+  "initialCandidateSnapshots": "../sources/",
+  "interruptionQualification": "tested primary interruption plus second interruption during recording or inner/fallback cleanup; no guarantee under indefinitely repeated asynchronous exceptions",
+  "legacyRawCallers": "compatibility retained; no new custody qualification claimed",
+  "matrixCoverage": "matrix-coverage.md",
+  "newFocusedTestsAgainstReview1": 10,
+  "operationalCertificatesIssued": false,
+  "operationalGate": "closed",
+  "operationalQualification": null,
+  "packetFileSha256": {
+    "README.md": "4815274ec0a7c16860aae459121224e4b128c5b97759c687f58fb0f2c58ddbab",
+    "command-results.json": "ea16cb74a51e331966ce0ad3d76eddad015f8a1516c8f286916edb286ece3d7a",
+    "common-adapter.log": "c980a76672d484aa2aa31d239c3f64ea0231ac84db548ee247ccadabc05fc900",
+    "diff-check.log": "0d4fcdbc441a99763e2886a18971b9e98d840ae1f42183b207e2319be9fc2beb",
+    "execution-boundary.log": "5a6959d15a1668aa06579979e1ef0fca91fa1af2661ed974a1b84402a46dabc1",
+    "handoff-prefixes.json": "d18b2e7bb8150953f6b5b5b9ef6185af97552c9110a8816739217c28acb25c90",
+    "immutable-readback.log": "440be55cfc9f5ed06f2da81bfc349e6c17c2894b78c97902150bb83d5dfaa1f4",
+    "immutable-s3-provider.log": "cb0f4d92f6f2a92e09d87af1adf4f51ac15527815e5eeadca79aad15325eaaab",
+    "matrix-coverage.md": "5313ce057cbcd86c9378a4890852a7442bbfeb64c0b1b7f974a600f09b276938",
+    "native-client-certificate.log": "e6a03694db94a9b46dd32190ecb054beb3e429e7d4d88f58f378ce682cb5d3a2",
+    "parent-raw-transfer-probe.py": "e4b888c087266398950ca1c5c64abefa62184003b27dfacc7ba1770f48849a86",
+    "parent-raw-transfer-result.json": "7541bffcd5b1479ced48d7892f4470bcb4b8f8afa1561903cc160353fe9dc122",
+    "policy-authentication.log": "0b037e9302d53d6a82c6948da5e1280f6d5bb4d19e6ccf1a2ac826b9e325698e",
+    "prior-packet-sha256.json": "4537ace25aa877325aa363ecee1d6d6eaaafda103cdba8e6bed60afc97df7706",
+    "receipt-check.log": "2c563d424f1af46f033f256a6aba9dae96dd055b371ffe6fcbc1c4a169434c7b",
+    "runtime-environment.json": "04c7ff2eb288ab54af50dbe2ecae53e991a3e7f85abf375ebd10031a46609ce6",
+    "sources/_execution_boundary_fixtures.py": "82167a940467bcf81f689f85427a10a5b31937cf881ce140eaffc5ec177482bb",
+    "sources/recovery_execution_boundary.py": "3157b29d2d5e9b2c7a679a0385e6be5f3c8531d58b2dfd61568e6bb80fce8920",
+    "sources/test_native_client_certificate.py": "eb0116906cce5138789ff2444424725cb3b803d4fecbcbb74907b896346bcd8d",
+    "sources/test_recovery_execution_boundary.py": "17ac8c330d489bfb076ef54a9d3f684c98e301a72437944fd8df09582438efd4",
+    "spec-dispatch-baseline.md": "aef6dba84f4df5f7ee6a0a85bc47d3d33cb423b447dd008b06b728dffd7d1338",
+    "spec-verification-checkpoint.md": "a8302ce5eb93ff019b53e2aefdaf91af31ce316be9eda12f1faa61b125401f81",
+    "telemetry-postgres.log": "24a9a1f0c1893daacf49c83b82be480a34fd99c235d851f4f2c5e2244ae64800",
+    "verify-receipt.py": "e6ca3a6198ce592f13b93a22f5fbebfcdf8c656adf86406bb7cb943498acc190"
+  },
+  "preservedPriorPacketFiles": 55,
+  "preservedStoryStates": {
+    "4.1": "closed",
+    "4.27": "in-progress",
+    "Timesheets 3.6": "open/FAIL"
+  },
+  "priorPacketInventory": "prior-packet-sha256.json",
+  "productionEndpointsAccessed": false,
+  "publicActivation": "disabled",
+  "receiptChecker": "verify-receipt.py",
+  "receiptCheckerSelfTest": "isolated coherent source/snapshot drift rejected by recorded source hash",
+  "recoveryAcceptance": null,
+  "recoveryAttemptAllocated": false,
+  "recoveryDocumentSigning": false,
+  "recoveryOperations": false,
+  "remainingIntegrations": [
+    "Actual credential acquisition/custody, IAM/authority lineage and client identity qualification",
+    "Separately reviewed live connector/TLS/runtime qualification and explicit activation",
+    "Full store/system orchestration including telemetry PostgreSQL",
+    "Isolated capture/restore targets and proof-consumer integration",
+    "Fresh exact attempt/policy/tool bindings, separately scoped operational approval, actual recovery/resume/cleanup and signed/non-dry/manual acceptance"
+  ],
+  "reviewIteration": 2,
+  "runtimeEnvironment": "runtime-environment.json",
+  "skips": 0,
+  "snapshotSha256": {
+    "_execution_boundary_fixtures.py": "82167a940467bcf81f689f85427a10a5b31937cf881ce140eaffc5ec177482bb",
+    "recovery_execution_boundary.py": "3157b29d2d5e9b2c7a679a0385e6be5f3c8531d58b2dfd61568e6bb80fce8920",
+    "test_native_client_certificate.py": "eb0116906cce5138789ff2444424725cb3b803d4fecbcbb74907b896346bcd8d",
+    "test_recovery_execution_boundary.py": "17ac8c330d489bfb076ef54a9d3f684c98e301a72437944fd8df09582438efd4"
+  },
+  "sourceSha256": {
+    "eng/recovery-preparation/_execution_boundary_fixtures.py": "82167a940467bcf81f689f85427a10a5b31937cf881ce140eaffc5ec177482bb",
+    "eng/recovery-preparation/fresh_prerequisite.py": "ced52b51b6a44ede182a42b8e09a164354b6b7f2575211615ea097d2d6724266",
+    "eng/recovery-preparation/immutable_readback_driver.py": "5dac9d95ed8c46eb151cf82286fe9f39eadd8045d95bccd75a6983f80a7ac9b0",
+    "eng/recovery-preparation/native_enrollment_execution.py": "9319166c05285eef9090a1c02a4ef462b036ccd91e87a9e33917f8cf87def3d1",
+    "eng/recovery-preparation/native_https_transport.py": "1564e454eeee14b326613443b6d6606c59d2563e75c2191001965e7945913362",
+    "eng/recovery-preparation/native_measurement_adapter.py": "e8679bba18017a2fc269eb081d08301fe60b8f78bb17de2b023b5fea9552220e",
+    "eng/recovery-preparation/policy_authentication_driver.py": "b4cf0239b2733b95939e92f54eb8b94a9bae3c33236153f04fc4bf38a4c48038",
+    "eng/recovery-preparation/recovery_adapters.py": "c9330eacfe3ad174920d0def0ea1112fd75463dac52556f8ee6d92dfe67662e0",
+    "eng/recovery-preparation/recovery_execution_boundary.py": "3157b29d2d5e9b2c7a679a0385e6be5f3c8531d58b2dfd61568e6bb80fce8920",
+    "eng/recovery-preparation/static_transport_preflight.py": "30da6f0002d02a2fd3c47b720d74299ad4352cd2de49e2486ec982bd8b36ff9a",
+    "eng/recovery-preparation/telemetry_postgres_adapter.py": "21584b5e4d0976f5027e18bb0d8581fe8099294c2a3bc4afaa8c7c538489b83b",
+    "eng/recovery-preparation/test_fresh_prerequisite.py": "c551a27914cd451b1c876079e23f2cfd95b8738a30f281597880d9a88b26df59",
+    "eng/recovery-preparation/test_immutable_readback_driver.py": "d87ae73d25afe673c2fc2b67bee63ec764768b16632e7af90142e0821db5cc1a",
+    "eng/recovery-preparation/test_immutable_s3_provider.py": "8462d0b20e137b90074773e0a385b94bc6ffc33a9bb6c4e5a283298765b2be4a",
+    "eng/recovery-preparation/test_native_client_certificate.py": "eb0116906cce5138789ff2444424725cb3b803d4fecbcbb74907b896346bcd8d",
+    "eng/recovery-preparation/test_native_enrollment_execution.py": "46aa289e926412b2457f36bbec721f0ccdf30e42ee9fb62afc75176b9ba40be7",
+    "eng/recovery-preparation/test_native_https_transport.py": "bca33c8c4f24f20c89fa29c99239c10407c177f6ab0dcf812e7c33d8a185d1cd",
+    "eng/recovery-preparation/test_native_measurement_adapter.py": "0588c96e6522af1606fc71f6fbba8b501ae1f3821fbd1cd322b5d308c7ab04b2",
+    "eng/recovery-preparation/test_policy_authentication_driver.py": "8aab4de5900fb9c3b43881505a516a464cfb5aa10818a66e037ace4692470a83",
+    "eng/recovery-preparation/test_recovery_adapters.py": "42e1f48888aecf4d6000cb8230d7ff73dd560ad7b4e665b893101dfc15c12de4",
+    "eng/recovery-preparation/test_recovery_execution_boundary.py": "17ac8c330d489bfb076ef54a9d3f684c98e301a72437944fd8df09582438efd4",
+    "eng/recovery-preparation/test_static_transport_preflight.py": "458e96711941dab75ff528d2b7aa3b8b9c1f25c2f8824f5de9ad5a1b5088cc59",
+    "eng/recovery-preparation/test_telemetry_postgres_adapter.py": "74283f4b5fd64de7b0e4a7f14e574a3a637bc4ff46313cbf442527edb8010563",
+    "eng/recovery-preparation/test_verify_enrollment_revision.py": "c475a067f48c38b2a8a59b9b242d7be9fee905993ab1128d621ba99b4a3f89e8",
+    "eng/recovery-preparation/test_verify_native_supplement.py": "313fbd44fcad7b35f9150159f53b240ccf339e97adc19645d370998819b4f5bb",
+    "eng/recovery-preparation/test_verify_packet.py": "ef0bc400d60f3140bd580a2ec9a05beca666d45634104ba7c8128c5b444d9996",
+    "eng/recovery-preparation/verify_enrollment_revision.py": "cc53de8429cc0b9e6dd82bb854448985a8796a63a0513f43722d94d2054aa490",
+    "eng/recovery-preparation/verify_native_supplement.py": "d7e88423178d5b1f54dc03c5d939029a8176cfe467c95d15c1b0996279c975eb",
+    "eng/recovery-preparation/verify_packet.py": "19d535eead357a609fb9a3cefe41615b1f148569dafebf08b65fa37f6938cb5a"
+  },
+  "sourceSnapshots": "sources/",
+  "specDispatchSha256": "aef6dba84f4df5f7ee6a0a85bc47d3d33cb423b447dd008b06b728dffd7d1338",
+  "specDispatchSnapshot": "spec-dispatch-baseline.md",
+  "specVerificationCheckpoint": "spec-verification-checkpoint.md",
+  "specVerificationCheckpointSha256": "a8302ce5eb93ff019b53e2aefdaf91af31ce316be9eda12f1faa61b125401f81",
+  "story": "4.27",
+  "storyStatus": "in-progress",
+  "tests": [
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_native_client_certificate.py"
+      ],
+      "elapsedSeconds": 4.894,
+      "exitCode": 0,
+      "log": "native-client-certificate.log",
+      "logSha256": "e6a03694db94a9b46dd32190ecb054beb3e429e7d4d88f58f378ce682cb5d3a2",
+      "name": "native-client-certificate",
+      "skips": 0,
+      "tests": 39
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_recovery_execution_boundary.py"
+      ],
+      "elapsedSeconds": 25.074,
+      "exitCode": 0,
+      "log": "execution-boundary.log",
+      "logSha256": "5a6959d15a1668aa06579979e1ef0fca91fa1af2661ed974a1b84402a46dabc1",
+      "name": "execution-boundary",
+      "skips": 0,
+      "tests": 45
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_immutable_readback_driver.py"
+      ],
+      "elapsedSeconds": 0.34,
+      "exitCode": 0,
+      "log": "immutable-readback.log",
+      "logSha256": "440be55cfc9f5ed06f2da81bfc349e6c17c2894b78c97902150bb83d5dfaa1f4",
+      "name": "immutable-readback",
+      "skips": 0,
+      "tests": 12
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_policy_authentication_driver.py"
+      ],
+      "elapsedSeconds": 0.631,
+      "exitCode": 0,
+      "log": "policy-authentication.log",
+      "logSha256": "0b037e9302d53d6a82c6948da5e1280f6d5bb4d19e6ccf1a2ac826b9e325698e",
+      "name": "policy-authentication",
+      "skips": 0,
+      "tests": 13
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_immutable_s3_provider.py"
+      ],
+      "elapsedSeconds": 2.171,
+      "exitCode": 0,
+      "log": "immutable-s3-provider.log",
+      "logSha256": "cb0f4d92f6f2a92e09d87af1adf4f51ac15527815e5eeadca79aad15325eaaab",
+      "name": "immutable-s3-provider",
+      "skips": 0,
+      "tests": 42
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_recovery_adapters.py"
+      ],
+      "elapsedSeconds": 0.915,
+      "exitCode": 0,
+      "log": "common-adapter.log",
+      "logSha256": "c980a76672d484aa2aa31d239c3f64ea0231ac84db548ee247ccadabc05fc900",
+      "name": "common-adapter",
+      "skips": 0,
+      "tests": 94
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "eng/recovery-preparation/test_telemetry_postgres_adapter.py"
+      ],
+      "elapsedSeconds": 0.624,
+      "exitCode": 0,
+      "log": "telemetry-postgres.log",
+      "logSha256": "24a9a1f0c1893daacf49c83b82be480a34fd99c235d851f4f2c5e2244ae64800",
+      "name": "telemetry-postgres",
+      "skips": 0,
+      "tests": 70
+    }
+  ],
+  "testsPassed": 315,
+  "unrelatedEditsExcluded": [
+    "Story 2.3",
+    "deferred-work ledger",
+    "submodules"
+  ],
+  "uploads": false,
+  "verificationCommands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "diff-check.log",
+      "logSha256": "0d4fcdbc441a99763e2886a18971b9e98d840ae1f42183b207e2319be9fc2beb"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3.14",
+        "-I",
+        "-S",
+        "-B",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-delivery/review-2/verify-receipt.py",
+        "--self-test"
+      ],
+      "exitCode": 0,
+      "log": "receipt-check.log",
+      "logSha256": "2c563d424f1af46f033f256a6aba9dae96dd055b371ffe6fcbc1c4a169434c7b"
+    }
+  ]
+}
