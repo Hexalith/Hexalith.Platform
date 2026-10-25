@@ -43,6 +43,49 @@ public sealed class PlatformDaprDiagnosticsTests
     }
 
     [Fact]
+    public async Task DisposalReconcilesPublishedAllocationWhileStateDeliveryIsBlockedAsync()
+    {
+        string root = TemporaryDirectory();
+        try
+        {
+            IDistributedApplicationBuilder builder = Builder();
+            ExecutableResource native = builder.AddExecutable("memories-dapr-cli", "daprd", root).Resource;
+            ExecutableResource foreign = builder.AddExecutable("foreign-dapr-cli", "daprd", root).Resource;
+            await using DistributedApplication app = builder.Build();
+            string directory = Path.Combine(root, "evidence");
+            await using PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            await StartCaptureAsync(app, builder, capture);
+            ResourceLoggerService logs = app.Services.GetRequiredService<ResourceLoggerService>();
+            ResourceNotificationService notifications = app.Services.GetRequiredService<ResourceNotificationService>();
+            string allocated = native.Name + "-allocated";
+            // Hold only the collector's admission gate, so its existing background consumer
+            // cannot bind this new instance before disposal. Aspire publication/logging stay real.
+            object admission = typeof(PlatformDaprDiagnostics).GetField("_watcherGate", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(capture)!;
+            Task disposal;
+            lock (admission)
+            {
+                logs.GetLogger(native).LogInformation("logical backlog before immediate disposal");
+                logs.GetLogger(allocated).LogInformation("allocated backlog before immediate disposal");
+                logs.GetLogger(foreign.Name + "-allocated").LogInformation("foreign backlog must stay excluded");
+                notifications.PublishUpdateAsync(native, snapshot => snapshot with { State = new("Running", null) }).IsCompletedSuccessfully.ShouldBeTrue();
+                notifications.PublishUpdateAsync(foreign, foreign.Name + "-allocated", snapshot => snapshot with { State = new("Exited", null), ExitCode = 99 }).IsCompletedSuccessfully.ShouldBeTrue();
+                notifications.PublishUpdateAsync(native, allocated, snapshot => snapshot with { State = new("Exited", null), ExitCode = 23 }).IsCompletedSuccessfully.ShouldBeTrue();
+                disposal = capture.DisposeAsync().AsTask();
+            }
+            await disposal.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            string console = File.ReadAllText(Path.Combine(directory, native.Name + ".console.jsonl"));
+            console.ShouldContain("logical backlog before immediate disposal");
+            console.ShouldContain("allocated backlog before immediate disposal");
+            console.ShouldNotContain("foreign backlog must stay excluded");
+            StateRecords(directory).Count(record => record.GetProperty("Kind").GetString() == "log-stream-completed").ShouldBe(2);
+            JsonElement final = StateRecords(directory).Last();
+            final.GetProperty("Kind").GetString().ShouldBe("capture-stopped");
+            final.GetProperty("CaptureFailed").GetBoolean().ShouldBeFalse();
+        }
+        finally { Directory.Delete(root, recursive: true); }
+    }
+
+    [Fact]
     public async Task LateAllocatedPublicInstanceRetainsBacklogAndLiveOutputAndDrainsTheSubscribedKeyAsync()
     {
         string root = TemporaryDirectory();
@@ -159,7 +202,11 @@ public sealed class PlatformDaprDiagnosticsTests
             receipt.GetProperty("TerminalStateObserved").GetBoolean().ShouldBeTrue();
             receipt.GetProperty("ExitCodeObserved").GetBoolean().ShouldBeTrue();
             metadata.ShouldNotContain("never-retain");
-            Directory.GetFiles(evidence).Length.ShouldBe(2);
+            Directory.GetFiles(evidence).Length.ShouldBe(3);
+            string hostEvidence = File.ReadAllText(Path.Combine(evidence, "apphost.lifecycle.jsonl"));
+            hostEvidence.ShouldContain("capture-started");
+            hostEvidence.ShouldContain("unavailable-from-managed-lifetime-hooks");
+            hostEvidence.ShouldNotContain("never-retain");
             if (!OperatingSystem.IsWindows())
             {
                 File.GetUnixFileMode(evidence).ShouldBe(UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);

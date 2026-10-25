@@ -1311,3 +1311,12 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-27-native-client-certificate-delivery.md`
   summary: Select the Redis peer by explicit resource identity in the Story 2.5 live lifecycle proof.
   evidence: PlatformLocalRunLifecycleTests.cs:53-54 calls redis-cli on peerBefore.ContainerIds.First(), while CompositionRunResourceScanner returns all containers bearing the run label; eng/test-environment-provisioning/suite.py already selects resourceId=redis. Concurrent Story 2.5 fixture, outside native certificate delivery.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md (2026-10-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Off-Linux process discovery is never marked unverified by a normal test.
+  evidence: Pre-verified medium. `CompositionRunResourceScanner.FindAsync` sets `Unverified` and discovery failure `processes` when the OS is not Linux. The normal lane is Linux and there is no OS seam, so a Windows-only assertion would be skipped the same way the existing Windows skips are.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: The post-initialize state read is null-forgiving.
+  evidence: Unverified, medium if true. `CompositionEngine` line 301 assigns `TryReadAsync` with the null-forgiving operator immediately after `InitializeStateAsync`. Settle by confirming whether a null read is recorded as a startup failure or escapes as a null dereference.

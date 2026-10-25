@@ -151,6 +151,7 @@ public static class PlatformAppModel
             string discovery = options.RunPlan is null
                 ? CompositionDaprComponentRenderer.RenderConfiguration("platform-" + Path.GetFileName(rendered), rendered)
                 : File.ReadAllText(options.RunPlan.DaprConfigPath);
+            if (options.RetentionProfile is { } retentionDiscovery) discovery = retentionDiscovery.ConfigureDiscovery(discovery);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);

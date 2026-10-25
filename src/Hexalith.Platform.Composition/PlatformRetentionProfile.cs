@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using YamlDotNet.RepresentationModel;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Builds.Tooling.Runtime;
@@ -53,6 +54,32 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
             || Path.GetFullPath(candidate) != Path.Combine(Path.GetFullPath(platformRoot), "references", "Hexalith.Memories"))
             throw new InvalidDataException("The retention experiment requires the directly declared Memories source and Dapr 1.18.1 in the selected Platform workspace.");
         return new(plan);
+    }
+
+    /// <summary>Disables defective Dapr 1.18.1 discovery cleanup only for this bounded, run-owned local profile.</summary>
+    /// <param name="configuration">The supported runner's generated discovery configuration.</param>
+    /// <returns>The discovery configuration with renewal and stale-host lookup unchanged.</returns>
+    internal string ConfigureDiscovery(string configuration)
+    {
+        YamlStream document = new();
+        document.Load(new StringReader(configuration));
+        var spec = (YamlMappingNode)((YamlMappingNode)document.Documents.Single().RootNode).Children[new YamlScalarNode("spec")];
+        var discovery = (YamlMappingNode)spec.Children[new YamlScalarNode("nameResolution")];
+        var metadata = (YamlMappingNode)discovery.Children[new YamlScalarNode("configuration")];
+        string registry = Path.Combine(Path.GetDirectoryName(_plan.DaprConfigPath)!, "name-resolution.db").Replace('\\', '/');
+        if (discovery.Children[new YamlScalarNode("component")].ToString() != "sqlite"
+            || discovery.Children[new YamlScalarNode("version")].ToString() != "v1"
+            || metadata.Children[new YamlScalarNode("connectionString")].ToString() != registry)
+            throw new InvalidDataException("The local retention discovery workaround requires the runner-owned SQLite v1 registry.");
+
+        // components-contrib v1.18.0 deletes fresh registrations in its SQLite GC predicate.
+        // Its supported zero interval selects gcNoOp; five-second renewal/freshness checks stay active.
+        // This disposable registry belongs to one bounded run, with no automatic restarts. The existing
+        // workspace disposal removes it. This does not alter PostgreSQL telemetry TTL or cleanup.
+        metadata.Children[new YamlScalarNode("cleanupInterval")] = new YamlScalarNode("0s");
+        using StringWriter writer = new(System.Globalization.CultureInfo.InvariantCulture);
+        document.Save(writer, assignAnchors: false);
+        return writer.ToString();
     }
 
     /// <summary>Creates inactive, private run-local TLS material only when the runner composes this profile.</summary>

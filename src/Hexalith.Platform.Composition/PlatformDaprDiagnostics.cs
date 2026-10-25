@@ -41,6 +41,7 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
             }
             _logs = startup.Services.GetRequiredService<ResourceLoggerService>();
             _notifications = startup.Services.GetRequiredService<ResourceNotificationService>();
+            _ = new PlatformNativeHostDiagnostics(directory, startup.Services.GetRequiredService<Microsoft.Extensions.Hosting.IHostApplicationLifetime>(), _notifications, startup.Model.Resources.ToArray());
             // Public notifications supply the allocated producer key after early registration.
             _stateWatcher = WatchStatesAsync();
             return Task.CompletedTask;
@@ -108,6 +109,22 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
         // Do not cancel at ApplicationStopping: retain evidence while public producers still run.
         // DCP stops its watchers before native cleanup, so disposal can drain only delivered
         // batches. A final nonterminal snapshot must remain explicitly incomplete evidence.
+        _stop.CancelAfter(TimeSpan.FromSeconds(3));
+        if (_notifications is not null)
+        {
+            // The public watcher replays published snapshots before observing cancellation.
+            // Reconcile that finite replay before closing subscription admission: the existing
+            // watcher may not yet have delivered an owned allocation whose log backlog exists.
+            using CancellationTokenSource replay = new();
+            await replay.CancelAsync().ConfigureAwait(false);
+            try
+            {
+                await foreach (ResourceEvent update in _notifications.WatchAsync(replay.Token).ConfigureAwait(false))
+                    if (_resources.TryGetValue(update.Resource.Name, out PlatformDaprDiagnosticResource? resource) && ReferenceEquals(resource.Resource, update.Resource))
+                        WatchInstance(resource, update.ResourceId);
+            }
+            catch (OperationCanceledException) when (replay.IsCancellationRequested) { }
+        }
         Task[] watchers;
         lock (_watcherGate)
         {
@@ -115,7 +132,6 @@ internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<st
             foreach (string instance in _watchers.Keys) _logs?.Complete(instance);
             watchers = [.. _watchers.Values];
         }
-        _stop.CancelAfter(TimeSpan.FromSeconds(3));
         await Task.WhenAll(watchers).ConfigureAwait(false);
         bool drainTimedOut = _stop.IsCancellationRequested;
         await _stop.CancelAsync().ConfigureAwait(false);

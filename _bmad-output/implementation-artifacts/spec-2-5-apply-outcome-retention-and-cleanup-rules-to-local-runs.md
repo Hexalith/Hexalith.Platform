@@ -131,3 +131,39 @@ No unresolved intent gaps. Dispatch spans runner persistence, CLI and contract o
 ## Verification
 
 Build Builds Module.Tests and Platform Composition.Tests individually in Debug with `dotnet build <project> -c Debug -m:1`. Invoke built xUnit assemblies with `-class` filters for the listed tests, selection/startup and report-redaction regressions; require no unexpected failures/skips. Run schema parity and the gated real-service lifecycle proof. Retain exact commands, full revisions, parsed results, resource/peer audits and cleanup receipts; report unavailable package/live prerequisites separately.
+
+### Review Findings
+
+Implementation group only (Builds source, `docs/contracts/test-environment-v1.md`, `eng/test-environment-provisioning/suite.py`, `PlatformLocalRunLifecycleTests.cs`), 2026-10-25. Builds tests, spec/sprint text, the evidence archive, `README.md`, and `startup-verify.sh` were not in this diff.
+
+- [ ] [Review][Patch] Unreadable runner documents are treated as missing and overwritten, so a locked or malformed outcome can be replaced [CompositionDocumentStore.cs:68]
+- [ ] [Review][Patch] A later archive or cleanup-recording failure leaves the command failed while the durable first outcome stays passed [NativeTestExecutor.cs:281]
+- [ ] [Review][Patch] Explicit down stores an empty unverified remainder before teardown, dropping the last known leftover ids [CompositionEngine.cs:1126]
+- [ ] [Review][Patch] Partial startup publishes an empty resource list instead of an unobserved binding [TestResultWriter.cs:235]
+- [ ] [Review][Patch] A preserved outcome still absorbs later rule ids, so success cleanup cites HXC130 and down omits the result path [CompositionEngine.cs:633]
+- [ ] [Review][Patch] Cancelling the executor token commits owner cancellation, and the later execution-lifetime correction does not replace it [NativeTestExecutor.cs:420]
+- [ ] [Review][Patch] The first and inspected outcome callbacks run with an already-cancelled budget token and throw before the outcome is committed [NativeTestExecutor.cs:407]
+- [ ] [Review][Patch] One unverifiable claim file makes cleanup incomplete for every run [CompositionResourceClaimStore.cs:135]
+- [ ] [Review][Patch] Human list hides leftovers, enumeration accepts an attempt id equal to the environment id, and one bad state file hides every environment [ToolDiagnosticFormatter.cs:73]
+- [ ] [Review][Patch] Legacy evidence marks workspace or claim leftovers unverified and then omits their ids [ModuleRunEvidenceWriter.cs:261]
+- [ ] [Review][Patch] The last workspace-delete attempt can report the directory remaining after it has gone [CompositionWorkspace.cs:71]
+- [ ] [Review][Patch] Owner cancellation is still asserted as withdrawn, so restoring that status would not fail the normal suite [SelectedObservationTests.cs:359]
+- [ ] [Review][Patch] Non-hex docker output is not asserted separately from a retained container id [CompositionRunResourceScanner.cs:168]
+- [ ] [Review][Patch] A symlinked run workspace is not covered by a deletion test [CompositionWorkspace.cs:52]
+- [ ] [Review][Patch] Secret-bearing plan and readiness copies are not refused by a test [CompositionEngine.cs:934]
+- [x] [Review][Defer] Off-Linux process discovery is never marked unverified by a normal test [CompositionRunResourceScanner.cs:34] — deferred: the normal lane is Linux and there is no OS seam, so a Windows-only fact would be skipped the same way the existing Windows skips are
+- [x] [Review][Defer] The post-initialize state read is null-forgiving [CompositionEngine.cs:301] — deferred, unverified medium: confirm whether a null read immediately after InitializeStateAsync is recorded as a startup failure or escapes as a null dereference
+
+#### Rejected
+
+- `false` — Early HXT007 does not clean up a completed test failure. A nonzero exit is committed before report inspection, and cancellation is first only when the executor token is already cancelled.
+- `false` — Off Linux, cleanup stays incomplete because the scan is unverified. Discovery failures are paired with `Unverified`, so `IsEmpty` cannot treat that scan as complete.
+- `false` — `Directory.Delete` throws when the directory remains. A true return follows a successful delete or a missing directory.
+- `low` — The gated live proof's extra package, hash, termination, and credential assertions, and its `finally` exception swap, are outside everyday runs. Package qualification is already an acknowledged boundary, and preserving the original exception is more than a direct correction.
+- `false` — `suite.py` hits `assert report_path` before writing the report, so a missing report path is not a KeyError. Lifecycle profiles write their own Redis keys and receipt.
+- `false` — A late callback does not resurrect a removed owner. The outcome lock re-reads the record, and a complete cleanup disposition skips the state write.
+- `false` — `File.Delete` does not throw after the validation temp has been moved, and the writer is closed before validation, so that delete does not hide `InvalidDataException`.
+- `false` — A missing native report path in `suite.py` fails the assert. It does not raise KeyError.
+- `low` — The live proof's root walk fails only when `apphost.cs` is absent, which already stops that gated test. A typed exception adds a branch for a layout this proof does not run in.
+- `false` — Startup recording does not drop published candidate proof. Partial bindings keep candidate `not-yet-populated`, which this story does not populate.
+- `false` — Termination stays `not-yet-populated` because this diff's contract says an unauthenticated stopping observation must not be fabricated.
