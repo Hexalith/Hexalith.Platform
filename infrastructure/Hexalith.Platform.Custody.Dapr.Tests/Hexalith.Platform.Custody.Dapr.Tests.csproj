@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable><GenerateDocumentationFile>false</GenerateDocumentationFile><RestorePackagesWithLockFile>true</RestorePackagesWithLockFile></PropertyGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" /></ItemGroup>
 </Project>

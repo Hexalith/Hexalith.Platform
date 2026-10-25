@@ -25,6 +25,7 @@ var tests = new (string, Func<Task>)[] {
     ("complete-protobuf-unknown-field-and-metadata-bounds", Frames),
     ("shared-cut-independent-closure-and-exact-original-pages", Lifecycle),
     ("public-owner-adapter-real-sdk-signed-genesis-and-transition-wire", OwnerAdapter),
+    ("eventstore-published-owner-bridge-exact-framing-and-recovery", EventStoreOwnerBridgeTests.Run),
     ("real-native-store-identity-immutable-cas-and-loss", NativeStoreTests.Run),
     ("serving-startup-and-disjoint-profile-lanes", ReviewRegressionTests.StartupAndProfiles),
     ("canonical-delivery-tuples-and-retained-use-denial", ReviewRegressionTests.DeliveryTuples),
@@ -424,6 +425,7 @@ sealed class SdkBridge(Fixture fixture) : HttpMessageHandler {
     readonly BindingService service = new(fixture.Profile, fixture.Provider, fixture.Store);
     bool initialized;
     internal int Calls; internal bool CorruptSignature;
+    internal bool LoseNextRecordAcknowledgement;
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token) {
         Calls++; byte[] frame = await request.Content!.ReadAsByteArrayAsync(token); byte[] data = []; var metadata = new Dictionary<string, string>();
         using (var input = new CodedInputStream(frame, 5, frame.Length - 5)) { uint tag; while ((tag = input.ReadTag()) != 0) {
@@ -436,6 +438,7 @@ sealed class SdkBridge(Fixture fixture) : HttpMessageHandler {
         foreach (var pair in metadata) invocation.Metadata.Add(pair.Key, pair.Value);
         var componentResponse = await service.Invoke(invocation, new FixtureCallContext());
         var response = CustodyJson.Read<CustodyBindingResponseV1>(componentResponse.Data.Span);
+        if (LoseNextRecordAcknowledgement && invocation.Operation == "record-transition") { LoseNextRecordAcknowledgement = false; throw new HttpRequestException("Controlled lost owner-record acknowledgement after service commit."); }
         if (CorruptSignature && response.Current is { } current) response = response with { Current = current with { Signature = [1, 2, 3] } };
         byte[] json = CustodyJson.Bytes(response); using var protobuf = new MemoryStream(); using (var coded = new CodedOutputStream(protobuf, true)) {
             coded.WriteTag(1, WireFormat.WireType.LengthDelimited); coded.WriteBytes(ByteString.CopyFrom(json)); }
