@@ -178,9 +178,13 @@ class WorksEvidenceGateTests(unittest.TestCase):
         (identity / 'Hexalith.Platform.Identity.csproj').write_text('<Project />')
         (stale / 'Hexalith.Platform.Composition.csproj').write_text('<Project />')
         (compiled / 'Hexalith.Platform.Composition.csproj').write_text(
-            '<Project><ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /></ItemGroup></Project>')
+            '<Project><ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" />'
+            '<EmbeddedResource Include="../../eng/ext-secrets-1/public-joint-plan.json" /></ItemGroup></Project>')
         linked = platform / 'DaprSelfHostedMtls.cs'
         linked.write_text('// linked control plane')
+        resource = platform / 'eng/ext-secrets-1/public-joint-plan.json'
+        resource.parent.mkdir(parents=True)
+        resource.write_text('{"plan":"compiled"}')
         test_project = works / 'tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj'
         test_project.parent.mkdir(parents=True)
         test_project.write_text('<Project />')
@@ -189,19 +193,23 @@ class WorksEvidenceGateTests(unittest.TestCase):
             self.assertEqual(before['compositionRoot'], str(platform))
             self.assertIn(str(compiled / 'Adapter.cs'), before['sourceFiles'])
             self.assertIn(str(linked), before['sourceFiles'])
+            self.assertIn(str(resource), before['sourceFiles'])
             self.assertIn(str(identity / 'Adapter.cs'), before['sourceFiles'])
             self.assertFalse(any(name.startswith(str(stale)) for name in before['sourceFiles']))
             self.assertFalse(any('/bin/' in name for name in before['sourceFiles']))
             # The uncompiled Works dependency copy is not the bound exception.
             (stale / 'Adapter.cs').write_text('// changed uncompiled copy')
             self.assertEqual(verify_works_host.linked_fixture_snapshot(works, platform), before)
-            for path in (compiled / 'Adapter.cs', linked):
+            for path in (compiled / 'Adapter.cs', linked, resource):
                 with self.subTest(path=path.name):
                     original = path.read_text()
                     path.write_text('// changed compiled composition')
                     after = verify_works_host.linked_fixture_snapshot(works, platform)
                     self.assertNotEqual(before['sourceFiles'][str(path)], after['sourceFiles'][str(path)])
                     path.write_text(original)
+            resource.unlink()
+            with self.assertRaises(FileNotFoundError):
+                verify_works_host.linked_fixture_snapshot(works, platform)
 
     def test_linked_fixture_sources_remain_bound_below_output_named_workspace_parents(self):
         for parent in ('bin', 'obj'):

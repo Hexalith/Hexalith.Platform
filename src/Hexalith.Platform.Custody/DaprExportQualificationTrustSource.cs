@@ -10,6 +10,7 @@ public sealed class DaprExportQualificationTrustSource(DaprClient client,IPlatfo
     /// <inheritdoc />
     public async Task<ExportQualificationTrust?> ResolveAsync(ExportQualificationInput input,CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(input);
         if(!enrolledProfiles.TryGetValue(input.ExportId,out var profile) || profile.ExportId!=input.ExportId || profile.TenantId!=input.TenantId || profile.NotBefore>clock.GetUtcNow() || profile.ValidUntil<=clock.GetUtcNow()
             || string.IsNullOrWhiteSpace(profile.PublicAnchorId) || string.IsNullOrWhiteSpace(profile.PublicAnchorVersion)) return null;
         var reference=profile.PublicAnchor;var key=reference.InventoryKey;
