@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -81,6 +81,9 @@ Paths `B/` = `references/Hexalith.Builds/`; `R/` = `B/src/libraries/Hexalith.Bui
 
 - Final reviewed verification: 534/534 affected Builds tests, one four-scenario real-service proof (278.032 seconds), and relocated-evidence audit pass. Both Debug builds have zero warnings/errors. All 21 individual review/audit findings are corrected; nothing is deferred. Final source fingerprints, immutable runtime/archive fields, diagnostic hashes and exact-owner cleanup audits pass. Package runtime qualification remains unavailable under the existing authority gate.
 
+
+- 2026-10-25 review corrections: all 15 patch findings below are implemented. The final unchanged source passes all 584 affected Builds tests (142.164 seconds), both individual Debug builds with zero warnings/errors, current schema byte parity, and the relocated retained-evidence audit. Exact commands, full test XML, source fingerprints, individual patch mappings, and superseded observations are retained under `evidence/2-5/review-fixes-20261025/`. The command preserves its first terminal outcome while later archive/cleanup errors remain diagnostic and incomplete cleanup stays retryable. Fresh live verification was not run: Docker is unavailable in this WSL distribution and installed Aspire is 13.6.1 while the catalog requires 13.6.3. Package runtime qualification remains unavailable under the existing authority gate. The two explicit review deferrals remain; the story and sprint status stay `in-progress` for remaining review/qualification.
+
 ## Spec Change Log
 
 ## Review Triage Log
@@ -136,21 +139,21 @@ Build Builds Module.Tests and Platform Composition.Tests individually in Debug w
 
 Implementation group only (Builds source, `docs/contracts/test-environment-v1.md`, `eng/test-environment-provisioning/suite.py`, `PlatformLocalRunLifecycleTests.cs`), 2026-10-25. Builds tests, spec/sprint text, the evidence archive, `README.md`, and `startup-verify.sh` were not in this diff.
 
-- [ ] [Review][Patch] Unreadable runner documents are treated as missing and overwritten, so a locked or malformed outcome can be replaced [CompositionDocumentStore.cs:68]
-- [ ] [Review][Patch] A later archive or cleanup-recording failure leaves the command failed while the durable first outcome stays passed [NativeTestExecutor.cs:281]
-- [ ] [Review][Patch] Explicit down stores an empty unverified remainder before teardown, dropping the last known leftover ids [CompositionEngine.cs:1126]
-- [ ] [Review][Patch] Partial startup publishes an empty resource list instead of an unobserved binding [TestResultWriter.cs:235]
-- [ ] [Review][Patch] A preserved outcome still absorbs later rule ids, so success cleanup cites HXC130 and down omits the result path [CompositionEngine.cs:633]
-- [ ] [Review][Patch] Cancelling the executor token commits owner cancellation, and the later execution-lifetime correction does not replace it [NativeTestExecutor.cs:420]
-- [ ] [Review][Patch] The first and inspected outcome callbacks run with an already-cancelled budget token and throw before the outcome is committed [NativeTestExecutor.cs:407]
-- [ ] [Review][Patch] One unverifiable claim file makes cleanup incomplete for every run [CompositionResourceClaimStore.cs:135]
-- [ ] [Review][Patch] Human list hides leftovers, enumeration accepts an attempt id equal to the environment id, and one bad state file hides every environment [ToolDiagnosticFormatter.cs:73]
-- [ ] [Review][Patch] Legacy evidence marks workspace or claim leftovers unverified and then omits their ids [ModuleRunEvidenceWriter.cs:261]
-- [ ] [Review][Patch] The last workspace-delete attempt can report the directory remaining after it has gone [CompositionWorkspace.cs:71]
-- [ ] [Review][Patch] Owner cancellation is still asserted as withdrawn, so restoring that status would not fail the normal suite [SelectedObservationTests.cs:359]
-- [ ] [Review][Patch] Non-hex docker output is not asserted separately from a retained container id [CompositionRunResourceScanner.cs:168]
-- [ ] [Review][Patch] A symlinked run workspace is not covered by a deletion test [CompositionWorkspace.cs:52]
-- [ ] [Review][Patch] Secret-bearing plan and readiness copies are not refused by a test [CompositionEngine.cs:934]
+- [x] [Review][Patch] Unreadable runner documents are treated as missing and overwritten, so a locked or malformed outcome can be replaced [CompositionDocumentStore.cs:68]
+- [x] [Review][Patch] A later archive or cleanup-recording failure leaves the command failed while the durable first outcome stays passed [NativeTestExecutor.cs:281]
+- [x] [Review][Patch] Explicit down stores an empty unverified remainder before teardown, dropping the last known leftover ids [CompositionEngine.cs:1126]
+- [x] [Review][Patch] Partial startup publishes an empty resource list instead of an unobserved binding [TestResultWriter.cs:235]
+- [x] [Review][Patch] A preserved outcome still absorbs later rule ids, so success cleanup cites HXC130 and down omits the result path [CompositionEngine.cs:633]
+- [x] [Review][Patch] Cancelling the executor token commits owner cancellation, and the later execution-lifetime correction does not replace it [NativeTestExecutor.cs:420]
+- [x] [Review][Patch] The first and inspected outcome callbacks run with an already-cancelled budget token and throw before the outcome is committed [NativeTestExecutor.cs:407]
+- [x] [Review][Patch] One unverifiable claim file makes cleanup incomplete for every run [CompositionResourceClaimStore.cs:135]
+- [x] [Review][Patch] Human list hides leftovers, enumeration accepts an attempt id equal to the environment id, and one bad state file hides every environment [ToolDiagnosticFormatter.cs:73]
+- [x] [Review][Patch] Legacy evidence marks workspace or claim leftovers unverified and then omits their ids [ModuleRunEvidenceWriter.cs:261]
+- [x] [Review][Patch] The last workspace-delete attempt can report the directory remaining after it has gone [CompositionWorkspace.cs:71]
+- [x] [Review][Patch] Owner cancellation is still asserted as withdrawn, so restoring that status would not fail the normal suite [SelectedObservationTests.cs:359]
+- [x] [Review][Patch] Non-hex docker output is not asserted separately from a retained container id [CompositionRunResourceScanner.cs:168]
+- [x] [Review][Patch] A symlinked run workspace is not covered by a deletion test [CompositionWorkspace.cs:52]
+- [x] [Review][Patch] Secret-bearing plan and readiness copies are not refused by a test [CompositionEngine.cs:934]
 - [x] [Review][Defer] Off-Linux process discovery is never marked unverified by a normal test [CompositionRunResourceScanner.cs:34] — deferred: the normal lane is Linux and there is no OS seam, so a Windows-only fact would be skipped the same way the existing Windows skips are
 - [x] [Review][Defer] The post-initialize state read is null-forgiving [CompositionEngine.cs:301] — deferred, unverified medium: confirm whether a null read immediately after InitializeStateAsync is recorded as a startup failure or escapes as a null dereference
 
@@ -167,3 +170,44 @@ Implementation group only (Builds source, `docs/contracts/test-environment-v1.md
 - `low` — The live proof's root walk fails only when `apphost.cs` is absent, which already stops that gated test. A typed exception adds a branch for a layout this proof does not run in.
 - `false` — Startup recording does not drop published candidate proof. Partial bindings keep candidate `not-yet-populated`, which this story does not populate.
 - `false` — Termination stays `not-yet-populated` because this diff's contract says an unauthenticated stopping observation must not be fabricated.
+
+### Resumed independent workflow review, 2026-10-25
+
+All three reviewers completed before triage. Each finding received its own verdict before shared-root grouping. BH5/EH5 and EH3/EH6 share roots; all other accepted entries remain separate. The five low findings concern additional validation of historical no-credit artifacts, beyond the live producer assertions and current parent matrix audit.
+
+| Finding | Verdict | Route and evidence |
+| --- | --- | --- |
+| BH1 | medium | Patch: RecordTestOutcomeAsync deletes active state before selected-test/result publication; a subsequent write failure returns incomplete from DownOwnedCoreAsync without restoring enumerable retry tracking. Preserve tracking on publication failure under the existing outcome lock. |
+| BH2 | medium | Patch: Enumeration validates nested nulls but not TestRun.RunId/OwnerId, so a copied foreign record supplies retention and failed-run observations for the enclosing owner. Validate both identity bindings. |
+| BH3 | medium | Patch: ReportStartupTimeoutAsync with null runId publishes only before-run summary even for a selected suite; ReportSetupTimeoutAsync directly reaches it. Reuse issued-state and terminal-recording paths for selected pre-allocation expiry. |
+| BH4 | medium | Patch: ExecuteExactDownAsync normalizes a deserialized null Workspace before the engine validates ownership; ArgumentNullException bypasses structured results. Delegate ownership validation to the engine or guard normalization. |
+| BH5 | medium | Patch: The live proof finally loop has no catch around DownAsync or receipt writes, so one failure skips later owners. Attempt every owner and aggregate failures after cleanup. |
+| BH6 | low | Rejected: The historical portable audit explicitly audits selected retained observations and grants no qualification credit; a complete schema-validation extension for deliberately altered historical artifacts adds new validation machinery beyond a direct correction in an occasional audit. |
+| BH7 | low | Rejected: The archived XML has a recorded fixed count and identities in separate receipts; the portable audit promises selected checks and no qualification credit. Adding negative inventory validation for substituted historical transcripts is additional occasional-audit machinery. |
+| BH8 | low | Rejected: The historical matrix receipt names the executed passing cases, and the current parent audit independently reconciles all seven rows with final XML. Hardening the no-credit historical audit against substituted matrix receipts adds guards beyond a direct everyday correction. |
+| BH9 | low | Rejected: The live producer asserts resource survival before cleanup and retains its observations; the offline script reports recorded final cleanup checks without claiming to rerun retention or granting qualification. Additional historical cross-artifact validation is an occasional-audit extension. |
+| BH10 | low | Rejected: The live proof checks peer container identities and Redis value directly. The offline audit reports the retained sentinel observation with no qualification credit; reconstructing all historical ownership relationships adds occasional-audit validation beyond direct correction. |
+| EH1 | medium | Patch: Confirmed standalone probe at /tmp/story25-edge-probe/Program.cs: initial owner.json plus durable outcome with known container, no active state, and failed Docker discovery yields an empty container remainder. Load the durable first outcome before recording cleanup in-progress. |
+| EH2 | medium | Patch: The post-StartAsync missing-state fallback writes without the outcome lock or cleanup marker check. Exact down can finish between ready-session return and this fallback, recreating an owner whose complete outcome then skips cleanup. Guard initialization using existing lock/markers. |
+| EH3 | medium | Patch: New ordinary mapping-refusal tracking deletion checks HXR023, while CleanupPreparedWorkspaceAsync reports HXW009. The newly added deletion loses prior discoverability on failed workspace removal; preserve state and return its run identity. |
+| EH4 | medium | Patch: IsOwnedState accepts null resource arrays; subsequent failed discovery reaches Concat(previous.ContainerIds) and throws ArgumentNullException. The reviewer reproduced this with the built assembly. Refuse malformed nested arrays before teardown. |
+| EH5 | medium | Patch: Same root cause as BH5: an exception in one final cleanup/receipt prevents all subsequent owner attempts. Group with BH5 after this individual verdict. |
+| EH6 | medium | Patch: Same root cause as EH3: HXW009 never matches the new HXR023 deletion guard. Group with EH3 after this individual verdict. |
+| VG1 | medium | Patch: Pre-verified regression gap: listing tests assert identity/age/cleanup/leftovers and the live proof asserts FailureRunIds, but no test asserts list retention. Add persisted terminal cases for failure-retained, released, not-retained and unavailable through both output formats. |
+| P1 | medium | Patch: Parent trace: RecordTestOutcomeAsync commits selected-test.json before optional artifact/result/metadata writes; a later callback exception can leave its caller record null. Repeated recording failure then chooses retention from the later command error rather than the durable first pass. Recover the committed observation independently of optional work and cover command-level recording failure. |
+
+### Parent broad verification after follow-up patches
+
+The first full post-patch lane ran 598 cases: 595 passed, three failed, no errors/skips/unrun cases. Both Debug builds passed without warnings/errors. The failed run is retained under `evidence/2-5/review-fixes-20261025/pre-final-parent/`.
+
+| Finding | Verdict | Route and evidence |
+| --- | --- | --- |
+| PV1 | medium | Patch: ExactDownDoesNotRequireManifestRecognitionAsync(foreign) returns topology 3 instead of the existing ownership usage refusal 1 after CLI ownership prevalidation was removed. Restore the structured refusal safely. |
+| PV2 | medium | Patch: Guarded fallback issuance waits on the pre-held outcome lock, so the existing outcome-callback failure regression never reaches execution and cannot assert its original stopping timestamp. Preserve both synchronization safety and callback-budget coverage. |
+| PV3 | medium | Patch: In the full lane, the execution-expiry regression records test-failure instead of execution-timeout. Trace the source/gate/cancellation path and retain the cause assertion. |
+
+### Final resumed-build result
+
+All accepted review patches and all three parent verification corrections are implemented. Final unchanged-source verification passes 598/598 Builds cases (146.897 seconds), 1/1 Platform cleanup-helper case, both individual Debug builds without warnings/errors, current schema parity and the retained-evidence audit. `evidence/2-5/review-fixes-20261025/final-parent/` retains exact commands, full XML, all seven matrix rows, 30 source fingerprints and the per-finding passing tests. The historical 595/598 run remains retained and is superseded.
+
+The build spec is done and sprint entry moves to review. Fresh real-service and package qualification remain unavailable for the recorded Docker/Aspire and authoritative-artifact prerequisites. The two pre-existing deferrals remain; no accepted finding from this resumed review is left unfixed.

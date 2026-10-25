@@ -1,0 +1,47 @@
+{
+  "buildsDebugBuild": {
+    "passed": true,
+    "warnings": 0,
+    "errors": 0
+  },
+  "buildsAffectedTests": {
+    "total": 598,
+    "passed": 598,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "durationSeconds": 146.897
+  },
+  "platformDebugBuild": {
+    "passed": true,
+    "warnings": 0,
+    "errors": 0
+  },
+  "platformCleanupHelperTests": {
+    "total": 1,
+    "passed": 1,
+    "failures": 0
+  },
+  "retainedEvidenceRelocationAudit": {
+    "passed": 1,
+    "failed": 0
+  },
+  "schemaParity": true,
+  "sourceFilesUnchanged": 30,
+  "independentReviewLayers": 3,
+  "initialPatchFindingsImplemented": 15,
+  "followupPatchGroupsImplemented": 11,
+  "verificationCorrectionsImplemented": 3,
+  "freshLiveExecuted": false,
+  "packageRuntimeQualified": false,
+  "qualificationCredit": false,
+  "specStatus": "done",
+  "sprintStatus": "review",
+  "remainingDeferrals": [
+    "Off-Linux process discovery: the existing normal lane is Linux and has no OS seam.",
+    "Post-initialize null-forgiving state read: existing unverified medium deferral remains."
+  ],
+  "finalEvidence": "final-parent/verification.json",
+  "historical584CaseEvidence": "initial-implementation-verification.json"
+}

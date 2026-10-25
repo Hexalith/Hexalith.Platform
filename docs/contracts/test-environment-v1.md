@@ -87,7 +87,7 @@ and authenticate references; the offline reader validates one document at a time
 | `environment.executionContext` | `kind: local`, or `kind: ci` with repository, exact `workflowRunId`, positive `workflowAttempt`, `jobId`, `runnerKind`, `operatingSystem` and `disposable`. Declaring CI does not authenticate the job. Candidate acceptance requires disposable Linux GitHub-hosted package-mode CI; attachment must remain in the owner's exact job. |
 | `environment.catalog` | Exact catalog `commit` and run-specific `instanceId`, or explicit `not-yet-populated`. The runner binds known values to the selected catalog instance. |
 | `environment.isolation` | Reserved `syntheticTenantId`, `dataIsolationId`, `resourceScopeId` and `catalogScopeId`. The runner supplies synthetic, run-scoped data isolation; none identify hosted customer data. |
-| `environment.resources` | Per-resource `resourceId`, owning `moduleId` and `endpoints` with `name`, `protocol` and absolute `uri`. The reader additionally requires every endpoint to be representable as an absolute `System.Uri`, refusing invalid hosts or ports atomically as `HXT104`; HTTP, IPv6, gRPC and custom schemes remain supported. Endpoint URIs exclude userinfo, query strings and fragments; credentials travel through a separate channel and must never enter retained snapshots. Resource IDs must be unique within the environment, and endpoint names must be unique within their resource (ordinal, case-sensitive comparisons). The same endpoint name may appear on different resources. Tests consume these endpoints and never start AppHosts. Empty endpoint lists can describe non-network resources. |
+| `environment.resources` | Per-resource `resourceId`, owning `moduleId` and `endpoints` with `name`, `protocol` and absolute `uri`, or explicit `not-yet-populated` before ownership and endpoints have been observed. An empty array means an observed empty set and must not substitute for an unavailable observation. The reader additionally requires every endpoint to be representable as an absolute `System.Uri`, refusing invalid hosts or ports atomically as `HXT104`; HTTP, IPv6, gRPC and custom schemes remain supported. Endpoint URIs exclude userinfo, query strings and fragments; credentials travel through a separate channel and must never enter retained snapshots. Resource IDs must be unique within the environment, and endpoint names must be unique within their resource (ordinal, case-sensitive comparisons). The same endpoint name may appear on different resources. Tests consume these endpoints and never start AppHosts. Empty endpoint lists can describe non-network resources. |
 | `environment.readiness` | Reserved overall `status` (`pending`, `ready`, `failed`), `observedAt` and per-resource status/time/`diagnosticIds`. Each resource ID occurs at most once and resolves to `environment.resources`. The runner observes readiness, rather than inferring it from a successful descriptor read. |
 | `environment.startupTasks` | Reserved task list with unique `taskId`, `required`, status (`pending`, `running`, `passed`, `failed`, `cancelled`), optional actual `startedAt`/`finishedAt`, and diagnostics. Attachment and evidence consumers require every required task to pass. |
 | `tool` | Reserved actual executing `name`, `version`, `contentIdentity` and three independently reserved qualifications: `buildsAdoption`, `platformAcceptance`, `integrationQualification`. Each qualification requires a `referenceId`, exact tool version/content identity and exact policy. Builds owns adoption; Platform owns acceptance/qualification. A reference's authenticity and applicability are checked downstream. |
@@ -298,6 +298,13 @@ and explicit unavailable observations. The first outcome/cause/time survives
 cancellation, explicit stop, cleanup errors and retries. Owner cancellation is
 `cancelled`; `withdrawn` remains reserved for future attached runs.
 
+Command terminal status and outcome preserve that committed observation. Later
+archive and cleanup errors remain visible as diagnostics and cleanup disposition;
+they do not relabel a completed test. A finite metadata commit allowance remains
+available when stopping has exhausted its allowance, without extending execution,
+archive processing or cleanup. Unreadable existing outcome documents refuse
+replacement rather than being treated as missing.
+
 Successful local owners clean automatically. Test/startup failure and
 startup/execution timeout retain surviving owned resources until
 `hexalith-module down --run-id <owner-run-id>`. Cancellation without prior failure
@@ -311,6 +318,10 @@ loading current manifests. It shows owner/environment/attempt, age from the orig
 request, failed owners, retention, cleanup status and recorded independent
 deadlines. Legacy missing creation/identity fields stay unavailable. Attachment
 lists remain empty, and admission and hold deadlines are explicitly unavailable.
+Valid environments remain listed when another tracked file is invalid; the command
+reports the listing as incomplete. Human and JSON output both expose known
+leftovers and discovery uncertainty. Explicit down returns the surviving result
+path as well as its cleanup observation.
 
 Results, inspected native reports and classified redacted diagnostics remain in
 `<state-directory>/diagnostics/<run-id>/` after workspace deletion. The default

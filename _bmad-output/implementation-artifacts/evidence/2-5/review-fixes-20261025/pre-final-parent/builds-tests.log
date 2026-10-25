@@ -1,0 +1,85 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync [FAIL]
+      Shouldly.ShouldAssertException : saved.TerminalCause
+          should be
+      "execution-timeout"
+          but was
+      "test-failure"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | e    x    e    c    u    t    i    o    n    -    t    i    m    e    o    u    t    
+      Actual Value   | t    e    s    t    -    f    a    i    l    u    r    e                             
+      Expected Code  | 101  120  101  99   117  116  105  111  110  45   116  105  109  101  111  117  116  
+      Actual Code    | 116  101  115  116  45   102  97   105  108  117  114  101                           
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleReviewTests.cs(184,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.<>c__DisplayClass6_0.<<ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs(420,0): at Hexalith.Builds.Tooling.Runtime.NativeTestExecutor.ExecuteSelectedAsync(CompositionRunSession session, PersistedProfileNativeTests tests, String manifestPath, ModuleTestSelection selection, String dotnetCommand, String archiveDirectory, Func`3 onOutcome, CancellationToken ownerCancellationToken, CancellationToken cancellationToken)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs(426,0): at Hexalith.Builds.Tooling.Runtime.NativeTestExecutor.ExecuteSelectedAsync(CompositionRunSession session, PersistedProfileNativeTests tests, String manifestPath, ModuleTestSelection selection, String dotnetCommand, String archiveDirectory, Func`3 onOutcome, CancellationToken ownerCancellationToken, CancellationToken cancellationToken)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs(57,0): at Hexalith.Builds.Tooling.Runtime.NativeTestExecutor.ExecuteAsync(CompositionRunSession session, PersistedProfileNativeTests tests, String manifestPath, CancellationToken cancellationToken, String dotnetCommand, ModuleTestSelection selection, String archiveDirectory, Func`3 onOutcome, Nullable`1 ownerCancellationToken)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleReviewTests.cs(171,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: "foreign") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Cleanup","category":"TopologyOrLifecycle","ruleId":"HXR023"},"diagnostics":[{"ruleId":"HXR023","phase":"Cleanup","category":"TopologyOrLifecycle","message":"Owned cleanup could not be verified within its existing allowance.","field":"down","hint":"Retry down for the same run identity.","source":null,"location":null,"row":null}],"runId":"0123456789abcdef0123456789abcdef","remainingResources":{"containerIds":[],"processIds":[],"unverified":true,"isEmpty":false,"workspaceIds":[],"claimIds":[],"discoveryFailures":["cleanup-verification"],"resourceIds":[]}}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(405,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(405,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(String scenario)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync [FAIL]
+      Shouldly.ShouldAssertException : session.ShouldNotBeNull().StoppingTimestamp.HasValue
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(700,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(702,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(702,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 598, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 143.530s

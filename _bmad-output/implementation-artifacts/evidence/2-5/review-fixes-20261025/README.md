@@ -1,0 +1,11 @@
+# Story 2.5 reviewed lifecycle corrections
+
+Implementation and independent review are complete. Final parent verification passes **598/598 affected Builds tests** and **1/1 Platform cleanup-helper test**, with no failures, errors, skips or unrun cases. Both individual Debug builds have zero warnings/errors. Schema byte parity, the retained-evidence relocation audit and all seven lifecycle matrix rows pass. All 30 recorded source files stayed unchanged through the final verification.
+
+[Final commands](final-parent/commands.json), [final verification](final-parent/verification.json), [Builds XML](final-parent/builds-tests.xml), [Platform XML](final-parent/platform-tests.xml), [matrix audit](final-parent/matrix-audit.json), [individual review fixes](final-parent/review-followup-verification.json), and [final source fingerprints](final-parent/source-content-identities.json) preserve the evidence. The spec is done and sprint entry is in review. No candidate, CI, publication or package qualification credit is claimed.
+
+The initial 15 patch findings and all 11 follow-up groups are implemented. Three full-run regressions were also corrected while preserving the timeout and callback-budget assertions. The timeout fixture now has a unique run identity and a child-ready cancellation handshake. The [initial 584-case verification](initial-implementation-verification.json), root-level XML, and [595/598 intermediate run](pre-final-parent/commands.json) remain historical observations, superseded by the final passing XML above.
+
+Fresh real-service qualification was **not run**. [Prerequisite observations](live-prerequisites.json) record unavailable Docker in this WSL distribution and installed Aspire 13.6.1 versus required 13.6.3. Package runtime qualification requires authoritative published declarations. Historical live proof in the neighboring archive does not qualify these corrections.
+
+Two existing review deferrals remain: off-Linux discovery has no normal-lane OS seam, and the post-initialize null-forgiving state read remains unverified. Five low findings proposing expanded validation of historical no-credit audit artifacts were rejected individually in the spec triage log; no accepted finding from this review remains unfixed.

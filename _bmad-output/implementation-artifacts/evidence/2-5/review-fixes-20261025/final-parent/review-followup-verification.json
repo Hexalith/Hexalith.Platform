@@ -1,0 +1,109 @@
+[
+  {
+    "finding": "BH1",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CompletedPublicationFailureRestoresDiscoverableTrackingAsync"
+    ]
+  },
+  {
+    "finding": "BH2",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.ForeignNestedTerminalIdentityPreservesHealthyPeerAsync(field: \\\"run\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.ForeignNestedTerminalIdentityPreservesHealthyPeerAsync(field: \\\"owner\\\")"
+    ]
+  },
+  {
+    "finding": "BH3",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.SelectedSetupExpiryPublishesIssuedStartupTimeoutAsync"
+    ]
+  },
+  {
+    "finding": "BH4",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.ExactDownCliRefusesNullWorkspaceWithoutThrowingAsync"
+    ]
+  },
+  {
+    "finding": "BH5/EH5",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests.FinalCleanupAttemptsEveryOwnerDespiteFailuresAsync"
+    ]
+  },
+  {
+    "finding": "EH1",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.MissingActiveStateAndFailedDiscoveryPreserveDurableRemainderAsync"
+    ]
+  },
+  {
+    "finding": "EH2",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CleanupBeforeStartReturnCannotRecreateOwnerAsync"
+    ]
+  },
+  {
+    "finding": "EH3/EH6",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(declared: False, deletionFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(declared: True, deletionFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(declared: False, deletionFails: True)"
+    ]
+  },
+  {
+    "finding": "EH4",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.NullContainerArrayReturnsRetryableOwnershipRefusalAsync"
+    ]
+  },
+  {
+    "finding": "VG1",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"failure-retained\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"released\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"not-retained\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"unavailable\\\")"
+    ]
+  },
+  {
+    "finding": "P1",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync"
+    ]
+  },
+  {
+    "finding": "PV1",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"deleted\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"corrupt\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"foreign\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ExactDownDoesNotRequireManifestRecognitionAsync(scenario: \\\"malformed-id\\\")"
+    ]
+  },
+  {
+    "finding": "PV2",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync"
+    ]
+  },
+  {
+    "finding": "PV3",
+    "status": "patched",
+    "passingTests": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync"
+    ]
+  }
+]

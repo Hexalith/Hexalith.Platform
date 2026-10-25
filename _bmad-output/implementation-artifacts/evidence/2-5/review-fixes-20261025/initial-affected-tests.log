@@ -1,0 +1,114 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "cleanup-unverified", expectedExit: 3, expectedCleanup: 1, disposition: "unknown") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      3
+          but was
+      0
+      
+      Additional Info:
+          {"status":"completed","outcome":{"exitCode":"Success","phase":"None","category":"None","ruleId":null},"diagnostics":[{"ruleId":"HXI005","phase":"Test","category":"None","message":"The native test report passed.","field":"nativeTests","hint":null,"source":null,"location":null,"row":null},{"ruleId":"HXR023","phase":"Cleanup","category":"TopologyOrLifecycle","message":"Owned resources remain or their scan is unavailable.","field":"profile","hint":null,"source":null,"location":null,"row":null}],"runId":"0123456789abcdef0123456789abcdef","remainingResources":{"containerIds":[],"processIds":[],"unverified":true,"isEmpty":false,"workspaceIds":[],"claimIds":[],"discoveryFailures":[],"resourceIds":[]},"testResultPath":"/tmp/hexalith-g4-unit-8eb947d49eac41eca3f78950fbbd8cf4/state/diagnostics/0123456789abcdef0123456789abcdef/test-result.json"}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "cleanup-throws", expectedExit: 3, expectedCleanup: 1, disposition: "unknown") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      3
+          but was
+      0
+      
+      Additional Info:
+          {"status":"completed","outcome":{"exitCode":"Success","phase":"None","category":"None","ruleId":null},"diagnostics":[{"ruleId":"HXI005","phase":"Test","category":"None","message":"The native test report passed.","field":"nativeTests","hint":null,"source":null,"location":null,"row":null},{"ruleId":"HXR023","phase":"Cleanup","category":"TopologyOrLifecycle","message":"Owned cleanup could not be verified; retry down for the same run.","field":"profile","hint":null,"source":null,"location":null,"row":null}],"runId":"0123456789abcdef0123456789abcdef","remainingResources":{"containerIds":[],"processIds":[],"unverified":true,"isEmpty":false,"workspaceIds":[],"claimIds":[],"discoveryFailures":[],"resourceIds":[]},"testResultPath":"/tmp/hexalith-g4-unit-d2634ae1abce4b7da57c0cb833e4f90a/state/diagnostics/0123456789abcdef0123456789abcdef/test-result.json"}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "workspace-entry") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.Success
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-root") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.Success
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entries") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.Success
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entry") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.Success
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-file") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.Success
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 584, Errors: 0, Failed: 7, Skipped: 0, Not Run: 0, Time: 144.305s

@@ -129,17 +129,10 @@ public sealed class PlatformLocalRunLifecycleTests
             IEnumerable<string> persisted = Directory.Exists(options.StateDirectory)
                 ? Directory.GetFiles(options.StateDirectory, "*.json").Select(Path.GetFileNameWithoutExtension).OfType<string>().Where(CompositionRunPlanFactory.IsRunId)
                 : [];
-            foreach (string runId in owned.Concat(persisted).Distinct(StringComparer.Ordinal))
-            {
-                CompositionDownResult? down = null;
-                for (int attempt = 1; attempt <= 2; attempt++)
-                {
-                    down = attempt == 1 && peer?.RunId == runId ? await new CompositionEngine(options).DownAsync(peer, CancellationToken.None) : await new CompositionEngine(options).DownAsync(runId, CancellationToken.None);
-                    File.WriteAllText(Path.Combine(evidence, "final-cleanup-" + runId + "-" + attempt + ".json"), JsonSerializer.Serialize(down));
-                    if (down.Result.Outcome.ExitCode == ToolExitCode.Success && down.Remaining.IsEmpty) break;
-                }
-                if (down!.Result.Outcome.ExitCode != ToolExitCode.Success || !down.Remaining.IsEmpty) cleanupFailures.Add(runId);
-            }
+            cleanupFailures.AddRange(await CleanupOwnersAsync(
+                owned.Concat(persisted).Distinct(StringComparer.Ordinal),
+                (runId, attempt) => attempt == 1 && peer?.RunId == runId ? new CompositionEngine(options).DownAsync(peer, CancellationToken.None) : new CompositionEngine(options).DownAsync(runId, CancellationToken.None),
+                (runId, attempt, down) => File.WriteAllText(Path.Combine(evidence, "final-cleanup-" + runId + "-" + attempt + ".json"), JsonSerializer.Serialize(down))));
             string[] claims = Directory.Exists(Path.Combine(options.StateDirectory, "claims")) ? Directory.GetFiles(Path.Combine(options.StateDirectory, "claims"), "*.json") : [];
             string[] runs = Directory.Exists(options.WorkspaceRoot) ? Directory.GetDirectories(options.WorkspaceRoot) : [];
             File.WriteAllText(Path.Combine(evidence, "cleanup-audit.json"), JsonSerializer.Serialize(new { claims, runs, cleanupFailures, completed = claims.Length == 0 && runs.Length == 0 && cleanupFailures.Count == 0 }));
@@ -154,5 +147,67 @@ public sealed class PlatformLocalRunLifecycleTests
             result.ExitCode.ShouldBe(0);
             return result;
         }
+    }
+
+    [Fact]
+    public async Task FinalCleanupAttemptsEveryOwnerDespiteFailuresAsync()
+    {
+        string first = CompositionRunPlanFactory.NewRunId();
+        string second = CompositionRunPlanFactory.NewRunId();
+        List<string> attempted = [];
+        CompositionDownResult removed = new(new ToolCommandResult("completed", ToolOutcome.Passed(), []), new CompositionRunResources([], []));
+        IReadOnlyList<string> failures = await CleanupOwnersAsync(
+            [first, second],
+            (runId, _) =>
+            {
+                attempted.Add(runId);
+                return runId == first ? throw new IOException("cleanup unavailable") : Task.FromResult(removed);
+            },
+            (_, _, _) => throw new IOException("receipt unavailable"));
+        attempted.ShouldContain(second);
+        attempted.Count(runId => runId == first).ShouldBe(2);
+        failures.ShouldContain(item => item.StartsWith(first, StringComparison.Ordinal));
+        failures.ShouldContain(item => item.StartsWith(second, StringComparison.Ordinal));
+    }
+
+    private static async Task<IReadOnlyList<string>> CleanupOwnersAsync(IEnumerable<string> owners, Func<string, int, Task<CompositionDownResult>> cleanup, Action<string, int, CompositionDownResult> receipt)
+    {
+        List<string> failures = [];
+        foreach (string runId in owners)
+        {
+            bool complete = false;
+            for (int attempt = 1; attempt <= 2; attempt++)
+            {
+                CompositionDownResult down;
+                try
+                {
+                    down = await cleanup(runId, attempt);
+                }
+                catch (Exception exception) when (exception is not OutOfMemoryException)
+                {
+                    failures.Add(runId + ":cleanup-" + attempt);
+                    continue;
+                }
+
+                try
+                {
+                    receipt(runId, attempt, down);
+                }
+                catch (Exception exception) when (exception is not OutOfMemoryException)
+                {
+                    failures.Add(runId + ":receipt-" + attempt);
+                }
+
+                if (down.Result.Outcome.ExitCode == ToolExitCode.Success && down.Remaining.IsEmpty)
+                {
+                    complete = true;
+                    break;
+                }
+            }
+
+            if (!complete) failures.Add(runId + ":incomplete");
+        }
+
+        return failures;
     }
 }

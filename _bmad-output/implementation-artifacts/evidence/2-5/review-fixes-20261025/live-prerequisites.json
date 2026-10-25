@@ -1,0 +1,31 @@
+{
+  "liveExecuted": false,
+  "observations": [
+    {
+      "argv": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "exitCode": 1,
+      "stdout": "\nThe command 'docker' could not be found in this WSL 2 distro.\nWe recommend to activate the WSL integration in Docker Desktop settings.\n\nFor details about using Docker Desktop with WSL 2, visit:\n\nhttps://docs.docker.com/go/wsl2/\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "aspire",
+        "--version"
+      ],
+      "exitCode": 0,
+      "stdout": "13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8\n",
+      "stderr": ""
+    }
+  ],
+  "blockers": [
+    "Docker is unavailable in this WSL distribution.",
+    "Installed Aspire is 13.6.1; the existing live qualification/catalog requires 13.6.3."
+  ],
+  "packageRuntimeQualified": false,
+  "packageBlocker": "Authoritative release declaration hashes remain unpublished."
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "order": 1,
+    "finding": "Unreadable runner documents cannot be overwritten",
+    "changed": "CompositionDocumentStore.cs; CompositionEngine.cs",
+    "verification": "LocalRunLifecycleReviewTests.UnreadableFirstOutcomeCannotBeOverwrittenAsync",
+    "status": "patched"
+  },
+  {
+    "order": 2,
+    "finding": "Later archive/cleanup errors preserve first command outcome",
+    "changed": "NativeTestExecutor.cs; ModuleCommandExecutionService.cs",
+    "verification": "LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync; ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync; TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync",
+    "status": "patched"
+  },
+  {
+    "order": 3,
+    "finding": "Down preserves the last known resource remainder",
+    "changed": "CompositionEngine.cs",
+    "verification": "LocalRunLifecycleTests.SharedStoppingExpiryPreservesTrackedContainerObservationAsync",
+    "status": "patched"
+  },
+  {
+    "order": 4,
+    "finding": "Partial startup resource observation stays unavailable",
+    "changed": "TestResultWriter.cs; TestEnvironmentContractReader.cs; mirrored test schemas",
+    "verification": "TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync",
+    "status": "patched"
+  },
+  {
+    "order": 5,
+    "finding": "Preserved terminal rules and result location survive down",
+    "changed": "CompositionEngine.cs",
+    "verification": "LocalRunLifecycleReviewTests.SuccessfulCleanupPreservesTerminalRulesAndReturnsResultPathAsync",
+    "status": "patched"
+  },
+  {
+    "order": 6,
+    "finding": "Execution lifetime is distinct from owner cancellation",
+    "changed": "NativeTestExecutor.cs; ModuleCommandExecutionService.cs",
+    "verification": "LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync",
+    "status": "patched"
+  },
+  {
+    "order": 7,
+    "finding": "First/inspected callbacks commit after processing expiry",
+    "changed": "NativeTestExecutor.cs",
+    "verification": "LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync",
+    "status": "patched"
+  },
+  {
+    "order": 8,
+    "finding": "Unverifiable peer claims do not poison unrelated cleanup",
+    "changed": "CompositionResourceClaimStore.cs",
+    "verification": "LocalRunLifecycleReviewTests.UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync; LocalRunLifecycleTests.CorruptClaimDiscoveryStaysIncompleteUntilOwnershipIsRestoredAsync",
+    "status": "patched"
+  },
+  {
+    "order": 9,
+    "finding": "List preserves healthy entries, distinct identities and leftovers",
+    "changed": "CompositionRunStateStore.cs; CompositionRunListing.cs; ToolDiagnosticFormatter.cs",
+    "verification": "CompositionRunListingTests",
+    "status": "patched"
+  },
+  {
+    "order": 10,
+    "finding": "Legacy exports retain workspace/claim/discovery identities",
+    "changed": "ModuleRunEvidenceWriter.cs; hexalith.module-run-evidence.v1.json",
+    "verification": "LocalRunLifecycleReviewTests.LegacyEvidenceIncludesWorkspaceAndClaimIdentities",
+    "status": "patched"
+  },
+  {
+    "order": 11,
+    "finding": "Last directory retry reobserves absence",
+    "changed": "CompositionWorkspace.cs",
+    "verification": "Source inspection plus exact-cleanup lifecycle tests; no deterministic final-retry race seam added",
+    "status": "patched"
+  },
+  {
+    "order": 12,
+    "finding": "Owner cancellation assertion uses cancelled",
+    "changed": "SelectedObservationTests.cs",
+    "verification": "SelectedObservationTests",
+    "status": "patched"
+  },
+  {
+    "order": 13,
+    "finding": "Invalid Docker IDs are asserted as discovery uncertainty",
+    "changed": "LocalRunLifecycleReviewTests.cs",
+    "verification": "LocalRunLifecycleReviewTests.NonHexDockerOutputRemainsDiscoveryFailureAsync",
+    "status": "patched"
+  },
+  {
+    "order": 14,
+    "finding": "Workspace symlink cannot delete peer data",
+    "changed": "LocalRunLifecycleReviewTests.cs",
+    "verification": "LocalRunLifecycleReviewTests.SymlinkedWorkspaceCannotDeletePeerDataAsync",
+    "status": "patched"
+  },
+  {
+    "order": 15,
+    "finding": "Secret-bearing plan/readiness copies are refused",
+    "changed": "LocalRunLifecycleReviewTests.cs",
+    "verification": "LocalRunLifecycleReviewTests.SecretBearingMetadataCopiesAreNotRetainedAsync",
+    "status": "patched"
+  }
+]

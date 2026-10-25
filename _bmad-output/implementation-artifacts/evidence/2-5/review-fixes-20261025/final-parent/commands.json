@@ -1,0 +1,108 @@
+[
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--no-restore"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 50.44,
+    "log": "builds-debug-build.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--no-restore"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 35.612,
+    "log": "platform-debug-build.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*LocalRunFollowupTests",
+      "-class",
+      "*LocalRunLifecycleReviewTests",
+      "-class",
+      "*LocalRunLifecycleTests",
+      "-class",
+      "*TestResultWriterTests",
+      "-class",
+      "*CompositionRunListingTests",
+      "-class",
+      "*CompositionEngineTests",
+      "-class",
+      "*ModuleRunnerReviewRegressionTests",
+      "-class",
+      "*CompositionRedactionTests",
+      "-class",
+      "*ModuleTestSelectionTests",
+      "-class",
+      "*TestEnvironmentProvisioningTests",
+      "-class",
+      "*TestEnvironmentProvisioningReviewTests",
+      "-class",
+      "*StartupReadinessTests",
+      "-class",
+      "*StartupCoordinationTests",
+      "-class",
+      "*CompositionStartupTaskOutputTests",
+      "-class",
+      "*NativeTestReportRedactorTests",
+      "-class",
+      "*NativeTestReportLoaderTests",
+      "-class",
+      "*TestEnvironmentContractReaderTests",
+      "-class",
+      "*SelectedObservationTests",
+      "-class",
+      "*ModuleRunEvidenceSerializationTests",
+      "-class",
+      "*ModuleRunEvidenceWriterTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-fixes-20261025/final-parent/builds-tests.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 147.105,
+    "log": "builds-tests.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "*FinalCleanupAttemptsEveryOwnerDespiteFailuresAsync",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-fixes-20261025/final-parent/platform-tests.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 0.273,
+    "log": "platform-tests.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "python3",
+      "_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/test_audit.py"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 0.066,
+    "log": "retained-evidence-audit-tests.log"
+  }
+]
