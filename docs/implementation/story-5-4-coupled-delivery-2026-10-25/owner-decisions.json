@@ -1,6 +1,6 @@
 {
   "purpose": "Owner return form for coupled installation decisions; not a deployment, enrollment or acceptance packet",
-  "status": "ProposedAwaitingOwnerDecisions",
+  "status": "NonAwsMvpAwaitingActualBackendAndOwnerReturns",
   "installationAuthorized": false,
   "qualificationAuthorized": false,
   "attemptReserved": false,
@@ -8,7 +8,13 @@
   "preserved": {
     "host": "192.168.1.30",
     "partiesBranch": "B",
-    "timing": {"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800},
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
     "cohort": "OQ-5.4-1",
     "existingJournals": "Preserve unchanged",
     "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
@@ -16,27 +22,27 @@
   },
   "D1_backend": {
     "owner": "Project owner acting as Platform Maintainer",
-    "recommendedChoice": "A-new-independent-semantic-Dapr-reference-installation",
+    "confirmedConstraint": "AWS is not MVP",
+    "choices": [
+      "MVP-1 reuse an existing independently qualifying non-AWS semantic custody installation",
+      "MVP-2 implement and qualify a non-AWS semantic Dapr backend"
+    ],
     "selectedChoice": null,
-    "recommendedCustodyAndAuthorityRegion": "eu-west-3",
-    "recommendedArchiveAndObserverRegion": "eu-west-1",
-    "approvedResourceScopeReference": null,
-    "approvedCurrentItemizedQuoteAndCostCeilingReference": null,
+    "actualNonAwsProviderAndMaintainer": null,
+    "approvedNonAwsResourceAndCostScopeReference": null,
     "approvedRetentionAndExtensionScheduleReference": null,
-    "alternativeExistingInstallationBundle": null
+    "existingQualifyingInstallationBundle": null
   },
   "D2_resources": {
-    "owner": "Independent native custody, authority and archive custodians",
-    "custodyAccountId": null,
-    "authorityAccountId": null,
-    "archiveAccountId": null,
+    "owner": "Independent custody, current-authority and archive custodians",
+    "actualNonAwsBackendVersionHostOrApplianceIds": null,
+    "independentCurrentAuthorityHostServiceStoreIdIncarnationSchemaAndGenesis": null,
+    "independentArchiveResourcesProtectedVersionsAndEnrollmentHashes": null,
+    "originalOpaqueKeyEpochKekMappingsReference": null,
+    "actualProviderCompletionAndRecoveryBoundsReference": null,
     "scopedReadOnlyAccessOrSignedResourceCensusReference": null,
-    "authorityTableArnAndImmutableTableId": null,
-    "checkpointBucketRegionOwnerEnrollmentKeyVersionAndSha256": null,
-    "originalBucketRegionOwnerEnrollmentKeyVersionAndSha256": null,
-    "sevenNativeKeyArnsIdsAndTenantEpochKekMappingReference": null,
-    "exactEncryptedKekVersionAndContextReference": null,
-    "crossAccountPolicyAndRestoreExclusionReference": null
+    "backupExclusionsRetentionAndIndependentAdministrationReference": null,
+    "exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference": null
   },
   "D3_recovery": {
     "owner": "Project owner with independent recovery/access owners",
@@ -64,7 +70,8 @@
     "missingOwningServiceSourceImagesAndCompositionBundle": null,
     "authorityServiceStoreBundle": null,
     "registrationAndReservedManifestExactOriginalMappingBundle": null,
-    "spoolActualReplicasPlacementAndFailureModel": null
+    "spoolActualReplicasPlacementAndFailureModel": null,
+    "actualNonAwsComponentExecutableProfileAndDeploymentRecipe": null
   },
   "D6_releaseAndPhysicalProfile": {
     "owner": "Platform release, independent transport/security and storage owners",
@@ -88,14 +95,28 @@
     "branchBPartiesAndConversationsInstallationBindings": null
   },
   "D9_dates": {
-    "owners": ["Platform Maintainer", "EventStore Maintainer"],
-    "proposedProtectionIntegrationDate": "2026-11-30",
-    "proposedCoupledPlatformIntegrationDate": "2026-12-03",
-    "earliestCandidateCohortWindow": "2026-12-04",
+    "owners": [
+      "Platform Maintainer",
+      "EventStore Maintainer"
+    ],
+    "status": "Unresolved; AWS-derived estimates withdrawn",
+    "withdrawnPriorProposal": {
+      "protection": "2026-11-30",
+      "coupledPlatform": "2026-12-03",
+      "earliestCohortWindow": "2026-12-04",
+      "reason": "Estimate based on rejected AWS MVP path"
+    },
+    "actualNonAwsProviderReadinessCompletionRecoveryAndQualificationBoundsReference": null,
     "ownerConfirmedProtectionDate": null,
     "ownerConfirmedCoupledPlatformDate": null,
     "laterExplicitReplacementAcceptanceReference": null,
     "completeCanonicalPlatformTarget": null,
     "completeCanonicalProtectionTargetAndPackage": null
+  },
+  "mvpConstraints": {
+    "awsIncluded": false,
+    "existingDaprKubernetesOpenBaoRetainedForOperationalSecretScope": true,
+    "qualifyingNonAwsSemanticCustodyBackendSelected": false,
+    "physicalErasureAndIndependentRecoveryObligationsWaived": false
   }
 }
