@@ -1,0 +1,60 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync [FAIL]
+      Shouldly.ShouldAssertException : TestEnvironmentContractReader.ReadResult(resultPath, TestContext.Current.CancellationToken).Document!.Value.GetProperty("cleanup").GetProperty("disposition").GetString()
+          should be
+      "incomplete"
+          but was
+      "complete"
+          difference
+      Difference     |  |    |    |    |    |    |    |         |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    
+      Expected Value | i    n    c    o    m    p    l    e    t    e    
+      Actual Value   | c    o    m    p    l    e    t    e              
+      Expected Code  | 105  110  99   111  109  112  108  101  116  101  
+      Actual Code    | 99   111  109  112  108  101  116  101            
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(557,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CleanupBeforeStartReturnCannotRecreateOwnerAsync [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(new CompositionRunStateStore(options.StateDirectory).PathFor(session.RunId))
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunFollowupTests.cs(163,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CleanupBeforeStartReturnCannotRecreateOwnerAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunFollowupTests.cs(166,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CleanupBeforeStartReturnCannotRecreateOwnerAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-root") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 616, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 164.711s

@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -309,14 +309,25 @@ All three configured layers completed before triage. Each observation was graded
 
 After individual triage, only CB2 and CE2 are grouped by their shared FIFO-reader defect. Other accepted observations remain separate patch items.
 
-- [ ] [Review][Patch] F1: preserve known leftovers across unverified late callbacks.
-- [ ] [Review][Patch] F2: refuse/block-proof FIFO terminal-result input before automatic cleanup.
-- [ ] [Review][Patch] F3: align claim receipt publication/read bounds atomically.
-- [ ] [Review][Patch] F4: validate durable cleanup states and completion invariants.
-- [ ] [Review][Patch] F5: preserve native process-inspection uncertainty.
-- [ ] [Review][Patch] F6: prevent linked diagnostic/result publication outside ownership.
-- [ ] [Review][Patch] F7: add a portable native-host tagged-child/peer regression, without CI changes.
-- [ ] [Review][Patch] F8: assert real-service peer process survival.
-- [ ] [Review][Patch] F9: preserve native launch prerequisite classification.
-- [ ] [Review][Patch] F10: preserve a causal terminal observation when its first callback fails.
-- [ ] [Review][Patch] F11: keep receipt-recorded claim directories discoverable.
+- [x] [Review][Patch] F1: preserve known leftovers across unverified late callbacks.
+- [x] [Review][Patch] F2: refuse/block-proof FIFO terminal-result input before automatic cleanup.
+- [x] [Review][Patch] F3: align claim receipt publication/read bounds atomically.
+- [x] [Review][Patch] F4: validate durable cleanup states and completion invariants.
+- [x] [Review][Patch] F5: preserve native process-inspection uncertainty.
+- [x] [Review][Patch] F6: prevent linked diagnostic/result publication outside ownership.
+- [x] [Review][Patch] F7: add a portable native-host tagged-child/peer regression, without CI changes.
+- [x] [Review][Patch] F8: assert real-service peer process survival.
+- [x] [Review][Patch] F9: preserve native launch prerequisite classification.
+- [x] [Review][Patch] F10: preserve a causal terminal observation when its first callback fails.
+- [x] [Review][Patch] F11: keep receipt-recorded claim directories discoverable.
+
+
+### Final workflow verification — 2026-10-25
+
+All thirteen resumed accepted fixes and all eleven additional workflow patch groups are implemented. Parent final verification passes **632/632** affected Builds cases (243.130 seconds), without failures/errors/skips/unrun cases, plus the Platform cleanup-helper **1/1**. Both individual Debug builds have zero warnings/errors. Schema parity, retained-evidence validation, all thirteen original finding mappings, all seven matrix rows, 49 unchanged source fingerprints and all three Tooling PDB/source bindings (195 documents each) pass. The separately executed native-host case has one expected Linux skip; its implementation is complete but no native runtime qualification is claimed. The strengthened live peer-process assertions compile; fresh real-service qualification remains unavailable under the Aspire mismatch. Package qualification still requires authoritative published release declarations.
+
+The first parent full lane (631/632) and the first test correction remain archived. The sole full-lane failure was an obsolete HXT008 proxy for an exhausted metadata read; the published finite metadata allowance permits that read. The corrected regression verifies the original committed outcome and timestamp, no repeated resource cleanup, and no fabricated recording error. The parent also guards publication-inspection I/O failures/cancellation so they leave cleanup pending without discarding a committed outcome. No production source changed after the final source snapshot.
+
+Exact commands, full XML, runtime/source identities, individual patch verification and the seven-row audit are retained in [final verification](evidence/2-5/final-workflow-review-20261025/verification.json), [review finding verification](evidence/2-5/final-workflow-review-20261025/review-findings-verification.json), and [matrix audit](evidence/2-5/final-workflow-review-20261025/matrix-audit.json). D1 and the two separately recorded pre-existing scanner/deletion limitations remain deferred. No accepted patch remains open.
+
+Build workflow complete: the spec is `done`, sprint tracking is `review`, and Builds source/tests are committed locally as `b215213da90f7a25f7a181f8d4b394226148ac59`. The Platform completion commit records this tracking/evidence and its Builds gitlink. No push was performed by this workflow.

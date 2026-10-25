@@ -1,0 +1,101 @@
+{
+  "builds": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "cf46d045-5e04-411c-881e-246663342892",
+    "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "12:18:27",
+    "start-rtf": "2026-10-25T12:18:27.9589845+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T12:22:31.0756815+00:00",
+    "not-run": "0",
+    "passed": "632",
+    "skipped": "0",
+    "time": "243.130",
+    "time-rtf": "00:04:03.1300000",
+    "total": "632"
+  },
+  "platform": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "75557fd2-8584-4e11-af4f-ed40d383cb27",
+    "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "12:05:56",
+    "start-rtf": "2026-10-25T12:05:56.3649792+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T12:05:56.5297993+00:00",
+    "not-run": "0",
+    "passed": "1",
+    "skipped": "0",
+    "time": "0.164",
+    "time-rtf": "00:00:00.1640000",
+    "total": "1"
+  },
+  "nativeHost": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "b68741ed-d7a0-4eb8-8e10-0f8a3e4b113c",
+    "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "12:18:28",
+    "start-rtf": "2026-10-25T12:18:28.0574218+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T12:18:28.2917316+00:00",
+    "not-run": "0",
+    "passed": "0",
+    "skipped": "1",
+    "time": "0.236",
+    "time-rtf": "00:00:00.2360000",
+    "total": "1"
+  },
+  "originalAcceptedFixes": 13,
+  "additionalReviewFixes": 11,
+  "matrixRowsCovered": 7,
+  "sourceFilesUnchangedDuringFinalRun": 49,
+  "pdbSourceDocumentsPerToolingRuntime": 195,
+  "individualDebugBuilds": "zero warnings/errors",
+  "schemaParity": "passed",
+  "retainedEvidenceAudit": "passed",
+  "sourceMode": "Debug",
+  "freshLiveQualification": false,
+  "livePrerequisite": {
+    "docker": "29.8.2",
+    "installedAspire": "13.6.1",
+    "requiredAspire": "13.6.3"
+  },
+  "packageQualification": "unavailable until authoritative release declarations are published",
+  "nativeWindowsMacOSQualification": false,
+  "preExistingDeferrals": [
+    "D1 cancellation-aware claim transaction contention",
+    "CB3 cancellable workspace-tree traversal",
+    "CE1 Linux unreadable process environment discovery"
+  ],
+  "superseded": [
+    "builds-tests.xml: 631/632 before correcting a stale HXT008 metadata-read proxy assertion",
+    "startup-budget-corrected.xml: test correction used a field not exposed by CLI output; corrected to inspect durable record and restored outcome"
+  ],
+  "baselines": {
+    "platform": "f84977132777decec2f45a199d9392de73b6cc84",
+    "builds": "68e65f2023eca117a2aa08a022ee33d8f4c34a44",
+    "platformBaseline": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+    "buildsBaseline": "3052386abb54ff111f498a8f6424300ea7cdda93",
+    "implementationResumeBuildsBaseline": "0ade5ec2b4f9b81fcd3a4bbb1672c11b0131a274"
+  },
+  "currentRevisions": {
+    "platform": "0962af1b1ae12c0477aa0fd10334b4e8d0a1ce5c",
+    "builds": "68e65f2023eca117a2aa08a022ee33d8f4c34a44"
+  },
+  "runtimeIdentityNote": "Builds source/test Tooling bytes match; all three runtime PDBs match current source. Independently stamped Platform/Builds runtimes have separately retained hashes.",
+  "nativeApiSources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess",
+    "https://learn.microsoft.com/en-us/windows/win32/procthread/process-enumeration"
+  ]
+}

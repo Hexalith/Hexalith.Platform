@@ -1,0 +1,74 @@
+{
+  "coveredRows": 7,
+  "totalRows": 7,
+  "buildsExecutedCases": 632,
+  "rows": [
+    {
+      "matrixRow": "Local success",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: True, cleanupFails: False)"
+      ]
+    },
+    {
+      "matrixRow": "Test/startup failure or timeout",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True)",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"observed\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"io\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"timeout\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.ReadinessDeadlineObservationSharesStoppingBudgetAsync(scenario: \\\"legacy\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync"
+      ]
+    },
+    {
+      "matrixRow": "Cancellation before/after failure",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True)"
+      ]
+    },
+    {
+      "matrixRow": "Retained or pending cleanup",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"failure-retained\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"released\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"not-retained\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"unavailable\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync(ci: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync(ci: True)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ListingReconcilesCommittedFailureAfterResultPublicationFailureAsync"
+      ]
+    },
+    {
+      "matrixRow": "Explicit down/retry",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync"
+      ]
+    },
+    {
+      "matrixRow": "Deletion/discovery/recording failure",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ExactDownRetainsCleanupDiagnosticsAfterStoppingExpiryAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.UnreadableFirstOutcomeCannotBeOverwrittenAsync(malformed: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.UnreadableFirstOutcomeCannotBeOverwrittenAsync(malformed: True)"
+      ]
+    },
+    {
+      "matrixRow": "Environment gone",
+      "passingTestCases": [
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ImmutableReportsSurviveInterruptedAndRejectedUpdatesAsync",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"passed\\\", cause: \\\"tests-completed\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"failed\\\", cause: \\\"test-failure\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"failed\\\", cause: \\\"startup-failure\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"failed\\\", cause: \\\"startup-timeout\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"failed\\\", cause: \\\"execution-timeout\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: \\\"cancelled\\\", cause: \\\"run-cancelled\\\")"
+      ]
+    }
+  ],
+  "freshLiveQualification": false
+}
