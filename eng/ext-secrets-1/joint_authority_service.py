@@ -328,6 +328,25 @@ class InstalledPhaseExecutor:
         return self._observe(request)
 
     def lookup(self, request):
+        observed = self._observe(request)
+        if observed is not None: return observed
+        import subprocess
+        import hashlib
+        from pathlib import Path
+        command = self.descriptor.get("recoveryCommand")
+        normal = self.descriptor["command"]
+        expected = ["--phase-finalize" if arg == "--phase-command" else arg for arg in normal]
+        if normal.count("--phase-command") != 1 or command != expected:
+            raise Blocked("PinnedMetadataOnlyPhaseFinalizer")
+        for artifact in self.descriptor["artifacts"]:
+            if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:
+                raise Blocked("ExactInstalledPhaseExecutable")
+        # Restricted finalization reads immutable evidence only. It cannot resume normal work.
+        with subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                              cwd=self.descriptor["workingDirectory"], env=self.descriptor["environment"]) as process:
+            try: process.communicate(canonical(request), timeout=min(30,self.descriptor["completionTimeoutSeconds"]))
+            except subprocess.TimeoutExpired:
+                process.kill(); process.wait(); return None
         return self._observe(request)
 
 

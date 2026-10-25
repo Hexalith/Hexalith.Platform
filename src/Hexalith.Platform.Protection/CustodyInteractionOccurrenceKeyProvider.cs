@@ -11,16 +11,22 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Platform-owned occurrence provider with value-free current/lease checks and a single ownership transfer for native root bytes. It avoids the concrete candidate-delivery adapter's unowned copies; actual native holder admission remains mandatory.</summary>
 public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICustodyOccurrenceMaterialClient custody,CustodyInteractionProtectionBindingSource bindings,
     IInteractionOccurrenceRegistry registry,IPlatformKeyInventoryActor inventory,IPlatformKeyInventoryAuthority inventoryAuthority,
-    IReadOnlyDictionary<string,CustodyInteractionMaterialProfile> enrolledProfiles):IInteractionOccurrenceKeyProvider
+    IReadOnlyDictionary<string,CustodyInteractionMaterialProfile> enrolledProfiles,IFr34OccurrenceEnrollment? dynamicEnrollment=null):IInteractionOccurrenceKeyProvider
 {
     private readonly HashSet<string> _leases=new(StringComparer.Ordinal),_materialAttempts=new(StringComparer.Ordinal);private readonly object _gate=new();
     private readonly Dictionary<string,byte[]> _ownedRoots=new(StringComparer.Ordinal);
     private readonly HashSet<string> _completedUses=new(StringComparer.Ordinal);
     /// <summary>Gets the exact independently enrolled material profile identity.</summary>
     public static string ProfileId(InteractionOccurrenceIdentity identity,bool writing)=>CustodyInteractionProtectionBindingSource.ResourceId(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId))+"|"+(writing?"write":"read");
-    private async Task<(InteractionProtectionBinding Binding,CustodyInteractionMaterialProfile Profile)?> Current(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token)
+    private async Task<(InteractionProtectionBinding Binding,CustodyInteractionMaterialProfile Profile)?> Current(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token,bool allocate=false)
     {
-        if(!enrolledProfiles.TryGetValue(ProfileId(identity,writing),out var profile) || profile.Registration.Identity.TenantId!=identity.Target.TenantId
+        enrolledProfiles.TryGetValue(ProfileId(identity,writing),out var profile);
+        if(profile is null && dynamicEnrollment is not null)
+        {
+            if(allocate) profile=await dynamicEnrollment.MaterialAsync(identity,writing,token).ConfigureAwait(false);
+            else profile=(await dynamicEnrollment.ResolveAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token).ConfigureAwait(false))?.Write;
+        }
+        if(profile is null || profile.Registration.Identity.TenantId!=identity.Target.TenantId
             || profile.Registration.Identity.ObjectId!=identity.Target.AgentInteractionId || profile.Registration.Identity.KeyAlias!=identity.Target.TargetProtectionKeyAlias
             || profile.Registration.Identity.KeyVersion!=identity.RootKeyVersion || profile.Registration.Identity.Purpose!=PlatformKeyPurpose.InteractionRootDek
             || profile.KeyUse.OriginalRootReference!=profile.Registration.OpaqueWrappedKeyReference) return null;
@@ -40,14 +46,16 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     public async Task<InteractionOccurrenceOwnedKey?> ResolveRootAsync(InteractionOccurrenceIdentity identity,string keyReference,bool writing,CancellationToken token)
     {
         if(writing) { lock(_gate) if(!_leases.Contains(ProfileId(identity,true)+"|"+keyReference)) return null; }
-        if(await Current(identity,writing,token).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=keyReference) return null;
+        if(await Current(identity,writing,token,true).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=keyReference) return null;
         string materialAttempt=MaterialId(current.Profile.KeyUse);
+        if(dynamicEnrollment is not null && !enrolledProfiles.ContainsKey(ProfileId(identity,writing)) && !await dynamicEnrollment.AdmitReleaseAsync(identity,current.Profile,token).ConfigureAwait(false)) return null;
         lock(_gate) if(!_materialAttempts.Add(materialAttempt)) return null;
         var released=await custody.UnwrapAsync(current.Profile.Registration,current.Binding.OperationId+"|"+(writing?"write":"read"),current.Profile.KeyUse,token).ConfigureAwait(false);
         if(released.Key is not { } key) return null;
         using(key)
         {
-            if(key.Bytes.Length!=32 || await Current(identity,writing,token).ConfigureAwait(false) is not { } after || after.Binding!=current.Binding || after.Profile!=current.Profile) return null;
+            if(key.Bytes.Length!=32 || await bindings.FindRetainedAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token).ConfigureAwait(false)!=current.Binding
+                || await custody.LookupAsync(current.Profile.Registration,token).ConfigureAwait(false) is not { Status:CustodyKeyLifecycleStatus.Wrapped }) return null;
             byte[] transferred=key.TransferOwnership();lock(_gate) _ownedRoots[materialAttempt]=transferred;
             return new(identity.Target,"interaction-root",identity.RootKeyVersion,transferred);
         }
@@ -56,7 +64,8 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     public async Task<int> CompleteDisposedUsesAsync(CancellationToken token)
     {
         int completed=0;
-        foreach(var profile in enrolledProfiles.Values.DistinctBy(value=>MaterialId(value.KeyUse)))
+        var pending=dynamicEnrollment is null?[]:await dynamicEnrollment.PendingAsync(token).ConfigureAwait(false);
+        foreach(var profile in enrolledProfiles.Values.Concat(pending).DistinctBy(value=>MaterialId(value.KeyUse)))
         {
             string id=MaterialId(profile.KeyUse);
             lock(_gate)

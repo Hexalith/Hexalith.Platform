@@ -7,7 +7,7 @@ using Hexalith.Platform.Custody;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Independent actual native EventStore source reader. Engine-returned buffers and local archive copies confer no evidence.</summary>
-public sealed class Fr34EventStoreCanaryReader(IEventStoreGatewayClient privateReadGateway, TimeProvider clock) : IFr34PersistedCanaryReader
+public sealed class Fr34EventStoreCanaryReader(IEventStoreGatewayClient privateReadGateway, TimeProvider clock,IFr34OccurrenceEnrollment? dynamicEnrollment=null) : IFr34PersistedCanaryReader
 {
     private readonly AuthoritativeEventStreamReader _reader = new(privateReadGateway, clock, requireNativeProof: true);
     internal async Task<Fr34StoredCanary?> ReadCanaryAsync(Fr34ProtectionTarget target, string canaryId, CancellationToken token)
@@ -20,7 +20,13 @@ public sealed class Fr34EventStoreCanaryReader(IEventStoreGatewayClient privateR
         if (item.EventTypeName != typeof(Fr34CanaryPersisted).FullName || item.SequenceNumber != 1 || item.ProtectionMetadata is not { State: PayloadProtectionState.Protected } metadata
             || string.IsNullOrWhiteSpace(item.NativeEventDigest) || string.IsNullOrWhiteSpace(metadata.KeyAlias)) return null;
         var reference = new Fr34CanaryReference(target, canaryId, identity.ActorId, metadata.KeyAlias);
-        return new(reference, identity, new(target.TenantId, canaryId, "fr34-" + canaryId),
+        var protectionTarget=new ProtectionTarget(target.TenantId,canaryId,"fr34-"+canaryId);
+        if(dynamicEnrollment is not null)
+        {
+            var claim=await dynamicEnrollment.ResolveAsync(identity,new(1,PayloadProtectionPayloadKind.Event,item.EventTypeName),token).ConfigureAwait(false);
+            if(claim is null || claim.CanaryId!=canaryId || claim.Binding.KeyReference!=metadata.KeyAlias) return null;protectionTarget=claim.Binding.Identity.Target;
+        }
+        return new(reference, identity, protectionTarget,
             new(1, PayloadProtectionPayloadKind.Event, item.EventTypeName), new(item.Payload.ToArray(), item.SerializationFormat, metadata),stream.NativeProof,item.NativeEventDigest);
     }
     /// <summary>Reads and checks the complete independently persisted original reference.</summary>

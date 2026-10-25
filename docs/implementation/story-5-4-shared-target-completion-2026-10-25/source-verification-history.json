@@ -1,0 +1,181 @@
+{
+  "schema": "platform.story-5.4.source-verification-history.v1",
+  "observedAtUtc": "2026-10-25T20:34:36.961883+00:00",
+  "currentReviewStatus": "Pass3CorrectionsInProgress",
+  "currentSourceVerifiedComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "history": [
+    {
+      "sourcePass": "Pass2CorrectionsBeforeReview3",
+      "observedHead": "30673fdab03b5c5d527eb9eb596bfa6645ad6649",
+      "handbackSha256": "522cbbd903d0255de56615ac3cbcc5e7f19d1ae7e03c0ab723721fdf1f23bf91",
+      "verification": {
+        "runtime": {
+          "passed": 365,
+          "failed": 0,
+          "log": "/tmp/story54-round3-runtime-tests.log",
+          "logSha256": "a4e01439fd2369636a494b2f146b95af9ae40a6dcec1ec75073af390d28bb59b",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "protection": {
+          "passed": 47,
+          "failed": 0,
+          "log": "/tmp/story54-round3-protection-tests.log",
+          "logSha256": "3272cb0e68da59e2ab80b8637fdcf052c7cd0c63a5537b96a5507374a71602e7",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "custody": {
+          "passed": 784,
+          "failed": 0,
+          "log": "/tmp/story54-round3-custody-tests.log",
+          "logSha256": "751d31e71a47539a384000083924d110bea3b67634d896e4fb9b12f29737ec0c",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "native": {
+          "passed": 25,
+          "failed": 0,
+          "log": "/tmp/story54-round3-native-tests.log",
+          "logSha256": "e235b3f564dfecd2dd88e1c3be3d94ba03b6db7b72e875d4f4d099e3a4a67f38",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "compositionFocused": {
+          "passed": 30,
+          "failed": 0,
+          "log": "/tmp/story54-round3-composition-tests.log",
+          "logSha256": "2dbb2bc2bb227a8bda29aadc00c720c62b922786236fb4f61166ed6811c0850f",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "secretsPython": {
+          "passed": 256,
+          "failed": 0,
+          "log": "/tmp/story54-round3-python.log",
+          "logSha256": "58ec8171763a2c017da7ec2a656f81e9b3272da678db163715597b8822a3692f",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "hostPython": {
+          "passed": 13,
+          "failed": 0,
+          "log": "/tmp/story54-round3-host-python.log",
+          "logSha256": "47dcba5ee9327a8f2fc52fa2a7f45df745cd673b5e9ed65f8ab2d50d11f74747",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "runtimeBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-runtime-build.log",
+          "logSha256": "6cf8d33048493bfd63ea34bcbba9d08f27e7b8235898120a9e4c30d749609081",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "protectionBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-protection-build.log",
+          "logSha256": "0f2d8c89b2e97a74b854647c4bf4c73f0c9fe799eebcad5e6bf1b88efb5f510d",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "custodyBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-custody-build.log",
+          "logSha256": "e9e95045e0134f819880cb7bbfd92405206a56176e4f8810a825cddbaac58301",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "nativeBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-native-build.log",
+          "logSha256": "fc3ac389b89ec1949d571135183835830cf380475ff0c7a297ebf27d8c55297f",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "compositionBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-composition-build.log",
+          "logSha256": "76ea5eac79aa4801357d27c53bed00469835fb2100e157b1f8983f4b83e9fbd8",
+          "runPhase": "PreR2A1R2A2SourceSnapshot_RetainedHistoricalRun_NotRerun",
+          "logHashVerified": true
+        },
+        "postHandbackAffectedRuntimeBuild": {
+          "exitCode": 0,
+          "warnings": 0,
+          "errors": 0,
+          "log": "/tmp/story54-round3-r2a-runtime-build.log",
+          "logSha256": "0136df9d409c64b46c63d3dc745c22e0725800d17776906e702c347d39a0130d",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PostR2A1R2A2Corrections",
+          "logHashVerified": true
+        },
+        "postHandbackAffectedRuntimeTests": {
+          "passed": 57,
+          "failed": 0,
+          "skipped": 0,
+          "log": "/tmp/story54-round3-r2a-runtime-tests.log",
+          "caseBoundaryCounts": {
+            "changedInventoryOrProviderOriginalLoss": 6,
+            "envelopeOriginalLossThenExpiry": 6,
+            "legacyIssuanceWithNoEvaluationOriginal": 2,
+            "sourceSpecificRecovery": 1,
+            "actualReceivingProjection": 25,
+            "realHmacEnvelopeSubstitutions": 17
+          },
+          "logSha256": "1187ce5b6d239acdb217735162664646c4690501bce77c2f9af8ccdc29b18fa2",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PostR2A1R2A2Corrections",
+          "logHashVerified": true
+        },
+        "postHandbackAffectedInventoryTests": {
+          "passed": 3,
+          "failed": 0,
+          "log": "/tmp/story54-round3-r2a-inventory-tests.log",
+          "logSha256": "64c0d05846a892805230c3c008d74072cc915ae42176d6cb416f1a2e82ed2e76",
+          "classification": "IsolatedSourceComponentOnly",
+          "runPhase": "PostR2A1R2A2Corrections",
+          "logHashVerified": true
+        }
+      },
+      "exactCommands": {
+        "runtimeBuild": "dotnet build tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj --artifacts-path /tmp/story54-round3-runtime -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-runtime-locks/$(MSBuildProjectName).lock.json' -m:1",
+        "protectionBuild": "dotnet build tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj --artifacts-path /tmp/story54-round3-protection-tests -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-protection-locks/$(MSBuildProjectName).lock.json' -m:1",
+        "custodyBuild": "dotnet build tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj --artifacts-path /tmp/story54-round3-custody -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-custody-locks/$(MSBuildProjectName).lock.json' -m:1",
+        "nativeBuild": "dotnet build infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj --artifacts-path /tmp/story54-round3-native -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-native-locks/$(MSBuildProjectName).lock.json' -m:1",
+        "compositionBuild": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --artifacts-path /tmp/story54-round3-composition -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-composition-locks/$(MSBuildProjectName).lock.json' -p:BuildsToolingAssemblyPath=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll -p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round2-builds-test-reference.targets -m:1",
+        "runtimeTests": "dotnet /tmp/story54-round3-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName!~IndependentOriginalIndexTests'",
+        "protectionTests": "dotnet /tmp/story54-round3-protection-tests/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "custodyTests": "dotnet /tmp/story54-round3-custody/bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll",
+        "nativeTests": "dotnet /tmp/story54-round3-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+        "compositionTests": "dotnet /tmp/story54-round3-composition/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll -filterVSTest 'FullyQualifiedName~AgentsIngressDenialTests|FullyQualifiedName~AgentsHostCompositionTests|FullyQualifiedName~AgentsAcceptedDeploymentContextTests'",
+        "secretsPython": "python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py'",
+        "hostPython": "python3 -m unittest discover -s eng/ext-host-1 -p 'test_*.py'",
+        "whitespace": "git -c core.whitespace=cr-at-eol diff --check -- <paths in /tmp/story54-round3-owned-files.json>",
+        "postHandbackAffectedRuntimeBuild": "dotnet build tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj --artifacts-path /tmp/story54-round3-runtime -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round3-runtime-locks/$(MSBuildProjectName).lock.json' -m:1",
+        "postHandbackAffectedRuntimeTests": "dotnet /tmp/story54-round3-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName~QualificationRuntimeReadRecoveryTests|FullyQualifiedName~QualificationEnvelopeEvaluationRecoveryTests|FullyQualifiedName~QualificationRetainedSourceRecoveryTests|FullyQualifiedName~QualificationReceivingProjectionTests|FullyQualifiedName~ShippedEnvelopeWorkflowUsesRealHmacAndExactRetainedIssuanceForEverySubstitution'",
+        "postHandbackAffectedInventoryTests": "python3 -m unittest discover -s eng/ext-secrets-1 -p test_case_driver_inventory.py"
+      },
+      "scopeNote": "Historical executed source/component checks. Full suites preceded R2A1/R2A2; the explicitly labeled later selected runs verify those corrections only. Pass3 corrections require new checks."
+    }
+  ]
+}

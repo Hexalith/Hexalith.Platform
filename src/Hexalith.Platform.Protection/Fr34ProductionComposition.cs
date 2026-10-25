@@ -12,10 +12,10 @@ public static class Fr34ProductionComposition
     /// <summary>Captures all material ports privately. Supplied installed originals, current authority and native holder profiles must already exist; no enrollment or effects occur here.</summary>
     public static Fr34ProductionPorts Create(DaprClient dapr,CustodyLifecycleClient custody,IInteractionOccurrenceRegistry actualRegistry,
         IPlatformKeyInventoryActor inventory,IPlatformKeyInventoryAuthority inventoryAuthority,IReadOnlyDictionary<string,CustodyInteractionBindingResource> bindings,
-        IReadOnlyDictionary<string,CustodyInteractionMaterialProfile> materials,TimeProvider? clock=null)
+        IReadOnlyDictionary<string,CustodyInteractionMaterialProfile> materials,TimeProvider? clock=null,IFr34OccurrenceEnrollment? dynamicEnrollment=null)
     {
-        var source=new CustodyInteractionProtectionBindingSource(dapr,bindings);var provider=new InteractionProtectionBindingProvider(source);
-        var keys=new CustodyInteractionOccurrenceKeyProvider(dapr,new CustodyOccurrenceMaterialClient(custody),source,actualRegistry,inventory,inventoryAuthority,materials);
-        return new(new InteractionPayloadProtectionService(actualRegistry,keys,provider,clock??TimeProvider.System),provider,keys,source);
+        var source=new CustodyInteractionProtectionBindingSource(dapr,bindings,dynamicEnrollment);var provider=new InteractionProtectionBindingProvider(source);
+        var keys=new CustodyInteractionOccurrenceKeyProvider(dapr,new CustodyOccurrenceMaterialClient(custody),source,actualRegistry,inventory,inventoryAuthority,materials,dynamicEnrollment);
+        return new(new InteractionPayloadProtectionService(actualRegistry,keys,provider,clock??TimeProvider.System),provider,keys,source,dynamicEnrollment);
     }
 }

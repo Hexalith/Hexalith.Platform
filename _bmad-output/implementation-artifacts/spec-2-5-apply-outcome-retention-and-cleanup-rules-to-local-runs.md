@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'

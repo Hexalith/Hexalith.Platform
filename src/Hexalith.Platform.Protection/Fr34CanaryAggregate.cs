@@ -18,7 +18,7 @@ public sealed class Fr34CanaryAggregate : EventStoreAggregate<Fr34CanaryState>
     /// <summary>Appends one original canary; identical retry is a no-op and conflicting identity is refused.</summary>
     public static DomainResult Handle(PersistFr34Canary command, Fr34CanaryState? state)
     {
-        if (command.ProtectedContent.Value.Length is 0 or > 16384 || command.ProtectedContent.Target.AgentInteractionId.Length != 64)
+        if (command.ProtectedContent.Value.Length is 0 or > 16384 || string.IsNullOrWhiteSpace(command.ProtectedContent.Target.AgentInteractionId))
             throw new InvalidOperationException("Bounded canary required.");
         if (state?.OriginalSha256 is { } original)
             return original == Fr34CanaryState.Digest(command.ProtectedContent) ? DomainResult.NoOp() : throw new InvalidOperationException("Changed canary original.");

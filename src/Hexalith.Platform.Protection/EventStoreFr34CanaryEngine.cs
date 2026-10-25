@@ -13,7 +13,7 @@ namespace Hexalith.Platform.Protection;
 public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionService engine, Fr34EventStoreCanaryReader reader,
     Hexalith.EventStore.Client.Gateway.IEventStoreGatewayClient privateWriteGateway,
     Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource canaryProofs,
-    IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests) : IFr34ProtectionCanaryEngine
+    IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests,IFr34OccurrenceEnrollment? dynamicEnrollment=null) : IFr34ProtectionCanaryEngine
 {
     /// <summary>Reads identity from the actual production engine, never the requested target.</summary>
     public Hexalith.EventStore.PayloadProtection.InteractionProtectionEngineIdentity ReadEngineIdentity()=>engine.GetIdentity();
@@ -27,7 +27,13 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     {
         if (!IsActualTarget(target) || canaryId.Length != 64 || !canaryId.All(char.IsAsciiHexDigit) || plaintext.Length is 0 or > 8192) return null;
         if (await reader.ReadCanaryAsync(target, canaryId, cancellationToken).ConfigureAwait(false) is { } existing) return existing.Reference;
-        var payload = new PersistFr34Canary(new(Convert.ToBase64String(plaintext), new(target.TenantId, canaryId, "fr34-" + canaryId)));
+        var protectionTarget=new ProtectionTarget(target.TenantId,canaryId,"fr34-"+canaryId);
+        if(dynamicEnrollment is not null)
+        {
+            var claim=await dynamicEnrollment.ResolveAsync(new(target.TenantId,"fr34-canary",canaryId),new(1,PayloadProtectionPayloadKind.Event,typeof(Fr34CanaryPersisted).FullName!),cancellationToken).ConfigureAwait(false);
+            if(claim is null || claim.CanaryId!=canaryId) return null;protectionTarget=claim.Binding.Identity.Target;
+        }
+        var payload = new PersistFr34Canary(new(Convert.ToBase64String(plaintext),protectionTarget));
         string id = EventStorePrivateRecordingPort.StableUlid("fr34", target.TenantId, canaryId);
         var command = new Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest(id,target.TenantId,"fr34-canary",canaryId,
             typeof(PersistFr34Canary).FullName!,JsonSerializer.SerializeToElement(payload,new JsonSerializerOptions(JsonSerializerDefaults.Web)),IdempotencyKey:id);

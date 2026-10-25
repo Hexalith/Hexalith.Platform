@@ -8,4 +8,4 @@ public sealed record JointPhaseCommandInstallation(JointPhaseCommandScope Scope,
     IndependentDaprAuthorityBinding ExecutorOriginals,Dictionary<string,IReadOnlyList<JsonObject>> CaseOriginals,
     string EvidenceDirectory,string OwnerSigningKeyFile,string OwnerPublicKeyFile,IndependentDaprAuthorityBinding IndependentSource,
     Dictionary<string,QualificationInstallation>? SecretsRoles=null,QualificationCallerContext? SecretsCaller=null,Dictionary<string,JsonObject>? SecretsOriginals=null,
-    IndependentDaprAuthorityBinding? JointSecretsOriginals=null,IndependentDaprAuthorityBinding? JointCommandOriginals=null);
+    IndependentDaprAuthorityBinding? JointSecretsOriginals=null,IndependentDaprAuthorityBinding? JointCommandOriginals=null,QualificationCohortAttemptBinding? CohortAttempt=null);

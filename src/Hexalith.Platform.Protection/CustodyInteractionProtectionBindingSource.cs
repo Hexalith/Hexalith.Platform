@@ -8,13 +8,13 @@ using Hexalith.EventStore.PayloadProtection;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Production retained-binding/erasure reader and durable once-only completion lease using exact Dapr ETag and outside-restore custody anchors. Missing installed original state always refuses.</summary>
-public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IReadOnlyDictionary<string,CustodyInteractionBindingResource> enrolledResources):IInteractionProtectionBindingSource
+public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IReadOnlyDictionary<string,CustodyInteractionBindingResource> enrolledResources,IFr34OccurrenceEnrollment? dynamicEnrollment=null):IInteractionProtectionBindingSource
 {
     /// <summary>Gets the unambiguous exact occurrence locator used by independently installed enrollment.</summary>
     public static string ResourceId(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)=>Hash(new { owner,occurrence });
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> FindRetainedAsync(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
-    { var read=await Read(owner,occurrence,token).ConfigureAwait(false);return read?.Record.Binding; }
+    { var read=await Read(owner,occurrence,token).ConfigureAwait(false);return read?.Record.Binding ?? (enrolledResources.ContainsKey(ResourceId(owner,occurrence)) || dynamicEnrollment is null?null:(await dynamicEnrollment.ResolveAsync(owner,occurrence,token).ConfigureAwait(false))?.Binding); }
     private async Task<(CustodyInteractionBindingResource Resource,CustodyInteractionBindingRecord Record,string ETag)?> Read(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
     {
         string id=ResourceId(owner,occurrence);if(!enrolledResources.TryGetValue(id,out var resource)
@@ -93,6 +93,7 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     public async Task<bool> TryAcquireCompletionLeaseAsync(InteractionProtectionBinding binding,CancellationToken token)
     {
         var occurrence=new PayloadProtectionOccurrenceContext(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId);
+        if(!enrolledResources.ContainsKey(ResourceId(binding.Identity.Owner,occurrence))) return dynamicEnrollment is not null && await dynamicEnrollment.AcquireLeaseAsync(binding,true,token).ConfigureAwait(false);
         var read=await Read(binding.Identity.Owner,occurrence,token).ConfigureAwait(false);if(read is not { } observed || observed.Record.Binding!=binding || observed.Record.CompletionLeaseId is not null) return false;
         string id=ResourceId(binding.Identity.Owner,occurrence);string lease=Hash(new { schema="interaction-completion-lease-v1",binding });
         var next=observed.Record with { Revision=checked(observed.Record.Revision+1),CompletionLeaseId=lease };
@@ -107,8 +108,14 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     public async Task<bool> TryAcquireEncryptionLeaseAsync(InteractionOccurrenceRecord record,IInteractionOccurrenceRegistry registry,CancellationToken token)
     {
         var identity=record.Request.Identity;var occurrence=new PayloadProtectionOccurrenceContext(identity.Sequence,identity.Kind,identity.PayloadTypeId);
-        var read=await Read(identity.Owner,occurrence,token).ConfigureAwait(false);
         var current=await registry.LookupAsync(identity,token).ConfigureAwait(false);
+        if(!enrolledResources.ContainsKey(ResourceId(identity.Owner,occurrence)))
+        {
+            var claim=dynamicEnrollment is null?null:await dynamicEnrollment.ResolveAsync(identity.Owner,occurrence,token).ConfigureAwait(false);
+            return claim?.Binding.Identity==identity && claim.Binding.KeyReference==record.KeyReference && current.Status==InteractionOccurrenceReservationStatus.Reserved
+                && JsonSerializer.Serialize(current.Record)==JsonSerializer.Serialize(record) && await dynamicEnrollment!.AcquireLeaseAsync(claim.Binding,false,token).ConfigureAwait(false);
+        }
+        var read=await Read(identity.Owner,occurrence,token).ConfigureAwait(false);
         if(read is not { } observed || observed.Record.Binding.Identity!=identity || observed.Record.Binding.KeyReference!=record.KeyReference
             || observed.Record.EncryptionLeaseId is not null || current.Status!=InteractionOccurrenceReservationStatus.Reserved || current.Record is not { } original || JsonSerializer.Serialize(original)!=JsonSerializer.Serialize(record)) return false;
         string id=ResourceId(identity.Owner,occurrence);string lease=Hash(new { schema="interaction-encryption-lease-v1",identity,record.KeyReference,record.RegistryRevision });

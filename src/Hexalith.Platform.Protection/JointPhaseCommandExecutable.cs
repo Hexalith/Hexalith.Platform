@@ -12,18 +12,25 @@ namespace Hexalith.Platform.Protection;
 public static class JointPhaseCommandExecutable
 {
     /// <summary>Executes only the exact installed partition. Missing ordinary adapters or selected protocols return nonzero before starting that partition.</summary>
-    public static async Task<int> RunAsync(string? installationPath,CancellationToken token=default)
+    public static async Task<int> RunAsync(string? installationPath,CancellationToken token=default,bool finalizeOnly=false)
     {
         if(installationPath is null || !Path.IsPathFullyQualified(installationPath)) return 2;
         byte[] bytes=await File.ReadAllBytesAsync(installationPath,token).ConfigureAwait(false);if(bytes.Length is 0 or >1024*1024) return 2;
         CustodyBindingContract.RejectDuplicateProperties(bytes);var installed=JsonSerializer.Deserialize<JointPhaseCommandInstallation>(bytes,CustodyBindingContract.Json);if(installed is null) return 2;
-        if(installed.JointCommandOriginals is null || installed.Scope.Cases.Any(id=>id.StartsWith("secrets:",StringComparison.Ordinal)) && installed.JointSecretsOriginals is null) return 2;
+        if(installed.JointCommandOriginals is null || installed.JointSecretsOriginals is null) return 2;
         using var owner=await OpenSignerAsync(installed.OwnerSigningKeyFile,installed.OwnerPublicKeyFile,token).ConfigureAwait(false);
         using var stdin=new MemoryStream();byte[] buffer=new byte[8192];int length;
         while((length=await Console.OpenStandardInput().ReadAsync(buffer,token).ConfigureAwait(false))>0) { if(stdin.Length+length>1024*1024) return 2;await stdin.WriteAsync(buffer.AsMemory(0,length),token).ConfigureAwait(false); }
         var request=SecretsProof.Parse(System.Text.Encoding.UTF8.GetString(stdin.ToArray()));if(request is null) return 2;
         using var dapr=new DaprClientBuilder().Build();var transport=new DaprSecretsInvoker(dapr);var clock=TimeProvider.System;
-        var originalAuthority=new IndependentDaprAuthority(transport,installed.ExecutorOriginals,clock);var originals=new InstalledQualificationOriginalStore(originalAuthority);
+        var stores=JointPhaseOriginalStores.Create(transport,installed.ExecutorOriginals,installed.JointSecretsOriginals,installed.JointCommandOriginals,clock);var originals=stores.Executor;
+        if(finalizeOnly)
+        {
+            if(installed.CohortAttempt is null || installed.CohortAttempt.BindingDigest!=installed.Scope.BindingDigest
+                || !await new DaprQualificationAttemptAuthority(transport,installed.CohortAttempt,clock).ValidateAsync(new JsonObject { ["runId"]=request["attemptId"]?.DeepClone(),["targetCommit"]=installed.Scope.PlatformCommit,["planSha256"]=QualificationProtocolSchema.PlanSha256 },token).ConfigureAwait(false)) return 2;
+            var recovery=new JointPhaseMetadataFinalizer(installed.Scope,stores.Command,installed.EvidenceDirectory,owner);
+            return await recovery.FinalizeAsync(request,token).ConfigureAwait(false) is null?3:0;
+        }
         var runtime=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile);if(runtime is null) return 2;
         var ports=QualificationGuardProductionComposition.Create(dapr,runtime,installed.Protection,originals,clock);
         var workflows=ports.Workflow.Registrations().ToDictionary(value=>value.CaseId,StringComparer.Ordinal);
@@ -50,9 +57,9 @@ public static class JointPhaseCommandExecutable
             var trust=enroll.PublicAnchors.ToDictionary(pair=>pair.Key,pair=>new QualificationProofBinding(pair.Value.Identity,pair.Value.Version,System.Text.Encoding.ASCII.GetBytes(pair.Value.PublicKeyPem),pair.Value.Sha256));
             secrets=new JointSecretsCaseExecutor(installed.Scope,new InstalledQualificationExecutor(Authority(execute.ScopeAuthority),Authority(execute.Owner)),
                 new InstalledQualificationObserver(Authority(observe.ScopeAuthority),Authority(observe.Owner)),new InstalledQualificationEnrollment(Authority(enroll.ScopeAuthority),Authority(enroll.Owner)),
-                new QualificationProofVerifier(trust),new InstalledQualificationOriginalStore(Authority(installed.JointSecretsOriginals!)),caller,secretOriginals);
+                new QualificationProofVerifier(trust),stores.Secrets,caller,secretOriginals);
         }
-        var command=new JointPhaseCommand(installed.Scope,new InstalledQualificationOriginalStore(new(transport,installed.JointCommandOriginals,clock)),mapped,publisher,installed.EvidenceDirectory,owner,secrets);
+        var command=new JointPhaseCommand(installed.Scope,stores.Command,mapped,publisher,installed.EvidenceDirectory,owner,secrets);
         return await command.ExecuteAsync(request,token).ConfigureAwait(false) is null?3:0;
     }
     internal static async Task<ECDsa> OpenSignerAsync(string privateFile,string publicFile,CancellationToken token)
