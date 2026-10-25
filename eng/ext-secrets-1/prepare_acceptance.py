@@ -28,12 +28,13 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
                   "dependencyAvailable": False, "missingInputs": inputs, "packetPrepared": False}
         (output / "blocked-inputs.json").write_bytes(q.canonical(report))
         return report
-    # Relative public anchors are relative to their source configuration, never the later Agents command cwd.
+    # Detached bytes are immutable installed input. Relocation cannot rewrite their semantic anchor locators.
+    relative_anchors = []
     for role in ("executor", "observer", "enrollment"):
         anchor = q.get(config, f"qualification.{role}.publicAnchorFile")
         if isinstance(anchor, str) and not Path(anchor).is_absolute():
-            config["qualification"][role]["publicAnchorFile"] = str((configuration.parent / anchor).resolve())
-    missing = [name for name in q.REQUIRED if not isinstance(q.get(config, name), str) or not q.get(config, name)]
+            relative_anchors.append(f"qualification.{role}.absoluteInstalledPublicAnchorLocator")
+    missing = relative_anchors + [name for name in q.REQUIRED if not isinstance(q.get(config, name), str) or not q.get(config, name)]
     missing.extend(q.qualification_prerequisite_inputs(config))
     if type(q.get(config, "runtime.callTimeout")) is not int or q.get(config, "runtime.callTimeout") not in range(1, 31):
         missing.append("runtime.callTimeout")
@@ -80,7 +81,10 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     anchors, decoded = {}, []
     for role in ("executor", "observer", "enrollment"):
         try:
-            data = q.read_public_anchor(q.get(config, f"qualification.{role}.publicAnchorFile"))
+            locator = q.get(config, f"qualification.{role}.publicAnchorFile")
+            if not isinstance(locator, str) or not Path(locator).is_absolute():
+                raise ValueError("absolute original installed public anchor locator required")
+            data = q.read_public_anchor(locator)
             decoded.append(q.public_key_identity(data))
             anchors[f"{role}AnchorSha256"] = hashlib.sha256(data).hexdigest()
         except (OSError, TypeError, ValueError, ImportError):

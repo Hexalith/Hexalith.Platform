@@ -99,15 +99,45 @@ public sealed class EventStorePrivateRecordingPortTests
         fixture.Retryable=true;(await fixture.Port.LookupAsync(fixture.Record,TestContext.Current.CancellationToken)).State.ShouldBe(SecurityEventRecorderLookupState.Unknown);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task DefinitiveRejectedOriginalUsesOneRetainedNewTransportWithoutChangingLogicalObservationOrResendingUnknown(bool queueRecovery)
+    {
+        using var fixture=new Fixture { RejectOrdinary=true,QueueRecovery=queueRecovery };
+        var record=fixture.Record;await fixture.Port.AppendAsync(record,TestContext.Current.CancellationToken);
+        var proof=await fixture.Port.LookupAsync(record,TestContext.Current.CancellationToken);proof.State.ShouldBe(SecurityEventRecorderLookupState.NotRecorded);proof.NoRecordProof!.Basis.ShouldBe("TerminalNoEvent");
+        var grant=new SecurityObservationRecoveryGrant(new("spool","epoch","authority",DateTimeOffset.UtcNow.AddHours(1)),record,proof,"revision",DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddMinutes(5));
+        fixture.RecoveryAuthority.VerifyAgedOriginalRecoveryAsync(grant,Arg.Any<SecurityEventRecorderLookup>(),Arg.Any<CancellationToken>()).Returns(true);
+        await fixture.Port.RecoverOriginalAsync(record,grant,TestContext.Current.CancellationToken);fixture.Commands.Count.ShouldBe(2);
+        var original=fixture.Commands[0].Command;var recovery=fixture.Commands[1].Command;
+        recovery.MessageId.ShouldNotBe(original.MessageId);recovery.MessageId.ShouldBe(PrivateRecordingIdentity.SecurityRecoveryMessageId(grant));recovery.IdempotencyKey.ShouldBe(recovery.MessageId);
+        recovery.Payload.GetRawText().ShouldBe(original.Payload.GetRawText());recovery.AggregateId.ShouldBe(original.AggregateId);
+        var actual=await fixture.Port.LookupAsync(record,TestContext.Current.CancellationToken);
+        if(queueRecovery)
+        {
+            actual.State.ShouldBe(SecurityEventRecorderLookupState.Unknown);
+            await Should.ThrowAsync<InvalidOperationException>(()=>fixture.Port.RecoverOriginalAsync(record,grant,TestContext.Current.CancellationToken));
+        }
+        else
+        {
+            actual.State.ShouldBe(SecurityEventRecorderLookupState.Recorded);actual.Receipt!.ObservationId.ShouldBe(record.Intent.ObservationId);
+            await fixture.Port.RecoverOriginalAsync(record,grant,TestContext.Current.CancellationToken);
+        }
+        fixture.Commands.Count.ShouldBe(2);
+    }
+
     private sealed class Fixture : IDisposable
     {
         internal readonly IEventStoreGatewayClient Gateway = Substitute.For<IEventStoreGatewayClient>();
-        internal readonly IEventStoreGatewayBoundCommandProofSource Proofs = Substitute.For<IEventStoreGatewayBoundCommandProofSource>();
+        internal readonly IEventStoreGatewayBoundCommandProofSource Proofs = Substitute.For<IEventStoreGatewayBoundCommandProofSource,IPrivateRecoveryCommandProofSource>();
         internal readonly List<BoundWorkloadCommandRequest> Commands = [];
         private readonly Dictionary<string, List<StreamReadEvent>> _sources = [];
         private readonly OriginalTransport _originals = new();
         internal readonly DateTimeOffset Now = DateTimeOffset.UtcNow;
-        internal bool LoseAcknowledgement, ProofDenied, MissingNativeProof,QueueWithoutEvent;
+        internal bool LoseAcknowledgement, ProofDenied, MissingNativeProof,QueueWithoutEvent,RejectOrdinary,QueueRecovery;
+        private readonly Dictionary<string,SubmitCommandResponse> _terminalCache=[];
+        private readonly Dictionary<string,CommandStatus> _statuses=[];
         internal CommandStatus? OriginalStatus;
         internal bool? Retryable=false;
         internal readonly IReplicatedSecuritySpoolAuthority RecoveryAuthority=Substitute.For<IReplicatedSecuritySpoolAuthority>();
@@ -116,12 +146,17 @@ public sealed class EventStorePrivateRecordingPortTests
         internal Fixture()
         {
             Proofs.IssueAsync(Arg.Any<BoundWorkloadCommandRequest>(), Arg.Any<CancellationToken>()).Returns(_ => ValueTask.FromResult<string?>(ProofDenied ? null : "isolated-exact-scope-proof"));
+            ((IPrivateRecoveryCommandProofSource)Proofs).IssueRecoveryAsync(Arg.Any<BoundWorkloadCommandRequest>(),Arg.Any<SecurityObservationRecoveryGrant>(),Arg.Any<CancellationToken>()).Returns(_=>ValueTask.FromResult<string?>(ProofDenied?null:"isolated-current-recovery-proof"));
             Gateway.ReadStreamAsync(Arg.Any<StreamReadRequest>(), Arg.Any<CancellationToken>()).Returns(call => Task.FromResult(Read(call.ArgAt<StreamReadRequest>(0))));
             Gateway.SubmitBoundWorkloadCommandAsync(Arg.Any<BoundWorkloadCommandRequest>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
             {
                 var request = call.ArgAt<BoundWorkloadCommandRequest>(0); Commands.Add(request); var command = request.Command;
                 var identity = new AggregateIdentity(command.Tenant, command.Domain, command.AggregateId);
-                if(QueueWithoutEvent) return Task.FromResult(new SubmitCommandResponse(command.MessageId) { MessageId=command.MessageId });
+                if(_terminalCache.TryGetValue(command.MessageId,out var cached)) return Task.FromResult(cached);
+                if(RejectOrdinary && command.Domain=="security-event-log" && command.MessageId==PrivateRecordingIdentity.SecurityOriginalMessageId(command.Payload.GetProperty("securityObservationId").GetString()!))
+                { var rejected=new SubmitCommandResponse(command.MessageId) { MessageId=command.MessageId };_statuses[command.MessageId]=CommandStatus.Rejected;_terminalCache.Add(command.MessageId,rejected);return Task.FromResult(rejected); }
+                if(QueueWithoutEvent || QueueRecovery && command.Domain=="security-event-log" && command.MessageId!=PrivateRecordingIdentity.SecurityOriginalMessageId(command.Payload.GetProperty("securityObservationId").GetString()!))
+                { _statuses[command.MessageId]=OriginalStatus??CommandStatus.Processing;return Task.FromResult(new SubmitCommandResponse(command.MessageId) { MessageId=command.MessageId }); }
                 if (!_sources.TryGetValue(identity.ActorId, out var events)) _sources.Add(identity.ActorId, events = []);
                 string eventType = command.Domain == "trusted-envelope-replay" ? "Hexalith.Agents.Contracts.TrustedEnvelopeReplay.TrustedEnvelopeFirstSeen" : "Hexalith.Agents.Contracts.SecurityEventLog.SecurityEventRecorded";
                 object payload = command.Domain == "trusted-envelope-replay" ? new { Registration = command.Payload } : new { Observation = command.Payload };
@@ -133,8 +168,8 @@ public sealed class EventStorePrivateRecordingPortTests
             });
             Gateway.GetWorkloadCommandStatusAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(call=>
             {
-                var command=Commands.Single(value=>value.Command.MessageId==call.ArgAt<string>(1)).Command;var status=OriginalStatus??CommandStatus.Processing;
-                return new CommandStatusQueryResponse(command.CorrelationId??command.MessageId,status.ToString(),(int)status,MessageId:command.MessageId) { TenantId=command.Tenant,Domain=command.Domain,AggregateId=command.AggregateId,CommittedEventSequence=0,EventCount=0,Retryable=OriginalStatus is null?true:Retryable };
+                var command=Commands.Last(value=>value.Command.MessageId==call.ArgAt<string>(1)).Command;var status=_statuses.GetValueOrDefault(command.MessageId,OriginalStatus??CommandStatus.Processing);
+                return new CommandStatusQueryResponse(command.CorrelationId??command.MessageId,status.ToString(),(int)status,MessageId:command.MessageId) { TenantId=command.Tenant,Domain=command.Domain,AggregateId=command.AggregateId,CommittedEventSequence=0,EventCount=0,Retryable=status is CommandStatus.Received or CommandStatus.Processing?true:Retryable };
             });
             Port = new(Gateway, Proofs, _originals.Authority, RecoveryAuthority, "private-worker", TimeProvider.System);
         }
@@ -159,9 +194,16 @@ public sealed class EventStorePrivateRecordingPortTests
         public Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
         {
             using var document = JsonDocument.Parse(jsonBody); var request = document.RootElement; var payload = request.GetProperty("Payload");
-            string id = payload.GetProperty("requestId").GetString()!;
+            string id = payload.TryGetProperty("requestId",out var requestId)?requestId.GetString()!:payload.GetProperty("command").GetProperty("MessageId").GetString()!;
             object? result;
-            if (method.EndsWith("qualification-lookup-original",StringComparison.Ordinal)) result = _originals.GetValueOrDefault(id);
+            if(method.EndsWith("recording-recovery-dispatch-admit",StringComparison.Ordinal))
+            {
+                var command=payload.GetProperty("command");var grant=payload.GetProperty("grant").Deserialize<SecurityObservationRecoveryGrant>(CustodyBindingContract.Json)!;string mainId=PrivateRecordingIdentity.SecurityOriginalMessageId(grant.Original.Intent.ObservationId);
+                bool allowed=id==PrivateRecordingIdentity.SecurityRecoveryMessageId(grant) && _originals.TryGetValue(id,out var attempt) && attempt.SubmissionState=="Unsent" && attempt.Request.GetRawText()==command.GetProperty("Payload").GetRawText();
+                if(allowed) { _originals[id]=_originals[id] with { SubmissionState="Dispatched" };var main=_originals.GetValueOrDefault(mainId)??new IndependentOriginal(command.GetProperty("Payload").Clone(),null);_originals[mainId]=main with { SubmissionState="Dispatched",ActiveTransportMessageId=id }; }
+                result=new { Allowed=allowed };
+            }
+            else if (method.EndsWith("qualification-lookup-original",StringComparison.Ordinal)) result = _originals.GetValueOrDefault(id);
             else if (method.EndsWith("recording-dispatch-admit",StringComparison.Ordinal))
             {
                 bool allowed = _originals.TryGetValue(id,out var stored) && stored.Request.GetRawText() == payload.GetProperty("original").GetRawText() && stored.SubmissionState == "Unsent";

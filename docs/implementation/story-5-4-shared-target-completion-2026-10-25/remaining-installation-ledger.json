@@ -1,6 +1,6 @@
 {
   "schema": "platform.story-5.4.remaining-installation-ledger.v1",
-  "observedAtUtc": "2026-10-25T12:39:22.379827+00:00",
+  "observedAtUtc": "2026-10-25T17:16:37.541236+00:00",
   "deliveryStatus": "Blocked",
   "completeSharedTargetPacket": false,
   "dependencyAvailable": false,
@@ -562,6 +562,13 @@
         "EventStore Maintainer"
       ],
       "needed": "Explicit coordinated replacement Platform/protection dates and immutable complete targets based on actual installed readiness; complete replacement acceptance and executable commands afterward. No replacement date or target is inferred."
+    },
+    {
+      "id": "FR34_MATERIAL_ADMISSION",
+      "owner": "Independent custody/holder and protection owners",
+      "needed": "Explicit independently admitted per-occurrence read/write KeyUse profiles, original interaction-root mappings, current registry-correlated native lease/current authority and actual holder-completion witnesses for the Platform-owned material provider. Tenant digest uses a separate exact-purpose current inventory/secret binding. Source avoids the current dependency concrete provider copying defect; it does not create or qualify admissions.",
+      "sourceSchema": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+      "installationEvidence": null
     }
   ],
   "installedHashes": {
@@ -612,5 +619,33 @@
     "acceptedRecordMutations": 0
   },
   "qualificationRule": "All automated results in this change use isolated fixtures. They are source/component evidence and establish no installed qualification, acceptance or availability.",
-  "scope": "Missing values are observations of the supplied owner form/public installation bundle, not a claim of absence across every remote installation."
+  "scope": "Missing values are observations of the supplied owner form/public installation bundle, not a claim of absence across every remote installation.",
+  "packetRefusalEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/packet-refusal-verification.json",
+  "externalDependencyContractObservations": [
+    {
+      "id": "EVENTSTORE-INTERACTION-MATERIAL-OWNERSHIP",
+      "status": "AvoidedByPlatformSourceAdapter_InstalledEvidenceMissing",
+      "owner": "EventStore Maintainer with independent custody/holder owners",
+      "observedSource": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceKeyProvider.cs",
+      "observedSourceSha256": "5f471fad433869ae769edd438ae13f2967c0e3cc828ebddbace0718b5ec4c5d0",
+      "sourceCommit": "c5d1c280d8c1c1a207cd159d817f614e93c93130",
+      "fetchedOriginMain": "c5d1c280d8c1c1a207cd159d817f614e93c93130",
+      "methods": {
+        "AcquireEncryptionLeaseAsync": 53,
+        "ResolveRootAsync": 87,
+        "IsCurrentAsync": 121,
+        "Own": 170
+      },
+      "observedConstraint": "The current provider calls DeliverAsync separately for lease acquisition, root resolution and current checks; Own copies candidate KeyBytes, while candidate arrays are not cleared by those paths. Native custody unwrap permits one release for an admitted KeyUse. A guessed reused KeyUse or additional unadmitted copies cannot satisfy complete holder ownership.",
+      "requiredOwnerContract": "Actual independently admitted per-occurrence read/write KeyUse profiles, exact native current registry/lease enrollment and holder/copy completion evidence. No material-use admissions or completion proofs are guessed.",
+      "platformInstallationEvidence": null,
+      "implementedByThisChange": true,
+      "siblingSourceModifiedByThisChange": false,
+      "qualificationPassed": false,
+      "platformSourceAlternative": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+      "platformSourceBehavior": "Metadata-only current checks and independently anchored registry-correlated lease admission; exact native unwrap releases one admitted use, with sole-buffer ownership transfer to InteractionOccurrenceOwnedKey. The defective concrete dependency provider is not required.",
+      "sourceVerificationStatus": "InProgress"
+    }
+  ],
+  "externalDependencyContractBlockers": []
 }

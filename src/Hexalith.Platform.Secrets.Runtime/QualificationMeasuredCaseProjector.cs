@@ -8,7 +8,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding independentlyEnrolledObserver,IQualificationRecoveryController controlVerifier,
     IReadOnlyDictionary<string,IReadOnlyList<string>> missingInstalledReaders,TimeProvider? clock=null):IQualificationMeasuredCaseProjector
 {
-    private static readonly HashSet<string> SupportedMetrics=new(["immutableIdentity","immutableOutcome","persistedProofCount","activeCredentials","destroyedTargets","signingAttempts","originalEffects","activations","forbiddenEffects","foreignEffects","leakCount","allCopyRevival","atomicAllOrNone","exactIndependentDecision","currentActorRoleEvidence","exactReferenceCount","independentlyCurrentInventory","authenticatedWrap","ownedPlaintextCleared","detachedEs256","publicAnchorRetained"],StringComparer.Ordinal);
+    private static readonly HashSet<string> SupportedMetrics=new(["immutableIdentity","immutableOutcome","persistedProofCount","activeCredentials","destroyedTargets","signingAttempts","originalEffects","activations","forbiddenEffects","foreignEffects","leakCount","allCopyRevival","atomicAllOrNone","exactIndependentDecision","currentActorRoleEvidence","exactReferenceCount","independentlyCurrentInventory","authenticatedWrap","ownedPlaintextCleared","detachedEs256","publicAnchorRetained","retainedEnvelopeVerifier","newKeyAndNonce","immutableLogicalId","revokedEffects","exactReceipts","currentLifecycleReservation","retainedPins","staleSafetyVerdicts","retainedDigestVerifiers","obsoleteUnissuedAttempts","stableSealBatchManifest","capabilityExpiryFields","canonicalFieldCount","actualIssueRevisionSeparate","globalKeyBlock","exactNoIssueProof","constantTimeVerification","nonceRecords","directPrincipalRelease","immutableDeliveredAt","renewedExpiry","replayRetentionSeconds","renewedFirstSeen","reservedSystemNamespace"],StringComparer.Ordinal);
     /// <summary>Gets precise unavailable facts from the most recent projection.</summary>
     public IReadOnlyList<string> MissingReadInputs { get; private set; }=[];
     /// <inheritdoc />
@@ -126,10 +126,31 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
                 ?versions.OfType<JsonObject>().LongCount(value=>JsonNode.DeepEquals(value["Key"],exact)):last["independentResolution"]?["exactResolvedReferenceCount"]?.GetValue<long>();
             case "independentlyCurrentInventory":return last["inventoryState"]?["Revision"] is JsonValue revision && revision.TryGetValue<long>(out long actualRevision)
                 && last["inventoryAuthorityRevision"]?.GetValue<long>() is { } authorityRevision?actualRevision>0 && actualRevision==authorityRevision?1:0:null;
+            case "retainedEnvelopeVerifier":return last["independentTemporalVerification"]?["keyMetadata"]?["State"]?.GetValue<string>()=="Retained" && last["independentTemporalVerification"]?["status"]?.GetValue<string>()=="Succeeded"?1:null;
+            case "newKeyAndNonce":
+                var old=last["independentTemporalVerification"]?["originalEnvelope"];var fresh=last["independentTemporalVerification"]?["replacementEnvelope"];
+                return old is not null && fresh is not null?old["SigningKeyVersion"]?.GetValue<string>()!=fresh["SigningKeyVersion"]?.GetValue<string>() && old["DeliveryNonce"]?.GetValue<string>()!=fresh["DeliveryNonce"]?.GetValue<string>()?1:0:null;
+            case "immutableLogicalId":return last["independentTemporalVerification"]?["originalEnvelope"]?["Identity"] is { } oldIdentity && last["independentTemporalVerification"]?["replacementEnvelope"]?["Identity"] is { } freshIdentity?JsonNode.DeepEquals(oldIdentity,freshIdentity)?1:0:null;
+            case "revokedEffects":return last["targetMutations"] is JsonArray revokedWrites?revokedWrites.OfType<JsonObject>().LongCount(value=>value["keyState"]?.GetValue<string>()=="Revoked"):null;
+            case "constantTimeVerification":return last["independentEnvelopeVerification"]?["firstStatus"]?.GetValue<string>()=="Succeeded" && last["independentEnvelopeVerification"]?["exactRetryStatus"]?.GetValue<string>()=="Succeeded"?1:null;
+            case "nonceRecords":return last["independentEnvelopeVerification"]?["replayOriginal"]?["SourceRevision"]?.GetValue<long>() is { } sourceRevision?sourceRevision:null;
+            case "directPrincipalRelease":return last["independentDeliveryOriginal"]?["State"]?.GetValue<string>()=="Delivered" && last["independentDeliveryOriginal"]?["ObservedAt"] is not null?1:0;
+            case "immutableDeliveredAt":return states.All(value=>JsonNode.DeepEquals(value["deliveredAt"],state["deliveredAt"]))?1:0;
+            case "renewedExpiry":return states.Skip(1).LongCount(value=>!JsonNode.DeepEquals(value["exclusiveExpiry"],state["exclusiveExpiry"]));
+            case "replayRetentionSeconds":return state["firstSeenAt"]?.GetValue<long>() is { } firstSeen && state["retainUntil"]?.GetValue<long>() is { } retain?(retain-firstSeen)/1000:null;
+            case "renewedFirstSeen":return state["firstSeenAt"] is not null?states.Skip(1).LongCount(value=>!JsonNode.DeepEquals(value["firstSeenAt"],state["firstSeenAt"])):null;
+            case "reservedSystemNamespace":return state["replayNamespace"]?.GetValue<string>() is { } replayNamespace?replayNamespace=="system/trusted-envelope-replay"?1:0:null;
+            case "exactReceipts":return last["independentLifecycleVerification"]?["ExactReceiptCount"]?.GetValue<long>();
+            case "currentLifecycleReservation":return last["independentLifecycleVerification"]?["CurrentReservationCount"]?.GetValue<long>();
+            case "retainedPins":return last["independentLifecycleVerification"]?["RetainedPinCount"]?.GetValue<long>();
             case "authenticatedWrap":return ExportBoolean("AuthenticatedWrap");
             case "ownedPlaintextCleared":return ExportBoolean("OwnedPlaintextCleared");
             case "detachedEs256":return ExportBoolean("DetachedEs256");
             case "publicAnchorRetained":return ExportBoolean("PublicAnchorRetained");
+            case "staleSafetyVerdicts":return last["rotationVerdicts"] is JsonArray verdicts && last["rotationInventory"]?["Revision"]?.GetValue<long>() is { } currentRevision?verdicts.OfType<JsonObject>().LongCount(value=>value["BasisInventoryRevision"]?.GetValue<long>()<currentRevision && value["Status"]?.GetValue<string>()=="Current"):null;
+            case "retainedDigestVerifiers":return last["retainedDigestCurrent"] is JsonObject currentDigest && last["retainedDigestOriginal"] is JsonObject oldDigest?currentDigest["Status"]?.GetValue<string>()=="Succeeded" && JsonNode.DeepEquals(currentDigest,oldDigest)?1:0:null;
+            case "obsoleteUnissuedAttempts":case "stableSealBatchManifest":case "capabilityExpiryFields":case "canonicalFieldCount":case "actualIssueRevisionSeparate":case "globalKeyBlock":case "exactNoIssueProof":
+                return last["independentOwnerInvariants"]?["Metrics"]?[metric]?.GetValue<long>();
             default:return null;
         }
         long? ExportBoolean(string name)=>last["independentExportVerification"]?[name] is JsonValue value && value.TryGetValue<bool>(out bool actual)?actual?1:0:null;

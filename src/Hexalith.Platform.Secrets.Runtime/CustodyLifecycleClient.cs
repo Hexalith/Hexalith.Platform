@@ -19,6 +19,8 @@ public sealed class CustodyReleasedKey : IDisposable
     /// <summary>Borrowed key bytes, valid only before disposal. Consumers must register every additional copy.</summary>
     [System.Text.Json.Serialization.JsonIgnore]
     public ReadOnlyMemory<byte> Bytes => _bytes ?? throw new ObjectDisposedException(nameof(CustodyReleasedKey));
+    // Transfers the sole owned native response buffer to a private occurrence owner; no additional plaintext copy.
+    internal byte[] TransferOwnership() => Interlocked.Exchange(ref _bytes,null) ?? throw new ObjectDisposedException(nameof(CustodyReleasedKey));
     /// <inheritdoc />
     public void Dispose()
     {

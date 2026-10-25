@@ -15,4 +15,6 @@ public sealed record QualificationOwnerDriverInstallation(string ReceivingInstal
     Dictionary<string,TrustedEnvelopeIdentity>? EnvelopeCaseIdentities=null,Dictionary<string,DeletionBatchCapabilityV1>? CapabilityCasePayloads=null,
     Dictionary<string,QualificationDecisionCaseInput>? DecisionCaseInputs=null,QualificationProviderCredentialInput? ProviderCredential=null,
     Dictionary<string,QualificationHmacResolutionCaseInput>? HmacResolutionCases=null,Dictionary<string,ExportQualificationInput>? ExportCases=null,
-    Dictionary<string,DaprExportQualificationProfile>? ExportMaterialProfiles=null);
+    Dictionary<string,DaprExportQualificationProfile>? ExportMaterialProfiles=null,
+    Dictionary<string,QualificationTemporalCaseInput>? TemporalCases=null,QualificationInventoryRotationInput? InventoryRotation=null,
+    CustodyLifecycleInstallation? LifecycleInstallation=null,Dictionary<string,QualificationLifecycleCaseInput>? LifecycleCases=null,JsonElement? ProtectedCases=null,Dictionary<string,QualificationLifecycleRootReference>? LifecycleRoots=null,CustodyLifecycleInstallation? RootReadAuthority=null,Dictionary<string,QualificationExportDeliveryInput>? DeliveryCases=null);

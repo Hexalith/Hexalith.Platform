@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Shipped closed envelope substitution and replay workflows using the actual authenticated runtime and private registrar. No expected result, test key or synthetic clock is accepted.</summary>
 public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticator envelopes, TrustedEnvelopeReplayVerifier replay,
-    IndependentDaprAuthority originals,IReadOnlyDictionary<string,TrustedEnvelopeIdentity> enrolledIdentities)
+    IndependentDaprAuthority originals,IReadOnlyDictionary<string,TrustedEnvelopeIdentity> enrolledIdentities,ITrustedEnvelopeReplayRegistrar? lookupRegistrar=null)
 {
     /// <summary>Retains one original issuance before verification; after ambiguous issuance only exact signed-original lookup is allowed.</summary>
     public Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)=>RunAsync(request,false,token);
@@ -59,10 +59,24 @@ public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticat
             "key-version"=>envelope with { SigningKeyVersion=envelope.SigningKeyVersion+"-substituted" },
             _=>envelope };
         bool usesReplay=caseId.Contains("replay",StringComparison.Ordinal);
-        var first=usesReplay ? await replay.VerifyAsync(supplied,expected,token).ConfigureAwait(false) : await envelopes.VerifyAsync(supplied,expected,token).ConfigureAwait(false);
-        var exact=usesReplay ? await replay.VerifyAsync(supplied,expected,token).ConfigureAwait(false) : await envelopes.VerifyAsync(supplied,expected,token).ConfigureAwait(false);
+        var first=usesReplay && !lookupOnly ? await replay.VerifyAsync(supplied,expected,token).ConfigureAwait(false) : await envelopes.VerifyAsync(supplied,expected,token).ConfigureAwait(false);
+        var exact=usesReplay && !lookupOnly ? await replay.VerifyAsync(supplied,expected,token).ConfigureAwait(false) : await envelopes.VerifyAsync(supplied,expected,token).ConfigureAwait(false);
+        TrustedEnvelopeReplayReceipt? replayOriginal=null;
+        if(usesReplay && first.Status==CustodyStatus.Succeeded)
+        {
+            if(lookupRegistrar is null) return null;
+            byte[] canonical=TrustedEnvelopeCodec.Delivery(supplied),tag=Convert.FromHexString(supplied.Tag),complete=new byte[canonical.Length+tag.Length];
+            try
+            {
+                canonical.CopyTo(complete,0);tag.CopyTo(complete,canonical.Length);
+                var intent=new TrustedEnvelopeReplayIntent(supplied.Identity.Issuer,supplied.DeliveryNonce,supplied.Identity.TargetTenantId,supplied.Identity.LogicalCommandId,supplied.SigningKeyVersion,Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(complete)));
+                replayOriginal=await lookupRegistrar.LookupAsync(intent,token).ConfigureAwait(false);
+                if(replayOriginal?.Intent!=intent || replayOriginal.SourceRevision!=1) return null;
+            }
+            finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(canonical);System.Security.Cryptography.CryptographicOperations.ZeroMemory(tag);System.Security.Cryptography.CryptographicOperations.ZeroMemory(complete); }
+        }
         return new JsonObject { ["caseId"]=caseId,["requestId"]=requestId,["originalEnvelopeSha256"]=CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(envelope)),
-            ["firstStatus"]=first.Status.ToString(),["exactRetryStatus"]=exact.Status.ToString() };
+            ["firstStatus"]=first.Status.ToString(),["exactRetryStatus"]=exact.Status.ToString(),["replayOriginal"]=JsonSerializer.SerializeToNode(replayOriginal,CustodyBindingContract.Json) };
     }
     private sealed record Admission(bool Exact,bool First);
 }

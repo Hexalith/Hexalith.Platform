@@ -200,6 +200,28 @@ class CoordinatedPacketTests(unittest.TestCase):
             missing,_,_ = coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
             self.assertEqual(['ValidExplicitCoordinatedInstallationContext'],missing)
 
+    def test_complete_context_refuses_relative_installed_anchor_without_normalizing_raw_bytes(self):
+        self.fixture.config['qualification']['executor']['publicAnchorFile'] = 'executor.public.pem'
+        raw = json.dumps(self.fixture.config, indent=2).encode() + b'\n'
+        self.fixture.path.write_bytes(raw)
+        self.context['installedArtifacts']['custodyConfiguration']['sha256'] = hashlib.sha256(raw).hexdigest()
+        binding = self.joint_configuration['binding']
+        binding['configurationRawSha256'] = hashlib.sha256(raw).hexdigest()
+        binding['configurationSha256'] = q.digest(self.fixture.config)
+        for profile in self.joint_configuration['phaseExecutionProfiles'].values():
+            profile['bindingDigest'] = digest(binding)
+        self.joint.write_bytes(q.canonical(self.joint_configuration))
+        self.context['installedArtifacts']['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+        self.sign_context()
+        report = secrets_prepare.prepare(self.fixture.root, self.fixture.path, self.secret_output,
+                                         register=self.fixture.register, coordination_context=self.context_path)
+        self.assertFalse(report['packetPrepared'])
+        self.assertIn('qualification.executor.absoluteInstalledPublicAnchorLocator', report['missingInputs'])
+        self.assertEqual(raw, self.fixture.path.read_bytes())
+        self.assertFalse((self.secret_output / 'runtime-reference.json').exists())
+        self.assertFalse((self.secret_output / 'replacement-acceptance-packet.json').exists())
+        self.assertEqual([], self.fixture.calls)
+
 
 if __name__ == '__main__':
     unittest.main()

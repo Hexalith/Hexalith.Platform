@@ -52,6 +52,7 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
     /// <inheritdoc />
     public async Task<SecurityEventRecorderLookup> LookupAsync(SecurityObservationRecord record, CancellationToken cancellationToken = default)
     {
+        _=SecurityCommand(record);
         var source = await ReadAsync(SecurityIdentity(record), cancellationToken);
         if (source is null) return new(SecurityEventRecorderLookupState.Unknown);
         foreach (var item in source.Events)
@@ -80,7 +81,7 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
             if(!active.Authoritative || active.Original is not { SubmissionState:"Dispatched" } || !Same(active.Original.Request,retained.Original.Request)) return new(SecurityEventRecorderLookupState.Unknown);
         }
         CommandStatusQueryResponse? status;
-        try { status=await gateway.GetWorkloadCommandStatusAsync(source.Identity.TenantId,transportId,cancellationToken).ConfigureAwait(false); }
+        try { status=await gateway.GetWorkloadCommandStatusAsync(source.Identity.TenantId,transportId,cancellationToken).WaitAsync(cancellationToken).ConfigureAwait(false); }
         catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return new(SecurityEventRecorderLookupState.Unknown); }
         // Empty native source is not evidence that a dispatched command is absent: a queued/processing command can still append later.
         bool terminalNoEvent=status is { EventCount:0,Retryable:false,CommittedEventSequence:>=0 } && status.CommittedEventSequence<=source.Head

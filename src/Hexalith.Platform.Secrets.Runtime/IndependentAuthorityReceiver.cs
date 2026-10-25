@@ -43,8 +43,7 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             }
             if (method is "spool-admit-recovery" or "spool-verify-recovery")
             {
-                if (installation.RecorderAuthority is null) return Results.StatusCode(503);
-                var recorder = new DaprSecurityObservationRecorder(new(new DaprSecretsInvoker(dapr), installation.RecorderAuthority, clock));
+                if (recordingSource is null && installation.RecorderAuthority is null) return Results.StatusCode(503);
                 SecurityObservationRecord originalRecord;
                 SecurityEventRecorderLookup submitted;
                 if (method == "spool-admit-recovery")
@@ -57,7 +56,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                     var recovery = request.Payload.Deserialize<RecoveryVerification>(CustodyBindingContract.Json)!;
                     originalRecord = recovery.grant.Original; submitted = recovery.currentProof;
                 }
-                var actual = await recorder.LookupAsync(originalRecord, budget.Token).ConfigureAwait(false);
+                var actual = recordingSource is not null?await recordingSource.LookupAsync(originalRecord,budget.Token).ConfigureAwait(false)
+                    :await new DaprSecurityObservationRecorder(new(new DaprSecretsInvoker(dapr),installation.RecorderAuthority!,clock)).LookupAsync(originalRecord,budget.Token).ConfigureAwait(false);
                 if (actual.State == SecurityEventRecorderLookupState.Unknown || !Same(actual, submitted)) return Results.StatusCode(503);
             }
             if(method is "recording-recovery-command-authorize" or "recording-recovery-dispatch-admit")
@@ -355,20 +355,29 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             var attempt=await Read("private-security-observation",command.MessageId).ConfigureAwait(false);
             var main=await Read("private-security-observation",PrivateRecordingIdentity.SecurityOriginalMessageId(request.grant.Original.Intent.ObservationId)).ConfigureAwait(false);
             return (new Permission(command.Domain=="security-event-log" && command.MessageId==PrivateRecordingIdentity.SecurityRecoveryMessageId(request.grant)
-                && command.IdempotencyKey==command.MessageId && request.grant.ValidUntil>clock.GetUtcNow() && attempt is { SubmissionState:"Unsent" } && main is not null
-                && Same(main.Request,command.Payload) && Same(attempt.Request,command.Payload) && Workload(request.caller,request.principal,command.Domain)),false);
+                && command.IdempotencyKey==command.MessageId && request.grant.ValidUntil>clock.GetUtcNow() && attempt is { SubmissionState:"Unsent" }
+                && (main is not null?Same(main.Request,command.Payload):request.grant.OriginalProof.NoRecordProof?.Basis=="DefinitiveAbsent")
+                && Same(RecoveryPayload(request.grant),command.Payload) && Same(attempt.Request,command.Payload) && Workload(request.caller,request.principal,command.Domain)),false);
         }
         var dispatch=payload.Deserialize<RecordingRecoveryDispatch>(CustodyBindingContract.Json)!;var recovered=dispatch.command;
         string ordinaryId=PrivateRecordingIdentity.SecurityOriginalMessageId(dispatch.grant.Original.Intent.ObservationId);
         var baseOriginal=await Read("private-security-observation",ordinaryId).ConfigureAwait(false);
         var recoveryOriginal=await Read("private-security-observation",recovered.MessageId).ConfigureAwait(false);
         if(caller.Role!="private-security-observation" || recovered.Domain!="security-event-log" || recovered.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(dispatch.grant)
-            || recovered.IdempotencyKey!=recovered.MessageId || dispatch.grant.ValidUntil<=clock.GetUtcNow() || baseOriginal is null || recoveryOriginal is not { SubmissionState:"Unsent" }
-            || !Same(baseOriginal.Request,recovered.Payload) || !Same(recoveryOriginal.Request,recovered.Payload)) return (new Permission(false),false);
+            || recovered.IdempotencyKey!=recovered.MessageId || dispatch.grant.ValidUntil<=clock.GetUtcNow() || recoveryOriginal is not { SubmissionState:"Unsent" }
+            || (baseOriginal is not null?!Same(baseOriginal.Request,recovered.Payload):dispatch.grant.OriginalProof.NoRecordProof?.Basis!="DefinitiveAbsent")
+            || !Same(RecoveryPayload(dispatch.grant),recovered.Payload) || !Same(recoveryOriginal.Request,recovered.Payload)) return (new Permission(false),false);
         await Migrate().ConfigureAwait(false);
         await Store("private-security-observation",recovered.MessageId,recoveryOriginal with { SubmissionState="Dispatched" }).ConfigureAwait(false);
-        await Store("private-security-observation",ordinaryId,baseOriginal with { ActiveTransportMessageId=recovered.MessageId }).ConfigureAwait(false);
+        baseOriginal??=new(recovered.Payload.Clone(),null,RetainedRevision:checked(current.Revision+1));
+        await Store("private-security-observation",ordinaryId,baseOriginal with { SubmissionState="Dispatched",ActiveTransportMessageId=recovered.MessageId }).ConfigureAwait(false);
         return (new Permission(true),true);
+    }
+    private static JsonElement RecoveryPayload(SecurityObservationRecoveryGrant grant)
+    {
+        var r=grant.Original;
+        return JsonSerializer.SerializeToElement(new { securityObservationId=r.Intent.ObservationId,routingTenantId=r.Intent.RoutingTenantId,utcDay=r.UtcDay,observedAt=r.ObservedAt,
+            reasonCode=r.Intent.ReasonCode,untrustedFieldsHmac=r.Intent.UntrustedFieldsHmac,digestKeyVersion=r.Intent.DigestKeyVersion });
     }
 
     private async Task<(object? Payload,bool Mutated)> ApplyRecoveryAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,IndependentAuthorityState next,CancellationToken token)

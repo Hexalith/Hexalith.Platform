@@ -233,6 +233,8 @@ public sealed class IndependentAuthorityReceiverTests
         private readonly IndependentAuthorityReceiverInstallation _installation;
         private IndependentAuthorityReceiver _receiver;
         private readonly IIndependentArchiveStorage? _archiveStorage;
+        private readonly IIndependentContentArchive? _privateArchive;
+        private readonly TimeProvider _clock;
         internal string ArchiveDirectory=>_channel+"-archive";
         private int _revision;
         internal IndependentAuthorityState State;
@@ -241,9 +243,9 @@ public sealed class IndependentAuthorityReceiverTests
         internal string Bearer = "isolated-caller";
         internal ReplicatedSecuritySpoolTarget Target { get; } = new("isolated-spool", "isolated-epoch", "current-1", DateTimeOffset.UtcNow.AddHours(1));
         internal string Scope => Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch;
-        internal Fixture(IIndependentArchiveStorage? archiveStorage=null)
+        internal Fixture(IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateArchive=null,TimeProvider? clock=null)
         {
-            _archiveStorage=archiveStorage;
+            _archiveStorage=archiveStorage;_privateArchive=privateArchive;_clock=clock??TimeProvider.System;
             File.WriteAllText(_channel, "isolated-channel");
             string archive = _channel + "-archive"; Directory.CreateDirectory(archive);
             File.WriteAllText(Path.Combine(archive, "enrollment.json"), "isolated-archive-enrollment");
@@ -256,10 +258,10 @@ public sealed class IndependentAuthorityReceiverTests
                 .Returns(_ => Task.FromResult((State, _revision.ToString())));
             _dapr.TrySaveStateAsync("independent-test-store", "head", Arg.Any<IndependentAuthorityState>(), Arg.Any<string>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
                 .Returns(call => { if (call.ArgAt<string>(3) != _revision.ToString()) return false; State = call.ArgAt<IndependentAuthorityState>(2); _revision++; Saves++; return true; });
-            _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource,archiveStorage:_archiveStorage);
+            _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
         }
-        internal void Restart() => _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource,archiveStorage:_archiveStorage);
-        internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), TimeProvider.System);
+        internal void Restart() => _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
+        internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), _clock);
         public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); Directory.Delete(_channel + "-archive", true); }
         private sealed class Transport(Fixture fixture) : ISecretsCredentialBoundDaprInvoker
         {

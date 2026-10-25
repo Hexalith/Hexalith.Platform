@@ -12,6 +12,19 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
     IDeletionConsumptionActor consumption, IDeletionCapabilitySigningActor signer, IQualificationOriginalStore originals,
     IReadOnlyDictionary<string,QualificationGuardCaseDefinition> definitions, DeletionCapabilityRevocationSubscriber compromiseSubscriber)
 {
+    /// <summary>Registers the exact closed recipes, preserving their native owner lookup behavior.</summary>
+    public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>definitions.Keys.Select(id=>new QualificationSourceWorkflow(id,ExecuteAsync,LookupAsync,PreflightAsync)).ToArray();
+    /// <summary>Checks all exact typed steps before effects, including lookup-only recovery identities.</summary>
+    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();string? id=SecretsProof.Text(original,"caseId");
+        if(id is null || !definitions.TryGetValue(id,out var definition) || original["enrolledScope"] is not JsonObject scope || QualificationProtocolDigest(scope)!=definition.EnrolledScopeSha256
+            || definition.Before.Concat([definition.Effect]).Concat(definition.Trigger is { } trigger?[trigger]:[]).Concat(definition.After).Any(step=>!Scoped(step,definition)))
+            return Task.FromResult<IReadOnlyList<string>>(["ExactClosedGuardCaseRecipeAndTargets"]);
+        return Task.FromResult<IReadOnlyList<string>>([]);
+    }
+    /// <summary>Recovers only the exact retained complete result; step recovery remains typed owner lookup.</summary>
+    public Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken token)=>originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",token);
     /// <summary>Runs the exact enrolled operation recipe. An uncertain retained step uses only exact owner lookup after restart.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject original,CancellationToken token)
     {
