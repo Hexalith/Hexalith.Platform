@@ -14,6 +14,10 @@ sources: []
 
 # Production actor-history custody
 
+## Current execution direction — 2026-10-25
+
+**Production backend implementation is stopped following the applied feasibility recommendation.** The [custody direction](../../../docs/implementation/ext-parties-1-custody-direction-2026-10-25.md) supersedes the Luna/FM proposal as the next investment path. No complete non-AWS backend is verified. Keep the existing contract, capabilities and tests as requirements; preserve completed source work and fail-closed defaults. OpenBao is a conditional candidate only after an explicit guarantee amendment, not the selected provider. No new hardware work, installation or qualification is authorized by this spec. Resolve the guarantee/scope decision before resuming backend tasks; the 365-day original exclusive expiry and Branch B identity stay fixed.
+
 ## Why
 
 EXT-PARTIES-1 Branch B requires bounded attribution after profile erasure, irreversible expiry and restore safety. Platform currently supplies a cleanup library and SDK seam, but no production custody implementation or host registration. This dedicated Platform story supplies that missing owner capability; installed Branch B availability also requires the follow-ups in [implementation-plan.md](implementation-plan.md).

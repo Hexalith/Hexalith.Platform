@@ -4,7 +4,7 @@
 
 As the Platform identity and recovery owner, I want an installed purpose-specific custody provider in the existing owning hosts, so that Party attribution survives profile erasure for its approved finite window and cannot survive expiry through backups or restore.
 
-**Owner:** Hexalith.Platform, with EventStore and Parties integration owners and Administrator/deputy operations. **Scope:** CAP-1–CAP-5. **Status:** specified; backend and operator decisions remain open. This symbolic extension story is not assigned a new epic number by this spec.
+**Owner:** Hexalith.Platform, with EventStore and Parties integration owners and Administrator/deputy operations. **Scope:** CAP-1–CAP-5. **Status:** production backend implementation stopped by the [2026-10-25 custody direction](../../../docs/implementation/ext-parties-1-custody-direction-2026-10-25.md); backend feasibility and operator decisions remain unresolved. This symbolic extension story is not assigned a new epic number by this spec.
 
 ### Acceptance criteria
 
@@ -16,7 +16,7 @@ As the Platform identity and recovery owner, I want an installed purpose-specifi
 
 ### Concrete paths and ordered work
 
-Paths below are proposed additions unless marked existing. Backend names and deployment locations remain unset until the matching decisions are resolved.
+Paths below are proposed additions unless marked existing. Backend names and deployment locations remain unset until the matching decisions are resolved. The task table is retained as scope, not an instruction to start implementation. No new T1–T6 backend work follows from the superseded Luna/FM proposal; preserve existing source/hardening and keep default custody unavailable until the direction's reopening criteria are met.
 
 | Task | Implementation paths | Completion boundary |
 | --- | --- | --- |
@@ -54,4 +54,4 @@ Story **4.0** provides historical generic OpenBao recovery evidence; it is not a
 
 Q1/Q2 block concrete production adapters. Q3/Q4 block all-copy expiry operation and qualification. Q5 blocks final production unit admission/mapping; Q6 blocks complete host integration; Q7 blocks erasure/recovery acceptance. Resolve through a Story 4.9 decision packet with backend metadata/capability evidence and named operators, preserving the accepted policy.
 
-**Next implementable task: T1.** Add the exact-policy validator and immutable custody unit/lifecycle/copy/receipt contracts with focused tests. It can be reviewed without choosing a backend: reject anything other than the approved policy, preserve original instants/evidence/deadlines, bind full scope and round-trip durable record shapes. Keep default custody unavailable. T1 does not claim durable backend behavior, production availability or resolution of Q5; the adapter work must wait for the relevant owner decisions.
+**Next action: owner guarantee/scope decision; no new backend implementation task.** Apply the [custody direction](../../../docs/implementation/ext-parties-1-custody-direction-2026-10-25.md). Stop the custom Luna/FM path and retain the existing immutable-contract/policy work without recreating it. Under the unchanged contract, no candidate is verified and the default provider remains unavailable. If owners explicitly approve a compatible guarantee, assess existing OpenBao first and an ordinary managed key service in the existing cloud second; preserve the existing custody/Dapr boundaries. Record any accepted contract change before revising adapters, host registration or qualification. No resource, operator, availability/data-loss tradeoff, complete target or replacement integration date is approved by this plan.

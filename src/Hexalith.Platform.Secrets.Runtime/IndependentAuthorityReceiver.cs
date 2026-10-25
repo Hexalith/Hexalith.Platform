@@ -11,7 +11,7 @@ using System.Text.Json.Nodes;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Receiving durable authority. All permission, anchor, original and recovery transitions share one conditional owner head.</summary>
-public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null,IIndependentArchiveStorage? archiveStorage=null)
+public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null,IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateOriginalArchive=null)
 {
     private readonly IIndependentArchiveStorage _archive=archiveStorage??new IndependentArchiveStorage();
     /// <summary>Authenticates channel/workload, reads the surviving enrolled head, commits exact transitions and signs bounded current results.</summary>
@@ -60,13 +60,13 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 var actual = await recorder.LookupAsync(originalRecord, budget.Token).ConfigureAwait(false);
                 if (actual.State == SecurityEventRecorderLookupState.Unknown || !Same(actual, submitted)) return Results.StatusCode(503);
             }
-            if(method=="recording-recovery-command-authorize")
+            if(method is "recording-recovery-command-authorize" or "recording-recovery-dispatch-admit")
             {
                 if(recordingSource is null || installation.RecoverySpoolAuthority is null) return Results.StatusCode(503);
-                var recovery=request.Payload.Deserialize<RecordingRecoveryAuthorization>(CustodyBindingContract.Json)!;
-                var actual=await recordingSource.LookupAsync(recovery.grant.Original,budget.Token).ConfigureAwait(false);
+                var recoveryGrant=method=="recording-recovery-command-authorize"?request.Payload.Deserialize<RecordingRecoveryAuthorization>(CustodyBindingContract.Json)!.grant:request.Payload.Deserialize<RecordingRecoveryDispatch>(CustodyBindingContract.Json)!.grant;
+                var actual=await recordingSource.LookupAsync(recoveryGrant.Original,budget.Token).ConfigureAwait(false);
                 var recoveryAuthority=new DaprReplicatedSpoolAuthority(new(new DaprSecretsInvoker(dapr),installation.RecoverySpoolAuthority,clock));
-                if(actual.State!=SecurityEventRecorderLookupState.NotRecorded || !await recoveryAuthority.VerifyAgedOriginalRecoveryAsync(recovery.grant,actual,budget.Token).ConfigureAwait(false))
+                if(actual.State!=SecurityEventRecorderLookupState.NotRecorded || !await recoveryAuthority.VerifyAgedOriginalRecoveryAsync(recoveryGrant,actual,budget.Token).ConfigureAwait(false))
                     return Results.StatusCode(403);
             }
             var next = JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state, CustodyBindingContract.Json), CustodyBindingContract.Json)!;
@@ -106,6 +106,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 }
                 outcome = (recordingResult, false);
             }
+            else if(IsPrivateOriginalOperation(method,request.Payload))
+                outcome=await ApplyPrivateOriginalAsync(method,request.Payload,grant,state,next,replacement=>next=replacement,budget.Token).ConfigureAwait(false);
             else if(method is "spool-admit-recovery" or "spool-verify-recovery")
                 outcome=await ApplyRecoveryAsync(method,request.Payload,grant,state,next,budget.Token).ConfigureAwait(false);
             else if (method is "spool-admit-transition" or "spool-record-transition" or "spool-recover-transition" or "spool-verify-transition")
@@ -280,6 +282,95 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         replace(state with { SpoolRevision = transition.TargetRevision, SpoolDigest = transition.TargetDigest, PendingSpoolTransitionDigest = null });
         return (Decision(true), true);
     }
+    private static bool PrivateRole(string? role)=>role is "private-replay" or "private-security-observation";
+    private static bool IsPrivateOriginalOperation(string method,JsonElement payload)=>method is "recording-command-authorize" or "recording-recovery-command-authorize" or "recording-recovery-dispatch-admit"
+        || method is "qualification-begin-original" or "qualification-retain-result" or "qualification-lookup-original" or "recording-dispatch-admit"
+            && payload.TryGetProperty("role",out var role) && PrivateRole(role.GetString());
+    private async Task<(object? Payload,bool Mutated)> ApplyPrivateOriginalAsync(string method,JsonElement payload,IndependentCallerGrant caller,
+        IndependentAuthorityState current,IndependentAuthorityState next,Action<IndependentAuthorityState> replace,CancellationToken token)
+    {
+        var index=new IndependentPrivateOriginalIndex(privateOriginalArchive??new IndependentFileContentArchive(Path.Combine(CurrentArchiveDirectory(),"private-originals",Hash(new { installation.EnrollmentId,installation.Scope,installation.TrustRevision }))));
+        async Task<IndependentOriginal?> Read(string role,string id)
+        {
+            var archived=await index.ReadAsync(next.PrivateOriginalsRoot,role,id,token).ConfigureAwait(false);
+            return archived?.Original??next.Originals.GetValueOrDefault(role+":"+id);
+        }
+        async Task Store(string role,string id,IndependentOriginal value)
+        {
+            var stored=await index.SetAsync(next.PrivateOriginalsRoot,role,id,value,token).ConfigureAwait(false);
+            next=next with { PrivateOriginalsRoot=stored.Root,PrivateOriginalsCount=checked(next.PrivateOriginalsCount+(stored.First?1:0)) };
+            next.Originals.Remove(role+":"+id);replace(next);
+        }
+        async Task Migrate()
+        {
+            await RequireArchiveAsync(false,token).ConfigureAwait(false);
+            foreach(var legacy in next.Originals.Where(pair=>PrivateRole(pair.Key.Split(':',2)[0])).Take(16).ToArray())
+            { int separator=legacy.Key.IndexOf(':');await Store(legacy.Key[..separator],legacy.Key[(separator+1)..],legacy.Value).ConfigureAwait(false); }
+        }
+        bool Workload(string identity,string principal,string domain)=>current.Callers.Any(value=>value.Identity==identity && value.ScopeReference==principal && !value.Revoked
+            && value.ValidUntil>clock.GetUtcNow() && value.Methods.Contains("recording-source:"+domain,StringComparer.Ordinal));
+        if(method=="qualification-lookup-original")
+        {
+            var request=payload.Deserialize<LookupOriginal>(CustodyBindingContract.Json)!;
+            return (request.role==caller.Role || caller.Methods.Contains("qualification-read-original:"+request.role,StringComparer.Ordinal)?await Read(request.role,request.requestId).ConfigureAwait(false):null,false);
+        }
+        if(method=="qualification-begin-original")
+        {
+            var request=payload.Deserialize<BeginOriginal>(CustodyBindingContract.Json)!;
+            if(request.role!=caller.Role) return (new { Exact=false,First=false },false);
+            var existing=await Read(request.role,request.requestId).ConfigureAwait(false);
+            if(existing is not null) return (new { Exact=Same(existing.Request,request.original),First=false },false);
+            await RequireArchiveAsync(true,token).ConfigureAwait(false);
+            await Migrate().ConfigureAwait(false);
+            await Store(request.role,request.requestId,new(request.original.Clone(),null,RetainedRevision:checked(current.Revision+1))).ConfigureAwait(false);
+            return (new { Exact=true,First=true },true);
+        }
+        if(method=="qualification-retain-result")
+        {
+            var request=payload.Deserialize<RetainResult>(CustodyBindingContract.Json)!;
+            var original=request.role==caller.Role?await Read(request.role,request.requestId).ConfigureAwait(false):null;
+            if(original is null) return (new { Exact=false,First=false },false);
+            if(original.Result is { } recorded) return (new { Exact=Same(recorded,request.result),First=false },false);
+            await Migrate().ConfigureAwait(false);await Store(request.role,request.requestId,original with { Result=request.result.Clone(),ResultRetainedRevision=checked(current.Revision+1) }).ConfigureAwait(false);
+            return (new { Exact=true,First=true },true);
+        }
+        if(method=="recording-dispatch-admit")
+        {
+            var request=payload.Deserialize<RecordingDispatch>(CustodyBindingContract.Json)!;
+            var original=request.role==caller.Role?await Read(request.role,request.requestId).ConfigureAwait(false):null;
+            if(original is null || original.SubmissionState!="Unsent" || !Same(original.Request,request.original)) return (new Permission(false),false);
+            await Migrate().ConfigureAwait(false);await Store(request.role,request.requestId,original with { SubmissionState="Dispatched" }).ConfigureAwait(false);return (new Permission(true),true);
+        }
+        if(method=="recording-command-authorize")
+        {
+            var request=payload.Deserialize<RecordingCommandAuthorization>(CustodyBindingContract.Json)!;var command=request.command;
+            string role=command.Domain=="trusted-envelope-replay"?"private-replay":"private-security-observation";
+            var original=await Read(role,command.MessageId).ConfigureAwait(false);
+            return (new Permission(command.Domain is "trusted-envelope-replay" or "security-event-log" && original is { SubmissionState:"Unsent" }
+                && Same(original.Request,command.Payload) && Workload(request.caller,request.principal,command.Domain)),false);
+        }
+        if(method=="recording-recovery-command-authorize")
+        {
+            var request=payload.Deserialize<RecordingRecoveryAuthorization>(CustodyBindingContract.Json)!;var command=request.command;
+            var attempt=await Read("private-security-observation",command.MessageId).ConfigureAwait(false);
+            var main=await Read("private-security-observation",PrivateRecordingIdentity.SecurityOriginalMessageId(request.grant.Original.Intent.ObservationId)).ConfigureAwait(false);
+            return (new Permission(command.Domain=="security-event-log" && command.MessageId==PrivateRecordingIdentity.SecurityRecoveryMessageId(request.grant)
+                && command.IdempotencyKey==command.MessageId && request.grant.ValidUntil>clock.GetUtcNow() && attempt is { SubmissionState:"Unsent" } && main is not null
+                && Same(main.Request,command.Payload) && Same(attempt.Request,command.Payload) && Workload(request.caller,request.principal,command.Domain)),false);
+        }
+        var dispatch=payload.Deserialize<RecordingRecoveryDispatch>(CustodyBindingContract.Json)!;var recovered=dispatch.command;
+        string ordinaryId=PrivateRecordingIdentity.SecurityOriginalMessageId(dispatch.grant.Original.Intent.ObservationId);
+        var baseOriginal=await Read("private-security-observation",ordinaryId).ConfigureAwait(false);
+        var recoveryOriginal=await Read("private-security-observation",recovered.MessageId).ConfigureAwait(false);
+        if(caller.Role!="private-security-observation" || recovered.Domain!="security-event-log" || recovered.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(dispatch.grant)
+            || recovered.IdempotencyKey!=recovered.MessageId || dispatch.grant.ValidUntil<=clock.GetUtcNow() || baseOriginal is null || recoveryOriginal is not { SubmissionState:"Unsent" }
+            || !Same(baseOriginal.Request,recovered.Payload) || !Same(recoveryOriginal.Request,recovered.Payload)) return (new Permission(false),false);
+        await Migrate().ConfigureAwait(false);
+        await Store("private-security-observation",recovered.MessageId,recoveryOriginal with { SubmissionState="Dispatched" }).ConfigureAwait(false);
+        await Store("private-security-observation",ordinaryId,baseOriginal with { ActiveTransportMessageId=recovered.MessageId }).ConfigureAwait(false);
+        return (new Permission(true),true);
+    }
+
     private async Task<(object? Payload,bool Mutated)> ApplyRecoveryAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,IndependentAuthorityState next,CancellationToken token)
     {
         await RequireArchiveAsync(false,token).ConfigureAwait(false);
@@ -380,6 +471,7 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         finally { CryptographicOperations.ZeroMemory(expectedBytes); CryptographicOperations.ZeroMemory(supplied); }
     }
 
+    private sealed record RecordingRecoveryDispatch(Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest command,SecurityObservationRecoveryGrant grant);
     private sealed record RecorderOriginal(SecurityObservationRecord record);
     private sealed record RecorderRecovery(SecurityObservationRecord original, SecurityObservationRecoveryGrant grant);
     private sealed record ReplayAdmission(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt, long retentionTicks);

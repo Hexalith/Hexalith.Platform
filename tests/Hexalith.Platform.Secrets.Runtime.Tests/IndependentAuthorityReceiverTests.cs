@@ -204,6 +204,7 @@ public sealed class IndependentAuthorityReceiverTests
     [Fact]
     public async Task ActualReadOnlyArchiveDirectoryBlocksSettledReadinessBeforeNativeEffects()
     {
+        if(!OperatingSystem.IsLinux()) return;
         using var fixture=new Fixture();var authority=new DaprReplicatedSpoolAuthority(fixture.Client());
         var mode=File.GetUnixFileMode(fixture.ArchiveDirectory);File.SetUnixFileMode(fixture.ArchiveDirectory,UnixFileMode.UserRead|UnixFileMode.UserExecute);
         try { (await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBeNull();fixture.Saves.ShouldBe(0); }

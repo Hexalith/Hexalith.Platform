@@ -66,21 +66,30 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         string id=StableUlid("security",record.Intent.ObservationId);
         var retained=await ReadOriginalAsync("private-security-observation",id,cancellationToken).ConfigureAwait(false);
         if(!retained.Authoritative) return new(SecurityEventRecorderLookupState.Unknown);
-        if(retained.Original is null) return new(SecurityEventRecorderLookupState.NotRecorded);
+        SecurityEventRecorderLookup NoRecord(string basis,string transport,IndependentOriginal? value,CommandStatusQueryResponse? terminal=null)=>new(SecurityEventRecorderLookupState.NotRecorded,NoRecordProof:
+            new(id,transport,CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(value,CustodyBindingContract.Json)),source.NativeProof!.SourceIncarnation,source.Head,
+                source.NativeProof.CumulativeDigest,terminal is null?null:CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(terminal,CustodyBindingContract.Json)),basis));
+        if(retained.Original is null) return NoRecord("DefinitiveAbsent",id,null);
         if(!Same(retained.Original.Request,JsonSerializer.SerializeToElement(SecurityCommand(record),Json))) return new(SecurityEventRecorderLookupState.Unknown);
-        if(retained.Original.SubmissionState=="Unsent") return new(SecurityEventRecorderLookupState.NotRecorded);
+        if(retained.Original.SubmissionState=="Unsent" && retained.Original.ActiveTransportMessageId is null) return NoRecord("RetainedUnsent",id,retained.Original);
         if(retained.Original.SubmissionState!="Dispatched") return new(SecurityEventRecorderLookupState.Unknown);
+        string transportId=retained.Original.ActiveTransportMessageId??id;
+        if(transportId!=id)
+        {
+            var active=await ReadOriginalAsync("private-security-observation",transportId,cancellationToken).ConfigureAwait(false);
+            if(!active.Authoritative || active.Original is not { SubmissionState:"Dispatched" } || !Same(active.Original.Request,retained.Original.Request)) return new(SecurityEventRecorderLookupState.Unknown);
+        }
         CommandStatusQueryResponse? status;
-        try { status=await gateway.GetWorkloadCommandStatusAsync(source.Identity.TenantId,id,cancellationToken).ConfigureAwait(false); }
+        try { status=await gateway.GetWorkloadCommandStatusAsync(source.Identity.TenantId,transportId,cancellationToken).ConfigureAwait(false); }
         catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return new(SecurityEventRecorderLookupState.Unknown); }
         // Empty native source is not evidence that a dispatched command is absent: a queued/processing command can still append later.
         bool terminalNoEvent=status is { EventCount:0,Retryable:false,CommittedEventSequence:>=0 } && status.CommittedEventSequence<=source.Head
-            && status.MessageId==id && status.TenantId==source.Identity.TenantId && status.Domain==source.Identity.Domain && status.AggregateId==source.Identity.AggregateId
+            && status.MessageId==transportId && status.TenantId==source.Identity.TenantId && status.Domain==source.Identity.Domain && status.AggregateId==source.Identity.AggregateId
             && (status.StatusCode==(int)CommandStatus.Completed && status.Status==nameof(CommandStatus.Completed)
                 || status.StatusCode==(int)CommandStatus.Rejected && status.Status==nameof(CommandStatus.Rejected));
         if(!terminalNoEvent) return new(SecurityEventRecorderLookupState.Unknown);
         var confirmed=await ReadAsync(source.Identity,cancellationToken).ConfigureAwait(false);
-        return confirmed is not null && Same(source.NativeProof,confirmed.NativeProof)?new(SecurityEventRecorderLookupState.NotRecorded):new(SecurityEventRecorderLookupState.Unknown);
+        return confirmed is not null && Same(source.NativeProof,confirmed.NativeProof)?NoRecord("TerminalNoEvent",transportId,retained.Original,status):new(SecurityEventRecorderLookupState.Unknown);
     }
     /// <inheritdoc />
     public async Task AppendAsync(SecurityObservationRecord record, CancellationToken cancellationToken = default)
@@ -103,8 +112,13 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         if (proof.State == SecurityEventRecorderLookupState.Unknown || !await recoveryAuthority.VerifyAgedOriginalRecoveryAsync(grant, proof, cancellationToken))
             throw new InvalidOperationException("Current restricted exact-original recovery denied.");
         if (proof.State == SecurityEventRecorderLookupState.Recorded) return;
-        await SubmitAsync(SecurityIdentity(original), "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent",
-            StableUlid("security", original.Intent.ObservationId), SecurityCommand(original), cancellationToken, recovery: grant);
+        string transportId=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant);var command=SecurityCommand(original);
+        var attempt=await ReadOriginalAsync("private-security-observation",transportId,cancellationToken).ConfigureAwait(false);
+        if(!attempt.Authoritative) throw new InvalidOperationException("Recovery transport lookup unknown.");
+        if(attempt.Original is null) { await BeginAsync("private-security-observation",transportId,command,cancellationToken).ConfigureAwait(false);attempt=await ReadOriginalAsync("private-security-observation",transportId,cancellationToken).ConfigureAwait(false); }
+        if(!attempt.Authoritative || attempt.Original is not { SubmissionState:"Unsent" } || !Same(attempt.Original.Request,JsonSerializer.SerializeToElement(command,Json)))
+            throw new InvalidOperationException("Recovery transport already dispatched or unknown; exact lookup only.");
+        await SubmitAsync(SecurityIdentity(original), "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent",transportId,command,cancellationToken,recovery:grant);
     }
     private async Task<AuthoritativeEventStream?> ReadAsync(AggregateIdentity identity, CancellationToken token)
     {
@@ -138,6 +152,8 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         string role = identity.Domain == "trusted-envelope-replay" ? "private-replay" : "private-security-observation";
         if (recovery is null && await originals.InvokeAsync<Permission>("recording-dispatch-admit", new { role, requestId = messageId, original = command.Payload }, token) is not { Allowed: true })
             throw new InvalidOperationException("Dispatch is unknown or already admitted; exact lookup required.");
+        if(recovery is not null && await originals.InvokeAsync<Permission>("recording-recovery-dispatch-admit",new { command,grant=recovery },token).ConfigureAwait(false) is not { Allowed:true })
+            throw new InvalidOperationException("Recovery transport or current original dispatch barrier is unknown; lookup only.");
         _ = await gateway.SubmitBoundWorkloadCommandAsync(request, proof, token); // Acceptance is never an authoritative source receipt.
     }
     private static TrustedEnvelopeReplayReceipt? ReadReplay(AuthoritativeEventStream? source, TrustedEnvelopeReplayIntent intent)
@@ -172,11 +188,7 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
     private static string Derive(params string[] components) => Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(components)));
     internal static string StableUlid(params string[] components)
     {
-        byte[] hash = SHA256.HashData(PlatformCanonicalBytes.Identity(components));
-        var value = new BigInteger(hash.AsSpan(0, 16), isUnsigned: true, isBigEndian: true);
-        const string alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; var output = new char[26];
-        for (int index = 25; index >= 0; index--) { output[index] = alphabet[(int)(value & 31)]; value >>= 5; }
-        return new(output);
+        return PrivateRecordingIdentity.StableUlid(components);
     }
     private sealed record Admission(bool Exact, bool First);
     private sealed record Permission(bool Allowed);

@@ -44,7 +44,7 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
             aggregate = Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, command.Payload.GetProperty("utcDay").GetString()!])));
         }
         else return null;
-                if(command.AggregateId!=aggregate || grant is not null && command.Domain!="security-event-log") return null;
+        if(command.AggregateId!=aggregate || grant is not null && (command.Domain!="security-event-log" || command.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant))) return null;
         bool admitted=grant is null
             ? await currentScopes.InvokeAsync<Permission>("recording-command-authorize",new { caller,principal,command },cancellationToken) is { Allowed:true }
             : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken) is { Allowed:true };
