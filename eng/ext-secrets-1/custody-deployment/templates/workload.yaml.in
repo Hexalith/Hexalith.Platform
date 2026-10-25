@@ -1,0 +1,125 @@
+# Requires Kubernetes native sidecar initContainers; component startup precedes daprd discovery.
+# Review template only. Native backing profile remains an uninstalled reference, not an adopted backend.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${CUSTODY_WORKLOAD}
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: "${CUSTODY_WORKLOAD}"}
+  template:
+    metadata:
+      labels: {app: "${CUSTODY_WORKLOAD}"}
+    spec:
+      serviceAccountName: ${SCOPED_COMPONENT_SERVICE_ACCOUNT}
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        runAsGroup: 2001
+        fsGroup: 2001
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: custody-component
+          restartPolicy: Always
+          startupProbe:
+            exec:
+              command: [/bin/sh, -c, "test -S /var/run/custody/private/hexalithcustody.sock"]
+            periodSeconds: 1
+            failureThreshold: 60
+          image: ${COMPONENT_IMAGE}
+          command: [/bin/sh, -c]
+          args: ["umask 007; mkdir -p /var/run/custody/private; chmod 0770 /var/run/custody/private; ulimit -c 0; exec dotnet /app/Hexalith.Platform.Custody.Dapr.dll --serve /installed/profile.json"]
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: CUSTODY_REFERENCE_CREDENTIAL_FILE, value: /credentials/credentials}
+            - {name: CUSTODY_REFERENCE_CREDENTIAL_PROFILE, value: "${COMPONENT_CREDENTIAL_PROFILE}"}
+            - {name: AWS_EC2_METADATA_DISABLED, value: "true"}
+          volumeMounts:
+            - {name: custody-socket, mountPath: /var/run/custody}
+            - {name: installed-profile, mountPath: /installed, readOnly: true}
+            - {name: component-credentials, mountPath: /credentials, readOnly: true}
+      containers:
+        # The owning custody application instantiates the public adapters using its local daprd.
+        # Its source composition/image are separate required installation inputs; no application is fabricated here.
+        - name: custody-application
+          image: ${CUSTODY_APPLICATION_IMAGE}
+          env:
+            - {name: DAPR_GRPC_ENDPOINT, value: "http://127.0.0.1:50001"}
+            - {name: ASPNETCORE_HTTP_PORTS, value: "${CUSTODY_APP_PORT}"}
+            - name: DAPR_API_TOKEN
+              valueFrom: {secretKeyRef: {name: "${DAPR_API_TOKEN_SECRET}", key: "${DAPR_API_TOKEN_KEY}"}}
+            - name: APP_API_TOKEN
+              valueFrom: {secretKeyRef: {name: "${APP_API_TOKEN_SECRET}", key: "${APP_API_TOKEN_KEY}"}}
+          ports:
+            - {name: custody-host, containerPort: ${CUSTODY_APP_PORT}}
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - {name: application-credentials, mountPath: /application-credentials, readOnly: true}
+        - name: daprd
+          image: ${DAPR_IMAGE}
+          command: [/daprd]
+          ports:
+            - {name: dapr-internal, containerPort: ${DAPR_INTERNAL_GRPC_PORT}}
+          args: [ "--mode", "kubernetes", "--app-id", "${CUSTODY_APP_ID}", "--app-port", "${CUSTODY_APP_PORT}", "--app-protocol", "${CUSTODY_APP_PROTOCOL}", "--app-channel-address", "127.0.0.1", "--dapr-listen-addresses", "127.0.0.1", "--control-plane-address", "${DAPR_CONTROL_PLANE_ADDRESS}", "--control-plane-namespace", "${DAPR_CONTROL_PLANE_NAMESPACE}", "--control-plane-trust-domain", "${DAPR_CONTROL_PLANE_TRUST_DOMAIN}", "--sentry-address", "${DAPR_SENTRY_ADDRESS}", "--sentry-request-jwt-audiences", "${DAPR_SENTRY_TOKEN_AUDIENCE}", "--dapr-internal-grpc-port", "${DAPR_INTERNAL_GRPC_PORT}", "--enable-mtls", "--disable-builtin-k8s-secret-store", "--resources-path", "/dapr-resources", "--config", "custody-private", "--max-body-size", "128Mi", "--read-buffer-size", "64Ki", "--log-level", "error"]
+          env:
+            - {name: DAPR_COMPONENTS_SOCKETS_FOLDER, value: /var/run/custody/private}
+            - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+            - {name: SENTRY_LOCAL_IDENTITY, value: "${NAMESPACE}:${SCOPED_COMPONENT_SERVICE_ACCOUNT}"}
+            - {name: DAPR_SENTRY_TOKEN_FILE, value: /var/run/dapr-identity/token}
+            - name: DAPR_TRUST_ANCHORS
+              valueFrom: {secretKeyRef: {name: "${DAPR_TRUST_ANCHOR_SECRET}", key: "${DAPR_TRUST_ANCHOR_KEY}"}}
+            - name: DAPR_API_TOKEN
+              valueFrom: {secretKeyRef: {name: "${DAPR_API_TOKEN_SECRET}", key: "${DAPR_API_TOKEN_KEY}"}}
+            - name: APP_API_TOKEN
+              valueFrom: {secretKeyRef: {name: "${APP_API_TOKEN_SECRET}", key: "${APP_API_TOKEN_KEY}"}}
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - {name: custody-socket, mountPath: /var/run/custody}
+            - {name: dapr-resources, mountPath: /dapr-resources, readOnly: true}
+            - {name: dapr-identity, mountPath: /var/run/dapr-identity, readOnly: true}
+      volumes:
+        - name: application-credentials
+          secret: {secretName: "${SCOPED_APPLICATION_CREDENTIAL_SECRET}"}
+        - name: custody-socket
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+        - name: installed-profile
+          secret: {secretName: "${ENROLLED_PROFILE_SECRET}"}
+        - name: component-credentials
+          secret:
+            secretName: ${SCOPED_COMPONENT_CREDENTIAL_SECRET}
+            defaultMode: 0440
+            items: [{key: "${COMPONENT_CREDENTIAL_KEY}", path: credentials}]
+        - name: dapr-identity
+          projected:
+            defaultMode: 0440
+            sources:
+              - serviceAccountToken:
+                  audience: ${DAPR_SENTRY_TOKEN_AUDIENCE}
+                  expirationSeconds: ${DAPR_SENTRY_TOKEN_EXPIRATION_SECONDS}
+                  path: token
+        - name: dapr-resources
+          configMap: {name: "${PINNED_DAPR_RESOURCE_CONFIGMAP}"}
+
+---
+# Manual sidecar discovery exposes only mTLS internal invocation, never HTTP/API ports.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${CUSTODY_APP_ID}-dapr
+  namespace: ${NAMESPACE}
+spec:
+  selector: {app: "${CUSTODY_WORKLOAD}"}
+  ports:
+    - {name: dapr-internal, port: ${DAPR_INTERNAL_GRPC_PORT}, targetPort: dapr-internal, protocol: TCP}

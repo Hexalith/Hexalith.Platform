@@ -24,7 +24,7 @@ internal static class EventStoreOwnerBridgeTests
         var calls = new ControlledOwnerCallSource(new OwnerCalls(fixture));
         var bridge = new CustodyDeletionConsumptionOwnerAuthority(client, "custody", tenant,
             Encoding.UTF8.GetString(CustodyJson.Bytes(fixture.Profile.Enrollment)), fixture.Profile.ComponentPublicKeyPem, calls);
-        var authority = new PublishedTrustDeletionConsumptionAuthority([], new UnavailableOwnerTestGuard(), ownerAuthorities: [bridge]);
+        var authority = new PublishedTrustDeletionConsumptionAuthority([], new UnavailableOwnerTestGuard(), null, null, [bridge]);
         Check(bridge.TenantId == tenant && bridge.ScopeId == scope, "Installed routing changed.");
         Check(await authority.ValidateStateAsync(tenant, 0, genesis), "Exact independently enrolled signed genesis refused.");
         Check(!await authority.ValidateStateAsync("foreign", 0, genesis), "Foreign tenant selected installed owner.");

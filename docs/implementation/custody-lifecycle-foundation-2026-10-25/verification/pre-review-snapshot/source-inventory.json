@@ -1,0 +1,2031 @@
+{
+  "classification": "LocalSourceAndArtifactEvidenceOnly",
+  "baselineCommit": "eecea3fa467d27226ef6173c19f853add36bb26c",
+  "platformObservedHead": "651b3813a11907cedbafa3a78b02715e95d940fa",
+  "eventStoreObservedHead": "a680481f682e4e4f796aafc6cea6441f8a6be0ac",
+  "sourceSnapshotTiming": "Observed after local builds; concurrent owner work is not an accepted immutable installation target",
+  "eventStoreWorkingTree": [
+    "M _bmad-output/implementation-artifacts/spec-ext-protection-1-owner-delivery.md",
+    " M docs/implementation/ext-protection-1-owner-acceptance.md",
+    " M docs/implementation/ext-protection-1-verifier-protocol.md",
+    " M references/Hexalith.Tenants",
+    " M src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs",
+    " M src/Hexalith.EventStore.Server/Security/IDeletionConsumptionAuthority.cs",
+    " M src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+    " M tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustDeletionConsumptionAuthorityTests.cs",
+    " M tools/ext_protection_1.py",
+    " M tools/tests/fixtures/ext-protection-1/CapabilityInterop.cs",
+    " M tools/tests/test_ext_protection_1.py",
+    " M tools/tests/test_ext_protection_1_cross_language.py",
+    "?? _bmad-output/implementation-artifacts/spec-fix-tenants-cs0618-query-failure-reasons.md",
+    "?? docs/implementation/ext-protection-1-delivery-2026-10-25.json",
+    "?? docs/implementation/ext-protection-1-delivery-2026-10-25.md",
+    "?? src/Hexalith.EventStore.Server/Security/IDeletionConsumptionOwnerStateAuthority.cs",
+    "?? tests/Hexalith.EventStore.Server.Tests/Security/EnrolledDeletionOwnerFixture.cs",
+    "?? tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs"
+  ],
+  "installedProvider": false,
+  "physicalQualification": false,
+  "dependencyAvailable": false,
+  "sourceFiles": [
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs",
+      "sha256": "aab5fefb9d7bc2338b276f3fb538c20a9ded36fc78c6a9e280a40457d2234715",
+      "bytes": 20707
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprCall.cs",
+      "sha256": "0e923bebfe309ae5917186c7548918468eb90d01dee165ba8b7c571ea83b3bbf",
+      "bytes": 9437
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs",
+      "sha256": "f7c4f011b3a8c492c373c9990a2dd2f33dd39bd09a45dd63956c4bfd25b56d4a",
+      "bytes": 21986
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingEnvelopeBytes.cs",
+      "sha256": "2075ba4b0061282e66594e6246ee039d5273a78769bfcf6d9976accdd117145a",
+      "bytes": 4313
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingIntent.cs",
+      "sha256": "d4ad0a16f372fb5f59b7cdb82427d15df8fa4bba17b4de7c91066f9ddae48a18",
+      "bytes": 3337
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingOriginals.cs",
+      "sha256": "4a8cb0d9882d17c365c8e8a3c64184dd129eebd0dc324190ce3a9d7a19827cb5",
+      "bytes": 7842
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingOwnerAdapter.cs",
+      "sha256": "f3e9c9e3dbc85b543b6dc880e10ccb27c534c71b330c2a96508d16b35125eab0",
+      "bytes": 4948
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyComponentBindingCall.cs",
+      "sha256": "8782836da6be40817e0f21bd4735a62f1c1e8d267dbc6a4d7d2fb7d3ba8c8387",
+      "bytes": 2551
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyInstalledGuard.cs",
+      "sha256": "5b7fe77e397359ce95c7635ebfa04300607b6408d1856c6859b411b38d27391b",
+      "bytes": 2768
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingAuthority.cs",
+      "sha256": "893f9ee9ae9180928fdc70dda68beed876d0e6b177225d44319d76fedd2413c7",
+      "bytes": 7086
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingProvider.cs",
+      "sha256": "952d3ae049335d95fb90066bfad0d58acc09133b5dd5d9bedcb8487c98349bbc",
+      "bytes": 5743
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleBindingCommand.cs",
+      "sha256": "1793293ffd1b7cf9dad2f5236ff0f5676030fdf96b0d5fa715ef7310750d4dcb",
+      "bytes": 892
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleBindingReply.cs",
+      "sha256": "aa691a0955edbc6a8eeb566937706d78f316feb9e1bf43032b7b483ea5ce727a",
+      "bytes": 639
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs",
+      "sha256": "caa65166c52749237d732bfff08e41ff7f1fc4c92854953c335c2f0fbe87d6e5",
+      "bytes": 18335
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyNonrollbackJournal.cs",
+      "sha256": "e942910797826a1aabffe393a14687b8d669ee0fbd291538439fef6a4474715d",
+      "bytes": 4018
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyOwnerAuthority.cs",
+      "sha256": "fb3861aab60b29c4216a463fa3c1a01f8b227f4ec97a36c53b621a10fd79e734",
+      "bytes": 9734
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/CustodyProtectionOwnerIdentity.cs",
+      "sha256": "e65b8b82da53d69a6e8a334a2338bc2f041242c2ac8d4e03517bacf833d965b7",
+      "bytes": 1519
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+      "sha256": "f861117aae4e792d9e2067fa52d9237bbf002a1385583ed76bc50ef0f785c614",
+      "bytes": 21007
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs",
+      "sha256": "6f65479ad489729e17ad8649db633c29bdcd9462b09e3a2704c096cccf213736",
+      "bytes": 4665
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs",
+      "sha256": "1bfc778709d352bc61649afd8a6b190a6e3af47310e0d50330a26c8ead6ec744",
+      "bytes": 4485
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleProvider.cs",
+      "sha256": "9c09234e48d5624dec42f36e27a2970fa4b37b3d877397173fb61f031b3bc174",
+      "bytes": 3818
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprDecisionAuthorityAdapter.cs",
+      "sha256": "7ea5ad029c6f26803938c25a361d17f6cbc93ec9c0f55746a6c490b769989056",
+      "bytes": 7440
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprHmacAuthorityAdapter.cs",
+      "sha256": "ff92029f1e7c0a943ec3bc7aa979e41a95b96c7a862f70fea79db7a1d542d40d",
+      "bytes": 7319
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprInventoryAuthorityAdapter.cs",
+      "sha256": "21ad1838672cabe83eff5d21bcae45179fec4ff8fb15c4392b2176ee9014d93b",
+      "bytes": 7978
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj",
+      "sha256": "dc0ffa2eec74a261d48160c23a6b2123d2fc6f14da2abeb90cf36dedd6708cd7",
+      "bytes": 1004
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/ICustodyInstalledGuard.cs",
+      "sha256": "993a85409c792fda0c2b457f49ae87ecd4ca6fb87d3c4633edd6e53a8c14b77a",
+      "bytes": 1016
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/ICustodyLifecycleBinding.cs",
+      "sha256": "e62127de7f39ad5a9ca8bf823ebff3c74775a2d23b6de80e0d60b225fd7abe95",
+      "bytes": 575
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/ICustodyNonrollbackJournal.cs",
+      "sha256": "c35b154fe12f6fa8a2958bb9dd9e650d57ab5f294a61ace0d63a3e681cfcebd9",
+      "bytes": 1486
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/PrivateReplayCredentialBinding.cs",
+      "sha256": "faacda4d13e728a0c17de4250d802a4fd34f04e93a6469898adb3de4f04e8b48",
+      "bytes": 1700
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationDenial.cs",
+      "sha256": "e77d473517de132f304d57229452397a5a16ff363e4a7f78994913c4949244a6",
+      "bytes": 1333
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationHost.cs",
+      "sha256": "971445c0454764ee792989789d6339dfaf5cb0fbf2db9b1e62597ec35ce3a3fe",
+      "bytes": 7958
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpHost.cs",
+      "sha256": "ea0f7076240882e5dc73c5f4da4b7be657429898443a84633b401e322f92806e",
+      "bytes": 4026
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationProofVerifier.cs",
+      "sha256": "4f59d374fd1d80d65e023361fe6462c8f779168c6c6931d8d39128864362d85c",
+      "bytes": 6515
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationProtocolSchema.cs",
+      "sha256": "942d99dab7e36a9bb6953033beadae536fec53f196821c7c8b1d79a8b1478ef6",
+      "bytes": 17580
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/SecretsDapr.cs",
+      "sha256": "c4d60484342c0cdb5b26eceecfdf23cc415a168332d0b769ca5503ed9b79eb00",
+      "bytes": 10532
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/SecretsDependency.cs",
+      "sha256": "726d997e0cda087bea7a9f153d85b49af565d4e9b04e91f28fa6c0c0e8cca158",
+      "bytes": 6265
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/SecretsProof.cs",
+      "sha256": "0e2f0cd0feff87024abd29afae64ca3fba01714adb48964b22a31baceb1e0aac",
+      "bytes": 8276
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeConfiguration.cs",
+      "sha256": "8a0ee0b0c9284e3e085fef0533dbcebb3045e32ad70b0ac617009ff94eead5b6",
+      "bytes": 9387
+    },
+    {
+      "path": "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeServiceCollectionExtensions.cs",
+      "sha256": "d63290ce465ac3bd5dbb8d088394576ab951b85b7df5bf93d741335fd29dd87d",
+      "bytes": 9401
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/AtomicDeletionManifestBindingProvider.cs",
+      "sha256": "a69cbc4d6fdfbdc97e5e8b88601008105c430ec885df8a676d9e0a820f14036e",
+      "bytes": 5193
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyDeletionConsumptionOwnerAuthority.cs",
+      "sha256": "4495acf4eb68948c01ce41c919be64450be07e0d9e7b3673904c5fb6ab0c486f",
+      "bytes": 4963
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprAtomicDeletionManifestProvider.cs",
+      "sha256": "1fecc811d9581c087f465ae6498f2d32df3ed105db28359cd090a92a50189fef",
+      "bytes": 1029
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+      "sha256": "e4280255ebbd631551d5af056fc11b5e8c5f661e7d1341d833672b14c0985f04",
+      "bytes": 899
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleAction.cs",
+      "sha256": "5e2d290e77360a730a5231611b6a2b007f1979b2873400b37c1d7e3bbeabe990",
+      "bytes": 564
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+      "sha256": "76acb865e740c9259020cccae2c53a478298f7dc8a64ad29016097e72f1e8213",
+      "bytes": 22949
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleEntry.cs",
+      "sha256": "b4a1747e9f6bb2f873daf48d71be94cefb5c96c7803abb26b241704362cf9b2d",
+      "bytes": 744
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleLedger.cs",
+      "sha256": "41ab6e41a92ced28c4fec9a5f9fa4714a7707a93dd80a45bf908dff5c26cc6a6",
+      "bytes": 493
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleOutcome.cs",
+      "sha256": "6ed70ca1cab0e692eb4811dbd904ab3a37442fe58d15ec36ed295545fbc551cd",
+      "bytes": 829
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleRequest.cs",
+      "sha256": "156d71653710dc1f372684dc62fb61f4061075d7aa918322636ff9f31e950526",
+      "bytes": 1250
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleStatus.cs",
+      "sha256": "8aa1e00be1fb3669c2f00d1577b183418365f0cbbafc54768584fbaec8bc8464",
+      "bytes": 1107
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyObjectIdentity.cs",
+      "sha256": "ce4d4cfeb95563dfbf003b13a44954cb983635e6a31849897af7034e5a13c999",
+      "bytes": 932
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyRegistration.cs",
+      "sha256": "093a0efcfefa2acd0728b2552027f06ac27163dd5a40b7ac02f6c12596dc19b2",
+      "bytes": 809
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyWrapCore.cs",
+      "sha256": "b52911fc6b5952b76c7c364e416259bf6f7053e156a0936c64d9bb7654fc175f",
+      "bytes": 2576
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodySharedCutModel.cs",
+      "sha256": "7f42863175579ce8fdab4d882fcd0fb0ef31d329a86ba66b3746002366206393",
+      "bytes": 24549
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyStatus.cs",
+      "sha256": "bdbba11231cfa282fc4069dfc0211fdf011e83f38a31e47a0e88b5a60be6fd0c",
+      "bytes": 1270
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprPlatformHmacBinding.cs",
+      "sha256": "d069a14b7b92408026e58f910ffd6f42ad9635e22a603f1167814d9fdd1da647",
+      "bytes": 13842
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeadlineAnchoredStateAuthority.cs",
+      "sha256": "72fc0d02f466b109fd95cc56069d0d99ce9eba89d8c0fc9da75e3c74487bbb4e",
+      "bytes": 1431
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityApprover.cs",
+      "sha256": "2875fb0dac8d031d7592e20be99eb378f7f680f1bda96524b36aa51fc2f87dda",
+      "bytes": 733
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityExpectedBasis.cs",
+      "sha256": "3e17d6591ebc7fc6322fcafeb147f87616d3f75b0ffd9fa94b103c0f5844da87",
+      "bytes": 1069
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityManifest.cs",
+      "sha256": "508973e9668ca23892630c022d2b1af3b2d2edea645c111ffd38601683d78ed9",
+      "bytes": 1595
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityManifestCodec.cs",
+      "sha256": "7372ec250e4125feebcf51f712da427156289ac073778f7669132bf6a1c9e958",
+      "bytes": 6556
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityPublishedProfile.cs",
+      "sha256": "8f212285624da26b98f7d68db585d70142d8e25f62f69a2be7192d9c43e208ab",
+      "bytes": 1736
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchCapabilityCodec.cs",
+      "sha256": "a18fb4951dd1897c9383265d58334d140fe07c6219ba345f166ef0ae0f74cd5d",
+      "bytes": 3795
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchExecutionCoordinator.cs",
+      "sha256": "f16b069b16888c6511a39b5ec91069830d384ffa0fd8712d45a66e2b84cbde2d",
+      "bytes": 15768
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchExecutionResult.cs",
+      "sha256": "618b7055e42923ec87db03df9bc92667ce681a86b0d0b1f21ddc1bf796d9b890",
+      "bytes": 914
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchGuardSnapshot.cs",
+      "sha256": "a22b78c80a680e020a1e90554a2726aa39f33fbf43c7810e0fcf66c74a945f1f",
+      "bytes": 568
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityNoIssueProof.cs",
+      "sha256": "409656b998eded489c31b92cc724d9163f2f10b1b4cfdd3b6d57fb130818fc39",
+      "bytes": 1277
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityPublishedTrust.cs",
+      "sha256": "f2e28ec561e964466f2c606a658bbfc6977a350e3751e4e400e4f77a24ca43a6",
+      "bytes": 1374
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationAuthorization.cs",
+      "sha256": "576014506d860da31f7e8262ab1fe8435ebcac5f1ae3049103947a751f01c81a",
+      "bytes": 738
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscriber.cs",
+      "sha256": "bf1d9ec61d6bc2f5906e35a93255828f40e32f3b863f70a8b66d12da57792db8",
+      "bytes": 7528
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscription.cs",
+      "sha256": "4a00a382d4c4976ba3d26d4eca692a37d3429c07843f1b386e78728463435654",
+      "bytes": 491
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningActor.cs",
+      "sha256": "a6dda194fa783d9c334463833a1bdeb40492a9e35d6570b8164f255a68992619",
+      "bytes": 25481
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningOutcome.cs",
+      "sha256": "f99423fff1b127855ffbb5ba33e62de8e47b76521e5464e166873456beac3fa9",
+      "bytes": 1375
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningResult.cs",
+      "sha256": "a2905b11b5dee5c0b9d7087b29ae16a623a79e13ee58bdb1d5bedaa0b3153da1",
+      "bytes": 753
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningState.cs",
+      "sha256": "49c338a7f3392978fd014a0d71a597bc138fa646e3a0c27c9cff602294456ecf",
+      "bytes": 915
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningSuccessor.cs",
+      "sha256": "b5dd22d45a8323dd371ba609f884a7748f58bc97105b7e6acbae392a865d270d",
+      "bytes": 3394
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityTrustProfile.cs",
+      "sha256": "cb4ab421cbf95f470615a7e62efedcb5505e1054786e2f2f57d4590a19c4b7c5",
+      "bytes": 376
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DetachedEs256JwsCore.cs",
+      "sha256": "67ca22b9262bee59cd7b71cd78ada37de1da51d0d6567e914934dddd8b2588f5",
+      "bytes": 3605
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs",
+      "sha256": "8addc5618211401bad0e181b00138ea9959de37eb92088714eb318c9c76466c8",
+      "bytes": 9965
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionCapabilityGuardRevocationMirror.cs",
+      "sha256": "bed1172722de14f2c6f62b1b14332df13b078fad439b967d649e28dff9f01da5",
+      "bytes": 4609
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionCapabilityNoIssueAuthority.cs",
+      "sha256": "9d477bc63f37321c5667bfece52499ee8254b9d8b37d9f9267ebdbffae761911",
+      "bytes": 1105
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryActor.cs",
+      "sha256": "21a8569482d1e7808d876b8b38c14a16f76bdf827fa35442d7a7b12368c81e4b",
+      "bytes": 13709
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryIdentity.cs",
+      "sha256": "680326d462e891e88a0a04f2b3136b727e7a3a3ca015b10611062552dc70d31f",
+      "bytes": 2568
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryOutcome.cs",
+      "sha256": "0917df1b0406538b81ef323d07d5d0ab71b417baee52e2a3c37e3badbe747cb5",
+      "bytes": 615
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryState.cs",
+      "sha256": "e03850937db3730f8bdb236c70b1570616cf0fda940e3857e7ccb7df75f15b6e",
+      "bytes": 712
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyWrapContext.cs",
+      "sha256": "c031461abae326899081b1e1af46e38e40ca1af11e0d806b4a728347b9771b49",
+      "bytes": 446
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyWrappingCore.cs",
+      "sha256": "d911042db4b32e28f3f81ed24d1f4e1dd70481276e06f14f02e152cdc248cbf6",
+      "bytes": 2847
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportManifestSignatureContext.cs",
+      "sha256": "6821454a856001c18495604b50abcaa80f86edc48e0bb55edc5f6ce140fd409d",
+      "bytes": 590
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportManifestSignatureCore.cs",
+      "sha256": "c6adb0ed286bb397273358be71db49c09202cddb592ac4e24cf59f67277d3aaa",
+      "bytes": 2441
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34CanaryAuthorization.cs",
+      "sha256": "016495685afa367fa2a18d3d022da75361d3d50b9227b62c7c77f90dc323b4ef",
+      "bytes": 583
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34CanaryReference.cs",
+      "sha256": "b394d18df6ab943a9c11cd5e9a3727068d4a493cf0a8990b0c3b4cc0c4f9a261",
+      "bytes": 558
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34PersistedCanary.cs",
+      "sha256": "ab4ed8dc7b9766c87249996986caa95cf6a7346345a6c44452cef521aced0ae9",
+      "bytes": 511
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionGate.cs",
+      "sha256": "f60e616cda31f85913340b331e88101022fc8208517ad3fcdf349c2239d8d777",
+      "bytes": 14294
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionReadinessCheck.cs",
+      "sha256": "8af942a46e594ac4edc332b4d0d6a1646a4202cb4435d91004724076b5eaf501",
+      "bytes": 746
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionStartupGate.cs",
+      "sha256": "aa895522d174480ba4f74d67b7de18f5f0d06e52181adc866379f9ca7a63bacf",
+      "bytes": 623
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionTarget.cs",
+      "sha256": "ff613d6e58c686b561cce5187b0bea66650df8aac131362c82b47474d005f35a",
+      "bytes": 562
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+      "sha256": "6aec710048c07c7e62da0d56a3791eac6fae9b934b90732920de217705ebccf7",
+      "bytes": 1255
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleActor.cs",
+      "sha256": "c704bd2c5b22b95c6a655b640b9826e0e85d348c0fa51b15c7f82f083a4574db",
+      "bytes": 940
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleAuthority.cs",
+      "sha256": "f173db92e6ba0f4d663cdcd2655a98b172dd9f6be5dc23f99690d60fab159a0c",
+      "bytes": 2524
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleProvider.cs",
+      "sha256": "4a7e151cce4aa0b0f931bcc4cce922f9e3df5029467d051a00d545c479da68f9",
+      "bytes": 1122
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionBatchGuardPort.cs",
+      "sha256": "a712c5b7c9af24a51e369e1912098baa7ff8dcc82d716f104de266e70c1c2405",
+      "bytes": 2148
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityGuardRevocationMirror.cs",
+      "sha256": "768a2d33f16cb090e948c8aef7e4aae7d4b902e51d4da99a397d23941f928e72",
+      "bytes": 1088
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityNoIssueAuthority.cs",
+      "sha256": "bce4c9ccd98b740c6a4b3ba127380b0f330e4b4ecf20941f537e7ffbc4d92a3b",
+      "bytes": 771
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityOriginalSigningReceiptAuthority.cs",
+      "sha256": "db812aefebfea8f85ddcae2c4ee29f05c7b05c6be83c8f0868719e4d4a59be36",
+      "bytes": 1005
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityRevocationAuthenticator.cs",
+      "sha256": "629f2d771bdbd1653060e7a8ce0b894ae2b75e8e4ba5a7c49cd1fca6c433c520",
+      "bytes": 906
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningActor.cs",
+      "sha256": "27371e0d2b81167d96bd8c59bb5a7df08b8f784b1a379c64db305ac9dfe86463",
+      "bytes": 1305
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningAuthority.cs",
+      "sha256": "e8fffb92475dd8a2b3113fe467a8327f4f88ecfd06589a9003bdd5e9e930bb93",
+      "bytes": 2210
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningProvider.cs",
+      "sha256": "9b848b26668b5842cf969106f97451e7f8fceabcd92b8b4cc0933ec9f2b7ce30",
+      "bytes": 1130
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningTrustProvider.cs",
+      "sha256": "0db1af23249feaeadb035998049fc94828819b2f0a82771c1873004afa771ed8",
+      "bytes": 975
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDeliveryActor.cs",
+      "sha256": "79039c630c9143c388150035f957cde043a8aa0463ece57b0444ac520000235c",
+      "bytes": 651
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDeliveryAuthority.cs",
+      "sha256": "7f8305b83a3c70787342ab3c0144c2fa25c9a6e64d552152f950c4679688a520",
+      "bytes": 2094
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDirectDeliveryProvider.cs",
+      "sha256": "0b631ff42fcf9e645d6f410a5328caefb6d68a79e30f1a7fbd507bae3ddeee24",
+      "bytes": 1125
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34CanaryAuthority.cs",
+      "sha256": "8ec2225aa5cf9dd599e49349b4440b85d7fe70efcd862dc13f44d5508f9538a4",
+      "bytes": 1960
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34PersistedCanaryReader.cs",
+      "sha256": "e25225b8c0b28903ae1d8a6a3e2e17e6f6c4dcfa8561f8709466876a00a7313d",
+      "bytes": 634
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34ProtectionCanaryEngine.cs",
+      "sha256": "4ecd3992f1d4c1d9d0d53f51b5662310f21c5f2adcae65ae130cc2ff6438991d",
+      "bytes": 1307
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IIndependentDecisionAuthority.cs",
+      "sha256": "0fef5c1bcbb42a2dbdb923c3262ddd3b90e1c01985ec853f271040ab7b563e5b",
+      "bytes": 1939
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformHmacKeyProvider.cs",
+      "sha256": "929b244db6cd2b7297f88d4b7b0981dea59859d6cf2f394b49e3272e98950224",
+      "bytes": 490
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformKeyInventoryActor.cs",
+      "sha256": "0dbb5ddbcbaaf3cf3d0ce1aa937a2efdf23a488134a8352be1594a860adaa03f",
+      "bytes": 622
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformKeyInventoryAuthority.cs",
+      "sha256": "0a4965c87837eea8fa4eca4e6e676de1d0b747e77f2efc21b8eba8b534a320cc",
+      "bytes": 1940
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformSigningProfileProvider.cs",
+      "sha256": "11e9cc3cd32526c383d669b39a94a732037ed9853a25cb8cbc7d8392eb37b97d",
+      "bytes": 333
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPrivateOwnerOperationGrantSource.cs",
+      "sha256": "1aa450bf684e3c7838897833023c9cf17e80ca4bbd2dd870c3ea07f87348da14",
+      "bytes": 616
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IReplicatedSecuritySpoolAuthority.cs",
+      "sha256": "286f7e5b1be1e0a9391ecd347c7e6ee63ee87d53c586f9525a5d65efdda08175",
+      "bytes": 3604
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ISecurityObservationRecorder.cs",
+      "sha256": "49f97e2895169731b39ce6cbeb7f9b1bfd2c1cdb7bc16afbd8c68abb691bc6ca",
+      "bytes": 1544
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ITrustedEnvelopeReplayRegistrar.cs",
+      "sha256": "03e4f5f020be8a5ee503ecb6bafdea155b0fd0dcb0dd630f1be581ec3c5da74d",
+      "bytes": 1278
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryClassOutcome.cs",
+      "sha256": "80773ea163aeff3161a0c3522d67005802e38f4ba7cddfc650ff1570126fe5b8",
+      "bytes": 1047
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCleanup.cs",
+      "sha256": "459bf37506ff2c5a3de43ced6e93b93f64abc14e2736e3f462044a7f6ff3c79a",
+      "bytes": 3739
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCleanupOutcome.cs",
+      "sha256": "c86707b2bbb70980e9b1896653e2ceef7f08979e17041dfa719c4de56945f831",
+      "bytes": 703
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCopyRecord.cs",
+      "sha256": "61a790ffecdd87ff7eba74d031c0f884ff2b090559681d829740b04270ceaa90",
+      "bytes": 3710
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCopyRegistration.cs",
+      "sha256": "0228b264a18bc6d396e7c172657df28ba7e5bca9e8aca8efec3896875e73f105",
+      "bytes": 544
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCustodyOptions.cs",
+      "sha256": "93d3a6aa292090368f5e24d4f6790b3533e7bb99c6267696742679464271de2d",
+      "bytes": 5904
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCustodyUnit.cs",
+      "sha256": "e961874210ac0fb9de9c9bce60509b8188ca349766e89860406ee85a817f9aca",
+      "bytes": 4518
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryDestructionReceipt.cs",
+      "sha256": "8da3c71eff75647f9797c13ea8e8c71daa3ce6b54b5fff65eebd1b080a60e4b0",
+      "bytes": 6552
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs",
+      "sha256": "00eb5c661d80c54e5244d1025cbc5c545632995e50b997549b188e6a9e52ffb3",
+      "bytes": 11126
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleState.cs",
+      "sha256": "067739d1b9de3bdbe43e5c9e7cfc7b96d3455b00ff983edefe8d9cfa54656914",
+      "bytes": 705
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IndependentDecisionManifestVerifier.cs",
+      "sha256": "324bc0322406284e6ee315ed8291139e6eb886b7d7f980eb199431bc7d609ee6",
+      "bytes": 6278
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/OwnedExportKey.cs",
+      "sha256": "f71b697f704a049d078b06cb21a1d90c8085ff71db6d074c58f13850024ef7c3",
+      "bytes": 1024
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformAcceptedEnvelopeTiming.cs",
+      "sha256": "6174b0186506271094ca90a4b0285c8b5bfe73290e16e9a86f1a5907edb7cc96",
+      "bytes": 2009
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformCanonicalBytes.cs",
+      "sha256": "a4624fbc113d5cdc79fbf75e5875f2000a3821821e4eff8442c006fec186171a",
+      "bytes": 1884
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformCustodyServiceCollectionExtensions.cs",
+      "sha256": "564f7715fa04df908c1b49d0598a3eb9ca374c37338bd13d6c22d56cb0bf09f8",
+      "bytes": 1278
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyMetadata.cs",
+      "sha256": "6871b94c140f917a2847b6e4fa88aef5d85267cb070ec48bfadb780fd3fd95c9",
+      "bytes": 672
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyResolution.cs",
+      "sha256": "51f44587dec6ff4e854efbfefb2d23ba206be102d26fb73f122842b7840a0a30",
+      "bytes": 405
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeySnapshot.cs",
+      "sha256": "0e8082c10791d7e5c318cb5fdf48bff7b5c2d8556cdc47587f91af6f4d69c26b",
+      "bytes": 2310
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyState.cs",
+      "sha256": "3ea583bddffecb3c583f733627f35d6bb39029cb7cf74caaeede572e649e81fe",
+      "bytes": 491
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacPurpose.cs",
+      "sha256": "f5ac7f0ed2dbef0f7a30a0ddd938006017bf521a41e10b8e8df519e039c8a31b",
+      "bytes": 502
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacResult.cs",
+      "sha256": "30e70b6dc05abeb2493c4e874c73949b4f191208569083b2e961d91ed8dd6aa5",
+      "bytes": 446
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacScope.cs",
+      "sha256": "67a9ad4a570dd7b8311615fb0fb120917ee16fadabf949ec81504c10ccad7aa8",
+      "bytes": 656
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacService.cs",
+      "sha256": "65050608d927fac05f13a26a0ec962498d4e422874bb2914898a08544f179721",
+      "bytes": 5148
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryAction.cs",
+      "sha256": "52d9372504c4514765ce3ac8fe5f897f7c1f59f23224ef82eec38f4f0f0afec7",
+      "bytes": 465
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryActor.cs",
+      "sha256": "08adde91f27dc7b1676bfeb151a02a0a36b55b2cc39d96d2949ef10d9e0902f2",
+      "bytes": 11548
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryChange.cs",
+      "sha256": "0d3ce3ad0641b79a1bdc590db198f1398689cc6bb235df6369964413be68a138",
+      "bytes": 745
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryEntry.cs",
+      "sha256": "777811790b32fa18d3de97d1789c83a21c95adb07938438f80748ba358527de2",
+      "bytes": 540
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventorySignal.cs",
+      "sha256": "1788b0822b3f00cd2a43b9e5122898b3da17eb3112ed4899ec80f35a66e86563",
+      "bytes": 708
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventorySnapshot.cs",
+      "sha256": "7b39865a93a13e8d994bdf6320ba7dabe1399e9d00a599eb58a3947cf741068a",
+      "bytes": 798
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyPurpose.cs",
+      "sha256": "abcf087ee4f5ec1b2821848fab9567dcc7a2a2690ccff29647339a8958d5a15d",
+      "bytes": 1315
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyResolution.cs",
+      "sha256": "46c5db43be142f848700711d0ed9061607cdcbd73b39433b5cf8f363d0def8c0",
+      "bytes": 3386
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyVersion.cs",
+      "sha256": "90067f867ac8dda8b94a61abbd79c88146fc765783fef80f5f9e17609b6a0971",
+      "bytes": 1013
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformPrivateCapabilityComposition.cs",
+      "sha256": "e604aaa95efd89b78f326c1b424ed37f87e7350306dbe053b00f9c7e6a9ce49a",
+      "bytes": 4083
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformSecurityDenialRecorder.cs",
+      "sha256": "814c5f057c60f9896d785c9120e6ce36d903b5bf7e4a48d06d7f159f4518e47a",
+      "bytes": 6595
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformSigningProfile.cs",
+      "sha256": "b81e1119fad9b213ce405f496d6be85240ad41b80b4644781fcd58af3fd0ca25",
+      "bytes": 1879
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateActorStateIoLifetime.cs",
+      "sha256": "c52054de973614974eb2e7342907a9fbb8dd55497b9d1a628638dab6a2817bd5",
+      "bytes": 1187
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateCustodyBindingAuthority.cs",
+      "sha256": "2306e8fb5ac74e6fac32d4da22c071afe2a0a4ec9a791eaaf7704638becea779",
+      "bytes": 7833
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationAuthenticator.cs",
+      "sha256": "24ea0280917d383adb7e529773f9374e889f95aedead28071c69f979aa4c8081",
+      "bytes": 12647
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationCredential.cs",
+      "sha256": "1d81c90aa66a819c686d1435dab49efae9e6d1f2691d5370c7ee54ff16ac1b5b",
+      "bytes": 1736
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationDeadline.cs",
+      "sha256": "84ccceb3ee3c727767a7bcfe3da62d90bbacc29a12fc8f4af37130f7e7c10e02",
+      "bytes": 3061
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationGrant.cs",
+      "sha256": "bb8ee04d48ddad2cc650918e28ee013cd44e326a06d446e19e43d250ab10494c",
+      "bytes": 1357
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationMachine.cs",
+      "sha256": "bb49a48a63a9cd20b5b4e884ef0b6a910d86b5fae6e84b685471e0014cc24615",
+      "bytes": 258
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationScope.cs",
+      "sha256": "9759119564a9ab6ddde3bf82f90d69d276ca322e4cf56eb7ffafc0884c3820e4",
+      "bytes": 1040
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateReplicatedSpoolAuthority.cs",
+      "sha256": "02f45b90f5e65388b28f0d5f0242f88e6feaafa969f612cfdada198aa89e9c81",
+      "bytes": 9829
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpool.cs",
+      "sha256": "1bb94a7f40542d71cd38786be9faeddd5b860efd2e70533f1b7399a23a03c9c7",
+      "bytes": 48766
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpoolWorker.cs",
+      "sha256": "7f2a370e2cf0c65ca116fa77635c69463e8d2099e4032a656cb35f31fcc792a7",
+      "bytes": 1463
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecuritySpoolTarget.cs",
+      "sha256": "10f32fffdb169fac85db5de6a61c4558abb8b280587618ae7a4755ea724dd03d",
+      "bytes": 740
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecordReceipt.cs",
+      "sha256": "eee27da2dd7a951dd87a144dfdedd40ef36deb3a4ba1196768c5b4f3b37e84f7",
+      "bytes": 878
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecorderLookup.cs",
+      "sha256": "3e300f850aa3491787f68a70933c093bdee921b9f5851c2b0233b6e698b24b3f",
+      "bytes": 392
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecorderLookupState.cs",
+      "sha256": "eed18ae93d65a4b57998b39d0887f9c707aac7d9ad48d57038f9651dee8dca89",
+      "bytes": 493
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationIntent.cs",
+      "sha256": "2fc25a8bc4afd374903860217d4a03c586d0f94c05cafdf8b15b3f0f6eb8f00b",
+      "bytes": 1287
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationOriginalLookup.cs",
+      "sha256": "68e6abf233109deeaa602da14cabf95c3aaa28ecba7a2eff0862cc802178d620",
+      "bytes": 781
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationOriginalLookupResult.cs",
+      "sha256": "fcc95bd698a376e064a0eed7c84b951e9005d380eb0518ec74bacb7c117195af",
+      "bytes": 546
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationRecord.cs",
+      "sha256": "40361907671920295f32d28d86fc902110e58fca2cf6799df6d4fd9c94fc34f6",
+      "bytes": 861
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationRecoveryGrant.cs",
+      "sha256": "49e7e3a42c34a7813c5ece2d2870fa18f30d7966e71ec2dc7b0772213465a0b9",
+      "bytes": 1228
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecuritySpoolArchivePage.cs",
+      "sha256": "70ee7c03cb6568b85afee4f0ec14c430d69d5d30cada7e0313afc2693ef53b77",
+      "bytes": 546
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecuritySpoolSnapshot.cs",
+      "sha256": "8578a880c5ebdc2482f3f9eea835bbdf5f270e9c7cd88d20ea8a27873dc4b272",
+      "bytes": 1968
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelope.cs",
+      "sha256": "e056effa2d9745b5997ce314cdabe62afc76581429a5d7e2d4c33d627a4142cb",
+      "bytes": 715
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+      "sha256": "c19e71232d64e58e9fda94b372fa99a010e8160c0ccea2b4d61c96b5f9bcaf7d",
+      "bytes": 8578
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeCodec.cs",
+      "sha256": "6c6010b914fb315cd66108cc6d711cdd92235f70b0fa1245ffc02abd3f236780",
+      "bytes": 2897
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeIdentity.cs",
+      "sha256": "24a07db789e949f143f8ef02134304580d874ba15de74f47face4e8f1a37ad46",
+      "bytes": 1649
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayIntent.cs",
+      "sha256": "c09fb8c868442c61e85cccb66b79c6af0d3048e43c5cb17894b03d05f0756658",
+      "bytes": 834
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayReceipt.cs",
+      "sha256": "c6c58f1b737fef92d51fe9dd36b617259eac932f0966e7313fd2d97050599687",
+      "bytes": 744
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs",
+      "sha256": "3140fd15a33db5bf8540a61e6b58d2ad03024eea184cf2deed2e495537e117d8",
+      "bytes": 5201
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeResult.cs",
+      "sha256": "8869687bb94c3c9ecb424df72e6480eb2332c2a5a69241b93a1c2f2109a8049f",
+      "bytes": 371
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedPrincipal.cs",
+      "sha256": "36dc110f0d9a4908b3146a2ab4f400e175b8f761f98727c067819de1d70b1b26",
+      "bytes": 2700
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedPrincipalKind.cs",
+      "sha256": "d24ae1b599acdc3a3e691822af71571672992556379d0ef257a6e81c46ddbe46",
+      "bytes": 481
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/UnavailablePlatformHmacKeyProvider.cs",
+      "sha256": "cf1d4a65e130eb63f18cd8a635892055dd52ce6c7c5b5d72dd3cf3f5d9f362b6",
+      "bytes": 587
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/UnavailablePlatformSigningProfileProvider.cs",
+      "sha256": "c1fd8b528ecc563a35e470a55e693824c385466854dd9ae35004e3ddbcf2a75e",
+      "bytes": 316
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/WrappedCustodyKey.cs",
+      "sha256": "bed0bf2bb09fcb71b55dd771041dd4da938630ee7c5318e0b492a49d78c5a236",
+      "bytes": 396
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/WrappedExportKey.cs",
+      "sha256": "688d4b90872bcb1a69f862775a5e621512d6b964bb548ae384bfe530ba8058e4",
+      "bytes": 557
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyComponentEnvelope.cs",
+      "sha256": "1fd47a545ef91b1f00fd07d208cf43c102d2f4d03a39340c8dbd55a414af139d",
+      "bytes": 3229
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyComponentOutcome.cs",
+      "sha256": "c48075f7f490240207bff795fe88bff6150c62dd1871deb3f26afa60a910fe29",
+      "bytes": 1163
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyComponentStatus.cs",
+      "sha256": "668a2f21e9b36292e160e4048d7bb40386b08f0aa9a7c1ea0b8e6926847c7de3",
+      "bytes": 981
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyComponentStore.cs",
+      "sha256": "98e1d55974921c77611de643c8bb45c4d5da97fbadda9dba2d72941f40a001c1",
+      "bytes": 24805
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyComponentVolume.cs",
+      "sha256": "c4bb9fc9e5282bac1bcafd4a402cb2129eb3ada05a98fe4febb76ba3a7517e77",
+      "bytes": 5531
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyEpochEnvelope.cs",
+      "sha256": "05e561d6e2303f044e5a758e94b37123967726325767d46c21a11f59864aca68",
+      "bytes": 4385
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyManifestRecord.cs",
+      "sha256": "1b8f1a89d042031aefe4cbacbb914c3dfbeaad6abe83298bb5615ea269460805",
+      "bytes": 642
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyOriginalManifest.cs",
+      "sha256": "f366839bc973469e18cf4f3a0bc555bc7e03b219e15d7e505f805c5f3e785a00",
+      "bytes": 567
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyOutsideWitness.cs",
+      "sha256": "514832cdea4f1c1234f78bcc0e2c92811c8625b1c9c530c589e523dff93df581",
+      "bytes": 11137
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodySharedCutGate.cs",
+      "sha256": "a9f790e208f9da8d628ac66118621b23bf0305236f9012dd4d6e1f5322277b89",
+      "bytes": 3146
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodySuccessorWrap.cs",
+      "sha256": "aef6ae40a120547dbe82d25e4740b2c3183449af752c58ec2931034d165106cb",
+      "bytes": 591
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyWitnessFact.cs",
+      "sha256": "488b4c881d61854ce4ae86e6f01c71475a45f808d19635da6a90ce281d09e94e",
+      "bytes": 792
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/CustodyWitnessHold.cs",
+      "sha256": "7cd825ec82cab46a341ec496395659343a8a31617729fc128c2f9986f84ec553",
+      "bytes": 342
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj",
+      "sha256": "3cff465a0b78c1738d057e3322b070193e9ff5dc26c3607fe7f8ecfe57d32a0f",
+      "bytes": 1068
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/ICustodyOriginalManifestSource.cs",
+      "sha256": "9449127aecd295509ed1bdd987a7ee97afb3d2b57a755a621e19fd328db753b8",
+      "bytes": 367
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody.Component/ICustodyOutsideWitness.cs",
+      "sha256": "c6e1bc6f06b6a40362540e0802620a1f70639754147ccdafbcf7538746cb1ceb",
+      "bytes": 573
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs",
+      "sha256": "6c0ec0a025d0fde35f366cdba79cd262755795bf92bc04cac62fb669f4326795",
+      "bytes": 4339
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsAuthorityStore.cs",
+      "sha256": "fd0e71c1c1139c488f5656252961b87c90f3d8f7ff86f95943c81ed9627d286c",
+      "bytes": 11474
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsEpochOperations.cs",
+      "sha256": "e61a80a1207f0f0ceac9a030a8ef9013392fbccc6ca5ed73a667d16149c8abd0",
+      "bytes": 4280
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/AwsKeyAccess.cs",
+      "sha256": "4b968cd9a49e55b85eacb5865ab76e4a2af67c41a5b5987b4543bafddee996fb",
+      "bytes": 3047
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/BindingService.cs",
+      "sha256": "45c6f54b148ad8b08b959a00c1450f94490acd71b0c4d43a9a499c23f51e5fa8",
+      "bytes": 4741
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/CheckpointArchive.cs",
+      "sha256": "144c0ab6f6136d9d84c538a77e8bee3914b6a8637e50d8b67c0c93ba6f38e7e6",
+      "bytes": 8026
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/ClosureInventory.cs",
+      "sha256": "1306e4aee0078b346fb44f302df438e84742a43f39e05dcfbb401529f0ea9d89",
+      "bytes": 8189
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs",
+      "sha256": "8dd3e9a401d9ea4f73d0ce5ed32edb40550d950234950cb1d8b26ec8b65f3443",
+      "bytes": 6964
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj",
+      "sha256": "196b038cdfdf7b02ae7ca5d257d6fd434802e2dcf4f0b28e1c5a5b53d1d51ce6",
+      "bytes": 1269
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/KeyEnvelopeBuilder.cs",
+      "sha256": "bab2ca5a4d2b8774d282951544a733d6c96cd402f6f28cbaf12f7faed952515a",
+      "bytes": 3468
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs",
+      "sha256": "118b0e036674541a54056f9d63b0be23e2ab790b53899e5538e636c9e51f6dbd",
+      "bytes": 15628
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs",
+      "sha256": "c528f1725c2d816beff2e49ebf4133e4d8d555d3fc192c8f653a2eed7e03696d",
+      "bytes": 4363
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/SHA256SUMS",
+      "sha256": "31b8365dffcb8018d9afe9c965bfca5bd513b45114be7dcdbbb323fef89bd6e4",
+      "bytes": 210
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/dapr/proto/components/v1/bindings.proto",
+      "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
+      "bytes": 3810
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/Protocol/dapr/proto/components/v1/common.proto",
+      "sha256": "b1f7bfbd62f76fd6b91d52969a5dea66f2615c3ed847fe9ed49f7229b1a9555d",
+      "bytes": 1215
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs",
+      "sha256": "8ca7af6db15c8a3c10c116cfbe0dde40f1d8806d4ee9a9bf0a86786d3ba8f4b4",
+      "bytes": 30545
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs",
+      "sha256": "6d388d72e56a92d8db2e655531ccf5c39af6f76e51dfc9d9a1a1bedc786bb6b4",
+      "bytes": 18764
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/StartupGuard.cs",
+      "sha256": "984d584fac9777768eaf26c428c89a36c1684a79a73f399ccbfe6a008ae63cc5",
+      "bytes": 727
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/StatementVerifier.cs",
+      "sha256": "bec177d82bc317438f2111f30040c8bd0d96b9a7ed5216242d17a880a5605270",
+      "bytes": 4860
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/WorkerEntry.cs",
+      "sha256": "8b9e8da9889a061fdd3037d77c1c17dd3da9da126180cea582399766f01dce46",
+      "bytes": 2691
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json",
+      "sha256": "447dc55dc34edf57c3b819472d24791b796143479579e85edc229aeda1bde4f7",
+      "bytes": 8547
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/AwsKeyAdapterTests.cs",
+      "sha256": "e47208996eda1dd7b7c4742fa1d21163c55ff047c758ef26f8d60cdf879795f0",
+      "bytes": 8597
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/CheckpointCapacityTests.cs",
+      "sha256": "e186e387acb5efe5f0a369030a9fb672e37c1a25f9bfee7920560743acc19c66",
+      "bytes": 4129
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ControlledOwnerCallSource.cs",
+      "sha256": "897980ce51ebf624d0996a1a7f300d17f281489a4b130770351c4e4f595388f1",
+      "bytes": 2034
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/EventStoreOwnerBridgeTests.cs",
+      "sha256": "19fc0b08156d0c5d6012efe8312b450c90d4a422def654852a4fef76c1c0b54c",
+      "bytes": 7857
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+      "sha256": "26ecf9ee9d78dbfeb1d0bbe24e1f7f1e9501e2a52a9b697c7860e81f84a2587b",
+      "bytes": 519
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeStoreTests.cs",
+      "sha256": "8cd3a4ae3d19ee7eee7162129d6c6bbd31f0135ab9c56c53fa4d6c31106f61fa",
+      "bytes": 7569
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionBatch.cs",
+      "sha256": "3b24b5d10531b3b2d0377a27f80d2bf93d55a49badccb09b9a956f01f954e140",
+      "bytes": 697
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionLedger.cs",
+      "sha256": "d2ba867b9af09f7d9515448d7d891c7477ca36b0f2f736b2636e4cb3da535fb8",
+      "bytes": 1003
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OwnerConformance/DeletionConsumptionOperation.cs",
+      "sha256": "8c44c1455d542344555fc5e21f4d2ed4ca732be3fb77a35d98531648eea5399f",
+      "bytes": 1013
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs",
+      "sha256": "52039c31d0025f61e3b767c1682ed87f5e34989fcfd084abe410de7a31ca541c",
+      "bytes": 53276
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/PublicLifecycleTests.cs",
+      "sha256": "e264fb8c30a44441f4cdebb263f40382d60d340904ba191e3a2dbf920b7fbd51",
+      "bytes": 19272
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ReviewRegressionTests.cs",
+      "sha256": "4a7968bcc7a08f4cefeaa3603288852c6b8269ce57519aa52e8bdcf4f18b7f01",
+      "bytes": 4766
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ServiceBoundaryTests.cs",
+      "sha256": "3ad4436dfe0d2491e09cbc6fcd0ecc8c7c021dc8adc58cbff10c593c7fc3d434",
+      "bytes": 3118
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/UnavailableOwnerTestGuard.cs",
+      "sha256": "3632056ac14df9cfe3fa94d06962e43c9e149d34729abf339d03e5095531895b",
+      "bytes": 1074
+    },
+    {
+      "path": "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json",
+      "sha256": "ff89ce792f8267eb116bf741805e93c48f840a7d6a075afcfcec76b39c60ce48",
+      "bytes": 16510
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingContractTests.cs",
+      "sha256": "5b2c7561ef448f1908f5eb5ac61b5043796b5fb586e96cb3c152862b020a80a6",
+      "bytes": 17833
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingDaprInvokerTests.cs",
+      "sha256": "788639d347bab2934770d250b9bd5b1a40373a02816d5c0e8d98ea4409cefa67",
+      "bytes": 30954
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs",
+      "sha256": "f11b45afa9a6c65f5b3421dc470e551bb0b1c0331c526ccfd3a5ad47e11ca374",
+      "bytes": 13981
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFixture.cs",
+      "sha256": "d6e6ee371834542506d0ed21403ec70c54dfa9e9bfcf3f564cd3d5e6ab2ad0ce",
+      "bytes": 7850
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs",
+      "sha256": "bf8a9893d58da244aafa6f5c94f9d926379bfc3e0b782ea228befa430bfd4ea2",
+      "bytes": 9356
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingOriginalTests.cs",
+      "sha256": "ca86549e18a04d2407bea92ed402fbe679a4a2a0052e3f88bad087c21abd8b26",
+      "bytes": 10201
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyKeyLifecycleBindingTests.cs",
+      "sha256": "2110c3063f84aeecc572432a4477c90f2992141e995f9525b0ebf738e2738926",
+      "bytes": 18191
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyKeyLifecycleGuardAdmissionTests.cs",
+      "sha256": "04e7eafb731dc4eb025b044b332d89b7f03aa29655b1605d08f15454fd41a8b0",
+      "bytes": 15075
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecyclePublicContractTests.cs",
+      "sha256": "124c084b74c336ac33741659eb5d48b3402904b808ef0186c4ae467bd6f816c2",
+      "bytes": 3821
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprSecretsInvokerHttpTests.cs",
+      "sha256": "6e0967a7c744afe93c07742b8877c1e8ee93395033e2f55c1734f2a9445e150e",
+      "bytes": 2845
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "sha256": "1eda51c9daa2f5b6d03e35d7071fd51fabecde48acb4c516565eab2634c57bf4",
+      "bytes": 1567
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/ObserverJournalDurabilityTests.cs",
+      "sha256": "8ab573ce03f512aaafe42070e7e5e082c368d6de93b18480d10f0004cec86daa",
+      "bytes": 1920
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/OwnerConformance/DeletionConsumptionIdentity.cs",
+      "sha256": "117018c8279062487a7766c73f8443c4133e49a9b4f3c79edaceb802afda145c",
+      "bytes": 7218
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/PrivateDaprCredentialBindingTests.cs",
+      "sha256": "7d6e739fa27bc7e97525fbcd8208293b347230cfd584c5ce9650aa2886a859e0",
+      "bytes": 27757
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/PrivateReplayCredentialBindingTests.cs",
+      "sha256": "3ac9c6d678903422e5cc37f8a8d9e41987ab7710df724b6692523af6b0a387ca",
+      "bytes": 8881
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHostTests.cs",
+      "sha256": "73574a8977a4733cce4edffbf7bf8580664167216b5f5737560129108075c7de",
+      "bytes": 33585
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/RecordingCustodyBinding.cs",
+      "sha256": "fabaac92ce51a4c8b59c3fce3e39ed2bb3f7f36ce28b38f222bd7cc8a7b8c979",
+      "bytes": 1009
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/RecordingInvoker.cs",
+      "sha256": "5db2004862170342b14e1ec4197c7868c15e8ad76d4255e44a68b27b9e59bab7",
+      "bytes": 4115
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/SecretsAuthorityFailureTests.cs",
+      "sha256": "98dbe237e15d3e417e3da2e84d53ec6bc1d8f04ae04045a5ce9fe7693d9ecbb8",
+      "bytes": 15975
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/SecretsRuntimeAdapterTests.cs",
+      "sha256": "657e3186f1c71231996737abe2e4b6f3ae9683c1c4a72de56d8a9f5b14153abc",
+      "bytes": 31891
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/AtomicDeletionManifestBindingTests.cs",
+      "sha256": "844b40d914ca516710ca38a2acd14bbdd3b25df208ab2a3a6641ab249a727f5a",
+      "bytes": 11638
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/DaprAtomicDeletionManifestProviderTests.cs",
+      "sha256": "18f15dbbcf9d4de214a1697b06b71cc99a24f1e3d129c472f70e8a684fe76845",
+      "bytes": 3505
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "sha256": "aba9b3f8c252a60db19e84ecb5ed5c753b92d54cb1ec637b01c6a90706b0680b",
+      "bytes": 807
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/Dockerfile",
+      "sha256": "4be878f0045d7601edfb82b44e1f4456e65ed19d2794f8434a4baa1183bda652",
+      "bytes": 363
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/README.md",
+      "sha256": "8460c3b0278c43c30e52b8fb24fff45590f363189c1fc5b65d79e0aaac6f47e9",
+      "bytes": 6337
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/inputs.uninstalled.json",
+      "sha256": "08e46d6a4797afce8fefb54bec0a18f021c3cce89193d8f23f6cc95d64607729",
+      "bytes": 1488
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/preflight.py",
+      "sha256": "7a8b770bcaa37b5e3be2d39cad32eacc3edb4a6abf48c1b2b750004674ef26f6",
+      "bytes": 8804
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/prepare-image.py",
+      "sha256": "524a5a70d9ab259302477e47edf8344298549cd41dea9d52d88f54a9a48bf161",
+      "bytes": 2807
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/templates/component.yaml.in",
+      "sha256": "b21f6ed0aafbb6fe6198cf342d7b2ec6865825d604ec84f8278169dc8a10442d",
+      "bytes": 1165
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/templates/worker.yaml.in",
+      "sha256": "667cea737fa126f4ddb7de24ff78ec7a268259749e42c001afc2ea8379650bb8",
+      "bytes": 1711
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/templates/workload.yaml.in",
+      "sha256": "fbc2e9034bed2080795511418d64f5f80cd5aba7bac00838d9134dd3b636d71a",
+      "bytes": 3618
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/test_preflight.py",
+      "sha256": "bed604bf37df7691710cb95388fcfef39ff651ab17636f8c7577de0406619ae4",
+      "bytes": 3443
+    },
+    {
+      "path": "eng/ext-secrets-1/custody-deployment/test_prepare_image.py",
+      "sha256": "0ceeedb3fefe9135f000e95c0321ee8f17cf13b66c6ecbfefe5c10377396ab70",
+      "bytes": 1655
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "e07baf3cf5b11bf417590e268087202935b0f07d81f041d3d9a541f70e3bd20f",
+      "bytes": 1389
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "71bbbb3b3bf472b00e24c0fa29130ee60851f9c929b8e2e0f32ae19c6c1c8b29",
+      "bytes": 789
+    },
+    {
+      "path": "global.json",
+      "sha256": "4ec97d7c7e6bee864d2da2c965f18b94b0bd84e71058427f1f6fa69ee6824652",
+      "bytes": 139
+    },
+    {
+      "path": "references/Hexalith.Builds/Props/Directory.Packages.props",
+      "sha256": "c8efba903924130cdcb286066bb3a9e97dd3dcb9155ccc3f852c65329ea2a0bf",
+      "bytes": 30450
+    }
+  ],
+  "externalSourceIntegrationInputs": [
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/Directory.Build.props",
+      "sha256": "66b2d5f9b4b60ef17fff045881badc565fcca6e4dfb51919aee760feebb6f477",
+      "bytes": 9578
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/Directory.Packages.props",
+      "sha256": "4fe25096ceefd11e8ffffe1ab6a1854e18ac36c853a6805fa72285433b03b638",
+      "bytes": 1484
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/IDeletionConsumptionOwnerStateAuthority.cs",
+      "sha256": "0034c8fc6cc116f1394a47a3c08839b09f176201b0e42e6f83c95b9441b41210",
+      "bytes": 2231
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+      "sha256": "37c6ad68e1b194e301095f30d2283936e09f9ace531376f34505a0317521076d",
+      "bytes": 41061
+    }
+  ],
+  "builtAssemblies": [
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "e56e85c2da1226ede6a8c64426ac372f659e14747999956ef4e32d8252819ccd",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "e56e85c2da1226ede6a8c64426ac372f659e14747999956ef4e32d8252819ccd",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.Dapr.dll",
+      "sha256": "5c405f6c124b87e8dc4578f564047881a88b5523d97025d09607921294918d89",
+      "bytes": 335360
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "ba3a83ed837798c50673d191284e4e04cf3155b7b44a34c197617ca48494262f",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "e56e85c2da1226ede6a8c64426ac372f659e14747999956ef4e32d8252819ccd",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "sha256": "5337011d9303e69a422df8ac70e0d7f506ae4b6b9e5146b497ad8620a1535e82",
+      "bytes": 195584
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.dll",
+      "sha256": "5c405f6c124b87e8dc4578f564047881a88b5523d97025d09607921294918d89",
+      "bytes": 335360
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Protection.dll",
+      "sha256": "55667a83e2e2abe840711a3c98d2e0a2a7f11993834d959ded3e34d3d9773dad",
+      "bytes": 15872
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "ba3a83ed837798c50673d191284e4e04cf3155b7b44a34c197617ca48494262f",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "e56e85c2da1226ede6a8c64426ac372f659e14747999956ef4e32d8252819ccd",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Protection.dll",
+      "sha256": "55667a83e2e2abe840711a3c98d2e0a2a7f11993834d959ded3e34d3d9773dad",
+      "bytes": 15872
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "ba3a83ed837798c50673d191284e4e04cf3155b7b44a34c197617ca48494262f",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "e56e85c2da1226ede6a8c64426ac372f659e14747999956ef4e32d8252819ccd",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "8f48eb4a4f27d2d3eb2bf7e3634ea52b5f4cea86dcd1148c7232809298d2ee3d",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-component-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "ba3a83ed837798c50673d191284e4e04cf3155b7b44a34c197617ca48494262f",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.dll",
+      "sha256": "006bbf7a3daa2f35ba42f59d3321caa6137ce8369531033b9b3401b49908da63",
+      "bytes": 9216
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "2f0e5b8992e67f59b846b9b69be1eb4b4352883743833a55cdd4937fb71dcaff",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Secrets.Qualification.Executor.dll",
+      "sha256": "ce5705c798a76b6171aa0180c0140b8ff21017557ff2fbc7e5b01da6aa4e9f1f",
+      "bytes": 9728
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "2f0e5b8992e67f59b846b9b69be1eb4b4352883743833a55cdd4937fb71dcaff",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Secrets.Qualification.Observer.dll",
+      "sha256": "00b0d59841d4b4fe3e0a85c988c488e6f4961592aa3a5a5bfbe7dd070e77c042",
+      "bytes": 14336
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "2f0e5b8992e67f59b846b9b69be1eb4b4352883743833a55cdd4937fb71dcaff",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "2f0e5b8992e67f59b846b9b69be1eb4b4352883743833a55cdd4937fb71dcaff",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "9cad4333460cfa3e4f6fbe9f7401f0229f5df4887403430dde9abed9c2540d9e",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "c6acf61db859637ad2c679a84c1acd768f12c71c11a690f27c4dfff5f0ea311c",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.dll",
+      "sha256": "006bbf7a3daa2f35ba42f59d3321caa6137ce8369531033b9b3401b49908da63",
+      "bytes": 9216
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.dll",
+      "sha256": "ce5705c798a76b6171aa0180c0140b8ff21017557ff2fbc7e5b01da6aa4e9f1f",
+      "bytes": 9728
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.dll",
+      "sha256": "00b0d59841d4b4fe3e0a85c988c488e6f4961592aa3a5a5bfbe7dd070e77c042",
+      "bytes": 14336
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "sha256": "2c8937b2863ef09b5be4ee0e4678d3db1e32ce18eb79c3746d072a1774059282",
+      "bytes": 412160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-runtime-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "2f0e5b8992e67f59b846b9b69be1eb4b4352883743833a55cdd4937fb71dcaff",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "3b8c5f006f36626d430a1f1e32beddea67ccbfa76a29093d0ee247eda7804bc1",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "5e7e20b3dee6b4d22089e483abbfa560965c3fc3dbf95f0a056d3747b7aa4e19",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "3b8c5f006f36626d430a1f1e32beddea67ccbfa76a29093d0ee247eda7804bc1",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "5e7e20b3dee6b4d22089e483abbfa560965c3fc3dbf95f0a056d3747b7aa4e19",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "3b8c5f006f36626d430a1f1e32beddea67ccbfa76a29093d0ee247eda7804bc1",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Protection.dll",
+      "sha256": "2dd515317c0b436cbaeb6bdb014d415e5c2286cdb6fb98b586e8a4c0c0541da5",
+      "bytes": 15872
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "02d684eb9d826f92299424aa79a98c0b0bd26a6718f2b1812a88b3d6a0f2f89b",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "5e7e20b3dee6b4d22089e483abbfa560965c3fc3dbf95f0a056d3747b7aa4e19",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "3b8c5f006f36626d430a1f1e32beddea67ccbfa76a29093d0ee247eda7804bc1",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+      "sha256": "c99882c4c46c7401661c7d865ece2b6c02ad28a403210a867b3ef7bf5563febc",
+      "bytes": 39424
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.dll",
+      "sha256": "2dd515317c0b436cbaeb6bdb014d415e5c2286cdb6fb98b586e8a4c0c0541da5",
+      "bytes": 15872
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "02d684eb9d826f92299424aa79a98c0b0bd26a6718f2b1812a88b3d6a0f2f89b",
+      "bytes": 421376
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.Component.dll",
+      "sha256": "5e7e20b3dee6b4d22089e483abbfa560965c3fc3dbf95f0a056d3747b7aa4e19",
+      "bytes": 57856
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.dll",
+      "sha256": "3b8c5f006f36626d430a1f1e32beddea67ccbfa76a29093d0ee247eda7804bc1",
+      "bytes": 604160
+    },
+    {
+      "path": "/tmp/custody-lifecycle-final-protection-20261025a/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Secrets.Runtime.dll",
+      "sha256": "02d684eb9d826f92299424aa79a98c0b0bd26a6718f2b1812a88b3d6a0f2f89b",
+      "bytes": 421376
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/FINAL-VERIFICATION.md",
+      "sha256": "f4efdd9d789e5eb2c4fd0efc15498483dc551fe2c6218083b1ba0a0ab7730575",
+      "bytes": 11584
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/REFERENCE-PROFILE-INPUTS.md",
+      "sha256": "8c9679aca62601fb477d24ab7e8b68459fc2827733e009f83079394148509ad8",
+      "bytes": 2676
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/REVIEW-FINDINGS.md",
+      "sha256": "4310fff52848509bce686d597389fe445525c791a02bc675cac1cbab2459c2cd",
+      "bytes": 2805
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/installation-input-ledger-final.json",
+      "sha256": "900e7755b8c28a1cd1afc77cf70cb3296abba8d74deeb7eab864dce366229791",
+      "bytes": 10676
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/installation-input-ledger-reviewed.json",
+      "sha256": "d7d702929f1922836a0aa92ae7e0a6d249c5cd07b220c80b2d758e6b9fdbcf0d",
+      "bytes": 10924
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/installation-input-ledger.json",
+      "sha256": "05e2dbee83426112a9b88d755d96c317148616212a73f4052ef784d0aea13ca9",
+      "bytes": 11820
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/publish-inventory.json",
+      "sha256": "7650fcbb0189630d6a1e310810ab8ebed5c83885f72c59f921937c74be57b6b8",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/reference-profile-inputs.json",
+      "sha256": "b14ce4e01f9f66d456f1ae0aff8ac3a3c3d9487009a89bda31b6d006bee6294f",
+      "bytes": 48042
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/source-dispositions.json",
+      "sha256": "c67f90a57c8027fb9f982f4d8c5a487add7ea977bec11f3f16d39348398d8b4c",
+      "bytes": 3232
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-10.log",
+      "sha256": "bc2038604e4afd74e9a75ee9fe442e27217c1440ef7d49171a28c8e8970d7d55",
+      "bytes": 3819
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-11.log",
+      "sha256": "65fc5ac9ff2fba72e02a67b1f874887d66a0e4a1c28cc928dd4e9c5c9e18e439",
+      "bytes": 2058
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-2.log",
+      "sha256": "907f5f7789015d42cc173d7eac304451cac095011d48b7341f305ca82f94310d",
+      "bytes": 1583
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-3.log",
+      "sha256": "1a07248172bf1859586851df976e9dc102089fc9fca0b491602a19eb4eafe422",
+      "bytes": 4655
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-4.log",
+      "sha256": "774a4d087876b345b5e2d3f0e27d8501dd11ca898ccac96fbac4b0cbc9cc5c39",
+      "bytes": 4086
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-5.log",
+      "sha256": "c055d98e24bc0d9d781ca3b2a040541dc055fcca3f054e5a5654a1614529954d",
+      "bytes": 3008
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-6.log",
+      "sha256": "72f94bfa343b383202c5cc9d8b1762e2ba784a7b55b52c664e97734fd4ac196d",
+      "bytes": 3008
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-7.log",
+      "sha256": "56faebf9f630a26a9722c62c4965eaba29beca0fc57babdaeb454e142b89da7a",
+      "bytes": 3008
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-8.log",
+      "sha256": "a9d69bcb866ae8e83cf5eead4a171edc73b328528342c85a97dcbe17b465ae40",
+      "bytes": 2058
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build-9.log",
+      "sha256": "2016002fa71bf9d42bf97c7604698ce619c153dc22995d85d0e475a770b905e6",
+      "bytes": 3747
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-build.log",
+      "sha256": "709c7e671ef5908874b82b55a20d0ed5284358d7ed4ed66cb58cb39cd277d21b",
+      "bytes": 2229
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-tests-1.log",
+      "sha256": "5428fdb005ef17fc268bc2a1a5ed19a653534a293537af32d9725674ad0df55e",
+      "bytes": 217
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-tests-2.log",
+      "sha256": "2954f545baa405a04a804f60f973814430f795c27cd8366c519f8b8c32952b1f",
+      "bytes": 853
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-tests-3.log",
+      "sha256": "d418360466ddcf8d8592e6f0816f5f3903e79c81c4b2c3db79662a0113175556",
+      "bytes": 284
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-dev-tests-4.log",
+      "sha256": "922fcdc0a32765e0e3f1c7a5dad8627753e1c286ce2ecb78d2461300c7590252",
+      "bytes": 284
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-reference-publish-2.log",
+      "sha256": "e5dc294fb8a56d55e3ebe31f1202ea486f83a34c989ff11a9cf63772e0767c3a",
+      "bytes": 1079
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-reference-publish.log",
+      "sha256": "40e0504d445eef0fe2d98ec8c0986d5bf9ac6e90978b376ce64f41035e7dfeb3",
+      "bytes": 1655
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/custody-lifecycle-reference-source-publish.log",
+      "sha256": "c93444eb862e843fccb31e4579a2ddce99a74fc70bc85872e7df3146698eb29a",
+      "bytes": 2364
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-component-build-followup.log",
+      "sha256": "bae2cb03f31cc3fef85405539fd0a9a01c438dcf4cfe0951feb35642f5ceb2a6",
+      "bytes": 2014
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-component-build.log",
+      "sha256": "32c2034d53dcf8bdef891a8b1c55792eeedf87ae9aadb206d2168920cc0f8159",
+      "bytes": 4128
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-component-tests-followup.log",
+      "sha256": "31fd80f165e50b3404c2a7e5d78a9d0b9bf2387f837a8eeacbabb41e215ff1b8",
+      "bytes": 1286
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-component-tests.log",
+      "sha256": "2af889ac1477402805987d8a6c1996c88e9b94625b31510ad9d66fb68e25964c",
+      "bytes": 1286
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-image-context-followup.log",
+      "sha256": "e6b19f4d21e70da0c882d8235e96b0d0a7e743849796f495457cfcd7065448c3",
+      "bytes": 239
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-image-context.log",
+      "sha256": "0dee13c1106765f77579ebcf5225f71f8aed86e7157cebd786dea9f9ee9c81a4",
+      "bytes": 83
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-offline-preflight.log",
+      "sha256": "900e7755b8c28a1cd1afc77cf70cb3296abba8d74deeb7eab864dce366229791",
+      "bytes": 10676
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-offline-tests-followup.log",
+      "sha256": "3af14c077e4e40ab448b5b47a8450a8a4ab037cc2b064dc30c8dc7300a75b385",
+      "bytes": 800
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-offline-tests.log",
+      "sha256": "3af14c077e4e40ab448b5b47a8450a8a4ab037cc2b064dc30c8dc7300a75b385",
+      "bytes": 800
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-protection-build.log",
+      "sha256": "c627d5947cbded40cbd2d638ca858144914cf08b16b36a53ed44389e9e0b19b7",
+      "bytes": 3806
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-protection-tests.log",
+      "sha256": "90a6f7f0ff2c76f1a5162cf936dc66c3a076e2096a1fda3f988ea877d5e52606",
+      "bytes": 484
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-reference-publish.log",
+      "sha256": "87f93e6965ae8466e96d89353d7a9b4d55a68348e21ffd06f926e4e154708e30",
+      "bytes": 2274
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-runtime-build.log",
+      "sha256": "94981fe5f3c8dad7fd885d22bc90ff43805439773bc09bf8a1aec5459fe6c160",
+      "bytes": 3468
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-runtime-tests.log",
+      "sha256": "65114e387a8a539276ee2f6e07382ff74388b9c172dda59e566fd2f5a217806e",
+      "bytes": 511
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-static-checks.log",
+      "sha256": "85f2bba722eda70b13c964376dcf02a56ebf3f236b817e596ec62aa9d43b4f15",
+      "bytes": 478
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-synthetic-original/component-public.pem",
+      "sha256": "ff22cbeb62e809cebd39a6922772b9aad0f50df4e1ef7dd93fd36d7b0a1ad712",
+      "bytes": 177
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-synthetic-original/preparation-statement.json",
+      "sha256": "950c552beda00e0763e8b04cca4e69e56d7142dc625585d2e4364af1ba9d1966",
+      "bytes": 17785
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-synthetic-original/prepared-original.json",
+      "sha256": "f88bf3ee3e99657a00774f6ac49085ebdebc3414e1dd78aa04feb0d84d7caea6",
+      "bytes": 852
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/offline-preflight-tests.log",
+      "sha256": "99feea3b4d81c4293436c3889d19e9ec88794e66bed7117c879a1cb87121fc89",
+      "bytes": 646
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/offline-preflight.log",
+      "sha256": "05e2dbee83426112a9b88d755d96c317148616212a73f4052ef784d0aea13ca9",
+      "bytes": 11820
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/publish-inventory-sha256.txt",
+      "sha256": "aa04d4579f28a189bbdb51cff69f39f1bdb02c567f67f9a540d3c35d4d6363d4",
+      "bytes": 65
+    },
+    {
+      "path": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/reviewed-offline-preflight.log",
+      "sha256": "d7d702929f1922836a0aa92ae7e0a6d249c5cd07b220c80b2d758e6b9fdbcf0d",
+      "bytes": 10924
+    }
+  ],
+  "ignoredLogRetention": "Every listed .log must be explicitly retained; default git ignore omits log files",
+  "excludedConcurrentMutationScope": [
+    "docs/contracts/schemas/",
+    "docs/contracts/test-environment-v1.md",
+    "references/Hexalith.Builds",
+    "_bmad-output/implementation-artifacts/evidence/2-5/review-fixes-20261025/",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/EventStoreOwnerBridgeTests.cs compatibility adjustment"
+  ]
+}

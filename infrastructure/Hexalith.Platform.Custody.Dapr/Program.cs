@@ -17,9 +17,10 @@ try
 {
     var profile = ComponentProfile.Load(args[1]); profile.Validate();
     if (args[0] == "--check-profile") { Console.WriteLine(profile.ProfileDigest); return 0; }
+    var credentials = ReferenceBackendCredentials.Load();
     var nativeRegion = RegionEndpoint.GetBySystemName(profile.Region);
     var kmsConfig = new AmazonKeyManagementServiceConfig { RegionEndpoint = nativeRegion, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
-    using var kms = new AmazonKeyManagementServiceClient(kmsConfig);
+    using var kms = new AmazonKeyManagementServiceClient(credentials, kmsConfig);
     StartupGuard.Validate(args[0], profile.SocketPath);
     using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(profile.ComponentSigningKeyPath));
     using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(profile.ComponentPublicKeyPem);
@@ -28,7 +29,7 @@ try
     var region = RegionEndpoint.GetBySystemName(profile.Region);
     var dynamoConfig = new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
     var s3Config = new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
-    using var dynamo = new AmazonDynamoDBClient(dynamoConfig); using var s3 = new AmazonS3Client(s3Config);
+    using var dynamo = new AmazonDynamoDBClient(credentials, dynamoConfig); using var s3 = new AmazonS3Client(credentials, s3Config);
     var store = new AwsAuthorityStore(profile, dynamo, s3, TimeProvider.System);
     var verifier = new StatementVerifier(profile, TimeProvider.System);
     var epochs = new AwsEpochOperations(profile, kms);

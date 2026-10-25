@@ -1,0 +1,250 @@
+{
+  "status": "Blocked",
+  "installedProvider": false,
+  "physicalQualification": false,
+  "dependencyAvailable": false,
+  "runnableInstallationGenerated": false,
+  "inputSha256": "08e46d6a4797afce8fefb54bec0a18f021c3cce89193d8f23f6cc95d64607729",
+  "missing": [
+    {
+      "input": "images.component",
+      "reason": "not installed or supplied",
+      "owner": "Platform release owner",
+      "action": "Build and pin the reviewed artifact by immutable image digest"
+    },
+    {
+      "input": "images.custodyApplication",
+      "reason": "not installed or supplied",
+      "owner": "Platform release owner",
+      "action": "Build and pin the reviewed artifact by immutable image digest"
+    },
+    {
+      "input": "images.dapr",
+      "reason": "not installed or supplied",
+      "owner": "Platform release owner",
+      "action": "Build and pin the reviewed artifact by immutable image digest"
+    },
+    {
+      "input": "images.dotnetSdk",
+      "reason": "not installed or supplied",
+      "owner": "Platform release owner",
+      "action": "Build and pin the reviewed artifact by immutable image digest"
+    },
+    {
+      "input": "images.dotnetAspnet",
+      "reason": "not installed or supplied",
+      "owner": "Platform release owner",
+      "action": "Build and pin the reviewed artifact by immutable image digest"
+    },
+    {
+      "input": "artifacts.custodyApplicationComposition",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.componentProfile",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.enrollment",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.componentVerifier",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.transportProfile",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.holderClosureProfile",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.capacityMeasurement",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.independentPlacement",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.authorityEnrollment",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.originalArchiveEnrollment",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.privateAuthorizerImplementation",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.controlIssuerImplementation",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.independentObserverImplementation",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.eventStoreIntegration",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.physicalQualification",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "artifacts.g1Evidence",
+      "reason": "not installed or supplied",
+      "owner": "Platform infrastructure owner",
+      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
+    },
+    {
+      "input": "credentialReferences.component",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.worker",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.privateAuthorizer",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.controlIssuer",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.independentObserver",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.recoveryAdministrator",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "credentialReferences.recoveryDeputy",
+      "reason": "not installed or supplied",
+      "owner": "Security installation owner",
+      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
+    },
+    {
+      "input": "placement.applicationRecoveryClass",
+      "reason": "not installed or supplied",
+      "owner": "Recovery administrator and deputy",
+      "action": "Enroll independent failure/recovery placement outside application backups"
+    },
+    {
+      "input": "placement.authorityRecoveryClass",
+      "reason": "not installed or supplied",
+      "owner": "Recovery administrator and deputy",
+      "action": "Enroll independent failure/recovery placement outside application backups"
+    },
+    {
+      "input": "placement.originalRecoveryClass",
+      "reason": "not installed or supplied",
+      "owner": "Recovery administrator and deputy",
+      "action": "Enroll independent failure/recovery placement outside application backups"
+    },
+    {
+      "input": "placement.authorityFailureDomain",
+      "reason": "not installed or supplied; authority must survive the entire application restore/failure cut",
+      "owner": "Recovery administrator and deputy",
+      "action": "Enroll independent failure/recovery placement outside application backups"
+    },
+    {
+      "input": "placement.applicationFailureDomain",
+      "reason": "not installed or supplied",
+      "owner": "Recovery administrator and deputy",
+      "action": "Enroll independent failure/recovery placement outside application backups"
+    },
+    {
+      "input": "logicalRoles.interaction-custody",
+      "reason": "not installed or supplied",
+      "owner": "Platform composition owner",
+      "action": "Bind the logical role to its authenticated installed Dapr service/component"
+    },
+    {
+      "input": "logicalRoles.custody-authorizer",
+      "reason": "not installed or supplied",
+      "owner": "Platform composition owner",
+      "action": "Bind the logical role to its authenticated installed Dapr service/component"
+    },
+    {
+      "input": "profiles.kubernetesNativeSidecars",
+      "reason": "not installed or supplied; exact supported installed profile required",
+      "owner": "Independent transport/closure observer",
+      "action": "Measure and attest the complete installed transport, buffer and host profile"
+    },
+    {
+      "input": "profiles.swapDisabled",
+      "reason": "not installed or supplied; exact supported installed profile required",
+      "owner": "Independent transport/closure observer",
+      "action": "Measure and attest the complete installed transport, buffer and host profile"
+    },
+    {
+      "input": "profiles.coreDumpsDisabled",
+      "reason": "not installed or supplied; exact supported installed profile required",
+      "owner": "Independent transport/closure observer",
+      "action": "Measure and attest the complete installed transport, buffer and host profile"
+    },
+    {
+      "input": "profiles.memoryCaptureDisabled",
+      "reason": "not installed or supplied; exact supported installed profile required",
+      "owner": "Independent transport/closure observer",
+      "action": "Measure and attest the complete installed transport, buffer and host profile"
+    },
+    {
+      "input": "g1Qualified",
+      "reason": "physical G1 proof absent; ObservedRevival remains unqualified",
+      "owner": "Platform and protection owners",
+      "action": "Return independently accepted installation/proof"
+    }
+  ]
+}

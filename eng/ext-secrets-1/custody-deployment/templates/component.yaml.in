@@ -1,0 +1,56 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: ${CUSTODY_BINDING}
+  namespace: ${NAMESPACE}
+spec:
+  type: bindings.hexalithcustody
+  version: v1
+  metadata:
+    - name: profileDigest
+      value: ${COMPONENT_PROFILE_SHA256}
+scopes:
+  - ${CUSTODY_APP_ID}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Resiliency
+metadata:
+  name: custody-no-retry
+  namespace: ${NAMESPACE}
+scopes:
+  - ${CUSTODY_APP_ID}
+spec:
+  policies:
+    retries:
+      custodyNoRetry:
+        policy: constant
+        duration: 0s
+        maxRetries: 0
+  targets:
+    components:
+      ${CUSTODY_BINDING}:
+        outbound:
+          retry: custodyNoRetry
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: custody-private
+  namespace: ${NAMESPACE}
+spec:
+  tracing:
+    samplingRate: "0"
+  metric:
+    enabled: false
+  accessControl:
+    defaultAction: deny
+    trustDomain: ${TRUST_DOMAIN}
+    policies:
+      - appId: ${AUTHORIZED_CALLER_APP_ID}
+        namespace: ${CALLER_NAMESPACE}
+        trustDomain: ${TRUST_DOMAIN}
+        defaultAction: deny
+        operations:
+          - name: /custody-lifecycle/*
+            httpVerb: [POST]
+            action: allow

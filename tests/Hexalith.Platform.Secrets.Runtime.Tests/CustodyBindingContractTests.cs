@@ -123,15 +123,18 @@ public sealed class CustodyBindingContractTests
     }
 
     [Fact]
-    public void ContradictoryWrapRegistrationEnvelopeIsRejected()
+    public void OriginalWrapOwnerRevisionIsIndependentFromFreshCustodyHead()
     {
         var e = CustodyBindingFixture.Envelope("wrap") with { OperationId = CustodyBindingFixture.Registration.OperationId };
         var request = CustodyBindingFixture.Bind(new(e, CustodyBindingFixture.Registration));
         CustodyBindingContract.Validate(request).ShouldBeTrue();
         CustodyBindingContract.Validate(request with { Envelope = e with { OperationId = "other", RequestDigest = request.Envelope.RequestDigest } }).ShouldBeFalse();
-        var wrongRevision = request with { Envelope = request.Envelope with { ExpectedCustodyRevision = 2,
+        byte[] originalBytes = JsonSerializer.SerializeToUtf8Bytes(request.Registration);
+        var freshHead = request with { Envelope = request.Envelope with { ExpectedCustodyRevision = 2,
             Proof = request.Envelope.Proof with { ExpectedCustodyRevision = 2 } } };
-        CustodyBindingContract.Validate(wrongRevision).ShouldBeFalse();
+        CustodyBindingContract.Validate(freshHead).ShouldBeTrue();
+        freshHead.Envelope.RequestDigest.ShouldBe(request.Envelope.RequestDigest);
+        JsonSerializer.SerializeToUtf8Bytes(freshHead.Registration).ShouldBe(originalBytes);
     }
 
     [Fact]

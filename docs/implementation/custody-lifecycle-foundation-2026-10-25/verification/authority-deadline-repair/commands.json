@@ -1,0 +1,98 @@
+[
+  {
+    "name": "runtime-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-authority-deadline-repair-20261025a",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:50:10.399472+00:00",
+    "exitCode": 1,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/runtime-build-1.log",
+    "sha256": "c8d78ab0d77a1a177d34f6b1fb3a9cd542aaba1c9e789946ab6d63717adf54b9"
+  },
+  {
+    "name": "runtime-build-2",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-authority-deadline-repair-20261025a",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:50:36.381999+00:00",
+    "exitCode": 1,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/runtime-build-2.log",
+    "sha256": "168cb523de09383329cc7ceaafbd9d81ebac246a2c4f25853db51bca75a00252"
+  },
+  {
+    "name": "runtime-build-3",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-authority-deadline-repair-20261025a",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:50:55.601934+00:00",
+    "exitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/runtime-build-3.log",
+    "sha256": "e0ab7b19056ee74df7448591525cf18bb6b44a126a82ab2d72456111dd36c2b6"
+  },
+  {
+    "name": "authority-cancellation-targeted-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/custody-authority-deadline-repair-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyLifecycleCancellationTests",
+      "-noColor"
+    ],
+    "startedAtUtc": "2026-10-25T08:51:13.850553+00:00",
+    "exitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/authority-cancellation-targeted-tests.log",
+    "sha256": "299d2b61c9545be20bd0fc9ed95c54e1f23945aeeb2aa4bd4d761d8222e2ac83"
+  },
+  {
+    "name": "authorizer-contract-targeted-test",
+    "argv": [
+      "dotnet",
+      "/tmp/custody-authority-deadline-repair-20261025a/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyLifecyclePublicContractTests.AuthorizerUsesOnlyCredentialBoundExactValueFreeIntentAndRejectsDuplicateResponseFields",
+      "-noColor"
+    ],
+    "startedAtUtc": "2026-10-25T08:51:14.280525+00:00",
+    "exitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/authorizer-contract-targeted-test.log",
+    "sha256": "a140690f73c1fc62b0194f46858d7e3c250f7807fa1fbb9b2c3dec09562bb12c"
+  },
+  {
+    "name": "scoped-diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecycleCancellationTests.cs",
+      "eng/ext-secrets-1/custody-deployment/README.md"
+    ],
+    "startedAtUtc": "2026-10-25T08:51:51.942951+00:00",
+    "exitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/authority-deadline-repair/scoped-diff-check.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

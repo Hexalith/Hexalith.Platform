@@ -1,0 +1,93 @@
+{
+  "protocol": "custody-lifecycle-v1",
+  "images": {
+    "component": null,
+    "custodyApplication": null,
+    "dapr": null,
+    "dotnetSdk": null,
+    "dotnetAspnet": null
+  },
+  "artifacts": {
+    "custodyApplicationComposition": null,
+    "componentProfile": null,
+    "enrollment": null,
+    "componentVerifier": null,
+    "transportProfile": null,
+    "holderClosureProfile": null,
+    "capacityMeasurement": null,
+    "independentPlacement": null,
+    "authorityEnrollment": null,
+    "originalArchiveEnrollment": null,
+    "privateAuthorizerImplementation": null,
+    "controlIssuerImplementation": null,
+    "independentObserverImplementation": null,
+    "eventStoreIntegration": null,
+    "physicalQualification": null,
+    "g1Evidence": null,
+    "registrationOriginalLocatorImplementation": null,
+    "reservedManifestOriginalLocatorImplementation": null,
+    "registrationOriginalMapping": null,
+    "reservedManifestOriginalMapping": null
+  },
+  "credentialReferences": {
+    "component": null,
+    "worker": null,
+    "privateAuthorizer": null,
+    "controlIssuer": null,
+    "independentObserver": null,
+    "recoveryAdministrator": null,
+    "recoveryDeputy": null
+  },
+  "placement": {
+    "applicationRecoveryClass": null,
+    "authorityRecoveryClass": null,
+    "originalRecoveryClass": null,
+    "authorityFailureDomain": null,
+    "applicationFailureDomain": null
+  },
+  "logicalRoles": {
+    "interaction-custody": null,
+    "custody-authorizer": null
+  },
+  "profiles": {
+    "transport": "custody-lifecycle-v1",
+    "maximumRequestMessageBytes": 134217728,
+    "maximumResponseFrameBytes": 1048575,
+    "automaticRetries": 0,
+    "redirects": false,
+    "kubernetesNativeSidecars": null,
+    "swapDisabled": null,
+    "coreDumpsDisabled": null,
+    "memoryCaptureDisabled": null
+  },
+  "sourceStatus": "reference-component-uninstalled",
+  "g1Qualified": false,
+  "kubernetes": {
+    "appPort": null,
+    "appProtocol": null,
+    "controlPlaneAddress": null,
+    "controlPlaneNamespace": null,
+    "controlPlaneTrustDomain": null,
+    "sentryAddress": null,
+    "sentryTokenAudience": null,
+    "sentryTokenExpirationSeconds": null,
+    "trustAnchorSecret": null,
+    "trustAnchorKey": null,
+    "apiTokenSecret": null,
+    "apiTokenKey": null,
+    "appApiTokenSecret": null,
+    "appApiTokenKey": null,
+    "workerGroupId": null,
+    "workerOutputOwnershipEvidence": null,
+    "internalGrpcPort": null
+  },
+  "referenceCredentials": {
+    "componentSecret": null,
+    "componentKey": null,
+    "componentProfile": null,
+    "workerSecret": null,
+    "workerKey": null,
+    "workerProfile": null,
+    "mountedFile": null
+  }
+}

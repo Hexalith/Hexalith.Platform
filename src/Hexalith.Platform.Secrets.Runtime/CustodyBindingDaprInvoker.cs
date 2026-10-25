@@ -24,7 +24,11 @@ internal sealed record CustodyBindingResponseV1(string ProtocolVersion, string O
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyKeyRegistration? WrappedRegistration = null,
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingKeyDeliveryV1? KeyDelivery = null,
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingDeliveryV1? Delivery = null,
-    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingTransitionProofV1? TransitionProof = null);
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingTransitionProofV1? TransitionProof = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingResultProofV1? ResultProof = null);
+
+internal sealed record CustodyBindingResultProofV1(string RequestAttemptId, string Challenge, AuthorityEnrollmentV1 Authority,
+    string ResponseSha256, byte[] Signature);
 
 internal sealed record CustodyBindingKeyDeliveryV1(CustodyBindingKeyUseV1 KeyUse, byte[] RootKey);
 
@@ -95,7 +99,7 @@ internal sealed class CustodyBindingDaprInvoker
                 || ComponentRequestUpperBound(request.Envelope.Operation, data.Length) > limit)
             { return new(CustodyBindingTransportState.Refused); }
             CheckBudget();
-            // Key delivery is unsupported until SDK/sidecar/component holder/buffer closure can be qualified.
+            // Key delivery requires the independently qualified SDK/sidecar/component holder profile above.
             // Current authority must also be consumed by a native comparison inside the eventual component.
             string method = "custody-lifecycle/" + request.Envelope.Operation;
             bool authorized = await _authority.AuthorizeAsync(request, method, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);

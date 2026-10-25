@@ -1,0 +1,208 @@
+[
+  {
+    "name": "component-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-reviewed-final-4x0mlegb/component",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:53:16.982348+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/component-build.log",
+    "sha256": "7a25c59eaf4120d0aee322880cb404789dbba7e3d806e15e2f9a9f5bf1a98972"
+  },
+  {
+    "name": "component-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/custody-reviewed-final-4x0mlegb/component/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll"
+    ],
+    "startedAtUtc": "2026-10-25T08:53:39.398137+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/component-tests.log",
+    "sha256": "ff1b43be7a0b9779c66a1e91e63770461f999e44f0ebcecc98081a5bc1e205dc"
+  },
+  {
+    "name": "runtime-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-reviewed-final-4x0mlegb/runtime",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:53:44.058407+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/runtime-build.log",
+    "sha256": "9819185a4c451c1308673da7257ac17a318594418c7847b62c53f48ce6cd19f4"
+  },
+  {
+    "name": "runtime-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/custody-reviewed-final-4x0mlegb/runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyBindingContractTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyBindingDaprInvokerTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyBindingOriginalTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyKeyLifecycleBindingTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyKeyLifecycleGuardAdmissionTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyLifecyclePublicContractTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyLifecycleCancellationTests",
+      "-noColor"
+    ],
+    "startedAtUtc": "2026-10-25T08:53:56.738240+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/runtime-tests.log",
+    "sha256": "9aaf6937298ebd8e9f2e9770d8162b7b8c312457f6f4bf2f1dfa70f98e03e061"
+  },
+  {
+    "name": "protection-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-reviewed-final-4x0mlegb/protection",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:53:57.505724+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/protection-build.log",
+    "sha256": "9ecc8733c92939524cecb1cc12f65d3eb12fafbc0eb80da08d6dc453123bcfe0"
+  },
+  {
+    "name": "protection-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/custody-reviewed-final-4x0mlegb/protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+      "-noColor"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:18.260810+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/protection-tests.log",
+    "sha256": "01c4321c96cc403de1d60c57ed51c336d2907db7985ef6f2868b9aca7d80300e"
+  },
+  {
+    "name": "offline-tests",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/ext-secrets-1/custody-deployment",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:18.642987+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/offline-tests.log",
+    "sha256": "be4940268b81e4403db961878653f603a038c5435e1a55637ec3e0fe5eefb8f3"
+  },
+  {
+    "name": "uninstalled-preflight",
+    "argv": [
+      "python3",
+      "eng/ext-secrets-1/custody-deployment/preflight.py",
+      "eng/ext-secrets-1/custody-deployment/inputs.uninstalled.json",
+      "--output",
+      "/home/administrator/projects/hexalith/platform/docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/installation-input-ledger.json"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:18.710834+00:00",
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/uninstalled-preflight.log",
+    "sha256": "36f0b4862233365128fdc93539fac4bb00f2d10cf9fa07aa3c47752a5c353192"
+  },
+  {
+    "name": "release-publish",
+    "argv": [
+      "dotnet",
+      "publish",
+      "infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj",
+      "-c",
+      "Release",
+      "--artifacts-path",
+      "/tmp/custody-reviewed-final-4x0mlegb/publish",
+      "-o",
+      "/tmp/custody-reviewed-final-4x0mlegb/publish-output",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:18.741512+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/release-publish.log",
+    "sha256": "949596648516e5e36b60d9be3c79ad93407af94366889736843ad207b7f25fda"
+  },
+  {
+    "name": "image-context-missing-runtime-pin",
+    "argv": [
+      "python3",
+      "eng/ext-secrets-1/custody-deployment/prepare-image.py",
+      "--publish",
+      "/tmp/custody-reviewed-final-4x0mlegb/publish-output",
+      "--inventory",
+      "/home/administrator/projects/hexalith/platform/docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/publish-inventory-runtime-pin-missing.json",
+      "--inventory-sha256",
+      "f197ace828d22ba8e983cee1f202e4f1dd7aa593220a33093db128718dd431d4",
+      "--output",
+      "/tmp/custody-reviewed-final-4x0mlegb/blocked-image-context"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:28.053823+00:00",
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/image-context-missing-runtime-pin.log",
+    "sha256": "56a9ee6a0e367fe9bab074784b2f6bb4e31fec1945d06e5d068d060d7bf18013"
+  },
+  {
+    "name": "scoped-diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      ".gitignore",
+      "src/Hexalith.Platform.Secrets.Runtime",
+      "src/Hexalith.Platform.Protection",
+      "infrastructure/Hexalith.Platform.Custody.Dapr",
+      "infrastructure/Hexalith.Platform.Custody.Dapr.Tests",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests",
+      "tests/Hexalith.Platform.Protection.Tests",
+      "eng/ext-secrets-1/custody-deployment",
+      "docs/implementation/custody-lifecycle-foundation-2026-10-25",
+      "_bmad-output/implementation-artifacts/spec-5-4-production-custody-lifecycle-foundation.md"
+    ],
+    "startedAtUtc": "2026-10-25T08:54:28.086124+00:00",
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-l3qf1w_t/scoped-diff-check.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

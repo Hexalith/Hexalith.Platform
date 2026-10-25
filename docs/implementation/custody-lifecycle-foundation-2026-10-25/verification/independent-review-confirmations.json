@@ -1,0 +1,31 @@
+{
+  "reviewInputSha256": "bec84e415e7c1d8ff6513cbea2441b678c22bc5915cfb16c4e11ad9afb68b885",
+  "repairDiffSha256": "ad7495af5aefa7e8c2bd5d8ac1762a40d386c058b071a4fe8f46656cd880a76a",
+  "finalAuthorityFixDiffSha256": "64b98489ccd11c34160f25895a03767411c6fb4d407b47abba567464103e2126",
+  "reviewersExecutedSuites": false,
+  "parentExecutedSuites": true,
+  "layers": [
+    {
+      "layer": "blind-hunter",
+      "initialFindings": 10,
+      "finalConfirmation": "Both remaining findings resolved: default-token authority waits and registration/lifecycle sequence share one deadline, caller token is preserved, and the primary image recipe matches the repaired schema. No concrete defect remains in the focused static follow-up."
+    },
+    {
+      "layer": "edge-case-hunter",
+      "initialFindings": 3,
+      "finalConfirmation": "Revision and app-channel findings resolved. Foreign-token completed-task cancellation is normalized to the original caller token. No concrete defect found in the new authority deadline wrapper; downstream waits are bounded and internal expiry returns false."
+    },
+    {
+      "layer": "verification-gap",
+      "initialFindings": 2,
+      "finalConfirmation": "Both filed findings closed: real signed unwrap replay is rejected, actual actor integration exercises diverged revisions, and covering scenarios are registered. Deadline/cancellation, native credentials and rendered deployment checks exercise the named boundaries. No remaining concrete defect found in these repair paths."
+    }
+  ],
+  "parentAdditionalObservations": 5,
+  "separatelyTriagedFollowupObservations": 3,
+  "totalTriagedObservations": 23,
+  "allResolved": true,
+  "deferredFindings": 0,
+  "physicalQualification": false,
+  "dependencyAvailable": false
+}

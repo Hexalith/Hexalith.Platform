@@ -1,0 +1,341 @@
+--- a/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs
+@@ -18,41 +18,53 @@
+     /// <inheritdoc />
+     public Task<bool> AuthorizeOperationAsync(CustodyKeyObjectIdentity identity, string operationId, string method, string requestDigest,
+         CancellationToken cancellationToken = default)
+-        => identity.TenantId == tenantId && CustodyBindingContract.Digest(requestDigest)
+-            ? owner.AuthorizeOperationAsync(CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(new { identity, operationId, requestDigest })), method, cancellationToken)
+-            : Task.FromResult(false);
++        => InvokeAsync(budget => identity.TenantId == tenantId && CustodyBindingContract.Digest(requestDigest)
++            ? owner.AuthorizeOperationAsync(CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(new { identity, operationId, requestDigest })), method, budget.Token)
++            : Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+-    public async Task<bool> VerifyRegistrationAsync(CustodyKeyRegistration registration, CancellationToken cancellationToken = default)
++    public Task<bool> VerifyRegistrationAsync(CustodyKeyRegistration registration, CancellationToken cancellationToken = default)
++        => InvokeAsync(async budget =>
+     {
+         if (registration.Identity.TenantId != tenantId) return false;
+-        var result = await client.LookupOriginalAsync(registration, cancellationToken: cancellationToken);
++        var result = await client.LifecycleAsync(registration, null, true, budget).WaitAsync(budget.Token);
++        budget.Check();
+         return result.Status == CustodyKeyLifecycleStatus.Wrapped && result.ReceiptId == registration.WrapReceiptId;
+-    }
++    }, cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> AuthorizeEffectAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken = default)
+         => AuthorizeOperationAsync(request.Identity, request.OperationId, "custody-lifecycle/" + request.Action,
+             CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(request)), cancellationToken);
+     /// <inheritdoc />
+-    public async Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default)
++    public Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default)
++        => InvokeAsync(async budget =>
+     {
+         if (request.Identity.TenantId != tenantId || request.Identity != outcome.Identity || request.OperationId != outcome.OperationId) return false;
+-        var registration = await registrations.FindAsync(request.Identity, cancellationToken).WaitAsync(cancellationToken);
++        var registration = await registrations.FindAsync(request.Identity, budget.Token).WaitAsync(budget.Token);
++        budget.Check();
+         if (registration is null) return false;
+-        var original = await lifecycle.LookupAsync(registration, request, outcome.RequestDigest, cancellationToken);
+-        return original == outcome && original.Status is CustodyKeyLifecycleStatus.Pinned or CustodyKeyLifecycleStatus.Unpinned or CustodyKeyLifecycleStatus.Destroyed;
+-    }
++        var original = await lifecycle.LookupAsync(registration, request, outcome.RequestDigest, budget.Token).WaitAsync(budget.Token);
++        budget.Check();
++        return original == outcome && original.Status is CustodyKeyLifecycleStatus.Pinned or CustodyKeyLifecycleStatus.Unpinned or CustodyKeyLifecycleStatus.Destroyed or CustodyKeyLifecycleStatus.NotPerformed;
++    }, cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> ValidateStateAsync(string tenant, long revision, string exactStateDigest, CancellationToken cancellationToken = default)
+-        => tenant == tenantId ? owner.ValidateStateAsync(revision, exactStateDigest, cancellationToken) : Task.FromResult(false);
++        => InvokeAsync(budget => tenant == tenantId ? owner.ValidateStateAsync(revision, exactStateDigest, budget.Token) : Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> RecordRevisionAsync(string tenant, long expectedRevision, long nextRevision, string exactStateDigest,
+-        CancellationToken cancellationToken = default) => Task.FromResult(false);
++        CancellationToken cancellationToken = default) => InvokeAsync(_ => Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.AdmitTransitionAsync(transition, cancellationToken);
++    public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(budget => owner.AdmitTransitionAsync(transition, budget.Token), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> RecordTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.RecordTransitionAsync(transition, cancellationToken);
++    public Task<bool> RecordTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(budget => owner.RecordTransitionAsync(transition, budget.Token), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> RecoverTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.RecoverTransitionAsync(transition, cancellationToken);
++    public Task<bool> RecoverTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(budget => owner.RecoverTransitionAsync(transition, budget.Token), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.VerifyTransitionAsync(transition, cancellationToken);
++    public Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(budget => owner.VerifyTransitionAsync(transition, budget.Token), cancellationToken);
++
++    private Task<bool> InvokeAsync(Func<CustodyOperationBudget, Task<bool>> operation, CancellationToken caller)
++        => client.InBudgetAsync(caller, async budget =>
++        {
++            bool result = await operation(budget).WaitAsync(budget.Token).ConfigureAwait(false);
++            budget.Check(); return result;
++        }, () => false);
+ }
+--- a/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs
+@@ -56,18 +56,22 @@
+ 
+     private async Task<TResponse?> InvokeAsync<TRequest, TResponse>(string phase, TRequest request, CancellationToken token)
+     {
++        token.ThrowIfCancellationRequested();
+         if (_service is null || !SecretsProvisioning.IsReference(_credentialReference)) return default;
+         try
+         {
+             string? json = await _invoker.InvokeCredentialBoundAsync(_service, _credentialReference, "custody-lifecycle/" + phase,
+                 System.Text.Json.JsonSerializer.Serialize(request, CustodyBindingContract.Json), token).WaitAsync(token).ConfigureAwait(false);
++            token.ThrowIfCancellationRequested();
+             if (json is null) return default;
+             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
+             if (bytes.Length is 0 or >= CustodyBindingContract.MaximumPageFrameBytes) return default;
+             CustodyBindingContract.RejectDuplicateProperties(bytes);
+-            return System.Text.Json.JsonSerializer.Deserialize<TResponse>(bytes, CustodyBindingContract.Json);
++            var result = System.Text.Json.JsonSerializer.Deserialize<TResponse>(bytes, CustodyBindingContract.Json);
++            token.ThrowIfCancellationRequested(); return result;
+         }
+-        catch (Exception) { return default; }
++        catch (OperationCanceledException) when (token.IsCancellationRequested) { throw new OperationCanceledException(token); }
++        catch (Exception) { token.ThrowIfCancellationRequested(); return default; }
+     }
+ 
+     private sealed record CustodyAuthorizationIntent(CustodyCallIntent Intent, CustodyPreparedCall Prepared, string RequestSha256);
+--- a/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecycleCancellationTests.cs
++++ b/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecycleCancellationTests.cs
+@@ -0,0 +1,207 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++using Dapr.Client;
++using Hexalith.EventStore.Contracts.Security;
++using Hexalith.Platform.Custody;
++using Hexalith.Platform.Secrets.Runtime;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.Platform.Secrets.Runtime.Tests;
++
++public sealed class CustodyLifecycleCancellationTests
++{
++    [Fact]
++    public async Task CredentialBoundAuthorizerPreservesCallerCancellationWhenTransportReturnsRefusal()
++    {
++        using var caller = new CancellationTokenSource();
++        var transport = Substitute.For<ISecretsCredentialBoundDaprInvoker>();
++        transport.InvokeCredentialBoundAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(_ => { caller.Cancel(); return Task.FromResult<string?>(null); });
++        var authorizer = new DaprCustodyAuthorizerClient(transport,
++            new Dictionary<string, string> { [DaprCustodyAuthorizerClient.LogicalRole] = "independent-authorizer" }, "file:/private/credential");
++        var intent = new CustodyCallIntent("unwrap", "tenant", "owner", "operation", CustodyBindingFixture.Digest, "{}", "attempt", "challenge");
++        var failure = await Should.ThrowAsync<OperationCanceledException>(() => authorizer.PrepareAsync(intent, caller.Token));
++        failure.CancellationToken.ShouldBe(caller.Token);
++    }
++
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task CredentialBoundAuthorizerNormalizesAlreadyCancelledForeignTask(bool authorize)
++    {
++        using var caller = new CancellationTokenSource();
++        var transport = Substitute.For<ISecretsCredentialBoundDaprInvoker>();
++        transport.InvokeCredentialBoundAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(_ => CancelledWithForeignToken<string?>(caller));
++        var authorizer = new DaprCustodyAuthorizerClient(transport,
++            new Dictionary<string, string> { [DaprCustodyAuthorizerClient.LogicalRole] = "independent-authorizer" }, "file:/private/credential");
++        var intent = new CustodyCallIntent("unwrap", "tenant", "owner", "operation", CustodyBindingFixture.Digest, "{}", "attempt", "challenge");
++        var failure = await Should.ThrowAsync<OperationCanceledException>(async () =>
++        {
++            if (authorize) await authorizer.AuthorizeAsync(intent, new("{}", 1024, CustodyBindingFixture.Digest, null), CustodyBindingFixture.Digest, caller.Token);
++            else await authorizer.PrepareAsync(intent, caller.Token);
++        });
++        failure.CancellationToken.ShouldBe(caller.Token);
++    }
++
++    [Fact]
++    public async Task DiscardedOwnedKeyIsClearedWhenCallerCancelsBeforeResultExposure()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var client = Client(sdk, key); byte[] owned = Enumerable.Range(1, 32).Select(x => (byte)x).ToArray();
++        using var caller = new CancellationTokenSource();
++        var error = await Should.ThrowAsync<OperationCanceledException>(() => client.InBudgetAsync(caller.Token,
++            _ => { caller.Cancel(); return Task.FromResult(new CustodyKeyUseResult("Released", new(owned))); }, () => new CustodyKeyUseResult("Unknown")));
++        error.CancellationToken.ShouldBe(caller.Token); owned.ShouldBe(new byte[32]);
++    }
++
++    [Fact]
++    public async Task AuthorityRestoresCancellationFromRefusingOwnerForwardersAndRegistrationLocator()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var client = Client(sdk, key);
++        foreach (string phase in new[] { "state", "operation", "admit", "record", "recover", "verify", "registration" })
++        {
++            using var caller = new CancellationTokenSource();
++            var owner = Substitute.For<ICustodyOwnerStateAuthority>();
++            Task<bool> Refusal() { caller.Cancel(); return Task.FromResult(false); }
++            owner.ValidateStateAsync(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.AuthorizeOperationAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.AdmitTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.RecoverTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.VerifyTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            var registrations = Substitute.For<ICustodyKeyRegistrationSource>();
++            registrations.FindAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<CancellationToken>()).Returns(_ => { caller.Cancel(); return Task.FromResult<CustodyKeyRegistration?>(null); });
++            var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, client, Substitute.For<ICustodyKeyLifecycleProvider>(), registrations);
++            var transition = new AnchoredStateTransition("owner", 0, 1, CustodyBindingFixture.Digest, CustodyBindingFixture.Digest, [1]);
++            var request = CustodyBindingFixture.Lifecycle().Lifecycle!;
++            var outcome = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, CustodyBindingFixture.Digest, CustodyKeyLifecycleStatus.Unknown);
++            Task<bool> call = phase switch {
++                "state" => authority.ValidateStateAsync("tenant", 0, CustodyBindingFixture.Digest, caller.Token),
++                "operation" => authority.AuthorizeOperationAsync(CustodyBindingFixture.Identity, "operation", "method", CustodyBindingFixture.Digest, caller.Token),
++                "admit" => authority.AdmitTransitionAsync(transition, caller.Token),
++                "record" => authority.RecordTransitionAsync(transition, caller.Token),
++                "recover" => authority.RecoverTransitionAsync(transition, caller.Token),
++                "verify" => authority.VerifyTransitionAsync(transition, caller.Token),
++                _ => authority.VerifyOutcomeAsync(request, outcome, caller.Token),
++            };
++            (await Should.ThrowAsync<OperationCanceledException>(() => call)).CancellationToken.ShouldBe(caller.Token);
++        }
++    }
++
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task AuthorityNormalizesAlreadyCancelledForeignOwnerOrRegistrationTask(bool registration)
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        using var caller = new CancellationTokenSource();
++        var owner = Substitute.For<ICustodyOwnerStateAuthority>();
++        owner.ValidateStateAsync(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(_ => CancelledWithForeignToken<bool>(caller));
++        var registrations = Substitute.For<ICustodyKeyRegistrationSource>();
++        registrations.FindAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<CancellationToken>())
++            .Returns(_ => CancelledWithForeignToken<CustodyKeyRegistration?>(caller));
++        var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, Client(sdk, key), Substitute.For<ICustodyKeyLifecycleProvider>(), registrations);
++        var request = CustodyBindingFixture.Lifecycle().Lifecycle!;
++        var outcome = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, CustodyBindingFixture.Digest, CustodyKeyLifecycleStatus.Pinned);
++        var failure = await Should.ThrowAsync<OperationCanceledException>(() => registration
++            ? authority.VerifyOutcomeAsync(request, outcome, caller.Token)
++            : authority.ValidateStateAsync("tenant", 0, CustodyBindingFixture.Digest, caller.Token));
++        failure.CancellationToken.ShouldBe(caller.Token);
++    }
++
++    // These regressions must exercise a default caller token; their outer waits still use test cancellation.
++#pragma warning disable xUnit1051
++    [Fact]
++    public async Task AuthorityBoundsUnresponsiveOwnerWithDefaultCallerToken()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var clock = new BudgetClock(); var owner = Substitute.For<ICustodyOwnerStateAuthority>();
++        var pending = new TaskCompletionSource<bool>(); CancellationToken downstream = default;
++        owner.ValidateStateAsync(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(call => { downstream = call.ArgAt<CancellationToken>(2); return pending.Task; });
++        var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, Client(sdk, key, clock),
++            Substitute.For<ICustodyKeyLifecycleProvider>(), Substitute.For<ICustodyKeyRegistrationSource>());
++        var result = authority.ValidateStateAsync("tenant", 0, CustodyBindingFixture.Digest, cancellationToken: default);
++        downstream.CanBeCanceled.ShouldBeTrue(); result.IsCompleted.ShouldBeFalse();
++        clock.Advance(TimeSpan.FromSeconds(30));
++        (await result.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)).ShouldBeFalse(); downstream.IsCancellationRequested.ShouldBeTrue();
++    }
++
++    [Fact]
++    public async Task AuthorityBoundsUnresponsiveRegistrationLocatorWithDefaultCallerToken()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var clock = new BudgetClock(); var registrations = Substitute.For<ICustodyKeyRegistrationSource>();
++        var pending = new TaskCompletionSource<CustodyKeyRegistration?>(); CancellationToken downstream = default;
++        registrations.FindAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<CancellationToken>())
++            .Returns(call => { downstream = call.ArgAt<CancellationToken>(1); return pending.Task; });
++        var lifecycle = Substitute.For<ICustodyKeyLifecycleProvider>();
++        var authority = new DaprCustodyKeyLifecycleAuthority("tenant", Substitute.For<ICustodyOwnerStateAuthority>(), Client(sdk, key, clock), lifecycle, registrations);
++        var request = CustodyBindingFixture.Lifecycle().Lifecycle!;
++        var outcome = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, CustodyBindingFixture.Digest, CustodyKeyLifecycleStatus.Pinned);
++        var result = authority.VerifyOutcomeAsync(request, outcome, cancellationToken: default);
++        downstream.CanBeCanceled.ShouldBeTrue(); result.IsCompleted.ShouldBeFalse();
++        clock.Advance(TimeSpan.FromSeconds(30));
++        (await result.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)).ShouldBeFalse(); downstream.IsCancellationRequested.ShouldBeTrue();
++        await lifecycle.DidNotReceiveWithAnyArgs().LookupAsync(default!, default!, default!, default);
++    }
++
++    [Fact]
++    public async Task AuthorityRegistrationAndLifecycleLookupShareOriginalDeadline()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var clock = new BudgetClock(); var registrations = Substitute.For<ICustodyKeyRegistrationSource>();
++        CancellationToken registrationToken = default, lifecycleToken = default;
++        registrations.FindAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<CancellationToken>())
++            .Returns(call => { registrationToken = call.ArgAt<CancellationToken>(1); clock.Advance(TimeSpan.FromSeconds(20)); return Task.FromResult<CustodyKeyRegistration?>(CustodyBindingFixture.Registration); });
++        var lifecycle = Substitute.For<ICustodyKeyLifecycleProvider>(); var pending = new TaskCompletionSource<CustodyKeyLifecycleOutcome>();
++        lifecycle.LookupAsync(Arg.Any<CustodyKeyRegistration>(), Arg.Any<CustodyKeyLifecycleRequest>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(call => { lifecycleToken = call.ArgAt<CancellationToken>(3); return pending.Task; });
++        var authority = new DaprCustodyKeyLifecycleAuthority("tenant", Substitute.For<ICustodyOwnerStateAuthority>(), Client(sdk, key, clock), lifecycle, registrations);
++        var request = CustodyBindingFixture.Lifecycle().Lifecycle!;
++        var outcome = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, CustodyBindingFixture.Digest, CustodyKeyLifecycleStatus.Pinned);
++        var result = authority.VerifyOutcomeAsync(request, outcome, cancellationToken: default);
++        lifecycleToken.ShouldBe(registrationToken); lifecycleToken.CanBeCanceled.ShouldBeTrue();
++        clock.Advance(TimeSpan.FromSeconds(9)); result.IsCompleted.ShouldBeFalse();
++        clock.Advance(TimeSpan.FromSeconds(1));
++        (await result.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)).ShouldBeFalse(); lifecycleToken.IsCancellationRequested.ShouldBeTrue();
++    }
++#pragma warning restore xUnit1051
++
++    private static Task<T> CancelledWithForeignToken<T>(CancellationTokenSource caller)
++    {
++        using var foreign = CancellationTokenSource.CreateLinkedTokenSource(caller.Token);
++        caller.Cancel(); return Task.FromCanceled<T>(foreign.Token);
++    }
++
++    private static CustodyLifecycleClient Client(DaprClient sdk, ECDsa key, TimeProvider? clock = null)
++        => new(sdk, new Dictionary<string, string>(), "owner", JsonSerializer.Serialize(CustodyBindingFixture.Enrollment),
++            key.ExportSubjectPublicKeyInfoPem(), Substitute.For<ICustodyLifecycleCallSource>()) { OperationClock = clock ?? TimeProvider.System };
++
++    private sealed class BudgetClock : TimeProvider
++    {
++        private long _ticks;
++        private readonly List<BudgetTimer> _timers = [];
++        public override long TimestampFrequency => TimeSpan.TicksPerSecond;
++        public override long GetTimestamp() => _ticks;
++        public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
++        { var timer = new BudgetTimer(this, callback, state); _timers.Add(timer); timer.Change(dueTime, period); return timer; }
++        internal void Advance(TimeSpan elapsed)
++        {
++            _ticks += elapsed.Ticks;
++            foreach (var timer in _timers.ToArray()) if (!timer.Disposed && timer.Due <= _ticks) { timer.Disposed = true; timer.Callback(timer.State); }
++        }
++        private sealed class BudgetTimer(BudgetClock clock, TimerCallback callback, object? state) : ITimer
++        {
++            internal bool Disposed; internal long Due;
++            internal TimerCallback Callback = callback; internal object? State = state;
++            public bool Change(TimeSpan dueTime, TimeSpan period) { Disposed = false; Due = dueTime == Timeout.InfiniteTimeSpan ? long.MaxValue : clock._ticks + dueTime.Ticks; return true; }
++            public void Dispose() => Disposed = true;
++            public ValueTask DisposeAsync() { Dispose(); return ValueTask.CompletedTask; }
++        }
++    }
++}
+--- a/eng/ext-secrets-1/custody-deployment/README.md
++++ b/eng/ext-secrets-1/custody-deployment/README.md
+@@ -16,7 +16,13 @@
+ dotnet publish infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj -c Release -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/absolute/reviewed/eventstore --artifacts-path /new/external/artifacts -o /new/external/publish -m:1
+ ```
+ 
+-Record every source revision/dirty-source hash and published file hash. Supply a JSON object mapping every publish-relative filename to its SHA-256, pin that inventory's SHA-256, and run `prepare-image.py --publish /new/external/publish --inventory /retained/publish-inventory.json --inventory-sha256 <exact-digest> --output /new/external/context`. The container recipe is reviewable without claiming an installed artifact. No fabricated image, profile or credential is supplied. Protection adapter tests require the EventStore owner's published owner-state port; the installed NuGet graph predates that source seam. Source qualification and the accepted dependency target remain separate owner work; the image recipe does not silently switch package versions.
++Record every source revision/dirty-source hash and published file hash. Supply the closed JSON packet `{ "runtimeImage": "<reviewed-registry/image>@sha256:<actual-digest>", "files": { "<every-relative-publish-file>": "<sha256>" } }`, pin that inventory's SHA-256, and supply its matching actual digest-pinned runtime image:
++
++```bash
++python3 eng/ext-secrets-1/custody-deployment/prepare-image.py --publish /new/external/publish --inventory /retained/publish-inventory.json --inventory-sha256 <exact-inventory-digest> --runtime-image '<reviewed-registry/image>@sha256:<actual-digest>' --output /new/external/context
++```
++
++The existing real 41-file publish inventory has no reviewed runtime-image pin, so preparation remains **Blocked** until the Platform release owner supplies one. The container recipe is reviewable without claiming an installed artifact. No fabricated image, profile or credential is supplied. Protection adapter tests require the EventStore owner's published owner-state port; the installed NuGet graph predates that source seam. Source qualification and the accepted dependency target remain separate owner work; the image recipe does not silently switch package versions.
+ 
+ `component.yaml.in` registers the exact profile hash and scopes the binding, disables automatic output retries, disables telemetry and defines deny-default invocation policy. `workload.yaml.in` places daprd and the component on a memory-backed UDS volume accessible only inside their pod/group, sets non-root/read-only/capability restrictions and embeds no native credentials. Require cluster mTLS, workload admission, network isolation, memory-capture/swap/hibernation disablement, protected socket directory ownership/mode, disabled SDK/HTTP retries/redirects, complete sidecar/SDK/gRPC/native buffer admission and independent I/O/zeroing/termination evidence. Kubernetes settings alone prove none of these conditions. Bind all named references and exact installed profiles before any separately authorized installation.
+ 
+@@ -29,3 +35,13 @@
+ The output binding is local to a daprd instance. The owning custody application, daprd and pluggable component must share this pod (or an equivalently qualified private socket boundary); applications cannot address a remote output binding by its logical name. The workload explicitly requires a separately reviewed `CUSTODY_APPLICATION_IMAGE` and its source composition. A remote EventStore/Platform caller reaches that owning custody application's authenticated Dapr service API; the app then invokes its own local `interaction-custody` binding. The authenticated authorizer is a separate service reached by scoped credential-bound Dapr invocation. No receiving API host/production DI is activated by these library adapters or templates. Missing host integration is source work, not a ConfigMap value. The daprd Kubernetes workload identity/mTLS, trust domain, invocation ACL, API token/access isolation and exact sidecar identity are installation prerequisites. A generic sidecar alone supplies neither private-operation authorization nor holder closure.
+ 
+ The component socket must be `/var/run/custody/private/hexalithcustody.sock`: the socket stem registers `bindings.hexalithcustody`. The native sidecar init container waits for that protected UDS before daprd discovery; require the cluster's corresponding native-sidecar support. See the [Dapr pluggable registration contract](https://v1-18.docs.dapr.io/operations/components/pluggable-components-registration/). Its current registration guidance confirms the same-pod/shared-UDS boundary; exact pinned runtime behavior still requires installed transport qualification.
++
++## Review repair requirements
++
++Image preparation now requires a closed inventory `{ "runtimeImage": "<reviewed-registry/image>@sha256:<actual-digest>", "files": { "<every-relative-publish-file>": "<sha256>" } }`, its exact inventory SHA-256 and the matching `--runtime-image` argument. The preparer emits that literal immutable `FROM` into a recipe with no runtime-image `ARG`; mutable references, interpolation, duplicate JSON properties or a substituted image are rejected. The previous 41-file publish inventory contains no reviewed runtime-image pin. Its post-review context is therefore **Blocked** until the Platform release owner supplies one. Earlier context output is retained as pre-review evidence; synthetic registry pins occur only in regression fixtures and grant no installed/accepted artifact status.
++
++The manually configured daprd now needs explicit Sentry/control-plane addresses, namespace/trust domain, a scoped projected service-account token with its accepted Sentry audience/lifetime, public trust-anchor secret/key references, and matching Dapr/API and app-channel token secret/key references. Automount remains disabled; only daprd mounts the explicit identity token. The receiving host's actual port/protocol are explicit, and its owning source must enforce `APP_API_TOKEN`. The `appId-dapr` Service selects the custody workload and exposes only the pinned internal mTLS gRPC port 50002; HTTP and local API ports stay on loopback and are not exposed by that Service. Cluster identity/RBAC/network policy and actual trust acceptance remain installation prerequisites. The wiring follows the pinned [Dapr 1.18.1 flags](https://github.com/dapr/dapr/blob/v1.18.1/cmd/daprd/options/options.go), [security/token variables](https://github.com/dapr/dapr/blob/v1.18.1/pkg/security/consts/consts.go) and [Kubernetes resolver naming](https://github.com/dapr/components-contrib/blob/v1.18.1/nameresolution/kubernetes/kubernetes.go).
++
++For the uninstalled reference backend, the component and worker each require a separately scoped mounted credential Secret/key and exact shared-credential profile. The selected secret item is mounted as `/credentials/credentials`; `CUSTODY_REFERENCE_CREDENTIAL_FILE` and `CUSTODY_REFERENCE_CREDENTIAL_PROFILE` are consumed explicitly by infrastructure. Only one selected profile with access/secret keys and an optional session token is accepted; role/process/metadata profile sources and the SDK default credential chain are excluded. `AWS_EC2_METADATA_DISABLED=true` is also required. No credential value belongs in an input ledger or evidence.
++
++The worker sets its configured group as both `runAsGroup` and `fsGroup`, with `OnRootMismatch` ownership handling. The storage owner must verify the actual CSI/PVC supports that ownership and that the exact retained output path beneath `/retained` is writable before authorization. `prepare-original` must exclusively create its original output there; a root-owned unwritable path, ephemeral output or overwritten original is not a supported preparation result.

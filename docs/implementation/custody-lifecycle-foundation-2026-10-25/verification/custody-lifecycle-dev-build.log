@@ -1,0 +1,18 @@
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 240 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 240 ms).
+  Restored /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj (in 240 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 240 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj (in 240 ms).
+  Restored /home/administrator/projects/hexalith/platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj (in 240 ms).
+  Hexalith.Platform.Custody -> /tmp/custody-lifecycle-dev-20261025/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> /tmp/custody-lifecycle-dev-20261025/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.Component.dll
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs(56,26): error CS0618: 'DaprClient.InvokeMethodAsync<TRequest, TResponse>(string, string, TRequest, CancellationToken)' is obsolete: 'Recommended guidance is to use a native HTTP or gRPC client for service invocation' [/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj]
+
+Build FAILED.
+
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs(56,26): error CS0618: 'DaprClient.InvokeMethodAsync<TRequest, TResponse>(string, string, TRequest, CancellationToken)' is obsolete: 'Recommended guidance is to use a native HTTP or gRPC client for service invocation' [/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:04.87

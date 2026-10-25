@@ -41,6 +41,7 @@ internal sealed class BindingService(ComponentProfile profile, SemanticProvider 
                 CustodyJson.Read<SignedStatement>(Convert.FromBase64String(control)), context.CancellationToken,
                 request.Metadata.TryGetValue("custody-key-admission", out string? keyAdmission)
                     ? CustodyJson.Read<SignedStatement>(Convert.FromBase64String(keyAdmission)) : null);
+            result = provider.AuthenticateResponse(decoded, result);
             responseBytes = CustodyJson.Bytes(result);
             var response = new InvokeResponse { Data = ByteString.CopyFrom(responseBytes), ContentType = "application/json" };
             if (response.CalculateSize() + 5 >= CustodyBindingContract.MaximumPageFrameBytes) throw Closed("Complete response frame exceeds bound.");

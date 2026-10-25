@@ -42,7 +42,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         next.NativeResults.Add(intentId + ":admission", admissionOriginal);
         if (e.Operation == "wrap" && request.WrapInput is { } input)
         {
-            if (input.ExpectedRevision != current.Head.Revision || next.Registrations.Count >= 1000
+            if (next.Registrations.Count >= 1000
                 || next.AllocationExclusions.Contains(CustodyJson.Interaction(input.Identity))
                 || next.Registrations.ContainsKey(input.OpaqueWrappedKeyReference))
                 throw new AuthorityUnavailableException("Original allocation is excluded or capacity exhausted.");

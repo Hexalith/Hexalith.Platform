@@ -15,6 +15,10 @@ using Hexalith.Platform.Custody.Dapr;
 // All keys, stores and observer claims below are disposable component fixtures. No network/native
 // resource is opened. A fixture PASS is source evidence only and cannot satisfy physical qualification.
 var tests = new (string, Func<Task>)[] {
+    ("public-lifecycle-real-sdk-authorizer-key-cleanup-and-refusals", PublicLifecycleTests.Run),
+    ("actual-lifecycle-actor-diverged-owner-and-custody-revisions", ActorLifecycleIntegrationTests.Run),
+    ("public-lifecycle-cancellation-and-shared-operation-deadline", PublicLifecycleCancellationTests.Run),
+    ("explicit-scoped-reference-credentials-without-default-fallback", ReferenceCredentialTests.Run),
     ("missing-qualification-and-enrollment-close-effects", Missing),
     ("ephemeral-key-delivery-duplicate-and-holder-completion", Keys),
     ("lost-wrap-result-recovers-without-native-resend", LostWrap),
@@ -35,7 +39,11 @@ var tests = new (string, Func<Task>)[] {
     ("uncertain-successor-retirement-abandonment-and-replacement", SuccessorRetirement),
     ("maximum-manifest-transition-immutable-index-roundtrip", CheckpointCapacityTests.Run),
 };
-if (args.Length > 0) tests = tests.Where(t => args.Contains(t.Item1, StringComparer.Ordinal)).ToArray();
+if (args.Length > 0)
+{
+    if (args.Any(name => !tests.Any(test => test.Item1 == name))) { Console.Error.WriteLine("Unknown component scenario requested."); return 2; }
+    tests = tests.Where(t => args.Contains(t.Item1, StringComparer.Ordinal)).ToArray();
+}
 int failed = 0;
 foreach (var (name, run) in tests) try { await run(); Console.WriteLine("PASS " + name); }
 catch (Exception e) { failed++; Console.WriteLine("FAIL " + name + " " + e); }
@@ -167,7 +175,7 @@ static async Task Lifecycle() {
     var survivorRequest = f.Wrap("survivor", "survivor-object"); var survivor = (await f.Call(survivorRequest)).WrappedRegistration!;
     await f.CloseKey(target, targetRequest.WrapInput!.KeyUse); await f.CloseKey(survivor, survivorRequest.WrapInput!.KeyUse);
     await f.CloseKey(second, secondRequest.WrapInput!.KeyUse);
-    var manifest = f.Manifest([target, second]); await f.Call(manifest);
+    var manifest = f.Manifest([target, second]); await PublicLifecycleTests.AdmitManifest(f, manifest);
     var op = new WorkerOperation("select-successor", manifest.Envelope.OperationId, "select", "e1", "e2", "", "executor-process-1"); f.Qualify();
     await f.Worker.SelectSuccessorAsync("tenant", op, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(op)), op), default);
     var cycle = f.Store.State.Checkpoint.Cycle!;
@@ -241,6 +249,7 @@ static async Task Lifecycle() {
     var page = f.Request("read-original-page", page: new(header, 0, bytes.Length)); var actual = await f.Call(page);
     Check(actual.Page!.Data.AsSpan().SequenceEqual(bytes), "Original bytes/signature changed.");
     var changed = header with { OriginalSha256 = Fixture.Digest }; await Closed(() => f.Call(f.Request("read-original-page", page: new(changed, 0, bytes.Length))));
+    await PublicLifecycleTests.ManifestRecovery(f, manifest);
     var survivorPlain = await f.Native.ReadOuterKeyAsync(f.Store.State.Checkpoint.Registrations[survivor.OpaqueWrappedKeyReference], default);
     CryptographicOperations.ZeroMemory(survivorPlain); Check(f.Native.Encrypts == 4, "Wrong survivor-copy effect count.");
 }
@@ -360,15 +369,16 @@ sealed class Fixture : IDisposable {
     internal CustodyBindingRequestV1 Lookup(CustodyKeyRegistration registration) {
         var request = Request("lookup-original", registration); var e = request.Envelope;
         return request with { Envelope = e with { TenantId = registration.Identity.TenantId, OperationId = registration.OperationId,
-            ExpectedCustodyRevision = registration.ExpectedRevision,
-            Proof = e.Proof with { TenantId = registration.Identity.TenantId, ExpectedCustodyRevision = registration.ExpectedRevision } } };
+            Proof = e.Proof with { TenantId = registration.Identity.TenantId } } };
     }
     internal CustodyBindingRequestV1 Pin(CustodyKeyRegistration registration, bool release) { var l = new CustodyKeyLifecycleRequest(registration.Identity, "hold-" + ++sequence,
         release ? CustodyKeyLifecycleAction.Unpin : CustodyKeyLifecycleAction.Pin, Store.State.Head.Revision, "hold", "registered", 2, "decision");
         return Request(release ? "unpin" : "pin", registration, lifecycle: l); }
     internal CustodyBindingRequestV1 Manifest(CustodyKeyRegistration[] registrations) { var targets = registrations.Select(r => new ProtectionTarget("tenant", r.Identity.ObjectId, r.Identity.KeyAlias)).OrderBy(t => t.AgentInteractionId, StringComparer.Ordinal).ToArray();
         var capability = new DeletionBatchCapabilityV1("issuer", "audience", "tenant", "deletion", "seal", "kind", 0, "batch", DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key");
-        return Request("destroy-manifest", manifest: new(new(capability, "original-jws", 2, "dispatch", 3, targets), DeletionBatchCapabilityIdentity.CanonicalPayload(capability), "reservation")); }
+        var original = new DeletionBatchConsumptionRequest(capability, "original-jws", 2, "dispatch", 3, targets);
+        var request = Request("destroy-manifest", manifest: new(original, DeletionBatchCapabilityIdentity.CanonicalPayload(capability), "reservation"));
+        return request with { Envelope = request.Envelope with { OperationId = CustodyLifecycleClient.ManifestOperationId(original, "reservation") } }; }
 
     internal async Task CloseKey(CustodyKeyRegistration registration, CustodyBindingKeyUseV1 use) {
         string id = "key-" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(CustodyJson.DeliveryId(use)));
@@ -426,6 +436,10 @@ sealed class SdkBridge(Fixture fixture) : HttpMessageHandler {
     bool initialized;
     internal int Calls; internal bool CorruptSignature;
     internal bool LoseNextRecordAcknowledgement;
+    internal bool CorruptResultProof, CorruptPage, LoseNextPage, LoseNextKeyAcknowledgement;
+    internal CustodyBindingResponseV1? CapturedUnwrap;
+    internal bool ReplayCapturedUnwrap;
+    internal Action? AfterResponse;
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token) {
         Calls++; byte[] frame = await request.Content!.ReadAsByteArrayAsync(token); byte[] data = []; var metadata = new Dictionary<string, string>();
         using (var input = new CodedInputStream(frame, 5, frame.Length - 5)) { uint tag; while ((tag = input.ReadTag()) != 0) {
@@ -439,6 +453,16 @@ sealed class SdkBridge(Fixture fixture) : HttpMessageHandler {
         var componentResponse = await service.Invoke(invocation, new FixtureCallContext());
         var response = CustodyJson.Read<CustodyBindingResponseV1>(componentResponse.Data.Span);
         if (LoseNextRecordAcknowledgement && invocation.Operation == "record-transition") { LoseNextRecordAcknowledgement = false; throw new HttpRequestException("Controlled lost owner-record acknowledgement after service commit."); }
+        if (invocation.Operation == "unwrap")
+        {
+            if (ReplayCapturedUnwrap && CapturedUnwrap is not null) response = CustodyJson.Read<CustodyBindingResponseV1>(CustodyJson.Bytes(CapturedUnwrap));
+            else if (response.KeyDelivery is not null) CapturedUnwrap = CustodyJson.Read<CustodyBindingResponseV1>(CustodyJson.Bytes(response));
+        }
+        AfterResponse?.Invoke();
+        if (LoseNextKeyAcknowledgement && invocation.Operation == "unwrap") { LoseNextKeyAcknowledgement = false; throw new HttpRequestException("Lost actual key response."); }
+        if (LoseNextPage && invocation.Operation == "read-original-page") { LoseNextPage = false; throw new HttpRequestException("Lost original page."); }
+        if (CorruptResultProof && response.ResultProof is { } proof) response = response with { ResultProof = proof with { Signature = [1, 2, 3] } };
+        if (CorruptPage && response.Page is { } page) response = response with { Page = page with { Data = new byte[page.Length] } };
         if (CorruptSignature && response.Current is { } current) response = response with { Current = current with { Signature = [1, 2, 3] } };
         byte[] json = CustodyJson.Bytes(response); using var protobuf = new MemoryStream(); using (var coded = new CodedOutputStream(protobuf, true)) {
             coded.WriteTag(1, WireFormat.WireType.LengthDelimited); coded.WriteBytes(ByteString.CopyFrom(json)); }

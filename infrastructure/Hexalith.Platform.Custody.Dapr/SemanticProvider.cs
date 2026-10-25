@@ -194,6 +194,17 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, TransitionVerified: accepted,
             TransitionProof: proof with { Signature = Sign(CustodyJson.Bytes(proof)) });
     }
+    internal CustodyBindingResponseV1 AuthenticateResponse(CustodyBindingRequestV1 request, CustodyBindingResponseV1 response)
+    {
+        byte[] bytes = CustodyJson.Bytes(response with { ResultProof = null });
+        try
+        {
+            var proof = new CustodyBindingResultProofV1(request.Envelope.RequestAttemptId, request.Envelope.Challenge,
+                profile.Enrollment, CustodyJson.Hash(bytes), []);
+            return response with { ResultProof = proof with { Signature = Sign(CustodyJson.Bytes(proof)) } };
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
     internal static Checkpoint Clone(CurrentState current) => CustodyJson.Read<Checkpoint>(CustodyJson.Bytes(current.Checkpoint)) with {
         Revision = checked(current.Head.Revision + 1), PredecessorDigest = current.Head.Digest };
     private byte[] Sign(byte[] bytes) => responseSigner.SignData(bytes, HashAlgorithmName.SHA256, DSASignatureFormat.Rfc3279DerSequence);

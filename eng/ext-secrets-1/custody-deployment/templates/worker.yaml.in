@@ -1,0 +1,51 @@
+# One retained, independently signed original command. No automatic cadence or regenerated identity.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${EXACT_WORKER_JOB_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  suspend: true
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: ${SCOPED_WORKER_SERVICE_ACCOUNT}
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        runAsGroup: ${WORKER_GROUP_ID}
+        fsGroup: ${WORKER_GROUP_ID}
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: admitted-command
+          image: ${COMPONENT_IMAGE}
+          command: [/bin/sh, -c]
+          args: ["umask 007; ulimit -c 0; exec dotnet /app/Hexalith.Platform.Custody.Dapr.dll --worker /installed/profile.json /command/original.json"]
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: CUSTODY_REFERENCE_CREDENTIAL_FILE, value: /credentials/credentials}
+            - {name: CUSTODY_REFERENCE_CREDENTIAL_PROFILE, value: "${WORKER_CREDENTIAL_PROFILE}"}
+            - {name: AWS_EC2_METADATA_DISABLED, value: "true"}
+          volumeMounts:
+            - {name: installed-profile, mountPath: /installed, readOnly: true}
+            - {name: worker-command, mountPath: /command, readOnly: true}
+            - {name: worker-credentials, mountPath: /credentials, readOnly: true}
+            - {name: retained-output, mountPath: /retained}
+      volumes:
+        - name: installed-profile
+          secret: {secretName: "${ENROLLED_PROFILE_SECRET}"}
+        - name: worker-command
+          configMap: {name: "${EXACT_SIGNED_WORKER_PACKET_CONFIGMAP}"}
+        - name: worker-credentials
+          secret:
+            secretName: ${SCOPED_WORKER_CREDENTIAL_SECRET}
+            defaultMode: 0440
+            items: [{key: "${WORKER_CREDENTIAL_KEY}", path: credentials}]
+        - name: retained-output
+          persistentVolumeClaim: {claimName: "${IMMUTABLE_ORIGINAL_OUTPUT_CLAIM}"}

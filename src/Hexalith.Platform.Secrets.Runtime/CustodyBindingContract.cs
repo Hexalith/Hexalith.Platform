@@ -168,7 +168,7 @@ internal static class CustodyBindingContract
                 return e.Operation == "wrap" && r.Registration is null && r.Manifest is null && r.Transition is null && r.Page is null
                     && r.KeyUse is null && r.Lifecycle is null && input.Identity.TenantId == e.TenantId
                     && input.Identity.StoreTarget == e.Enrollment.StoreTarget && input.OperationId == e.OperationId
-                    && input.ExpectedRevision == e.ExpectedCustodyRevision && CustodyText(input.KekVersion)
+                    && input.ExpectedRevision >= 0 && CustodyText(input.KekVersion)
                     && CustodyText(input.OpaqueWrappedKeyReference) && input.RootKey is { Length: 32 }
                     && input.KeyUse is { } k && Text(k.KeyUseLeaseId) && Text(k.DeliveryAttemptId)
                     && Text(k.RecipientProcessIncarnation) && Text(k.TransportIncarnation)
@@ -203,12 +203,12 @@ internal static class CustodyBindingContract
                         || !CustodyText(registration.OpaqueWrappedKeyReference) || !CustodyText(registration.WrapReceiptId)) { return false; }
                     if (e.Operation is "wrap" || e.Operation == "lookup-original" && r.Lifecycle is null)
                     {
-                        if (e.OperationId != registration.OperationId || e.ExpectedCustodyRevision != registration.ExpectedRevision) { return false; }
+                        if (e.OperationId != registration.OperationId) { return false; }
                     }
                     if (e.Operation is "pin" or "unpin" || e.Operation == "lookup-original" && r.Lifecycle is not null)
                     {
                         return r.KeyUse is null && r.Lifecycle is { } l && l.Identity == registration.Identity && l.OperationId == e.OperationId
-                            && l.ExpectedRevision == e.ExpectedCustodyRevision && l.HoldId == p.HoldId && CustodyText(l.HoldId)
+                            && l.ExpectedRevision >= 0 && l.HoldId == p.HoldId && CustodyText(l.HoldId)
                             && CustodyText(l.OperationId) && CustodyText(l.FenceTokenId) && CustodyText(l.DecisionVersion)
                             && l.FenceTokenId == p.GuardReceiptId && l.FenceRevision == p.GuardRevision && l.DecisionVersion == p.DecisionVersion
                             && l.ProtectionReservationReceiptId is null

@@ -1,0 +1,2066 @@
+--- a/.gitignore
++++ b/.gitignore
+@@ -408,3 +408,6 @@
+ .bmad-loop/policy.toml
+ _bmad/render/
+ _bmad/config.user.toml
++
++# Retain the exact custody foundation evidence, including failed/intermediate runs.
++!docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/**/*.log
+--- a/docs/implementation/custody-lifecycle-foundation-2026-10-25/REFERENCE-PROFILE-INPUTS.md
++++ b/docs/implementation/custody-lifecycle-foundation-2026-10-25/REFERENCE-PROFILE-INPUTS.md
+@@ -9,3 +9,5 @@
+ [source-dispositions.json](source-dispositions.json) separately names missing owning-service implementations and the EventStore source/package/production integration, whose owner is the **EventStore Maintainer**. Interfaces, image names, environment variables and credential references do not close missing source. The current sibling source used by local conformance builds is not an accepted installed dependency target.
+ 
+ The deduplicated top-level [installation-input-ledger-reviewed.json](installation-input-ledger-reviewed.json) has one entry per input, combining multiple unmet conditions in its reason. Earlier ledgers remain intermediate evidence. The [prior semantic-provider gaps](../ext-secrets-1-semantic-provider-2026-10-22/final-installation-gaps.json) and [EventStore handback](../ext-secrets-1-semantic-provider-2026-10-22/EVENTSTORE-HANDBACK.md) remain historical evidence, unchanged; this companion does not relabel them as installed.
++
++The review adds the concrete registration and reserved-manifest locator implementations and retained mappings to the source dispositions/member list. Full registration identity maps to the exact original wrap operation, actor revision, KEK version, opaque root reference and receipt; exact protection reservation maps to its unchanged complete signed capability/request, guard dispatch facts and sorted vector. These are missing owning-source and scoped installation dependencies, not fabricated configuration. The current deduplicated ledger is [installation-input-ledger-after-review.json](installation-input-ledger-after-review.json). The [repair handback](REVIEW-REPAIRS.md) also records the explicit Kubernetes/credential inputs and the real runtime-image pin gate, which remains Blocked.
+--- a/docs/implementation/custody-lifecycle-foundation-2026-10-25/REVIEW-REPAIRS.md
++++ b/docs/implementation/custody-lifecycle-foundation-2026-10-25/REVIEW-REPAIRS.md
+@@ -0,0 +1,33 @@
++# Review repairs — targeted handback
++
++The review repairs are ready for parent verification. **Five selected component scenarios, 32 selected Runtime tests and 10 offline checks passed.** Both selected project builds completed with zero warnings/errors. The initial repair build failure remains retained. No broad suite, deployment, serving/worker operation, native experiment or image build ran in this repair pass.
++
++The previous verification/inventory files describe the pre-review snapshot. They remain unchanged. In particular, the earlier 41-file image-context result does **not** satisfy the repaired runtime-image gate: the real publish inventory lacks an actual reviewed runtime-image pin, and the new attempt is **Blocked**. Only isolated regression fixtures contain synthetic image pins. Parent-owned full verification and a separate final reviewed inventory follow this handback.
++
++| Review repair | Implemented behavior and targeted evidence |
++| --- | --- |
++| Actor revisions versus independent custody head | Original wrap/registration/lifecycle `ExpectedRevision` and bytes remain actor-owned. Fresh envelope/proof custody revision still drives native current-head/digest verification and whole-head CAS. No public wire field was added. The actual `CustodyKeyLifecycleActor` test registers two roots at owner revisions 0/1 while custody starts at 7 and advances independently, then pins, unpins and recovers immutable originals through the real SDK/service boundary. |
++| Supported NotPerformed cleanup | The production authority accepts NotPerformed only when exact authenticated retained lookup equals the supplied complete original outcome. The actor test first retains a genuinely pending fixture pin, then recovers a separately retained never-performed original, rejects a substituted receipt and proves the actor removes its pending pin. No absence/never-performed synthesis was added. |
++| Explicit caller cancellation and discarded keys | Public client, credential-bound authorizer, lifecycle provider and lifecycle-authority forwarders recheck caller cancellation after lower awaits/refusals and before result exposure. Discarded owned results are cleared. Runtime tests exercise interrupted false-returning owner forwarders, a refusing credential transport, a cancelling registration locator and discarded owned-key cleanup; component tests cancel after actual key response and prove retry releases no second key. |
++| One whole-operation deadline | One shared thirty-second budget spans authorizer preparation/signing, registration lookup, manifest locator, manifest call and all pages. Unresponsive locators use that token/remaining budget. Internal expiry returns Unknown; explicit caller cancellation throws with the original caller token. Virtual-clock component tests cross registration/locator/manifest and header/page boundaries and stop later I/O at the original deadline. |
++| Real signed-response replay | The SDK bridge captures a valid signed unwrap response and replays it on a retry with the same operation/delivery but a fresh attempt/challenge. Public authentication refuses its key and the native release count remains one. |
++| Manual daprd identity, host and discovery | Review templates explicitly project the scoped Sentry token, reference public trust and both API-channel token Secrets, configure namespace/trust domain/control-plane/Sentry/mTLS, and supply actual host port/protocol. An `appId-dapr` Service selects the owning workload and exposes only the pinned mTLS internal port 50002. Offline rendered tests assert token/trust/API/host/selector/port relationships. |
++| Worker output ownership | Configured worker group is both `runAsGroup` and `fsGroup`, with `OnRootMismatch`. The storage owner must establish actual PVC/CSI group ownership and a writable exclusively created retained output beneath `/retained`. That requirement is explicit installation input. |
++| Native credential consumption | Infrastructure explicitly loads the selected mounted file/profile and passes those credentials to all three native SDK clients. The accepted profile has only access/secret and optional session-token keys; ambient/default, role/process and metadata fallback are excluded. Component/worker templates map exact Secret keys to `/credentials/credentials`, select the profile and disable metadata. Targeted tests consume a fixture session profile and deny wrong/duplicate/metadata profiles without native calls. |
++| Duplicate JSON properties | Both preflight inputs and publish inventories reject duplicate keys recursively, including conflicting nested fields. Targeted offline regressions pass. |
++| Runtime image binding | The closed hash-bound inventory now contains exact `runtimeImage` plus complete `files`. The matching immutable runtime pin is required and is emitted literally in the prepared Dockerfile; there is no overridable runtime-image build argument. Mutable, interpolated or substituted pins are rejected. The real missing-pin attempt is retained as Blocked; earlier contexts remain pre-review evidence. |
++| Evidence retention | A narrowly scoped `.gitignore` exception retains existing and future custody verification logs, including intermediate failures. The offline check confirms custody logs are unignored and an unrelated log remains ignored. |
++| Concrete locator dependencies | `source-dispositions.json`, `reference-profile-inputs.json`, deployment inputs and the new deduplicated ledger explicitly name `ICustodyKeyRegistrationSource` and `ICustodyReservedManifestSource` implementations, installation owners and exact retained full-identity/reservation mappings. EventStore owns the complete reserved-manifest original mapping; Platform custody owns the registration locator. |
++
++## Retained targeted results
++
++- `verification/review-repairs/component-build-1.log`: retained initial compile failure.
++- `verification/review-repairs/component-build-2.log`, `component-build-3.log`: successful component test-project builds.
++- `verification/review-repairs/component-targeted-tests-2.log`: five selected scenarios, zero failures: public lifecycle; actual actor/diverged revisions/NotPerformed; cancellation/shared deadline; explicit native credential selection; two-target original recovery.
++- `verification/review-repairs/runtime-build-1.log`: successful Runtime test-project build.
++- `verification/review-repairs/runtime-targeted-tests-1.log`: 32 tests from `CustodyBindingContractTests`, `CustodyLifecyclePublicContractTests` and `CustodyLifecycleCancellationTests`; zero errors/failures/skips/unrun.
++- `verification/review-repairs/offline-tests-3.log`: ten tests covering changed preflight/image preparation/rendered wiring/log-retention files, all passed.
++- `verification/review-repairs/real-image-context-missing-runtime-pin.log`: expected Blocked result, imageBuilt=false.
++- `verification/review-repairs/preflight-after-review.log` and `installation-input-ledger-after-review.json`: expected Blocked result, 68 unique missing inputs with owners/actions.
++
++Builds selected the current sibling EventStore source graph explicitly and used external artifact directories `/tmp/custody-lifecycle-review-repairs-20261025a` and `/tmp/custody-lifecycle-review-runtime-20261025a`. Only the named component scenarios and Runtime classes ran. Source-reference package-lock drift was restored to current committed bytes. Concurrent unrelated work was preserved.
+--- a/docs/implementation/custody-lifecycle-foundation-2026-10-25/installation-input-ledger-after-review.json
++++ b/docs/implementation/custody-lifecycle-foundation-2026-10-25/installation-input-ledger-after-review.json
+@@ -0,0 +1,418 @@
++{
++  "status": "Blocked",
++  "installedProvider": false,
++  "physicalQualification": false,
++  "dependencyAvailable": false,
++  "runnableInstallationGenerated": false,
++  "inputSha256": "4b92b2d1d38aeac1cf1efc8f2b2fbdc76526e72d93e5549efdbc62a0db723af7",
++  "missing": [
++    {
++      "input": "images.component",
++      "reason": "not installed or supplied",
++      "owner": "Platform release owner",
++      "action": "Build and pin the reviewed artifact by immutable image digest"
++    },
++    {
++      "input": "images.custodyApplication",
++      "reason": "not installed or supplied",
++      "owner": "Platform release owner",
++      "action": "Build and pin the reviewed artifact by immutable image digest"
++    },
++    {
++      "input": "images.dapr",
++      "reason": "not installed or supplied",
++      "owner": "Platform release owner",
++      "action": "Build and pin the reviewed artifact by immutable image digest"
++    },
++    {
++      "input": "images.dotnetSdk",
++      "reason": "not installed or supplied",
++      "owner": "Platform release owner",
++      "action": "Build and pin the reviewed artifact by immutable image digest"
++    },
++    {
++      "input": "images.dotnetAspnet",
++      "reason": "not installed or supplied",
++      "owner": "Platform release owner",
++      "action": "Build and pin the reviewed artifact by immutable image digest"
++    },
++    {
++      "input": "artifacts.custodyApplicationComposition",
++      "reason": "not installed or supplied",
++      "owner": "Platform host composition owner",
++      "action": "Integrate the public adapters into the owning authenticated custody application; no production DI is activated here"
++    },
++    {
++      "input": "artifacts.componentProfile",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.enrollment",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.componentVerifier",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.transportProfile",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.holderClosureProfile",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.capacityMeasurement",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.independentPlacement",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.authorityEnrollment",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.originalArchiveEnrollment",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.privateAuthorizerImplementation",
++      "reason": "not installed or supplied",
++      "owner": "Independent private-authority service maintainer",
++      "action": "Implement authenticated exact-intent/current-permission authorization; install separately after source review"
++    },
++    {
++      "input": "artifacts.controlIssuerImplementation",
++      "reason": "not installed or supplied",
++      "owner": "Governance/guard and protection-owner maintainers",
++      "action": "Implement durable hold/dispatch/reservation handoff and original lookup; install separately after source review"
++    },
++    {
++      "input": "artifacts.independentObserverImplementation",
++      "reason": "not installed or supplied",
++      "owner": "Independent infrastructure/security observer",
++      "action": "Implement native evidence, copy/buffer/termination and survivor-recovery verification; install separately after source review"
++    },
++    {
++      "input": "artifacts.eventStoreIntegration",
++      "reason": "not installed or supplied",
++      "owner": "EventStore Maintainer",
++      "action": "Complete owning-source adapter/owner-state integration and return an exact published source/package target"
++    },
++    {
++      "input": "artifacts.physicalQualification",
++      "reason": "not installed or supplied",
++      "owner": "Platform infrastructure owner",
++      "action": "Supply retained exact artifact bytes, owner implementation and accepted profile pin"
++    },
++    {
++      "input": "artifacts.g1Evidence",
++      "reason": "not installed or supplied",
++      "owner": "Protection owner and independent erasure observer",
++      "action": "Return retained accepted physical non-revival/shared-cut proof; the OpenBao negative control remains unqualified"
++    },
++    {
++      "input": "artifacts.registrationOriginalLocatorImplementation",
++      "reason": "not installed or supplied",
++      "owner": "Platform custody application maintainer",
++      "action": "Implement and install ICustodyKeyRegistrationSource under its exact scoped original lookup binding"
++    },
++    {
++      "input": "artifacts.reservedManifestOriginalLocatorImplementation",
++      "reason": "not installed or supplied",
++      "owner": "EventStore Maintainer with Platform custody host integration owner",
++      "action": "Implement and install ICustodyReservedManifestSource with restricted authenticated protection-original lookup"
++    },
++    {
++      "input": "artifacts.registrationOriginalMapping",
++      "reason": "not installed or supplied",
++      "owner": "Platform custody application maintainer",
++      "action": "Retain full key identity to exact original registration/actor revision/KEK/opaque root/wrap receipt mappings, verified independently before authority use"
++    },
++    {
++      "input": "artifacts.reservedManifestOriginalMapping",
++      "reason": "not installed or supplied",
++      "owner": "EventStore Maintainer",
++      "action": "Retain exact ConsumptionReserved receipt to complete immutable signed request, issued/dispatch guard facts and sorted manifest vector"
++    },
++    {
++      "input": "credentialReferences.component",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.worker",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.privateAuthorizer",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.controlIssuer",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.independentObserver",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.recoveryAdministrator",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "credentialReferences.recoveryDeputy",
++      "reason": "not installed or supplied",
++      "owner": "Security installation owner",
++      "action": "Install the least-privilege opaque credential reference; never put credential values in this ledger"
++    },
++    {
++      "input": "placement.applicationRecoveryClass",
++      "reason": "not installed or supplied",
++      "owner": "Recovery administrator and deputy",
++      "action": "Enroll independent failure/recovery placement outside application backups"
++    },
++    {
++      "input": "placement.authorityRecoveryClass",
++      "reason": "not installed or supplied",
++      "owner": "Recovery administrator and deputy",
++      "action": "Enroll independent failure/recovery placement outside application backups"
++    },
++    {
++      "input": "placement.originalRecoveryClass",
++      "reason": "not installed or supplied",
++      "owner": "Recovery administrator and deputy",
++      "action": "Enroll independent failure/recovery placement outside application backups"
++    },
++    {
++      "input": "placement.authorityFailureDomain",
++      "reason": "not installed or supplied; authority must survive the entire application restore/failure cut",
++      "owner": "Recovery administrator and deputy",
++      "action": "Enroll independent failure/recovery placement outside application backups"
++    },
++    {
++      "input": "placement.applicationFailureDomain",
++      "reason": "not installed or supplied",
++      "owner": "Recovery administrator and deputy",
++      "action": "Enroll independent failure/recovery placement outside application backups"
++    },
++    {
++      "input": "logicalRoles.interaction-custody",
++      "reason": "not installed or supplied",
++      "owner": "Platform composition owner",
++      "action": "Bind the logical role to its authenticated installed Dapr service/component"
++    },
++    {
++      "input": "logicalRoles.custody-authorizer",
++      "reason": "not installed or supplied",
++      "owner": "Platform composition owner",
++      "action": "Bind the logical role to its authenticated installed Dapr service/component"
++    },
++    {
++      "input": "kubernetes.appPort",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.appProtocol",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.controlPlaneAddress",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.controlPlaneNamespace",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.controlPlaneTrustDomain",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.sentryAddress",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.sentryTokenAudience",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.sentryTokenExpirationSeconds",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.trustAnchorSecret",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.trustAnchorKey",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.apiTokenSecret",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.apiTokenKey",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.appApiTokenSecret",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.appApiTokenKey",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.workerGroupId",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.workerOutputOwnershipEvidence",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "kubernetes.internalGrpcPort",
++      "reason": "not installed or supplied",
++      "owner": "Platform Kubernetes identity/host owner",
++      "action": "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"
++    },
++    {
++      "input": "referenceCredentials.componentSecret",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.componentKey",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.componentProfile",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.workerSecret",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.workerKey",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.workerProfile",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "referenceCredentials.mountedFile",
++      "reason": "not installed or supplied",
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"
++    },
++    {
++      "input": "profiles.kubernetesNativeSidecars",
++      "reason": "not installed or supplied; exact supported installed profile required",
++      "owner": "Independent transport/closure observer",
++      "action": "Measure and attest the complete installed transport, buffer and host profile"
++    },
++    {
++      "input": "profiles.swapDisabled",
++      "reason": "not installed or supplied; exact supported installed profile required",
++      "owner": "Independent transport/closure observer",
++      "action": "Measure and attest the complete installed transport, buffer and host profile"
++    },
++    {
++      "input": "profiles.coreDumpsDisabled",
++      "reason": "not installed or supplied; exact supported installed profile required",
++      "owner": "Independent transport/closure observer",
++      "action": "Measure and attest the complete installed transport, buffer and host profile"
++    },
++    {
++      "input": "profiles.memoryCaptureDisabled",
++      "reason": "not installed or supplied; exact supported installed profile required",
++      "owner": "Independent transport/closure observer",
++      "action": "Measure and attest the complete installed transport, buffer and host profile"
++    },
++    {
++      "input": "g1Qualified",
++      "reason": "physical G1 proof absent; ObservedRevival remains unqualified",
++      "owner": "Platform and protection owners",
++      "action": "Return independently accepted installation/proof"
++    }
++  ]
++}
+--- a/docs/implementation/custody-lifecycle-foundation-2026-10-25/reference-profile-inputs.json
++++ b/docs/implementation/custody-lifecycle-foundation-2026-10-25/reference-profile-inputs.json
+@@ -870,6 +870,69 @@
+       "value": null,
+       "owner": "Protection owner and independent infrastructure/security observer",
+       "action": "Supply retained actual physical shared-cut/non-revival evidence under separate authorization; scheduled deletion, tombstones, wrappers and local doubles remain insufficient"
++    },
++    {
++      "input": "ICustodyKeyRegistrationSource.ImplementationAndScopedLookupBinding",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform custody application maintainer",
++      "action": "Implement and install the locator; an interface, actor snapshot or connection reference alone does not supply owning source."
++    },
++    {
++      "input": "ICustodyKeyRegistrationSource.CompleteIdentityToRetainedRegistration",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform custody application maintainer",
++      "action": "Retain exact full identity -> original wrap operation/actor ExpectedRevision/KEK version/opaque root reference/wrap receipt, with restore-safe retention and independent original verification."
++    },
++    {
++      "input": "ICustodyReservedManifestSource.ImplementationAndAuthenticatedOriginalLookup",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "EventStore Maintainer with Platform custody host integration owner",
++      "action": "Implement and install exact protection-reservation original lookup under a non-general scoped credential; never regenerate the original after uncertainty."
++    },
++    {
++      "input": "ICustodyReservedManifestSource.ProtectionReservationToCompleteOriginal",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "EventStore Maintainer",
++      "action": "Retain exact ConsumptionReserved receipt -> full signed capability, JWS/canonical bytes, issued/dispatch guard facts and complete sorted target vector, with immutable identity and original-only recovery."
++    },
++    {
++      "input": "Kubernetes.DaprWorkloadIdentityAndControlPlane",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform Kubernetes identity owner",
++      "action": "Supply scoped service-account name, projected Sentry audience/lifetime/token file, trust-anchor secret/key, control-plane/Sentry addresses, namespace/trust domain and matching mTLS identity. API tokens are secret/key references only."
++    },
++    {
++      "input": "Kubernetes.CustodyHostAppPortProtocolAndDiscovery",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform custody host composition owner",
++      "action": "Supply actual receiving-host port/protocol and app ID; wire the appId-dapr selector and pinned internal mTLS gRPC port 50002. Host must enforce APP_API_TOKEN; local HTTP/API ports remain unexposed."
++    },
++    {
++      "input": "Kubernetes.WorkerRetainedOutputGroupOwnership",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform storage owner and recovery administrator",
++      "action": "Supply worker group ID and storage-driver fsGroup ownership evidence; signed prepare-original output must use an exact writable retained path beneath /retained, with no original overwrite."
++    },
++    {
++      "input": "ReferenceBackend.ConsumedCredentialFileKeyAndProfile",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Infrastructure reference-backend credential owner",
++      "action": "Install exact component/worker secret names and keys, each scoped shared-credential profile, mounted at /credentials/credentials. Explicit infrastructure credentials exclude metadata/default-chain fallback; retain no credential values in evidence."
++    },
++    {
++      "input": "ImageContext.ReviewedRuntimeImageDigest",
++      "status": "MissingSourceOrInstallationInput",
++      "value": null,
++      "owner": "Platform release owner",
++      "action": "Supply and review the actual immutable ASP.NET runtime image digest in the hash-bound publish inventory. The real 41-file context is now Blocked until that pin exists; synthetic pins are regression fixtures only."
+     }
+   ]
+ }
+--- a/docs/implementation/custody-lifecycle-foundation-2026-10-25/source-dispositions.json
++++ b/docs/implementation/custody-lifecycle-foundation-2026-10-25/source-dispositions.json
+@@ -44,6 +44,18 @@
+       "status": "OpenPolicyAndUnqualifiedClosureUnchanged",
+       "owner": "Product/Governance/Security and export store owner",
+       "action": "Retain Open export disposition and separately accepted all-copy obligations; an export-affected B5 remains blocked. No policy or date was changed."
++    },
++    {
++      "id": "complete-key-registration-original-locator",
++      "status": "MissingOwningSourceImplementationAndInstallation",
++      "owner": "Platform custody application maintainer",
++      "action": "Implement ICustodyKeyRegistrationSource.FindAsync for the complete tenant/object/purpose/alias/key/lifecycle/store/contract identity. Retain the exact original CustodyKeyRegistration (wrap operation, actor ExpectedRevision, original KEK version, opaque wrapped-key reference and wrap receipt). The locator is a durable hint only: every use must still authenticate the independent custody original. Install its scoped store/Dapr lookup binding and preserve mappings across restore without root reallocation."
++    },
++    {
++      "id": "reserved-complete-manifest-original-locator",
++      "status": "MissingOwningSourceImplementationAndInstallation",
++      "owner": "EventStore Maintainer with Platform custody host integration owner",
++      "action": "Implement ICustodyReservedManifestSource.FindAsync from the exact protection ConsumptionReserved receipt to its retained immutable complete DeletionBatchConsumptionRequest: capability/JWS/canonical identity, issued guard revision, dispatch receipt/revision and full sorted target vector. Exact duplicate/loss/restore uses that original; no singleton derivation, batch-only alias, newly signed request or reconstructed manifest. Install authenticated restricted original lookup and wire it into the custody lifecycle provider."
+     }
+   ]
+ }
+--- a/eng/ext-secrets-1/custody-deployment/Dockerfile
++++ b/eng/ext-secrets-1/custody-deployment/Dockerfile
+@@ -1,6 +1,5 @@
+ # Build context is produced offline by prepare-image.py from exact reviewed publish-output hashes.
+-ARG DOTNET_ASPNET_IMAGE
+-FROM ${DOTNET_ASPNET_IMAGE}
++FROM @@REVIEWED_RUNTIME_IMAGE@@
+ WORKDIR /app
+ COPY reviewed-publish/ ./
+ USER 1654:2001
+--- a/eng/ext-secrets-1/custody-deployment/README.md
++++ b/eng/ext-secrets-1/custody-deployment/README.md
+@@ -29,3 +29,13 @@
+ The output binding is local to a daprd instance. The owning custody application, daprd and pluggable component must share this pod (or an equivalently qualified private socket boundary); applications cannot address a remote output binding by its logical name. The workload explicitly requires a separately reviewed `CUSTODY_APPLICATION_IMAGE` and its source composition. A remote EventStore/Platform caller reaches that owning custody application's authenticated Dapr service API; the app then invokes its own local `interaction-custody` binding. The authenticated authorizer is a separate service reached by scoped credential-bound Dapr invocation. No receiving API host/production DI is activated by these library adapters or templates. Missing host integration is source work, not a ConfigMap value. The daprd Kubernetes workload identity/mTLS, trust domain, invocation ACL, API token/access isolation and exact sidecar identity are installation prerequisites. A generic sidecar alone supplies neither private-operation authorization nor holder closure.
+ 
+ The component socket must be `/var/run/custody/private/hexalithcustody.sock`: the socket stem registers `bindings.hexalithcustody`. The native sidecar init container waits for that protected UDS before daprd discovery; require the cluster's corresponding native-sidecar support. See the [Dapr pluggable registration contract](https://v1-18.docs.dapr.io/operations/components/pluggable-components-registration/). Its current registration guidance confirms the same-pod/shared-UDS boundary; exact pinned runtime behavior still requires installed transport qualification.
++
++## Review repair requirements
++
++Image preparation now requires a closed inventory `{ "runtimeImage": "<reviewed-registry/image>@sha256:<actual-digest>", "files": { "<every-relative-publish-file>": "<sha256>" } }`, its exact inventory SHA-256 and the matching `--runtime-image` argument. The preparer emits that literal immutable `FROM` into a recipe with no runtime-image `ARG`; mutable references, interpolation, duplicate JSON properties or a substituted image are rejected. The previous 41-file publish inventory contains no reviewed runtime-image pin. Its post-review context is therefore **Blocked** until the Platform release owner supplies one. Earlier context output is retained as pre-review evidence; synthetic registry pins occur only in regression fixtures and grant no installed/accepted artifact status.
++
++The manually configured daprd now needs explicit Sentry/control-plane addresses, namespace/trust domain, a scoped projected service-account token with its accepted Sentry audience/lifetime, public trust-anchor secret/key references, and matching Dapr/API and app-channel token secret/key references. Automount remains disabled; only daprd mounts the explicit identity token. The receiving host's actual port/protocol are explicit, and its owning source must enforce `APP_API_TOKEN`. The `appId-dapr` Service selects the custody workload and exposes only the pinned internal mTLS gRPC port 50002; HTTP and local API ports stay on loopback and are not exposed by that Service. Cluster identity/RBAC/network policy and actual trust acceptance remain installation prerequisites. The wiring follows the pinned [Dapr 1.18.1 flags](https://github.com/dapr/dapr/blob/v1.18.1/cmd/daprd/options/options.go), [security/token variables](https://github.com/dapr/dapr/blob/v1.18.1/pkg/security/consts/consts.go) and [Kubernetes resolver naming](https://github.com/dapr/components-contrib/blob/v1.18.1/nameresolution/kubernetes/kubernetes.go).
++
++For the uninstalled reference backend, the component and worker each require a separately scoped mounted credential Secret/key and exact shared-credential profile. The selected secret item is mounted as `/credentials/credentials`; `CUSTODY_REFERENCE_CREDENTIAL_FILE` and `CUSTODY_REFERENCE_CREDENTIAL_PROFILE` are consumed explicitly by infrastructure. Only one selected profile with access/secret keys and an optional session token is accepted; role/process/metadata profile sources and the SDK default credential chain are excluded. `AWS_EC2_METADATA_DISABLED=true` is also required. No credential value belongs in an input ledger or evidence.
++
++The worker sets its configured group as both `runAsGroup` and `fsGroup`, with `OnRootMismatch` ownership handling. The storage owner must verify the actual CSI/PVC supports that ownership and that the exact retained output path beneath `/retained` is writable before authorization. `prepare-original` must exclusively create its original output there; a root-owned unwritable path, ephemeral output or overwritten original is not a supported preparation result.
+--- a/eng/ext-secrets-1/custody-deployment/inputs.uninstalled.json
++++ b/eng/ext-secrets-1/custody-deployment/inputs.uninstalled.json
+@@ -1,11 +1,93 @@
+ {
+   "protocol": "custody-lifecycle-v1",
+-  "images": {"component": null, "custodyApplication": null, "dapr": null, "dotnetSdk": null, "dotnetAspnet": null},
+-  "artifacts": {"custodyApplicationComposition": null, "componentProfile": null, "enrollment": null, "componentVerifier": null, "transportProfile": null, "holderClosureProfile": null, "capacityMeasurement": null, "independentPlacement": null, "authorityEnrollment": null, "originalArchiveEnrollment": null, "privateAuthorizerImplementation": null, "controlIssuerImplementation": null, "independentObserverImplementation": null, "eventStoreIntegration": null, "physicalQualification": null, "g1Evidence": null},
+-  "credentialReferences": {"component": null, "worker": null, "privateAuthorizer": null, "controlIssuer": null, "independentObserver": null, "recoveryAdministrator": null, "recoveryDeputy": null},
+-  "placement": {"applicationRecoveryClass": null, "authorityRecoveryClass": null, "originalRecoveryClass": null, "authorityFailureDomain": null, "applicationFailureDomain": null},
+-  "logicalRoles": {"interaction-custody": null, "custody-authorizer": null},
+-  "profiles": {"transport": "custody-lifecycle-v1", "maximumRequestMessageBytes": 134217728, "maximumResponseFrameBytes": 1048575, "automaticRetries": 0, "redirects": false, "kubernetesNativeSidecars": null, "swapDisabled": null, "coreDumpsDisabled": null, "memoryCaptureDisabled": null},
++  "images": {
++    "component": null,
++    "custodyApplication": null,
++    "dapr": null,
++    "dotnetSdk": null,
++    "dotnetAspnet": null
++  },
++  "artifacts": {
++    "custodyApplicationComposition": null,
++    "componentProfile": null,
++    "enrollment": null,
++    "componentVerifier": null,
++    "transportProfile": null,
++    "holderClosureProfile": null,
++    "capacityMeasurement": null,
++    "independentPlacement": null,
++    "authorityEnrollment": null,
++    "originalArchiveEnrollment": null,
++    "privateAuthorizerImplementation": null,
++    "controlIssuerImplementation": null,
++    "independentObserverImplementation": null,
++    "eventStoreIntegration": null,
++    "physicalQualification": null,
++    "g1Evidence": null,
++    "registrationOriginalLocatorImplementation": null,
++    "reservedManifestOriginalLocatorImplementation": null,
++    "registrationOriginalMapping": null,
++    "reservedManifestOriginalMapping": null
++  },
++  "credentialReferences": {
++    "component": null,
++    "worker": null,
++    "privateAuthorizer": null,
++    "controlIssuer": null,
++    "independentObserver": null,
++    "recoveryAdministrator": null,
++    "recoveryDeputy": null
++  },
++  "placement": {
++    "applicationRecoveryClass": null,
++    "authorityRecoveryClass": null,
++    "originalRecoveryClass": null,
++    "authorityFailureDomain": null,
++    "applicationFailureDomain": null
++  },
++  "logicalRoles": {
++    "interaction-custody": null,
++    "custody-authorizer": null
++  },
++  "profiles": {
++    "transport": "custody-lifecycle-v1",
++    "maximumRequestMessageBytes": 134217728,
++    "maximumResponseFrameBytes": 1048575,
++    "automaticRetries": 0,
++    "redirects": false,
++    "kubernetesNativeSidecars": null,
++    "swapDisabled": null,
++    "coreDumpsDisabled": null,
++    "memoryCaptureDisabled": null
++  },
+   "sourceStatus": "reference-component-uninstalled",
+-  "g1Qualified": false
++  "g1Qualified": false,
++  "kubernetes": {
++    "appPort": null,
++    "appProtocol": null,
++    "controlPlaneAddress": null,
++    "controlPlaneNamespace": null,
++    "controlPlaneTrustDomain": null,
++    "sentryAddress": null,
++    "sentryTokenAudience": null,
++    "sentryTokenExpirationSeconds": null,
++    "trustAnchorSecret": null,
++    "trustAnchorKey": null,
++    "apiTokenSecret": null,
++    "apiTokenKey": null,
++    "appApiTokenSecret": null,
++    "appApiTokenKey": null,
++    "workerGroupId": null,
++    "workerOutputOwnershipEvidence": null,
++    "internalGrpcPort": null
++  },
++  "referenceCredentials": {
++    "componentSecret": null,
++    "componentKey": null,
++    "componentProfile": null,
++    "workerSecret": null,
++    "workerKey": null,
++    "workerProfile": null,
++    "mountedFile": null
++  }
+ }
+--- a/eng/ext-secrets-1/custody-deployment/preflight.py
++++ b/eng/ext-secrets-1/custody-deployment/preflight.py
+@@ -6,27 +6,41 @@
+ import re
+ from pathlib import Path
+ 
++def strict_json(text):
++    def unique(pairs):
++        result = {}
++        for key, value in pairs:
++            if key in result: raise ValueError("conflicting duplicate JSON property")
++            result[key] = value
++        return result
++    return json.loads(text, object_pairs_hook=unique)
++
++
+ OWNERS = {
+     "images": ("Platform release owner", "Build and pin the reviewed artifact by immutable image digest"),
+     "artifacts": ("Platform infrastructure owner", "Supply retained exact artifact bytes, owner implementation and accepted profile pin"),
+     "credentialReferences": ("Security installation owner", "Install the least-privilege opaque credential reference; never put credential values in this ledger"),
+     "placement": ("Recovery administrator and deputy", "Enroll independent failure/recovery placement outside application backups"),
+     "logicalRoles": ("Platform composition owner", "Bind the logical role to its authenticated installed Dapr service/component"),
++    "kubernetes": ("Platform Kubernetes identity/host owner", "Install exact Dapr workload token/trust/control-plane/API-channel and receiving-host inputs; retain owner/volume proof"),
++    "referenceCredentials": ("Infrastructure reference-backend credential owner", "Install the exact secret/key and shared-credential profile at the declared protected file; no metadata/default-chain fallback"),
+     "profiles": ("Independent transport/closure observer", "Measure and attest the complete installed transport, buffer and host profile"),
+ }
+ 
+ REQUIRED = {
+     "images": {"component", "custodyApplication", "dapr", "dotnetSdk", "dotnetAspnet"},
+-    "artifacts": {"custodyApplicationComposition", "componentProfile", "enrollment", "componentVerifier", "transportProfile", "holderClosureProfile", "capacityMeasurement", "independentPlacement", "authorityEnrollment", "originalArchiveEnrollment", "privateAuthorizerImplementation", "controlIssuerImplementation", "independentObserverImplementation", "eventStoreIntegration", "physicalQualification", "g1Evidence"},
++    "artifacts": {"custodyApplicationComposition", "componentProfile", "enrollment", "componentVerifier", "transportProfile", "holderClosureProfile", "capacityMeasurement", "independentPlacement", "authorityEnrollment", "originalArchiveEnrollment", "privateAuthorizerImplementation", "controlIssuerImplementation", "independentObserverImplementation", "eventStoreIntegration", "physicalQualification", "g1Evidence", "registrationOriginalLocatorImplementation", "reservedManifestOriginalLocatorImplementation", "registrationOriginalMapping", "reservedManifestOriginalMapping"},
+     "credentialReferences": {"component", "worker", "privateAuthorizer", "controlIssuer", "independentObserver", "recoveryAdministrator", "recoveryDeputy"},
+     "placement": {"applicationRecoveryClass", "authorityRecoveryClass", "originalRecoveryClass", "authorityFailureDomain", "applicationFailureDomain"},
+     "logicalRoles": {"interaction-custody", "custody-authorizer"},
++    "kubernetes": {"appPort", "appProtocol", "internalGrpcPort", "controlPlaneAddress", "controlPlaneNamespace", "controlPlaneTrustDomain", "sentryAddress", "sentryTokenAudience", "sentryTokenExpirationSeconds", "trustAnchorSecret", "trustAnchorKey", "apiTokenSecret", "apiTokenKey", "appApiTokenSecret", "appApiTokenKey", "workerGroupId", "workerOutputOwnershipEvidence"},
++    "referenceCredentials": {"componentSecret", "componentKey", "componentProfile", "workerSecret", "workerKey", "workerProfile", "mountedFile"},
+     "profiles": {"transport", "maximumRequestMessageBytes", "maximumResponseFrameBytes", "automaticRetries", "redirects", "kubernetesNativeSidecars", "swapDisabled", "coreDumpsDisabled", "memoryCaptureDisabled"},
+ }
+ 
+ 
+ def inspect(path):
+-    data = json.loads(Path(path).read_text())
++    data = strict_json(Path(path).read_text())
+     if not isinstance(data, dict): raise ValueError("object required")
+     missing = []
+     gaps = {}
+@@ -38,6 +52,10 @@
+             "artifacts.controlIssuerImplementation": ("Governance/guard and protection-owner maintainers", "Implement durable hold/dispatch/reservation handoff and original lookup; install separately after source review"),
+             "artifacts.independentObserverImplementation": ("Independent infrastructure/security observer", "Implement native evidence, copy/buffer/termination and survivor-recovery verification; install separately after source review"),
+             "artifacts.custodyApplicationComposition": ("Platform host composition owner", "Integrate the public adapters into the owning authenticated custody application; no production DI is activated here"),
++            "artifacts.registrationOriginalLocatorImplementation": ("Platform custody application maintainer", "Implement and install ICustodyKeyRegistrationSource under its exact scoped original lookup binding"),
++            "artifacts.registrationOriginalMapping": ("Platform custody application maintainer", "Retain full key identity to exact original registration/actor revision/KEK/opaque root/wrap receipt mappings, verified independently before authority use"),
++            "artifacts.reservedManifestOriginalLocatorImplementation": ("EventStore Maintainer with Platform custody host integration owner", "Implement and install ICustodyReservedManifestSource with restricted authenticated protection-original lookup"),
++            "artifacts.reservedManifestOriginalMapping": ("EventStore Maintainer", "Retain exact ConsumptionReserved receipt to complete immutable signed request, issued/dispatch guard facts and sorted manifest vector"),
+             "artifacts.g1Evidence": ("Protection owner and independent erasure observer", "Return retained accepted physical non-revival/shared-cut proof; the OpenBao negative control remains unqualified"),
+         }
+         owner, action = specific.get(field, (owner, action))
+@@ -62,7 +80,16 @@
+             field = section + '.' + key
+             if value is None or value == "": gap(field, "not installed or supplied"); continue
+             if section in {"placement", "logicalRoles"} and (not isinstance(value, str) or not value.strip()): gap(field, "nonempty opaque identifier required")
+-            if section == "images" and (not isinstance(value, str) or not re.fullmatch(r"[^\s]+@sha256:[a-f0-9]{64}", value)):
++            if section == "kubernetes":
++                if key in {"appPort", "internalGrpcPort", "workerGroupId", "sentryTokenExpirationSeconds"}:
++                    minimum, maximum = (1, 65535) if key in {"appPort", "internalGrpcPort"} else (1, 2147483647) if key == "workerGroupId" else (600, 2147483647)
++                    if type(value) is not int or not minimum <= value <= maximum: gap(field, "valid explicit numeric workload input required")
++                elif not isinstance(value, str) or not value.strip(): gap(field, "explicit workload identity/host reference required")
++                elif key == "appProtocol" and value not in {"http", "https", "grpc", "grpcs", "h2c"}: gap(field, "supported exact Dapr app protocol required")
++            if section == "kubernetes" and key == "internalGrpcPort" and value != 50002: gap(field, "pinned Kubernetes resolver/internal invocation port 50002 required")
++            if section == "referenceCredentials" and (not isinstance(value, str) or not value.strip()): gap(field, "exact credential file/key/profile reference required")
++            if section == "referenceCredentials" and key == "mountedFile" and value != "/credentials/credentials": gap(field, "exact consumed protected credential mount required")
++            if section == "images" and (not isinstance(value, str) or not re.fullmatch(r"[a-z0-9][a-z0-9./:_-]*@sha256:[a-f0-9]{64}", value)):
+                 gap(field, "immutable digest-pinned image required")
+             if section == "credentialReferences" and (not isinstance(value, str) or not value.startswith(("file:/", "secretref:", "workloadref:"))):
+                 gap(field, "scoped opaque credential reference required")
+--- a/eng/ext-secrets-1/custody-deployment/prepare-image.py
++++ b/eng/ext-secrets-1/custody-deployment/prepare-image.py
+@@ -5,12 +5,28 @@
+ import json
+ from pathlib import Path
+ import shutil
++import re
++
++def strict_json(text):
++    def unique(pairs):
++        result = {}
++        for key, value in pairs:
++            if key in result: raise ValueError("conflicting duplicate JSON property")
++            result[key] = value
++        return result
++    return json.loads(text, object_pairs_hook=unique)
+ 
+ 
+-def prepare(publish, inventory, expected, output):
++
++def prepare(publish, inventory, expected, output, runtime_image=None):
+     raw = inventory.read_bytes()
+     if hashlib.sha256(raw).hexdigest() != expected: raise ValueError('publish inventory digest mismatch')
+-    entries = json.loads(raw)
++    packet = strict_json(raw)
++    if not isinstance(runtime_image, str) or not re.fullmatch(r"[a-z0-9][a-z0-9./:_-]*@sha256:[a-f0-9]{64}", runtime_image):
++        raise ValueError('reviewed digest-pinned runtime image input missing or invalid')
++    if not isinstance(packet, dict) or set(packet) != {'runtimeImage', 'files'} or packet['runtimeImage'] != runtime_image:
++        raise ValueError('runtime image differs from the reviewed hash-bound inventory')
++    entries = packet['files']
+     if not isinstance(entries, dict) or not entries: raise ValueError('nonempty publish inventory required')
+     files = {str(path.relative_to(publish)): path for path in publish.rglob('*') if path.is_file()}
+     if files.keys() != entries.keys() or 'Hexalith.Platform.Custody.Dapr.dll' not in files:
+@@ -21,14 +37,17 @@
+         if source.suffix not in {'.dll', '.json', '.pdb', '.so', '.xml'} and source.name not in {'Hexalith.Platform.Custody.Dapr', 'web.config'}:
+             raise ValueError('unrecognized publish asset')
+         if hashlib.sha256(source.read_bytes()).hexdigest() != entries[name]: raise ValueError('publish asset digest mismatch')
++    recipe = (Path(__file__).parent / 'Dockerfile').read_text()
++    if recipe.count('@@REVIEWED_RUNTIME_IMAGE@@') != 1 or 'ARG ' in recipe: raise ValueError('unbound runtime recipe')
++    recipe = recipe.replace('@@REVIEWED_RUNTIME_IMAGE@@', runtime_image)
+     output.mkdir()  # Exclusive; retained contexts are never replaced.
+     destination = output / 'reviewed-publish'; destination.mkdir()
+     for name, source in files.items():
+         target = destination / name; target.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(source, target)
+         if hashlib.sha256(target.read_bytes()).hexdigest() != entries[name]: raise ValueError('copy digest mismatch')
+-    shutil.copyfile(Path(__file__).parent / 'Dockerfile', output / 'Dockerfile')
++    (output / 'Dockerfile').write_text(recipe)
+     (output / 'publish-inventory.json').write_bytes(raw)
+-    return {'status': 'OfflineContextPrepared', 'publishInventorySha256': expected, 'files': len(files),
++    return {'status': 'OfflineContextPrepared', 'publishInventorySha256': expected, 'runtimeImage': runtime_image, 'recipeSha256': hashlib.sha256(recipe.encode()).hexdigest(), 'files': len(files),
+             'imageBuilt': False, 'installedProvider': False, 'physicalQualification': False}
+ 
+ 
+@@ -38,8 +57,9 @@
+     parser.add_argument('--inventory', type=Path, required=True)
+     parser.add_argument('--inventory-sha256', required=True)
+     parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--runtime-image')
+     args = parser.parse_args()
+-    try: print(json.dumps(prepare(args.publish, args.inventory, args.inventory_sha256, args.output), indent=2))
++    try: print(json.dumps(prepare(args.publish, args.inventory, args.inventory_sha256, args.output, args.runtime_image), indent=2))
+     except (OSError, ValueError, TypeError) as error:
+         print(json.dumps({'status': 'Blocked', 'reason': str(error), 'imageBuilt': False})); return 1
+     return 0
+--- a/eng/ext-secrets-1/custody-deployment/templates/worker.yaml.in
++++ b/eng/ext-secrets-1/custody-deployment/templates/worker.yaml.in
+@@ -15,7 +15,9 @@
+       securityContext:
+         runAsNonRoot: true
+         runAsUser: 1654
+-        runAsGroup: 2001
++        runAsGroup: ${WORKER_GROUP_ID}
++        fsGroup: ${WORKER_GROUP_ID}
++        fsGroupChangePolicy: OnRootMismatch
+         seccompProfile: {type: RuntimeDefault}
+       containers:
+         - name: admitted-command
+@@ -26,6 +28,10 @@
+             readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+             capabilities: {drop: [ALL]}
++          env:
++            - {name: CUSTODY_REFERENCE_CREDENTIAL_FILE, value: /credentials/credentials}
++            - {name: CUSTODY_REFERENCE_CREDENTIAL_PROFILE, value: "${WORKER_CREDENTIAL_PROFILE}"}
++            - {name: AWS_EC2_METADATA_DISABLED, value: "true"}
+           volumeMounts:
+             - {name: installed-profile, mountPath: /installed, readOnly: true}
+             - {name: worker-command, mountPath: /command, readOnly: true}
+@@ -37,6 +43,9 @@
+         - name: worker-command
+           configMap: {name: "${EXACT_SIGNED_WORKER_PACKET_CONFIGMAP}"}
+         - name: worker-credentials
+-          secret: {secretName: "${SCOPED_WORKER_CREDENTIAL_SECRET}"}
++          secret:
++            secretName: ${SCOPED_WORKER_CREDENTIAL_SECRET}
++            defaultMode: 0440
++            items: [{key: "${WORKER_CREDENTIAL_KEY}", path: credentials}]
+         - name: retained-output
+           persistentVolumeClaim: {claimName: "${IMMUTABLE_ORIGINAL_OUTPUT_CLAIM}"}
+--- a/eng/ext-secrets-1/custody-deployment/templates/workload.yaml.in
++++ b/eng/ext-secrets-1/custody-deployment/templates/workload.yaml.in
+@@ -36,6 +36,10 @@
+             readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+             capabilities: {drop: [ALL]}
++          env:
++            - {name: CUSTODY_REFERENCE_CREDENTIAL_FILE, value: /credentials/credentials}
++            - {name: CUSTODY_REFERENCE_CREDENTIAL_PROFILE, value: "${COMPONENT_CREDENTIAL_PROFILE}"}
++            - {name: AWS_EC2_METADATA_DISABLED, value: "true"}
+           volumeMounts:
+             - {name: custody-socket, mountPath: /var/run/custody}
+             - {name: installed-profile, mountPath: /installed, readOnly: true}
+@@ -47,6 +51,13 @@
+           image: ${CUSTODY_APPLICATION_IMAGE}
+           env:
+             - {name: DAPR_GRPC_ENDPOINT, value: "http://127.0.0.1:50001"}
++            - {name: ASPNETCORE_HTTP_PORTS, value: "${CUSTODY_APP_PORT}"}
++            - name: DAPR_API_TOKEN
++              valueFrom: {secretKeyRef: {name: "${DAPR_API_TOKEN_SECRET}", key: "${DAPR_API_TOKEN_KEY}"}}
++            - name: APP_API_TOKEN
++              valueFrom: {secretKeyRef: {name: "${APP_API_TOKEN_SECRET}", key: "${APP_API_TOKEN_KEY}"}}
++          ports:
++            - {name: custody-host, containerPort: ${CUSTODY_APP_PORT}}
+           securityContext:
+             readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+@@ -56,9 +67,20 @@
+         - name: daprd
+           image: ${DAPR_IMAGE}
+           command: [/daprd]
+-          args: [ "--mode", "kubernetes", "--app-id", "${CUSTODY_APP_ID}", "--resources-path", "/dapr-resources", "--config", "custody-private", "--max-body-size", "128Mi", "--read-buffer-size", "64Ki", "--log-level", "error"]
++          ports:
++            - {name: dapr-internal, containerPort: ${DAPR_INTERNAL_GRPC_PORT}}
++          args: [ "--mode", "kubernetes", "--app-id", "${CUSTODY_APP_ID}", "--app-port", "${CUSTODY_APP_PORT}", "--app-protocol", "${CUSTODY_APP_PROTOCOL}", "--app-channel-address", "127.0.0.1", "--dapr-listen-addresses", "127.0.0.1", "--control-plane-address", "${DAPR_CONTROL_PLANE_ADDRESS}", "--control-plane-namespace", "${DAPR_CONTROL_PLANE_NAMESPACE}", "--control-plane-trust-domain", "${DAPR_CONTROL_PLANE_TRUST_DOMAIN}", "--sentry-address", "${DAPR_SENTRY_ADDRESS}", "--sentry-request-jwt-audiences", "${DAPR_SENTRY_TOKEN_AUDIENCE}", "--dapr-internal-grpc-port", "${DAPR_INTERNAL_GRPC_PORT}", "--enable-mtls", "--disable-builtin-k8s-secret-store", "--resources-path", "/dapr-resources", "--config", "custody-private", "--max-body-size", "128Mi", "--read-buffer-size", "64Ki", "--log-level", "error"]
+           env:
+             - {name: DAPR_COMPONENTS_SOCKETS_FOLDER, value: /var/run/custody/private}
++            - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
++            - {name: SENTRY_LOCAL_IDENTITY, value: "${NAMESPACE}:${SCOPED_COMPONENT_SERVICE_ACCOUNT}"}
++            - {name: DAPR_SENTRY_TOKEN_FILE, value: /var/run/dapr-identity/token}
++            - name: DAPR_TRUST_ANCHORS
++              valueFrom: {secretKeyRef: {name: "${DAPR_TRUST_ANCHOR_SECRET}", key: "${DAPR_TRUST_ANCHOR_KEY}"}}
++            - name: DAPR_API_TOKEN
++              valueFrom: {secretKeyRef: {name: "${DAPR_API_TOKEN_SECRET}", key: "${DAPR_API_TOKEN_KEY}"}}
++            - name: APP_API_TOKEN
++              valueFrom: {secretKeyRef: {name: "${APP_API_TOKEN_SECRET}", key: "${APP_API_TOKEN_KEY}"}}
+           securityContext:
+             readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+@@ -66,6 +88,7 @@
+           volumeMounts:
+             - {name: custody-socket, mountPath: /var/run/custody}
+             - {name: dapr-resources, mountPath: /dapr-resources, readOnly: true}
++            - {name: dapr-identity, mountPath: /var/run/dapr-identity, readOnly: true}
+       volumes:
+         - name: application-credentials
+           secret: {secretName: "${SCOPED_APPLICATION_CREDENTIAL_SECRET}"}
+@@ -74,6 +97,29 @@
+         - name: installed-profile
+           secret: {secretName: "${ENROLLED_PROFILE_SECRET}"}
+         - name: component-credentials
+-          secret: {secretName: "${SCOPED_COMPONENT_CREDENTIAL_SECRET}"}
++          secret:
++            secretName: ${SCOPED_COMPONENT_CREDENTIAL_SECRET}
++            defaultMode: 0440
++            items: [{key: "${COMPONENT_CREDENTIAL_KEY}", path: credentials}]
++        - name: dapr-identity
++          projected:
++            defaultMode: 0440
++            sources:
++              - serviceAccountToken:
++                  audience: ${DAPR_SENTRY_TOKEN_AUDIENCE}
++                  expirationSeconds: ${DAPR_SENTRY_TOKEN_EXPIRATION_SECONDS}
++                  path: token
+         - name: dapr-resources
+           configMap: {name: "${PINNED_DAPR_RESOURCE_CONFIGMAP}"}
++
++---
++# Manual sidecar discovery exposes only mTLS internal invocation, never HTTP/API ports.
++apiVersion: v1
++kind: Service
++metadata:
++  name: ${CUSTODY_APP_ID}-dapr
++  namespace: ${NAMESPACE}
++spec:
++  selector: {app: "${CUSTODY_WORKLOAD}"}
++  ports:
++    - {name: dapr-internal, port: ${DAPR_INTERNAL_GRPC_PORT}, targetPort: dapr-internal, protocol: TCP}
+--- a/eng/ext-secrets-1/custody-deployment/test_preflight.py
++++ b/eng/ext-secrets-1/custody-deployment/test_preflight.py
+@@ -24,6 +24,10 @@
+             for section in ['placement', 'logicalRoles']:
+                 for key in data[section]: data[section][key] = key
+             for key in ['kubernetesNativeSidecars', 'swapDisabled', 'coreDumpsDisabled', 'memoryCaptureDisabled']: data['profiles'][key] = True
++            for key in data['kubernetes']: data['kubernetes'][key] = key
++            data['kubernetes'].update(appPort=8080, appProtocol='http', internalGrpcPort=50002, workerGroupId=2001, sentryTokenExpirationSeconds=600)
++            for key in data['referenceCredentials']: data['referenceCredentials'][key] = key
++            data['referenceCredentials']['mountedFile'] = '/credentials/credentials'
+             data['g1Qualified'] = True
+             mutate(data)
+             path = Path(directory) / 'inputs.json'; path.write_text(json.dumps(data))
+@@ -51,6 +55,12 @@
+         self.assertEqual('Blocked', result['status'])
+         self.assertIn('artifacts.g1Evidence', {entry['input'] for entry in result['missing']})
+ 
++    def test_duplicate_fields_rejected_recursively(self):
++        for text in ['{"protocol":"one","protocol":"two"}', '{"artifacts":{"g1Evidence":{"path":"one","path":"two"}}}']:
++            with tempfile.TemporaryDirectory() as directory:
++                path = Path(directory) / 'duplicate.json'; path.write_text(text)
++                with self.assertRaises(ValueError): module.inspect(path)
++
+     def test_presence_never_claims_installed_qualified_available(self):
+         result = self.check_inputs(lambda d: None)
+         self.assertEqual('InputsPresentUnverified', result['status'])
+--- a/eng/ext-secrets-1/custody-deployment/test_prepare_image.py
++++ b/eng/ext-secrets-1/custody-deployment/test_prepare_image.py
+@@ -15,15 +15,32 @@
+         with tempfile.TemporaryDirectory() as directory:
+             root = Path(directory); publish = root / 'publish'; publish.mkdir()
+             dll = publish / 'Hexalith.Platform.Custody.Dapr.dll'; dll.write_bytes(b'disposable-test-output')
+-            inventory = root / 'inventory.json'; inventory.write_text(json.dumps({dll.name: hashlib.sha256(dll.read_bytes()).hexdigest()}))
++            inventory = root / 'inventory.json'; runtime = 'synthetic.invalid/runtime@sha256:' + 'a' * 64
++            inventory.write_text(json.dumps({'runtimeImage': runtime, 'files': {dll.name: hashlib.sha256(dll.read_bytes()).hexdigest()}}))
+             digest = hashlib.sha256(inventory.read_bytes()).hexdigest()
+             output = root / 'context'
+-            result = module.prepare(publish, inventory, digest, output)
++            result = module.prepare(publish, inventory, digest, output, runtime)
+             self.assertEqual('OfflineContextPrepared', result['status'])
+             self.assertFalse(result['imageBuilt'])
++            self.assertEqual('FROM ' + runtime, (output / 'Dockerfile').read_text().splitlines()[1])
++            self.assertNotIn('ARG ', (output / 'Dockerfile').read_text())
+             self.assertEqual(dll.read_bytes(), (output / 'reviewed-publish' / dll.name).read_bytes())
+-            with self.assertRaises(FileExistsError): module.prepare(publish, inventory, digest, output)
++            with self.assertRaises(FileExistsError): module.prepare(publish, inventory, digest, output, runtime)
+             dll.write_bytes(b'substituted-output')
+-            with self.assertRaises(ValueError): module.prepare(publish, inventory, digest, root / 'tampered')
++            with self.assertRaises(ValueError): module.prepare(publish, inventory, digest, root / 'tampered', runtime)
+             self.assertFalse((root / 'tampered').exists())
+-            with self.assertRaises(ValueError): module.prepare(publish, inventory, '0' * 64, root / 'wrong-inventory')
++            with self.assertRaises(ValueError): module.prepare(publish, inventory, '0' * 64, root / 'wrong-inventory', runtime)
++
++    def test_runtime_pin_and_duplicate_inventory_fields_fail_before_context(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); publish = root / 'publish'; publish.mkdir()
++            dll = publish / 'Hexalith.Platform.Custody.Dapr.dll'; dll.write_bytes(b'fixture')
++            runtime = 'synthetic.invalid/runtime@sha256:' + 'a' * 64
++            inventory = root / 'inventory.json'; inventory.write_text(json.dumps({'runtimeImage': runtime, 'files': {dll.name: hashlib.sha256(dll.read_bytes()).hexdigest()}}))
++            digest = hashlib.sha256(inventory.read_bytes()).hexdigest()
++            for invalid in [None, 'runtime:latest', runtime[:-1] + 'b', '${MUTABLE_BASE}@sha256:' + 'a' * 64]:
++                with self.assertRaises(ValueError): module.prepare(publish, inventory, digest, root / 'invalid', invalid)
++                self.assertFalse((root / 'invalid').exists())
++            for raw in ['{"runtimeImage":"one","runtimeImage":"two","files":{}}', '{"runtimeImage":"' + runtime + '","files":{"same":"one","same":"two"}}']:
++                inventory.write_text(raw); digest = hashlib.sha256(inventory.read_bytes()).hexdigest()
++                with self.assertRaises(ValueError): module.prepare(publish, inventory, digest, root / 'duplicate', runtime)
+--- a/eng/ext-secrets-1/custody-deployment/test_template_wiring.py
++++ b/eng/ext-secrets-1/custody-deployment/test_template_wiring.py
+@@ -0,0 +1,70 @@
++"""Render review templates with explicitly synthetic references and inspect wiring; never deploy."""
++from pathlib import Path
++from string import Template
++import unittest
++import subprocess
++import yaml
++
++ROOT = Path(__file__).parent
++
++
++class WiringTests(unittest.TestCase):
++    def render(self, name):
++        template = Template((ROOT / 'templates' / name).read_text())
++        keys = {match.group('named') or match.group('braced') for match in template.pattern.finditer(template.template)} - {None}
++        values = {key: 'synthetic-' + key.lower().replace('_', '-') for key in keys}
++        values.update(CUSTODY_APP_PORT='8080', CUSTODY_APP_PROTOCOL='http', DAPR_INTERNAL_GRPC_PORT='50002',
++                      DAPR_SENTRY_TOKEN_EXPIRATION_SECONDS='600', WORKER_GROUP_ID='2001')
++        return list(yaml.safe_load_all(template.substitute(values))), values
++
++    def test_sidecar_identity_host_channel_and_private_service_wiring(self):
++        docs, values = self.render('workload.yaml.in'); deployment, service = docs
++        pod = deployment['spec']['template']['spec']
++        self.assertFalse(pod['automountServiceAccountToken'])
++        app, daprd = pod['containers']; component = pod['initContainers'][0]
++        args = daprd['args']
++        def value(flag): return args[args.index(flag) + 1]
++        self.assertIn('--enable-mtls', args)
++        self.assertEqual('8080', value('--app-port')); self.assertEqual('http', value('--app-protocol'))
++        self.assertEqual('127.0.0.1', value('--dapr-listen-addresses'))
++        self.assertEqual(values['DAPR_CONTROL_PLANE_ADDRESS'], value('--control-plane-address'))
++        self.assertEqual(values['DAPR_SENTRY_ADDRESS'], value('--sentry-address'))
++        env = {entry['name']: entry for entry in daprd['env']}
++        self.assertEqual('/var/run/dapr-identity/token', env['DAPR_SENTRY_TOKEN_FILE']['value'])
++        self.assertIn('secretKeyRef', env['DAPR_TRUST_ANCHORS']['valueFrom'])
++        appenv = {entry['name']: entry for entry in app['env']}
++        for key in ['DAPR_API_TOKEN', 'APP_API_TOKEN']: self.assertEqual(env[key]['valueFrom'], appenv[key]['valueFrom'])
++        volumes = {volume['name']: volume for volume in pod['volumes']}
++        token = volumes['dapr-identity']['projected']['sources'][0]['serviceAccountToken']
++        self.assertEqual(values['DAPR_SENTRY_TOKEN_AUDIENCE'], token['audience'])
++        self.assertEqual(600, token['expirationSeconds'])
++        self.assertEqual(values['CUSTODY_APP_ID'] + '-dapr', service['metadata']['name'])
++        self.assertEqual(deployment['spec']['template']['metadata']['labels'], service['spec']['selector'])
++        self.assertEqual([50002], [port['port'] for port in service['spec']['ports']])
++        self.assertEqual('dapr-internal', service['spec']['ports'][0]['targetPort'])
++        self.assertEqual(50002, daprd['ports'][0]['containerPort'])
++        self.assertEqual('50002', value('--dapr-internal-grpc-port'))
++        self.assertEqual('true', next(e['value'] for e in component['env'] if e['name'] == 'AWS_EC2_METADATA_DISABLED'))
++        self.assertEqual('/credentials/credentials', next(e['value'] for e in component['env'] if e['name'] == 'CUSTODY_REFERENCE_CREDENTIAL_FILE'))
++        self.assertEqual('credentials', volumes['component-credentials']['secret']['items'][0]['path'])
++
++    def test_worker_group_output_and_consumed_credential_mount(self):
++        (worker,), values = self.render('worker.yaml.in'); pod = worker['spec']['template']['spec']
++        self.assertEqual(pod['securityContext']['runAsGroup'], pod['securityContext']['fsGroup'])
++        self.assertEqual(2001, pod['securityContext']['fsGroup'])
++        self.assertEqual('OnRootMismatch', pod['securityContext']['fsGroupChangePolicy'])
++        env = {entry['name']: entry['value'] for entry in pod['containers'][0]['env']}
++        self.assertEqual(values['WORKER_CREDENTIAL_PROFILE'], env['CUSTODY_REFERENCE_CREDENTIAL_PROFILE'])
++        self.assertEqual('/credentials/credentials', env['CUSTODY_REFERENCE_CREDENTIAL_FILE'])
++        self.assertEqual('true', env['AWS_EC2_METADATA_DISABLED'])
++        secret = next(v for v in pod['volumes'] if v['name'] == 'worker-credentials')['secret']
++        self.assertEqual(values['WORKER_CREDENTIAL_KEY'], secret['items'][0]['key'])
++        self.assertEqual('credentials', secret['items'][0]['path'])
++
++    def test_only_custody_evidence_logs_have_an_ignore_exception(self):
++        workspace = ROOT.parents[2]
++        for path in ['docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/final-image-context.log',
++                     'docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/review-repairs/new.log']:
++            result = subprocess.run(['git', 'check-ignore', '--no-index', '--quiet', path], cwd=workspace)
++            self.assertEqual(1, result.returncode)
++        self.assertEqual(0, subprocess.run(['git', 'check-ignore', '--no-index', '--quiet', 'docs/implementation/unrelated.log'], cwd=workspace).returncode)
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ActorLifecycleIntegrationTests.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ActorLifecycleIntegrationTests.cs
+@@ -0,0 +1,110 @@
++using System.Reflection;
++using System.Text;
++using System.Text.Json;
++using Dapr.Actors.Runtime;
++using Dapr.Client;
++using Grpc.Net.Client;
++using Hexalith.Platform.Custody;
++using Hexalith.Platform.Custody.Dapr;
++using Hexalith.Platform.Secrets.Runtime;
++
++internal static class ActorLifecycleIntegrationTests
++{
++    internal static async Task Run()
++    {
++        string scope = CustodyKeyLifecycleActor.GetActorId("tenant") + "|custody-key-lifecycle-candidate-v1";
++        var genesis = new CustodyKeyLifecycleLedger("tenant", 0, []);
++        using var f = new Fixture(CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(genesis)), scope);
++        var handler = new SdkBridge(f);
++        using var sdk = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
++        var client = PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f));
++        var originals = new RegistrationMap();
++        var physical = new DaprCustodyKeyLifecycleProvider(client, new ManifestLocator(null));
++        var owner = new CustodyOwnerAuthority(sdk, "custody", "tenant", scope, Encoding.UTF8.GetString(CustodyJson.Bytes(f.Profile.Enrollment)), f.Profile.ComponentPublicKeyPem, new OwnerCalls(f));
++        var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, client, physical, originals);
++        var gate = new DeferredProvider(physical);
++        var actor = new CustodyKeyLifecycleActor(ActorHost.CreateForTest<CustodyKeyLifecycleActor>(new ActorTestOptions { ActorId = new(CustodyKeyLifecycleActor.GetActorId("tenant")) }), authority, gate);
++        var state = DispatchProxy.Create<IActorStateManager, SerializedActorState>();
++        typeof(Actor).GetProperty("StateManager", BindingFlags.Public | BindingFlags.Instance)!.SetValue(actor, state);
++        for (int revision = 0; revision < 2; revision++)
++        {
++            var identity = new CustodyKeyObjectIdentity("tenant", "actor-" + revision, PlatformKeyPurpose.InteractionRootDek, "alias", "key", "lifecycle", "store", "contract");
++            var use = new CustodyKeyUse("actor-wrap-" + revision, "actor-delivery-" + revision, "recipient", "transport", identity.ObjectId);
++            var registration = await client.WrapAsync(identity, "actor-wrap-" + revision, revision, "kek", identity.ObjectId, use, Fixture.Root)
++                ?? throw new Exception("Diverged owner revision failed wrap.");
++            originals.Items.Add(identity, registration);
++            Check(registration.ExpectedRevision == revision && f.Store.State.Head.Revision != revision, "Original registration revision was rewritten to custody head.");
++            Check((await actor.RegisterWrappedAsync(registration)).Status == CustodyKeyLifecycleStatus.Wrapped, "Actual actor rejected original registration with diverged revisions.");
++        }
++        var registered = originals.Items.Values.First();
++        var pin = new CustodyKeyLifecycleRequest(registered.Identity, "actor-pin", CustodyKeyLifecycleAction.Pin, 2, "hold", "registered", 2, "decision");
++        byte[] originalBytes = JsonSerializer.SerializeToUtf8Bytes(pin);
++        Check((await actor.ApplyAsync(pin)).Status == CustodyKeyLifecycleStatus.Pinned, "Actual actor pin failed after pending-state transition advanced custody head.");
++        Check(JsonSerializer.SerializeToUtf8Bytes(pin).AsSpan().SequenceEqual(originalBytes), "Original pin bytes were rewritten.");
++        var recovered = await actor.LookupAsync(pin);
++        Check(recovered.Status == CustodyKeyLifecycleStatus.Pinned && recovered.RequestDigest == CustodyBindingContract.Hash(originalBytes), "Actual actor original recovery changed request bytes.");
++        var unpin = pin with { OperationId = "actor-unpin", Action = CustodyKeyLifecycleAction.Unpin, ExpectedRevision = 4 };
++        Check((await actor.ApplyAsync(unpin)).Status == CustodyKeyLifecycleStatus.Unpinned, "Actual actor unpin failed with independent revisions.");
++
++        // A pending pin may be cleared only by an exact retained authenticated never-performed original.
++        var notPerformed = pin with { OperationId = "actor-never-performed", ExpectedRevision = 6 };
++        gate.DeferNext = true;
++        Check((await actor.ApplyAsync(notPerformed)).Status == CustodyKeyLifecycleStatus.Unknown, "Deferred pin did not remain pending.");
++        Check(f.Store.State.Checkpoint.Pins.Count == 0, "Deferred fixture issued a native pin.");
++        string digest = CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(notPerformed));
++        var outcome = new CustodyKeyLifecycleOutcome(registered.Identity, notPerformed.OperationId, digest, CustodyKeyLifecycleStatus.NotPerformed, "retained-never-performed");
++        var response = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, outcome.OperationId, digest, Lifecycle: outcome);
++        var current = await f.Store.ReadAsync("tenant", default); var next = SemanticProvider.Clone(current);
++        var reference = await f.Store.PutImmutableAsync(CustodyJson.Bytes(response), "original", default);
++        next.Originals.Add(outcome.OperationId, new(digest, "pin", reference, null)); await f.Store.CommitAsync(current, next, default);
++        Check(await authority.VerifyOutcomeAsync(notPerformed, outcome), "Exact retained authenticated NotPerformed was rejected.");
++        Check(!await authority.VerifyOutcomeAsync(notPerformed, outcome with { ReceiptId = "invented-absence" }), "Changed never-performed receipt was accepted.");
++        Check((await actor.LookupAsync(notPerformed)) == outcome, "Actual actor could not retain never-performed original.");
++        var again = pin with { OperationId = "actor-pin-after-cleanup", ExpectedRevision = 8 };
++        Check((await actor.ApplyAsync(again)).Status == CustodyKeyLifecycleStatus.Pinned, "Authenticated NotPerformed did not remove the pending pin.");
++        Check(f.Native.Encrypts == 2 && f.Native.Schedules == 0, "Actor integration regenerated roots or destroyed native keys.");
++    }
++    private static void Check(bool value, string message) { if (!value) throw new Exception(message); }
++    private sealed class RegistrationMap : ICustodyKeyRegistrationSource
++    {
++        internal Dictionary<CustodyKeyObjectIdentity, CustodyKeyRegistration> Items = [];
++        public Task<CustodyKeyRegistration?> FindAsync(CustodyKeyObjectIdentity identity, CancellationToken token)
++            => Task.FromResult(Items.GetValueOrDefault(identity));
++    }
++    private sealed class DeferredProvider(ICustodyKeyLifecycleProvider inner) : ICustodyKeyLifecycleProvider
++    {
++        internal bool DeferNext;
++        public Task<CustodyKeyLifecycleOutcome> ExecuteAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest request, string digest, CancellationToken token)
++        {
++            if (!DeferNext) return inner.ExecuteAsync(registration, request, digest, token);
++            DeferNext = false; return Task.FromResult(new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, digest, CustodyKeyLifecycleStatus.Unknown));
++        }
++        public Task<CustodyKeyLifecycleOutcome> LookupAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest request, string digest, CancellationToken token)
++            => inner.LookupAsync(registration, request, digest, token);
++    }
++}
++
++// Serialized local actor-state double. All authority/effects still use actual SDK and BindingService calls.
++public class SerializedActorState : DispatchProxy
++{
++    private readonly Dictionary<string, byte[]> _committed = [], _pending = [];
++    private readonly HashSet<string> _removed = [];
++    protected override object? Invoke(MethodInfo? method, object?[]? args)
++    {
++        args ??= []; string name = args.Length > 0 && args[0] is string value ? value : "";
++        switch (method!.Name)
++        {
++            case "ClearCacheAsync": _pending.Clear(); _removed.Clear(); return Task.CompletedTask;
++            case "SetStateAsync": _pending[name] = JsonSerializer.SerializeToUtf8Bytes(args[1], method.GetGenericArguments()[0]); _removed.Remove(name); return Task.CompletedTask;
++            case "TryGetStateAsync": return typeof(SerializedActorState).GetMethod(nameof(ReadAsync), BindingFlags.NonPublic | BindingFlags.Instance)!.MakeGenericMethod(method.GetGenericArguments()).Invoke(this, [name]);
++            case "TryRemoveStateAsync": bool exists = _pending.ContainsKey(name) || _committed.ContainsKey(name); _removed.Add(name); _pending.Remove(name); return Task.FromResult(exists);
++            case "SaveStateAsync": foreach (string key in _removed) _committed.Remove(key); foreach (var pair in _pending) _committed[pair.Key] = pair.Value; _pending.Clear(); _removed.Clear(); return Task.CompletedTask;
++            default: throw new NotSupportedException(method.Name);
++        }
++    }
++    private Task<ConditionalValue<T>> ReadAsync<T>(string name)
++    {
++        byte[]? bytes = _removed.Contains(name) ? null : _pending.GetValueOrDefault(name) ?? _committed.GetValueOrDefault(name);
++        return Task.FromResult(bytes is null ? new ConditionalValue<T>(false, default!) : new(true, JsonSerializer.Deserialize<T>(bytes)!));
++    }
++}
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs
+@@ -16,6 +16,9 @@
+ // resource is opened. A fixture PASS is source evidence only and cannot satisfy physical qualification.
+ var tests = new (string, Func<Task>)[] {
+     ("public-lifecycle-real-sdk-authorizer-key-cleanup-and-refusals", PublicLifecycleTests.Run),
++    ("actual-lifecycle-actor-diverged-owner-and-custody-revisions", ActorLifecycleIntegrationTests.Run),
++    ("public-lifecycle-cancellation-and-shared-operation-deadline", PublicLifecycleCancellationTests.Run),
++    ("explicit-scoped-reference-credentials-without-default-fallback", ReferenceCredentialTests.Run),
+     ("missing-qualification-and-enrollment-close-effects", Missing),
+     ("ephemeral-key-delivery-duplicate-and-holder-completion", Keys),
+     ("lost-wrap-result-recovers-without-native-resend", LostWrap),
+@@ -366,8 +369,7 @@
+     internal CustodyBindingRequestV1 Lookup(CustodyKeyRegistration registration) {
+         var request = Request("lookup-original", registration); var e = request.Envelope;
+         return request with { Envelope = e with { TenantId = registration.Identity.TenantId, OperationId = registration.OperationId,
+-            ExpectedCustodyRevision = registration.ExpectedRevision,
+-            Proof = e.Proof with { TenantId = registration.Identity.TenantId, ExpectedCustodyRevision = registration.ExpectedRevision } } };
++            Proof = e.Proof with { TenantId = registration.Identity.TenantId } } };
+     }
+     internal CustodyBindingRequestV1 Pin(CustodyKeyRegistration registration, bool release) { var l = new CustodyKeyLifecycleRequest(registration.Identity, "hold-" + ++sequence,
+         release ? CustodyKeyLifecycleAction.Unpin : CustodyKeyLifecycleAction.Pin, Store.State.Head.Revision, "hold", "registered", 2, "decision");
+@@ -435,6 +437,9 @@
+     internal int Calls; internal bool CorruptSignature;
+     internal bool LoseNextRecordAcknowledgement;
+     internal bool CorruptResultProof, CorruptPage, LoseNextPage, LoseNextKeyAcknowledgement;
++    internal CustodyBindingResponseV1? CapturedUnwrap;
++    internal bool ReplayCapturedUnwrap;
++    internal Action? AfterResponse;
+     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token) {
+         Calls++; byte[] frame = await request.Content!.ReadAsByteArrayAsync(token); byte[] data = []; var metadata = new Dictionary<string, string>();
+         using (var input = new CodedInputStream(frame, 5, frame.Length - 5)) { uint tag; while ((tag = input.ReadTag()) != 0) {
+@@ -448,6 +453,12 @@
+         var componentResponse = await service.Invoke(invocation, new FixtureCallContext());
+         var response = CustodyJson.Read<CustodyBindingResponseV1>(componentResponse.Data.Span);
+         if (LoseNextRecordAcknowledgement && invocation.Operation == "record-transition") { LoseNextRecordAcknowledgement = false; throw new HttpRequestException("Controlled lost owner-record acknowledgement after service commit."); }
++        if (invocation.Operation == "unwrap")
++        {
++            if (ReplayCapturedUnwrap && CapturedUnwrap is not null) response = CustodyJson.Read<CustodyBindingResponseV1>(CustodyJson.Bytes(CapturedUnwrap));
++            else if (response.KeyDelivery is not null) CapturedUnwrap = CustodyJson.Read<CustodyBindingResponseV1>(CustodyJson.Bytes(response));
++        }
++        AfterResponse?.Invoke();
+         if (LoseNextKeyAcknowledgement && invocation.Operation == "unwrap") { LoseNextKeyAcknowledgement = false; throw new HttpRequestException("Lost actual key response."); }
+         if (LoseNextPage && invocation.Operation == "read-original-page") { LoseNextPage = false; throw new HttpRequestException("Lost original page."); }
+         if (CorruptResultProof && response.ResultProof is { } proof) response = response with { ResultProof = proof with { Signature = [1, 2, 3] } };
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/PublicLifecycleCancellationTests.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/PublicLifecycleCancellationTests.cs
+@@ -0,0 +1,100 @@
++using Dapr.Client;
++using Grpc.Net.Client;
++using Hexalith.EventStore.Contracts.Security;
++using Hexalith.Platform.Custody;
++using Hexalith.Platform.Custody.Dapr;
++using Hexalith.Platform.Secrets.Runtime;
++
++internal static class PublicLifecycleCancellationTests
++{
++    internal static async Task Run()
++    {
++        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("budget-root"))).WrappedRegistration!;
++        var handler = new SdkBridge(f);
++        using var sdk = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
++        using (var caller = new CancellationTokenSource())
++        {
++            var source = new LifecycleAuthorizer(f) { Stage = _ => caller.Cancel() };
++            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, source).LookupOriginalAsync(registration, cancellationToken: caller.Token), caller.Token);
++        }
++        var use = new CustodyKeyUse("cancel-key-lease", "cancel-key-delivery", "recipient", "transport", registration.OpaqueWrappedKeyReference);
++        using (var caller = new CancellationTokenSource())
++        {
++            handler.AfterResponse = caller.Cancel;
++            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use, caller.Token), caller.Token);
++            handler.AfterResponse = null;
++        }
++        if (f.Native.Decrypts != 1) throw new Exception("Cancellation test missed the actual key release boundary.");
++        var retry = await PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use);
++        if (retry.Key is not null || f.Native.Decrypts != 1) throw new Exception("Cancelled key response retry repeated native release.");
++
++        var original = f.Manifest([registration]).Manifest!.Original;
++        var request = new CustodyKeyLifecycleRequest(registration.Identity, "budget-destroy", CustodyKeyLifecycleAction.Destroy, 0, null, "barrier", 3, "decision", "reservation");
++        string digest = CustodyBindingContract.Hash(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(request));
++        var clock = new BudgetClock(); var staged = new LifecycleAuthorizer(f) { Stage = _ => clock.Advance(TimeSpan.FromSeconds(10)) };
++        var locator = new CallbackManifestSource(() => { clock.Advance(TimeSpan.FromSeconds(9)); return Task.FromResult<DeletionBatchConsumptionRequest?>(original); });
++        var provider = new DaprCustodyKeyLifecycleProvider(PublicLifecycleTests.Client(f, sdk, staged, clock), locator);
++        int before = handler.Calls;
++        if ((await provider.ExecuteAsync(registration, request, digest)).Status != CustodyKeyLifecycleStatus.Unknown
++            || locator.Calls != 1 || handler.Calls != before + 1 || f.Store.State.Checkpoint.Cycle is not null)
++            throw new Exception("Nested registration/locator/manifest stages restarted the operation deadline.");
++
++        clock = new BudgetClock(); var blocked = new CallbackManifestSource(() => { clock.Advance(TimeSpan.FromSeconds(31)); return new TaskCompletionSource<DeletionBatchConsumptionRequest?>().Task; });
++        provider = new(PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f), clock), blocked);
++        if ((await provider.LookupAsync(registration, request, digest)).Status != CustodyKeyLifecycleStatus.Unknown) throw new Exception("Unresponsive locator did not end as Unknown at the shared deadline.");
++        using (var caller = new CancellationTokenSource())
++        {
++            var cancelled = new CallbackManifestSource(() => { caller.Cancel(); return Task.FromResult<DeletionBatchConsumptionRequest?>(null); });
++            provider = new(PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)), cancelled);
++            await Cancelled(() => provider.LookupAsync(registration, request, digest, caller.Token), caller.Token);
++        }
++
++        // Header lookup and every page share the original budget. The deliberately unfinished fixture
++        // original must never be parsed/exposed after authorization has exhausted that budget.
++        var pageRequest = f.Manifest([registration]);
++        var current = await f.Store.ReadAsync("tenant", default); var next = SemanticProvider.Clone(current);
++        var retained = await f.Store.PutImmutableAsync(new byte[600 * 1024], "original", default);
++        next.Originals.Add(pageRequest.Envelope.OperationId, new(pageRequest.Envelope.RequestDigest, "destroy-manifest", retained, pageRequest));
++        await f.Store.CommitAsync(current, next, default);
++        clock = new BudgetClock(); var pages = new LifecycleAuthorizer(f) { Stage = _ => clock.Advance(TimeSpan.FromSeconds(5)) };
++        before = handler.Calls;
++        var assembled = await PublicLifecycleTests.Client(f, sdk, pages, clock).ExecuteManifestOriginalAsync(original, "reservation", true);
++        if (assembled.Result.State != DeletionManifestProviderState.Unknown || handler.Calls != before + 2
++            || clock.GetTimestamp() != TimeSpan.FromSeconds(30).Ticks)
++            throw new Exception("Original header/page stages restarted the shared operation deadline.");
++    }
++    private static async Task Cancelled(Func<Task> action, CancellationToken token)
++    {
++        try { await action(); } catch (OperationCanceledException e) when (token.IsCancellationRequested && e.CancellationToken == token) { return; }
++        throw new Exception("Explicit caller cancellation became a refusal or Unknown.");
++    }
++    private sealed class CallbackManifestSource(Func<Task<DeletionBatchConsumptionRequest?>> callback) : ICustodyReservedManifestSource
++    {
++        internal int Calls;
++        public Task<DeletionBatchConsumptionRequest?> FindAsync(string reservationReceiptId, CancellationToken token) { Calls++; return callback(); }
++    }
++}
++
++internal sealed class BudgetClock : TimeProvider
++{
++    private long _ticks;
++    private readonly List<BudgetTimer> _timers = [];
++    public override long TimestampFrequency => TimeSpan.TicksPerSecond;
++    public override long GetTimestamp() => _ticks;
++    public override DateTimeOffset GetUtcNow() => DateTimeOffset.UnixEpoch.AddTicks(_ticks);
++    public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
++    { var timer = new BudgetTimer(this, callback, state); _timers.Add(timer); timer.Change(dueTime, period); return timer; }
++    internal void Advance(TimeSpan elapsed)
++    {
++        _ticks += elapsed.Ticks;
++        foreach (var timer in _timers.ToArray()) if (!timer.Disposed && timer.Due <= _ticks) { timer.Disposed = true; timer.Callback(timer.State); }
++    }
++    private sealed class BudgetTimer(BudgetClock clock, TimerCallback callback, object? state) : ITimer
++    {
++        internal bool Disposed; internal long Due;
++        internal TimerCallback Callback = callback; internal object? State = state;
++        public bool Change(TimeSpan dueTime, TimeSpan period) { Disposed = false; Due = dueTime == Timeout.InfiniteTimeSpan ? long.MaxValue : clock._ticks + dueTime.Ticks; return true; }
++        public void Dispose() => Disposed = true;
++        public ValueTask DisposeAsync() { Dispose(); return ValueTask.CompletedTask; }
++    }
++}
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/PublicLifecycleTests.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/PublicLifecycleTests.cs
+@@ -31,6 +31,11 @@
+             && !JsonSerializer.Serialize(released.Key).Contains("Bytes", StringComparison.Ordinal), "Public result serialization leaked key bytes.");
+         var borrowed = released.Key!.Bytes; released.Key.Dispose();
+         Check(borrowed.Span.IndexOfAnyExcept((byte)0) == -1, "Owned root was not zeroed.");
++        handler.ReplayCapturedUnwrap = true;
++        var replayed = await client.UnwrapAsync(registration, "public-unwrap", use);
++        Check(replayed.Key is null && replayed.State == "Unknown" && f.Native.Decrypts == 1,
++            "A valid earlier signed unwrap response replayed against a fresh challenge exposed a key or repeated native release.");
++        handler.ReplayCapturedUnwrap = false;
+         var duplicate = await client.UnwrapAsync(registration, "public-unwrap", use);
+         Check(duplicate.Key is null && duplicate.State == "ResultDurable" && f.Native.Decrypts == 1, "Duplicate delivery released a key twice.");
+         source.Mode = "missing-completion";
+@@ -114,10 +119,10 @@
+         Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Consumed, "Lost page recovery changed original.");
+         Check(f.Store.State.Head == before && f.Native.Schedules == sends, "Original recovery started a physical effect.");
+     }
+-    internal static CustodyLifecycleClient Client(Fixture f, DaprClient sdk, LifecycleAuthorizer source) => new(sdk,
++    internal static CustodyLifecycleClient Client(Fixture f, DaprClient sdk, LifecycleAuthorizer source, TimeProvider? clock = null) => new(sdk,
+         new Dictionary<string, string> { [CustodyLifecycleClient.LogicalRole] = "custody" }, f.OwnerScope,
+         Encoding.UTF8.GetString(CustodyJson.Bytes(f.Profile.Enrollment)), f.Profile.ComponentPublicKeyPem,
+-        new DaprCustodyAuthorizerClient(source, new Dictionary<string, string> { [DaprCustodyAuthorizerClient.LogicalRole] = "authorizer" }, "file:/tmp/fixture-private-reference"));
++        new DaprCustodyAuthorizerClient(source, new Dictionary<string, string> { [DaprCustodyAuthorizerClient.LogicalRole] = "authorizer" }, "file:/tmp/fixture-private-reference")) { OperationClock = clock ?? TimeProvider.System };
+     private static DaprClient Sdk(SdkBridge handler) => new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1")
+         .UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
+     private static void Check(bool value, string message) { if (!value) throw new Exception(message); }
+@@ -127,12 +132,13 @@
+ internal sealed class LifecycleAuthorizer(Fixture fixture) : ISecretsCredentialBoundDaprInvoker
+ {
+     internal string Mode = "normal";
++    internal Action<string>? Stage { get; set; }
+     internal List<string> Requests = [];
+     public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken token)
+         => throw new Exception("Uncredentialed authorizer fallback.");
+     public async Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken token)
+     {
+-        Requests.Add(jsonBody); token.ThrowIfCancellationRequested();
++        Requests.Add(jsonBody); Stage?.Invoke(method); token.ThrowIfCancellationRequested();
+         if (appId != "authorizer" || credentialReference != "file:/tmp/fixture-private-reference" || Mode == "refuse") return null;
+         using var document = JsonDocument.Parse(jsonBody); var root = document.RootElement;
+         if (method.EndsWith("/prepare", StringComparison.Ordinal))
+@@ -145,11 +151,6 @@
+             var request = fixture.Request(intent.Operation, registration, lifecycle, manifest, page: page);
+             var e = request.Envelope with { OperationId = intent.OperationId, RequestDigest = intent.RequestDigest,
+                 RequestAttemptId = intent.RequestAttemptId, Challenge = intent.Challenge };
+-            if (intent.Operation == "lookup-original" && registration is not null)
+-            {
+-                long revision = lifecycle?.ExpectedRevision ?? registration.ExpectedRevision;
+-                e = e with { ExpectedCustodyRevision = revision, Proof = e.Proof with { ExpectedCustodyRevision = revision } };
+-            }
+             if (Mode == "wrong-scope") e = e with { OwnerPurposeScope = "foreign" };
+             if (Mode == "stale") e = e with { CheckpointDigest = Fixture.Digest, Proof = e.Proof with { CheckpointDigest = Fixture.Digest } };
+             return JsonSerializer.Serialize(new CustodyPreparedCall(JsonSerializer.Serialize(e, CustodyBindingContract.Json), CustodyBindingContract.DefaultMessageBytes,
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ReferenceCredentialTests.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/ReferenceCredentialTests.cs
+@@ -0,0 +1,23 @@
++using Hexalith.Platform.Custody.Dapr;
++
++internal static class ReferenceCredentialTests
++{
++    internal static Task Run()
++    {
++        string file = Path.GetTempFileName();
++        try
++        {
++            File.WriteAllText(file, "[scoped-fixture]\naws_access_key_id=fixture-access\naws_secret_access_key=fixture-secret\naws_session_token=fixture-session\n");
++            var credential = ReferenceBackendCredentials.Load(file, "scoped-fixture").GetCredentials();
++            if (!credential.UseToken || credential.Token != "fixture-session") throw new Exception("Exact mounted profile was not consumed.");
++            foreach (string invalid in new[] { "[other]\naws_access_key_id=x\naws_secret_access_key=y\n", "[scoped-fixture]\ncredential_source=Ec2InstanceMetadata\n", "[scoped-fixture]\naws_access_key_id=x\naws_access_key_id=y\naws_secret_access_key=z\n" })
++            {
++                File.WriteAllText(file, invalid);
++                try { ReferenceBackendCredentials.Load(file, "scoped-fixture"); } catch (AuthorityUnavailableException) { continue; }
++                throw new Exception("Unsupported native credential fallback/profile was accepted.");
++            }
++        }
++        finally { File.Delete(file); }
++        return Task.CompletedTask;
++    }
++}
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs
+@@ -42,7 +42,7 @@
+         next.NativeResults.Add(intentId + ":admission", admissionOriginal);
+         if (e.Operation == "wrap" && request.WrapInput is { } input)
+         {
+-            if (input.ExpectedRevision != current.Head.Revision || next.Registrations.Count >= 1000
++            if (next.Registrations.Count >= 1000
+                 || next.AllocationExclusions.Contains(CustodyJson.Interaction(input.Identity))
+                 || next.Registrations.ContainsKey(input.OpaqueWrappedKeyReference))
+                 throw new AuthorityUnavailableException("Original allocation is excluded or capacity exhausted.");
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs
+@@ -17,9 +17,10 @@
+ {
+     var profile = ComponentProfile.Load(args[1]); profile.Validate();
+     if (args[0] == "--check-profile") { Console.WriteLine(profile.ProfileDigest); return 0; }
++    var credentials = ReferenceBackendCredentials.Load();
+     var nativeRegion = RegionEndpoint.GetBySystemName(profile.Region);
+     var kmsConfig = new AmazonKeyManagementServiceConfig { RegionEndpoint = nativeRegion, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
+-    using var kms = new AmazonKeyManagementServiceClient(kmsConfig);
++    using var kms = new AmazonKeyManagementServiceClient(credentials, kmsConfig);
+     StartupGuard.Validate(args[0], profile.SocketPath);
+     using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(profile.ComponentSigningKeyPath));
+     using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(profile.ComponentPublicKeyPem);
+@@ -28,7 +29,7 @@
+     var region = RegionEndpoint.GetBySystemName(profile.Region);
+     var dynamoConfig = new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
+     var s3Config = new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
+-    using var dynamo = new AmazonDynamoDBClient(dynamoConfig); using var s3 = new AmazonS3Client(s3Config);
++    using var dynamo = new AmazonDynamoDBClient(credentials, dynamoConfig); using var s3 = new AmazonS3Client(credentials, s3Config);
+     var store = new AwsAuthorityStore(profile, dynamo, s3, TimeProvider.System);
+     var verifier = new StatementVerifier(profile, TimeProvider.System);
+     var epochs = new AwsEpochOperations(profile, kms);
+--- a/infrastructure/Hexalith.Platform.Custody.Dapr/ReferenceBackendCredentials.cs
++++ b/infrastructure/Hexalith.Platform.Custody.Dapr/ReferenceBackendCredentials.cs
+@@ -0,0 +1,38 @@
++using Amazon.Runtime;
++namespace Hexalith.Platform.Custody.Dapr;
++
++// Infrastructure-only credential selection. No default SDK chain, metadata, web identity or process fallback.
++internal static class ReferenceBackendCredentials
++{
++    internal static AWSCredentials Load()
++    {
++        if (Environment.GetEnvironmentVariable("AWS_EC2_METADATA_DISABLED") != "true")
++            throw new AuthorityUnavailableException("Explicit metadata exclusion required.");
++        return Load(Environment.GetEnvironmentVariable("CUSTODY_REFERENCE_CREDENTIAL_FILE"),
++            Environment.GetEnvironmentVariable("CUSTODY_REFERENCE_CREDENTIAL_PROFILE"));
++    }
++    internal static AWSCredentials Load(string? path, string? profile)
++    {
++        if (path is null || !Path.IsPathFullyQualified(path) || string.IsNullOrWhiteSpace(profile)
++            || profile.IndexOfAny(['[', ']', '\r', '\n']) >= 0 || !File.Exists(path) || new FileInfo(path).Length is <= 0 or > 16384)
++            throw new AuthorityUnavailableException("Exact scoped credential file/profile required.");
++        var values = new Dictionary<string, string>(StringComparer.Ordinal); bool section = false;
++        foreach (string raw in File.ReadLines(path))
++        {
++            string line = raw.Trim(); if (line.Length == 0 || line.StartsWith('#') || line.StartsWith(';')) continue;
++            if (line.StartsWith('['))
++            {
++                if (section || line != "[" + profile + "]") throw new AuthorityUnavailableException("Credential file must contain only the exact scoped profile.");
++                section = true; continue;
++            }
++            int equals = line.IndexOf('=');
++            if (!section || equals <= 0) throw new AuthorityUnavailableException("Invalid scoped credential profile.");
++            string key = line[..equals].Trim(), value = line[(equals + 1)..].Trim();
++            if (key is not ("aws_access_key_id" or "aws_secret_access_key" or "aws_session_token") || value.Length == 0 || !values.TryAdd(key, value))
++                throw new AuthorityUnavailableException("Unsupported or duplicate scoped credential entry.");
++        }
++        if (!values.TryGetValue("aws_access_key_id", out var access) || !values.TryGetValue("aws_secret_access_key", out var secret))
++            throw new AuthorityUnavailableException("Incomplete scoped credentials.");
++        return values.TryGetValue("aws_session_token", out var token) ? new SessionAWSCredentials(access, secret, token) : new BasicAWSCredentials(access, secret);
++    }
++}
+--- a/src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs
+@@ -168,7 +168,7 @@
+                 return e.Operation == "wrap" && r.Registration is null && r.Manifest is null && r.Transition is null && r.Page is null
+                     && r.KeyUse is null && r.Lifecycle is null && input.Identity.TenantId == e.TenantId
+                     && input.Identity.StoreTarget == e.Enrollment.StoreTarget && input.OperationId == e.OperationId
+-                    && input.ExpectedRevision == e.ExpectedCustodyRevision && CustodyText(input.KekVersion)
++                    && input.ExpectedRevision >= 0 && CustodyText(input.KekVersion)
+                     && CustodyText(input.OpaqueWrappedKeyReference) && input.RootKey is { Length: 32 }
+                     && input.KeyUse is { } k && Text(k.KeyUseLeaseId) && Text(k.DeliveryAttemptId)
+                     && Text(k.RecipientProcessIncarnation) && Text(k.TransportIncarnation)
+@@ -203,12 +203,12 @@
+                         || !CustodyText(registration.OpaqueWrappedKeyReference) || !CustodyText(registration.WrapReceiptId)) { return false; }
+                     if (e.Operation is "wrap" || e.Operation == "lookup-original" && r.Lifecycle is null)
+                     {
+-                        if (e.OperationId != registration.OperationId || e.ExpectedCustodyRevision != registration.ExpectedRevision) { return false; }
++                        if (e.OperationId != registration.OperationId) { return false; }
+                     }
+                     if (e.Operation is "pin" or "unpin" || e.Operation == "lookup-original" && r.Lifecycle is not null)
+                     {
+                         return r.KeyUse is null && r.Lifecycle is { } l && l.Identity == registration.Identity && l.OperationId == e.OperationId
+-                            && l.ExpectedRevision == e.ExpectedCustodyRevision && l.HoldId == p.HoldId && CustodyText(l.HoldId)
++                            && l.ExpectedRevision >= 0 && l.HoldId == p.HoldId && CustodyText(l.HoldId)
+                             && CustodyText(l.OperationId) && CustodyText(l.FenceTokenId) && CustodyText(l.DecisionVersion)
+                             && l.FenceTokenId == p.GuardReceiptId && l.FenceRevision == p.GuardRevision && l.DecisionVersion == p.DecisionVersion
+                             && l.ProtectionReservationReceiptId is null
+--- a/src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs
+@@ -59,93 +59,119 @@
+         if (key.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7") throw new ArgumentException("P-256 verifier required.");
+     }
+ 
++    internal TimeProvider OperationClock { get; init; } = TimeProvider.System;
++
++    internal async Task<T> InBudgetAsync<T>(CancellationToken caller, Func<CustodyOperationBudget, Task<T>> operation, Func<T> unknown)
++    {
++        using var budget = new CustodyOperationBudget(caller, OperationClock);
++        T? result = default; bool transferred = false;
++        try
++        {
++            budget.Check(); result = await operation(budget).ConfigureAwait(false); budget.Check();
++            transferred = true; return result;
++        }
++        catch (OperationCanceledException) when (caller.IsCancellationRequested) { throw new OperationCanceledException(caller); }
++        catch (Exception) { caller.ThrowIfCancellationRequested(); return unknown(); }
++        finally { if (!transferred && result is CustodyKeyUseResult { Key: { } key }) key.Dispose(); }
++    }
++
+     /// <summary>Wraps the supplied original 32-byte root. The caller retains ownership of its input; internal copies are cleared.</summary>
+-    public async Task<CustodyKeyRegistration?> WrapAsync(CustodyKeyObjectIdentity identity, string operationId, long expectedRevision,
++    public Task<CustodyKeyRegistration?> WrapAsync(CustodyKeyObjectIdentity identity, string operationId, long expectedRevision,
+         string kekVersion, string opaqueReference, CustodyKeyUse keyUse, ReadOnlyMemory<byte> rootKey, CancellationToken cancellationToken = default)
+-    {
+-        if (rootKey.Length != 32) return null;
+-        byte[] owned = rootKey.ToArray();
+-        try
+-        {
+-            var input = new CustodyBindingWrapInputV1(identity, operationId, expectedRevision, kekVersion, opaqueReference, owned, Use(keyUse));
+-            // The authorizer sees only public metadata and a digest. Raw key bytes appear solely on the custody binding.
+-            var body = new { input.Identity, input.OperationId, input.ExpectedRevision, input.KekVersion, input.OpaqueWrappedKeyReference, input.KeyUse };
+-            var result = await CallAsync("wrap", identity.TenantId, operationId, body, e => new(e, WrapInput: input), cancellationToken);
+-            return result?.Response.WrappedRegistration;
+-        }
+-        finally { CryptographicOperations.ZeroMemory(owned); }
+-    }
++        => InBudgetAsync<CustodyKeyRegistration?>(cancellationToken, async budget =>
++        {
++            if (rootKey.Length != 32) return null;
++            byte[] owned = rootKey.ToArray();
++            try
++            {
++                var input = new CustodyBindingWrapInputV1(identity, operationId, expectedRevision, kekVersion, opaqueReference, owned, Use(keyUse));
++                var body = new { input.Identity, input.OperationId, input.ExpectedRevision, input.KekVersion, input.OpaqueWrappedKeyReference, input.KeyUse };
++                var result = await CallAsync("wrap", identity.TenantId, operationId, body, e => new(e, WrapInput: input), budget);
++                return result?.Response.WrappedRegistration;
++            }
++            finally { CryptographicOperations.ZeroMemory(owned); }
++        }, () => null);
+ 
+     /// <summary>Releases one original root to an enrolled recipient. A duplicate or lost delivery returns value-free status.</summary>
+-    public async Task<CustodyKeyUseResult> UnwrapAsync(CustodyKeyRegistration registration, string operationId,
++    public Task<CustodyKeyUseResult> UnwrapAsync(CustodyKeyRegistration registration, string operationId,
+         CustodyKeyUse keyUse, CancellationToken cancellationToken = default)
+-    {
+-        var result = await CallAsync("unwrap", registration.Identity.TenantId, operationId, new { Registration = registration, KeyUse = Use(keyUse) },
+-            e => new(e, Registration: registration, KeyUse: Use(keyUse)), cancellationToken);
+-        if (result?.Response.KeyDelivery is { } delivery) return new("Released", new(delivery.RootKey));
+-        return Delivery(result?.Response.Delivery);
+-    }
++        => InBudgetAsync(cancellationToken, async budget =>
++        {
++            var result = await CallAsync("unwrap", registration.Identity.TenantId, operationId, new { Registration = registration, KeyUse = Use(keyUse) },
++                e => new(e, Registration: registration, KeyUse: Use(keyUse)), budget);
++            if (result?.Response.KeyDelivery is { } delivery) return new CustodyKeyUseResult("Released", new(delivery.RootKey));
++            return Delivery(result?.Response.Delivery);
++        }, () => new CustodyKeyUseResult("Unknown"));
+ 
+     /// <summary>Records independent completion of every originally admitted holder. Local disposal alone cannot close a delivery.</summary>
+-    public async Task<CustodyKeyUseResult> CompleteKeyUseAsync(CustodyKeyRegistration registration, string operationId,
++    public Task<CustodyKeyUseResult> CompleteKeyUseAsync(CustodyKeyRegistration registration, string operationId,
+         CustodyKeyUse keyUse, CancellationToken cancellationToken = default)
+-    {
+-        var result = await CallAsync("complete-key-use", registration.Identity.TenantId, operationId,
+-            new { Registration = registration, KeyUse = Use(keyUse) }, e => new(e, Registration: registration, KeyUse: Use(keyUse)), cancellationToken);
+-        return Delivery(result?.Response.Delivery);
+-    }
++        => InBudgetAsync(cancellationToken, async budget =>
++        {
++            var result = await CallAsync("complete-key-use", registration.Identity.TenantId, operationId,
++                new { Registration = registration, KeyUse = Use(keyUse) }, e => new(e, Registration: registration, KeyUse: Use(keyUse)), budget);
++            return Delivery(result?.Response.Delivery);
++        }, () => new CustodyKeyUseResult("Unknown"));
+ 
+     /// <summary>Executes an exact pin/unpin. The independent control owner supplies hold/dispatch ordering.</summary>
+-    public async Task<CustodyKeyLifecycleOutcome> ExecuteLifecycleAsync(CustodyKeyRegistration registration,
++    public Task<CustodyKeyLifecycleOutcome> ExecuteLifecycleAsync(CustodyKeyRegistration registration,
+         CustodyKeyLifecycleRequest request, CancellationToken cancellationToken = default)
+-        => await LifecycleAsync(registration, request, false, cancellationToken);
++        => InBudgetAsync(cancellationToken, budget => LifecycleAsync(registration, request, false, budget), () => Missing(registration, request));
+ 
+     /// <summary>Recovers a value-free registration or pin/unpin original; this never releases a key or starts native work.</summary>
+-    public async Task<CustodyKeyLifecycleOutcome> LookupOriginalAsync(CustodyKeyRegistration registration,
++    public Task<CustodyKeyLifecycleOutcome> LookupOriginalAsync(CustodyKeyRegistration registration,
+         CustodyKeyLifecycleRequest? request = null, CancellationToken cancellationToken = default)
+-        => await LifecycleAsync(registration, request, true, cancellationToken);
+-
+-    private async Task<CustodyKeyLifecycleOutcome> LifecycleAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest? lifecycle,
+-        bool lookup, CancellationToken token)
+-    {
++        => InBudgetAsync(cancellationToken, budget => LifecycleAsync(registration, request, true, budget), () => Missing(registration, request));
++
++    internal async Task<CustodyKeyLifecycleOutcome> LifecycleAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest? lifecycle,
++        bool lookup, CustodyOperationBudget budget)
++    {
++        budget.Check();
+         string operation = lookup ? "lookup-original" : lifecycle?.Action == CustodyKeyLifecycleAction.Pin ? "pin" : "unpin";
+         string id = lifecycle?.OperationId ?? registration.OperationId;
+-        if (!lookup && lifecycle?.Action is not (CustodyKeyLifecycleAction.Pin or CustodyKeyLifecycleAction.Unpin))
+-            return new(registration.Identity, id, "", CustodyKeyLifecycleStatus.Unknown);
++        if (!lookup && lifecycle?.Action is not (CustodyKeyLifecycleAction.Pin or CustodyKeyLifecycleAction.Unpin)) return Missing(registration, lifecycle);
+         var result = await CallAsync(operation, registration.Identity.TenantId, id, new { Registration = registration, Lifecycle = lifecycle },
+-            e => new(e, Registration: registration, Lifecycle: lifecycle), token);
+-        return result?.Response.Lifecycle ?? new(registration.Identity, id,
++            e => new(e, Registration: registration, Lifecycle: lifecycle), budget);
++        budget.Check(); return result?.Response.Lifecycle ?? Missing(registration, lifecycle);
++    }
++    private static CustodyKeyLifecycleOutcome Missing(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest? lifecycle)
++        => new(registration.Identity, lifecycle?.OperationId ?? registration.OperationId,
+             CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes<object>(lifecycle is null ? registration : lifecycle)), CustodyKeyLifecycleStatus.Unknown);
+-    }
+ 
+     /// <summary>Consumes or recovers the exact complete signed manifest. Only a verified full immutable original yields Consumed.</summary>
+     public async Task<DeletionManifestProviderResult> ExecuteManifestAsync(DeletionBatchConsumptionRequest original, string reservationReceiptId,
+         bool lookupOnly, CancellationToken cancellationToken = default)
+-        => (await ExecuteManifestOriginalAsync(original, reservationReceiptId, lookupOnly, cancellationToken)).Result;
++    {
++        var result = await ExecuteManifestOriginalAsync(original, reservationReceiptId, lookupOnly, cancellationToken);
++        cancellationToken.ThrowIfCancellationRequested(); return result.Result;
++    }
+ 
+     /// <summary>Recovers the complete signed vector together with its original restore-barrier evidence.</summary>
+-    public async Task<CustodyManifestOriginal> ExecuteManifestOriginalAsync(DeletionBatchConsumptionRequest original, string reservationReceiptId,
++    public Task<CustodyManifestOriginal> ExecuteManifestOriginalAsync(DeletionBatchConsumptionRequest original, string reservationReceiptId,
+         bool lookupOnly, CancellationToken cancellationToken = default)
+-    {
+-        var unknown = new DeletionManifestProviderResult(original.Capability.TenantId, original.Capability.BatchId,
+-            reservationReceiptId, DeletionManifestProviderState.Unknown, []);
+-        try
+-        {
+-            var manifest = new CustodyBindingManifestV1(original, DeletionBatchCapabilityIdentity.CanonicalPayload(original.Capability), reservationReceiptId);
+-            string id = ManifestOperationId(original, reservationReceiptId);
+-            var call = await CallAsync(lookupOnly ? "lookup-original" : "destroy-manifest", original.Capability.TenantId, id,
+-                new { Manifest = manifest }, e => new(e, Manifest: manifest), cancellationToken);
+-            if (call is null) return new(unknown, null);
+-            if (call.Response.ManifestStatus is { } status)
+-                return Verify(JsonSerializer.SerializeToUtf8Bytes(status with { Signature = [] }, CustodyBindingContract.Json), status.Signature)
+-                    ? new(status.Result, null) : new(unknown, null);
+-            if (call.Response.OriginalHeader is not { } header) return new(unknown, null);
+-            var authority = new OriginalAuthority(this, header);
+-            var assembled = await CustodyBindingOriginalAssembler.AssembleAsync(call.Request, header,
+-                new OriginalPages(this, original.Capability.TenantId, id), authority, TimeSpan.FromSeconds(30), cancellationToken);
+-            return new(assembled.Original?.Result ?? unknown, assembled.Original?.RestoreBarrierReceiptId);
+-        }
+-        catch (Exception) { return new(unknown, null); }
++        => InBudgetAsync(cancellationToken, budget => ExecuteManifestOriginalAsync(original, reservationReceiptId, lookupOnly, budget),
++            () => UnknownManifest(original, reservationReceiptId));
++
++    private static CustodyManifestOriginal UnknownManifest(DeletionBatchConsumptionRequest original, string reservation)
++        => new(new(original.Capability.TenantId, original.Capability.BatchId, reservation, DeletionManifestProviderState.Unknown, []), null);
++
++    internal async Task<CustodyManifestOriginal> ExecuteManifestOriginalAsync(DeletionBatchConsumptionRequest original, string reservationReceiptId,
++        bool lookupOnly, CustodyOperationBudget budget)
++    {
++        budget.Check();
++        var manifest = new CustodyBindingManifestV1(original, DeletionBatchCapabilityIdentity.CanonicalPayload(original.Capability), reservationReceiptId);
++        string id = ManifestOperationId(original, reservationReceiptId);
++        var call = await CallAsync(lookupOnly ? "lookup-original" : "destroy-manifest", original.Capability.TenantId, id,
++            new { Manifest = manifest }, e => new(e, Manifest: manifest), budget);
++        budget.Check();
++        if (call is null) return UnknownManifest(original, reservationReceiptId);
++        if (call.Response.ManifestStatus is { } status)
++            return Verify(JsonSerializer.SerializeToUtf8Bytes(status with { Signature = [] }, CustodyBindingContract.Json), status.Signature)
++                ? new(status.Result, null) : UnknownManifest(original, reservationReceiptId);
++        if (call.Response.OriginalHeader is not { } header) return UnknownManifest(original, reservationReceiptId);
++        var assembled = await CustodyBindingOriginalAssembler.AssembleAsync(call.Request, header,
++            new OriginalPages(this, original.Capability.TenantId, id, budget), new OriginalAuthority(this, header), budget.Remaining, budget.Token);
++        budget.Check(); return new(assembled.Original?.Result ?? UnknownManifest(original, reservationReceiptId).Result, assembled.Original?.RestoreBarrierReceiptId);
+     }
+ 
+     internal static string ManifestOperationId(DeletionBatchConsumptionRequest original, string reservation)
+@@ -153,12 +179,12 @@
+             original.Capability.BatchId, original.Capability.ManifestDigest, reservation]));
+ 
+     private async Task<Call?> CallAsync(string operation, string tenant, string id, object publicBody,
+-        Func<CustodyBindingEnvelopeV1, CustodyBindingRequestV1> create, CancellationToken token)
+-    {
+-        using var budget = CancellationTokenSource.CreateLinkedTokenSource(token); budget.CancelAfter(TimeSpan.FromSeconds(30));
++        Func<CustodyBindingEnvelopeV1, CustodyBindingRequestV1> create, CustodyOperationBudget budget)
++    {
+         CustodyBindingResponseV1? response = null; bool transferred = false;
+         try
+         {
++            budget.Check();
+             // Derive the exact original digest locally before authorization, without sending a secret to the authorizer.
+             var placeholder = new CustodyBindingEnvelopeV1(CustodyBindingContract.Protocol, operation, id, "", tenant, _scope, _enrollment,
+                 0, "", "", "", null!);
+@@ -167,6 +193,7 @@
+             var intent = new CustodyCallIntent(operation, tenant, _scope, id, digest, JsonSerializer.Serialize(publicBody, CustodyBindingContract.Json),
+                 Guid.NewGuid().ToString("N"), Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
+             var prepared = await _source.PrepareAsync(intent, budget.Token).WaitAsync(budget.Token);
++            budget.Check();
+             if (prepared is null) return null;
+             byte[] envelopeBytes = Encoding.UTF8.GetBytes(prepared.EnvelopeJson);
+             CustodyBindingContract.RejectDuplicateProperties(envelopeBytes);
+@@ -178,15 +205,18 @@
+             try { wireDigest = CustodyBindingContract.Hash(exact); }
+             finally { CryptographicOperations.ZeroMemory(exact); }
+             var authorization = await _source.AuthorizeAsync(intent, prepared, wireDigest, budget.Token).WaitAsync(budget.Token);
++            budget.Check();
+             if (authorization is null || authorization.RequestSha256 != wireDigest) return null;
+             var authority = new ExactAuthority(wireDigest, prepared, authorization);
+             var invoker = new CustodyBindingDaprInvoker(_client, _bindings, authority);
+-            var result = await invoker.InvokeAsync(request, TimeSpan.FromSeconds(30), budget.Token);
++            var result = await invoker.InvokeAsync(request, budget.Remaining, budget.Token);
+             response = result.Response;
++            budget.Check();
+             if (result.State != CustodyBindingTransportState.ReceivedUnverified || response is null || !Authenticate(request, response)) return null;
+-            transferred = true; return new(request, response, invoker);
+-        }
+-        catch (Exception) { return null; }
++            budget.Check(); transferred = true; return new(request, response, invoker);
++        }
++        catch (OperationCanceledException) when (budget.Caller.IsCancellationRequested) { throw new OperationCanceledException(budget.Caller); }
++        catch (Exception) { budget.Caller.ThrowIfCancellationRequested(); return null; }
+         finally { if (!transferred && response?.KeyDelivery is { } delivery) CryptographicOperations.ZeroMemory(delivery.RootKey); }
+     }
+     private bool Authenticate(CustodyBindingRequestV1 request, CustodyBindingResponseV1 response)
+@@ -236,11 +266,12 @@
+         public Task<bool> VerifyOriginalAsync(CustodyBindingOriginalHeaderV1 header, CustodyBindingOriginalV1 original, ReadOnlyMemory<byte> bytes, CancellationToken token)
+             => Task.FromResult(header == authenticatedHeader && client.Verify(JsonSerializer.SerializeToUtf8Bytes(original with { Signature = [] }, CustodyBindingContract.Json), original.Signature));
+     }
+-    private sealed class OriginalPages(CustodyLifecycleClient client, string tenant, string id) : ICustodyBindingOriginalPageSource
++    private sealed class OriginalPages(CustodyLifecycleClient client, string tenant, string id, CustodyOperationBudget budget) : ICustodyBindingOriginalPageSource
+     {
+         public async Task<ReadOnlyMemory<byte>?> ReadAsync(CustodyBindingPageReadV1 read, CancellationToken token)
+         {
+-            var call = await client.CallAsync("read-original-page", tenant, id, new { Page = read }, e => new(e, Page: read), token);
++            var call = await client.CallAsync("read-original-page", tenant, id, new { Page = read }, e => new(e, Page: read), budget);
++            budget.Check();
+             return call?.Response.Page is { } page ? JsonSerializer.SerializeToUtf8Bytes(page, CustodyBindingContract.Json) : null;
+         }
+     }
+--- a/src/Hexalith.Platform.Secrets.Runtime/CustodyOperationBudget.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/CustodyOperationBudget.cs
+@@ -0,0 +1,32 @@
++namespace Hexalith.Platform.Secrets.Runtime;
++
++// One operation owns one deadline. Nested stages share this instance, never reset its thirty seconds.
++internal sealed class CustodyOperationBudget : IDisposable
++{
++    private readonly TimeProvider _clock;
++    private readonly long _started;
++    private readonly CancellationTokenSource _deadline, _linked;
++    internal CustodyOperationBudget(CancellationToken caller, TimeProvider clock)
++    {
++        Caller = caller; _clock = clock; _started = clock.GetTimestamp();
++        _deadline = new(TimeSpan.FromSeconds(30), clock);
++        _linked = CancellationTokenSource.CreateLinkedTokenSource(caller, _deadline.Token);
++    }
++    internal CancellationToken Caller { get; }
++    internal CancellationToken Token => _linked.Token;
++    internal TimeSpan Remaining
++    {
++        get
++        {
++            Check();
++            return TimeSpan.FromSeconds(30) - _clock.GetElapsedTime(_started);
++        }
++    }
++    internal void Check()
++    {
++        Caller.ThrowIfCancellationRequested();
++        Token.ThrowIfCancellationRequested();
++        if (_clock.GetElapsedTime(_started) >= TimeSpan.FromSeconds(30)) throw new OperationCanceledException(Token);
++    }
++    public void Dispose() { _linked.Dispose(); _deadline.Dispose(); }
++}
+--- a/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs
+@@ -56,18 +56,22 @@
+ 
+     private async Task<TResponse?> InvokeAsync<TRequest, TResponse>(string phase, TRequest request, CancellationToken token)
+     {
++        token.ThrowIfCancellationRequested();
+         if (_service is null || !SecretsProvisioning.IsReference(_credentialReference)) return default;
+         try
+         {
+             string? json = await _invoker.InvokeCredentialBoundAsync(_service, _credentialReference, "custody-lifecycle/" + phase,
+                 System.Text.Json.JsonSerializer.Serialize(request, CustodyBindingContract.Json), token).WaitAsync(token).ConfigureAwait(false);
++            token.ThrowIfCancellationRequested();
+             if (json is null) return default;
+             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
+             if (bytes.Length is 0 or >= CustodyBindingContract.MaximumPageFrameBytes) return default;
+             CustodyBindingContract.RejectDuplicateProperties(bytes);
+-            return System.Text.Json.JsonSerializer.Deserialize<TResponse>(bytes, CustodyBindingContract.Json);
++            var result = System.Text.Json.JsonSerializer.Deserialize<TResponse>(bytes, CustodyBindingContract.Json);
++            token.ThrowIfCancellationRequested(); return result;
+         }
+-        catch (Exception) { return default; }
++        catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
++        catch (Exception) { token.ThrowIfCancellationRequested(); return default; }
+     }
+ 
+     private sealed record CustodyAuthorizationIntent(CustodyCallIntent Intent, CustodyPreparedCall Prepared, string RequestSha256);
+--- a/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleAuthority.cs
+@@ -18,41 +18,58 @@
+     /// <inheritdoc />
+     public Task<bool> AuthorizeOperationAsync(CustodyKeyObjectIdentity identity, string operationId, string method, string requestDigest,
+         CancellationToken cancellationToken = default)
+-        => identity.TenantId == tenantId && CustodyBindingContract.Digest(requestDigest)
++        => InvokeAsync(() => identity.TenantId == tenantId && CustodyBindingContract.Digest(requestDigest)
+             ? owner.AuthorizeOperationAsync(CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(new { identity, operationId, requestDigest })), method, cancellationToken)
+-            : Task.FromResult(false);
++            : Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+-    public async Task<bool> VerifyRegistrationAsync(CustodyKeyRegistration registration, CancellationToken cancellationToken = default)
++    public Task<bool> VerifyRegistrationAsync(CustodyKeyRegistration registration, CancellationToken cancellationToken = default)
++        => InvokeAsync(async () =>
+     {
+         if (registration.Identity.TenantId != tenantId) return false;
+         var result = await client.LookupOriginalAsync(registration, cancellationToken: cancellationToken);
++        cancellationToken.ThrowIfCancellationRequested();
+         return result.Status == CustodyKeyLifecycleStatus.Wrapped && result.ReceiptId == registration.WrapReceiptId;
+-    }
++    }, cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> AuthorizeEffectAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken = default)
+         => AuthorizeOperationAsync(request.Identity, request.OperationId, "custody-lifecycle/" + request.Action,
+             CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(request)), cancellationToken);
+     /// <inheritdoc />
+-    public async Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default)
++    public Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default)
++        => InvokeAsync(async () =>
+     {
+         if (request.Identity.TenantId != tenantId || request.Identity != outcome.Identity || request.OperationId != outcome.OperationId) return false;
+         var registration = await registrations.FindAsync(request.Identity, cancellationToken).WaitAsync(cancellationToken);
++        cancellationToken.ThrowIfCancellationRequested();
+         if (registration is null) return false;
+         var original = await lifecycle.LookupAsync(registration, request, outcome.RequestDigest, cancellationToken);
+-        return original == outcome && original.Status is CustodyKeyLifecycleStatus.Pinned or CustodyKeyLifecycleStatus.Unpinned or CustodyKeyLifecycleStatus.Destroyed;
+-    }
++        cancellationToken.ThrowIfCancellationRequested();
++        return original == outcome && original.Status is CustodyKeyLifecycleStatus.Pinned or CustodyKeyLifecycleStatus.Unpinned or CustodyKeyLifecycleStatus.Destroyed or CustodyKeyLifecycleStatus.NotPerformed;
++    }, cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> ValidateStateAsync(string tenant, long revision, string exactStateDigest, CancellationToken cancellationToken = default)
+-        => tenant == tenantId ? owner.ValidateStateAsync(revision, exactStateDigest, cancellationToken) : Task.FromResult(false);
++        => InvokeAsync(() => tenant == tenantId ? owner.ValidateStateAsync(revision, exactStateDigest, cancellationToken) : Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+     public Task<bool> RecordRevisionAsync(string tenant, long expectedRevision, long nextRevision, string exactStateDigest,
+-        CancellationToken cancellationToken = default) => Task.FromResult(false);
++        CancellationToken cancellationToken = default) => InvokeAsync(() => Task.FromResult(false), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.AdmitTransitionAsync(transition, cancellationToken);
++    public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(() => owner.AdmitTransitionAsync(transition, cancellationToken), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> RecordTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.RecordTransitionAsync(transition, cancellationToken);
++    public Task<bool> RecordTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(() => owner.RecordTransitionAsync(transition, cancellationToken), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> RecoverTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.RecoverTransitionAsync(transition, cancellationToken);
++    public Task<bool> RecoverTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(() => owner.RecoverTransitionAsync(transition, cancellationToken), cancellationToken);
+     /// <inheritdoc />
+-    public Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => owner.VerifyTransitionAsync(transition, cancellationToken);
++    public Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => InvokeAsync(() => owner.VerifyTransitionAsync(transition, cancellationToken), cancellationToken);
++
++    private static async Task<bool> InvokeAsync(Func<Task<bool>> operation, CancellationToken caller)
++    {
++        caller.ThrowIfCancellationRequested();
++        try
++        {
++            bool result = await operation().WaitAsync(caller).ConfigureAwait(false);
++            caller.ThrowIfCancellationRequested(); return result;
++        }
++        catch (OperationCanceledException) when (caller.IsCancellationRequested) { throw; }
++        catch (Exception) { caller.ThrowIfCancellationRequested(); return false; }
++    }
+ }
+--- a/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleProvider.cs
++++ b/src/Hexalith.Platform.Secrets.Runtime/DaprCustodyKeyLifecycleProvider.cs
+@@ -20,28 +20,30 @@
+     public Task<CustodyKeyLifecycleOutcome> LookupAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest original,
+         string requestDigest, CancellationToken cancellationToken = default) => InvokeAsync(registration, original, requestDigest, true, cancellationToken);
+ 
+-    private async Task<CustodyKeyLifecycleOutcome> InvokeAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest request,
++    private Task<CustodyKeyLifecycleOutcome> InvokeAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest request,
+         string digest, bool lookup, CancellationToken token)
+     {
+         var unknown = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, digest, CustodyKeyLifecycleStatus.Unknown);
+-        try
++        return client.InBudgetAsync(token, async budget =>
+         {
+             if (registration.Identity != request.Identity || digest != CustodyBindingContract.Hash(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(request))) return unknown;
+             if (request.Action != CustodyKeyLifecycleAction.Destroy)
+-                return lookup ? await client.LookupOriginalAsync(registration, request, token) : await client.ExecuteLifecycleAsync(registration, request, token);
++                return await client.LifecycleAsync(registration, request, lookup, budget);
+             if (request.Identity.Purpose != PlatformKeyPurpose.InteractionRootDek || !CustodyBindingContract.Text(request.ProtectionReservationReceiptId)) return unknown;
+             // The signed manifest uses the target triple. Authenticate every remaining root/lifecycle/store/contract
+             // field against the retained wrap original before projecting a target receipt onto this complete identity.
+-            var wrapped = await client.LookupOriginalAsync(registration, cancellationToken: token);
++            var wrapped = await client.LifecycleAsync(registration, null, true, budget);
++            budget.Check();
+             if (wrapped.Status != CustodyKeyLifecycleStatus.Wrapped || wrapped.ReceiptId != registration.WrapReceiptId) return unknown;
+-            var manifest = await originals.FindAsync(request.ProtectionReservationReceiptId!, token).WaitAsync(token);
++            var manifest = await originals.FindAsync(request.ProtectionReservationReceiptId!, budget.Token).WaitAsync(budget.Token);
++            budget.Check();
+             var target = new ProtectionTarget(request.Identity.TenantId, request.Identity.ObjectId, request.Identity.KeyAlias);
+             if (manifest is null || !manifest.Targets.Contains(target)) return unknown;
+-            var original = await client.ExecuteManifestOriginalAsync(manifest, request.ProtectionReservationReceiptId!, lookup, token);
++            var original = await client.ExecuteManifestOriginalAsync(manifest, request.ProtectionReservationReceiptId!, lookup, budget);
++            budget.Check();
+             var receipt = original.Result.TargetReceipts.SingleOrDefault(r => r.Target == target);
+             return original.Result.State == DeletionManifestProviderState.Consumed && receipt is not null && original.RestoreBarrierReceiptId is not null
+                 ? new(request.Identity, request.OperationId, digest, CustodyKeyLifecycleStatus.Destroyed, receipt.ReceiptId, original.RestoreBarrierReceiptId) : unknown;
+-        }
+-        catch (Exception) { return unknown; }
++        }, () => unknown);
+     }
+ }
+--- a/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingContractTests.cs
++++ b/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingContractTests.cs
+@@ -123,15 +123,18 @@
+     }
+ 
+     [Fact]
+-    public void ContradictoryWrapRegistrationEnvelopeIsRejected()
++    public void OriginalWrapOwnerRevisionIsIndependentFromFreshCustodyHead()
+     {
+         var e = CustodyBindingFixture.Envelope("wrap") with { OperationId = CustodyBindingFixture.Registration.OperationId };
+         var request = CustodyBindingFixture.Bind(new(e, CustodyBindingFixture.Registration));
+         CustodyBindingContract.Validate(request).ShouldBeTrue();
+         CustodyBindingContract.Validate(request with { Envelope = e with { OperationId = "other", RequestDigest = request.Envelope.RequestDigest } }).ShouldBeFalse();
+-        var wrongRevision = request with { Envelope = request.Envelope with { ExpectedCustodyRevision = 2,
++        byte[] originalBytes = JsonSerializer.SerializeToUtf8Bytes(request.Registration);
++        var freshHead = request with { Envelope = request.Envelope with { ExpectedCustodyRevision = 2,
+             Proof = request.Envelope.Proof with { ExpectedCustodyRevision = 2 } } };
+-        CustodyBindingContract.Validate(wrongRevision).ShouldBeFalse();
++        CustodyBindingContract.Validate(freshHead).ShouldBeTrue();
++        freshHead.Envelope.RequestDigest.ShouldBe(request.Envelope.RequestDigest);
++        JsonSerializer.SerializeToUtf8Bytes(freshHead.Registration).ShouldBe(originalBytes);
+     }
+ 
+     [Fact]
+--- a/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecycleCancellationTests.cs
++++ b/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyLifecycleCancellationTests.cs
+@@ -0,0 +1,77 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++using Dapr.Client;
++using Hexalith.EventStore.Contracts.Security;
++using Hexalith.Platform.Custody;
++using Hexalith.Platform.Secrets.Runtime;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.Platform.Secrets.Runtime.Tests;
++
++public sealed class CustodyLifecycleCancellationTests
++{
++    [Fact]
++    public async Task CredentialBoundAuthorizerPreservesCallerCancellationWhenTransportReturnsRefusal()
++    {
++        using var caller = new CancellationTokenSource();
++        var transport = Substitute.For<ISecretsCredentialBoundDaprInvoker>();
++        transport.InvokeCredentialBoundAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(_ => { caller.Cancel(); return Task.FromResult<string?>(null); });
++        var authorizer = new DaprCustodyAuthorizerClient(transport,
++            new Dictionary<string, string> { [DaprCustodyAuthorizerClient.LogicalRole] = "independent-authorizer" }, "file:/private/credential");
++        var intent = new CustodyCallIntent("unwrap", "tenant", "owner", "operation", CustodyBindingFixture.Digest, "{}", "attempt", "challenge");
++        var failure = await Should.ThrowAsync<OperationCanceledException>(() => authorizer.PrepareAsync(intent, caller.Token));
++        failure.CancellationToken.ShouldBe(caller.Token);
++    }
++
++    [Fact]
++    public async Task DiscardedOwnedKeyIsClearedWhenCallerCancelsBeforeResultExposure()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var client = Client(sdk, key); byte[] owned = Enumerable.Range(1, 32).Select(x => (byte)x).ToArray();
++        using var caller = new CancellationTokenSource();
++        var error = await Should.ThrowAsync<OperationCanceledException>(() => client.InBudgetAsync(caller.Token,
++            _ => { caller.Cancel(); return Task.FromResult(new CustodyKeyUseResult("Released", new(owned))); }, () => new CustodyKeyUseResult("Unknown")));
++        error.CancellationToken.ShouldBe(caller.Token); owned.ShouldBe(new byte[32]);
++    }
++
++    [Fact]
++    public async Task AuthorityRestoresCancellationFromRefusingOwnerForwardersAndRegistrationLocator()
++    {
++        using var sdk = new DaprClientBuilder().Build(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        var client = Client(sdk, key);
++        foreach (string phase in new[] { "state", "operation", "admit", "record", "recover", "verify", "registration" })
++        {
++            using var caller = new CancellationTokenSource();
++            var owner = Substitute.For<ICustodyOwnerStateAuthority>();
++            Task<bool> Refusal() { caller.Cancel(); return Task.FromResult(false); }
++            owner.ValidateStateAsync(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.AuthorizeOperationAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.AdmitTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.RecoverTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            owner.VerifyTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => Refusal());
++            var registrations = Substitute.For<ICustodyKeyRegistrationSource>();
++            registrations.FindAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<CancellationToken>()).Returns(_ => { caller.Cancel(); return Task.FromResult<CustodyKeyRegistration?>(null); });
++            var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, client, Substitute.For<ICustodyKeyLifecycleProvider>(), registrations);
++            var transition = new AnchoredStateTransition("owner", 0, 1, CustodyBindingFixture.Digest, CustodyBindingFixture.Digest, [1]);
++            var request = CustodyBindingFixture.Lifecycle().Lifecycle!;
++            var outcome = new CustodyKeyLifecycleOutcome(request.Identity, request.OperationId, CustodyBindingFixture.Digest, CustodyKeyLifecycleStatus.Unknown);
++            Task<bool> call = phase switch {
++                "state" => authority.ValidateStateAsync("tenant", 0, CustodyBindingFixture.Digest, caller.Token),
++                "operation" => authority.AuthorizeOperationAsync(CustodyBindingFixture.Identity, "operation", "method", CustodyBindingFixture.Digest, caller.Token),
++                "admit" => authority.AdmitTransitionAsync(transition, caller.Token),
++                "record" => authority.RecordTransitionAsync(transition, caller.Token),
++                "recover" => authority.RecoverTransitionAsync(transition, caller.Token),
++                "verify" => authority.VerifyTransitionAsync(transition, caller.Token),
++                _ => authority.VerifyOutcomeAsync(request, outcome, caller.Token),
++            };
++            (await Should.ThrowAsync<OperationCanceledException>(() => call)).CancellationToken.ShouldBe(caller.Token);
++        }
++    }
++
++    private static CustodyLifecycleClient Client(DaprClient sdk, ECDsa key)
++        => new(sdk, new Dictionary<string, string>(), "owner", JsonSerializer.Serialize(CustodyBindingFixture.Enrollment),
++            key.ExportSubjectPublicKeyInfoPem(), Substitute.For<ICustodyLifecycleCallSource>());
++}

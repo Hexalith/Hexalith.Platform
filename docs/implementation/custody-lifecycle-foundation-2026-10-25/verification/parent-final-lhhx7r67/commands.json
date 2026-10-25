@@ -1,0 +1,21 @@
+[
+  {
+    "name": "component-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+      "--artifacts-path",
+      "/tmp/custody-reviewed-final-hbtvff63/component",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:RestorePackagesWithLockFile=false",
+      "-m:1"
+    ],
+    "startedAtUtc": "2026-10-25T08:39:26.244210+00:00",
+    "exitCode": 1,
+    "expectedExitCode": 0,
+    "log": "docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/parent-final-lhhx7r67/component-build.log",
+    "sha256": "759e539029003119fbbd4beb43b151083b62b620c73a0dcb6d794794c81aab54"
+  }
+]
