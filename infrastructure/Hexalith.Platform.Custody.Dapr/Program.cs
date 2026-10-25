@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Security.Cryptography;
 using Hexalith.Platform.Secrets.Runtime;
 
+if (args.Length == 2 && args[0] == "--serve-independent-authority")
+    return await IndependentAuthorityHttpApplication.RunAsync(args[1]);
+
 // No startup bootstrap, resource creation, fixture fallback, automatic worker or production DI registration.
 if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" or "--serve" or "--worker"))
 {
