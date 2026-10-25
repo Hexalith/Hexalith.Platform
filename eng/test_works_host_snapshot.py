@@ -33,7 +33,7 @@ class WorksHostSnapshotTests(unittest.TestCase):
         (self.origin / "src/runtime.cs").write_text("working overlay")
         (self.origin / "src/new.cs").write_text("new input")
         for name in [*snapshot.UNRELATED_CANONICAL_INPUTS, "config/works-production-profile.schema.json", "eng/used-fixture.json",
-                     "eng/executed.py", "src/Used.csproj"]:
+                     "eng/executed.py", "src/Used.csproj", "eng/ext-secrets-1/public-joint-plan.json"]:
             path = self.origin / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("bound input")
@@ -51,7 +51,8 @@ class WorksHostSnapshotTests(unittest.TestCase):
         observed = self.verify()
         self.assertEqual(observed["originCommit"], self.commit)
         self.assertEqual(set(self.record["workingOverlays"]), {"src/runtime.cs", "src/new.cs", *snapshot.UNRELATED_CANONICAL_INPUTS,
-            "config/works-production-profile.schema.json", "eng/used-fixture.json", "eng/executed.py", "src/Used.csproj"})
+            "config/works-production-profile.schema.json", "eng/used-fixture.json", "eng/executed.py", "src/Used.csproj",
+            "eng/ext-secrets-1/public-joint-plan.json"})
         self.assertTrue((self.export / "references/Dependency").is_symlink())
         (self.export / "src/obj").mkdir()
         (self.export / "src/obj/generated.cs").write_text("generated")
@@ -84,6 +85,17 @@ class WorksHostSnapshotTests(unittest.TestCase):
     def test_current_origin_drift_refuses(self):
         (self.origin / "src/new.cs").write_text("changed ordinary fixture")
         with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
+
+    def test_embedded_composition_plan_cannot_drift_with_unexecuted_secret_tools(self):
+        path = self.origin / "eng/ext-secrets-1/public-joint-plan.json"
+        original = path.read_bytes()
+        for change in ("changed", "removed"):
+            with self.subTest(change=change):
+                if change == "changed": path.write_text("different compiled plan")
+                else: path.unlink()
+                with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
+                path.write_bytes(original)
+        self.verify()
 
     def test_isolated_origin_also_binds_the_original_owner_working_overlay(self):
         upstream = self.root / 'upstream'
