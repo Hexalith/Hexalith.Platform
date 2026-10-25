@@ -10,7 +10,10 @@ using Hexalith.EventStore.Aspire;
 /// <summary>Enrolls dedicated owner REST clients without composing a Platform topology or granting SDK callers.</summary>
 /// <remarks>Operation scopes and permission mappers describe the consumer's request/cache contract. Receivers keep
 /// their native authorization: Memories enforces authenticated tenant membership, not these operation/permission
-/// claims. Enrollment does not add a per-operation Memories authorization scheme or provision owner records.</remarks>
+/// claims. Enrollment does not add a per-operation Memories authorization scheme or provision owner records.
+/// Tokens carry <c>tenant_id</c> but never <c>eventstore:tenant</c>: an owner audience can also be accepted by EventStore,
+/// whose tenant-scoped endpoints authorize on that claim alone. EventStore derives it from <c>tenant_id</c> only for
+/// tokens without <c>eventstore:*</c> claims, and every owner token carries <c>eventstore:permission</c>.</remarks>
 public static class PlatformOwnerServices
 {
     /// <summary>Gets the dedicated audience scope prefix, separate from SDK workload scopes.</summary>
@@ -85,7 +88,6 @@ public static class PlatformOwnerServices
                 ["protocolMappers"] = new JsonArray(
                     Mapper("owner-subject", "oidc-sub-mapper", new() { ["access.token.claim"] = "true" }),
                     Claim("tenant_id", binding.TenantId),
-                    Claim("eventstore:tenant", binding.TenantId),
                     Claim("eventstore:permission", binding.Permission)),
             });
         }

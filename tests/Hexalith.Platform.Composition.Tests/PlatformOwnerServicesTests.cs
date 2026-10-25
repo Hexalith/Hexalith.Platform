@@ -37,6 +37,8 @@ public sealed class PlatformOwnerServicesTests
             client["optionalClientScopes"]!.AsArray().ShouldAllBe(scope => scope!.GetValue<string>().StartsWith("platform-owner-", StringComparison.Ordinal));
             JsonNode tenant = client["protocolMappers"]!.AsArray().Single(mapper => mapper!["config"]?["claim.name"]?.GetValue<string>() == "tenant_id")!;
             tenant["config"]!["claim.value"]!.GetValue<string>().ShouldBe("tenant-alpha");
+            client["protocolMappers"]!.AsArray().Any(mapper => mapper!["config"]?["claim.name"]?.GetValue<string>() == "eventstore:tenant")
+                .ShouldBeFalse("Owner tokens must not carry EventStore's tenant claim.");
         }
         realm["clientScopes"]!.AsArray().Count.ShouldBe(4);
         realm["clientScopes"]!.AsArray().Select(scope => scope!["name"]!.GetValue<string>()).ShouldBe(
