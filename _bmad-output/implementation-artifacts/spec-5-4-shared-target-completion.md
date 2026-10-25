@@ -4,7 +4,7 @@ type: 'feature'
 created: '2026-10-25'
 status: 'in-progress'
 route: 'dispatch'
-review_loop_iteration: 0
+review_loop_iteration: 1
 baseline_commit: '90aef9ac3e813d9cae5b16d68ca5e326ce0fb599'
 context:
   - '../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
@@ -81,7 +81,54 @@ Investigation only. No implementation task is closed. Full S1–S4/v23 and H1–
 
 ## Spec Change Log
 
+
+### Pass 1 source re-derivation
+
+Independent review exposed receiving-service omissions, false packet completeness, missing exact recovery and durability boundaries. All are within the existing frozen intent. Re-derive the affected paths in place: concurrent external commits and unrelated work make broad reversion unsafe. KEEP the existing signed identity checks, real EventStore recording port, complete case partitions, no-resend uncertainty behavior, private credential captures, explicit-date checks and all working source/tests. No accepted record or unrelated file may be reverted.
+
+Required corrections:
+
+- Implement receiving source for every method invoked by installed qualification, owner-call, and FR-34 clients. Bind actual runtime/native/protection and independently persisted read ports; do not substitute another unimplemented remote method or self-reported success. Native authorizer must supply current verified key-closure digest and exact key-admission statements for wrap/unwrap. Source applications must compose these handlers with explicit installed dependencies and deny missing inputs.
+- Independently verify native host/protection evidence and case invariants; bind every secrets proof to the current target, cohort attempt, exact case/request, installed configuration and plan. Historical originals require retained public-key signature verification and original-time validity; current authorization remains fresh separately. No owner-provided flag/receipt shape is authoritative observation.
+- Validate complete joint configuration structure and all cross-artifact/date/target/trust/phase-profile pins during packet admission. Preserve exact installed raw configuration bytes and clearly retain canonical semantic hashes separately where the legacy runtime protocol requires them. Reject malformed shapes with named blockers. Replace binding rows rather than append duplicates. Both exact commands must match their coordinated commands and pass the accepted joint configuration path.
+- Impose a monotonic total deadline on cohort RPCs. Carry reserved/dispatched/unknown effect state into failure evidence; never claim zero after dispatch. Keep exact original replay payload/time across retry, allow proven unsent/rejected recovery, and keep uncertain submissions lookup-only.
+- Store immutable spool transition originals separately with a bounded independent conditional head and completion capacity; keep restart/restore exactness and original grants. Publish immutable files atomically only after flush, and fsync containing directories before advancing authority. Never overwrite conflicting originals.
+- Add meaningful receiving-path tests: restart with null phase result must only lookup; missing/changed retained payload and revoked workload must deny private proof issuance; full positive receiving handlers and negative substitutions; raw formatting, duplicate binding replacement, malformed inputs, cross-bound complete packet, old original signatures, actual observer evidence and bounded calls. Synchronize renamed reconciliation obligations and run the full isolated Python suite. No live owner/cohort/physical action is authorized.
+
 ## Review Triage Log
+
+
+### Review pass 1
+
+| Finding | Verdict | Verified evidence | Route |
+| --- | --- | --- | --- |
+| BH1 | high | Installed qualification adapters call executor/observer/enrollment operations without receiving handlers; actual source handlers and executable composition are required. | bad_spec — re-derive affected path in place |
+| BH2 | high | custody-owner-call has no receiving handler; current owner authority cannot function. | bad_spec — re-derive affected path in place |
+| BH3 | high | FR-34 engine/reader/canary methods have no receiving handlers; startup/readiness cannot complete. | bad_spec — re-derive affected path in place |
+| BH4 | high | Non-secrets observer validates receipt shape only, permitting fabricated owner evidence without authoritative reads or case invariants. | bad_spec — re-derive affected path in place |
+| BH5 | high | q.verify_signed applies a 30-second current window to immutable historical phase originals, preventing delayed recovery. | bad_spec — re-derive affected path in place |
+| BH6 | high | Packet admission does not validate joint configuration binding against target/dates/artifact/trust pins; invalid fixture binding prepares a complete packet. | bad_spec — re-derive affected path in place |
+| BH7 | medium | Preparation compares raw installed configuration hash with canonical parsed serialization, rejecting valid reformatted files. | bad_spec — re-derive affected path in place |
+| BH8 | medium | Replacement records append duplicate joint/host binding rows; consumers select obsolete first rows on subsequent replacement. | bad_spec — re-derive affected path in place |
+| BH9 | high | urllib inactivity timeout does not impose an overall monotonic request deadline. | bad_spec — re-derive affected path in place |
+| BH10 | high | Joint qualifier failures retain effects_started=false even after reserved/dispatched phases. | bad_spec — re-derive affected path in place |
+| BH11 | high | Replay original is retained before proof/submission; unsent originals cannot progress and later timestamps change identity. | bad_spec — re-derive affected path in place |
+| BH12 | high | Spool authority retains every complete transition snapshot twice in a capped single head; quadratic growth lacks archive/completion reserve. | bad_spec — re-derive affected path in place |
+| BH13 | high | Immutable archive writes publish final paths before completion and omit parent directory fsync. | bad_spec — re-derive affected path in place |
+| EC1 | high | Confirmed BH13: interrupted final-locator writes can expose partial originals and break exact recovery. | bad_spec — re-derive affected path in place |
+| EC2 | high | Secrets original request is not cross-bound to current platform target and retained cohort attempt; other signed case results can be reused. | bad_spec — re-derive affected path in place |
+| EC3 | high | Confirmed BH5: immutable proofs are incorrectly subject to current 30-second freshness. | bad_spec — re-derive affected path in place |
+| EC4 | high | Confirmed BH4: fabricated host/protection receipts pass independent observer shape checks. | bad_spec — re-derive affected path in place |
+| EC5 | high | Confirmed BH10: post-dispatch Blocked results report zero effects. | bad_spec — re-derive affected path in place |
+| EC6 | medium | Malformed context/nested arrays raise AttributeError instead of a named blocked-input report. | bad_spec — re-derive affected path in place |
+| EC7 | medium | Malformed accepted packet fields/types raise KeyNotFoundException or InvalidOperationException outside TryCompose refusal guards. | bad_spec — re-derive affected path in place |
+| EC8 | medium | Confirmed BH7: raw-byte enrollment and canonical configuration hashes diverge. | bad_spec — re-derive affected path in place |
+| EC9 | high | Native authorizer prepares null KeyClosureProfileDigest and omits custody-key-admission metadata; every wrap/unwrap is refused. | bad_spec — re-derive affected path in place |
+| EC10 | high | Confirmed BH2: custody-owner-call receiver is absent. | bad_spec — re-derive affected path in place |
+| EC11 | high | Confirmed BH3: FR-34 receiving operations are absent. | bad_spec — re-derive affected path in place |
+| VG1 | high | Pre-verified regression gap: mutating RetainedPhaseOwner to repeat execution after unknown original leaves all ten coordinator tests passing; add actual receiving restart/lookup test. | patch |
+| VG2 | high | Pre-verified regression gap: exact retained-original private command authorization has no exercised receiving/proof-source test; port tests substitute the proof source. | patch |
+| VG3 | medium | Renamed cohort blocker is not synchronized with reconciliation obligations, causing a false RegisterConditionMetNotLiveVerified classification and four isolated-suite failures. | patch |
 
 ## Verification
 

@@ -43,7 +43,7 @@ def digest(value):
 def default_profile():
     return {
         "host": "192.168.1.30",
-        "integrationDate": "2026-10-08",
+        "integrationDate": None,
         "partiesBranch": "B",
         "timing": dict(TIMING),
         "services": {key: "../" + ("eventstore" if key == "eventStore" else key) for key in SERVICE_KEYS},
@@ -87,7 +87,7 @@ def missing_references(profile):
     if profile.get("host") != "192.168.1.30" or profile.get("partiesBranch") != "B":
         raise ValueError("profile rejected accepted constants")
     value = profile.get("integrationDate")
-    if not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value) or date.fromisoformat(value).isoformat() != value:
+    if value not in (None, "") and (not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value) or date.fromisoformat(value).isoformat() != value):
         raise ValueError("profile requires an explicit real calendar date yyyy-MM-dd")
     timing = profile.get("timing")
     if not isinstance(timing, dict) or sorted(timing) != sorted(TIMING) or any(timing.get(key) != value for key, value in TIMING.items()):
@@ -95,7 +95,7 @@ def missing_references(profile):
     services = profile.get("services")
     if not isinstance(services, dict) or sorted(services) != sorted(SERVICE_KEYS):
         raise ValueError("profile rejected an unknown or incomplete setting")
-    missing = []
+    missing = ["integrationDate"] if value in (None, "") else []
     for key in SERVICE_KEYS:
         if reference(services.get(key), "services." + key) is None:
             missing.append("services." + key)
@@ -119,7 +119,7 @@ def plan():
     return {
         "credentialSlots": sorted([*REFERENCE_KEYS, "replicaCount", *(f"services.{key}" for key in SERVICE_KEYS)]),
         "host": "192.168.1.30",
-        "integrationDate": "2026-10-08",
+        "integrationDatePolicy": "explicit-accepted-calendar-date",
         "partiesBranch": "B",
         "services": SERVICE_KEYS,
         "timing": TIMING,
@@ -134,6 +134,7 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
         raise ValueError("fresh detached output directory required")
     profile = load_profile(profile_path) if profile_path else default_profile()
     missing = missing_references(profile)
+    profile_bytes = Path(profile_path).read_bytes() if profile_path else canonical(profile)
     head = git(root, "rev-parse", "HEAD")
     if not COMMIT.fullmatch(head) or git(root, "status", "--porcelain"):
         raise ValueError("clean candidate checkout required")
@@ -142,6 +143,8 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
     from coordinated_packets import admission
     installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, True, profile["integrationDate"])
     missing.extend(installation_missing)
+    if not installation_missing and hashlib.sha256(profile_bytes).hexdigest() != installed_hashes.get("hostProfileSha256"):
+        missing.append("ExactInstalledProfileBytes")
     if missing:
         report = {"packetPrepared": False, "completeReplacementPacket": False, "targetCommit": None,
                   "dependencyAvailable": False, "effects": 0, "missingReferences": sorted(set(missing)), "installedHashes": installed_hashes}
@@ -150,8 +153,14 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
     profile_file = output / "agents-deployment-profile.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && '
                'test -z "$(git -C ../platform status --porcelain)" && '
+               "env PLATFORM_JOINT_COHORT_CONFIGURATION=" + shlex.quote(str(coordinated["installedArtifacts"]["jointConfiguration"]["path"])) + " "
                "bash ../platform/eng/verify-agents-host.sh --mode Full --artifacts-path /tmp/ext-host-1-full --profile "
                + shlex.quote(str(profile_file)))
+    if coordinated["exactCommands"].get("EXT-HOST-1") != command:
+        report = {"packetPrepared": False, "completeReplacementPacket": False, "targetCommit": None,
+                  "dependencyAvailable": False, "effects": 0, "missingReferences": ["EXT-HOST-1.ExactCoordinatedCommand"], "installedHashes": installed_hashes}
+        (output / "blocked-inputs.json").write_bytes(canonical(report))
+        return report
     packet = {
         "schema": SCHEMA,
         "completeReplacementPacket": True,
@@ -170,14 +179,14 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
         "planSha256": digest(plan()),
         "productionMutationAllowed": False,
         "profile": profile,
-        "profileSha256": digest(profile),
+        "profileSha256": hashlib.sha256(profile_bytes).hexdigest(),
     }
-    from coordinated_packets import records
+    from coordinated_packets import records, shared_binding
     from joint_live_phase_runner import full_plan, digest as cohort_digest
     packet["cohortPlanSha256"] = cohort_digest(full_plan())
-    packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], installed_hashes)
+    packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
     (output / "joint-qualification-plan.json").write_bytes(canonical(full_plan()))
-    (output / "agents-deployment-profile.json").write_bytes(canonical(profile))
+    (output / "agents-deployment-profile.json").write_bytes(profile_bytes)
     (output / "replacement-acceptance-packet.json").write_bytes(canonical(packet))
     (output / "exact-command.sh").write_text(command + "\n")
     return {"packetPrepared": True, "acceptedReplacementCommit": None, "dependencyAvailable": False,

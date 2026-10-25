@@ -93,6 +93,8 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     from coordinated_packets import admission
     installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, candidate_ready)
     missing.extend(installation_missing)
+    if not installation_missing and q.digest(config) != installed_hashes.get("custodyConfigurationSha256"):
+        missing.append("ExactInstalledConfigurationBytes")
     cohort = []
     register_binding = None
     if register is not None:
@@ -110,8 +112,11 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     packet_path = output / "replacement-acceptance-packet.json"
     detached_configuration = output / "runtime-reference.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && test -z "$(git -C ../platform status --porcelain)" && '
-               f'env EXT_SECRETS_1_RUNTIME_CONFIGURATION={shlex.quote(str(detached_configuration))} EXT_SECRETS_1_ACCEPTANCE_PACKET={shlex.quote(str(packet_path))} '
+               f'env PLATFORM_JOINT_COHORT_CONFIGURATION={shlex.quote(str(coordinated.get("installedArtifacts", {}).get("jointConfiguration", {}).get("path", "")))} '
+               f'EXT_SECRETS_1_RUNTIME_CONFIGURATION={shlex.quote(str(detached_configuration))} EXT_SECRETS_1_ACCEPTANCE_PACKET={shlex.quote(str(packet_path))} '
                + q.command_suffix(eventstore, artifacts, evidence))
+    if not installation_missing and coordinated["exactCommands"].get("EXT-SECRETS-1") != command:
+        missing.append("EXT-SECRETS-1.ExactCoordinatedCommand")
     packet = {"schema": "EXT-SECRETS-1.replacement-acceptance.v2", "candidateCommit": head,
               "acceptedReplacementCommit": None, "dependencyAvailable": False, "liveCompatibilityAuthorized": False,
               "productionMutationAllowed": False, "ownerAcceptanceRequired": True, **binding,
@@ -126,10 +131,10 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
               "installedHashes": installed_hashes, "targetCommit": head if candidate_ready and not missing else None}
     (output / "blocked-inputs.json").write_bytes(q.canonical(report))
     if report["packetPrepared"]:
-        from coordinated_packets import records
+        from coordinated_packets import records, shared_binding
         from joint_live_phase_runner import full_plan, digest as cohort_digest
         packet["cohortPlanSha256"] = cohort_digest(full_plan())
-        packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], binding)
+        packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
         (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
         packet_path.write_bytes(q.canonical(packet))
         detached_configuration.write_bytes(q.canonical(config))

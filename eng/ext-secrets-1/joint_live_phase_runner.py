@@ -110,13 +110,20 @@ class JointLivePhaseRunner:
             missing.extend(self.authority.preflight(b))
         if set(self.owners) != set(PHASES):
             missing.append("InstalledIndependentPhaseOwners")
+        readiness = []
+        if not missing:
+            for phase, name in enumerate(PHASES):
+                report = self.owners[name].preflight(b, phase, partitions()[phase])
+                missing.extend(report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]))
+                readiness.append(report.get("readiness"))
         if missing:
             raise Blocked(*missing)
+        self._readiness = readiness
         return digest(b)
 
     def run(self):
         key = self.preflight()  # reserves nothing, including on refusal
-        retained = self.authority.reserve(self.binding, str(uuid.uuid4()))
+        retained = self.authority.reserve(self.binding, str(uuid.uuid4()), self._readiness)
         if retained.get("bindingDigest") != key or not retained.get("attemptId"):
             raise Blocked("ExactRetainedAttempt")
         attempt = retained["attemptId"]
@@ -230,8 +237,8 @@ class DaprCohortAuthority:
     def current(self, binding):
         return self.rpc.call("current", {"binding": binding}).get("current") is True
 
-    def reserve(self, binding, attempt):
-        return self.rpc.call("reserve", {"binding": binding, "attemptId": attempt})
+    def reserve(self, binding, attempt, readiness):
+        return self.rpc.call("reserve", {"binding": binding, "attemptId": attempt, "ownerReadiness": readiness})
 
     def retain(self, request):
         return self.rpc.call("retain", {"request": request}).get("first") is True
@@ -251,6 +258,9 @@ class DaprPhaseOwner:
     def __init__(self, rpc):
         self.rpc = rpc
 
+    def preflight(self, binding, phase, cases):
+        return self.rpc.call("preflight", {"binding": binding, "phase": phase, "cases": cases})
+
     def execute(self, request):
         return self.rpc.call("execute", request)
 
@@ -261,11 +271,11 @@ class DaprPhaseOwner:
 def run_installed_cohort(configuration_path, register_path):
     """Common owner entrypoint; requires an explicit externally enrolled installation, never synthesizes ports."""
     import qualify as q
-    config = q.read_json(configuration_path)
+    configuration_bytes = q.bounded_public_file(configuration_path, 1024 * 1024)
+    config = q.decode_json(configuration_bytes)
     binding = config["binding"]
+    validate_source_checkout(binding)
     register = q.bounded_public_file(register_path, 1024 * 1024)
-    if hashlib.sha256(register).hexdigest() != binding.get("registerSha256"):
-        raise Blocked("ExactAcceptedCoordinatedRegister")
     text = register.decode("utf-8")
     for record in ("EXT-SECRETS-1", "EXT-HOST-1", "EXT-PROTECTION-1"):
         match = re.search(r"^### " + record + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)
@@ -275,6 +285,12 @@ def run_installed_cohort(configuration_path, register_path):
         if (f'| `TargetVersionOrCommit` | `{target}` |' not in section or f'| `TargetIntegrationDate` | `{integration}` |' not in section
                 or not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", section)):
             raise Blocked("ExactAcceptedCoordinatedRecords")
+        if record != "EXT-PROTECTION-1":
+            pins = re.search(r"\| `JointQualificationBinding` \| `([^`]+)` \|", section)
+            expected = {"configurationSha256": hashlib.sha256(configuration_bytes).hexdigest(),
+                        "bindingSha256": digest(binding), "planSha256": digest(full_plan())}
+            if pins is None or q.decode_json(pins.group(1)) != expected:
+                raise Blocked("ExactAcceptedJointConfigurationAndTrust")
     endpoint = config["daprEndpoint"]
     from urllib.parse import urlparse
     parsed = urlparse(endpoint)
@@ -286,3 +302,15 @@ def run_installed_cohort(configuration_path, register_path):
     if not verify_complete_result(result, binding, authority):
         raise Blocked("SameCompletePairedOwnerResult")
     return result
+
+
+def validate_source_checkout(binding, root=None):
+    """Validate the executing source checkout before contacting any admission service."""
+    import subprocess
+    import qualify as q
+    root = Path(__file__).resolve().parents[2] if root is None else Path(root)
+    try:
+        if q.git(root, "rev-parse", "HEAD") != binding.get("platformCommit") or q.git(root, "status", "--porcelain"):
+            raise Blocked("ExactCleanExecutingPlatformCheckout")
+    except (OSError, subprocess.SubprocessError):
+        raise Blocked("ExactCleanExecutingPlatformCheckout") from None

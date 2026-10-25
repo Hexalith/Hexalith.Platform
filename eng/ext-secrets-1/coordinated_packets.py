@@ -6,7 +6,7 @@ import re
 from joint_live_phase_runner import calendar_date, digest, full_plan
 
 REQUIRED_ARTIFACTS = ("custodyConfiguration", "hostProfile", "protectionProfile", "providerProfile", "authorityEnrollment",
-                      "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan")
+                      "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan", "jointConfiguration")
 
 
 def section(text, record):
@@ -51,8 +51,13 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
             except (OSError, KeyError, ValueError, TypeError, ImportError):
                 hashes[name + "Sha256"] = None
                 missing.append("installedArtifacts." + name)
-        anchors = [hashes.get(name + "Sha256") for name in ("executorAnchor", "observerAnchor", "enrollmentAnchor")]
-        if None in anchors or len(set(anchors)) != 3:
+        anchors = []
+        for name in ("executorAnchor", "observerAnchor", "enrollmentAnchor"):
+            try:
+                anchors.append(q.public_key_identity(q.read_public_anchor(context["installedArtifacts"][name]["path"])))
+            except (OSError, KeyError, ValueError, TypeError, ImportError):
+                missing.append("IndependentInstalledTrustBytes")
+        if len(anchors) != 3 or len(set(anchors)) != 3:
             missing.append("IndependentInstalledTrustBytes")
         if context.get("planSha256") != digest(full_plan()):
             missing.append("FullCoordinatedQualificationPlan")
@@ -81,6 +86,7 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
                     or payload["platformIntegrationDate"] != context["platformIntegrationDate"]
                     or payload["protectionIntegrationDate"] != context["protectionIntegrationDate"]
                     or payload["planSha256"] != digest(full_plan())
+                    or payload["exactCommands"] != context.get("exactCommands")
                     or not time.time() - 30 <= payload["observedAt"] <= time.time() < payload["validUntil"] <= payload["observedAt"] + 30):
                 raise ValueError("current exact independent installation proof required")
         except Exception:
@@ -98,6 +104,15 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
         return ["ValidExplicitCoordinatedInstallationContext"], hashes, context
 
 
+def shared_binding(installed_hashes, coordinated):
+    from cases import plan_digest
+    return {"jointConfigurationFile": coordinated["installedArtifacts"]["jointConfiguration"]["path"], "jointConfigurationSha256": installed_hashes["jointConfigurationSha256"],
+            "configurationSha256": installed_hashes["custodyConfigurationSha256"],
+            "profileSha256": installed_hashes["hostProfileSha256"], "planSha256": plan_digest(),
+            "cohortPlanSha256": digest(full_plan()),
+            **{name + "AnchorSha256": installed_hashes[name + "AnchorSha256"] for name in ("executor", "observer", "enrollment")}}
+
+
 def records(register_path, target, platform_date, commands, bindings):
     """Preserve all nine fields and every extension verbatim except explicit proposed fields. Acceptance remains external."""
     import qualify as q
@@ -108,6 +123,11 @@ def records(register_path, target, platform_date, commands, bindings):
         proposed = re.sub(r"(\| `TargetVersionOrCommit` \| )`[^`]+`", lambda m: m[1] + "`" + target + "`", original)
         proposed = re.sub(r"(\| `TargetIntegrationDate` \| )`[^`]+`", lambda m: m[1] + "`" + calendar_date(platform_date) + "`", proposed)
         proposed = re.sub(r"Command: `[^`]+`", lambda _: "Command: `" + commands[record] + "`", proposed)
+        joint = q.read_json(bindings["jointConfigurationFile"])
+        joint_binding = {"configurationSha256": bindings["jointConfigurationSha256"], "bindingSha256": digest(joint["binding"]), "planSha256": digest(full_plan())}
+        proposed += "\n| `JointQualificationBinding` | `" + json.dumps(joint_binding, sort_keys=True, separators=(",", ":")) + "` |\n"
+        if record == "EXT-SECRETS-1":
+            proposed = re.sub(r"(\| `RuntimeQualificationBinding` \| )`[^`]+`", lambda m: m[1] + "`" + json.dumps(bindings, sort_keys=True, separators=(",", ":")) + "`", proposed)
         result[record] = {"acceptedSectionSha256": hashlib.sha256(original.encode()).hexdigest(), "acceptedVerbatimSection": original,
                           "proposedVerbatimSection": proposed + ("\n| `HostQualificationBinding` | `" + json.dumps(bindings, sort_keys=True, separators=(",", ":")) + "` |\n" if record == "EXT-HOST-1" else ""), "RuntimeQualificationBinding": bindings, "accepted": False, "availability": False}
     return result

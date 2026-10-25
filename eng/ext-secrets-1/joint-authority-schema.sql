@@ -6,4 +6,4 @@ CREATE TABLE originals(request_id TEXT PRIMARY KEY, attempt_id TEXT NOT NULL REF
 CREATE TABLE results(request_id TEXT PRIMARY KEY REFERENCES originals(request_id), result_json BLOB NOT NULL);
 CREATE TABLE phase_originals(request_id TEXT PRIMARY KEY, request_json BLOB NOT NULL, result_json BLOB NULL);
 CREATE TABLE workload_grants(bearer_sha256 TEXT PRIMARY KEY, methods_json BLOB NOT NULL, valid_until INTEGER NOT NULL, revoked INTEGER NOT NULL CHECK(revoked IN (0,1)));
-CREATE TABLE service_enrollment(role TEXT PRIMARY KEY, public_anchor_sha256 TEXT NOT NULL);
+CREATE TABLE service_enrollment(role TEXT PRIMARY KEY, public_anchor_sha256 TEXT NOT NULL, profile_sha256 TEXT NOT NULL);

@@ -6,6 +6,7 @@ outside application restore. Installed storage/replication proof remains mandato
 """
 import json
 import sqlite3
+from contextlib import contextmanager, closing
 from joint_live_phase_runner import PROTOCOL, PHASES, partitions, canonical, digest, Blocked
 
 
@@ -17,11 +18,19 @@ class CohortAuthorityStore:
             for name in ("accepted_sets", "current_set", "attempts", "originals", "results"):
                 database.execute("SELECT * FROM " + name + " LIMIT 0")
 
+    @contextmanager
     def connect(self):
         database = sqlite3.connect("file:" + self.path + "?mode=rw", uri=True, timeout=10)
         database.execute("PRAGMA synchronous=FULL")
         database.execute("PRAGMA foreign_keys=ON")
-        return database
+        try:
+            yield database
+            database.commit()
+        except BaseException:
+            database.rollback()
+            raise
+        finally:
+            database.close()
 
     def _current(self, database, binding):
         key = digest(binding)
@@ -46,6 +55,18 @@ class CohortAuthorityStore:
                 if method == "current":
                     return {"current": True}
                 if method == "reserve":
+                    import time
+                    ready = value.get("ownerReadiness", [])
+                    if not isinstance(ready, list) or len(ready) != 4:
+                        raise Blocked("CurrentInstalledOwnerReadinessBeforeReservation")
+                    now = int(time.time())
+                    for phase, receipt in enumerate(ready):
+                        payload = receipt.get("payload", {}) if isinstance(receipt, dict) else {}
+                        if (not self.verify_owner(phase, receipt) or payload.get("bindingDigest") != key or payload.get("phase") != phase
+                                or payload.get("cases") != partitions()[phase]
+                                or payload.get("profileSha256") != binding.get("phaseExecutionProfileSha256", {}).get(str(phase))
+                                or not now - 30 <= payload.get("observedAt", 0) <= now < payload.get("validUntil", 0) <= payload["observedAt"] + 30):
+                            raise Blocked("CurrentInstalledOwnerReadinessBeforeReservation")
                     row = database.execute("SELECT attempt_id FROM attempts WHERE binding_digest=?", (key,)).fetchone()
                     if row is None:
                         database.execute("INSERT INTO attempts(binding_digest,attempt_id) VALUES(?,?)", (key, value["attemptId"]))
@@ -114,12 +135,30 @@ class RetainedPhaseOwner:
         self.path, self.phase, self.binding = str(path), phase, binding
         self.executor, self.sign, self.authority = executor, sign, authority
 
+    @contextmanager
     def _connect(self):
         database = sqlite3.connect("file:" + self.path + "?mode=rw", uri=True, timeout=10)
         database.execute("PRAGMA synchronous=FULL")
-        return database
+        try:
+            yield database
+            database.commit()
+        except BaseException:
+            database.rollback()
+            raise
+        finally:
+            database.close()
 
     def dispatch(self, method, request):
+        if method == "preflight":
+            if request.get("binding") != self.binding or request.get("phase") != self.phase or request.get("cases") != partitions()[self.phase]:
+                raise Blocked("ExactInstalledPreflightPartition")
+            missing = self.executor.preflight()
+            if not self.authority.call("current", {"binding": self.binding}).get("current"):
+                missing.append("CurrentAcceptedPhaseSet")
+            import time
+            now = int(time.time())
+            return {"missingInputs": missing, "readiness": None if missing else self.sign({"bindingDigest": digest(self.binding), "phase": self.phase,
+                "cases": partitions()[self.phase], "profileSha256": self.binding["phaseExecutionProfileSha256"][str(self.phase)], "observedAt": now, "validUntil": now + 30})}
         if (request.get("bindingDigest") != digest(self.binding) or request.get("phase") != self.phase
                 or request.get("cases") != partitions()[self.phase] or method not in ("execute", "lookup")):
             raise Blocked("ExactInstalledPhaseScope")
@@ -164,6 +203,23 @@ class InstalledPhaseExecutor:
     """
     def __init__(self, descriptor, observer, binding):
         self.descriptor, self.observer, self.binding = descriptor, observer, binding
+        profiles = binding.get("phaseExecutionProfileSha256", {})
+        if profiles.get(str(descriptor.get("phase"))) != digest({name: value for name, value in descriptor.items() if name != "bindingDigest"}):
+            raise Blocked("ExactAcceptedPhaseExecutionProfile")
+
+    def preflight(self):
+        import hashlib
+        from pathlib import Path
+        missing = []
+        for artifact in self.descriptor["artifacts"]:
+            try:
+                if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:
+                    missing.append("ExactInstalledPhaseExecutable")
+            except OSError:
+                missing.append("InstalledPhaseExecutable")
+        report = self.observer.call("preflight-phase", {"binding": self.binding, "phase": self.descriptor["phase"], "cases": partitions()[self.descriptor["phase"]]})
+        missing.extend(report.get("missingInputs", ["IndependentCurrentPhaseObservationInputs"]))
+        return missing
 
     def _observe(self, request):
         observed = self.observer.call("lookup-phase-original", {"request": request, "binding": self.binding})
@@ -225,7 +281,7 @@ class CohortHttpApplication:
         if set(request) != {"protocol", "requestId", "method", "payload"} or request["protocol"] != PROTOCOL or request["method"] != method:
             raise Blocked("ClosedExactCohortRequest")
         now = int(time.time())
-        with sqlite3.connect("file:" + self.database_path + "?mode=rw", uri=True) as db:
+        with closing(sqlite3.connect("file:" + self.database_path + "?mode=rw", uri=True)) as db:
             row = db.execute("SELECT methods_json,valid_until,revoked FROM workload_grants WHERE bearer_sha256=?", (hashlib.sha256(bearer[7:].encode()).hexdigest(),)).fetchone()
         if row is None or row[2] or row[1] <= now or method not in json.loads(row[0]):
             raise Blocked("CurrentExactCohortWorkloadScope")
@@ -256,6 +312,86 @@ class CohortHttpApplication:
         ThreadingHTTPServer((host, port), Handler).serve_forever()
 
 
+class PersistedPhaseObserver:
+    """Independent receiving reader of exact immutable owner originals and their persisted source evidence."""
+    def __init__(self, descriptor, binding, authority):
+        import hashlib
+        import qualify as q
+        from cryptography.hazmat.primitives import serialization
+        self.descriptor, self.binding, self.authority = descriptor, binding, authority
+        raw = q.read_public_anchor(descriptor["ownerOriginalAnchorFile"])
+        if hashlib.sha256(raw).hexdigest() != descriptor["ownerOriginalAnchorSha256"]:
+            raise Blocked("ExactIndependentPersistedOriginalTrust")
+        q.public_key_identity(raw)
+        self.key = serialization.load_pem_public_key(raw)
+
+    def dispatch(self, method, value):
+        import hashlib
+        import base64
+        from pathlib import Path
+        import qualify as q
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.primitives.asymmetric import ec
+        if value.get("binding") != self.binding or not self.authority.call("current", {"binding": self.binding}).get("current"):
+            raise Blocked("CurrentExactObserverBinding")
+        if method == "preflight-phase":
+            phase = value["phase"]
+            if value.get("cases") != partitions()[phase]:
+                raise Blocked("CompleteObserverPartition")
+            missing = []
+            for artifact in self.descriptor["installedArtifacts"]:
+                try:
+                    if hashlib.sha256(q.bounded_public_file(artifact["path"], 1024 * 1024)).hexdigest() != artifact["sha256"]:
+                        missing.append("ExactInstalledObserverInput")
+                except OSError:
+                    missing.append("InstalledObserverInput")
+            return {"missingInputs": missing}
+        if method != "lookup-phase-original":
+            raise Blocked("RestrictedPersistedObserverMethod")
+        request = value["request"]
+        if self.authority.call("phase-admission", {"request": request}).get("exact") is not True:
+            raise Blocked("ExactRetainedObservedOriginal")
+        original_id = request["requestId"]
+        import re
+        if not re.fullmatch('[0-9a-f]{64}', original_id):
+            raise Blocked("ExactOriginalLocator")
+        root = Path(self.descriptor["evidenceDirectory"]) / original_id
+        try:
+            envelope = q.read_json(root / 'owner-original.json')
+            payload = envelope['payload']
+            self.key.verify(base64.b64decode(envelope['signature'], validate=True), canonical(payload), ec.ECDSA(hashes.SHA256()))
+            if payload.get('requestSha256') != digest(request) or payload.get('bindingDigest') != digest(self.binding):
+                raise Blocked('ChangedPersistedOwnerOriginal')
+            observations = payload['observations']
+            if [item['caseId'] for item in observations] != request['cases']:
+                raise Blocked('CompleteIndependentPersistedCasePartition')
+            passed = []
+            for item in observations:
+                data = q.bounded_public_file(root / (hashlib.sha256(item['caseId'].encode()).hexdigest() + '.json'), 1024 * 1024)
+                if hashlib.sha256(data).hexdigest() != item['evidenceSha256']:
+                    raise Blocked('ExactPersistedOwnerEvidenceBytes')
+                evidence = q.decode_json(data)
+                if item['caseId'].startswith('secrets:'):
+                    case = next(case for case in q.plan() if 'secrets:' + case.id == item['caseId'])
+                    config = q.read_public_configuration(self.descriptor['secretsRuntimeConfiguration'])
+                    accepted = self.descriptor['secretsRuntimeBinding']
+                    execution = q.verify_signed(evidence['execution'], 'executor', config, accepted)
+                    observation = q.verify_signed(evidence['observation'], 'observer', config, accepted)
+                    q.check_binding(execution, evidence['request'])
+                    q.check_observation(case, observation, execution, evidence['request'])
+                else:
+                    if (evidence.get('sourceKind') != 'PersistedOwnerRead' or evidence.get('requestSha256') != digest(request)
+                            or evidence.get('caseId') != item['caseId'] or not evidence.get('sourceReceipts')
+                            or any(type(receipt.get('sourceRevision')) is not int or receipt['sourceRevision'] <= 0
+                                   or not receipt.get('eventId') or not receipt.get('sourceSha256') for receipt in evidence['sourceReceipts'])
+                            or evidence.get('outcome') != 'Verified'):
+                        raise Blocked('ActualPersistedOwnerSourceReceipts')
+                passed.append(item['caseId'])
+            return {'state': 'Passed', 'requestSha256': digest(request), 'bindingDigest': digest(self.binding), 'passedCases': passed}
+        except (OSError, ValueError, KeyError):
+            return {'state': 'Unknown', 'requestSha256': digest(request), 'bindingDigest': digest(self.binding), 'passedCases': []}
+
+
 def main():
     """Explicit installed receiving service. Provisioning database/trust/credentials is an external owner operation."""
     import argparse
@@ -269,9 +405,9 @@ def main():
     args = parser.parse_args()
     config = q.read_json(args.installation)
     public = q.read_public_anchor(config['publicAnchorFile'])
-    with sqlite3.connect('file:' + config['databasePath'] + '?mode=rw', uri=True) as db:
-        enrollment = db.execute('SELECT public_anchor_sha256 FROM service_enrollment WHERE role=?', (config['role'],)).fetchone()
-    if enrollment is None or enrollment[0] != hashlib.sha256(public).hexdigest():
+    with closing(sqlite3.connect('file:' + config['databasePath'] + '?mode=rw', uri=True)) as db:
+        enrollment = db.execute('SELECT public_anchor_sha256,profile_sha256 FROM service_enrollment WHERE role=?', (config['role'],)).fetchone()
+    if enrollment is None or enrollment[0] != hashlib.sha256(public).hexdigest() or enrollment[1] != hashlib.sha256(q.bounded_public_file(args.installation, 1024 * 1024)).hexdigest():
         raise Blocked('IndependentServiceEnrollment')
     with open(config['signingKeyFile'], 'rb') as handle:
         signer = serialization.load_pem_private_key(handle.read(8193), password=None)
@@ -282,6 +418,11 @@ def main():
     if config['role'] == 'authority':
         store = CohortAuthorityStore(config['databasePath'], lambda phase, result: owners[phase].verify(result))
         dispatch = store.dispatch
+    elif config['role'] == 'observer':
+        authority = DaprCohortRpc(config['authority'], config['daprEndpoint'], config['daprCredentialReference'])
+        if q.public_key_identity(q.read_public_anchor(config['observerProfile']['ownerOriginalAnchorFile'])) == q.public_key_identity(public):
+            raise Blocked('IndependentPersistedObserverSourceSigner')
+        dispatch = PersistedPhaseObserver(config['observerProfile'], config['binding'], authority).dispatch
     else:
         authority = DaprCohortRpc(config['authority'], config['daprEndpoint'], config['daprCredentialReference'])
         observer = DaprCohortRpc(config['observer'], config['daprEndpoint'], config['daprCredentialReference'])

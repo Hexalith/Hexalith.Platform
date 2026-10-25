@@ -1,0 +1,616 @@
+{
+  "schema": "platform.story-5.4.remaining-installation-ledger.v1",
+  "observedAtUtc": "2026-10-25T12:39:22.379827+00:00",
+  "deliveryStatus": "Blocked",
+  "completeSharedTargetPacket": false,
+  "dependencyAvailable": false,
+  "installedQualification": false,
+  "sourceReviewStatus": "InProgress",
+  "ownerReturnForm": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+  "ownerReturnFormSha256": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d",
+  "missingOwnerReturns": [
+    {
+      "input": "D1_backend.selectedChoice",
+      "owner": "Project owner acting as Platform Maintainer",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D1_backend.actualNonAwsProviderAndMaintainer",
+      "owner": "Project owner acting as Platform Maintainer",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D1_backend.approvedNonAwsResourceAndCostScopeReference",
+      "owner": "Project owner acting as Platform Maintainer",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D1_backend.approvedRetentionAndExtensionScheduleReference",
+      "owner": "Project owner acting as Platform Maintainer",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D1_backend.existingQualifyingInstallationBundle",
+      "owner": "Project owner acting as Platform Maintainer",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.actualNonAwsBackendVersionHostOrApplianceIds",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.independentCurrentAuthorityHostServiceStoreIdIncarnationSchemaAndGenesis",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.independentArchiveResourcesProtectedVersionsAndEnrollmentHashes",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.originalOpaqueKeyEpochKekMappingsReference",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.actualProviderCompletionAndRecoveryBoundsReference",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.scopedReadOnlyAccessOrSignedResourceCensusReference",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.backupExclusionsRetentionAndIndependentAdministrationReference",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D2_resources.exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference",
+      "owner": "Independent custody, current-authority and archive custodians",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D3_recovery.primaryHumanSubjectAndIssuer",
+      "owner": "Project owner with independent recovery/access owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D3_recovery.differentDeputyHumanSubjectAndIssuer",
+      "owner": "Project owner with independent recovery/access owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D3_recovery.appointmentAndTwoPersonChangeAuthorityReference",
+      "owner": "Project owner with independent recovery/access owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D3_recovery.independentMfaRecoveryAccessAndEscalationReference",
+      "owner": "Project owner with independent recovery/access owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D3_recovery.delegatedRoleArnsAndFencingReadBackEvidenceReference",
+      "owner": "Project owner with independent recovery/access owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.authorityComputeTargetIdAndAuditAccess",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.observerComputeTargetIdAndAuditAccess",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.enrollmentComputeTargetIdAndAuditAccess",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.crossClusterDaprRoutingDiscoveryAndAcceptedTrustReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.executorCompleteRoleInputsReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.observerCompleteRoleInputsReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.enrollmentCompleteRoleInputsReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.independentPublicP256AnchorsSignedManifestsAndCurrentRevocationReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D4_rolesAndTrust.custodyPurposeSpecificPublicTrustAndGenesisReference",
+      "owner": "Independent role provisioning, network and Kubernetes identity owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D5_implementations.missingOwningServiceSourceImagesAndCompositionBundle",
+      "owner": "Platform and independent service maintainers",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D5_implementations.authorityServiceStoreBundle",
+      "owner": "Platform and independent service maintainers",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D5_implementations.registrationAndReservedManifestExactOriginalMappingBundle",
+      "owner": "Platform and independent service maintainers",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D5_implementations.spoolActualReplicasPlacementAndFailureModel",
+      "owner": "Platform and independent service maintainers",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D5_implementations.actualNonAwsComponentExecutableProfileAndDeploymentRecipe",
+      "owner": "Platform and independent service maintainers",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D6_releaseAndPhysicalProfile.actualImagePublishFileAndVerifierInventoryReference",
+      "owner": "Platform release, independent transport/security and storage owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeReencryptionAdmission.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D6_releaseAndPhysicalProfile.nativeSidecarSocketAndHostMeasurementReference",
+      "owner": "Platform release, independent transport/security and storage owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeReencryptionAdmission.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D6_releaseAndPhysicalProfile.measuredCompletionReserveAndWorkerOutputOwnershipReference",
+      "owner": "Platform release, independent transport/security and storage owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeReencryptionAdmission.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D6_releaseAndPhysicalProfile.completeCopyHolderProducerTransportClosureReference",
+      "owner": "Platform release, independent transport/security and storage owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeReencryptionAdmission.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D7_protection.completeImmutableSourcePackageAndLockedRestoreReference",
+      "owner": "EventStore Maintainer with Governance/protection owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D7_protection.installedEngineRolesTrustAndAcceptedProfileReference",
+      "owner": "EventStore Maintainer with Governance/protection owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D7_protection.actualProfileFileSha256",
+      "owner": "EventStore Maintainer with Governance/protection owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D7_protection.g1ThroughG7OriginalClosureBundle",
+      "owner": "EventStore Maintainer with Governance/protection owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D7_protection.independentPhysicalNonRevivalAndSurvivorRecoveryReference",
+      "owner": "EventStore Maintainer with Governance/protection owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D8_host.all14ActualHostSlotsAndFiveServiceInstallationsBundle",
+      "owner": "Platform identity, independent decision issuer and dependency installation owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D8_host.independentDecisionAuthorityAndCurrentRoleReferences",
+      "owner": "Platform identity, independent decision issuer and dependency installation owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D8_host.branchBPartiesAndConversationsInstallationBindings",
+      "owner": "Platform identity, independent decision issuer and dependency installation owners",
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.actualNonAwsProviderReadinessCompletionRecoveryAndQualificationBoundsReference",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.ownerConfirmedProtectionDate",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.ownerConfirmedCoupledPlatformDate",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.laterExplicitReplacementAcceptanceReference",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.completeCanonicalPlatformTarget",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    },
+    {
+      "input": "D9_dates.completeCanonicalProtectionTargetAndPackage",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "status": "MissingOwnerReturn",
+      "sourcePaths": [
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "completionEvidence": null
+    }
+  ],
+  "requiredInstallationBundles": [
+    {
+      "id": "NATIVE",
+      "owner": "Platform infrastructure and independent storage/security owners",
+      "needed": "Actual eligible existing non-AWS resources, original key/epoch/KEK mappings, pinned OpenBao metadata and credential mounts, independent authority/archive enrollment, physical all-copy non-revival and survivor-recovery originals. OpenBao deletion alone is insufficient. Ciphertext-only cross-key migration is unavailable; the implemented holder flow additionally requires independently current holder/transport/closure admission and exact retained native outcomes."
+    },
+    {
+      "id": "AUTHORITY",
+      "owner": "Independent authority/archive/recovery custodians",
+      "needed": "Pre-enrolled Dapr strong-CAS heads and immutable retained archives outside application backup/restore; actual replicas, failure domains, genesis/incarnations, completion reserve, retention and two-person recovery authority. Runtime creates no genesis."
+    },
+    {
+      "id": "TRUST",
+      "owner": "Independent enrollment/security/network owners",
+      "needed": "Distinct P-256 role/public anchors, installed service profiles and signing mounts, current grants/revocation and Dapr app-channel credentials; separate authorizer/control/observer and qualification executor/observer/enrollment placements. All supplied bytes must match accepted pins."
+    },
+    {
+      "id": "RECORDING",
+      "owner": "Platform/EventStore and independent recorder owners",
+      "needed": "Installed restricted EventStore bound-command proof source, native authoritative reader, independent original authority, exact replay/security-log stream/event ACLs, durable replicated denial spool, recovery authority and worker installation. Source composition does not install or activate these."
+    },
+    {
+      "id": "HOST",
+      "owner": "Platform host/dependency installation owners",
+      "needed": "All fourteen actual host slots and five service installations at 192.168.1.30, Branch B identity/tenant/Parties/Conversations bindings and independently issued decision authority; child owning-process composition and FR-34 engine/observer bindings."
+    },
+    {
+      "id": "PROTECTION",
+      "owner": "EventStore Maintainer and independent protection owners",
+      "needed": "Complete immutable protection source/package/locked graph, installed accepted profile/roles/trust, real engine and persisted-reader ports, G1-G7 closure, physical non-revival and survivor recovery originals, complete accepted owner command."
+    },
+    {
+      "id": "COHORT",
+      "owner": "Independent qualification/installation owners",
+      "needed": "Externally provisioned SQLite schemas/current accepted set and service enrollment on independently durable storage, authenticated phase owners and persisted observer, pinned exact phase command artifacts, current signed owner readiness, complete configuration/profile/plan/anchor/image inventories and independent installation proof. No source test provisions production enrollment."
+    },
+    {
+      "id": "DATES_AND_TARGET",
+      "owner": [
+        "Platform Maintainer",
+        "EventStore Maintainer"
+      ],
+      "needed": "Explicit coordinated replacement Platform/protection dates and immutable complete targets based on actual installed readiness; complete replacement acceptance and executable commands afterward. No replacement date or target is inferred."
+    }
+  ],
+  "installedHashes": {
+    "providerProfile": null,
+    "custodyConfiguration": null,
+    "authorityEnrollment": null,
+    "publicTrust": null,
+    "executorAnchor": null,
+    "observerAnchor": null,
+    "enrollmentAnchor": null,
+    "hostInstalledProfile": null,
+    "protectionInstalledProfile": null,
+    "installedImageInventory": null,
+    "physicalQualificationPlan": null,
+    "jointConfiguration": null
+  },
+  "replacementPlatformIntegrationDate": null,
+  "replacementProtectionIntegrationDate": null,
+  "replacementPlatformTarget": null,
+  "historicalAcceptedDate": "2026-10-08",
+  "historicalDateIsAReplacementProposal": false,
+  "preserved": {
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "secretsScope": "S1-S4/v23 (234 cases)",
+    "hostScope": "H1-H4/v21/v23",
+    "identityHistoryDays": 365,
+    "productGates": [
+      "OD-HUMAN-EXACT-CONVERSATION-SCOPE-1",
+      "OD-GOVERNANCE-CLASS-RANGE-SCOPE-1"
+    ]
+  },
+  "deliveryEffects": {
+    "liveOwnerCommands": 0,
+    "liveCohortPhases": 0,
+    "liveAttemptReservations": 0,
+    "installations": 0,
+    "consumingSeamActivations": 0,
+    "physicalExperiments": 0,
+    "spending": 0,
+    "acceptedRecordMutations": 0
+  },
+  "qualificationRule": "All automated results in this change use isolated fixtures. They are source/component evidence and establish no installed qualification, acceptance or availability.",
+  "scope": "Missing values are observations of the supplied owner form/public installation bundle, not a claim of absence across every remote installation."
+}

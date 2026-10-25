@@ -2,6 +2,7 @@ import copy
 import json
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 import tempfile
 import unittest
 
@@ -13,7 +14,9 @@ class Authority:
     def __init__(self, store): self.store = store
     def preflight(self, binding): return self.store.dispatch("preflight", {"binding": binding})["missingInputs"]
     def current(self, binding): return self.store.dispatch("current", {"binding": binding})["current"]
-    def reserve(self, binding, attempt): return self.store.dispatch("reserve", {"binding": binding, "attemptId": attempt})
+    def reserve(self, binding, attempt, readiness=None):
+        if readiness is None: readiness = [Owner().preflight(binding, phase, partitions()[phase])["readiness"] for phase in range(4)]
+        return self.store.dispatch("reserve", {"binding": binding, "attemptId": attempt, "ownerReadiness": readiness})
     def retain(self, request): return self.store.dispatch("retain", {"request": request})["first"]
     def publish(self, request, result):
         if not self.store.dispatch("publish", {"request": request, "result": result})["exact"]: raise Blocked("changed")
@@ -21,7 +24,13 @@ class Authority:
 
 
 class Owner:
-    def __init__(self): self.executions = []; self.lookups = []; self.originals = {}; self.lose = False; self.fail = False
+    def __init__(self): self.executions = []; self.lookups = []; self.originals = {}; self.lose = False; self.fail = False; self.missing = []
+    def preflight(self, binding, phase, cases):
+        import time
+        now = int(time.time())
+        return {"missingInputs": self.missing, "readiness": {"payload": {"bindingDigest": digest(binding), "phase": phase, "cases": cases,
+            "profileSha256": binding["phaseExecutionProfileSha256"][str(phase)], "observedAt": now, "validUntil": now + 30}, "signature": "isolated-signature"}}
+
     def execute(self, request):
         self.executions.append(copy.deepcopy(request))
         result = {"payload": request | {"state": "Failed" if self.fail else "Passed", "passedCases": request["cases"]}, "signature": "isolated-signature"}
@@ -42,7 +51,8 @@ class JointRunnerTests(unittest.TestCase):
                         "timing": {"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800}}
         for name in ("configurationSha256", "profileSha256", "protectionProfileSha256", "executorAnchorSha256", "observerAnchorSha256", "enrollmentAnchorSha256", "currentTrustSha256", "installedImageSha256"):
             self.binding[name] = digest(name)
-        with sqlite3.connect(self.path) as db:
+        self.binding["phaseExecutionProfileSha256"] = {str(phase): digest(["isolated-profile", phase]) for phase in range(4)}
+        with closing(sqlite3.connect(self.path)) as db, db:
             db.executescript(Path(__file__).with_name('joint-authority-schema.sql').read_text())
             db.execute('INSERT INTO accepted_sets VALUES(?,?,1)', (digest(self.binding), canonical(self.binding)))
             db.execute('INSERT INTO current_set VALUES(1,?)', (digest(self.binding),))
@@ -55,7 +65,7 @@ class JointRunnerTests(unittest.TestCase):
 
     def test_preflight_reserves_nothing_and_exact_coverage(self):
         self.runner().preflight()
-        with sqlite3.connect(self.path) as db: self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
+        with closing(sqlite3.connect(self.path)) as db, db: self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
         all_cases = [case for phase in partitions().values() for case in phase]
         self.assertEqual(len(all_cases), len(set(all_cases)))
         self.assertEqual(234, sum(case.startswith('secrets:') for case in all_cases))
@@ -95,13 +105,19 @@ class JointRunnerTests(unittest.TestCase):
             with self.assertRaises(Blocked): self.runner(changed).run()
         changed = self.binding | {'configurationSha256': 'b' * 64}
         with self.assertRaises(Blocked): self.runner(changed).run()
-        with sqlite3.connect(self.path) as db: self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
+        with closing(sqlite3.connect(self.path)) as db, db: self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
 
     def test_out_of_order_phase_cannot_be_retained(self):
         reserved = self.authority.reserve(self.binding, 'test-attempt')
         request = {'protocol': 'OQ-5.4-1.joint.v1', 'attemptId': reserved['attemptId'], 'bindingDigest': digest(self.binding),
                    'phase': 3, 'owner': PHASES[3], 'previousSha256': digest(self.binding), 'cases': partitions()[3], 'requestId': 'changed'}
         with self.assertRaises(Blocked): self.authority.retain(request)
+
+    def test_changed_installed_phase_pins_refuse_before_attempt_reservation(self):
+        self.owners[PHASES[2]].missing = ["ExactInstalledPhaseExecutable"]
+        with self.assertRaises(Blocked): self.runner().run()
+        with closing(sqlite3.connect(self.path)) as db, db:
+            self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
 
     def test_calendar_validation_uses_real_dates(self):
         self.assertEqual('2028-02-29', calendar_date('2028-02-29'))
@@ -120,7 +136,7 @@ class ReceivingServiceTests(unittest.TestCase):
         self.signer = ec.generate_private_key(ec.SECP256R1())
         self.channel = Path(self.fixture.directory.name) / 'channel'
         self.channel.write_text('isolated-app-channel')
-        with sqlite3.connect(self.fixture.path) as db:
+        with closing(sqlite3.connect(self.fixture.path)) as db, db:
             db.execute('INSERT INTO workload_grants VALUES(?,?,?,0)',
                        (hashlib.sha256(b'isolated-workload').hexdigest(), canonical(['preflight', 'current']), int(time.time()) + 60))
 
@@ -140,7 +156,7 @@ class ReceivingServiceTests(unittest.TestCase):
         with self.assertRaises(Blocked): app.handle('preflight', headers | {'Authorization': 'Bearer wrong'}, canonical(request))
         with self.assertRaises(Blocked): app.handle('preflight', headers | {'dapr-api-token': 'wrong'}, canonical(request))
         with self.assertRaises(Blocked): app.handle('reserve', headers, canonical(request | {'method': 'reserve'}))
-        with sqlite3.connect(self.fixture.path) as db:
+        with closing(sqlite3.connect(self.fixture.path)) as db, db:
             self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
 
     def test_direct_phase_call_cannot_bypass_current_retained_authority_admission(self):
