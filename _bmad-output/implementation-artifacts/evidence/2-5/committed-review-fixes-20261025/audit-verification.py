@@ -2,7 +2,7 @@ from pathlib import Path
 import hashlib,json,subprocess,xml.etree.ElementTree as ET
 root=Path('/home/administrator/projects/hexalith/platform')
 evidence=root/'_bmad-output/implementation-artifacts/evidence/2-5/committed-review-fixes-20261025'
-xml=evidence/'final-builds-tests.xml'
+xml=evidence/'final2-builds-tests.xml'
 assembly=ET.parse(xml).getroot().find('assembly')
 assert assembly is not None
 assert all(assembly.get(key)=='0' for key in ['failed','errors','skipped','not-run']),assembly.attrib
@@ -58,9 +58,15 @@ for name in sorted(paths):
 binaries={}
 for name in ['references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll','references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll','references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll','tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll','tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll']:
  content=(root/name).read_bytes();binaries[name]={'sha256':hashlib.sha256(content).hexdigest(),'size':len(content)}
-assert len({item['sha256'] for name,item in binaries.items() if name.endswith('Hexalith.Builds.Tooling.dll')})==1,binaries
+assert binaries['references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll']['sha256']==binaries['references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll']['sha256']
+pdb_rows=[json.loads(line) for line in (evidence/'final-pdb-source-audit.log').read_text().splitlines() if line.startswith('{')]
+assert len(pdb_rows)==3 and all(row['verified']==195 and not row['mismatches'] for row in pdb_rows),pdb_rows
+(evidence/'pdb-source-bindings.json').write_text(json.dumps(pdb_rows,indent=2)+'\n')
+platform=ET.parse(evidence/'final-platform-tests.xml').getroot().find('assembly')
+assert platform is not None and platform.get('total')=='1' and platform.get('passed')=='1'
+assert all(platform.get(key)=='0' for key in ['failed','errors','skipped','not-run'])
 (evidence/'runtime-content-identities.json').write_text(json.dumps(binaries,indent=2)+'\n')
-summary={'builds':dict(assembly.attrib),'reviewFindings':len(rows),'sourceFingerprints':len(fingerprints),'sourceMode':'Debug','nativeWindowsAndMacOSRuntimeQualification':'not-run-on-Linux-host','liveServiceQualification':'no-new-credit-in-this-offline-worker','packageRuntimeQualification':'unavailable-until-authoritative-release-declarations-are-published','preExistingDeferral':'D1 cancellation-aware claim transaction contention','platformHead':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'buildsHead':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root/'references/Hexalith.Builds',text=True).strip(),'uncommittedSourceIdentities':'source-content-identities.json','supersededObservations':['focused-tests.xml:124/126 before correcting two new fixture inputs','builds-tests-verified.xml:613/616 before completion rollback and shared-fixture-tag corrections']}
+summary={'builds':dict(assembly.attrib),'platform':dict(platform.attrib),'resumeBuildsBaseline':'0ade5ec2b4f9b81fcd3a4bbb1672c11b0131a274','originalSpecBaselines':'preserved-unchanged','runtimeBuildContext':'Builds/source DLL equals the Builds test copy; all three portable PDBs match 195 current Tooling source documents; independent Platform/Builds informational-version stamps are retained separately','reviewFindings':len(rows),'sourceFingerprints':len(fingerprints),'sourceMode':'Debug','nativeWindowsAndMacOSRuntimeQualification':'not-run-on-Linux-host','liveServiceQualification':'no-new-credit-in-this-offline-worker','packageRuntimeQualification':'unavailable-until-authoritative-release-declarations-are-published','preExistingDeferral':'D1 cancellation-aware claim transaction contention','platformHead':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'buildsHead':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root/'references/Hexalith.Builds',text=True).strip(),'uncommittedSourceIdentities':'source-content-identities.json','supersededObservations':['focused-tests.xml:124/126 before correcting two new fixture inputs','builds-tests-verified.xml:613/616 before completion rollback and shared-fixture-tag corrections','final-builds-tests.xml:617/617 preceded the final NativeTestExecutor owned-path activation change; PDB mismatch retained separately']}
 (evidence/'verification.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps({key:summary[key] for key in ['reviewFindings','sourceFingerprints','platformHead','buildsHead']},indent=2))
 print(json.dumps({key:assembly.get(key) for key in ['total','passed','failed','errors','skipped','not-run','time']},indent=2))

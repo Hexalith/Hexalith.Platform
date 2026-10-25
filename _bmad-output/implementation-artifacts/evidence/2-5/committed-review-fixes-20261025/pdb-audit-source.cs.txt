@@ -2,6 +2,17 @@ using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text.Json;
 
+if (args.FirstOrDefault() == "--attributes")
+{
+    foreach (string path in args.Skip(1))
+    {
+        var assembly = System.Reflection.Assembly.LoadFile(Path.GetFullPath(path));
+        var attributes = assembly.GetCustomAttributesData().Select(attribute => new { name = attribute.AttributeType.FullName, arguments = attribute.ConstructorArguments.Select(argument => argument.Value?.ToString()).ToArray() }).OrderBy(attribute => attribute.name).ToArray();
+        Console.WriteLine(JsonSerializer.Serialize(new { path, attributes }));
+    }
+    return;
+}
+
 foreach (string path in args)
 {
     using FileStream stream = File.OpenRead(path);

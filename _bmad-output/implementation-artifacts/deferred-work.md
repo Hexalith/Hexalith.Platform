@@ -1326,3 +1326,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Keep claim transaction contention within the original cleanup stopping allowance (D1).
   evidence: Medium, pre-existing. `CompositionResourceClaimStore.OpenTransaction` synchronously waits up to two seconds for `transaction.lock` without a stopping token; `CompositionEngine.TearDownAsync` calls `ReleaseOwned` after runtime/workspace deletion. Both the call and implementation predate the reviewed Builds baseline `3052386abb54ff111f498a8f6424300ea7cdda93`, so this is deferred separately from the story's 13 patch findings.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Make workspace tree deletion observe the stopping allowance throughout traversal.
+  evidence: Final workflow review CB3 verified that synchronous recursive Directory.Delete can exceed cancellation; the exact deletion predates Story 2.5 at Builds baseline 3052386abb54ff111f498a8f6424300ea7cdda93.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Preserve Linux process-discovery uncertainty when a live owned process makes its environment unreadable.
+  evidence: Final workflow review CE1 reproduced PR_SET_DUMPABLE=0 causing an owned tagged process to be omitted with verified emptiness; the Linux exception handling and scan behavior are unchanged from Builds baseline 3052386abb54ff111f498a8f6424300ea7cdda93.
