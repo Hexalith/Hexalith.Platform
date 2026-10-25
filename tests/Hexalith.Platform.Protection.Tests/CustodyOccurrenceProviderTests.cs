@@ -1,0 +1,92 @@
+using System.Security.Cryptography;
+using System.Text.Json;
+using Dapr.Client;
+using Hexalith.EventStore.Contracts.Identity;
+using Hexalith.EventStore.Contracts.Security;
+using Hexalith.EventStore.PayloadProtection;
+using Hexalith.Platform.Custody;
+using Hexalith.Platform.Secrets.Runtime;
+using NSubstitute;
+using Shouldly;
+
+namespace Hexalith.Platform.Protection.Tests;
+
+public sealed class CustodyOccurrenceProviderTests
+{
+    [Fact]
+    public async Task ActualLeaseAndCurrentChecksReleaseNoMaterialAndOneRootBufferTransfersToDisposableOwner()
+    {
+        using var fixture=new Fixture();var provider=fixture.Provider();
+        (await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await provider.AcquireEncryptionLeaseAsync(fixture.Occurrence,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await provider.AcquireEncryptionLeaseAsync(fixture.Occurrence,TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await provider.IsCurrentAsync(fixture.Identity,"Write",TestContext.Current.CancellationToken)).ShouldBeTrue();fixture.MaterialReleases.ShouldBe(0);
+        var root=await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken);root.ShouldNotBeNull();
+        ReferenceEquals(root.Bytes,fixture.Root).ShouldBeTrue();fixture.MaterialReleases.ShouldBe(1);
+        Should.Throw<ObjectDisposedException>(()=>fixture.Released!.Bytes);
+        root.Dispose();fixture.Root.ShouldAllBe(value=>value==0);
+        (await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken)).ShouldBeNull();fixture.MaterialReleases.ShouldBe(1);
+        (await provider.ResolveRootAsync(fixture.Identity,"substituted",true,TestContext.Current.CancellationToken)).ShouldBeNull();fixture.MaterialReleases.ShouldBe(1);
+        fixture.Revoked=true;
+        (await provider.IsCurrentAsync(fixture.Identity,"Write",TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken)).ShouldBeNull();fixture.MaterialReleases.ShouldBe(1);
+    }
+    [Fact]
+    public async Task DigestUsesOnlyExactCurrentTenantPurposeVersionAndClearsOwnedCandidateOnDispose()
+    {
+        using var fixture=new Fixture();var provider=fixture.Provider();
+        (await provider.ResolveDigestAsync(fixture.Identity,"foreign-version",TestContext.Current.CancellationToken)).ShouldBeNull();fixture.SecretReads.ShouldBe(0);
+        var digest=await provider.ResolveDigestAsync(fixture.Identity,"digest-v1",TestContext.Current.CancellationToken);digest.ShouldNotBeNull();
+        fixture.SecretReads.ShouldBe(1);fixture.Response!.ShouldBeEmpty();digest.Bytes.ShouldAllBe(value=>value==71);digest.Dispose();digest.Bytes.ShouldAllBe(value=>value==0);
+        fixture.InventoryRevoked=true;
+        (await provider.ResolveDigestAsync(fixture.Identity,"digest-v1",TestContext.Current.CancellationToken)).ShouldBeNull();fixture.SecretReads.ShouldBe(1);
+    }
+    [Fact]
+    public async Task RestoredMissingBindingCannotAcquireLeaseOrCreateGenesisAndCompletionIsDurablyOnceOnly()
+    {
+        using var fixture=new Fixture();fixture.Missing=true;
+        (await fixture.Source.TryAcquireEncryptionLeaseAsync(fixture.Occurrence,fixture.Registry,TestContext.Current.CancellationToken)).ShouldBeFalse();
+        await fixture.Authority.DidNotReceive().AdmitTransitionAsync(Arg.Any<AnchoredStateTransition>(),Arg.Any<CancellationToken>());
+        fixture.Missing=false;
+        (await fixture.Source.TryAcquireCompletionLeaseAsync(fixture.Record.Binding,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await fixture.Source.TryAcquireCompletionLeaseAsync(fixture.Record.Binding,TestContext.Current.CancellationToken)).ShouldBeFalse();
+        var restored=fixture.Record with { CompletionLeaseId=null,Revision=1 };fixture.Stored=restored;
+        (await fixture.Source.TryAcquireCompletionLeaseAsync(restored.Binding,TestContext.Current.CancellationToken)).ShouldBeFalse();
+    }
+    private sealed class Fixture:IDisposable
+    {
+        internal readonly DaprClient Dapr=Substitute.For<DaprClient>();internal readonly ICustodyOwnerStateAuthority Authority=Substitute.For<ICustodyOwnerStateAuthority>();
+        internal readonly IInteractionOccurrenceRegistry Registry=Substitute.For<IInteractionOccurrenceRegistry>();private readonly ICustodyOccurrenceMaterialClient _material=Substitute.For<ICustodyOccurrenceMaterialClient>();
+        private readonly IPlatformKeyInventoryActor _inventory=Substitute.For<IPlatformKeyInventoryActor>();private readonly IPlatformKeyInventoryAuthority _inventoryAuthority=Substitute.For<IPlatformKeyInventoryAuthority>();
+        internal readonly InteractionOccurrenceIdentity Identity=new(new("tenant","interaction","alias"),new AggregateIdentity("tenant","domain","aggregate"),PayloadProtectionPayloadKind.Event,1,"event","root-v1","profile-v1");
+        internal CustodyInteractionBindingRecord Record,Stored;internal readonly CustodyInteractionProtectionBindingSource Source;internal readonly InteractionOccurrenceRecord Occurrence;
+        internal byte[] Root=Enumerable.Repeat((byte)42,32).ToArray();internal CustodyReleasedKey? Released;internal int MaterialReleases,SecretReads;internal Dictionary<string,string>? Response;internal bool Revoked,Missing,InventoryRevoked;
+        private readonly CustodyKeyRegistration _registration=new(new("tenant","interaction",PlatformKeyPurpose.InteractionRootDek,"alias","root-v1","lifecycle","store","contract"),"wrap",1,"kek-v1","opaque","wrap-receipt");private long _anchoredRevision=1;private string _anchor;
+        internal Fixture()
+        {
+            Record=Stored=new(1,new(Identity,"digest-v1",1,"reference","source-operation",1));_anchor=Hash(Record);
+            Occurrence=new(new(Identity,"digest-v1","opaque-hmac",1,"reference"),"reference",1,InteractionOccurrenceWriterState.Reserved,null,null);
+            Registry.LookupAsync(Identity,Arg.Any<CancellationToken>()).Returns(new InteractionOccurrenceReservationResult(InteractionOccurrenceReservationStatus.Reserved,Occurrence));
+            Dapr.GetStateAndETagAsync<CustodyInteractionBindingRecord>("independent","binding",Arg.Any<ConsistencyMode?>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(_=>Task.FromResult((Missing?null!:Stored,"etag")));
+            Dapr.TrySaveStateAsync("independent","binding",Arg.Any<CustodyInteractionBindingRecord>(),"etag",Arg.Any<StateOptions>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(call=> { Stored=call.ArgAt<CustodyInteractionBindingRecord>(2);return true; });
+            Authority.AuthorizeOperationAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>!Revoked);
+            Authority.ValidateStateAsync(Arg.Any<long>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(call=>!Revoked && call.ArgAt<long>(0)==_anchoredRevision && call.ArgAt<string>(1)==_anchor);
+            Authority.AdmitTransitionAsync(Arg.Any<AnchoredStateTransition>(),Arg.Any<CancellationToken>()).Returns(call=>call.Arg<AnchoredStateTransition>().ExpectedRevision==_anchoredRevision && call.Arg<AnchoredStateTransition>().PredecessorDigest==_anchor);
+            Authority.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(),Arg.Any<CancellationToken>()).Returns(call=> { var next=call.Arg<AnchoredStateTransition>();_anchoredRevision=next.TargetRevision;_anchor=next.TargetDigest;return true; });
+            Source=new(Dapr,new Dictionary<string,CustodyInteractionBindingResource>{{CustodyInteractionProtectionBindingSource.ResourceId(Identity.Owner,new(1,Identity.Kind,"event")),new("independent","binding","outside-scope",Authority)}});
+            _material.LookupAsync(_registration,Arg.Any<CancellationToken>()).Returns(new CustodyKeyLifecycleOutcome(_registration.Identity,"wrap","digest",CustodyKeyLifecycleStatus.Wrapped,"wrap-receipt"));
+            _material.UnwrapAsync(_registration,Arg.Any<string>(),Arg.Any<CustodyKeyUse>(),Arg.Any<CancellationToken>()).Returns(_=> { MaterialReleases++;return MaterialReleases==1?new CustodyKeyUseResult("Released",Released=new(Root)):new CustodyKeyUseResult("Unknown"); });
+            _inventoryAuthority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>!InventoryRevoked);
+            _inventoryAuthority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<long>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>!InventoryRevoked);
+            _inventory.ReadAsync(Arg.Any<PlatformKeyVersion>()).Returns(call=> { var key=call.Arg<PlatformKeyVersion>();return new PlatformKeyInventorySnapshot(key.TenantId,key.Purpose,key.KeyAlias,1,[new(key,PlatformHmacKeyState.Active,1)],[]); });
+            Dapr.GetSecretAsync("digest-store","digest-key",Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(call=> { call.ArgAt<IReadOnlyDictionary<string,string>>(2)["version_id"].ShouldBe("7");SecretReads++;return Response=new(){{"value",Convert.ToBase64String(Enumerable.Repeat((byte)71,32).ToArray())}}; });
+        }
+        internal CustodyInteractionOccurrenceKeyProvider Provider()
+        {
+            var profile=new CustodyInteractionMaterialProfile(_registration,new("lease","attempt","process","transport","opaque"),new("digest-store","digest-key","7","value",new("tenant",PlatformKeyPurpose.DigestKey,"digest","digest-v1","native","authority",null,null)));
+            return new(Dapr,_material,Source,Registry,_inventory,_inventoryAuthority,new Dictionary<string,CustodyInteractionMaterialProfile>{{CustodyInteractionOccurrenceKeyProvider.ProfileId(Identity,true),profile},{CustodyInteractionOccurrenceKeyProvider.ProfileId(Identity,false),profile}});
+        }
+        private static string Hash<T>(T value)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
+        public void Dispose() { Dapr.Dispose();CryptographicOperations.ZeroMemory(Root); }
+    }
+}
