@@ -1,0 +1,22 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*RetainedSurvivorsAreRecordedAfterStoppingBudgetExpiresAsync",
+    "-method",
+    "*NativeOutcomeControlsLocalCleanupAsync",
+    "-method",
+    "*PackageCommandFailureEstablishesLocalRetentionAsync",
+    "-method",
+    "*PackageOutcomesPreserveRetentionAndOwnedCleanupAsync",
+    "-method",
+    "*CancellationPreservesFirstOutcomeAndFailureRetentionAsync",
+    "-result-xml",
+    "/tmp/story25-full-review-patches-2hyzkf/survivor-metadata-final.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 3.775,
+  "log": "survivor-metadata-final.log"
+}

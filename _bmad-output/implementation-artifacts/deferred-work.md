@@ -1340,3 +1340,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Let Windows cleanup reach verified absence when same-user processes cannot be inspected (Q3).
   evidence: Medium, unverified on this Linux host. `CompositionProcessEnvironmentReader.ReadWindows` (Builds `b215213`, lines 91-95) treats an `OpenProcess(0x410)` denial as unverified unless the process has a foreign SID or has exited. On UAC hosts, an elevated process of the same user is likely unreadable from a medium-integrity runner, so `down` never completes, claims are never released, and tracking persists. Deferred by owner decision: Windows/macOS native runtime is explicitly unqualified, and the dev lane is Linux/WSL. Candidate fixes: exclude processes whose token integrity is higher than the runner's, or scope discovery to descendants or the job object of the recorded AppHost. Settle during Windows/macOS native qualification.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Validate process creation identity before deleting discovered PIDs so PID reuse cannot terminate an independent peer.
+  evidence: The baseline CompositionRunResourceScanner discovers bare PIDs and later reopens them in TryKill without creation-time or held-handle verification; the new unverified-observation merge can prolong the existing race. Workflow review B3/E3, 2026-10-25.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Apply exact captured secret filtering or trusted snapshots to optional retained plan/readiness metadata.
+  evidence: Baseline CopySelectedMetadataAsync already rereads child-writable JSON and relies only on ManifestSecretDetector; arbitrary captured token values under innocuous properties can pass SafeMetadata. Workflow review B4, 2026-10-25.

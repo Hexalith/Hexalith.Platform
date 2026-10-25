@@ -1,0 +1,20 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-class",
+    "*LocalRunLifecycleTests",
+    "-class",
+    "*CompositionRunListingTests",
+    "-class",
+    "*ModuleCommandApplicationTests",
+    "-class",
+    "*CompositionResourceClaimStoreTests",
+    "-result-xml",
+    "/tmp/story25-full-review-patches-2hyzkf/focused-module.xml"
+  ],
+  "exitCode": 1,
+  "durationSeconds": 58.294,
+  "log": "focused-module.log"
+}

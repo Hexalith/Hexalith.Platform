@@ -1,0 +1,62 @@
+{
+  "C1": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FinalComponentSymlinksRefuseAtomically(result: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.FinalComponentSymlinksRefuseAtomically(result: True)"
+    ],
+    "result": "passed",
+    "windowsRuntimeQualification": false,
+    "note": "Portable reader cases execute on Linux; Windows held-handle branch compiles and was checked against retained Microsoft API documentation."
+  },
+  "C2": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.NullTrackedReadinessReturnsStructuredUncertaintyAsync"
+    ],
+    "result": "passed"
+  },
+  "C3": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.DiscoveryFailuresPreventCompleteCleanupAsync"
+    ],
+    "result": "passed"
+  },
+  "C4": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"exit-code\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"phase\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"category\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"completed-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"failed-with-success\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"failed-with-cancelled\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unavailable-with-success\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unavailable-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"cancelled-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"withdrawn-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unknown-status\\\")"
+    ],
+    "result": "passed"
+  },
+  "C5": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.StateRootAbsenceAndNonDirectoryAreDistinguishedAsync(existingFile: False)",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.StateRootAbsenceAndNonDirectoryAreDistinguishedAsync(existingFile: True)"
+    ],
+    "result": "passed"
+  },
+  "C6": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExclusiveLocksRefuseUntilReleased(result: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.ExclusiveLocksRefuseUntilReleased(result: True)"
+    ],
+    "result": "passed"
+  },
+  "C7": {
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: False, populatedReadiness: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: False, populatedReadiness: True)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: True, populatedReadiness: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: True, populatedReadiness: True)"
+    ],
+    "result": "passed"
+  }
+}

@@ -35,8 +35,10 @@ Every reserved binding is required, even when its producer is unavailable. It
 uses exactly `{"state":"not-yet-populated"}` until that producer can populate
 its defined typed shape. A populated binding uses `"state":"populated"` and
 all fields required by that branch. Composition and catalog identities retain
-their direct known-value objects (`id`/`contentIdentity` and `commit`/`instanceId`),
-and also accept the same explicit `not-yet-populated` object while unavailable.
+their direct known-value objects (`id`/`contentIdentity` and `commit`/`instanceId`).
+Composition, catalog and `environment.resources` also accept the same explicit
+`not-yet-populated` object while unavailable; resources otherwise use their
+defined array of observed resources.
 Do not use null, an omitted binding, an empty
 object, fabricated identities, catalog identities substituted for candidate
 identities, or a configured tool pin substituted for the executing tool.
@@ -65,6 +67,13 @@ The reader accepts strict UTF-8 JSON of at most 1 MiB, including
 an optional UTF-8 BOM, and at most 64 nesting levels. It rejects duplicate keys
 at any depth, comments, trailing commas, malformed UTF-8/JSON and excess size or
 depth before returning a document.
+
+On 2026-10-25, the contract owner approved an in-place v1 amendment before any
+fixture consumer had adopted v1: unavailable `environment.resources` may use
+`not-yet-populated`, and Builds `hexalith.module-run-evidence.v1`
+`remainingResources` includes workspace IDs, claim IDs and discovery-failure
+categories. This approval applies to that amendment only; subsequent semantic
+changes still require versioning and explicit consumer adoption.
 
 ## Shared bindings
 
@@ -218,6 +227,10 @@ all parsing, version, policy, shape and timing checks pass. Any refusal returns
 `Document: null` and stable metadata-only diagnostics; no partial values escape.
 Cancellation propagates as cancellation. Schemas are embedded in Tooling and
 packaged under `tools/net10.0/any/schemas/`; remote schema retrieval is disabled.
+File reads are non-blocking and bounded: a FIFO or other non-seekable input is
+refused as `HXT105`. A symlink in the final path component and a file held under
+an exclusive lock are refused as `HXT106`; the reader requires a regular file
+opened without following that final link and with shared-read access.
 No source checkout is needed by the installed reader. Tooling is not published as
 a standalone package: the reader runs inside the installed `hexalith-module` tool,
 and module fixtures that validate descriptors themselves use the published schemas.

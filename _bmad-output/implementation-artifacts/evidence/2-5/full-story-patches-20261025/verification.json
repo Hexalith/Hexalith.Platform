@@ -1,0 +1,99 @@
+{
+  "module": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "73630028-84fd-4060-b007-a867420105c0",
+    "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "15:44:49",
+    "start-rtf": "2026-10-25T15:44:49.6490425+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T15:48:34.0217999+00:00",
+    "not-run": "0",
+    "passed": "691",
+    "skipped": "0",
+    "time": "224.382",
+    "time-rtf": "00:03:44.3820000",
+    "total": "691"
+  },
+  "evidence": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "0b8d8ab6-20fe-4ebd-90e7-69f4a2463647",
+    "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "15:48:34",
+    "start-rtf": "2026-10-25T15:48:34.2215249+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T15:48:37.9642146+00:00",
+    "not-run": "0",
+    "passed": "182",
+    "skipped": "0",
+    "time": "3.743",
+    "time-rtf": "00:00:03.7430000",
+    "total": "182"
+  },
+  "platform": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "5ea240ec-daa1-4a34-b37a-f33d0f85dd6c",
+    "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "run-date": "2026-10-25",
+    "run-time": "15:48:38",
+    "start-rtf": "2026-10-25T15:48:38.1944297+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-25T15:48:38.2912052+00:00",
+    "not-run": "0",
+    "passed": "1",
+    "skipped": "0",
+    "time": "0.097",
+    "time-rtf": "00:00:00.0970000",
+    "total": "1"
+  },
+  "executedPassingCases": 874,
+  "originalAcceptedFixes": 16,
+  "workflowReviewPatchGroups": 7,
+  "matrixRowsCovered": 7,
+  "sourceFilesUnchangedDuringFinalChecks": 59,
+  "individualDebugBuilds": "zero warnings/errors",
+  "schemaParity": {
+    "hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+    "hexalith.test-result.v1.json": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39"
+  },
+  "finalSourceBroadVerification": true,
+  "freshLiveQualification": false,
+  "nativeWindowsMacOSQualification": false,
+  "preExistingReviewDeferrals": [
+    "D2 process creation identity before PID deletion",
+    "D3 exact captured-secret filtering for optional metadata archives"
+  ],
+  "carriedDeferrals": [
+    "D1 claim transaction cancellation",
+    "CB3 cancellable workspace traversal",
+    "CE1 inaccessible Linux process environments",
+    "Q3 same-user Windows process inspection"
+  ],
+  "qualificationLimits": {
+    "platformStart": "c4fad9cd10491547a2b3e94c108442eff38a6edd",
+    "buildsStart": "0c735503728e18de93937b1495abebcfa6e33f9a",
+    "platformStoryBaseline": "654d2299fbba59ea1998c0a2791e5b928131e38f",
+    "buildsStoryBaseline": "3052386abb54ff111f498a8f6424300ea7cdda93",
+    "scope": "Resume full-story review P1-P16; owner decisions Q1(a), Q2(a), Q3(c) preserved.",
+    "recordedAt": "2026-10-25T14:29:52.774741+00:00",
+    "freshLiveQualification": false,
+    "livePrerequisites": {
+      "dockerServer": "29.8.2",
+      "installedAspire": "13.6.1",
+      "requiredAspire": "13.6.3"
+    },
+    "packageQualification": "unavailable until authoritative release declarations are published",
+    "nativeWindowsMacOSQualification": false
+  },
+  "historicalVerification": "pre-workflow-review/ preserves the earlier 668-case broad lane and separate 11-case final archival correction; neither is substituted for this final full-source lane."
+}

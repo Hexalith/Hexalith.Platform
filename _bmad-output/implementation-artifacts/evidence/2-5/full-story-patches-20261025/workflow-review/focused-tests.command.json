@@ -1,0 +1,18 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-class",
+    "*TestEnvironmentContractReaderTests",
+    "-class",
+    "*CompositionRunListingTests",
+    "-class",
+    "*LocalRunCommittedReviewTests",
+    "-result-xml",
+    "/tmp/story25-workflow-review-fixes-kWK0gv/focused-tests.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 7.859,
+  "log": "focused-tests.log"
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "finding": "B1",
+    "verdict": "medium",
+    "route": "Patch C1",
+    "evidence": "The Windows branch opens an ordinary FileStream; the public reader has no preceding reparse-point check. A held no-follow handle is required for the promised HXT106 refusal."
+  },
+  {
+    "finding": "B2",
+    "verdict": "high",
+    "route": "Carried defer CE1",
+    "evidence": "carried: same Linux inaccessible-environment claim and location as CE1 in the prior final workflow triage. The entire Linux environment-read/exception behavior exists at Builds baseline 3052386abb54ff111f498a8f6424300ea7cdda93. Do not patch or defer it again."
+  },
+  {
+    "finding": "B3",
+    "verdict": "high",
+    "route": "Defer D2",
+    "evidence": "The baseline scanner already discovers bare PIDs and later calls GetProcessById/Kill without creation-identity validation. PID reuse can kill a peer; this is a pre-existing deletion identity defect."
+  },
+  {
+    "finding": "B4",
+    "verdict": "high",
+    "route": "Defer D3",
+    "evidence": "The baseline CopySelectedMetadataAsync already reads child-writable plan/readiness JSON and uses only ManifestSecretDetector/SafeMetadata. Exact arbitrary token values in innocuous properties can escape this pre-existing filter."
+  },
+  {
+    "finding": "B5",
+    "verdict": "medium",
+    "route": "Patch C2",
+    "evidence": "IsOwnedState and enumeration do not reject null ReadinessResults entries. Down passes them into the new TestResultWriter, whose resource.Name projection dereferences null before structured teardown can finish."
+  },
+  {
+    "finding": "B6",
+    "verdict": "medium",
+    "route": "Patch C3",
+    "evidence": "ValidResources accepts nonempty DiscoveryFailures with Unverified=false; IsEmpty ignores these categories. Such a durable observation can incorrectly validate complete cleanup."
+  },
+  {
+    "finding": "B7",
+    "verdict": "medium",
+    "route": "Patch C4",
+    "evidence": "ValidOutcome checks the presence of TerminalOutcome but not its enum values or terminal status/exit-code consistency. Typed JSON permits undefined numeric enum values, which can reach restored command outcomes."
+  },
+  {
+    "finding": "B8",
+    "verdict": "medium",
+    "route": "Patch C5",
+    "evidence": "Directory.Exists also returns false for an existing non-directory state path or inaccessible directory. Enumeration then reports successful absence. A direct attributes/enumeration check can distinguish absence from failure."
+  },
+  {
+    "finding": "B9",
+    "verdict": "low",
+    "route": "Rejected",
+    "evidence": "Optional final export warnings remain in command diagnostics and do not fabricate cleanup or invalidate retained result references. Updating the earlier lifecycle snapshot would add export-to-state context/callback plumbing for an occasional redundant diagnostic omission; no everyday loss of the terminal outcome or owned resources was shown."
+  },
+  {
+    "finding": "B10",
+    "verdict": "low",
+    "route": "Carried rejected BH11/CB10",
+    "evidence": "carried: the same additional real-service cancellation/startup-timeout scenarios were rejected in the earlier review. Ordinary cases run and pass; fresh live/package qualification remains explicitly unavailable."
+  },
+  {
+    "finding": "E1",
+    "verdict": "high",
+    "route": "Carried defer CE1",
+    "evidence": "carried: the reproduced nondumpable Linux child confirms the already logged CE1 boundary; baseline behavior is unchanged. No duplicate deferral is appended."
+  },
+  {
+    "finding": "E2",
+    "verdict": "medium",
+    "route": "Patch C1",
+    "evidence": "Same Windows final-component link-following defect as B1; there is no upstream public-reader guard."
+  },
+  {
+    "finding": "E3",
+    "verdict": "high",
+    "route": "Defer D2",
+    "evidence": "The new unverified-observation merge prolongs the stale-PID window, but the same bare-PID kill and discovery/deletion race are present at the original baseline. Preserve the independent-peer harm in the shared pre-existing identity-defect deferral."
+  },
+  {
+    "finding": "V1",
+    "verdict": "medium",
+    "route": "Patch C6",
+    "evidence": "Pre-verified regression gap: no public descriptor/result test holds an otherwise valid file exclusively. Disabling respectSharing at the reader leaves the inspected tests passing."
+  },
+  {
+    "finding": "V2",
+    "verdict": "medium",
+    "route": "Patch C7",
+    "evidence": "Pre-verified regression gap: no descriptor/result test combines unavailable resources with populated empty readiness. Removing the array-kind guard leaves the inspected tests passing."
+  },
+  {
+    "finding": "VO1",
+    "verdict": "medium",
+    "route": "Patch C1",
+    "evidence": "Verified Other finding: the Windows FileStream branch follows the final link while the contract promises HXT106. Group with B1/E2 only after this individual verdict."
+  }
+]

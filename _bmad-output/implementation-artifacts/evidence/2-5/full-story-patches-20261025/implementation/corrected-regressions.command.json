@@ -1,0 +1,20 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*ConcurrentDownCancelsStartingOwnerAsync",
+    "-method",
+    "*ExhaustedExecutionLifetimeBeforeNativeReturnRecordsTimeoutCauseAsync",
+    "-method",
+    "*CorruptClaimDiscoveryStaysIncompleteUntilOwnershipIsRestoredAsync",
+    "-method",
+    "*SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync",
+    "-result-xml",
+    "/tmp/story25-full-review-patches-2hyzkf/corrected-regressions.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 17.136,
+  "log": "corrected-regressions.log"
+}
