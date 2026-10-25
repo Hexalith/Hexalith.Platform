@@ -127,7 +127,7 @@ public sealed partial class PlatformAppModelTests
         SourceMapping mapping = initial.SourceMapping! with { Entries = [.. initial.SourceMapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
         CompositionRunPlan plan = CompositionRunPlanFactory.Create(initial.RunId, workspace, Path.Combine(workspace, "dapr-home"), CompositionPortAllocator.Allocate(3), [], [], mapping,
             initial.PlatformDeclarationPaths, "memories", typeof(PlatformAppModel).Assembly.Location) with { SelectedTest = selected ? initial.SelectedTest : null };
-        await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+        await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken).ConfigureAwait(true);
         return plan;
     }
 
@@ -135,7 +135,7 @@ public sealed partial class PlatformAppModelTests
     {
         List<object> arguments = [];
         foreach (CommandLineArgsCallbackAnnotation callback in project.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
-            await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+            await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken)).ConfigureAwait(true);
         return arguments.Select(argument => argument.ToString()!).ToArray();
     }
 }

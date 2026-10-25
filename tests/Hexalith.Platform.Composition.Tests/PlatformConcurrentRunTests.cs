@@ -225,16 +225,16 @@ public sealed class PlatformConcurrentRunTests
         bound.CancelAfter(TimeSpan.FromSeconds(90));
         string nonce = CompositionRunPlanFactory.NewRunId();
         await CompositionDocumentStore.WriteAsync(CompositionControlRequest.PathFor(session.Plan.Workspace),
-            new CompositionControlRequest(CompositionControlRequest.SupportedSchema, session.RunId, nonce, "refresh-readiness"), bound.Token);
+            new CompositionControlRequest(CompositionControlRequest.SupportedSchema, session.RunId, nonce, "refresh-readiness"), bound.Token).ConfigureAwait(true);
         CompositionControlResponse? response;
         do
         {
-            await Task.Delay(TimeSpan.FromMilliseconds(200), bound.Token);
-            response = await CompositionDocumentStore.TryReadAsync<CompositionControlResponse>(CompositionControlResponse.PathFor(session.Plan.Workspace), bound.Token);
+            await Task.Delay(TimeSpan.FromMilliseconds(200), bound.Token).ConfigureAwait(true);
+            response = await CompositionDocumentStore.TryReadAsync<CompositionControlResponse>(CompositionControlResponse.PathFor(session.Plan.Workspace), bound.Token).ConfigureAwait(true);
         } while (response?.Nonce != nonce);
         response.RunId.ShouldBe(session.RunId);
         response.Success.ShouldBeTrue(response.FailureStep);
-        CompositionReadiness refreshed = (await CompositionDocumentStore.TryReadAsync<CompositionReadiness>(session.Plan.ReadinessPath, bound.Token)).ShouldNotBeNull();
+        CompositionReadiness refreshed = (await CompositionDocumentStore.TryReadAsync<CompositionReadiness>(session.Plan.ReadinessPath, bound.Token).ConfigureAwait(true)).ShouldNotBeNull();
         refreshed.RunId.ShouldBe(session.RunId);
         refreshed.RefreshId.ShouldBe(nonce);
         refreshed.Resources.Where(resource => resource.Kind == "project").Select(resource => resource.Name).Order()
@@ -267,7 +267,7 @@ public sealed class PlatformConcurrentRunTests
             string receipt = Path.Combine(evidence, "cleanup-" + run.RunId + ".json");
             try
             {
-                var stopped = await run.Cleanup();
+                var stopped = await run.Cleanup().ConfigureAwait(true);
                 File.WriteAllText(receipt, JsonSerializer.Serialize(stopped));
                 if (stopped.Result.Outcome.ExitCode != ToolExitCode.Success || !stopped.Remaining.IsEmpty)
                     throw new InvalidOperationException("Owned cleanup was incomplete for " + run.RunId);
@@ -293,7 +293,7 @@ public sealed class PlatformConcurrentRunTests
 
     private static async Task<CompositionProcessResult> CommandAsync(string command, string[] arguments, string root)
     {
-        CompositionProcessResult result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(command, arguments, root, null), TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken);
+        CompositionProcessResult result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(command, arguments, root, null), TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken).ConfigureAwait(true);
         result.ExitCode.ShouldBe(0, command + " " + string.Join(' ', arguments) + Environment.NewLine + result.Output + result.ErrorOutput);
         result.TimedOut.ShouldBeFalse();
         return result;

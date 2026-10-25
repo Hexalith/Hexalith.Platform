@@ -168,7 +168,7 @@ public sealed class DomainEnrollmentKitTests
 
     private static async Task<string> GitAsync(string directory, params string[] arguments)
     {
-        (int code, string output, string error) = await RunAsync(directory, "git", arguments);
+        (int code, string output, string error) = await RunAsync(directory, "git", arguments).ConfigureAwait(true);
         code.ShouldBe(0, output + error);
         return output;
     }
@@ -180,7 +180,7 @@ public sealed class DomainEnrollmentKitTests
         using Process process = Process.Start(start)!;
         Task<string> stdout = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         Task<string> stderr = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
-        await process.WaitForExitAsync(TestContext.Current.CancellationToken);
-        return (process.ExitCode, await stdout, await stderr);
+        await process.WaitForExitAsync(TestContext.Current.CancellationToken).ConfigureAwait(true);
+        return (process.ExitCode, await stdout.ConfigureAwait(true), await stderr.ConfigureAwait(true));
     }
 }

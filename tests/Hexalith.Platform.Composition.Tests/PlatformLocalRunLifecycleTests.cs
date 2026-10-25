@@ -66,7 +66,8 @@ public sealed class PlatformLocalRunLifecycleTests
                     declaration["modules"]![0]!["lifecycle"]!["tasks"]![0]!["arguments"] = new JsonArray("--fail-after-readiness");
                 string manifest = Path.Combine(evidence, "manifest-" + scenario + ".json");
                 File.WriteAllText(manifest, declaration.ToJsonString());
-                await using StringWriter output = new();
+                StringWriter output = new();
+                await using var outputDisposal = output.ConfigureAwait(true);
                 int exit = await ModuleCommandExecutionService.ExecuteAsync(ModuleInvocationCommand.Test, manifest, "lifecycle-" + scenario, null, null, ToolOutputFormat.Json, output, TestContext.Current.CancellationToken, typeof(CompositionEngine).Assembly.Location, compositionOptions: options with { AppHostLogPath = Path.Combine(evidence, "apphost-" + scenario + ".log") });
                 File.WriteAllText(Path.Combine(evidence, "command-" + scenario + ".json"), output.ToString());
                 using JsonDocument command = JsonDocument.Parse(output.ToString());
@@ -149,7 +150,7 @@ public sealed class PlatformLocalRunLifecycleTests
 
         async Task<CompositionProcessResult> DockerAsync(IReadOnlyList<string> arguments)
         {
-            CompositionProcessResult result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", arguments, root, null), TimeSpan.FromSeconds(20), TestContext.Current.CancellationToken);
+            CompositionProcessResult result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", arguments, root, null), TimeSpan.FromSeconds(20), TestContext.Current.CancellationToken).ConfigureAwait(true);
             result.ExitCode.ShouldBe(0);
             return result;
         }
@@ -187,7 +188,7 @@ public sealed class PlatformLocalRunLifecycleTests
                 CompositionDownResult down;
                 try
                 {
-                    down = await cleanup(runId, attempt);
+                    down = await cleanup(runId, attempt).ConfigureAwait(true);
                 }
                 catch (Exception exception) when (exception is not OutOfMemoryException)
                 {

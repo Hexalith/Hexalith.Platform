@@ -552,10 +552,10 @@ public sealed partial class PlatformAppModelTests
 
         async Task RemoveOwnedAsync(string container, string owner)
         {
-            var owned = await DockerAsync(["inspect", "--format", "{{index .Config.Labels \"hexalith.g4.run\"}}", container]);
+            var owned = await DockerAsync(["inspect", "--format", "{{index .Config.Labels \"hexalith.g4.run\"}}", container]).ConfigureAwait(true);
             if (owned.ExitCode != 0) return;
             owned.Output.Trim().ShouldBe(owner);
-            var cleanup = await DockerAsync(["rm", "--force", "--volumes", container]);
+            var cleanup = await DockerAsync(["rm", "--force", "--volumes", container]).ConfigureAwait(true);
             File.WriteAllText(Path.Combine(evidence, owner + "-cleanup.log"), cleanup.Output + cleanup.ErrorOutput);
             cleanup.ExitCode.ShouldBe(0, cleanup.Output + cleanup.ErrorOutput);
         }

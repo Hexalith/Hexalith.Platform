@@ -53,7 +53,8 @@ public sealed class PlatformDaprDiagnosticsTests
             ExecutableResource foreign = builder.AddExecutable("foreign-dapr-cli", "daprd", root).Resource;
             await using DistributedApplication app = builder.Build();
             string directory = Path.Combine(root, "evidence");
-            await using PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            await using var captureDisposal = capture.ConfigureAwait(true);
             await StartCaptureAsync(app, builder, capture);
             ResourceLoggerService logs = app.Services.GetRequiredService<ResourceLoggerService>();
             ResourceNotificationService notifications = app.Services.GetRequiredService<ResourceNotificationService>();
@@ -345,7 +346,8 @@ public sealed class PlatformDaprDiagnosticsTests
             Directory.CreateDirectory(directory);
             string existing = Path.Combine(directory, "memories-dapr-cli.console.jsonl");
             File.WriteAllText(existing, "original evidence");
-            await using PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            PlatformDaprDiagnostics capture = new(directory, ["memories"], []);
+            await using var captureDisposal = capture.ConfigureAwait(true);
             await Should.ThrowAsync<IOException>(() => StartCaptureAsync(app, builder, capture));
             File.ReadAllText(existing).ShouldBe("original evidence");
         }
@@ -373,12 +375,12 @@ public sealed class PlatformDaprDiagnosticsTests
     private static async Task StartCaptureAsync(DistributedApplication app, IDistributedApplicationBuilder builder, PlatformDaprDiagnostics capture)
     {
         IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
-        await capture.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
-        await eventing.PublishAsync(new BeforeStartEvent(app.Services, app.Services.GetRequiredService<DistributedApplicationModel>()), TestContext.Current.CancellationToken);
+        await capture.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        await eventing.PublishAsync(new BeforeStartEvent(app.Services, app.Services.GetRequiredService<DistributedApplicationModel>()), TestContext.Current.CancellationToken).ConfigureAwait(true);
         // Real DCP allocation publishes a public instance notification after BeforeStart.
         ResourceNotificationService notifications = app.Services.GetRequiredService<ResourceNotificationService>();
         foreach (IResource resource in app.Services.GetRequiredService<DistributedApplicationModel>().Resources)
-            await notifications.PublishUpdateAsync(resource, snapshot => snapshot);
+            await notifications.PublishUpdateAsync(resource, snapshot => snapshot).ConfigureAwait(true);
     }
 
     private static JsonElement[] StateRecords(string directory) => File.ReadAllLines(Path.Combine(directory, "memories-dapr-cli.state.jsonl"))
@@ -390,7 +392,7 @@ public sealed class PlatformDaprDiagnosticsTests
         while (!condition())
         {
             if (Stopwatch.GetElapsedTime(start) > TimeSpan.FromSeconds(5)) throw new TimeoutException("Public capture did not retain the expected observation.");
-            await Task.Delay(10, TestContext.Current.CancellationToken);
+            await Task.Delay(10, TestContext.Current.CancellationToken).ConfigureAwait(true);
         }
     }
 }

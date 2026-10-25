@@ -306,7 +306,7 @@ public sealed class AgentsHostCompositionTests
             new TrustedPrincipal(TrustedPrincipalKind.User, "tenant-a", "actor-a", "party-a", 1, "roles", null, null, null, null),
             "Contracts.EditProposal", "EditProposal", "tenant-a", "resource-a", "correlation", "cause",
             ["tenant-a"], "fingerprint", "digest-v1", "audience-a", "logical-command");
-        TrustedEnvelope envelope = (await authenticator.IssueAsync(expected, TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken)).Envelope!;
+        TrustedEnvelope envelope = (await authenticator.IssueAsync(expected, TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken).ConfigureAwait(true)).Envelope!;
         ITrustedEnvelopeReplayRegistrar registrar = Substitute.For<ITrustedEnvelopeReplayRegistrar>();
         int order = 0;
         TrustedEnvelopeReplayReceipt? stored = null;
@@ -333,7 +333,7 @@ public sealed class AgentsHostCompositionTests
             order.ShouldBe(1);
             constructed++;
             return "target-command";
-        }, TestContext.Current.CancellationToken);
+        }, TestContext.Current.CancellationToken).ConfigureAwait(true);
         return (result, constructed);
     }
 
@@ -435,7 +435,7 @@ public sealed class AgentsHostCompositionTests
     {
         DateTime until = DateTime.UtcNow.AddSeconds(5);
         while (!ready() && DateTime.UtcNow < until)
-            await Task.Delay(20, TestContext.Current.CancellationToken);
+            await Task.Delay(20, TestContext.Current.CancellationToken).ConfigureAwait(true);
         ready().ShouldBeTrue();
     }
 
@@ -458,7 +458,7 @@ public sealed class AgentsHostCompositionTests
     {
         Dictionary<string, object> environment = new(StringComparer.Ordinal);
         foreach (EnvironmentCallbackAnnotation callback in resource.Annotations.OfType<EnvironmentCallbackAnnotation>())
-            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken));
+            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken)).ConfigureAwait(true);
         return environment;
     }
 

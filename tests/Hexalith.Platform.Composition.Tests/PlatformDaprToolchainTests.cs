@@ -114,7 +114,7 @@ public sealed partial class PlatformAppModelTests
             await using (var app = builder.Build())
             {
                 // Aspire publishes BeforeStart before the host resolves hosted services, so the workspace is never disposed here.
-                var failure = await Should.ThrowAsync<InvalidDataException>(async () => await app.StartAsync(TestContext.Current.CancellationToken));
+                var failure = await Should.ThrowAsync<InvalidDataException>(async () => await app.StartAsync(TestContext.Current.CancellationToken).ConfigureAwait(true));
                 failure.Message.ShouldContain("selected Dapr native runtime is unavailable");
                 failure.Message.ShouldContain(Path.Combine(workspace, "missing-runtime"));
             }
@@ -144,7 +144,7 @@ public sealed partial class PlatformAppModelTests
             using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
             var eventing = new DistributedApplicationEventing();
             await new PlatformDaprEndpointSubscriber([], workspace: workspace).SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
-            var failure = await Should.ThrowAsync<InvalidOperationException>(async () => await eventing.PublishAsync(new BeforeStartEvent(services, model), TestContext.Current.CancellationToken));
+            var failure = await Should.ThrowAsync<InvalidOperationException>(async () => await eventing.PublishAsync(new BeforeStartEvent(services, model), TestContext.Current.CancellationToken).ConfigureAwait(true));
             File.ReadAllText(Path.Combine(workspace, PlatformCompositionWorkspace.FailureMarker)).ShouldBe(failure.Message);
             new PlatformCompositionWorkspace(workspace).Dispose();
             Directory.Exists(workspace).ShouldBeTrue("a marked failure must survive registered-service disposal");

@@ -46,8 +46,9 @@ public sealed class PlatformTestEnvironmentProvisioningTests
                     AppHostLogPath = Path.Combine(evidence, "apphost-" + index + ".log"),
                 };
                 owners.Add(options);
-                await using StringWriter output = new();
-                int exit = await ModuleCommandExecutionService.ExecuteAsync(ModuleInvocationCommand.Test, manifest, "descriptor-isolation", null, null, ToolOutputFormat.Json, output, TestContext.Current.CancellationToken, typeof(CompositionEngine).Assembly.Location, compositionOptions: options);
+                StringWriter output = new();
+                await using var outputDisposal = output.ConfigureAwait(true);
+                int exit = await ModuleCommandExecutionService.ExecuteAsync(ModuleInvocationCommand.Test, manifest, "descriptor-isolation", null, null, ToolOutputFormat.Json, output, TestContext.Current.CancellationToken, typeof(CompositionEngine).Assembly.Location, compositionOptions: options).ConfigureAwait(true);
                 string commandOutput = output.ToString();
                 File.WriteAllText(Path.Combine(evidence, "command-" + index + ".json"), commandOutput);
                 using JsonDocument result = JsonDocument.Parse(commandOutput);

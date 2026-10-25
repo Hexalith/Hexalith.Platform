@@ -200,13 +200,13 @@ public sealed partial class PlatformAppModelTests
                         }
                     }
 
-                    (await checking).Status.ShouldBe(expected);
+                    (await checking.ConfigureAwait(true)).Status.ShouldBe(expected);
                 }
             }
             finally
             {
                 await caller.CancelAsync();
-                try { _ = await checking; }
+                try { _ = await checking.ConfigureAwait(true); }
                 catch (OperationCanceledException) { }
             }
         }

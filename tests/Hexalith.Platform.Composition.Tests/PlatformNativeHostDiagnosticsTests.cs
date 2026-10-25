@@ -44,8 +44,8 @@ public sealed class PlatformNativeHostDiagnosticsTests
                 signal.ExitCode.ShouldBe(0);
             }
             await child.WaitForExitAsync(TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(15), TestContext.Current.CancellationToken);
-            string output = await stdout;
-            string error = await stderr;
+            string output = await stdout.ConfigureAwait(true);
+            string error = await stderr.ConfigureAwait(true);
             if (scenario is "normal" or "cancellation" or "resource-failure" or "bounded") child.ExitCode.ShouldBe(0, output + error);
             else child.ExitCode.ShouldNotBe(0);
             string bytes = File.ReadAllText(path);
@@ -108,7 +108,7 @@ public sealed class PlatformNativeHostDiagnosticsTests
         while (!condition())
         {
             if (Stopwatch.GetElapsedTime(start) > TimeSpan.FromSeconds(10)) throw new TimeoutException("Controlled native host did not publish its observation.");
-            await Task.Delay(10, TestContext.Current.CancellationToken);
+            await Task.Delay(10, TestContext.Current.CancellationToken).ConfigureAwait(true);
         }
     }
 }
