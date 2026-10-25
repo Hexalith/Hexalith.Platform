@@ -1,0 +1,235 @@
+{
+  "captured_at_utc": "2026-10-25T11:42:21.682520+00:00",
+  "artifact_root": "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x",
+  "repositories": {
+    "parties": {
+      "path": "/home/administrator/projects/hexalith/parties",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "13a6247aff26a77c80d0308b6c69af2bc3e20279\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M eng/verify-ext-parties-1.ps1\n m references/Hexalith.Memories\n M tests/Hexalith.Parties.Tests/Projections/PartyGuardedRebuildErasureTests.cs\n?? _bmad-output/implementation-artifacts/spec-ext-parties-1-custody-prerequisite-hardening.md\n",
+        "stderr": ""
+      },
+      "remotes": {
+        "command": [
+          "git",
+          "remote",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "origin\thttps://github.com/Hexalith/Hexalith.Parties.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.Parties.git (push)\n",
+        "stderr": ""
+      },
+      "recent_history": {
+        "command": [
+          "git",
+          "log",
+          "-5",
+          "--oneline"
+        ],
+        "exit_code": 0,
+        "stdout": "13a6247a build: point eventstore and memories at synced main\n17290ed6 fix: swwep\nfdba00e5 fix: sweep\n9c116910 build: record synced eventstore and memories tips\ne523b065 fix: sweep\n",
+        "stderr": ""
+      }
+    },
+    "platform": {
+      "path": "/home/administrator/projects/hexalith/platform",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "f84977132777decec2f45a199d9392de73b6cc84\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M eng/ext-host-1/prepare_acceptance.py\n M eng/ext-host-1/verify_full.py\n M eng/ext-secrets-1/joint_live_phase_runner.py\n M eng/ext-secrets-1/prepare_acceptance.py\n M eng/ext-secrets-1/qualify.py\n M infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs\n M infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs\n m references/Hexalith.Builds\n M src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs\n?? eng/ext-secrets-1/coordinated_packets.py\n?? eng/ext-secrets-1/joint-authority-schema.sql\n?? eng/ext-secrets-1/joint_authority_service.py\n?? infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs\n",
+        "stderr": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\n"
+      },
+      "remotes": {
+        "command": [
+          "git",
+          "remote",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "origin\thttps://github.com/Hexalith/Hexalith.Platform.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.Platform.git (push)\n",
+        "stderr": ""
+      },
+      "recent_history": {
+        "command": [
+          "git",
+          "log",
+          "-5",
+          "--oneline"
+        ],
+        "exit_code": 0,
+        "stdout": "f849771 fix: sweep\n2a4c7fa story 5.4\n8b712a0 fix: story 2.5\n90aef9a fix: story 2.5\n7c56ad6 build: sync local changes via /pushall\n",
+        "stderr": ""
+      }
+    },
+    "eventstore": {
+      "path": "/home/administrator/projects/hexalith/eventstore",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "fd083a91b67a3bca10016f1f645da913c7ef526e\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M _bmad-output/implementation-artifacts/2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-ext-protection-1-owner-delivery.md\n M docs/implementation/ext-protection-1-owner-acceptance.md\n M src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs\n M tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.json\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.md\n?? src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionTargetReader.cs\n?? tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs\n",
+        "stderr": ""
+      },
+      "remotes": {
+        "command": [
+          "git",
+          "remote",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "origin\thttps://github.com/Hexalith/Hexalith.EventStore.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.EventStore.git (push)\n",
+        "stderr": ""
+      },
+      "recent_history": {
+        "command": [
+          "git",
+          "log",
+          "-5",
+          "--oneline"
+        ],
+        "exit_code": 0,
+        "stdout": "fd083a91b feat: discover read-model recovery before erasure\n7012502bc build: advance Builds, Memories, and Platform pointers to origin/main\n82821e453 fix: story 2.13\n03ef9f156 test: repair release gate fixture bindings\nd80cbf4d1 fix(aspire): reuse generated app channel token registrations\n",
+        "stderr": ""
+      }
+    },
+    "platform-builds": {
+      "path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "68e65f2023eca117a2aa08a022ee33d8f4c34a44\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStateStore.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs\n M src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs\n M src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs\n?? test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs\n?? test/Hexalith.Builds.Module.Tests/LocalRunReviewCorrectionTests.cs\n",
+        "stderr": ""
+      },
+      "remotes": {
+        "command": [
+          "git",
+          "remote",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "origin\thttps://github.com/Hexalith/Hexalith.Builds.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.Builds.git (push)\n",
+        "stderr": ""
+      },
+      "recent_history": {
+        "command": [
+          "git",
+          "log",
+          "-5",
+          "--oneline"
+        ],
+        "exit_code": 0,
+        "stdout": "68e65f2 fix(runtime): remove pre-start state after an unmapped project refusal\n6e40ea5 build: sync local changes via /pushall\n7144b80 docs(module): resume governed CLI release\n142b06e build: merge governance release evidence into main\n197a57c build: sync local changes via /pushall\n",
+        "stderr": ""
+      }
+    },
+    "eventstore-builds": {
+      "path": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Builds",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "6e40ea5f6243391bea80084b8ddd695df58fb1ff\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n",
+        "stderr": ""
+      },
+      "remotes": {
+        "command": [
+          "git",
+          "remote",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "origin\thttps://github.com/Hexalith/Hexalith.Builds.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.Builds.git (push)\n",
+        "stderr": ""
+      },
+      "recent_history": {
+        "command": [
+          "git",
+          "log",
+          "-5",
+          "--oneline"
+        ],
+        "exit_code": 0,
+        "stdout": "6e40ea5 build: sync local changes via /pushall\n7144b80 docs(module): resume governed CLI release\n142b06e build: merge governance release evidence into main\n197a57c build: sync local changes via /pushall\na9013c5 build: sync local changes via /pushall\n",
+        "stderr": ""
+      }
+    }
+  },
+  "original_target_sha256": {
+    "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs": "00eb5c661d80c54e5244d1025cbc5c545632995e50b997549b188e6a9e52ffb3",
+    "tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs": "76d11db3a8726843075a01f17d8c7edb13f4b65203c96376694df5aff6dcf01a"
+  }
+}

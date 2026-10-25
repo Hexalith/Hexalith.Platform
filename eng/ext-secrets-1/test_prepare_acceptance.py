@@ -27,21 +27,15 @@ class AcceptancePreparationTests(unittest.TestCase):
         self.assertEqual(set(q.IMPLEMENTATIONS) | {"OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"},
                          set(caught.exception.inputs))
 
-    def test_detached_packet_pins_real_anchors_without_accepting_candidate(self):
+    def test_missing_installation_refuses_complete_packet_without_accepting_candidate(self):
         output = Path(self.temp.name) / "packet"
         result = prepare.prepare(self.fixture.root, self.fixture.path, output)
-        packet = q.read_json(output / "replacement-acceptance-packet.json")
-        self.assertTrue(result["packetPrepared"])
-        self.assertEqual(self.fixture.target, packet["candidateCommit"])
-        self.assertIsNone(packet["acceptedReplacementCommit"])
-        self.assertFalse(packet["dependencyAvailable"])
-        self.assertIn("OwnerAcceptedTargetRuntimeQualificationBindingAndExactCommand", result["missingInputs"])
-        for role in ("executor", "observer", "enrollment"):
-            data = Path(q.get(self.fixture.config, f"qualification.{role}.publicAnchorFile")).read_bytes()
-            self.assertEqual(hashlib.sha256(data).hexdigest(), packet[f"{role}AnchorSha256"])
-        self.assertEqual([], q.replacement_packet_inputs(packet, self.fixture.config, self.fixture.target, self.fixture.target, self.fixture.binding))
-        self.assertIn(str(output), packet["exactCommand"])
-        self.assertFalse((self.fixture.root / "eng/ext-secrets-1/replacement-acceptance-packet.json").exists())
+        self.assertFalse(result["packetPrepared"])
+        self.assertFalse(result["completeReplacementPacket"])
+        self.assertIsNone(result["targetCommit"])
+        self.assertIn("ExplicitCoordinatedInstallationContext", result["missingInputs"])
+        self.assertFalse((output / "replacement-acceptance-packet.json").exists())
+        self.assertEqual([], self.fixture.calls)
 
     def test_dirty_checkout_yields_only_blocked_report(self):
         (self.fixture.root / "uncommitted").write_text("changed")
@@ -56,12 +50,10 @@ class AcceptancePreparationTests(unittest.TestCase):
             stream.write("\n### OQ-5.4-1 — Bounded Owner-Qualification Cohort\n")
         output = Path(self.temp.name) / "cohort-packet"
         report = prepare.prepare(self.fixture.root, self.fixture.path, output, register=self.fixture.register)
-        packet = q.read_json(output / "replacement-acceptance-packet.json")
-        self.assertEqual("IncompleteSourceCandidate", packet["readiness"])
-        self.assertFalse(packet["qualificationCompleted"])
-        self.assertIn("OQ-5.4-1.JointLivePhaseRunner", report["missingInputs"])
-        self.assertIn("OQ-5.4-1.CommittedProtectionOwner", packet["cohortBlockingInputs"])
-        self.assertEqual(hashlib.sha256(self.fixture.register.read_bytes()).hexdigest(), packet["registerEvidence"]["sha256"])
+        self.assertFalse(report["packetPrepared"])
+        self.assertIn("OQ-5.4-1.IndependentCurrentCohortBindingAndOwners", report["missingInputs"])
+        self.assertIn("OQ-5.4-1.CommittedProtectionOwner", report["missingInputs"])
+        self.assertFalse((output / "replacement-acceptance-packet.json").exists())
         self.assertEqual([], self.fixture.calls)
 
     def test_candidate_cannot_contain_its_packet_or_overwrite_existing_packet(self):
@@ -75,7 +67,7 @@ class AcceptancePreparationTests(unittest.TestCase):
     def test_null_or_substituted_anchor_never_clears_readiness(self):
         output = Path(self.temp.name) / "packet"
         prepare.prepare(self.fixture.root, self.fixture.path, output)
-        packet = q.read_json(output / "replacement-acceptance-packet.json")
+        packet = q.read_json(self.fixture.packet_path)
         packet["observerAnchorSha256"] = "a" * 64
         anchors = {f"{r}AnchorSha256": packet[f"{r}AnchorSha256"] for r in ("executor", "observer", "enrollment")}
         packet["publicAnchorSha256"] = q.digest(anchors)
@@ -121,23 +113,12 @@ class AcceptancePreparationTests(unittest.TestCase):
                 self.assertFalse(report["packetPrepared"])
                 self.assertEqual(["blocked-inputs.json"], [p.name for p in output.iterdir()])
 
-    def test_generated_v2_packet_round_trips_pins_with_quoted_paths_and_keeps_cohort_closed(self):
+    def test_quoted_paths_do_not_bypass_missing_installed_context(self):
         output = Path(self.temp.name) / "packet directory;$(never-run)'quoted"
-        eventstore = "../event store;$(never-run)"
-        artifacts = "/tmp/artifacts space'quoted;$()"
-        evidence = "/tmp/evidence space`quoted`"
-        prepare.prepare(self.fixture.root, self.fixture.path, output, eventstore, artifacts, evidence)
-        packet = q.read_json(output / "replacement-acceptance-packet.json")
-        self.fixture.write_register()
-        text = self.fixture.register.read_text()
-        original = text.split("Command: `", 1)[1].split("` |", 1)[0]
-        self.fixture.register.write_text(text.replace(original, packet["exactCommand"]))
-        self.assert_only_cohort_refusal(lambda: q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register,
-            self.fixture.agents, eventstore, artifacts, evidence, output / "replacement-acceptance-packet.json"))
-        self.assertEqual(self.fixture.target, packet["candidateCommit"])
-        self.assertEqual(self.fixture.config, q.read_public_configuration(output / "runtime-reference.json"))
-        self.assertEqual(self.fixture.binding, packet["RuntimeQualificationBinding"])
-        self.assertTrue(packet["exactCommand"].endswith(q.command_suffix(eventstore, artifacts, evidence)))
+        report = prepare.prepare(self.fixture.root, self.fixture.path, output,
+            "../event store;$(never-run)", "/tmp/artifacts space'quoted;$()", "/tmp/evidence space`quoted`")
+        self.assertFalse(report["packetPrepared"])
+        self.assertEqual(["blocked-inputs.json"], [item.name for item in output.iterdir()])
         self.assertEqual([], self.fixture.calls)
 
     def test_unknown_packet_schemas_never_use_legacy_acceptance(self):
@@ -184,26 +165,14 @@ class AcceptancePreparationTests(unittest.TestCase):
                     "metrics": sorted(set(q.GLOBAL) | set(case.expected)), "outcomes": list(case.outcomes), "boundary": case.boundary} for case in q.plan()]}
         self.assertEqual(expected, q.read_json(Path(__file__).parent / "public-case-schemas.json"))
 
-    def test_relative_anchor_is_pinned_absolutely_before_agents_working_directory_change(self):
+    def test_relative_anchor_does_not_create_an_installed_packet(self):
         self.fixture.config["qualification"]["executor"]["publicAnchorFile"] = "executor.public.pem"
         self.fixture.path.write_bytes(q.canonical(self.fixture.config))
         output = Path(self.temp.name) / "relative-anchor-packet"
-        prepare.prepare(self.fixture.root, self.fixture.path, output, "../eventstore", "/tmp/artifacts", "/tmp/evidence")
-        copied = q.read_json(output / "runtime-reference.json")
-        self.assertEqual(str(Path(self.temp.name) / "executor.public.pem"), copied["qualification"]["executor"]["publicAnchorFile"])
-        packet = q.read_json(output / "replacement-acceptance-packet.json")
-        text = self.fixture.register.read_text()
-        original = text.split("Command: `", 1)[1].split("` |", 1)[0]
-        self.fixture.register.write_text(text.replace(original, packet["exactCommand"]))
-        previous = Path.cwd()
-        try:
-            os.chdir(self.fixture.agents)
-            self.assert_only_cohort_refusal(lambda: q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register, self.fixture.agents,
-                "../eventstore", "/tmp/artifacts", "/tmp/evidence", output / "replacement-acceptance-packet.json"))
-        finally:
-            os.chdir(previous)
-        self.assertEqual(copied, q.read_public_configuration(output / "runtime-reference.json"))
-        self.assertEqual(q.digest(copied), packet["configurationSha256"])
+        report = prepare.prepare(self.fixture.root, self.fixture.path, output)
+        self.assertFalse(report["packetPrepared"])
+        self.assertFalse((output / "runtime-reference.json").exists())
+        self.assertEqual([], self.fixture.calls)
 
     def test_preparation_reuses_all_named_transport_and_role_version_blockers(self):
         self.fixture.config["qualification"].update(daprEndpoint="http://foreign-host:3500", requestTimeoutSeconds=0,

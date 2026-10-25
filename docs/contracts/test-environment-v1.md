@@ -305,7 +305,10 @@ available when stopping has exhausted its allowance, without extending execution
 archive processing or cleanup. Unreadable existing outcome documents refuse
 replacement rather than being treated as missing.
 
-Successful local owners clean automatically. Test/startup failure and
+Successful local owners clean automatically after a reader-valid terminal result
+has been published. Publication failure leaves owned resources and discoverable
+pending cleanup available for exact retry without replacing the first outcome.
+Test/startup failure and
 startup/execution timeout retain surviving owned resources until
 `hexalith-module down --run-id <owner-run-id>`. Cancellation without prior failure
 cleans up. CI retains its existing cleanup policy. Exact cleanup is bounded and

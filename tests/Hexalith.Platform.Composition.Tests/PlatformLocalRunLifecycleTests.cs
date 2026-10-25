@@ -50,6 +50,10 @@ public sealed class PlatformLocalRunLifecycleTests
             owned.Add(peer.RunId);
             CompositionRunResources peerBefore = await new CompositionEngine(options).Scanner.FindAsync(peer.RunId, TestContext.Current.CancellationToken);
             peerBefore.ContainerIds.ShouldNotBeEmpty();
+            CompositionRunState peerState = (await new CompositionRunStateStore(options.StateDirectory).TryReadAsync(peer.RunId, TestContext.Current.CancellationToken)).ShouldNotBeNull();
+            int appHostPid = peerState.AppHostProcessId.ShouldNotBeNull();
+            int[] stablePeerPids = [.. peer.Readiness.Resources.Where(resource => resource.Kind is "project" or "executable").Select(resource => resource.ProcessId).OfType<int>().Append(appHostPid).Distinct()];
+            foreach (int processId in stablePeerPids) peerBefore.ProcessIds.ShouldContain(processId);
             string peerContainer = peer.Plan.RedisContainerName;
             await DockerAsync(["exec", peerContainer, "redis-cli", "SET", "story25-peer-key", "unchanged"]);
             foreach (string scenario in new[] { "success", "failure", "timeout", "partial-startup" })
@@ -118,9 +122,11 @@ public sealed class PlatformLocalRunLifecycleTests
                     if (Path.GetExtension(file) is ".json" or ".trx") File.Copy(file, Path.Combine(archive, Path.GetFileName(file)), overwrite: true);
                 CompositionRunResources peerAfter = await new CompositionEngine(options).Scanner.FindAsync(peer.RunId, TestContext.Current.CancellationToken);
                 peerAfter.ContainerIds.ShouldBe(peerBefore.ContainerIds);
+                peerAfter.Unverified.ShouldBeFalse();
+                foreach (int processId in stablePeerPids) peerAfter.ProcessIds.ShouldContain(processId);
                 CompositionProcessResult peerValue = await DockerAsync(["exec", peerContainer, "redis-cli", "GET", "story25-peer-key"]);
                 peerValue.Output.Trim().ShouldBe("unchanged");
-                File.WriteAllText(Path.Combine(evidence, "peer-audit-" + scenario + ".json"), JsonSerializer.Serialize(new { peer.RunId, peerAfter.ContainerIds, observedValue = peerValue.Output.Trim() }));
+                File.WriteAllText(Path.Combine(evidence, "peer-audit-" + scenario + ".json"), JsonSerializer.Serialize(new { peer.RunId, peerAfter.ContainerIds, peerAfter.ProcessIds, stablePeerPids, observedValue = peerValue.Output.Trim() }));
             }
         }
         finally

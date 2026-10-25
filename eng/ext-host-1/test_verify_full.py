@@ -175,6 +175,7 @@ class VerifyFullTests(unittest.TestCase):
 
 def complete_profile():
     profile = prepare.default_profile()
+    profile["integrationDate"] = "2028-02-29"  # Explicit fixture date; no production default is inferred.
     for key in prepare.REFERENCE_KEYS:
         profile[key] = "ref-" + key
     profile["replicaCount"] = 1

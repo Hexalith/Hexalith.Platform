@@ -1,0 +1,69 @@
+{
+  "observedAtUtc": "2026-10-25T11:38:49.955655+00:00",
+  "scope": "read-only; configured context only; does not rule out external/undisclosed installation",
+  "commands": [
+    {
+      "argv": [
+        "kubectl",
+        "config",
+        "get-contexts",
+        "-o",
+        "name"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "output": "01-metadata.txt",
+      "sha256": "9b28851921d6c8549b61ffa861d93df5bbad820a7932355d0e11ed6fa1a0dc45"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--request-timeout=15s",
+        "get",
+        "namespace",
+        "kube-system",
+        "-o",
+        "jsonpath={.metadata.uid}"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "output": "02-metadata.txt",
+      "sha256": "92965a61f024592d8a976449dc97f1b1f04f73bc164675292107761f6782c0e2"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--request-timeout=15s",
+        "get",
+        "deployments,statefulsets,daemonsets",
+        "-A",
+        "-o",
+        "custom-columns=KIND:.kind,NAMESPACE:.metadata.namespace,NAME:.metadata.name,UID:.metadata.uid,IMAGES:.spec.template.spec.containers[*].image"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "output": "03-metadata.txt",
+      "sha256": "de2a40110d6d10a04149080a5771ce6fa83cb00d2a51f5a85a10c7a50d7264a7"
+    }
+  ],
+  "sourceDispositions": {
+    "source": "/home/administrator/projects/hexalith/platform/docs/implementation/custody-lifecycle-foundation-2026-10-25/source-dispositions.json",
+    "sha256": "8761e56d73261585457de1a46a8b0122d6cef21c4dc182a47318579b3fbf2c73",
+    "copy": "source-dispositions.json"
+  },
+  "liveInputPresence": {
+    "EXT_PARTIES_GATEWAY_URL": false,
+    "EXT_PARTIES_TENANT_A": false,
+    "EXT_PARTIES_TENANT_B": false,
+    "EXT_PARTIES_PROVISIONER_CREDENTIAL": false,
+    "EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL": false,
+    "EXT_PARTIES_READER_CREDENTIAL": false,
+    "EXT_PARTIES_POLICY_ID": false,
+    "EXT_PARTIES_RETENTION": false,
+    "EXT_PARTIES_EXPIRY_TRIGGER": false,
+    "EXT_PARTIES_CUSTODY_TARGET": false,
+    "EXT_PARTIES_RESTORE_TARGET": false,
+    "EXT_PARTIES_FAILURE_INJECTION_TARGET": false
+  },
+  "detachedEvidenceExists": false
+}

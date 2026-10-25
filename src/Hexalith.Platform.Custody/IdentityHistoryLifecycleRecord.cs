@@ -117,15 +117,15 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
     /// <summary>Gets generations grown on this unit.</summary>
     public IReadOnlyList<long> Generations { get; }
 
-    /// <summary>Moves one legal step forward at a higher lifecycle revision.</summary>
+    /// <summary>Moves one legal step forward at a higher lifecycle revision without regressing authority.</summary>
     /// <param name="state">Next lifecycle state.</param>
     /// <param name="lifecycleRevision">Higher current lifecycle revision.</param>
-    /// <param name="epoch">Authority epoch for the next snapshot.</param>
-    /// <param name="fence">Authority fence for the next snapshot.</param>
+    /// <param name="epoch">Authority epoch for the next snapshot; it cannot be lower than the current epoch.</param>
+    /// <param name="fence">Nonnegative authority fence; it cannot decrease within the same epoch, but may restart in a higher epoch.</param>
     /// <param name="operationId">Original destruction operation identifier when destruction has started.</param>
     /// <param name="receiptReference">Original receipt reference when the state is receipt final.</param>
     /// <returns>The next snapshot of the same unit and deadline.</returns>
-    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, or not a higher revision.</exception>
+    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, not a higher revision, or regresses the epoch or same-epoch fence.</exception>
     public IdentityHistoryLifecycleRecord Move(
         IdentityHistoryLifecycleState state,
         long lifecycleRevision,
@@ -137,6 +137,16 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
         if (lifecycleRevision <= LifecycleRevision)
         {
             throw new ArgumentException("A forward lifecycle move requires a higher revision.", nameof(lifecycleRevision));
+        }
+
+        if (epoch < Epoch)
+        {
+            throw new ArgumentException("Authority epoch cannot regress.", nameof(epoch));
+        }
+
+        if (epoch == Epoch && fence < Fence)
+        {
+            throw new ArgumentException("Authority fence cannot regress within the same epoch.", nameof(fence));
         }
 
         if (!CanMove(State, state))
@@ -160,12 +170,12 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
             Generations);
     }
 
-    /// <summary>Grows one generation on the same unit and deadline. A repeated generation does not mint a new revision.</summary>
+    /// <summary>Grows one generation only while Active on the same unit and deadline. A known generation returns the same snapshot in every state.</summary>
     /// <param name="unit">Unit that must be the original unit.</param>
     /// <param name="generation">Generation number to append.</param>
     /// <returns>The same snapshot when the generation is already present; otherwise the grown snapshot.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="unit"/> is null.</exception>
-    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit or does not grow.</exception>
+    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit, does not grow, or is new while the lifecycle is not Active.</exception>
     public IdentityHistoryLifecycleRecord AddGeneration(IdentityHistoryCustodyUnit unit, long generation)
     {
         ArgumentNullException.ThrowIfNull(unit);
@@ -182,6 +192,11 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
         if (Generations.Contains(generation))
         {
             return this;
+        }
+
+        if (State != IdentityHistoryLifecycleState.Active)
+        {
+            throw new ArgumentException("New generations require an active lifecycle.", nameof(generation));
         }
 
         if (Generations.Count > 0 && generation <= Generations[^1])

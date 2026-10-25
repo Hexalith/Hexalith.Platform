@@ -1,0 +1,38 @@
+{
+  "observedAtUtc": "2026-10-25T09:46:55.578312+00:00",
+  "operations": [
+    "shutil.which(tool)",
+    "Path.is_file(path); no credential contents opened"
+  ],
+  "tools": {
+    "kubectl": "/usr/local/bin/kubectl",
+    "aws": null,
+    "bao": null,
+    "vault": null,
+    "az": "/usr/bin/az",
+    "terraform": null,
+    "tofu": null
+  },
+  "files": [
+    {
+      "path": "/home/administrator/.aws/config",
+      "exists": false
+    },
+    {
+      "path": "/home/administrator/.aws/credentials",
+      "exists": false
+    },
+    {
+      "path": "/home/administrator/.kube/hexalith-production",
+      "exists": true
+    },
+    {
+      "path": "/home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json",
+      "exists": false
+    },
+    {
+      "path": "/home/administrator/hexalith-conversations-evidence/ext-conv-ai-1/live-manifest.json",
+      "exists": false
+    }
+  ]
+}

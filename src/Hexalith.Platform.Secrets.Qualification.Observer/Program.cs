@@ -1,8 +1,9 @@
 using Hexalith.Platform.Secrets.Runtime;
 
 var builder = WebApplication.CreateBuilder(args);
-// A deployment composes role-specific providers and an independently provisioned durable store.
-// No production provider or credential is inferred from a configuration reference.
+builder.Services.AddSingleton(new Dapr.Client.DaprClientBuilder().Build());
+builder.Services.AddSingleton(TimeProvider.System);
+_ = builder.Services.AddInstalledQualificationRole("observer", builder.Configuration["PLATFORM_QUALIFICATION_INSTALLATION"]);
 var app = builder.Build();
 SecretsRuntimeConfiguration configuration = args.Length > 0 ? SecretsRuntimeConfiguration.Load(args[0]) ?? new SecretsRuntimeConfiguration() : new SecretsRuntimeConfiguration();
 app.MapPost("/ext-secrets-1/v1/observe", (HttpContext context, IServiceProvider services, CancellationToken cancellation) => Handle("observe", context, services, cancellation));

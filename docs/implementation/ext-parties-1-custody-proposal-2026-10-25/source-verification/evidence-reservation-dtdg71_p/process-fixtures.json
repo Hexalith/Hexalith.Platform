@@ -1,0 +1,328 @@
+[
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: \\\"DirectReadiness\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-aeb3e5382b0b4edc89c156a835a63e82",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-aeb3e5382b0b4edc89c156a835a63e82",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fresh.command.json": "82f26d47a6fa37fbc9803573766df372e058cb80cc0cc7001b9a37ab60e8f200",
+      "fresh.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "fresh.stderr.log": "b1a68947bd4ee417d8ef8ca93323251bb3a3a4c00dcf528cd5426f66e950bbe8",
+      "fresh.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: \\\"LiveReadiness\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-8b56556da134407e903724bf8a553360",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-8b56556da134407e903724bf8a553360",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fresh.command.json": "fa6d27a7d8d206d1831898d7849b57cab14596419bbcd5ebbc65c4113f18d2a3",
+      "fresh.exit-code": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "fresh.stderr.log": "b1a68947bd4ee417d8ef8ca93323251bb3a3a4c00dcf528cd5426f66e950bbe8",
+      "fresh.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"Live\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-c75dbc627ce84256bde3a6cd85a7647b",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-c75dbc627ce84256bde3a6cd85a7647b",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0",
+      "original.command.json": "9fd16742b156505d436d31ad30e05e24a9154c60200a7af60161e7dd38bfe169",
+      "original.exit-code": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "original.stderr.log": "10dab1286ed99b49a4e726d8c1229f9d7ab2a205bb4ec16187fcf5dd97f45e63",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"Local\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-4b04b46e2f87426ca7b59d73ec597ec5",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-4b04b46e2f87426ca7b59d73ec597ec5",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0",
+      "original.command.json": "09266b48f87638292f71963f10dea851c1ab094e9d531cf573952853678bfdd1",
+      "original.exit-code": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "original.stderr.log": "5da001bf7413a999e06c33b2a63ad06622db3c0bbb998262ef908d0000be2daa",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"LiveReadiness\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-fabee81875fa45cfb3eaf911188a7f31",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-fabee81875fa45cfb3eaf911188a7f31",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0",
+      "original.command.json": "b48fa4fbb64e3e5e501a40b0eec933d8b0fb52009fc63bfc0e894455d8b91e1b",
+      "original.exit-code": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "original.stderr.log": "afe00c7bee817451644902e2838937fac83272dd625950e56114a2b0c9b869d1",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.DirectReadiness_RejectsExistingDirectoryBeforeInputsOrLookups(completeInputs: False)",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-b2851668a7a346dba0d9d9124dc6b0f6",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-b2851668a7a346dba0d9d9124dc6b0f6",
+    "sha256": {
+      "direct.command.json": "5bbaf08802042dc0953d7cb0188117a425af20b74ff772109746176842205350",
+      "direct.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "direct.stderr.log": "0559e5994b1161250d1d5f7ba1cc2302c436728455a6015bb7d59802904fc65e",
+      "direct.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-readiness.json": "0ce0f955e9258bc9bb1289da62430549b209f3c21d27904888161abe913d1265",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.DirectReadiness_RejectsExistingDirectoryBeforeInputsOrLookups(completeInputs: True)",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-dcc0f821790e4637b61f982213ec5122",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-dcc0f821790e4637b61f982213ec5122",
+    "sha256": {
+      "direct.command.json": "f9c8c4ebb651027039cc82ee92eb4c24a511b3b9b3ee675ae66ae8e55d3c8799",
+      "direct.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "direct.stderr.log": "56bf5c39ec56b73bb80b3648cec1ce02fdc33eb20cb9cee91b8306df76e9b040",
+      "direct.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-readiness.json": "0ce0f955e9258bc9bb1289da62430549b209f3c21d27904888161abe913d1265",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \\\"Live\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-071ed3fb6aac47d3a6cc996127f2b941",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-071ed3fb6aac47d3a6cc996127f2b941",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "first.command.json": "41ee1addc0dbe438ac84b3a57a567f545841c085cb5b18f206456aeccc8a31fa",
+      "first.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "first.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "first.stderr.log": "a8dcefe41c41f5afea2d039684ec3e5a4cfd73f63f136f751a3e4000c64a5f11",
+      "first.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0",
+      "release": "a4d451ec23463726f72c43d64c710968f6b602cd653b4de8adee1b556240a829",
+      "second.command.json": "6cb1e7859fcbf6c16ec8a0335a769aeac2ef9a9c7f8719ff2599b05338b7cf56",
+      "second.exit-code": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "second.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "second.stderr.log": "a53080763369fe2a5d2bd9fd2070ace6a57faa67727e9168d095c75286d918b6",
+      "second.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \\\"DirectReadiness\\\")",
+    "result": "Fail",
+    "original_path": "/tmp/ext-parties-verifier-evidence-19de7b08562a41f4b081b87f58b7b6d9",
+    "retained_path": "process-fixtures/verifier-evidence-tests/ext-parties-verifier-evidence-19de7b08562a41f4b081b87f58b7b6d9",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first.command.json": "87b1b4b6fd906695bb8774f33d5c37c082f749c6e9104184c84f170d7813beb9",
+      "first.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "first.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "first.stderr.log": "6e29d9ec1c966384dd186780ff1842df5ed1e7b63cae094b8d258bd951cbb193",
+      "first.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "fc9ae0fb5a70dc3627f99ab6d535b926f13c5d202487c7957344d118ac0f86f0",
+      "release": "a4d451ec23463726f72c43d64c710968f6b602cd653b4de8adee1b556240a829",
+      "second.command.json": "c59550c26fa32d4efc8629fe6d781784dd254b342846b6c39afff059c35425bf",
+      "second.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "second.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "second.stderr.log": "b1a68947bd4ee417d8ef8ca93323251bb3a3a4c00dcf528cd5426f66e950bbe8",
+      "second.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.DirectReadiness_RejectsExistingDirectoryBeforeInputsOrLookups(completeInputs: False)",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-6e3023680ad84c679689a084bb238a24",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-6e3023680ad84c679689a084bb238a24",
+    "sha256": {
+      "direct.command.json": "73fa891d458a879e2327b1ac0f648374837b5f9b78674ad563e87f87f5cc14ef",
+      "direct.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "direct.stderr.log": "341586e2cf594a0236bb74d9abf85b9842037da0a732a3803223f414d02fcfb5",
+      "direct.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-readiness.json": "0ce0f955e9258bc9bb1289da62430549b209f3c21d27904888161abe913d1265",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.DirectReadiness_RejectsExistingDirectoryBeforeInputsOrLookups(completeInputs: True)",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-95328e9bc461442592e4b536faeb10e0",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-95328e9bc461442592e4b536faeb10e0",
+    "sha256": {
+      "direct.command.json": "66b5f5ae7b3f5cd23dd051823805fb70a7fbac5c21e1889c0e510a783f885895",
+      "direct.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "direct.stderr.log": "0c62a4b3e6aa37916bb9cd0db603450cf1f4b9b00fabb328587bf23df82c712c",
+      "direct.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-readiness.json": "0ce0f955e9258bc9bb1289da62430549b209f3c21d27904888161abe913d1265",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \\\"Live\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-6364577c6c1e414dadc23f5739d3e7ff",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-6364577c6c1e414dadc23f5739d3e7ff",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "first.command.json": "0ddb8f9d942dd03ad9b2bb3e28f5ca5ce025c26e4ce49699784280baf85e76fb",
+      "first.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "first.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "first.stderr.log": "ee71d60063251073a36aa90f7d249e83832afbf5134fb2c98b81283389511fd8",
+      "first.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706",
+      "release": "a4d451ec23463726f72c43d64c710968f6b602cd653b4de8adee1b556240a829",
+      "second.command.json": "9063bd0e9a5db09e0f0a701092719644d6e7f27b58d5254c0b830dae9fb09c41",
+      "second.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "second.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "second.stderr.log": "cf3d8864b55a31abd4a660eb6f7f77fb6358959e2cbddcdbf2cb03cf32525a6f",
+      "second.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \\\"DirectReadiness\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-289f9ba9bb0c446985df1091b9a6cee2",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-289f9ba9bb0c446985df1091b9a6cee2",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first.command.json": "71d30d2ee83a20f76e12b39718af5b1725c1e8b9e4c4f3a9ae298aba9553eb65",
+      "first.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "first.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "first.stderr.log": "6e92ccf25566585ef6a447606dfa63ea075b3ce7dcb4a07fa867a3fca63e06c0",
+      "first.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706",
+      "release": "a4d451ec23463726f72c43d64c710968f6b602cd653b4de8adee1b556240a829",
+      "second.command.json": "ba268e92d1cbf357d91e1e9fcdf37de29f98d96b3aeeca1f96ca46253220fbc2",
+      "second.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "second.ready": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6",
+      "second.stderr.log": "141119deeb9ac8fc7be6cb8a5458d6adc4d13f0cf6f81eabdacd221785542eb2",
+      "second.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"Live\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-a4cfc163c88b4d7c8057a9d9f600c304",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-a4cfc163c88b4d7c8057a9d9f600c304",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706",
+      "original.command.json": "4aadae5eae5095373da3494a748c5a02932badb5942b1f9f57e840f34f659853",
+      "original.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "original.stderr.log": "fe8e09407294d7bd35817ccbb30ed483d63ed5fdb6c3dc1e6430bda06615ddd3",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4",
+      "retry.command.json": "a9197a988c218132a5cbac79d541af4c2cb2160bed2efff261270731cedb0dc0",
+      "retry.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "retry.stderr.log": "ae17877f64da1b64159b4b8b6d967853bc5c03c3f8e7eb97b47c9661d586986f",
+      "retry.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"Local\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-fd90c1b11b5f4480941f0810031cde48",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-fd90c1b11b5f4480941f0810031cde48",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706",
+      "original.command.json": "71aff845d35fd47d773bfb800c416ea7278352796dd197b1757ae8ee09a5e8d9",
+      "original.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "original.stderr.log": "6142c2cc0b545482b1eb07beb94d4de276615445103cbe4263d73a28b48efb07",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4",
+      "retry.command.json": "7e1b821206eea9156d7d054db02de379242a3af54e9f63b49108e9dc5d982683",
+      "retry.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "retry.stderr.log": "6fb998182e63c3b712527788fda02007cd2c637faa4bf9ff72e77d02a11ce9f5",
+      "retry.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: \\\"LiveReadiness\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-ce98d106d262463ba7065ec2bb47bd54",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-ce98d106d262463ba7065ec2bb47bd54",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence/live-gate.txt": "b60753bd1e52b607eb2f91bdc4cb3bbd67b760c8a87814215fb91ceb2cd9bdfd",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706",
+      "original.command.json": "687cefa3584b599fb8f6c4a76521cfdbbdda7014efab87ecd2e035de5a09aeda",
+      "original.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "original.stderr.log": "5efaa46f98c9c4a4f8d83c523dcf0c7b6db8b2e8a981cb4dd433d936b16240af",
+      "original.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original.writes": "189ca04f61853066cb6c5fa8727553fdc29729c84f47b34a84b8aeebaa2192e4",
+      "retry.command.json": "ee511f0579706df167c6aaee5bbc564c7745af536b7f6d2b9d0abba8e95e33ed",
+      "retry.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "retry.stderr.log": "2e9fb6a6723cdb723d18d69fd7833e99773327478d5fcf7b80857fa73150bcd2",
+      "retry.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: \\\"DirectReadiness\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-baad9396a9474708ab4b7bbc06ee30fb",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-baad9396a9474708ab4b7bbc06ee30fb",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fresh.command.json": "7af5677dfad3755e6e1940a9babc7acc39c92267d0d64b2f5b75fd75bfd514ab",
+      "fresh.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "fresh.stderr.log": "6e92ccf25566585ef6a447606dfa63ea075b3ce7dcb4a07fa867a3fca63e06c0",
+      "fresh.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706"
+    }
+  },
+  {
+    "run": "verifier-evidence-tests-fixed",
+    "test": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: \\\"LiveReadiness\\\")",
+    "result": "Pass",
+    "original_path": "/tmp/ext-parties-verifier-evidence-87f032edade24b838870012be6bfcbcd",
+    "retained_path": "process-fixtures/verifier-evidence-tests-fixed/ext-parties-verifier-evidence-87f032edade24b838870012be6bfcbcd",
+    "sha256": {
+      "evidence/.ext-parties-1-attempt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fresh.command.json": "3eddf73fed02b962f2a2b8479cafb91b08b95da71375b4da4261971361c9dd06",
+      "fresh.exit-code": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "fresh.stderr.log": "b1a68947bd4ee417d8ef8ca93323251bb3a3a4c00dcf528cd5426f66e950bbe8",
+      "fresh.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "harness.ps1": "a65cec62fd2f3253b65b9ebe9bd8401a2f9af8855b03f1c4a9f8455b9fa34706"
+    }
+  }
+]

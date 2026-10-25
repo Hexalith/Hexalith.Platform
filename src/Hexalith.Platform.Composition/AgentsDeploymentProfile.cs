@@ -3,14 +3,11 @@ namespace Hexalith.Platform.Composition;
 using System.Text.Json;
 
 /// <summary>Validates the reference-only Agents deployment profile before any Agents resource is composed.</summary>
-/// <remarks>Accepted constants are host 192.168.1.30, date 2026-10-08, Parties Branch B, and L/S/O/H/R of 300/30/600/86400/604800. Credential slots hold references. This type mints nothing and does not approve human exact-Conversation or class/time-range scope.</remarks>
+/// <remarks>Accepted constants are host 192.168.1.30, Parties Branch B, and L/S/O/H/R of 300/30/600/86400/604800. Credential slots hold references. This type mints nothing and does not approve human exact-Conversation or class/time-range scope.</remarks>
 public static class AgentsDeploymentProfile
 {
     /// <summary>Gets the accepted composition host.</summary>
     public const string Host = "192.168.1.30";
-
-    /// <summary>Gets the accepted integration date.</summary>
-    public const string IntegrationDate = "2026-10-08";
 
     /// <summary>Gets the accepted Parties identity branch.</summary>
     public const string PartiesBranch = "B";
@@ -61,6 +58,52 @@ public static class AgentsDeploymentProfile
         return parsed.Model;
     }
 
+    /// <summary>Validates the profile date against the explicit accepted register and packet dates.</summary>
+    public static AgentsDeploymentProfileModel ValidateAccepted(string json, string acceptedRegisterDate, string acceptedPacketDate)
+    {
+        AgentsDeploymentProfileModel model = Validate(json);
+        using JsonDocument document = JsonDocument.Parse(json);
+        string date = document.RootElement.GetProperty("integrationDate").GetString()!;
+        if (date != acceptedRegisterDate || date != acceptedPacketDate)
+            throw new InvalidDataException("Coordinated accepted register, packet and profile dates must agree.");
+        return model;
+    }
+
+    /// <summary>Checks both coordinated accepted record sections and the exact packet/profile date before production composition.</summary>
+    public static AgentsDeploymentProfileModel ValidateAcceptedContext(string json, string acceptedRegister, string acceptedPacket)
+    {
+        using JsonDocument packet = JsonDocument.Parse(acceptedPacket);
+        string target = packet.RootElement.GetProperty("candidateCommit").GetString()!;
+        string date = packet.RootElement.GetProperty("platformIntegrationDate").GetString()!;
+        if (!System.Text.RegularExpressions.Regex.IsMatch(target, "^[0-9a-f]{40}$")
+            || !packet.RootElement.TryGetProperty("profileSha256", out var profilePin)
+            || profilePin.GetString() != Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(json)))
+            || !packet.RootElement.TryGetProperty("cohortPlanSha256", out var planPin)
+            || !System.Text.RegularExpressions.Regex.IsMatch(planPin.GetString() ?? "", "^[0-9a-f]{64}$"))
+            throw new InvalidDataException("Accepted packet must bind exact profile bytes and complete shared plan.");
+        foreach (string record in new[] { "EXT-HOST-1", "EXT-SECRETS-1" })
+        {
+            var section = System.Text.RegularExpressions.Regex.Match(acceptedRegister,
+                @"^### " + System.Text.RegularExpressions.Regex.Escape(record) + @"\b[^\n]*\n(.*?)(?=^### |^## |\z)",
+                System.Text.RegularExpressions.RegexOptions.Multiline | System.Text.RegularExpressions.RegexOptions.Singleline).Value;
+            if (!section.Contains("| `TargetVersionOrCommit` | `" + target + "` |", StringComparison.Ordinal)
+                || !section.Contains("| `TargetIntegrationDate` | `" + date + "` |", StringComparison.Ordinal)
+                || !System.Text.RegularExpressions.Regex.IsMatch(section, @"\| `AcceptedStatus` \| `(?:Committed|Available)` \|"))
+                throw new InvalidDataException("Accepted coordinated target/date context required.");
+            if (record == "EXT-HOST-1")
+            {
+                var binding = System.Text.RegularExpressions.Regex.Match(section, @"\| `HostQualificationBinding` \| `([^`]+)` \|");
+                if (!binding.Success) throw new InvalidDataException("Accepted host profile/plan binding required.");
+                using JsonDocument pins = JsonDocument.Parse(binding.Groups[1].Value);
+                if (pins.RootElement.GetProperty("profileSha256").GetString() != profilePin.GetString()
+                    || pins.RootElement.GetProperty("cohortPlanSha256").GetString() != planPin.GetString())
+                    throw new InvalidDataException("Accepted host profile or plan bytes changed.");
+            }
+        }
+        AgentsDeploymentProfileModel model = ValidateAccepted(json, date, date);
+        return model with { AcceptedContextValidated = true };
+    }
+
     /// <summary>Names every empty reference slot. Secrets and unknown keys still fail closed.</summary>
     /// <param name="json">The deployment profile.</param>
     public static IReadOnlyList<string> MissingReferences(string json) => Read(json).Missing;
@@ -83,8 +126,9 @@ public static class AgentsDeploymentProfile
         RequireKeys(profile, RootKeys, "Agents deployment profile");
         if (RequiredString(profile, "host") != Host)
             throw new InvalidDataException("Agents deployment profile requires host 192.168.1.30.");
-        if (RequiredString(profile, "integrationDate") != IntegrationDate)
-            throw new InvalidDataException("Agents deployment profile requires integration date 2026-10-08.");
+        if (!DateOnly.TryParseExact(RequiredString(profile, "integrationDate"), "yyyy-MM-dd",
+            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out _))
+            throw new InvalidDataException("Agents deployment profile requires an explicit real calendar date yyyy-MM-dd.");
         if (RequiredString(profile, "partiesBranch") != PartiesBranch)
             throw new InvalidDataException("Agents deployment profile requires Parties Branch B.");
         JsonElement timing = profile.GetProperty("timing");
@@ -127,7 +171,7 @@ public static class AgentsDeploymentProfile
             serviceRoots, references["currentTenant"], references["globalAdministrator"], references["humanIdentity"],
             references["approverEvidence"], references["replay"], references["recorder"], references["worker"],
             references["spoolBackend"], replicaCount, references["failureModel"], references["protectionEngine"],
-            references["protectionObserver"], references["partiesBinding"], references["conversationsBinding"]), missing);
+            references["protectionObserver"], references["partiesBinding"], references["conversationsBinding"], RequiredString(profile, "integrationDate")), missing);
     }
 
     private static void RequireKeys(JsonElement element, IReadOnlyList<string> expected, string scope)
@@ -184,36 +228,3 @@ public static class AgentsDeploymentProfile
 
     private sealed record Parsed(AgentsDeploymentProfileModel Model, IReadOnlyList<string> Missing);
 }
-
-/// <summary>Accepted reference-only Agents deployment profile. Strings are references, not secret material.</summary>
-/// <param name="Services">Sibling source roots for EventStore, Tenants, Parties, Conversations, and Agents.</param>
-/// <param name="CurrentTenant">Current tenant reference.</param>
-/// <param name="GlobalAdministrator">Global administrator reference bound to Tenants bootstrap.</param>
-/// <param name="HumanIdentity">Human identity reference.</param>
-/// <param name="ApproverEvidence">Approver evidence reference. This is not an approved exact-Conversation or class/time-range scope.</param>
-/// <param name="ReplayReference">Private replay registrar reference.</param>
-/// <param name="RecorderReference">Private denial recorder reference.</param>
-/// <param name="WorkerReference">Private spool worker reference.</param>
-/// <param name="SpoolBackend">Replicated spool backend reference.</param>
-/// <param name="ReplicaCount">Configured spool replica count.</param>
-/// <param name="FailureModel">Spool failure-model reference.</param>
-/// <param name="ProtectionEngine">Protection engine reference. No engine is installed by validation.</param>
-/// <param name="ProtectionObserver">Independent protection observer reference.</param>
-/// <param name="PartiesBinding">Installed Parties runtime binding reference.</param>
-/// <param name="ConversationsBinding">Installed Conversations runtime binding reference.</param>
-public sealed record AgentsDeploymentProfileModel(
-    IReadOnlyDictionary<string, string> Services,
-    string CurrentTenant,
-    string GlobalAdministrator,
-    string HumanIdentity,
-    string ApproverEvidence,
-    string ReplayReference,
-    string RecorderReference,
-    string WorkerReference,
-    string SpoolBackend,
-    int ReplicaCount,
-    string FailureModel,
-    string ProtectionEngine,
-    string ProtectionObserver,
-    string PartiesBinding,
-    string ConversationsBinding);

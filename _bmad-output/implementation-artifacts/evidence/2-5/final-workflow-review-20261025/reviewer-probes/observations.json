@@ -1,0 +1,21 @@
+{
+  "source": "edge-case-hunter review tool output; captured before final review patches",
+  "originalProbeDirectory": "/tmp/story25-edge-probe-9rwH3q",
+  "discoveryOutput": [
+    "Claim directory still exists=True, FindOwned count=0",
+    "Owned environment read failure=UnauthorizedAccessException",
+    "Owned process alive=True, Found=False, Unverified=False, IsEmpty=True"
+  ],
+  "fifoArgv": [
+    "timeout",
+    "2s",
+    "dotnet",
+    "/tmp/story25-edge-probe-9rwH3q/bin/Debug/net10.0/Probe.dll",
+    "/tmp/story25-edge-probe-9rwH3q/result-fifo.json"
+  ],
+  "fifoOutput": [
+    "Reading result with 200ms cancellation allowance"
+  ],
+  "fifoExitCode": 124,
+  "qualificationCredit": false
+}
