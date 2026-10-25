@@ -203,8 +203,9 @@ def acceptance(register, *, register_text=None):
     target = re.search(r"\| `TargetVersionOrCommit` \| `([0-9a-f]{40})` \|", section).group(1)
     if not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", section):
         raise ValueError("not accepted")
-    if "| `TargetIntegrationDate` | `2026-10-08` |" not in section:
-        raise ValueError("date changed")
+    from joint_live_phase_runner import calendar_date
+    date_match = re.search(r"\| `TargetIntegrationDate` \| `([^`]+)` \|", section)
+    calendar_date(date_match.group(1) if date_match else None)
     command = re.search(r"Command: `(.*)`\s*\|?\s*$", section, re.MULTILINE).group(1)
     if f'"{target}"' not in command or "status --porcelain" not in command:
         raise ValueError("not exact")
@@ -249,7 +250,7 @@ def cohort_prerequisite_inputs(register, target, *, register_text=None):
     # owner phase, interleave host composition, or prove every consumer refuses. Those
     # phase receipts must come from a real joint runner before this standalone entry can
     # acquire any authority for the mutual cases. No local/config flag supplies them.
-    missing.append("OQ-5.4-1.JointLivePhaseRunner")
+    missing.append("OQ-5.4-1.IndependentCurrentCohortBindingAndOwners")
     return missing
 
 

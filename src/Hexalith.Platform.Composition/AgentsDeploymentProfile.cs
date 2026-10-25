@@ -3,7 +3,7 @@ namespace Hexalith.Platform.Composition;
 using System.Text.Json;
 
 /// <summary>Validates the reference-only Agents deployment profile before any Agents resource is composed.</summary>
-/// <remarks>Accepted constants are host 192.168.1.30, date 2026-10-08, Parties Branch B, and L/S/O/H/R of 300/30/600/86400/604800. Credential slots hold references. This type mints nothing and does not approve human exact-Conversation or class/time-range scope.</remarks>
+/// <remarks>Accepted constants are host 192.168.1.30, Parties Branch B, and L/S/O/H/R of 300/30/600/86400/604800. Credential slots hold references. This type mints nothing and does not approve human exact-Conversation or class/time-range scope.</remarks>
 public static class AgentsDeploymentProfile
 {
     /// <summary>Gets the accepted composition host.</summary>
@@ -61,6 +61,17 @@ public static class AgentsDeploymentProfile
         return parsed.Model;
     }
 
+    /// <summary>Validates the profile date against the explicit accepted register and packet dates.</summary>
+    public static AgentsDeploymentProfileModel ValidateAccepted(string json, string acceptedRegisterDate, string acceptedPacketDate)
+    {
+        AgentsDeploymentProfileModel model = Validate(json);
+        using JsonDocument document = JsonDocument.Parse(json);
+        string date = document.RootElement.GetProperty("integrationDate").GetString()!;
+        if (date != acceptedRegisterDate || date != acceptedPacketDate)
+            throw new InvalidDataException("Coordinated accepted register, packet and profile dates must agree.");
+        return model;
+    }
+
     /// <summary>Names every empty reference slot. Secrets and unknown keys still fail closed.</summary>
     /// <param name="json">The deployment profile.</param>
     public static IReadOnlyList<string> MissingReferences(string json) => Read(json).Missing;
@@ -83,8 +94,9 @@ public static class AgentsDeploymentProfile
         RequireKeys(profile, RootKeys, "Agents deployment profile");
         if (RequiredString(profile, "host") != Host)
             throw new InvalidDataException("Agents deployment profile requires host 192.168.1.30.");
-        if (RequiredString(profile, "integrationDate") != IntegrationDate)
-            throw new InvalidDataException("Agents deployment profile requires integration date 2026-10-08.");
+        if (!DateOnly.TryParseExact(RequiredString(profile, "integrationDate"), "yyyy-MM-dd",
+            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out _))
+            throw new InvalidDataException("Agents deployment profile requires an explicit real calendar date yyyy-MM-dd.");
         if (RequiredString(profile, "partiesBranch") != PartiesBranch)
             throw new InvalidDataException("Agents deployment profile requires Parties Branch B.");
         JsonElement timing = profile.GetProperty("timing");

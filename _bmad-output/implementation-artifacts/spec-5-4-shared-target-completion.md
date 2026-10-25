@@ -2,13 +2,13 @@
 title: 'Complete the coordinated EXT-SECRETS-1 and EXT-HOST-1 target'
 type: 'feature'
 created: '2026-10-25'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '90aef9ac3e813d9cae5b16d68ca5e326ce0fb599'
 context:
-  - '../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
-  - '../agents/_bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-25.md'
+  - '../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
+  - '../../../agents/_bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-25.md'
   - '../../docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-and-installation-audit.json'
 ---
 
@@ -36,7 +36,7 @@ Complete the real JointLivePhaseRunner and installed production composition for 
 
 </frozen-after-approval>
 
-## Open Questions
+## External Delivery Inputs (not implementation checkpoints)
 
 1. Which existing non-AWS native installation/resources should the provider target? Supply the public installation bundle, independent authority/archive placement, enrolled public trust, scoped credential references and existing physical proof. No new experiment or spending is authorized. The prior owner form still has no selected installation.
 2. What explicit coordinated Platform and protection integration dates should the completed replacement propose? The accepted October 8 date remains historical; missing installation readiness prevents deriving a credible replacement promise.
@@ -69,6 +69,13 @@ Complete the real JointLivePhaseRunner and installed production composition for 
 - Given an accepted set in isolated runner tests, when a phase fails or becomes uncertain, then neither record passes and recovery retains the original identity without repeating an unknown effect.
 
 ## Implementation Notes
+
+User authorization 2026-10-25: proceed with all reversible source implementation and isolated verification now; the planning checkpoint is overridden. Missing installation choices, enrolled inputs and integration dates remain external delivery blockers, not implementation gates. Preserve the frozen intent verbatim, existing staged Story 2.5 probes, and dirty `references/Hexalith.Builds` work. Do not stage, commit, push, execute a cohort/Live/Full owner command, reserve a live attempt, activate a consuming seam, install anything, conduct a physical experiment, spend money or mutate accepted records. Fixture-generated anchors/hashes/identities are restricted to isolated tests and must never be presented as installed qualification. Source completion and complete shared-target delivery must be reported separately; leave delivery blocked where installed evidence or owner dates are missing. Complete independent review after implementation.
+
+Remote/current-source check 2026-10-25: fetched `origin` without changing the checkout. Current local HEAD is `8b712a0` (resolve the canonical full identifier directly from Git for evidence); `origin/main` is `90aef9ac3e813d9cae5b16d68ca5e326ce0fb599`. The existing baseline above is retained. No non-AWS continuation is present in this checkout; the Code Map's prior mention is historical investigation, not an implemented provider. Existing OpenBao/native registry/local transport assets may support provider implementation but do not prove all-copy physical erasure or eligibility. Select only operations supported by those assets and fail closed for uninstalled independent controls and physical evidence.
+
+Implementation decisions: strict `yyyy-MM-dd` real calendar dates must come from an explicitly accepted register/packet/profile context and agree across the coordinated set; no replacement date is inferred. Independent authority, control and observer services must use authenticated bounded request scopes, durable exact originals and externally enrolled current trust; unavailable dependencies deny before effects. Complete the source wiring even when real installations are absent, with an explicit installation ledger of all dependencies. Preserve every verbatim commitment field/extension from the accepted records, including S1–S4/v23, H1–H4/v21/v23, 365-day history and open Product gates. Packet preparation must refuse a complete output if installed inputs/dates are absent. If an immutable new source commit is unavailable, record working-tree source hashes separately and block the target field instead of inventing a commit.
+
 
 Investigation only. No implementation task is closed. Full S1–S4/v23 and H1–H4/v21/v23, 365-day history and open Product gates remain binding. Existing staged Story 2.5 work and concurrent owner changes were not modified. Remote source was fetched; the audit records observed full revisions and public-file hashes. The frozen intent is preserved verbatim from the prior coupled-delivery draft. No approval, enrollment, cohort, experiment or spending occurred.
 
