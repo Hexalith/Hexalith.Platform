@@ -1,0 +1,61 @@
+{
+  "sourceComponentAdapters": "ImplementedForIndependentReview",
+  "productionDiActivated": false,
+  "dependencyAvailable": false,
+  "dispositions": [
+    {
+      "id": "independent-private-authorizer",
+      "status": "MissingOwningServiceImplementationAndInstallation",
+      "owner": "Independent private-authority service maintainer",
+      "action": "Implement authenticated prepare/authorize and owner-call permission issuance from fresh independent current state, exact body hashes, original controls and retained revocation. DaprCustodyAuthorizerClient is transport only; caller hashes grant no permission."
+    },
+    {
+      "id": "durable-control-issuer",
+      "status": "MissingOwningServiceImplementationAndInstallation",
+      "owner": "Governance/guard and protection-owner maintainers",
+      "action": "Implement durable RegisteredDispatchBlocked hold reservations, release ordering, guard dispatch versus protection ConsumptionReserved original handoff and exact loss lookup. No snapshot/read-then-effect issuer is provided."
+    },
+    {
+      "id": "independent-closure-observer",
+      "status": "MissingOwningServiceImplementationAndInstallation",
+      "owner": "Independent infrastructure/security observer",
+      "action": "Implement actual native final-evidence verification, complete inventory, I/O/sanitation/termination, restore non-revival and independent survivor recovery. Signed disposable test statements are not implementation or trust."
+    },
+    {
+      "id": "eventstore-owning-source-integration",
+      "status": "MissingAcceptedOwningSourcePackageAndProductionIntegration",
+      "owner": "EventStore Maintainer",
+      "action": "Review/commit/publish the owner-state port and actual transition bridge, integrate exact original state/genesis/custody adapters into owning source, and return accepted source/package/profile pins. The local build explicitly used current sibling source, including work not in its installed package; no sibling was edited or activated."
+    },
+    {
+      "id": "custody-application-composition",
+      "status": "MissingOwningHostCompositionAndInstallation",
+      "owner": "Platform host composition owner",
+      "action": "Compose the public clients behind the authenticated custody application API with its local daprd/component, public enrollment/trust, mounted scoped credentials and actual holder/copy integration. No receiving API host or production DI is activated by these libraries/templates."
+    },
+    {
+      "id": "history-custody",
+      "status": "OutsideThisInteractionFoundation",
+      "owner": "Parties/EventStore history owners and Platform history custodian",
+      "action": "Preserve the existing accepted exclusive expiry/history policy and open source/owner/qualification obligations. This interaction epoch component does not implement exact history expiry or resolve Q1-Q7."
+    },
+    {
+      "id": "export-lifecycle",
+      "status": "OpenPolicyAndUnqualifiedClosureUnchanged",
+      "owner": "Product/Governance/Security and export store owner",
+      "action": "Retain Open export disposition and separately accepted all-copy obligations; an export-affected B5 remains blocked. No policy or date was changed."
+    },
+    {
+      "id": "complete-key-registration-original-locator",
+      "status": "MissingOwningSourceImplementationAndInstallation",
+      "owner": "Platform custody application maintainer",
+      "action": "Implement ICustodyKeyRegistrationSource.FindAsync for the complete tenant/object/purpose/alias/key/lifecycle/store/contract identity. Retain the exact original CustodyKeyRegistration (wrap operation, actor ExpectedRevision, original KEK version, opaque wrapped-key reference and wrap receipt). The locator is a durable hint only: every use must still authenticate the independent custody original. Install its scoped store/Dapr lookup binding and preserve mappings across restore without root reallocation."
+    },
+    {
+      "id": "reserved-complete-manifest-original-locator",
+      "status": "MissingOwningSourceImplementationAndInstallation",
+      "owner": "EventStore Maintainer with Platform custody host integration owner",
+      "action": "Implement ICustodyReservedManifestSource.FindAsync from the exact protection ConsumptionReserved receipt to its retained immutable complete DeletionBatchConsumptionRequest: capability/JWS/canonical identity, issued guard revision, dispatch receipt/revision and full sorted target vector. Exact duplicate/loss/restore uses that original; no singleton derivation, batch-only alias, newly signed request or reconstructed manifest. Install authenticated restricted original lookup and wire it into the custody lifecycle provider."
+    }
+  ]
+}

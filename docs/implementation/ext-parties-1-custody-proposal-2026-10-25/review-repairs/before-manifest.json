@@ -1,0 +1,108 @@
+{
+  "verdict": "LocalSourceVerified",
+  "captured_at_utc": "2026-10-25T11:47:34.004128+00:00",
+  "spec": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/spec-ext-parties-1-custody-prerequisite-hardening.md",
+  "Available": false,
+  "installed_qualification": false,
+  "production_history_provider_installed": false,
+  "independent_nonrollback_authority_supplied": false,
+  "artifact_root": "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x",
+  "canonical_checkout_heads": {
+    "parties": "13a6247aff26a77c80d0308b6c69af2bc3e20279",
+    "platform": "f84977132777decec2f45a199d9392de73b6cc84",
+    "eventstore": "fd083a91b67a3bca10016f1f645da913c7ef526e",
+    "platform-builds": "68e65f2023eca117a2aa08a022ee33d8f4c34a44",
+    "eventstore-builds": "6e40ea5f6243391bea80084b8ddd695df58fb1ff",
+    "eventstore-commons": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
+    "platform-instructions": "3f194e17174994d308ec84af9ee2b5aa68674d0d"
+  },
+  "source_files_before_sha256": {
+    "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs": "00eb5c661d80c54e5244d1025cbc5c545632995e50b997549b188e6a9e52ffb3",
+    "tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs": "76d11db3a8726843075a01f17d8c7edb13f4b65203c96376694df5aff6dcf01a"
+  },
+  "source_files_after_sha256": {
+    "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs": "89d407069b96ca56b962597b4e602ab73b3cf99d53cae28e57c53400cd8b235e",
+    "tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs": "604ae88a3fb0c5c65927c7822119c24938a1e2b34cf90d6a197bf67607a75ef6"
+  },
+  "final_build": {
+    "configuration": "Debug",
+    "warnings": 0,
+    "errors": 0,
+    "exit_code": 0,
+    "sdk": "10.0.402",
+    "project_references": true
+  },
+  "tests": {
+    "total": 136,
+    "passed": 136,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not_run": 0,
+    "class_counts": {
+      "Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests": 89,
+      "Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests": 47
+    }
+  },
+  "baseline_counterexample": {
+    "total": 18,
+    "failed": 14,
+    "passed": 4,
+    "skipped": 0,
+    "not_run": 0,
+    "expected_failure": true,
+    "notes": "Ten authority-regression cases and four increasing generations outside Active were accepted by the unchanged lifecycle implementation."
+  },
+  "failed_attempts": [
+    {
+      "label": "final-focused-tests",
+      "exit_code": 1,
+      "cause": "Runner invoked before final-build produced its assembly. No tests ran. Raw command and failure preserved; final-focused-tests-complete ran after successful build and executed all 136 selected tests."
+    }
+  ],
+  "blockers": [],
+  "qualification_remaining": [
+    "Selected production custody backend and independent current authority",
+    "Owner decisions Q1-Q7 and prerequisite infrastructure",
+    "Installed backend, host, destruction, backup, restart, restore and failure-injection evidence",
+    "F1 actor-free successor continuation and F2 complete P-01-P-10 qualification"
+  ],
+  "artifact_hashes": {
+    "commands.json": "4515ec1fc5fe235b5d1195177f575a94867b325f80a9ec9c952a86e6109b013f",
+    "commands.jsonl": "db0f01f2eacf23ac1870ac7dc68705db73c16523b5aa9ed61070c697aaa165f7",
+    "final-build.log": "3e9ac97b2603a7432b30d801ca0a15548fb0cc669d45749c112298d327ecf28d",
+    "final-focused-tests-complete.log": "6c3c74c96e571c122e50195fbfa26f55417aadc0823efb3d7bc4a0828ea18c1c",
+    "final-focused-tests-complete.xml": "7b366de5a4410f38d3be928400fe8a22a5a4a50e4fb1e501dc348a83dd41a20e",
+    "final-focused-tests.log": "249ef348e1daca03899fde5ba9bbf0e6db17e54c1e45ad5e49171b3c2ff1e1fe",
+    "original/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs": "00eb5c661d80c54e5244d1025cbc5c545632995e50b997549b188e6a9e52ffb3",
+    "original/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs": "76d11db3a8726843075a01f17d8c7edb13f4b65203c96376694df5aff6dcf01a",
+    "provenance-after.json": "cbf1a5b5161283cb6d58cf5dbce63072e74f9915b06b013ad2993ef95d8422fe",
+    "provenance-before.json": "5b7e564bbd1607569eae0aad2a3522fc4ac9a56cdbc171b02c2bffe63773cf35",
+    "regression-before-fix.log": "e3debb8095e839d894a05f6e490218113c5f6dd5a872d2dda32aa3a1da88d5ee",
+    "regression-before-fix.xml": "2a8889c216d9a9d0b9371845d0dbb6f9f994742843787b172fb89a7f5daffbec",
+    "regression-build.log": "8e46574aa484da7d11247f00721ccb4d7f22b78a0a1c7de8e66dc3d72bfad0fe",
+    "run-command.py": "bb62c6635fdb1150cf0fdad2bd37915e189ff94fa9b27ac4eaa83ac6a2560bea",
+    "scoped-diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-diff.json": "2e4e30d64e74559759804b7f46a2e1a039787d73c9a2bcebbcb40a2c139bbb8a",
+    "source.patch": "c10d960dffd15fdb96ad53a83e0bdc8e14cbbc38eefbfe12926a0597cc3e64cc",
+    "README.md": "5b8f7a1cf3e8c8d2ebb871c77dc9d0480f8466cddd7fe232f26bfb92fd02f7ff"
+  },
+  "external_product_hashes": {
+    "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x/final-build/bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll": {
+      "sha256": "b287e108ea7c42e311f8db281ad70628b6fa0c532780df9ead72feb4f398041c",
+      "bytes": 878080
+    },
+    "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x/final-build/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll": {
+      "sha256": "d9bbad3ac2092a871e191e007106484b1d93593363b3ea474108a5defa4aa03d",
+      "bytes": 604672
+    },
+    "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x/final-build/bin/Hexalith.EventStore.Contracts/debug/Hexalith.EventStore.Contracts.dll": {
+      "sha256": "a25f1bac203d67830612e8784bd91bf63125af91d704ddaa4f5d8636ebe8fd6f",
+      "bytes": 726016
+    },
+    "/tmp/ext-parties-1-hardening-20261025-1pt6kz0x/final-build/bin/Hexalith.EventStore.Testing/debug/Hexalith.EventStore.Testing.dll": {
+      "sha256": "be1b811f994d7f30d001d0cb2487ccf8e2e7c867de651860a0eb9c5dfa326bbf",
+      "bytes": 140800
+    }
+  }
+}

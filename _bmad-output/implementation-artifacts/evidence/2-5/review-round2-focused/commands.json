@@ -1,0 +1,78 @@
+[
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*LocalRunReviewCorrectionTests",
+      "-class",
+      "*CompositionNativeProcessDiscoveryTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/correction-tests.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 3.708,
+    "log": "correction-tests.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*TestEnvironmentContractReaderTests",
+      "-class",
+      "*TestResultWriterTests",
+      "-class",
+      "*CompositionRunListingTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/affected-contract-tests.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 3.267,
+    "log": "affected-contract-tests.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*ConflictNamesOwnerAndRollsBackOnlyTheRejectedAcquisition",
+      "-method",
+      "*OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync",
+      "-method",
+      "*CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync",
+      "-method",
+      "*OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync",
+      "-method",
+      "*TrackingDeletionFailureDoesNotPublishCompleteAsync",
+      "-method",
+      "*ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync",
+      "-method",
+      "*UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync",
+      "-method",
+      "*ClaimTraversalRefusesUnsafePayloadAsync",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/affected-lifecycle-tests.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 11.294,
+    "log": "affected-lifecycle-tests.log"
+  },
+  {
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*ResultReaderRejectsWriterlessFifoWithoutBlockingAsync",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/isolated-fifo-test.xml"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 0.571,
+    "log": "isolated-fifo-test.log"
+  }
+]

@@ -281,7 +281,8 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     public static string IntentDigest(SecurityObservationIntent intent) { ValidateIntent(intent); return Digest(intent); }
     /// <summary>Gets the exact source owner identity required by the restricted recorder credential.</summary>
     public static string SourceStream(SecurityObservationRecord record)
-    { ArgumentNullException.ThrowIfNull(record); return new AggregateIdentity(record.Intent.RoutingTenantId, "agents", "SecurityEventLog-" + record.UtcDay).ActorId; }
+    { ArgumentNullException.ThrowIfNull(record); return new AggregateIdentity(record.Intent.RoutingTenantId, "security-event-log",
+        Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", record.Intent.RoutingTenantId, record.UtcDay])))).ActorId; }
     private async Task<ReplicatedSecuritySpoolTarget?> CurrentAsync(string method, SecurityObservationIntent? intent, PrivateOwnerOperationDeadline budget)
     {
         if (authority is null) { return null; } var target = await budget.ReadAsync(() => authority.GetCurrentAsync(CancellationToken.None)).ConfigureAwait(false);

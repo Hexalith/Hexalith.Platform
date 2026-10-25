@@ -65,7 +65,7 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
         return await ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+    internal static async Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
     {
         const int maximumBytes = 8192;
         if (!SecretsProvisioning.IsReference(reference) || !reference.StartsWith("file:/", StringComparison.Ordinal)) { return null; }
@@ -106,9 +106,10 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
     [DllImport("libc", EntryPoint = "open", SetLastError = true)]
     private static extern int LinuxOpen([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags);
 
-    internal static async Task<string?> ReadBoundedAsync(Stream stream, CancellationToken cancellationToken)
+    internal static async Task<string?> ReadBoundedAsync(Stream stream, CancellationToken cancellationToken, int maximumBytes = SecretsProof.MaximumBytes)
     {
-        byte[] bytes = new byte[SecretsProof.MaximumBytes + 1];
+        if (maximumBytes is <= 0 or > CustodyBindingContract.CandidateRequestMessageBytes) return null;
+        byte[] bytes = new byte[maximumBytes + 1];
         int used = 0;
         while (used < bytes.Length)
         {

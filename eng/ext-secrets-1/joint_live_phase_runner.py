@@ -156,3 +156,133 @@ def verify_complete_result(result, binding, authority):
     if authority is None or not authority.current(binding):
         return False
     return authority.verify_completion(binding, result) and result.get("bindingDigest") == digest(binding) and result.get("cohortPassed") is True
+
+class DaprCohortRpc:
+    """Concrete Dapr-only private transport with public ES256 verification and a bounded deadline."""
+    def __init__(self, descriptor, dapr_endpoint, dapr_credential_reference):
+        import qualify as q
+        self.q, self.descriptor = q, descriptor
+        self.endpoint = dapr_endpoint.rstrip("/")
+        self.dapr_credential_reference = dapr_credential_reference
+        raw = q.read_public_anchor(descriptor["publicAnchorFile"])
+        if hashlib.sha256(raw).hexdigest() != descriptor["publicAnchorSha256"]:
+            raise Blocked("ExactInstalledCohortAnchor")
+        from cryptography.hazmat.primitives import serialization
+        self.key = serialization.load_pem_public_key(raw)
+        q.public_key_identity(raw)
+
+    def verify(self, envelope):
+        try:
+            import base64
+            from cryptography.hazmat.primitives import hashes
+            from cryptography.hazmat.primitives.asymmetric import ec
+            if set(envelope) != {"payload", "signature"}:
+                return False
+            signature = base64.b64decode(envelope["signature"], validate=True)
+            self.key.verify(signature, canonical(envelope["payload"]), ec.ECDSA(hashes.SHA256()))
+            return True
+        except Exception:
+            return False
+
+    def call(self, method, payload):
+        import urllib.request
+        request_id = str(uuid.uuid4())
+        request = {"protocol": PROTOCOL, "requestId": request_id, "method": method, "payload": payload}
+        body = canonical(request)
+        app = self.descriptor["appId"]
+        if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}", app):
+            raise Blocked("EnrolledDaprApplication")
+        bearer = self.q.read_mounted_credential(self.descriptor["credentialReference"], "CohortWorkloadCredential")
+        channel = self.q.read_mounted_credential(self.dapr_credential_reference, "CohortDaprCredential")
+        url = self.endpoint + "/v1.0/invoke/" + app + "/method/joint/v1/" + method
+        headers = {"Authorization": "Bearer " + bearer, "dapr-api-token": channel, "Content-Type": "application/json"}
+        # No redirects, proxies or transport retries, including after uncertain owner execution.
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
+        with opener.open(urllib.request.Request(url, data=body, headers=headers, method="POST"), timeout=30) as response:
+            raw = response.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise Blocked("BoundedCohortProof")
+        envelope = self.q.decode_json(raw)
+        if not self.verify(envelope):
+            raise Blocked("SignedCurrentCohortProof")
+        proof = envelope["payload"]
+        import time
+        now = int(time.time())
+        if (proof.get("requestId") != request_id or proof.get("method") != method or proof.get("requestSha256") != hashlib.sha256(body).hexdigest()
+                or not now - 30 <= proof.get("observedAt", 0) <= now or not now < proof.get("validUntil", 0) <= proof["observedAt"] + 30):
+            raise Blocked("ExactCurrentCohortResponse")
+        return proof["result"]
+
+
+import urllib.request as _urlrequest
+class _NoRedirect(_urlrequest.HTTPRedirectHandler):
+    def redirect_request(self, request, file, code, message, headers, url):
+        return None
+
+
+class DaprCohortAuthority:
+    def __init__(self, rpc, owners):
+        self.rpc, self.owners = rpc, owners
+
+    def preflight(self, binding):
+        return self.rpc.call("preflight", {"binding": binding}).get("missingInputs", ["IndependentCohortAdmission"])
+
+    def current(self, binding):
+        return self.rpc.call("current", {"binding": binding}).get("current") is True
+
+    def reserve(self, binding, attempt):
+        return self.rpc.call("reserve", {"binding": binding, "attemptId": attempt})
+
+    def retain(self, request):
+        return self.rpc.call("retain", {"request": request}).get("first") is True
+
+    def publish(self, request, result):
+        if self.rpc.call("publish", {"request": request, "result": result}).get("exact") is not True:
+            raise Blocked("DurableExactPhasePublication")
+
+    def verify(self, request, result):
+        return self.owners[PHASES[request["phase"]]].rpc.verify(result)
+
+    def verify_completion(self, binding, result):
+        return self.rpc.call("completion", {"binding": binding, "result": result}).get("exact") is True
+
+
+class DaprPhaseOwner:
+    def __init__(self, rpc):
+        self.rpc = rpc
+
+    def execute(self, request):
+        return self.rpc.call("execute", request)
+
+    def lookup(self, request):
+        return self.rpc.call("lookup", request)
+
+
+def run_installed_cohort(configuration_path, register_path):
+    """Common owner entrypoint; requires an explicit externally enrolled installation, never synthesizes ports."""
+    import qualify as q
+    config = q.read_json(configuration_path)
+    binding = config["binding"]
+    register = q.bounded_public_file(register_path, 1024 * 1024)
+    if hashlib.sha256(register).hexdigest() != binding.get("registerSha256"):
+        raise Blocked("ExactAcceptedCoordinatedRegister")
+    text = register.decode("utf-8")
+    for record in ("EXT-SECRETS-1", "EXT-HOST-1", "EXT-PROTECTION-1"):
+        match = re.search(r"^### " + record + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)
+        section = match.group(1) if match else ""
+        target = binding["platformCommit"] if record != "EXT-PROTECTION-1" else binding.get("protectionCommit")
+        integration = binding["platformIntegrationDate"] if record != "EXT-PROTECTION-1" else binding["protectionIntegrationDate"]
+        if (f'| `TargetVersionOrCommit` | `{target}` |' not in section or f'| `TargetIntegrationDate` | `{integration}` |' not in section
+                or not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", section)):
+            raise Blocked("ExactAcceptedCoordinatedRecords")
+    endpoint = config["daprEndpoint"]
+    from urllib.parse import urlparse
+    parsed = urlparse(endpoint)
+    if parsed.scheme != "http" or parsed.hostname not in ("127.0.0.1", "localhost", "::1") or parsed.path not in ("", "/"):
+        raise Blocked("LoopbackDaprEndpoint")
+    owners = {name: DaprPhaseOwner(DaprCohortRpc(config["services"][name], endpoint, config["daprCredentialReference"])) for name in PHASES}
+    authority = DaprCohortAuthority(DaprCohortRpc(config["services"]["authority"], endpoint, config["daprCredentialReference"]), owners)
+    result = JointLivePhaseRunner(binding, authority, owners).run()
+    if not verify_complete_result(result, binding, authority):
+        raise Blocked("SameCompletePairedOwnerResult")
+    return result

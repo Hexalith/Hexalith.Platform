@@ -1,0 +1,21 @@
+{
+  "originalResult": "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-custody-proposal-2026-10-25/source-verification/verifier-evidence-preservation/result.json",
+  "originalUnnamedSha256Meaning": "SHA-256 of the exact Parties verifier script bytes before the independent review repairs",
+  "snapshot": "verifier-before-review.ps1",
+  "sha256": "4e0d18c6deefaa1a4d92d7a92bcf787b48c9ece1f2934462acaf4a577f85c2d2",
+  "syntheticEnvironmentSetupForAllInputsOffline": {
+    "EXT_PARTIES_GATEWAY_URL": "offline-regression-only",
+    "EXT_PARTIES_TENANT_A": "offline-regression-only",
+    "EXT_PARTIES_TENANT_B": "offline-regression-only",
+    "EXT_PARTIES_PROVISIONER_CREDENTIAL": "offline-regression-only",
+    "EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL": "offline-regression-only",
+    "EXT_PARTIES_READER_CREDENTIAL": "offline-regression-only",
+    "EXT_PARTIES_POLICY_ID": "offline-regression-only",
+    "EXT_PARTIES_RETENTION": "offline-regression-only",
+    "EXT_PARTIES_EXPIRY_TRIGGER": "offline-regression-only",
+    "EXT_PARTIES_CUSTODY_TARGET": "offline-regression-only",
+    "EXT_PARTIES_RESTORE_TARGET": "offline-regression-only",
+    "EXT_PARTIES_FAILURE_INJECTION_TARGET": "offline-regression-only"
+  },
+  "scope": "Initial six offline probes; not installed credentials or current-source final tests"
+}

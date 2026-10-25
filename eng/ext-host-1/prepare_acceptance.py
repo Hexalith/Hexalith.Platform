@@ -7,6 +7,7 @@ import re
 import shlex
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 SCHEMA = "EXT-HOST-1.replacement-acceptance.v2"
@@ -83,8 +84,11 @@ def reference(value, name):
 def missing_references(profile):
     if not isinstance(profile, dict) or sorted(profile) != sorted(ROOT_KEYS):
         raise ValueError("profile rejected an unknown or incomplete setting")
-    if profile.get("host") != "192.168.1.30" or profile.get("integrationDate") != "2026-10-08" or profile.get("partiesBranch") != "B":
+    if profile.get("host") != "192.168.1.30" or profile.get("partiesBranch") != "B":
         raise ValueError("profile rejected accepted constants")
+    value = profile.get("integrationDate")
+    if not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value) or date.fromisoformat(value).isoformat() != value:
+        raise ValueError("profile requires an explicit real calendar date yyyy-MM-dd")
     timing = profile.get("timing")
     if not isinstance(timing, dict) or sorted(timing) != sorted(TIMING) or any(timing.get(key) != value for key, value in TIMING.items()):
         raise ValueError("profile rejected accepted constants")
@@ -122,7 +126,7 @@ def plan():
     }
 
 
-def prepare(root, output, profile_path=None):
+def prepare(root, output, profile_path=None, register=None, coordination_context=None):
     root, output = Path(root).resolve(), Path(output).resolve()
     if output == root or output.is_relative_to(root):
         raise ValueError("detached output must be outside candidate checkout")
@@ -134,6 +138,15 @@ def prepare(root, output, profile_path=None):
     if not COMMIT.fullmatch(head) or git(root, "status", "--porcelain"):
         raise ValueError("clean candidate checkout required")
     output.mkdir(parents=True)
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ext-secrets-1"))
+    from coordinated_packets import admission
+    installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, True, profile["integrationDate"])
+    missing.extend(installation_missing)
+    if missing:
+        report = {"packetPrepared": False, "completeReplacementPacket": False, "targetCommit": None,
+                  "dependencyAvailable": False, "effects": 0, "missingReferences": sorted(set(missing)), "installedHashes": installed_hashes}
+        (output / "blocked-inputs.json").write_bytes(canonical(report))
+        return report
     profile_file = output / "agents-deployment-profile.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && '
                'test -z "$(git -C ../platform status --porcelain)" && '
@@ -141,6 +154,10 @@ def prepare(root, output, profile_path=None):
                + shlex.quote(str(profile_file)))
     packet = {
         "schema": SCHEMA,
+        "completeReplacementPacket": True,
+        "platformIntegrationDate": coordinated["platformIntegrationDate"],
+        "protectionIntegrationDate": coordinated["protectionIntegrationDate"],
+        "installedHashes": installed_hashes,
         "acceptedReplacementCommit": None,
         "availability": False,
         "candidate": head,
@@ -155,6 +172,11 @@ def prepare(root, output, profile_path=None):
         "profile": profile,
         "profileSha256": digest(profile),
     }
+    from coordinated_packets import records
+    from joint_live_phase_runner import full_plan, digest as cohort_digest
+    packet["cohortPlanSha256"] = cohort_digest(full_plan())
+    packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], installed_hashes)
+    (output / "joint-qualification-plan.json").write_bytes(canonical(full_plan()))
     (output / "agents-deployment-profile.json").write_bytes(canonical(profile))
     (output / "replacement-acceptance-packet.json").write_bytes(canonical(packet))
     (output / "exact-command.sh").write_text(command + "\n")
@@ -177,13 +199,15 @@ def main():
     parser.add_argument("--output")
     parser.add_argument("--root")
     parser.add_argument("--profile")
+    parser.add_argument("--register")
+    parser.add_argument("--coordination-context")
     args = parser.parse_args()
     destination = args.output or args.directory
     if not destination:
         parser.error("a fresh directory outside the checkout is required")
     root = args.root or Path(__file__).resolve().parents[2]
     try:
-        report = prepare(root, destination, args.profile)
+        report = prepare(root, destination, args.profile, args.register, args.coordination_context)
     except (ValueError, OSError, subprocess.SubprocessError, json.JSONDecodeError) as error:
         print(str(error), file=sys.stderr)
         return 2

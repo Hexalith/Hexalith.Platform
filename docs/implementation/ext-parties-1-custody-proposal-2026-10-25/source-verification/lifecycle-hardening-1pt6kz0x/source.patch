@@ -1,0 +1,252 @@
+diff --git a/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs b/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
+index b1eaf7b..0e2a726 100644
+--- a/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
++++ b/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
+@@ -117,15 +117,15 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+     /// <summary>Gets generations grown on this unit.</summary>
+     public IReadOnlyList<long> Generations { get; }
+ 
+-    /// <summary>Moves one legal step forward at a higher lifecycle revision.</summary>
++    /// <summary>Moves one legal step forward at a higher lifecycle revision without regressing authority.</summary>
+     /// <param name="state">Next lifecycle state.</param>
+     /// <param name="lifecycleRevision">Higher current lifecycle revision.</param>
+-    /// <param name="epoch">Authority epoch for the next snapshot.</param>
+-    /// <param name="fence">Authority fence for the next snapshot.</param>
++    /// <param name="epoch">Authority epoch for the next snapshot; it cannot be lower than the current epoch.</param>
++    /// <param name="fence">Nonnegative authority fence; it cannot decrease within the same epoch, but may restart in a higher epoch.</param>
+     /// <param name="operationId">Original destruction operation identifier when destruction has started.</param>
+     /// <param name="receiptReference">Original receipt reference when the state is receipt final.</param>
+     /// <returns>The next snapshot of the same unit and deadline.</returns>
+-    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, or not a higher revision.</exception>
++    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, not a higher revision, or regresses the epoch or same-epoch fence.</exception>
+     public IdentityHistoryLifecycleRecord Move(
+         IdentityHistoryLifecycleState state,
+         long lifecycleRevision,
+@@ -139,6 +139,16 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             throw new ArgumentException("A forward lifecycle move requires a higher revision.", nameof(lifecycleRevision));
+         }
+ 
++        if (epoch < Epoch)
++        {
++            throw new ArgumentException("Authority epoch cannot regress.", nameof(epoch));
++        }
++
++        if (epoch == Epoch && fence < Fence)
++        {
++            throw new ArgumentException("Authority fence cannot regress within the same epoch.", nameof(fence));
++        }
++
+         if (!CanMove(State, state))
+         {
+             throw new ArgumentException("Actor-history lifecycle cannot make that transition.", nameof(state));
+@@ -160,12 +170,12 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             Generations);
+     }
+ 
+-    /// <summary>Grows one generation on the same unit and deadline. A repeated generation does not mint a new revision.</summary>
++    /// <summary>Grows one generation only while Active on the same unit and deadline. A known generation returns the same snapshot in every state.</summary>
+     /// <param name="unit">Unit that must be the original unit.</param>
+     /// <param name="generation">Generation number to append.</param>
+     /// <returns>The same snapshot when the generation is already present; otherwise the grown snapshot.</returns>
+     /// <exception cref="ArgumentNullException">Thrown when <paramref name="unit"/> is null.</exception>
+-    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit or does not grow.</exception>
++    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit, does not grow, or is new while the lifecycle is not Active.</exception>
+     public IdentityHistoryLifecycleRecord AddGeneration(IdentityHistoryCustodyUnit unit, long generation)
+     {
+         ArgumentNullException.ThrowIfNull(unit);
+@@ -184,6 +194,11 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             return this;
+         }
+ 
++        if (State != IdentityHistoryLifecycleState.Active)
++        {
++            throw new ArgumentException("New generations require an active lifecycle.", nameof(generation));
++        }
++
+         if (Generations.Count > 0 && generation <= Generations[^1])
+         {
+             throw new ArgumentException("Generations grow only on the same unit and deadline.", nameof(generation));
+diff --git a/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs b/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
+index c2319cc..caf7f22 100644
+--- a/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
++++ b/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
+@@ -304,23 +304,155 @@ public sealed class IdentityHistoryCustodyPolicyTests
+         direct.OperationId.ShouldBe("operation-1");
+     }
+ 
++    /// <summary>A legal higher-revision move cannot lower the epoch or an epoch-local fence.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.Expired, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.PendingDestruction, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Expired, IdentityHistoryLifecycleState.PendingDestruction, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, IdentityHistoryLifecycleState.Destroyed, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, IdentityHistoryLifecycleState.ReceiptFinal, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.Expired, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.PendingDestruction, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Expired, IdentityHistoryLifecycleState.PendingDestruction, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, IdentityHistoryLifecycleState.Destroyed, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, IdentityHistoryLifecycleState.ReceiptFinal, 1L, 0L, "fence")]
++    public void Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(
++        IdentityHistoryLifecycleState from,
++        IdentityHistoryLifecycleState to,
++        long epoch,
++        long fence,
++        string parameter)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(from, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++        string? operationId = to == IdentityHistoryLifecycleState.Expired ? null : "operation-1";
++        string? receiptReference = to == IdentityHistoryLifecycleState.ReceiptFinal ? "receipt-1" : null;
++
++        Should.Throw<ArgumentException>(() => lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference))
++            .ParamName.ShouldBe(parameter);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Authority coordinates remain separate: the fence may restart when the epoch advances.</summary>
++    [Theory]
++    [InlineData(1L, 1L)]
++    [InlineData(1L, 2L)]
++    [InlineData(2L, 0L)]
++    public void Move_PreservesEpochLocalAuthorityCoordinates(long epoch, long fence)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(IdentityHistoryLifecycleState.Active, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        IdentityHistoryLifecycleRecord moved = lifecycle.Move(IdentityHistoryLifecycleState.Expired, 6, epoch, fence, null, null);
++
++        moved.State.ShouldBe(IdentityHistoryLifecycleState.Expired);
++        moved.LifecycleRevision.ShouldBe(6);
++        moved.Epoch.ShouldBe(epoch);
++        moved.Fence.ShouldBe(fence);
++        moved.Unit.ShouldBeSameAs(lifecycle.Unit);
++        moved.Unit.BindingEffectiveAt.ShouldBe(EffectiveAt);
++        moved.Unit.ExpiresAt.ShouldBe(EffectiveAt.AddSeconds(31_536_000));
++        moved.Generations.ShouldBe([0L, 2L]);
++        lifecycle.ShouldBe(original);
++    }
++
+     /// <summary>A generation grows only on the same unit, and a repeat does not mint a revision or deadline.</summary>
+     [Fact]
+     public void AddGeneration_RequiresTheSameUnitAndDeadline()
+     {
+         IdentityHistoryCustodyUnit unit = Admit();
+         IdentityHistoryLifecycleRecord lifecycle = ActiveLifecycle(unit);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
+         IdentityHistoryLifecycleRecord grown = lifecycle.AddGeneration(unit, 0).AddGeneration(unit, 2);
+         IdentityHistoryLifecycleRecord retry = grown.AddGeneration(unit, 0);
+ 
+         grown.Generations.ShouldBe([0L, 2L]);
+-        grown.Unit.ExpiresAt.ShouldBe(unit.ExpiresAt);
++        grown.Unit.ShouldBeSameAs(unit);
++        grown.Unit.BindingEffectiveAt.ShouldBe(EffectiveAt);
++        grown.Unit.ExpiresAt.ShouldBe(EffectiveAt.AddSeconds(31_536_000));
++        grown.State.ShouldBe(IdentityHistoryLifecycleState.Active);
++        grown.Epoch.ShouldBe(lifecycle.Epoch);
++        grown.Fence.ShouldBe(lifecycle.Fence);
+         grown.LifecycleRevision.ShouldBe(lifecycle.LifecycleRevision);
+         retry.ShouldBeSameAs(grown);
+         Should.Throw<ArgumentException>(() => grown.AddGeneration(Admit(evidenceId: "evidence-8"), 3))
+             .ShouldBeOfType<ArgumentException>();
+         grown.Unit.ExpiresAt.ShouldBe(unit.ExpiresAt);
+         grown.Generations.Count.ShouldBe(2);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>No unknown generation may grow after the unit leaves Active, including gaps below its latest generation.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Expired, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.Expired, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal, 3L)]
++    public void AddGeneration_RejectsUnknownGenerationOutsideActive(
++        IdentityHistoryLifecycleState state,
++        long generation)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(lifecycle.Unit, generation))
++            .ParamName.ShouldBe("generation");
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Known generation retries return the exact original record in every lifecycle state.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Active)]
++    [InlineData(IdentityHistoryLifecycleState.Expired)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal)]
++    public void AddGeneration_KnownRetryPreservesEveryLifecycleState(IdentityHistoryLifecycleState state)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        lifecycle.AddGeneration(lifecycle.Unit, 0).ShouldBeSameAs(lifecycle);
++        lifecycle.AddGeneration(lifecycle.Unit, 2).ShouldBeSameAs(lifecycle);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Neither known retries nor new generations may cross tenant, Party, or immutable unit facts.</summary>
++    [Theory]
++    [InlineData("tenant")]
++    [InlineData("aggregate")]
++    [InlineData("environment")]
++    [InlineData("instance")]
++    [InlineData("evidence")]
++    [InlineData("instant")]
++    [InlineData("admission-revision")]
++    public void AddGeneration_RejectsForeignUnitsInEveryLifecycleState(string field)
++    {
++        IdentityHistoryCustodyUnit foreign = field switch
++        {
++            "tenant" => Admit(identity: new AggregateIdentity("tenant-b", "party", "party-1")),
++            "aggregate" => Admit(identity: new AggregateIdentity("tenant-a", "party", "party-2")),
++            "environment" => Admit(environment: "env-b"),
++            "instance" => Admit(instance: "instance-b"),
++            "evidence" => Admit(evidenceId: "evidence-8"),
++            "instant" => Admit(effectiveAt: EffectiveAt.AddTicks(1)),
++            "admission-revision" => Admit(admissionRevision: 5),
++            _ => throw new ArgumentOutOfRangeException(nameof(field)),
++        };
++
++        foreach (IdentityHistoryLifecycleState state in Enum.GetValues<IdentityHistoryLifecycleState>())
++        {
++            IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++            IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++            Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(foreign, 0)).ParamName.ShouldBe("unit");
++            Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(foreign, 3)).ParamName.ShouldBe("unit");
++            lifecycle.ShouldBe(original);
++        }
+     }
+ 
+     /// <summary>A copy deadline after or before the unit deadline is rejected.</summary>
+@@ -506,16 +638,16 @@ public sealed class IdentityHistoryCustodyPolicyTests
+     private static IdentityHistoryLifecycleRecord ActiveLifecycle(IdentityHistoryCustodyUnit unit)
+         => new(unit, IdentityHistoryLifecycleState.Active, 5, 1, 1, null, null, []);
+ 
+-    private static IdentityHistoryLifecycleRecord Lifecycle(IdentityHistoryLifecycleState state)
++    private static IdentityHistoryLifecycleRecord Lifecycle(IdentityHistoryLifecycleState state, IReadOnlyList<long>? generations = null)
+     {
+         IdentityHistoryCustodyUnit unit = Admit();
+         return state switch
+         {
+-            IdentityHistoryLifecycleState.Active => ActiveLifecycle(unit),
+-            IdentityHistoryLifecycleState.Expired => new(unit, state, 5, 1, 1, null, null, []),
+-            IdentityHistoryLifecycleState.PendingDestruction => new(unit, state, 5, 1, 1, "operation-1", null, []),
+-            IdentityHistoryLifecycleState.Destroyed => new(unit, state, 5, 1, 1, "operation-1", null, []),
+-            IdentityHistoryLifecycleState.ReceiptFinal => new(unit, state, 5, 1, 1, "operation-1", "receipt-1", []),
++            IdentityHistoryLifecycleState.Active => new(unit, state, 5, 1, 1, null, null, generations ?? []),
++            IdentityHistoryLifecycleState.Expired => new(unit, state, 5, 1, 1, null, null, generations ?? []),
++            IdentityHistoryLifecycleState.PendingDestruction => new(unit, state, 5, 1, 1, "operation-1", null, generations ?? []),
++            IdentityHistoryLifecycleState.Destroyed => new(unit, state, 5, 1, 1, "operation-1", null, generations ?? []),
++            IdentityHistoryLifecycleState.ReceiptFinal => new(unit, state, 5, 1, 1, "operation-1", "receipt-1", generations ?? []),
+             _ => throw new ArgumentOutOfRangeException(nameof(state)),
+         };
+     }

@@ -1090,7 +1090,7 @@ class RunJournal:
             os.close(descriptor)
 
 
-def execute(config, target, binding, transport, persist=lambda name, value: None, journal=None):
+def execute(config, target, binding, transport, persist=lambda name, value: None, journal=None, case_ids=None):
     run = journal.run if journal else str(uuid.uuid4())
     base = {"protocol": PROTOCOL, "runId": run, "targetCommit": target,
             "isolatedTargetId": get(config, "qualification.isolatedTargetId"), "planSha256": plan_digest()}
@@ -1127,8 +1127,11 @@ def execute(config, target, binding, transport, persist=lambda name, value: None
     targets = installed["caseTargetIds"]
     persist("enrollment", enrolled)
     persist("effects-started", {"runId": run, "targetCommit": target})
+    selected_cases = tuple(case for case in plan() if case_ids is None or case.id in case_ids)
+    if case_ids is not None and set(case_ids) != {case.id for case in selected_cases}:
+        raise QualificationFailed("ExactDisjointPhaseCaseSelection")
     results = []
-    for case in plan():
+    for case in selected_cases:
         request = base | {"caseId": case.id, "caseTargetId": targets[case.id], "enrolledScope": installed["caseScopes"][case.id], "scenario": {"outcomes": list(case.outcomes), "expected": GLOBAL | case.expected,
                                                        "boundary": case.boundary, "persistedStages": list(STAGES)}}
         request["requestId"] = digest(request)
@@ -1171,9 +1174,9 @@ def execute(config, target, binding, transport, persist=lambda name, value: None
         results.append({"caseId": case.id, "requestId": request["requestId"], "execution": envelope,
                         "observation": observed})
         persist("case", results[-1])
-    if [r["caseId"] for r in results] != [c.id for c in plan()]:
+    if [r["caseId"] for r in results] != [c.id for c in selected_cases]:
         raise QualificationFailed("IncompletePlan")
-    return {"code": "QualificationPassed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
+    return {"code": "QualificationPassed" if case_ids is None else "PhaseQualificationPassed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
             "permitsOwnerAcceptanceForExactTarget": True, "targetCommit": target, "runId": run,
             "planSha256": plan_digest(), "caseCount": len(results), "enrollmentProof": enrolled, "cases": results}
 
@@ -1223,6 +1226,16 @@ def main():
     try:
         root = Path(args.root).resolve()
         register = root.parent / "agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+        cohort_configuration = os.environ.get("PLATFORM_JOINT_COHORT_CONFIGURATION")
+        if cohort_configuration:
+            from joint_live_phase_runner import run_installed_cohort, Blocked
+            try:
+                result = run_installed_cohort(cohort_configuration, register)
+            except Blocked as error:
+                raise Unavailable(*error.missing) from None
+            (evidence / "joint-cohort-result.json").write_bytes(canonical(result))
+            print("JointCohortPassed: EXT-SECRETS-1, EXT-HOST-1; acceptance unchanged.")
+            return 0
         config, target, binding = preflight(root, os.environ.get("EXT_SECRETS_1_RUNTIME_CONFIGURATION"), register,
                                             args.caller, args.eventstore_argument, args.artifacts_argument, args.evidence_argument)
         def persist(name, value):

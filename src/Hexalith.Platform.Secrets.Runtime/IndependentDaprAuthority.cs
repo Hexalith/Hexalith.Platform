@@ -4,10 +4,6 @@ using System.Text.Json;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>Independently enrolled public service identity. Credentials are mounted references, never DI registrations.</summary>
-public sealed record IndependentDaprAuthorityBinding(string AppId, string CredentialReference, string PublicKeyPem,
-    string EnrollmentId, string Scope, string CurrentTrustRevision);
-
 /// <summary>Authenticated, bounded, nonce-bound exact-current service invocation. No retry or local authority fallback.</summary>
 public sealed class IndependentDaprAuthority
 {

@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -370,6 +371,18 @@ def refuse_profile(evidence, profile, configuration="Debug"):
 
 def verify(root, artifacts, profile, configuration="Debug"):
     suite_mode(configuration)
+    cohort_configuration = os.environ.get("PLATFORM_JOINT_COHORT_CONFIGURATION")
+    if cohort_configuration:
+        sys.path.insert(0, str(Path(root) / "eng/ext-secrets-1"))
+        from joint_live_phase_runner import run_installed_cohort, Blocked
+        try:
+            result = run_installed_cohort(cohort_configuration, Path(root).parent / "agents/_bmad-output/planning-artifacts/external-dependency-register.md")
+        except (Blocked, OSError, ValueError, KeyError):
+            return 1
+        destination = Path(artifacts) / "joint-cohort-result.json"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(canonical(result))
+        return 0
     root, artifacts = Path(root).resolve(), Path(artifacts).resolve()
     evidence = artifacts / "evidence"
     evidence.mkdir(parents=True, exist_ok=True)

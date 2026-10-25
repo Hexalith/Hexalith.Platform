@@ -75,7 +75,9 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         foreach (string directory in new[] { installation.CheckpointArchiveDirectory, installation.OriginalArchiveDirectory })
         {
             var info = new DirectoryInfo(directory);
-            if (!info.Exists || info.LinkTarget is not null || CustodyJson.Hash(File.ReadAllBytes(Path.Combine(directory, "enrollment.json"))) != installation.ArchiveEnrollmentSha256)
+            var enrollment = new FileInfo(Path.Combine(directory, "enrollment.json"));
+            if (!info.Exists || info.LinkTarget is not null || !enrollment.Exists || enrollment.LinkTarget is not null || enrollment.Length is <= 0 or > 65536
+                || CustodyJson.Hash(File.ReadAllBytes(enrollment.FullName)) != installation.ArchiveEnrollmentSha256)
                 throw new AuthorityUnavailableException("Independent archive enrollment/placement unavailable.");
         }
     }
@@ -86,6 +88,9 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         string root = key.StartsWith("checkpoint/", StringComparison.Ordinal) ? installation.CheckpointArchiveDirectory : installation.OriginalArchiveDirectory;
         string path = Path.GetFullPath(Path.Combine(root, key));
         if (!path.StartsWith(Path.GetFullPath(root) + Path.DirectorySeparatorChar, StringComparison.Ordinal)) throw new AuthorityUnavailableException("Archive boundary denied.");
+        for (DirectoryInfo? parent = new(Path.GetDirectoryName(path)!); parent is not null && parent.FullName.StartsWith(Path.GetFullPath(root), StringComparison.Ordinal); parent = parent.Parent)
+            if (parent.Exists && parent.LinkTarget is not null) throw new AuthorityUnavailableException("Archive symbolic link denied.");
+        if (File.Exists(path) && new FileInfo(path).LinkTarget is not null) throw new AuthorityUnavailableException("Immutable object symbolic link denied.");
         return path;
     }
     private static async Task<byte[]> ReadBoundedAsync(string path, CancellationToken token)

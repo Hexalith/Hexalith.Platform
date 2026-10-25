@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "python3",
+    "/tmp/custody-runner-repair-sjwpzo92/run-command.py",
+    "duplicate",
+    "python3",
+    "-c",
+    "print('original failure'); raise SystemExit(1)"
+  ],
+  "firstExit": 1,
+  "repeatExit": 1,
+  "originalLogPreserved": true,
+  "commandJournalPreserved": true,
+  "logSha256": "a39da5edd7cdd1b27f38ee504978eb9263e47c938a7ce0582756b6911c5496f7",
+  "firstStdout": "{\n  \"label\": \"duplicate\",\n  \"cwd\": \"/home/administrator/projects/hexalith/parties\",\n  \"command\": [\n    \"python3\",\n    \"-c\",\n    \"print('original failure'); raise SystemExit(1)\"\n  ],\n  \"command_shell\": \"python3 -c 'print('\\\"'\\\"'original failure'\\\"'\\\"'); raise SystemExit(1)'\",\n  \"started_at_utc\": \"2026-10-25T11:56:22.678881+00:00\",\n  \"finished_at_utc\": \"2026-10-25T11:56:22.690844+00:00\",\n  \"exit_code\": 1,\n  \"log\": \"/tmp/custody-runner-repair-sjwpzo92/duplicate.log\",\n  \"log_sha256\": \"a39da5edd7cdd1b27f38ee504978eb9263e47c938a7ce0582756b6911c5496f7\"\n}\noriginal failure\n\n",
+  "firstStderr": "",
+  "repeatStdout": "",
+  "repeatStderr": "Traceback (most recent call last):\n  File \"/tmp/custody-runner-repair-sjwpzo92/run-command.py\", line 7, in <module>\n    with log.open('xb') as stream:\n         ~~~~~~~~^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 772, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: '/tmp/custody-runner-repair-sjwpzo92/duplicate.log'\n",
+  "tempRoot": "/tmp/custody-runner-repair-sjwpzo92"
+}

@@ -12,7 +12,7 @@ import qualify as q
 from cases import plan_digest
 
 
-def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence", register=None):
+def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence", register=None, coordination_context=None):
     root, configuration, output = Path(root).resolve(), Path(configuration).resolve(), Path(output).resolve()
     if output.is_relative_to(root):
         raise ValueError("detached output must be outside candidate checkout")
@@ -90,9 +90,9 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         values = [q.get(config, f"qualification.{role}.{field}") for role in ("executor", "observer", "enrollment")]
         if not all(isinstance(v, str) and q.IDENTITY.fullmatch(v) for v in values) or len(set(values)) != 3:
             missing.append("IndependentInstalledQualificationAuthorities")
-    # Installation, current scopes and owner acceptance are independent external gates even with complete references.
-    missing.extend(q.IMPLEMENTATIONS)
-    missing.append("OwnerAcceptedTargetRuntimeQualificationBindingAndExactCommand")
+    from coordinated_packets import admission
+    installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, candidate_ready)
+    missing.extend(installation_missing)
     cohort = []
     register_binding = None
     if register is not None:
@@ -104,6 +104,8 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         except (OSError, ValueError, TypeError):
             cohort = ["AuthoritativeCohortPrerequisites"]
         missing.extend(cohort)
+    if not installation_missing:
+        missing = [name for name in missing if name != "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"]
     binding = {"configurationSha256": q.digest(config), "planSha256": plan_digest(), **anchors}
     packet_path = output / "replacement-acceptance-packet.json"
     detached_configuration = output / "runtime-reference.json"
@@ -115,12 +117,20 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
               "productionMutationAllowed": False, "ownerAcceptanceRequired": True, **binding,
               "publicAnchorSha256": q.digest(anchors), "RuntimeQualificationBinding": binding, "exactCommand": command,
               "readiness": "IncompleteSourceCandidate",
-              "qualificationCompleted": False, "cohortBlockingInputs": cohort, "registerEvidence": register_binding}
+              "qualificationCompleted": False, "cohortBlockingInputs": cohort, "registerEvidence": register_binding,
+              "platformIntegrationDate": coordinated.get("platformIntegrationDate"), "protectionIntegrationDate": coordinated.get("protectionIntegrationDate"),
+              "installedHashes": installed_hashes, "completeReplacementPacket": not missing}
     report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "candidateCommit": head,
               "qualificationEffects": 0, "dependencyAvailable": False, "missingInputs": sorted(set(missing)),
-              "packetPrepared": candidate_ready}
+              "packetPrepared": candidate_ready and not missing, "completeReplacementPacket": candidate_ready and not missing,
+              "installedHashes": installed_hashes, "targetCommit": head if candidate_ready and not missing else None}
     (output / "blocked-inputs.json").write_bytes(q.canonical(report))
     if report["packetPrepared"]:
+        from coordinated_packets import records
+        from joint_live_phase_runner import full_plan, digest as cohort_digest
+        packet["cohortPlanSha256"] = cohort_digest(full_plan())
+        packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], binding)
+        (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
         packet_path.write_bytes(q.canonical(packet))
         detached_configuration.write_bytes(q.canonical(config))
         (output / "exact-command.sh").write_text(command + "\n")
@@ -136,9 +146,10 @@ def main():
     parser.add_argument("--eventstore-argument", default="../eventstore")
     parser.add_argument("--artifacts-argument", required=True)
     parser.add_argument("--evidence-argument", required=True)
+    parser.add_argument("--coordination-context", help="Explicit independently enrolled public installation bundle and accepted dates")
     parser.add_argument("--register", help="Authoritative Agents register for cohort blockers; read-only, never accepted or edited")
     args = parser.parse_args()
-    result = prepare(args.root, args.configuration, args.output, args.eventstore_argument, args.artifacts_argument, args.evidence_argument, args.register)
+    result = prepare(args.root, args.configuration, args.output, args.eventstore_argument, args.artifacts_argument, args.evidence_argument, args.register, args.coordination_context)
     print(json.dumps(result, sort_keys=True))
     return 2 if result["missingInputs"] else 0
 

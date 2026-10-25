@@ -28,8 +28,6 @@ public static class AgentsHostComposition
     public static bool TryCompose(IDistributedApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        if (!builder.Environment.IsDevelopment())
-            return false;
         string? configured = builder.Configuration[ProfilePathKey];
         if (string.IsNullOrWhiteSpace(configured))
             return false;
@@ -39,9 +37,17 @@ public static class AgentsHostComposition
             string path = Path.GetFullPath(configured, builder.AppHostDirectory);
             if (!File.Exists(path))
                 return false;
-            profile = AgentsDeploymentProfile.Validate(File.ReadAllText(path));
+            string json = File.ReadAllText(path);
+            if (builder.Environment.IsDevelopment()) profile = AgentsDeploymentProfile.Validate(json);
+            else
+            {
+                string? registerPath = builder.Configuration["Platform:Agents:AcceptedRegister"];
+                string? packetPath = builder.Configuration["Platform:Agents:AcceptancePacket"];
+                if (string.IsNullOrWhiteSpace(registerPath) || string.IsNullOrWhiteSpace(packetPath)) return false;
+                profile = AgentsDeploymentProfile.ValidateAcceptedContext(json, File.ReadAllText(registerPath), File.ReadAllText(packetPath));
+            }
         }
-        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException)
+        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException or System.Text.Json.JsonException)
         {
             return false;
         }
@@ -60,6 +66,8 @@ public static class AgentsHostComposition
         if (string.IsNullOrWhiteSpace(profile.SpoolBackend) || string.IsNullOrWhiteSpace(profile.ReplayReference)
             || string.IsNullOrWhiteSpace(profile.RecorderReference) || string.IsNullOrWhiteSpace(profile.WorkerReference))
             throw new InvalidDataException("Agents deployment profile requires every reference slot.");
+        if (!builder.Environment.IsDevelopment() && !profile.AcceptedContextValidated)
+            throw new InvalidDataException("Production composition requires the coordinated accepted register/packet/profile context.");
         List<(string Resource, string Project)> projects = [];
         foreach ((string service, string relative, string resource) in Projects)
             projects.Add((resource, RequireProject(builder, profile, service, relative)));

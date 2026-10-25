@@ -15,10 +15,8 @@ log_path = evidence / (label + ".log")
 with log_path.open("w") as log:
     process = subprocess.run(argv, cwd=cwd, stdout=log, stderr=subprocess.STDOUT)
 record = {"cwd": str(cwd), "argv": argv, "exitCode": process.returncode, "durationSeconds": round(time.monotonic() - started, 3), "log": log_path.name}
-journal = evidence / "commands.json"
-rows = json.loads(journal.read_text()) if journal.exists() else []
-rows.append(record)
-journal.write_text(json.dumps(rows, indent=2) + "\n")
+receipt = evidence / (label + ".command.json")
+receipt.write_text(json.dumps(record, indent=2) + "\n")
 print(json.dumps(record))
 print("\n".join(log_path.read_text(errors="replace").splitlines()[-45:]))
 sys.exit(process.returncode)

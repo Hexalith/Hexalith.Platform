@@ -10,24 +10,8 @@ using System.Text.Json.Nodes;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>Externally provisioned current caller permission, retained with the authority head.</summary>
-public sealed record IndependentCallerGrant(string BearerSha256, string Identity, string ScopeReference,
-    string Role, string[] Methods, DateTimeOffset ValidUntil, bool Revoked);
-/// <summary>Durable exact original, including uncertain executions. No request identity is recycled.</summary>
-public sealed record IndependentOriginal(JsonElement Request, JsonElement? Result);
-/// <summary>Externally enrolled independent authority genesis/current state. Startup never creates this document.</summary>
-public sealed record IndependentAuthorityState(string EnrollmentId, string Scope, string TrustRevision,
-    long Revision, DateTimeOffset ValidUntil, IndependentCallerGrant[] Callers,
-    ReplicatedSecuritySpoolTarget? Spool, long SpoolRevision, string SpoolDigest,
-    Dictionary<string, AnchoredStateTransition> Admitted, Dictionary<string, AnchoredStateTransition> Recorded,
-    Dictionary<string, SecurityObservationRecoveryGrant> Recoveries, Dictionary<string, IndependentOriginal> Originals,
-    Dictionary<string, CustodyKeyRegistration> Registrations, Dictionary<string, DeletionBatchConsumptionRequest> Manifests);
-/// <summary>Explicit independently administered service/store and signing installation. It is not enrollment authority.</summary>
-public sealed record IndependentAuthorityReceiverInstallation(string EnrollmentId, string Scope, string TrustRevision,
-    string Component, string StateKey, string SigningKeyFile, string PublicKeyPem, string AppChannelTokenReference);
-
 /// <summary>Receiving durable authority. All permission, anchor, original and recovery transitions share one conditional owner head.</summary>
-public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock)
+public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null)
 {
     /// <summary>Authenticates channel/workload, reads the surviving enrolled head, commits exact transitions and signs bounded current results.</summary>
     public async Task<IResult> HandleAsync(HttpContext context, string method, CancellationToken cancellationToken)
@@ -51,8 +35,63 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 || state.TrustRevision != installation.TrustRevision || state.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(503);
             var grant = Authenticate(context, state, method);
             if (grant is null) return Results.StatusCode(403);
+            if (method is "spool-admit-recovery" or "spool-verify-recovery")
+            {
+                if (installation.RecorderAuthority is null) return Results.StatusCode(503);
+                var recorder = new DaprSecurityObservationRecorder(new(new DaprSecretsInvoker(dapr), installation.RecorderAuthority, clock));
+                SecurityObservationRecord originalRecord;
+                SecurityEventRecorderLookup submitted;
+                if (method == "spool-admit-recovery")
+                {
+                    var recovery = request.Payload.Deserialize<RecoveryAdmission>(CustodyBindingContract.Json)!;
+                    originalRecord = recovery.original; submitted = recovery.proof;
+                }
+                else
+                {
+                    var recovery = request.Payload.Deserialize<RecoveryVerification>(CustodyBindingContract.Json)!;
+                    originalRecord = recovery.grant.Original; submitted = recovery.currentProof;
+                }
+                var actual = await recorder.LookupAsync(originalRecord, budget.Token).ConfigureAwait(false);
+                if (actual.State == SecurityEventRecorderLookupState.Unknown || !Same(actual, submitted)) return Results.StatusCode(503);
+            }
             var next = JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state, CustodyBindingContract.Json), CustodyBindingContract.Json)!;
-            var outcome = Apply(method, request.Payload, grant, next, replacement => next = replacement);
+            (object? Payload, bool Mutated) outcome;
+            if (method is "replay-register-exact" or "replay-lookup-exact" or "security-observation-lookup" or "security-observation-append" or "security-observation-recover-original")
+            {
+                if (recordingSource is null) return Results.StatusCode(503);
+                object? recordingResult;
+                if (method.StartsWith("replay-", StringComparison.Ordinal))
+                {
+                    if (grant.Role != "replay-registrar") return Results.StatusCode(403);
+                    if (method == "replay-register-exact")
+                    {
+                        var replay = request.Payload.Deserialize<ReplayAdmission>(CustodyBindingContract.Json)!;
+                        recordingResult = await recordingSource.RegisterAsync(replay.intent, replay.evaluatedAt, TimeSpan.FromTicks(replay.retentionTicks), budget.Token);
+                    }
+                    else recordingResult = await recordingSource.LookupAsync(request.Payload.Deserialize<ReplayLookup>(CustodyBindingContract.Json)!.intent, budget.Token);
+                }
+                else
+                {
+                    if (grant.Role is not ("security-recorder" or "aged-recovery")) return Results.StatusCode(403);
+                    SecurityObservationRecord originalRecord;
+                    if (method == "security-observation-recover-original")
+                    {
+                        if (grant.Role != "aged-recovery") return Results.StatusCode(403);
+                        var recovery = request.Payload.Deserialize<RecorderRecovery>(CustodyBindingContract.Json)!;
+                        originalRecord = recovery.original;
+                        await recordingSource.RecoverOriginalAsync(recovery.original, recovery.grant, budget.Token);
+                    }
+                    else
+                    {
+                        originalRecord = request.Payload.Deserialize<RecorderOriginal>(CustodyBindingContract.Json)!.record;
+                        if (method == "security-observation-append") await recordingSource.AppendAsync(originalRecord, budget.Token);
+                    }
+                    var lookup = await recordingSource.LookupAsync(originalRecord, budget.Token);
+                    recordingResult = new { OriginalSha256 = Hash(originalRecord), Lookup = lookup };
+                }
+                outcome = (recordingResult, false);
+            }
+            else outcome = Apply(method, request.Payload, grant, next, replacement => next = replacement);
             if (outcome.Mutated)
             {
                 next = next with { Revision = checked(next.Revision + 1) };
@@ -129,6 +168,28 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                     && verify.currentProof.State != SecurityEventRecorderLookupState.Unknown
                     && (Same(verify.grant.OriginalProof, verify.currentProof)
                         || verify.grant.OriginalProof.State == SecurityEventRecorderLookupState.NotRecorded && verify.currentProof.State == SecurityEventRecorderLookupState.Recorded)), false);
+            case "recording-command-authorize":
+                var recording = Read<RecordingCommandAuthorization>();
+                string recordingRole = recording.command.Domain == "trusted-envelope-replay" ? "private-replay" : "private-security-observation";
+                bool exactOriginal = state.Originals.TryGetValue(recordingRole + ":" + recording.command.MessageId, out var sourceOriginal)
+                    && Same(sourceOriginal.Request, recording.command.Payload);
+                return (Decision(exactOriginal && state.Callers.Any(c => c.Identity == recording.caller && c.ScopeReference == recording.principal
+                    && !c.Revoked && c.ValidUntil > clock.GetUtcNow() && c.Methods.Contains("recording-source:" + recording.command.Domain, StringComparer.Ordinal))), false);
+            case "custody-control-original":
+            case "custody-native-observation-original":
+                var custodyOriginal = Read<CustodyOriginalLookup>();
+                string originalRole = method == "custody-control-original" ? "control-original" : "native-observation-original";
+                string originalId = Hash(custodyOriginal);
+                if (caller.ScopeReference != custodyOriginal.tenant + "|" + custodyOriginal.scope) return (null, false);
+                return (state.Originals.TryGetValue(originalRole + ":" + originalId, out var custodyRetained) ? custodyRetained.Request : null, false);
+            case "custody-role-authorize":
+                var roleRequest = Read<CustodyRoleAuthorization>();
+                return (Decision(state.Callers.Any(c => c.BearerSha256 == roleRequest.bearerSha256 && !c.Revoked && c.ValidUntil > clock.GetUtcNow()
+                    && c.Role == roleRequest.role && c.ScopeReference == roleRequest.intent.TenantId + "|" + roleRequest.intent.OwnerPurposeScope
+                    && c.Methods.Contains("custody-intent:" + roleRequest.intent.Operation, StringComparer.Ordinal))), false);
+            case "qualification-lookup-original":
+                var originalLookup = Read<LookupOriginal>();
+                return (originalLookup.role == caller.Role ? state.Originals.GetValueOrDefault(originalLookup.role + ":" + originalLookup.requestId) : null, false);
             case "qualification-authenticate":
                 var authentication = Read<CallerAuthentication>();
                 var authenticated = state.Callers.SingleOrDefault(c => c.BearerSha256 == authentication.bearerSha256 && c.Role == authentication.role
@@ -138,24 +199,37 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 var authorization = Read<CallerAuthorization>();
                 return (Decision(state.Callers.Any(c => c.Identity == authorization.caller.Identity && c.ScopeReference == authorization.caller.ScopeReference
                     && c.Role == authorization.role && !c.Revoked && c.ValidUntil > clock.GetUtcNow())
-                    && authorization.request["targetCommit"] is not null && authorization.request["isolatedTargetId"] is not null), false);
+                    && state.QualificationBindings is { Count: >= 3 }
+                    && new[] { "targetCommit", "isolatedTargetId", "planSha256" }.All(state.QualificationBindings.ContainsKey)
+                    && state.QualificationBindings.All(binding => authorization.request[binding.Key]?.ToJsonString() == binding.Value)
+                    && (authorization.role == "enrollment" || ExactCase(authorization.request, state))), false);
             case "qualification-begin-original":
                 var begin = Read<BeginOriginal>(); string id = begin.role + ":" + begin.requestId;
+                if (begin.role != caller.Role) return (new { Exact = false, First = false }, false);
                 if (state.Originals.TryGetValue(id, out var prior)) return (new { Exact = Same(prior.Request, begin.original), First = false }, false);
                 if (state.Originals.Count >= 10000) throw new InvalidOperationException("Original capacity exhausted.");
                 state.Originals.Add(id, new(begin.original.Clone(), null)); return (new { Exact = true, First = true }, true);
             case "qualification-retain-result":
                 var result = Read<RetainResult>(); string resultId = result.role + ":" + result.requestId;
+                if (result.role != caller.Role) return (new { Exact = false, First = false }, false);
                 if (!state.Originals.TryGetValue(resultId, out var retainedOriginal)) return (new { Exact = false, First = false }, false);
                 if (retainedOriginal.Result is { } previous) return (new { Exact = Same(previous, result.result), First = false }, false);
                 state.Originals[resultId] = retainedOriginal with { Result = result.result.Clone() }; return (new { Exact = true, First = true }, true);
             case "custody-registration-original":
                 var identity = Read<RegistrationLookup>().identity;
-                return (state.Registrations.Values.SingleOrDefault(r => r.Identity == identity), false);
+                return (caller.ScopeReference == identity.TenantId ? state.Registrations.Values.SingleOrDefault(r => r.Identity == identity) : null, false);
             case "custody-reserved-manifest-original":
-                return (state.Manifests.GetValueOrDefault(Read<ManifestLookup>().reservationReceiptId), false);
+                var foundManifest = state.Manifests.GetValueOrDefault(Read<ManifestLookup>().reservationReceiptId);
+                return (foundManifest?.Capability.TenantId == caller.ScopeReference ? foundManifest : null, false);
             default: throw new InvalidOperationException("Operation is not installed for this authority role.");
         }
+    }
+    private static bool ExactCase(JsonObject request, IndependentAuthorityState state)
+    {
+        string? id = SecretsProof.Text(request, "caseId");
+        if (id is null || state.QualificationCases is null || !state.QualificationCases.TryGetValue(id, out var expected)) return false;
+        return new[] { "caseId", "caseTargetId", "enrolledScope" }.All(name => expected.TryGetProperty(name, out var value)
+            && request[name] is { } supplied && JsonNode.DeepEquals(JsonNode.Parse(value.GetRawText()), supplied));
     }
     private static bool Same<T, U>(T left, U right) => JsonSerializer.SerializeToUtf8Bytes(left, CustodyBindingContract.Json).AsSpan()
         .SequenceEqual(JsonSerializer.SerializeToUtf8Bytes(right, CustodyBindingContract.Json));
@@ -171,13 +245,22 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
     {
         string reference = installation.AppChannelTokenReference;
         if (!reference.StartsWith("file:/", StringComparison.Ordinal)) return false;
-        byte[] expected = await File.ReadAllBytesAsync(reference[5..], token).ConfigureAwait(false);
+        string? expected = await DaprSecretsInvoker.ReadMountedBearerAsync(reference, token).ConfigureAwait(false);
         var header = context.Request.Headers["dapr-api-token"];
-        if (expected.Length is 0 or > 8192 || header.Count != 1 || header[0] is not { Length: > 0 and <= 8192 } actual) return false;
-        byte[] supplied = Encoding.UTF8.GetBytes(actual);
-        try { return CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(expected).TrimEnd('\r', '\n')), supplied); }
-        finally { CryptographicOperations.ZeroMemory(expected); CryptographicOperations.ZeroMemory(supplied); }
+        if (expected is null || header.Count != 1 || header[0] is not { Length: > 0 and <= 8192 } actual) return false;
+        byte[] supplied = Encoding.UTF8.GetBytes(actual); byte[] expectedBytes = Encoding.UTF8.GetBytes(expected);
+        try { return CryptographicOperations.FixedTimeEquals(expectedBytes, supplied); }
+        finally { CryptographicOperations.ZeroMemory(expectedBytes); CryptographicOperations.ZeroMemory(supplied); }
     }
+
+    private sealed record RecorderOriginal(SecurityObservationRecord record);
+    private sealed record RecorderRecovery(SecurityObservationRecord original, SecurityObservationRecoveryGrant grant);
+    private sealed record ReplayAdmission(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt, long retentionTicks);
+    private sealed record ReplayLookup(TrustedEnvelopeReplayIntent intent);
+    private sealed record CustodyOriginalLookup(string tenant, string scope, string operationId, long revision, string digest);
+    private sealed record RecordingCommandAuthorization(string caller, string principal, Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest command);
+    private sealed record CustodyRoleAuthorization(string role, CustodyCallIntent intent, string bearerSha256);
+    private sealed record LookupOriginal(string role, string requestId);
     private sealed record Request(string Protocol, string EnrollmentId, string Scope, string TrustRevision, string Method, string Nonce, JsonElement Payload);
     private sealed record Response(string EnrollmentId, string Scope, string TrustRevision, string Method, string Nonce, string RequestSha256,
         long ObservedAt, long ValidUntil, JsonElement Payload, byte[] Signature);

@@ -11,7 +11,7 @@ if (args.Length == 2 && args[0] == "--serve-independent-authority")
     return await IndependentAuthorityHttpApplication.RunAsync(args[1]);
 
 // No startup bootstrap, resource creation, fixture fallback, automatic worker or production DI registration.
-if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" or "--serve" or "--worker"))
+if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" or "--serve" or "--worker" or "--serve-role"))
 {
     Console.Error.WriteLine("Usage: Hexalith.Platform.Custody.Dapr --check-profile|--serve <pre-enrolled-profile.json> OR --worker <profile.json> <signed-command.json>");
     return 2;
@@ -20,23 +20,37 @@ try
 {
     var profile = ComponentProfile.Load(args[1]); profile.Validate();
     if (args[0] == "--check-profile") { Console.WriteLine(profile.ProfileDigest); return 0; }
-    var credentials = ReferenceBackendCredentials.Load();
-    var nativeRegion = RegionEndpoint.GetBySystemName(profile.Region);
-    var kmsConfig = new AmazonKeyManagementServiceConfig { RegionEndpoint = nativeRegion, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
-    using var kms = new AmazonKeyManagementServiceClient(credentials, kmsConfig);
     StartupGuard.Validate(args[0], profile.SocketPath);
-    using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(profile.ComponentSigningKeyPath));
-    using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(profile.ComponentPublicKeyPem);
+    var roleInstallation = args[0] == "--serve-role" && args.Length == 3 ? CustodyJson.Read<CustodyRoleInstallation>(File.ReadAllBytes(args[2])) : null;
+    if (args[0] == "--serve-role" && roleInstallation is null) throw new AuthorityUnavailableException("Independent role installation required.");
+    using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(roleInstallation?.SigningKeyFile ?? profile.ComponentSigningKeyPath));
+    using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(roleInstallation is null ? profile.ComponentPublicKeyPem :
+        profile.Trust.Single(t => t.KeyId == roleInstallation.SignerId && t.Purpose == (roleInstallation.Role switch { "authorizer" => "private-operation", "observer" => "independent-observer", _ => roleInstallation.Role })).PublicKeyPem);
     if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(publicSigner.ExportSubjectPublicKeyInfo()))
         throw new AuthorityUnavailableException("Installed response signer mismatch.");
-    var region = RegionEndpoint.GetBySystemName(profile.Region);
-    var dynamoConfig = new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
-    var s3Config = new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, DisableLogging = true, LogMetrics = false, IgnoreConfiguredEndpointUrls = true };
-    using var dynamo = new AmazonDynamoDBClient(credentials, dynamoConfig); using var s3 = new AmazonS3Client(credentials, s3Config);
-    var store = new AwsAuthorityStore(profile, dynamo, s3, TimeProvider.System);
+    using var nativeDapr = new Dapr.Client.DaprClientBuilder().Build();
+    // The AWS reference remains explicit compatibility source; an absent native profile never selects an installation.
+    var credentials = profile.Native is null ? ReferenceBackendCredentials.Load() : null;
+    var region = credentials is null ? null : RegionEndpoint.GetBySystemName(profile.Region);
+    using var kms = credentials is null ? null : new AmazonKeyManagementServiceClient(credentials, new AmazonKeyManagementServiceConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
+    using var dynamo = credentials is null ? null : new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
+    using var s3 = credentials is null ? null : new AmazonS3Client(credentials, new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
+    IAuthorityStore store = profile.Native is { } installed
+        ? new NativeDaprAuthorityStore(profile, installed, nativeDapr, TimeProvider.System)
+        : new AwsAuthorityStore(profile, dynamo!, s3!, TimeProvider.System);
+    using var native = profile.Native is { } installation ? new OpenBaoNativeOperations(profile, installation, store, nativeDapr) : null;
+    if (roleInstallation is not null)
+    {
+        var receiver = new CustodyIndependentRoleReceiver(profile, roleInstallation, store, nativeDapr, signer, TimeProvider.System);
+        var roleBuilder = WebApplication.CreateSlimBuilder(); roleBuilder.Logging.ClearProviders();
+        roleBuilder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = CustodyBindingContract.CandidateRequestMessageBytes);
+        var roleApp = roleBuilder.Build();
+        roleApp.MapPost("/custody-lifecycle/{method}", (HttpContext context, string method, CancellationToken token) => receiver.HandleAsync(context, method, token));
+        await roleApp.RunAsync(); return 0;
+    }
     var verifier = new StatementVerifier(profile, TimeProvider.System);
-    var epochs = new AwsEpochOperations(profile, kms);
-    var exchange = new KeyExchange(profile, store, epochs, new AwsKeyAccess(profile, kms), verifier);
+    IEpochOperations epochs = native is not null ? native : new AwsEpochOperations(profile, kms!);
+    var exchange = new KeyExchange(profile, store, epochs, native is not null ? native : new AwsKeyAccess(profile, kms!), verifier);
     if (args[0] == "--worker")
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");
