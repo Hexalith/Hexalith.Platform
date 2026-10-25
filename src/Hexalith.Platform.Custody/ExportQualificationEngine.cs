@@ -11,6 +11,7 @@ public sealed class ExportQualificationEngine(IExportQualificationMaterialSource
     /// <summary>Creates one exact export artifact using independently resolved dedicated material, then verifies it through the same production primitives.</summary>
     public async Task<ExportQualificationOriginal?> ExecuteAsync(string caseId,ExportQualificationInput input,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(input);
         var use=Signature(caseId)?ExportQualificationMaterialUse.Sign:ExportQualificationMaterialUse.Wrap;
         if(!Supported(caseId) || input.Manifest is not { Length:>0 and <=1048576 } || (await materials.PreflightAsync(input,use,token).ConfigureAwait(false)).Count!=0) return null;
         using var owned=await materials.ResolveAsync(input,use,token).ConfigureAwait(false);if(owned is null) return null;
@@ -40,6 +41,8 @@ public sealed class ExportQualificationEngine(IExportQualificationMaterialSource
     /// <summary>Independently reopens and verifies the exact original without fresh wrapping/signing. Every denial is produced by the actual crypto core.</summary>
     public async Task<ExportQualificationObservation?> ObserveAsync(ExportQualificationOriginal original,ExportQualificationInput input,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(original);
+        ArgumentNullException.ThrowIfNull(input);
         if(!Supported(original.CaseId) || original.TenantId!=input.TenantId || original.ExportId!=input.ExportId || original.KekVersion!=input.KekVersion
             || original.SigningKeyVersion!=input.SigningKeyVersion || original.ManifestVersion!=input.ManifestVersion || original.ManifestSha256!=Hash(input.Manifest)) return null;
         if(Signature(original.CaseId))

@@ -986,8 +986,10 @@ def linked_fixture_snapshot(works, composition_root):
 
     files = inputs(set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}, identity)
     files |= inputs(set(composition.rglob("*.cs")) | {composition / "Hexalith.Platform.Composition.csproj"}, composition)
-    # Composition also compiles explicitly linked Platform sources (for example ../../DaprSelfHostedMtls.cs).
-    for item in ET.parse(composition / "Hexalith.Platform.Composition.csproj").getroot().iter("Compile"):
+    # Composition also consumes explicitly linked sources and embedded resources from its actual root.
+    for item in ET.parse(composition / "Hexalith.Platform.Composition.csproj").getroot().iter():
+        if item.tag not in ("Compile", "EmbeddedResource"):
+            continue
         include = item.get("Include", "")
         if include and "$(" not in include and "*" not in include:
             files |= inputs({Path(os.path.normpath(composition / include.replace("\\", "/")))}, Path(composition_root))

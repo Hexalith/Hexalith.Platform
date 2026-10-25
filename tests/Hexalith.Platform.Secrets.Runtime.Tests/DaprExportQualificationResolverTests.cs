@@ -58,7 +58,7 @@ public sealed class DaprExportQualificationResolverTests
         private readonly ECDsa _signer=ECDsa.Create(ECCurve.NamedCurves.nistP256),_foreign=ECDsa.Create(ECCurve.NamedCurves.nistP256);
         private readonly byte[] _root=RandomNumberGenerator.GetBytes(32),_kek=RandomNumberGenerator.GetBytes(32);
         internal List<Dictionary<string,string>> Responses { get; }=[];internal bool Retained,WrongAnchor,ChangeAuthorityAfterRead,ExtraField;internal int PrivateReads;
-        internal ExportQualificationInput Input=>new("tenant","export","kek-v1","sign-v1",1,"fixture-manifest"u8.ToArray());
+        internal ExportQualificationInput Input=>new(Profile.TenantId,Profile.ExportId,"kek-v1","sign-v1",1,"fixture-manifest"u8.ToArray());
         internal DaprExportQualificationProfile Profile { get; }
         internal Fixture(bool pem=false)
         {

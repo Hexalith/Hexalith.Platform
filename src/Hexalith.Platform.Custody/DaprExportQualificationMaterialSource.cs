@@ -11,6 +11,7 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
     public Task<IReadOnlyList<string>> PreflightAsync(ExportQualificationInput input,ExportQualificationMaterialUse use,CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(input);
         if(!Enum.IsDefined(use) || !enrolledProfiles.TryGetValue(input.ExportId,out var profile) || profile.TenantId!=input.TenantId || profile.ExportId!=input.ExportId
             || profile.NotBefore>clock.GetUtcNow() || profile.ValidUntil<=clock.GetUtcNow() || string.IsNullOrWhiteSpace(profile.PublicAnchorId) || string.IsNullOrWhiteSpace(profile.PublicAnchorVersion)) return Task.FromResult<IReadOnlyList<string>>(["ExactCurrentDedicatedExportProfile"]);
         bool Exact(DaprExportQualificationReference? reference,PlatformKeyPurpose purpose,string? version,string[] codecs)=>reference is not null && reference.InventoryKey.TenantId==input.TenantId
@@ -23,6 +24,7 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
     public async Task<ExportQualificationMaterial?> ResolveAsync(ExportQualificationInput input,ExportQualificationMaterialUse use,CancellationToken cancellationToken)
     {
         if((await PreflightAsync(input,use,cancellationToken).ConfigureAwait(false)).Count!=0) return null;
+        ArgumentNullException.ThrowIfNull(input);
         var profile=enrolledProfiles[input.ExportId];bool active=use!=ExportQualificationMaterialUse.Unwrap;
         var reader=new DaprExportQualificationReferenceReader(client,inventory,authority);
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));
