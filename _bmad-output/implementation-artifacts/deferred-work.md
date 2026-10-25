@@ -1320,3 +1320,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: The post-initialize state read is null-forgiving.
   evidence: Unverified, medium if true. `CompositionEngine` line 301 assigns `TryReadAsync` with the null-forgiving operator immediately after `InitializeStateAsync`. Settle by confirming whether a null read is recorded as a startup failure or escapes as a null dereference.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md (2026-10-25, committed-state review)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Keep claim transaction contention within the original cleanup stopping allowance (D1).
+  evidence: Medium, pre-existing. `CompositionResourceClaimStore.OpenTransaction` synchronously waits up to two seconds for `transaction.lock` without a stopping token; `CompositionEngine.TearDownAsync` calls `ReleaseOwned` after runtime/workspace deletion. Both the call and implementation predate the reviewed Builds baseline `3052386abb54ff111f498a8f6424300ea7cdda93`, so this is deferred separately from the story's 13 patch findings.

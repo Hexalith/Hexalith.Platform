@@ -1,0 +1,101 @@
+{
+  "purpose": "Owner return form for coupled installation decisions; not a deployment, enrollment or acceptance packet",
+  "status": "ProposedAwaitingOwnerDecisions",
+  "installationAuthorized": false,
+  "qualificationAuthorized": false,
+  "attemptReserved": false,
+  "dependencyAvailable": false,
+  "preserved": {
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "timing": {"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800},
+    "cohort": "OQ-5.4-1",
+    "existingJournals": "Preserve unchanged",
+    "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
+    "acceptedIntegrationDate": "2026-10-08"
+  },
+  "D1_backend": {
+    "owner": "Project owner acting as Platform Maintainer",
+    "recommendedChoice": "A-new-independent-semantic-Dapr-reference-installation",
+    "selectedChoice": null,
+    "recommendedCustodyAndAuthorityRegion": "eu-west-3",
+    "recommendedArchiveAndObserverRegion": "eu-west-1",
+    "approvedResourceScopeReference": null,
+    "approvedCurrentItemizedQuoteAndCostCeilingReference": null,
+    "approvedRetentionAndExtensionScheduleReference": null,
+    "alternativeExistingInstallationBundle": null
+  },
+  "D2_resources": {
+    "owner": "Independent native custody, authority and archive custodians",
+    "custodyAccountId": null,
+    "authorityAccountId": null,
+    "archiveAccountId": null,
+    "scopedReadOnlyAccessOrSignedResourceCensusReference": null,
+    "authorityTableArnAndImmutableTableId": null,
+    "checkpointBucketRegionOwnerEnrollmentKeyVersionAndSha256": null,
+    "originalBucketRegionOwnerEnrollmentKeyVersionAndSha256": null,
+    "sevenNativeKeyArnsIdsAndTenantEpochKekMappingReference": null,
+    "exactEncryptedKekVersionAndContextReference": null,
+    "crossAccountPolicyAndRestoreExclusionReference": null
+  },
+  "D3_recovery": {
+    "owner": "Project owner with independent recovery/access owners",
+    "primaryHumanSubjectAndIssuer": null,
+    "differentDeputyHumanSubjectAndIssuer": null,
+    "appointmentAndTwoPersonChangeAuthorityReference": null,
+    "independentMfaRecoveryAccessAndEscalationReference": null,
+    "delegatedRoleArnsAndFencingReadBackEvidenceReference": null
+  },
+  "D4_rolesAndTrust": {
+    "owner": "Independent role provisioning, network and Kubernetes identity owners",
+    "authorityComputeTargetIdAndAuditAccess": null,
+    "observerComputeTargetIdAndAuditAccess": null,
+    "enrollmentComputeTargetIdAndAuditAccess": null,
+    "crossClusterDaprRoutingDiscoveryAndAcceptedTrustReference": null,
+    "executorCompleteRoleInputsReference": null,
+    "observerCompleteRoleInputsReference": null,
+    "enrollmentCompleteRoleInputsReference": null,
+    "independentPublicP256AnchorsSignedManifestsAndCurrentRevocationReference": null,
+    "custodyPurposeSpecificPublicTrustAndGenesisReference": null,
+    "credentialReferencesOnlyNoPrivateValues": true
+  },
+  "D5_implementations": {
+    "owner": "Platform and independent service maintainers",
+    "missingOwningServiceSourceImagesAndCompositionBundle": null,
+    "authorityServiceStoreBundle": null,
+    "registrationAndReservedManifestExactOriginalMappingBundle": null,
+    "spoolActualReplicasPlacementAndFailureModel": null
+  },
+  "D6_releaseAndPhysicalProfile": {
+    "owner": "Platform release, independent transport/security and storage owners",
+    "actualImagePublishFileAndVerifierInventoryReference": null,
+    "nativeSidecarSocketAndHostMeasurementReference": null,
+    "measuredCompletionReserveAndWorkerOutputOwnershipReference": null,
+    "completeCopyHolderProducerTransportClosureReference": null
+  },
+  "D7_protection": {
+    "owner": "EventStore Maintainer with Governance/protection owners",
+    "completeImmutableSourcePackageAndLockedRestoreReference": null,
+    "installedEngineRolesTrustAndAcceptedProfileReference": null,
+    "actualProfileFileSha256": null,
+    "g1ThroughG7OriginalClosureBundle": null,
+    "independentPhysicalNonRevivalAndSurvivorRecoveryReference": null
+  },
+  "D8_host": {
+    "owner": "Platform identity, independent decision issuer and dependency installation owners",
+    "all14ActualHostSlotsAndFiveServiceInstallationsBundle": null,
+    "independentDecisionAuthorityAndCurrentRoleReferences": null,
+    "branchBPartiesAndConversationsInstallationBindings": null
+  },
+  "D9_dates": {
+    "owners": ["Platform Maintainer", "EventStore Maintainer"],
+    "proposedProtectionIntegrationDate": "2026-11-30",
+    "proposedCoupledPlatformIntegrationDate": "2026-12-03",
+    "earliestCandidateCohortWindow": "2026-12-04",
+    "ownerConfirmedProtectionDate": null,
+    "ownerConfirmedCoupledPlatformDate": null,
+    "laterExplicitReplacementAcceptanceReference": null,
+    "completeCanonicalPlatformTarget": null,
+    "completeCanonicalProtectionTargetAndPackage": null
+  }
+}

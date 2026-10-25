@@ -1,0 +1,335 @@
+{
+  "observedAtUtc": "2026-10-25T09:36:14.282237+00:00",
+  "argv": [
+    "kubectl",
+    "--kubeconfig",
+    "/home/administrator/.kube/hexalith-production",
+    "--context",
+    "jpiquot@local",
+    "--request-timeout=15s",
+    "get",
+    "configmap",
+    "dapr-trust-bundle",
+    "-n",
+    "dapr-system",
+    "-o",
+    "json"
+  ],
+  "exitCode": 0,
+  "sourceUid": "100ca4a0-f340-4b06-837f-7c678c467df9",
+  "sourceResourceVersion": "848824",
+  "certificateFile": "observed-dapr-transport-ca.pem",
+  "certificateFileSha256": "32241a03538035dcd13b3c0d848465ccb52b8cb45bb9961354f35ab39ccd4626",
+  "opensslMetadata": "subject=O=cluster.local\nissuer=O=cluster.local\nnotBefore=Jul 19 11:11:14 2026 GMT\nnotAfter=Jul 19 11:26:14 2027 GMT\nsha256 Fingerprint=D7:F3:F0:C9:B9:AC:B4:C5:B4:8E:CC:4F:B9:8F:3D:36:D8:BB:A9:E8:19:15:3A:5D:34:ED:C2:C4:1E:B1:EC:AA\n",
+  "independentRoleTrustEstablished": false,
+  "additionalObservations": [
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "pods",
+        "-n",
+        "ext-secrets-1-isolated",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selectedPublicMetadata": [
+        {
+          "pod": "eventstore-6d7977bff8-8mzh7",
+          "serviceAccount": "ext-secrets-1-registry",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            },
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 7200,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "inventory-5d99c9f9b-qjl7p",
+          "serviceAccount": "ext-secrets-1-inventory",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            },
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 7200,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "registry-idp-6b4dd6984b-szwlr",
+          "serviceAccount": "ext-secrets-1-registry-idp",
+          "projectedServiceAccountTokens": []
+        },
+        {
+          "pod": "registry-idp-db-0",
+          "serviceAccount": "ext-secrets-1-registry",
+          "projectedServiceAccountTokens": []
+        },
+        {
+          "pod": "registry-state-0",
+          "serviceAccount": "ext-secrets-1-registry",
+          "projectedServiceAccountTokens": []
+        },
+        {
+          "pod": "tenants-59c976998-nj46v",
+          "serviceAccount": "ext-secrets-1-registry",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            },
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 7200,
+              "path": "token"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "pods",
+        "-n",
+        "dapr-system",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selectedPublicMetadata": [
+        {
+          "pod": "dapr-operator-58bfcd4f54-kvg9q",
+          "serviceAccount": "dapr-operator",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-operator-58bfcd4f54-s6bxk",
+          "serviceAccount": "dapr-operator",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-operator-58bfcd4f54-zqj95",
+          "serviceAccount": "dapr-operator",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-placement-server-0",
+          "serviceAccount": "dapr-placement",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-placement-server-1",
+          "serviceAccount": "dapr-placement",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-placement-server-2",
+          "serviceAccount": "dapr-placement",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-scheduler-server-0",
+          "serviceAccount": "dapr-scheduler",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-scheduler-server-1",
+          "serviceAccount": "dapr-scheduler",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-scheduler-server-2",
+          "serviceAccount": "dapr-scheduler",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sentry-68fc6cf899-59gqp",
+          "serviceAccount": "dapr-sentry",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sentry-68fc6cf899-8fn2c",
+          "serviceAccount": "dapr-sentry",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sentry-68fc6cf899-k7tww",
+          "serviceAccount": "dapr-sentry",
+          "projectedServiceAccountTokens": [
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sidecar-injector-c46dfc499-vxjsg",
+          "serviceAccount": "dapr-injector",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sidecar-injector-c46dfc499-xlqnm",
+          "serviceAccount": "dapr-injector",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        },
+        {
+          "pod": "dapr-sidecar-injector-c46dfc499-zmjz2",
+          "serviceAccount": "dapr-injector",
+          "projectedServiceAccountTokens": [
+            {
+              "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+              "expirationSeconds": 600,
+              "path": "token"
+            },
+            {
+              "expirationSeconds": 3607,
+              "path": "token"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
