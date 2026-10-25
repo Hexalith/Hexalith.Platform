@@ -67,6 +67,9 @@ def full_plan():
 class Blocked(Exception):
     def __init__(self, *missing):
         self.missing = sorted(set(missing))
+        self.effects_started = False
+        self.attempt_state = "NotReserved"
+        self.effect_state = "NotDispatched"
         super().__init__("DependencyNotAvailable: EXT-SECRETS-1, EXT-HOST-1")
 
 
@@ -122,10 +125,22 @@ class JointLivePhaseRunner:
         return digest(b)
 
     def run(self):
+        self.attempt_state, self.effect_state = "NotReserved", "NotDispatched"
+        try:
+            return self._run()
+        except Exception as error:
+            blocked = error if isinstance(error, Blocked) else Blocked("ExactOriginalLookupRequired")
+            blocked.attempt_state, blocked.effect_state = self.attempt_state, self.effect_state
+            blocked.effects_started = self.effect_state != "NotDispatched"
+            raise blocked from None
+
+    def _run(self):
         key = self.preflight()  # reserves nothing, including on refusal
+        self.attempt_state = "ReservationUnknown"
         retained = self.authority.reserve(self.binding, str(uuid.uuid4()), self._readiness)
         if retained.get("bindingDigest") != key or not retained.get("attemptId"):
             raise Blocked("ExactRetainedAttempt")
+        self.attempt_state = "Reserved"
         attempt = retained["attemptId"]
         previous = key
         for phase, name in enumerate(PHASES):
@@ -135,9 +150,11 @@ class JointLivePhaseRunner:
                        "phase": phase, "owner": name, "previousSha256": previous,
                        "cases": partitions()[phase], "requestId": digest([attempt, key, phase, previous])}
             # False means an original may already have executed. Only exact lookup is legal.
+            self.effect_state = "Unknown" # A retained predecessor may already have dispatched.
             first = self.authority.retain(request)
             owner = self.owners[name]
             try:
+                self.effect_state = "Dispatched" if first else "Unknown"
                 result = owner.execute(request) if first else owner.lookup(request)
             except Exception:
                 result = None
@@ -152,6 +169,7 @@ class JointLivePhaseRunner:
             self.authority.publish(request, result)
             if payload.get("state") != "Passed" or payload.get("passedCases") != request["cases"]:
                 raise Blocked("CompletePairedCohortPass", request["requestId"])
+            self.effect_state = "Observed"
             previous = digest(result)
         return {"protocol": PROTOCOL, "attemptId": attempt, "bindingDigest": key,
                 "resultSha256": previous, "records": ["EXT-SECRETS-1", "EXT-HOST-1"],
@@ -192,23 +210,62 @@ class DaprCohortRpc:
             return False
 
     def call(self, method, payload):
-        import urllib.request
+        import http.client
+        import queue
+        import socket
+        import threading
+        import time
+        from urllib.parse import urlparse
         request_id = str(uuid.uuid4())
         request = {"protocol": PROTOCOL, "requestId": request_id, "method": method, "payload": payload}
         body = canonical(request)
         app = self.descriptor["appId"]
         if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}", app):
             raise Blocked("EnrolledDaprApplication")
-        bearer = self.q.read_mounted_credential(self.descriptor["credentialReference"], "CohortWorkloadCredential")
-        channel = self.q.read_mounted_credential(self.dapr_credential_reference, "CohortDaprCredential")
-        url = self.endpoint + "/v1.0/invoke/" + app + "/method/joint/v1/" + method
-        headers = {"Authorization": "Bearer " + bearer, "dapr-api-token": channel, "Content-Type": "application/json"}
-        # No redirects, proxies or transport retries, including after uncertain owner execution.
-        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
-        with opener.open(urllib.request.Request(url, data=body, headers=headers, method="POST"), timeout=30) as response:
-            raw = response.read(1024 * 1024 + 1)
-        if len(raw) > 1024 * 1024:
-            raise Blocked("BoundedCohortProof")
+        parsed = urlparse(self.endpoint)
+        if parsed.scheme != "http" or parsed.hostname not in ("127.0.0.1", "localhost", "::1"):
+            raise Blocked("LoopbackDaprEndpoint")
+        deadline, result = time.monotonic() + 30, queue.Queue(maxsize=1)
+        connection = http.client.HTTPConnection(parsed.hostname, parsed.port or 80, timeout=30)
+        def remaining():
+            seconds = deadline - time.monotonic()
+            if seconds <= 0: raise TimeoutError("CohortMonotonicDeadline")
+            return seconds
+        def read():
+            try:
+                bearer = self.q.read_mounted_credential(self.descriptor["credentialReference"], "CohortWorkloadCredential")
+                channel = self.q.read_mounted_credential(self.dapr_credential_reference, "CohortDaprCredential")
+                connection.timeout = remaining(); connection.connect()
+                connection.sock.settimeout(remaining())
+                connection.request("POST", "/v1.0/invoke/" + app + "/method/joint/v1/" + method, body,
+                    {"Authorization": "Bearer " + bearer, "dapr-api-token": channel, "Content-Type": "application/json"})
+                bearer = channel = None
+                response = connection.getresponse()
+                if response.status != 200: raise Blocked("CurrentCohortTransport")
+                raw = bytearray()
+                while True:
+                    remaining()
+                    chunk = response.read1(min(65536, 1024 * 1024 + 1 - len(raw)))
+                    if not chunk: break
+                    raw.extend(chunk)
+                    if len(raw) > 1024 * 1024: raise Blocked("BoundedCohortProof")
+                remaining(); result.put((True, bytes(raw)))
+            except Exception as error:
+                result.put((False, error))
+            finally:
+                connection.close()
+        threading.Thread(target=read, daemon=True).start()
+        try:
+            succeeded, raw = result.get(timeout=remaining())
+            remaining()
+            if not succeeded: raise raw
+        except queue.Empty:
+            raise Blocked("CohortMonotonicDeadline") from None
+        finally:
+            if connection.sock is not None:
+                try: connection.sock.shutdown(socket.SHUT_RDWR)
+                except OSError: pass
+            connection.close()
         envelope = self.q.decode_json(raw)
         if not self.verify(envelope):
             raise Blocked("SignedCurrentCohortProof")
@@ -273,8 +330,12 @@ def run_installed_cohort(configuration_path, register_path):
     import qualify as q
     configuration_bytes = q.bounded_public_file(configuration_path, 1024 * 1024)
     config = q.decode_json(configuration_bytes)
+    if not isinstance(config, dict) or not isinstance(config.get("binding"), dict): raise Blocked("JointConfiguration.Structure")
     binding = config["binding"]
     validate_source_checkout(binding)
+    from coordinated_packets import validate_joint_configuration
+    missing = validate_joint_configuration(config)
+    if missing: raise Blocked(*missing)
     register = q.bounded_public_file(register_path, 1024 * 1024)
     text = register.decode("utf-8")
     for record in ("EXT-SECRETS-1", "EXT-HOST-1", "EXT-PROTECTION-1"):

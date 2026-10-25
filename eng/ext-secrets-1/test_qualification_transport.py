@@ -89,7 +89,7 @@ class CohortPrerequisiteTests(unittest.TestCase):
             with unittest.mock.patch.object(q.DaprTransport, "call", side_effect=AssertionError("no runtime call")):
                 with self.assertRaises(q.Unavailable) as caught:
                     fixture.preflight()
-            self.assertIn("OQ-5.4-1.JointLivePhaseRunner", caught.exception.inputs)
+            self.assertIn("OQ-5.4-1.IndependentCurrentCohortBindingAndOwners", caught.exception.inputs)
             self.assertEqual([], fixture.calls)
 
     def test_standalone_plan_cannot_run_accepted_joint_cohort(self):
@@ -104,25 +104,25 @@ class CohortPrerequisiteTests(unittest.TestCase):
 ### OQ-5.4-1 — bounded
 """)
             self.assertEqual(["OQ-5.4-1.CommittedProtectionOwner", "OQ-5.4-1.SharedPlatformTarget",
-                "OQ-5.4-1.AcceptedPinnedHostProfile", "OQ-5.4-1.JointLivePhaseRunner"],
+                "OQ-5.4-1.AcceptedPinnedHostProfile", "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"],
                 q.cohort_prerequisite_inputs(register, "b" * 40))
             text = register.read_text().replace("Uncommitted", "Committed").replace("a" * 40, "b" * 40).replace("host --mode Full", "host --mode Full --profile /accepted/profile.json")
             text = text.replace("### EXT-PROTECTION-1 — protection", "| `AcceptedStatus` | `Committed` |\n| `TargetIntegrationDate` | `2026-10-08` |\n### EXT-PROTECTION-1 — protection")
             text = text.replace("## Owner Qualification Cohorts", "| `TargetVersionOrCommit` | `" + "c" * 40 + "` |\n| `TargetIntegrationDate` | `2026-10-08` |\n| `Command` | Command: `protection --full` |\n## Owner Qualification Cohorts")
             register.write_text(text)
-            self.assertEqual(["OQ-5.4-1.JointLivePhaseRunner"], q.cohort_prerequisite_inputs(register, "b" * 40))
+            self.assertEqual(["OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"], q.cohort_prerequisite_inputs(register, "b" * 40))
 
     def test_missing_cohort_incomplete_owner_and_flag_as_profile_remain_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "register"
             path.write_text("no cohort")
-            self.assertEqual(["OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"],
+            self.assertEqual(["OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"],
                              q.cohort_prerequisite_inputs(path, "a" * 40))
             path.write_text("### EXT-HOST-1\n| `TargetVersionOrCommit` | `" + "a" * 40 + "` |\n"
                             "| `AcceptedStatus` | `Uncommitted` |\n| `Command` | Command: `host --profile --garbage` |\n"
                             "### EXT-PROTECTION-1\n| `AcceptedStatus` | `Committed` |\n### OQ-5.4-1\n")
             self.assertEqual(["OQ-5.4-1.CommittedProtectionOwner", "OQ-5.4-1.SharedPlatformTarget",
-                              "OQ-5.4-1.AcceptedPinnedHostProfile", "OQ-5.4-1.JointLivePhaseRunner"],
+                              "OQ-5.4-1.AcceptedPinnedHostProfile", "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"],
                              q.cohort_prerequisite_inputs(path, "a" * 40))
 
     def test_register_loading_rejects_fifo_and_oversize_before_interpretation(self):

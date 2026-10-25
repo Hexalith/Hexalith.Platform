@@ -15,7 +15,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 import coordinated_packets as coordinated
 import prepare_acceptance as secrets_prepare
 import qualify as q
-from joint_live_phase_runner import digest, full_plan
+from joint_live_phase_runner import digest, full_plan, PHASES, partitions
 from test_qualify import Fixture
 
 spec = importlib.util.spec_from_file_location("coordinated_host_prepare", Path(__file__).parents[1] / "ext-host-1" / "prepare_acceptance.py")
@@ -78,6 +78,32 @@ class CoordinatedPacketTests(unittest.TestCase):
                 path = self.directory / (name + '.json')
                 path.write_bytes(q.canonical({'fixtureOnly': name}))
             artifacts[name] = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'enrollmentReference': 'fixture-enrollment-' + name}
+        protection = Path(artifacts['protectionProfile']['path'])
+        protection.write_bytes(q.canonical({'targetCommit':'c'*40,'fixtureOnly':True}))
+        artifacts['protectionProfile']['sha256'] = hashlib.sha256(protection.read_bytes()).hexdigest()
+        executable = self.directory / 'fixture-owner-executable'
+        executable.write_text('fixture executable: never invoked')
+        binding = {'platformCommit':self.fixture.target,'secretsCommit':self.fixture.target,'hostCommit':self.fixture.target,'protectionCommit':'c'*40,
+                   'platformIntegrationDate':self.profile['integrationDate'],'protectionIntegrationDate':self.profile['integrationDate'],
+                   'planSha256':digest(full_plan()),'host':'192.168.1.30','partiesBranch':'B','timing':{'L':300,'S':30,'O':600,'H':86400,'R':604800},
+                   'configurationSha256':q.digest(self.fixture.config),'configurationRawSha256':artifacts['custodyConfiguration']['sha256'],
+                   'profileSha256':artifacts['hostProfile']['sha256'],'protectionProfileSha256':artifacts['protectionProfile']['sha256'],
+                   'currentTrustSha256':artifacts['publicTrust']['sha256'],'installedImageSha256':artifacts['installedImageInventory']['sha256'],
+                   **{r+'AnchorSha256':artifacts[r+'Anchor']['sha256'] for r in ('executor','observer','enrollment')}}
+        profiles = {str(phase):{'phase':phase,'cases':partitions()[phase],'command':[str(executable)],'environment':{},
+                    'workingDirectory':str(self.directory),'completionTimeoutSeconds':30,
+                    'artifacts':[{'path':str(executable),'sha256':hashlib.sha256(executable.read_bytes()).hexdigest()}]} for phase in range(4)}
+        binding['phaseExecutionProfileSha256'] = {phase:digest(profile) for phase,profile in profiles.items()}
+        for profile in profiles.values(): profile['bindingDigest'] = digest(binding)
+        services = {}
+        for role in (*PHASES,'authority'):
+            key = ec.generate_private_key(ec.SECP256R1())
+            anchor = self.directory / ('fixture-service-' + role + '.pem')
+            anchor.write_bytes(key.public_key().public_bytes(serialization.Encoding.PEM,serialization.PublicFormat.SubjectPublicKeyInfo))
+            services[role] = {'appId':'fixture-'+role,'credentialReference':'file:/fixture/'+role,'publicAnchorFile':str(anchor),'publicAnchorSha256':hashlib.sha256(anchor.read_bytes()).hexdigest()}
+        self.joint_configuration = {'binding':binding,'phaseExecutionProfiles':profiles,'services':services,'daprEndpoint':'http://127.0.0.1:3500','daprCredentialReference':'file:/fixture/dapr'}
+        self.joint.write_bytes(q.canonical(self.joint_configuration))
+        artifacts['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
         self.context = {'sourceCommit': self.fixture.target, 'acceptedRegisterSha256': hashlib.sha256(self.fixture.register.read_bytes()).hexdigest(),
                         'platformIntegrationDate': self.profile['integrationDate'], 'protectionIntegrationDate': self.profile['integrationDate'],
                         'installedArtifacts': artifacts, 'planSha256': digest(full_plan()), 'exactCommands': self.commands,
@@ -129,6 +155,46 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.profile_path.write_text('changed')
         missing, _, _ = coordinated.admission(self.context_path, self.fixture.register, self.fixture.target, True)
         self.assertIn('installedArtifacts.hostProfile', missing)
+
+    def test_malformed_joint_and_cross_artifact_substitution_block_complete_packets(self):
+        for malformed in ([], {'binding':[]}, {'binding':{'platformCommit':self.fixture.target}}):
+            self.joint.write_bytes(q.canonical(malformed))
+            self.context['installedArtifacts']['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+            self.sign_context()
+            missing,_,_ = coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+            self.assertTrue(any(name.startswith('JointConfiguration.') for name in missing),missing)
+        self.joint_configuration['binding']['profileSha256'] = '0'*64
+        self.joint.write_bytes(q.canonical(self.joint_configuration))
+        self.context['installedArtifacts']['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+        self.sign_context()
+        missing,_,_ = coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertIn('JointConfiguration.CrossArtifact.profileSha256',missing)
+
+    def test_raw_configuration_format_is_preserved_and_semantic_hash_retained(self):
+        raw = json.dumps(self.fixture.config,indent=4).encode() + b'\n'
+        self.fixture.path.write_bytes(raw)
+        self.context['installedArtifacts']['custodyConfiguration']['sha256'] = hashlib.sha256(raw).hexdigest()
+        binding = self.joint_configuration['binding']; binding['configurationRawSha256'] = hashlib.sha256(raw).hexdigest()
+        for profile in self.joint_configuration['phaseExecutionProfiles'].values(): profile['bindingDigest'] = digest(binding)
+        self.joint.write_bytes(q.canonical(self.joint_configuration))
+        self.context['installedArtifacts']['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+        self.sign_context()
+        report = secrets_prepare.prepare(self.fixture.root,self.fixture.path,self.secret_output,register=self.fixture.register,coordination_context=self.context_path)
+        self.assertTrue(report['packetPrepared'],report)
+        self.assertEqual(raw,(self.secret_output/'runtime-reference.json').read_bytes())
+        packet = q.read_json(self.secret_output/'replacement-acceptance-packet.json')
+        self.assertEqual(q.digest(self.fixture.config),packet['configurationSha256'])
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),packet['configurationRawSha256'])
+
+    def test_binding_rows_are_replaced_and_malformed_context_has_named_blocker(self):
+        original = 'before\n| `JointQualificationBinding` | `old` |\nmiddle\n| `JointQualificationBinding` | `older` |\nafter\n'
+        replaced = coordinated.replace_binding_row(original,'JointQualificationBinding',{'new':True})
+        self.assertEqual(1,replaced.count('| `JointQualificationBinding` |'))
+        self.assertIn('before',replaced); self.assertIn('middle',replaced); self.assertIn('after',replaced)
+        for malformed in ([],{'installedArtifacts':[]},{'installedArtifacts':{'x':[]},'exactCommands':{}}):
+            self.context_path.write_bytes(q.canonical(malformed))
+            missing,_,_ = coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+            self.assertEqual(['ValidExplicitCoordinatedInstallationContext'],missing)
 
 
 if __name__ == '__main__':

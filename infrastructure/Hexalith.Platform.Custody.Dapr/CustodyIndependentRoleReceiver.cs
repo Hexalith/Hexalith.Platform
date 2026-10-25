@@ -65,8 +65,11 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
             var envelope = new CustodyBindingEnvelopeV1(CustodyBindingContract.Protocol, intent.Operation, intent.OperationId,
                 intent.RequestDigest, intent.TenantId, intent.OwnerPurposeScope, profile.Enrollment, current.Head.Revision,
                 current.Head.Digest, intent.RequestAttemptId, intent.Challenge, control.Proof);
+            bool keyOperation = intent.Operation is "wrap" or "unwrap" or "complete-key-use";
+            var qualification = keyOperation ? verifier.CurrentQualification(current) : null;
+            if (keyOperation && qualification is null) return Results.StatusCode(503);
             var prepared = new CustodyPreparedCall(JsonSerializer.Serialize(envelope, CustodyBindingContract.Json),
-                CustodyBindingContract.CandidateRequestMessageBytes, profile.Enrollment.ArtifactProfileDigest, null);
+                CustodyBindingContract.CandidateRequestMessageBytes, qualification?.TransportProfileDigest ?? profile.Enrollment.ArtifactProfileDigest, qualification?.ClosureProfileDigest);
             string id = installation.Role + ":" + intent.RequestAttemptId;
             if (method == "prepare")
             {
@@ -88,6 +91,22 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
                 if (control.ControlStatement is null || !verifier.Verify(control.ControlStatement, "control", current, proofHash, TimeSpan.FromSeconds(30)))
                     return Results.StatusCode(503);
                 metadata["custody-control-proof"] = Convert.ToBase64String(CustodyJson.Bytes(control.ControlStatement));
+                if (keyOperation)
+                {
+                    var observed = await originals.InvokeAsync<SignedStatement>("custody-native-observation-original", originalScope, budget.Token);
+                    if (observed is null || !verifier.Verify(observed, "independent-observer", current,
+                        CustodyJson.Hash(CustodyJson.Bytes(observed.Payload)), TimeSpan.FromSeconds(30))) return Results.StatusCode(503);
+                    if (intent.Operation is "wrap" or "unwrap")
+                    {
+                        var admission = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(observed.Payload));
+                        var suppliedUse = publicBody.RootElement.GetProperty("KeyUse").Deserialize<CustodyBindingKeyUseV1>(CustodyBindingContract.Json);
+                        if (admission.RequestDigest != intent.RequestDigest || admission.QualifiedProfileDigest != profile.ProfileDigest
+                            || admission.KeyUse != suppliedUse) return Results.StatusCode(503);
+                    }
+                    else if (CustodyJson.Read<KeyCompletion>(CustodyJson.Bytes(observed.Payload)).KeyUse
+                        != publicBody.RootElement.GetProperty("KeyUse").Deserialize<CustodyBindingKeyUseV1>(CustodyBindingContract.Json)) return Results.StatusCode(503);
+                    metadata["custody-key-admission"] = Convert.ToBase64String(CustodyJson.Bytes(observed));
+                }
             }
             else if (installation.Role == "control") metadata["custody-control-proof"] = Convert.ToBase64String(CustodyJson.Bytes(Sign("control", current, proofHash, facts)));
             else return Results.StatusCode(403); // Observation claims require actual retained native evidence and are never inferred here.

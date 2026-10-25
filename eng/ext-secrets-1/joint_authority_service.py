@@ -375,21 +375,91 @@ class PersistedPhaseObserver:
                     case = next(case for case in q.plan() if 'secrets:' + case.id == item['caseId'])
                     config = q.read_public_configuration(self.descriptor['secretsRuntimeConfiguration'])
                     accepted = self.descriptor['secretsRuntimeBinding']
-                    execution = q.verify_signed(evidence['execution'], 'executor', config, accepted)
-                    observation = q.verify_signed(evidence['observation'], 'observer', config, accepted)
-                    q.check_binding(execution, evidence['request'])
-                    q.check_observation(case, observation, execution, evidence['request'])
+                    original = evidence['request']
+                    original_time = payload['completedAt']
+                    if (not isinstance(original, dict) or original.get('runId') != request['attemptId']
+                            or original.get('targetCommit') != self.binding.get('platformCommit')
+                            or original.get('isolatedTargetId') != config.get('qualification', {}).get('isolatedTargetId')
+                            or original.get('planSha256') != q.plan_digest() or original.get('caseId') != case.id
+                            or original.get('requestId') != q.digest({k:v for k,v in original.items() if k != 'requestId'})
+                            or evidence.get('cohortRequestId') != request['requestId']
+                            or q.digest(config) != self.binding.get('configurationSha256')):
+                        raise Blocked('ExactCurrentCohortSecretsOriginal')
+                    execution = q.verify_signed(evidence['execution'], 'executor', config, accepted, original_time=original_time)
+                    observation = q.verify_signed(evidence['observation'], 'observer', config, accepted, original_time=original_time)
+                    enrolled = q.verify_signed(evidence['enrollment'], 'enrollment', config, accepted, original_time=evidence['enrollment']['payload']['observedAt'])
+                    if enrolled.get('targetCommit') != original['targetCommit'] or enrolled.get('runId') != original['runId'] \
+                            or enrolled.get('caseScopes', {}).get(case.id) != original.get('enrolledScope') \
+                            or enrolled.get('caseTargetIds', {}).get(case.id) != original.get('caseTargetId'):
+                        raise Blocked('ExactIndependentlyEnrolledCaseScope')
+                    q.check_binding(execution, original)
+                    q.check_binding(observation, original)
+                    q.check_observation(case, observation, execution, original)
                 else:
-                    if (evidence.get('sourceKind') != 'PersistedOwnerRead' or evidence.get('requestSha256') != digest(request)
-                            or evidence.get('caseId') != item['caseId'] or not evidence.get('sourceReceipts')
-                            or any(type(receipt.get('sourceRevision')) is not int or receipt['sourceRevision'] <= 0
-                                   or not receipt.get('eventId') or not receipt.get('sourceSha256') for receipt in evidence['sourceReceipts'])
-                            or evidence.get('outcome') != 'Verified'):
-                        raise Blocked('ActualPersistedOwnerSourceReceipts')
+                    self._verify_source_case(request, item['caseId'], evidence)
                 passed.append(item['caseId'])
             return {'state': 'Passed', 'requestSha256': digest(request), 'bindingDigest': digest(self.binding), 'passedCases': passed}
-        except (OSError, ValueError, KeyError):
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
             return {'state': 'Unknown', 'requestSha256': digest(request), 'bindingDigest': digest(self.binding), 'passedCases': []}
+
+
+    def _verify_source_case(self, request, case_id, evidence):
+        """Read independently signed persisted source bytes and apply the accepted per-case invariant profile."""
+        import base64
+        import hashlib
+        from pathlib import Path
+        import qualify as q
+        from cryptography.hazmat.primitives import serialization, hashes
+        from cryptography.hazmat.primitives.asymmetric import ec
+        profile = self.descriptor.get('sourceEvidence', {}).get(case_id)
+        required = {
+            'EXT-PROTECTION-1.complete-owner-command': {'G1','G2','G3','G4','G5','G6','G7'},
+            'host:H1': {'CurrentAuthenticatedOrigin','ExactPrivateReplayAcl','DurableDenialBeforeReturn','SpoolOutageBlocksIngress'},
+            'host:H2': {'CompleteInstalledComposition','BranchBIdentity','NoConsumerExecution'},
+            'host:all-consumers-refuse': {'EveryConsumerRefusesUnavailableDependency'},
+            'host:H3': {'ActualProductionEngine','PersistedPlaintextAbsence','UnsealEquality','IrreversibleErasedReplay','StartupAndEveryReadiness'},
+            'host:H4': {'CurrentMigrationEpoch','RepairFenceAtomicity','ExactBridgeCohort','SuccessorPreservesAllOwnerFacts'},
+            'host:v21': {'AcceptedOrdinalAtWrite','HoldSealLinearization','AttestationDispatchOrdering','CompletionBarrierOrdering'},
+            'host:v23': {'BlockReserveSameOwner','CompromiseSubscriberOnly','StableBatchSuccessorAttempts','ReplacementKeyBlockSetCompare','UnknownLookupOnly'},
+        }.get(case_id)
+        if not isinstance(profile, dict) or required is None or not isinstance(profile.get('invariants'), dict) or set(profile['invariants']) != required:
+            raise Blocked('InstalledCompleteCaseInvariantProfile', case_id)
+        raw_anchor = q.read_public_anchor(profile['anchorFile'])
+        if hashlib.sha256(raw_anchor).hexdigest() != profile['anchorSha256'] or q.public_key_identity(raw_anchor) == q.public_key_identity(q.read_public_anchor(self.descriptor['ownerOriginalAnchorFile'])):
+            raise Blocked('IndependentPersistedSourceTrust')
+        locator = Path(profile['directory']) / request['requestId'] / (hashlib.sha256(case_id.encode()).hexdigest() + '.json')
+        source_envelope = q.read_json(locator)
+        source = source_envelope['payload']
+        key = serialization.load_pem_public_key(raw_anchor)
+        key.verify(base64.b64decode(source_envelope['signature'], validate=True), canonical(source), ec.ECDSA(hashes.SHA256()))
+        if source.get('requestSha256') != digest(request) or source.get('bindingDigest') != digest(self.binding) or source.get('caseId') != case_id \
+                or evidence.get('requestSha256') != digest(request) or evidence.get('caseId') != case_id \
+                or not isinstance(source.get('records'), list) or not source['records'] or evidence.get('sourceRecordsSha256') != digest(source['records']):
+            raise Blocked('ActualIndependentPersistedSourceBytes')
+        records = source['records']
+        if any(not isinstance(row, dict) or type(row.get('sourceRevision')) is not int or row['sourceRevision'] <= 0
+               or not isinstance(row.get('eventId'), str) or not row['eventId'] or not isinstance(row.get('payload'), dict) for row in records):
+            raise Blocked('CompletePersistedSourceRecords')
+        # Profiles are part of the accepted phase artifact, and select actual source facts; an owner outcome/flag is never a fact.
+        def value(path):
+            if not isinstance(path,list) or not path: raise Blocked('ClosedSourceInvariantPath')
+            current = records
+            for part in path:
+                if type(part) is int and isinstance(current,list): current = current[part]
+                elif isinstance(part,str) and isinstance(current,dict): current = current[part]
+                else: raise Blocked('ExactSourceInvariantPath')
+            return current
+        for name, predicate in profile['invariants'].items():
+            if not isinstance(predicate,dict): raise Blocked('ClosedSourceInvariant')
+            operation = predicate.get('operation')
+            first = value(predicate['path'])
+            if operation == 'equals': passed = first == predicate['expected']
+            elif operation == 'same': passed = first == value(predicate['otherPath'])
+            elif operation == 'before': passed = type(first) is int and type(value(predicate['otherPath'])) is int and first < value(predicate['otherPath'])
+            elif operation == 'count': passed = isinstance(first,list) and len(first) == predicate['expected']
+            elif operation == 'set-equals': passed = isinstance(first,list) and sorted(first) == sorted(predicate['expected'])
+            else: raise Blocked('ClosedSourceInvariantOperation')
+            if not passed: raise Blocked('PersistedCaseInvariant.' + name)
 
 
 def main():

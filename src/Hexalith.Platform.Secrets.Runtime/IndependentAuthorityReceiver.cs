@@ -11,7 +11,7 @@ using System.Text.Json.Nodes;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Receiving durable authority. All permission, anchor, original and recovery transitions share one conditional owner head.</summary>
-public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null)
+public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null)
 {
     /// <summary>Authenticates channel/workload, reads the surviving enrolled head, commits exact transitions and signs bounded current results.</summary>
     public async Task<IResult> HandleAsync(HttpContext context, string method, CancellationToken cancellationToken)
@@ -91,6 +91,10 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 }
                 outcome = (recordingResult, false);
             }
+            else if (method is "spool-admit-transition" or "spool-record-transition" or "spool-recover-transition" or "spool-verify-transition")
+                outcome = await ApplySpoolTransitionAsync(method, request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!, next, replacement => next = replacement, budget.Token).ConfigureAwait(false);
+            else if (ownerHandlers?.SingleOrDefault(handler => handler.Methods.Contains(method)) is { } handler)
+                outcome = (await handler.HandleAsync(method, request.Payload, grant, state, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false), false);
             else outcome = Apply(method, request.Payload, grant, next, replacement => next = replacement);
             if (outcome.Mutated)
             {
@@ -101,6 +105,12 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                     || !await dapr.TrySaveStateAsync(installation.Component, installation.StateKey, next, etag,
                         new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, cancellationToken: budget.Token).ConfigureAwait(false))
                     return Results.StatusCode(503); // No retry after unknown CAS acknowledgement.
+            }
+            if (method is "spool-record-transition" or "spool-recover-transition"
+                && outcome.Payload is Permission { Allowed: true })
+            {
+                var completed = request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!;
+                await WriteSpoolOriginalAsync("recorded", completed, false, budget.Token).ConfigureAwait(false);
             }
             long now = clock.GetUtcNow().ToUnixTimeSeconds();
             if (grant.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(403);
@@ -131,29 +141,6 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             case "spool-validate":
                 var validation = Read<StateValidation>();
                 return (Decision(Target(validation.target) && validation.revision == state.SpoolRevision && validation.exactStateDigest == state.SpoolDigest), false);
-            case "spool-admit-transition":
-            case "spool-record-transition":
-            case "spool-recover-transition":
-            case "spool-verify-transition":
-                var t = Read<AnchoredStateTransition>();
-                string scope = state.Spool?.ComponentName + "|system/security-observations/" + state.Spool?.InstallationEpoch;
-                bool exact = state.Admitted.TryGetValue(t.TargetDigest, out var admitted) && Same(admitted, t);
-                bool recorded = state.Recorded.TryGetValue(t.TargetDigest, out var retained) && Same(retained, t);
-                if (state.Spool is null || !Target(state.Spool) || t.ScopeId != scope || t.TargetRevision != t.ExpectedRevision + 1
-                    || Convert.ToHexString(SHA256.HashData(t.TargetBytes)) != t.TargetDigest) return (Decision(false), false);
-                if (method == "spool-verify-transition") return (Decision(recorded), false);
-                if (recorded) return (Decision(true), false);
-                if (t.ExpectedRevision != state.SpoolRevision || t.PredecessorDigest != state.SpoolDigest) return (Decision(false), false);
-                if (method == "spool-admit-transition")
-                {
-                    if (state.Admitted.Count >= 10000 || state.Admitted.Values.Any(a => a.ExpectedRevision == t.ExpectedRevision && !Same(a, t))) return (Decision(false), false);
-                    state.Admitted[t.TargetDigest] = t; return (Decision(true), !exact);
-                }
-                if (!exact) return (Decision(false), false);
-                state.Recorded[t.TargetDigest] = t;
-                // Records are immutable reference values; the receiver returns a replacement head through the mutation delegate below.
-                replace(state with { SpoolRevision = t.TargetRevision, SpoolDigest = t.TargetDigest });
-                return (Decision(true), true);
             case "spool-admit-recovery":
                 var recovery = Read<RecoveryAdmission>();
                 if (!Target(recovery.target) || recovery.original.Receipt is not null || recovery.proof.State == SecurityEventRecorderLookupState.Unknown
@@ -168,6 +155,14 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                     && verify.currentProof.State != SecurityEventRecorderLookupState.Unknown
                     && (Same(verify.grant.OriginalProof, verify.currentProof)
                         || verify.grant.OriginalProof.State == SecurityEventRecorderLookupState.NotRecorded && verify.currentProof.State == SecurityEventRecorderLookupState.Recorded)), false);
+            case "recording-dispatch-admit":
+                var dispatch = Read<RecordingDispatch>();
+                string dispatchId = dispatch.role + ":" + dispatch.requestId;
+                if (caller.Role != dispatch.role || !state.Originals.TryGetValue(dispatchId, out var dispatchOriginal)
+                    || !Same(dispatchOriginal.Request, dispatch.original) || dispatchOriginal.SubmissionState != "Unsent")
+                    return (Decision(false), false);
+                state.Originals[dispatchId] = dispatchOriginal with { SubmissionState = "Dispatched" };
+                return (Decision(true), true);
             case "recording-command-authorize":
                 var recording = Read<RecordingCommandAuthorization>();
                 string recordingRole = recording.command.Domain == "trusted-envelope-replay" ? "private-replay" : "private-security-observation";
@@ -224,6 +219,66 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             default: throw new InvalidOperationException("Operation is not installed for this authority role.");
         }
     }
+    private async Task<(object? Payload, bool Mutated)> ApplySpoolTransitionAsync(string method, AnchoredStateTransition transition,
+        IndependentAuthorityState state, Action<IndependentAuthorityState> replace, CancellationToken token)
+    {
+        object Decision(bool allowed) => new Permission(allowed);
+        string scope = state.Spool?.ComponentName + "|system/security-observations/" + state.Spool?.InstallationEpoch;
+        if (state.Spool is null || state.Spool.ValidUntil <= clock.GetUtcNow() || transition.ScopeId != scope
+            || transition.TargetRevision != transition.ExpectedRevision + 1 || transition.TargetBytes.Length > 32 * 1024 * 1024
+            || Convert.ToHexString(SHA256.HashData(transition.TargetBytes)) != transition.TargetDigest)
+            return (Decision(false), false);
+        // Legacy snapshots must be migrated by the independent archive owner, never silently evicted.
+        if (state.Admitted.Count != 0 || state.Recorded.Count != 0) throw new InvalidOperationException("Independent spool archive migration required.");
+        bool recorded = await HasSpoolOriginalAsync("recorded", transition, token).ConfigureAwait(false);
+        if (method == "spool-verify-transition") return (Decision(recorded && state.SpoolRevision >= transition.TargetRevision), false);
+        if (recorded) return (Decision(true), false);
+        bool admitted = await HasSpoolOriginalAsync("admitted", transition, token).ConfigureAwait(false);
+        if (method != "spool-admit-transition" && admitted && state.SpoolRevision == transition.TargetRevision && state.SpoolDigest == transition.TargetDigest)
+            return (Decision(true), false); // Lost CAS acknowledgement: publish this exact completion, never a new transition.
+        if (state.SpoolRevision != transition.ExpectedRevision || state.SpoolDigest != transition.PredecessorDigest
+            || state.PendingSpoolTransitionDigest is { } pending && pending != transition.TargetDigest) return (Decision(false), false);
+        if (method == "spool-admit-transition")
+        {
+            await WriteSpoolOriginalAsync("admitted", transition, true, token).ConfigureAwait(false);
+            replace(state with { PendingSpoolTransitionDigest = transition.TargetDigest });
+            return (Decision(true), state.PendingSpoolTransitionDigest != transition.TargetDigest);
+        }
+        if (!admitted || state.PendingSpoolTransitionDigest != transition.TargetDigest) return (Decision(false), false);
+        replace(state with { SpoolRevision = transition.TargetRevision, SpoolDigest = transition.TargetDigest, PendingSpoolTransitionDigest = null });
+        return (Decision(true), true);
+    }
+    private string SpoolOriginalPath(string category, AnchoredStateTransition transition)
+    {
+        string? directory = installation.OriginalArchiveDirectory;
+        if (directory is null || !Path.IsPathFullyQualified(directory) || installation.CompletionReserveBytes <= 0
+            || installation.ArchiveEnrollmentSha256 is not { Length: 64 } enrollmentHash
+            || !CustodyBindingContract.Digest(transition.TargetDigest) || new DirectoryInfo(directory).LinkTarget is not null)
+            throw new InvalidOperationException("Independent immutable spool archive and completion reserve required.");
+        var enrollment = new FileInfo(Path.Combine(directory, "enrollment.json"));
+        if (!enrollment.Exists || enrollment.LinkTarget is not null || enrollment.Length is <= 0 or > 65536
+            || Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(enrollment.FullName))) != enrollmentHash)
+            throw new InvalidOperationException("Current immutable spool archive enrollment required.");
+        return Path.Combine(directory, "spool", category, Hash(transition.ScopeId), transition.TargetDigest);
+    }
+    private async Task<bool> HasSpoolOriginalAsync(string category, AnchoredStateTransition transition, CancellationToken token)
+    {
+        string path = SpoolOriginalPath(category, transition); var info = new FileInfo(path);
+        if (!info.Exists) return false;
+        if (info.LinkTarget is not null || info.Length is <= 0 or > CustodyBindingContract.MaximumOriginalBytes) throw new InvalidOperationException("Exact immutable transition required.");
+        return (await File.ReadAllBytesAsync(path, token).ConfigureAwait(false)).AsSpan()
+            .SequenceEqual(JsonSerializer.SerializeToUtf8Bytes(transition, CustodyBindingContract.Json));
+    }
+    private async Task WriteSpoolOriginalAsync(string category, AnchoredStateTransition transition, bool admission, CancellationToken token)
+    {
+        string path = SpoolOriginalPath(category, transition);
+        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(transition, CustodyBindingContract.Json);
+        var drive = new DriveInfo(Path.GetPathRoot(path)!);
+        if (admission && drive.AvailableFreeSpace < checked(bytes.LongLength * 2 + installation.CompletionReserveBytes))
+            throw new InvalidOperationException("Spool completion reserve unavailable; ingress denied.");
+        await ImmutableFileArchive.PublishAsync(path, bytes, token).ConfigureAwait(false);
+    }
+    private sealed record Permission(bool Allowed);
     private static bool ExactCase(JsonObject request, IndependentAuthorityState state)
     {
         string? id = SecretsProof.Text(request, "caseId");
@@ -258,6 +313,7 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
     private sealed record ReplayAdmission(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt, long retentionTicks);
     private sealed record ReplayLookup(TrustedEnvelopeReplayIntent intent);
     private sealed record CustodyOriginalLookup(string tenant, string scope, string operationId, long revision, string digest);
+    private sealed record RecordingDispatch(string role, string requestId, JsonElement original);
     private sealed record RecordingCommandAuthorization(string caller, string principal, Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest command);
     private sealed record CustodyRoleAuthorization(string role, CustodyCallIntent intent, string bearerSha256);
     private sealed record LookupOriginal(string role, string requestId);

@@ -20,6 +20,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         raise ValueError("fresh detached output directory required")
     output.mkdir(parents=True)
     try:
+        configuration_bytes = q.bounded_public_file(configuration, 1024 * 1024)
         config = q.read_public_configuration(configuration)
     except q.Unavailable as error:
         report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "qualificationEffects": 0,
@@ -93,7 +94,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     from coordinated_packets import admission
     installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, candidate_ready)
     missing.extend(installation_missing)
-    if not installation_missing and q.digest(config) != installed_hashes.get("custodyConfigurationSha256"):
+    if not installation_missing and hashlib.sha256(configuration_bytes).hexdigest() != installed_hashes.get("custodyConfigurationSha256"):
         missing.append("ExactInstalledConfigurationBytes")
     cohort = []
     register_binding = None
@@ -108,7 +109,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         missing.extend(cohort)
     if not installation_missing:
         missing = [name for name in missing if name != "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"]
-    binding = {"configurationSha256": q.digest(config), "planSha256": plan_digest(), **anchors}
+    binding = {"configurationRawSha256": hashlib.sha256(configuration_bytes).hexdigest(), "configurationSha256": q.digest(config), "planSha256": plan_digest(), **anchors}
     packet_path = output / "replacement-acceptance-packet.json"
     detached_configuration = output / "runtime-reference.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && test -z "$(git -C ../platform status --porcelain)" && '
@@ -137,7 +138,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
         (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
         packet_path.write_bytes(q.canonical(packet))
-        detached_configuration.write_bytes(q.canonical(config))
+        detached_configuration.write_bytes(configuration_bytes)
         (output / "exact-command.sh").write_text(command + "\n")
         (output / "runtime-qualification-binding.json").write_bytes(q.canonical(binding))
     return report

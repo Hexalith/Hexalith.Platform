@@ -18,4 +18,4 @@ public sealed record IndependentAuthorityState(string EnrollmentId, string Scope
     Dictionary<string, SecurityObservationRecoveryGrant> Recoveries, Dictionary<string, IndependentOriginal> Originals,
     Dictionary<string, CustodyKeyRegistration> Registrations, Dictionary<string, DeletionBatchConsumptionRequest> Manifests,
     Dictionary<string, string>? QualificationBindings = null,
-    Dictionary<string, JsonElement>? QualificationCases = null);
+    Dictionary<string, JsonElement>? QualificationCases = null, Fr34ProtectionTarget? Fr34Target = null, string? PendingSpoolTransitionDigest = null);

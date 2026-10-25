@@ -377,7 +377,18 @@ def verify(root, artifacts, profile, configuration="Debug"):
         from joint_live_phase_runner import run_installed_cohort, Blocked
         try:
             result = run_installed_cohort(cohort_configuration, Path(root).parent / "agents/_bmad-output/planning-artifacts/external-dependency-register.md")
-        except (Blocked, OSError, ValueError, KeyError):
+        except Blocked as error:
+            destination = Path(artifacts) / "joint-cohort-failure.json"
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(canonical({"code":"DependencyNotAvailable", "records":["EXT-SECRETS-1","EXT-HOST-1"],
+                "missingInputs":error.missing,"attemptState":error.attempt_state,"effectState":error.effect_state,
+                "effectsStarted":error.effects_started,"qualificationEffects":"Unknown" if error.effects_started else 0,"dependencyAvailable":False}))
+            return 1
+        except (OSError, ValueError, KeyError, TypeError):
+            destination = Path(artifacts) / "joint-cohort-failure.json"
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(canonical({"code":"DependencyNotAvailable","records":["EXT-SECRETS-1","EXT-HOST-1"],
+                "missingInputs":["ValidCoordinatedInstallation"],"qualificationEffects":"Unknown","originalLookupRequired":True,"dependencyAvailable":False}))
             return 1
         destination = Path(artifacts) / "joint-cohort-result.json"
         destination.parent.mkdir(parents=True, exist_ok=True)

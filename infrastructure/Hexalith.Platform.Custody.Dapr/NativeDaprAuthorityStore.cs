@@ -38,9 +38,8 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         ValidateArchiveEnrollment();
         if (bytes.Length is 0 or > CustodyBindingContract.MaximumOriginalBytes || profile.RetainUntil <= clock.GetUtcNow())
             throw new AuthorityUnavailableException("Original capacity/retention unavailable.");
-        string path = Resolve(key); Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-        await using var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.Read, 65536, FileOptions.WriteThrough | FileOptions.Asynchronous);
-        await output.WriteAsync(bytes, token); await output.FlushAsync(token); output.Flush(flushToDisk: true);
+        string path = Resolve(key);
+        await ImmutableFileArchive.PublishAsync(path, bytes, token);
         return new(key, CustodyJson.Hash(bytes.Span), CustodyJson.Hash(bytes.Span), bytes.Length, profile.RetainUntil);
     }
     public async Task<byte[]> ReadImmutableAsync(ObjectVersion version, CancellationToken token)
