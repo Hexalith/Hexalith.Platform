@@ -1,0 +1,147 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-25T19:13:41.733929+00:00",
+  "reviewPass": 2,
+  "reviewLoopIterationAfterTriage": 2,
+  "status": "CorrectionsInProgress",
+  "reviewers": [
+    "/root/correction_blind",
+    "/root/correction_edge",
+    "/root/correction_gap"
+  ],
+  "contextFree": true,
+  "sourceScopeManifest": "/tmp/story54-final-review-m6zw_8o9/scope.json",
+  "reviewDiffSha256": "d9c729f3e387edd85e49c32f7bd6e2774e39cd7addea85f6ccd2318f6e6f8b5e",
+  "findings": [
+    {
+      "finding": "B2-1",
+      "verdict": "high",
+      "evidence": "Enrollment reaches unconditional RetainAsync without BeginAsync; JointSecretsCaseExecutor calls the installed owner directly, so the strict original store rejects first enrollment.",
+      "route": "bad_spec \u2014 admit and recover exact enrollment originals in the receiving handler"
+    },
+    {
+      "finding": "B2-2",
+      "verdict": "high",
+      "evidence": "Installed CaseOriginals/SecretsOriginals contain fixed runId values, but reserve chooses an unpredictable attempt UUID afterward; executable equality checks cannot admit a genuinely fresh attempt.",
+      "route": "bad_spec \u2014 pin recipes and bind/enroll exact requests to the returned retained attempt"
+    },
+    {
+      "finding": "B2-3",
+      "verdict": "high",
+      "evidence": "Immutable execution/observation proofs are checked at enclosing phase completedAt, exceeding their 30-second original window for earlier cases in a long phase.",
+      "route": "bad_spec \u2014 retain and verify each independently bound original proof time"
+    },
+    {
+      "finding": "B2-4",
+      "verdict": "high",
+      "evidence": "IndependentDaprAuthority caps frames at 1 MiB while spool targets permit 32 MiB and base64 target bytes; allowed heads can exceed transport before acknowledgment or rollover.",
+      "route": "bad_spec \u2014 make all end-to-end admission/completion bounds consistent or use bounded authenticated immutable transfer"
+    },
+    {
+      "finding": "B2-5",
+      "verdict": "high",
+      "evidence": "The occurrence material adapter only exposes Unwrap/Lookup; no CompleteKeyUse call path can close an admitted holder after the transferred buffer is disposed.",
+      "route": "bad_spec \u2014 wire exact independently witnessed holder completion; disposal alone proves no physical completion"
+    },
+    {
+      "finding": "B2-6",
+      "verdict": "high",
+      "evidence": "Retained workflow lookup only reads :case-result; a recoverable envelope/signing source original cannot fill a lost case-result acknowledgment.",
+      "route": "bad_spec \u2014 provide source-specific exact original lookup without re-executing uncertain effects"
+    },
+    {
+      "finding": "B2-7",
+      "verdict": "high",
+      "evidence": "A retained phase whose first delivery never reaches its owner retries lookup forever; owner lookup conflates signed absence and admitted unknown.",
+      "route": "bad_spec \u2014 authenticated current absence plus conditional first delivery; admitted unknown remains lookup-only"
+    },
+    {
+      "finding": "B2-8",
+      "verdict": "high",
+      "evidence": "Binding lease CAS can succeed before a lost RecordTransition acknowledgment; Read validates the new unanchored state before any reconciliation and permanently refuses.",
+      "route": "bad_spec \u2014 durably retain/reconcile both exact lease transitions without another lease"
+    },
+    {
+      "finding": "B2-9",
+      "verdict": "high",
+      "evidence": "Execution-time expiry-at/before checks run again in enrollment/observation/recovery; advancing time prevents reading an already retained native temporal original.",
+      "route": "bad_spec \u2014 separate first native evaluation admission from historical exact-original reads"
+    },
+    {
+      "finding": "B2-10",
+      "verdict": "high",
+      "evidence": "Delivery substitutions that change actor address return a locally manufactured Conflict and independently read only the original actor, without receiving-boundary denial evidence.",
+      "route": "bad_spec \u2014 exercise the real restricted receiving boundary or keep receiving coverage explicitly blocked"
+    },
+    {
+      "finding": "B2-11",
+      "verdict": "high",
+      "evidence": "constantTimeVerification=1 is inferred solely from two successful verifications, which proves neither a constant-time primitive nor timing behavior.",
+      "route": "bad_spec \u2014 independently verified implementation assurance or a named missing fact; never infer it from success"
+    },
+    {
+      "finding": "E2-1",
+      "verdict": "high",
+      "evidence": "Final verify_complete_result failure occurs outside runner.run's effect-state wrapper; new Blocked defaults cause both owners to report zero after four dispatched phases.",
+      "route": "patch \u2014 preserve retained attempt/effect state through final verification"
+    },
+    {
+      "finding": "E2-2",
+      "verdict": "high",
+      "evidence": "Confirmed B2-3 at the observer's per-case proof checks: phase completion time invalidates earlier valid immutable proofs.",
+      "route": "bad_spec \u2014 shared original-time correction"
+    },
+    {
+      "finding": "E2-3",
+      "verdict": "high",
+      "evidence": "Confirmed B2-1: the direct cohort enrollment path bypasses the public host admission and cannot retain its first result.",
+      "route": "bad_spec \u2014 shared enrollment correction"
+    },
+    {
+      "finding": "E2-4",
+      "verdict": "high",
+      "evidence": "Confirmed B2-9: bound driver/owner preflight rejects retained temporal recovery before its historical reader can run.",
+      "route": "bad_spec \u2014 shared temporal recovery correction"
+    },
+    {
+      "finding": "E2-5",
+      "verdict": "high",
+      "evidence": "OpenBao ResponseHeadersRead ends HttpClient timeout protection at headers; body reads use caller token, and Program invokes workers with CancellationToken.None.",
+      "route": "patch \u2014 one linked finite deadline through credential, headers and body with stalled-body fixture"
+    },
+    {
+      "finding": "E2-6",
+      "verdict": "high",
+      "evidence": "Replay registration with Dispatched state only performs empty native lookup forever after definitive terminal rejection; security-observation transport recovery does not cover replay.",
+      "route": "bad_spec \u2014 separately admitted deterministic replay transport recovery preserving original first-seen/retention/body"
+    },
+    {
+      "finding": "E2-7",
+      "verdict": "high",
+      "evidence": "SourceStream changed from agents/SecurityEventLog-day to security-event-log/hash without versioning; Capture rejects legacy acknowledgments and pending lookup uses a different original source.",
+      "route": "bad_spec \u2014 preserve legacy formats, original locators/receipts and digest bytes; require exact legacy scopes without broadening credentials"
+    },
+    {
+      "finding": "V2-1",
+      "verdict": "high",
+      "evidence": "Pre-verified regression gap: no executed receiving test covers the capability workflow/reader; an unchanged issuer substitution arm escapes existing codec and synthesized Python tests.",
+      "route": "patch \u2014 real receiving positive and every substitution with independent proof verification"
+    },
+    {
+      "finding": "V2-2",
+      "verdict": "high",
+      "evidence": "Pre-verified regression gap: the lifecycle qualification wrapper is unexercised; changing its manifest lookupOnly argument to false is undetected by lower client/provider tests.",
+      "route": "patch \u2014 actual SDK/component recovery fixture, original receipts and unchanged native effects"
+    },
+    {
+      "finding": "E2-withdrawn-packet",
+      "verdict": "false",
+      "evidence": "Reviewer withdrew the truncated-diff candidate-field claim; generated host packets already include candidateCommit and profileSha256 required by composition.",
+      "route": "rejected \u2014 current surrounding code disproves the claim"
+    }
+  ],
+  "acceptedRecordChangesAuthorized": false,
+  "installedQualification": false,
+  "fullSourceComplete": false,
+  "deliveryComplete": false
+}

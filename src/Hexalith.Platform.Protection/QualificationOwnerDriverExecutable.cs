@@ -65,11 +65,14 @@ public static class QualificationOwnerDriverExecutable
             var inventoryReader=new QualificationInventoryOriginalReader(new QualificationInventoryActorRouter(),inventory,executorOriginals,audit,inventoryKeys);
             foreach(var workflow in runtimeWorkflows)
             {
+                if(workflow.CaseId=="S2.retained-digest") sourceReaders[workflow.CaseId]=new QualificationRetainedDigestOriginalReader(executorOriginals,audit,raw);
                 if(workflow.CaseId.StartsWith("S1.inventory.",StringComparison.Ordinal)) sourceReaders[workflow.CaseId]=inventoryReader;
                 if(envelopes is not null && workflow.CaseId is "S2.canonical-hmac" or "S2.byte-identical-replay")
                     sourceReaders[workflow.CaseId]=new QualificationEnvelopeOriginalReader(executorOriginals,audit,envelopes);
                 if(envelopes is not null && (workflow.CaseId.StartsWith("S2.substitution.",StringComparison.Ordinal) || workflow.CaseId.StartsWith("S2.replay-reject.",StringComparison.Ordinal)))
                     sourceReaders[workflow.CaseId]=new QualificationDeniedOriginalReader(executorOriginals,audit,envelopes.ReadVerifyAsync);
+                if(capability is not null && workflow.CaseId=="S4.capability-canonical-14-fields")
+                    sourceReaders[workflow.CaseId]=new QualificationCapabilityOriginalReader(executorOriginals,audit,capability);
                 if(capability is not null && workflow.CaseId.StartsWith("S4.capability-substitution.",StringComparison.Ordinal))
                     sourceReaders[workflow.CaseId]=new QualificationDeniedOriginalReader(executorOriginals,audit,capability.ReadVerifyAsync);
             }
@@ -149,19 +152,9 @@ public static class QualificationOwnerDriverExecutable
             IndependentEvidenceComponent:{ } evidenceComponent,EvidenceResources:{ } resources,EvidenceAuthorities:{ } evidenceOwners,GuardArguments:{ } arguments,GuardDefinitions:{ } definitions,RevocationSubscription:{ } subscription }
             && services?.GetService<IDeletionCapabilityRevocationAuthenticator>() is { } revocation)
         {
-            var installedCells=new CustodyGuardedStateInstallation(target,protectionInstallation.GuardTargetRevision,Owner(targetOwner),cells.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),receipts.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),TimeProvider.System);
-            var evidence=new CustodyGovernanceGuardInstallation(dapr,evidenceComponent,resources,evidenceOwners.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),TimeProvider.System);
-            var guarded=new DaprGuardedStateTransaction(dapr,TimeProvider.System,new GuardedStateTransactionAuthority(installedCells));
-            var guard=new GovernanceScopeGuardOwner(guarded,TimeProvider.System,new GovernanceGuardAuthority(evidence));
-            var proxies=ActorProxy.DefaultProxyFactory;
-            var protection=new DaprDeletionProtectionOwner(target.TenantId,proxies,TimeProvider.System);
-            var consumption=ActorProxy.Create<IDeletionConsumptionActor>(new ActorId(DeletionConsumptionActor.GetActorId(target.TenantId)),DeletionConsumptionActor.ActorTypeName);
-            var signerActor=new QualificationSigningActorRouter();
-            var subscriber=new DeletionCapabilityRevocationSubscriber(subscription,revocation,new DaprDeletionCapabilityCompromiseRegistrar(proxies),new EventStoreDeletionCapabilityGuardRevocationMirror(guard,TimeProvider.System),TimeProvider.System);
-            var compiled=definitions.ToDictionary(pair=>pair.Key,pair=>QualificationGuardRecipeCatalog.Compile(pair.Key,pair.Value.TenantId,pair.Value.BatchId,pair.Value.EnrolledScopeSha256,arguments[pair.Key]),StringComparer.Ordinal);
-            var guardedWorkflow=new QualificationGuardCaseWorkflow(guard,protection,consumption,signerActor,executorOriginals,compiled,subscriber);
-            var registrations=guardedWorkflow.Registrations();workflows.AddRange(registrations);
-            foreach(var registration in registrations) sourceReaders[registration.CaseId]=new QualificationGuardOriginalReader(guard,protection,signerActor,executorOriginals,audit,compiled);
+            var ports=QualificationGuardProductionComposition.Create(dapr,SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile!)!,protectionInstallation,executorOriginals);
+            var registrations=ports.Workflow.Registrations();workflows.AddRange(registrations);
+            foreach(var registration in registrations) sourceReaders[registration.CaseId]=new QualificationGuardOriginalReader(ports.Guard,ports.Protection,ports.Signing,executorOriginals,audit,ports.Definitions);
         }
         var readers=workflows.ToDictionary(value=>value.CaseId,_=>(IReadOnlyList<string>)["External.SelectedNativeRecoveryControlReceiptHistory","External.CompleteInstalledLogAndTraceAccessAndCensus","External.NativeOutboxSnapshotAndAllHolderPhysicalCopyReadProtocols"],StringComparer.Ordinal);
         var drivers=QualificationDriverComposition.Create(workflows,executorOriginals,recovery,source,observerTrust,readers);

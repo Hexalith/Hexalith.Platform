@@ -6,11 +6,34 @@ namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Shipped closed envelope substitution and replay workflows using the actual authenticated runtime and private registrar. No expected result, test key or synthetic clock is accepted.</summary>
 public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticator envelopes, TrustedEnvelopeReplayVerifier replay,
-    IndependentDaprAuthority originals,IReadOnlyDictionary<string,TrustedEnvelopeIdentity> enrolledIdentities,ITrustedEnvelopeReplayRegistrar? lookupRegistrar=null)
+    IndependentDaprAuthority originals,IReadOnlyDictionary<string,TrustedEnvelopeIdentity> enrolledIdentities,ITrustedEnvelopeReplayRegistrar? lookupRegistrar=null,IQualificationOriginalStore? evaluationOriginals=null)
 {
-    /// <summary>Retains one original issuance before verification; after ambiguous issuance only exact signed-original lookup is allowed.</summary>
-    public Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)=>RunAsync(request,false,token);
-    /// <summary>Independently verifies the exact retained issued bytes using current runtime authority. It never issues a missing original.</summary>
+    private readonly IQualificationOriginalStore _evaluations=evaluationOriginals??new InstalledQualificationOriginalStore(originals);
+    /// <summary>Admits one actual issuance/evaluation, retaining the complete evaluation body before return. An admitted missing result stays unknown.</summary>
+    public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
+    {
+        string? id=EvaluationId(request);if(id is null) return null;
+        if(!await _evaluations.BeginAsync("executor",id,request,token).ConfigureAwait(false)) return await LookupAsync(request,token).ConfigureAwait(false);
+        var result=await RunAsync(request,false,token).ConfigureAwait(false);if(result is null) return null;
+        await _evaluations.RetainAsync("executor",id,result,token).ConfigureAwait(false);return (JsonObject)result.DeepClone();
+    }
+    /// <summary>Recovers only the immutable evaluation original. It never issues, registers replay or calls the clock-dependent verifier again.</summary>
+    public async Task<JsonObject?> LookupAsync(JsonObject request,CancellationToken token)
+    {
+        string? id=EvaluationId(request);
+        if(id is null || await _evaluations.ReadAdmissionAsync("executor",id,request,token).ConfigureAwait(false)!=QualificationOriginalAdmissionState.Admitted) return null;
+        var result=await _evaluations.LookupResultAsync("executor",id,token).ConfigureAwait(false);
+        return result is not null && JsonNode.DeepEquals(result["caseId"],request["caseId"]) && JsonNode.DeepEquals(result["requestId"],request["requestId"])?(JsonObject)result.DeepClone():null;
+    }
+    private string? EvaluationId(JsonObject request)
+    {
+        string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
+        return id is not null && requestId is not null && enrolledIdentities.TryGetValue(id,out var identity)
+            && request["enrolledScope"] is JsonObject scope && SecretsProof.Text(scope,"tenantId")==identity.TargetTenantId
+            && (id is "S2.canonical-hmac" or "S2.byte-identical-replay" or "S2.replay-reject.changed-fields" or "S2.replay-reject.cross-tenant" or "S2.replay-reject.foreign-issuer" || id.StartsWith("S2.substitution.",StringComparison.Ordinal))
+            ?requestId+":envelope-evaluation-result":null;
+    }
+    /// <summary>Independently verifies retained issued bytes at the actual current time and current authority. This is not historical outcome lookup; missing historical native MAC evidence remains an observation blocker.</summary>
     public Task<JsonObject?> ReadVerifyAsync(JsonObject request,CancellationToken token)=>RunAsync(request,true,token);
     private async Task<JsonObject?> RunAsync(JsonObject request,bool lookupOnly,CancellationToken token)
     {
@@ -21,6 +44,9 @@ public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticat
             && caseId is not ("S2.replay-reject.changed-fields" or "S2.replay-reject.cross-tenant" or "S2.replay-reject.foreign-issuer")) return null;
         string originalId=requestId+":envelope";
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="executor",requestId=originalId },token).ConfigureAwait(false);
+        // A legacy issuance without an evaluation original may already have been evaluated before loss.
+        // Only this invocation's fresh issuance permits its first evaluation; never recreate a missing outcome.
+        if(!lookupOnly && original is not null) return null;
         var input=JsonSerializer.SerializeToElement(new { requestId,caseId,identity },CustodyBindingContract.Json);
         if(original is null)
         {

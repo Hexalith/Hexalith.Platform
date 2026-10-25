@@ -1236,8 +1236,9 @@ def main():
                 result = run_installed_cohort(cohort_configuration, register)
             except Blocked as error:
                 effects_started = error.effects_started
-                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state}
+                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state,"attemptId":error.attempt_id,"phaseRequestId":error.phase_request_id}
                 raise Unavailable(*error.missing) from None
+            effects_started=True
             (evidence / "joint-cohort-result.json").write_bytes(canonical(result))
             print("JointCohortPassed: EXT-SECRETS-1, EXT-HOST-1; acceptance unchanged.")
             return 0
@@ -1259,7 +1260,7 @@ def main():
         exit_code = 2
     except ReplacementAcceptancePacket:
         result = {"code": "ReplacementAcceptancePacket", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
-                  "effectsStarted": effects_started, "qualificationEffects": 0}
+                  "effectsStarted": effects_started, "qualificationEffects": "Unknown" if effects_started else 0}
         exit_code = 4
     except Exception:
         # Provider error strings and arbitrary response content never enter evidence, logs or stdout.

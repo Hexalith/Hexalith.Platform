@@ -6,6 +6,21 @@ outside application restore. Installed storage/replication proof remains mandato
 """
 import json
 import sqlite3
+import contextvars
+
+# A private request carries its workload identity into the same durable transaction
+# that admits work. No SQL lock is retained while a native effect or process runs.
+_workload_admission = contextvars.ContextVar("cohort_workload_admission", default=None)
+
+def _authorize_admission(database, path):
+    admission = _workload_admission.get()
+    if admission is None: return  # Direct calls are isolated/internal composition, never HTTP authentication.
+    import time
+    if admission[0] != str(path): raise Blocked("SameDurableWorkloadAdmissionStore")
+    row = database.execute("SELECT methods_json,valid_until,revoked FROM workload_grants WHERE bearer_sha256=?", (admission[1],)).fetchone()
+    if row is None or row[2] or row[1] <= int(time.time()) or admission[2] not in json.loads(row[0]):
+        raise Blocked("CurrentExactCohortWorkloadScope")
+
 from contextlib import contextmanager, closing
 from joint_live_phase_runner import PROTOCOL, PHASES, partitions, canonical, digest, Blocked
 
@@ -41,7 +56,24 @@ class CohortAuthorityStore:
     def dispatch(self, method, value):
         with self.connect() as database:
             database.execute("BEGIN IMMEDIATE" if method in ("reserve", "retain", "publish") else "BEGIN")
-            if method in ("preflight", "current", "reserve", "completion"):
+            _authorize_admission(database, self.path)
+            if method == "qualification-attempt":
+                key = value.get("bindingDigest")
+                row = database.execute("SELECT binding_json FROM accepted_sets WHERE binding_digest=?", (key,)).fetchone()
+                binding = json.loads(row[0]) if row is not None else {}
+                attempt = database.execute("SELECT attempt_id FROM attempts WHERE binding_digest=?", (key,)).fetchone()
+                exact = (row is not None and self._current(database, binding) and attempt is not None and attempt[0] == value.get("attemptId")
+                    and binding.get("platformCommit") == value.get("targetCommit"))
+                import qualify as q
+                exact = exact and value.get("planSha256") == q.plan_digest()
+                case_id = value.get("caseId")
+                if case_id is not None:
+                    phases = [phase for phase, cases in partitions().items() if "secrets:" + str(case_id) in cases]
+                    phase = phases[0] if len(phases) == 1 else -1
+                    original = database.execute("SELECT request_json FROM originals WHERE attempt_id=? AND phase=?", (value.get("attemptId"), phase)).fetchone()
+                    exact = exact and original is not None and "secrets:" + str(case_id) in json.loads(original[0]).get("cases", [])
+                return {"exact": bool(exact), "binding": value}
+            if method in ("preflight", "current", "reserve", "completion", "lookup-attempt"):
                 binding = value["binding"]
                 if not self._current(database, binding):
                     if method == "preflight":
@@ -54,6 +86,12 @@ class CohortAuthorityStore:
                     return {"missingInputs": []}
                 if method == "current":
                     return {"current": True}
+                if method == "lookup-attempt":
+                    attempt = database.execute("SELECT attempt_id FROM attempts WHERE binding_digest=?", (key,)).fetchone()
+                    if attempt is None: return {"bindingDigest":key,"state":"Absent","effectState":"NotDispatched"}
+                    original = database.execute("SELECT request_id FROM originals WHERE attempt_id=? ORDER BY phase DESC LIMIT 1", (attempt[0],)).fetchone()
+                    return {"bindingDigest":key,"state":"Retained","attemptId":attempt[0],"effectState":"Unknown" if original else "NotDispatched",
+                            "phaseRequestId":original[0] if original else None}
                 if method == "reserve":
                     import time
                     ready = value.get("ownerReadiness", [])
@@ -149,10 +187,19 @@ class RetainedPhaseOwner:
             database.close()
 
     def dispatch(self, method, request):
+        absence = None
+        if method == "execute-if-absent":
+            absence, request = request.get("absence"), request.get("request", {})
         if method == "preflight":
             if request.get("binding") != self.binding or request.get("phase") != self.phase or request.get("cases") != partitions()[self.phase]:
                 raise Blocked("ExactInstalledPreflightPartition")
             missing = self.executor.preflight()
+            try:
+                with self._connect() as database:
+                    database.execute("SELECT request_id,request_json,result_json FROM phase_originals LIMIT 0")
+                    database.execute("SELECT request_id,nonce,absence_json FROM phase_absences LIMIT 0")
+            except sqlite3.Error:
+                missing.append("IndependentPhaseOriginalAndAbsenceStorageSchema")
             if not self.authority.call("current", {"binding": self.binding}).get("current"):
                 missing.append("CurrentAcceptedPhaseSet")
             import time
@@ -160,12 +207,13 @@ class RetainedPhaseOwner:
             return {"missingInputs": missing, "readiness": None if missing else self.sign({"bindingDigest": digest(self.binding), "phase": self.phase,
                 "cases": partitions()[self.phase], "profileSha256": self.binding["phaseExecutionProfileSha256"][str(self.phase)], "observedAt": now, "validUntil": now + 30})}
         if (request.get("bindingDigest") != digest(self.binding) or request.get("phase") != self.phase
-                or request.get("cases") != partitions()[self.phase] or method not in ("execute", "lookup")):
+                or request.get("cases") != partitions()[self.phase] or method not in ("execute", "lookup", "execute-if-absent")):
             raise Blocked("ExactInstalledPhaseScope")
         if self.authority.call("phase-admission", {"request": request, "recovery": method == "lookup"}).get("exact") is not True:
             raise Blocked("CurrentRetainedAuthorityAdmission")
         with self._connect() as db:
             db.execute("BEGIN IMMEDIATE")
+            _authorize_admission(db, self.path)
             original = db.execute("SELECT request_json,result_json FROM phase_originals WHERE request_id=?", (request["requestId"],)).fetchone()
             if original is not None and bytes(original[0]) != canonical(request):
                 raise Blocked("ChangedRetainedPhaseOriginal")
@@ -173,8 +221,32 @@ class RetainedPhaseOwner:
                 return json.loads(original[1])
             first = original is None
             if first:
+                import time
+                import uuid
                 if method == "lookup":
-                    return None
+                    now = int(time.time())
+                    prior = db.execute("SELECT absence_json FROM phase_absences WHERE request_id=?", (request["requestId"],)).fetchone()
+                    if prior is not None:
+                        old = json.loads(prior[0]); value = old.get("payload", {})
+                        if value.get("requestSha256") == digest(request) and now < value.get("validUntil", 0) <= value.get("observedAt", 0) + 30:
+                            return old
+                    db.execute("DELETE FROM phase_absences WHERE request_id=?", (request["requestId"],))
+                    proof = self.sign({"state": "OwnerAbsent", "requestId": request["requestId"], "requestSha256": digest(request),
+                        "bindingDigest": digest(self.binding), "attemptId": request["attemptId"], "phase": self.phase,
+                        "nonce": str(uuid.uuid4()), "observedAt": now, "validUntil": now + 30})
+                    db.execute("INSERT INTO phase_absences VALUES(?,?,?)", (request["requestId"], proof["payload"]["nonce"], canonical(proof)))
+                    return proof
+                if method == "execute-if-absent":
+                    proof = absence.get("payload", {}) if isinstance(absence, dict) else {}
+                    retained = db.execute("SELECT absence_json FROM phase_absences WHERE request_id=? AND nonce=?",
+                        (request["requestId"], proof.get("nonce"))).fetchone()
+                    now = int(time.time())
+                    if (retained is None or bytes(retained[0]) != canonical(absence) or proof.get("state") != "OwnerAbsent"
+                            or proof.get("requestSha256") != digest(request) or proof.get("attemptId") != request["attemptId"]
+                            or proof.get("bindingDigest") != digest(self.binding) or proof.get("phase") != self.phase
+                            or not now - 30 <= proof.get("observedAt", 0) <= now < proof.get("validUntil", 0) <= proof["observedAt"] + 30):
+                        raise Blocked("ExactCurrentOwnerAbsenceRequired")
+                db.execute("DELETE FROM phase_absences WHERE request_id=?", (request["requestId"],))
                 db.execute("INSERT INTO phase_originals VALUES(?,?,NULL)", (request["requestId"], canonical(request)))
         # The original is durable before dispatch. Unknown restarts only ask the executor for exact lookup.
         observed = self.executor.execute(request) if first else self.executor.lookup(request)
@@ -187,6 +259,7 @@ class RetainedPhaseOwner:
                             "state": state, "passedCases": passed, "ownerEvidenceSha256": digest(evidence)})
         with self._connect() as db:
             db.execute("BEGIN IMMEDIATE")
+            _authorize_admission(db, self.path)
             prior = db.execute("SELECT result_json FROM phase_originals WHERE request_id=?", (request["requestId"],)).fetchone()[0]
             if prior is not None:
                 return json.loads(prior)
@@ -286,7 +359,11 @@ class CohortHttpApplication:
             row = db.execute("SELECT methods_json,valid_until,revoked FROM workload_grants WHERE bearer_sha256=?", (hashlib.sha256(bearer[7:].encode()).hexdigest(),)).fetchone()
         if row is None or row[2] or row[1] <= now or method not in json.loads(row[0]):
             raise Blocked("CurrentExactCohortWorkloadScope")
-        result = self.dispatch(method, request["payload"])
+        admission = _workload_admission.set((self.database_path, hashlib.sha256(bearer[7:].encode()).hexdigest(), method))
+        try:
+            result = self.dispatch(method, request["payload"])
+        finally:
+            _workload_admission.reset(admission)
         payload = {"requestId": request["requestId"], "method": method, "requestSha256": hashlib.sha256(body).hexdigest(),
                    "observedAt": now, "validUntil": min(now + 30, row[1]), "result": result}
         signature = self.signer.sign(canonical(payload), ec.ECDSA(hashes.SHA256()))
@@ -346,7 +423,11 @@ class PersistedPhaseObserver:
                         missing.append("ExactInstalledObserverInput")
                 except OSError:
                     missing.append("InstalledObserverInput")
-            return {"missingInputs": missing}
+            from closed_phase_invariants import missing_inputs
+            for case_id in value['cases']:
+                if not case_id.startswith('secrets:'):
+                    missing.extend(missing_inputs(case_id))
+            return {"missingInputs": sorted(set(missing))}
         if method != "lookup-phase-original":
             raise Blocked("RestrictedPersistedObserverMethod")
         request = value["request"]
@@ -377,7 +458,6 @@ class PersistedPhaseObserver:
                     config = q.read_public_configuration(self.descriptor['secretsRuntimeConfiguration'])
                     accepted = self.descriptor['secretsRuntimeBinding']
                     original = evidence['request']
-                    original_time = payload['completedAt']
                     if (not isinstance(original, dict) or original.get('runId') != request['attemptId']
                             or original.get('targetCommit') != self.binding.get('platformCommit')
                             or original.get('isolatedTargetId') != config.get('qualification', {}).get('isolatedTargetId')
@@ -386,8 +466,8 @@ class PersistedPhaseObserver:
                             or evidence.get('cohortRequestId') != request['requestId']
                             or q.digest(config) != self.binding.get('configurationSha256')):
                         raise Blocked('ExactCurrentCohortSecretsOriginal')
-                    execution = q.verify_signed(evidence['execution'], 'executor', config, accepted, original_time=original_time)
-                    observation = q.verify_signed(evidence['observation'], 'observer', config, accepted, original_time=original_time)
+                    execution = q.verify_signed(evidence['execution'], 'executor', config, accepted, original_time=evidence['execution']['payload']['observedAt'])
+                    observation = q.verify_signed(evidence['observation'], 'observer', config, accepted, original_time=evidence['observation']['payload']['observedAt'])
                     enrolled = q.verify_signed(evidence['enrollment'], 'enrollment', config, accepted, original_time=evidence['enrollment']['payload']['observedAt'])
                     if enrolled.get('targetCommit') != original['targetCommit'] or enrolled.get('runId') != original['runId'] \
                             or enrolled.get('caseScopes', {}).get(case.id) != original.get('enrolledScope') \
@@ -441,26 +521,10 @@ class PersistedPhaseObserver:
         if any(not isinstance(row, dict) or type(row.get('sourceRevision')) is not int or row['sourceRevision'] <= 0
                or not isinstance(row.get('eventId'), str) or not row['eventId'] or not isinstance(row.get('payload'), dict) for row in records):
             raise Blocked('CompletePersistedSourceRecords')
-        # Profiles are part of the accepted phase artifact, and select actual source facts; an owner outcome/flag is never a fact.
-        def value(path):
-            if not isinstance(path,list) or not path: raise Blocked('ClosedSourceInvariantPath')
-            current = records
-            for part in path:
-                if type(part) is int and isinstance(current,list): current = current[part]
-                elif isinstance(part,str) and isinstance(current,dict): current = current[part]
-                else: raise Blocked('ExactSourceInvariantPath')
-            return current
-        for name, predicate in profile['invariants'].items():
-            if not isinstance(predicate,dict): raise Blocked('ClosedSourceInvariant')
-            operation = predicate.get('operation')
-            first = value(predicate['path'])
-            if operation == 'equals': passed = first == predicate['expected']
-            elif operation == 'same': passed = first == value(predicate['otherPath'])
-            elif operation == 'before': passed = type(first) is int and type(value(predicate['otherPath'])) is int and first < value(predicate['otherPath'])
-            elif operation == 'count': passed = isinstance(first,list) and len(first) == predicate['expected']
-            elif operation == 'set-equals': passed = isinstance(first,list) and sorted(first) == sorted(predicate['expected'])
-            else: raise Blocked('ClosedSourceInvariantOperation')
-            if not passed: raise Blocked('PersistedCaseInvariant.' + name)
+        # A pinned path/expected-value program is not a closed invariant implementation.
+        from closed_phase_invariants import verify
+        verify(case_id, source)
+
 
 
 def main():

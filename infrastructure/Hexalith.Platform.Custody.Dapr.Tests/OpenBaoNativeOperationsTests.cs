@@ -49,6 +49,13 @@ internal static class OpenBaoNativeOperationsTests
                     await Refused(()=>mismatched.EncryptOuterKeyAsync("e1","tenant",original,default));
                 using(var badEndpoint=new OpenBaoNativeOperations(profile,installation with { OpenBaoHttpsUrl="https://fixture.invalid/substituted-path" },fixture.Store,dapr,new NativeTransport(metadata,derived)))
                     await Refused(()=>badEndpoint.EncryptOuterKeyAsync("e1","tenant",original,default));
+                using(var stalled=new OpenBaoNativeOperations(profile,installation,fixture.Store,dapr,new StalledTransport(),TimeSpan.FromMilliseconds(100)))
+                {
+                    var elapsed=System.Diagnostics.Stopwatch.StartNew();
+                    try { await stalled.EncryptOuterKeyAsync("e1","tenant",original,CancellationToken.None);throw new Exception("Stalled native response body escaped total deadline."); }
+                    catch(OperationCanceledException) { }
+                    if(elapsed.Elapsed>TimeSpan.FromSeconds(3)) throw new Exception("Native headers ended total deadline protection.");
+                }
                 effects=handler.Effects;
                 await Refused(()=>operations.ReencryptOuterKeyAsync("e1","e2","tenant",encrypted,default));
                 if(handler.Effects!=effects) throw new Exception("Missing independent holder/recovery protocol reached survivor plaintext operation.");
@@ -61,6 +68,19 @@ internal static class OpenBaoNativeOperationsTests
     }
     private static async Task Refused(Func<Task> action)
     { try { await action(); } catch(Exception exception) when(exception is AuthorityUnavailableException or HttpRequestException or CryptographicException) { return; }throw new Exception("OpenBao substitution or unsupported mapping was accepted."); }
+    private sealed class StalledTransport:HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
+            =>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content=new StreamContent(new StalledStream()) });
+    }
+    private sealed class StalledStream:Stream
+    {
+        public override bool CanRead=>true;public override bool CanSeek=>false;public override bool CanWrite=>false;
+        public override long Length=>throw new NotSupportedException();public override long Position { get=>throw new NotSupportedException();set=>throw new NotSupportedException(); }
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer,CancellationToken token=default) { await Task.Delay(Timeout.Infinite,token);return 0; }
+        public override int Read(byte[] buffer,int offset,int count)=>throw new NotSupportedException();public override void Flush()=>throw new NotSupportedException();
+        public override long Seek(long offset,SeekOrigin origin)=>throw new NotSupportedException();public override void SetLength(long value)=>throw new NotSupportedException();public override void Write(byte[] buffer,int offset,int count)=>throw new NotSupportedException();
+    }
     private sealed class NativeTransport(JsonElement metadata,bool derived):HttpMessageHandler
     {
         private readonly byte[] _key=RandomNumberGenerator.GetBytes(32);internal int Effects;internal bool Substitute,Malformed,WrongAad;internal byte[]? LastAad;

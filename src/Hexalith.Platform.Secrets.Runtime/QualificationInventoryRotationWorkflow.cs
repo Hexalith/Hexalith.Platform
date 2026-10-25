@@ -9,7 +9,7 @@ public sealed class QualificationInventoryRotationWorkflow(IPlatformKeyInventory
     IQualificationOriginalStore originals,QualificationInventoryRotationInput input,IQualificationSafetyInvalidationPort? invalidation)
 {
     /// <summary>Gets the closed executable registration; the absent safety consumer/protocol cannot be replaced by an install flag.</summary>
-    public QualificationSourceWorkflow Registration=>new("S1.rotation-invalidation",ExecuteAsync,LookupAsync,PreflightAsync);
+    public QualificationSourceWorkflow Registration=>new("S1.rotation-invalidation",ExecuteAsync,LookupAsync,PreflightAsync,ExecuteAsync);
     /// <summary>Names missing selected controls before changing even isolated actor metadata.</summary>
     public async Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken token)
     {

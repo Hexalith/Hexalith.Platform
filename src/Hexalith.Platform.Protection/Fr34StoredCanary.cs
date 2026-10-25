@@ -6,5 +6,4 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Exact encrypted persisted canary and occurrence; no plaintext or key bytes.</summary>
 public sealed record Fr34StoredCanary(Fr34CanaryReference Reference, AggregateIdentity Owner, ProtectionTarget ProtectionTarget,
-    PayloadProtectionOccurrenceContext Occurrence, PayloadProtectionResult Protected);
-
+    PayloadProtectionOccurrenceContext Occurrence, PayloadProtectionResult Protected,Hexalith.EventStore.Contracts.Streams.NativeSourceProof? NativeProof=null,string? NativeEventDigest=null);

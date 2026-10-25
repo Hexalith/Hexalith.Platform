@@ -46,15 +46,21 @@ public static class QualificationHost
             // An existing or failed original publication may follow an applied predecessor.
             // From this boundary onward only exact lookup can resolve executor uncertainty.
             executionUncertain = role == "executor";
-            bool first = await store.BeginAsync(role, id, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            // Public audit originals are distinct from the stripped receiving-operation namespace, even at one authority.
+            string auditId = "public-host:" + id;
+            bool lookup = role == "executor" && operation == "lookup";
+            bool first = !lookup && await store.BeginAsync(role, auditId, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             string effectiveOperation = role == "executor" && (!first || operation == "lookup") ? "lookup" : operation;
             JsonObject? result = await provider.InvokeAsync(effectiveOperation, ownerRequest, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
-            if (result is null || SecretsProof.Parse(result.ToJsonString()) is null || !verifier.Verify(role, request, result, budget.Token))
-            { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"], executionUncertain); }
+            if(result is null || SecretsProof.Parse(result.ToJsonString()) is not { } parsedResult)
+            { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"],executionUncertain); }
+            result=parsedResult;
+            if(!verifier.VerifyOriginal(role,request,result,SecretsProof.Integer(result["payload"]!.AsObject(),"observedAt")??-1,budget.Token))
+            { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"],executionUncertain); }
             var stable = (JsonObject)result["payload"]!.DeepClone();
             stable.Remove("observedAt");
             stable.Remove("validUntil");
-            await store.RetainAsync(role, id, stable, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            if (!lookup) await store.RetainAsync(role, auditId, stable, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             return new QualificationHostResult(200, result);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }

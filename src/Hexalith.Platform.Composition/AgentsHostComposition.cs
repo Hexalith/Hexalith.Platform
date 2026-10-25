@@ -122,7 +122,7 @@ public static class AgentsHostComposition
         TrustedEnvelope envelope,
         TrustedEnvelopeIdentity expected,
         Func<TrustedEnvelope, string> construct,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,AgentsIngressDenialContext? denialContext=null)
     {
         ArgumentNullException.ThrowIfNull(verifier);
         ArgumentNullException.ThrowIfNull(spool);
@@ -134,7 +134,14 @@ public static class AgentsHostComposition
         TrustedEnvelopeResult verified = await verifier.VerifyAsync(envelope, expected, cancellationToken).ConfigureAwait(false);
         if (verified.Status != CustodyStatus.Succeeded || verified.Envelope is null
             || !verified.Envelope.Identity.Principal.IsValid(expected.TargetTenantId))
-            return AgentsAdmissionResult.Blocked(verified.Status.ToString());
+        {
+            if(denialContext is null) return AgentsAdmissionResult.Blocked("SecurityAuditUnavailable");
+            string reason=verified.Status switch { CustodyStatus.InvalidTag=>"invalid-tag",CustodyStatus.ScopeMismatch=>"scope-mismatch",CustodyStatus.StaleProfile=>"stale-authority",_=>"unavailable-owner" };
+            var observation=await denialContext.Recorder.ObserveAsync(denialContext.RetainedServerReceiptId,reason,denialContext.UntrustedFields,
+                denialContext.OriginalDigestKeyVersion,envelope,expected,cancellationToken).ConfigureAwait(false);
+            return observation is null?AgentsAdmissionResult.Blocked("SecurityAuditUnavailable"):
+                new AgentsAdmissionResult(false,verified.Status.ToString()) { DenialOriginal=observation };
+        }
         if (!await spool.IsReadyAsync(cancellationToken).ConfigureAwait(false))
             return AgentsAdmissionResult.Blocked("SecurityAuditUnavailable");
         return new AgentsAdmissionResult(true, construct(verified.Envelope));
@@ -167,6 +174,8 @@ public sealed record AgentsPrivateCapabilities(
 /// <param name="Command">Constructed command, or the blocked outcome name.</param>
 public sealed record AgentsAdmissionResult(bool CommandConstructed, string? Command)
 {
+    /// <summary>Exact durable content-free denial accepted before this classified result was constructed; null never establishes a processed denial.</summary>
+    public SecurityObservationRecord? DenialOriginal { get; init; }
     /// <summary>Builds a blocked admission that did not construct a command.</summary>
     /// <param name="outcome">Safe outcome name.</param>
     public static AgentsAdmissionResult Blocked(string outcome) => new(false, outcome);

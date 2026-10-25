@@ -1,0 +1,30 @@
+{
+  "schema": "platform.story-5.4.preservation-verification.v1",
+  "observedAtUtc": "2026-10-25T19:01:14.197671+00:00",
+  "acceptedFiles": [
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "initialSha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+      "observedSha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+      "byteIdentical": true
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-25.md",
+      "initialSha256": "509c32f6111a0b9e454ed9cac0ba990be79e35476e3acc8f7f15f568b5dede9a",
+      "observedSha256": "509c32f6111a0b9e454ed9cac0ba990be79e35476e3acc8f7f15f568b5dede9a",
+      "byteIdentical": true
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/implementation-artifacts/tests/story-5-4-reconciliation-2026-10-25/platform-owner-packets.md",
+      "initialSha256": "2206c4380507dcec3df2e7d3f1d517b8114939eef5d2663cc9571c8cda144fc7",
+      "observedSha256": "2206c4380507dcec3df2e7d3f1d517b8114939eef5d2663cc9571c8cda144fc7",
+      "byteIdentical": true
+    }
+  ],
+  "frozenIntentByteIdentical": true,
+  "frozenIntentSha256": "22a68017041611fdf0d729b10c0c2ecee95606151ce49f48f8dd68fcc6b748ec",
+  "initialLocalHead": "8b712a05cdae8880ccd9c7f7dd355ec2ffe6952b",
+  "observedLocalHead": "30673fdab03b5c5d527eb9eb596bfa6645ad6649",
+  "qualificationEvidence": false,
+  "note": "Shared checkout revisions can advance through concurrent external work. This check preserves accepted artifacts and the frozen intent; it does not claim the entire shared checkout was unchanged."
+}

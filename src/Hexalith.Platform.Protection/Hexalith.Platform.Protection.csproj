@@ -13,6 +13,7 @@
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
     <PackageReference Include="Hexalith.EventStore.Server" />
   </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/native-phase-invariant-inventory.json" LogicalName="NativePhaseInvariantInventory" /></ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Hexalith.Platform.Protection.Tests" />
   </ItemGroup>

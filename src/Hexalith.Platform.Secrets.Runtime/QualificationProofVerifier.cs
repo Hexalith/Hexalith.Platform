@@ -12,6 +12,11 @@ public sealed class QualificationProofVerifier(IReadOnlyDictionary<string, Quali
 
     /// <inheritdoc/>
     public bool Verify(string role, JsonObject request, JsonObject envelope, CancellationToken cancellationToken = default)
+        =>VerifyAt(role,request,envelope,null,cancellationToken);
+    /// <inheritdoc />
+    public bool VerifyOriginal(string role,JsonObject request,JsonObject envelope,long originalTime,CancellationToken cancellationToken=default)
+        =>VerifyAt(role,request,envelope,originalTime,cancellationToken);
+    private bool VerifyAt(string role,JsonObject request,JsonObject envelope,long? originalTime,CancellationToken cancellationToken)
     {
         try
         {
@@ -31,7 +36,9 @@ public sealed class QualificationProofVerifier(IReadOnlyDictionary<string, Quali
                 foreach (string field in new[] { "caseId", "caseTargetId" })
                 { if (!SecretsProof.SameText(payload, field, SecretsProof.Text(request, field))) { return false; } }
             }
-            long now = (clock ?? TimeProvider.System).GetUtcNow().ToUnixTimeSeconds();
+            long current=(clock ?? TimeProvider.System).GetUtcNow().ToUnixTimeSeconds();
+            long now=originalTime??current;
+            if(now>current) return false;
             if (SecretsProof.Integer(payload, "observedAt") is not { } observed || SecretsProof.Integer(payload, "validUntil") is not { } until
                 || observed > now || observed < now - 30 || until <= now || until <= observed || until > observed + 30) { return false; }
             if (encoded.Length != 88) { return false; }

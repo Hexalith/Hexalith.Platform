@@ -15,7 +15,7 @@ public sealed class QualificationTemporalOriginalReader(IQualificationOriginalSt
         if(retained is null || native?.Facts?["temporalOriginal"] is not JsonObject independentlyPersisted || !JsonNode.DeepEquals(independentlyPersisted,retained)
             || retained["outcome"]?.GetValue<string>() is not ("Verified" or "Denied" or "Expired")) return null;
         string receipt=QualificationProtocolSchema.Digest(retained);var state=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
-        state["outcome"]=retained["outcome"]!.DeepClone();state["status"]=retained["status"]!.DeepClone();
+        state["outcome"]=retained["outcome"]!.DeepClone();state["status"]=retained["outcome"]!.DeepClone();
         state["timing"]!["checkedAt"]=retained["checkedAt"]!.DeepClone();
         if(request["caseId"]!.GetValue<string>().StartsWith("S2.expiry.",StringComparison.Ordinal))
         {

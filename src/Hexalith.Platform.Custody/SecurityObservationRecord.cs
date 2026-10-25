@@ -6,7 +6,8 @@ namespace Hexalith.Platform.Custody;
 /// <param name="UtcDay">Exact SecurityEventLog day partition.</param>
 /// <param name="Sequence">Complete spool-owner insertion sequence.</param>
 /// <param name="Receipt">Only exact authoritative EventStore proof may acknowledge.</param>
-public sealed record SecurityObservationRecord(SecurityObservationIntent Intent, DateTimeOffset ObservedAt, string UtcDay, long Sequence, SecurityEventRecordReceipt? Receipt)
+/// <param name="SourceVersion">Zero preserves the exact legacy source; two explicitly selects the independently enrolled hashed source.</param>
+public sealed record SecurityObservationRecord(SecurityObservationIntent Intent, DateTimeOffset ObservedAt, string UtcDay, long Sequence, SecurityEventRecordReceipt? Receipt, [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)] int SourceVersion=0)
 {
     /// <inheritdoc/>
     public override string ToString() => nameof(SecurityObservationRecord);

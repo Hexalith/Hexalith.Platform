@@ -58,6 +58,8 @@ internal static class CustodyBindingContract
         + 128 * 4096 * 6 + 1024 * 1024;
     internal const int MaximumPageBytes = 256 * 1024;
     internal const int MaximumPageFrameBytes = 1024 * 1024;
+    // Independent owner heads may carry a full 32MiB spool transition (base64), or a 64MiB immutable original.
+    internal const int MaximumIndependentAuthorityFrameBytes = CandidateRequestMessageBytes;
     // A complete value-free original has <=1000 receipts, each with five <=2048 UTF-16 strings
     // (three target components, batch, receipt), at most six JSON bytes per UTF-16 code unit.
     // 1000*(5*2048*6+256) + 16*2048*6 + 16384 < 64 MiB, including wrapper/signature overhead.

@@ -17,6 +17,7 @@ public sealed class QualificationLifecycleCaseWorkflow(CustodyLifecycleClient cl
     {
         token.ThrowIfCancellationRequested();var input=Input(request);if(input is null) return Task.FromResult<IReadOnlyList<string>>(["ExactEnrolledCustodyCaseIdentityAndReservation"]);
         string id=request["caseId"]!.GetValue<string>();
+        if(id.StartsWith("Recovery.lifecycle.",StringComparison.Ordinal)) return Task.FromResult<IReadOnlyList<string>>(["External.ExactNativeLifecycleLostResultInjectionAndLookupOutageControllerProtocol"]);
         return Task.FromResult<IReadOnlyList<string>>(id=="S3.lifecycle.wrap" && roots is null?["External.OriginalCanaryRootAndCompleteNativeHolderAdmissionProtocol"]:[]);
     }
     /// <summary>Retains admission before the real client call; an admitted unknown result is lookup-only.</summary>
@@ -82,5 +83,5 @@ public sealed class QualificationLifecycleCaseWorkflow(CustodyLifecycleClient cl
             || !input.Manifest.Targets.Contains(new(input.Registration.Identity.TenantId,input.Registration.Identity.ObjectId,input.Registration.Identity.KeyAlias))?null:input;
     }
     /// <summary>Gets the closed supported lifecycle group.</summary>
-    public static bool Supported(string id)=>id is "S3.lifecycle.wrap" or "S3.lifecycle.unwrap" or "S3.lifecycle.pin" or "S3.lifecycle.unpin" or "S3.lifecycle.destroy" or "S3.hold-pin";
+    public static bool Supported(string id)=>id is "S3.lifecycle.wrap" or "S3.lifecycle.unwrap" or "S3.lifecycle.pin" or "S3.lifecycle.unpin" or "S3.lifecycle.destroy" or "S3.hold-pin" || id.StartsWith("Recovery.lifecycle.",StringComparison.Ordinal);
 }

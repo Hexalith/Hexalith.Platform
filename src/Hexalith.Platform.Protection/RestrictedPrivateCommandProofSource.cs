@@ -7,23 +7,18 @@ using System.Text.Json;
 
 namespace Hexalith.Platform.Protection;
 
-/// <summary>Distinct private recovery-proof capability; it cannot grant a new observation or a replay retry.</summary>
-public interface IPrivateRecoveryCommandProofSource
-{
-    /// <summary>Requires independent current exact-original recovery authorization before signing the unchanged security command.</summary>
-    ValueTask<string?> IssueRecoveryAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant grant,CancellationToken cancellationToken);
-}
-
 /// <summary>Private workload proof signing restricted to the two exact owner command shapes. No public/general dispatcher authority.</summary>
 public sealed class RestrictedPrivateCommandProofSource(string caller, string principal, string mountedRsaKeyFile,
-    IndependentDaprAuthority currentScopes, TimeProvider clock) : IEventStoreGatewayBoundCommandProofSource,IPrivateRecoveryCommandProofSource
+    IndependentDaprAuthority currentScopes, TimeProvider clock) : IEventStoreGatewayBoundCommandProofSource,IPrivateRecoveryCommandProofSource,IPrivateReplayRecoveryCommandProofSource
 {
     /// <inheritdoc />
     public ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken)=>IssueCoreAsync(request,null,cancellationToken);
     /// <inheritdoc />
     public ValueTask<string?> IssueRecoveryAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant grant,CancellationToken cancellationToken)
         =>IssueCoreAsync(request,grant,cancellationToken);
-    private async ValueTask<string?> IssueCoreAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant? grant,CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public ValueTask<string?> IssueReplayRecoveryAsync(BoundWorkloadCommandRequest request,PrivateReplayRecoveryProof proof,CancellationToken token)=>IssueCoreAsync(request,null,token,proof);
+    private async ValueTask<string?> IssueCoreAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant? grant,CancellationToken cancellationToken,PrivateReplayRecoveryProof? replayRecovery=null)
     {
         if (request.PrincipalId != principal || request.Command.Extensions is { Count: > 0 }
             || request.Command.IdempotencyKey != request.Command.MessageId) return null;
@@ -37,15 +32,16 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
             if (!ExactFields(command.Payload, fields)) return null;
             aggregate = Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["trusted-envelope-replay", command.Payload.GetProperty("issuer").GetString()!, command.Payload.GetProperty("deliveryNonce").GetString()!])));
         }
-        else if (command.Domain == "security-event-log" && command.CommandType == "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent")
+        else if (command.Domain is "security-event-log" or "agents" && command.CommandType == "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent")
         {
             fields = ["securityObservationId", "routingTenantId", "utcDay", "observedAt", "reasonCode", "untrustedFieldsHmac", "digestKeyVersion"];
             if (!ExactFields(command.Payload, fields) || command.Payload.GetProperty("routingTenantId").GetString() != command.Tenant) return null;
-            aggregate = Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, command.Payload.GetProperty("utcDay").GetString()!])));
+            aggregate = command.Domain=="agents"?"SecurityEventLog-"+command.Payload.GetProperty("utcDay").GetString()!:Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, command.Payload.GetProperty("utcDay").GetString()!])));
         }
         else return null;
-        if(command.AggregateId!=aggregate || grant is not null && (command.Domain!="security-event-log" || command.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant))) return null;
-        bool admitted=grant is null
+        if(command.AggregateId!=aggregate || grant is not null && (command.Domain is not ("security-event-log" or "agents") || command.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant))) return null;
+        if(replayRecovery is not null && (command.Domain!="trusted-envelope-replay" || command.MessageId!=PrivateRecordingIdentity.ReplayRecoveryMessageId(replayRecovery))) return null;
+        bool admitted=replayRecovery is not null?await currentScopes.InvokeAsync<Permission>("recording-replay-recovery-command-authorize",new { caller,principal,command,proof=replayRecovery },cancellationToken) is { Allowed:true }:grant is null
             ? await currentScopes.InvokeAsync<Permission>("recording-command-authorize",new { caller,principal,command },cancellationToken) is { Allowed:true }
             : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken) is { Allowed:true };
         if(!admitted) return null;

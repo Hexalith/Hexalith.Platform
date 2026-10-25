@@ -21,7 +21,7 @@ public sealed class Fr34EventStoreCanaryReader(IEventStoreGatewayClient privateR
             || string.IsNullOrWhiteSpace(item.NativeEventDigest) || string.IsNullOrWhiteSpace(metadata.KeyAlias)) return null;
         var reference = new Fr34CanaryReference(target, canaryId, identity.ActorId, metadata.KeyAlias);
         return new(reference, identity, new(target.TenantId, canaryId, "fr34-" + canaryId),
-            new(1, PayloadProtectionPayloadKind.Event, item.EventTypeName), new(item.Payload.ToArray(), item.SerializationFormat, metadata));
+            new(1, PayloadProtectionPayloadKind.Event, item.EventTypeName), new(item.Payload.ToArray(), item.SerializationFormat, metadata),stream.NativeProof,item.NativeEventDigest);
     }
     /// <summary>Reads and checks the complete independently persisted original reference.</summary>
     public async Task<Fr34StoredCanary?> ReadOriginalAsync(Fr34CanaryReference reference, CancellationToken token)

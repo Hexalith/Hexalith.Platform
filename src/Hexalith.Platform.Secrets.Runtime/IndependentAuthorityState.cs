@@ -19,4 +19,4 @@ public sealed record IndependentAuthorityState(string EnrollmentId, string Scope
     Dictionary<string, CustodyKeyRegistration> Registrations, Dictionary<string, DeletionBatchConsumptionRequest> Manifests,
     Dictionary<string, string>? QualificationBindings = null,
     Dictionary<string, JsonElement>? QualificationCases = null, Fr34ProtectionTarget? Fr34Target = null, string? PendingSpoolTransitionDigest = null,
-    string? PrivateOriginalsRoot=null,long PrivateOriginalsCount=0);
+    string? PrivateOriginalsRoot=null,long PrivateOriginalsCount=0,[property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IndependentAuthorityTransportCapacity? TransportCapacity=null);

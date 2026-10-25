@@ -8,7 +8,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding independentlyEnrolledObserver,IQualificationRecoveryController controlVerifier,
     IReadOnlyDictionary<string,IReadOnlyList<string>> missingInstalledReaders,TimeProvider? clock=null):IQualificationMeasuredCaseProjector
 {
-    private static readonly HashSet<string> SupportedMetrics=new(["immutableIdentity","immutableOutcome","persistedProofCount","activeCredentials","destroyedTargets","signingAttempts","originalEffects","activations","forbiddenEffects","foreignEffects","leakCount","allCopyRevival","atomicAllOrNone","exactIndependentDecision","currentActorRoleEvidence","exactReferenceCount","independentlyCurrentInventory","authenticatedWrap","ownedPlaintextCleared","detachedEs256","publicAnchorRetained","retainedEnvelopeVerifier","newKeyAndNonce","immutableLogicalId","revokedEffects","exactReceipts","currentLifecycleReservation","retainedPins","staleSafetyVerdicts","retainedDigestVerifiers","obsoleteUnissuedAttempts","stableSealBatchManifest","capabilityExpiryFields","canonicalFieldCount","actualIssueRevisionSeparate","globalKeyBlock","exactNoIssueProof","constantTimeVerification","nonceRecords","directPrincipalRelease","immutableDeliveredAt","renewedExpiry","replayRetentionSeconds","renewedFirstSeen","reservedSystemNamespace"],StringComparer.Ordinal);
+    private static readonly HashSet<string> SupportedMetrics=new(["immutableIdentity","immutableOutcome","persistedProofCount","activeCredentials","destroyedTargets","signingAttempts","originalEffects","activations","forbiddenEffects","foreignEffects","leakCount","allCopyRevival","atomicAllOrNone","exactIndependentDecision","currentActorRoleEvidence","exactReferenceCount","independentlyCurrentInventory","authenticatedWrap","ownedPlaintextCleared","detachedEs256","publicAnchorRetained","retainedEnvelopeVerifier","newKeyAndNonce","immutableLogicalId","revokedEffects","exactReceipts","currentLifecycleReservation","retainedPins","staleSafetyVerdicts","retainedDigestVerifiers","obsoleteUnissuedAttempts","stableSealBatchManifest","capabilityExpiryFields","canonicalFieldCount","actualIssueRevisionSeparate","globalKeyBlock","exactNoIssueProof","nonceRecords","directPrincipalRelease","immutableDeliveredAt","renewedExpiry","replayRetentionSeconds","renewedFirstSeen","reservedSystemNamespace","successfulRevisionInSignedBytes","raceWinners","immutableReservation","completeAffectedBatchEnumeration","capabilityCompromiseBlockProof","successorDispatchProof","exactNewKeyBlockReceipt","immutableOriginalOutcome","immutableOriginalRequest","restoredIdentityUnchanged","exactOriginalReceipt","replacementKeyEffects","openProductDispositionEffects","legacyEpochWrites","nextAttestationOrdinal","exactReplayStreamWrites"],StringComparer.Ordinal);
     /// <summary>Gets precise unavailable facts from the most recent projection.</summary>
     public IReadOnlyList<string> MissingReadInputs { get; private set; }=[];
     /// <inheritdoc />
@@ -105,12 +105,15 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
         long? ReceiptCount(string kind)=>receipts.OfType<JsonObject>().LongCount(value=>value["kind"]?.GetValue<string>()==kind);
         switch(metric)
         {
-            case "immutableIdentity":return states.All(value=>value["requestId"]?.ToJsonString()==state["requestId"]?.ToJsonString())?1:0;
-            case "immutableOutcome":return states.All(value=>value["outcome"]?.ToJsonString()==state["outcome"]?.ToJsonString() && value["receiptId"]?.ToJsonString()==state["receiptId"]?.ToJsonString())?1:0;
+            case "immutableOriginalRequest":case "restoredIdentityUnchanged":case "immutableIdentity":return states.All(value=>value["requestId"]?.ToJsonString()==state["requestId"]?.ToJsonString())?1:0;
+            case "immutableOriginalOutcome":case "exactOriginalReceipt":case "immutableOutcome":return states.All(value=>value["outcome"]?.ToJsonString()==state["outcome"]?.ToJsonString() && value["receiptId"]?.ToJsonString()==state["receiptId"]?.ToJsonString())?1:0;
             case "persistedProofCount":return sources.Count;
             case "activeCredentials":return ArrayCount("activeCredentialIds");case "destroyedTargets":return ArrayCount("destroyedTargetIds");
             case "signingAttempts":return ArrayCount("attempts");
             case "originalEffects":return ReceiptCount("Effect");case "activations":return ReceiptCount("Activate");
+            case "replacementKeyEffects":return MutationCount("keyVersion",original["enrolledScope"]?["successorKeyVersion"]?.GetValue<string>(),equal:true);
+            case "openProductDispositionEffects":return MutationCount("productDisposition","Open",equal:true);
+            case "legacyEpochWrites":return MutationCount("epochId",last["guardState"]?["EpochId"]?.GetValue<string>(),equal:false);
             case "forbiddenEffects":
                 return last["targetMutations"] is JsonArray mutations?mutations.OfType<JsonObject>().LongCount(value=>value["authorizationReceiptId"] is null):null;
             case "foreignEffects":
@@ -132,7 +135,8 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
                 return old is not null && fresh is not null?old["SigningKeyVersion"]?.GetValue<string>()!=fresh["SigningKeyVersion"]?.GetValue<string>() && old["DeliveryNonce"]?.GetValue<string>()!=fresh["DeliveryNonce"]?.GetValue<string>()?1:0:null;
             case "immutableLogicalId":return last["independentTemporalVerification"]?["originalEnvelope"]?["Identity"] is { } oldIdentity && last["independentTemporalVerification"]?["replacementEnvelope"]?["Identity"] is { } freshIdentity?JsonNode.DeepEquals(oldIdentity,freshIdentity)?1:0:null;
             case "revokedEffects":return last["targetMutations"] is JsonArray revokedWrites?revokedWrites.OfType<JsonObject>().LongCount(value=>value["keyState"]?.GetValue<string>()=="Revoked"):null;
-            case "constantTimeVerification":return last["independentEnvelopeVerification"]?["firstStatus"]?.GetValue<string>()=="Succeeded" && last["independentEnvelopeVerification"]?["exactRetryStatus"]?.GetValue<string>()=="Succeeded"?1:null;
+            case "constantTimeVerification":return null; // Successful calls do not establish implementation assurance or timing behavior.
+            case "exactReplayStreamWrites":return last["independentReplayOriginal"]?["SourceRevision"]?.GetValue<long>();
             case "nonceRecords":return last["independentEnvelopeVerification"]?["replayOriginal"]?["SourceRevision"]?.GetValue<long>() is { } sourceRevision?sourceRevision:null;
             case "directPrincipalRelease":return last["independentDeliveryOriginal"]?["State"]?.GetValue<string>()=="Delivered" && last["independentDeliveryOriginal"]?["ObservedAt"] is not null?1:0;
             case "immutableDeliveredAt":return states.All(value=>JsonNode.DeepEquals(value["deliveredAt"],state["deliveredAt"]))?1:0;
@@ -145,13 +149,23 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
             case "retainedPins":return last["independentLifecycleVerification"]?["RetainedPinCount"]?.GetValue<long>();
             case "authenticatedWrap":return ExportBoolean("AuthenticatedWrap");
             case "ownedPlaintextCleared":return ExportBoolean("OwnedPlaintextCleared");
-            case "detachedEs256":return ExportBoolean("DetachedEs256");
+            case "detachedEs256":return last["independentCapabilityVerification"]?["verified"] is JsonValue capability && capability.TryGetValue<bool>(out bool signatureValid)?signatureValid?1:0:ExportBoolean("DetachedEs256");
             case "publicAnchorRetained":return ExportBoolean("PublicAnchorRetained");
             case "staleSafetyVerdicts":return last["rotationVerdicts"] is JsonArray verdicts && last["rotationInventory"]?["Revision"]?.GetValue<long>() is { } currentRevision?verdicts.OfType<JsonObject>().LongCount(value=>value["BasisInventoryRevision"]?.GetValue<long>()<currentRevision && value["Status"]?.GetValue<string>()=="Current"):null;
             case "retainedDigestVerifiers":return last["retainedDigestCurrent"] is JsonObject currentDigest && last["retainedDigestOriginal"] is JsonObject oldDigest?currentDigest["Status"]?.GetValue<string>()=="Succeeded" && JsonNode.DeepEquals(currentDigest,oldDigest)?1:0:null;
+            case "successfulRevisionInSignedBytes":return last["independentCapabilityVerification"]?["payload"] is JsonObject signedPayload?signedPayload.ContainsKey("CommittedIssuedGuardRevision")?1:0:null;
+            case "canonicalFieldCount" when last["independentCapabilityVerification"] is JsonObject canonical:return canonical["canonicalFieldCount"]?.GetValue<long>();
+            case "capabilityExpiryFields" when (last["independentCapabilityVerification"]?["payload"] is JsonObject capPayload):return capPayload.Count(value=>value.Key.Contains("Expir",StringComparison.OrdinalIgnoreCase));
+            case "nextAttestationOrdinal":case "raceWinners":case "immutableReservation":case "completeAffectedBatchEnumeration":case "capabilityCompromiseBlockProof":case "successorDispatchProof":case "exactNewKeyBlockReceipt":
+                return last["independentOwnerInvariants"]?["Metrics"]?[metric]?.GetValue<long>();
             case "obsoleteUnissuedAttempts":case "stableSealBatchManifest":case "capabilityExpiryFields":case "canonicalFieldCount":case "actualIssueRevisionSeparate":case "globalKeyBlock":case "exactNoIssueProof":
                 return last["independentOwnerInvariants"]?["Metrics"]?[metric]?.GetValue<long>();
             default:return null;
+        }
+        long? MutationCount(string field,string? expected,bool equal)
+        {
+            if(expected is null || last["targetMutations"] is not JsonArray mutations || mutations.Any(value=>value?[field] is not JsonValue)) return null;
+            return mutations.OfType<JsonObject>().LongCount(value=>(value[field]!.GetValue<string>()==expected)==equal);
         }
         long? ExportBoolean(string name)=>last["independentExportVerification"]?[name] is JsonValue value && value.TryGetValue<bool>(out bool actual)?actual?1:0:null;
     }

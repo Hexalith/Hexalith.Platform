@@ -33,10 +33,10 @@ public sealed class IndependentDaprAuthority
             var request = new Request("platform-independent-authority-v1", _binding.EnrollmentId, _binding.Scope,
                 _binding.CurrentTrustRevision, method, nonce, JsonSerializer.SerializeToElement(payload, CustodyBindingContract.Json));
             byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(request, CustodyBindingContract.Json);
-            if (bytes.Length >= CustodyBindingContract.MaximumPageFrameBytes) return default;
+            if (bytes.Length >= CustodyBindingContract.MaximumIndependentAuthorityFrameBytes) return default;
             string? json = await _transport.InvokeCredentialBoundAsync(_binding.AppId, _binding.CredentialReference,
                 "platform-independent/v1/" + method, Encoding.UTF8.GetString(bytes), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
-            if (json is null || Encoding.UTF8.GetByteCount(json) >= CustodyBindingContract.MaximumPageFrameBytes) return default;
+            if (json is null || Encoding.UTF8.GetByteCount(json) >= CustodyBindingContract.MaximumIndependentAuthorityFrameBytes) return default;
             byte[] responseBytes = Encoding.UTF8.GetBytes(json); CustodyBindingContract.RejectDuplicateProperties(responseBytes);
             var response = JsonSerializer.Deserialize<Response>(responseBytes, CustodyBindingContract.Json);
             long now = _clock.GetUtcNow().ToUnixTimeSeconds();

@@ -14,11 +14,18 @@ public sealed class QualificationExportDeliveryWorkflow(IQualificationOriginalSt
     /// <summary>Registers actual closed actor calls and exact lookup-only recovery.</summary>
     public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>inputs.Keys.Where(Supported).Select(id=>new QualificationSourceWorkflow(id,ExecuteAsync,LookupAsync,PreflightAsync)).ToArray();
     /// <summary>Refuses substitutions without an actual original actor identity and exact scope.</summary>
-    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token) { token.ThrowIfCancellationRequested();return Task.FromResult<IReadOnlyList<string>>(Input(request) is null?["ExactEnrolledPrincipalDeliveryOriginal"]:[]); }
+    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();var input=Input(request);if(input is null) return Task.FromResult<IReadOnlyList<string>>(["ExactEnrolledPrincipalDeliveryOriginal"]);
+        var supplied=Substitute(request["caseId"]!.GetValue<string>(),input.Original);
+        try { supplied.Validate(); }
+        catch(ArgumentException) { return Task.FromResult<IReadOnlyList<string>>(["External.RestrictedDeliveryReceivingDenialOriginalForClosedIdentity"]); }
+        return Task.FromResult<IReadOnlyList<string>>(supplied.ActorId==input.Original.ActorId?[]:["External.RestrictedDeliveryReceivingBoundaryForChangedActorAddress"]);
+    }
     /// <summary>Admits one actor call before dispatch. A lost result never calls Deliver again.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
     {
-        var input=Input(request);if(input is null) return null;string id=request["caseId"]!.GetValue<string>(),requestId=request["requestId"]!.GetValue<string>();
+        var input=Input(request);if(input is null || (await PreflightAsync(request,token).ConfigureAwait(false)).Count!=0) return null;string id=request["caseId"]!.GetValue<string>(),requestId=request["requestId"]!.GetValue<string>();
         bool first=await originals.BeginAsync("executor",requestId+":case-result",request,token).ConfigureAwait(false);if(!first) return await LookupAsync(request,token).ConfigureAwait(false);
         var actor=Actor(input.Original);ExportKeyDeliveryIdentity supplied=Substitute(id,input.Original);ExportKeyDeliveryOutcome result;
         if(id.StartsWith("S3.delivery-substitution.",StringComparison.Ordinal))
@@ -28,10 +35,9 @@ public sealed class QualificationExportDeliveryWorkflow(IQualificationOriginalSt
             try
             {
                 supplied.Validate();
-                result=supplied.ActorId!=input.Original.ActorId?new(supplied,ExportKeyDeliveryState.Conflict,Reason:"exact-actor-binding"):
-                    await actor.DeliverAsync(supplied).WaitAsync(token).ConfigureAwait(false);
+                result=await actor.DeliverAsync(supplied).WaitAsync(token).ConfigureAwait(false);
             }
-            catch(ArgumentException) { result=new(supplied,ExportKeyDeliveryState.Conflict,Reason:"closed-delivery-identity"); }
+            catch(ArgumentException) { return null; }
         }
         else result=await actor.DeliverAsync(input.Original).WaitAsync(token).ConfigureAwait(false);
         if(result.Identity!=supplied) return null;
@@ -42,14 +48,15 @@ public sealed class QualificationExportDeliveryWorkflow(IQualificationOriginalSt
     {
         var input=Input(request);if(input is null) return null;string requestId=request["requestId"]!.GetValue<string>();
         if(await originals.LookupResultAsync("executor",requestId+":case-result",token).ConfigureAwait(false) is { } retained) return retained;
-        if(request["caseId"]!.GetValue<string>().StartsWith("S3.delivery-substitution.",StringComparison.Ordinal)) return null;
-        var result=await Actor(input.Original).LookupAsync(input.Original).WaitAsync(token).ConfigureAwait(false);
-        if(result.Identity!=input.Original || result.State is ExportKeyDeliveryState.Unknown or ExportKeyDeliveryState.Unavailable) return null;
+        if((await PreflightAsync(request,token).ConfigureAwait(false)).Count!=0) return null;
+        var supplied=Substitute(request["caseId"]!.GetValue<string>(),input.Original);
+        var result=await Actor(input.Original).LookupAsync(supplied).WaitAsync(token).ConfigureAwait(false);
+        if(result.Identity!=supplied || result.State is ExportKeyDeliveryState.Unknown or ExportKeyDeliveryState.Unavailable) return null;
         var value=Encode(request,result);await originals.RetainAsync("executor",requestId+":case-result",value,token).ConfigureAwait(false);return value;
     }
     /// <summary>Independently reads only the unchanged original actor outcome, never a missing delivery.</summary>
     public async Task<ExportKeyDeliveryOutcome?> ObserveAsync(JsonObject request,CancellationToken token)
-    { var input=Input(request);if(input is null) return null;var read=await Actor(input.Original).LookupAsync(input.Original).WaitAsync(token).ConfigureAwait(false);return read.Identity==input.Original?read:null; }
+    { var input=Input(request);if(input is null || (await PreflightAsync(request,token).ConfigureAwait(false)).Count!=0) return null;var supplied=Substitute(request["caseId"]!.GetValue<string>(),input.Original);var read=await Actor(input.Original).LookupAsync(supplied).WaitAsync(token).ConfigureAwait(false);return read.Identity==supplied?read:null; }
     private QualificationExportDeliveryInput? Input(JsonObject request)
     {
         string? id=SecretsProof.Text(request,"caseId");return id is not null && Supported(id) && inputs.TryGetValue(id,out var input) && request["enrolledScope"] is JsonObject scope

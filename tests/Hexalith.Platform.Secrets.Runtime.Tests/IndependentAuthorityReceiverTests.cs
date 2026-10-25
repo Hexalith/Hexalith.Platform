@@ -92,10 +92,10 @@ public sealed class IndependentAuthorityReceiverTests
     {
         using var fixture = new Fixture();
         fixture.State = fixture.State with { QualificationBindings = new() {
-            ["targetCommit"] = "\"accepted-target\"", ["isolatedTargetId"] = "\"isolated-target\"", ["planSha256"] = "\"accepted-plan\"" },
+            ["runId"] = "\"fixture-run\"", ["targetCommit"] = "\"accepted-target\"", ["isolatedTargetId"] = "\"isolated-target\"", ["planSha256"] = "\"accepted-plan\"" },
             QualificationCases = new() { ["S1.test"] = JsonSerializer.SerializeToElement(new { caseId = "S1.test", caseTargetId = "target-a", enrolledScope = "scope-a" }) },
             Callers = fixture.State.Callers.Select(c => c with { Methods = ["qualification-authorize"] }).ToArray() };
-        var request = new System.Text.Json.Nodes.JsonObject { ["targetCommit"] = "accepted-target", ["isolatedTargetId"] = "isolated-target", ["planSha256"] = "accepted-plan", ["caseId"] = "S1.test", ["caseTargetId"] = "target-a", ["enrolledScope"] = "scope-a" };
+        var request = new System.Text.Json.Nodes.JsonObject { ["runId"]="fixture-run", ["targetCommit"] = "accepted-target", ["isolatedTargetId"] = "isolated-target", ["planSha256"] = "accepted-plan", ["caseId"] = "S1.test", ["caseTargetId"] = "target-a", ["enrolledScope"] = "scope-a" };
         var caller = new QualificationCallerContext("worker", "scope");
         var allowed = await fixture.Client().InvokeAsync<Permission>("qualification-authorize", new { role = "executor", request, caller }, TestContext.Current.CancellationToken);
         allowed.ShouldNotBeNull(); allowed.Allowed.ShouldBeTrue();
@@ -211,6 +211,63 @@ public sealed class IndependentAuthorityReceiverTests
         finally { File.SetUnixFileMode(fixture.ArchiveDirectory,mode); }
     }
 
+    [Fact]
+    public async Task ReceivingEnrollmentAdmitsItsOwnOriginalAndRetainsExactSignedProofAcrossLostReplyAndLaterClock()
+    {
+        var clock=new ProofClock();using var fixture=new Fixture(clock:clock);using var signer=ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var request=QualificationHostTests.Request();foreach(string field in new[]{"caseId","caseTargetId","enrolledScope","scenario","requestId"}) request.Remove(field);
+        request["operation"]="enroll";request["requestId"]=QualificationProtocolSchema.Digest(request);
+        var cases=new Dictionary<string,JsonElement>();var drivers=new Dictionary<string,IQualificationOwnerCaseDriver>();
+        foreach(string id in QualificationProtocolSchema.CaseIds)
+        {
+            var scope=QualificationHostTests.Request()["enrolledScope"]!.DeepClone();string target=Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(id)));
+            scope["logicalId"]=target;scope["targetIds"]=new System.Text.Json.Nodes.JsonArray(target);
+            cases[id]=JsonSerializer.SerializeToElement(new { caseTargetId=target,enrolledScope=scope },CustodyBindingContract.Json);drivers[id]=new EnrollmentDriver(id);
+        }
+        var bindings=new Dictionary<string,string>(new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.Select(name=>new KeyValuePair<string,string>(name,request[name]!.ToJsonString())));
+        foreach(var pair in new[]{("executorIdentity","executor"),("executorVersion","v1"),("observerIdentity","observer"),("observerVersion","v1"),("qualifiedReferencesSha256",new string('b',64)),("currentProfileSha256",new string('c',64))}) bindings[pair.Item1]=JsonSerializer.Serialize(pair.Item2);
+        fixture.State=fixture.State with { QualificationBindings=bindings,QualificationCases=cases,Callers=fixture.State.Callers.Select(value=>value with { Role="enrollment",Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray() };
+        var store=new InstalledQualificationOriginalStore(fixture.Client());var role=new QualificationOwnerRole("enrollment","enrollment","v1",signer.ExportSubjectPublicKeyInfoPem());
+        QualificationOwnerOperationHandler Receiver()=>new(role,signer,store,drivers,clock);
+        var first=(System.Text.Json.Nodes.JsonObject)(await Receiver().HandleAsync("qualification-enrollment-enroll",JsonSerializer.SerializeToElement(request),fixture.State.Callers[0],fixture.State,TestContext.Current.CancellationToken))!;
+        clock.Now=clock.Now.AddMinutes(10);fixture.Restart();
+        var recovered=(System.Text.Json.Nodes.JsonObject)(await Receiver().HandleAsync("qualification-enrollment-enroll",JsonSerializer.SerializeToElement(request),fixture.State.Callers[0],fixture.State,TestContext.Current.CancellationToken))!;
+        System.Text.Json.Nodes.JsonNode.DeepEquals(first,recovered).ShouldBeTrue();
+        byte[] pem=Encoding.ASCII.GetBytes(role.PublicKeyPem);var verifier=new QualificationProofVerifier(new Dictionary<string,QualificationProofBinding>{{"enrollment",new(role.Identity,role.Version,pem,Convert.ToHexStringLower(SHA256.HashData(pem)))}},clock);
+        verifier.Verify("enrollment",request,recovered,TestContext.Current.CancellationToken).ShouldBeFalse();
+        verifier.VerifyOriginal("enrollment",request,recovered,first["payload"]!["observedAt"]!.GetValue<long>(),TestContext.Current.CancellationToken).ShouldBeTrue();
+        await Should.ThrowAsync<InvalidOperationException>(()=>Receiver().HandleAsync("qualification-enrollment-enroll",JsonSerializer.SerializeToElement(request),fixture.State.Callers[0] with { Revoked=true },fixture.State,TestContext.Current.CancellationToken));
+    }
+    [Fact]
+    public async Task FullSpoolSnapshotAndCompletionRoundTripThroughReceivingSerializationAndLowerSidecarCapacityBlocksAdmission()
+    {
+        using var fixture=new Fixture();var authority=new DaprReplicatedSpoolAuthority(fixture.Client());
+        fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Methods=value.Methods.Concat(["spool-authorize"]).ToArray() }).ToArray() };
+        var original=fixture.State.TransportCapacity!;fixture.State=fixture.State with { TransportCapacity=original with { MaximumDaprInvokeBytes=1024*1024 } };
+        (await authority.AuthorizeAsync(fixture.Target,"Readiness",null,TestContext.Current.CancellationToken)).ShouldBeFalse();
+        byte[] body=new byte[RecoverableAnchoredState.MaximumPendingBytes];body.AsSpan().Fill(42);
+        var transition=new AnchoredStateTransition(fixture.Scope,0,1,new string('A',64),Convert.ToHexString(SHA256.HashData(body)),body);
+        (await authority.AdmitTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeFalse();fixture.Saves.ShouldBe(0);
+        fixture.State=fixture.State with { TransportCapacity=original };
+        (await authority.AdmitTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();fixture.Restart();
+        (await authority.RecoverTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await authority.VerifyTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        var complete=transition with { ExpectedRevision=1,TargetRevision=2,PredecessorDigest=transition.TargetDigest,TargetBytes=body.ToArray() };
+        complete.TargetBytes[^1]=43;complete=complete with { TargetDigest=Convert.ToHexString(SHA256.HashData(complete.TargetBytes)) };
+        (await authority.AdmitTransitionAsync(complete,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await authority.RecordTransitionAsync(complete,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await authority.ValidateStateAsync(fixture.Target,2,complete.TargetDigest,TestContext.Current.CancellationToken)).ShouldBeTrue();
+    }
+    private sealed class ProofClock:TimeProvider { internal DateTimeOffset Now=DateTimeOffset.UtcNow;public override DateTimeOffset GetUtcNow()=>Now; }
+    private sealed class EnrollmentDriver(string id):IQualificationOwnerCaseDriver
+    {
+        public string CaseId=>id;
+        public Task<IReadOnlyList<string>> PreflightAsync(System.Text.Json.Nodes.JsonObject request,CancellationToken token)=>Task.FromResult<IReadOnlyList<string>>([]);
+        public Task<System.Text.Json.Nodes.JsonObject?> ExecuteAsync(System.Text.Json.Nodes.JsonObject request,CancellationToken token)=>throw new InvalidOperationException("Enrollment cannot execute cases.");
+        public Task<System.Text.Json.Nodes.JsonObject?> LookupAsync(System.Text.Json.Nodes.JsonObject request,CancellationToken token)=>throw new InvalidOperationException("Enrollment cannot read cases.");
+        public Task<System.Text.Json.Nodes.JsonObject?> ObserveAsync(System.Text.Json.Nodes.JsonObject request,CancellationToken token)=>throw new InvalidOperationException("Enrollment cannot observe cases.");
+    }
+
     private sealed class ReceivingCaseDriver:IQualificationOwnerCaseDriver
     {
         public string CaseId=>"S1.reject.missing-config";
@@ -253,7 +310,7 @@ public sealed class IndependentAuthorityReceiverTests
             string hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(Bearer)));
             State = new("isolated-enrollment", "isolated-owner", "current-1", 0, DateTimeOffset.UtcNow.AddHours(1),
                 [new(hash, "worker", "scope", "executor", ["spool-current", "spool-admit-transition", "spool-record-transition", "spool-recover-transition", "spool-verify-transition", "spool-validate", "qualification-begin-original"], DateTimeOffset.UtcNow.AddHours(1), false)],
-                Target, 0, new string('A', 64), [], [], [], [], [], []);
+                Target, 0, new string('A', 64), [], [], [], [], [], [],TransportCapacity:new("fixture-current-capacity","fixture-sidecar",new string('a',64),128L*1024*1024,128L*1024*1024,128L*1024*1024,128L*1024*1024,DateTimeOffset.UtcNow.AddHours(1)));
             _dapr.GetStateAndETagAsync<IndependentAuthorityState>("independent-test-store", "head", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
                 .Returns(_ => Task.FromResult((State, _revision.ToString())));
             _dapr.TrySaveStateAsync("independent-test-store", "head", Arg.Any<IndependentAuthorityState>(), Arg.Any<string>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())

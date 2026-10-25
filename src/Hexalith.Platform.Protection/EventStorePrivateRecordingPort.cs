@@ -15,7 +15,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Actual native EventStore first-seen and security-event recording under exact private bound-command credentials.</summary>
 public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gateway, IEventStoreGatewayBoundCommandProofSource scopedProofs,
-    IndependentDaprAuthority originals, IReplicatedSecuritySpoolAuthority recoveryAuthority, string principal, TimeProvider clock) : IPrivateRecordingEventStore
+    IndependentDaprAuthority originals, IReplicatedSecuritySpoolAuthority recoveryAuthority, string principal, TimeProvider clock) : IPrivateRecordingEventStore,IPrivateReplayRecoverySource
 {
     private readonly AuthoritativeEventStreamReader _reader = new(gateway, clock, requireNativeProof: true);
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web) { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow };
@@ -45,9 +45,47 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
             await BeginAsync("private-replay", id, command, cancellationToken);
             retained = await FindOriginalAsync("private-replay", id, cancellationToken);
         }
-        if (retained?.SubmissionState != "Unsent") return await LookupAsync(intent, cancellationToken);
+        if(retained?.SubmissionState=="Dispatched")
+        {
+            var proof=await ReadReplayRecoveryProofAsync(intent,cancellationToken).ConfigureAwait(false);if(proof is null) return await LookupAsync(intent,cancellationToken);
+            string recoveryId=PrivateRecordingIdentity.ReplayRecoveryMessageId(proof);
+            var attempt=await ReadOriginalAsync("private-replay",recoveryId,cancellationToken).ConfigureAwait(false);
+            if(!attempt.Authoritative) return null;
+            if(attempt.Original is null) { await BeginAsync("private-replay",recoveryId,command,cancellationToken).ConfigureAwait(false);attempt=await ReadOriginalAsync("private-replay",recoveryId,cancellationToken).ConfigureAwait(false); }
+            if(attempt.Original is not { SubmissionState:"Unsent" } || !Same(attempt.Original.Request,JsonSerializer.SerializeToElement(command,Json))) return await LookupAsync(intent,cancellationToken);
+            await SubmitAsync(identity,"Hexalith.Agents.Contracts.TrustedEnvelopeReplay.RegisterTrustedEnvelopeFirstSeen",recoveryId,command,cancellationToken,replayRecovery:proof).ConfigureAwait(false);
+            return await LookupAsync(intent,cancellationToken);
+        }
+        if(retained?.SubmissionState!="Unsent") return await LookupAsync(intent,cancellationToken);
         await SubmitAsync(identity, "Hexalith.Agents.Contracts.TrustedEnvelopeReplay.RegisterTrustedEnvelopeFirstSeen", id, command, cancellationToken);
         return await LookupAsync(intent, cancellationToken);
+    }
+    /// <inheritdoc />
+    public async Task<PrivateReplayRecoveryProof?> ReadReplayRecoveryProofAsync(TrustedEnvelopeReplayIntent intent,CancellationToken cancellationToken)
+    {
+        var identity=ReplayIdentity(intent);var source=await ReadAsync(identity,cancellationToken).ConfigureAwait(false);if(source is null || source.Head!=0) return null;
+        string id=StableUlid("replay",identity.ActorId);var retained=await ReadOriginalAsync("private-replay",id,cancellationToken).ConfigureAwait(false);
+        if(!retained.Authoritative || retained.Original is not { SubmissionState:"Dispatched" } original) return null;
+        var body=original.Request.Deserialize<ReplayCommand>(Json);
+        if(body is null || body.Issuer!=intent.Issuer || body.DeliveryNonce!=intent.DeliveryNonce || body.TargetTenantId!=intent.TargetTenantId
+            || body.LogicalCommandId!=intent.LogicalCommandId || body.SigningKeyVersion!=intent.SigningKeyVersion || body.CanonicalAndTagDigest!=intent.CanonicalAndTagDigest
+            || body.RetainUntil-body.FirstSeenAt!=TimeSpan.FromSeconds(604800)) return null;
+        string active=original.ActiveTransportMessageId??id;
+        if(active!=id)
+        {
+            var attempt=await ReadOriginalAsync("private-replay",active,cancellationToken).ConfigureAwait(false);
+            if(!attempt.Authoritative || attempt.Original is not { SubmissionState:"Dispatched" } exact || !Same(exact.Request,original.Request)) return null;
+        }
+        CommandStatusQueryResponse? status;
+        try { status=await gateway.GetWorkloadCommandStatusAsync(identity.TenantId,active,cancellationToken).WaitAsync(cancellationToken).ConfigureAwait(false); }
+        catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return null; }
+        if(status is not { EventCount:0,Retryable:false,CommittedEventSequence:0 } || status.MessageId!=active || status.TenantId!=identity.TenantId || status.Domain!=identity.Domain
+            || status.AggregateId!=identity.AggregateId || !(status.StatusCode==(int)CommandStatus.Rejected && status.Status==nameof(CommandStatus.Rejected)
+                || status.StatusCode==(int)CommandStatus.Completed && status.Status==nameof(CommandStatus.Completed))) return null;
+        var confirmed=await ReadAsync(identity,cancellationToken).ConfigureAwait(false);if(confirmed is null || !Same(source.NativeProof,confirmed.NativeProof)) return null;
+        var proof=new SecurityEventNoRecordProof(id,active,CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(original,CustodyBindingContract.Json)),source.NativeProof!.SourceIncarnation,
+            source.Head,source.NativeProof.CumulativeDigest,CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(status,CustodyBindingContract.Json)),"TerminalNoEvent");
+        return new(intent,id,active,original.Request.Clone(),proof);
     }
     /// <inheritdoc />
     public async Task<SecurityEventRecorderLookup> LookupAsync(SecurityObservationRecord record, CancellationToken cancellationToken = default)
@@ -141,20 +179,23 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         if (result is null || !result.Exact) throw new InvalidOperationException("Durable exact source original unavailable.");
         return result.First;
     }
-    private async Task SubmitAsync(AggregateIdentity identity, string commandType, string messageId, object payload, CancellationToken token, SecurityObservationRecoveryGrant? recovery = null)
+    private async Task SubmitAsync(AggregateIdentity identity, string commandType, string messageId, object payload, CancellationToken token, SecurityObservationRecoveryGrant? recovery = null,PrivateReplayRecoveryProof? replayRecovery=null)
     {
         // No generic user/principal/Workflow dispatch. Scope and command are constructed here from immutable authenticated originals.
         var command = new SubmitCommandRequest(messageId, identity.TenantId, identity.Domain, identity.AggregateId, commandType,
             JsonSerializer.SerializeToElement(payload, Json), IdempotencyKey: messageId);
         var request = new BoundWorkloadCommandRequest(command, principal);
-        string? proof = recovery is null ? await scopedProofs.IssueAsync(request, token)
+        string? proof = replayRecovery is not null?scopedProofs is IPrivateReplayRecoveryCommandProofSource replayProofs?await replayProofs.IssueReplayRecoveryAsync(request,replayRecovery,token):null:
+            recovery is null ? await scopedProofs.IssueAsync(request, token)
             : scopedProofs is IPrivateRecoveryCommandProofSource recoveryProofs ? await recoveryProofs.IssueRecoveryAsync(request,recovery,token) : null;
         if (proof is null) throw new InvalidOperationException("Exact stream/event workload ACL denied.");
         string role = identity.Domain == "trusted-envelope-replay" ? "private-replay" : "private-security-observation";
-        if (recovery is null && await originals.InvokeAsync<Permission>("recording-dispatch-admit", new { role, requestId = messageId, original = command.Payload }, token) is not { Allowed: true })
+        if (recovery is null && replayRecovery is null && await originals.InvokeAsync<Permission>("recording-dispatch-admit", new { role, requestId = messageId, original = command.Payload }, token) is not { Allowed: true })
             throw new InvalidOperationException("Dispatch is unknown or already admitted; exact lookup required.");
         if(recovery is not null && await originals.InvokeAsync<Permission>("recording-recovery-dispatch-admit",new { command,grant=recovery },token).ConfigureAwait(false) is not { Allowed:true })
             throw new InvalidOperationException("Recovery transport or current original dispatch barrier is unknown; lookup only.");
+        if(replayRecovery is not null && await originals.InvokeAsync<Permission>("recording-replay-recovery-dispatch-admit",new { command,proof=replayRecovery },token).ConfigureAwait(false) is not { Allowed:true })
+            throw new InvalidOperationException("Replay terminal recovery dispatch is unknown or not current; lookup only.");
         _ = await gateway.SubmitBoundWorkloadCommandAsync(request, proof, token); // Acceptance is never an authoritative source receipt.
     }
     private static TrustedEnvelopeReplayReceipt? ReadReplay(AuthoritativeEventStream? source, TrustedEnvelopeReplayIntent intent)
@@ -177,7 +218,11 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
     }
     private static bool Same<T>(T first, T second) => JsonSerializer.SerializeToUtf8Bytes(first, Json).AsSpan().SequenceEqual(JsonSerializer.SerializeToUtf8Bytes(second, Json));
     private static AggregateIdentity ReplayIdentity(TrustedEnvelopeReplayIntent intent) => new("system", "trusted-envelope-replay", Derive("trusted-envelope-replay", intent.Issuer, intent.DeliveryNonce));
-    private static AggregateIdentity SecurityIdentity(SecurityObservationRecord record) => new(record.Intent.RoutingTenantId, "security-event-log", Derive("security-event-log", record.Intent.RoutingTenantId, record.UtcDay));
+    private static AggregateIdentity SecurityIdentity(SecurityObservationRecord record)
+    {
+        var current=new AggregateIdentity(record.Intent.RoutingTenantId,"security-event-log",Derive("security-event-log",record.Intent.RoutingTenantId,record.UtcDay));
+        return ReplicatedSecurityObservationSpool.SourceStream(record)==current.ActorId?current:new(record.Intent.RoutingTenantId,"agents","SecurityEventLog-"+record.UtcDay);
+    }
     private static SecurityObservationCommand SecurityCommand(SecurityObservationRecord record)
     {
         _ = ReplicatedSecurityObservationSpool.IntentDigest(record.Intent);

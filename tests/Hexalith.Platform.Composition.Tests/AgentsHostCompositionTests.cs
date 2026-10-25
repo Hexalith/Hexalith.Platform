@@ -120,7 +120,7 @@ public sealed class AgentsHostCompositionTests
     /// <summary>Host, date, branch, and timing outside the accepted constants are rejected.</summary>
     [Theory]
     [InlineData("host", "192.168.1.31")]
-    [InlineData("integrationDate", "2026-10-09")]
+    [InlineData("integrationDate", "2026-02-29")]
     [InlineData("partiesBranch", "A")]
     public void RejectedConstantsFailValidation(string key, string value)
     {

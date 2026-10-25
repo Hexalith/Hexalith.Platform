@@ -376,15 +376,22 @@ def verify(root, artifacts, profile, configuration="Debug"):
         sys.path.insert(0, str(Path(root) / "eng/ext-secrets-1"))
         from joint_live_phase_runner import run_installed_cohort, Blocked
         try:
+            # The CLI profile is an exact enrolled raw artifact, including formatting.
+            from qualify import bounded_public_file, decode_json
+            profile_bytes = bounded_public_file(profile, 1024 * 1024) if profile else b""
+            supplied = decode_json(profile_bytes)
+            joint = decode_json(bounded_public_file(cohort_configuration, 1024 * 1024))
+            if not isinstance(supplied, dict) or hashlib.sha256(profile_bytes).hexdigest() != joint["binding"]["profileSha256"]:
+                raise Blocked("ExactSuppliedAcceptedHostProfileBytes")
             result = run_installed_cohort(cohort_configuration, Path(root).parent / "agents/_bmad-output/planning-artifacts/external-dependency-register.md")
         except Blocked as error:
             destination = Path(artifacts) / "joint-cohort-failure.json"
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(canonical({"code":"DependencyNotAvailable", "records":["EXT-SECRETS-1","EXT-HOST-1"],
-                "missingInputs":error.missing,"attemptState":error.attempt_state,"effectState":error.effect_state,
+                "missingInputs":error.missing,"attemptState":error.attempt_state,"effectState":error.effect_state,"attemptId":error.attempt_id,"phaseRequestId":error.phase_request_id,
                 "effectsStarted":error.effects_started,"qualificationEffects":"Unknown" if error.effects_started else 0,"dependencyAvailable":False}))
             return 1
-        except (OSError, ValueError, KeyError, TypeError):
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
             destination = Path(artifacts) / "joint-cohort-failure.json"
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(canonical({"code":"DependencyNotAvailable","records":["EXT-SECRETS-1","EXT-HOST-1"],

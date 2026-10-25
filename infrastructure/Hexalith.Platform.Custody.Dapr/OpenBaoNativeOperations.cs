@@ -6,11 +6,13 @@ namespace Hexalith.Platform.Custody.Dapr;
 
 // Existing non-exportable transit keys only. No create, import, export, backup, restore, or key configuration API.
 // OpenBao deletion is only native send completion. It never proves all-copy physical destruction.
-internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeInstallation installation, IAuthorityStore store, global::Dapr.Client.DaprClient dapr,HttpMessageHandler? transport=null) : IEpochOperations, IKeyAccess, IDisposable
+internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeInstallation installation, IAuthorityStore store, global::Dapr.Client.DaprClient dapr,HttpMessageHandler? transport=null,TimeSpan? operationTimeout=null) : IEpochOperations, IKeyAccess, IDisposable
 {
     private readonly HttpClient _http = new(transport??new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false }) { Timeout = TimeSpan.FromSeconds(30) };
     private async Task<JsonElement> CallAsync(HttpMethod method, string path, object? body, CancellationToken token)
     {
+        using var deadline=CancellationTokenSource.CreateLinkedTokenSource(token);deadline.CancelAfter(operationTimeout is { } timeout && timeout>TimeSpan.Zero && timeout<=TimeSpan.FromSeconds(30)?timeout:TimeSpan.FromSeconds(30));
+        token=deadline.Token;
         if (!Uri.TryCreate(installation.OpenBaoHttpsUrl, UriKind.Absolute, out var endpoint) || endpoint.Scheme != "https"
             || !string.IsNullOrEmpty(endpoint.UserInfo) || !string.IsNullOrEmpty(endpoint.Query) || !string.IsNullOrEmpty(endpoint.Fragment) || endpoint.AbsolutePath!="/"
             || installation.TransitMount.Length is 0 or >128 || installation.TransitMount.Any(c=>!(char.IsAsciiLetterOrDigit(c)||c is '-' or '_')))
@@ -21,11 +23,11 @@ internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeIn
         using var request = new HttpRequestMessage(method, new Uri(endpoint, "/v1/" + path));
         request.Headers.Add("X-Vault-Token", credential);
         if (body is not null) request.Content = JsonContent.Create(body);
-        using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
+        using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token).WaitAsync(token);
         response.EnsureSuccessStatusCode();
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent) return JsonSerializer.SerializeToElement(new { });
-        using var input = await response.Content.ReadAsStreamAsync(token);
-        string? json = await Hexalith.Platform.Secrets.Runtime.DaprSecretsInvoker.ReadBoundedAsync(input, token);
+        using var input = await response.Content.ReadAsStreamAsync(token).WaitAsync(token);
+        string? json = await Hexalith.Platform.Secrets.Runtime.DaprSecretsInvoker.ReadBoundedAsync(input, token).WaitAsync(token);
         if (json is null) throw new AuthorityUnavailableException("Bounded native response required.");
         return CustodyJson.Read<JsonElement>(System.Text.Encoding.UTF8.GetBytes(json));
     }

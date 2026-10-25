@@ -57,9 +57,26 @@ public sealed class QualificationGuardSourceTests
         var guard=new TenantGovernanceGuardState("tenant","installation",1,"epoch","legacy","writers",null,[],[deletion],[],[],[],[]);
         var outcome=new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.Consumed,1,0,"receipt",null,null,null,[new(new("tenant","other","alias"),"batch","target-receipt")]);
         var changed=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,outcome,[],["atomicAllOrNone","globalKeyBlock","leakCount"]);
-        changed.Metrics["atomicAllOrNone"].ShouldBe(0); changed.Metrics.ContainsKey("globalKeyBlock").ShouldBeFalse();
+        changed.Metrics["atomicAllOrNone"].ShouldBe(0); changed.Metrics["globalKeyBlock"].ShouldBe(0);
         changed.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.leakCount");
         var correct=outcome with { TargetReceipts=[new(new("tenant","interaction","alias"),"batch","target-receipt")] };
         QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,correct,[],["atomicAllOrNone"]).Metrics["atomicAllOrNone"].ShouldBe(1);
+    }
+    [Theory]
+    [InlineData(2,1)][InlineData(3,0)]
+    public void SuccessorOrdinalComesFromActualRetainedIssueCapabilitiesAndSubstitutedIssueCannotSupplyIt(long ordinal,long expected)
+    {
+        var predecessor=Batch().Capability;var successor=predecessor with { AttestationOrdinal=ordinal,CapabilityKeyVersion="v2",IntendedIssuedGuardRevision=4 };
+        var batch=new GovernanceBatchState("batch","Accepted",0,[new("tenant","interaction","alias")],predecessor.ManifestDigest,ordinal,"v2","digest","new-issue","dispatch","Consumed","receipt",["target-receipt"],1,[]) {
+            Capability=successor,IssuedGuardRevision=5,SigningRequestId="successor-signing" };
+        var deletion=new GovernanceDeletionState("deletion",new("tenant","ExactInteraction","interaction",""),new string('b',64),1,[],[],[],[],[],"seal",[batch],false,false);
+        var receipts=new[] { new GovernanceProtocolReceipt("old",new string('a',64),"Committed",2,0,"batch","old-issue") { Capability=predecessor },
+            new GovernanceProtocolReceipt("new",new string('b',64),"Committed",5,0,"batch","new-issue") { Capability=successor,SigningRequestId="successor-signing" } };
+        var guard=new TenantGovernanceGuardState("tenant","installation",6,"epoch","legacy","writers",null,[],[deletion],[],[],receipts,["v1"]);
+        var outcome=new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.Consumed,3,1,"receipt",null,null,null,[]);
+        QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,outcome,[],["nextAttestationOrdinal"]).Metrics["nextAttestationOrdinal"].ShouldBe(expected);
+        var substituted=guard with { Receipts=[receipts[0],receipts[1] with { Capability=successor with { TenantId="foreign" } }] };
+        var denied=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",substituted,outcome,[],["nextAttestationOrdinal"]);
+        denied.Metrics.ShouldNotContainKey("nextAttestationOrdinal");denied.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.nextAttestationOrdinal");
     }
 }

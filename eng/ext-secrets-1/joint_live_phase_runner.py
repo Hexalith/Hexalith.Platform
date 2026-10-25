@@ -71,6 +71,7 @@ class Blocked(Exception):
         self.effects_started = False
         self.attempt_state = "NotReserved"
         self.effect_state = "NotDispatched"
+        self.attempt_id = self.phase_request_id = None
         super().__init__("DependencyNotAvailable: EXT-SECRETS-1, EXT-HOST-1")
 
 
@@ -126,16 +127,44 @@ class JointLivePhaseRunner:
         return digest(b)
 
     def run(self):
-        self.attempt_state, self.effect_state = "NotReserved", "NotDispatched"
+        self.attempt_state, self.effect_state = "LookupRequired", "Unknown"
+        self.attempt_id = self.phase_request_id = None
         try:
             return self._run()
         except Exception as error:
             blocked = error if isinstance(error, Blocked) else Blocked("ExactOriginalLookupRequired")
             blocked.attempt_state, blocked.effect_state = self.attempt_state, self.effect_state
+            blocked.attempt_id, blocked.phase_request_id = self.attempt_id, self.phase_request_id
             blocked.effects_started = self.effect_state != "NotDispatched"
             raise blocked from None
 
+    def run_complete(self):
+        result = self.run()
+        try:
+            if not verify_complete_result(result, self.binding, self.authority):
+                raise Blocked("SameCompletePairedOwnerResult")
+        except Exception as error:
+            blocked = error if isinstance(error, Blocked) else Blocked("SameCompletePairedOwnerResult")
+            blocked.attempt_state, blocked.effect_state = self.attempt_state, self.effect_state
+            blocked.attempt_id, blocked.phase_request_id = self.attempt_id, self.phase_request_id
+            blocked.effects_started = self.effect_state != "NotDispatched"
+            raise blocked from None
+        return result
+
     def _run(self):
+        # Establish retained uncertainty before any mutable owner readiness can fail.
+        key = digest(self.binding)
+        retained_state = self.authority.lookup_attempt(self.binding)
+        if not isinstance(retained_state, dict) or retained_state.get("bindingDigest") != key:
+            raise Blocked("AuthoritativeRetainedAttemptLookupRequired")
+        if retained_state.get("state") == "Absent" and retained_state.get("effectState") == "NotDispatched":
+            self.attempt_state, self.effect_state = "NotReserved", "NotDispatched"
+        elif retained_state.get("state") == "Retained" and retained_state.get("attemptId"):
+            self.attempt_state, self.attempt_id = "Reserved", retained_state["attemptId"]
+            self.phase_request_id = retained_state.get("phaseRequestId")
+            self.effect_state = retained_state.get("effectState") if retained_state.get("effectState") in ("Unknown", "NotDispatched") else "Unknown"
+        else:
+            raise Blocked("AuthoritativeRetainedAttemptLookupRequired")
         key = self.preflight()  # reserves nothing, including on refusal
         self.attempt_state = "ReservationUnknown"
         retained = self.authority.reserve(self.binding, str(uuid.uuid4()), self._readiness)
@@ -143,6 +172,7 @@ class JointLivePhaseRunner:
             raise Blocked("ExactRetainedAttempt")
         self.attempt_state = "Reserved"
         attempt = retained["attemptId"]
+        self.attempt_id = attempt
         previous = key
         for phase, name in enumerate(PHASES):
             if not self.authority.current(self.binding):
@@ -150,6 +180,7 @@ class JointLivePhaseRunner:
             request = {"protocol": PROTOCOL, "attemptId": attempt, "bindingDigest": key,
                        "phase": phase, "owner": name, "previousSha256": previous,
                        "cases": partitions()[phase], "requestId": digest([attempt, key, phase, previous])}
+            self.phase_request_id = request["requestId"]
             # False means an original may already have executed. Only exact lookup is legal.
             self.effect_state = "Unknown" # A retained predecessor may already have dispatched.
             first = self.authority.retain(request)
@@ -157,6 +188,17 @@ class JointLivePhaseRunner:
             try:
                 self.effect_state = "Dispatched" if first else "Unknown"
                 result = owner.execute(request) if first else owner.lookup(request)
+                if not first and isinstance(result, dict) and result.get("payload", {}).get("state") == "OwnerAbsent":
+                    import time
+                    proof = result["payload"]; now = int(time.time())
+                    if (not self.authority.verify(request, result) or proof.get("requestId") != request["requestId"]
+                            or proof.get("requestSha256") != digest(request) or proof.get("attemptId") != attempt
+                            or proof.get("bindingDigest") != key or proof.get("phase") != phase
+                            or not now - 30 <= proof.get("observedAt", 0) <= now < proof.get("validUntil", 0) <= proof["observedAt"] + 30
+                            or not hasattr(owner, "execute_if_absent")):
+                        raise Blocked("ExactCurrentOwnerAbsenceRequired")
+                    self.effect_state = "Dispatched"
+                    result = owner.execute_if_absent(request, result)
             except Exception:
                 result = None
             if result is None:
@@ -295,6 +337,9 @@ class DaprCohortAuthority:
     def current(self, binding):
         return self.rpc.call("current", {"binding": binding}).get("current") is True
 
+    def lookup_attempt(self, binding):
+        return self.rpc.call("lookup-attempt", {"binding":binding})
+
     def reserve(self, binding, attempt, readiness):
         return self.rpc.call("reserve", {"binding": binding, "attemptId": attempt, "ownerReadiness": readiness})
 
@@ -324,6 +369,9 @@ class DaprPhaseOwner:
 
     def lookup(self, request):
         return self.rpc.call("lookup", request)
+
+    def execute_if_absent(self, request, absence):
+        return self.rpc.call("execute-if-absent", {"request": request, "absence": absence})
 
 
 def run_installed_cohort(configuration_path, register_path):
@@ -360,10 +408,7 @@ def run_installed_cohort(configuration_path, register_path):
         raise Blocked("LoopbackDaprEndpoint")
     owners = {name: DaprPhaseOwner(DaprCohortRpc(config["services"][name], endpoint, config["daprCredentialReference"])) for name in PHASES}
     authority = DaprCohortAuthority(DaprCohortRpc(config["services"]["authority"], endpoint, config["daprCredentialReference"]), owners)
-    result = JointLivePhaseRunner(binding, authority, owners).run()
-    if not verify_complete_result(result, binding, authority):
-        raise Blocked("SameCompletePairedOwnerResult")
-    return result
+    return JointLivePhaseRunner(binding, authority, owners).run_complete()
 
 
 def validate_source_checkout(binding, root=None):

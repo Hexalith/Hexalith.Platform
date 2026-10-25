@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using Shouldly;
 using NSubstitute;
 using Hexalith.Platform.Custody;
+using Hexalith.EventStore.Contracts.Security;
 
 namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
@@ -21,6 +22,22 @@ public sealed class QualificationReceivingProjectionTests
     [InlineData("S3.aes256gcm")]
     [InlineData("S3.es256-offline-anchor")]
     [InlineData("S3.crypto-substitution.tag")]
+    [InlineData("S4.capability-canonical-14-fields")]
+    [InlineData("S4.capability-substitution.issuer")]
+    [InlineData("S4.capability-substitution.audience")]
+    [InlineData("S4.capability-substitution.tenant")]
+    [InlineData("S4.capability-substitution.request")]
+    [InlineData("S4.capability-substitution.seal")]
+    [InlineData("S4.capability-substitution.kind")]
+    [InlineData("S4.capability-substitution.ordinal")]
+    [InlineData("S4.capability-substitution.batch")]
+    [InlineData("S4.capability-substitution.manifest")]
+    [InlineData("S4.capability-substitution.guard")]
+    [InlineData("S4.capability-substitution.intended-revision")]
+    [InlineData("S4.capability-substitution.attestation")]
+    [InlineData("S4.capability-substitution.signing-attempt")]
+    [InlineData("S4.capability-substitution.key-version")]
+    [InlineData("S4.capability-substitution.header")]
     public async Task ConcreteReceivingDriverAndSignedNativeProjectionPassExistingPythonVerifierAndRejectSubstitution(string caseId)
     {
         using var authority=new IndependentAuthorityReceiverTests.Fixture();
@@ -29,6 +46,11 @@ public sealed class QualificationReceivingProjectionTests
         if(caseId=="S3.exact-independent-decision") { request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");metrics["exactIndependentDecision"]=1; }
         if(caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)) { request["scenario"]!["outcomes"]=new JsonArray("Resolved");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");metrics["exactReferenceCount"]=1;metrics["independentlyCurrentInventory"]=1; }
         if(caseId is "S3.aes256gcm" or "S3.es256-offline-anchor") { request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");if(caseId=="S3.aes256gcm") { metrics["authenticatedWrap"]=1;metrics["ownedPlaintextCleared"]=1; } else { metrics["detachedEs256"]=1;metrics["publicAnchorRetained"]=1; } }
+        if(caseId=="S4.capability-canonical-14-fields")
+        {
+            request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");
+            metrics["canonicalFieldCount"]=14;metrics["detachedEs256"]=1;metrics["successfulRevisionInSignedBytes"]=0;metrics["capabilityExpiryFields"]=0;
+        }
         request.Remove("requestId");request["requestId"]=QualificationProtocolSchema.Digest(request);var original=(JsonObject)request.DeepClone();original.Remove("scenario");
         authority.State=authority.State with {
             Callers=authority.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray(),
@@ -38,13 +60,14 @@ public sealed class QualificationReceivingProjectionTests
         using var audit=new FileAuditFixture(originals,original);
         var envelope=Envelope(authority,caseId);var decision=Decision(caseId);var inventory=Inventory(originals,audit,caseId,original);
         using var exportFixture=new ExportQualificationFixture();var exportWorkflow=new QualificationExportCaseWorkflow(exportFixture.Engine(),originals,new Dictionary<string,ExportQualificationInput>{{caseId,exportFixture.Input(original["caseTargetId"]!.GetValue<string>())}});
-        IQualificationObservedOriginalReader rawReader=caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationOriginalReader(originals,audit):IsExport(caseId)?new QualificationExportOriginalReader(originals,audit,exportWorkflow):caseId.StartsWith("S3.",StringComparison.Ordinal)?new QualificationDecisionOriginalReader(originals,audit,decision):caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Reader:new QualificationDeniedOriginalReader(originals,audit,envelope.ReadVerifyAsync);
+        using var capabilityKey=ECDsa.Create(ECCurve.NamedCurves.nistP256);var capability=Capability(caseId,original,originals,capabilityKey);
+        IQualificationObservedOriginalReader rawReader=caseId=="S4.capability-canonical-14-fields"?new QualificationCapabilityOriginalReader(originals,audit,capability):caseId.StartsWith("S4.capability-substitution.",StringComparison.Ordinal)?new QualificationDeniedOriginalReader(originals,audit,capability.ReadVerifyAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationOriginalReader(originals,audit):IsExport(caseId)?new QualificationExportOriginalReader(originals,audit,exportWorkflow):caseId.StartsWith("S3.",StringComparison.Ordinal)?new QualificationDecisionOriginalReader(originals,audit,decision):caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Reader:new QualificationDeniedOriginalReader(originals,audit,envelope.ReadVerifyAsync);
         var observerRole=new QualificationOwnerRole("observer","observer","fixture-v1",observerKey.ExportSubjectPublicKeyInfoPem());
         var sourceReceiver=new QualificationOwnerOperationHandler(observerRole,observerKey,originals,new Dictionary<string,IQualificationOwnerCaseDriver>(),TimeProvider.System,rawReader);
         var sourceReader=new ReceivingReader(sourceReceiver,()=>authority.State,authority.State.Callers[0] with { Role="observer-reader" });
         byte[] anchor=Encoding.ASCII.GetBytes(observerKey.ExportSubjectPublicKeyInfoPem());
         var trust=new QualificationProofBinding("observer","fixture-v1",anchor,Convert.ToHexStringLower(SHA256.HashData(anchor)));
-        var workflows=new[]{caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
+        var workflows=new[]{caseId.StartsWith("S4.capability",StringComparison.Ordinal)?QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,capability.ExecuteAsync,capability.ReadVerifyAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
         var drivers=QualificationDriverComposition.Create(workflows,originals,audit,sourceReader,trust,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}});
         var executor=new QualificationOwnerOperationHandler(new("executor","executor","fixture-v1",executorKey.ExportSubjectPublicKeyInfoPem()),executorKey,originals,drivers,TimeProvider.System);
         var observer=new QualificationOwnerOperationHandler(observerRole,observerKey,originals,drivers,TimeProvider.System);
@@ -52,7 +75,7 @@ public sealed class QualificationReceivingProjectionTests
         authority.State=authority.State with { Callers=authority.State.Callers.Select(value=>value with { Role="observer",Methods=value.Methods.Concat(["qualification-read-original:executor"]).ToArray() }).ToArray() };
         JsonObject observation=(JsonObject)(await observer.HandleAsync("qualification-observer-observe",JsonSerializer.SerializeToElement(original),authority.State.Callers[0] with { Role="observer" },authority.State,TestContext.Current.CancellationToken))!;
         audit.Controls.ShouldBe(2);audit.Reads.ShouldBe(4);
-        execution["payload"]!["outcome"]!.GetValue<string>().ShouldBe(caseId is "S3.exact-independent-decision" or "S3.aes256gcm" or "S3.es256-offline-anchor"?"Verified":caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?"Resolved":"Denied");
+        execution["payload"]!["outcome"]!.GetValue<string>().ShouldBe(caseId is "S3.exact-independent-decision" or "S3.aes256gcm" or "S3.es256-offline-anchor" or "S4.capability-canonical-14-fields"?"Verified":caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?"Resolved":"Denied");
         observation["payload"]!["metrics"]!["persistedProofCount"]!.GetValue<long>().ShouldBe(4);
         var anchors=new Dictionary<string,QualificationProofBinding> { ["executor"]=Binding(executorKey,"executor"),["observer"]=trust };
         var verifier=new QualificationProofVerifier(anchors);
@@ -85,6 +108,7 @@ public sealed class QualificationReceivingProjectionTests
 
     private static (QualificationSourceWorkflow Workflow,IQualificationObservedOriginalReader Reader) Inventory(IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,string caseId,JsonObject original)
     {
+        if(!caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)) return (null!,null!);
         var key=new PlatformKeyVersion("tenant",PlatformKeyPurpose.TenantKek,"fixture-kek","v1","provider-target","outside-authority",null,null);
         var snapshot=new PlatformKeyInventorySnapshot("tenant",PlatformKeyPurpose.TenantKek,"fixture-kek",7,[new(key,PlatformHmacKeyState.Active,7)],[]);
         var actor=Substitute.For<IPlatformKeyInventoryActor>();actor.ReadAsync(key).Returns(snapshot);
@@ -94,7 +118,21 @@ public sealed class QualificationReceivingProjectionTests
         authority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<long>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(call=>call.ArgAt<PlatformKeyVersion>(0)==key && call.ArgAt<long>(1)==7 && call.ArgAt<string>(2)==digest);
         var inputs=new Dictionary<string,JsonElement>{{caseId,JsonSerializer.SerializeToElement(new { enrolledScope=original["enrolledScope"],key },CustodyBindingContract.Json)}};
         var source=new QualificationRuntimeSourceDriver(actor,authority,null!,null!,inputs);
-        return (QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,source.ExecuteAsync),new QualificationInventoryOriginalReader(actor,authority,originals,audit,new Dictionary<string,PlatformKeyVersion>{{caseId,key}}));
+        return (QualificationRuntimeWorkflowCatalog.Create(originals,[caseId],source).Single(),new QualificationInventoryOriginalReader(actor,authority,originals,audit,new Dictionary<string,PlatformKeyVersion>{{caseId,key}}));
+    }
+
+    private static QualificationCapabilityCaseWorkflow Capability(string caseId,JsonObject original,IQualificationOriginalStore originals,ECDsa privateSigner)
+    {
+        var scope=original["enrolledScope"]!;
+        var payload=new DeletionBatchCapabilityV1("capability-issuer","protection-owner",scope["tenantId"]!.GetValue<string>(),"request",scope["sealId"]!.GetValue<string>(),"accepted",1,
+            scope["batchId"]!.GetValue<string>(),scope["manifestDigest"]!.GetValue<string>(),"guard",1,1,1,scope["initialKeyVersion"]!.GetValue<string>());
+        var profile=new DeletionCapabilityTrustProfile(payload.Issuer,payload.Audience,payload.TenantId,payload.CapabilityKeyVersion,"public-capability-anchor","v1");
+        var signed=new DeletionCapabilitySigningOutcome(DeletionBatchCapabilityCodec.SigningRequestId(payload),payload,DeletionCapabilitySigningState.Signed,
+            DeletionBatchCapabilityCodec.Sign(payload,profile,privateSigner),profile.PublicAnchorId,profile.PublicAnchorVersion);
+        var actor=Substitute.For<IDeletionCapabilitySigningActor>();actor.SignAsync(payload).Returns(signed);actor.LookupAsync(payload).Returns(signed);
+        var trust=Substitute.For<IDeletionCapabilitySigningTrustProvider>();trust.ResolveAsync(payload.TenantId,"DeletionBatchCapabilitySigningKey",payload.CapabilityKeyVersion,Arg.Any<CancellationToken>())
+            .Returns(new DeletionCapabilityPublishedTrust(payload.TenantId,"DeletionBatchCapabilitySigningKey",payload.CapabilityKeyVersion,payload.Issuer,payload.Audience,profile.PublicAnchorId,profile.PublicAnchorVersion,privateSigner.ExportSubjectPublicKeyInfo(),1,true));
+        return new(actor,trust,originals,new Dictionary<string,DeletionBatchCapabilityV1>{{caseId,payload}});
     }
 
     private static QualificationDecisionCaseWorkflow Decision(string caseId)

@@ -19,18 +19,18 @@ internal sealed class ReceivingAuthorityFixture : ISecretsCredentialBoundDaprInv
     private int _revision;
     internal IndependentAuthorityState State;
     internal IndependentDaprAuthority Authority => new(this,new("isolated-authority","file:/isolated",_key.ExportSubjectPublicKeyInfoPem(),"isolated-enrollment","isolated-owner","trust-1"),TimeProvider.System);
-    internal ReceivingAuthorityFixture(string role)
+    internal ReceivingAuthorityFixture(string role,IPrivateRecordingEventStore? recordingSource=null)
     {
         File.WriteAllText(_channel,"fixture-channel");Directory.CreateDirectory(_archive);File.WriteAllText(Path.Combine(_archive,"enrollment.json"),"fixture-enrollment");
         State = new("isolated-enrollment","isolated-owner","trust-1",0,DateTimeOffset.UtcNow.AddHours(1),
             [new(Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes("fixture-workload"))),"recording-owner","private-worker",role,
-                ["qualification-begin-original","qualification-lookup-original","recording-dispatch-admit","recording-command-authorize","fr34-command-authorize","recording-source:trusted-envelope-replay","recording-source:security-event-log","recording-source:fr34-canary"],DateTimeOffset.UtcNow.AddHours(1),false)],
+                ["qualification-begin-original","qualification-lookup-original","recording-dispatch-admit","recording-command-authorize","fr34-command-authorize","recording-replay-recovery-command-authorize","recording-replay-recovery-dispatch-admit","recording-source:trusted-envelope-replay","recording-source:security-event-log","recording-source:fr34-canary"],DateTimeOffset.UtcNow.AddHours(1),false)],
             null,0,new string('A',64),[],[],[],[],[],[]);
         _dapr.GetStateAndETagAsync<IndependentAuthorityState>("fixture-store","head",Arg.Any<ConsistencyMode?>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>())
             .Returns(_=>Task.FromResult((State,_revision.ToString())));
         _dapr.TrySaveStateAsync("fixture-store","head",Arg.Any<IndependentAuthorityState>(),Arg.Any<string>(),Arg.Any<StateOptions>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>())
             .Returns(call=> { if(call.ArgAt<string>(3)!=_revision.ToString()) return false; State=call.ArgAt<IndependentAuthorityState>(2); _revision++; return true; });
-        _receiver = new(_dapr,new("isolated-enrollment","isolated-owner","trust-1","fixture-store","head","unused",_key.ExportSubjectPublicKeyInfoPem(),"file:"+_channel,OriginalArchiveDirectory:_archive,ArchiveEnrollmentSha256:Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(_archive,"enrollment.json")))),CompletionReserveBytes:1024*1024),_key,TimeProvider.System);
+        _receiver = new(_dapr,new("isolated-enrollment","isolated-owner","trust-1","fixture-store","head","unused",_key.ExportSubjectPublicKeyInfoPem(),"file:"+_channel,OriginalArchiveDirectory:_archive,ArchiveEnrollmentSha256:Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(_archive,"enrollment.json")))),CompletionReserveBytes:1024*1024),_key,TimeProvider.System,recordingSource);
     }
     public Task<string?> InvokeAsync(string appId,string method,string jsonBody,CancellationToken token)=>throw new InvalidOperationException("Uncredentialed fixture call.");
     public async Task<string?> InvokeCredentialBoundAsync(string appId,string credentialReference,string method,string jsonBody,CancellationToken token)

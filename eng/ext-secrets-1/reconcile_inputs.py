@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import time
+import re
 
 import qualify as q
 
@@ -262,8 +263,17 @@ def reconcile(original_evidence, configuration, output, source_evidence=(), obse
         raise ValueError("IntegralObservationTimeRequired")
     missing = missing_references(config)
     current_cohort_missing, checked_register_target = [], None
+    accepted_integration_date, date_missing = None, ["ExplicitAcceptedRegisterIntegrationDate"]
     if register is not None:
         register_text = capture(register).decode("utf-8")
+        from coordinated_packets import section
+        from joint_live_phase_runner import calendar_date
+        accepted_section=section(register_text,"EXT-SECRETS-1")
+        date_row=re.search(r"\| `TargetIntegrationDate` \| `([^`]+)` \|",accepted_section)
+        if date_row:
+            explicit_date=calendar_date(date_row.group(1))
+            if re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|",accepted_section):
+                accepted_integration_date,date_missing=explicit_date,[]
         checked_register_target = target if target is not None else q.acceptance(register, register_text=register_text)[0]
         if not isinstance(checked_register_target, str) or not q.COMMIT.fullmatch(checked_register_target):
             raise ValueError("ExactRegisterOrCandidateTargetRequired")
@@ -299,6 +309,7 @@ def reconcile(original_evidence, configuration, output, source_evidence=(), obse
               "sourceEvidence": hashes, "inputs": rows,
               "unverifiedLivePrerequisites": list(q.IMPLEMENTATIONS),
               "checkedRegisterTarget": checked_register_target, "currentCohortMissingInputs": current_cohort_missing,
+              "acceptedPolicyMissingInputs": date_missing,
               "supplementalCohortPrerequisites": [{"input": name, "action": action,
                   "state": "NotCheckedByThisPublicReferencePacket" if register is None else
                            "RegisterOrImplementationPrerequisiteMissing" if name in current_cohort_missing else
@@ -308,7 +319,7 @@ def reconcile(original_evidence, configuration, output, source_evidence=(), obse
                               "Credential contents, public-anchor contents, runtime services and operator identities are not inspected; path/inode metadata is compared only to reject configured credential aliases.",
                               "Supplied references cannot resolve independent installation, current authorization, trust acceptance or physical all-copy/nonrollback proof."]}
     requests = {"schema": "EXT-SECRETS-1.provisioning-requests.v1", **common, "sourceEvidence": hashes,
-                "acceptedPolicy": {"host": "192.168.1.30", "integrationDate": "2026-10-08", "timing": {"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800},
+                "acceptedPolicy": {"host": "192.168.1.30", "integrationDate": accepted_integration_date, "missingInputs": date_missing, "timing": {"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800},
                                    "decisionKeysOutsideCustody": True, "overlappingExportDisposition": "Open"},
                 "groups": [{"id": group_id, **group, "historicalInputs": [row["input"] for row in rows if row["group"] == group_id],
                             "requestedPublicReferenceValues": {name: None for name in missing if group_for(name) == group_id},

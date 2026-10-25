@@ -52,6 +52,14 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
             ["detachedArtifactSha256"]=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(issued.DetachedJws))),
             ["publicAnchorId"]=published.PublicAnchorId,["publicAnchorVersion"]=published.PublicAnchorVersion,["trustRevision"]=published.TrustProfileRevision,
             ["payload"]=JsonSerializer.SerializeToNode(payload,CustodyBindingContract.Json) };
+        var retained=await originals.LookupResultAsync("executor",originalId,token).ConfigureAwait(false)
+            ??await originals.LookupResultAsync("executor",requestId+":case-result",token).ConfigureAwait(false);
+        if(retained is not null)
+        {
+            // Current trust/revocation was checked above. Preserve the independently retained original observation revision rather than rewriting it during recovery.
+            var before=(JsonObject)retained.DeepClone();var after=(JsonObject)result.DeepClone();before.Remove("trustRevision");after.Remove("trustRevision");
+            return JsonNode.DeepEquals(before,after)?retained:null;
+        }
         if(!lookupOnly) await originals.RetainAsync("executor",originalId,result,token).ConfigureAwait(false);
         return result;
     }

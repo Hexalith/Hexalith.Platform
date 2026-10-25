@@ -1,0 +1,111 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-25T20:31:17.206349+00:00",
+  "reviewPass": 3,
+  "reviewLoopIterationAfterTriage": 3,
+  "status": "CorrectionsInProgress",
+  "reviewers": [
+    "/root/review3_blind",
+    "/root/review3_edge",
+    "/root/review3_gap"
+  ],
+  "contextFree": true,
+  "sourceScopeManifest": "/tmp/story54-final-review-px3vqd04/scope.json",
+  "reviewDiffSha256": "629f4b7c9f2d6509a25d8ba0f292bc129ab56bfcf497baeb43f305b2c68fdfde",
+  "findings": [
+    {
+      "id": "B3-1",
+      "verdict": "high",
+      "evidence": "JointPhaseCommandExecutable passes one ExecutorOriginals store to executor workflows, joint-phase-secret and joint-phase-command; IndependentAuthorityReceiver requires begin.role equal the credential caller role. No single credential admits the composed three roles.",
+      "route": "bad_spec \u2014 independently credential-bound stores per role"
+    },
+    {
+      "id": "B3-2",
+      "verdict": "high",
+      "evidence": "QualificationHost begins the complete scenario request, while QualificationOwnerOperationHandler begins the stripped owner request with the same role/requestId. Permitted shared authority placement then causes immutable-original conflict.",
+      "route": "bad_spec \u2014 distinct public and receiving original namespaces with canonical exact identity"
+    },
+    {
+      "id": "B3-3",
+      "verdict": "high",
+      "evidence": "Both public host and receiver call Begin for executor lookup. An absent lookup makes the subsequent execute non-first, permanently selecting lookup without an effect.",
+      "route": "bad_spec \u2014 read-only lookup absence must not consume first execution admission"
+    },
+    {
+      "id": "B3-4",
+      "verdict": "high",
+      "evidence": "CohortHttpApplication closes workload-grant read before dispatch opens the reserve/retain transaction. A concurrent committed revocation can precede new admission despite passing the earlier check.",
+      "route": "bad_spec \u2014 atomically order current grant validation and durable admission"
+    },
+    {
+      "id": "B3-5",
+      "verdict": "high",
+      "evidence": "Fr34ProtectionGate generates a fresh unpredictable canary, while production binding/material sources resolve only pre-enrolled exact occurrence dictionaries. There is no shipped authorized producer for that fresh challenge.",
+      "route": "bad_spec \u2014 current independently authorized dynamic recipe binding and receiving producer, with absent actual inputs blocked"
+    },
+    {
+      "id": "B3-6",
+      "verdict": "high",
+      "evidence": "CustodyInteractionOccurrenceKeyProvider uses one fixed read KeyUse and permanently records its material attempt. Every later legitimate read of that occurrence fails, including after native completion; restart still reuses the consumed native use.",
+      "route": "bad_spec \u2014 independently admitted fresh per-read uses with exact pending-use recovery"
+    },
+    {
+      "id": "B3-7",
+      "verdict": "high",
+      "evidence": "FR34 unseal opens owned plaintext then awaits RecordUnsealAsync; exception or cancellation bypasses clearing. The array has not transferred ownership on that path.",
+      "route": "patch \u2014 finally clear unless ownership transfers successfully"
+    },
+    {
+      "id": "B3-8",
+      "verdict": "high",
+      "evidence": "InstalledPhaseExecutor.lookup only asks the observer, which requires owner-original.json. If the command persisted all case files then crashed before that index, recovery never reaches any metadata finalization and remains stuck.",
+      "route": "bad_spec \u2014 reachable bounded metadata-only finalization from exact immutable case evidence"
+    },
+    {
+      "id": "B3-9",
+      "verdict": "medium",
+      "evidence": "Every absent phase lookup inserts a new nonce row into phase_absences without expiry, per-request bound or cleanup. Repeated authorized lookups can exhaust recovery storage for one retained request.",
+      "route": "bad_spec \u2014 bound outstanding absence challenges without deleting effect originals"
+    },
+    {
+      "id": "B3-10",
+      "verdict": "high",
+      "evidence": "verify_full selects the cohort route before reading/checking its supplied profile path. Missing or substituted --profile bytes are ignored even when the cohort returns success.",
+      "route": "bad_spec \u2014 exact raw supplied profile pin before cohort admission"
+    },
+    {
+      "id": "B3-11",
+      "verdict": "medium",
+      "evidence": "Indexed storage applies only to private replay/recorder/FR34 roles. Qualification and joint-phase history still accumulates in one state.Originals head until its permanent 10,000-item refusal. Repeated installed attempts cannot continue despite preserving unrelated history.",
+      "route": "bad_spec \u2014 extend bounded immutable indexed originals to these roles, preserving prior originals"
+    },
+    {
+      "id": "E3-1",
+      "verdict": "high",
+      "evidence": "JointLivePhaseRunner resets state to NotReserved/NotDispatched before preflight. Retry of an already dispatched retained attempt reports zero if current owner readiness fails before reserve returns it.",
+      "route": "bad_spec \u2014 recover retained attempt/effect state before mutable readiness or report uncertainty"
+    },
+    {
+      "id": "E3-2",
+      "verdict": "high",
+      "evidence": "Guard workflow recovers Register/Reserve/Block/Activate from mutable batch Lookup. Native Activate retains ActivationBlockedByReplacementKeyCompromise as its operation result but stores ConsumptionBlocked as the batch outcome; this substitutes a different original and allows later steps.",
+      "route": "bad_spec \u2014 exact operation-specific original lookup or unknown, never current batch as original"
+    },
+    {
+      "id": "V3-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: no executed test calls AddInstalledAgentsOwningProcess; removing its startup/readiness registrations leaves current tests green. Manual gate and old composition tests do not cover the new production registration.",
+      "route": "patch \u2014 exercise actual composed startup and ready health checks with controlled authorities"
+    },
+    {
+      "id": "V3-2",
+      "verdict": "high",
+      "evidence": "Pre-verified: native receiving tests pre-create ciphertext/native events and never call SealAndPersistAsync. Deleting bound submit/domain dispatch would escape them.",
+      "route": "patch \u2014 real isolated seal/protect/bound-submit/domain/persist/read round trip"
+    }
+  ],
+  "acceptedRecordChangesAuthorized": false,
+  "installedQualification": false,
+  "fullSourceComplete": false,
+  "deliveryComplete": false
+}

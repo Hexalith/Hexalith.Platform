@@ -14,6 +14,8 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     IReadOnlyDictionary<string,CustodyInteractionMaterialProfile> enrolledProfiles):IInteractionOccurrenceKeyProvider
 {
     private readonly HashSet<string> _leases=new(StringComparer.Ordinal),_materialAttempts=new(StringComparer.Ordinal);private readonly object _gate=new();
+    private readonly Dictionary<string,byte[]> _ownedRoots=new(StringComparer.Ordinal);
+    private readonly HashSet<string> _completedUses=new(StringComparer.Ordinal);
     /// <summary>Gets the exact independently enrolled material profile identity.</summary>
     public static string ProfileId(InteractionOccurrenceIdentity identity,bool writing)=>CustodyInteractionProtectionBindingSource.ResourceId(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId))+"|"+(writing?"write":"read");
     private async Task<(InteractionProtectionBinding Binding,CustodyInteractionMaterialProfile Profile)?> Current(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token)
@@ -39,16 +41,38 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     {
         if(writing) { lock(_gate) if(!_leases.Contains(ProfileId(identity,true)+"|"+keyReference)) return null; }
         if(await Current(identity,writing,token).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=keyReference) return null;
-        string materialAttempt=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(current.Profile.KeyUse)));
+        string materialAttempt=MaterialId(current.Profile.KeyUse);
         lock(_gate) if(!_materialAttempts.Add(materialAttempt)) return null;
         var released=await custody.UnwrapAsync(current.Profile.Registration,current.Binding.OperationId+"|"+(writing?"write":"read"),current.Profile.KeyUse,token).ConfigureAwait(false);
         if(released.Key is not { } key) return null;
         using(key)
         {
             if(key.Bytes.Length!=32 || await Current(identity,writing,token).ConfigureAwait(false) is not { } after || after.Binding!=current.Binding || after.Profile!=current.Profile) return null;
-            return new(identity.Target,"interaction-root",identity.RootKeyVersion,key.TransferOwnership());
+            byte[] transferred=key.TransferOwnership();lock(_gate) _ownedRoots[materialAttempt]=transferred;
+            return new(identity.Target,"interaction-root",identity.RootKeyVersion,transferred);
         }
     }
+    /// <summary>Recovers exact native holder completion, including after process restart. Buffer disposal merely permits asking the independently witnessed native boundary; it never supplies completion evidence.</summary>
+    public async Task<int> CompleteDisposedUsesAsync(CancellationToken token)
+    {
+        int completed=0;
+        foreach(var profile in enrolledProfiles.Values.DistinctBy(value=>MaterialId(value.KeyUse)))
+        {
+            string id=MaterialId(profile.KeyUse);
+            lock(_gate)
+            {
+                if(_completedUses.Contains(id) || _ownedRoots.TryGetValue(id,out var bytes) && bytes.AsSpan().IndexOfAnyExcept((byte)0)>=0) continue;
+            }
+            var result=await custody.CompleteAsync(profile.Registration,"holder-completion:"+id,profile.KeyUse,token).ConfigureAwait(false);
+            if(result.Key is { } unexpected) { unexpected.Dispose();continue; }
+            if(result.HoldersCompleted)
+            {
+                lock(_gate) { _completedUses.Add(id);_ownedRoots.Remove(id); }completed++;
+            }
+        }
+        return completed;
+    }
+    private static string MaterialId(CustodyKeyUse use)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(use)));
     /// <inheritdoc />
     public async Task<bool> IsCurrentAsync(InteractionOccurrenceIdentity identity,string operation,CancellationToken token)
     {

@@ -111,6 +111,20 @@ internal static class PublicLifecycleTests
         var subset = original.Manifest.Original with { Targets = [target] };
         var incomplete = new DaprCustodyKeyLifecycleProvider(client, new ManifestLocator(subset));
         Check((await incomplete.ExecuteAsync(registration, destroy, digest)).Status == CustodyKeyLifecycleStatus.Unknown, "Subset manifest became per-key authority.");
+        // Exercise the actual qualification wrapper through the SDK/component boundary after losing the local case-result acknowledgement.
+        var localOriginals=new QualificationOriginalFixture();
+        var qualificationScope=new System.Text.Json.Nodes.JsonObject { ["tenantId"]=registration.Identity.TenantId };
+        var qualificationRequest=new System.Text.Json.Nodes.JsonObject { ["caseId"]="S3.lifecycle.destroy",["requestId"]="fixture-wrapper-lost-result",["enrolledScope"]=qualificationScope };
+        var qualificationInput=new QualificationLifecycleCaseInput(registration,Convert.ToHexStringLower(SHA256.HashData(QualificationProofVerifier.CanonicalBytes(qualificationScope))),
+            Manifest:original.Manifest.Original,ReservationReceiptId:original.Manifest.ProtectionReservationReceiptId);
+        var wrapper=new QualificationLifecycleCaseWorkflow(client,localOriginals,new Dictionary<string,QualificationLifecycleCaseInput>{{"S3.lifecycle.destroy",qualificationInput}});
+        await localOriginals.BeginAsync("executor","fixture-wrapper-lost-result:case-result",qualificationRequest,default);
+        var originalHead=f.Store.State.Head;int originalSends=f.Native.Schedules,requests=source.Requests.Count;
+        var recoveredWrapper=await wrapper.LookupAsync(qualificationRequest,default)??throw new Exception("Qualification wrapper stranded an independently recoverable manifest original.");
+        Check(recoveredWrapper["actual"]!["Result"]!["TargetReceipts"]!.AsArray().Count==2,"Qualification wrapper dropped the original receipt vector.");
+        Check(source.Requests.Skip(requests).Select(value=> { using var parsed=JsonDocument.Parse(value);var raw=parsed.RootElement;return (raw.TryGetProperty("Intent",out var intent)?intent:raw).Deserialize<CustodyCallIntent>(CustodyBindingContract.Json)!; }).All(value=>value.Operation is "lookup-original" or "read-original-page"),
+            "Qualification recovery invoked an effect entrypoint instead of the exact original reader.");
+        Check(f.Store.State.Head==originalHead && f.Native.Schedules==originalSends,"Qualification original recovery repeated native work.");
         var before = f.Store.State.Head; int sends = f.Native.Schedules;
         handler.CorruptPage = true;
         Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Unknown, "Corrupt original page yielded Consumed.");
@@ -118,6 +132,18 @@ internal static class PublicLifecycleTests
         Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Unknown, "Missing original page yielded Consumed.");
         Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Consumed, "Lost page recovery changed original.");
         Check(f.Store.State.Head == before && f.Native.Schedules == sends, "Original recovery started a physical effect.");
+    }
+    private sealed class QualificationOriginalFixture:IQualificationOriginalStore
+    {
+        private readonly Dictionary<string,(System.Text.Json.Nodes.JsonObject Original,System.Text.Json.Nodes.JsonObject? Result)> _items=[];
+        public Task<bool> BeginAsync(string role,string id,System.Text.Json.Nodes.JsonObject original,CancellationToken token)
+        {
+            if(_items.TryGetValue(id,out var old)) { if(!System.Text.Json.Nodes.JsonNode.DeepEquals(old.Original,original)) throw new Exception("Changed qualification fixture original.");return Task.FromResult(false); }
+            _items[id]=((System.Text.Json.Nodes.JsonObject)original.DeepClone(),null);return Task.FromResult(true);
+        }
+        public Task RetainAsync(string role,string id,System.Text.Json.Nodes.JsonObject result,CancellationToken token)
+        { var old=_items[id];if(old.Result is not null && !System.Text.Json.Nodes.JsonNode.DeepEquals(old.Result,result)) throw new Exception("Changed fixture result.");_items[id]=(old.Original,(System.Text.Json.Nodes.JsonObject)result.DeepClone());return Task.CompletedTask; }
+        public Task<System.Text.Json.Nodes.JsonObject?> LookupResultAsync(string role,string id,CancellationToken token)=>Task.FromResult(_items.GetValueOrDefault(id).Result);
     }
     internal static CustodyLifecycleClient Client(Fixture f, DaprClient sdk, LifecycleAuthorizer source, TimeProvider? clock = null) => new(sdk,
         new Dictionary<string, string> { [CustodyLifecycleClient.LogicalRole] = "custody" }, f.OwnerScope,

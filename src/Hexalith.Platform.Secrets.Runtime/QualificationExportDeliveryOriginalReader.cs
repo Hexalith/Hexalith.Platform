@@ -17,7 +17,7 @@ public sealed class QualificationExportDeliveryOriginalReader(IQualificationOrig
         if(result is null || actual is null || native is null || native.Facts?["principalDeliveryOriginal"] is not JsonObject proof
             || !JsonNode.DeepEquals(proof,JsonSerializer.SerializeToNode(actual,CustodyBindingContract.Json))) return null;
         bool substitution=id.StartsWith("S3.delivery-substitution.",StringComparison.Ordinal);
-        if(!substitution && result!=actual || substitution && result.State!=ExportKeyDeliveryState.Conflict) return null;
+        if(result!=actual || substitution && result.State!=ExportKeyDeliveryState.Conflict) return null;
         string receipt=QualificationProtocolSchema.Digest(retained!);var state=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
         state["outcome"]=substitution?"Denied":actual.State.ToString();state["status"]=state["outcome"]!.DeepClone();
         state["deliveredAt"]=substitution?null:actual.ObservedAt?.ToUnixTimeMilliseconds();state["exclusiveExpiry"]=actual.Identity.ExclusiveExpiry.ToUnixTimeMilliseconds();

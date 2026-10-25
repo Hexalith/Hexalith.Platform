@@ -1,4 +1,11 @@
 using Hexalith.Platform.Secrets.Runtime;
+using Hexalith.Platform.Protection;
+
+if(args.Length==1 && args[0]=="--phase-command")
+{
+    Environment.ExitCode=await JointPhaseCommandExecutable.RunAsync(Environment.GetEnvironmentVariable("PLATFORM_JOINT_PHASE_COMMAND_INSTALLATION"));
+    return;
+}
 
 if (args.Length == 1 && args[0] == "--serve-owner")
 {

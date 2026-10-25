@@ -15,21 +15,26 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
     public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
     {
         token.ThrowIfCancellationRequested();var input=Input(request);var profile=profiles.GetCurrent();
-        if(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())) return Task.FromResult<IReadOnlyList<string>>(["ExactTemporalOriginalAndCurrentProfile"]);
+        return Task.FromResult<IReadOnlyList<string>>(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())?["ExactTemporalOriginalAndCurrentProfile"]:[]);
+    }
+    private bool FirstBoundaryAdmitted(JsonObject request)
+    {
+        var input=Input(request);var profile=profiles.GetCurrent();if(input is null || profile is null) return false;
         string id=request["caseId"]!.GetValue<string>();var now=clock.GetUtcNow();var envelope=input.Envelope;
-        bool condition=id switch {
+        return id switch {
             "S2.expiry.before"=>now<envelope.ExpiresAt && now>=envelope.ExpiresAt.AddSeconds(-1),
             "S2.expiry.at"=>now==envelope.ExpiresAt,
             "S2.expiry.after"=>now>envelope.ExpiresAt,
             "S2.future-skew"=>envelope.IssuedAt>now+profile.ClockSkew,
             "S2.maximum-lifetime"=>envelope.ExpiresAt-envelope.IssuedAt>profile.MaximumLifetime,
             _=>true };
-        return Task.FromResult<IReadOnlyList<string>>(condition?[]:["External.NativeTemporalEvaluatorAtExactBoundary."+id]);
     }
     /// <summary>Executes only the actual temporal check, or emergency reissuance after independently established current revocation.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
     {
         if((await PreflightAsync(request,token).ConfigureAwait(false)).Count!=0) return null;
+        if(await originals.LookupResultAsync("executor",request["requestId"]!.GetValue<string>()+":case-result",token).ConfigureAwait(false) is { } retained) return retained;
+        if(!FirstBoundaryAdmitted(request)) return null;
         return await EvaluateAsync(request,true,token).ConfigureAwait(false);
     }
     /// <summary>Repeats current verification only. Emergency issued bytes are retrieved from their exact durable original, never reissued.</summary>

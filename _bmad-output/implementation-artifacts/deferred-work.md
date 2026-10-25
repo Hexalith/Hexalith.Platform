@@ -1348,3 +1348,9 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Apply exact captured secret filtering or trusted snapshots to optional retained plan/readiness metadata.
   evidence: Baseline CopySelectedMetadataAsync already rereads child-writable JSON and relies only on ManifestSecretDetector; arbitrary captured token values under innocuous properties can pass SafeMetadata. Workflow review B4, 2026-10-25.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md (2026-10-25, delta review)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Run the Windows no-follow, shared-read metadata open path on Windows (W10).
+  evidence: Medium, unverified on this Linux host. In Builds `7116b16`, `SelectedNativeTestReport.OpenWithoutBlocking` opens Windows files with `CreateFileW` (`FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_OVERLAPPED`) and rejects any reparse point through `GetFileInformationByHandleEx(FileAttributeTagInfo)` (lines 203-221). Every workflow runs on `ubuntu-latest`, so `FinalComponentSymlinksRefuseAtomically`, `ExclusiveLocksRefuseUntilReleased` and every runner metadata read take only the Unix branch. Dropping the reparse check, or the overlapped flag while `isAsync: true` stays, would ship with CI green. CI workflow changes are out of scope for story 2.5, and Windows native runtime qualification is deferred by owner decision Q3. During that qualification, also check two Windows-only defects: non-link reparse tags (cloud placeholders, dedup) are refused, and the raw path has no `\\?\` prefix for paths of 260 or more characters.

@@ -13,6 +13,9 @@ public static class PrivateRecordingIdentity
     /// <summary>Gets one deterministic current-grant-bound recovery transport; terminal idempotency cannot replay the rejected ordinary attempt.</summary>
     public static string SecurityRecoveryMessageId(SecurityObservationRecoveryGrant grant)=>StableUlid("security-recovery",grant.Original.Intent.ObservationId,
         Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(grant,CustodyBindingContract.Json))));
+    /// <summary>Gets a deterministic terminal-proof-bound replay successor without changing the logical original or first-seen bytes.</summary>
+    public static string ReplayRecoveryMessageId(PrivateReplayRecoveryProof proof)=>StableUlid("replay-terminal-recovery",proof.OriginalRequestId,proof.PreviousTransportMessageId,
+        Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(proof,CustodyBindingContract.Json))));
     /// <summary>Derives the unchanged private message identifier from exact framed components.</summary>
     public static string StableUlid(params string[] components)
     {

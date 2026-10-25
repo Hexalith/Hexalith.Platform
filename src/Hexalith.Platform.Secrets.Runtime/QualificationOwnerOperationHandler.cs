@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Receiving implementation for all installed executor/observer/enrollment methods. Missing concrete drivers or measured projections deny before effects.</summary>
 public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole role,ECDsa signer,IQualificationOriginalStore originals,
-    IReadOnlyDictionary<string,IQualificationOwnerCaseDriver> drivers,TimeProvider clock,IQualificationObservedOriginalReader? independentSourceReader=null) : IIndependentOwnerOperationHandler
+    IReadOnlyDictionary<string,IQualificationOwnerCaseDriver> drivers,TimeProvider clock,IQualificationObservedOriginalReader? independentSourceReader=null,IQualificationAttemptAuthority? attemptAuthority=null) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["qualification-executor-execute","qualification-executor-lookup","qualification-observer-observe","qualification-enrollment-enroll","qualification-observer-read-source"],StringComparer.Ordinal);
@@ -22,8 +22,15 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
             throw new InvalidOperationException("Independently enrolled ES256 role signer required before effects.");
         var request=JsonNode.Parse(payload.GetRawText()) as JsonObject;
         if(request is null || !QualificationProtocolSchema.ValidOwnerRequest(role.Role,request)
-            || !new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.All(name=>current.QualificationBindings.TryGetValue(name,out string? value) && request[name]?.ToJsonString()==value))
+            || !new[]{"targetCommit","isolatedTargetId","planSha256"}.All(name=>current.QualificationBindings.TryGetValue(name,out string? value) && request[name]?.ToJsonString()==value))
             throw new InvalidOperationException("Exact current target, cohort attempt, configuration and plan required.");
+        if(current.QualificationBindings.TryGetValue("runId",out var pinnedRun)?request["runId"]?.ToJsonString()!=pinnedRun:
+            attemptAuthority is null || !await attemptAuthority.ValidateAsync(request,cancellationToken).ConfigureAwait(false))
+            throw new InvalidOperationException("Current independently retained cohort attempt required.");
+        if(role.Role!="enrollment" && (!current.QualificationCases.TryGetValue(request["caseId"]!.GetValue<string>(),out var pinnedCase)
+            || !JsonNode.DeepEquals(JsonNode.Parse(pinnedCase.GetProperty("enrolledScope").GetRawText()),request["enrolledScope"])
+            || !JsonNode.DeepEquals(JsonNode.Parse(pinnedCase.GetProperty("caseTargetId").GetRawText()),request["caseTargetId"])))
+            throw new InvalidOperationException("Current independently enrolled exact recipe scope required.");
         string requestId=SecretsProof.Text(request,"requestId")!;
         if(method=="qualification-observer-read-source")
         {
@@ -40,9 +47,27 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
             lock(signer) bound=bound with { Signature=signer.SignData(bytes,HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation) };
             return bound;
         }
+        string proofId=requestId+":signed-proof";
+        if(await originals.LookupResultAsync(role.Role,proofId,cancellationToken).ConfigureAwait(false) is { } oldProof)
+        {
+            // Current receiving role/scope/attempt admission above is fresh; immutable signature/time remain original.
+            if(role.Role=="enrollment" && (current.QualificationCases.Count!=QualificationProtocolSchema.CaseIds.Length
+                || current.QualificationCases.Any(pair=>!JsonNode.DeepEquals(oldProof["payload"]?["caseScopes"]?[pair.Key],JsonNode.Parse(pair.Value.GetProperty("enrolledScope").GetRawText()))
+                    || !JsonNode.DeepEquals(oldProof["payload"]?["caseTargetIds"]?[pair.Key],JsonNode.Parse(pair.Value.GetProperty("caseTargetId").GetRawText())))
+                || new[]{"executorIdentity","executorVersion","observerIdentity","observerVersion","qualifiedReferencesSha256","currentProfileSha256"}
+                    .Any(name=>!current.QualificationBindings.TryGetValue(name,out var currentValue) || oldProof["payload"]?[name]?.ToJsonString()!=currentValue)))
+                throw new InvalidOperationException("Current independently enrolled case/profile bindings changed.");
+            byte[] anchor=System.Text.Encoding.ASCII.GetBytes(role.PublicKeyPem);
+            var verifier=new QualificationProofVerifier(new Dictionary<string,QualificationProofBinding>{{role.Role,new(role.Identity,role.Version,anchor,Convert.ToHexStringLower(SHA256.HashData(anchor)))}},clock);
+            long at=oldProof["payload"]?["observedAt"]?.GetValue<long>()??-1;
+            if(!verifier.VerifyOriginal(role.Role,request,oldProof,at,cancellationToken)) throw new InvalidOperationException("Exact immutable receiving proof required.");
+            return oldProof;
+        }
         JsonObject result;
         if(role.Role=="enrollment")
         {
+            // Receiving admission is required even when the public host was bypassed.
+            await originals.BeginAsync(role.Role,requestId,request,cancellationToken).ConfigureAwait(false);
             string[] complete=QualificationProtocolSchema.CaseIds;
             if(!complete.ToHashSet(StringComparer.Ordinal).SetEquals(drivers.Keys) || !complete.ToHashSet(StringComparer.Ordinal).SetEquals(current.QualificationCases.Keys))
                 throw new InvalidOperationException("Complete shipped and independently enrolled case driver set required.");
@@ -69,7 +94,10 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
                 || !JsonNode.DeepEquals(JsonNode.Parse(enrolled.GetProperty("caseTargetId").GetRawText()),request["caseTargetId"])
                 || (await driver.PreflightAsync(request,cancellationToken).ConfigureAwait(false)).Count!=0)
                 throw new InvalidOperationException("Exact installed concrete case workflow and independent observation inputs required.");
-            bool first=await originals.BeginAsync(role.Role,requestId,request,cancellationToken).ConfigureAwait(false);
+            // Absent lookups must never consume execute admission or create a signed execution original.
+            bool lookup=role.Role=="executor" && method.EndsWith("lookup",StringComparison.Ordinal);
+            if(lookup && await originals.ReadAdmissionAsync(role.Role,requestId,request,cancellationToken).ConfigureAwait(false)!=QualificationOriginalAdmissionState.Admitted) return null;
+            bool first=!lookup && await originals.BeginAsync(role.Role,requestId,request,cancellationToken).ConfigureAwait(false);
             JsonObject? actual=role.Role=="observer"?await driver.ObserveAsync(request,cancellationToken).ConfigureAwait(false)
                 : first && method.EndsWith("execute",StringComparison.Ordinal)?await driver.ExecuteAsync(request,cancellationToken).ConfigureAwait(false)
                 :await driver.LookupAsync(request,cancellationToken).ConfigureAwait(false);
@@ -89,7 +117,15 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
         if(!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(publicKey.ExportSubjectPublicKeyInfo())) throw new InvalidOperationException("Independently enrolled role signer mismatch.");
         byte[] signature;
         lock(signer) signature=signer.SignData(QualificationProofVerifier.CanonicalBytes(result),HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
-        return new JsonObject { ["payload"]=result,["signature"]=Convert.ToBase64String(signature) };
+        var proof=new JsonObject { ["payload"]=result,["signature"]=Convert.ToBase64String(signature) };
+        await originals.BeginAsync(role.Role,proofId,request,cancellationToken).ConfigureAwait(false);
+        try { await originals.RetainAsync(role.Role,proofId,proof,cancellationToken).ConfigureAwait(false); }
+        catch(InvalidOperationException)
+        {
+            // A concurrent exact caller may have retained the unique proof first. Never replace its original time/signature.
+            var prior=await originals.LookupResultAsync(role.Role,proofId,cancellationToken).ConfigureAwait(false);if(prior is null) throw;return prior;
+        }
+        return await originals.LookupResultAsync(role.Role,proofId,cancellationToken).ConfigureAwait(false)??throw new InvalidOperationException("Exact receiving proof acknowledgement pending.");
     }
     private static JsonObject Common(JsonObject original)
     {

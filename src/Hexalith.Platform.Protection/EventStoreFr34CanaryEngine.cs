@@ -15,6 +15,8 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource canaryProofs,
     IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests) : IFr34ProtectionCanaryEngine
 {
+    /// <summary>Reads identity from the actual production engine, never the requested target.</summary>
+    public Hexalith.EventStore.PayloadProtection.InteractionProtectionEngineIdentity ReadEngineIdentity()=>engine.GetIdentity();
     internal bool IsActualTarget(Fr34ProtectionTarget target)
     {
         var identity = engine.GetIdentity();

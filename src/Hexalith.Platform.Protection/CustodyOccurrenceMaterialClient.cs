@@ -10,4 +10,6 @@ public sealed class CustodyOccurrenceMaterialClient(CustodyLifecycleClient clien
     public Task<CustodyKeyLifecycleOutcome> LookupAsync(CustodyKeyRegistration registration,CancellationToken token)=>client.LookupOriginalAsync(registration,null,token);
     /// <inheritdoc />
     public Task<CustodyKeyUseResult> UnwrapAsync(CustodyKeyRegistration registration,string operationId,CustodyKeyUse use,CancellationToken token)=>client.UnwrapAsync(registration,operationId,use,token);
+    /// <inheritdoc />
+    public Task<CustodyKeyUseResult> CompleteAsync(CustodyKeyRegistration registration,string operationId,CustodyKeyUse use,CancellationToken token)=>client.CompleteKeyUseAsync(registration,operationId,use,token);
 }

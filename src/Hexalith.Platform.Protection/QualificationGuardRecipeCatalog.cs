@@ -36,6 +36,16 @@ public static class QualificationGuardRecipeCatalog
         static SourceRecipe Race(string effect,string trigger,string boundary)=>new(effect=="Reserve"?["Register"]:
             effect=="Guard:CommitDispatch"?["Guard:AuthorizeDispatch"]:["Guard:AuthorizeCompletion"],effect,trigger,boundary,[]);
         string point=id[(id.LastIndexOf('.')+1)..];
+        if(id.StartsWith("Recovery.",StringComparison.Ordinal))
+        {
+            string operation=id.Split('.')[1];
+            return operation switch {
+                "signing"=>Plain("Sign"),"consume"=>Plain("Reserve","Register"),"compromise-block"=>Plain("Compromise"),
+                "activation"=>Plain("Activate","Register","Compromise","Sign","Guard:ReplaceAttestation","Guard:AuthorizeDispatch","Guard:CommitDispatch"),
+                "guard-issue"=>Plain("Guard:RecordBatchIssued","Sign"),"dispatch"=>Plain("Guard:CommitDispatch","Guard:AuthorizeDispatch"),
+                "completion"=>Plain("Guard:CommitCompletion","Guard:AuthorizeCompletion"),
+                _=>throw new InvalidOperationException("DifferentClosedRecoveryOwnerProtocol."+id) };
+        }
         if(id.StartsWith("S4.migration.",StringComparison.Ordinal))
             throw new InvalidOperationException("SelectedActualWriterAndRecoveryControlProtocol."+id);
         if(id=="S4.migration-successor-preservation")
