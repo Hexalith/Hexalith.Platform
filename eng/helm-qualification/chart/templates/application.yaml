@@ -12,7 +12,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: hexalith-reference
 spec:
-  replicas: {{ if eq $.Values.mode "recovery" }}0{{ else }}{{ $.Values.replicas }}{{ end }}
+  replicas: {{ if eq $.Values.mode "recovery" }}0{{ else }}{{ default $.Values.replicas $binding.replicas }}{{ end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .resourceId }}
@@ -32,7 +32,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: app
+        - name: {{ if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}{{ default "app" $binding.containerName }}{{ else }}app{{ end }}
           image: {{ index $.Values.images .identity | quote }}
           ports:
             - name: http
@@ -52,11 +52,19 @@ spec:
               mountPath: /etc/hexalith/environment
               readOnly: true
           resources:
+            {{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}
+            {{- toYaml $binding.resources | nindent 12 }}
+            {{- else }}
             requests: {cpu: 10m, memory: 32Mi}
             limits: {cpu: "1", memory: 512Mi}
+            {{- end }}
       volumes:
         - name: tmp
+          {{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}
+          emptyDir: {sizeLimit: 128Mi}
+          {{- else }}
           emptyDir: {}
+          {{- end }}
         - name: environment-components
           configMap:
             name: {{ $.Values.environment.componentConfigMap }}
