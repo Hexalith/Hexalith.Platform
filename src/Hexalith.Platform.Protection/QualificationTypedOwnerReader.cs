@@ -7,8 +7,6 @@ using Hexalith.Platform.Secrets.Runtime;
 
 namespace Hexalith.Platform.Protection;
 
-/// <summary>Exact independently enrolled owner and native source identities for one qualification case.</summary>
-public sealed record QualificationOwnerReadScope(string TenantId,string BatchId,string DeletionRequestId,DeletionBatchCapabilityV1? Signing,IReadOnlyList<AggregateIdentity> NativeStreams);
 /// <summary>Actual typed guard/protection/signer/native source reader. It accepts no owner outcome flags or fabricated receipt vectors.</summary>
 public sealed class QualificationTypedOwnerReader(IGovernanceScopeGuard guard,IDeletionProtectionOwner protection,IDeletionCapabilitySigningActor signer,
     QualificationNativeSourceReader native,IndependentDaprAuthority originals,IReadOnlyDictionary<string,QualificationOwnerReadScope> enrolledScopes) : IQualificationObservedOriginalReader

@@ -3,8 +3,6 @@ using Hexalith.Platform.Custody;
 
 namespace Hexalith.Platform.Protection;
 
-/// <summary>Measured guard/protection/signing invariants and precise unsupported independent read protocols. No expected metric values are inputs.</summary>
-public sealed record QualificationInvariantProjection(IReadOnlyDictionary<string,long> Metrics,IReadOnlyList<string> MissingProtocols);
 /// <summary>Derives observable invariants from actual typed current owner state and retained receipts. An unavailable/history-incomplete port never yields a complete projection.</summary>
 public static class QualificationGuardInvariantProjection
 {

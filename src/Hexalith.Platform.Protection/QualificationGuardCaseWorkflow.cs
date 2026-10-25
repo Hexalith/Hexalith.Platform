@@ -7,36 +7,6 @@ using Hexalith.Platform.Secrets.Runtime;
 
 namespace Hexalith.Platform.Protection;
 
-/// <summary>Closed technical owner operations available to isolated qualification. No approval issuance or general dispatcher operation exists.</summary>
-public enum QualificationGuardStepKind
-{
-    /// <summary>Conditional guard authorize/effect/result, admission, hold, migration or completion transition.</summary>
-    Guard,
-    /// <summary>Register the exact signed/issued protection batch.</summary>
-    Register,
-    /// <summary>Irreversible same-owner reserve/consume.</summary>
-    Reserve,
-    /// <summary>Same-owner integrity cancellation.</summary>
-    Block,
-    /// <summary>Authenticated private compromise registration.</summary>
-    Compromise,
-    /// <summary>Replacement-key block-set compare and activation.</summary>
-    Activate,
-    /// <summary>Exact deterministic signing request.</summary>
-    Sign,
-    /// <summary>Exact independently proven obsolete-unissued signing result.</summary>
-    ObsoleteUnissued,
-}
-/// <summary>One independently enrolled typed technical step; unrelated union branches are refused.</summary>
-public sealed record QualificationGuardStep(QualificationGuardStepKind Kind, GovernanceGuardTransition? Transition = null,
-    IReadOnlyList<GuardedStateMutation>? Targets = null, DeletionBatchConsumptionRequest? Batch = null,
-    DeletionBatchBlockRequest? Block = null, DeletionCapabilityRevocationEnvelope? Compromise = null,
-    DeletionReattestationActivation? Activation = null, DeletionBatchCapabilityV1? Signing = null, string? SignedRevocationEvidence = null);
-/// <summary>Exact accepted case input, including an optional concurrent trigger boundary. These are real owner requests, never expected metrics.</summary>
-public sealed record QualificationGuardCaseDefinition(string CaseId, string TenantId, string BatchId, string EnrolledScopeSha256,
-    IReadOnlyList<QualificationGuardStep> Before, QualificationGuardStep Effect, QualificationGuardStep? Trigger,
-    string Boundary, IReadOnlyList<QualificationGuardStep> After);
-
 /// <summary>Shipped typed guard/protection/signing workflow and exact native owner reader. Independently enrolled case requests and recovery-controller protocols remain installation inputs.</summary>
 public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, IDeletionProtectionOwner protection,
     IDeletionConsumptionActor consumption, IDeletionCapabilitySigningActor signer, IQualificationOriginalStore originals,

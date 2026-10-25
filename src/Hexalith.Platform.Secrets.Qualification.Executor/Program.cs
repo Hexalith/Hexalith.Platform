@@ -1,5 +1,11 @@
 using Hexalith.Platform.Secrets.Runtime;
 
+if (args.Length == 1 && args[0] == "--serve-owner")
+{
+    Environment.ExitCode = await QualificationOwnerDriverExecutable.RunAsync("executor", Environment.GetEnvironmentVariable("PLATFORM_QUALIFICATION_OWNER_INSTALLATION"));
+    return;
+}
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(new Dapr.Client.DaprClientBuilder().Build());
 builder.Services.AddSingleton(TimeProvider.System);

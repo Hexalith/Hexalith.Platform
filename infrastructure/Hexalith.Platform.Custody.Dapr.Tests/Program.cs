@@ -37,6 +37,7 @@ var tests = new (string, Func<Task>)[] {
     ("signed-pre-cycle-hold-reservation-denial", ReviewRegressionTests.SignedHoldReservations),
     ("binding-service-init-and-invoke-boundary", ServiceBoundaryTests.Run),
     ("real-aws-key-adapters-and-contexts", AwsKeyAdapterTests.Run),
+    ("real-openbao-http-metadata-derivation-and-aead-binding", OpenBaoNativeOperationsTests.Run),
     ("uncertain-successor-retirement-abandonment-and-replacement", SuccessorRetirement),
     ("maximum-manifest-transition-immutable-index-roundtrip", CheckpointCapacityTests.Run),
 };

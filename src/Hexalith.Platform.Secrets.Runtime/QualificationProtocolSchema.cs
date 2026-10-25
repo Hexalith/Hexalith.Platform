@@ -7,6 +7,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 internal static class QualificationProtocolSchema
 {
     private static readonly JsonObject CaseSchema = LoadCaseSchema();
+    internal static string[] MetricNames(string id)=>((JsonArray)Case(id)!["metrics"]!).Select(value=>value!.GetValue<string>()).ToArray();
     internal static string[] CaseIds=>((JsonArray)CaseSchema["cases"]!).Select(value=>value!["id"]!.GetValue<string>()).ToArray();
     internal static string PlanSha256 => CaseSchema["planSha256"]!.GetValue<string>();
     private static JsonObject LoadCaseSchema()

@@ -36,6 +36,9 @@ internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string
         if (Tenants.Any(tenant => Epochs.Count(e => e.TenantId == tenant) < 2 || Keks.Count(k => k.TenantId == tenant) != 1))
             throw new AuthorityUnavailableException("Each tenant requires independent source/successor epochs and exactly one KEK mapping.");
         var nativeKeys = Epochs.Select(e => (Arn: e.KeyArn, Id: e.KeyId)).Concat(Keks.Select(k => (Arn: k.ProtectorArn, Id: k.ProtectorKeyId))).ToArray();
+        if(native && (Native!.TransitBindingProfiles is not { } bindingProfiles || !bindingProfiles.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(nativeKeys.Select(value=>value.Arn))
+            || bindingProfiles.Values.Any(value=>value.Schema!="OpenBaoTransit.AeadAssociatedData.V1")))
+            throw new AuthorityUnavailableException("Every native key requires an explicitly enrolled supported derivation/AEAD profile; no legacy context fallback.");
         if (nativeKeys.Any(k => string.IsNullOrWhiteSpace(k.Id) || !Resource(k.Arn))
             || nativeKeys.Select(k => k.Arn).Distinct(StringComparer.Ordinal).Count() != nativeKeys.Length
             || nativeKeys.Select(k => k.Id).Distinct(StringComparer.Ordinal).Count() != nativeKeys.Length)

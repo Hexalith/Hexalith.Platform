@@ -6,16 +6,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>Authenticated workload identity and independently verified scope, never inferred from request content.</summary>
-public sealed record QualificationCallerContext(string Identity, string ScopeReference);
-
-/// <summary>Installed workload authentication and current caller-scope authority; channel authentication alone is insufficient.</summary>
-public interface IQualificationCallerAuthenticator
-{
-    /// <summary>Validates workload credentials and returns their currently authorized isolated scope.</summary>
-    Task<QualificationCallerContext?> AuthenticateAsync(HttpContext context, string role, CancellationToken cancellationToken);
-}
-
 /// <summary>Shared HTTP admission for the three independent role hosts.</summary>
 public static class QualificationHttpHost
 {

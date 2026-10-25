@@ -11,8 +11,9 @@ using System.Text.Json.Nodes;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Receiving durable authority. All permission, anchor, original and recovery transitions share one conditional owner head.</summary>
-public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null)
+public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null,IIndependentArchiveStorage? archiveStorage=null)
 {
+    private readonly IIndependentArchiveStorage _archive=archiveStorage??new IndependentArchiveStorage();
     /// <summary>Authenticates channel/workload, reads the surviving enrolled head, commits exact transitions and signs bounded current results.</summary>
     public async Task<IResult> HandleAsync(HttpContext context, string method, CancellationToken cancellationToken)
     {
@@ -35,6 +36,11 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 || state.TrustRevision != installation.TrustRevision || state.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(503);
             var grant = Authenticate(context, state, method);
             if (grant is null) return Results.StatusCode(403);
+            if(method is "spool-current" or "spool-validate" or "spool-authorize")
+            {
+                bool admission=method=="spool-authorize" && request.Payload.Deserialize<SpoolAuthorization>(CustodyBindingContract.Json)!.method is "Observe" or "Readiness";
+                await RequireArchiveAsync(admission,budget.Token).ConfigureAwait(false);
+            }
             if (method is "spool-admit-recovery" or "spool-verify-recovery")
             {
                 if (installation.RecorderAuthority is null) return Results.StatusCode(503);
@@ -100,6 +106,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 }
                 outcome = (recordingResult, false);
             }
+            else if(method is "spool-admit-recovery" or "spool-verify-recovery")
+                outcome=await ApplyRecoveryAsync(method,request.Payload,grant,state,next,budget.Token).ConfigureAwait(false);
             else if (method is "spool-admit-transition" or "spool-record-transition" or "spool-recover-transition" or "spool-verify-transition")
                 outcome = await ApplySpoolTransitionAsync(method, request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!, next, replacement => next = replacement, budget.Token).ConfigureAwait(false);
             else if (ownerHandlers?.SingleOrDefault(handler => handler.Methods.Contains(method)) is { } handler)
@@ -123,6 +131,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 var completed = request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!;
                 await WriteSpoolOriginalAsync("recorded", completed, false, budget.Token).ConfigureAwait(false);
             }
+            if(method=="spool-admit-recovery" && outcome.Payload is SecurityObservationRecoveryGrant issued)
+                await new IndependentRecoveryGrantArchive(CurrentArchiveDirectory(),installation,signer).PublishAsync(issued,next.Revision,budget.Token).ConfigureAwait(false);
             long now = clock.GetUtcNow().ToUnixTimeSeconds();
             if (grant.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(403);
             var result = new Response(installation.EnrollmentId, installation.Scope, installation.TrustRevision, method, request.Nonce,
@@ -152,23 +162,6 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             case "spool-validate":
                 var validation = Read<StateValidation>();
                 return (Decision(Target(validation.target) && validation.revision == state.SpoolRevision && validation.exactStateDigest == state.SpoolDigest), false);
-            case "spool-admit-recovery":
-                var recovery = Read<RecoveryAdmission>();
-                if (!Target(recovery.target) || recovery.original.Receipt is not null || recovery.proof.State == SecurityEventRecorderLookupState.Unknown
-                    || recovery.proof.State == SecurityEventRecorderLookupState.Recorded != (recovery.proof.Receipt is not null)) return (null, false);
-                var priorGrant=state.Recoveries.Values.SingleOrDefault(value=>value.Target==recovery.target && Same(value.Original,recovery.original) && Same(value.OriginalProof,recovery.proof));
-                if(priorGrant is not null) return (priorGrant,false);
-                if(state.Recoveries.Count>=10000) throw new InvalidOperationException("Independent recovery original capacity exhausted.");
-                var grant = new SecurityObservationRecoveryGrant(recovery.target, recovery.original, recovery.proof, state.TrustRevision,
-                    clock.GetUtcNow(), new[] { clock.GetUtcNow().AddMinutes(5), recovery.target.ValidUntil, caller.ValidUntil }.Min());
-                string recoveryId = Hash(grant); state.Recoveries[recoveryId] = grant; return (grant, true);
-            case "spool-verify-recovery":
-                var verify = Read<RecoveryVerification>();
-                return (Decision(verify.grant.ValidUntil > clock.GetUtcNow() && Target(verify.grant.Target)
-                    && state.Recoveries.TryGetValue(Hash(verify.grant), out var original) && Same(original, verify.grant)
-                    && verify.currentProof.State != SecurityEventRecorderLookupState.Unknown
-                    && (Same(verify.grant.OriginalProof, verify.currentProof)
-                        || verify.grant.OriginalProof.State == SecurityEventRecorderLookupState.NotRecorded && verify.currentProof.State == SecurityEventRecorderLookupState.Recorded)), false);
             case "recording-dispatch-admit":
                 var dispatch = Read<RecordingDispatch>();
                 string dispatchId = dispatch.role + ":" + dispatch.requestId;
@@ -287,18 +280,51 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         replace(state with { SpoolRevision = transition.TargetRevision, SpoolDigest = transition.TargetDigest, PendingSpoolTransitionDigest = null });
         return (Decision(true), true);
     }
+    private async Task<(object? Payload,bool Mutated)> ApplyRecoveryAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,IndependentAuthorityState next,CancellationToken token)
+    {
+        await RequireArchiveAsync(false,token).ConfigureAwait(false);
+        var archive=new IndependentRecoveryGrantArchive(CurrentArchiveDirectory(),installation,signer);
+        bool Target(ReplicatedSecuritySpoolTarget target)=>target==current.Spool && target.ValidUntil>clock.GetUtcNow();
+        // Migrate only actually retained authorizations into immutable signed originals before replacing the bounded current head.
+        foreach(var retained in current.Recoveries.Values) await archive.PublishAsync(retained,current.Revision,token).ConfigureAwait(false);
+        if(method=="spool-admit-recovery")
+        {
+            var request=payload.Deserialize<RecoveryAdmission>(CustodyBindingContract.Json)!;
+            if(!Target(request.target) || request.original.Receipt is not null || request.proof.State==SecurityEventRecorderLookupState.Unknown
+                || (request.proof.State==SecurityEventRecorderLookupState.Recorded)!=(request.proof.Receipt is not null)) return (null,false);
+            var prior=current.Recoveries.Values.SingleOrDefault(value=>value.Target==request.target && Same(value.Original,request.original)
+                && Same(value.OriginalProof,request.proof) && value.RecoveryAuthorityRevision==current.TrustRevision && value.ValidUntil>clock.GetUtcNow());
+            var issued=prior??new SecurityObservationRecoveryGrant(request.target,request.original,request.proof,current.TrustRevision,clock.GetUtcNow(),
+                new[]{clock.GetUtcNow().AddMinutes(5),request.target.ValidUntil,caller.ValidUntil}.Min());
+            next.Recoveries.Clear();next.Recoveries.Add(Hash(new { issued.Target,issued.Original }),issued);
+            return (issued,true); // Even reissue crosses the shared current-role CAS barrier; the original grant time is unchanged.
+        }
+        var verify=payload.Deserialize<RecoveryVerification>(CustodyBindingContract.Json)!;
+        bool admitted=verify.grant.ValidUntil>clock.GetUtcNow() && verify.grant.RecoveryAuthorityRevision==current.TrustRevision && Target(verify.grant.Target)
+            && await archive.ContainsAsync(verify.grant,current.Revision,token).ConfigureAwait(false)
+            && verify.currentProof.State!=SecurityEventRecorderLookupState.Unknown && (Same(verify.grant.OriginalProof,verify.currentProof)
+                || verify.grant.OriginalProof.State==SecurityEventRecorderLookupState.NotRecorded && verify.currentProof.State==SecurityEventRecorderLookupState.Recorded);
+        if(admitted && verify.currentProof.State==SecurityEventRecorderLookupState.Recorded)
+            foreach(string key in next.Recoveries.Where(pair=>Same(pair.Value.Original,verify.grant.Original) && pair.Value.Target==verify.grant.Target).Select(pair=>pair.Key).ToArray()) next.Recoveries.Remove(key);
+        return (new Permission(admitted),admitted); // Successful verification is ordered atomically with role revocation, including an archive-only grant.
+    }
     private string SpoolOriginalPath(string category, AnchoredStateTransition transition)
+    {
+        if(!CustodyBindingContract.Digest(transition.TargetDigest)) throw new InvalidOperationException("Exact immutable transition digest required.");
+        return Path.Combine(CurrentArchiveDirectory(), "spool", category, Hash(transition.ScopeId), transition.TargetDigest);
+    }
+    private string CurrentArchiveDirectory()
     {
         string? directory = installation.OriginalArchiveDirectory;
         if (directory is null || !Path.IsPathFullyQualified(directory) || installation.CompletionReserveBytes <= 0
             || installation.ArchiveEnrollmentSha256 is not { Length: 64 } enrollmentHash
-            || !CustodyBindingContract.Digest(transition.TargetDigest) || new DirectoryInfo(directory).LinkTarget is not null)
+            || new DirectoryInfo(directory).LinkTarget is not null)
             throw new InvalidOperationException("Independent immutable spool archive and completion reserve required.");
         var enrollment = new FileInfo(Path.Combine(directory, "enrollment.json"));
         if (!enrollment.Exists || enrollment.LinkTarget is not null || enrollment.Length is <= 0 or > 65536
             || Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(enrollment.FullName))) != enrollmentHash)
             throw new InvalidOperationException("Current immutable spool archive enrollment required.");
-        return Path.Combine(directory, "spool", category, Hash(transition.ScopeId), transition.TargetDigest);
+        return directory;
     }
     private async Task<bool> HasSpoolOriginalAsync(string category, AnchoredStateTransition transition, CancellationToken token)
     {
@@ -312,10 +338,17 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
     {
         string path = SpoolOriginalPath(category, transition);
         byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(transition, CustodyBindingContract.Json);
-        var drive = new DriveInfo(Path.GetPathRoot(path)!);
-        if (admission && drive.AvailableFreeSpace < checked(bytes.LongLength * 2 + installation.CompletionReserveBytes))
+        if (admission && _archive.AvailableBytes(installation.OriginalArchiveDirectory!) < checked(bytes.LongLength * 2 + installation.CompletionReserveBytes))
             throw new InvalidOperationException("Spool completion reserve unavailable; ingress denied.");
         await ImmutableFileArchive.PublishAsync(path, bytes, token).ConfigureAwait(false);
+    }
+    private async Task RequireArchiveAsync(bool admission,CancellationToken token)
+    {
+        // Reuse exact enrollment/path validation before a settled spool may report readiness or admit new ingress.
+        string directory=CurrentArchiveDirectory();
+        long required=admission?checked(2L*CustodyBindingContract.MaximumOriginalBytes+installation.CompletionReserveBytes):1;
+        if(_archive.AvailableBytes(directory)<required) throw new IOException("Archive admission or completion capacity unavailable.");
+        await _archive.ProbeWritableAsync(directory,token).ConfigureAwait(false);
     }
     private sealed record Permission(bool Allowed);
     private static bool ExactCase(JsonObject request, IndependentAuthorityState state)

@@ -14,7 +14,7 @@ public sealed class QualificationRuntimeOriginalReader(IndependentDaprAuthority 
     {
         string? requestId=SecretsProof.Text(request,"requestId"),caseId=SecretsProof.Text(request,"caseId");
         if(requestId is null || caseId is null || !enrolledStreams.TryGetValue(caseId,out var streamScope)) return null;
-        var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="executor",requestId=requestId+":envelope" },cancellationToken).ConfigureAwait(false);
+        var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="executor",requestId=requestId+":case-result" },cancellationToken).ConfigureAwait(false);
         if(original?.Result is not { } result || original.ResultRetainedRevision<=0 || original.Request.GetProperty("requestId").GetString()!=requestId
             || original.Request.GetProperty("caseId").GetString()!=caseId) return null;
         var streams=streamScope.Count==0 ? [] : await native.ReadAsync(streamScope,cancellationToken).ConfigureAwait(false);

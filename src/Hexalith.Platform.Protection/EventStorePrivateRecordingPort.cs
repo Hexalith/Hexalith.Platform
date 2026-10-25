@@ -63,7 +63,24 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
             return new(SecurityEventRecorderLookupState.Recorded, new(record.Intent.ObservationId, record.Intent.RoutingTenantId, record.UtcDay,
                 ReplicatedSecurityObservationSpool.IntentDigest(record.Intent), source.Identity.ActorId, item.SequenceNumber, item.MessageId));
         }
-        return new(SecurityEventRecorderLookupState.NotRecorded);
+        string id=StableUlid("security",record.Intent.ObservationId);
+        var retained=await ReadOriginalAsync("private-security-observation",id,cancellationToken).ConfigureAwait(false);
+        if(!retained.Authoritative) return new(SecurityEventRecorderLookupState.Unknown);
+        if(retained.Original is null) return new(SecurityEventRecorderLookupState.NotRecorded);
+        if(!Same(retained.Original.Request,JsonSerializer.SerializeToElement(SecurityCommand(record),Json))) return new(SecurityEventRecorderLookupState.Unknown);
+        if(retained.Original.SubmissionState=="Unsent") return new(SecurityEventRecorderLookupState.NotRecorded);
+        if(retained.Original.SubmissionState!="Dispatched") return new(SecurityEventRecorderLookupState.Unknown);
+        CommandStatusQueryResponse? status;
+        try { status=await gateway.GetWorkloadCommandStatusAsync(source.Identity.TenantId,id,cancellationToken).ConfigureAwait(false); }
+        catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return new(SecurityEventRecorderLookupState.Unknown); }
+        // Empty native source is not evidence that a dispatched command is absent: a queued/processing command can still append later.
+        bool terminalNoEvent=status is { EventCount:0,Retryable:false,CommittedEventSequence:>=0 } && status.CommittedEventSequence<=source.Head
+            && status.MessageId==id && status.TenantId==source.Identity.TenantId && status.Domain==source.Identity.Domain && status.AggregateId==source.Identity.AggregateId
+            && (status.StatusCode==(int)CommandStatus.Completed && status.Status==nameof(CommandStatus.Completed)
+                || status.StatusCode==(int)CommandStatus.Rejected && status.Status==nameof(CommandStatus.Rejected));
+        if(!terminalNoEvent) return new(SecurityEventRecorderLookupState.Unknown);
+        var confirmed=await ReadAsync(source.Identity,cancellationToken).ConfigureAwait(false);
+        return confirmed is not null && Same(source.NativeProof,confirmed.NativeProof)?new(SecurityEventRecorderLookupState.NotRecorded):new(SecurityEventRecorderLookupState.Unknown);
     }
     /// <inheritdoc />
     public async Task AppendAsync(SecurityObservationRecord record, CancellationToken cancellationToken = default)
@@ -94,8 +111,15 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         var read = await _reader.ReadAsync(identity, token);
         return read.IsAuthoritative && read.Stream?.NativeProof is { CodecVersion: 1, Erased: false, RetainedFloor: 1 } ? read.Stream : null;
     }
-    private Task<IndependentOriginal?> FindOriginalAsync(string role, string requestId, CancellationToken token)
-        => originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original", new { role, requestId }, token);
+    private async Task<IndependentOriginal?> FindOriginalAsync(string role, string requestId, CancellationToken token)
+        => (await ReadOriginalAsync(role,requestId,token).ConfigureAwait(false)).Original;
+    private async Task<(bool Authoritative,IndependentOriginal? Original)> ReadOriginalAsync(string role,string requestId,CancellationToken token)
+    {
+        // A signed JSON null is a definite absence. Transport/default Undefined is unknown and must never authorize recovery.
+        var value=await originals.InvokeAsync<JsonElement>("qualification-lookup-original",new { role,requestId },token).ConfigureAwait(false);
+        if(value.ValueKind==JsonValueKind.Null) return (true,null);
+        return value.ValueKind==JsonValueKind.Object?(true,value.Deserialize<IndependentOriginal>(CustodyBindingContract.Json)):(false,null);
+    }
     private async Task<bool> BeginAsync(string role, string requestId, object original, CancellationToken token)
     {
         var result = await originals.InvokeAsync<Admission>("qualification-begin-original", new { role, requestId, original = JsonSerializer.SerializeToElement(original, Json) }, token);

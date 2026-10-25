@@ -2,44 +2,6 @@ using System.Text.Json.Nodes;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>An independently installed role provider. Implementations must use actual owner state and a separately held signing key.</summary>
-public interface IQualificationRoleProvider
-{
-    /// <summary>Gets the exact enrolled role: executor, observer, or enrollment.</summary>
-    string Role { get; }
-
-    /// <summary>Checks current accepted target/configuration/plan/anchors, authenticated caller, isolated scope and all required owner ACLs.</summary>
-    Task<bool> AuthorizeAsync(JsonObject request, QualificationCallerContext caller, CancellationToken cancellationToken);
-
-    /// <summary>Reads actual owner results and returns the independently signed public protocol envelope. Expected outcomes are never supplied.</summary>
-    Task<JsonObject?> InvokeAsync(string operation, JsonObject original, CancellationToken cancellationToken);
-}
-
-/// <summary>Executor installation; observer and enrollment installations cannot satisfy this port.</summary>
-public interface IQualificationExecutorProvider : IQualificationRoleProvider;
-
-/// <summary>Independent persisted-owner reader; it must have no executor or signing-request permission.</summary>
-public interface IQualificationObserverProvider : IQualificationRoleProvider;
-
-/// <summary>Independent isolated-target enrollment and current ACL verifier.</summary>
-public interface IQualificationEnrollmentProvider : IQualificationRoleProvider;
-
-/// <summary>Independently provisioned atomic, durable, nonrollback original store; not an in-memory substitute.</summary>
-public interface IQualificationOriginalStore
-{
-    /// <summary>Atomically retains the complete request before an effect. Existing identities return false; changed bytes must throw.</summary>
-    Task<bool> BeginAsync(string role, string requestId, JsonObject original, CancellationToken cancellationToken);
-
-    /// <summary>Retains a signed observation or resolved original. Existing changed bytes must throw.</summary>
-    Task RetainAsync(string role, string requestId, JsonObject result, CancellationToken cancellationToken);
-
-    /// <summary>Reads an exact retained result after current private admission; omitted implementations remain unresolved.</summary>
-    Task<JsonObject?> LookupResultAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);
-}
-
-/// <summary>Public endpoint result. A lost provider result retains the original and requires exact lookup.</summary>
-public sealed record QualificationHostResult(int StatusCode, JsonObject Body);
-
 /// <summary>Enrollable role dispatcher. There is no default provider, signer, scope authority or durable store.</summary>
 public static class QualificationHost
 {

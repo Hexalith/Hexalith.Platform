@@ -4,33 +4,17 @@ using System.Text.Json.Nodes;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>Local concrete case workflow and independent projection. Implementations return only actual owner-derived public facts.</summary>
-public interface IQualificationOwnerCaseDriver
-{
-    /// <summary>Gets the exact compiled case identity.</summary>
-    string CaseId { get; }
-    /// <summary>Names source/protocol/resource inputs before any effect; no expected outcome is an input.</summary>
-    Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Runs one admitted original operation and observation sequence.</summary>
-    Task<JsonObject?> ExecuteAsync(JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Looks up only the exact retained original after uncertainty.</summary>
-    Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Reads and projects independently persisted owner originals.</summary>
-    Task<JsonObject?> ObserveAsync(JsonObject original,CancellationToken cancellationToken);
-}
-/// <summary>Current independently enrolled role signer and exact public identity; construction does not enroll it.</summary>
-public sealed record QualificationOwnerRole(string Role,string Identity,string Version,string PublicKeyPem);
 /// <summary>Receiving implementation for all installed executor/observer/enrollment methods. Missing concrete drivers or measured projections deny before effects.</summary>
 public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole role,ECDsa signer,IQualificationOriginalStore originals,
-    IReadOnlyDictionary<string,IQualificationOwnerCaseDriver> drivers,TimeProvider clock) : IIndependentOwnerOperationHandler
+    IReadOnlyDictionary<string,IQualificationOwnerCaseDriver> drivers,TimeProvider clock,IQualificationObservedOriginalReader? independentSourceReader=null) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
-    public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["qualification-executor-execute","qualification-executor-lookup","qualification-observer-observe","qualification-enrollment-enroll"],StringComparer.Ordinal);
+    public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["qualification-executor-execute","qualification-executor-lookup","qualification-observer-observe","qualification-enrollment-enroll","qualification-observer-read-source"],StringComparer.Ordinal);
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken cancellationToken)
     {
         string expectedMethod=role.Role switch { "executor"=>"qualification-executor-","observer"=>"qualification-observer-","enrollment"=>"qualification-enrollment-",_=>throw new InvalidOperationException("Enrolled role required.") };
-        if(!method.StartsWith(expectedMethod,StringComparison.Ordinal) || caller.Role!=role.Role || caller.Revoked || caller.ValidUntil<=clock.GetUtcNow()
+        if(!method.StartsWith(expectedMethod,StringComparison.Ordinal) || caller.Role!=(method=="qualification-observer-read-source"?"observer-reader":role.Role) || caller.Revoked || caller.ValidUntil<=clock.GetUtcNow()
             || current.ValidUntil<=clock.GetUtcNow() || current.QualificationBindings is null || current.QualificationCases is null)
             throw new InvalidOperationException("Current independently enrolled receiving role required.");
         using var enrolledKey=ECDsa.Create();enrolledKey.ImportFromPem(role.PublicKeyPem);
@@ -41,6 +25,21 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
             || !new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.All(name=>current.QualificationBindings.TryGetValue(name,out string? value) && request[name]?.ToJsonString()==value))
             throw new InvalidOperationException("Exact current target, cohort attempt, configuration and plan required.");
         string requestId=SecretsProof.Text(request,"requestId")!;
+        if(method=="qualification-observer-read-source")
+        {
+            string sourceCase=SecretsProof.Text(request,"caseId")!;
+            if(role.Role!="observer" || independentSourceReader is null || !current.QualificationCases.TryGetValue(sourceCase,out var enrolledSource)
+                || !JsonNode.DeepEquals(JsonNode.Parse(enrolledSource.GetProperty("enrolledScope").GetRawText()),request["enrolledScope"]))
+                throw new InvalidOperationException("Independent typed source reader and exact enrolled scope required.");
+            var raw=await independentSourceReader.ReadAsync(request,cancellationToken).ConfigureAwait(false)
+                ??throw new InvalidOperationException("Exact native original read unavailable.");
+            if(raw.RequestId!=requestId) throw new InvalidOperationException("Native original request substitution.");
+            long observed=clock.GetUtcNow().ToUnixTimeSeconds();
+            var bound=raw with { ObservationIdentity=role.Identity,ObservationVersion=role.Version,ObservedAt=observed,ValidUntil=Math.Min(observed+30,current.ValidUntil.ToUnixTimeSeconds()),Signature=[] };
+            byte[] bytes=QualificationProofVerifier.CanonicalBytes(JsonSerializer.SerializeToNode(bound,CustodyBindingContract.Json)!);
+            lock(signer) bound=bound with { Signature=signer.SignData(bytes,HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation) };
+            return bound;
+        }
         JsonObject result;
         if(role.Role=="enrollment")
         {

@@ -11,7 +11,10 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
     IQualificationOriginalStore originals,IReadOnlyDictionary<string,DeletionBatchCapabilityV1> enrolledPayloads)
 {
     /// <summary>Uses one deterministic original signing identity and verifies changed public bytes without any destruction, issue, dispatch or approval operation.</summary>
-    public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
+    public Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)=>RunAsync(request,false,token);
+    /// <summary>Re-verifies the actual original signer artifact and independently current public trust. Missing originals cannot sign.</summary>
+    public Task<JsonObject?> ReadVerifyAsync(JsonObject request,CancellationToken token)=>RunAsync(request,true,token);
+    private async Task<JsonObject?> RunAsync(JsonObject request,bool lookupOnly,CancellationToken token)
     {
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
         if(id is null || requestId is null || !enrolledPayloads.TryGetValue(id,out var payload) || request["enrolledScope"] is not JsonObject scope
@@ -20,7 +23,7 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
             || id!="S4.capability-canonical-14-fields" && !id.StartsWith("S4.capability-substitution.",StringComparison.Ordinal)) return null;
         string originalId=requestId+":capability";
         var input=(JsonObject)JsonSerializer.SerializeToNode(new { requestId,payload },CustodyBindingContract.Json)!;
-        bool first=await originals.BeginAsync("executor",originalId,input,token).ConfigureAwait(false);
+        bool first=!lookupOnly && await originals.BeginAsync("executor",originalId,input,token).ConfigureAwait(false);
         var issued=first ? await signer.SignAsync(payload).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(payload).WaitAsync(token).ConfigureAwait(false);
         if(issued.Payload!=payload || issued.State!=DeletionCapabilitySigningState.Signed || issued.DetachedJws is null) return null;
         var published=await trust.ResolveAsync(payload.TenantId,"DeletionBatchCapabilitySigningKey",payload.CapabilityKeyVersion,token).ConfigureAwait(false);
@@ -47,8 +50,9 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
         var result=new JsonObject { ["caseId"]=id,["requestId"]=requestId,["signingRequestId"]=issued.SigningRequestId,["verified"]=verified,
             ["canonicalFieldCount"]=document.RootElement.EnumerateObject().Count(),["canonicalSha256"]=Convert.ToHexStringLower(SHA256.HashData(canonical)),
             ["detachedArtifactSha256"]=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(issued.DetachedJws))),
-            ["publicAnchorId"]=published.PublicAnchorId,["publicAnchorVersion"]=published.PublicAnchorVersion,["trustRevision"]=published.TrustProfileRevision };
-        await originals.RetainAsync("executor",originalId,result,token).ConfigureAwait(false);
+            ["publicAnchorId"]=published.PublicAnchorId,["publicAnchorVersion"]=published.PublicAnchorVersion,["trustRevision"]=published.TrustProfileRevision,
+            ["payload"]=JsonSerializer.SerializeToNode(payload,CustodyBindingContract.Json) };
+        if(!lookupOnly) await originals.RetainAsync("executor",originalId,result,token).ConfigureAwait(false);
         return result;
     }
 }

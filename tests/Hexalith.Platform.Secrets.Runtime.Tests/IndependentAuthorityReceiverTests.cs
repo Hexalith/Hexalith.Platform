@@ -178,6 +178,38 @@ public sealed class IndependentAuthorityReceiverTests
         await Should.ThrowAsync<InvalidOperationException>(()=>Receiver().HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(request),caller with { Revoked=true },fixture.State,TestContext.Current.CancellationToken));
         driver.Executions.ShouldBe(1);
     }
+    [Fact]
+    public async Task SettledSpoolCannotAdmitReadinessOrObservationWithoutActualWritableArchiveAndReserve()
+    {
+        var storage=Substitute.For<IIndependentArchiveStorage>();long available=long.MaxValue;
+        storage.AvailableBytes(Arg.Any<string>()).Returns(_=>available);
+        using var fixture=new Fixture(storage);
+        fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Methods=value.Methods.Concat(["spool-authorize"]).ToArray() }).ToArray() };
+        var authority=new DaprReplicatedSpoolAuthority(fixture.Client());
+        (await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBe(fixture.Target);
+        (await authority.AuthorizeAsync(fixture.Target,"Readiness",null,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        storage.ReceivedCalls().Where(value=>value.GetMethodInfo().Name==nameof(IIndependentArchiveStorage.AvailableBytes)).ShouldAllBe(value=>value.GetArguments()[0]!.Equals(fixture.ArchiveDirectory));
+        available=0;(await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBeNull();
+        available=1024*1024; // Completion space remains, but no new maximum-sized denial original can be admitted.
+        (await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBe(fixture.Target);
+        (await authority.AuthorizeAsync(fixture.Target,"Readiness",null,TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await authority.AuthorizeAsync(fixture.Target,"Drain",null,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        byte[] bytes="fixture-completion-state"u8.ToArray();var transition=new AnchoredStateTransition(fixture.Scope,0,1,new string('A',64),Convert.ToHexString(SHA256.HashData(bytes)),bytes);
+        available=long.MaxValue;(await authority.AdmitTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();available=1024*1024;
+        (await authority.RecoverTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        string moved=fixture.ArchiveDirectory+"-offline";Directory.Move(fixture.ArchiveDirectory,moved);
+        try { (await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBeNull();(await authority.ValidateStateAsync(fixture.Target,1,transition.TargetDigest,TestContext.Current.CancellationToken)).ShouldBeFalse(); }
+        finally { Directory.Move(moved,fixture.ArchiveDirectory); }
+    }
+    [Fact]
+    public async Task ActualReadOnlyArchiveDirectoryBlocksSettledReadinessBeforeNativeEffects()
+    {
+        using var fixture=new Fixture();var authority=new DaprReplicatedSpoolAuthority(fixture.Client());
+        var mode=File.GetUnixFileMode(fixture.ArchiveDirectory);File.SetUnixFileMode(fixture.ArchiveDirectory,UnixFileMode.UserRead|UnixFileMode.UserExecute);
+        try { (await authority.GetCurrentAsync(TestContext.Current.CancellationToken)).ShouldBeNull();fixture.Saves.ShouldBe(0); }
+        finally { File.SetUnixFileMode(fixture.ArchiveDirectory,mode); }
+    }
+
     private sealed class ReceivingCaseDriver:IQualificationOwnerCaseDriver
     {
         public string CaseId=>"S1.reject.missing-config";
@@ -192,13 +224,15 @@ public sealed class IndependentAuthorityReceiverTests
 
     private sealed record Permission(bool Allowed);
 
-    private sealed class Fixture : IDisposable
+    internal sealed class Fixture : IDisposable
     {
         private readonly string _channel = Path.Combine(Path.GetTempPath(), "story54-authority-" + Guid.NewGuid().ToString("N"));
         private readonly ECDsa _signer = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         private readonly DaprClient _dapr = Substitute.For<DaprClient>();
         private readonly IndependentAuthorityReceiverInstallation _installation;
         private IndependentAuthorityReceiver _receiver;
+        private readonly IIndependentArchiveStorage? _archiveStorage;
+        internal string ArchiveDirectory=>_channel+"-archive";
         private int _revision;
         internal IndependentAuthorityState State;
         internal int Saves;
@@ -206,8 +240,9 @@ public sealed class IndependentAuthorityReceiverTests
         internal string Bearer = "isolated-caller";
         internal ReplicatedSecuritySpoolTarget Target { get; } = new("isolated-spool", "isolated-epoch", "current-1", DateTimeOffset.UtcNow.AddHours(1));
         internal string Scope => Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch;
-        internal Fixture()
+        internal Fixture(IIndependentArchiveStorage? archiveStorage=null)
         {
+            _archiveStorage=archiveStorage;
             File.WriteAllText(_channel, "isolated-channel");
             string archive = _channel + "-archive"; Directory.CreateDirectory(archive);
             File.WriteAllText(Path.Combine(archive, "enrollment.json"), "isolated-archive-enrollment");
@@ -220,9 +255,9 @@ public sealed class IndependentAuthorityReceiverTests
                 .Returns(_ => Task.FromResult((State, _revision.ToString())));
             _dapr.TrySaveStateAsync("independent-test-store", "head", Arg.Any<IndependentAuthorityState>(), Arg.Any<string>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
                 .Returns(call => { if (call.ArgAt<string>(3) != _revision.ToString()) return false; State = call.ArgAt<IndependentAuthorityState>(2); _revision++; Saves++; return true; });
-            _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource);
+            _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource,archiveStorage:_archiveStorage);
         }
-        internal void Restart() => _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource);
+        internal void Restart() => _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource,archiveStorage:_archiveStorage);
         internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), TimeProvider.System);
         public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); Directory.Delete(_channel + "-archive", true); }
         private sealed class Transport(Fixture fixture) : ISecretsCredentialBoundDaprInvoker

@@ -13,7 +13,7 @@ public sealed class QualificationRuntimeSourceDriver(IPlatformKeyInventoryActor 
     {
         string? caseId = SecretsProof.Text(original,"caseId");
         if (caseId is null || !enrolledInputs.TryGetValue(caseId,out var input) || original["enrolledScope"] is not JsonObject scope
-            || input.GetProperty("enrolledScope").GetRawText() != scope.ToJsonString()) return null;
+            || !JsonNode.DeepEquals(JsonNode.Parse(input.GetProperty("enrolledScope").GetRawText()),scope)) return null;
         var result = new JsonObject { ["caseId"]=caseId,["requestSha256"]=QualificationProtocolSchema.Digest(original) };
         if (caseId.StartsWith("S1.inventory.",StringComparison.Ordinal))
         {

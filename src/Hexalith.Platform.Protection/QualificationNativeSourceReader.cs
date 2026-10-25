@@ -6,10 +6,6 @@ using Hexalith.EventStore.Contracts.Streams;
 
 namespace Hexalith.Platform.Protection;
 
-/// <summary>Content-free independently measured exact persisted native event fact.</summary>
-public sealed record QualificationNativeEvent(long SourceRevision,string EventId,string EventTypeName,string PayloadSha256,string NativeEventDigest,string? ProtectionScheme,string? ProtectionKeyAlias);
-/// <summary>Complete bounded native stream observation under its actual source-v1 proof; no owner-provided result flag.</summary>
-public sealed record QualificationNativeStream(AggregateIdentity Identity,NativeSourceProof Proof,IReadOnlyList<QualificationNativeEvent> Events);
 /// <summary>Actual EventStore source reader for replay, denial, canary and guard-related source writes. It never accepts owner receipts or returns payload content.</summary>
 public sealed class QualificationNativeSourceReader(IEventStoreGatewayClient privateReadGateway,TimeProvider clock)
 {

@@ -9,7 +9,10 @@ public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticat
     IndependentDaprAuthority originals,IReadOnlyDictionary<string,TrustedEnvelopeIdentity> enrolledIdentities)
 {
     /// <summary>Retains one original issuance before verification; after ambiguous issuance only exact signed-original lookup is allowed.</summary>
-    public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
+    public Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)=>RunAsync(request,false,token);
+    /// <summary>Independently verifies the exact retained issued bytes using current runtime authority. It never issues a missing original.</summary>
+    public Task<JsonObject?> ReadVerifyAsync(JsonObject request,CancellationToken token)=>RunAsync(request,true,token);
+    private async Task<JsonObject?> RunAsync(JsonObject request,bool lookupOnly,CancellationToken token)
     {
         string? caseId=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
         if(caseId is null || requestId is null || !enrolledIdentities.TryGetValue(caseId,out var identity)
@@ -21,6 +24,7 @@ public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticat
         var input=JsonSerializer.SerializeToElement(new { requestId,caseId,identity },CustodyBindingContract.Json);
         if(original is null)
         {
+            if(lookupOnly) return null;
             var admitted=await originals.InvokeAsync<Admission>("qualification-begin-original",new { role="executor",requestId=originalId,original=input },token).ConfigureAwait(false);
             if(admitted is not { Exact:true,First:true }) return null;
             var issued=await envelopes.IssueAsync(identity,TimeSpan.FromSeconds(300),token).ConfigureAwait(false);

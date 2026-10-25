@@ -74,6 +74,31 @@ public sealed class EventStorePrivateRecordingPortTests
         fixture.Commands.Count.ShouldBe(1);
     }
 
+    [Theory]
+    [InlineData(CommandStatus.Received)]
+    [InlineData(CommandStatus.Processing)]
+    [InlineData(CommandStatus.EventsStored)]
+    [InlineData(CommandStatus.TimedOut)]
+    public async Task QueuedOrUncertainDispatchedCommandWithEmptyNativeSourceRemainsLookupOnly(CommandStatus status)
+    {
+        using var fixture=new Fixture { QueueWithoutEvent=true,OriginalStatus=status };
+        var record=fixture.Record;await fixture.Port.AppendAsync(record,TestContext.Current.CancellationToken);fixture.Commands.Count.ShouldBe(1);
+        (await fixture.Port.LookupAsync(record,TestContext.Current.CancellationToken)).State.ShouldBe(SecurityEventRecorderLookupState.Unknown);
+        var grant=new SecurityObservationRecoveryGrant(new("spool","epoch","authority",DateTimeOffset.UtcNow.AddHours(1)),record,new(SecurityEventRecorderLookupState.NotRecorded),"revision",DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddMinutes(5));
+        await Should.ThrowAsync<InvalidOperationException>(()=>fixture.Port.RecoverOriginalAsync(record,grant,TestContext.Current.CancellationToken));
+        fixture.Commands.Count.ShouldBe(1);fixture.RecoveryAuthority.ReceivedCalls().ShouldBeEmpty();
+    }
+    [Theory]
+    [InlineData(CommandStatus.Completed)]
+    [InlineData(CommandStatus.Rejected)]
+    public async Task ActualTerminalNonretryableNoEventAndNativeProofCanEstablishNotRecorded(CommandStatus status)
+    {
+        using var fixture=new Fixture { QueueWithoutEvent=true,OriginalStatus=status };
+        await fixture.Port.AppendAsync(fixture.Record,TestContext.Current.CancellationToken);
+        (await fixture.Port.LookupAsync(fixture.Record,TestContext.Current.CancellationToken)).State.ShouldBe(SecurityEventRecorderLookupState.NotRecorded);
+        fixture.Retryable=true;(await fixture.Port.LookupAsync(fixture.Record,TestContext.Current.CancellationToken)).State.ShouldBe(SecurityEventRecorderLookupState.Unknown);
+    }
+
     private sealed class Fixture : IDisposable
     {
         internal readonly IEventStoreGatewayClient Gateway = Substitute.For<IEventStoreGatewayClient>();
@@ -82,7 +107,10 @@ public sealed class EventStorePrivateRecordingPortTests
         private readonly Dictionary<string, List<StreamReadEvent>> _sources = [];
         private readonly OriginalTransport _originals = new();
         internal readonly DateTimeOffset Now = DateTimeOffset.UtcNow;
-        internal bool LoseAcknowledgement, ProofDenied, MissingNativeProof;
+        internal bool LoseAcknowledgement, ProofDenied, MissingNativeProof,QueueWithoutEvent;
+        internal CommandStatus? OriginalStatus;
+        internal bool? Retryable=false;
+        internal readonly IReplicatedSecuritySpoolAuthority RecoveryAuthority=Substitute.For<IReplicatedSecuritySpoolAuthority>();
         internal EventStorePrivateRecordingPort Port { get; }
         internal SecurityObservationRecord Record => new(new("security-observation-" + new string('a', 64), "tenant-a", "invalid-tag", new string('B', 64), "v1"), Now, Now.ToString("yyyy-MM-dd"), 1, null);
         internal Fixture()
@@ -93,6 +121,7 @@ public sealed class EventStorePrivateRecordingPortTests
             {
                 var request = call.ArgAt<BoundWorkloadCommandRequest>(0); Commands.Add(request); var command = request.Command;
                 var identity = new AggregateIdentity(command.Tenant, command.Domain, command.AggregateId);
+                if(QueueWithoutEvent) return Task.FromResult(new SubmitCommandResponse(command.MessageId) { MessageId=command.MessageId });
                 if (!_sources.TryGetValue(identity.ActorId, out var events)) _sources.Add(identity.ActorId, events = []);
                 string eventType = command.Domain == "trusted-envelope-replay" ? "Hexalith.Agents.Contracts.TrustedEnvelopeReplay.TrustedEnvelopeFirstSeen" : "Hexalith.Agents.Contracts.SecurityEventLog.SecurityEventRecorded";
                 object payload = command.Domain == "trusted-envelope-replay" ? new { Registration = command.Payload } : new { Observation = command.Payload };
@@ -102,7 +131,12 @@ public sealed class EventStorePrivateRecordingPortTests
                 if (LoseAcknowledgement) throw new IOException("isolated lost source acknowledgement");
                 return Task.FromResult(new SubmitCommandResponse(command.MessageId) { MessageId = command.MessageId });
             });
-            Port = new(Gateway, Proofs, _originals.Authority, Substitute.For<IReplicatedSecuritySpoolAuthority>(), "private-worker", TimeProvider.System);
+            Gateway.GetWorkloadCommandStatusAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(call=>
+            {
+                var command=Commands.Single(value=>value.Command.MessageId==call.ArgAt<string>(1)).Command;var status=OriginalStatus??CommandStatus.Processing;
+                return new CommandStatusQueryResponse(command.CorrelationId??command.MessageId,status.ToString(),(int)status,MessageId:command.MessageId) { TenantId=command.Tenant,Domain=command.Domain,AggregateId=command.AggregateId,CommittedEventSequence=0,EventCount=0,Retryable=OriginalStatus is null?true:Retryable };
+            });
+            Port = new(Gateway, Proofs, _originals.Authority, RecoveryAuthority, "private-worker", TimeProvider.System);
         }
         private StreamReadPage Read(StreamReadRequest request)
         {

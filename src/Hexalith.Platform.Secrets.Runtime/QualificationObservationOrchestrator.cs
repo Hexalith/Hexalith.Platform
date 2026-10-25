@@ -2,29 +2,6 @@ using System.Text.Json.Nodes;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>Exact retained owner source fact, measured by a typed independently authenticated reader.</summary>
-public sealed record QualificationObservedOriginal(string RequestId,string OriginalReceiptSha256,string AuthorityRevision,JsonObject Source);
-/// <summary>Verified control original. A process or restore operation cannot be replaced by an owner success flag.</summary>
-public sealed record QualificationRecoveryControlOriginal(string RequestId,string OperationId,string Operation,string TargetCommit,
-    string IsolatedTargetId,string BeforeIncarnation,string AfterIncarnation,string OriginalReceiptSha256,string ControlReceiptSha256,byte[]? Signature=null);
-/// <summary>Separately installed exact process/restore controller. No default or self-reported implementation exists.</summary>
-public interface IQualificationRecoveryController
-{
-    /// <summary>Reports exact missing protocol/resource inputs before any case effect or recovery operation.</summary>
-    Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Performs one independently authenticated isolated restart or restore, retaining exact identity across uncertainty.</summary>
-    Task<QualificationRecoveryControlOriginal?> ExecuteAsync(string operation,JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Reads only the exact control original after loss; never repeats an unknown control.</summary>
-    Task<QualificationRecoveryControlOriginal?> LookupAsync(string operation,JsonObject original,CancellationToken cancellationToken);
-    /// <summary>Verifies externally enrolled retained public trust and actual process/storage incarnation evidence.</summary>
-    bool Verify(QualificationRecoveryControlOriginal original,JsonObject request);
-}
-/// <summary>Typed actual persisted owner reader. No scenario expected values or stage labels are inputs.</summary>
-public interface IQualificationObservedOriginalReader
-{
-    /// <summary>Reads the exact retained source original under fresh current authority.</summary>
-    Task<QualificationObservedOriginal?> ReadAsync(JsonObject original,CancellationToken cancellationToken);
-}
 /// <summary>Four actual independent read stages with durable exact control identity; missing controller protocols refuse before case effects.</summary>
 public sealed class QualificationObservationOrchestrator(IQualificationOriginalStore originals,IQualificationRecoveryController recovery,
     IQualificationObservedOriginalReader reader)
@@ -46,10 +23,10 @@ public sealed class QualificationObservationOrchestrator(IQualificationOriginalS
         {
             var observed=await reader.ReadAsync(request,token).ConfigureAwait(false);
             if(observed is null || observed.RequestId!=requestId || observed.OriginalReceiptSha256.Length!=64 || string.IsNullOrWhiteSpace(observed.AuthorityRevision)) return false;
-            if(retained is not null && (retained.OriginalReceiptSha256!=observed.OriginalReceiptSha256 || !JsonNode.DeepEquals(retained.Source,observed.Source))) return false;
+            if(retained is not null && (retained.OriginalReceiptSha256!=observed.OriginalReceiptSha256 || !JsonNode.DeepEquals(retained.Source["state"]??retained.Source,observed.Source["state"]??observed.Source))) return false;
             retained??=observed;
             snapshots.Add(new JsonObject { ["stage"]=actualStage,["originalRequestId"]=requestId,["originalResultSha256"]=observed.OriginalReceiptSha256,
-                ["stateSha256"]=QualificationProtocolSchema.Digest(observed.Source),["authorityRevision"]=observed.AuthorityRevision,["source"]=observed.Source.DeepClone() });
+                ["stateSha256"]=QualificationProtocolSchema.Digest(observed.Source),["authorityRevision"]=observed.AuthorityRevision,["source"]=observed.Source.DeepClone(),["sourceProof"]=System.Text.Json.JsonSerializer.SerializeToNode(observed,CustodyBindingContract.Json) });
             return true;
         }
         if(!await Read("AfterEffect").ConfigureAwait(false)) return null;
