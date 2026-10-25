@@ -32,6 +32,9 @@ public interface IQualificationOriginalStore
 
     /// <summary>Retains a signed observation or resolved original. Existing changed bytes must throw.</summary>
     Task RetainAsync(string role, string requestId, JsonObject result, CancellationToken cancellationToken);
+
+    /// <summary>Reads an exact retained result after current private admission; omitted implementations remain unresolved.</summary>
+    Task<JsonObject?> LookupResultAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);
 }
 
 /// <summary>Public endpoint result. A lost provider result retains the original and requires exact lookup.</summary>

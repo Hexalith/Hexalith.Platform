@@ -10,8 +10,10 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Canary driver for the actual occurrence-authenticated EventStore engine and complete original custody manifest.</summary>
-public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionService engine, Fr34CanaryArchive writer,
-    CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests) : IFr34ProtectionCanaryEngine
+public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionService engine, Fr34EventStoreCanaryReader reader,
+    Hexalith.EventStore.Client.Gateway.IEventStoreGatewayClient privateWriteGateway,
+    Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource canaryProofs,
+    IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests) : IFr34ProtectionCanaryEngine
 {
     internal bool IsActualTarget(Fr34ProtectionTarget target)
     {
@@ -22,31 +24,23 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     public async Task<Fr34CanaryReference?> SealAndPersistAsync(Fr34ProtectionTarget target, string canaryId, byte[] plaintext, CancellationToken cancellationToken = default)
     {
         if (!IsActualTarget(target) || canaryId.Length != 64 || !canaryId.All(char.IsAsciiHexDigit) || plaintext.Length is 0 or > 8192) return null;
-        var owner = new AggregateIdentity(target.TenantId, "platform-fr34", canaryId);
-        var keyTarget = new ProtectionTarget(target.TenantId, canaryId, "fr34-" + canaryId);
-        var occurrence = new PayloadProtectionOccurrenceContext(1, PayloadProtectionPayloadKind.Event, typeof(CanaryEvent).FullName!);
-        byte[] input = JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Value = Convert.ToBase64String(plaintext), Target = keyTarget } });
-        PayloadProtectionCompletionContext? completion = null; bool published = false;
-        try
+        if (await reader.ReadCanaryAsync(target, canaryId, cancellationToken).ConfigureAwait(false) is { } existing) return existing.Reference;
+        var payload = new PersistFr34Canary(new(Convert.ToBase64String(plaintext), new(target.TenantId, canaryId, "fr34-" + canaryId)));
+        string id = EventStorePrivateRecordingPort.StableUlid("fr34", target.TenantId, canaryId);
+        var command = new Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest(id,target.TenantId,"fr34-canary",canaryId,
+            typeof(PersistFr34Canary).FullName!,JsonSerializer.SerializeToElement(payload,new JsonSerializerOptions(JsonSerializerDefaults.Web)),IdempotencyKey:id);
+        var original = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },cancellationToken).ConfigureAwait(false);
+        if (original is null)
         {
-            var result = await engine.ProtectEventPayloadAsync(owner, new CanaryEvent(), occurrence.PayloadTypeId, input, "json", occurrence, cancellationToken).ConfigureAwait(false);
-            completion = result.CompletionContext;
-            if (completion is null || result.ProtectionResult.Metadata.State != PayloadProtectionState.Protected
-                || result.ProtectionResult.Metadata.KeyAlias != completion.KeyReference || result.ProtectionResult.PayloadBytes.AsSpan().IndexOf(input) >= 0) return null;
-            var reference = new Fr34CanaryReference(target, canaryId, owner.ActorId, completion.KeyReference);
-            await engine.AcquirePayloadProtectionCompletionLeaseAsync(completion, cancellationToken).ConfigureAwait(false);
-            await writer.PublishAsync(new(reference, owner, keyTarget, occurrence, result.ProtectionResult), cancellationToken).ConfigureAwait(false);
-            published = true;
-            await engine.CompletePayloadProtectionAsync(completion, PayloadProtectionPersistenceOutcome.Persisted, cancellationToken).ConfigureAwait(false);
-            return reference;
+            if (await originals.InvokeAsync<Admission>("qualification-begin-original",new { role="fr34-engine",requestId=id,original=command.Payload },cancellationToken).ConfigureAwait(false) is not { Exact:true }) return null;
+            original = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },cancellationToken).ConfigureAwait(false);
         }
-        catch
-        {
-            if (completion is not null)
-                await engine.CompletePayloadProtectionAsync(completion, PayloadProtectionPersistenceOutcome.Unknown, cancellationToken).ConfigureAwait(false);
-            throw;
-        }
-        finally { CryptographicOperations.ZeroMemory(input); _ = published; }
+        if (original?.Request.GetRawText() != command.Payload.GetRawText() || original.SubmissionState != "Unsent") return null;
+        var request = new Hexalith.EventStore.Contracts.Commands.BoundWorkloadCommandRequest(command,privatePrincipal);
+        string? proof = await canaryProofs.IssueAsync(request,cancellationToken).ConfigureAwait(false);
+        if (proof is null || await originals.InvokeAsync<Permission>("recording-dispatch-admit",new { role="fr34-engine",requestId=id,original=command.Payload },cancellationToken).ConfigureAwait(false) is not { Allowed:true }) return null;
+        _ = await privateWriteGateway.SubmitBoundWorkloadCommandAsync(request,proof,cancellationToken).ConfigureAwait(false);
+        return (await reader.ReadCanaryAsync(target,canaryId,cancellationToken).ConfigureAwait(false))?.Reference;
     }
     /// <inheritdoc />
     public async Task<byte[]?> UnsealAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
@@ -59,7 +53,7 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<bool> DestroyAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
-        if (!IsActualTarget(reference.Target) || await writer.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
+        if (!IsActualTarget(reference.Target) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
         // The independent control owner publishes this complete signed/reserved original; a locator is never authority.
         string reservation = "fr34:" + reference.CanaryId;
         var manifest = await manifests.FindAsync(reservation, cancellationToken).ConfigureAwait(false);
@@ -71,9 +65,10 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<PayloadUnprotectionOutcome?> ReplayAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
-        if (!IsActualTarget(reference.Target) || await writer.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } original) return null;
+        if (!IsActualTarget(reference.Target) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } original) return null;
         return await engine.TryUnprotectEventPayloadAsync(original.Owner, original.Occurrence.PayloadTypeId, original.Protected.PayloadBytes,
             original.Protected.SerializationFormat, original.Protected.Metadata, original.Occurrence, cancellationToken).ConfigureAwait(false);
     }
-    private sealed record CanaryEvent : IEventPayload;
+    private sealed record Admission(bool Exact,bool First);
+    private sealed record Permission(bool Allowed);
 }

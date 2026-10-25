@@ -7,6 +7,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 internal static class QualificationProtocolSchema
 {
     private static readonly JsonObject CaseSchema = LoadCaseSchema();
+    internal static string[] CaseIds=>((JsonArray)CaseSchema["cases"]!).Select(value=>value!["id"]!.GetValue<string>()).ToArray();
     internal static string PlanSha256 => CaseSchema["planSha256"]!.GetValue<string>();
     private static JsonObject LoadCaseSchema()
     {
@@ -51,6 +52,18 @@ internal static class QualificationProtocolSchema
             || expected.Any(item => !Integer(item.Value))
             || scenario["persistedStages"] is not JsonArray stages || !stages.Select(item => item?.ToString()).SequenceEqual(new[] { "AfterEffect", "AfterRestart", "AfterRestore", "AfterLookup" })) { return false; }
         return true;
+    }
+
+    internal static bool ValidOwnerRequest(string role,JsonObject request)
+    {
+        const string common="protocol runId targetCommit isolatedTargetId planSha256 requestId";
+        if(role is not ("executor" or "observer" or "enrollment") || !Exact(request,common+(role=="enrollment"?" operation":" caseId caseTargetId enrolledScope"))
+            || !SecretsProof.SameText(request,"protocol","EXT-SECRETS-1.qualification.v1") || !SecretsProof.SameText(request,"planSha256",PlanSha256)
+            || !Texts(request,"runId isolatedTargetId") || !Hashes(request,"requestId") || SecretsProof.Text(request,"targetCommit") is not { Length:40 } commit
+            || !commit.All(char.IsAsciiHexDigitLower)) return false;
+        return role=="enrollment" ? SecretsProof.SameText(request,"operation","enroll") : Case(SecretsProof.Text(request,"caseId")) is not null
+            && Hashes(request,"caseTargetId") && request["enrolledScope"] is JsonObject scope && ValidScope(scope)
+            && JsonNode.DeepEquals(scope["logicalId"],request["caseTargetId"]);
     }
 
     private static bool ValidScope(JsonObject scope)

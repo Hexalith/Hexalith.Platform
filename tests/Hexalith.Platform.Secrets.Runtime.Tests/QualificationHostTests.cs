@@ -471,7 +471,7 @@ public sealed class QualificationHostTests
 
     private static SecretsRuntimeConfiguration Configuration() => Fixtures.Ready() with { AcceptedReplacementCommit = new string('a', 40) };
 
-    private static JsonObject Request(string role = "executor")
+    internal static JsonObject Request(string role = "executor")
     {
         var request = new JsonObject
         {

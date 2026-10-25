@@ -208,9 +208,10 @@ class InstalledPhaseExecutor:
             raise Blocked("ExactAcceptedPhaseExecutionProfile")
 
     def preflight(self):
+        from case_driver_inventory import blockers
         import hashlib
         from pathlib import Path
-        missing = []
+        missing = blockers([name.removeprefix("secrets:") for name in self.descriptor.get("cases",[]) if name.startswith("secrets:")])
         for artifact in self.descriptor["artifacts"]:
             try:
                 if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:

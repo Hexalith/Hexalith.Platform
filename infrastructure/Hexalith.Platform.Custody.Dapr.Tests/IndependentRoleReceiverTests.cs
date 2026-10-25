@@ -49,6 +49,36 @@ internal static class IndependentRoleReceiverTests
             var permission = CustodyJson.Read<SignedStatement>(Convert.FromBase64String(issued.Metadata["custody-operation-proof"]));
             if (!roleKey.VerifyData(CustodyJson.Bytes(permission with { Signature = [] }), permission.Signature, HashAlgorithmName.SHA256, DSASignatureFormat.Rfc3279DerSequence))
                 throw new Exception("Actual permission signature failed.");
+            var ownerHandler = new CustodyOwnerOperationHandler(fixture.Profile, fixture.Store,
+                new IndependentDaprAuthority(transport,transport.Binding("originals"),TimeProvider.System),"authorizer",roleKey,TimeProvider.System);
+            var ownerGrant = new IndependentCallerGrant("unused","owner", "tenant|"+envelope.OwnerPurposeScope,"custody-owner",["custody-owner-phase:read-current"],DateTimeOffset.UtcNow.AddMinutes(1),false);
+            var ownerState = new IndependentAuthorityState("enrollment","scope","trust-1",0,DateTimeOffset.UtcNow.AddMinutes(1),[],null,0,Fixture.Digest,[],[],[],[],[],[]);
+            var ownerPayload = JsonSerializer.SerializeToElement(new { phase="read-current",tenant="tenant",ownerScope=envelope.OwnerPurposeScope,operationIdentity=(string?)null,transitionJson=(string?)null });
+            var ownerCall = (CustodyOwnerAuthorizedCall?)await ownerHandler.HandleAsync("custody-owner-call",ownerPayload,ownerGrant,ownerState,default);
+            if(ownerCall is null || CustodyBindingContract.Decode(Encoding.UTF8.GetBytes(ownerCall.RequestJson)) is not { } ownerWire
+                || ownerWire.Envelope.Operation!="read-current" || !ownerCall.Metadata.ContainsKey("custody-operation-proof")) throw new Exception("Actual native owner-call framing unavailable.");
+            try { await ownerHandler.HandleAsync("custody-owner-call",ownerPayload,ownerGrant with { ScopeReference="foreign" },ownerState,default); throw new Exception("Substituted owner scope admitted."); }
+            catch(AuthorityUnavailableException) { }
+
+            fixture.Qualify();
+            var wrap=fixture.Wrap("receiver-key"); var wrapEnvelope=wrap.Envelope;
+            var wrapFacts=new ControlClaim(CustodyJson.Hash(CustodyJson.Bytes(wrapEnvelope.Proof)),Fixture.Digest,Fixture.Digest,Fixture.Digest,100,null,null);
+            var wrapOriginal=original with { SubjectSha256=wrapFacts.ControlProofSha256,Payload=JsonSerializer.SerializeToElement(wrapFacts,CustodyBindingContract.Json) };
+            transport.Control=new(wrapEnvelope.Proof,Signed(wrapOriginal),fixture.Sign("control",wrapFacts.ControlProofSha256,wrapFacts));
+            var admission=new KeyAdmission(wrap.WrapInput!.KeyUse,wrapEnvelope.RequestDigest,fixture.Profile.ProfileDigest,
+                new[]{"caller","sdk","sidecar","uds","grpc","tls","component","native"}.Select(role=>new KeyHolder("copy-"+role,role,"recipient","transport","owner",Fixture.Digest)).ToArray());
+            transport.Observation=fixture.Sign("independent-observer",CustodyJson.Hash(CustodyJson.Bytes(admission)),admission);
+            var wrapIntent=new CustodyCallIntent("wrap","tenant",wrapEnvelope.OwnerPurposeScope,wrapEnvelope.OperationId,wrapEnvelope.RequestDigest,
+                JsonSerializer.Serialize(new { wrap.WrapInput.Identity,wrap.WrapInput.OperationId,wrap.WrapInput.ExpectedRevision,wrap.WrapInput.KekVersion,wrap.WrapInput.OpaqueWrappedKeyReference,wrap.WrapInput.KeyUse },CustodyBindingContract.Json),wrapEnvelope.RequestAttemptId,wrapEnvelope.Challenge);
+            var keyPreparedResponse=await Call(receiver,"prepare",CustodyJson.Bytes(wrapIntent));
+            if(keyPreparedResponse.Status!=200) throw new Exception("Valid current key closure prepare refused.");
+            var keyPrepared=CustodyJson.Read<CustodyPreparedCall>(keyPreparedResponse.Bytes);
+            if(keyPrepared.KeyClosureProfileDigest!=Fixture.Digest) throw new Exception("Current verified key closure digest omitted.");
+            var keyAuthorization=await Call(receiver,"authorize",CustodyJson.Bytes(new { Intent=wrapIntent,Prepared=keyPrepared,RequestSha256=Fixture.Digest }));
+            if(keyAuthorization.Status!=200 || !CustodyJson.Read<CustodyCallAuthorization>(keyAuthorization.Bytes).Metadata.ContainsKey("custody-key-admission")) throw new Exception("Exact independently signed key admission omitted.");
+            transport.Observation=null;
+            if((await Call(receiver,"authorize",CustodyJson.Bytes(new { Intent=wrapIntent,Prepared=keyPrepared,RequestSha256=Fixture.Digest }))).Status!=503) throw new Exception("Missing key admission did not close authorization.");
+            transport.Control=new(envelope.Proof,Signed(original),controlStatement);
             int writes = transport.Begins;
             await Install(new(envelope.Proof, Signed(original with { IssuedAt = DateTimeOffset.UtcNow.AddMinutes(-1), ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(-31) }), controlStatement));
             if ((await Call(receiver, "prepare", CustodyJson.Bytes(intent))).Status != 503 || transport.Begins != writes)
@@ -74,6 +104,7 @@ internal static class IndependentRoleReceiverTests
         private readonly Dictionary<string, IndependentOriginal> _originals = [];
         internal int Begins;
         internal RetainedControlOriginal? Control;
+        internal SignedStatement? Observation;
         internal IndependentDaprAuthorityBinding Binding(string scope) => new("independent-owner", "file:/isolated", _key.ExportSubjectPublicKeyInfoPem(), "enrollment", scope, "trust-1");
         public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken) => throw new Exception("Uncredentialed source fallback.");
         public Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
@@ -82,6 +113,7 @@ internal static class IndependentRoleReceiverTests
             object result;
             if (method.EndsWith("custody-role-authorize", StringComparison.Ordinal)) result = new { Allowed = true };
             else if (method.EndsWith("custody-control-original", StringComparison.Ordinal)) result = Control!;
+            else if (method.EndsWith("custody-native-observation-original",StringComparison.Ordinal)) result = Observation!;
             else if (method.EndsWith("qualification-begin-original", StringComparison.Ordinal))
             {
                 Begins++; string id = payload.GetProperty("requestId").GetString()!; var original = payload.GetProperty("original").Clone();

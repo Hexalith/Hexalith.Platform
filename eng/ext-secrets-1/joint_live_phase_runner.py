@@ -19,6 +19,7 @@ PHASES = ("protection", "secrets", "host-refusing-consumers", "mutual")
 RECOVERY_PHASES = {"lifecycle": 3, "delivery": 3, "signing": 3, "replay": 1,
                    "consume": 3, "compromise-block": 3, "activation": 3,
                    "guard-issue": 3, "dispatch": 3, "completion": 3}
+REQUEST_DEADLINE_SECONDS = 30
 HOST_CASES = ("H1", "H2", "H3", "H4", "v21", "v23")
 
 
@@ -225,8 +226,8 @@ class DaprCohortRpc:
         parsed = urlparse(self.endpoint)
         if parsed.scheme != "http" or parsed.hostname not in ("127.0.0.1", "localhost", "::1"):
             raise Blocked("LoopbackDaprEndpoint")
-        deadline, result = time.monotonic() + 30, queue.Queue(maxsize=1)
-        connection = http.client.HTTPConnection(parsed.hostname, parsed.port or 80, timeout=30)
+        deadline, result = time.monotonic() + REQUEST_DEADLINE_SECONDS, queue.Queue(maxsize=1)
+        connection = http.client.HTTPConnection(parsed.hostname, parsed.port or 80, timeout=REQUEST_DEADLINE_SECONDS)
         def remaining():
             seconds = deadline - time.monotonic()
             if seconds <= 0: raise TimeoutError("CohortMonotonicDeadline")

@@ -12,6 +12,15 @@ public static class AgentsDeploymentProfile
     /// <summary>Gets the accepted Parties identity branch.</summary>
     public const string PartiesBranch = "B";
 
+    internal static string ExpectedCohortPlanSha256
+    {
+        get
+        {
+            using Stream stream=typeof(AgentsDeploymentProfile).Assembly.GetManifestResourceStream("ExtSecretsFullJointPlan")!;
+            return Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(stream));
+        }
+    }
+
     private static readonly string[] RootKeys =
     [
         "host", "integrationDate", "partiesBranch", "timing", "services",
@@ -79,7 +88,7 @@ public static class AgentsDeploymentProfile
             || !packet.RootElement.TryGetProperty("profileSha256", out var profilePin)
             || profilePin.GetString() != Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(json)))
             || !packet.RootElement.TryGetProperty("cohortPlanSha256", out var planPin)
-            || !System.Text.RegularExpressions.Regex.IsMatch(planPin.GetString() ?? "", "^[0-9a-f]{64}$"))
+            || planPin.GetString()!=ExpectedCohortPlanSha256)
             throw new InvalidDataException("Accepted packet must bind exact profile bytes and complete shared plan.");
         foreach (string record in new[] { "EXT-HOST-1", "EXT-SECRETS-1" })
         {

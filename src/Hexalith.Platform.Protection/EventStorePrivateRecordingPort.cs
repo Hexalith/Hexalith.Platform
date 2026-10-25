@@ -87,7 +87,7 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
             throw new InvalidOperationException("Current restricted exact-original recovery denied.");
         if (proof.State == SecurityEventRecorderLookupState.Recorded) return;
         await SubmitAsync(SecurityIdentity(original), "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent",
-            StableUlid("security", original.Intent.ObservationId), SecurityCommand(original), cancellationToken, recovery: true);
+            StableUlid("security", original.Intent.ObservationId), SecurityCommand(original), cancellationToken, recovery: grant);
     }
     private async Task<AuthoritativeEventStream?> ReadAsync(AggregateIdentity identity, CancellationToken token)
     {
@@ -102,16 +102,17 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
         if (result is null || !result.Exact) throw new InvalidOperationException("Durable exact source original unavailable.");
         return result.First;
     }
-    private async Task SubmitAsync(AggregateIdentity identity, string commandType, string messageId, object payload, CancellationToken token, bool recovery = false)
+    private async Task SubmitAsync(AggregateIdentity identity, string commandType, string messageId, object payload, CancellationToken token, SecurityObservationRecoveryGrant? recovery = null)
     {
         // No generic user/principal/Workflow dispatch. Scope and command are constructed here from immutable authenticated originals.
         var command = new SubmitCommandRequest(messageId, identity.TenantId, identity.Domain, identity.AggregateId, commandType,
             JsonSerializer.SerializeToElement(payload, Json), IdempotencyKey: messageId);
         var request = new BoundWorkloadCommandRequest(command, principal);
-        string? proof = await scopedProofs.IssueAsync(request, token);
+        string? proof = recovery is null ? await scopedProofs.IssueAsync(request, token)
+            : scopedProofs is IPrivateRecoveryCommandProofSource recoveryProofs ? await recoveryProofs.IssueRecoveryAsync(request,recovery,token) : null;
         if (proof is null) throw new InvalidOperationException("Exact stream/event workload ACL denied.");
         string role = identity.Domain == "trusted-envelope-replay" ? "private-replay" : "private-security-observation";
-        if (!recovery && await originals.InvokeAsync<Permission>("recording-dispatch-admit", new { role, requestId = messageId, original = command.Payload }, token) is not { Allowed: true })
+        if (recovery is null && await originals.InvokeAsync<Permission>("recording-dispatch-admit", new { role, requestId = messageId, original = command.Payload }, token) is not { Allowed: true })
             throw new InvalidOperationException("Dispatch is unknown or already admitted; exact lookup required.");
         _ = await gateway.SubmitBoundWorkloadCommandAsync(request, proof, token); // Acceptance is never an authoritative source receipt.
     }
@@ -145,7 +146,7 @@ public sealed class EventStorePrivateRecordingPort(IEventStoreGatewayClient gate
             record.Intent.ReasonCode, record.Intent.UntrustedFieldsHmac, record.Intent.DigestKeyVersion);
     }
     private static string Derive(params string[] components) => Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(components)));
-    private static string StableUlid(params string[] components)
+    internal static string StableUlid(params string[] components)
     {
         byte[] hash = SHA256.HashData(PlatformCanonicalBytes.Identity(components));
         var value = new BigInteger(hash.AsSpan(0, 16), isUnsigned: true, isBigEndian: true);

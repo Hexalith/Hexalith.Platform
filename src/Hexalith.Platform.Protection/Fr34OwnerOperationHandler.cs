@@ -8,7 +8,7 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Actual receiving FR-34 engine and independently persisted observation operations. No owner-provided verification flags are accepted.</summary>
-public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine, Fr34CanaryArchive independentReader,
+public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine, Fr34EventStoreCanaryReader independentReader,
     IInteractionProtectionBindingProvider independentBindings, TimeProvider clock) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />

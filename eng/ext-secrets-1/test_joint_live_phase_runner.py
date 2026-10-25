@@ -83,7 +83,9 @@ class JointRunnerTests(unittest.TestCase):
 
     def test_unknown_effect_after_restart_uses_exact_lookup(self):
         self.owners['secrets'].lose = True
-        with self.assertRaises(Blocked): self.runner().run()
+        with self.assertRaises(Blocked) as caught: self.runner().run()
+        self.assertTrue(caught.exception.effects_started)
+        self.assertEqual('Reserved',caught.exception.attempt_state)
         self.store = CohortAuthorityStore(self.path, lambda phase, result: result.get('signature') == 'isolated-signature')
         self.authority = Authority(self.store)
         recovered = self.runner().run()
@@ -158,6 +160,26 @@ class ReceivingServiceTests(unittest.TestCase):
         with self.assertRaises(Blocked): app.handle('reserve', headers, canonical(request | {'method': 'reserve'}))
         with closing(sqlite3.connect(self.fixture.path)) as db, db:
             self.assertEqual(0, db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0])
+
+    def test_receiving_owner_restart_with_null_original_only_looks_up(self):
+        from joint_authority_service import RetainedPhaseOwner
+        class Rpc:
+            def __init__(self,store): self.store=store
+            def call(self,method,payload): return self.store.dispatch(method,payload)
+        class Executor:
+            executions=0; lookups=0
+            def execute(self,request): self.executions+=1; return None
+            def lookup(self,request): self.lookups+=1; return None
+        authority=self.fixture.authority
+        reserved=authority.reserve(self.fixture.binding,'isolated-null-attempt'); key=digest(self.fixture.binding)
+        request={'protocol':'OQ-5.4-1.joint.v1','attemptId':reserved['attemptId'],'bindingDigest':key,'phase':0,'owner':PHASES[0],
+                 'previousSha256':key,'cases':partitions()[0],'requestId':digest([reserved['attemptId'],key,0,key])}
+        authority.retain(request); executor=Executor()
+        def receiver(): return RetainedPhaseOwner(self.fixture.path,0,self.fixture.binding,executor,lambda payload:{'payload':payload},Rpc(self.fixture.store))
+        self.assertIsNone(receiver().dispatch('execute',request))
+        self.assertIsNone(receiver().dispatch('execute',request))
+        self.assertIsNone(receiver().dispatch('lookup',request))
+        self.assertEqual(1,executor.executions); self.assertEqual(2,executor.lookups)
 
     def test_direct_phase_call_cannot_bypass_current_retained_authority_admission(self):
         from joint_authority_service import RetainedPhaseOwner

@@ -8,6 +8,7 @@ import shlex
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
@@ -25,6 +26,9 @@ spec.loader.exec_module(host)
 
 class CoordinatedPacketTests(unittest.TestCase):
     def setUp(self):
+        # Isolate packet binding mechanics from the explicitly incomplete shipped driver inventory.
+        self.driver_patch = patch('coordinated_packets.driver_blockers', return_value=[])
+        self.driver_patch.start(); self.addCleanup(self.driver_patch.stop)
         self.temp = tempfile.TemporaryDirectory(prefix="fixture-shared-packet-")
         self.addCleanup(self.temp.cleanup)
         self.directory = Path(self.temp.name)

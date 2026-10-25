@@ -24,7 +24,7 @@ class AcceptancePreparationTests(unittest.TestCase):
     def assert_only_cohort_refusal(self, invoke):
         with self.assertRaises(q.Unavailable) as caught:
             invoke()
-        self.assertEqual(set(q.IMPLEMENTATIONS) | {"OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"},
+        self.assertEqual(set(q.IMPLEMENTATIONS) | {"OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"},
                          set(caught.exception.inputs))
 
     def test_missing_installation_refuses_complete_packet_without_accepting_candidate(self):

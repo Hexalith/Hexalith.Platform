@@ -27,4 +27,5 @@
   <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Composition.Tests" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/public-joint-plan.json" LogicalName="ExtSecretsFullJointPlan" /></ItemGroup>
 </Project>

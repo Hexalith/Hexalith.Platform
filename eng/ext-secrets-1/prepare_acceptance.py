@@ -22,9 +22,10 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     try:
         configuration_bytes = q.bounded_public_file(configuration, 1024 * 1024)
         config = q.read_public_configuration(configuration)
-    except q.Unavailable as error:
+    except (q.Unavailable, OSError, ValueError, TypeError) as error:
+        inputs = error.inputs if isinstance(error,q.Unavailable) else ["PublicRuntimeConfiguration"]
         report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "qualificationEffects": 0,
-                  "dependencyAvailable": False, "missingInputs": error.inputs, "packetPrepared": False}
+                  "dependencyAvailable": False, "missingInputs": inputs, "packetPrepared": False}
         (output / "blocked-inputs.json").write_bytes(q.canonical(report))
         return report
     # Relative public anchors are relative to their source configuration, never the later Agents command cwd.

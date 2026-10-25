@@ -37,13 +37,14 @@ public static class ImmutableFileArchive
 
     private static void EnsureDirectory(string directory)
     {
+        string? parent = Path.GetDirectoryName(directory);
+        if (parent is not null && parent != directory) EnsureDirectory(parent);
         if (Directory.Exists(directory))
         {
             if (new DirectoryInfo(directory).LinkTarget is not null) throw new IOException("Archive symbolic link denied.");
             return;
         }
-        string parent = Path.GetDirectoryName(directory) ?? throw new IOException("Archive root unavailable.");
-        EnsureDirectory(parent);
+        if (parent is null) throw new IOException("Archive root unavailable.");
         Directory.CreateDirectory(directory);
         FlushDirectory(parent);
         FlushDirectory(directory);

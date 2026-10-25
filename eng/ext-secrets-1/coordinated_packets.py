@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 from joint_live_phase_runner import calendar_date, digest, full_plan
+from case_driver_inventory import blockers as driver_blockers
 
 REQUIRED_ARTIFACTS = ("custodyConfiguration", "hostProfile", "protectionProfile", "providerProfile", "authorityEnrollment",
                       "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan", "jointConfiguration")
@@ -15,7 +16,7 @@ def section(text, record):
 
 
 def admission(context_path, register_path, candidate, clean, profile_date=None):
-    missing, hashes, context = [], {}, {}
+    missing, hashes, context = driver_blockers(), {}, {}
     if context_path is None:
         return ["ExplicitCoordinatedInstallationContext", "ExplicitPlatformIntegrationDate", "ExplicitProtectionIntegrationDate"], {}, {}
     import qualify as q
@@ -105,6 +106,28 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
             command = commands.get(record)
             if not isinstance(command, str) or not candidate or candidate not in command or "status --porcelain" not in command:
                 missing.append(record + ".CompleteExactCommand")
+            else:
+                import shlex
+                try:
+                    accepted_command=re.search(r'Command: `([^`]+)`',section(text,record))
+                    tokens=shlex.split(command)
+                    if accepted_command is None or accepted_command[1]!=command:
+                        missing.append(record+".EqualAcceptedCoordinatedCommand")
+                    joint_argument="PLATFORM_JOINT_COHORT_CONFIGURATION="+context["installedArtifacts"]["jointConfiguration"]["path"]
+                    if tokens.count(joint_argument)!=1 or any(value.startswith("PLATFORM_JOINT_COHORT_CONFIGURATION=") and value!=joint_argument for value in tokens):
+                        missing.append(record+".ExactJointConfigurationCommandPath")
+                    marker="../platform/eng/verify-ext-secrets-1.ps1" if record=="EXT-SECRETS-1" else "../platform/eng/verify-agents-host.sh"
+                    if tokens.count(marker)!=1 or any(value in tokens for value in (";","|","||","&")):
+                        missing.append(record+".ClosedCompleteOwnerCommand")
+                    if record=="EXT-SECRETS-1":
+                        suffix=tokens[tokens.index(marker)+1:]
+                        if len(suffix)!=8 or suffix[0:2]!=["-Mode","Live"] or suffix[2]!="-EventStoreSourceRoot" or suffix[4]!="-ArtifactsDirectory" or suffix[6]!="-EvidenceDirectory":
+                            missing.append(record+".ClosedCompleteOwnerCommand")
+                    else:
+                        suffix=tokens[tokens.index(marker)+1:]
+                        if len(suffix)!=6 or suffix[0:2]!=["--mode","Full"] or suffix[2]!="--artifacts-path" or suffix[4]!="--profile":
+                            missing.append(record+".ClosedCompleteOwnerCommand")
+                except (KeyError,TypeError,ValueError): missing.append(record+".ClosedCompleteOwnerCommand")
         # Explicit externally enrolled artifact inventory, never a local installed=true flag.
         if not all(context.get("installedArtifacts", {}).get(name, {}).get("enrollmentReference") for name in REQUIRED_ARTIFACTS):
             missing.append("IndependentInstallationEnrollmentReferences")

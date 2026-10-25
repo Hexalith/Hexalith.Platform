@@ -261,7 +261,7 @@ class QualificationTests(unittest.TestCase):
         with self.assertRaises(q.Unavailable) as caught:
             self.fixture.preflight()
         self.assertIn("OQ-5.4-1.AuthoritativeCohortRecord", caught.exception.inputs)
-        self.assertIn("OQ-5.4-1.JointLivePhaseRunner", caught.exception.inputs)
+        self.assertIn("OQ-5.4-1.IndependentCurrentCohortBindingAndOwners", caught.exception.inputs)
         self.assertFalse(self.fixture.calls)
 
     def _ignore_packet(self):

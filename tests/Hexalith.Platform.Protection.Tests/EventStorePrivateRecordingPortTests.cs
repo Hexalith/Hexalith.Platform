@@ -59,6 +59,21 @@ public sealed class EventStorePrivateRecordingPortTests
         (await fixture.Port.LookupAsync(fixture.Record, TestContext.Current.CancellationToken)).State.ShouldBe(SecurityEventRecorderLookupState.Unknown);
     }
 
+    [Fact]
+    public async Task ProvenUnsentReplayAfterProofDenialRetainsOriginalTimeAndCanProgress()
+    {
+        using var fixture = new Fixture { ProofDenied=true };
+        var intent = new TrustedEnvelopeReplayIntent("issuer","unsent-nonce","tenant-a","logical","v1",new string('A',64));
+        await Should.ThrowAsync<InvalidOperationException>(()=>fixture.Port.RegisterAsync(intent,fixture.Now,TimeSpan.FromSeconds(604800),TestContext.Current.CancellationToken));
+        fixture.Commands.ShouldBeEmpty();
+        fixture.ProofDenied=false;
+        DateTimeOffset retryAt=DateTimeOffset.UtcNow;
+        retryAt.ShouldBeGreaterThan(fixture.Now);
+        var receipt = await fixture.Port.RegisterAsync(intent,retryAt,TimeSpan.FromSeconds(604800),TestContext.Current.CancellationToken);
+        receipt.ShouldNotBeNull(); receipt.FirstSeenAt.ShouldBe(fixture.Now);
+        fixture.Commands.Count.ShouldBe(1);
+    }
+
     private sealed class Fixture : IDisposable
     {
         internal readonly IEventStoreGatewayClient Gateway = Substitute.For<IEventStoreGatewayClient>();
@@ -104,15 +119,29 @@ public sealed class EventStorePrivateRecordingPortTests
     private sealed class OriginalTransport : ISecretsCredentialBoundDaprInvoker, IDisposable
     {
         private readonly ECDsa _key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-        private readonly Dictionary<string, string> _originals = [];
+        private readonly Dictionary<string, IndependentOriginal> _originals = [];
         internal IndependentDaprAuthority Authority => new(this, new("original-owner", "file:/isolated", _key.ExportSubjectPublicKeyInfoPem(), "enrollment", "originals", "trust-1"), TimeProvider.System);
         public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken) => Task.FromResult<string?>(null);
         public Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
         {
             using var document = JsonDocument.Parse(jsonBody); var request = document.RootElement; var payload = request.GetProperty("Payload");
-            string id = payload.GetProperty("requestId").GetString()!; string bytes = payload.GetProperty("original").GetRawText();
-            bool first = !_originals.TryGetValue(id, out string? existing); if (first) _originals.Add(id, bytes);
-            var outcome = JsonSerializer.SerializeToElement(new { Exact = first || existing == bytes, First = first });
+            string id = payload.GetProperty("requestId").GetString()!;
+            object? result;
+            if (method.EndsWith("qualification-lookup-original",StringComparison.Ordinal)) result = _originals.GetValueOrDefault(id);
+            else if (method.EndsWith("recording-dispatch-admit",StringComparison.Ordinal))
+            {
+                bool allowed = _originals.TryGetValue(id,out var stored) && stored.Request.GetRawText() == payload.GetProperty("original").GetRawText() && stored.SubmissionState == "Unsent";
+                if (allowed) _originals[id] = stored! with { SubmissionState="Dispatched" };
+                result = new { Allowed=allowed };
+            }
+            else
+            {
+                var original = payload.GetProperty("original").Clone();
+                bool first = !_originals.TryGetValue(id,out var existing);
+                if (first) _originals.Add(id,new(original,null));
+                result = new { Exact=first || existing!.Request.GetRawText()==original.GetRawText(),First=first };
+            }
+            var outcome = JsonSerializer.SerializeToElement(result);
             long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             var response = new Response("enrollment", "originals", "trust-1", request.GetProperty("Method").GetString()!, request.GetProperty("Nonce").GetString()!,
                 Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(jsonBody))), now, now + 30, outcome, []);

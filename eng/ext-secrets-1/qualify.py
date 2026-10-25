@@ -220,7 +220,7 @@ def cohort_prerequisite_inputs(register, target, *, register_text=None):
     """The full plan crosses the accepted joint cohort; a standalone run cannot satisfy it."""
     text = bounded_public_file(register, 1024 * 1024).decode("utf-8") if register_text is None else register_text
     if "### OQ-5.4-1" not in text:
-        return ["OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"]
+        return ["OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners"]
     missing = []
     def section(record):
         match = re.search(r"^### " + re.escape(record) + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)

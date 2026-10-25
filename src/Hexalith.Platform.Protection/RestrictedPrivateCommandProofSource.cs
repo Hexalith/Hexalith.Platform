@@ -7,12 +7,23 @@ using System.Text.Json;
 
 namespace Hexalith.Platform.Protection;
 
+/// <summary>Distinct private recovery-proof capability; it cannot grant a new observation or a replay retry.</summary>
+public interface IPrivateRecoveryCommandProofSource
+{
+    /// <summary>Requires independent current exact-original recovery authorization before signing the unchanged security command.</summary>
+    ValueTask<string?> IssueRecoveryAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant grant,CancellationToken cancellationToken);
+}
+
 /// <summary>Private workload proof signing restricted to the two exact owner command shapes. No public/general dispatcher authority.</summary>
 public sealed class RestrictedPrivateCommandProofSource(string caller, string principal, string mountedRsaKeyFile,
-    IndependentDaprAuthority currentScopes, TimeProvider clock) : IEventStoreGatewayBoundCommandProofSource
+    IndependentDaprAuthority currentScopes, TimeProvider clock) : IEventStoreGatewayBoundCommandProofSource,IPrivateRecoveryCommandProofSource
 {
     /// <inheritdoc />
-    public async ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken)
+    public ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken)=>IssueCoreAsync(request,null,cancellationToken);
+    /// <inheritdoc />
+    public ValueTask<string?> IssueRecoveryAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant grant,CancellationToken cancellationToken)
+        =>IssueCoreAsync(request,grant,cancellationToken);
+    private async ValueTask<string?> IssueCoreAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant? grant,CancellationToken cancellationToken)
     {
         if (request.PrincipalId != principal || request.Command.Extensions is { Count: > 0 }
             || request.Command.IdempotencyKey != request.Command.MessageId) return null;
@@ -33,7 +44,11 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
             aggregate = Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, command.Payload.GetProperty("utcDay").GetString()!])));
         }
         else return null;
-        if (command.AggregateId != aggregate || await currentScopes.InvokeAsync<Permission>("recording-command-authorize", new { caller, principal, command }, cancellationToken) is not { Allowed: true }) return null;
+                if(command.AggregateId!=aggregate || grant is not null && command.Domain!="security-event-log") return null;
+        bool admitted=grant is null
+            ? await currentScopes.InvokeAsync<Permission>("recording-command-authorize",new { caller,principal,command },cancellationToken) is { Allowed:true }
+            : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken) is { Allowed:true };
+        if(!admitted) return null;
         // Independent workload RSA key; this is not a decision approval issuer or capability signing family.
         var info = new FileInfo(mountedRsaKeyFile);
         if (!info.Exists || info.Length is <= 0 or > 16384) return null;
@@ -42,6 +57,7 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
     }
     private static bool ExactFields(JsonElement payload, string[] expected)
     {
+        if (payload.ValueKind != JsonValueKind.Object) return false;
         var names = payload.EnumerateObject().Select(p => p.Name).ToArray();
         return names.Length == expected.Length && names.Distinct(StringComparer.Ordinal).Count() == expected.Length
             && names.Order(StringComparer.Ordinal).SequenceEqual(expected.Order(StringComparer.Ordinal));

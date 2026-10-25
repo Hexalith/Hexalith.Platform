@@ -24,5 +24,11 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
         if (await originals.InvokeAsync<OriginalAdmission>("qualification-retain-result", new { role, requestId, result }, cancellationToken).ConfigureAwait(false) is not { Exact: true })
             throw new InvalidOperationException("Durable original result publication is unknown or conflicting.");
     }
+    /// <inheritdoc />
+    public async Task<JsonObject?> LookupResultAsync(string role,string requestId,CancellationToken cancellationToken)
+    {
+        var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role,requestId },cancellationToken).ConfigureAwait(false);
+        return original?.Result is { ValueKind:JsonValueKind.Object } result ? JsonNode.Parse(result.GetRawText()) as JsonObject : null;
+    }
     private sealed record OriginalAdmission(bool Exact, bool First);
 }

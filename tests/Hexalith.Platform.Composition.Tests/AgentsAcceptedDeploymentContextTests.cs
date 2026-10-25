@@ -15,7 +15,7 @@ public sealed class AgentsAcceptedDeploymentContextTests
         model.IntegrationDate.ShouldBe("2026-11-03"); model.AcceptedContextValidated.ShouldBeTrue();
         Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.ValidateAcceptedContext(json.Replace("recorder-ref", "changed-recorder", StringComparison.Ordinal), register, packet));
         Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.ValidateAcceptedContext(json, register, packet.Replace("2026-11-03", "2026-11-04", StringComparison.Ordinal)));
-        Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.ValidateAcceptedContext(json, register, packet.Replace(new string('b', 64), new string('c', 64), StringComparison.Ordinal)));
+        Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.ValidateAcceptedContext(json, register, packet.Replace(AgentsDeploymentProfile.ExpectedCohortPlanSha256, new string('c', 64), StringComparison.Ordinal)));
     }
 
     [Theory]
@@ -47,7 +47,7 @@ public sealed class AgentsAcceptedDeploymentContextTests
         foreach (string name in new[] { "currentTenant", "globalAdministrator", "humanIdentity", "approverEvidence", "replay", "recorder", "worker", "spoolBackend", "failureModel", "protectionEngine", "protectionObserver", "partiesBinding", "conversationsBinding" }) profile[name] = name + "-ref";
         string json = JsonSerializer.Serialize(profile);
         string profileHash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(json)));
-        string planHash = new('b', 64); string target = new('a', 40);
+        string planHash = AgentsDeploymentProfile.ExpectedCohortPlanSha256; string target = new('a', 40);
         string packet = JsonSerializer.Serialize(new { candidateCommit = target, platformIntegrationDate = "2026-11-03", profileSha256 = profileHash, cohortPlanSha256 = planHash });
         string fields = "\n| `TargetVersionOrCommit` | `" + target + "` |\n| `TargetIntegrationDate` | `2026-11-03` |\n| `AcceptedStatus` | `Committed` |\n";
         string pin = JsonSerializer.Serialize(new { profileSha256 = profileHash, cohortPlanSha256 = planHash });

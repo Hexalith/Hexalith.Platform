@@ -121,6 +121,75 @@ public sealed class IndependentAuthorityReceiverTests
         services.Count.ShouldBe(2);
     }
 
+    [Theory]
+    [InlineData("issuer")][InlineData("audience")][InlineData("operation")][InlineData("principal")][InlineData("actor")][InlineData("binding")][InlineData("roles")]
+    [InlineData("target")][InlineData("schema")][InlineData("logical-id")][InlineData("tuple")][InlineData("fingerprint")][InlineData("digest-key-version")]
+    [InlineData("nonce")][InlineData("issued-at")][InlineData("expires-at")][InlineData("key-version")]
+    public async Task ShippedEnvelopeWorkflowUsesRealHmacAndExactRetainedIssuanceForEverySubstitution(string field)
+    {
+        using var fixture=new Fixture();
+        fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray() };
+        var profiles=Substitute.For<IPlatformSigningProfileProvider>(); var keys=Substitute.For<IPlatformHmacKeyProvider>();
+        DateTimeOffset now=DateTimeOffset.UtcNow;
+        profiles.GetCurrent().Returns(new PlatformSigningProfile("fixture-r1","fixture-issuer","fixture-audience",now.AddHours(-1),now.AddHours(1),
+            TimeSpan.FromSeconds(300),TimeSpan.FromSeconds(30),TimeSpan.FromSeconds(600),TimeSpan.FromSeconds(86400),TimeSpan.FromSeconds(604800)));
+        keys.ResolveAsync(Arg.Any<PlatformHmacScope>(),Arg.Any<string?>(),Arg.Any<CancellationToken>()).Returns(call=>ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded,
+            new(call.ArgAt<PlatformHmacScope>(0),new("v1",PlatformHmacKeyState.Active,now.AddHours(-1),now.AddHours(1),null),Enumerable.Repeat((byte)42,32).ToArray()))));
+        var authenticator=new TrustedEnvelopeAuthenticator(keys,profiles,TimeProvider.System);
+        var registrar=Substitute.For<ITrustedEnvelopeReplayRegistrar>();
+        var replay=new TrustedEnvelopeReplayVerifier(authenticator,registrar,profiles,TimeProvider.System);
+        var identity=new TrustedEnvelopeIdentity(1,"fixture-r1","fixture-issuer",new(TrustedPrincipalKind.User,"tenant-a","actor-a","party-a",1,"roles",null,null,null,null),
+            "Contracts.EditProposal","EditProposal","tenant-a","interaction-a","correlation","cause",["tenant-a","User","actor-a","EditProposal","client-key"],"fingerprint","digest-v1","fixture-audience","logical-command");
+        string caseId="S2.substitution."+field;
+        var driver=new QualificationEnvelopeCaseWorkflow(authenticator,replay,fixture.Client(),new Dictionary<string,TrustedEnvelopeIdentity>{{caseId,identity}});
+        var request=new System.Text.Json.Nodes.JsonObject { ["caseId"]=caseId,["requestId"]="isolated-"+field,["enrolledScope"]=new System.Text.Json.Nodes.JsonObject { ["tenantId"]="tenant-a" } };
+        var first=await driver.ExecuteAsync(request,TestContext.Current.CancellationToken); first.ShouldNotBeNull();
+        first["firstStatus"]!.GetValue<string>().ShouldNotBe("Succeeded");
+        fixture.Restart();
+        var retried=await new QualificationEnvelopeCaseWorkflow(authenticator,replay,fixture.Client(),new Dictionary<string,TrustedEnvelopeIdentity>{{caseId,identity}}).ExecuteAsync(request,TestContext.Current.CancellationToken);
+        System.Text.Json.Nodes.JsonNode.DeepEquals(first,retried).ShouldBeTrue();
+        registrar.ReceivedCalls().ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task ActualQualificationOwnerReceiverSignsExactOriginalAndUncertainRestartUsesLookupOnly()
+    {
+        using var fixture=new Fixture();using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var full=QualificationHostTests.Request();var request=(System.Text.Json.Nodes.JsonObject)full.DeepClone();request.Remove("scenario");
+        fixture.State=fixture.State with {
+            Callers=fixture.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray(),
+            QualificationBindings=new Dictionary<string,string>(new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.Select(name=>new KeyValuePair<string,string>(name,request[name]!.ToJsonString()))),
+            QualificationCases=new() { ["S1.reject.missing-config"]=JsonSerializer.SerializeToElement(new { caseId="S1.reject.missing-config",caseTargetId=request["caseTargetId"]!.GetValue<string>(),enrolledScope=request["enrolledScope"] },CustodyBindingContract.Json) } };
+        var role=new QualificationOwnerRole("executor","isolated-executor","v1",key.ExportSubjectPublicKeyInfoPem());
+        var driver=new ReceivingCaseDriver();var drivers=new Dictionary<string,IQualificationOwnerCaseDriver>{{driver.CaseId,driver}};
+        var store=new InstalledQualificationOriginalStore(fixture.Client());
+        var caller=fixture.State.Callers[0];
+        QualificationOwnerOperationHandler Receiver()=>new(role,key,store,drivers,TimeProvider.System);
+        driver.Lose=true;
+        await Should.ThrowAsync<TimeoutException>(()=>Receiver().HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(request),caller,fixture.State,TestContext.Current.CancellationToken));
+        fixture.Restart();driver.Lose=false;
+        var result=(System.Text.Json.Nodes.JsonObject?)await Receiver().HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(request),caller,fixture.State,TestContext.Current.CancellationToken);
+        result.ShouldNotBeNull();driver.Executions.ShouldBe(1);driver.Lookups.ShouldBe(1);
+        byte[] anchor=Encoding.ASCII.GetBytes(key.ExportSubjectPublicKeyInfoPem());
+        var verifier=new QualificationProofVerifier(new Dictionary<string,QualificationProofBinding>{{"executor",new("isolated-executor","v1",anchor,Convert.ToHexStringLower(SHA256.HashData(anchor)))}});
+        verifier.Verify("executor",full,result,TestContext.Current.CancellationToken).ShouldBeTrue();
+        var foreign=(System.Text.Json.Nodes.JsonObject)request.DeepClone();foreign["caseTargetId"]=new string('f',64);
+        await Should.ThrowAsync<InvalidOperationException>(()=>Receiver().HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(foreign),caller,fixture.State,TestContext.Current.CancellationToken));
+        await Should.ThrowAsync<InvalidOperationException>(()=>Receiver().HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(request),caller with { Revoked=true },fixture.State,TestContext.Current.CancellationToken));
+        driver.Executions.ShouldBe(1);
+    }
+    private sealed class ReceivingCaseDriver:IQualificationOwnerCaseDriver
+    {
+        public string CaseId=>"S1.reject.missing-config";
+        internal int Executions,Lookups;internal bool Lose;
+        public Task<IReadOnlyList<string>> PreflightAsync(System.Text.Json.Nodes.JsonObject original,CancellationToken token)=>Task.FromResult<IReadOnlyList<string>>([]);
+        public Task<System.Text.Json.Nodes.JsonObject?> ExecuteAsync(System.Text.Json.Nodes.JsonObject original,CancellationToken token)
+        { Executions++;if(Lose) throw new TimeoutException("isolated lost owner acknowledgement");return LookupResult(); }
+        public Task<System.Text.Json.Nodes.JsonObject?> LookupAsync(System.Text.Json.Nodes.JsonObject original,CancellationToken token) { Lookups++;return LookupResult(); }
+        public Task<System.Text.Json.Nodes.JsonObject?> ObserveAsync(System.Text.Json.Nodes.JsonObject original,CancellationToken token)=>Task.FromResult<System.Text.Json.Nodes.JsonObject?>(null);
+        private static Task<System.Text.Json.Nodes.JsonObject?> LookupResult()=>Task.FromResult<System.Text.Json.Nodes.JsonObject?>(new() { ["outcome"]="Denied",["resultSha256"]=new string('b',64) });
+    }
+
     private sealed record Permission(bool Allowed);
 
     private sealed class Fixture : IDisposable
