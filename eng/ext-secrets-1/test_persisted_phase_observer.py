@@ -37,8 +37,18 @@ class PersistedObserverTests(unittest.TestCase):
         self.observer = PersistedPhaseObserver(self.descriptor, self.binding, Authority())
         case = self.request['cases'][0]
         self.evidence = self.evidence_root / (hashlib.sha256(case.encode()).hexdigest() + '.json')
-        self.evidence.write_bytes(canonical({'sourceKind': 'PersistedOwnerRead', 'requestSha256': digest(self.request), 'caseId': case,
-            'sourceReceipts': [{'sourceRevision': 1, 'eventId': 'fixture-event', 'sourceSha256': digest('fixture-native-bytes')}], 'outcome': 'Verified'}))
+        self.source_key = ec.generate_private_key(ec.SECP256R1())
+        source_anchor = self.root / 'independent-source.pem'
+        source_anchor.write_bytes(self.source_key.public_key().public_bytes(serialization.Encoding.PEM,serialization.PublicFormat.SubjectPublicKeyInfo))
+        facts = {name:1 for name in ('G1','G2','G3','G4','G5','G6','G7')}
+        self.source = {'requestSha256':digest(self.request),'bindingDigest':digest(self.binding),'caseId':case,
+                       'records':[{'sourceRevision':1,'eventId':'fixture-native-event','payload':facts}]}
+        self.source_file = self.root / 'source' / self.request['requestId'] / self.evidence.name
+        self.source_file.parent.mkdir(parents=True)
+        self.source_file.write_bytes(canonical({'payload':self.source,'signature':base64.b64encode(self.source_key.sign(canonical(self.source),ec.ECDSA(hashes.SHA256()))).decode()}))
+        self.descriptor['sourceEvidence'] = {case:{'anchorFile':str(source_anchor),'anchorSha256':hashlib.sha256(source_anchor.read_bytes()).hexdigest(),
+            'directory':str(self.root/'source'),'invariants':{name:{'operation':'equals','path':[0,'payload',name],'expected':1} for name in facts}}}
+        self.evidence.write_bytes(canonical({'requestSha256':digest(self.request),'caseId':case,'sourceRecordsSha256':digest(self.source['records'])}))
         self.payload = {'requestSha256': digest(self.request), 'bindingDigest': digest(self.binding),
                         'observations': [{'caseId': case, 'evidenceSha256': hashlib.sha256(self.evidence.read_bytes()).hexdigest()}]}
         self.write_original()
@@ -73,6 +83,21 @@ class PersistedObserverTests(unittest.TestCase):
         Path(self.descriptor['installedArtifacts'][0]['path']).write_text('changed')
         result = self.observer.dispatch('preflight-phase', {'binding': self.binding, 'phase': 0, 'cases': partitions()[0]})
         self.assertEqual(['ExactInstalledObserverInput'], result['missingInputs'])
+
+    def test_owner_receipt_shape_cannot_replace_actual_independent_source_read(self):
+        self.source_file.unlink()
+        self.evidence.write_bytes(canonical({'sourceKind':'PersistedOwnerRead','requestSha256':digest(self.request),'caseId':self.request['cases'][0],
+            'sourceReceipts':[{'sourceRevision':1,'eventId':'invented','sourceSha256':digest('invented')}],'outcome':'Verified'}))
+        self.payload['observations'][0]['evidenceSha256'] = hashlib.sha256(self.evidence.read_bytes()).hexdigest()
+        self.write_original()
+        self.assertEqual('Unknown',self.lookup()['state'])
+
+    def test_independent_source_invariant_failure_denies_even_signed_owner_success(self):
+        self.source['records'][0]['payload']['G1'] = 0
+        self.source_file.write_bytes(canonical({'payload':self.source,'signature':base64.b64encode(self.source_key.sign(canonical(self.source),ec.ECDSA(hashes.SHA256()))).decode()}))
+        self.evidence.write_bytes(canonical({'requestSha256':digest(self.request),'caseId':self.request['cases'][0],'sourceRecordsSha256':digest(self.source['records'])}))
+        self.payload['observations'][0]['evidenceSha256'] = hashlib.sha256(self.evidence.read_bytes()).hexdigest(); self.write_original()
+        with self.assertRaises(Blocked): self.lookup()
 
 
 class SourceCheckoutTests(unittest.TestCase):

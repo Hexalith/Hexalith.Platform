@@ -476,7 +476,7 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
     return config, target, binding
 
 
-def verify_signed(envelope, role, config, binding):
+def verify_signed(envelope, role, config, binding, *, original_time=None):
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import ec
     from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
@@ -502,9 +502,11 @@ def verify_signed(envelope, role, config, binding):
     if payload.get("protocol") != PROTOCOL or payload.get("identity") != get(config, f"qualification.{role}.identity") \
             or payload.get("version") != get(config, f"qualification.{role}.version"):
         raise QualificationFailed("EnrolledAuthorityIdentity")
-    if type(payload.get("observedAt")) is not int or type(payload.get("validUntil")) is not int \
-            or not time.time() - 30 <= payload["observedAt"] <= time.time() + 1 \
-            or not time.time() < payload["validUntil"] <= payload["observedAt"] + 30:
+    instant = time.time() if original_time is None else original_time
+    if type(instant) not in (int, float) or instant > time.time() + 1 \
+            or type(payload.get("observedAt")) is not int or type(payload.get("validUntil")) is not int \
+            or not instant - 30 <= payload["observedAt"] <= instant + 1 \
+            or not instant < payload["validUntil"] <= payload["observedAt"] + 30:
         raise QualificationFailed("CurrentProofAuthority")
     return payload
 
@@ -1222,6 +1224,7 @@ def main():
     # Always retain the full immutable case plan, even when no prerequisites exist.
     (evidence / "live-plan.json").write_bytes(canonical({"protocol": PROTOCOL, "planSha256": plan_digest(), "cases": wire_plan()}))
     effects_started = False
+    cohort_failure = {}
     journal = None
     try:
         root = Path(args.root).resolve()
@@ -1232,6 +1235,8 @@ def main():
             try:
                 result = run_installed_cohort(cohort_configuration, register)
             except Blocked as error:
+                effects_started = error.effects_started
+                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state}
                 raise Unavailable(*error.missing) from None
             (evidence / "joint-cohort-result.json").write_bytes(canonical(result))
             print("JointCohortPassed: EXT-SECRETS-1, EXT-HOST-1; acceptance unchanged.")
@@ -1250,7 +1255,7 @@ def main():
         exit_code = 0
     except Unavailable as exc:
         result = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
-                  "missingInputs": exc.inputs, "effectsStarted": effects_started, "qualificationEffects": 0 if not effects_started else "Unknown"}
+                  "missingInputs": exc.inputs, "effectsStarted": effects_started, "qualificationEffects": 0 if not effects_started else "Unknown", **cohort_failure}
         exit_code = 2
     except ReplacementAcceptancePacket:
         result = {"code": "ReplacementAcceptancePacket", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,

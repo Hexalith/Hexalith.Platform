@@ -47,7 +47,7 @@ public static class AgentsHostComposition
                 profile = AgentsDeploymentProfile.ValidateAcceptedContext(json, File.ReadAllText(registerPath), File.ReadAllText(packetPath));
             }
         }
-        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException or System.Text.Json.JsonException)
+        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException or System.Text.Json.JsonException or InvalidOperationException or KeyNotFoundException or FormatException)
         {
             return false;
         }

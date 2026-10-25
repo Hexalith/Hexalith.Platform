@@ -140,7 +140,9 @@ public sealed class IndependentAuthorityReceiverTests
         internal Fixture()
         {
             File.WriteAllText(_channel, "isolated-channel");
-            _installation = new("isolated-enrollment", "isolated-owner", "current-1", "independent-test-store", "head", "unused", _signer.ExportSubjectPublicKeyInfoPem(), "file:" + _channel);
+            string archive = _channel + "-archive"; Directory.CreateDirectory(archive);
+            File.WriteAllText(Path.Combine(archive, "enrollment.json"), "isolated-archive-enrollment");
+            _installation = new("isolated-enrollment", "isolated-owner", "current-1", "independent-test-store", "head", "unused", _signer.ExportSubjectPublicKeyInfoPem(), "file:" + _channel, OriginalArchiveDirectory: archive, ArchiveEnrollmentSha256: Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(archive, "enrollment.json")))), CompletionReserveBytes: 1024 * 1024);
             string hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(Bearer)));
             State = new("isolated-enrollment", "isolated-owner", "current-1", 0, DateTimeOffset.UtcNow.AddHours(1),
                 [new(hash, "worker", "scope", "executor", ["spool-current", "spool-admit-transition", "spool-record-transition", "spool-recover-transition", "spool-verify-transition", "spool-validate", "qualification-begin-original"], DateTimeOffset.UtcNow.AddHours(1), false)],
@@ -153,7 +155,7 @@ public sealed class IndependentAuthorityReceiverTests
         }
         internal void Restart() => _receiver = new(_dapr, _installation, _signer, TimeProvider.System, RecordingSource);
         internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), TimeProvider.System);
-        public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); }
+        public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); Directory.Delete(_channel + "-archive", true); }
         private sealed class Transport(Fixture fixture) : ISecretsCredentialBoundDaprInvoker
         {
             public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken) => Task.FromResult<string?>(null);

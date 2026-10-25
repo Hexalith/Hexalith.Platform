@@ -126,7 +126,7 @@ COHORT_OBLIGATIONS = {
     "OQ-5.4-1.CommittedProtectionOwner": "Require an independently accepted EXT-PROTECTION-1 target and real lifecycle/protection installation before the joint cohort.",
     "OQ-5.4-1.SharedPlatformTarget": "Reconcile EXT-SECRETS-1 and EXT-HOST-1 to one canonical immutable Platform target or an explicitly accepted compatible layout.",
     "OQ-5.4-1.AcceptedPinnedHostProfile": "Accept an actual host qualification profile and exact command whose --profile references that profile and whose verifier has a genuine pass path.",
-    "OQ-5.4-1.JointLivePhaseRunner": "Provide the actual accepted joint phase runner and current independently enrolled participant bindings; per-owner local checks cannot implement OQ-5.4-1.",
+    "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners": "Provide the actual accepted joint phase runner and current independently enrolled participant bindings; per-owner local checks cannot implement OQ-5.4-1.",
 }
 
 
