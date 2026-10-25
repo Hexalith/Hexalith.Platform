@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" />
+    <!-- Reuse the focused tests retained with the composition contracts; unrelated legacy test helpers
+         remain subject to their existing broad build gate. -->
+    <Compile Include="../Hexalith.Platform.Composition.Tests/PlatformOwnerServicesTests.cs" Link="PlatformOwnerServicesTests.cs" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Shouldly" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

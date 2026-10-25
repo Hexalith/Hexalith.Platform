@@ -10,8 +10,11 @@ using Microsoft.Extensions.Configuration;
 public static class PlatformHostedPublishing
 {
     /// <summary>Returns canonical chart inputs without binding local credentials, paths or providers.</summary>
-    public static JsonElement Describe(PlatformApplicationGraph graph) => JsonSerializer.SerializeToElement(new
+    public static JsonElement Describe(PlatformApplicationGraph graph)
     {
+        ArgumentNullException.ThrowIfNull(graph);
+        return JsonSerializer.SerializeToElement(new
+        {
         schema = "hexalith.platform.application-graph.v1",
         workloads = graph.Workloads.Select(w => new
         {
@@ -29,7 +32,8 @@ public static class PlatformHostedPublishing
             accessControl = graph.Dapr.AccessControl(w.AppId, "__APPLICATION_NAMESPACE__", "__TRUST_DOMAIN__"),
         }).ToArray(),
         capabilities = graph.Dapr.Capabilities, subscriptions = graph.Dapr.Subscriptions,
-    });
+        });
+    }
 
     /// <summary>Selects the same four-owner reference composition, without calling the local binder.</summary>
     public static PlatformCompositionOptions ReferenceOptions(string root) => new()
@@ -44,6 +48,7 @@ public static class PlatformHostedPublishing
     /// <summary>Probes the pinned native integration. No publish/deploy operation is triggered here.</summary>
     public static void ComposeNativeProbe(IDistributedApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         if (builder.ExecutionContext.IsRunMode) throw new InvalidOperationException("Hosted qualification is publish-only; select an explicit publish operation.");
         if (builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled") || builder.Configuration.GetValue<bool>("Platform:Works:Enabled") || builder.Configuration.GetValue<bool>("Platform:Agents:Enabled"))
             throw new InvalidDataException("Hosted reference publishing cannot combine local composition selections.");
