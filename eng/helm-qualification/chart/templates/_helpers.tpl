@@ -289,6 +289,10 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- end -}}
 {{- if and (eq (default "" $root.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1") (hasPrefix "memories/" $workload.identity) -}}
 {{- include "reference.put" (dict "key" "ASPNETCORE_ENVIRONMENT" "entry" (dict "value" "Qualification") "environment" $env "seen" $seen) -}}
+{{- if eq $workload.identity "memories/server" -}}
+{{- include "reference.put" (dict "key" "AccessTelemetryQualification__GatePath" "entry" (dict "value" "/var/run/hexalith/access-telemetry-qualification/gate.json") "environment" $env "seen" $seen) -}}
+{{- include "reference.put" (dict "key" "HEXALITH_QUALIFICATION_WRITER" "entry" (dict "valueFrom" (dict "fieldRef" (dict "fieldPath" "metadata.name"))) "environment" $env "seen" $seen) -}}
+{{- end -}}
 {{- include "reference.put" (dict "key" "AccessTelemetryQualification__ProfileId" "entry" (dict "value" "PG-FINITE-CAMPAIGN-1") "environment" $env "seen" $seen) -}}
 {{- include "reference.put" (dict "key" "AccessTelemetryQualification__ApprovedProfileHash" "entry" (dict "valueFrom" (dict "configMapKeyRef" (dict "name" "access-telemetry-campaign-identity" "key" "profileSha256"))) "environment" $env "seen" $seen) -}}
 {{- end -}}

@@ -317,6 +317,130 @@ producer read back its exact profile/capacity identity before mutation. Actual
 owner authority binds the target/runtime receipt. Do not replace the named
 reference with a literal self-hash inside the values/render being hashed.
 
-The full PostgreSQL/OpenBao/independent-UTC/monitoring environment, multi-day
-lifecycle, bounded failure/disposal and reservations remain Platform prerequisites.
-No full campaign launch command or qualification credit is supplied by this work.
+The capacity-only slice above supplies no lifecycle or qualification credit. The
+supported full-environment lifecycle is implemented below; real independent UTC/
+monitoring sources, measurements, reservations and operational inputs remain required.
+
+
+## Supported full-campaign lifecycle
+
+The additive `--campaign` mode extends `Qualification` and its bounded process,
+explicit transport, cancellation and disposal path. `campaign_environment.py`
+supplies the real environment layer; `campaign_lifecycle.py` persists exact run
+ownership and integrates `campaign_capacity.py`. It does not run or replace
+Memories assertions. Builds' source/Debug CLI validates descriptors using its
+existing contract reader through `validate --environment`. No dependency pin or
+historical fixture was changed.
+
+From this repository, the supported command surface is:
+
+```bash
+python3 -B eng/helm-qualification/qualify.py --campaign prepare --campaign-state "$STATE" --campaign-plan "$PLAN" --approved-plan-sha256 "$PLAN_SHA256"
+python3 -B eng/helm-qualification/qualify.py --campaign inspect --campaign-state "$STATE"
+python3 -B eng/helm-qualification/qualify.py --campaign launch --campaign-state "$STATE" --approved-plan-sha256 "$PLAN_SHA256"
+python3 -B eng/helm-qualification/qualify.py --campaign monitor --campaign-state "$STATE" --approved-plan-sha256 "$PLAN_SHA256"
+python3 -B eng/helm-qualification/qualify.py --campaign stop --campaign-state "$STATE"
+python3 -B eng/helm-qualification/qualify.py --campaign remove --campaign-state "$STATE"
+```
+
+`prepare` is offline. It requires actual complete outside-approved inputs and
+renders with the pinned local Helm artifacts; it never creates a cluster. `launch`
+is an explicit operational action and stays in foreground supervision. `monitor`
+observes the original owner and never renews startup/execution/stopping budgets or
+replays uncertain creation. `stop`/`remove` request cancellation of that exact
+owner and share the first stopping deadline. Startup is600s, campaign execution is
+at most336h within the approved window, stopping/disposal is900s cumulatively.
+Preserve private state after failure; incomplete/foreign/unverified resources
+never become a successful disposition. The source code's closed plan validation
+is authoritative for input shapes.
+
+The private plan binds run ID, capacity profile and canonical Memories hash,
+initial admission, independent clock/status custody, exact window, Docker
+engine/socket, primary/backup paths, all tool binaries/support files, pinned
+Dapr/Gateway/CNI assets, environment configuration and source closure. The
+application input binds this environment configuration into the finite profile;
+the tool input binds the actual tools/assets. Environment configuration supplies
+immutable Dapr/backend/application/provider/reporter images, component files,
+provider/reporter resources, private Secrets/OpenBao seed, PostgreSQL conformance
+template and source-bound bounded fault reservations. Missing data is a refusal,
+not a generated operational default. Private files use0600 and directories0700.
+
+The real environment retains TLS PostgreSQL with dedicated runtime/maintenance
+roles and the maintained security/bootstrap template; OpenBao Raft/TLS with
+private initialization custody; three persistent Placement/Scheduler members;
+restricted application Pods, declared service accounts and writer gate; and a
+suspended, zero-retry unprivileged reporter. Scheduler uses explicitly configured
+1Gi member claims and a lower etcd quota, subject to actual measurement admission.
+Placement uses three256Mi claims within the control allowance. Single-node member
+replication provides no node/site HA. Provider/reporter/CNI bounds must fit the
+remaining300m CPU/1Gi control envelope and actual measured performance; oversized
+inputs refuse and need a newly admitted allocation. Do not change pins or relax
+capacity checks to fit a candidate.
+
+Actual signed independent UTC/status/monitoring sources, fresh source-bound
+measurements, compatible finite schedule, physical reservations/backup, TLS and
+scoped credentials, exact artifact adoption and live target bindings are still
+operational prerequisites. No actual launch or qualification is claimed. The
+one ordinary review is complete with all seven substantive findings resolved. The
+final37-case lifecycle lane and18-case Memories handoff/profile/cleanup selection
+pass; focused process checks, rendering and Builds validation are recorded in
+Memories Spec14 and its single retention report. These are offline results.
+
+
+Collector receipts distinguish `preflight` (before target creation, target and
+runtime/PostgreSQL observations explicitly null) from `observed` (exact live
+physical target and every required fresh series). Source/trust, declared limits
+and physical allocation bindings are checked before launch. The first live poll
+requires actual observations; missing/stale data stops the run. During an exact
+approved PostgreSQL fault only its unavailable series can be null; allocation
+and runtime observations remain required. The implementation supplies the
+admission/monitor contract, not fabricated operational measurements.
+
+
+The operational environment input also binds:
+
+- `leaseHolders`: exact approved `story-27-4/owner-6775094/<32 lowercase hex>`
+  session holders. Cleanup never treats a matching prefix as ownership.
+- `providerNamespaces`: explicitly declared additional provider namespaces,
+  including the existing consumers' `monitoring` namespace. Resources keep their
+  declared namespace; namespace UIDs join the run's physical ownership record.
+- `faultWindows`: exact source command/hash, resource and interval, explicit
+  `replicas` and `allowRolloutRestart`, plus the exact source `scenario`,
+  configuration/resource `changes` and `metricAllowances`. Normal drift
+  checks resume after the interval. An allowance never grants a general exemption
+  for images, security settings or unrelated configuration.
+- `monitoring`: `collectorId`, source Ref, `commandSha256`, private key Ref,
+  `receiptPath`, allocation bindings and explicit operational limits. Each sizing
+  allocation binds an adopted `poolId` and unique owned `identity`.
+
+The signed collector body uses `schema: hexalith.platform.campaign-monitor/v1`,
+`runId`, `planSha256`, `profileSha256`, `collectorId`, `sourceSha256`,
+`commandSha256`, `observedUtcMs`, `intervalStartUtcMs`, `boottimeNs`, `bootId`,
+`phase`, `target`, `allocations`, `series` and `expectedFaults`, with an HMAC
+`signature`. Receipts are at most60s old by
+UTC and same-boot elapsed time. Each allocation reports its original pool/identity,
+`scope: owned-allocation`, `usedBytes` and `availableBytes`; whole-filesystem free
+space is not an owned allocation measurement. Expected fault errors additionally
+need attribution to the exact approved command/resource UID/window. Each
+`expectedFaults` entry binds `faultSha256`, `resourceUid` and the attributed `series`.
+Intervals must not overlap a prior consumed receipt; allowances are cumulative
+within the original fault window and never reset on a fresh receipt. Restoration
+returns every configuration/resource field to its admitted baseline.
+
+Required `postgres.` series include table count, relation/live/dead/support/WAL
+size/counts, connections/utilization, transaction p99 latency/errors, timed and
+requested checkpoints/age, vacuum progress/stall, lock wait, oldest-due age,
+physical-evidence age and recovery health. `runtime.` series cover TLS/authentication,
+Dapr transaction, ETag and restart errors. The exact closed field names and bounds
+are `PG_SERIES`, `RUNTIME_SERIES`, `MONITOR_LIMITS` and `monitoring_config` in
+`campaign_lifecycle.py`. These operational series do not replace Memories' exact
+accepted-record or reclamation assertions.
+
+Read-only `inspect` works while the monitor owns its mutation lock and exposes an
+immutable `observationPair` path/hash plus descriptor/readback references. Each pair
+stays available for its full freshness interval. Memories accepts
+`HEXALITH_CAMPAIGN_OBSERVATION` and
+`HEXALITH_CAMPAIGN_APPROVED_OBSERVATION_SHA256` together with the outside-approved
+lifecycle plan hash; separate pinned artifact inputs remain supported. A later
+poll cannot rewrite a producer's held pair. Environment observations remain
+`qualified: false`.

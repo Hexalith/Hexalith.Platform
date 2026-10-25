@@ -92,34 +92,104 @@ class Qualification:
         self.tools = json.loads((HERE / 'toolchain.json').read_text())
         self.helm = self.env['HELM_BIN']
 
-    def run(self, args, *, data=None, ok=True, timeout=120):
+    def run(self, args, *, data=None, ok=True, timeout=120, sensitive=False,
+            maximum_output_bytes=8 * 1024 * 1024):
+        """Drain bounded pipes and always terminate/reap the owned process group."""
+        import ctypes
+        import selectors
+        import time
         args = [str(a) for a in args]
-        with subprocess.Popen(args, stdin=subprocess.PIPE if data is not None else subprocess.DEVNULL,
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=self.env,
-                              cwd=ROOT, start_new_session=True) as process:
-            timed_out = False
-            try:
-                stdout, stderr = process.communicate(data, timeout=timeout)
-            except subprocess.TimeoutExpired:
-                timed_out = True
-                os.killpg(process.pid, signal.SIGKILL)
-                stdout, stderr = process.communicate()
-            except BaseException:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.communicate()
-                raise
-            result = subprocess.CompletedProcess(args, process.returncode, stdout, stderr)
-        index = len(self.record['commands'])
+        output = {'stdout': bytearray(), 'stderr': bytearray()}
+        timed_out = overflow = False
+        failure = None
+        # Linux qualification adopts orphaned descendants so group cleanup can
+        # reap them, including a writer whose original parent already exited.
+        libc = ctypes.CDLL(None, use_errno=True)
+        old_subreaper = ctypes.c_int()
+        if libc.prctl(37, ctypes.byref(old_subreaper), 0, 0, 0) != 0 or libc.prctl(36, 1, 0, 0, 0) != 0:
+            raise RuntimeError('process-group supervision unavailable')
+        process = None
+        try:
+            with tempfile.TemporaryFile() as stdin_file, selectors.DefaultSelector() as selector:
+                if data is not None:
+                    stdin_file.write(data.encode() if isinstance(data, str) else data)
+                    stdin_file.seek(0)
+                process = subprocess.Popen(args, stdin=stdin_file if data is not None else subprocess.DEVNULL,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env, cwd=ROOT, start_new_session=True)
+                for name in output:
+                    stream = getattr(process, name)
+                    os.set_blocking(stream.fileno(), False)
+                    selector.register(stream, selectors.EVENT_READ, name)
+                end = time.monotonic() + timeout
+                try:
+                    while selector.get_map():
+                        # A leader's successful exit does not authorize a detached
+                        # descendant to continue writing or running indefinitely.
+                        if process.poll() is not None:
+                            try:
+                                os.killpg(process.pid, signal.SIGKILL)
+                            except ProcessLookupError:
+                                pass
+                        if time.monotonic() >= end:
+                            timed_out = True
+                            break
+                        for key, _ in selector.select(min(0.05, max(0, end - time.monotonic()))):
+                            remaining = maximum_output_bytes - sum(map(len, output.values()))
+                            chunk = os.read(key.fileobj.fileno(), min(16384, remaining + 1))
+                            if not chunk:
+                                selector.unregister(key.fileobj)
+                            elif len(chunk) > remaining:
+                                overflow = True
+                                break
+                            else:
+                                output[key.data].extend(chunk)
+                        if overflow:
+                            break
+                    if not timed_out and not overflow:
+                        try:
+                            process.wait(timeout=max(0.001, end - time.monotonic()))
+                        except subprocess.TimeoutExpired:
+                            timed_out = True
+                except BaseException as error:
+                    failure = error
+                finally:
+                    # killpg is unconditional, even when poll() has reaped the
+                    # leader between cancellation and this terminal path.
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                    process.wait()
+                    process.stdout.close(); process.stderr.close()
+                    reap_end = time.monotonic() + 1
+                    while time.monotonic() < reap_end:
+                        try:
+                            child, _ = os.waitpid(-process.pid, os.WNOHANG)
+                        except ChildProcessError:
+                            break
+                        if child == 0:
+                            time.sleep(0.005)
+        finally:
+            libc.prctl(36, old_subreaper.value, 0, 0, 0)
+        result = subprocess.CompletedProcess(args, process.returncode,
+            output['stdout'].decode('utf-8', errors='replace'), output['stderr'].decode('utf-8', errors='replace'))
+        index = self.record.get('commandCount', len(self.record['commands']))
         log = self.evidence / f'{index:03d}-{Path(args[0]).name}.log'
-        log.write_text(result.stdout + result.stderr)
-        self.record['commands'].append({'argv': args, 'returncode': result.returncode,
-                                      'log': log.name, 'logSha256': sha(log),
-                                      'stdinSha256': hashlib.sha256((data or '').encode()).hexdigest() if data is not None else None})
-        if timed_out:
-            self.record['commands'][-1].update(timeoutSeconds=timeout, timedOut=True)
-            raise RuntimeError('bounded command timed out: ' + args[0])
+        code = ('cancelled' if isinstance(failure, (KeyboardInterrupt, InterruptedError)) else 'process-io' if failure else
+                'timeout' if timed_out else 'output-limit' if overflow else 'exit-code' if result.returncode else 'completed')
+        with os.fdopen(os.open(log, os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW, 0o600), 'w') as stream:
+            stream.write(json.dumps({'outcome': code, 'returncode': result.returncode}) + '\n' if sensitive else result.stdout + result.stderr)
+        self.record['commands'].append({'argv': [Path(args[0]).name, '[restricted arguments omitted]'] if sensitive else args,
+            'returncode': result.returncode, 'outcome': code, 'timedOut': timed_out, 'outputLimitExceeded': overflow,
+            'timeoutSeconds': timeout, 'capturedBytes': sum(map(len, output.values())), 'processGroupTerminated': True,
+            'log': log.name, 'logSha256': sha(log),
+            'stdinSha256': None if sensitive or data is None else hashlib.sha256(data.encode() if isinstance(data, str) else data).hexdigest()})
+        if failure:
+            raise failure
+        if timed_out or overflow:
+            raise RuntimeError('bounded command timed out' if timed_out else 'bounded command refused: output-limit')
         if ok and result.returncode:
-            raise RuntimeError(f'command failed ({result.returncode}): {args[0]} — {result.stderr[-1500:]}')
+            raise RuntimeError(f'command failed ({result.returncode}): {Path(args[0]).name}' + ('' if sensitive else ' — ' + result.stderr[-1500:]))
         return result
 
     def kube(self, *args, **kwargs):
@@ -517,6 +587,10 @@ class Qualification:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE)
+    parser.add_argument('--campaign', choices=('prepare', 'inspect', 'launch', 'monitor', 'stop', 'remove'))
+    parser.add_argument('--campaign-state', type=Path)
+    parser.add_argument('--campaign-plan', type=Path)
+    parser.add_argument('--approved-plan-sha256')
     parser.add_argument('--campaign-capacity', action='store_true', help='Offline finite Memories sizing/admission only; does not instantiate the synthetic qualifier.')
     parser.add_argument('--campaign-profile')
     parser.add_argument('--approved-campaign-sha256')
@@ -528,6 +602,17 @@ def main():
     parser.add_argument('--admission-key')
     parser.add_argument('--approved-admission-key-sha256')
     args = parser.parse_args()
+    if args.campaign:
+        if args.campaign_capacity or args.campaign_state is None:
+            parser.error('--campaign requires --campaign-state and cannot select the fixture/capacity route')
+        import campaign_lifecycle
+        forwarded = [args.campaign, '--state', str(args.campaign_state)]
+        for name, value in (('--plan', args.campaign_plan), ('--approved-plan-sha256', args.approved_plan_sha256)):
+            if value is not None:
+                forwarded.extend((name, str(value)))
+        return campaign_lifecycle.main(forwarded)
+    if any((args.campaign_state, args.campaign_plan, args.approved_plan_sha256)):
+        parser.error('lifecycle inputs require --campaign')
     if args.campaign_capacity:
         import campaign_capacity
         forwarded = []

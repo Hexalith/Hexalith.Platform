@@ -23,6 +23,9 @@ spec:
       annotations:
         {{- include "reference.dapr" (dict "workload" . "binding" $binding) | nindent 8 }}
     spec:
+      {{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}
+      serviceAccountName: {{ .resourceId }}
+      {{- end }}
       automountServiceAccountToken: true
       imagePullSecrets:
         - name: {{ $.Values.imagePullSecret }}
@@ -48,6 +51,11 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            {{- if and (eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1") (eq .identity "memories/server") }}
+            - name: access-telemetry-qualification-gate
+              mountPath: /var/run/hexalith/access-telemetry-qualification
+              readOnly: true
+            {{- end }}
             - name: environment-components
               mountPath: /etc/hexalith/environment
               readOnly: true
@@ -65,6 +73,11 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- if and (eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1") (eq .identity "memories/server") }}
+        - name: access-telemetry-qualification-gate
+          configMap:
+            name: access-telemetry-qualification-gate
+        {{- end }}
         - name: environment-components
           configMap:
             name: {{ $.Values.environment.componentConfigMap }}
