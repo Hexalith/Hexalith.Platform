@@ -13,8 +13,10 @@ DIRECTORIES = {"src", "tests", "eng", "DaprComponents", "config", "schemas", ".c
 OUTPUTS = {"bin", "obj", "__pycache__", "artifacts", ".netcoredbg_hist"}
 VERIFIER_DOCUMENTS = {"docs/ext-host-1-agents-composition.md",
     "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md"}
-# Audited separately: none is imported, invoked, read or compiled by verify_works_host,
-# either Agents lane, the compiled Platform graphs, or the Works proof fixture graph.
+# The Composition graph embeds this plan even though adjacent qualification tools are unrelated.
+COMPILED_CANONICAL_INPUTS = {"eng/ext-secrets-1/public-joint-plan.json"}
+# Except for the compiled inputs above, none is imported, invoked, read or compiled by
+# verify_works_host, either Agents lane, the Platform graphs, or the Works proof fixture graph.
 # Keep the complete immutable export binding, and report their current canonical drift.
 UNRELATED_CANONICAL_INPUTS = {"schemas/hexalith.recovery-hook.v1.json"}
 UNRELATED_CANONICAL_PREFIXES = ("eng/recovery-contract/", "eng/ext-secrets-1/",
@@ -22,7 +24,8 @@ UNRELATED_CANONICAL_PREFIXES = ("eng/recovery-contract/", "eng/ext-secrets-1/",
 
 
 def unrelated(name):
-    return name in UNRELATED_CANONICAL_INPUTS or name.startswith(UNRELATED_CANONICAL_PREFIXES)
+    return name not in COMPILED_CANONICAL_INPUTS and (
+        name in UNRELATED_CANONICAL_INPUTS or name.startswith(UNRELATED_CANONICAL_PREFIXES))
 
 
 def digest(value):
