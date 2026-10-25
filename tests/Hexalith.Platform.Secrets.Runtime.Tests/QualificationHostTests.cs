@@ -469,7 +469,7 @@ public sealed class QualificationHostTests
         return new JsonObject { ["payload"] = payload, ["signature"] = Convert.ToBase64String(signature) };
     }
 
-    private static SecretsRuntimeConfiguration Configuration() => Fixtures.Ready() with { AcceptedReplacementCommit = new string('a', 40) };
+    internal static SecretsRuntimeConfiguration Configuration() => Fixtures.Ready() with { AcceptedReplacementCommit = new string('a', 40) };
 
     internal static JsonObject Request(string role = "executor")
     {

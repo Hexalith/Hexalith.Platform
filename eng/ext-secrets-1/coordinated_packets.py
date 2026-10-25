@@ -223,6 +223,7 @@ def validate_joint_configuration(config, installed_hashes=None, context=None):
                         or pins[str(phase)] != digest({k:v for k,v in profile.items() if k != 'bindingDigest'}) \
                         or profile.get('bindingDigest') != digest(binding) or not isinstance(profile.get('command'), list) \
                         or not profile['command'] or any(not isinstance(arg, str) or not arg for arg in profile['command']) \
+                        or profile['command'].count("--phase-command") != 1 or profile.get("recoveryCommand") != ["--phase-finalize" if arg == "--phase-command" else arg for arg in profile["command"]] \
                         or not isinstance(profile.get('environment'), dict) or any(not isinstance(k,str) or not isinstance(v,str) for k,v in profile['environment'].items()) \
                         or not isinstance(profile.get('workingDirectory'), str) or not Path(profile['workingDirectory']).is_absolute() \
                         or type(profile.get('completionTimeoutSeconds')) is not int or not 1 <= profile['completionTimeoutSeconds'] <= 86400 \

@@ -9,11 +9,12 @@ from unittest.mock import patch
 from cryptography.hazmat.primitives.asymmetric import ec
 from joint_live_phase_runner import Blocked, PHASES, partitions, canonical, digest
 from joint_authority_service import CohortHttpApplication, RetainedPhaseOwner
-from test_joint_live_phase_runner import JointRunnerTests, Owner
+import test_joint_live_phase_runner as runner_fixture
+from test_joint_live_phase_runner import Owner
 
 
 class JointAdmissionTests(unittest.TestCase):
-    def setUp(self): self.fixture=JointRunnerTests();self.fixture.setUp()
+    def setUp(self): self.fixture=runner_fixture.JointRunnerTests();self.fixture.setUp()
     def tearDown(self): self.fixture.tearDown()
 
     def test_retry_recovers_prior_dispatched_state_before_readiness_or_authority_outage(self):
@@ -61,6 +62,31 @@ class JointAdmissionTests(unittest.TestCase):
             return result
         self.assertEqual('isolated-ordering',self._app('reserve',value,admit_then_revoke)['payload']['result']['attemptId'])
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(1,db.execute('SELECT count(*) FROM attempts').fetchone()[0])
+
+    def test_first_owner_admission_orders_revocation_without_holding_sql_lock_during_native_work(self):
+        f=self.fixture;key=digest(f.binding);attempt=f.authority.reserve(f.binding,'fixture-owner-order')['attemptId']
+        request={'protocol':'OQ-5.4-1.joint.v1','attemptId':attempt,'bindingDigest':key,'phase':0,'owner':PHASES[0],
+                 'previousSha256':key,'cases':partitions()[0],'requestId':digest([attempt,key,0,key])}
+        f.authority.retain(request)
+        class IndependentAuthority:
+            def call(self,method,value):return {'exact':True}
+        class Executor:
+            count=0
+            def execute(self,request):
+                self.count+=1
+                # A second connection can commit revocation while native work runs: no owner SQL lock is held.
+                with closing(sqlite3.connect(f.path,timeout=1)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
+                return None
+            def lookup(self,request):return None
+        executor=Executor();owner=RetainedPhaseOwner(f.path,0,f.binding,executor,lambda p:{'payload':p,'signature':'isolated'},IndependentAuthority())
+        def revoke_first(method,value):
+            with closing(sqlite3.connect(f.path)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
+            return owner.dispatch(method,value)
+        with self.assertRaises(Blocked):self._app('execute',request,revoke_first)
+        self.assertEqual(0,executor.count)
+        with closing(sqlite3.connect(f.path)) as db:self.assertEqual(0,db.execute('SELECT count(*) FROM phase_originals').fetchone()[0])
+        self.assertIsNone(self._app('execute',request,owner.dispatch)['payload']['result']);self.assertEqual(1,executor.count)
+        with closing(sqlite3.connect(f.path)) as db:self.assertEqual(1,db.execute('SELECT count(*) FROM phase_originals').fetchone()[0])
 
     def test_absence_challenges_remain_one_per_request_expire_and_are_consumed(self):
         f=self.fixture;key=digest(f.binding);attempt=f.authority.reserve(f.binding,'fixture-absence-bound')['attemptId']

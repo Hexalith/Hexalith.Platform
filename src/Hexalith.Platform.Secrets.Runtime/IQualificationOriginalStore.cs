@@ -15,6 +15,9 @@ public interface IQualificationOriginalStore
     Task<QualificationOriginalAdmissionState> ReadAdmissionAsync(string role,string requestId,JsonObject exactOriginal,CancellationToken cancellationToken)
         =>Task.FromResult(QualificationOriginalAdmissionState.Unknown);
 
+    /// <summary>Reads the immutable admitted request for metadata-only recovery; a missing implementation cannot prove absence.</summary>
+    Task<JsonObject?> LookupRequestAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);
+
     /// <summary>Reads an exact retained result after current private admission; omitted implementations remain unresolved.</summary>
     Task<JsonObject?> LookupResultAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);
 }

@@ -10,6 +10,15 @@ namespace Hexalith.Platform.Protection.Tests;
 public sealed class JointPhaseCommandTests
 {
     [Fact]
+    public void ShippedPhaseOneCompositionDoesNotRequireOrConstructAbsentHostGuardOrNativeSourcePorts()
+    {
+        using var dapr=NSubstitute.Substitute.For<Dapr.Client.DaprClient>();
+        var scope=new JointPhaseCommandScope("binding",new string('a',40),1,["secrets:S1.reject.missing-config","secrets:S2.canonical-hmac"]);
+        JointPhaseCommandExecutable.CreateSelectedWorkflows(scope,dapr,new SecretsRuntimeConfiguration(),null,Substitute.For<IQualificationOriginalStore>(),TimeProvider.System).ShouldBeEmpty();
+        dapr.ReceivedCalls().ShouldBeEmpty();
+        Should.Throw<InvalidOperationException>(()=>JointPhaseCommandExecutable.CreateSelectedWorkflows(scope with { Cases=["host:H1"] },dapr,new SecretsRuntimeConfiguration(),null,Substitute.For<IQualificationOriginalStore>(),TimeProvider.System));
+    }
+    [Fact]
     public void ImmutableRecipesBindOnlyTheReturnedAttemptAndChangedAcceptedBindingsRefuse()
     {
         var accepted=new JointPhaseCommandScope(new string('a',64),new string('b',40),1,["secrets:S1.reject.missing-config"]);
@@ -45,6 +54,41 @@ public sealed class JointPhaseCommandTests
             var result=await command.ExecuteAsync(request,TestContext.Current.CancellationToken);
             if(crash=="unknown-first") { result.ShouldBeNull();firstEffects.ShouldBe(0);secondEffects.ShouldBe(0);lookups.ShouldBe(1);await publisher.DidNotReceive().PublishAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()); }
             else { result.ShouldNotBeNull();firstEffects.ShouldBe(crash=="before-first"?1:0);secondEffects.ShouldBe(1); }
+        }
+        finally { if(Directory.Exists(directory)) Directory.Delete(directory,true); }
+    }
+    [Theory]
+    [InlineData("complete")][InlineData("missing")][InlineData("changed")][InlineData("foreign-admission")]
+    public async Task MetadataOnlyFinalizerReadsImmutableCasesAndRecoversMissingIndexWithoutAnyWorkflowOrNativePort(string state)
+    {
+        using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);using var authority=new ReceivingAuthorityFixture("joint-phase-command");
+        string directory=Path.Combine(Path.GetTempPath(),"fixture-phase-finalization-"+Guid.NewGuid().ToString("N"));
+        try
+        {
+            string id=new string('a',64);var request=new JsonObject { ["requestId"]=id,["bindingDigest"]="binding",["attemptId"]="retained-attempt",["phase"]=2,["cases"]=new JsonArray("host:H1") };
+            var store=new InstalledQualificationOriginalStore(authority.Authority);await store.BeginAsync("joint-phase-command",id,request,TestContext.Current.CancellationToken);
+            if(state=="foreign-admission") request["attemptId"]="changed-attempt";
+            Directory.CreateDirectory(Path.Combine(directory,id));
+            if(state!="missing")
+            {
+                var evidence=new JsonObject { ["requestSha256"]=state=="changed"?new string('f',64):QualificationProtocolSchema.Digest(request),["caseId"]="host:H1",["sourceRecordsSha256"]=new string('b',64) };
+                string name=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("host:H1")))+".json";
+                await ImmutableFileArchive.PublishAsync(Path.Combine(directory,id,name),QualificationProofVerifier.CanonicalBytes(evidence),TestContext.Current.CancellationToken);
+            }
+            var finalizer=new JointPhaseMetadataFinalizer(new("binding",new string('c',40),2,["host:H1"]),store,directory,key);
+            if(state=="missing") await Should.ThrowAsync<IOException>(()=>finalizer.FinalizeAsync(request,TestContext.Current.CancellationToken));
+            else
+            {
+                var result=await finalizer.FinalizeAsync(request,TestContext.Current.CancellationToken);
+                if(state!="complete") result.ShouldBeNull();
+                else
+                {
+                    result.ShouldNotBeNull();var bytes=await File.ReadAllBytesAsync(Path.Combine(directory,id,"owner-original.json"),TestContext.Current.CancellationToken);
+                    JsonNode.DeepEquals(result,await finalizer.FinalizeAsync(request,TestContext.Current.CancellationToken)).ShouldBeTrue();
+                    (await File.ReadAllBytesAsync(Path.Combine(directory,id,"owner-original.json"),TestContext.Current.CancellationToken)).ShouldBe(bytes);
+                    key.VerifyData(QualificationProofVerifier.CanonicalBytes(result["payload"]!),Convert.FromBase64String(result["signature"]!.GetValue<string>()),HashAlgorithmName.SHA256,DSASignatureFormat.Rfc3279DerSequence).ShouldBeTrue();
+                }
+            }
         }
         finally { if(Directory.Exists(directory)) Directory.Delete(directory,true); }
     }

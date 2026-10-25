@@ -21,7 +21,8 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     private async Task<(InteractionProtectionBinding Binding,CustodyInteractionMaterialProfile Profile)?> Current(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token,bool allocate=false)
     {
         enrolledProfiles.TryGetValue(ProfileId(identity,writing),out var profile);
-        if(profile is null && dynamicEnrollment is not null)
+        if(allocate && !writing && dynamicEnrollment is not null) profile=await dynamicEnrollment.MaterialAsync(identity,false,token).ConfigureAwait(false);
+        else if(profile is null && dynamicEnrollment is not null)
         {
             if(allocate) profile=await dynamicEnrollment.MaterialAsync(identity,writing,token).ConfigureAwait(false);
             else profile=(await dynamicEnrollment.ResolveAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token).ConfigureAwait(false))?.Write;
@@ -48,9 +49,9 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
         if(writing) { lock(_gate) if(!_leases.Contains(ProfileId(identity,true)+"|"+keyReference)) return null; }
         if(await Current(identity,writing,token,true).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=keyReference) return null;
         string materialAttempt=MaterialId(current.Profile.KeyUse);
-        if(dynamicEnrollment is not null && !enrolledProfiles.ContainsKey(ProfileId(identity,writing)) && !await dynamicEnrollment.AdmitReleaseAsync(identity,current.Profile,token).ConfigureAwait(false)) return null;
+        if(dynamicEnrollment is not null && (!writing || !enrolledProfiles.ContainsKey(ProfileId(identity,writing))) && !await dynamicEnrollment.AdmitReleaseAsync(identity,current.Profile,token).ConfigureAwait(false)) return null;
         lock(_gate) if(!_materialAttempts.Add(materialAttempt)) return null;
-        var released=await custody.UnwrapAsync(current.Profile.Registration,current.Binding.OperationId+"|"+(writing?"write":"read"),current.Profile.KeyUse,token).ConfigureAwait(false);
+        var released=await custody.UnwrapAsync(current.Profile.Registration,current.Binding.OperationId+"|"+(writing?"write":"read")+(dynamicEnrollment is not null && (!writing || !enrolledProfiles.ContainsKey(ProfileId(identity,writing)))?"|"+materialAttempt:""),current.Profile.KeyUse,token).ConfigureAwait(false);
         if(released.Key is not { } key) return null;
         using(key)
         {
@@ -81,7 +82,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
         }
         return completed;
     }
-    private static string MaterialId(CustodyKeyUse use)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(use)));
+    private static string MaterialId(CustodyKeyUse use)=>CustodyMaterialUseIdentity.Digest(use);
     /// <inheritdoc />
     public async Task<bool> IsCurrentAsync(InteractionOccurrenceIdentity identity,string operation,CancellationToken token)
     {

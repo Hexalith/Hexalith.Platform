@@ -9,7 +9,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Actual receiving FR-34 engine and independently persisted observation operations. No owner-provided verification flags are accepted.</summary>
 public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine, Fr34EventStoreCanaryReader independentReader,
-    IInteractionProtectionBindingProvider independentBindings, TimeProvider clock,Fr34IndependentOriginalCollector? independentMeasurements=null) : IIndependentOwnerOperationHandler
+    IInteractionProtectionBindingProvider independentBindings, TimeProvider clock,IFr34UnsealMeasurement? independentMeasurements=null) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["fr34-seal-persist", "fr34-unseal", "fr34-destroy", "fr34-replay",

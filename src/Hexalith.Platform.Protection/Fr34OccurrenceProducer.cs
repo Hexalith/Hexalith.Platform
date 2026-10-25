@@ -16,8 +16,8 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     private bool Valid()=>SecretsProvisioning.IsReference(recipe.RecipeId) && recipe.Slots.Count is >0 and <=128 && recipe.LifecycleEpoch>0
         && recipe.Slots.Select(value=>value.SlotId).Distinct(StringComparer.Ordinal).Count()==recipe.Slots.Count
         && recipe.Slots.Select(value=>value.Write.Registration.OpaqueWrappedKeyReference).Distinct(StringComparer.Ordinal).Count()==recipe.Slots.Count
-        && recipe.PayloadTypeId==typeof(Fr34CanaryPersisted).FullName && recipe.DigestVersion.Length>0 && recipe.ProtectionProfileVersion.Length>0
-        && recipe.Slots.All(slot=>SecretsProvisioning.IsReference(slot.SlotId) && SecretsProvisioning.IsReference(slot.KeyReference) && slot.Reads.Count is >0 and <=32 && slot.Write.Registration.Identity.TenantId==recipe.Target.TenantId
+        && (recipe.PayloadTypeId==typeof(Fr34CanaryPersisted).FullName || recipe.ExactOccurrences is { Count:>0 and <=128 }) && recipe.DigestVersion.Length>0 && recipe.ProtectionProfileVersion=="candidate-hkdf-sha256-v1"
+        && recipe.Slots.All(slot=>SecretsProvisioning.IsReference(slot.SlotId) && (slot.KeyReference is { Length:26 } && slot.KeyReference[0]<='7' && slot.KeyReference.All(value=>"0123456789ABCDEFGHJKMNPQRSTVWXYZ".Contains(value,StringComparison.Ordinal))) && slot.Reads.Count is >0 and <=32 && slot.Write.Registration.Identity.TenantId==recipe.Target.TenantId
             && slot.Write.Registration.Identity.Purpose==PlatformKeyPurpose.InteractionRootDek && slot.Write.Registration.Identity.KeyVersion.Length>0
             && slot.Reads.All(read=>read.Registration==slot.Write.Registration && read.DigestReference==slot.Write.DigestReference)
             && slot.Reads.Append(slot.Write).All(profile=>profile.KeyUse.OriginalRootReference==profile.Registration.OpaqueWrappedKeyReference)
@@ -25,11 +25,12 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <inheritdoc />
     public async Task<Fr34OccurrenceClaim?> ResolveAsync(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
     {
-        if(!Valid() || owner.TenantId!=recipe.Target.TenantId || owner.Domain!="fr34-canary" || owner.AggregateId is not { Length:64 } canary
-            || !canary.All(char.IsAsciiHexDigit) || occurrence.RecordSequence!=1 || occurrence.PayloadKind!=PayloadProtectionPayloadKind.Event || occurrence.PayloadTypeId!=recipe.PayloadTypeId) return null;
+        if(!Valid() || !ValidOwner(owner,occurrence)) return null;string canary=owner.AggregateId;
         var request=Node(new { recipe.RecipeId,owner,occurrence });
+        var exact=ExactBinding(owner,occurrence);
         foreach(var slot in recipe.Slots)
         {
+            if(exact is not null && !MatchesSlot(exact,slot)) continue;
             string id=recipe.RecipeId+":"+slot.SlotId;
             var retained=await claims.LookupResultAsync("fr34-recipes",id,token).ConfigureAwait(false);
             if(retained is not null)
@@ -38,30 +39,58 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
                 if(old?.CanaryId==canary) return Exact(old,owner,occurrence)?old:null;
                 continue;
             }
-            var admission=await claims.ReadAdmissionAsync("fr34-recipes",id,request,token).ConfigureAwait(false);
-            if(admission==QualificationOriginalAdmissionState.Unknown) return null; // Foreign/unknown unfinished claim never permits another slot.
-            if(admission==QualificationOriginalAdmissionState.Absent)
+            var admittedRequest=await claims.LookupRequestAsync("fr34-recipes",id,token).ConfigureAwait(false);
+            AggregateIdentity originalOwner=owner;PayloadProtectionOccurrenceContext originalOccurrence=occurrence;
+            if(admittedRequest is not null)
             {
-                try { await claims.BeginAsync("fr34-recipes",id,request,token).ConfigureAwait(false); }
-                catch(InvalidOperationException) { return null; }
+                if(admittedRequest.Count!=3 || admittedRequest["RecipeId"]?.GetValue<string>()!=recipe.RecipeId
+                    || admittedRequest["owner"]?.Deserialize<AggregateIdentity>(CustodyBindingContract.Json) is not { } retainedOwner
+                    || admittedRequest["occurrence"]?.Deserialize<PayloadProtectionOccurrenceContext>(CustodyBindingContract.Json) is not { } retainedOccurrence
+                    || !ValidOwner(retainedOwner,retainedOccurrence)) return null;
+                originalOwner=retainedOwner;originalOccurrence=retainedOccurrence;
             }
+            else
+            {
+                var admission=await claims.ReadAdmissionAsync("fr34-recipes",id,request,token).ConfigureAwait(false);
+                if(admission==QualificationOriginalAdmissionState.Unknown) return null;
+                if(admission==QualificationOriginalAdmissionState.Absent)
+                {
+                    try { await claims.BeginAsync("fr34-recipes",id,request,token).ConfigureAwait(false); }
+                    catch(InvalidOperationException) { return null; }
+                }
+                admittedRequest=request;
+            }
+            // Reconstruct only exact claim metadata after a lost Retain acknowledgement. No native registration or release is repeated.
             var key=slot.Write.Registration.Identity;
-            var identity=new InteractionOccurrenceIdentity(new(key.TenantId,key.ObjectId,key.KeyAlias),owner,occurrence.PayloadKind,occurrence.RecordSequence,occurrence.PayloadTypeId,key.KeyVersion,recipe.ProtectionProfileVersion);
-            var claim=new Fr34OccurrenceClaim(recipe.RecipeId,slot.SlotId,canary,new(identity,recipe.DigestVersion,1,slot.KeyReference,Id(request),recipe.LifecycleEpoch),slot.Write,slot.Reads);
+            var identity=new InteractionOccurrenceIdentity(new(key.TenantId,key.ObjectId,key.KeyAlias),originalOwner,originalOccurrence.PayloadKind,originalOccurrence.RecordSequence,originalOccurrence.PayloadTypeId,key.KeyVersion,recipe.ProtectionProfileVersion);
+            var originalExact=ExactBinding(originalOwner,originalOccurrence);
+            if(originalExact is not null && !MatchesSlot(originalExact,slot)) return null;
+            var claim=new Fr34OccurrenceClaim(recipe.RecipeId,slot.SlotId,originalOwner.AggregateId,originalExact??new(identity,recipe.DigestVersion,1,slot.KeyReference,EventStorePrivateRecordingPort.StableUlid("fr34-occurrence",recipe.RecipeId,originalOwner.AggregateId),recipe.LifecycleEpoch),slot.Write,slot.Reads);
             if(await native.LookupAsync(slot.Write.Registration,token).ConfigureAwait(false) is not { Status:CustodyKeyLifecycleStatus.Wrapped } original || original.ReceiptId!=slot.Write.Registration.WrapReceiptId) return null;
-            await claims.RetainAsync("fr34-recipes",id,Node(claim),token).ConfigureAwait(false);return claim;
+            await claims.RetainAsync("fr34-recipes",id,Node(claim),token).ConfigureAwait(false);if(originalOwner==owner && originalOccurrence==occurrence) return claim;
         }
         return null;
     }
+    private InteractionProtectionBinding? ExactBinding(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)=>recipe.ExactOccurrences?.GetValueOrDefault(CustodyInteractionProtectionBindingSource.ResourceId(owner,occurrence));
+    private bool MatchesSlot(InteractionProtectionBinding binding,Fr34OccurrenceSlot slot)=>binding.Identity.Target==new ProtectionTarget(slot.Write.Registration.Identity.TenantId,slot.Write.Registration.Identity.ObjectId,slot.Write.Registration.Identity.KeyAlias)
+        && binding.Identity.RootKeyVersion==slot.Write.Registration.Identity.KeyVersion && binding.Identity.DerivationProfileVersion==recipe.ProtectionProfileVersion
+        && binding.KeyReference==slot.KeyReference && binding.DigestKeyVersion==recipe.DigestVersion && binding.LifecycleEpoch==recipe.LifecycleEpoch;
+    private bool ValidOwner(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)=>owner.TenantId==recipe.Target.TenantId
+        && (ExactBinding(owner,occurrence) is { } exact?exact.Identity.Owner==owner && exact.Identity.Sequence==occurrence.RecordSequence && exact.Identity.Kind==occurrence.PayloadKind
+            && exact.Identity.PayloadTypeId==occurrence.PayloadTypeId && recipe.Slots.Any(slot=>MatchesSlot(exact,slot)):
+            owner.Domain=="fr34-canary" && owner.AggregateId is { Length:64 } canary && canary.All(char.IsAsciiHexDigit) && occurrence.RecordSequence==1
+                && occurrence.PayloadKind==PayloadProtectionPayloadKind.Event && occurrence.PayloadTypeId==recipe.PayloadTypeId);
     private bool Exact(Fr34OccurrenceClaim claim,AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)
     {
         var slot=recipe.Slots.SingleOrDefault(value=>value.SlotId==claim.SlotId);var identity=claim.Binding.Identity;
+        if(ExactBinding(owner,occurrence) is { } exact) return claim.RecipeId==recipe.RecipeId && claim.Binding==exact && slot is not null && MatchesSlot(exact,slot)
+            && claim.Write==slot.Write && JsonSerializer.Serialize(claim.Reads)==JsonSerializer.Serialize(slot.Reads);
         return claim.RecipeId==recipe.RecipeId && slot is not null && claim.Write==slot.Write && JsonSerializer.Serialize(claim.Reads)==JsonSerializer.Serialize(slot.Reads)
             && identity.Owner==owner && identity.Sequence==occurrence.RecordSequence && identity.Kind==occurrence.PayloadKind && identity.PayloadTypeId==occurrence.PayloadTypeId
             && identity.Target==new ProtectionTarget(slot.Write.Registration.Identity.TenantId,slot.Write.Registration.Identity.ObjectId,slot.Write.Registration.Identity.KeyAlias)
             && identity.RootKeyVersion==slot.Write.Registration.Identity.KeyVersion && identity.DerivationProfileVersion==recipe.ProtectionProfileVersion
             && claim.Binding.KeyReference==slot.KeyReference && claim.Binding.DigestKeyVersion==recipe.DigestVersion && claim.Binding.LifecycleEpoch==recipe.LifecycleEpoch
-            && claim.Binding.ReservationAttemptOrdinal==1 && claim.Binding.OperationId==Id(Node(new { recipe.RecipeId,owner,occurrence }));
+            && claim.Binding.ReservationAttemptOrdinal==1 && claim.Binding.OperationId==EventStorePrivateRecordingPort.StableUlid("fr34-occurrence",recipe.RecipeId,owner.AggregateId);
     }
     private Task<Fr34OccurrenceClaim?> Claim(InteractionOccurrenceIdentity identity,CancellationToken token)=>ResolveAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token);
     /// <inheritdoc />
@@ -83,7 +112,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
             var state=await readUses.ReadAdmissionAsync("occurrence-read-use",id,input,token).ConfigureAwait(false);
             if(state==QualificationOriginalAdmissionState.Unknown) return null;
             if(state==QualificationOriginalAdmissionState.Absent) { await readUses.BeginAsync("occurrence-read-use",id,input,token).ConfigureAwait(false);return profile; }
-            var completed=await native.CompleteAsync(profile.Registration,"holder-completion:"+Id(profile.KeyUse),profile.KeyUse,token).ConfigureAwait(false);
+            var completed=await native.CompleteAsync(profile.Registration,"holder-completion:"+CustodyMaterialUseIdentity.Digest(profile.KeyUse),profile.KeyUse,token).ConfigureAwait(false);
             completed.Key?.Dispose();if(!completed.HoldersCompleted) return profile;
             await readUses.RetainAsync("occurrence-read-use",id,new JsonObject { ["completedUseSha256"]=Id(profile.KeyUse) },token).ConfigureAwait(false);
         }

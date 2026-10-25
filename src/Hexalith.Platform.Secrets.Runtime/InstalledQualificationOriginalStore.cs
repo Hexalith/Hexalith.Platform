@@ -31,6 +31,12 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
         return original?.Result is { ValueKind:JsonValueKind.Object } result ? JsonNode.Parse(result.GetRawText()) as JsonObject : null;
     }
     /// <inheritdoc />
+    public async Task<JsonObject?> LookupRequestAsync(string role,string requestId,CancellationToken cancellationToken)
+    {
+        var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role,requestId },cancellationToken).ConfigureAwait(false);
+        return original?.Request is { ValueKind:JsonValueKind.Object } request?JsonNode.Parse(request.GetRawText()) as JsonObject:null;
+    }
+    /// <inheritdoc />
     public async Task<QualificationOriginalAdmissionState> ReadAdmissionAsync(string role,string requestId,JsonObject exactOriginal,CancellationToken token)
     {
         var read=await originals.InvokeAsync<JsonElement>("qualification-lookup-original",new { role,requestId },token).ConfigureAwait(false);

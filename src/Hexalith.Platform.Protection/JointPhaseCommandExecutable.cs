@@ -32,8 +32,7 @@ public static class JointPhaseCommandExecutable
             return await recovery.FinalizeAsync(request,token).ConfigureAwait(false) is null?3:0;
         }
         var runtime=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile);if(runtime is null) return 2;
-        var ports=QualificationGuardProductionComposition.Create(dapr,runtime,installed.Protection,originals,clock);
-        var workflows=ports.Workflow.Registrations().ToDictionary(value=>value.CaseId,StringComparer.Ordinal);
+        var workflows=CreateSelectedWorkflows(installed.Scope,dapr,runtime,installed.Protection,originals,clock);
         var mapped=new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow Workflow,JsonObject Original)>>(StringComparer.Ordinal);
         foreach(string caseId in installed.Scope.Cases)
         {
@@ -48,7 +47,12 @@ public static class JointPhaseCommandExecutable
             }
             mapped.Add(caseId,result);
         }
-        var publisher=new DaprJointPhaseNativeSourcePublisher(new IndependentDaprAuthority(transport,installed.IndependentSource,clock));
+        IJointPhaseNativeSourcePublisher? publisher=null;
+        if(installed.Scope.Cases.Any(id=>!id.StartsWith("secrets:",StringComparison.Ordinal)))
+        {
+            if(installed.IndependentSource is null) return 2;
+            publisher=new DaprJointPhaseNativeSourcePublisher(new IndependentDaprAuthority(transport,installed.IndependentSource,clock));
+        }
         IJointSecretsCaseExecutor? secrets=null;
         if(installed.SecretsRoles is { } roles && installed.SecretsCaller is { } caller && installed.SecretsOriginals is { } secretOriginals)
         {
@@ -59,8 +63,14 @@ public static class JointPhaseCommandExecutable
                 new InstalledQualificationObserver(Authority(observe.ScopeAuthority),Authority(observe.Owner)),new InstalledQualificationEnrollment(Authority(enroll.ScopeAuthority),Authority(enroll.Owner)),
                 new QualificationProofVerifier(trust),stores.Secrets,caller,secretOriginals);
         }
-        var command=new JointPhaseCommand(installed.Scope,stores.Command,mapped,publisher,installed.EvidenceDirectory,owner,secrets);
+        var command=new JointPhaseCommand(installed.Scope,stores.Command,mapped,publisher,installed.EvidenceDirectory,owner,secrets,stores.Executor);
         return await command.ExecuteAsync(request,token).ConfigureAwait(false) is null?3:0;
+    }
+    internal static IReadOnlyDictionary<string,QualificationSourceWorkflow> CreateSelectedWorkflows(JointPhaseCommandScope scope,DaprClient dapr,SecretsRuntimeConfiguration runtime,QualificationProtectionInstallation? protection,IQualificationOriginalStore originals,TimeProvider clock)
+    {
+        if(scope.Cases.All(id=>id.StartsWith("secrets:",StringComparison.Ordinal))) return new Dictionary<string,QualificationSourceWorkflow>(StringComparer.Ordinal);
+        if(protection is null) throw new InvalidOperationException("SelectedNativeGuardWorkflowInstallation");
+        return QualificationGuardProductionComposition.Create(dapr,runtime,protection,originals,clock).Workflow.Registrations().ToDictionary(value=>value.CaseId,StringComparer.Ordinal);
     }
     internal static async Task<ECDsa> OpenSignerAsync(string privateFile,string publicFile,CancellationToken token)
     {

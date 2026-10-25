@@ -6,7 +6,7 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Independent original canary collector over the actual production engine, native persisted reader and exact original command. Lost measurements are lookup-only; plaintext is never retained in its measurement.</summary>
-public sealed class Fr34IndependentOriginalCollector(EventStoreFr34CanaryEngine actualEngine,Fr34EventStoreCanaryReader nativeReader,IndependentDaprAuthority originals)
+public sealed class Fr34IndependentOriginalCollector(EventStoreFr34CanaryEngine actualEngine,Fr34EventStoreCanaryReader nativeReader,IndependentDaprAuthority originals):IFr34UnsealMeasurement
 {
     /// <summary>Records actual original engine identity, native bytes/plaintext absence and the concrete handler's unseal result before erasure. This method issues no second unseal or key delivery.</summary>
     public async Task<Fr34MeasuredCanaryOriginal?> RecordUnsealAsync(Fr34CanaryReference reference,ReadOnlyMemory<byte> actualUnsealedBytes,CancellationToken token)

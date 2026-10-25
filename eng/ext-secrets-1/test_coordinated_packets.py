@@ -94,7 +94,7 @@ class CoordinatedPacketTests(unittest.TestCase):
                    'profileSha256':artifacts['hostProfile']['sha256'],'protectionProfileSha256':artifacts['protectionProfile']['sha256'],
                    'currentTrustSha256':artifacts['publicTrust']['sha256'],'installedImageSha256':artifacts['installedImageInventory']['sha256'],
                    **{r+'AnchorSha256':artifacts[r+'Anchor']['sha256'] for r in ('executor','observer','enrollment')}}
-        profiles = {str(phase):{'phase':phase,'cases':partitions()[phase],'command':[str(executable)],'environment':{},
+        profiles = {str(phase):{'phase':phase,'cases':partitions()[phase],'command':[str(executable),'--phase-command'],'recoveryCommand':[str(executable),'--phase-finalize'],'environment':{},
                     'workingDirectory':str(self.directory),'completionTimeoutSeconds':30,
                     'artifacts':[{'path':str(executable),'sha256':hashlib.sha256(executable.read_bytes()).hexdigest()}]} for phase in range(4)}
         binding['phaseExecutionProfileSha256'] = {phase:digest(profile) for phase,profile in profiles.items()}

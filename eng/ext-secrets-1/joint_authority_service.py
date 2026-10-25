@@ -284,7 +284,11 @@ class InstalledPhaseExecutor:
         from case_driver_inventory import blockers
         import hashlib
         from pathlib import Path
-        missing = blockers([name.removeprefix("secrets:") for name in self.descriptor.get("cases",[]) if name.startswith("secrets:")])
+        missing = []
+        command=self.descriptor.get("command",[])
+        if not isinstance(command,list) or command.count("--phase-command")!=1 or self.descriptor.get("recoveryCommand")!=["--phase-finalize" if arg=="--phase-command" else arg for arg in command]:
+            missing.append("PinnedMetadataOnlyPhaseFinalizer")
+        missing += blockers([name.removeprefix("secrets:") for name in self.descriptor.get("cases",[]) if name.startswith("secrets:")])
         for artifact in self.descriptor["artifacts"]:
             try:
                 if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:

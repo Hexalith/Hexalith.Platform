@@ -50,13 +50,31 @@ public sealed class QualificationFreshCohortReceivingTests
             enrolled["payload"]!["runId"]!.GetValue<string>().ShouldBe(attempt);
             originalAuthority.State=originalAuthority.State with { Callers=originalAuthority.State.Callers.Select(value=>value with { Role="executor" }).ToArray() };
             var executor=new QualificationOwnerOperationHandler(new("executor","fixture-executor","v1",executorKey.ExportSubjectPublicKeyInfoPem()),executorKey,store,allDrivers,TimeProvider.System,attemptAuthority:attempts);
-            var first=(JsonObject)(await executor.HandleAsync("qualification-executor-execute",JsonSerializer.SerializeToElement(owner),originalAuthority.State.Callers[0],originalAuthority.State,TestContext.Current.CancellationToken))!;
+            long before=originalAuthority.State.PrivateOriginalsCount;
+            for(int lookup=0;lookup<2;lookup++) (await executor.HandleAsync("qualification-executor-lookup",JsonSerializer.SerializeToElement(owner),originalAuthority.State.Callers[0],originalAuthority.State,TestContext.Current.CancellationToken)).ShouldBeNull();
+            originalAuthority.State.PrivateOriginalsCount.ShouldBe(before);
+            var publicProvider=new ForwardExecutor(executor,()=>originalAuthority.State);
+            byte[] executorAnchor=Encoding.ASCII.GetBytes(executorKey.ExportSubjectPublicKeyInfoPem());
+            var publicVerifier=new QualificationProofVerifier(new Dictionary<string,QualificationProofBinding>{{"executor",new("fixture-executor","v1",executorAnchor,Convert.ToHexStringLower(SHA256.HashData(executorAnchor)))}});
+            for(int lookup=0;lookup<2;lookup++) (await QualificationHost.HandleAsync("executor","lookup",QualificationHostTests.Configuration(),full,publicProvider,store,publicVerifier,TestContext.Current.CancellationToken,new("fixture-caller","fixture-scope"))).StatusCode.ShouldBe(503);
+            originalAuthority.State.PrivateOriginalsCount.ShouldBe(before);
+            var publicResult=await QualificationHost.HandleAsync("executor","execute",QualificationHostTests.Configuration(),full,publicProvider,store,publicVerifier,TestContext.Current.CancellationToken,new("fixture-caller","fixture-scope"));
+            publicResult.StatusCode.ShouldBe(200);var first=publicResult.Body;
+            (await store.LookupRequestAsync("executor","public-host:"+full["requestId"]!.GetValue<string>(),TestContext.Current.CancellationToken))!.ContainsKey("scenario").ShouldBeTrue();
+            (await store.LookupRequestAsync("executor",full["requestId"]!.GetValue<string>(),TestContext.Current.CancellationToken))!.ContainsKey("scenario").ShouldBeFalse();
             originalAuthority.Restart();var exact=JointPhaseRequestRecipe.Bind(recipe,phaseRequest,scopeBinding)!;JsonNode.DeepEquals(full,exact).ShouldBeTrue();
             var recovered=(JsonObject)(await executor.HandleAsync("qualification-executor-lookup",JsonSerializer.SerializeToElement(owner),originalAuthority.State.Callers[0],originalAuthority.State,TestContext.Current.CancellationToken))!;
             JsonNode.DeepEquals(first,recovered).ShouldBeTrue();((FixtureCaseDriver)allDrivers[owner["caseId"]!.GetValue<string>()]).Effects.ShouldBe(1);
             JsonSerializer.Serialize(originalAuthority.State.QualificationBindings).ShouldBe(unchangedInstallation);originalAuthority.State.QualificationBindings!.ContainsKey("runId").ShouldBeFalse();recipe.ToJsonString().ShouldBe(pinnedRecipe);
         }
         finally { Directory.Delete(directory,true); }
+    }
+    private sealed class ForwardExecutor(QualificationOwnerOperationHandler receiving,Func<IndependentAuthorityState> current):IQualificationExecutorProvider
+    {
+        public string Role=>"executor";
+        public Task<bool> AuthorizeAsync(JsonObject request,QualificationCallerContext caller,CancellationToken token)=>Task.FromResult(true);
+        public async Task<JsonObject?> InvokeAsync(string operation,JsonObject original,CancellationToken token)
+            =>await receiving.HandleAsync("qualification-executor-"+operation,JsonSerializer.SerializeToElement(original),current().Callers[0],current(),token).ConfigureAwait(false) as JsonObject;
     }
     private sealed class FixtureCaseDriver(string id):IQualificationOwnerCaseDriver
     {

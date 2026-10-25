@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Closed phase command implementation over shipped case workflows and independent native publication. Unknown originals use lookup only; complete phase readiness requires every exact mapped workflow/read protocol.</summary>
 public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualificationOriginalStore originals,IReadOnlyDictionary<string,IReadOnlyList<(QualificationSourceWorkflow Workflow,JsonObject Original)>> mappedCases,
-    IJointPhaseNativeSourcePublisher independentPublisher,string evidenceDirectory,ECDsa ownerSigner,IJointSecretsCaseExecutor? secrets=null)
+    IJointPhaseNativeSourcePublisher? independentPublisher,string evidenceDirectory,ECDsa ownerSigner,IJointSecretsCaseExecutor? secrets=null,IQualificationOriginalStore? executorOriginals=null)
 {
     /// <summary>Gets precise missing full-partition readiness inputs; native uncertainty after dispatch remains a retained unresolved original.</summary>
     public IReadOnlyList<string> MissingInputs { get; private set; }=[];
@@ -25,6 +25,7 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
             foreach(var (workflow,original) in operations)
                 if(original["runId"]?.GetValue<string>()!=request["attemptId"]?.GetValue<string>() || original["targetCommit"]?.GetValue<string>()!=accepted.PlatformCommit
                     || original["caseId"]?.GetValue<string>()!=workflow.CaseId || (await workflow.Preflight(original,token).ConfigureAwait(false)).Count!=0) return null;
+            if(independentPublisher is null) { MissingInputs=["IndependentNativeSourceReadinessProtocol"];return null; }
             var missing=await independentPublisher.PreflightAsync(id,request,token).ConfigureAwait(false);if(missing.Count!=0) { MissingInputs=missing;return null; }
             work.Add((id,operations));
         }
@@ -52,13 +53,13 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
         {
             foreach(var (workflow,original) in operations)
             {
-                var admission=await originals.ReadAdmissionAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",original,token).ConfigureAwait(false);
+                var admission=await (executorOriginals??originals).ReadAdmissionAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",original,token).ConfigureAwait(false);
                 var actual=admission==QualificationOriginalAdmissionState.Absent?await workflow.Execute(original,token).ConfigureAwait(false):
                     admission==QualificationOriginalAdmissionState.Admitted && workflow.Resume is { } resume?await resume(original,token).ConfigureAwait(false):await workflow.Lookup(original,token).ConfigureAwait(false);
                 if(actual is null) return null;
             }
             var evidence=caseId.StartsWith("secrets:",StringComparison.Ordinal)?await secrets!.ExecuteAsync(caseId,request,token).ConfigureAwait(false):
-                await independentPublisher.PublishAsync(caseId,request,token).ConfigureAwait(false);if(evidence is null) return null;
+                await independentPublisher!.PublishAsync(caseId,request,token).ConfigureAwait(false);if(evidence is null) return null;
             byte[] bytes=QualificationProofVerifier.CanonicalBytes(evidence);
             string name=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(caseId)))+".json";
             await ImmutableFileArchive.PublishAsync(Path.Combine(evidenceDirectory,requestId,name),bytes,token).ConfigureAwait(false);

@@ -49,6 +49,23 @@ public sealed class QualificationGuardSourceTests
         consumption.ReceivedCalls().ShouldBeEmpty(); signer.ReceivedCalls().ShouldBeEmpty(); guard.ReceivedCalls().ShouldBeEmpty();
         protection.ReceivedCalls().Count().ShouldBe(1);
     }
+    [Theory]
+    [InlineData(QualificationGuardStepKind.Register)][InlineData(QualificationGuardStepKind.Reserve)][InlineData(QualificationGuardStepKind.Block)][InlineData(QualificationGuardStepKind.Activate)]
+    public async Task LostNativeStepNeverSubstitutesMutableBatchOutcomeOrDispatchesLaterStep(QualificationGuardStepKind kind)
+    {
+        var scope=new JsonObject { ["tenantId"]="tenant",["batchId"]="batch" };string hash=QualificationProtocolSchema.Digest(scope);var batch=Batch();
+        var lost=kind switch { QualificationGuardStepKind.Block=>new QualificationGuardStep(kind,Block:new("tenant","batch","block","integrity")),QualificationGuardStepKind.Activate=>new QualificationGuardStep(kind,Activation:new("activate","block",1,"replacement",batch)),_=>new QualificationGuardStep(kind,Batch:batch) };
+        var after=new QualificationGuardStep(QualificationGuardStepKind.Register,Batch:batch);
+        var definition=new QualificationGuardCaseDefinition("v23.no-false-replacement","tenant","batch",hash,[],lost,null,"none",[after]);
+        var guard=Substitute.For<IGovernanceScopeGuard>();var protection=Substitute.For<IDeletionProtectionOwner>();var consumption=Substitute.For<IDeletionConsumptionActor>();var signer=Substitute.For<IDeletionCapabilitySigningActor>();var originals=Substitute.For<IQualificationOriginalStore>();
+        originals.BeginAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(false);
+        protection.LookupAsync("tenant","batch",Arg.Any<CancellationToken>()).Returns(new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.ConsumptionBlocked,10,1,"different-current-batch",null,null,null,[]));
+        var subscriber=new DeletionCapabilityRevocationSubscriber(new("issuer","audience","tenant"),Substitute.For<IDeletionCapabilityRevocationAuthenticator>(),Substitute.For<IDeletionCapabilityCompromiseRegistrar>(),Substitute.For<IDeletionCapabilityGuardRevocationMirror>(),TimeProvider.System);
+        var workflow=new QualificationGuardCaseWorkflow(guard,protection,consumption,signer,originals,new Dictionary<string,QualificationGuardCaseDefinition>{{definition.CaseId,definition}},subscriber);
+        var request=new JsonObject { ["requestId"]=new string('c',64),["caseId"]=definition.CaseId,["enrolledScope"]=scope };
+        var error=await Should.ThrowAsync<InvalidOperationException>(()=>workflow.ExecuteAsync(request,TestContext.Current.CancellationToken));error.Message.ShouldContain("ExactNativeOperationOriginalProtocol."+kind);
+        protection.ReceivedCalls().ShouldBeEmpty();consumption.ReceivedCalls().ShouldBeEmpty();guard.ReceivedCalls().ShouldBeEmpty();signer.ReceivedCalls().ShouldBeEmpty();
+    }
     [Fact]
     public void TypedProjectionUsesActualTargetVectorsAndDoesNotInventMissingPhysicalOrHistoryMeasurements()
     {
