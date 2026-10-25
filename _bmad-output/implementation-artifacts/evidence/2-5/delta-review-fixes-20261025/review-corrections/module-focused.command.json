@@ -1,0 +1,26 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*SessionlessStartupPreservesCommittedOutcomeAsync",
+    "-method",
+    "*SessionlessStartupRejectsMalformedCommittedOutcomeAsync",
+    "-method",
+    "*NativeOutcomeControlsLocalCleanupAsync",
+    "-method",
+    "*SupportedTerminalMetadataRestoresAndListsAsync",
+    "-method",
+    "*MalformedTerminalMetadataRefusesRestorationAsync",
+    "-method",
+    "*RetainedSurvivorsAreRecordedAfterStoppingBudgetExpiresAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/delta-review-fixes-20261025/review-corrections/module-focused.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 2.017,
+  "log": "module-focused.log",
+  "archivedLog": "module-focused.log.gz",
+  "logSha256": "66edb76018b07ee3287f94affdcae0cbafd912fce04fb56d8cd7f37a5682c4db"
+}

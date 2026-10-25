@@ -1,0 +1,58 @@
+{
+  "layers": {
+    "blind-hunter": {
+      "findings": 6,
+      "findingFloor": 6
+    },
+    "edge-case-hunter": {
+      "findings": 0
+    },
+    "verification-gap": {
+      "findings": 0
+    }
+  },
+  "triage": [
+    {
+      "id": "B1",
+      "verdict": "medium",
+      "route": "patch",
+      "finding": "Sessionless recovery can miss valid committed outcomes during brief finalization lock contention."
+    },
+    {
+      "id": "B2",
+      "verdict": "low",
+      "route": "rejected",
+      "finding": "Separate terminal corruption can omit previously validated container/process/claim leftovers.",
+      "evidence": "No resources are deleted and uncertainty is explicit; recovering independent observations requires a new partial-validation path for damaged metadata."
+    },
+    {
+      "id": "B3",
+      "verdict": "low",
+      "route": "patch",
+      "finding": "HXE149 selected-cleanup wording also applies to unsuccessful non-selected artifacts."
+    },
+    {
+      "id": "B4",
+      "verdict": "medium",
+      "route": "patch",
+      "finding": "Sessionless command recovery lacked positive cancelled/unavailable controls."
+    },
+    {
+      "id": "B5",
+      "verdict": "false",
+      "route": "rejected",
+      "finding": "Invalid-JSON listing cases do not test filesystem read failures.",
+      "evidence": "Both invalid JSON and directory occupancy flow through the same IOException catch; existing unreadable rows detect omission of its owner-ID insertion and require the healthy peer."
+    },
+    {
+      "id": "B6",
+      "verdict": "low",
+      "route": "patch",
+      "finding": "Clean-pass evidence-export failure did not assert rendered verified-empty cleanup or absent HXR023."
+    }
+  ],
+  "decisionsRequired": 0,
+  "newDeferrals": 0,
+  "acceptedPatches": 4,
+  "verification": "workflow-review-findings-verification.json"
+}
