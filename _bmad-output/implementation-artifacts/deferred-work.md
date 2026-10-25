@@ -1334,3 +1334,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Preserve Linux process-discovery uncertainty when a live owned process makes its environment unreadable.
   evidence: Final workflow review CE1 reproduced PR_SET_DUMPABLE=0 causing an owned tagged process to be omitted with verified emptiness; the Linux exception handling and scan behavior are unchanged from Builds baseline 3052386abb54ff111f498a8f6424300ea7cdda93.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md (2026-10-25, full-story review)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Let Windows cleanup reach verified absence when same-user processes cannot be inspected (Q3).
+  evidence: Medium, unverified on this Linux host. `CompositionProcessEnvironmentReader.ReadWindows` (Builds `b215213`, lines 91-95) treats an `OpenProcess(0x410)` denial as unverified unless the process has a foreign SID or has exited. On UAC hosts, an elevated process of the same user is likely unreadable from a medium-integrity runner, so `down` never completes, claims are never released, and tracking persists. Deferred by owner decision: Windows/macOS native runtime is explicitly unqualified, and the dev lane is Linux/WSL. Candidate fixes: exclude processes whose token integrity is higher than the runner's, or scope discovery to descendants or the job object of the recorded AppHost. Settle during Windows/macOS native qualification.
