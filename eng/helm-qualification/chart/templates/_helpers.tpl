@@ -3,6 +3,7 @@
 {{- end -}}
 
 {{- define "reference.validate" -}}
+{{- if and .Values.capacityProfile (ne .Values.capacityProfile "PG-FINITE-CAMPAIGN-1") -}}{{ fail "unknown capacity profile" }}{{- end -}}
 {{- if not (has .Values.mode (list "normal" "recovery" "remove-workloads")) -}}{{ fail "unknown mode" }}{{- end -}}
 {{- if not (regexMatch "^[1-3]$" (toString .Values.replicas)) -}}{{ fail "replicas must be an integer in 1..3" }}{{- end -}}
 {{- range $value := list .Values.imagePullSecret .Values.environment.componentConfigMap .Values.gateway.name .Values.gateway.sectionName .Values.environment.trustDomain .Values.environment.controlPlaneTrustDomain -}}
@@ -47,6 +48,16 @@
 {{- $image := required (printf "image binding missing for %s" .identity) (index $.Values.images .identity) -}}
 {{- if not (regexMatch "^([a-z0-9][a-z0-9.-]*(:[0-9]+)?/)?[a-z0-9][a-z0-9./_-]*@sha256:[a-f0-9]{64}$" $image) -}}{{ fail "images require repository@sha256 digest; tags are forbidden" }}{{- end -}}
 {{- $b := required (printf "bindings missing for %s" .identity) (index $.Values.bindings .identity) -}}
+{{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" -}}
+{{- $replicas := 1 -}}
+{{- if has .identity (list "memories/server" "memories/telemetry") -}}{{- $replicas = 2 -}}{{- end -}}
+{{- if ne (toString $b.replicas) (toString $replicas) -}}{{ fail "finite campaign replica allocation differs" }}{{- end -}}
+{{- if hasPrefix "memories/" .identity -}}
+{{- if ne $b.containerName (index (dict "memories/server" "memories" "memories/telemetry" "lifecycle" "memories/clock" "clock") .identity) -}}{{ fail "finite campaign container name differs" }}{{- end -}}
+{{- end -}}
+{{- $resources := dict "requests" (dict "cpu" "400m" "memory" "640Mi" "ephemeral-storage" "128Mi") "limits" (dict "cpu" "400m" "memory" "640Mi" "ephemeral-storage" "384Mi") -}}
+{{- if ne (toJson $b.resources) (toJson $resources) -}}{{ fail "finite campaign resources differ" }}{{- end -}}
+{{- else if or $b.replicas $b.resources -}}{{ fail "resource overrides require an explicit capacity profile" }}{{- end -}}
 {{- include "reference.secretRef" $b.appToken | trunc 0 -}}
 {{- include "reference.secretRef" $b.apiToken | trunc 0 -}}
 {{- if or (ne $b.appToken.key "token") (ne $b.apiToken.key "token") -}}{{ fail "Dapr token references must use the token key" }}{{- end -}}
@@ -164,6 +175,12 @@ dapr.io/app-token-secret: {{ .binding.appToken.name | quote }}
 dapr.io/api-token-secret: {{ .binding.apiToken.name | quote }}
 dapr.io/sidecar-listen-addresses: "127.0.0.1"
 dapr.io/enable-api-logging: "false"
+{{- if .binding.resources }}
+dapr.io/sidecar-cpu-request: "100m"
+dapr.io/sidecar-cpu-limit: "100m"
+dapr.io/sidecar-memory-request: "128Mi"
+dapr.io/sidecar-memory-limit: "128Mi"
+{{- end }}
 {{- end -}}
 
 {{/* All configuration is decoded before recursive validation and flattening. */}}
@@ -269,6 +286,11 @@ dapr.io/enable-api-logging: "false"
 {{- end -}}
 {{- range $key, $value := dict "ASPNETCORE_URLS" (dict "value" "http://0.0.0.0:8080") "Dapr__DeclarativeSubscriptions" (dict "value" "true") "APP_API_TOKEN" (dict "valueFrom" (dict "secretKeyRef" $binding.appToken)) "DAPR_API_TOKEN" (dict "valueFrom" (dict "secretKeyRef" $binding.apiToken)) -}}
 {{- include "reference.put" (dict "key" $key "entry" $value "environment" $env "seen" $seen) -}}
+{{- end -}}
+{{- if and (eq (default "" $root.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1") (hasPrefix "memories/" $workload.identity) -}}
+{{- include "reference.put" (dict "key" "ASPNETCORE_ENVIRONMENT" "entry" (dict "value" "Qualification") "environment" $env "seen" $seen) -}}
+{{- include "reference.put" (dict "key" "AccessTelemetryQualification__ProfileId" "entry" (dict "value" "PG-FINITE-CAMPAIGN-1") "environment" $env "seen" $seen) -}}
+{{- include "reference.put" (dict "key" "AccessTelemetryQualification__ApprovedProfileHash" "entry" (dict "valueFrom" (dict "configMapKeyRef" (dict "name" "access-telemetry-campaign-identity" "key" "profileSha256"))) "environment" $env "seen" $seen) -}}
 {{- end -}}
 {{- range $key, $value := $env }}
 - {{ toYaml $value | nindent 2 | trim }}

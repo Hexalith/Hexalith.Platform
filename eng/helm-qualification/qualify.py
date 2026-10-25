@@ -517,7 +517,30 @@ class Qualification:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE)
+    parser.add_argument('--campaign-capacity', action='store_true', help='Offline finite Memories sizing/admission only; does not instantiate the synthetic qualifier.')
+    parser.add_argument('--campaign-profile')
+    parser.add_argument('--approved-campaign-sha256')
+    parser.add_argument('--current-capacity-receipt')
+    parser.add_argument('--approved-capacity-sha256')
+    parser.add_argument('--original-admission')
+    parser.add_argument('--approved-original-admission-sha256')
+    parser.add_argument('--admission-issuer')
+    parser.add_argument('--admission-key')
+    parser.add_argument('--approved-admission-key-sha256')
     args = parser.parse_args()
+    if args.campaign_capacity:
+        import campaign_capacity
+        forwarded = []
+        for flag, value in (('--profile', args.campaign_profile), ('--approved-sha256', args.approved_campaign_sha256),
+                            ('--current-capacity-receipt', args.current_capacity_receipt), ('--approved-capacity-sha256', args.approved_capacity_sha256),
+                            ('--original-admission', args.original_admission), ('--approved-original-admission-sha256', args.approved_original_admission_sha256),
+                            ('--admission-issuer', args.admission_issuer), ('--admission-key', args.admission_key), ('--approved-admission-key-sha256', args.approved_admission_key_sha256)):
+            if value is not None:
+                forwarded.extend((flag, value))
+        return campaign_capacity.main(forwarded)
+    if any((args.campaign_profile, args.approved_campaign_sha256, args.current_capacity_receipt, args.approved_capacity_sha256,
+            args.original_admission, args.approved_original_admission_sha256, args.admission_issuer, args.admission_key, args.approved_admission_key_sha256)):
+        parser.error('campaign inputs require --campaign-capacity; the synthetic qualifier is not a full campaign launcher')
     def interrupted(signum, frame):
         # InterruptedError is swallowed as an interrupted system call by selectors.
         raise RuntimeError('qualification interrupted; cleaning owned resources')

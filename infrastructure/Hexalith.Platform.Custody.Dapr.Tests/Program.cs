@@ -15,6 +15,7 @@ using Hexalith.Platform.Custody.Dapr;
 // All keys, stores and observer claims below are disposable component fixtures. No network/native
 // resource is opened. A fixture PASS is source evidence only and cannot satisfy physical qualification.
 var tests = new (string, Func<Task>)[] {
+    ("independent-role-receiver-current-original-expiry-and-substitution", IndependentRoleReceiverTests.Run),
     ("public-lifecycle-real-sdk-authorizer-key-cleanup-and-refusals", PublicLifecycleTests.Run),
     ("actual-lifecycle-actor-diverged-owner-and-custody-revisions", ActorLifecycleIntegrationTests.Run),
     ("public-lifecycle-cancellation-and-shared-operation-deadline", PublicLifecycleCancellationTests.Run),

@@ -211,3 +211,123 @@ The first full post-patch lane ran 598 cases: 595 passed, three failed, no error
 All accepted review patches and all three parent verification corrections are implemented. Final unchanged-source verification passes 598/598 Builds cases (146.897 seconds), 1/1 Platform cleanup-helper case, both individual Debug builds without warnings/errors, current schema parity and the retained-evidence audit. `evidence/2-5/review-fixes-20261025/final-parent/` retains exact commands, full XML, all seven matrix rows, 30 source fingerprints and the per-finding passing tests. The historical 595/598 run remains retained and is superseded.
 
 The build spec is done and sprint entry moves to review. Fresh real-service and package qualification remain unavailable for the recorded Docker/Aspire and authoritative-artifact prerequisites. The two pre-existing deferrals remain; no accepted finding from this resumed review is left unfixed.
+
+### Review Findings — committed-state review (2026-10-25)
+
+All four configured review layers completed: Blind Hunter, Edge Case Hunter, Verification Gap Reviewer, and Acceptance Auditor. Each of the 20 observations below received an individual verdict before grouping. The result is **0 decisions, 13 patch items, 1 pre-existing deferral, and 2 rejected suggestions**. Patch items comprise three high and ten medium findings. No implementation changes were made in this review.
+
+Disposition: the user selected **Leave as action items** (option 2). All 13 patch findings remain unchecked; none were applied. Story and sprint tracking are `in-progress` because the accepted findings remain unresolved.
+
+The reviewed diff is `/tmp/bmad-review-2-5-z0ggtmxn.diff`: 45 files, 3,802 additions, 281 deletions. Builds is reviewed from `3052386abb54ff111f498a8f6424300ea7cdda93` through `d434d4a789661c48aaad3ddfba42f383240e8a1a`; Platform uses this spec's baseline and only its six scoped contract/proof files. Concurrent Platform commits did not change the reviewed bytes: the complete diff still passed reverse-apply verification at Platform `1b7a00381794bb7ecf40caf643c63c50758a81eb`.
+
+Verification: the individual Builds Debug build passed with zero warnings/errors; all 598 scoped tests passed, with no failures, errors, skips, or unrun cases, in 212.734 seconds. Both Platform/Builds schema mirrors are byte-identical. Logs and full XML are `/tmp/bmad-review-2-5-build.log`, `/tmp/bmad-review-2-5-tests.log`, and `/tmp/bmad-review-2-5-tests.xml`. Fresh live-service and package qualification were not run; these checks grant no new qualification credit.
+
+#### Patch items
+
+- [x] [Review][Patch] R1 — **high**: Require a reader-valid v1 result before automatic environment deletion [ModuleCommandExecutionService.cs:1267]. Recovery currently obtains only `selected-test.json` after `test-result.json` publication fails, then enables cleanup. The passing `CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync` regression deliberately blocks the result path with a directory and asserts exit 0 plus workspace deletion. That behavior violates AC2 and the required validated-result-before-cleanup order; preserve the first outcome while making result publication a prerequisite for automatic deletion.
+- [x] [Review][Patch] R2 — **high**: Commit startup outcomes even when the original stopping allowance is exhausted [CompositionEngine.cs:1690]. The readiness deadline tail can exhaust `observationBound` before `TryRecordStoppingOutcomeAsync`, and every subsequent outcome write uses that cancelled token. The probe observed neither `selected-test.json` nor `test-result.json`. Use a separate finite metadata commit allowance without renewing resource stopping, diagnostics processing, or cleanup.
+- [x] [Review][Patch] R3 — **high**: Preserve published attempt/environment identities through initialization versus exact-down races [CompositionEngine.cs:165]. State is published before the provisioning lease. Exact down can delete active tracking before package startup reaches its second `InitializeStateAsync`, which reissues identities and overwrites `owner.json`. Cleanup markers prevent lasting resource resurrection, but the later terminal rewrite changes the published result's attempt/environment identity. Reuse durable issued identities and honor completed cleanup before reinitializing.
+- [x] [Review][Patch] R4 — **medium**: Preserve known container leftovers when the first cleanup scan is interrupted [CompositionEngine.cs:1319]. Cancellation before the first Docker observation leaves only `cleanup-verification`; the prior-ID merge tests only for `containers`. The probe returned an empty container list despite a recorded 64-character container ID and unverifiable deletion. Keep prior IDs until a successful observation verifies absence.
+- [x] [Review][Patch] R5 — **medium**: Reconcile listing with committed outcomes after publication failure [CompositionRunListing.cs:24]. A result-publication exception occurs after `selected-test.json` commits and before the active-state update. Listing then reports success, no failed owner IDs, unavailable retention and null leftovers despite an authoritative retained failure. Read the committed record or report the unreconciled entry as incomplete while preserving other owners.
+- [x] [Review][Patch] R6 — **medium**: Persist execution activation for listing while the suite is still running [NativeTestExecutor.cs:310]. Timing is written only to the session and disposable workspace until terminal recording. `list` reads `state.TestRun.ExecutionTiming`, so it cannot show an already-known active execution deadline. Persist and expose the runner-held activation before child launch.
+- [x] [Review][Patch] R7 — **medium**: Preserve later archive/cleanup errors in durable diagnostics [CompositionEngine.cs:715]. `prior.DiagnosticRuleIds` freezes the first rule list and drops later `HXT008`/`HXR023` errors. A probe recorded incomplete cleanup with `HXR023`, but the referenced lifecycle diagnostic still had `ruleIds: []`. Keep terminal cause/rules immutable while retaining subsequent error diagnostics separately; do not introduce synthetic owner-cancellation causes into passed results.
+- [x] [Review][Patch] R8 — **medium**: Reject null entries in persisted resource observations before teardown [CompositionEngine.cs:1130]. `ValidOutcome` checks that `Resources` exists but accepts `[null]`. The probe made exact down throw `NullReferenceException` at `TestResultWriter.cs:60` before removing owned resources. Validate nested entries and return structured retryable uncertainty.
+- [x] [Review][Patch] R9 — **medium**: Finalize owners on every refusal after initial state publication [CompositionEngine.cs:181]. Descriptor refusal and final manifest-revalidation refusal clean the prepared workspace and return `RunId = null`, leaving newly initialized active tracking without its terminal outcome. Preserve the issued identity in the response and finalize or retain its tracking according to the observed cleanup result.
+- [x] [Review][Patch] R10 — **medium**: Keep incomplete completion transactions discoverable across process interruption [CompositionEngine.cs:695]. Active tracking is deleted before the completed internal record and v1 result are published. Process termination during those asynchronous writes bypasses exception recovery and makes the unfinished completion disappear from active-state-only listing. Retain discoverable retry metadata until durable completion publication succeeds.
+- [x] [Review][Patch] R11 — **medium**: Provide a path to verified cleanup on supported Windows/macOS hosts [CompositionRunResourceScanner.cs:34]. The new non-Linux `Unverified` flag is permanent; every retry remains nonempty and claims cannot be released. Aspire host resolution explicitly supports these hosts. Preserve honest uncertainty while implementing ownership verification that can establish completed cleanup on supported hosts.
+- [x] [Review][Patch] R12 — **medium**: Assert independently activated listing deadlines in both CLI formats [CompositionRunListingTests.cs:24]. Pre-verified regression gap: all listing fixtures omit `TestRun.ExecutionTiming`, and no listing assertion checks its deadline. Substituting the earlier selection expiry for actual activation would pass the inspected tests. Add exact human/JSON assertions with activation later than selection, plus unavailable behavior before activation. This verification defect is separate from R6's missing live persistence.
+- [x] [Review][Patch] R13 — **medium**: Apply the committed outcome before exporting legacy evidence [ModuleCommandExecutionService.cs:979]. `WriteResultAsync` writes legacy evidence before restoring `selectedTestRun.TerminalOutcome` in command output. The probe produced command `completed`/exit 0 while the written legacy artifact said `failed`/exit 3 after a committed pass followed by cleanup failure. Preserve the same first terminal status/outcome in both outputs and keep cleanup errors diagnostic.
+
+#### Deferred
+
+- [x] [Review][Defer] D1 — **medium**, pre-existing: Claim transaction contention can outlast the shared stopping allowance [CompositionResourceClaimStore.cs:231]. `ReleaseOwned` synchronously waits up to two seconds on `transaction.lock` without the stopping token. Both the teardown call and wait implementation predate this diff; the reviewer withdrew it as a regression finding. Track cancellation-aware claim operations separately.
+
+#### Individual triage before grouping
+
+| Observation | Source | Verdict | Route and verified evidence |
+| --- | --- | --- | --- |
+| BH1 | Blind Hunter | high | R2: the exhausted startup observation token prevents both terminal documents; reproduced. |
+| BH2 | Blind Hunter | medium | R6: activation updates the workspace/session, while listing reads only terminal state. |
+| BH3 | Blind Hunter | medium | R7: later `HXR023` is absent from the referenced diagnostic; parent probe confirmed it. |
+| BH4 | Blind Hunter | medium | R9: the new initialization precedes early-return branches that neither finalize active state nor return its ID. |
+| BH5 | Blind Hunter | high | R3: corrected after checking cleanup guards; lasting resurrection is prevented, but published identity mutation is reproduced. |
+| BH6 | Blind Hunter | medium | R8: `[null]` passes ownership validation and crashes exact down in result publication. |
+| BH7 | Blind Hunter | medium | R10: deletion precedes asynchronous completion publication, and process termination bypasses catch-based restoration. |
+| BH8 | Blind Hunter | medium | R11: source inspection proves non-Linux scans can never become verified; host resolution supports Windows/macOS. |
+| BH9 | Blind Hunter | low | Rejected: cancellation during a short read-only list can omit JSON, but adds no lifecycle-state risk and is uncommon; extra response machinery is disproportionate. |
+| BH10 | Blind Hunter | medium | D1: the bounded-but-token-independent claim wait is real, but both call and wait predate this change. |
+| BH11 | Blind Hunter | low | Rejected: extending an occasional live matrix goes beyond a direct correction; the ordinary lane covers these orderings and qualification limits remain explicit. |
+| EH1 | Edge Case Hunter | high | R2: the startup probe returned `selectedTestExists=false`, `resultExists=false`, exit 3. |
+| EH2 | Edge Case Hunter | medium | R4: known container `c` repeated 64 times became `returnedContainers=[]` with `cleanup-verification`, exit 6. |
+| EH3 | Edge Case Hunter | medium | R8: exact down raised `NullReferenceException` in `TestResultWriter.cs:60`. |
+| VG1 | Verification Gap Reviewer | medium | R12: accepted as pre-verified; no activated deadline fixture/assertion exists in the searched listing coverage. |
+| VG2 | Verification Gap Reviewer | medium | R7: recorder freezes rules before `TestResultWriter` generates the retained diagnostic. |
+| VG3 | Verification Gap Reviewer | high | R2: caller/test/probe confirm the native metadata allowance does not cover startup recording. |
+| AA1 | Acceptance Auditor | high | R1: the passing command regression deletes the workspace with the v1 result path blocked, violating AC2. |
+| AA2 | Acceptance Auditor | medium | R5: an external harness committed failed/retained while listing returned completed/no failures/unavailable retention. |
+| P1 | Parent verification | medium | R13: the private command writer probe exported failed/3 and rendered the same invocation completed/0. |
+
+Probe sources: `/tmp/edge-lifecycle-repro.91HGEL/Program.cs` (R2/R4/R8), `/tmp/blind-race-repro/Program.cs` (R3), `/tmp/acceptance-audit-25/Program.cs` (R5), and `/tmp/bmad-review-2-5-parent-probe/Program.cs` plus `/tmp/bmad-review-2-5-parent-probe.log` (R7/R13). Probes used disposable `/tmp` state and the reviewed Debug Tooling assembly.
+
+#### Rejected
+
+- **BH9 — low:** Cancellation while listing can omit the JSON response. The operation is read-only, the timing is uncommon in everyday use, and adding cancellation-output branches is not warranted by the negligible harm.
+- **BH11 — low:** Additional live cancellation/startup-timeout scenarios would extend occasional qualification machinery; ordinary tests cover the orderings, and this review does not grant new live or package qualification.
+
+
+### Committed-state review fixes — resumed build, 2026-10-25
+
+All thirteen accepted patch items R1–R13 are implemented. Parent inspection of the implementation diff and final XML confirms that all thirteen finding mappings and all seven matrix rows reference executed passing cases. The frozen intent and original baseline revisions are unchanged.
+
+Final unchanged-source verification: 617/617 affected Builds cases pass (260.216 seconds), the Platform cleanup-helper passes 1/1, and both individual Debug builds have zero warnings/errors. Schema parity, relocated retained-evidence validation, 33 source fingerprints and the portable-PDB audit pass. All three Tooling PDBs match all 195 current source documents; independent Platform/Builds generated version stamps and runtime hashes are retained separately. The earlier failing and superseded observations remain archived. Exact commands, full XML and per-finding evidence are in [the verification archive](evidence/2-5/committed-review-fixes-20261025/verification.json), [finding mapping](evidence/2-5/committed-review-fixes-20261025/review-findings-verification.json) and [matrix audit](evidence/2-5/committed-review-fixes-20261025/matrix-audit.json).
+
+The older post-initialize null-read deferral is resolved by returning the durable issued state directly. The ordinary-lane non-Linux observation gap is resolved by verified/unverified process-discovery tests. Native Windows/macOS queries remain unqualified on this Linux host. D1, cancellation-aware claim transaction contention, remains the pre-existing deferred item. Docker is now available (29.8.2); installed Aspire remains 13.6.1 against catalog 13.6.3, so no fresh live qualification is claimed. Package qualification still requires authoritative published release declarations. Independent workflow review follows.
+
+
+### Final workflow review triage — 2026-10-25
+
+All three configured layers completed before triage. Each observation was graded independently before grouping. The reviewed source diff is `/tmp/story25-workflow-review-b9q6w_i_/story-2-5.diff`; the complete baseline archive, including unrelated concurrent work and historical evidence, is retained alongside it.
+
+| Finding | Verdict | Route and verified evidence |
+| --- | --- | --- |
+| CB1 | medium | Patch F1: RecordTestOutcomeAsync replaces known leftovers with the executor callback's empty unverified observation while cleanup is incomplete. Preserve known identities until verified absent. |
+| CB2 | high | Patch F2: Automatic-cleanup validation calls ReadResult, whose File.OpenRead blocks on a FIFO before cancellation; the edge reviewer reproduced a 200 ms token still blocked at a 2-second external timeout. Reuse bounded nonblocking input. |
+| CB3 | medium | Defer: recursive synchronous Directory.Delete can exceed its cancellation allowance. The exact recursive deletion is present at the original Builds baseline; this change did not introduce it. |
+| CB4 | medium | Patch F3: New acquisition receipts serialize without a size check while new ReadReceipt refuses over 64 KiB. Roughly 1,000 identities produce a self-generated unreadable receipt. Keep publication and read bounds compatible before mutation. |
+| CB5 | medium | Patch F4: Enumeration validates status/resources but accepts arbitrary cleanup strings and complete with nonempty/unverified leftovers. Refuse inconsistent durable lifecycle observations while preserving healthy owners. |
+| CB6 | high | Patch F5: New Windows/macOS reads treat inspection denial as absent without proving a foreign/exited process. Preserve uncertainty for unresolved live inspection failures and establish foreign ownership before excluding a process. |
+| CB7 | high | Patch F6: TestResultWriter uses ordinary publication into a supplied owner directory; replacing that directory with a link redirects its fixed diagnostic/result names outside ownership. Apply existing owned-destination checks to publication and temporary cleanup. |
+| CB8 | medium | Patch F7: Native reader tests use a discovery override or synthetic bytes, so no native tagged child/peer lifecycle is exercised. Add a portable supported-host regression and preserve the explicit Linux-host qualification limit. |
+| CB9 | medium | Patch F8: The live peer audit compares containers/data but not process identities; it would miss termination of peer AppHost/Dapr/API processes while Redis survives. Assert peer processes using its existing before/after scanner observations. |
+| CB10 | low | Rejected, carried: same missing live cancellation/startup-timeout scenarios as prior BH11; the unchanged occasional live matrix and existing ordinary coverage still support that verdict. |
+| CE1 | high | Defer: the reviewer reproduced a tagged non-dumpable Linux process omitted with verified emptiness. The entire Linux environment-read/exception behavior is unchanged at the original Builds baseline; track this scanner limitation separately. |
+| CE2 | high | Patch F2: independently reproduced the FIFO input block at the same new cleanup-validation call as CB2. |
+| CE3 | medium | Patch F9: the new immediate callback commits generic HXT007 for Started=false before Evaluate can emit existing prerequisite HXR030. Preserve that known prerequisite classification. |
+| CE4 | medium | Patch F10: a timeout callback throwing before first commit escapes before NativeTestExecutionResult returns; the service then records a generic failure and loses execution-timeout. Preserve the runner-held causal observation for retry. No earlier durable timestamp exists when the first commit failed. |
+| CE5 | medium | Patch F11: the new receipt-aware FindOwned enumerates files only, so replacing a receipt-recorded claim with a directory hides a still-blocking reservation. Preserve its identity and uncertainty until verified deletion. |
+| CV1 | medium | Native reader coverage gap accepted as pre-verified. F7 adds the portable host test; expanding Windows/macOS CI jobs is rejected because frozen intent explicitly excludes CI workflow changes. This build continues to claim no Windows/macOS native runtime qualification. |
+
+After individual triage, only CB2 and CE2 are grouped by their shared FIFO-reader defect. Other accepted observations remain separate patch items.
+
+- [x] [Review][Patch] F1: preserve known leftovers across unverified late callbacks.
+- [x] [Review][Patch] F2: refuse/block-proof FIFO terminal-result input before automatic cleanup.
+- [x] [Review][Patch] F3: align claim receipt publication/read bounds atomically.
+- [x] [Review][Patch] F4: validate durable cleanup states and completion invariants.
+- [x] [Review][Patch] F5: preserve native process-inspection uncertainty.
+- [x] [Review][Patch] F6: prevent linked diagnostic/result publication outside ownership.
+- [x] [Review][Patch] F7: add a portable native-host tagged-child/peer regression, without CI changes.
+- [x] [Review][Patch] F8: assert real-service peer process survival.
+- [x] [Review][Patch] F9: preserve native launch prerequisite classification.
+- [x] [Review][Patch] F10: preserve a causal terminal observation when its first callback fails.
+- [x] [Review][Patch] F11: keep receipt-recorded claim directories discoverable.
+
+
+### Final workflow verification — 2026-10-25
+
+All thirteen resumed accepted fixes and all eleven additional workflow patch groups are implemented. Parent final verification passes **632/632** affected Builds cases (243.130 seconds), without failures/errors/skips/unrun cases, plus the Platform cleanup-helper **1/1**. Both individual Debug builds have zero warnings/errors. Schema parity, retained-evidence validation, all thirteen original finding mappings, all seven matrix rows, 49 unchanged source fingerprints and all three Tooling PDB/source bindings (195 documents each) pass. The separately executed native-host case has one expected Linux skip; its implementation is complete but no native runtime qualification is claimed. The strengthened live peer-process assertions compile; fresh real-service qualification remains unavailable under the Aspire mismatch. Package qualification still requires authoritative published release declarations.
+
+The first parent full lane (631/632) and the first test correction remain archived. The sole full-lane failure was an obsolete HXT008 proxy for an exhausted metadata read; the published finite metadata allowance permits that read. The corrected regression verifies the original committed outcome and timestamp, no repeated resource cleanup, and no fabricated recording error. The parent also guards publication-inspection I/O failures/cancellation so they leave cleanup pending without discarding a committed outcome. No production source changed after the final source snapshot.
+
+Exact commands, full XML, runtime/source identities, individual patch verification and the seven-row audit are retained in [final verification](evidence/2-5/final-workflow-review-20261025/verification.json), [review finding verification](evidence/2-5/final-workflow-review-20261025/review-findings-verification.json), and [matrix audit](evidence/2-5/final-workflow-review-20261025/matrix-audit.json). D1 and the two separately recorded pre-existing scanner/deletion limitations remain deferred. No accepted patch remains open.
+
+Build workflow complete: the spec is `done`, sprint tracking is `review`, and Builds source/tests are committed locally as `b215213da90f7a25f7a181f8d4b394226148ac59`. The Platform completion commit records this tracking/evidence and its Builds gitlink. No push was performed by this workflow.

@@ -160,3 +160,163 @@ After native publishing, the resolved native and composition
 `Aspire.Hosting.Kubernetes` identities must both equal `aspireKubernetes` in
 `toolchain.json`; retained project-assets files, hashes and package SHA512 values
 provide the resolved-package evidence. No package version is changed.
+
+## Finite Memories campaign capacity (offline)
+
+`campaign_capacity.py` adds an explicit `PG-FINITE-CAMPAIGN-1` candidate beside
+this qualifier. The existing synthetic qualifier remains chart/admission-only;
+its Scheduler-disabled fixtures are not a full Memories environment or launcher.
+No toolchain pin or historical fixture allocation changes. Inspect the candidate
+without creating a Qualification object, downloading tools or contacting a cluster:
+
+```bash
+python3 -B eng/helm-qualification/qualify.py --campaign-capacity
+```
+
+Let N be the number of complete C1 collections in the validated finite renewal
+schedule. Each collection reserves450000 C1.9 records,150000 C1.10 records and
+50000 other C1/C0 records. C2 reserves450000 writers +150000 separate backlog
++50000 other; C3 reserves375 seeds +125 newer controls; C4 reserves50000 other.
+The cumulative live/dead bound is therefore R=650000*N+700500 records, with no
+credit for earlier vacuum/reuse. A complete source/normalized-argument inventory
+has exactly one invocation per command per round; retries earn no extra allowance.
+The50000 terms are configured admission envelopes, not observed producer counts.
+Missing or excess inventory refuses; producer behavior remains unchanged.
+
+For the admitted R, raw relation/support bytes are4096*R (2048 heap/TOAST +2048
+all index/actor/due/catalogue/cursor/reminder state); M=ceil(5*4096*R/4) adds25%.
+Reserve one full M-byte rewrite,4GiB WAL and1GiB fixed DB overhead:
+PG=round_up_4GiB(ceil(5*(2*M+5GiB)/4)). The independent recoverable backup is
+round_up_4GiB(ceil(5*(M+5GiB)/4)). Both retain20% free at modeled peak. Fixed
+other primary allocations are8GiB control (etcd4/OpenBao1/logs+other3), three1GiB
+Scheduler volumes,4GiB app spill and18GiB host workspace:33GiB. Primary=PG+33GiB.
+These configured bounds require actual scoped physical/support/WAL/rewrite and
+performance measurements; no exact PG/backup allocation is selected without a
+compatible measured schedule. The former24GiB PG /57GiB primary /16GiB backup
+numbers are only a single-collection lower bound, superseded for the full campaign.
+Aggregate compute remains16250m CPU/31GiB (PG8CPU/16GiB, apps4.5CPU/7GiB,
+control2CPU/3GiB, Scheduler0.75CPU/1GiB and host1CPU/4GiB).
+
+A compatible renewal schedule remains a missing Platform prerequisite. The
+unchanged C1.15->C1.16 parent chain requires all25 descendants to be recaptured
+for each root refresh. A round reserves measured source-bound gate capture,
+decision and cleanup slots in parent order, at most24h capture/review lag, the
+original<=72h collection and<=24h review/use windows, and<=96h technical age.
+Their collection coverage must span the full C2/C3/C4 intervals inside336h.
+Each actual owner plan binds `campaignOriginUtcMs` and `renewalRound`; the
+consumer checks actual capture/collection times against that admitted round.
+A new round cannot move the immutable profile or original C3 origin/deadline.
+
+C1 fault/workers and whole-table maintenance can purge C3 cohorts early or
+confound exact125-row seeds/newer controls and physical attribution. The schedule
+therefore reserves no-overlap intervals for empty/seeding and every cohort's
+expiry/purge/reclamation, with newer-control/report isolation at168h. Shorter
+operation reservations require retained source-bound timing measurements;900s
+purge,24h reclamation and216h overall C3 policies remain unchanged. Every round
+requires exact retained zero unrelated live/dead/support-state readbacks and
+unchanged C3 cohort/due/reminder inventory, plus physical-attribution proof.
+C2's24h records must be proven drained/purged/reclaimed before C3's empty boundary.
+The proposed phase times alone cannot prove that fit. Missing timing, cleanup,
+C2 drain or C3 isolation measurements reject admission. No operational renewal
+count or compatible timeline is invented; unit schedules/receipts are simulations
+and supply no adopted evidence. Platform must supply a real compatible plan and
+exercise its native lifecycle; this change supplies no second orchestrator.
+
+`configure_application(values, graph)` returns values for this chart: two Memories
+server and two telemetry replicas, one of every other declared workload (nine
+Pods), each app400m/640Mi plus Dapr100m/128Mi; explicit ephemeral limits and
+128Mi `/tmp`. Existing container names `memories`, `lifecycle` and `clock` remain
+compatible with the registered producer. PG keeps8CPU/16GiB. Adding4.5CPU/7GiB
+applications,2CPU/3GiB control,0.75CPU/1GiB Scheduler and1CPU/4GiB host reserve
+requires16250m CPU and31GiB RAM in aggregate. Throughput, fault and latency
+performance must be measured at these actual limits before use.
+
+Complete the candidate's closed input groups (tool/toolchain, immutable runtime
+and backend images, every chart file, values/render, component/application/reporter,
+source/storage configuration, finite workload plan and renewalEvidence). Every Ref names canonical
+absolute bytes and SHA256. The workload plan binds every C1 gate and C0/C2/C3/C4
+command to source, a maximum accepted-record inventory and invocation count.
+C1 command IDs are `<round-id>/C1.n`; every round has all25 exactly once.
+The proposed schedule includes closed campaign/phases/rounds/protectedIntervals/
+`c3OperationBoundsSeconds` fields. Each round supplies start/ready/collectionEnd/
+reviewEnd seconds and all25 parent-ordered `captureBoundsSeconds`. A retained
+`renewalEvidence` Ref authenticates the exact schedule/source/workload digests,
+per-round source/command-bound timing receipts, zero unrelated live/dead/support
+cleanup and unchanged cohort inventories, C2 drain and C3 exact-row/physical
+readbacks. The actual required proof and compatible inputs do not yet exist.
+For C1 argument hashing only `target_sha256` and `session_id` are normalized to
+`late-bound-target` and `late-bound-session`; the actual owner authority separately
+verifies those exact late bindings. Retrying the same identity earns no new record
+allowance. Missing or out-of-envelope plans refuse. Supply actual scoped full-rate
+heap/index/support/WAL/rewrite/compute measurements, exact retained receipts,
+Linux-backed physical reservations with aggregate competing demands, and separate
+backup failure-domain proof. Candidate labels, free-space readings and PVC requests
+never substitute for those inputs. No such operational receipts were created here.
+
+```bash
+python3 -B eng/helm-qualification/qualify.py --campaign-capacity \
+  --campaign-profile /private/approved/finite-profile.json \
+  --approved-campaign-sha256 <outside-approved-raw-file-sha256> \
+  --current-capacity-receipt /private/approved/current-capacity.json \
+  --approved-capacity-sha256 <outside-pinned-raw-receipt-sha256>
+```
+
+This route performs offline bind/admit checks only. An absent schedule emits
+blocked sizing with null PostgreSQL/backup volume requests and a labelled
+single-collection diagnostic lower bound; it cannot authorize launch.
+
+Initial measurement freshness cannot be renewed by a fresh capacity receipt.
+A first use needs<=24h measurements. Before C3 dispatch, the private outside-approved
+owner plan must additionally bind `initialCapacityAdmission` (exact Ref digest),
+`capacityAdmissionIssuer`, `capacityAdmissionKeyPath` and
+`capacityAdmissionKeySha256`. Platform's small initial-admission artifact signs
+the exact immutable profile after strict fresh validation. Its issuer advances an
+authenticated independent UTC sample with same-boot CLOCK_BOOTTIME (sample<=60s)
+and stamps actual admission time; there is no user backdate argument. Verification
+uses only outside-approved issuer/key/receipt bytes, rechecks initial freshness at
+that authenticated original stamp, and preserves original identity/C3 time through
+multi-day continuation. The immutable initial300s compute/storage observations do
+not start expiring again during a valid continuation; separate current capacity
+receipts still require<=300s age before every launch. They may renew only observed
+available/reserved/competing quantities and receipt metadata over the original
+poolId/failureDomain/Linux backing/allocation ownership; backing changes need new
+adoption. The real issuer, key custody and trusted-UTC service remain absent
+operational prerequisites. No operational key, timestamp or receipt was created.
+
+Owned cleanup authenticates the original outside-approved profile, physical API/CA/
+cluster/namespace/runtime, session and exact Lease independently of changed capacity
+inputs. Actual disable-only and parent fallback retain this authority and preserve
+the original failure-packet profile. Foreign targets/sessions/Leases still refuse.
+Historical source closure is authenticated from the committed verifier's actual
+imports: authentic old C0/C2-C4 archives retain their original exact source sets;
+current exports require every actual import, including the finite-profile loader.
+Historical source cannot earn finite-profile credit.
+
+For C3/archival admission, append these outside-approved initial-admission anchors:
+
+```bash
+  --original-admission /private/approved/initial-admission.json \
+  --approved-original-admission-sha256 <outside-approved-raw-receipt-sha256> \
+  --admission-issuer <outside-approved-issuer> \
+  --admission-key /private/approved/capacity-admission.key \
+  --approved-admission-key-sha256 <outside-approved-key-sha256>
+```
+
+The held key must have mode0600 under private0700 custody. Real Memories consumers
+obtain these anchors from their outside-approved private owner plan, never from
+the proposed capacity profile. No operational issuer implementation/custody service
+is supplied; Platform must establish that trusted service before an actual run.
+
+The immutable chart references environment ConfigMap
+`access-telemetry-campaign-identity/profileSha256`. It supplies the lifecycle
+component hash and Qualification's approved profile hash, with explicit profile ID
+and Qualification environment. `runtime_binding(profile, canonical_memories_hash)`
+produces its exact late-bound descriptor **after** Memories computes the canonical
+identity. The descriptor is excluded from its own hashed inputs; C0 and every
+producer read back its exact profile/capacity identity before mutation. Actual
+owner authority binds the target/runtime receipt. Do not replace the named
+reference with a literal self-hash inside the values/render being hashed.
+
+The full PostgreSQL/OpenBao/independent-UTC/monitoring environment, multi-day
+lifecycle, bounded failure/disposal and reservations remain Platform prerequisites.
+No full campaign launch command or qualification credit is supplied by this work.

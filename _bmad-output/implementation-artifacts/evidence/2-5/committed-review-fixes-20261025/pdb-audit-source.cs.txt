@@ -1,0 +1,35 @@
+using System.Reflection.Metadata;
+using System.Security.Cryptography;
+using System.Text.Json;
+
+if (args.FirstOrDefault() == "--attributes")
+{
+    foreach (string path in args.Skip(1))
+    {
+        var assembly = System.Reflection.Assembly.LoadFile(Path.GetFullPath(path));
+        var attributes = assembly.GetCustomAttributesData().Select(attribute => new { name = attribute.AttributeType.FullName, arguments = attribute.ConstructorArguments.Select(argument => argument.Value?.ToString()).ToArray() }).OrderBy(attribute => attribute.name).ToArray();
+        Console.WriteLine(JsonSerializer.Serialize(new { path, attributes }));
+    }
+    return;
+}
+
+foreach (string path in args)
+{
+    using FileStream stream = File.OpenRead(path);
+    using MetadataReaderProvider provider = MetadataReaderProvider.FromPortablePdbStream(stream);
+    MetadataReader reader = provider.GetMetadataReader();
+    int verified = 0;
+    List<object> mismatches = [];
+    foreach (DocumentHandle handle in reader.Documents)
+    {
+        Document document = reader.GetDocument(handle);
+        string name = reader.GetString(document.Name);
+        if (!name.Contains("/src/libraries/Hexalith.Builds.Tooling/", StringComparison.Ordinal) || name.Contains("/obj/", StringComparison.Ordinal)) continue;
+        string local = File.Exists(name) ? name : "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/" + name[(name.LastIndexOf("/src/", StringComparison.Ordinal) + 1)..];
+        byte[] expected = reader.GetBlobBytes(document.Hash);
+        byte[] actual = expected.Length == 20 ? SHA1.HashData(File.ReadAllBytes(local)) : SHA256.HashData(File.ReadAllBytes(local));
+        verified++;
+        if (!expected.SequenceEqual(actual)) mismatches.Add(new { source = name, expected = Convert.ToHexString(expected), actual = Convert.ToHexString(actual) });
+    }
+    Console.WriteLine(JsonSerializer.Serialize(new { pdb = path, verified, mismatches }));
+}

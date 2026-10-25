@@ -1,0 +1,77 @@
+{
+  "captured_at_utc": "2026-10-25T11:57:16.912824+00:00",
+  "repositories": {
+    "parties": {
+      "path": "/home/administrator/projects/hexalith/parties",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "13a6247aff26a77c80d0308b6c69af2bc3e20279\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M eng/verify-ext-parties-1.ps1\n m references/Hexalith.EventStore\n m references/Hexalith.Memories\n M tests/Hexalith.Parties.Tests/Projections/PartyGuardedRebuildErasureTests.cs\n?? _bmad-output/implementation-artifacts/spec-ext-parties-1-custody-prerequisite-hardening.md\n?? docs/implementation/\n",
+        "stderr": ""
+      }
+    },
+    "platform": {
+      "path": "/home/administrator/projects/hexalith/platform",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "f84977132777decec2f45a199d9392de73b6cc84\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M eng/ext-host-1/prepare_acceptance.py\n M eng/ext-host-1/test_prepare_acceptance.py\n M eng/ext-host-1/verify_full.py\n M eng/ext-secrets-1/joint_live_phase_runner.py\n M eng/ext-secrets-1/prepare_acceptance.py\n M eng/ext-secrets-1/qualify.py\n M eng/ext-secrets-1/test_prepare_acceptance.py\n M infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs\n M infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs\n m references/Hexalith.Builds\n M src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs\n M src/Hexalith.Platform.Composition/AgentsHostComposition.cs\n M src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs\n M src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpool.cs\n M src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs\n D src/Hexalith.Platform.Secrets.Runtime/DaprFr34Protection.cs\n D src/Hexalith.Platform.Secrets.Runtime/DaprSecurityObservationServices.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs\n M src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs\n M src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs\n M tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs\n?? _bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/\n?? docs/implementation/ext-parties-1-custody-proposal-2026-10-25/\n?? eng/ext-secrets-1/coordinated_packets.py\n?? eng/ext-secrets-1/joint-authority-schema.sql\n?? eng/ext-secrets-1/joint_authority_service.py\n?? eng/ext-secrets-1/test_joint_live_phase_runner.py\n?? infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/CustodyRoleInstallation.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/RetainedControlOriginal.cs\n?? src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs\n?? src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs\n?? src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprCustodyOriginalLocators.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprCustodyOwnerCallSource.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34CanaryAuthority.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprIndependentReplayRegistrar.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprSecurityObservationRecorder.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IPrivateRecordingEventStore.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiverInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityState.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthorityBinding.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentOriginal.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationCallerAuthenticator.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationEnrollment.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationExecutor.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationObserver.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationOriginalStore.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationProvider.cs\n?? src/Hexalith.Platform.Secrets.Runtime/QualificationInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/QualificationInstalledAnchor.cs\n?? tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs\n",
+        "stderr": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\n"
+      }
+    },
+    "eventstore": {
+      "path": "/home/administrator/projects/hexalith/eventstore",
+      "head": {
+        "command": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout": "fd083a91b67a3bca10016f1f645da913c7ef526e\n",
+        "stderr": ""
+      },
+      "status": {
+        "command": [
+          "git",
+          "status",
+          "--short",
+          "--branch"
+        ],
+        "exit_code": 0,
+        "stdout": "## main...origin/main\n M _bmad-output/implementation-artifacts/2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-ext-protection-1-owner-delivery.md\n M docs/implementation/ext-protection-1-owner-acceptance.md\n M src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs\n M tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs\n?? _bmad-output/implementation-artifacts/spec-ext-conv-ai-1-eventstore-authorities.md\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.json\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.md\n?? src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionTargetReader.cs\n?? tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs\n",
+        "stderr": ""
+      }
+    }
+  }
+}

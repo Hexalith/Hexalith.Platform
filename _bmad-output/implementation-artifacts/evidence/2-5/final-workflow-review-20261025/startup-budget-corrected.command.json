@@ -1,0 +1,14 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*FailedStartupDoesNotRenewStoppingBudgetAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/startup-budget-corrected.xml"
+  ],
+  "exitCode": 1,
+  "durationSeconds": 0.621,
+  "log": "startup-budget-corrected.log"
+}

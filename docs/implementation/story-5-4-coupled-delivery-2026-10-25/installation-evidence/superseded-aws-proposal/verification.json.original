@@ -1,0 +1,105 @@
+{
+  "completedAtUtc": "2026-10-25T09:48:55.491843+00:00",
+  "classification": "Planning and read-only installation evidence only",
+  "frozenSpecSection": {
+    "initialReadSha256": "22a68017041611fdf0d729b10c0c2ecee95606151ce49f48f8dd68fcc6b748ec",
+    "currentSha256": "22a68017041611fdf0d729b10c0c2ecee95606151ce49f48f8dd68fcc6b748ec",
+    "unchanged": true
+  },
+  "draftStatusPreserved": true,
+  "governingAndHistoricalPathsUnchanged": 15,
+  "existingGoverningAndHistoricalFilesByteIdentical": 13,
+  "previouslyAbsentProfilesStillAbsent": 2,
+  "runbookBashSyntax": [
+    {
+      "block": 1,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 2,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 3,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 4,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 5,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 6,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 7,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 8,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 9,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 10,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 11,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 12,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 13,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    }
+  ],
+  "offlineDeploymentPreflight": {
+    "argv": [
+      "python3",
+      "eng/ext-secrets-1/custody-deployment/preflight.py",
+      "eng/ext-secrets-1/custody-deployment/inputs.uninstalled.json",
+      "--output",
+      "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/deployment-preflight.json"
+    ],
+    "exitCode": 1,
+    "missingUniqueInputs": 68,
+    "status": "Blocked",
+    "inputSha256": "4b92b2d1d38aeac1cf1efc8f2b2fbdc76526e72d93e5549efdbc62a0db723af7"
+  },
+  "implementationTestsRun": false,
+  "deploymentExecuted": false,
+  "nativeKeyUseOrDeletionExecuted": false,
+  "qualificationEnrollmentInvoked": false,
+  "liveOrFullExecuted": false,
+  "workerInvoked": false,
+  "cohortOrAttemptReservationInvoked": false,
+  "dependencyRecordsChanged": false,
+  "journalPreservationBasis": "No qualification, enrollment, worker, native mutation or journal-writing entry point invoked; existing operational journals were not opened for writing. This record does not assert a census/hash of every journal outside inspected paths.",
+  "localLinks": "All local targets resolve",
+  "whitespace": "No trailing whitespace in new/updated Markdown or JSON",
+  "runbookFailFastPipeHandling": true
+}

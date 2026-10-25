@@ -203,8 +203,9 @@ def acceptance(register, *, register_text=None):
     target = re.search(r"\| `TargetVersionOrCommit` \| `([0-9a-f]{40})` \|", section).group(1)
     if not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", section):
         raise ValueError("not accepted")
-    if "| `TargetIntegrationDate` | `2026-10-08` |" not in section:
-        raise ValueError("date changed")
+    from joint_live_phase_runner import calendar_date
+    date_match = re.search(r"\| `TargetIntegrationDate` \| `([^`]+)` \|", section)
+    calendar_date(date_match.group(1) if date_match else None)
     command = re.search(r"Command: `(.*)`\s*\|?\s*$", section, re.MULTILINE).group(1)
     if f'"{target}"' not in command or "status --porcelain" not in command:
         raise ValueError("not exact")
@@ -249,7 +250,7 @@ def cohort_prerequisite_inputs(register, target, *, register_text=None):
     # owner phase, interleave host composition, or prove every consumer refuses. Those
     # phase receipts must come from a real joint runner before this standalone entry can
     # acquire any authority for the mutual cases. No local/config flag supplies them.
-    missing.append("OQ-5.4-1.JointLivePhaseRunner")
+    missing.append("OQ-5.4-1.IndependentCurrentCohortBindingAndOwners")
     return missing
 
 
@@ -475,7 +476,7 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
     return config, target, binding
 
 
-def verify_signed(envelope, role, config, binding):
+def verify_signed(envelope, role, config, binding, *, original_time=None):
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import ec
     from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
@@ -501,9 +502,11 @@ def verify_signed(envelope, role, config, binding):
     if payload.get("protocol") != PROTOCOL or payload.get("identity") != get(config, f"qualification.{role}.identity") \
             or payload.get("version") != get(config, f"qualification.{role}.version"):
         raise QualificationFailed("EnrolledAuthorityIdentity")
-    if type(payload.get("observedAt")) is not int or type(payload.get("validUntil")) is not int \
-            or not time.time() - 30 <= payload["observedAt"] <= time.time() + 1 \
-            or not time.time() < payload["validUntil"] <= payload["observedAt"] + 30:
+    instant = time.time() if original_time is None else original_time
+    if type(instant) not in (int, float) or instant > time.time() + 1 \
+            or type(payload.get("observedAt")) is not int or type(payload.get("validUntil")) is not int \
+            or not instant - 30 <= payload["observedAt"] <= instant + 1 \
+            or not instant < payload["validUntil"] <= payload["observedAt"] + 30:
         raise QualificationFailed("CurrentProofAuthority")
     return payload
 
@@ -1089,7 +1092,7 @@ class RunJournal:
             os.close(descriptor)
 
 
-def execute(config, target, binding, transport, persist=lambda name, value: None, journal=None):
+def execute(config, target, binding, transport, persist=lambda name, value: None, journal=None, case_ids=None):
     run = journal.run if journal else str(uuid.uuid4())
     base = {"protocol": PROTOCOL, "runId": run, "targetCommit": target,
             "isolatedTargetId": get(config, "qualification.isolatedTargetId"), "planSha256": plan_digest()}
@@ -1126,8 +1129,11 @@ def execute(config, target, binding, transport, persist=lambda name, value: None
     targets = installed["caseTargetIds"]
     persist("enrollment", enrolled)
     persist("effects-started", {"runId": run, "targetCommit": target})
+    selected_cases = tuple(case for case in plan() if case_ids is None or case.id in case_ids)
+    if case_ids is not None and set(case_ids) != {case.id for case in selected_cases}:
+        raise QualificationFailed("ExactDisjointPhaseCaseSelection")
     results = []
-    for case in plan():
+    for case in selected_cases:
         request = base | {"caseId": case.id, "caseTargetId": targets[case.id], "enrolledScope": installed["caseScopes"][case.id], "scenario": {"outcomes": list(case.outcomes), "expected": GLOBAL | case.expected,
                                                        "boundary": case.boundary, "persistedStages": list(STAGES)}}
         request["requestId"] = digest(request)
@@ -1170,9 +1176,9 @@ def execute(config, target, binding, transport, persist=lambda name, value: None
         results.append({"caseId": case.id, "requestId": request["requestId"], "execution": envelope,
                         "observation": observed})
         persist("case", results[-1])
-    if [r["caseId"] for r in results] != [c.id for c in plan()]:
+    if [r["caseId"] for r in results] != [c.id for c in selected_cases]:
         raise QualificationFailed("IncompletePlan")
-    return {"code": "QualificationPassed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
+    return {"code": "QualificationPassed" if case_ids is None else "PhaseQualificationPassed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
             "permitsOwnerAcceptanceForExactTarget": True, "targetCommit": target, "runId": run,
             "planSha256": plan_digest(), "caseCount": len(results), "enrollmentProof": enrolled, "cases": results}
 
@@ -1218,10 +1224,23 @@ def main():
     # Always retain the full immutable case plan, even when no prerequisites exist.
     (evidence / "live-plan.json").write_bytes(canonical({"protocol": PROTOCOL, "planSha256": plan_digest(), "cases": wire_plan()}))
     effects_started = False
+    cohort_failure = {}
     journal = None
     try:
         root = Path(args.root).resolve()
         register = root.parent / "agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+        cohort_configuration = os.environ.get("PLATFORM_JOINT_COHORT_CONFIGURATION")
+        if cohort_configuration:
+            from joint_live_phase_runner import run_installed_cohort, Blocked
+            try:
+                result = run_installed_cohort(cohort_configuration, register)
+            except Blocked as error:
+                effects_started = error.effects_started
+                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state}
+                raise Unavailable(*error.missing) from None
+            (evidence / "joint-cohort-result.json").write_bytes(canonical(result))
+            print("JointCohortPassed: EXT-SECRETS-1, EXT-HOST-1; acceptance unchanged.")
+            return 0
         config, target, binding = preflight(root, os.environ.get("EXT_SECRETS_1_RUNTIME_CONFIGURATION"), register,
                                             args.caller, args.eventstore_argument, args.artifacts_argument, args.evidence_argument)
         def persist(name, value):
@@ -1236,7 +1255,7 @@ def main():
         exit_code = 0
     except Unavailable as exc:
         result = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
-                  "missingInputs": exc.inputs, "effectsStarted": effects_started, "qualificationEffects": 0 if not effects_started else "Unknown"}
+                  "missingInputs": exc.inputs, "effectsStarted": effects_started, "qualificationEffects": 0 if not effects_started else "Unknown", **cohort_failure}
         exit_code = 2
     except ReplacementAcceptancePacket:
         result = {"code": "ReplacementAcceptancePacket", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,

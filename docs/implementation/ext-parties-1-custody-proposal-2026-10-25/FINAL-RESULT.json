@@ -1,0 +1,150 @@
+{
+  "recordId": "EXT-PARTIES-1",
+  "completedAtUtc": "2026-10-25T12:06:40.368926+00:00",
+  "disposition": "ActionableSourceAndProvisioningProposalDelivered_OwnerAndInstalledQualificationBlocked",
+  "sourceWorkComplete": true,
+  "completeOwnerDelivery": false,
+  "ownerAccepted": false,
+  "available": false,
+  "liveQualified": false,
+  "fullLocalQualificationRun": false,
+  "qualificationRule": "Acceptance of the complete exact target and full installed qualification required; local tests cannot establish Available.",
+  "qualifyingInstallationEstablished": false,
+  "scope": "Configured context and supplied owner evidence only; undisclosed installations are not excluded.",
+  "recommendedImplementation": "Environment-isolated on-premises Luna PCIe HSM 7 pairs with custom timed-erasure FM and independent lifecycle authority; feasibility, transient plaintext expiry, capacity, maintenance/data-loss tradeoffs and owner approval remain go/no-go gates.",
+  "proposedIntegrationDate": "2026-12-14",
+  "acceptedReplacementIntegrationDate": null,
+  "remainingDecisions": [
+    "D01",
+    "D02",
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "F1",
+    "D03",
+    "D04",
+    "F2"
+  ],
+  "unresolvedCommandBindings": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B09",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15"
+  ],
+  "originalDecisionNullPaths": 661,
+  "originalBindingNullPaths": 165,
+  "installedCustodyHashes": {
+    "backendProfile": null,
+    "applicationConfiguration": null,
+    "qualificationPlan": null,
+    "publicTrust": null,
+    "completeInstalledTarget": null
+  },
+  "observedGenericInfrastructureOnly": {
+    "openBaoControllerUid": "df2bbbbe-1fe8-4e0b-a8a6-174bd3287806",
+    "controllerTemplateImage": "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+    "qualifiesHistoryCustody": false,
+    "runtimeImageIdIndependentlyVerified": false
+  },
+  "checkoutObservations": {
+    "parties": {
+      "head": "13a6247aff26a77c80d0308b6c69af2bc3e20279",
+      "branch": "main",
+      "status": "M eng/verify-ext-parties-1.ps1\n M eng/verify-ext-parties-history-readiness.ps1\n m references/Hexalith.EventStore\n m references/Hexalith.Memories\n M tests/Hexalith.Parties.Tests/Projections/PartyGuardedRebuildErasureTests.cs\n?? _bmad-output/implementation-artifacts/spec-ext-parties-1-custody-prerequisite-hardening.md\n?? docs/implementation/\n?? tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs"
+    },
+    "platform": {
+      "head": "f84977132777decec2f45a199d9392de73b6cc84",
+      "branch": "main",
+      "status": "M _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/run-check.py\n M eng/ext-host-1/prepare_acceptance.py\n M eng/ext-host-1/test_prepare_acceptance.py\n M eng/ext-host-1/verify_full.py\n M eng/ext-secrets-1/joint_live_phase_runner.py\n M eng/ext-secrets-1/prepare_acceptance.py\n M eng/ext-secrets-1/qualify.py\n M eng/ext-secrets-1/test_prepare_acceptance.py\n M infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs\n M infrastructure/Hexalith.Platform.Custody.Dapr/NativeInstallation.cs\n M infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs\n m references/Hexalith.Builds\n M src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs\n M src/Hexalith.Platform.Composition/AgentsHostComposition.cs\n M src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs\n M src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpool.cs\n M src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs\n D src/Hexalith.Platform.Secrets.Runtime/DaprFr34Protection.cs\n D src/Hexalith.Platform.Secrets.Runtime/DaprSecurityObservationServices.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs\n M src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs\n M src/Hexalith.Platform.Secrets.Runtime/InstalledCustodyLifecycle.cs\n M src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs\n M tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs\n M tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/commands.json\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/native-host-tests.command.json\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/native-host-tests.xml\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/platform-tests.command.json\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/platform-tests.xml\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/revisions-before-checks.json\n?? _bmad-output/implementation-artifacts/evidence/2-5/final-workflow-review-20261025/source-snapshot-before-checks.json\n?? _bmad-output/implementation-artifacts/evidence/2-5/review-round2-focused/\n?? docs/implementation/ext-parties-1-custody-proposal-2026-10-25/\n?? eng/ext-secrets-1/coordinated_packets.py\n?? eng/ext-secrets-1/joint-authority-schema.sql\n?? eng/ext-secrets-1/joint_authority_service.py\n?? eng/ext-secrets-1/test_joint_live_phase_runner.py\n?? infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/CustodyRoleInstallation.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/NativeReencryptionAdmission.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/OpenBaoNativeOperations.cs\n?? infrastructure/Hexalith.Platform.Custody.Dapr/RetainedControlOriginal.cs\n?? src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs\n?? src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs\n?? src/Hexalith.Platform.Protection/PrivateRecordingAuthorityApplication.cs\n?? src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs\n?? src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprCustodyOriginalLocators.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprCustodyOwnerCallSource.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34CanaryAuthority.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34PersistedReader.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprFr34ProtectionEngine.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprIndependentReplayRegistrar.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprReplicatedSpoolAuthority.cs\n?? src/Hexalith.Platform.Secrets.Runtime/DaprSecurityObservationRecorder.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IPrivateRecordingEventStore.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiverInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityState.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthorityBinding.cs\n?? src/Hexalith.Platform.Secrets.Runtime/IndependentOriginal.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationCallerAuthenticator.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationEnrollment.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationExecutor.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationObserver.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationOriginalStore.cs\n?? src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationProvider.cs\n?? src/Hexalith.Platform.Secrets.Runtime/QualificationInstallation.cs\n?? src/Hexalith.Platform.Secrets.Runtime/QualificationInstalledAnchor.cs\n?? tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs\n?? tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs\n?? tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs"
+    },
+    "eventstore": {
+      "head": "fd083a91b67a3bca10016f1f645da913c7ef526e",
+      "branch": "main",
+      "status": "M _bmad-output/implementation-artifacts/2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-2-13-dapr-notification-distribution-qualification.md\n M _bmad-output/implementation-artifacts/spec-ext-protection-1-owner-delivery.md\n M docs/implementation/ext-protection-1-owner-acceptance.md\n M src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs\n M tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs\n?? _bmad-output/implementation-artifacts/spec-ext-conv-ai-1-eventstore-authorities.md\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.json\n?? docs/implementation/ext-protection-1-delivery-2026-10-25-resumed.md\n?? src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionTargetReader.cs\n?? tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs"
+    },
+    "agents": {
+      "head": "28d0c413107275c9ab1590fb2f64376445c89280",
+      "branch": "main",
+      "status": "M _bmad-output/implementation-artifacts/spec-5-4-reconcile-owner-deliveries.md\n?? _bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-25.md\n?? _bmad-output/implementation-artifacts/tests/story-5-4-reconciliation-2026-10-25/"
+    }
+  },
+  "sourceSha256": {
+    "parties/eng/verify-ext-parties-1.ps1": "4dd903a4ee4f2667aee6908da9706493ce0783348675cbfa8fdc01de428ada00",
+    "parties/eng/verify-ext-parties-history-readiness.ps1": "77778b35dd7f419540498f2a3ca93e65b93855f636035893838351ac1eb727cd",
+    "parties/tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs": "911430df06ebaa129623ced67815c6439032892fc4cefb092c14113da047acce",
+    "platform/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs": "89d407069b96ca56b962597b4e602ab73b3cf99d53cae28e57c53400cd8b235e",
+    "platform/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs": "604ae88a3fb0c5c65927c7822119c24938a1e2b34cf90d6a197bf67607a75ef6"
+  },
+  "sourcePatchSha256": "97ba213b5f30f6974448a74615b8f8394498a20169b52412265aaa281d044e2e",
+  "patchCommittedByThisWork": false,
+  "validation": [
+    {
+      "lane": "lifecycle-hardening-1pt6kz0x",
+      "passed": 136,
+      "failed": 0,
+      "skipped": 0,
+      "unrun": 0,
+      "boundEvidenceFilesVerified": 18,
+      "manifestSha256": "ef2f2bf3b1ff152bd574bc73f5d7d5c685c656d6aad8bb6fd49b3458417151be"
+    },
+    {
+      "lane": "evidence-reservation-dtdg71_p",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "unrun": 0,
+      "boundEvidenceFilesVerified": 186,
+      "manifestSha256": "700351402a0b105fc14e15286582f21e6d4552ed5b24cc7e995b11204348e573"
+    }
+  ],
+  "commandSyntax": [
+    {
+      "bashBlock": 1,
+      "exit": 0
+    },
+    {
+      "bashBlock": 2,
+      "exit": 0
+    },
+    {
+      "bashBlock": 3,
+      "exit": 0
+    },
+    {
+      "bashBlock": 4,
+      "exit": 0
+    }
+  ],
+  "initialReviewLayers": [
+    "blind-hunter",
+    "edge-case-hunter",
+    "verification-gap"
+  ],
+  "initialFindingsIndividuallyTriaged": 13,
+  "followupHarnessFindingRepaired": true,
+  "edgeFollowup": "Original findings repaired, no unresolved defect found; source/evidence inspection only, no reviewer test rerun.",
+  "originalEvidenceFilesVerifiedUnchanged": 281,
+  "priorFailuresAndRefusalsPreserved": true,
+  "newDeploymentOrCredentialRetrievalPerformed": false,
+  "gitMutationPerformed": false,
+  "inputEvidence": "input-sources.json",
+  "reviewTriage": "../../../../parties/_bmad-output/implementation-artifacts/spec-ext-parties-1-custody-prerequisite-hardening.md",
+  "proposal": "PROPOSAL.md",
+  "commands": "COMMANDS.md",
+  "bindingLedger": "decision-and-binding-ledger.json"
+}

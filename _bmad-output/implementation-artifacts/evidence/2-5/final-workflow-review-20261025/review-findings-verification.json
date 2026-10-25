@@ -1,0 +1,90 @@
+{
+  "F1": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.UnverifiedLateObservationPreservesKnownLeftoversAsync"
+    ],
+    "result": "passed"
+  },
+  "F10": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.TimeoutCallbackFailureRetriesOriginalCauseWithoutRenewingStoppingAsync",
+      "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedStartupDoesNotRenewStoppingBudgetAsync"
+    ],
+    "result": "passed"
+  },
+  "F11": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.DirectoryClaimRemainsVisibleUntilVerifiedDeletionAsync"
+    ],
+    "result": "passed"
+  },
+  "F2": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.ResultReaderRejectsWriterlessFifoWithoutBlockingAsync",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync(ci: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunFollowupTests.CommandRecoversCommittedPassAfterOptionalRecordingFailureAsync(ci: True)"
+    ],
+    "result": "passed"
+  },
+  "F3": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.OversizedAcquisitionPreservesReadableReceipt(existing: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.OversizedAcquisitionPreservesReadableReceipt(existing: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.OversizedClaimPayloadDoesNotPublishReceipt"
+    ],
+    "result": "passed"
+  },
+  "F4": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"state-disposition\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"record-disposition\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"state-leftovers\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"state-unverified\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"record-leftovers\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.InvalidCleanupMetadataPreservesHealthyListingAsync(invalid: \\\"record-unverified\\\")"
+    ],
+    "result": "passed"
+  },
+  "F5": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.SupportedHostProcessObservationControlsCleanupVerificationAsync(verified: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.SupportedHostProcessObservationControlsCleanupVerificationAsync(verified: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.NativeEnvironmentTagMatchingPreservesOwnerBoundary(unicode: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.NativeEnvironmentTagMatchingPreservesOwnerBoundary(unicode: False)"
+    ],
+    "result": "passed",
+    "nativeRuntimeQualification": "unavailable on Linux; native SID/UID paths compiled and reviewed against primary API documentation"
+  },
+  "F6": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.LinkedResultOwnerCannotOverwriteOutsideSentinelAsync"
+    ],
+    "result": "passed"
+  },
+  "F7": {
+    "implemented": true,
+    "result": "expected host-gated skip",
+    "artifact": "final-native-host-tests.xml",
+    "nativeRuntimeQualification": false
+  },
+  "F8": {
+    "implemented": true,
+    "result": "stable peer-PID assertions compile; real-service case not run because installed Aspire differs from catalog",
+    "liveRuntimeQualification": false
+  },
+  "F9": {
+    "implemented": true,
+    "cases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.MissingNativeProcessCommitsPrerequisiteClassificationAsync"
+    ],
+    "result": "passed"
+  }
+}

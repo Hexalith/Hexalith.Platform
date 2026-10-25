@@ -1,0 +1,133 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Custody.Tests
+  Discovered:  Hexalith.Platform.Custody.Tests
+  Starting:    Hexalith.Platform.Custody.Tests
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(state: Expired, generation: 3) [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.AddGeneration(lifecycle.Unit, generation)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(395,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(IdentityHistoryLifecycleState state, Int64 generation)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(state: PendingDestruction, generation: 3) [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.AddGeneration(lifecycle.Unit, generation)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(395,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(IdentityHistoryLifecycleState state, Int64 generation)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(state: Destroyed, generation: 3) [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.AddGeneration(lifecycle.Unit, generation)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(395,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(IdentityHistoryLifecycleState state, Int64 generation)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(state: ReceiptFinal, generation: 3) [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.AddGeneration(lifecycle.Unit, generation)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(395,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(IdentityHistoryLifecycleState state, Int64 generation)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.AddGeneration_RejectsUnknownGenerationOutsideActive(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Active, to: Expired, epoch: 0, fence: 2, parameter: "epoch") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Active, to: PendingDestruction, epoch: 0, fence: 2, parameter: "epoch") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Expired, to: PendingDestruction, epoch: 0, fence: 2, parameter: "epoch") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: PendingDestruction, to: Destroyed, epoch: 0, fence: 2, parameter: "epoch") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Destroyed, to: ReceiptFinal, epoch: 0, fence: 2, parameter: "epoch") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Active, to: Expired, epoch: 1, fence: 0, parameter: "fence") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Active, to: PendingDestruction, epoch: 1, fence: 0, parameter: "fence") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Expired, to: PendingDestruction, epoch: 1, fence: 0, parameter: "fence") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: PendingDestruction, to: Destroyed, epoch: 1, fence: 0, parameter: "fence") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(from: Destroyed, to: ReceiptFinal, epoch: 1, fence: 0, parameter: "fence") [FAIL]
+      Shouldly.ShouldAssertException : `lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference)`
+          should throw
+      System.ArgumentException
+          but did not
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs(331,0): at Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(IdentityHistoryLifecycleState from, IdentityHistoryLifecycleState to, Int64 epoch, Int64 fence, String parameter)
+           at InvokeStub_IdentityHistoryCustodyPolicyTests.Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Platform.Custody.Tests (ID = 'f8a9a889e1a0cfc056f4a2f737565cf58d6ae3d6be4319a8144726ec13e3dc5c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Custody.Tests  Total: 18, Errors: 0, Failed: 14, Skipped: 0, Not Run: 0, Time: 0.171s

@@ -1,0 +1,32 @@
+{
+  "builds": {
+    "repository": "references/Hexalith.Builds",
+    "commit": "b215213da90f7a25f7a181f8d4b394226148ac59",
+    "message": "fix(runtime): complete local run retention and cleanup rules\n",
+    "commitlintVersion": "21.2.4",
+    "commitlintExitCode": 0,
+    "paths": [
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStateStore.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+      "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs",
+      "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs",
+      "test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs",
+      "test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs",
+      "test/Hexalith.Builds.Module.Tests/LocalRunReviewCorrectionTests.cs"
+    ],
+    "pushed": false
+  },
+  "platform": {
+    "preCommit": "0962af1b1ae12c0477aa0fd10334b4e8d0a1ce5c",
+    "message": "fix(platform): complete story 2.5 local run lifecycle\n",
+    "commitlintVersion": "21.2.1",
+    "commitlintExitCode": 0,
+    "completionRevision": "the commit containing this evidence; reported by git after creation"
+  },
+  "pushed": false
+}

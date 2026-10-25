@@ -50,19 +50,20 @@ internal sealed class StatementVerifier(ComponentProfile profile, TimeProvider c
             || facts.EffectiveDispatchReceiptId != e.Proof.DispatchReceiptId || !CustodyBindingContract.Digest(facts.ProtectionOriginalSha256))) return false;
         return true;
     }
-    internal bool Qualified(CurrentState state)
+    internal bool Qualified(CurrentState state) => CurrentQualification(state) is not null;
+    internal QualificationClaim? CurrentQualification(CurrentState state)
     {
-        if (!File.Exists(profile.QualificationStatementPath)) return false;
+        if (!File.Exists(profile.QualificationStatementPath)) return null;
         try
         {
             var signed = CustodyJson.Read<SignedStatement>(File.ReadAllBytes(profile.QualificationStatementPath));
-            if (!Verify(signed, "independent-observer", state, profile.ProfileDigest, TimeSpan.FromSeconds(30))) return false;
+            if (!Verify(signed, "independent-observer", state, profile.ProfileDigest, TimeSpan.FromSeconds(30))) return null;
             var q = CustodyJson.Read<QualificationClaim>(CustodyJson.Bytes(signed.Payload));
             return q.ProfileDigest == profile.ProfileDigest && q.ArtifactDigest == profile.Enrollment.ArtifactProfileDigest
                 && q.CompletionReserveBytes == profile.CompletionReserveBytes
                 && new[] { q.TransportProfileDigest, q.ClosureProfileDigest, q.CapacityMeasurementDigest,
-                    q.IndependentPlacementEvidenceDigest, q.NativeAuthorizationDigest }.All(CustodyBindingContract.Digest);
+                    q.IndependentPlacementEvidenceDigest, q.NativeAuthorizationDigest }.All(CustodyBindingContract.Digest) ? q : null;
         }
-        catch (Exception ex) when (ex is IOException or System.Text.Json.JsonException or CryptographicException) { return false; }
+        catch (Exception ex) when (ex is IOException or System.Text.Json.JsonException or CryptographicException) { return null; }
     }
 }

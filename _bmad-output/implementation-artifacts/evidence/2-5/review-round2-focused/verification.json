@@ -1,0 +1,48 @@
+{
+  "scope": "Focused tests only; full verification remains with parent.",
+  "results": {
+    "correction-tests": {
+      "total": "16",
+      "passed": "15",
+      "failed": "0",
+      "errors": "0",
+      "skipped": "1",
+      "not-run": "0",
+      "time": "3.415"
+    },
+    "affected-contract-tests": {
+      "total": "253",
+      "passed": "253",
+      "failed": "0",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "2.979"
+    },
+    "affected-lifecycle-tests": {
+      "total": "10",
+      "passed": "10",
+      "failed": "0",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "11.038"
+    },
+    "isolated-fifo-test": {
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "errors": "0",
+      "skipped": "0",
+      "not-run": "0",
+      "time": "0.246"
+    }
+  },
+  "distinctFocusedPassed": 278,
+  "expectedNativeHostSkips": 1,
+  "nativeGate": "CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync is gated to Windows/macOS; this Linux run grants no native execution qualification.",
+  "platformPeerAudit": "Stable AppHost/readiness-resource PID assertions added to the existing gated real-service test; not executed in this focused worker.",
+  "publicApiExpansion": false,
+  "batchReset": "Existing native = null reset before each entry remains in place.",
+  "concurrentRefusalCleanup": "Preserved committed behavior; corrected the archive-only comment without changing deletion behavior."
+}

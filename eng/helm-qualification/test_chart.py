@@ -119,6 +119,25 @@ def expected_environment(workload, values):
 
 
 class ChartTests(unittest.TestCase):
+    def test_finite_campaign_resources_replicas_and_sidecars_are_explicit(self):
+        import campaign_capacity
+        values = campaign_capacity.configure_application(fixture_values(), graph())
+        _, docs = self.good(values)
+        deployments = [d for d in docs if d['kind'] == 'Deployment']
+        self.assertEqual(9, sum(d['spec']['replicas'] for d in deployments))
+        for d in deployments:
+            pod = d['spec']['template']
+            app = pod['spec']['containers'][0]
+            self.assertEqual({'cpu': '400m', 'memory': '640Mi', 'ephemeral-storage': '384Mi'}, app['resources']['limits'])
+            self.assertEqual('100m', pod['metadata']['annotations']['dapr.io/sidecar-cpu-limit'])
+            self.assertEqual('128Mi', pod['metadata']['annotations']['dapr.io/sidecar-memory-limit'])
+            self.assertEqual('128Mi', pod['spec']['volumes'][0]['emptyDir']['sizeLimit'])
+        values['bindings']['memories/server']['replicas'] = 1
+        self.bad(values, 'finite campaign replica allocation differs')
+        values = campaign_capacity.configure_application(fixture_values(), graph())
+        values['bindings']['memories/server']['resources']['limits']['cpu'] = '8'
+        self.bad(values, 'finite campaign resources differ')
+
     @classmethod
     def setUpClass(cls):
         if not HELM:

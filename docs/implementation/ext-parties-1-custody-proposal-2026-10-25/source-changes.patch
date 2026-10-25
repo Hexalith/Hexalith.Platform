@@ -1,0 +1,593 @@
+diff --git a/eng/verify-ext-parties-1.ps1 b/eng/verify-ext-parties-1.ps1
+index 91d86723..22fbfe36 100644
+--- a/eng/verify-ext-parties-1.ps1
++++ b/eng/verify-ext-parties-1.ps1
+@@ -17,14 +17,19 @@ $EvidenceDirectory = [System.IO.Path]::GetFullPath($EvidenceDirectory, $callerDi
+ $DependencyRegisterPath = [System.IO.Path]::GetFullPath($DependencyRegisterPath, $callerDirectory)
+ if (-not [string]::IsNullOrWhiteSpace($ArtifactsDirectory)) { $ArtifactsDirectory = [System.IO.Path]::GetFullPath($ArtifactsDirectory, $callerDirectory) }
+ if (-not [string]::IsNullOrWhiteSpace($MemoriesRoot)) { $MemoriesRoot = [System.IO.Path]::GetFullPath($MemoriesRoot, $callerDirectory) }
+-New-Item -ItemType Directory -Path $EvidenceDirectory -Force | Out-Null
+-
+ if ($Mode -eq 'LiveReadiness') {
+     & pwsh -NoProfile -File (Join-Path $PSScriptRoot 'verify-ext-parties-history-readiness.ps1') -EvidenceDirectory $EvidenceDirectory -DependencyRegisterPath $DependencyRegisterPath
+     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+     exit 0
+ }
+ 
++# An attempt owns a fresh directory and a permanent, atomically created marker.
++# Directory creation alone does not exclude a synchronized competing attempt.
++if (Test-Path -LiteralPath $EvidenceDirectory) { throw "Evidence directory already exists: $EvidenceDirectory" }
++New-Item -ItemType Directory -Path $EvidenceDirectory -ErrorAction Stop | Out-Null
++$attempt = [IO.File]::Open((Join-Path $EvidenceDirectory '.ext-parties-1-attempt'), [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
++$attempt.Dispose()
++
+ if ($Mode -eq 'Live') {
+     $required = @('EXT_PARTIES_GATEWAY_URL', 'EXT_PARTIES_TENANT_A', 'EXT_PARTIES_TENANT_B',
+         'EXT_PARTIES_PROVISIONER_CREDENTIAL', 'EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL', 'EXT_PARTIES_READER_CREDENTIAL',
+diff --git a/eng/verify-ext-parties-history-readiness.ps1 b/eng/verify-ext-parties-history-readiness.ps1
+index 0172e505..e094d8d1 100644
+--- a/eng/verify-ext-parties-history-readiness.ps1
++++ b/eng/verify-ext-parties-history-readiness.ps1
+@@ -6,6 +6,13 @@ param(
+ $ErrorActionPreference = 'Stop'
+ $callerDirectory = (Get-Location).ProviderPath
+ $EvidenceDirectory = [IO.Path]::GetFullPath($EvidenceDirectory, $callerDirectory)
++# An attempt owns a fresh directory and a permanent, atomically created marker.
++# Directory creation alone does not exclude a synchronized competing attempt.
++if (Test-Path -LiteralPath $EvidenceDirectory) { throw "Evidence directory already exists: $EvidenceDirectory" }
++New-Item -ItemType Directory -Path $EvidenceDirectory -ErrorAction Stop | Out-Null
++$attempt = [IO.File]::Open((Join-Path $EvidenceDirectory '.ext-parties-1-attempt'), [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
++$attempt.Dispose()
++
+ $DependencyRegisterPath = [IO.Path]::GetFullPath($DependencyRegisterPath, $callerDirectory)
+ $required = @('EXT_PARTIES_GATEWAY_URL', 'EXT_PARTIES_READER_HEADERS_JSON', 'EXT_PARTIES_TARGET_SHA', 'EXT_PARTIES_COMPATIBILITY_RECEIPT',
+     'EXT_PARTIES_TENANT_A', 'EXT_PARTIES_HISTORY_PARTY_ID', 'EXT_PARTIES_HISTORY_ACTOR_ID',
+@@ -312,6 +319,5 @@ $evidence = @{ qualification='ReadinessOnly'; requestedTargetSha=$env:EXT_PARTIE
+     checks=@('complete-original-position-source-partition', 'exact-action-time-actor-and-version', 'original-binding-source-position', 'current-identity-ineligible');
+     sourceHead=$history.sourcePosition; bindingSourcePosition=$history.bindingSourcePosition;
+     incomplete=@('P-01-P-10-installed-matrix', 'independent-erasure-certification', 'persisted-restart-restore', 'failure-injection', 'production-custody-destruction-and-copy-cleanup') }
+-New-Item -ItemType Directory -Path $EvidenceDirectory -Force | Out-Null
+ $evidence | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $EvidenceDirectory 'live-readiness.json')
+ Write-Host 'Authenticated retained-history readiness probes passed for the owner-provided fixture. Erasure certification and complete Live qualification remain unavailable.'
+
+diff --git a/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs b/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
+index b1eaf7b..0e2a726 100644
+--- a/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
++++ b/src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs
+@@ -117,15 +117,15 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+     /// <summary>Gets generations grown on this unit.</summary>
+     public IReadOnlyList<long> Generations { get; }
+ 
+-    /// <summary>Moves one legal step forward at a higher lifecycle revision.</summary>
++    /// <summary>Moves one legal step forward at a higher lifecycle revision without regressing authority.</summary>
+     /// <param name="state">Next lifecycle state.</param>
+     /// <param name="lifecycleRevision">Higher current lifecycle revision.</param>
+-    /// <param name="epoch">Authority epoch for the next snapshot.</param>
+-    /// <param name="fence">Authority fence for the next snapshot.</param>
++    /// <param name="epoch">Authority epoch for the next snapshot; it cannot be lower than the current epoch.</param>
++    /// <param name="fence">Nonnegative authority fence; it cannot decrease within the same epoch, but may restart in a higher epoch.</param>
+     /// <param name="operationId">Original destruction operation identifier when destruction has started.</param>
+     /// <param name="receiptReference">Original receipt reference when the state is receipt final.</param>
+     /// <returns>The next snapshot of the same unit and deadline.</returns>
+-    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, or not a higher revision.</exception>
++    /// <exception cref="ArgumentException">Thrown when the move is reverse, skipped, not a higher revision, or regresses the epoch or same-epoch fence.</exception>
+     public IdentityHistoryLifecycleRecord Move(
+         IdentityHistoryLifecycleState state,
+         long lifecycleRevision,
+@@ -139,6 +139,16 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             throw new ArgumentException("A forward lifecycle move requires a higher revision.", nameof(lifecycleRevision));
+         }
+ 
++        if (epoch < Epoch)
++        {
++            throw new ArgumentException("Authority epoch cannot regress.", nameof(epoch));
++        }
++
++        if (epoch == Epoch && fence < Fence)
++        {
++            throw new ArgumentException("Authority fence cannot regress within the same epoch.", nameof(fence));
++        }
++
+         if (!CanMove(State, state))
+         {
+             throw new ArgumentException("Actor-history lifecycle cannot make that transition.", nameof(state));
+@@ -160,12 +170,12 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             Generations);
+     }
+ 
+-    /// <summary>Grows one generation on the same unit and deadline. A repeated generation does not mint a new revision.</summary>
++    /// <summary>Grows one generation only while Active on the same unit and deadline. A known generation returns the same snapshot in every state.</summary>
+     /// <param name="unit">Unit that must be the original unit.</param>
+     /// <param name="generation">Generation number to append.</param>
+     /// <returns>The same snapshot when the generation is already present; otherwise the grown snapshot.</returns>
+     /// <exception cref="ArgumentNullException">Thrown when <paramref name="unit"/> is null.</exception>
+-    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit or does not grow.</exception>
++    /// <exception cref="ArgumentException">Thrown when the generation is on a different unit, does not grow, or is new while the lifecycle is not Active.</exception>
+     public IdentityHistoryLifecycleRecord AddGeneration(IdentityHistoryCustodyUnit unit, long generation)
+     {
+         ArgumentNullException.ThrowIfNull(unit);
+@@ -184,6 +194,11 @@ public sealed class IdentityHistoryLifecycleRecord : IEquatable<IdentityHistoryL
+             return this;
+         }
+ 
++        if (State != IdentityHistoryLifecycleState.Active)
++        {
++            throw new ArgumentException("New generations require an active lifecycle.", nameof(generation));
++        }
++
+         if (Generations.Count > 0 && generation <= Generations[^1])
+         {
+             throw new ArgumentException("Generations grow only on the same unit and deadline.", nameof(generation));
+diff --git a/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs b/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
+index c2319cc..caf7f22 100644
+--- a/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
++++ b/tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs
+@@ -304,23 +304,155 @@ public sealed class IdentityHistoryCustodyPolicyTests
+         direct.OperationId.ShouldBe("operation-1");
+     }
+ 
++    /// <summary>A legal higher-revision move cannot lower the epoch or an epoch-local fence.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.Expired, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.PendingDestruction, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Expired, IdentityHistoryLifecycleState.PendingDestruction, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, IdentityHistoryLifecycleState.Destroyed, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, IdentityHistoryLifecycleState.ReceiptFinal, 0L, 2L, "epoch")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.Expired, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Active, IdentityHistoryLifecycleState.PendingDestruction, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Expired, IdentityHistoryLifecycleState.PendingDestruction, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, IdentityHistoryLifecycleState.Destroyed, 1L, 0L, "fence")]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, IdentityHistoryLifecycleState.ReceiptFinal, 1L, 0L, "fence")]
++    public void Move_RejectsRegressingAuthorityWithoutChangingOriginalFacts(
++        IdentityHistoryLifecycleState from,
++        IdentityHistoryLifecycleState to,
++        long epoch,
++        long fence,
++        string parameter)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(from, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++        string? operationId = to == IdentityHistoryLifecycleState.Expired ? null : "operation-1";
++        string? receiptReference = to == IdentityHistoryLifecycleState.ReceiptFinal ? "receipt-1" : null;
++
++        Should.Throw<ArgumentException>(() => lifecycle.Move(to, 6, epoch, fence, operationId, receiptReference))
++            .ParamName.ShouldBe(parameter);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Authority coordinates remain separate: the fence may restart when the epoch advances.</summary>
++    [Theory]
++    [InlineData(1L, 1L)]
++    [InlineData(1L, 2L)]
++    [InlineData(2L, 0L)]
++    public void Move_PreservesEpochLocalAuthorityCoordinates(long epoch, long fence)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(IdentityHistoryLifecycleState.Active, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        IdentityHistoryLifecycleRecord moved = lifecycle.Move(IdentityHistoryLifecycleState.Expired, 6, epoch, fence, null, null);
++
++        moved.State.ShouldBe(IdentityHistoryLifecycleState.Expired);
++        moved.LifecycleRevision.ShouldBe(6);
++        moved.Epoch.ShouldBe(epoch);
++        moved.Fence.ShouldBe(fence);
++        moved.Unit.ShouldBeSameAs(lifecycle.Unit);
++        moved.Unit.BindingEffectiveAt.ShouldBe(EffectiveAt);
++        moved.Unit.ExpiresAt.ShouldBe(EffectiveAt.AddSeconds(31_536_000));
++        moved.Generations.ShouldBe([0L, 2L]);
++        lifecycle.ShouldBe(original);
++    }
++
+     /// <summary>A generation grows only on the same unit, and a repeat does not mint a revision or deadline.</summary>
+     [Fact]
+     public void AddGeneration_RequiresTheSameUnitAndDeadline()
+     {
+         IdentityHistoryCustodyUnit unit = Admit();
+         IdentityHistoryLifecycleRecord lifecycle = ActiveLifecycle(unit);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
+         IdentityHistoryLifecycleRecord grown = lifecycle.AddGeneration(unit, 0).AddGeneration(unit, 2);
+         IdentityHistoryLifecycleRecord retry = grown.AddGeneration(unit, 0);
+ 
+         grown.Generations.ShouldBe([0L, 2L]);
+-        grown.Unit.ExpiresAt.ShouldBe(unit.ExpiresAt);
++        grown.Unit.ShouldBeSameAs(unit);
++        grown.Unit.BindingEffectiveAt.ShouldBe(EffectiveAt);
++        grown.Unit.ExpiresAt.ShouldBe(EffectiveAt.AddSeconds(31_536_000));
++        grown.State.ShouldBe(IdentityHistoryLifecycleState.Active);
++        grown.Epoch.ShouldBe(lifecycle.Epoch);
++        grown.Fence.ShouldBe(lifecycle.Fence);
+         grown.LifecycleRevision.ShouldBe(lifecycle.LifecycleRevision);
+         retry.ShouldBeSameAs(grown);
+         Should.Throw<ArgumentException>(() => grown.AddGeneration(Admit(evidenceId: "evidence-8"), 3))
+             .ShouldBeOfType<ArgumentException>();
+         grown.Unit.ExpiresAt.ShouldBe(unit.ExpiresAt);
+         grown.Generations.Count.ShouldBe(2);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>No unknown generation may grow after the unit leaves Active, including gaps below its latest generation.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Expired, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.Expired, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed, 3L)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal, 1L)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal, 3L)]
++    public void AddGeneration_RejectsUnknownGenerationOutsideActive(
++        IdentityHistoryLifecycleState state,
++        long generation)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(lifecycle.Unit, generation))
++            .ParamName.ShouldBe("generation");
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Known generation retries return the exact original record in every lifecycle state.</summary>
++    [Theory]
++    [InlineData(IdentityHistoryLifecycleState.Active)]
++    [InlineData(IdentityHistoryLifecycleState.Expired)]
++    [InlineData(IdentityHistoryLifecycleState.PendingDestruction)]
++    [InlineData(IdentityHistoryLifecycleState.Destroyed)]
++    [InlineData(IdentityHistoryLifecycleState.ReceiptFinal)]
++    public void AddGeneration_KnownRetryPreservesEveryLifecycleState(IdentityHistoryLifecycleState state)
++    {
++        IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++        IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++        lifecycle.AddGeneration(lifecycle.Unit, 0).ShouldBeSameAs(lifecycle);
++        lifecycle.AddGeneration(lifecycle.Unit, 2).ShouldBeSameAs(lifecycle);
++        lifecycle.ShouldBe(original);
++    }
++
++    /// <summary>Neither known retries nor new generations may cross tenant, Party, or immutable unit facts.</summary>
++    [Theory]
++    [InlineData("tenant")]
++    [InlineData("aggregate")]
++    [InlineData("environment")]
++    [InlineData("instance")]
++    [InlineData("evidence")]
++    [InlineData("instant")]
++    [InlineData("admission-revision")]
++    public void AddGeneration_RejectsForeignUnitsInEveryLifecycleState(string field)
++    {
++        IdentityHistoryCustodyUnit foreign = field switch
++        {
++            "tenant" => Admit(identity: new AggregateIdentity("tenant-b", "party", "party-1")),
++            "aggregate" => Admit(identity: new AggregateIdentity("tenant-a", "party", "party-2")),
++            "environment" => Admit(environment: "env-b"),
++            "instance" => Admit(instance: "instance-b"),
++            "evidence" => Admit(evidenceId: "evidence-8"),
++            "instant" => Admit(effectiveAt: EffectiveAt.AddTicks(1)),
++            "admission-revision" => Admit(admissionRevision: 5),
++            _ => throw new ArgumentOutOfRangeException(nameof(field)),
++        };
++
++        foreach (IdentityHistoryLifecycleState state in Enum.GetValues<IdentityHistoryLifecycleState>())
++        {
++            IdentityHistoryLifecycleRecord lifecycle = Lifecycle(state, [0L, 2L]);
++            IdentityHistoryLifecycleRecord original = RoundTrip(lifecycle);
++
++            Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(foreign, 0)).ParamName.ShouldBe("unit");
++            Should.Throw<ArgumentException>(() => lifecycle.AddGeneration(foreign, 3)).ParamName.ShouldBe("unit");
++            lifecycle.ShouldBe(original);
++        }
+     }
+ 
+     /// <summary>A copy deadline after or before the unit deadline is rejected.</summary>
+@@ -506,16 +638,16 @@ public sealed class IdentityHistoryCustodyPolicyTests
+     private static IdentityHistoryLifecycleRecord ActiveLifecycle(IdentityHistoryCustodyUnit unit)
+         => new(unit, IdentityHistoryLifecycleState.Active, 5, 1, 1, null, null, []);
+ 
+-    private static IdentityHistoryLifecycleRecord Lifecycle(IdentityHistoryLifecycleState state)
++    private static IdentityHistoryLifecycleRecord Lifecycle(IdentityHistoryLifecycleState state, IReadOnlyList<long>? generations = null)
+     {
+         IdentityHistoryCustodyUnit unit = Admit();
+         return state switch
+         {
+-            IdentityHistoryLifecycleState.Active => ActiveLifecycle(unit),
+-            IdentityHistoryLifecycleState.Expired => new(unit, state, 5, 1, 1, null, null, []),
+-            IdentityHistoryLifecycleState.PendingDestruction => new(unit, state, 5, 1, 1, "operation-1", null, []),
+-            IdentityHistoryLifecycleState.Destroyed => new(unit, state, 5, 1, 1, "operation-1", null, []),
+-            IdentityHistoryLifecycleState.ReceiptFinal => new(unit, state, 5, 1, 1, "operation-1", "receipt-1", []),
++            IdentityHistoryLifecycleState.Active => new(unit, state, 5, 1, 1, null, null, generations ?? []),
++            IdentityHistoryLifecycleState.Expired => new(unit, state, 5, 1, 1, null, null, generations ?? []),
++            IdentityHistoryLifecycleState.PendingDestruction => new(unit, state, 5, 1, 1, "operation-1", null, generations ?? []),
++            IdentityHistoryLifecycleState.Destroyed => new(unit, state, 5, 1, 1, "operation-1", null, generations ?? []),
++            IdentityHistoryLifecycleState.ReceiptFinal => new(unit, state, 5, 1, 1, "operation-1", "receipt-1", generations ?? []),
+             _ => throw new ArgumentOutOfRangeException(nameof(state)),
+         };
+     }
+
+diff --git a/home/administrator/projects/hexalith/parties/tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs b/home/administrator/projects/hexalith/parties/tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs
+new file mode 100644
+index 00000000..381f8d93
+--- /dev/null
++++ b/home/administrator/projects/hexalith/parties/tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs
+@@ -0,0 +1,282 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++
++namespace Hexalith.Parties.Ci.Tests;
++
++/// <summary>Exercises exclusive evidence ownership through isolated verifier child processes.</summary>
++/// <param name="output">Reports the fresh fixture paths retained after every test.</param>
++public sealed class ExtPartiesVerifierEvidenceTests(ITestOutputHelper output)
++{
++    private const string AttemptMarker = ".ext-parties-1-attempt";
++    private const string Harness = """
++        param([string]$Script, [string]$Mode, [string]$EvidenceDirectory,
++            [string]$DependencyRegisterPath, [string]$Fixture, [string]$Participant,
++            [switch]$Synchronize)
++        $ErrorActionPreference = 'Stop'
++        $lookupLog = Join-Path $Fixture ($Participant + '.lookups')
++        $writeLog = Join-Path $Fixture ($Participant + '.writes')
++        function dotnet {
++            [IO.File]::AppendAllText($lookupLog, "dotnet`n")
++            throw 'Unexpected Local dependency lookup.'
++        }
++        function Test-Path {
++            [CmdletBinding()]
++            param([string]$LiteralPath, [string]$Path, [string]$PathType)
++            if ($LiteralPath -eq $DependencyRegisterPath -or $Path -eq $DependencyRegisterPath) {
++                [IO.File]::AppendAllText($lookupLog, "register`n")
++                throw 'Unexpected readiness dependency lookup.'
++            }
++            Microsoft.PowerShell.Management\Test-Path @PSBoundParameters
++        }
++        function Set-Content {
++            [CmdletBinding()]
++            param([string]$Path, [string]$LiteralPath, [object]$Value)
++            [IO.File]::AppendAllText($writeLog, "evidence-write`n")
++            Microsoft.PowerShell.Management\Set-Content @PSBoundParameters
++        }
++        if ($Synchronize) {
++            function New-Item {
++                [CmdletBinding()]
++                param([string]$ItemType, [string]$Path)
++                if ($ItemType -ne 'Directory' -or $Path -ne $EvidenceDirectory) {
++                    throw 'Unexpected fixture directory creation.'
++                }
++                # Both real scripts have passed their existing-path check before
++                # either directory creation returns. Model the nonexclusive API
++                # returning success to both contenders, independent of scheduling.
++                [IO.File]::WriteAllText((Join-Path $Fixture ($Participant + '.ready')), 'ready')
++                $deadline = [DateTime]::UtcNow.AddSeconds(15)
++                while (-not [IO.File]::Exists((Join-Path $Fixture 'release'))) {
++                    if ([DateTime]::UtcNow -ge $deadline) { throw 'Reservation barrier timed out.' }
++                    [Threading.Thread]::Sleep(10)
++                }
++                [IO.Directory]::CreateDirectory($Path)
++            }
++        }
++        try {
++            if ($Mode -eq 'DirectReadiness') {
++                & $Script -EvidenceDirectory $EvidenceDirectory -DependencyRegisterPath $DependencyRegisterPath
++            }
++            else {
++                & $Script -Mode $Mode -EvidenceDirectory $EvidenceDirectory -DependencyRegisterPath $DependencyRegisterPath
++            }
++            if ($null -ne $LASTEXITCODE) { exit $LASTEXITCODE }
++        }
++        catch {
++            [Console]::Error.WriteLine($_.Exception.Message)
++            exit 1
++        }
++        """;
++
++    /// <summary>A refused Live attempt cannot be rewritten by a changed-input retry through any mode.</summary>
++    /// <param name="mode">The retry entry point.</param>
++    [Theory]
++    [InlineData("Live")]
++    [InlineData("Local")]
++    [InlineData("LiveReadiness")]
++    public async Task RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(string mode)
++    {
++        string fixture = CreateFixture();
++        string evidence = Path.Combine(fixture, "evidence");
++        using Process original = Start(fixture, evidence, "original", "Live");
++        (int originalExit, string originalError) = await CompleteAsync(original, fixture, "original").ConfigureAwait(true);
++        originalExit.ShouldNotBe(0);
++        originalError.ShouldContain("Missing live inputs:");
++        File.Exists(Path.Combine(evidence, AttemptMarker)).ShouldBeTrue();
++        File.ReadAllText(Path.Combine(evidence, "live-gate.txt")).ShouldContain("Missing live inputs:");
++        Dictionary<string, string> before = Snapshot(evidence);
++
++        using Process retry = Start(fixture, evidence, "retry", mode, completeInputs: true);
++        (int retryExit, string retryError) = await CompleteAsync(retry, fixture, "retry").ConfigureAwait(true);
++
++        retryExit.ShouldNotBe(0);
++        retryError.ShouldContain("Evidence directory already exists:");
++        Snapshot(evidence).ShouldBe(before);
++        File.Exists(Path.Combine(fixture, "retry.lookups")).ShouldBeFalse();
++        File.Exists(Path.Combine(fixture, "retry.writes")).ShouldBeFalse();
++    }
++
++    /// <summary>Direct readiness rejects retained evidence before input validation or register lookup.</summary>
++    /// <param name="completeInputs">Whether changed synthetic readiness inputs are supplied.</param>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task DirectReadiness_RejectsExistingDirectoryBeforeInputsOrLookups(bool completeInputs)
++    {
++        string fixture = CreateFixture();
++        string evidence = Path.Combine(fixture, "evidence");
++        Directory.CreateDirectory(evidence);
++        File.WriteAllText(Path.Combine(evidence, "live-readiness.json"), "historical-readiness-evidence");
++        Dictionary<string, string> before = Snapshot(evidence);
++        using Process attempt = Start(fixture, evidence, "direct", "DirectReadiness", completeInputs);
++
++        (int exitCode, string error) = await CompleteAsync(attempt, fixture, "direct").ConfigureAwait(true);
++
++        exitCode.ShouldNotBe(0);
++        error.ShouldContain("Evidence directory already exists:");
++        Snapshot(evidence).ShouldBe(before);
++        File.Exists(Path.Combine(fixture, "direct.lookups")).ShouldBeFalse();
++        File.Exists(Path.Combine(fixture, "direct.writes")).ShouldBeFalse();
++    }
++
++    /// <summary>Fresh direct and delegated readiness attempts reserve exactly once before missing-input refusal.</summary>
++    /// <param name="mode">The direct helper or parent readiness route.</param>
++    [Theory]
++    [InlineData("DirectReadiness")]
++    [InlineData("LiveReadiness")]
++    public async Task FreshReadiness_ReservesOnceBeforeInputRefusal(string mode)
++    {
++        string fixture = CreateFixture();
++        string evidence = Path.Combine(fixture, "evidence");
++        using Process attempt = Start(fixture, evidence, "fresh", mode);
++
++        (int exitCode, string error) = await CompleteAsync(attempt, fixture, "fresh").ConfigureAwait(true);
++
++        exitCode.ShouldNotBe(0);
++        error.ShouldContain("Missing read-only");
++        error.ShouldNotContain("Evidence directory already exists:");
++        Directory.GetFiles(evidence).Select(Path.GetFileName).ShouldBe([AttemptMarker]);
++        File.Exists(Path.Combine(fixture, "fresh.lookups")).ShouldBeFalse();
++    }
++
++    /// <summary>Even when directory creation succeeds for both synchronized children, only one owns the attempt.</summary>
++    /// <param name="mode">The parent Live gate or direct readiness helper.</param>
++    [Theory]
++    [InlineData("Live")]
++    [InlineData("DirectReadiness")]
++    public async Task SynchronizedReservations_AdmitExactlyOneWriter(string mode)
++    {
++        string fixture = CreateFixture();
++        string evidence = Path.Combine(fixture, "evidence");
++        using Process first = Start(fixture, evidence, "first", mode, synchronize: true);
++        using Process second = Start(fixture, evidence, "second", mode, synchronize: true);
++        Task<(int ExitCode, string Error)> firstResult = CompleteAsync(first, fixture, "first");
++        Task<(int ExitCode, string Error)> secondResult = CompleteAsync(second, fixture, "second");
++        try
++        {
++            using var barrier = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++            barrier.CancelAfter(TimeSpan.FromSeconds(10));
++            while (!File.Exists(Path.Combine(fixture, "first.ready")) || !File.Exists(Path.Combine(fixture, "second.ready")))
++            {
++                await Task.Delay(10, barrier.Token).ConfigureAwait(true);
++            }
++
++            Directory.Exists(evidence).ShouldBeFalse("Both children must pass the existing-directory check before either creates it.");
++            File.WriteAllText(Path.Combine(fixture, "release"), "release");
++            (int ExitCode, string Error)[] results = await Task.WhenAll(firstResult, secondResult).ConfigureAwait(true);
++            results.ShouldAllBe(result => result.ExitCode != 0);
++            string refusal = mode == "Live" ? "Missing live inputs:" : "Missing read-only";
++            results.Count(result => result.Error.Contains(refusal, StringComparison.Ordinal)).ShouldBe(1);
++            results.Count(result => result.Error.Contains(AttemptMarker, StringComparison.Ordinal)).ShouldBe(1);
++            File.Exists(Path.Combine(evidence, AttemptMarker)).ShouldBeTrue();
++            string[] writes = Directory.GetFiles(fixture, "*.writes");
++            writes.Length.ShouldBe(mode == "Live" ? 1 : 0);
++            if (mode == "Live")
++            {
++                File.ReadAllLines(writes.Single()).ShouldBe(["evidence-write"]);
++                File.ReadAllText(Path.Combine(evidence, "live-gate.txt")).ShouldContain(refusal);
++            }
++            Directory.GetFiles(evidence).Length.ShouldBe(mode == "Live" ? 2 : 1);
++        }
++        finally
++        {
++            Stop(first);
++            Stop(second);
++        }
++    }
++
++    private string CreateFixture()
++    {
++        string root = Path.Combine(Path.GetTempPath(), $"ext-parties-verifier-evidence-{Guid.NewGuid():N}");
++        Directory.CreateDirectory(root);
++        File.WriteAllText(Path.Combine(root, "harness.ps1"), Harness);
++        output.WriteLine($"Preserved verifier fixture: {root}");
++        return root;
++    }
++
++    private static Process Start(string fixture, string evidence, string participant, string mode,
++        bool completeInputs = false, bool synchronize = false)
++    {
++        string? configuredRoot = Environment.GetEnvironmentVariable("HEXALITH_PARTIES_SOURCE_ROOT");
++        string repository = string.IsNullOrWhiteSpace(configuredRoot) ? CiTestPaths.RepositoryRoot : configuredRoot;
++        string script = Path.Combine(repository, "eng", mode == "DirectReadiness"
++            ? "verify-ext-parties-history-readiness.ps1" : "verify-ext-parties-1.ps1");
++        var start = new ProcessStartInfo("pwsh")
++        {
++            WorkingDirectory = fixture,
++            RedirectStandardOutput = true,
++            RedirectStandardError = true,
++            UseShellExecute = false,
++        };
++        // Copy runtime discovery paths only; owner inputs and credentials never reach a child.
++        start.Environment.Clear();
++        foreach (string name in new[] { "PATH", "DOTNET_ROOT", "SystemRoot", "WINDIR" })
++        {
++            string? value = Environment.GetEnvironmentVariable(name);
++            if (value is not null) { start.Environment[name] = value; }
++        }
++        start.Environment["POWERSHELL_TELEMETRY_OPTOUT"] = "1";
++        start.Environment["PSModuleAnalysisCachePath"] = Path.Combine(fixture, participant + ".module-cache");
++        if (completeInputs)
++        {
++            foreach (string name in new[] { "GATEWAY_URL", "TENANT_A", "TENANT_B", "PROVISIONER_CREDENTIAL",
++                "IDENTITY_WRITER_CREDENTIAL", "READER_CREDENTIAL", "POLICY_ID", "RETENTION", "EXPIRY_TRIGGER",
++                "CUSTODY_TARGET", "RESTORE_TARGET", "FAILURE_INJECTION_TARGET", "READER_HEADERS_JSON", "TARGET_SHA",
++                "COMPATIBILITY_RECEIPT", "HISTORY_PARTY_ID", "HISTORY_ACTOR_ID", "HISTORY_ACTION_AT", "HISTORY_BINDING_VERSION" })
++            {
++                start.Environment["EXT_PARTIES_" + name] = "synthetic-changed-input";
++            }
++            start.Environment["EXT_PARTIES_GATEWAY_URL"] = "http://127.0.0.1:1";
++            start.Environment["EXT_PARTIES_TARGET_SHA"] = new string('a', 40);
++            start.Environment["EXT_PARTIES_COMPATIBILITY_RECEIPT"] = Path.Combine(fixture, "absent-synthetic-receipt.json");
++            start.Environment["EXT_PARTIES_READER_HEADERS_JSON"] = "{\"Authorization\":\"Bearer synthetic-test-only\"}";
++        }
++        foreach (string argument in new[] { "-NoLogo", "-NoProfile", "-NonInteractive", "-File", Path.Combine(fixture, "harness.ps1"),
++            "-Script", script, "-Mode", mode, "-EvidenceDirectory", evidence, "-DependencyRegisterPath",
++            Path.Combine(fixture, "absent-synthetic-register.md"), "-Fixture", fixture, "-Participant", participant })
++        {
++            start.ArgumentList.Add(argument);
++        }
++        if (synchronize) { start.ArgumentList.Add("-Synchronize"); }
++        File.WriteAllText(Path.Combine(fixture, participant + ".command.json"), JsonSerializer.Serialize(new
++        {
++            executable = start.FileName, arguments = start.ArgumentList.ToArray(), environment = start.Environment,
++        }));
++        return Process.Start(start) ?? throw new InvalidOperationException("Verifier fixture could not start.");
++    }
++
++    private static async Task<(int ExitCode, string Error)> CompleteAsync(Process process, string fixture, string participant)
++    {
++        Task<string> stdout = process.StandardOutput.ReadToEndAsync();
++        Task<string> stderr = process.StandardError.ReadToEndAsync();
++        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        deadline.CancelAfter(TimeSpan.FromSeconds(20));
++        try
++        {
++            await process.WaitForExitAsync(deadline.Token).ConfigureAwait(false);
++        }
++        finally
++        {
++            Stop(process);
++            File.WriteAllText(Path.Combine(fixture, participant + ".stdout.log"), await stdout.WaitAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false));
++            File.WriteAllText(Path.Combine(fixture, participant + ".stderr.log"), await stderr.WaitAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false));
++        }
++        File.WriteAllText(Path.Combine(fixture, participant + ".exit-code"), process.ExitCode.ToString(System.Globalization.CultureInfo.InvariantCulture));
++        return (process.ExitCode, await stderr.ConfigureAwait(false));
++    }
++
++    private static void Stop(Process process)
++    {
++        if (!process.HasExited)
++        {
++            process.Kill(entireProcessTree: true);
++            process.WaitForExit(5_000).ShouldBeTrue("A timed-out verifier child must terminate.");
++        }
++    }
++
++    private static Dictionary<string, string> Snapshot(string directory)
++        => Directory.EnumerateFileSystemEntries(directory, "*", SearchOption.AllDirectories)
++            .ToDictionary(path => Path.GetRelativePath(directory, path), path => Directory.Exists(path)
++                ? "directory" : Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))));
++}

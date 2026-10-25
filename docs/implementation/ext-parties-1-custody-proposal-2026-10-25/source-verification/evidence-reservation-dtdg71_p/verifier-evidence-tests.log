@@ -1,0 +1,133 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Parties.Ci.Tests
+  Discovered:  Hexalith.Parties.Ci.Tests
+  Starting:    Hexalith.Parties.Ci.Tests
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: "DirectReadiness") [FAIL]
+      Shouldly.ShouldAssertException : error
+          should contain (case insensitive comparison)
+      "Missing read-only live readiness inputs:"
+          but was actually
+      "Exception: /home/administrator/projects/hexalith/parties/eng/verify-ext-parties-history-r..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(130,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-aeb3e5382b0b4edc89c156a835a63e82
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(mode: "LiveReadiness") [FAIL]
+      Shouldly.ShouldAssertException : exitCode
+          should not be
+      0
+          but was
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(129,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.FreshReadiness_ReservesOnceBeforeInputRefusal(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-8b56556da134407e903724bf8a553360
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: "Live") [FAIL]
+      Shouldly.ShouldAssertException : originalExit
+          should not be
+      0
+          but was
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(77,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-c75dbc627ce84256bde3a6cd85a7647b
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: "Local") [FAIL]
+      Shouldly.ShouldAssertException : originalExit
+          should not be
+      0
+          but was
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(77,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-4b04b46e2f87426ca7b59d73ec597ec5
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(mode: "LiveReadiness") [FAIL]
+      Shouldly.ShouldAssertException : originalExit
+          should not be
+      0
+          but was
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(77,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.RefusedLiveAttempt_PreservesEvidenceAcrossChangedInputRetries(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-fabee81875fa45cfb3eaf911188a7f31
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: "Live") [FAIL]
+      Shouldly.ShouldAssertException : results
+          should satisfy the condition
+      (result.Item1 != 0)
+          but
+      [(0, Write-Error: /tmp/ext-parties-verifier-evidence-071ed3fb6aac47d3a6cc996127f2b941/harness.ps1:49
+      Line |
+        49 |      & $Script -Mode $Mode -EvidenceDirectory $EvidenceDirectory -Depe …
+           |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           | Missing live inputs: EXT_PARTIES_GATEWAY_URL, EXT_PARTIES_TENANT_A,
+           | EXT_PARTIES_TENANT_B, EXT_PARTIES_PROVISIONER_CREDENTIAL,
+           | EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL, EXT_PARTIES_READER_CREDENTIAL,
+           | EXT_PARTIES_POLICY_ID, EXT_PARTIES_RETENTION,
+           | EXT_PARTIES_EXPIRY_TRIGGER, EXT_PARTIES_CUSTODY_TARGET,
+           | EXT_PARTIES_RESTORE_TARGET, EXT_PARTIES_FAILURE_INJECTION_TARGET
+      )]
+          do not
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(161,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-071ed3fb6aac47d3a6cc996127f2b941
+    Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: "DirectReadiness") [FAIL]
+      Shouldly.ShouldAssertException : results.Count(result => result.Error.Contains(refusal, StringComparison.Ordinal))
+          should be
+      1
+          but was
+      0
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs(163,0): at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+      Output:
+        Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-19de7b08562a41f4b081b87f58b7b6d9
+  Finished:    Hexalith.Parties.Ci.Tests (ID = '97e721bc80e7a26ce5a97fb84ac7c2453ca9f2e4f0d82c35414b0b4570dbb63f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Ci.Tests  Total: 9, Errors: 0, Failed: 7, Skipped: 0, Not Run: 0, Time: 31.522s

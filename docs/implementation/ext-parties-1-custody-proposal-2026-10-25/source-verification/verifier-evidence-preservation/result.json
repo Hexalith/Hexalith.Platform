@@ -1,0 +1,92 @@
+{
+  "scope": "Offline verifier refusal and evidence-preservation regression only; no custody or installed qualification",
+  "checks": [
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "Live",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/fresh"
+      ],
+      "exitCode": 1,
+      "log": "01-Live.log"
+    },
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "Live",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/fresh"
+      ],
+      "exitCode": 1,
+      "log": "02-Live.log"
+    },
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "LiveReadiness",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/fresh"
+      ],
+      "exitCode": 1,
+      "log": "03-LiveReadiness.log"
+    },
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "Local",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/fresh"
+      ],
+      "exitCode": 1,
+      "log": "04-Local.log"
+    },
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "Live",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/previous"
+      ],
+      "exitCode": 1,
+      "log": "05-Live.log"
+    },
+    {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "/home/administrator/projects/hexalith/parties/eng/verify-ext-parties-1.ps1",
+        "-Mode",
+        "Live",
+        "-EvidenceDirectory",
+        "/tmp/ext-parties-custody-verifier-970gx9ol/all-inputs-offline"
+      ],
+      "exitCode": 1,
+      "log": "06-Live.log"
+    }
+  ],
+  "passed": true,
+  "sha256": "4e0d18c6deefaa1a4d92d7a92bcf787b48c9ece1f2934462acaf4a577f85c2d2",
+  "completedAtUtc": "2026-10-25T11:46:47.525244+00:00"
+}
