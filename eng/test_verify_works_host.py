@@ -367,6 +367,13 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     outcomes.assert_not_called()
         return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
 
+    def test_release_dependency_record_names_every_accepted_test_only_source_exception(self):
+        ledger, _, _ = self.run_until_live_lanes(b'qualified runtime')
+        self.assertEqual(ledger['dependencyModes']['Release'],
+                         'public NuGet ' + VERSION + ' consumer graph plus explicitly named test-only '
+                         'Platform.Identity, Platform.Composition, conditional Platform.Works.Runtime '
+                         'and linked Parties authority/query source')
+
     def test_complete_pipeline_checks_final_inputs_before_accepting_persisted_evidence(self):
         ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', finish=True)
         self.assertEqual(ledger['status'], 'passed-disposable-synthetic-parity-and-rollback')
