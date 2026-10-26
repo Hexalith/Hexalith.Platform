@@ -130,7 +130,8 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)
     {
         var read=await Read(binding.Identity.Owner,new(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId),token).ConfigureAwait(false);
-        return read?.Record.Binding==binding?read.Value.Record.Erasure:null;
+        return read?.Record.Binding==binding?read.Value.Record.Erasure:!enrolledResources.ContainsKey(ResourceId(binding.Identity.Owner,new(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId)))
+            && dynamicEnrollment is not null?await dynamicEnrollment.ReadErasureAsync(binding,token).ConfigureAwait(false):null;
     }
     private static string Hash<T>(T value)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
 }

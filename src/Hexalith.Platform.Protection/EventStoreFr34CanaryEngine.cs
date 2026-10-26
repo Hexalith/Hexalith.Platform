@@ -13,7 +13,8 @@ namespace Hexalith.Platform.Protection;
 public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionService engine, Fr34EventStoreCanaryReader reader,
     Hexalith.EventStore.Client.Gateway.IEventStoreGatewayClient privateWriteGateway,
     Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource canaryProofs,
-    IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests,IFr34OccurrenceEnrollment? dynamicEnrollment=null) : IFr34ProtectionCanaryEngine
+    IndependentDaprAuthority originals, string privatePrincipal, CustodyLifecycleClient custody, ICustodyReservedManifestSource manifests,IFr34OccurrenceEnrollment? dynamicEnrollment=null,
+    IReadOnlyDictionary<string,Fr34NativeManifestBinding>? installedManifests=null) : IFr34ProtectionCanaryEngine
 {
     /// <summary>Reads identity from the actual production engine, never the requested target.</summary>
     public Hexalith.EventStore.PayloadProtection.InteractionProtectionEngineIdentity ReadEngineIdentity()=>engine.GetIdentity();
@@ -63,9 +64,18 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     {
         if (!IsActualTarget(reference.Target) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
         // The independent control owner publishes this complete signed/reserved original; a locator is never authority.
-        string reservation = "fr34:" + reference.CanaryId;
+        Fr34NativeManifestBinding? expected=null;
+        if(dynamicEnrollment is not null)
+        {
+            var claim=await dynamicEnrollment.ResolveAsync(stored.Owner,stored.Occurrence,cancellationToken).ConfigureAwait(false);
+            if(claim?.NativeManifest is not { } native || claim.Binding.Identity.Target!=stored.ProtectionTarget || claim.Binding.KeyReference!=reference.KeyReference) return false;
+            expected=native;
+        }
+        else if(installedManifests?.TryGetValue(reference.RecordId,out expected)!=true) return false;
+        if(expected is null) return false;string reservation=expected.ReservationReceiptId;
         var manifest = await manifests.FindAsync(reservation, cancellationToken).ConfigureAwait(false);
-        if (manifest is null || manifest.Targets.Count != 1 || manifest.Targets[0] != stored.ProtectionTarget) return false;
+        if (manifest is null || manifest.Targets.Count != 1 || manifest.Targets[0] != stored.ProtectionTarget
+            || JsonSerializer.Serialize(manifest,CustodyBindingContract.Json)!=JsonSerializer.Serialize(expected.Original,CustodyBindingContract.Json)) return false;
         var original = await custody.ExecuteManifestOriginalAsync(manifest, reservation, false, cancellationToken).ConfigureAwait(false);
         return original.Result.State == DeletionManifestProviderState.Consumed && original.RestoreBarrierReceiptId is not null
             && original.Result.TargetReceipts.Count == 1 && original.Result.TargetReceipts[0].Target == stored.ProtectionTarget;

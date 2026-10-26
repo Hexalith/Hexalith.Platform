@@ -43,7 +43,7 @@ public sealed class QualificationFreshCohortReceivingTests
             var retained=await PythonAsync(directory,"reserve",new JsonObject());string attempt=retained["attemptId"]!.GetValue<string>();Guid.TryParse(attempt,out _).ShouldBeTrue();
             var phaseRequest=new JsonObject { ["attemptId"]=attempt,["bindingDigest"]=bindingDigest,["phase"]=1 };
             var scopeBinding=new JointPhaseCommandScope(bindingDigest,recipe["targetCommit"]!.GetValue<string>(),1,["secrets:"+recipe["caseId"]!.GetValue<string>()]);
-            var full=JointPhaseRequestRecipe.Bind(recipe,phaseRequest,scopeBinding)!;var owner=(JsonObject)full.DeepClone();owner.Remove("scenario");
+            var full=JointPhaseRequestRecipe.Bind(recipe,phaseRequest,scopeBinding)!;var owner=(JsonObject)full.DeepClone();
             var enroll=new JsonObject();foreach(string field in new[]{"protocol","runId","targetCommit","isolatedTargetId","planSha256"}) enroll[field]=owner[field]!.DeepClone();enroll["operation"]="enroll";enroll["requestId"]=QualificationProtocolSchema.Digest(enroll);
             var enroller=new QualificationOwnerOperationHandler(new("enrollment","fixture-enrollment","v1",enrollmentKey.ExportSubjectPublicKeyInfoPem()),enrollmentKey,store,allDrivers,TimeProvider.System,attemptAuthority:attempts);
             var enrolled=(JsonObject)(await enroller.HandleAsync("qualification-enrollment-enroll",JsonSerializer.SerializeToElement(enroll),originalAuthority.State.Callers[0],originalAuthority.State,TestContext.Current.CancellationToken))!;
@@ -61,7 +61,7 @@ public sealed class QualificationFreshCohortReceivingTests
             var publicResult=await QualificationHost.HandleAsync("executor","execute",QualificationHostTests.Configuration(),full,publicProvider,store,publicVerifier,TestContext.Current.CancellationToken,new("fixture-caller","fixture-scope"));
             publicResult.StatusCode.ShouldBe(200);var first=publicResult.Body;
             (await store.LookupRequestAsync("executor","public-host:"+full["requestId"]!.GetValue<string>(),TestContext.Current.CancellationToken))!.ContainsKey("scenario").ShouldBeTrue();
-            (await store.LookupRequestAsync("executor",full["requestId"]!.GetValue<string>(),TestContext.Current.CancellationToken))!.ContainsKey("scenario").ShouldBeFalse();
+            (await store.LookupRequestAsync("executor",full["requestId"]!.GetValue<string>(),TestContext.Current.CancellationToken))!.ContainsKey("scenario").ShouldBeTrue();
             originalAuthority.Restart();var exact=JointPhaseRequestRecipe.Bind(recipe,phaseRequest,scopeBinding)!;JsonNode.DeepEquals(full,exact).ShouldBeTrue();
             var recovered=(JsonObject)(await executor.HandleAsync("qualification-executor-lookup",JsonSerializer.SerializeToElement(owner),originalAuthority.State.Callers[0],originalAuthority.State,TestContext.Current.CancellationToken))!;
             JsonNode.DeepEquals(first,recovered).ShouldBeTrue();((FixtureCaseDriver)allDrivers[owner["caseId"]!.GetValue<string>()]).Effects.ShouldBe(1);

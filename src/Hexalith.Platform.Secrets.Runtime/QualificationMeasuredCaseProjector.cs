@@ -121,7 +121,7 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
             case "leakCount":
                 if(last["surfaceScans"] is not JsonArray scans || !new[]{"Events","Projections","Responses","Logs","Traces","Evidence"}.All(name=>scans.OfType<JsonObject>().Any(value=>value["surface"]?.GetValue<string>()==name))) return null;
                 return scans.OfType<JsonObject>().Sum(value=>value["matchCount"]!.GetValue<long>());
-            case "allCopyRevival":return last["copyCensus"] is JsonArray copies?copies.OfType<JsonObject>().LongCount(value=>value["priorDestructionReceiptId"] is not null && value["readability"]?.GetValue<string>()=="Readable"):null;
+            case "allCopyRevival":return CompleteCopyRevival(last,original);
             case "atomicAllOrNone":return state["targetIds"] is JsonArray targets && state["destroyedTargetIds"] is JsonArray destroyed?destroyed.Count==0 || JsonNode.DeepEquals(targets,destroyed)?1:0:null;
             case "exactIndependentDecision":return last["independentDecisionVerification"]?["verified"] is JsonValue decision && decision.TryGetValue<bool>(out bool valid)?valid?1:0:null;
             case "currentActorRoleEvidence":return last["independentDecisionVerification"]?["currentRoleVerificationCount"]?.GetValue<long>();
@@ -168,5 +168,29 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
             return mutations.OfType<JsonObject>().LongCount(value=>(value[field]!.GetValue<string>()==expected)==equal);
         }
         long? ExportBoolean(string name)=>last["independentExportVerification"]?[name] is JsonValue value && value.TryGetValue<bool>(out bool actual)?actual?1:0:null;
+    }
+    private static long? CompleteCopyRevival(JsonObject source,JsonObject original)
+    {
+        if(original["enrolledScope"]?["providerCopyIds"] is not JsonArray enrolled
+            || source["copyCensus"] is not JsonArray census || census.Count!=enrolled.Count) return null;
+        // An explicitly enrolled empty set is meaningful only for cases with no physical copies in scope.
+        if(enrolled.Count==0) return 0;
+        if(source["destructionOriginals"] is not JsonArray destructions) return null;
+        var expected=enrolled.Select(value=>value?.GetValue<string>()).ToArray();
+        if(expected.Any(string.IsNullOrWhiteSpace) || expected.Distinct(StringComparer.Ordinal).Count()!=expected.Length) return null;
+        var seen=new HashSet<string>(StringComparer.Ordinal);long revived=0;
+        foreach(var value in census)
+        {
+            if(value is not JsonObject copy || copy["copyId"]?.GetValue<string>() is not { } id || !expected.Contains(id,StringComparer.Ordinal) || !seen.Add(id)
+                || copy["priorDestructionReceiptId"]?.GetValue<string>() is not { Length:64 } receipt
+                || copy["readability"]?.GetValue<string>() is not ("Readable" or "Erased")
+                || !JsonNode.DeepEquals(copy["tenantId"],original["enrolledScope"]!["tenantId"])
+                || !JsonNode.DeepEquals(copy["requestId"],original["requestId"]) || copy["nativeReadProofSha256"]?.GetValue<string>() is not { Length:64 }
+                || destructions.OfType<JsonObject>().Count(item=>item["receiptId"]?.GetValue<string>()==receipt
+                    && item["copyId"]?.GetValue<string>()==id && item["outcome"]?.GetValue<string>()=="Destroyed"
+                    && JsonNode.DeepEquals(item["tenantId"],copy["tenantId"]) && JsonNode.DeepEquals(item["requestId"],copy["requestId"]))!=1) return null;
+            if(copy["readability"]!.GetValue<string>()=="Readable") revived++;
+        }
+        return seen.Count==expected.Length?revived:null;
     }
 }

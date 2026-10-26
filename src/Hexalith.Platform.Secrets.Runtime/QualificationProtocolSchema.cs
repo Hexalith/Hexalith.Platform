@@ -50,21 +50,14 @@ internal static class QualificationProtocolSchema
             || !JsonNode.DeepEquals(scenario["boundary"], schema["boundary"])
             || scenario["expected"] is not JsonObject expected
             || !expected.Select(item => item.Key).ToHashSet(StringComparer.Ordinal).SetEquals(((JsonArray)schema["metrics"]!).Select(item => item!.GetValue<string>()))
-            || expected.Any(item => !Integer(item.Value))
+            || expected.Any(item => !Integer(item.Value)) || !JsonNode.DeepEquals(expected,schema["expected"])
             || scenario["persistedStages"] is not JsonArray stages || !stages.Select(item => item?.ToString()).SequenceEqual(new[] { "AfterEffect", "AfterRestart", "AfterRestore", "AfterLookup" })) { return false; }
         return true;
     }
 
     internal static bool ValidOwnerRequest(string role,JsonObject request)
     {
-        const string common="protocol runId targetCommit isolatedTargetId planSha256 requestId";
-        if(role is not ("executor" or "observer" or "enrollment") || !Exact(request,common+(role=="enrollment"?" operation":" caseId caseTargetId enrolledScope"))
-            || !SecretsProof.SameText(request,"protocol","EXT-SECRETS-1.qualification.v1") || !SecretsProof.SameText(request,"planSha256",PlanSha256)
-            || !Texts(request,"runId isolatedTargetId") || !Hashes(request,"requestId") || SecretsProof.Text(request,"targetCommit") is not { Length:40 } commit
-            || !commit.All(char.IsAsciiHexDigitLower)) return false;
-        return role=="enrollment" ? SecretsProof.SameText(request,"operation","enroll") : Case(SecretsProof.Text(request,"caseId")) is not null
-            && Hashes(request,"caseTargetId") && request["enrolledScope"] is JsonObject scope && ValidScope(scope)
-            && JsonNode.DeepEquals(scope["logicalId"],request["caseTargetId"]);
+        return ValidRequest(role,role switch { "executor"=>"execute","observer"=>"observe",_=>"enroll" },request);
     }
 
     private static bool ValidScope(JsonObject scope)

@@ -1,11 +1,12 @@
 {
   "schema": "platform.story-5.4.source-boundary-audit.v1",
-  "observedAtUtc": "2026-10-25T18:39:04.976657+00:00",
-  "classification": "ImplementationAgentSourceAudit_SupersededByIndependentCorrections",
+  "observedAtUtc": "2026-10-25T23:13:23.122433+00:00",
+  "classification": "TestedSourceWithVerifiedRemainingDefects_ReviewLoopEscalation",
   "sourceComplete": false,
   "deliveryComplete": false,
   "installedQualification": false,
   "ordinaryIndependentlyImplementableSourceRemainingAtImplementationAudit": [],
+  "ordinaryImplementationAuditIsIndependentApproval": false,
   "qualification": {
     "caseCount": 234,
     "publiclyRegisteredSourceOperationAndReaderCount": 185,
@@ -13,6 +14,10 @@
     "unregisteredExternalProtocolDependentCases": [
       {
         "caseId": "S1.reject.stale-inventory",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.SelectedProviderFaultScenarioAndOriginalReader.S1.reject.stale-inventory",
@@ -27,10 +32,27 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S1.reject.changed-authority",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.SelectedProviderFaultScenarioAndOriginalReader.S1.reject.changed-authority",
@@ -45,10 +67,27 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S1.reject.outage",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.SelectedProviderFaultScenarioAndOriginalReader.S1.reject.outage",
@@ -63,10 +102,27 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S1.reject.unexpected-key-response",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.SelectedProviderFaultScenarioAndOriginalReader.S1.reject.unexpected-key-response",
@@ -81,10 +137,27 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S1.approval-prohibited.recorder",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S1.approval-prohibited.recorder",
@@ -101,6 +174,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "approvalRequests",
@@ -116,6 +202,10 @@
       },
       {
         "caseId": "S1.approval-prohibited.custodian",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S1.approval-prohibited.custodian",
@@ -132,6 +222,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "approvalRequests",
@@ -147,6 +250,10 @@
       },
       {
         "caseId": "S1.approval-prohibited.workflow",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S1.approval-prohibited.workflow",
@@ -163,6 +270,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "approvalRequests",
@@ -178,6 +298,10 @@
       },
       {
         "caseId": "S1.approval-prohibited.revocation-registrar",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S1.approval-prohibited.revocation-registrar",
@@ -194,6 +318,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "approvalRequests",
@@ -209,6 +346,10 @@
       },
       {
         "caseId": "S2.replay-reject.public-registrar",
+        "sourceOperation": "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+        "typedReader": "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S2.replay-reject.public-registrar",
@@ -224,10 +365,30 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationRuntimeWorkflowCatalog.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S2.replay-reject.workflow-registrar",
+        "sourceOperation": "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+        "typedReader": "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S2.replay-reject.workflow-registrar",
@@ -243,10 +404,30 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationRuntimeWorkflowCatalog.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S2.replay-reject.target-handler-registrar",
+        "sourceOperation": "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+        "typedReader": "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.S2.replay-reject.target-handler-registrar",
@@ -262,10 +443,30 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationRuntimeWorkflowCatalog.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S3.all-copy-destroy-restore",
+        "sourceOperation": "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs",
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.NativeFactProjection.allCopiesDestroyed",
@@ -284,6 +485,20 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "allCopiesDestroyed",
@@ -299,6 +514,10 @@
       },
       {
         "caseId": "S3.open-export-disposition",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.CurrentIndependentExportDispositionOriginalAdapter",
@@ -315,6 +534,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "openProductDisposition",
@@ -325,6 +557,10 @@
       },
       {
         "caseId": "S4.migration.interaction-create.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -345,10 +581,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.interaction-create.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -369,10 +626,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.interaction-create.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -393,10 +671,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.failure-create.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -417,10 +716,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.failure-create.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -441,10 +761,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.failure-create.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -465,10 +806,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.content-append.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -489,10 +851,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.content-append.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -513,10 +896,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.content-append.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -537,10 +941,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.directory-permit.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -561,10 +986,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.directory-permit.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -585,10 +1031,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.directory-permit.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -609,10 +1076,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.user-action-intent.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -633,10 +1121,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.user-action-intent.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -657,10 +1166,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.user-action-intent.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -681,10 +1211,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-acquire.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -705,10 +1256,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-acquire.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -729,10 +1301,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-acquire.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -753,10 +1346,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-commit.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -777,10 +1391,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-commit.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -801,10 +1436,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.lease-commit.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -825,10 +1481,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.rate.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -849,10 +1526,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.rate.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -873,10 +1571,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.rate.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -897,10 +1616,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.open.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -921,10 +1661,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.open.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -945,10 +1706,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.open.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -969,10 +1751,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.budget.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -993,10 +1796,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.budget.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1017,10 +1841,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.budget.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1041,10 +1886,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.capacity.stale",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1065,10 +1931,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.capacity.disconnected",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1089,10 +1976,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.migration.capacity.restored",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ActualElevenWriterEntryPointAndBoundCommandOriginalAdapter",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1113,10 +2021,31 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": []
       },
       {
         "caseId": "S4.routine-rotation-retention",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.NativeFactProjection.currentHealthyIssuance",
@@ -1137,6 +2066,23 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "currentHealthyIssuance",
@@ -1147,6 +2093,10 @@
       },
       {
         "caseId": "v23.compromise-private-isolation",
+        "sourceOperation": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "typedReader": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
           "ExternalProtocolDependentSource.InstalledForbiddenPrincipalDenialAndNativeGrantReader.v23.compromise-private-isolation",
@@ -1170,6 +2120,23 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+          "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "approvalRequests",
@@ -1195,6 +2162,10 @@
       },
       {
         "caseId": "Leakage.all-surfaces",
+        "sourceOperation": null,
+        "typedReader": null,
+        "qualificationDriver": null,
+        "completeQualificationDriver": false,
         "requiredSourceImplementations": [
           "ExternalProtocolDependentSource.ClosedNativeResourceCaseAdapter.Leakage.all-surfaces",
           "ExternalProtocolDependentSource.CompleteLogTraceResponseEvidenceAndNativeCopyCensusAdapter",
@@ -1216,6 +2187,19 @@
           "SelectedNativeOutboxSnapshotAndAllHolderPhysicalCopyReadSchemas",
           "SelectedNativeRestoreAndStorageIncarnationProofProtocol"
         ],
+        "sourceStatus": "ExternalProtocolDependentSource",
+        "receivingExecutable": "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "measuredProjector": "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "sourceImplementations": [
+          "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+          "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs"
+        ],
+        "publiclyRegisteredSourceOperation": false,
         "missingMetricFacts": [
           {
             "metric": "scannedEvents",
@@ -1701,65 +2685,206 @@
           }
         ]
       }
+    ],
+    "sourceCorrectionRequirements": [
+      {
+        "input": "IndependentMeasuredDaprRequestInvokeReceiverResponseCapacity128MiB",
+        "source": "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityTransportCapacity.cs",
+        "installedEvidence": null
+      },
+      {
+        "input": "ExactNativeHolderCompletionOriginalsForEveryAdmittedUse",
+        "source": "src/Hexalith.Platform.Protection/CustodyOccurrenceHolderCompletionWorker.cs",
+        "installedEvidence": null
+      },
+      {
+        "input": "ExactLegacySecurityEventLogDayReadWriteRecoveryScopesForRetainedOriginalLocators",
+        "source": "src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpool.cs",
+        "installedEvidence": null
+      },
+      {
+        "input": "IndependentPhaseOriginalAndAbsenceStorageSchema",
+        "source": "eng/ext-secrets-1/joint-authority-schema.sql",
+        "installedEvidence": null
+      }
     ]
   },
-  "verification": {
-    "runtimeFocused": {
-      "passed": 344,
-      "log": "/tmp/story54-round2-runtime-direct-tests.log"
+  "externalProtocolAndInstallationBoundaries": [
+    "Actual eligible existing non-AWS installation, immutable native key/epoch/KEK registrations and original controls; source produces no native key or new enrollment.",
+    "Independently approved bounded parent recipe hash in current independent state (Fr34RecipeSha256), exact source owner/type/profile/native mapping, actual original root slots and distinct pre-admitted write/read KeyUse profiles. A fresh logical challenge never renames or substitutes its native original target.",
+    "Actual current material-admission and independent holder/copy-completion originals for every use. Pools have source bounds of 128 roots and 32 read uses per root; fixtures establish no installed capacity. Exhaustion or unknown delivery/completion denies a new release.",
+    "Independent claim and read-use authority stores with disjoint role credentials, outside application restore placement, immutable indexed archives and current enrolled trust; no genesis is created.",
+    "Installed exact metadata-only recovery argv (--phase-finalize), same pinned executable/artifacts/configuration, current retained-attempt authority read grant/public trust and exact immutable case files. Missing/foreign/incomplete evidence cannot finalize a phase, and independent observer verification still decides.",
+    "Exact native operation-original APIs for Register/Reserve/Block/Activate are absent in the published owner contract. Unknown lost steps explicitly stop with External.ExactNativeOperationOriginalProtocol.<Kind>; a mutable batch outcome cannot substitute.",
+    "Every previous selected physical, native history/census, principal receiving-denial, historical MAC, restart/restore controller and constant-time assurance protocol remains required. Full-driver and native complete-phase flags stay false.",
+    "Actual configuration/profile/plan/trust/image hashes, explicit coordinated replacement dates and one complete immutable accepted replacement target are absent. No complete packet or availability is inferred."
+  ],
+  "verificationHistory": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-verification-history.json",
+  "latestVerification": {
+    "runtimeBuild": {
+      "command": "dotnet build tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj --artifacts-path /tmp/story54-round6-runtime -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round6-runtime-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round6-runtime-build.log",
+      "logSha256": "310b093f6d07b5a886e45bc60d3ae2aac9fdeda09538374df472f1d6a0d81ed6",
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "boundedImmutableOriginalIndex": {
-      "passed": 1,
-      "completedObservations": 10025,
-      "log": "/tmp/story54-round2-bounded-original-tests.log"
+    "protectionBuild": {
+      "command": "dotnet build tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj --artifacts-path /tmp/story54-round6-protection -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round6-protection-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round6-protection-build.log",
+      "logSha256": "96df42b688ab202435a82ba8825a3d44bbc8215996b5393b8485d825a9db5d50",
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "protection": {
-      "passed": 40,
-      "log": "/tmp/story54-round2-protection-tests.log"
+    "nativeBuild": {
+      "command": "dotnet build infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj --artifacts-path /tmp/story54-round6-native -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round6-native-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round6-native-build.log",
+      "logSha256": "3ae22b63dea19316149e023ba90f41ba74d67f1a7c029a6c005fc2e3eed16999",
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "ingressCompositionFocused": {
-      "passed": 30,
-      "log": "/tmp/story54-round2-ingress-tests.log"
+    "runtimeTests": {
+      "command": "dotnet /tmp/story54-round6-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName!~IndependentOriginalIndexTests'",
+      "log": "/tmp/story54-round6-runtime-tests.log",
+      "logSha256": "e4a58671b5831084aacb8f0d68d29df81c7d9847ab6c495d97682bb6a9be1ce0",
+      "passed": true,
+      "passedCases": 416,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "nativeTransport": {
-      "passed": 25,
-      "log": "/tmp/story54-round2-native-tests.log"
+    "indexTests": {
+      "command": "dotnet /tmp/story54-round6-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName~IndependentOriginalIndexTests'",
+      "log": "/tmp/story54-round6-index-tests.log",
+      "logSha256": "435a1862b1871c252ec4ffb8d44f51358a9885fe2ec1019f25154319e77bf862",
+      "passed": true,
+      "passedCases": 8,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "secretsPythonBeforeLastTwoNewIndependentTests": {
-      "passed": 248,
-      "log": "/tmp/story54-round2-python.log"
+    "protectionTests": {
+      "command": "dotnet /tmp/story54-round6-protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+      "log": "/tmp/story54-round6-protection-tests.log",
+      "logSha256": "cc052cee7597f2f56d812db7d891c0a271b1c122a0bdcae939c90bfcc359c0ca",
+      "passed": true,
+      "passedCases": 86,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "additionalNativePhaseInventoryAndTypedCanaryTests": {
-      "passed": 2,
-      "log": "/tmp/story54-round2-native-phase-tests.log"
+    "nativeTests": {
+      "command": "dotnet /tmp/story54-round6-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "log": "/tmp/story54-round6-native-tests.log",
+      "logSha256": "4ac11f8526ad03aba289a8e139907c4990c0bfba33750b6a0bb04360cbca002d",
+      "passed": true,
+      "passedCases": 26,
+      "classification": "IsolatedSourceComponentOnly"
+    },
+    "compositionTests": {
+      "command": "dotnet /tmp/story54-round6-composition-focused/bin/Debug/net10.0/FocusedComposition.dll",
+      "log": "/tmp/story54-round6-composition-tests.log",
+      "logSha256": "d97c923350313c91a324820406e6bb79dbfcff36f584cf5ce409c61c672f482b",
+      "passed": true,
+      "passedCases": 12,
+      "classification": "IsolatedSourceComponentOnly"
+    },
+    "secretsPython": {
+      "command": "python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py'",
+      "log": "/tmp/story54-round6-secrets-python.log",
+      "logSha256": "16b0a95840c4a1131f0c03a57e5e1f1ae108d86a8587eb4ed56881b766a86670",
+      "passed": true,
+      "passedCases": 269,
+      "classification": "IsolatedSourceComponentOnly"
     },
     "hostPython": {
-      "passed": 13,
-      "log": "/tmp/story54-round2-host-python.log"
+      "command": "python3 -m unittest discover -s eng/ext-host-1 -p 'test_*.py'",
+      "log": "/tmp/story54-round6-host-python.log",
+      "logSha256": "f368d0f5c504f5add3478a056ca0e8700d3ae942508f97f531aa4633f0644376",
+      "passed": true,
+      "passedCases": 14,
+      "classification": "IsolatedSourceComponentOnly"
     },
-    "executablesBuilt": [
-      "Executor",
-      "Observer",
-      "Enrollment"
-    ],
-    "allAffectedBuilds": "Exit0,0warnings,0errors"
+    "compositionBuild": {
+      "command": "dotnet build /tmp/story54-round6-composition-focused/FocusedComposition.csproj -m:1",
+      "log": "/tmp/story54-round6-composition-build.log",
+      "logSha256": "83f0c05ca7e8dae982583a96ca8153e5fb7d0baf5e918b79bdb866975914dc3d",
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "scope": "Focused source-linked accepted-context/cross-language packet project; no installed composition or native image qualification."
+    },
+    "whitespace": {
+      "command": "git diff --check -- <exact paths from /tmp/story54-round6-owned-files.json>; additionally scan every owned file including untracked files for trailing whitespace",
+      "log": "/tmp/story54-round6-whitespace.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    }
   },
-  "limits": [
-    "All verification is fixture/source evidence. No installed/physical qualification is established.",
-    "Every234 complete driver remains unavailable;185 registered operation/reader workflows are partial source.",
-    "Source adapters requiring actual selected native/principal/recovery/history/census protocols remain unimplemented and explicitly blocked.",
-    "No Live/Full/cohort command, attempt reservation, installation, consuming seam, physical experiment, staging, commit or push performed by this agent.",
-    "Parent owns final docs/ledger and independent source review."
-  ],
-  "exactVerificationCommands": "SOURCE BUILD FLAGS (for runtime/protection/native graphs):\n-p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false -m:1\nAll builds use --artifacts-path /tmp/story54-round2-GRAPH and '-p:NuGetLockFilePath=/tmp/story54-round2-GRAPH-locks/$(MSBuildProjectName).lock.json'. No --no-restore.\nRuntime project: tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj\nProtection project: tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj\nNative project: infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj\nRuntime binary: /tmp/story54-round2-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll\nProtection binary: /tmp/story54-round2-protection-tests/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll\nNative binary: /tmp/story54-round2-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll\nRuntime execution: dotnet RUNTIME_BINARY -filterVSTest 'FullyQualifiedName!~IndependentOriginalIndexTests'\nLong bounded test (already verified 1/1, 97.8sec): dotnet RUNTIME_BINARY -class '*IndependentOriginalIndexTests'\nProtection execution: dotnet PROTECTION_BINARY\nComposition build adds -p:BuildsToolingAssemblyPath=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll -p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round2-builds-test-reference.targets\nThe temporary import supplies the existing Tooling DLL and its existing NuGet.Versioning7.9.0 compile dependency only to Composition.Tests. Actual Tooling project.assets.json pins NuGet.Versioning7.9.0. No Builds source/version modified.\nComposition binary: /tmp/story54-round2-composition/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll\nComposition isolated source-layout mirror: /tmp/story54-round2-composition/apphost.cs and /tmp/story54-round2-composition/src/Hexalith.Platform.Composition/Declarations copied from source. AppHost was never started.\nComposition execution: dotnet COMPOSITION_BINARY -filterVSTest 'FullyQualifiedName~AgentsIngressDenialTests|FullyQualifiedName~AgentsHostCompositionTests|FullyQualifiedName~AgentsAcceptedDeploymentContextTests'\nPython secrets: python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py'\nPython host: python3 -m unittest discover -s eng/ext-host-1 -p 'test_*.py'\nFull logs: /tmp/story54-round2-{runtime-build,runtime-direct-tests,protection-build,protection-tests,composition-build,ingress-tests,native-build,native-tests,python,host-python}.log\n\nLATEST EXECUTABLE BUILDS (not executed):\nFor ROLE in Executor, Observer, Enrollment:\ndotnet build src/Hexalith.Platform.Secrets.Qualification.ROLE/Hexalith.Platform.Secrets.Qualification.ROLE.csproj --artifacts-path /tmp/story54-round2-qualification-executables -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round2-qualification-executables-locks/$(MSBuildProjectName).lock.json' -m:1\nLogs /tmp/story54-round2-{executor,observer,enrollment}-build.log. Each exit0,0warnings,0errors.\nExecutable DLLs: /tmp/story54-round2-qualification-executables/bin/Hexalith.Platform.Secrets.Qualification.ROLE/debug/Hexalith.Platform.Secrets.Qualification.ROLE.dll\n\nLATEST TEST RESULTS (all fixture/source, no installation/physical qualification):\nRuntime344/344; separate long bounded-index1/1 (10,025 completed observations,97.843sec); Protection40/40; Composition focused30/30; Native25/25; secrets Python248/248 plus2/2 new closed-phase inventory/typed-canary tests; host Python13/13.\nAdditional2-test command: python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_closed_phase_invariants.py'\nAdditional log: /tmp/story54-round2-native-phase-tests.log\nStable source/blocker/ownership handback: /tmp/story54-round2-handback.json and /tmp/story54-round2-owned-files.json\n",
+  "sourceHeadObserved": "8e55c68dbc885aa1b61c300b9cfb120e3fd828ac",
+  "replacementTarget": null,
+  "inventoryHashes": {
+    "eng/ext-secrets-1/case-driver-inventory.json": "deeed36cd2763aea385fcab036e9d49ce3532aa63697c1ffab7df2f08b562f9a",
+    "eng/ext-secrets-1/native-phase-invariant-inventory.json": "e9cd9d50c9657d0cfde50bb2f880412ed6f5e744142378cd002ba020491d8692"
+  },
   "independentCorrectionReview": {
-    "status": "ConfirmedSourceCorrectionsRequired",
-    "reviewLoopIteration": 2,
-    "spec": "_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md",
-    "reviewDiff": "/tmp/story54-final-review-m6zw_8o9/changes.diff",
-    "reviewDiffSha256": "d9c729f3e387edd85e49c32f7bd6e2774e39cd7addea85f6ccd2318f6e6f8b5e",
-    "reportedFindings": 20,
-    "withdrawnCandidateClaims": 1,
-    "sourceChangesAfterReviewPending": true
+    "status": "EscalationRequired_ReviewLoopLimitReached",
+    "reviewLoopIteration": 6,
+    "reviewEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-6.json",
+    "haltRule": {
+      "skill": ".agents/skills/bmad-build/SKILL.md",
+      "step": ".agents/skills/bmad-build/step-04-review.md:62",
+      "quote": "If it exceeds 5, HALT and escalate to the human.",
+      "limit": 5,
+      "counter": 6,
+      "overrideReceived": false
+    }
+  },
+  "qualificationRule": "All tests are isolated source/component evidence. No source hash, fixture, test result or protocol definition supplies installed qualification, approval, dates or a complete accepted target.",
+  "ordinaryIndependentlyImplementableSourceRemainingAfterIndependentReview": [
+    "B6-1",
+    "B6-2",
+    "B6-3",
+    "B6-4",
+    "B6-5",
+    "B6-6",
+    "B6-7",
+    "B6-8",
+    "B6-9",
+    "B6-10",
+    "E6-1",
+    "E6-2",
+    "E6-3",
+    "V6-1"
+  ],
+  "latestExternalProtocolAndInstallationBoundaries": {
+    "schema": "platform.story54.round6.source-boundaries.v1",
+    "observedAtUtc": "2026-10-25T23:12:13.974349+00:00",
+    "sourceComplete": false,
+    "deliveryComplete": false,
+    "installedQualification": false,
+    "replacementTarget": null,
+    "replacementPlatformIntegrationDate": null,
+    "replacementProtectionIntegrationDate": null,
+    "newOrReaffirmedExactProtocols": [
+      "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol",
+      "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol",
+      "External.ExactHistoricalSignedStageSnapshotProtocol",
+      "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol",
+      "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol"
+    ],
+    "priorExternalBoundariesPreserved": [
+      "Actual eligible existing non-AWS installation/native registrations and immutable reserved manifests, actual original controls and physical all-copy/holder/restore evidence.",
+      "Independently enrolled outside-restore current authority/archive/trust, scopes, credential mounts and measured transport/storage capacity; source creates none.",
+      "Common independently current FR34 authorization revision/recipe binding and exact static or dynamic native manifest originals.",
+      "Dedicated guarded-transaction original credential/store and exact independently enrolled cell/receipt scopes. Complete primary plus receipt restore before any independent witness remains Unknown; no immutable native transaction-original API can resolve that absence.",
+      "External.CompleteAffectedBatchSetAtRecordedRevocationRevisionProtocol and External.ExactCompetingProtectionOperationOriginalAndReservationHistoryProtocol.",
+      "Existing exact Register/Reserve/Block/Activate native operation-original contracts, complete selected recovery/history/log/trace/physical census schemas and all previously recorded external protocols remain unavailable.",
+      "Explicit accepted protection binding/target/date/profile/config/plan and complete coordinated installed public input bundle.",
+      "Actual installed hashes, newly accepted immutable complete Platform target and explicit owner integration dates remain absent."
+    ],
+    "installedPoolReplenishmentEvidence": null,
+    "fullCaseCount": 234,
+    "completeQualificationDriverCount": 0,
+    "qualificationRule": "Only isolated source/component effects and trust were exercised. No native physical property, enrolled installation, owner date, accepted replacement, availability or complete source qualification is established."
   }
 }

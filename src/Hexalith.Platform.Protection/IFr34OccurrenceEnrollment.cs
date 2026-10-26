@@ -18,4 +18,6 @@ public interface IFr34OccurrenceEnrollment
     Task<bool> AdmitReleaseAsync(InteractionOccurrenceIdentity identity,CustodyInteractionMaterialProfile profile,CancellationToken token);
     /// <summary>Enumerates the finite retained pending native holders for exact completion recovery.</summary>
     Task<IReadOnlyList<CustodyInteractionMaterialProfile>> PendingAsync(CancellationToken token);
+    /// <summary>Reads exact independently authenticated original destruction/barrier evidence, without repeating destruction or releasing material.</summary>
+    Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)=>Task.FromResult<InteractionProtectionErasureWitness?>(null);
 }

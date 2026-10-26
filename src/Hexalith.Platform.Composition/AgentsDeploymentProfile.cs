@@ -81,6 +81,12 @@ public static class AgentsDeploymentProfile
     /// <summary>Checks both coordinated accepted record sections and the exact packet/profile date before production composition.</summary>
     public static AgentsDeploymentProfileModel ValidateAcceptedContext(string json, string acceptedRegister, string acceptedPacket)
     {
+        try { return ValidateAcceptedContextCore(json,acceptedRegister,acceptedPacket); }
+        catch(Exception exception) when(exception is JsonException or KeyNotFoundException or InvalidOperationException or ArgumentException or FormatException)
+        { throw new InvalidDataException("Complete valid coordinated accepted context required.",exception); }
+    }
+    private static AgentsDeploymentProfileModel ValidateAcceptedContextCore(string json,string acceptedRegister,string acceptedPacket)
+    {
         using JsonDocument packet = JsonDocument.Parse(acceptedPacket);
         string target = packet.RootElement.GetProperty("candidateCommit").GetString()!;
         string date = packet.RootElement.GetProperty("platformIntegrationDate").GetString()!;
@@ -110,6 +116,7 @@ public static class AgentsDeploymentProfile
             }
         }
         AgentsDeploymentProfileModel model = ValidateAccepted(json, date, date);
+        CoordinatedProtectionAcceptance.Validate(packet.RootElement,acceptedRegister,target,date,profilePin.GetString()!,planPin.GetString()!);
         return model with { AcceptedContextValidated = true };
     }
 

@@ -184,6 +184,10 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
     from coordinated_packets import records, shared_binding
     from joint_live_phase_runner import full_plan, digest as cohort_digest
     packet["cohortPlanSha256"] = cohort_digest(full_plan())
+    from coordinated_packets import protection_binding
+    packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
+    packet["jointBinding"] = load_profile(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
+    packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
     packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
     (output / "joint-qualification-plan.json").write_bytes(canonical(full_plan()))
     (output / "agents-deployment-profile.json").write_bytes(profile_bytes)

@@ -32,9 +32,9 @@ try
     // The AWS reference remains explicit compatibility source; an absent native profile never selects an installation.
     var credentials = profile.Native is null ? ReferenceBackendCredentials.Load() : null;
     var region = credentials is null ? null : RegionEndpoint.GetBySystemName(profile.Region);
-    using var kms = credentials is null ? null : new AmazonKeyManagementServiceClient(credentials, new AmazonKeyManagementServiceConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
-    using var dynamo = credentials is null ? null : new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
-    using var s3 = credentials is null ? null : new AmazonS3Client(credentials, new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
+    using var kms = credentials is null ? null : new AmazonKeyManagementServiceClient(credentials, AwsCompatibilityClientConfiguration.Kms(region));
+    using var dynamo = credentials is null ? null : new AmazonDynamoDBClient(credentials, AwsCompatibilityClientConfiguration.Dynamo(region));
+    using var s3 = credentials is null ? null : new AmazonS3Client(credentials, AwsCompatibilityClientConfiguration.S3(region));
     IAuthorityStore store = profile.Native is { } installed
         ? new NativeDaprAuthorityStore(profile, installed, nativeDapr, TimeProvider.System)
         : new AwsAuthorityStore(profile, dynamo!, s3!, TimeProvider.System);

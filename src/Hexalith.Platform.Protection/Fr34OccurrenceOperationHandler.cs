@@ -10,7 +10,12 @@ namespace Hexalith.Platform.Protection;
 public sealed class Fr34OccurrenceOperationHandler(Fr34OccurrenceRecipe recipe,Fr34OccurrenceProducer producer,TimeProvider clock):IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
-    public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["fr34-resolve-occurrence","fr34-occurrence-lease","fr34-material-use","fr34-material-release","fr34-pending-material"],StringComparer.Ordinal);
+    public bool IsReadOnly(string method)=>method is "fr34-pending-material" or "fr34-read-erasure";
+    /// <inheritdoc />
+    public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
+        =>HandleAsync(method,payload,caller,current,token);
+    /// <inheritdoc />
+    public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["fr34-resolve-occurrence","fr34-occurrence-lease","fr34-material-use","fr34-material-release","fr34-pending-material","fr34-read-erasure"],StringComparer.Ordinal);
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
     {
@@ -23,6 +28,7 @@ public sealed class Fr34OccurrenceOperationHandler(Fr34OccurrenceRecipe recipe,F
             case "fr34-material-use": var material=payload.Deserialize<Material>(CustodyBindingContract.Json)!;return await producer.MaterialAsync(material.identity,material.writing,token).ConfigureAwait(false);
             case "fr34-material-release": var release=payload.Deserialize<Release>(CustodyBindingContract.Json)!;return new { Allowed=await producer.AdmitReleaseAsync(release.identity,release.profile,token).ConfigureAwait(false) };
             case "fr34-pending-material": return await producer.PendingAsync(token).ConfigureAwait(false);
+            case "fr34-read-erasure": return await producer.ReadErasureAsync(payload.GetProperty("binding").Deserialize<InteractionProtectionBinding>(CustodyBindingContract.Json)!,token).ConfigureAwait(false);
             default: return null;
         }
     }

@@ -162,7 +162,7 @@ class AcceptancePreparationTests(unittest.TestCase):
 
     def test_embedded_public_host_schema_matches_complete_canonical_plan(self):
         expected = {"planSha256": q.plan_digest(), "cases": [{"id": case.id,
-                    "metrics": sorted(set(q.GLOBAL) | set(case.expected)), "outcomes": list(case.outcomes), "boundary": case.boundary} for case in q.plan()]}
+                    "metrics": sorted(set(q.GLOBAL) | set(case.expected)), "outcomes": list(case.outcomes), "boundary": case.boundary, "expected": q.GLOBAL | case.expected} for case in q.plan()]}
         self.assertEqual(expected, q.read_json(Path(__file__).parent / "public-case-schemas.json"))
 
     def test_relative_anchor_does_not_create_an_installed_packet(self):

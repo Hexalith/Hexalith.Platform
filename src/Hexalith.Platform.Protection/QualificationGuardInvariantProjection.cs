@@ -35,16 +35,22 @@ public static class QualificationGuardInvariantProjection
                 "globalKeyBlock" when known => protection.BlockedKeyVersion is { } version && guard.CompromisedKeyVersions.Contains(version,StringComparer.Ordinal)
                     && protection.RevocationRevision>0 ? 1:protection.BlockedKeyVersion is null ? 0:null,
 
-                "raceWinners" when known => protection.Status is DeletionConsumptionStatus.Consumed or DeletionConsumptionStatus.ConsumptionBlocked ? 1:0,
-                "immutableReservation" when known => protection.ReceiptId is not null && protection.OwnerRevision>0 && protection.Status is DeletionConsumptionStatus.Consumed or DeletionConsumptionStatus.ConsumptionBlocked ? 1:0,
+                // The published current-state port carries neither competing operation originals nor the original reservation identity/history.
+                "raceWinners" or "immutableReservation" => null,
                 "exactNewKeyBlockReceipt" when known => guard.Revocations.LongCount(value=>value.Envelope.KeyVersion==protection.BlockedKeyVersion && value.AffectedBatchIds.Contains(batchId,StringComparer.Ordinal) && value.Envelope.RevocationRevision==protection.RevocationRevision),
-                "completeAffectedBatchEnumeration" => guard.Revocations.Count>0 && guard.Revocations.All(value=>value.OwnerRevision>0 && value.KeyBlockSetRevision>0 && value.AffectedBatchIds.Count==value.AffectedBatchIds.Distinct(StringComparer.Ordinal).Count()) ? 1:null,
+                // Current batches and revocation receipts do not expose a complete affected-set snapshot at the recorded revocation revision.
+                "completeAffectedBatchEnumeration" => null,
                 "capabilityCompromiseBlockProof" => guard.Revocations.Any(value=>value.AffectedBatchIds.Contains(batchId,StringComparer.Ordinal) && value.Envelope.KeyVersion!=batch.CapabilityKeyVersion) ? 1:0,
                 "successorDispatchProof" => batch.DispatchReceiptId.Length>0 && batch.DispatchGuardRevision>batch.IssuedGuardRevision && batch.IssuedGuardRevision>0 && guard.Receipts.Any(value=>value.ReceiptId==batch.DispatchReceiptId) ? 1:0,
                 "nextAttestationOrdinal" => NextAttestationOrdinal(guard,batch),
                 "exactNoIssueProof" when signing.Count>0 => signing.Count(value=>value.NoIssueProof is not null),
                 _=>null };
-            if(measured is null) missing.Add("IndependentMeasuredOwnerHistoryOrBoundaryProtocol."+metric);
+            if(measured is null)
+            {
+                missing.Add("IndependentMeasuredOwnerHistoryOrBoundaryProtocol."+metric);
+                if(metric is "raceWinners" or "immutableReservation") missing.Add("External.ExactCompetingProtectionOperationOriginalAndReservationHistoryProtocol");
+                if(metric=="completeAffectedBatchEnumeration") missing.Add("External.CompleteAffectedBatchSetAtRecordedRevocationRevisionProtocol");
+            }
             else metrics[metric]=measured.Value;
         }
         return new(metrics,missing);

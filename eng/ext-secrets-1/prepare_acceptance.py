@@ -140,6 +140,10 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         from coordinated_packets import records, shared_binding
         from joint_live_phase_runner import full_plan, digest as cohort_digest
         packet["cohortPlanSha256"] = cohort_digest(full_plan())
+        from coordinated_packets import protection_binding
+        packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
+        packet["jointBinding"] = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
+        packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
         packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
         (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
         packet_path.write_bytes(q.canonical(packet))

@@ -1,0 +1,128 @@
+{
+  "schema": "platform.story-5.4.current-source-verification.v1",
+  "observedAtUtc": "2026-10-25T23:32:31.055449+00:00",
+  "repositories": {
+    "platform": {
+      "checkoutHead": "8e55c68dbc885aa1b61c300b9cfb120e3fd828ac",
+      "fetchedOriginMain": "e4e5c9761527db04062685e93bb82fe3c51f61df",
+      "workingTreeChanged": true
+    },
+    "eventstore": {
+      "checkoutHead": "a5f1aaa08cf466f26a06cf8719138043f22cfde7",
+      "fetchedOriginMain": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+      "workingTreeChanged": true
+    },
+    "agents": {
+      "checkoutHead": "9001c896ff24c47065fafccba7f02191cd7b65fd",
+      "fetchedOriginMain": "9001c896ff24c47065fafccba7f02191cd7b65fd",
+      "workingTreeChanged": false
+    }
+  },
+  "operation": "git fetch origin, then read-only revision/status inspection; no pull, checkout, merge, push or sibling source edits",
+  "replacementTarget": null,
+  "installedQualification": false,
+  "acceptedCommitmentsChanged": false,
+  "readOnlyContractEvidence": [
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Contracts/Security/IDeletionProtectionOwner.cs",
+      "sha256": "014b799b807f136a9d3d4c76a8fff7df292e82f4171c701bf11999fc3e718ae5"
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/IDeletionConsumptionActor.cs",
+      "sha256": "a8f9d1d6ca260d0a338bdbabe69226c95d72af0a752cb4ea95af60f347101dd0"
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+      "sha256": "840e0cd207001b5bb4b193b80cf270dfa6161f9a824fe7bb23dbefabc766e6a2"
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Client/Gateway/BoundOwnerQueryProof.cs",
+      "sha256": "6964294cca11da3847ddee133ef5c94678ff6f543b08aab12e845f0aef138ce2"
+    }
+  ],
+  "contractObservations": [
+    "The current deletion owner/consumption interfaces expose no exact operation-original getters for Register/Reserve/Block/Activate; current batch lookup does not supply that history.",
+    "The current query controller exposes the restricted signed owner-authority workload endpoint; source composition must use it or another actually supported authenticated path."
+  ],
+  "fetchedEventStoreContractEvidence": [
+    {
+      "repository": "eventstore",
+      "revision": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+      "path": "src/Hexalith.EventStore.Contracts/Security/IDeletionProtectionOwner.cs",
+      "sha256": "307b8700736b7473b5dd62340c90b580f47b85e26d7edcc875e69f1825992244"
+    },
+    {
+      "repository": "eventstore",
+      "revision": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+      "path": "src/Hexalith.EventStore.Server/Security/IDeletionConsumptionActor.cs",
+      "sha256": "4b8bff28d770162855936a49c3527761e83c4f9986cfdd5a88ffe3647ac0b6bf"
+    },
+    {
+      "repository": "eventstore",
+      "revision": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+      "path": "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+      "sha256": "6681a8ed6924f17983648447d7c3a6b669aacfa8ba2cddf736f17e54e8459b86"
+    },
+    {
+      "repository": "eventstore",
+      "revision": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+      "path": "src/Hexalith.EventStore.Client/Gateway/BoundOwnerQueryProof.cs",
+      "sha256": "6964294cca11da3847ddee133ef5c94678ff6f543b08aab12e845f0aef138ce2"
+    }
+  ],
+  "remoteInspectionNote": "Latest EventStore remote refs were fetched/read without modifying its dirty checkout. Exact fetched/local contract hashes and method comparisons are recorded separately. Executed test results remain bound to the recorded local source graph; no newer remote revision is silently substituted.",
+  "latestDeletionOwnerInterfaceComparison": {
+    "src/Hexalith.EventStore.Contracts/Security/IDeletionProtectionOwner.cs": {
+      "localMethods": [
+        "ActivateAsync",
+        "LookupAsync",
+        "ReadActivationComparisonAsync",
+        "ReadBlockedReplacementAsync",
+        "ReconcileBlockedReplacementAsync",
+        "RegisterAsync",
+        "ReserveAndConsumeAsync"
+      ],
+      "fetchedMethods": [
+        "ActivateAsync",
+        "LookupAsync",
+        "ReadActivationComparisonAsync",
+        "ReadBlockedReplacementAsync",
+        "ReconcileBlockedReplacementAsync",
+        "RegisterAsync",
+        "ReserveAndConsumeAsync"
+      ],
+      "newFetchedMethods": []
+    },
+    "src/Hexalith.EventStore.Server/Security/IDeletionConsumptionActor.cs": {
+      "localMethods": [
+        "ActivateAsync",
+        "BlockAsync",
+        "LookupAsync",
+        "LookupRevocationAsync",
+        "ReadActivationComparisonAsync",
+        "ReadBlockedReplacementAsync",
+        "ReconcileBlockedReplacementAsync",
+        "RegisterAsync",
+        "RegisterRevocationAsync",
+        "ReserveAndConsumeAsync"
+      ],
+      "fetchedMethods": [
+        "ActivateAsync",
+        "BlockAsync",
+        "LookupAsync",
+        "LookupRevocationAsync",
+        "ReadActivationComparisonAsync",
+        "ReadBlockedReplacementAsync",
+        "ReconcileBlockedReplacementAsync",
+        "RegisterAsync",
+        "RegisterRevocationAsync",
+        "ReserveAndConsumeAsync"
+      ],
+      "newFetchedMethods": []
+    }
+  }
+}

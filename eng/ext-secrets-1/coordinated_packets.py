@@ -59,6 +59,17 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
         try:
             joint = q.read_json(context["installedArtifacts"]["jointConfiguration"]["path"])
             missing.extend(validate_joint_configuration(joint, hashes, context))
+            protection = section(text, "EXT-PROTECTION-1")
+            expected_protection = {"targetCommit": joint["binding"]["protectionCommit"],
+                "integrationDate": calendar_date(context["protectionIntegrationDate"]),
+                "profileSha256": hashes["protectionProfileSha256"],
+                "configurationSha256": hashes["jointConfigurationSha256"], "planSha256": digest(full_plan())}
+            accepted_protection = re.search(r"\| `ProtectionQualificationBinding` \| `([^`]+)` \|", protection)
+            if (accepted_protection is None or q.decode_json(accepted_protection[1]) != expected_protection
+                    or f'| `TargetVersionOrCommit` | `{expected_protection["targetCommit"]}` |' not in protection
+                    or not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", protection)):
+                missing.append("ExactAcceptedCompleteProtectionBinding")
+            context["acceptedProtectionSectionSha256"] = hashlib.sha256(protection.encode()).hexdigest()
         except (OSError, ValueError, TypeError, KeyError):
             missing.append("JointConfiguration.Structure")
         anchors = []
@@ -143,7 +154,16 @@ def shared_binding(installed_hashes, coordinated):
             "configurationRawSha256": installed_hashes["custodyConfigurationSha256"],
             "profileSha256": installed_hashes["hostProfileSha256"], "planSha256": plan_digest(),
             "cohortPlanSha256": digest(full_plan()),
+            "protectionBinding": protection_binding(installed_hashes, coordinated),
             **{name + "AnchorSha256": installed_hashes[name + "AnchorSha256"] for name in ("executor", "observer", "enrollment")}}
+
+
+def protection_binding(installed_hashes, coordinated):
+    import qualify as q
+    joint = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])
+    return {"targetCommit": joint["binding"]["protectionCommit"], "integrationDate": calendar_date(coordinated["protectionIntegrationDate"]),
+        "profileSha256": installed_hashes["protectionProfileSha256"], "configurationSha256": installed_hashes["jointConfigurationSha256"],
+        "planSha256": digest(full_plan()), "acceptedSectionSha256": coordinated["acceptedProtectionSectionSha256"]}
 
 
 def records(register_path, target, platform_date, commands, bindings):
@@ -160,7 +180,7 @@ def records(register_path, target, platform_date, commands, bindings):
         joint_binding = {"configurationSha256": bindings["jointConfigurationSha256"], "bindingSha256": digest(joint["binding"]), "planSha256": digest(full_plan())}
         proposed = replace_binding_row(proposed, "JointQualificationBinding", joint_binding)
         if record == "EXT-SECRETS-1":
-            proposed = re.sub(r"(\| `RuntimeQualificationBinding` \| )`[^`]+`", lambda m: m[1] + "`" + json.dumps(bindings, sort_keys=True, separators=(",", ":")) + "`", proposed)
+            proposed = replace_binding_row(proposed, "RuntimeQualificationBinding", bindings)
         result[record] = {"acceptedSectionSha256": hashlib.sha256(original.encode()).hexdigest(), "acceptedVerbatimSection": original,
                           "proposedVerbatimSection": replace_binding_row(proposed, "HostQualificationBinding", bindings) if record == "EXT-HOST-1" else proposed, "RuntimeQualificationBinding": bindings, "accepted": False, "availability": False}
     return result
@@ -229,9 +249,8 @@ def validate_joint_configuration(config, installed_hashes=None, context=None):
                         or type(profile.get('completionTimeoutSeconds')) is not int or not 1 <= profile['completionTimeoutSeconds'] <= 86400 \
                         or not isinstance(profile.get('artifacts'), list) or not profile['artifacts']:
                     raise ValueError()
-                for artifact in profile['artifacts']:
-                    if not isinstance(artifact, dict) or hashlib.sha256(q.bounded_public_file(artifact['path'], 1024*1024)).hexdigest() != artifact['sha256']: raise ValueError()
-                if profile['command'][0] not in [item['path'] for item in profile['artifacts']]: raise ValueError()
+                from execution_profile import validate_execution_profile
+                missing.extend('JointConfiguration.phaseExecutionProfiles.'+str(phase)+'.'+item for item in validate_execution_profile(profile))
             except (OSError, KeyError, ValueError, TypeError): missing.append('JointConfiguration.phaseExecutionProfiles.' + str(phase))
     if installed_hashes is not None and context is not None:
         mapping = {'profileSha256':'hostProfileSha256','protectionProfileSha256':'protectionProfileSha256','currentTrustSha256':'publicTrustSha256',

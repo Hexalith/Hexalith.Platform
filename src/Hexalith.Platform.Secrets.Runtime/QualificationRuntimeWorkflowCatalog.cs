@@ -22,7 +22,7 @@ public static class QualificationRuntimeWorkflowCatalog
                 capability is not null && (id=="S4.capability-canonical-14-fields" || id.StartsWith("S4.capability-substitution.",StringComparison.Ordinal))?capability.ExecuteAsync:null;
             if(execute is null) continue;
             Func<JsonObject,CancellationToken,Task<JsonObject?>> recover=id.StartsWith("S1.inventory.",StringComparison.Ordinal) || id=="S2.retained-digest"?runtimeOriginals.LookupAsync:
-                id.StartsWith("S4.capability",StringComparison.Ordinal)?capability!.ReadVerifyAsync:envelope!.LookupAsync;
+                id.StartsWith("S4.capability",StringComparison.Ordinal)?capability!.LookupAsync:envelope!.LookupAsync;
             result.Add(Retained(id,originals,execute,recover));
         }
         return result;

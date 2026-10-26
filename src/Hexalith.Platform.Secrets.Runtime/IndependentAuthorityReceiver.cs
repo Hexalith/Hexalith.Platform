@@ -36,6 +36,12 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 || state.TrustRevision != installation.TrustRevision || state.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(503);
             var grant = Authenticate(context, state, method);
             if (grant is null) return Results.StatusCode(403);
+            if(method is "qualification-begin-original" or "qualification-retain-result" && request.Payload.TryGetProperty("role",out var privateRole) && PrivateRole(privateRole.GetString()))
+            {
+                var publication=await PreparePrivatePublicationAsync(method,request.Payload,grant,state,etag,budget.Token).ConfigureAwait(false);
+                if(!publication.Ready) return Results.StatusCode(503);
+                state=publication.State;etag=publication.ETag;grant=Authenticate(context,state,method);if(grant is null) return Results.StatusCode(403);
+            }
             bool capacityAdmission=method=="spool-admit-transition" || method=="spool-authorize"
                 && request.Payload.Deserialize<SpoolAuthorization>(CustodyBindingContract.Json)?.method is "Observe" or "Readiness";
             if(capacityAdmission && !UsableTransportCapacity(state))
@@ -84,6 +90,66 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 var proof=request.Payload.GetProperty("proof").Deserialize<PrivateReplayRecoveryProof>(CustodyBindingContract.Json)!;
                 if(recordingSource is not IPrivateReplayRecoverySource native || !Same(await native.ReadReplayRecoveryProofAsync(proof.Intent,budget.Token).ConfigureAwait(false),proof)) return Results.StatusCode(403);
             }
+            if(method is "spool-admit-transition" or "spool-record-transition" or "spool-recover-transition")
+            {
+                var transition=request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!;
+                string scope=state.Spool?.ComponentName+"|system/security-observations/"+state.Spool?.InstallationEpoch;
+                if(state.Spool is null || state.Spool.ValidUntil<=clock.GetUtcNow() || transition.ScopeId!=scope || transition.TargetRevision!=transition.ExpectedRevision+1
+                    || transition.TargetBytes.Length>32*1024*1024 || Convert.ToHexString(SHA256.HashData(transition.TargetBytes))!=transition.TargetDigest) return Results.StatusCode(403);
+                if(!await HasSpoolOriginalAsync("recorded",transition,budget.Token).ConfigureAwait(false))
+                {
+                    bool archivedAdmission=await HasSpoolOriginalAsync("admitted",transition,budget.Token).ConfigureAwait(false);
+                    var reservation=new IndependentSpoolPublication(Hash(transition),transition.TargetDigest,transition.TargetRevision,
+                        checked((archivedAdmission?1L:2L)*JsonSerializer.SerializeToUtf8Bytes(transition,CustodyBindingContract.Json).LongLength+1024*1024));
+                    if(state.SpoolPublication is { } prior)
+                    {
+                        if(prior.TransitionSha256!=reservation.TransitionSha256 || prior.TargetDigest!=reservation.TargetDigest || prior.TargetRevision!=reservation.TargetRevision || prior.ReservedBytes<reservation.ReservedBytes) return Results.StatusCode(503);
+                        reservation=prior;
+                    }
+                    else
+                    {
+                        bool before=state.SpoolRevision==transition.ExpectedRevision && state.SpoolDigest==transition.PredecessorDigest;
+                        bool committed=archivedAdmission && state.SpoolRevision==transition.TargetRevision && state.SpoolDigest==transition.TargetDigest;
+                        if(!before && !committed || state.PendingSpoolTransitionDigest is { } pending && (pending!=transition.TargetDigest || !archivedAdmission)
+                            || method!="spool-admit-transition" && !archivedAdmission) return Results.StatusCode(503);
+                        // Reserve before even the first large archive write. A losing conditional writer publishes no bytes.
+                        if(state.PendingOriginalCompletionBytes is null && (state.PrivateOriginalsCount!=0 || state.Originals.Count!=0)) return Results.StatusCode(503);
+                        long other=checked((state.PendingOriginalCompletionBytes??0)+(state.OriginalPublications?.Values.Sum(value=>value.ReservedBytes)??0));
+                        if(_archive.AvailableBytes(CurrentArchiveDirectory())<checked(other+reservation.ReservedBytes+installation.CompletionReserveBytes)) return Results.StatusCode(503);
+                        var reserved=state with { Revision=checked(state.Revision+1),SpoolPublication=reservation,PendingSpoolTransitionDigest=before?transition.TargetDigest:state.PendingSpoolTransitionDigest };
+                        if(grant.ValidUntil<=clock.GetUtcNow() || !await dapr.TrySaveStateAsync(installation.Component,installation.StateKey,reserved,etag,
+                            new StateOptions { Concurrency=ConcurrencyMode.FirstWrite,Consistency=ConsistencyMode.Strong },cancellationToken:budget.Token).ConfigureAwait(false)) return Results.StatusCode(503);
+                        (state,etag)=await dapr.GetStateAndETagAsync<IndependentAuthorityState>(installation.Component,installation.StateKey,ConsistencyMode.Strong,cancellationToken:budget.Token).ConfigureAwait(false);
+                        if(state is null || state.SpoolPublication!=reservation || (grant=Authenticate(context,state,method)) is null) return Results.StatusCode(503);
+                    }
+                }
+            }
+            var ownerHandler=ownerHandlers?.SingleOrDefault(handler=>handler.Methods.Contains(method));
+            bool externalEffect=method is "replay-register-exact" or "security-observation-append" or "security-observation-recover-original"
+                || ownerHandler is not null && !ownerHandler.IsReadOnly(method);
+            bool recoverAdmitted=false;
+            if(externalEffect)
+            {
+                // The logical admission excludes frame nonce: a retry cannot turn unknown work into a new dispatch.
+                var exact=JsonSerializer.SerializeToElement(new { caller=grant.Identity,grant.Role,grant.ScopeReference,method,payloadSha256=QualificationProtocolSchema.Digest(JsonNode.Parse(request.Payload.GetRawText())!) },CustodyBindingContract.Json);
+                string admissionId="receiver:"+Hash(exact);
+                var internalCaller=grant with { Role="receiver-admission" };
+                var publicationPayload=JsonSerializer.SerializeToElement(new { role="receiver-admission",requestId=admissionId,original=exact,finalAtAdmission=true },CustodyBindingContract.Json);
+                var prepared=await PreparePrivatePublicationAsync("qualification-begin-original",publicationPayload,internalCaller,state,etag,budget.Token).ConfigureAwait(false);
+                if(!prepared.Ready) return Results.StatusCode(503);
+                state=prepared.State;etag=prepared.ETag;var fresh=Authenticate(context,state,method);
+                if(fresh is null || fresh.Identity!=grant.Identity || fresh.Role!=grant.Role || fresh.ScopeReference!=grant.ScopeReference) return Results.StatusCode(403);grant=fresh;
+                var admitted=JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state,CustodyBindingContract.Json),CustodyBindingContract.Json)!;
+                var admission=await ApplyPrivateOriginalAsync("qualification-begin-original",publicationPayload,internalCaller,state,admitted,value=>admitted=value,budget.Token).ConfigureAwait(false);
+                var admittedBody=JsonSerializer.SerializeToElement(admission.Payload,CustodyBindingContract.Json);
+                if(!admittedBody.GetProperty("Exact").GetBoolean()) return Results.StatusCode(503);
+                recoverAdmitted=!admittedBody.GetProperty("First").GetBoolean();
+                // Even exact recovery authorization is ordered with the same independently surviving revocation head.
+                admitted=admitted with { Revision=checked(state.Revision+1) };
+                if(grant.ValidUntil<=clock.GetUtcNow() || !await dapr.TrySaveStateAsync(installation.Component,installation.StateKey,admitted,etag,
+                    new StateOptions { Concurrency=ConcurrencyMode.FirstWrite,Consistency=ConsistencyMode.Strong },cancellationToken:budget.Token).ConfigureAwait(false)) return Results.StatusCode(503);
+                state=admitted;
+            }
             var next = JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state, CustodyBindingContract.Json), CustodyBindingContract.Json)!;
             (object? Payload, bool Mutated) outcome;
             if (method is "replay-register-exact" or "replay-lookup-exact" or "security-observation-lookup" or "security-observation-append" or "security-observation-recover-original")
@@ -96,7 +162,7 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                     if (method == "replay-register-exact")
                     {
                         var replay = request.Payload.Deserialize<ReplayAdmission>(CustodyBindingContract.Json)!;
-                        recordingResult = await recordingSource.RegisterAsync(replay.intent, replay.evaluatedAt, TimeSpan.FromTicks(replay.retentionTicks), budget.Token);
+                        recordingResult = recoverAdmitted?await recordingSource.LookupAsync(replay.intent,budget.Token):await recordingSource.RegisterAsync(replay.intent, replay.evaluatedAt, TimeSpan.FromTicks(replay.retentionTicks), budget.Token);
                     }
                     else recordingResult = await recordingSource.LookupAsync(request.Payload.Deserialize<ReplayLookup>(CustodyBindingContract.Json)!.intent, budget.Token);
                 }
@@ -109,26 +175,26 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                         if (grant.Role != "aged-recovery") return Results.StatusCode(403);
                         var recovery = request.Payload.Deserialize<RecorderRecovery>(CustodyBindingContract.Json)!;
                         originalRecord = recovery.original;
-                        await recordingSource.RecoverOriginalAsync(recovery.original, recovery.grant, budget.Token);
+                        if(!recoverAdmitted) await recordingSource.RecoverOriginalAsync(recovery.original, recovery.grant, budget.Token);
                     }
                     else
                     {
                         originalRecord = request.Payload.Deserialize<RecorderOriginal>(CustodyBindingContract.Json)!.record;
-                        if (method == "security-observation-append") await recordingSource.AppendAsync(originalRecord, budget.Token);
+                        if (method == "security-observation-append" && !recoverAdmitted) await recordingSource.AppendAsync(originalRecord, budget.Token);
                     }
                     var lookup = await recordingSource.LookupAsync(originalRecord, budget.Token);
                     recordingResult = new { OriginalSha256 = Hash(originalRecord), Lookup = lookup };
                 }
                 outcome = (recordingResult, false);
             }
+            else if (ownerHandler is { } handler)
+                outcome = (await (recoverAdmitted?handler.RecoverAsync(method,request.Payload,grant,state,budget.Token):handler.HandleAsync(method, request.Payload, grant, state, budget.Token)).WaitAsync(budget.Token).ConfigureAwait(false), false);
             else if(IsPrivateOriginalOperation(method,request.Payload))
                 outcome=await ApplyPrivateOriginalAsync(method,request.Payload,grant,state,next,replacement=>next=replacement,budget.Token).ConfigureAwait(false);
             else if(method is "spool-admit-recovery" or "spool-verify-recovery")
                 outcome=await ApplyRecoveryAsync(method,request.Payload,grant,state,next,budget.Token).ConfigureAwait(false);
             else if (method is "spool-admit-transition" or "spool-record-transition" or "spool-recover-transition" or "spool-verify-transition")
                 outcome = await ApplySpoolTransitionAsync(method, request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!, next, replacement => next = replacement, budget.Token).ConfigureAwait(false);
-            else if (ownerHandlers?.SingleOrDefault(handler => handler.Methods.Contains(method)) is { } handler)
-                outcome = (await handler.HandleAsync(method, request.Payload, grant, state, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false), false);
             else outcome = Apply(method, request.Payload, grant, next, replacement => next = replacement);
             if (outcome.Mutated)
             {
@@ -147,6 +213,11 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             {
                 var completed = request.Payload.Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!;
                 await WriteSpoolOriginalAsync("recorded", completed, false, budget.Token).ConfigureAwait(false);
+                // Release only after exact durable publication; failure keeps the reservation recoverable.
+                var (settled,settledTag)=await dapr.GetStateAndETagAsync<IndependentAuthorityState>(installation.Component,installation.StateKey,ConsistencyMode.Strong,cancellationToken:budget.Token).ConfigureAwait(false);
+                if(settled?.SpoolPublication is { } liability && liability.TransitionSha256==Hash(completed) && settled.SpoolRevision>=completed.TargetRevision)
+                    if(!await dapr.TrySaveStateAsync(installation.Component,installation.StateKey,settled with { Revision=checked(settled.Revision+1),SpoolPublication=null },settledTag,
+                        new StateOptions { Concurrency=ConcurrencyMode.FirstWrite,Consistency=ConsistencyMode.Strong },cancellationToken:budget.Token).ConfigureAwait(false)) return Results.StatusCode(503);
             }
             if(method=="spool-admit-recovery" && outcome.Payload is SecurityObservationRecoveryGrant issued)
                 await new IndependentRecoveryGrantArchive(CurrentArchiveDirectory(),installation,signer).PublishAsync(issued,next.Revision,budget.Token).ConfigureAwait(false);
@@ -170,6 +241,53 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             && SecretsProvisioning.IsReference(capacity.DaprSidecarIdentity) && capacity.MeasurementOriginalSha256 is { Length:64 } && capacity.MeasurementOriginalSha256.All(char.IsAsciiHexDigit)
             && capacity.MaximumDaprRequestBytes>=required && capacity.MaximumDaprInvokeBytes>=required && capacity.MaximumReceiverBytes>=required && capacity.MaximumResponseBytes>=required;
     }
+
+    private async Task<(IndependentAuthorityState State,string ETag,bool Ready)> PreparePrivatePublicationAsync(string method,JsonElement payload,IndependentCallerGrant caller,
+        IndependentAuthorityState state,string etag,CancellationToken token)
+    {
+        string role=payload.GetProperty("role").GetString()!,id=payload.GetProperty("requestId").GetString()!;
+        if(role!=caller.Role || !CustodyBindingContract.Text(id) || !PrivateRole(role)) return (state,etag,false);
+        bool begin=method=="qualification-begin-original",final=begin && payload.TryGetProperty("finalAtAdmission",out var terminal) && terminal.GetBoolean();
+        if(final && !TerminalAtAdmission(role,id)) return (state,etag,false);
+        async Task<bool> Save(IndependentAuthorityState next)
+        {
+            next=next with { Revision=checked(state.Revision+1) };
+            if(JsonSerializer.SerializeToUtf8Bytes(next,CustodyBindingContract.Json).Length>32*1024*1024) return false;
+            if(!await dapr.TrySaveStateAsync(installation.Component,installation.StateKey,next,etag,new StateOptions { Concurrency=ConcurrencyMode.FirstWrite,Consistency=ConsistencyMode.Strong },cancellationToken:token).ConfigureAwait(false)) return false;
+            (state,etag)=await dapr.GetStateAndETagAsync<IndependentAuthorityState>(installation.Component,installation.StateKey,ConsistencyMode.Strong,cancellationToken:token).ConfigureAwait(false);
+            if(state is null || string.IsNullOrWhiteSpace(etag) || state.ValidUntil<=clock.GetUtcNow()) throw new IOException("Current original publication reservation unavailable.");return true;
+        }
+        if(state.PendingOriginalCompletionBytes is null || state.OriginalLiabilityVersion!=1)
+        {
+            var initialized=JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state,CustodyBindingContract.Json),CustodyBindingContract.Json)!;
+            var result=await ApplyPrivateOriginalAsync("private-original-initialize",payload,caller,state,initialized,value=>initialized=value,token).ConfigureAwait(false);
+            if(!await Save(initialized).ConfigureAwait(false) || result.Payload is not Permission { Allowed:true }) return (state,etag,false);
+        }
+        var index=new IndependentPrivateOriginalIndex(PrivateArchive());var existing=(await index.ReadAsync(state.PrivateOriginalsRoot,role,id,token).ConfigureAwait(false))?.Original??state.Originals.GetValueOrDefault(role+":"+id);
+        if(begin && existing is not null || !begin && existing?.Result is not null) return (state,etag,true);
+        if(!begin && existing is null) return (state,etag,false);
+        byte[] body=JsonSerializer.SerializeToUtf8Bytes(payload.GetProperty(begin?"original":"result"),CustodyBindingContract.Json);
+        if(body.Length>(begin?CustodyBindingContract.MaximumOriginalBytes/2:CustodyBindingContract.MaximumOriginalBytes)) return (state,etag,false);
+        string kind=begin?"request":"result",key=PublicationKey(role,id,kind);var publications=state.OriginalPublications??new();
+        var reserved=new IndependentOriginalPublication(role,id,kind,CustodyBindingContract.Hash(body),begin?2L*CustodyBindingContract.MaximumOriginalBytes:0,begin && !final?OriginalCompletionBytes:0,final);
+        if(publications.TryGetValue(key,out var prior)) { if(prior!=reserved) return (state,etag,false); }
+        else
+        {
+            if(publications.Count>=128 || _archive.AvailableBytes(CurrentArchiveDirectory())<checked(state.PendingOriginalCompletionBytes!.Value+(state.SpoolPublication?.ReservedBytes??0)+publications.Values.Sum(value=>value.ReservedBytes)+reserved.ReservedBytes+reserved.CompletionBytes+installation.CompletionReserveBytes)) return (state,etag,false);
+            var nextPublications=new Dictionary<string,IndependentOriginalPublication>(publications,StringComparer.Ordinal) { [key]=reserved };
+            if(!await Save(state with { PendingOriginalCompletionBytes=checked(state.PendingOriginalCompletionBytes.Value+reserved.CompletionBytes),OriginalPublications=nextPublications }).ConfigureAwait(false)) return (state,etag,false);
+            publications=state.OriginalPublications!;
+        }
+        long own=begin?reserved.CompletionBytes:existing is { Result:null,FinalAtAdmission:false }?OriginalCompletionBytes:0;
+        long required=checked(state.PendingOriginalCompletionBytes!.Value-own+(state.SpoolPublication?.ReservedBytes??0)+publications.Values.Sum(value=>value.ReservedBytes)-reserved.ReservedBytes+body.LongLength+1024*1024+installation.CompletionReserveBytes);
+        if(_archive.AvailableBytes(CurrentArchiveDirectory())<required) return (state,etag,false);
+        await _archive.ProbeWritableAsync(CurrentArchiveDirectory(),token).ConfigureAwait(false);return (state,etag,true);
+    }
+    private const long OriginalCompletionBytes=4L*CustodyBindingContract.MaximumOriginalBytes+1024*1024;
+    private static string PublicationKey(string role,string id,string kind)=>Hash(new { role,id,kind });
+    private static bool TerminalAtAdmission(string role,string id)=>role=="receiver-admission" && id.StartsWith("receiver:",StringComparison.Ordinal) || role=="fr34-recipes" && (id.EndsWith(":encryption",StringComparison.Ordinal) || id.EndsWith(":completion",StringComparison.Ordinal))
+        || role=="occurrence-read-use" && id.Contains(":release:",StringComparison.Ordinal) || role=="guarded-transaction" && id.StartsWith("cell:",StringComparison.Ordinal);
+    private IIndependentContentArchive PrivateArchive()=>privateOriginalArchive??new IndependentFileContentArchive(Path.Combine(CurrentArchiveDirectory(),"private-originals",Hash(new { installation.EnrollmentId,installation.Scope,installation.TrustRevision })));
 
     private (object? Payload, bool Mutated) Apply(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState state, Action<IndependentAuthorityState> replace)
     {
@@ -298,7 +416,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             || state.PendingSpoolTransitionDigest is { } pending && pending != transition.TargetDigest) return (Decision(false), false);
         if (method == "spool-admit-transition")
         {
-            await WriteSpoolOriginalAsync("admitted", transition, true, token).ConfigureAwait(false);
+            if(state.SpoolPublication is not { } reservation || reservation.TransitionSha256!=Hash(transition)) return (Decision(false),false);
+            await WriteSpoolOriginalAsync("admitted", transition, false, token).ConfigureAwait(false);
             replace(state with { PendingSpoolTransitionDigest = transition.TargetDigest });
             return (Decision(true), state.PendingSpoolTransitionDigest != transition.TargetDigest);
         }
@@ -306,14 +425,44 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         replace(state with { SpoolRevision = transition.TargetRevision, SpoolDigest = transition.TargetDigest, PendingSpoolTransitionDigest = null });
         return (Decision(true), true);
     }
-    private static bool PrivateRole(string? role)=>role is "private-replay" or "private-security-observation" or "fr34-engine" or "fr34-observer" or "executor" or "observer" or "enrollment" or "joint-phase-secret" or "joint-phase-command" or "fr34-recipes" or "occurrence-read-use";
+    private static bool PrivateRole(string? role)=>role is "receiver-admission" or "private-replay" or "private-security-observation" or "fr34-engine" or "fr34-observer" or "executor" or "observer" or "enrollment" or "joint-phase-secret" or "joint-phase-command" or "fr34-recipes" or "occurrence-read-use" or "guarded-transaction";
     private static bool IsPrivateOriginalOperation(string method,JsonElement payload)=>method is "recording-replay-recovery-command-authorize" or "recording-replay-recovery-dispatch-admit" or "recording-command-authorize" or "recording-recovery-command-authorize" or "recording-recovery-dispatch-admit" or "fr34-command-authorize"
         || method is "qualification-begin-original" or "qualification-retain-result" or "qualification-lookup-original" or "recording-dispatch-admit"
             && payload.TryGetProperty("role",out var role) && PrivateRole(role.GetString());
     private async Task<(object? Payload,bool Mutated)> ApplyPrivateOriginalAsync(string method,JsonElement payload,IndependentCallerGrant caller,
         IndependentAuthorityState current,IndependentAuthorityState next,Action<IndependentAuthorityState> replace,CancellationToken token)
     {
-        var index=new IndependentPrivateOriginalIndex(privateOriginalArchive??new IndependentFileContentArchive(Path.Combine(CurrentArchiveDirectory(),"private-originals",Hash(new { installation.EnrollmentId,installation.Scope,installation.TrustRevision }))));
+        var index=new IndependentPrivateOriginalIndex(PrivateArchive());
+        // Includes a maximum result body, retained dispatch/history bodies and bounded AVL path publication.
+        const long liability=OriginalCompletionBytes;
+        async Task<bool> InitializeLiabilities()
+        {
+            if(next.PendingOriginalCompletionBytes is not null && next.OriginalLiabilityVersion==1) return true;
+            var migration=next.OriginalLiabilityMigration??new(next.PrivateOriginalsRoot,[],0,next.OriginalPublications?.Values.Sum(value=>value.CompletionBytes)??0);
+            if(migration.IndexRoot!=next.PrivateOriginalsRoot) throw new IOException("Liability migration index changed.");
+            IReadOnlyList<string> cursor=migration.IndexStarted?migration.Remaining:migration.IndexRoot is null?[]:[migration.IndexRoot];
+            var page=await index.PageAsync(cursor,64,token).ConfigureAwait(false);long pending=migration.PendingBytes;
+            foreach(var entry in page.Entries) if(entry.Pending) pending=checked(pending+liability);
+            migration=migration with { Remaining=page.Remaining,IndexStarted=true,Processed=checked(migration.Processed+page.Entries.Count),PendingBytes=pending };
+            if(migration.Processed>next.PrivateOriginalsCount) throw new IOException("Original migration count substitution.");
+            bool legacyComplete=false;
+            if(page.Remaining.Count==0)
+            {
+                var legacy=next.Originals.Where(pair=>PrivateRole(pair.Key.Split(':',2)[0]) && (migration.LegacyAfter is null || string.CompareOrdinal(pair.Key,migration.LegacyAfter)>0))
+                    .OrderBy(pair=>pair.Key,StringComparer.Ordinal).Take(65).ToArray();
+                foreach(var entry in legacy.Take(64)) { if(entry.Value.Result is null && !entry.Value.FinalAtAdmission) pending=checked(pending+liability);migration=migration with { LegacyAfter=entry.Key,PendingBytes=pending }; }
+                legacyComplete=legacy.Length<=64;
+            }
+            bool complete=page.Remaining.Count==0 && legacyComplete;
+            next=next with { PendingOriginalCompletionBytes=complete?pending:null,OriginalLiabilityVersion=complete?1:0,OriginalLiabilityMigration=complete?null:migration };replace(next);return complete;
+        }
+        async Task Reserve(long extra,long writes)
+        {
+            if(!await InitializeLiabilities().ConfigureAwait(false)) throw new IOException("Bounded durable original liability migration required.");string directory=CurrentArchiveDirectory();
+            if(_archive.AvailableBytes(directory)<checked(next.PendingOriginalCompletionBytes!.Value+extra+writes+(next.SpoolPublication?.ReservedBytes??0)+installation.CompletionReserveBytes))
+                throw new IOException("Independent archive outstanding original completion liability unavailable.");
+            await _archive.ProbeWritableAsync(directory,token).ConfigureAwait(false);
+        }
         async Task<IndependentOriginal?> Read(string role,string id)
         {
             var archived=await index.ReadAsync(next.PrivateOriginalsRoot,role,id,token).ConfigureAwait(false);
@@ -328,34 +477,50 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         async Task Migrate()
         {
             await RequireArchiveAsync(false,token).ConfigureAwait(false);
+            long bytes=0;
             foreach(var legacy in next.Originals.Where(pair=>PrivateRole(pair.Key.Split(':',2)[0])).Take(16).ToArray())
-            { int separator=legacy.Key.IndexOf(':');await Store(legacy.Key[..separator],legacy.Key[(separator+1)..],legacy.Value).ConfigureAwait(false); }
+            { bytes=checked(bytes+JsonSerializer.SerializeToUtf8Bytes(legacy.Value,CustodyBindingContract.Json).LongLength);if(bytes>1024*1024) break;int separator=legacy.Key.IndexOf(':');await Store(legacy.Key[..separator],legacy.Key[(separator+1)..],legacy.Value).ConfigureAwait(false); }
         }
         bool Workload(string identity,string principal,string domain)=>current.Callers.Any(value=>value.Identity==identity && value.ScopeReference==principal && !value.Revoked
             && value.ValidUntil>clock.GetUtcNow() && value.Methods.Contains("recording-source:"+(domain=="agents"?"legacy-security-event-log":domain),StringComparer.Ordinal));
+        if(method=="private-original-initialize") return (new Permission(await InitializeLiabilities().ConfigureAwait(false)),true);
         if(method=="qualification-lookup-original")
         {
             var request=payload.Deserialize<LookupOriginal>(CustodyBindingContract.Json)!;
             return (request.role==caller.Role || caller.Methods.Contains("qualification-read-original:"+request.role,StringComparer.Ordinal)?await Read(request.role,request.requestId).ConfigureAwait(false):null,false);
         }
+        // Persist each bounded migration page even when the requested mutation cannot yet be admitted.
+        // No archive/index mutation races the pinned migration snapshot; authenticated exact reads remain available.
+        if(method is "qualification-begin-original" or "qualification-retain-result" or "recording-dispatch-admit" or "recording-replay-recovery-dispatch-admit" or "recording-recovery-dispatch-admit")
+            if(!await InitializeLiabilities().ConfigureAwait(false)) return (method.StartsWith("qualification-",StringComparison.Ordinal)?new { Exact=false,First=false }:new Permission(false),true);
         if(method=="qualification-begin-original")
         {
             var request=payload.Deserialize<BeginOriginal>(CustodyBindingContract.Json)!;
             if(request.role!=caller.Role) return (new { Exact=false,First=false },false);
             var existing=await Read(request.role,request.requestId).ConfigureAwait(false);
-            if(existing is not null) return (new { Exact=Same(existing.Request,request.original),First=false },false);
+            if(existing is not null) return (new { Exact=Same(existing.Request,request.original) && existing.FinalAtAdmission==request.finalAtAdmission,First=false },false);
+            if(request.finalAtAdmission && !TerminalAtAdmission(request.role,request.requestId)) return (new { Exact=false,First=false },false);
+            if(JsonSerializer.SerializeToUtf8Bytes(request.original,CustodyBindingContract.Json).Length>CustodyBindingContract.MaximumOriginalBytes/2) throw new IOException("Bounded original request leaves no result capacity.");
             await RequireArchiveAsync(true,token).ConfigureAwait(false);
+            string publicationKey=PublicationKey(request.role,request.requestId,"request");
+            bool preReserved=next.OriginalPublications?.ContainsKey(publicationKey)==true;
+            if(!preReserved) await Reserve(request.finalAtAdmission?0:liability,2L*CustodyBindingContract.MaximumOriginalBytes).ConfigureAwait(false);
             await Migrate().ConfigureAwait(false);
-            await Store(request.role,request.requestId,new(request.original.Clone(),null,RetainedRevision:checked(current.Revision+1))).ConfigureAwait(false);
+            await Store(request.role,request.requestId,new(request.original.Clone(),null,RetainedRevision:checked(current.Revision+1),FinalAtAdmission:request.finalAtAdmission)).ConfigureAwait(false);
+            next.OriginalPublications?.Remove(publicationKey);
+            next=next with { PendingOriginalCompletionBytes=checked(next.PendingOriginalCompletionBytes!.Value+(preReserved || request.finalAtAdmission?0:liability)) };replace(next);
             return (new { Exact=true,First=true },true);
         }
         if(method=="qualification-retain-result")
         {
             var request=payload.Deserialize<RetainResult>(CustodyBindingContract.Json)!;
             var original=request.role==caller.Role?await Read(request.role,request.requestId).ConfigureAwait(false):null;
-            if(original is null) return (new { Exact=false,First=false },false);
+            if(original is null || original.FinalAtAdmission) return (new { Exact=false,First=false },false);
             if(original.Result is { } recorded) return (new { Exact=Same(recorded,request.result),First=false },false);
+            _=await InitializeLiabilities().ConfigureAwait(false);
             await Migrate().ConfigureAwait(false);await Store(request.role,request.requestId,original with { Result=request.result.Clone(),ResultRetainedRevision=checked(current.Revision+1) }).ConfigureAwait(false);
+            next=next with { PendingOriginalCompletionBytes=checked(next.PendingOriginalCompletionBytes!.Value>=liability?next.PendingOriginalCompletionBytes.Value-liability:throw new IOException("Uncharged original completion liability requires reconciliation.")) };replace(next);
+            next.OriginalPublications?.Remove(PublicationKey(request.role,request.requestId,"result"));
             return (new { Exact=true,First=true },true);
         }
         if(method=="recording-dispatch-admit")
@@ -412,11 +577,10 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         var recoveryOriginal=await Read("private-security-observation",recovered.MessageId).ConfigureAwait(false);
         if(caller.Role!="private-security-observation" || recovered.Domain is not ("security-event-log" or "agents") || recovered.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(dispatch.grant)
             || recovered.IdempotencyKey!=recovered.MessageId || dispatch.grant.ValidUntil<=clock.GetUtcNow() || recoveryOriginal is not { SubmissionState:"Unsent" }
-            || (baseOriginal is not null?!Same(baseOriginal.Request,recovered.Payload):dispatch.grant.OriginalProof.NoRecordProof?.Basis!="DefinitiveAbsent")
+            || baseOriginal is null || !Same(baseOriginal.Request,recovered.Payload)
             || !Same(RecoveryPayload(dispatch.grant),recovered.Payload) || !Same(recoveryOriginal.Request,recovered.Payload)) return (new Permission(false),false);
         await Migrate().ConfigureAwait(false);
         await Store("private-security-observation",recovered.MessageId,recoveryOriginal with { SubmissionState="Dispatched" }).ConfigureAwait(false);
-        baseOriginal??=new(recovered.Payload.Clone(),null,RetainedRevision:checked(current.Revision+1));
         await Store("private-security-observation",ordinaryId,baseOriginal with { SubmissionState="Dispatched",ActiveTransportMessageId=recovered.MessageId }).ConfigureAwait(false);
         return (new Permission(true),true);
     }
@@ -450,11 +614,17 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         bool admitted=verify.grant.ValidUntil>clock.GetUtcNow() && verify.grant.RecoveryAuthorityRevision==current.TrustRevision && Target(verify.grant.Target)
             && await archive.ContainsAsync(verify.grant,current.Revision,token).ConfigureAwait(false)
             && verify.currentProof.State!=SecurityEventRecorderLookupState.Unknown && (Same(verify.grant.OriginalProof,verify.currentProof)
+                || MonotonicUnsentBase(verify.grant.OriginalProof,verify.currentProof)
                 || verify.grant.OriginalProof.State==SecurityEventRecorderLookupState.NotRecorded && verify.currentProof.State==SecurityEventRecorderLookupState.Recorded);
         if(admitted && verify.currentProof.State==SecurityEventRecorderLookupState.Recorded)
             foreach(string key in next.Recoveries.Where(pair=>Same(pair.Value.Original,verify.grant.Original) && pair.Value.Target==verify.grant.Target).Select(pair=>pair.Key).ToArray()) next.Recoveries.Remove(key);
         return (new Permission(admitted),admitted); // Successful verification is ordered atomically with role revocation, including an archive-only grant.
     }
+    private static bool MonotonicUnsentBase(SecurityEventRecorderLookup before,SecurityEventRecorderLookup after)
+        =>before.State==SecurityEventRecorderLookupState.NotRecorded && after.State==SecurityEventRecorderLookupState.NotRecorded
+            && before.NoRecordProof is { Basis:"DefinitiveAbsent" } absent && after.NoRecordProof is { Basis:"RetainedUnsent" } admitted
+            && absent.OriginalMessageId==admitted.OriginalMessageId && admitted.CurrentTransportMessageId==admitted.OriginalMessageId
+            && absent.NativeSourceIncarnation==admitted.NativeSourceIncarnation && absent.NativeHead==admitted.NativeHead && absent.NativePrefixSha256==admitted.NativePrefixSha256;
     private string SpoolOriginalPath(string category, AnchoredStateTransition transition)
     {
         if(!CustodyBindingContract.Digest(transition.TargetDigest)) throw new InvalidOperationException("Exact immutable transition digest required.");
@@ -548,7 +718,7 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
     private sealed record RecoveryVerification(SecurityObservationRecoveryGrant grant, SecurityEventRecorderLookup currentProof);
     private sealed record CallerAuthentication(string role, string bearerSha256);
     private sealed record CallerAuthorization(string role, JsonObject request, QualificationCallerContext caller);
-    private sealed record BeginOriginal(string role, string requestId, JsonElement original);
+    private sealed record BeginOriginal(string role, string requestId, JsonElement original,bool finalAtAdmission=false);
     private sealed record RetainResult(string role, string requestId, JsonElement result);
     private sealed record RegistrationLookup(CustodyKeyObjectIdentity identity);
     private sealed record ManifestLookup(string reservationReceiptId);

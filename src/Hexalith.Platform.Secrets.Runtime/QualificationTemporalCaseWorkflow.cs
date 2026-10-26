@@ -12,10 +12,14 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
     public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>inputs.Keys.Where(Supported).Select(id=>QualificationRuntimeWorkflowCatalog.Retained(id,originals,ExecuteAsync)
         with { Preflight=PreflightAsync }).ToArray();
     /// <summary>Validates real current temporal conditions; supplied clocks and expected outcome flags are not accepted.</summary>
-    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
+    public async Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
     {
-        token.ThrowIfCancellationRequested();var input=Input(request);var profile=profiles.GetCurrent();
-        return Task.FromResult<IReadOnlyList<string>>(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())?["ExactTemporalOriginalAndCurrentProfile"]:[]);
+        token.ThrowIfCancellationRequested();
+        if(SecretsProof.Text(request,"requestId") is { } originalId && await originals.LookupResultAsync("executor",originalId+":case-result",token).ConfigureAwait(false) is not null) return [];
+        var input=Input(request);var profile=profiles.GetCurrent();
+        if(SecretsProof.Text(request,"caseId") is { } id && (id.StartsWith("S2.expiry.",StringComparison.Ordinal) || id.StartsWith("S2.overlap-",StringComparison.Ordinal)))
+            return ["External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol"];
+        return input is null || profile is null || !profile.IsValid(clock.GetUtcNow())?["ExactTemporalOriginalAndCurrentProfile"]:[];
     }
     private bool FirstBoundaryAdmitted(JsonObject request)
     {

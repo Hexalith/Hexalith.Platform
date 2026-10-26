@@ -155,7 +155,7 @@ public sealed class IndependentAuthorityReceiverTests
     public async Task ActualQualificationOwnerReceiverSignsExactOriginalAndUncertainRestartUsesLookupOnly()
     {
         using var fixture=new Fixture();using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
-        var full=QualificationHostTests.Request();var request=(System.Text.Json.Nodes.JsonObject)full.DeepClone();request.Remove("scenario");
+        var full=QualificationHostTests.Request();var request=(System.Text.Json.Nodes.JsonObject)full.DeepClone();
         fixture.State=fixture.State with {
             Callers=fixture.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray(),
             QualificationBindings=new Dictionary<string,string>(new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.Select(name=>new KeyValuePair<string,string>(name,request[name]!.ToJsonString()))),
@@ -292,16 +292,20 @@ public sealed class IndependentAuthorityReceiverTests
         private readonly IIndependentArchiveStorage? _archiveStorage;
         private readonly IIndependentContentArchive? _privateArchive;
         private readonly TimeProvider _clock;
+        private readonly IReadOnlyList<IIndependentOwnerOperationHandler>? _handlers;
         internal string ArchiveDirectory=>_channel+"-archive";
         private int _revision;
         internal IndependentAuthorityState State;
         internal int Saves;
+        internal Func<IndependentAuthorityState,bool>? RejectHeadPublication;
+        private readonly object _headLock=new();
         internal IPrivateRecordingEventStore RecordingSource { get; } = Substitute.For<IPrivateRecordingEventStore>();
         internal string Bearer = "isolated-caller";
         internal ReplicatedSecuritySpoolTarget Target { get; } = new("isolated-spool", "isolated-epoch", "current-1", DateTimeOffset.UtcNow.AddHours(1));
         internal string Scope => Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch;
-        internal Fixture(IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateArchive=null,TimeProvider? clock=null)
+        internal Fixture(IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateArchive=null,TimeProvider? clock=null,IReadOnlyList<IIndependentOwnerOperationHandler>? handlers=null)
         {
+            _handlers=handlers;
             _archiveStorage=archiveStorage;_privateArchive=privateArchive;_clock=clock??TimeProvider.System;
             File.WriteAllText(_channel, "isolated-channel");
             string archive = _channel + "-archive"; Directory.CreateDirectory(archive);
@@ -312,12 +316,15 @@ public sealed class IndependentAuthorityReceiverTests
                 [new(hash, "worker", "scope", "executor", ["spool-current", "spool-admit-transition", "spool-record-transition", "spool-recover-transition", "spool-verify-transition", "spool-validate", "qualification-begin-original"], DateTimeOffset.UtcNow.AddHours(1), false)],
                 Target, 0, new string('A', 64), [], [], [], [], [], [],TransportCapacity:new("fixture-current-capacity","fixture-sidecar",new string('a',64),128L*1024*1024,128L*1024*1024,128L*1024*1024,128L*1024*1024,DateTimeOffset.UtcNow.AddHours(1)));
             _dapr.GetStateAndETagAsync<IndependentAuthorityState>("independent-test-store", "head", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
-                .Returns(_ => Task.FromResult((State, _revision.ToString())));
+                .Returns(_ => { lock(_headLock) return Task.FromResult((State, _revision.ToString())); });
             _dapr.TrySaveStateAsync("independent-test-store", "head", Arg.Any<IndependentAuthorityState>(), Arg.Any<string>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
-                .Returns(call => { if (call.ArgAt<string>(3) != _revision.ToString()) return false; State = call.ArgAt<IndependentAuthorityState>(2); _revision++; Saves++; return true; });
-            _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
+                .Returns(call => { lock(_headLock) { if (call.ArgAt<string>(3) != _revision.ToString()) return false;var next=call.ArgAt<IndependentAuthorityState>(2);
+                    if(RejectHeadPublication?.Invoke(next)==true) { State=State with { Revision=checked(State.Revision+1) };_revision++;return false; }
+                    State=next;_revision++;Saves++;return true; } });
+            _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
         }
-        internal void Restart() => _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
+        internal void Restart() => _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive);
+        internal void RevokeCaller() { lock(_headLock) { State=State with { Revision=checked(State.Revision+1),Callers=State.Callers.Select(value=>value with { Revoked=true }).ToArray() };_revision++; } }
         internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), _clock);
         public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); Directory.Delete(_channel + "-archive", true); }
         private sealed class Transport(Fixture fixture) : ISecretsCredentialBoundDaprInvoker

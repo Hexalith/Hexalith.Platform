@@ -18,5 +18,7 @@ public sealed class DaprFr34OccurrenceEnrollment(IndependentDaprAuthority produc
     public async Task<bool> AdmitReleaseAsync(InteractionOccurrenceIdentity identity,CustodyInteractionMaterialProfile profile,CancellationToken token)=>(await producer.InvokeAsync<Permission>("fr34-material-release",new { identity,profile },token).ConfigureAwait(false))?.Allowed==true;
     /// <inheritdoc />
     public async Task<IReadOnlyList<CustodyInteractionMaterialProfile>> PendingAsync(CancellationToken token)=>await producer.InvokeAsync<CustodyInteractionMaterialProfile[]>("fr34-pending-material",new { },token).ConfigureAwait(false)??[];
+    /// <inheritdoc />
+    public Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)=>producer.InvokeAsync<InteractionProtectionErasureWitness>("fr34-read-erasure",new { binding },token);
     private sealed record Permission(bool Allowed);
 }

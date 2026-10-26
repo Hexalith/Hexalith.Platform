@@ -40,12 +40,14 @@ public static class QualificationOwnerDriverExecutable
         ICustodyOwnerStateAuthority Owner(CustodyLifecycleInstallation value)=>new CustodyOwnerAuthority(dapr,value.BindingName,value.TenantId,value.OwnerScope,value.EnrollmentJson,value.PublicKeyPem,new DaprCustodyOwnerCallSource(Authority(value.OwnerAuthority)));
         using var gatewayHttp=new HttpClient(new SocketsHttpHandler { AllowAutoRedirect=false,UseProxy=false }) { Timeout=TimeSpan.FromSeconds(30),BaseAddress=protectionInstallation?.EventStoreEndpoint };
         IEventStoreGatewayClient? gateway=null;
+        QualificationOwnerQueryClient? queries=null;
         if(protectionInstallation is { EventStoreEndpoint:{ IsAbsoluteUri:true,Scheme:"https" },GatewayCredentials:{ } credentials,ReadAuthority:{ } readAuthority,AuditScopes:{ } auditScopes })
         {
             var proofs=new QualificationGatewayReadProofs(credentials,Owner(readAuthority),auditScopes.Values.SelectMany(value=>value.NativeStreams).Distinct().ToArray(),TimeProvider.System);
             gateway=new EventStoreGatewayClient(gatewayHttp,Options.Create(new EventStoreGatewayClientOptions { BaseAddress=protectionInstallation.EventStoreEndpoint,UseWorkloadTransport=true,MaxStreamReadResponseBytes=1024*1024 }),proofs,proofs);
+            queries=new(gatewayHttp,credentials,Owner(readAuthority),auditScopes.Values.SelectMany(value=>value.ProjectionQueries).Distinct().ToArray(),TimeProvider.System);
         }
-        var audit=new QualificationEventStoreCaseAuditReader(gateway is null || protectionInstallation?.AuditScopes is null?null:new QualificationEventStoreAuditReader(Authority(installed.ExecutorOriginals),gateway,TimeProvider.System,protectionInstallation.AuditScopes));
+        var audit=new QualificationEventStoreCaseAuditReader(gateway is null || protectionInstallation?.AuditScopes is null?null:new QualificationEventStoreAuditReader(Authority(installed.ExecutorOriginals),gateway,TimeProvider.System,protectionInstallation.AuditScopes,queries));
         var sourceReaders=new Dictionary<string,IQualificationObservedOriginalReader>(StringComparer.Ordinal) { ["S1.reject.missing-config"]=new QualificationMissingConfigurationOriginalReader(executorOriginals,audit) };
         using var services=RuntimeServices(installed,dapr);
         if(installed.RuntimeCaseInputs is { } inputs && services?.GetService<IPlatformKeyInventoryAuthority>() is { } inventory)

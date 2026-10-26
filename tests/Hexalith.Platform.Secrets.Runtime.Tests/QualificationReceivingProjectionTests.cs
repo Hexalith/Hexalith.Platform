@@ -51,7 +51,7 @@ public sealed class QualificationReceivingProjectionTests
             request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");
             metrics["canonicalFieldCount"]=14;metrics["detachedEs256"]=1;metrics["successfulRevisionInSignedBytes"]=0;metrics["capabilityExpiryFields"]=0;
         }
-        request.Remove("requestId");request["requestId"]=QualificationProtocolSchema.Digest(request);var original=(JsonObject)request.DeepClone();original.Remove("scenario");
+        request.Remove("requestId");request["requestId"]=QualificationProtocolSchema.Digest(request);var original=(JsonObject)request.DeepClone();
         authority.State=authority.State with {
             Callers=authority.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray(),
             QualificationBindings=new(new[]{"runId","targetCommit","isolatedTargetId","planSha256"}.Select(name=>new KeyValuePair<string,string>(name,original[name]!.ToJsonString()))),
@@ -67,7 +67,7 @@ public sealed class QualificationReceivingProjectionTests
         var sourceReader=new ReceivingReader(sourceReceiver,()=>authority.State,authority.State.Callers[0] with { Role="observer-reader" });
         byte[] anchor=Encoding.ASCII.GetBytes(observerKey.ExportSubjectPublicKeyInfoPem());
         var trust=new QualificationProofBinding("observer","fixture-v1",anchor,Convert.ToHexStringLower(SHA256.HashData(anchor)));
-        var workflows=new[]{caseId.StartsWith("S4.capability",StringComparison.Ordinal)?QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,capability.ExecuteAsync,capability.ReadVerifyAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
+        var workflows=new[]{caseId.StartsWith("S4.capability",StringComparison.Ordinal)?QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,capability.ExecuteAsync,capability.LookupAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
         var drivers=QualificationDriverComposition.Create(workflows,originals,audit,sourceReader,trust,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}});
         var executor=new QualificationOwnerOperationHandler(new("executor","executor","fixture-v1",executorKey.ExportSubjectPublicKeyInfoPem()),executorKey,originals,drivers,TimeProvider.System);
         var observer=new QualificationOwnerOperationHandler(observerRole,observerKey,originals,drivers,TimeProvider.System);
@@ -95,7 +95,7 @@ public sealed class QualificationReceivingProjectionTests
     public async Task MissingActualReadInputsRefuseBeforeOriginalAdmissionOrEffects()
     {
         using var authority=new IndependentAuthorityReceiverTests.Fixture();using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
-        var originals=new InstalledQualificationOriginalStore(authority.Client());var original=QualificationHostTests.Request();original.Remove("scenario");
+        var originals=new InstalledQualificationOriginalStore(authority.Client());var original=QualificationHostTests.Request();
         using var audit=new FileAuditFixture(originals,original);
         var drivers=QualificationDriverComposition.Create([new QualificationMissingConfigurationWorkflow(originals).Registration],originals,audit,
             new QualificationMissingConfigurationOriginalReader(originals,audit),Binding(key,"observer"),new Dictionary<string,IReadOnlyList<string>>{{"S1.reject.missing-config",["InstalledIndependentEventOutboxSnapshotAndLeakageReaders"]}});

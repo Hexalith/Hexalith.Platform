@@ -68,9 +68,10 @@ def full_plan():
 class Blocked(Exception):
     def __init__(self, *missing):
         self.missing = sorted(set(missing))
-        self.effects_started = False
-        self.attempt_state = "NotReserved"
-        self.effect_state = "NotDispatched"
+        # Local admission failures cannot establish absence of an earlier retained attempt.
+        self.effects_started = True
+        self.attempt_state = "LookupRequired"
+        self.effect_state = "Unknown"
         self.attempt_id = self.phase_request_id = None
         super().__init__("DependencyNotAvailable: EXT-SECRETS-1, EXT-HOST-1")
 
@@ -375,6 +376,16 @@ class DaprPhaseOwner:
 
 
 def run_installed_cohort(configuration_path, register_path):
+    """Preserve uncertainty through every local refusal before authenticated retained-attempt lookup."""
+    try:
+        return _run_installed_cohort(configuration_path, register_path)
+    except Blocked:
+        raise
+    except Exception:
+        raise Blocked("ValidCoordinatedInstallationAndExactOriginalLookup") from None
+
+
+def _run_installed_cohort(configuration_path, register_path):
     """Common owner entrypoint; requires an explicit externally enrolled installation, never synthesizes ports."""
     import qualify as q
     configuration_bytes = q.bounded_public_file(configuration_path, 1024 * 1024)
@@ -401,6 +412,13 @@ def run_installed_cohort(configuration_path, register_path):
                         "bindingSha256": digest(binding), "planSha256": digest(full_plan())}
             if pins is None or q.decode_json(pins.group(1)) != expected:
                 raise Blocked("ExactAcceptedJointConfigurationAndTrust")
+        else:
+            pins = re.search(r"\| `ProtectionQualificationBinding` \| `([^`]+)` \|", section)
+            expected = {"targetCommit": binding["protectionCommit"], "integrationDate": integration,
+                        "profileSha256": binding["protectionProfileSha256"],
+                        "configurationSha256": hashlib.sha256(configuration_bytes).hexdigest(), "planSha256": digest(full_plan())}
+            if pins is None or q.decode_json(pins.group(1)) != expected:
+                raise Blocked("ExactAcceptedProtectionConfigurationProfileAndPlan")
     endpoint = config["daprEndpoint"]
     from urllib.parse import urlparse
     parsed = urlparse(endpoint)

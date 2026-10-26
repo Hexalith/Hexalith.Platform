@@ -7,6 +7,11 @@ namespace Hexalith.Platform.Protection;
 public sealed class JointPhaseSourceOperationHandler(JointPhaseNativeSourcePublisher publisher,TimeProvider clock):IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
+    public bool IsReadOnly(string method)=>method is "joint-phase-native-source-preflight";
+    /// <inheritdoc />
+    public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
+        =>HandleAsync(method,payload,caller,current,token);
+    /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["joint-phase-publish-native-source","joint-phase-native-source-preflight"],StringComparer.Ordinal);
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState state,CancellationToken token)

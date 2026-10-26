@@ -11,6 +11,11 @@ public sealed class QualificationOwnerOperationHandler(QualificationOwnerRole ro
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; }=new HashSet<string>(["qualification-executor-execute","qualification-executor-lookup","qualification-observer-observe","qualification-enrollment-enroll","qualification-observer-read-source"],StringComparer.Ordinal);
     /// <inheritdoc />
+    public bool IsReadOnly(string method)=>method is "qualification-executor-lookup" or "qualification-observer-read-source";
+    /// <inheritdoc />
+    public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
+        =>HandleAsync(method=="qualification-executor-execute"?"qualification-executor-lookup":method,payload,caller,current,token);
+    /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken cancellationToken)
     {
         string expectedMethod=role.Role switch { "executor"=>"qualification-executor-","observer"=>"qualification-observer-","enrollment"=>"qualification-enrollment-",_=>throw new InvalidOperationException("Enrolled role required.") };

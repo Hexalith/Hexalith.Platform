@@ -7,6 +7,9 @@ public interface IQualificationOriginalStore
 {
     /// <summary>Atomically retains the complete request before an effect. Existing identities return false; changed bytes must throw.</summary>
     Task<bool> BeginAsync(string role, string requestId, JsonObject original, CancellationToken cancellationToken);
+    /// <summary>Admits a closed once-only lease/release whose protocol is terminal at admission; no fictitious later result is reserved.</summary>
+    Task<bool> BeginFinalAsync(string role,string requestId,JsonObject original,CancellationToken cancellationToken)
+        =>Task.FromException<bool>(new InvalidOperationException("Explicit terminal-at-admission original protocol required."));
 
     /// <summary>Retains a signed observation or resolved original. Existing changed bytes must throw.</summary>
     Task RetainAsync(string role, string requestId, JsonObject result, CancellationToken cancellationToken);
@@ -17,6 +20,8 @@ public interface IQualificationOriginalStore
 
     /// <summary>Reads the immutable admitted request for metadata-only recovery; a missing implementation cannot prove absence.</summary>
     Task<JsonObject?> LookupRequestAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);
+    /// <summary>Distinguishes authenticated absent requests from an unavailable original reader without inventing a request body.</summary>
+    Task<QualificationOriginalLookup> ReadOriginalAsync(string role,string requestId,CancellationToken cancellationToken)=>Task.FromResult(new QualificationOriginalLookup(false));
 
     /// <summary>Reads an exact retained result after current private admission; omitted implementations remain unresolved.</summary>
     Task<JsonObject?> LookupResultAsync(string role,string requestId,CancellationToken cancellationToken) => Task.FromResult<JsonObject?>(null);

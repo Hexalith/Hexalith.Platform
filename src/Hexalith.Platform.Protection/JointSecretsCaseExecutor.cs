@@ -26,7 +26,7 @@ public sealed class JointSecretsCaseExecutor(JointPhaseCommandScope accepted,IQu
         if(!caseId.StartsWith("secrets:",StringComparison.Ordinal) || !enrolledOriginals.TryGetValue(caseId,out var recipe) || JointPhaseRequestRecipe.Bind(recipe,phaseRequest,accepted) is not { } full || full["caseId"]?.GetValue<string>()!=caseId[8..]
             || full["runId"]?.GetValue<string>()!=phaseRequest["attemptId"]?.GetValue<string>() || full["targetCommit"]?.GetValue<string>()!=accepted.PlatformCommit
             || phaseRequest["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest || !QualificationProtocolSchema.ValidRequest("executor","execute",full)) return null;
-        var original=(JsonObject)full.DeepClone();original.Remove("scenario");string id=full["requestId"]!.GetValue<string>();
+        var original=(JsonObject)full.DeepClone();string id=full["requestId"]!.GetValue<string>();
         var admission=new JsonObject();foreach(string name in new[]{"protocol","runId","targetCommit","isolatedTargetId","planSha256"}) admission[name]=original[name]!.DeepClone();
         admission["operation"]="enroll";admission["requestId"]=QualificationProtocolSchema.Digest(admission);
         if(!await enrollment.AuthorizeAsync(admission,caller,token).ConfigureAwait(false)) return null;

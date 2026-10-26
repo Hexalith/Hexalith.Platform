@@ -9,10 +9,11 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Actual receiving producer over independently enrolled finite native inputs and indexed immutable originals. It generates no key, native admission, closure witness or genesis.</summary>
-public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualificationOriginalStore claims,IQualificationOriginalStore readUses,ICustodyOccurrenceMaterialClient native):IFr34OccurrenceEnrollment
+public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualificationOriginalStore claims,IQualificationOriginalStore readUses,ICustodyOccurrenceMaterialClient native,
+    CustodyLifecycleClient? custody=null,ICustodyReservedManifestSource? manifests=null):IFr34OccurrenceEnrollment
 {
     private static JsonObject Node<T>(T value)=>(JsonObject)JsonSerializer.SerializeToNode(value,CustodyBindingContract.Json)!;
-    private static string Id<T>(T value)=>QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(value,CustodyBindingContract.Json)!);
+    private static string Id<T>(T value)=>value is null?"null":QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(value,CustodyBindingContract.Json)!);
     private bool Valid()=>SecretsProvisioning.IsReference(recipe.RecipeId) && recipe.Slots.Count is >0 and <=128 && recipe.LifecycleEpoch>0
         && recipe.Slots.Select(value=>value.SlotId).Distinct(StringComparer.Ordinal).Count()==recipe.Slots.Count
         && recipe.Slots.Select(value=>value.Write.Registration.OpaqueWrappedKeyReference).Distinct(StringComparer.Ordinal).Count()==recipe.Slots.Count
@@ -65,7 +66,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
             var identity=new InteractionOccurrenceIdentity(new(key.TenantId,key.ObjectId,key.KeyAlias),originalOwner,originalOccurrence.PayloadKind,originalOccurrence.RecordSequence,originalOccurrence.PayloadTypeId,key.KeyVersion,recipe.ProtectionProfileVersion);
             var originalExact=ExactBinding(originalOwner,originalOccurrence);
             if(originalExact is not null && !MatchesSlot(originalExact,slot)) return null;
-            var claim=new Fr34OccurrenceClaim(recipe.RecipeId,slot.SlotId,originalOwner.AggregateId,originalExact??new(identity,recipe.DigestVersion,1,slot.KeyReference,EventStorePrivateRecordingPort.StableUlid("fr34-occurrence",recipe.RecipeId,originalOwner.AggregateId),recipe.LifecycleEpoch),slot.Write,slot.Reads);
+            var claim=new Fr34OccurrenceClaim(recipe.RecipeId,slot.SlotId,originalOwner.AggregateId,originalExact??new(identity,recipe.DigestVersion,1,slot.KeyReference,EventStorePrivateRecordingPort.StableUlid("fr34-occurrence",recipe.RecipeId,originalOwner.AggregateId),recipe.LifecycleEpoch),slot.Write,slot.Reads,slot.NativeManifest);
             if(await native.LookupAsync(slot.Write.Registration,token).ConfigureAwait(false) is not { Status:CustodyKeyLifecycleStatus.Wrapped } original || original.ReceiptId!=slot.Write.Registration.WrapReceiptId) return null;
             await claims.RetainAsync("fr34-recipes",id,Node(claim),token).ConfigureAwait(false);if(originalOwner==owner && originalOccurrence==occurrence) return claim;
         }
@@ -83,7 +84,8 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     private bool Exact(Fr34OccurrenceClaim claim,AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)
     {
         var slot=recipe.Slots.SingleOrDefault(value=>value.SlotId==claim.SlotId);var identity=claim.Binding.Identity;
-        if(ExactBinding(owner,occurrence) is { } exact) return claim.RecipeId==recipe.RecipeId && claim.Binding==exact && slot is not null && MatchesSlot(exact,slot)
+        if(slot is null || Id(claim.NativeManifest)!=Id(slot.NativeManifest)) return false;
+        if(ExactBinding(owner,occurrence) is { } exact) return claim.RecipeId==recipe.RecipeId && claim.Binding==exact && MatchesSlot(exact,slot)
             && claim.Write==slot.Write && JsonSerializer.Serialize(claim.Reads)==JsonSerializer.Serialize(slot.Reads);
         return claim.RecipeId==recipe.RecipeId && slot is not null && claim.Write==slot.Write && JsonSerializer.Serialize(claim.Reads)==JsonSerializer.Serialize(slot.Reads)
             && identity.Owner==owner && identity.Sequence==occurrence.RecordSequence && identity.Kind==occurrence.PayloadKind && identity.PayloadTypeId==occurrence.PayloadTypeId
@@ -97,7 +99,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     public async Task<bool> AcquireLeaseAsync(InteractionProtectionBinding binding,bool completion,CancellationToken token)
     {
         if(await Claim(binding.Identity,token).ConfigureAwait(false) is not { } claim || claim.Binding!=binding) return false;
-        return await claims.BeginAsync("fr34-recipes",recipe.RecipeId+":"+claim.SlotId+(completion?":completion":":encryption"),Node(binding),token).ConfigureAwait(false);
+        return await claims.BeginFinalAsync("fr34-recipes",recipe.RecipeId+":"+claim.SlotId+(completion?":completion":":encryption"),Node(binding),token).ConfigureAwait(false);
     }
     /// <inheritdoc />
     public async Task<CustodyInteractionMaterialProfile?> MaterialAsync(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token)
@@ -122,7 +124,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     public async Task<bool> AdmitReleaseAsync(InteractionOccurrenceIdentity identity,CustodyInteractionMaterialProfile profile,CancellationToken token)
     {
         if(await Claim(identity,token).ConfigureAwait(false) is not { } claim || claim.Binding.Identity!=identity || profile!=claim.Write && !claim.Reads.Contains(profile)) return false;
-        return await readUses.BeginAsync("occurrence-read-use",recipe.RecipeId+":"+claim.SlotId+":release:"+Id(profile.KeyUse),Node(new { identity,profile }),token).ConfigureAwait(false);
+        return await readUses.BeginFinalAsync("occurrence-read-use",recipe.RecipeId+":"+claim.SlotId+":release:"+Id(profile.KeyUse),Node(new { identity,profile }),token).ConfigureAwait(false);
     }
     /// <inheritdoc />
     public async Task<IReadOnlyList<CustodyInteractionMaterialProfile>> PendingAsync(CancellationToken token)
@@ -136,5 +138,36 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
                 if(await readUses.ReadAdmissionAsync("occurrence-read-use",recipe.RecipeId+":"+slot.SlotId+":release:"+Id(profile.KeyUse),Node(new { identity=claim.Binding.Identity,profile }),token).ConfigureAwait(false)==QualificationOriginalAdmissionState.Admitted) result.Add(profile);
         }
         return result;
+    }
+    /// <summary>Read-only command claim verification. It can neither allocate a claim nor accept an arbitrary caller target.</summary>
+    public async Task<bool> VerifyCommandAsync(Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest command,CancellationToken token)
+    {
+        if(!Valid() || command.Domain!="fr34-canary" || command.Tenant!=recipe.Target.TenantId || command.CommandType!=typeof(PersistFr34Canary).FullName
+            || command.AggregateId is not { Length:64 } || !command.AggregateId.All(char.IsAsciiHexDigit)
+            || command.MessageId!=EventStorePrivateRecordingPort.StableUlid("fr34",command.Tenant,command.AggregateId) || command.IdempotencyKey!=command.MessageId || command.Extensions is { Count:>0 }) return false;
+        var owner=new AggregateIdentity(command.Tenant,command.Domain,command.AggregateId);var occurrence=new PayloadProtectionOccurrenceContext(1,PayloadProtectionPayloadKind.Event,typeof(Fr34CanaryPersisted).FullName!);
+        var payload=command.Payload.Deserialize<PersistFr34Canary>(new JsonSerializerOptions(JsonSerializerDefaults.Web));if(payload is null) return false;
+        foreach(var slot in recipe.Slots)
+        {
+            var retained=await claims.LookupResultAsync("fr34-recipes",recipe.RecipeId+":"+slot.SlotId,token).ConfigureAwait(false);
+            var claim=retained?.Deserialize<Fr34OccurrenceClaim>(CustodyBindingContract.Json);
+            if(claim is not null && claim.CanaryId==command.AggregateId && Exact(claim,owner,occurrence)) return claim.Binding.Identity.Target==payload.ProtectedContent.Target;
+        }
+        return false;
+    }
+    /// <inheritdoc />
+    public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)
+    {
+        if(custody is null || manifests is null || await Claim(binding.Identity,token).ConfigureAwait(false) is not { } claim || claim.Binding!=binding
+            || claim.NativeManifest is not { } expected || expected.Original.Targets.Count!=1 || expected.Original.Targets[0]!=binding.Identity.Target
+            || await manifests.FindAsync(expected.ReservationReceiptId,token).ConfigureAwait(false) is not { } found || Id(found)!=Id(expected.Original)) return null;
+        // This custody read verifies every original page, its signature and independently current full-vector/restore proof. Status-only responses carry no barrier and cannot qualify.
+        var original=await custody.ExecuteManifestOriginalAsync(found,expected.ReservationReceiptId,true,token).ConfigureAwait(false);
+        var result=original.Result;
+        if(original.RestoreBarrierReceiptId is null || result.State!=DeletionManifestProviderState.Consumed || result.ReservationReceiptId!=expected.ReservationReceiptId
+            || result.TenantId!=binding.Identity.Target.TenantId || result.BatchId!=found.Capability.BatchId || result.TargetReceipts.Count!=1
+            || result.TargetReceipts[0].Target!=binding.Identity.Target || result.TargetReceipts[0].OriginalBatchId!=result.BatchId) return null;
+        string[] targets=[InteractionProtectionBindingProvider.TargetId(binding.Identity.Target)],receipts=[result.TargetReceipts[0].ReceiptId];
+        return new(InteractionProtectionBindingProvider.ManifestDigest(binding),InteractionProtectionBindingProvider.ReceiptOrderDigest(targets,receipts),targets,receipts,true,false,null,false,null);
     }
 }

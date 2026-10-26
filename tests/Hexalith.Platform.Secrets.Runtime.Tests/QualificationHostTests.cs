@@ -77,7 +77,7 @@ public sealed class QualificationHostTests
         QualificationHostResult recovered = await QualificationHost.HandleAsync("executor", "execute", Configuration(), Request(), provider, store, verifier, TestContext.Current.CancellationToken, Caller());
         recovered.StatusCode.ShouldBe(200);
         provider.Operations.ShouldBe(["execute", "lookup"]);
-        provider.Requests.ShouldAllBe(request => !request.ContainsKey("scenario"));
+        provider.Requests.ShouldAllBe(request => request.ContainsKey("scenario"));
         store.Original.ContainsKey("scenario").ShouldBeTrue();
         store.Result.ShouldNotBeNull();
         store.Result.ContainsKey("observedAt").ShouldBeFalse();
@@ -112,7 +112,7 @@ public sealed class QualificationHostTests
         result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");
         result.Body["originalLookupRequired"]!.GetValue<bool>().ShouldBeTrue();
         provider.Operations.ShouldBe(["execute", "lookup"]);
-        provider.AuthorizedRequests.ShouldAllBe(r => !r.ContainsKey("scenario"));
+        provider.AuthorizedRequests.ShouldAllBe(r => r.ContainsKey("scenario"));
         store.Original!.ContainsKey("scenario").ShouldBeTrue();
     }
 
@@ -200,8 +200,8 @@ public sealed class QualificationHostTests
         QualificationHostResult result = await QualificationHttpHost.HandleAsync("executor", "execute", Configuration(), Context("role-channel", true), "role-channel", new CallerAuthenticator(), provider, store, Verifier(key), TestContext.Current.CancellationToken);
         result.StatusCode.ShouldBe(200);
         provider.Caller.ShouldBe(Caller());
-        provider.AuthorizedRequests.ShouldHaveSingleItem().ContainsKey("scenario").ShouldBeFalse();
-        provider.Requests.ShouldHaveSingleItem().ContainsKey("scenario").ShouldBeFalse();
+        provider.AuthorizedRequests.ShouldHaveSingleItem().ContainsKey("scenario").ShouldBeTrue();
+        provider.Requests.ShouldHaveSingleItem().ContainsKey("scenario").ShouldBeTrue();
         store.Result.ShouldNotBeNull();
     }
 

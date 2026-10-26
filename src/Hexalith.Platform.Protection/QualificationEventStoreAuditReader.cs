@@ -9,7 +9,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Concrete common audit portion using real authenticated originals, native source-v1 streams, workload command status and exact enrolled projection queries.</summary>
 public sealed class QualificationEventStoreAuditReader(IndependentDaprAuthority originalAuthority,IEventStoreGatewayClient privateGateway,
-    TimeProvider clock,IReadOnlyDictionary<string,QualificationEventStoreAuditScope> enrolledScopes)
+    TimeProvider clock,IReadOnlyDictionary<string,QualificationEventStoreAuditScope> enrolledScopes,QualificationOwnerQueryClient? projectionQueries=null)
 {
     /// <summary>Reads actual bytes/state only. It never turns a source buffer or missing log/trace/restore protocol into persistence, receipt positions, or a zero-effects assertion.</summary>
     public async Task<QualificationEventStoreAuditSnapshot?> ReadAsync(JsonObject request,CancellationToken cancellationToken)
@@ -43,8 +43,9 @@ public sealed class QualificationEventStoreAuditReader(IndependentDaprAuthority 
         var projections=new List<QualificationProjectionAudit>();
         foreach(var query in scope.ProjectionQueries)
         {
-            var result=await privateGateway.SubmitQueryAsync(query,null,budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
-            if(result.IsNotModified || result.Payload is not { } payload || payload.GetRawText().Length>1024*1024 || result.Metadata is not { Provenance:QueryResponseProvenance.ProjectionBacked,Lifecycle:ProjectionLifecycleState.Current,IsStale:false,IsDegraded:false } metadata
+            if(projectionQueries is null) return null;
+            var result=await projectionQueries.ReadAsync(query,budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            if(result is null || result.IsNotModified || result.Payload is not { } payload || payload.GetRawText().Length>1024*1024 || result.Metadata is not { Provenance:QueryResponseProvenance.ProjectionBacked,Lifecycle:ProjectionLifecycleState.Current,IsStale:false,IsDegraded:false } metadata
                 || metadata.ServedAt is not { } served || served>clock.GetUtcNow() || served<clock.GetUtcNow().AddSeconds(-30) || string.IsNullOrWhiteSpace(metadata.ProjectionVersion)) return null;
             projections.Add(new(query.Tenant,query.Domain,query.AggregateId,query.QueryType,CustodyBindingContract.Hash(System.Text.Encoding.UTF8.GetBytes(payload.GetRawText())),metadata));
         }

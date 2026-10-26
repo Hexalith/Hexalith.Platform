@@ -35,7 +35,7 @@ public sealed class IndependentOriginalIndexTests
             var actual=await authority.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role=role,requestId=id },TestContext.Current.CancellationToken);
             actual.ShouldNotBeNull();actual.Request.GetProperty("securityObservationId").GetString().ShouldBe("fixture-observation-"+index);actual.SubmissionState.ShouldBe(role=="private-security-observation"?"Dispatched":"Unsent");actual.Result!.Value.GetProperty("nativeReceipt").GetString().ShouldBe("fixture-receipt-"+index);
             var indexed=await new IndependentPrivateOriginalIndex(archive).ReadAsync(fixture.State.PrivateOriginalsRoot,role,id,TestContext.Current.CancellationToken);
-            indexed!.PreviousValueSha256.ShouldNotBeNull();var previous=JsonSerializer.Deserialize<IndependentPrivateOriginalIndex.Entry>(await archive.ReadAsync(indexed.PreviousValueSha256!,TestContext.Current.CancellationToken),CustodyBindingContract.Json)!;
+            indexed!.PreviousValueSha256.ShouldNotBeNull();var previous=await new IndependentPrivateOriginalIndex(archive).ReadVersionAsync(indexed.PreviousValueSha256!,TestContext.Current.CancellationToken);
             previous.Original.Result.ShouldBeNull();previous.Original.Request.GetRawText().ShouldBe(actual.Request.GetRawText());if(role=="private-security-observation") previous.PreviousValueSha256.ShouldNotBeNull();
         }
         var changed=new JsonObject { ["securityObservationId"]="substituted" };

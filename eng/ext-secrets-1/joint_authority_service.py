@@ -289,12 +289,10 @@ class InstalledPhaseExecutor:
         if not isinstance(command,list) or command.count("--phase-command")!=1 or self.descriptor.get("recoveryCommand")!=["--phase-finalize" if arg=="--phase-command" else arg for arg in command]:
             missing.append("PinnedMetadataOnlyPhaseFinalizer")
         missing += blockers([name.removeprefix("secrets:") for name in self.descriptor.get("cases",[]) if name.startswith("secrets:")])
-        for artifact in self.descriptor["artifacts"]:
-            try:
-                if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:
-                    missing.append("ExactInstalledPhaseExecutable")
-            except OSError:
-                missing.append("InstalledPhaseExecutable")
+        if self.binding.get("phaseExecutionProfileSha256",{}).get(str(self.descriptor.get("phase"))) != digest({name:value for name,value in self.descriptor.items() if name!="bindingDigest"}):
+            missing.append("ExactAcceptedPhaseExecutionProfile")
+        from execution_profile import validate_execution_profile
+        missing.extend(validate_execution_profile(self.descriptor))
         report = self.observer.call("preflight-phase", {"binding": self.binding, "phase": self.descriptor["phase"], "cases": partitions()[self.descriptor["phase"]]})
         missing.extend(report.get("missingInputs", ["IndependentCurrentPhaseObservationInputs"]))
         return missing
@@ -315,9 +313,11 @@ class InstalledPhaseExecutor:
         import hashlib
         from pathlib import Path
         command = self.descriptor["command"]
-        for artifact in self.descriptor["artifacts"]:
-            if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:
-                raise Blocked("ExactInstalledPhaseExecutable")
+        from execution_profile import validate_execution_profile
+        missing = validate_execution_profile(self.descriptor)
+        if self.binding.get("phaseExecutionProfileSha256",{}).get(str(self.descriptor.get("phase"))) != digest({name:value for name,value in self.descriptor.items() if name!="bindingDigest"}):
+            missing.append("ExactAcceptedPhaseExecutionProfile")
+        if missing: raise Blocked(*missing)
         if self.descriptor.get("bindingDigest") != digest(self.binding) or self.descriptor.get("cases") != request["cases"]:
             raise Blocked("AcceptedOwnerCommandPartition")
         # Exact enrolled argv; no shell interpolation, environment inheritance or generic dispatch callback.
@@ -342,9 +342,11 @@ class InstalledPhaseExecutor:
         expected = ["--phase-finalize" if arg == "--phase-command" else arg for arg in normal]
         if normal.count("--phase-command") != 1 or command != expected:
             raise Blocked("PinnedMetadataOnlyPhaseFinalizer")
-        for artifact in self.descriptor["artifacts"]:
-            if hashlib.sha256(Path(artifact["path"]).read_bytes()).hexdigest() != artifact["sha256"]:
-                raise Blocked("ExactInstalledPhaseExecutable")
+        from execution_profile import validate_execution_profile
+        missing = validate_execution_profile(self.descriptor)
+        if self.binding.get("phaseExecutionProfileSha256",{}).get(str(self.descriptor.get("phase"))) != digest({name:value for name,value in self.descriptor.items() if name!="bindingDigest"}):
+            missing.append("ExactAcceptedPhaseExecutionProfile")
+        if missing: raise Blocked(*missing)
         # Restricted finalization reads immutable evidence only. It cannot resume normal work.
         with subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                               cwd=self.descriptor["workingDirectory"], env=self.descriptor["environment"]) as process:
@@ -393,25 +395,9 @@ class CohortHttpApplication:
         return {"payload": payload, "signature": base64.b64encode(signature).decode()}
 
     def serve(self, host, port):
-        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-        application = self
-        class Handler(BaseHTTPRequestHandler):
-            def log_message(self, *args): pass
-            def do_POST(self):
-                try:
-                    if not self.path.startswith('/joint/v1/') or self.headers.get('Transfer-Encoding'):
-                        raise ValueError('request')
-                    length = int(self.headers.get('Content-Length', '-1'))
-                    if not 0 < length <= 1024 * 1024:
-                        raise ValueError('bound')
-                    self.connection.settimeout(30)
-                    result = application.handle(self.path[len('/joint/v1/'):], self.headers, self.rfile.read(length))
-                    data = canonical(result)
-                    self.send_response(200); self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(data))); self.end_headers(); self.wfile.write(data)
-                except Exception:
-                    self.send_response(503); self.send_header('Content-Length', '0'); self.end_headers()
-        ThreadingHTTPServer((host, port), Handler).serve_forever()
-
+        from bounded_cohort_http import make_server
+        with make_server(self,host,port) as server:
+            server.serve_forever()
 
 class PersistedPhaseObserver:
     """Independent receiving reader of exact immutable owner originals and their persisted source evidence."""

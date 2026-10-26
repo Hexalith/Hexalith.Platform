@@ -78,6 +78,9 @@ public sealed class QualificationGuardSourceTests
         changed.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.leakCount");
         var correct=outcome with { TargetReceipts=[new(new("tenant","interaction","alias"),"batch","target-receipt")] };
         QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,correct,[],["atomicAllOrNone"]).Metrics["atomicAllOrNone"].ShouldBe(1);
+        var misleading=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,correct,[],["raceWinners","immutableReservation","completeAffectedBatchEnumeration"]);
+        misleading.Metrics.ShouldBeEmpty();
+        foreach(string metric in new[]{"raceWinners","immutableReservation","completeAffectedBatchEnumeration"}) misleading.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol."+metric);
     }
     [Theory]
     [InlineData(2,1)][InlineData(3,0)]

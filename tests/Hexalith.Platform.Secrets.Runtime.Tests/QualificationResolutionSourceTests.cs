@@ -13,7 +13,7 @@ public sealed class QualificationResolutionSourceTests
     public async Task ExactPrivateProviderCredentialUsesCurrentActorAuthorityAndOnlyOnePinnedSecretRead()
     {
         var client=Substitute.For<DaprClient>();var actor=Substitute.For<IPlatformKeyInventoryActor>();var authority=Substitute.For<IPlatformKeyInventoryAuthority>();
-        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";request.Remove("scenario");
+        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";
         var key=new PlatformKeyVersion("tenant",PlatformKeyPurpose.ProviderCredential,"provider-credential","v7","native-provider","outside-authority",null,null);
         var state=new PlatformKeyInventorySnapshot("tenant",PlatformKeyPurpose.ProviderCredential,key.KeyAlias,9,[new(key,PlatformHmacKeyState.Active,9)],[]);
         actor.ReadAsync(key).Returns(state);authority.AuthorizeOperationAsync(key,"ResolveProviderCredential",Arg.Any<CancellationToken>()).Returns(true);

@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Custody.Dapr;
 
 // Existing non-exportable transit keys only. No create, import, export, backup, restore, or key configuration API.
 // OpenBao deletion is only native send completion. It never proves all-copy physical destruction.
-internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeInstallation installation, IAuthorityStore store, global::Dapr.Client.DaprClient dapr,HttpMessageHandler? transport=null,TimeSpan? operationTimeout=null) : IEpochOperations, IKeyAccess, IDisposable
+internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeInstallation installation, IAuthorityStore store, global::Dapr.Client.DaprClient dapr,HttpMessageHandler? transport=null,TimeSpan? operationTimeout=null,Hexalith.Platform.Secrets.Runtime.ISecretsCredentialBoundDaprInvoker? originalTransport=null) : IEpochOperations, IKeyAccess, IDisposable
 {
     private readonly HttpClient _http = new(transport??new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false }) { Timeout = TimeSpan.FromSeconds(30) };
     private async Task<JsonElement> CallAsync(HttpMethod method, string path, object? body, CancellationToken token)
@@ -76,7 +76,7 @@ internal sealed class OpenBaoNativeOperations(ComponentProfile profile, NativeIn
         var current = await store.ReadAsync(tenant, token);
         if (installation.NativeOriginalAuthority is null || string.IsNullOrWhiteSpace(installation.ProducerIncarnation) || string.IsNullOrWhiteSpace(installation.TransportIncarnation))
             throw new AuthorityUnavailableException("Exact independently admitted additional native plaintext holder originals required.");
-        var originalAuthority = new Hexalith.Platform.Secrets.Runtime.IndependentDaprAuthority(new Hexalith.Platform.Secrets.Runtime.DaprSecretsInvoker(dapr), installation.NativeOriginalAuthority, TimeProvider.System);
+        var originalAuthority = new Hexalith.Platform.Secrets.Runtime.IndependentDaprAuthority(originalTransport??new Hexalith.Platform.Secrets.Runtime.DaprSecretsInvoker(dapr), installation.NativeOriginalAuthority, TimeProvider.System);
         var statement = await originalAuthority.InvokeAsync<SignedStatement>("custody-native-observation-original", new { tenant, scope = "native-reencryption", operationId = subject,
             revision = current.Head.Revision, digest = current.Head.Digest }, token)
             ?? throw new AuthorityUnavailableException("Current independent native holder original missing.");

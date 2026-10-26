@@ -19,6 +19,13 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
         return result.First;
     }
     /// <inheritdoc />
+    public async Task<bool> BeginFinalAsync(string role,string requestId,JsonObject original,CancellationToken cancellationToken)
+    {
+        var result=await originals.InvokeAsync<OriginalAdmission>("qualification-begin-original",new { role,requestId,original,finalAtAdmission=true },cancellationToken).ConfigureAwait(false);
+        if(result is null || !result.Exact) throw new InvalidOperationException("Durable terminal original publication is unknown or conflicting.");
+        return result.First;
+    }
+    /// <inheritdoc />
     public async Task RetainAsync(string role, string requestId, JsonObject result, CancellationToken cancellationToken)
     {
         if (await originals.InvokeAsync<OriginalAdmission>("qualification-retain-result", new { role, requestId, result }, cancellationToken).ConfigureAwait(false) is not { Exact: true })
@@ -35,6 +42,15 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
     {
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role,requestId },cancellationToken).ConfigureAwait(false);
         return original?.Request is { ValueKind:JsonValueKind.Object } request?JsonNode.Parse(request.GetRawText()) as JsonObject:null;
+    }
+    /// <inheritdoc />
+    public async Task<QualificationOriginalLookup> ReadOriginalAsync(string role,string requestId,CancellationToken token)
+    {
+        var result=await originals.InvokeAsync<JsonElement>("qualification-lookup-original",new { role,requestId },token).ConfigureAwait(false);
+        if(result.ValueKind==JsonValueKind.Null) return new(true);
+        if(result.ValueKind!=JsonValueKind.Object) return new(false);
+        var value=result.Deserialize<IndependentOriginal>(CustodyBindingContract.Json);
+        return value is null?new(false):new(true,JsonNode.Parse(value.Request.GetRawText()) as JsonObject,value.Result is { } body?JsonNode.Parse(body.GetRawText()) as JsonObject:null);
     }
     /// <inheritdoc />
     public async Task<QualificationOriginalAdmissionState> ReadAdmissionAsync(string role,string requestId,JsonObject exactOriginal,CancellationToken token)

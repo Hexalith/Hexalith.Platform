@@ -22,11 +22,17 @@ public sealed class AgentsOwningProcessRegistrationTests
         dapr.CreateInvokableHttpClient(Arg.Any<string>()).Returns(_=>new HttpClient());
         var services=new ServiceCollection().AddLogging();var config=new SecretsRuntimeConfiguration { CompromiseSubscriptionReference="compromise",CompromiseSubscriberCredentialReference="file:/fixture",CompromiseGuardMirrorReference="guard",CurrentRevocationReference="revocations",CallTimeout=TimeSpan.FromSeconds(5),Issuer="issuer",Audience="audience" };
         services.AddInstalledAgentsOwningProcess(dapr,new(fixture.Binding("spool"),fixture.Binding("recorder"),fixture.Binding("replay"),config,new("issuer","audience","tenant"),fixture.Binding("engine"),fixture.Binding("observer"),fixture.Target,TimeSpan.FromSeconds(5),1),Substitute.For<IGovernanceScopeGuard>());
+        bool storageOutage=false;
+        dapr.GetStateAndETagAsync<SecuritySpoolSnapshot>("fixture-spool","system/security-observations/fixture-epoch",Arg.Any<ConsistencyMode?>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>())
+            .Returns(_=>storageOutage?Task.FromException<(SecuritySpoolSnapshot,string)>(new IOException("isolated spool storage outage")):Task.FromResult((new SecuritySpoolSnapshot("fixture-epoch",0,[]),"fixture-etag")));
         using var provider=services.BuildServiceProvider();var startup=provider.GetServices<IHostedService>().OfType<Fr34ProtectionStartupGate>().Single();
         try { await startup.StartAsync(TestContext.Current.CancellationToken); }catch(Exception error) { throw new InvalidOperationException("Fixture methods: "+string.Join(",",fixture.Methods),error); }fixture.Canaries.Count.ShouldBe(1);
         var health=provider.GetRequiredService<HealthCheckService>();
+        async Task<HealthStatus> Audit()=> (await health.CheckHealthAsync(registration=>registration.Name=="agents-security-audit",TestContext.Current.CancellationToken)).Entries["agents-security-audit"].Status;
+        (await Audit()).ShouldBe(HealthStatus.Healthy);storageOutage=true;(await Audit()).ShouldBe(HealthStatus.Unhealthy);storageOutage=false;(await Audit()).ShouldBe(HealthStatus.Healthy);
         for(int count=2;count<=3;count++) { var report=await health.CheckHealthAsync(registration=>registration.Name=="agents-protection-fr34",TestContext.Current.CancellationToken);report.Entries["agents-protection-fr34"].Status.ShouldBe(HealthStatus.Healthy);fixture.Canaries.Count.ShouldBe(count); }
         fixture.Revoked=true;var denied=await health.CheckHealthAsync(registration=>registration.Name=="agents-protection-fr34",TestContext.Current.CancellationToken);denied.Entries["agents-protection-fr34"].Status.ShouldBe(HealthStatus.Unhealthy);
+        (await Audit()).ShouldBe(HealthStatus.Unhealthy);
         await Should.ThrowAsync<InvalidOperationException>(()=>startup.StartAsync(TestContext.Current.CancellationToken));fixture.Canaries.Count.ShouldBe(3);
         provider.GetService<ITrustedEnvelopeReplayRegistrar>().ShouldBeNull();provider.GetService<ReplicatedSecurityObservationSpool>().ShouldBeNull();
     }
@@ -49,6 +55,7 @@ public sealed class AgentsOwningProcessRegistrationTests
                     Fr34CanaryReference Reference()=>payload.GetProperty("reference").Deserialize<Fr34CanaryReference>(CustodyBindingContract.Json)!;
                     switch(method)
                     {
+                        case "spool-current":result=new ReplicatedSecuritySpoolTarget("fixture-spool","fixture-epoch","fixture-policy",_valid);break;
                         case "fr34-observe-current":result=new Fr34CanaryAuthorization(Target,"revision",_observed,_valid);break;
                         case "fr34-seal-persist":string id=payload.GetProperty("canaryId").GetString()!;Canaries[id]=payload.GetProperty("plaintext").GetBytesFromBase64();result=new Fr34CanaryReference(Target,id,"record-"+id,"key-"+id);break;
                         case "fr34-read-persisted":var reference=Reference();result=new Fr34PersistedCanary(reference,"fixture-ciphertext"u8.ToArray(),new(PayloadProtectionState.Protected,1,"hexalith-pdenc-v2",reference.KeyReference,null,null));break;

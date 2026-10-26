@@ -391,11 +391,12 @@ def verify(root, artifacts, profile, configuration="Debug"):
                 "missingInputs":error.missing,"attemptState":error.attempt_state,"effectState":error.effect_state,"attemptId":error.attempt_id,"phaseRequestId":error.phase_request_id,
                 "effectsStarted":error.effects_started,"qualificationEffects":"Unknown" if error.effects_started else 0,"dependencyAvailable":False}))
             return 1
-        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        except Exception:
             destination = Path(artifacts) / "joint-cohort-failure.json"
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(canonical({"code":"DependencyNotAvailable","records":["EXT-SECRETS-1","EXT-HOST-1"],
-                "missingInputs":["ValidCoordinatedInstallation"],"qualificationEffects":"Unknown","originalLookupRequired":True,"dependencyAvailable":False}))
+                "missingInputs":["ValidCoordinatedInstallation"],"attemptState":"LookupRequired","effectState":"Unknown","effectsStarted":True,
+                "qualificationEffects":"Unknown","originalLookupRequired":True,"dependencyAvailable":False}))
             return 1
         destination = Path(artifacts) / "joint-cohort-result.json"
         destination.parent.mkdir(parents=True, exist_ok=True)

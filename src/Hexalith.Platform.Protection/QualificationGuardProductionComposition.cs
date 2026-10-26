@@ -15,12 +15,14 @@ public static class QualificationGuardProductionComposition
     public static QualificationGuardProductionPorts Create(DaprClient dapr,SecretsRuntimeConfiguration runtime,QualificationProtectionInstallation installed,IQualificationOriginalStore originals,TimeProvider? clock=null)
     {
         var time=clock??TimeProvider.System;var transport=new DaprSecretsInvoker(dapr);
+        // Exact independently installed original/cell/receipt scopes are captured privately; missing inputs keep new commits denied.
         if(installed is not { GuardTarget:{ } target,GuardTargetAuthority:{ } targetOwner,GuardCellAuthorities:{ } cells,GuardReceiptAuthorities:{ } receipts,
             IndependentEvidenceComponent:{ } component,EvidenceResources:{ } resources,EvidenceAuthorities:{ } evidenceOwners,GuardArguments:{ } arguments,GuardDefinitions:{ } definitions,RevocationSubscription:{ } subscription })
             throw new InvalidOperationException("ExactExistingGuardSourcePolicyCellReceiptAndRevocationEnrollment");
         ICustodyOwnerStateAuthority Owner(CustodyLifecycleInstallation value)=>new CustodyOwnerAuthority(dapr,value.BindingName,value.TenantId,value.OwnerScope,value.EnrollmentJson,value.PublicKeyPem,
             new DaprCustodyOwnerCallSource(new(transport,value.OwnerAuthority,time)));
-        var cellSource=new CustodyGuardedStateInstallation(target,installed.GuardTargetRevision,Owner(targetOwner),cells.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),receipts.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),time);
+        var transactionAnchors=installed.GuardTransactionOriginals is { } originalBinding?new CustodyGuardedTransactionAnchors(dapr,new InstalledQualificationOriginalStore(new(transport,originalBinding,time)),cells.ToDictionary(pair=>pair.Key,pair=>pair.Value.OwnerScope),receipts.ToDictionary(pair=>pair.Key,pair=>pair.Value.OwnerScope)):null;
+        var cellSource=new CustodyGuardedStateInstallation(target,installed.GuardTargetRevision,Owner(targetOwner),cells.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),receipts.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),time,transactionAnchors);
         var evidence=new CustodyGovernanceGuardInstallation(dapr,component,resources,evidenceOwners.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),time);
         var guarded=new DaprGuardedStateTransaction(dapr,time,new GuardedStateTransactionAuthority(cellSource));
         var guard=new GovernanceScopeGuardOwner(guarded,time,new GovernanceGuardAuthority(evidence));var proxies=ActorProxy.DefaultProxyFactory;

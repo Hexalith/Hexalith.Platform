@@ -19,6 +19,20 @@ namespace Hexalith.Platform.Protection.Tests;
 // Actual receiving producer, production key/binding adapters, domain handler and native proof codec in a disposable fixture.
 public sealed class Fr34DynamicOccurrenceTests
 {
+    [Theory]
+    [InlineData("normal",true)][InlineData("lost-completion",true)]
+    [InlineData("unknown-native",false)][InlineData("missing-witness",false)][InlineData("wrong-receipt",false)][InlineData("bad-signature",false)]
+    [InlineData("outage",false)][InlineData("policy-change",false)][InlineData("trust-change",false)][InlineData("recipe-change",false)]
+    [InlineData("changed-manifest",false)][InlineData("changed-target",false)][InlineData("claim-change",false)]
+    public async Task CompleteGateUsesActualReceivingProofProducerDomainPersistedReaderNativeManifestAndReadOnlyErasure(string fault,bool expected)
+    {
+        using var fixture=new Fixture();fixture.Fault=fault;
+        var gate=fixture.Gate();bool passed=await gate.EvaluateAsync(TestContext.Current.CancellationToken);
+        await ((Task)typeof(Fr34ProtectionGate).GetProperty("CleanupCompletion",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)!.GetValue(gate)!).WaitAsync(TestContext.Current.CancellationToken);
+        passed.ShouldBe(expected,fixture.Diagnostics);
+        fixture.Submits.ShouldBe(1);fixture.DomainCalls.ShouldBe(1);fixture.ProtectCalls.ShouldBe(1);
+        if(expected) { fixture.NativeDestructions.ShouldBe(1);fixture.NativeErasureReads.ShouldBeGreaterThan(0); }
+    }
     [Fact]
     public async Task FreshChallengeUsesUnchangedNativeRootAndRealSealBoundSubmitDomainPersistReadRoundTripAndFreshCompletedReads()
     {
@@ -123,11 +137,16 @@ public sealed class Fr34DynamicOccurrenceTests
     }
     private sealed class Fixture:IDisposable
     {
-        private readonly ReceivingAuthorityFixture _claims=new("fr34-recipes"),_reads=new("occurrence-read-use"),_commands=new("fr34-engine");
+        private readonly ReceivingAuthorityFixture _claims=new("fr34-recipes"),_reads=new("occurrence-read-use"),_commands;
+        private readonly List<IIndependentOwnerOperationHandler> _engineHandlers=[];private readonly ReceivingAuthorityFixture _gateObserver;
+        private readonly Fr34ManifestCustodyFixture _manifest;internal string Fault { set=>_manifest.SetFault(value); }
+        internal int NativeDestructions=>_manifest.Destroys;internal int NativeErasureReads=>_manifest.Reads;
+        internal string Diagnostics=>"engine="+string.Join(',',_commands.Methods)+" observer="+string.Join(',',_gateObserver.Methods)+" enrollment="+string.Join(',',Receiving.Methods)+" custody="+string.Join(',',_manifest.Operations);
         internal readonly ReceivingAuthorityFixture Receiving;internal readonly DaprFr34OccurrenceEnrollment Enrollment;
         private readonly DaprClient _dapr=Substitute.For<DaprClient>();private readonly ICustodyOccurrenceMaterialClient _native=Substitute.For<ICustodyOccurrenceMaterialClient>();
         private readonly IInteractionOccurrenceRegistry _registry=Substitute.For<IInteractionOccurrenceRegistry>();private readonly IPlatformKeyInventoryActor _inventory=Substitute.For<IPlatformKeyInventoryActor>();private readonly IPlatformKeyInventoryAuthority _inventoryAuthority=Substitute.For<IPlatformKeyInventoryAuthority>();
-        private readonly IEventStoreGatewayClient _gateway=Substitute.For<IEventStoreGatewayClient>();private readonly IEventStoreGatewayBoundCommandProofSource _proofs=Substitute.For<IEventStoreGatewayBoundCommandProofSource>();
+        private readonly IEventStoreGatewayClient _gateway=Substitute.For<IEventStoreGatewayClient>();private readonly IEventStoreGatewayBoundCommandProofSource _proofs;
+        private readonly RSA _proofKey=RSA.Create(2048);private readonly string _proofFile=Path.GetTempFileName();private readonly ReceivingAuthorityFixture _proofAuthority;
         private Fr34ProductionPorts _production=null!;internal Fr34EventStoreCanaryReader Reader=null!;internal EventStoreFr34CanaryEngine CanaryEngine=null!;internal Fr34ProtectionTarget Target;
         internal readonly CustodyKeyRegistration Registration=new(new("tenant","installed-original-interaction",PlatformKeyPurpose.InteractionRootDek,"installed-original-alias","root-v1","lifecycle","store","contract"),"original-wrap",1,"kek-v1","original-opaque-root","original-wrap-receipt");
         private readonly Dictionary<InteractionOccurrenceIdentity,InteractionOccurrenceRecord> _records=[];private StreamReadEvent? _event;private AggregateIdentity? _owner;
@@ -135,12 +154,24 @@ public sealed class Fr34DynamicOccurrenceTests
         internal int Releases,Submits,DomainCalls,ProtectCalls;internal bool AllowCompletion=true;
         internal Fixture()
         {
+            _commands=new("fr34-engine",handlers:_engineHandlers);_gateObserver=new("fr34-observer",handlers:_engineHandlers);
+            _manifest=new(new(Registration.Identity.TenantId,Registration.Identity.ObjectId,Registration.Identity.KeyAlias));
             var emptyEngine=new InteractionPayloadProtectionService(_registry,Substitute.For<IInteractionOccurrenceKeyProvider>(),Substitute.For<IInteractionProtectionBindingProvider>(),TimeProvider.System).GetIdentity();Target=new(emptyEngine.Name,emptyEngine.SourceRevision,"custody","tenant");
             CustodyInteractionMaterialProfile Profile(string use)=>new(Registration,new(use,"delivery-"+use,"actual-process","actual-transport",Registration.OpaqueWrappedKeyReference),new("digest","key","1","value",new("tenant",PlatformKeyPurpose.DigestKey,"digest","digest-v1","native","authority",null,null)));
-            var recipe=new Fr34OccurrenceRecipe("independently-enrolled-recipe",Target,typeof(Fr34CanaryPersisted).FullName!,"candidate-hkdf-sha256-v1","digest-v1",1,[new("actual-root-slot","01ARZ3NDEKTSV4RRFFQ69G5FAV",Profile("write"),[Profile("read-1"),Profile("read-2"),Profile("read-3")])]);
-            var producer=new Fr34OccurrenceProducer(recipe,new InstalledQualificationOriginalStore(_claims.Authority),new InstalledQualificationOriginalStore(_reads.Authority),_native);
+            var recipe=new Fr34OccurrenceRecipe("independently-enrolled-recipe",Target,typeof(Fr34CanaryPersisted).FullName!,"candidate-hkdf-sha256-v1","digest-v1",1,[new("actual-root-slot","01ARZ3NDEKTSV4RRFFQ69G5FAV",Profile("write"),[Profile("read-1"),Profile("read-2"),Profile("read-3")],_manifest.Binding)]);
+            var producer=new Fr34OccurrenceProducer(recipe,new InstalledQualificationOriginalStore(_claims.Authority),new InstalledQualificationOriginalStore(_reads.Authority),_native,_manifest.Client,_manifest.Locators);
+            DateTimeOffset validity=DateTimeOffset.UtcNow.AddHours(1);string recipeDigest=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!);
+            _commands.State=_commands.State with { Fr34Target=Target,Fr34AuthorizationRevision="common-policy-1",Fr34RecipeSha256=recipeDigest,ValidUntil=validity,Callers=_commands.State.Callers.Select(value=>value with { ScopeReference="tenant|fr34",Methods=value.Methods.Concat(["fr34-seal-persist","fr34-unseal","fr34-destroy","fr34-replay"]).ToArray() }).ToArray() };
+            var observationCaller=_commands.State.Callers[0] with { BearerSha256=Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes("fixture-observer"))),Role="fr34-observer",Methods=["qualification-lookup-original","qualification-read-original:fr34-engine","qualification-begin-original","qualification-retain-result"] };
+            _commands.State=_commands.State with { Callers=_commands.State.Callers.Append(observationCaller).ToArray() };
+            _gateObserver.State=_gateObserver.State with { Revision=900,Fr34Target=Target,Fr34AuthorizationRevision="common-policy-1",Fr34RecipeSha256=recipeDigest,ValidUntil=validity,Callers=_gateObserver.State.Callers.Select(value=>value with { ScopeReference="tenant|fr34",Methods=["fr34-observe-current","fr34-verify-ownership","fr34-verify-carrier","fr34-read-persisted","fr34-confirm-destroyed"] }).ToArray() };
+            _proofAuthority=new("fr34-engine",handlers:[new Fr34CommandAuthorizationHandler(recipe,producer,_commands.Authority,TimeProvider.System)]);
+            var proofCaller=_proofAuthority.State.Callers[0];
+            _proofAuthority.State=_proofAuthority.State with { Fr34Target=Target,Fr34AuthorizationRevision="common-policy-1",Fr34RecipeSha256=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!),Callers=[proofCaller with { ScopeReference="tenant|fr34" },proofCaller with { BearerSha256=new string('f',64) }] };
+            File.WriteAllText(_proofFile,Convert.ToBase64String(_proofKey.ExportPkcs8PrivateKey()));
+            _proofs=new Fr34CanaryCommandProofSource("recording-owner","private-worker",_proofFile,_proofAuthority.Authority,TimeProvider.System);
             Receiving=new("fr34-recipes",handlers:[new Fr34OccurrenceOperationHandler(recipe,producer,TimeProvider.System)]);
-            Receiving.State=Receiving.State with { Fr34Target=Target,Fr34RecipeSha256=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!),Callers=Receiving.State.Callers.Select(value=>value with { ScopeReference="tenant|fr34",Methods=["fr34-resolve-occurrence","fr34-occurrence-lease","fr34-material-use","fr34-material-release","fr34-pending-material"] }).ToArray() };
+            Receiving.State=Receiving.State with { Fr34Target=Target,Fr34AuthorizationRevision="common-policy-1",Fr34RecipeSha256=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!),Callers=Receiving.State.Callers.Select(value=>value with { ScopeReference="tenant|fr34",Methods=["fr34-resolve-occurrence","fr34-occurrence-lease","fr34-material-use","fr34-material-release","fr34-pending-material","fr34-read-erasure"] }).ToArray() };
             Enrollment=new(Receiving.Authority);
             _native.LookupAsync(Registration,Arg.Any<CancellationToken>()).Returns(new CustodyKeyLifecycleOutcome(Registration.Identity,Registration.OperationId,"digest",CustodyKeyLifecycleStatus.Wrapped,Registration.WrapReceiptId));
             _native.UnwrapAsync(Registration,Arg.Any<string>(),Arg.Any<CustodyKeyUse>(),Arg.Any<CancellationToken>()).Returns(_=> { Releases++;return new CustodyKeyUseResult("Released",new(Enumerable.Repeat((byte)42,32).ToArray())); });
@@ -152,9 +183,9 @@ public sealed class Fr34DynamicOccurrenceTests
             _registry.LookupAsync(Arg.Any<InteractionOccurrenceIdentity>(),Arg.Any<CancellationToken>()).Returns(call=> { var record=_records.GetValueOrDefault(call.Arg<InteractionOccurrenceIdentity>());return new InteractionOccurrenceReservationResult(record?.WriterState==InteractionOccurrenceWriterState.Active?InteractionOccurrenceReservationStatus.Sealed:InteractionOccurrenceReservationStatus.Reserved,record); });
             _registry.RetainSealedAsync(Arg.Any<InteractionOccurrenceIdentity>(),Arg.Any<InteractionOccurrenceSealedResult>(),Arg.Any<CancellationToken>()).Returns(call=> { var identity=call.Arg<InteractionOccurrenceIdentity>();_records[identity]=_records[identity] with { Sealed=call.Arg<InteractionOccurrenceSealedResult>() };return new InteractionOccurrenceReservationResult(InteractionOccurrenceReservationStatus.Sealed,_records[identity]); });
             _registry.CompleteWriterAsync(Arg.Any<InteractionOccurrenceIdentity>(),Arg.Any<string>(),Arg.Any<string>(),true,Arg.Any<CancellationToken>()).Returns(call=> { var identity=call.Arg<InteractionOccurrenceIdentity>();_records[identity]=_records[identity] with { WriterState=InteractionOccurrenceWriterState.Active,WriterProofId=call.ArgAt<string>(2) };return new InteractionOccurrenceReservationResult(InteractionOccurrenceReservationStatus.Sealed,_records[identity]); });
-            _proofs.IssueAsync(Arg.Any<BoundWorkloadCommandRequest>(),Arg.Any<CancellationToken>()).Returns(_=>ValueTask.FromResult<string?>("fixture-bound-proof"));
-            _gateway.SubmitBoundWorkloadCommandAsync(Arg.Any<BoundWorkloadCommandRequest>(),"fixture-bound-proof",Arg.Any<CancellationToken>()).Returns(async call=>
+            _gateway.SubmitBoundWorkloadCommandAsync(Arg.Any<BoundWorkloadCommandRequest>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(async call=>
             {
+                BoundWorkloadCommandProof.Verify(call.Arg<BoundWorkloadCommandRequest>(),call.Arg<string>(),"recording-owner",Convert.ToBase64String(_proofKey.ExportSubjectPublicKeyInfo()),DateTimeOffset.UtcNow).ShouldBeTrue();
                 Submits++;var command=call.Arg<BoundWorkloadCommandRequest>().Command;var payload=command.Payload.Deserialize<PersistFr34Canary>(new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
                 DomainCalls++;var eventPayload=(Fr34CanaryPersisted)Fr34CanaryAggregate.Handle(payload,null).Events.Single();_owner=new(command.Tenant,command.Domain,command.AggregateId);
                 ProtectCalls++;var resolved=await _production.Bindings.ResolveAsync(_owner,new(1,PayloadProtectionPayloadKind.Event,typeof(Fr34CanaryPersisted).FullName!),payload.ProtectedContent.Target,true,call.Arg<CancellationToken>());resolved.ShouldNotBeNull();
@@ -163,6 +194,10 @@ public sealed class Fr34DynamicOccurrenceTests
                 await _production.Engine.AcquirePayloadProtectionCompletionLeaseAsync(write.CompletionContext!,call.Arg<CancellationToken>());
                 _event=new(1,typeof(Fr34CanaryPersisted).FullName!,write.ProtectionResult.PayloadBytes,write.ProtectionResult.SerializationFormat,1,command.MessageId,null,null,DateTimeOffset.UtcNow,"fixture-writer",write.ProtectionResult.Metadata) { NativeEventDigest=new string('b',64) };
                 await _production.Engine.CompletePayloadProtectionAsync(write.CompletionContext!,PayloadProtectionPersistenceOutcome.Persisted,call.Arg<CancellationToken>());
+                if(_manifest.Fault=="policy-change") _gateObserver.State=_gateObserver.State with { Fr34AuthorizationRevision="common-policy-2" };
+                if(_manifest.Fault=="trust-change") _gateObserver.State=_gateObserver.State with { TrustRevision="revoked-trust-2" };
+                if(_manifest.Fault=="recipe-change") _gateObserver.State=_gateObserver.State with { Fr34RecipeSha256=new string('f',64) };
+                if(_manifest.Fault=="claim-change") Receiving.State=Receiving.State with { Fr34RecipeSha256=new string('f',64) };
                 return new SubmitCommandResponse(command.MessageId,null);
             });
             _gateway.ReadStreamAsync(Arg.Any<StreamReadRequest>(),Arg.Any<CancellationToken>()).Returns(call=>
@@ -178,8 +213,10 @@ public sealed class Fr34DynamicOccurrenceTests
         {
             var source=new CustodyInteractionProtectionBindingSource(_dapr,new Dictionary<string,CustodyInteractionBindingResource>(),Enrollment);var binding=new InteractionProtectionBindingProvider(source);
             var keys=new CustodyInteractionOccurrenceKeyProvider(_dapr,_native,source,_registry,_inventory,_inventoryAuthority,new Dictionary<string,CustodyInteractionMaterialProfile>(),Enrollment);
-            _production=new(new(_registry,keys,binding,TimeProvider.System),binding,keys,source,Enrollment);Reader=new(_gateway,TimeProvider.System,Enrollment);CanaryEngine=new(_production.Engine,Reader,_gateway,_proofs,_commands.Authority,"private-worker",null!,Substitute.For<ICustodyReservedManifestSource>(),Enrollment);
+            _production=new(new(_registry,keys,binding,TimeProvider.System),binding,keys,source,Enrollment);Reader=new(_gateway,TimeProvider.System,Enrollment);CanaryEngine=new(_production.Engine,Reader,_gateway,_proofs,_commands.Authority,"private-worker",_manifest.Client,_manifest.Locators,Enrollment);
+            _engineHandlers.Clear();_engineHandlers.Add(new Fr34OwnerOperationHandler(CanaryEngine,Reader,binding,TimeProvider.System,new Fr34IndependentOriginalCollector(CanaryEngine,Reader,_commands.AuthorityForBearer("fixture-observer"))));
         }
-        public void Dispose() { Receiving.Dispose();_claims.Dispose();_reads.Dispose();_commands.Dispose();_dapr.Dispose(); }
+        internal Fr34ProtectionGate Gate()=>new(Target,new DaprFr34ProtectionEngine(_commands.Authority),new DaprFr34PersistedReader(_gateObserver.Authority),new DaprFr34CanaryAuthority(_gateObserver.Authority),TimeProvider.System);
+        public void Dispose() { Receiving.Dispose();_claims.Dispose();_reads.Dispose();_commands.Dispose();_gateObserver.Dispose();_manifest.Dispose();_proofAuthority.Dispose();_proofKey.Dispose();File.Delete(_proofFile);_dapr.Dispose(); }
     }
 }

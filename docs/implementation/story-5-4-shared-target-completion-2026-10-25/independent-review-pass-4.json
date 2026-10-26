@@ -1,0 +1,299 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-25T21:25:15.373565+00:00",
+  "reviewPass": 4,
+  "reviewLoopIterationAfterTriage": 4,
+  "status": "SourceCorrectionsHandedBack_IndependentReview5Pending",
+  "reviewers": [
+    "/root/review4_blind",
+    "/root/review4_edge",
+    "/root/review4_gap"
+  ],
+  "contextFree": true,
+  "sourceScopeManifest": "/tmp/story54-final-review-544u4x82/scope.json",
+  "reviewDiffSha256": "e79e7a3b310b206e66a5fabae6c44d019ac647b74644305285647230e84e3a93",
+  "findings": [
+    {
+      "id": "B4-1",
+      "verdict": "high",
+      "evidence": "Both indexed and legacy fr34-command-authorize branches still require target interaction/alias to equal the random aggregate and fr34-prefix. New dynamic claims preserve the native original target instead; real Fr34CanaryCommandProofSource therefore returns null before dispatch.",
+      "route": "bad_spec \u2014 verify the independent exact retained claim at the real proof boundary"
+    },
+    {
+      "id": "B4-2",
+      "verdict": "high",
+      "evidence": "ReadErasureAsync only calls the static-resource Read path; dynamic claims have no enrolledResources entry and their enrollment interface exposes no erasure read. ConfirmDestroyed and erased replay cannot observe a successful native destruction.",
+      "route": "bad_spec \u2014 dynamic exact erasure original/witness read and full gate integration"
+    },
+    {
+      "id": "B4-3",
+      "verdict": "high",
+      "evidence": "run_installed_cohort validates checkout/config/register before constructing the runner. Default Blocked state remains NotReserved/NotDispatched; qualify.main copies it and emits zero after a previous uncertain attempt when these early checks fail.",
+      "route": "bad_spec \u2014 conservative uncertainty through every outer owner refusal until authoritative absence"
+    },
+    {
+      "id": "B4-4",
+      "verdict": "high",
+      "evidence": "Indexed Begin checks the same fixed free-space floor for every request. PrivateOriginalsCount tracks history, not pending result liability; many small admitted originals can exhaust the space required by their independently bounded large results and index/history writes.",
+      "route": "bad_spec \u2014 atomic bounded completion liability per outstanding admission"
+    },
+    {
+      "id": "B4-5",
+      "verdict": "high",
+      "evidence": "AuditReader calls SubmitQueryAsync. The shipped bare HttpClient has stream/status proof sources only; the SDK's ordinary query method adds no authorization, while the actual query controller requires it. The current source also publishes a narrow signed owner-authority query endpoint, which this composition never uses.",
+      "route": "bad_spec \u2014 explicit restricted authenticated native query transport"
+    },
+    {
+      "id": "B4-6",
+      "verdict": "high",
+      "evidence": "CustodyGuardedStateInstallation AuthorizeAsync only reads permission; it never admits/records cell or receipt transitions. The native Dapr transaction writes new bytes and immediately calls ValidateReceipt, which requires an independent anchor that no shipped source advances. Its subsequent current-cell reads fail likewise.",
+      "route": "bad_spec \u2014 retain/admit/publish/recover exact guarded transitions with the real transaction"
+    },
+    {
+      "id": "B4-7",
+      "verdict": "high",
+      "evidence": "completeAffectedBatchEnumeration returns one for any positive-revision duplicate-free affected list, including an empty one; neither the complete affected set nor its recorded revision is correlated.",
+      "route": "bad_spec \u2014 exact historical coverage or missing evidence"
+    },
+    {
+      "id": "B4-8",
+      "verdict": "high",
+      "evidence": "raceWinners and immutableReservation use only final status and receipt presence. They do not read competing original outcomes or the reservation's retained identity, so duplicate winners/replaced reservations are undetected.",
+      "route": "bad_spec \u2014 exact correlated operation/reservation history or missing evidence"
+    },
+    {
+      "id": "B4-9",
+      "verdict": "high",
+      "evidence": "allCopyRevival counts readable census entries but does not compare census identities with enrolled providerCopyIds or require correlated destruction originals. Empty/incomplete arrays report zero. Earlier state.providerCopyIds equality does not establish census coverage.",
+      "route": "bad_spec \u2014 complete unique exact copy census and original destruction correlation"
+    },
+    {
+      "id": "B4-10",
+      "verdict": "high",
+      "evidence": "ValidateAcceptedContext validates only the two Platform sections and platform date/profile/plan pins. TryCompose relies on it in production; protection date/target are never checked, and generated host packets do not expose a complete independently checked protection binding.",
+      "route": "bad_spec \u2014 exact complete coordinated protection acceptance"
+    },
+    {
+      "id": "E4-1",
+      "verdict": "high",
+      "evidence": "Verified the same dynamic-target rejection at the actual authorizer and proof source; no earlier caller supplies an allowed alternate target without renaming the native original.",
+      "route": "bad_spec \u2014 shared dynamic command admission correction"
+    },
+    {
+      "id": "E4-2",
+      "verdict": "high",
+      "evidence": "Catalog source recovery calls capability ReadVerifyAsync. If inner retention failed before commit, this method uses signer.Lookup plus current trust, returns a newly computed trustRevision with no immutable evaluation, and the catalog stores it as the original.",
+      "route": "bad_spec \u2014 exact retained capability evaluation lookup or unknown"
+    },
+    {
+      "id": "E4-3",
+      "verdict": "high",
+      "evidence": "FR34 authorization uses the entire authority state Revision. Original admission/dispatch can advance a legitimately shared head without changing target/trust; the subsequent Current check rejects the admitted gate revision. No composition rule disallows that placement.",
+      "route": "bad_spec \u2014 stable independently current authorization binding distinct from journal progress"
+    },
+    {
+      "id": "V4-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: the actual-composition test selects only agents-protection-fr34. Deleting agents-security-audit or returning healthy on spool outage is undetected; no other test evaluates that registered ready check.",
+      "route": "patch \u2014 evaluate actual audit readiness with controlled authority/storage outages"
+    },
+    {
+      "id": "V4-2",
+      "verdict": "high",
+      "evidence": "Pre-verified: OpenBao tests never execute ReadTenantKekAsync through KeyExchange. Outer-key tests and FakeNative KEK tests do not detect a tenant-KEK purpose/version AAD substitution.",
+      "route": "patch \u2014 real OpenBao adapter KEK plus key-exchange round trip and exact binding negatives"
+    },
+    {
+      "id": "V4-other-1",
+      "verdict": "high",
+      "evidence": "The gap review's other finding independently identifies the same real proof rejection; its test uses a constant proof substitute, bypassing the current receiving authorization. The source guards confirm the defect.",
+      "route": "bad_spec \u2014 shared dynamic proof correction with actual receiving regression"
+    },
+    {
+      "id": "R4A1",
+      "verdict": "high",
+      "evidence": "Source task audit: DestroyAsync looks up the manufactured locator fr34:<fresh random canaryId>. DaprCustodyOriginalLocators requires the exact existing reservation receipt, while the dynamic claim/slot carries no original manifest locator or binding. A pre-enrolled native original cannot be found through this source path without an unimplemented out-of-band alias.",
+      "route": "bad_spec \u2014 retain and use the independently supplied exact original manifest locator"
+    }
+  ],
+  "groups": [
+    {
+      "id": "DynamicCommandAdmission",
+      "members": [
+        "B4-1",
+        "E4-1",
+        "V4-other-1"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "DynamicErasureRead",
+      "members": [
+        "B4-2"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "ExactManifestLocator",
+      "members": [
+        "R4A1"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "OuterEntrypointUncertainty",
+      "members": [
+        "B4-3"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "PendingCompletionLiability",
+      "members": [
+        "B4-4"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "ProjectionQueryAuthentication",
+      "members": [
+        "B4-5"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "GuardedAnchorPublication",
+      "members": [
+        "B4-6"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "CorrelatedGuardHistoryMetrics",
+      "members": [
+        "B4-7",
+        "B4-8"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "CompleteCopyCensus",
+      "members": [
+        "B4-9"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "CoordinatedProtectionAcceptance",
+      "members": [
+        "B4-10"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "CapabilityEvaluationOriginal",
+      "members": [
+        "E4-2"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "StableProtectionAuthorization",
+      "members": [
+        "E4-3"
+      ],
+      "route": "bad_spec"
+    },
+    {
+      "id": "AuditReadinessCoverage",
+      "members": [
+        "V4-1"
+      ],
+      "route": "patch",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeRegressionInRederivation"
+    },
+    {
+      "id": "OpenBaoTenantKekCoverage",
+      "members": [
+        "V4-2"
+      ],
+      "route": "patch",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeRegressionInRederivation"
+    }
+  ],
+  "acceptedRecordChangesAuthorized": false,
+  "installedQualification": false,
+  "fullSourceComplete": false,
+  "deliveryComplete": false,
+  "implementationCorrectionEvidence": {
+    "B4-1": {
+      "status": "Corrected",
+      "correction": "Actual Fr34CommandAuthorizationHandler validates current enrolled recipe, retained exact command and native claim/target; receiving handler dispatch precedes static private fallback. Real Fr34CanaryCommandProofSource and native proof verification run in dynamic receiving/gate tests."
+    },
+    "B4-2": {
+      "status": "Corrected_SourceNativeOriginalInputsRemainRequired",
+      "correction": "Read-only dynamic erasure client/receiving producer uses actual custody full original/page/signature/restore proof and exact native reservation/target. Actual full gate crosses source engine/domain/persisted reader/proof/observer boundaries."
+    },
+    "B4-3": {
+      "status": "Corrected",
+      "correction": "Blocked starts LookupRequired/Unknown; common installed wrapper converts malformed/missing local inputs conservatively; both owner entrypoints retain uncertain state and known original identity. Three local-fault subcases exercise both actual entrypoints without cohort transport."
+    },
+    "B4-4": {
+      "status": "Corrected",
+      "correction": "Per-pending completion liability, explicit terminal admission, durable paged migration with bounded cache, pre-publication conditional reservations and stable content-addressed request/result bodies. Failed/competing CAS pressure, capacity loss, restart, repeated retained results and legacy publication carry-forward are covered."
+    },
+    "B4-5": {
+      "status": "Corrected",
+      "correction": "Restricted published owner-authority query route, mounted issuer assertion, complete principal/query proof, exact independently current scopes, closed allowlist and bounded total transport. Actual transport/proof codec and stale metadata/scope/token/key failures tested; ordinary SubmitQuery is unused."
+    },
+    "B4-6": {
+      "status": "Corrected_SupportedCommitAndRetainedReceiptRecovery",
+      "correction": "Actual typed native transaction hooks retain exact proposals and reverse cell references before write; exact complete native receipt/all-cell correlation publishes/reconciles admitted anchors. First sequence is bounded to the existing native authorization call sequence; unknown restart cannot dispatch. Fully restored missing receipt remains Unknown."
+    },
+    "B4-7": {
+      "status": "Corrected_ExactNativeHistoryProtocolAbsent",
+      "correction": "Never infers complete affected enumeration from current receipts; names External.CompleteAffectedBatchSetAtRecordedRevocationRevisionProtocol."
+    },
+    "B4-8": {
+      "status": "Corrected_ExactNativeHistoryProtocolAbsent",
+      "correction": "Never infers race winners or immutable reservation from final status; names External.ExactCompetingProtectionOperationOriginalAndReservationHistoryProtocol."
+    },
+    "B4-9": {
+      "status": "Corrected",
+      "correction": "Complete unique enrolled-copy census and per-copy target/request/destruction/readability proof correlation required. Eight genuinely independently signed source fixtures reject misleading incomplete/duplicate/foreign/unknown evidence. Explicit no-copy scopes remain separate from physical proof."
+    },
+    "B4-10": {
+      "status": "Corrected",
+      "correction": "Both packet producers retain complete protection binding from explicit accepted protection section; C# production admission checks protection target/date/raw profile/config/plan, exact accepted section and shared Platform pins. Actual cross-language prepared packet passes; substitutions and missing inputs refuse."
+    },
+    "E4-1": {
+      "status": "Corrected_SharedB4-1",
+      "correction": "Actual dynamic proof receiving correction shared with B4-1."
+    },
+    "E4-2": {
+      "status": "Corrected",
+      "correction": "Capability evaluation has its own immutable inner result and read-only exact lookup; issuance/current-trust evaluation cannot replace an unknown original. Lost inner/outer retention, trust changes and revocation never re-sign or recompute historical evaluation."
+    },
+    "E4-3": {
+      "status": "Corrected",
+      "correction": "Explicit independently current common authorization revision and target/trust/recipe binding replaces mutable journal counter. Complete gate passes shared original writes and disjoint journal counters, and rejects real binding/revocation changes."
+    },
+    "V4-1": {
+      "status": "Corrected",
+      "correction": "Actual AddInstalledAgentsOwningProcess registered agents-security-audit readiness check is Healthy with current fixture authority/state and Unhealthy on authority or spool storage outage."
+    },
+    "V4-2": {
+      "status": "Corrected",
+      "correction": "Actual OpenBao ReadTenantKekAsync decrypts independently prepared KEK for real isolated KeyExchange wrap/unwrap in derived/non-derived modes, including tenant/version/resource/purpose binding negatives and existing deadline/zeroing checks."
+    },
+    "V4-other-1": {
+      "status": "Corrected_SharedB4-1",
+      "correction": "Constant proof substitute removed from dynamic production fixture; actual receiver/private proof codec is exercised."
+    },
+    "R4A1": {
+      "status": "Corrected",
+      "correction": "Native slot/claim carries explicit exact existing manifest/reservation. Dynamic and static destruction use supplied bindings; no fr34:<freshCanary> locator is manufactured, no original is renamed or created."
+    }
+  },
+  "sourceVerificationEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-verification-history.json"
+}

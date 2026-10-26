@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Hexalith.Platform.Secrets.Runtime;
@@ -19,33 +20,62 @@ public sealed class QualificationObservationOrchestrator(IQualificationOriginalS
         bool first=await originals.BeginAsync("executor",requestId+":case-effect",request,token).ConfigureAwait(false);
         await executeOrLookup(!first,token).ConfigureAwait(false);
         var snapshots=new JsonArray();var controls=new JsonArray(); QualificationObservedOriginal? retained=null;
-        async Task<bool> Read(string actualStage)
+        async Task<bool> Read(string actualStage,string? nextControl,bool allowNew)
         {
-            var observed=await reader.ReadAsync(request,token).ConfigureAwait(false);
-            if(observed is null || observed.RequestId!=requestId || observed.OriginalReceiptSha256.Length!=64 || string.IsNullOrWhiteSpace(observed.AuthorityRevision)) return false;
+            string stageId=requestId+":observation-stage:"+actualStage;
+            JsonObject? snapshot=await originals.LookupResultAsync("executor",stageId,token).ConfigureAwait(false);
+            if(snapshot is null)
+            {
+                if(!allowNew) throw new InvalidOperationException("External.ExactHistoricalSignedStageSnapshotProtocol:"+actualStage);
+                if(nextControl is not null && await originals.ReadAdmissionAsync("executor",requestId+":"+nextControl,
+                    ControlRequest(),token).ConfigureAwait(false)!=QualificationOriginalAdmissionState.Absent)
+                    throw new InvalidOperationException("External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol:"+actualStage);
+                bool newRead=await originals.BeginAsync("executor",stageId,request,token).ConfigureAwait(false);
+                if(!newRead) throw new InvalidOperationException("External.ExactHistoricalSignedStageSnapshotProtocol:"+actualStage);
+                var measured=await reader.ReadAsync(request,token).ConfigureAwait(false);
+                if(measured is null) return false;
+                snapshot=new JsonObject { ["stage"]=actualStage,["originalRequestId"]=requestId,["originalResultSha256"]=measured.OriginalReceiptSha256,
+                    ["stateSha256"]=QualificationProtocolSchema.Digest(measured.Source),["authorityRevision"]=measured.AuthorityRevision,["source"]=measured.Source.DeepClone(),
+                    ["sourceProof"]=System.Text.Json.JsonSerializer.SerializeToNode(measured,CustodyBindingContract.Json) };
+                await originals.RetainAsync("executor",stageId,snapshot,token).ConfigureAwait(false);
+            }
+            var observed=snapshot["sourceProof"]?.Deserialize<QualificationObservedOriginal>(CustodyBindingContract.Json);
+            if(observed is null || observed.RequestId!=requestId || observed.OriginalReceiptSha256.Length!=64 || string.IsNullOrWhiteSpace(observed.AuthorityRevision)
+                || snapshot["stage"]?.GetValue<string>()!=actualStage || snapshot["stateSha256"]?.GetValue<string>()!=QualificationProtocolSchema.Digest(observed.Source)
+                || !JsonNode.DeepEquals(snapshot["source"],observed.Source)) return false;
             if(retained is not null && (retained.OriginalReceiptSha256!=observed.OriginalReceiptSha256 || !JsonNode.DeepEquals(retained.Source["state"]??retained.Source,observed.Source["state"]??observed.Source))) return false;
-            retained??=observed;
-            snapshots.Add(new JsonObject { ["stage"]=actualStage,["originalRequestId"]=requestId,["originalResultSha256"]=observed.OriginalReceiptSha256,
-                ["stateSha256"]=QualificationProtocolSchema.Digest(observed.Source),["authorityRevision"]=observed.AuthorityRevision,["source"]=observed.Source.DeepClone(),["sourceProof"]=System.Text.Json.JsonSerializer.SerializeToNode(observed,CustodyBindingContract.Json) });
-            return true;
+            retained??=observed;snapshots.Add(snapshot.DeepClone());return true;
         }
-        if(!await Read("AfterEffect").ConfigureAwait(false)) return null;
+        JsonObject ControlRequest()
+        {
+            var value=(JsonObject)request.DeepClone();if(retained is not null) value["originalResultSha256"]=retained.OriginalReceiptSha256;return value;
+        }
+        if(!await Read("AfterEffect","restart",first).ConfigureAwait(false)) return null;
         foreach(string operation in new[]{"restart","restore"})
         {
             string controlId=requestId+":"+operation;
-            var controlRequest=(JsonObject)request.DeepClone(); controlRequest["originalResultSha256"]=retained!.OriginalReceiptSha256;
-            bool start=await originals.BeginAsync("executor",controlId,controlRequest,token).ConfigureAwait(false);
-            var control=start ? await recovery.ExecuteAsync(operation,controlRequest,token).ConfigureAwait(false)
-                : await recovery.LookupAsync(operation,controlRequest,token).ConfigureAwait(false);
+            var controlRequest=ControlRequest();
+            var control=(await originals.LookupResultAsync("executor",controlId,token).ConfigureAwait(false))?.Deserialize<QualificationRecoveryControlOriginal>(CustodyBindingContract.Json);
+            bool firstControl=false;
+            if(control is null)
+            {
+                bool start=await originals.BeginAsync("executor",controlId,controlRequest,token).ConfigureAwait(false);
+                firstControl=start;
+                control=start ? await recovery.ExecuteAsync(operation,controlRequest,token).ConfigureAwait(false)
+                    : await recovery.LookupAsync(operation,controlRequest,token).ConfigureAwait(false);
+            }
             if(control is null || !recovery.Verify(control,controlRequest) || control.Operation!=operation || control.RequestId!=requestId
                 || control.TargetCommit!=SecretsProof.Text(request,"targetCommit") || control.IsolatedTargetId!=SecretsProof.Text(request,"isolatedTargetId")
-                || control.OriginalReceiptSha256!=retained.OriginalReceiptSha256 || control.BeforeIncarnation==control.AfterIncarnation
+                || control.OriginalReceiptSha256!=retained!.OriginalReceiptSha256 || control.BeforeIncarnation==control.AfterIncarnation
                 || string.IsNullOrWhiteSpace(control.BeforeIncarnation) || string.IsNullOrWhiteSpace(control.AfterIncarnation)) return null;
-            controls.Add(System.Text.Json.JsonSerializer.SerializeToNode(control,CustodyBindingContract.Json));
-            if(!await Read(operation=="restart"?"AfterRestart":"AfterRestore").ConfigureAwait(false)) return null;
+            var controlBody=(JsonObject)System.Text.Json.JsonSerializer.SerializeToNode(control,CustodyBindingContract.Json)!;
+            await originals.RetainAsync("executor",controlId,controlBody,token).ConfigureAwait(false);
+            controls.Add(controlBody);
+            if(!await Read(operation=="restart"?"AfterRestart":"AfterRestore",operation=="restart"?"restore":null,firstControl).ConfigureAwait(false)) return null;
         }
+        bool firstLookup=await originals.BeginAsync("executor",requestId+":lookup-stage",request,token).ConfigureAwait(false);
         await executeOrLookup(true,token).ConfigureAwait(false);
-        if(!await Read("AfterLookup").ConfigureAwait(false)) return null;
+        if(!await Read("AfterLookup",null,firstLookup).ConfigureAwait(false)) return null;
         var result=new JsonObject { ["requestId"]=requestId,["originalResultSha256"]=retained!.OriginalReceiptSha256,["snapshots"]=snapshots,["controls"]=controls };
         await originals.RetainAsync("executor",requestId+":observations",result,token).ConfigureAwait(false);
         return result;

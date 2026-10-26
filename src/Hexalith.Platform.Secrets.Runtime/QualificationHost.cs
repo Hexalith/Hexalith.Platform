@@ -34,11 +34,11 @@ public static class QualificationHost
         bool executionUncertain = role == "executor";
         try
         {
-            // Construct the closed provider shape; client expectations stay only in the durable original.
+            // Carry the complete canonical public identity; drivers independently verify every outcome.
             var ownerRequest = new JsonObject();
             foreach (string field in (role == "enrollment"
                 ? "protocol runId targetCommit isolatedTargetId planSha256 requestId operation"
-                : "protocol runId targetCommit isolatedTargetId planSha256 requestId caseId caseTargetId enrolledScope").Split(' '))
+                : "protocol runId targetCommit isolatedTargetId planSha256 requestId caseId caseTargetId enrolledScope scenario").Split(' '))
             { ownerRequest[field] = request[field]!.DeepClone(); }
             if (!await provider.AuthorizeAsync((JsonObject)ownerRequest.DeepClone(), caller!, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
             { return Deny(["IndependentCurrentAcceptedBindingAndIsolatedScope"], executionUncertain); }
@@ -46,7 +46,7 @@ public static class QualificationHost
             // An existing or failed original publication may follow an applied predecessor.
             // From this boundary onward only exact lookup can resolve executor uncertainty.
             executionUncertain = role == "executor";
-            // Public audit originals are distinct from the stripped receiving-operation namespace, even at one authority.
+            // Public audit originals are distinct from the receiving-operation namespace, even at one authority.
             string auditId = "public-host:" + id;
             bool lookup = role == "executor" && operation == "lookup";
             bool first = !lookup && await store.BeginAsync(role, auditId, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);

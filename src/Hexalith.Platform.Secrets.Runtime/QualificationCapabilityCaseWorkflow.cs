@@ -11,7 +11,27 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
     IQualificationOriginalStore originals,IReadOnlyDictionary<string,DeletionBatchCapabilityV1> enrolledPayloads)
 {
     /// <summary>Uses one deterministic original signing identity and verifies changed public bytes without any destruction, issue, dispatch or approval operation.</summary>
-    public Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)=>RunAsync(request,false,token);
+    public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
+    {
+        string? id=EvaluationId(request);if(id is null) return null;
+        if(!await originals.BeginAsync("executor",id,request,token).ConfigureAwait(false)) return await LookupAsync(request,token).ConfigureAwait(false);
+        var result=await RunAsync(request,false,token).ConfigureAwait(false);if(result is null) return null;
+        await originals.RetainAsync("executor",id,result,token).ConfigureAwait(false);return (JsonObject)result.DeepClone();
+    }
+    /// <summary>Reads only the immutable evaluation body. Issuance alone cannot recover an evaluation lost before retention.</summary>
+    public async Task<JsonObject?> LookupAsync(JsonObject request,CancellationToken token)
+    {
+        string? id=EvaluationId(request);
+        if(id is null || await originals.ReadAdmissionAsync("executor",id,request,token).ConfigureAwait(false)!=QualificationOriginalAdmissionState.Admitted) return null;
+        var result=await originals.LookupResultAsync("executor",id,token).ConfigureAwait(false);
+        return result is not null && JsonNode.DeepEquals(result["caseId"],request["caseId"]) && JsonNode.DeepEquals(result["requestId"],request["requestId"])?(JsonObject)result.DeepClone():null;
+    }
+    private string? EvaluationId(JsonObject request)
+    {
+        string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
+        return id is not null && requestId is not null && enrolledPayloads.ContainsKey(id)
+            && (id=="S4.capability-canonical-14-fields" || id.StartsWith("S4.capability-substitution.",StringComparison.Ordinal))?requestId+":capability-evaluation-result":null;
+    }
     /// <summary>Re-verifies the actual original signer artifact and independently current public trust. Missing originals cannot sign.</summary>
     public Task<JsonObject?> ReadVerifyAsync(JsonObject request,CancellationToken token)=>RunAsync(request,true,token);
     private async Task<JsonObject?> RunAsync(JsonObject request,bool lookupOnly,CancellationToken token)
@@ -23,6 +43,8 @@ public sealed class QualificationCapabilityCaseWorkflow(IDeletionCapabilitySigni
             || id!="S4.capability-canonical-14-fields" && !id.StartsWith("S4.capability-substitution.",StringComparison.Ordinal)) return null;
         string originalId=requestId+":capability";
         var input=(JsonObject)JsonSerializer.SerializeToNode(new { requestId,payload },CustodyBindingContract.Json)!;
+        // A pre-existing issuance may have been evaluated before a lost acknowledgement. Only exact evaluation lookup can resolve it.
+        if(!lookupOnly && await originals.LookupRequestAsync("executor",originalId,token).ConfigureAwait(false) is not null) return null;
         bool first=!lookupOnly && await originals.BeginAsync("executor",originalId,input,token).ConfigureAwait(false);
         var issued=first ? await signer.SignAsync(payload).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(payload).WaitAsync(token).ConfigureAwait(false);
         if(issued.Payload!=payload || issued.State!=DeletionCapabilitySigningState.Signed || issued.DetachedJws is null) return null;
