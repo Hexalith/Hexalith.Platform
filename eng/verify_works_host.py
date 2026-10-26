@@ -1214,7 +1214,7 @@ def run_verification(args):
             "project": str(identity_root / "Hexalith.Platform.Identity.csproj"),
             "projectSha256": sha256(identity_root / "Hexalith.Platform.Identity.csproj"),
             "qualifiedAssemblySha256": sha256(consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Platform.Identity.dll")}
-        summary["dependencyModes"] = {"Release": "public NuGet " + version + " consumer graph plus explicitly named test-only Platform.Identity, Platform.Composition and conditional Platform.Works.Runtime source"}
+        summary["dependencyModes"] = {"Release": "public NuGet " + version + " consumer graph plus explicitly named test-only Platform.Identity, Platform.Composition, conditional Platform.Works.Runtime and linked Parties authority/query source"}
         if "Debug" in profile["consumerConfigurations"]:
             summary["dependencyModes"]["Debug"] = "sibling source project graph; independently built and hashed"
         for row in summary["rows"].values():
