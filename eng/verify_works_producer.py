@@ -1,6 +1,7 @@
 """Bind an explicitly selected SDK source tree to its public package producer without Git mutations."""
 import hashlib
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
 import urllib.request
@@ -82,6 +83,10 @@ def require_unchanged_runtime_source(snapshot):
 def _fetch(url):
     request = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json",
                                                   "User-Agent": "Hexalith-Works-Story416-Provenance"})
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token and url.startswith(GIT_API):
+        # Authenticate only this official repository's Git API, and never forward the credential on redirects.
+        request.add_unredirected_header("Authorization", "Bearer " + token)
     with urllib.request.urlopen(request, timeout=15) as response:
         body = response.read(MAX_RESPONSE_BYTES + 1)
     if len(body) > MAX_RESPONSE_BYTES:
