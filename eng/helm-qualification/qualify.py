@@ -93,7 +93,7 @@ class Qualification:
         self.helm = self.env['HELM_BIN']
 
     def run(self, args, *, data=None, ok=True, timeout=120, sensitive=False,
-            maximum_output_bytes=8 * 1024 * 1024):
+            maximum_output_bytes=8 * 1024 * 1024, heartbeat=None, inherit_process_group=False):
         """Drain bounded pipes and always terminate/reap the owned process group."""
         import ctypes
         import selectors
@@ -115,19 +115,23 @@ class Qualification:
                     stdin_file.write(data.encode() if isinstance(data, str) else data)
                     stdin_file.seek(0)
                 process = subprocess.Popen(args, stdin=stdin_file if data is not None else subprocess.DEVNULL,
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env, cwd=ROOT, start_new_session=True)
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env, cwd=ROOT, start_new_session=not inherit_process_group)
                 for name in output:
                     stream = getattr(process, name)
                     os.set_blocking(stream.fileno(), False)
                     selector.register(stream, selectors.EVENT_READ, name)
                 end = time.monotonic() + timeout
+                next_heartbeat = time.monotonic()
                 try:
                     while selector.get_map():
+                        if heartbeat is not None and time.monotonic() >= next_heartbeat:
+                            heartbeat()
+                            next_heartbeat = time.monotonic() + 5
                         # A leader's successful exit does not authorize a detached
                         # descendant to continue writing or running indefinitely.
                         if process.poll() is not None:
                             try:
-                                os.killpg(process.pid, signal.SIGKILL)
+                                process.kill() if inherit_process_group else os.killpg(process.pid, signal.SIGKILL)
                             except ProcessLookupError:
                                 pass
                         if time.monotonic() >= end:
@@ -156,7 +160,7 @@ class Qualification:
                     # killpg is unconditional, even when poll() has reaped the
                     # leader between cancellation and this terminal path.
                     try:
-                        os.killpg(process.pid, signal.SIGKILL)
+                        process.kill() if inherit_process_group else os.killpg(process.pid, signal.SIGKILL)
                     except ProcessLookupError:
                         pass
                     process.wait()
@@ -587,6 +591,9 @@ class Qualification:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE)
+    parser.add_argument('--calibration', choices=('prepare', 'inspect', 'launch', 'monitor', 'stop', 'remove'), help='Independent calibration, with separate plan/authority/reservations; no campaign credit.')
+    parser.add_argument('--calibration-state', type=Path)
+    parser.add_argument('--calibration-plan', type=Path)
     parser.add_argument('--campaign', choices=('prepare', 'inspect', 'launch', 'monitor', 'stop', 'remove'))
     parser.add_argument('--campaign-state', type=Path)
     parser.add_argument('--campaign-plan', type=Path)
@@ -602,6 +609,17 @@ def main():
     parser.add_argument('--admission-key')
     parser.add_argument('--approved-admission-key-sha256')
     args = parser.parse_args()
+    if args.calibration:
+        if args.campaign or args.campaign_capacity or args.calibration_state is None or args.campaign_state or args.campaign_plan:
+            parser.error('--calibration requires --calibration-state and cannot select campaign or fixture inputs')
+        import independent_calibration
+        forwarded = [args.calibration, '--state', str(args.calibration_state)]
+        for name, value in (('--plan', args.calibration_plan), ('--approved-plan-sha256', args.approved_plan_sha256)):
+            if value is not None:
+                forwarded.extend((name, str(value)))
+        return independent_calibration.main(forwarded)
+    if args.calibration_state or args.calibration_plan:
+        parser.error('calibration inputs require --calibration')
     if args.campaign:
         if args.campaign_capacity or args.campaign_state is None:
             parser.error('--campaign requires --campaign-state and cannot select the fixture/capacity route')

@@ -444,3 +444,73 @@ stays available for its full freshness interval. Memories accepts
 lifecycle plan hash; separate pinned artifact inputs remain supported. A later
 poll cannot rewrite a producer's held pair. Environment observations remain
 `qualified: false`.
+
+
+## Independent prerequisite calibration
+
+`--calibration prepare|inspect|launch|monitor|stop|remove`, with
+`--calibration-state`, optional `--calibration-plan` for prepare, and
+`--approved-plan-sha256` for prepare/launch/monitor, is a separate supported mode.
+It subclasses the existing `CampaignQualification` lifecycle and shares its
+exclusive state lock, bounded processes, exact Docker/kind/cluster/namespace/
+control ownership, failure capture and stop/removal verification. It does not
+call finite campaign admission, a synthetic qualifier or a Memories C2 producer.
+The schema is `hexalith.platform.independent-calibration/v1` and the explicit
+application/chart profile is `PG-INDEPENDENT-CALIBRATION-1`. The qualification
+endpoint additionally requires the mounted independent run and plan bindings;
+Production, local-profile mixing, wrong component hashes and expired gates refuse.
+
+For example, from this repository, after actual inputs and outside approval exist:
+
+```bash
+python3 -B eng/helm-qualification/qualify.py --calibration prepare --calibration-state "$STATE" --calibration-plan "$PLAN" --approved-plan-sha256 "$INDEPENDENT_PLAN_SHA256"
+python3 -B eng/helm-qualification/qualify.py --calibration inspect --calibration-state "$STATE"
+python3 -B eng/helm-qualification/qualify.py --calibration launch --calibration-state "$STATE" --approved-plan-sha256 "$INDEPENDENT_PLAN_SHA256"
+# monitor is only for an original ready state whose measurement has not started;
+# launch normally supervises measurements and removal before returning.
+python3 -B eng/helm-qualification/qualify.py --calibration monitor --calibration-state "$STATE" --approved-plan-sha256 "$INDEPENDENT_PLAN_SHA256"
+python3 -B eng/helm-qualification/qualify.py --calibration stop --calibration-state "$STATE"
+python3 -B eng/helm-qualification/qualify.py --calibration remove --calibration-state "$STATE"
+```
+
+The closed plan schema in `independent_calibration.load_plan` is authoritative.
+It binds exact host/isolated engine, source/tool/image/value/component/credential
+inputs, a separate approved calibration allocation basis, independent Linux
+primary/backup backing and signed current reservations. Each reservation requires its issuer, reservation ID, owner, valid-from/end and
+active non-revoked disposition. It binds original host/engine/pool/filesystem/
+failure-domain/path identities, fresh available
+minus competing capacity and the reserved amount. Changed backing, unsigned gross
+observations, missing independent backup or missing inputs refuse before preparation
+or infrastructure mutation. The HMAC issuer/key references, authenticated UTC and
+short action-status custody must be outside-approved with the complete plan.
+No campaign measurement, renewal count or single-collection allocation is borrowed.
+
+The native `calibration_workload.py` child rechecks that original authority and
+budget before each authenticated fixed-workload call. It executes a separate
+1200-segment/150000-record lane and then two distinct Pod writers with 1801
+125-record segments each. Actual target receipts must account for every record,
+measure at least1800s common overlap and show at least900000 state-component
+operations from stable per-Pod metric counters. No retries or restarts occur.
+`launch` stays in foreground supervision; `monitor` cannot replay a consumed or
+uncertain measurement. Each child inherits the original supervised process group.
+
+Fresh complete operational allocation receipts, metrics-API per-container CPU/
+memory, target-side latency, and physical SQL snapshots cover database, heap/TOAST,
+all access-telemetry/support/index relations, WAL and the quiesced full-table rewrite.
+Allocation headroom remains at least 20%; the 4GiB WAL ceiling is enforced.
+Measurement quiescence is bounded within original execution and never starts or
+resets the separate stop/remove allowance.
+Missing metrics/provider/readbacks fail; no value is filled with a configured bound.
+The original startup is <=600s, execution <=50400s including startup, cumulative
+stop/remove <=900s, within the outside-approved <=51900s window. PostgreSQL stays
+8000m/16GiB and aggregate demand16250m/31GiB. The source-bound result and retained
+segment proofs say qualified/C1/C2/A41=false. Separate backlog occupancy is not an
+expired-backlog drain, C2 replacement/fault, C3 retention/24h reclamation or renewal
+proof. Existing full campaign admission and all its measurements/security checks
+remain unchanged and refuse this independent schema.
+
+Actual host access, reservations/allocations, complete images/provider/reporter/CNI
+and scoped credentials, trusted clock/status/monitor sources, adopted source and
+outside approval remain operational prerequisites. No independent calibration or
+infrastructure was executed during implementation. Missing data is retained as null
+in Memories' existing preparation index; no owner packet is fabricated.

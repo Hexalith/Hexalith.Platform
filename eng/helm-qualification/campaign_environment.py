@@ -128,7 +128,7 @@ def validate_provider_scope(objects, application_namespace, declared):
     require(selector and any(all(o['spec']['template']['metadata'].get('labels', {}).get(k) == v for k, v in selector.items()) for o in workloads), 'prometheus-backend-required')
 
 
-def topology(profile, config, run_id):
+def topology(profile, config, run_id, *, profile_id=capacity.PROFILE_ID):
     """Render real TLS services using separately supplied private bootstrap inputs.
 
     PostgreSQL bootstrap SQL, TLS certificates, scoped provider tokens, and the
@@ -180,11 +180,11 @@ def topology(profile, config, run_id):
     container = pg['spec']['template']['spec']['containers'][0]
     require(container['name'] == 'postgresql' and container['image'] == backend['postgresql']
             and pg['spec']['template']['spec']['serviceAccountName'] == 'access-telemetry-postgresql', 'postgres-consumer-binding')
-    pg['metadata']['labels']['hexalith.io/profile'] = capacity.PROFILE_ID
-    pg['spec']['template']['metadata']['labels']['hexalith.io/profile'] = capacity.PROFILE_ID
-    pg['spec']['template']['metadata']['annotations']['hexalith.io/profile-id'] = capacity.PROFILE_ID
+    pg['metadata']['labels']['hexalith.io/profile'] = profile_id
+    pg['spec']['template']['metadata']['labels']['hexalith.io/profile'] = profile_id
+    pg['spec']['template']['metadata']['annotations']['hexalith.io/profile-id'] = profile_id
     for claim in pg['spec']['volumeClaimTemplates']:
-        claim['metadata']['labels']['hexalith.io/profile'] = capacity.PROFILE_ID
+        claim['metadata']['labels']['hexalith.io/profile'] = profile_id
         claim['spec']['storageClassName'] = 'standard'
         claim['spec']['resources']['requests']['storage'] = str(profile['sizing']['allocations']['postgres'])
     objects.extend(postgres)

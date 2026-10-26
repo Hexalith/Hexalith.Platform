@@ -376,6 +376,22 @@ def admit(plan, plan_sha, action):
 class CampaignQualification(Qualification):
     """Persistent mode of the existing kind qualifier, not a parallel runner."""
 
+    schema = SCHEMA
+    state_name = 'campaign-state.json'
+    plan_name = 'campaign-plan.json'
+    composition_id = capacity.PROFILE_ID
+    execution_seconds = capacity.CAMPAIGN_SECONDS
+
+    def admission(self, action):
+        return admit(self.plan, self.record['planSha256'], action)
+
+    @staticmethod
+    def binding(profile, profile_sha256):
+        return capacity.runtime_binding(profile, profile_sha256)
+
+    def phases(self, profile):
+        return profile['renewalSchedule']['phases']
+
     def __init__(self, evidence):
         # Qualification takes the same exclusive directory flock and closes on
         # initialization failure. No transient qualifier/fixture is constructed.
@@ -383,11 +399,11 @@ class CampaignQualification(Qualification):
         super().__init__(Path(evidence))
 
     def _initialize(self):
-        self.state_path = self.evidence / 'campaign-state.json'
+        self.state_path = self.evidence / self.state_name
         self.record = strict(read_private(self.state_path))
-        self.plan_raw = read_private(self.evidence / 'campaign-plan.json', self.record['planSha256'])
+        self.plan_raw = read_private(self.evidence / self.plan_name, self.record['planSha256'])
         self.plan = strict(self.plan_raw)
-        require(self.record['schema'] == SCHEMA and self.plan['runId'] == self.record['runId'], 'state-binding')
+        require(self.record['schema'] == self.schema and self.plan['runId'] == self.record['runId'], 'state-binding')
         self.temp = self.evidence
         self.cluster = self.record['target']['clusterName']
         self.context = self.record['target']['context']
@@ -422,7 +438,7 @@ class CampaignQualification(Qualification):
         elapsed = (capacity._boottime() - anchor['boottimeNs']) / 1e9
         require(elapsed >= 0, 'elapsed-regressed')
         end = self.record['stopDeadlineUtcMs'] if stopping else self.record['executionDeadlineUtcMs']
-        return max(0, min((STOPPING_SECONDS if stopping else capacity.CAMPAIGN_SECONDS) - elapsed,
+        return max(0, min((STOPPING_SECONDS if stopping else self.execution_seconds) - elapsed,
                           (end - int(time.time() * 1000)) / 1000))
 
     def run(self, args, **kwargs):
@@ -435,7 +451,7 @@ class CampaignQualification(Qualification):
             args[0] = self.plan['tools'][args[0]]['path']
         # Cleanup uses original tool/target custody and survives configuration,
         # measurements or authority drift. Changing a tool binary still refuses.
-        for name in ('docker', 'kind', 'kubectl', 'helm', 'dotnet'):
+        for name in self.plan['tools']:
             if args[0] == self.plan['tools'][name]['path']:
                 binary(self.plan['tools'][name])
         limit = kwargs.get('timeout', 120)
@@ -482,7 +498,7 @@ class CampaignQualification(Qualification):
             'run': {'runId': self.record['runId'], 'attemptId': self.record['attemptId'], 'attemptSequence': 1,
                     'ownerRunId': self.record['runId'], 'environmentId': self.record['environmentId'], 'role': 'owner'},
             'tool': unknown, 'candidate': unknown, 'decision': unknown, 'reuseLineage': unknown,
-            'environment': {'composition': {'id': capacity.PROFILE_ID, 'contentIdentity': 'sha256:' + self.record['planSha256']},
+            'environment': {'composition': {'id': self.composition_id, 'contentIdentity': 'sha256:' + self.record['planSha256']},
                 'mode': 'source', 'executionContext': {'kind': 'local'}, 'catalog': unknown, 'isolation': unknown,
                 'resources': resource_values, 'readiness': {'state': 'populated', 'status': readiness, 'observedAt': utc(now),
                     'resources': [{'resourceId': r['resourceId'], 'status': resources[i].get('readiness', readiness), 'observedAt': utc(now), 'diagnosticIds': []} for i, r in enumerate(resource_values)]},
@@ -614,14 +630,14 @@ class CampaignQualification(Qualification):
 
     def launch(self):
         require(self.record['status'] == 'prepared' and not self.record['creationAttempted'] and self.record['inFlight'] is None, 'launch-already-consumed')
-        profile, objects, now = admit(self.plan, self.record['planSha256'], 'launch')
+        profile, objects, now = self.admission('launch')
         prepared = self.verify_prepared_inputs(profile, objects)
         application_values = capacity.snapshot(profile['inputs']['values'][0]['path'], profile['inputs']['values'][0]['sha256'])
         self.record['admittedResources'] = self.admitted_resources(objects, prepared['application.yaml'], prepared['dapr.yaml'])
-        self.record['phases'] = profile['renewalSchedule']['phases']; self.save()
+        self.record['phases'] = self.phases(profile); self.save()
         require(self.plan['window']['earliestLaunchUtcMs'] <= now <= self.plan['window']['latestLaunchUtcMs'], 'outside-launch-window')
         self.record['started'] = {'utcMs': now, 'boottimeNs': capacity._boottime(), 'bootId': capacity._boot()}
-        self.record['executionDeadlineUtcMs'] = min(now + capacity.CAMPAIGN_SECONDS * 1000, self.plan['window']['expiresUtcMs'])
+        self.record['executionDeadlineUtcMs'] = min(now + self.execution_seconds * 1000, self.plan['window']['expiresUtcMs'])
         self.record['status'] = 'starting'; self.save()
         self._command_bound = time.monotonic() + STARTUP_SECONDS
         self.engine()
@@ -658,7 +674,7 @@ class CampaignQualification(Qualification):
         self.bootstrap_openbao()
         self.helm_run('install', 'dapr', self.plan['assets']['dapr']['path'], '--namespace', 'dapr-system', '--create-namespace',
                       '-f', '-', '--wait', '--timeout=180s', data=prepared['dapr-values.json'], timeout=185)
-        self.apply_objects([capacity.runtime_binding(profile, self.plan['profileSha256']),
+        self.apply_objects([self.binding(profile, self.plan['profileSha256']),
             {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'access-telemetry-qualification-gate', 'namespace': self.record['target']['namespace']},
              'data': {'gate.json': json.dumps({'schemaVersion': 1, 'state': 'disabled', 'profileSha256': self.plan['profileSha256'], 'expiresUtcMs': 0})}},
             {'apiVersion': 'coordination.k8s.io/v1', 'kind': 'Lease', 'metadata': {'name': 'access-telemetry-qualification', 'namespace': self.record['target']['namespace']},
@@ -996,7 +1012,7 @@ class CampaignQualification(Qualification):
         while maximum_polls is None or polls < maximum_polls:
             if (self.evidence / 'stop-request.json').exists():
                 raise InterruptedError('campaign-lifecycle-stop-requested')
-            admit(self.plan, self.record['planSha256'], 'monitor')
+            self.admission('monitor')
             require(self.remaining() > 0, 'original-budget-exhausted')
             self.observe()
             polls += 1
@@ -1250,22 +1266,27 @@ class CampaignQualification(Qualification):
 def prepare(path, expected, evidence):
     plan = load_plan(path, expected)
     profile, objects, now = admit(plan, expected, 'prepare')
+    return prepare_admitted(plan, profile, objects, now, expected, evidence, raw=capacity.snapshot(path, expected))
+
+
+def prepare_admitted(plan, profile, objects, now, expected, evidence, runner=CampaignQualification, raw=None):
+    """Persist and render an admitted plan without infrastructure mutation."""
     evidence = Path(evidence)
     require(evidence.is_absolute() and evidence.resolve() == evidence and not evidence.exists(), 'fresh-state-required')
     private(evidence.parent, directory=True)
     evidence.mkdir(mode=0o700)
-    atomic(evidence / 'campaign-plan.json', capacity.snapshot(path, expected), exclusive=True)
-    record = {'schema': SCHEMA, 'runId': plan['runId'], 'attemptId': uuid.uuid4().hex, 'environmentId': uuid.uuid4().hex,
+    atomic(evidence / runner.plan_name, raw if raw is not None else capacity.canonical(plan), exclusive=True)
+    record = {'schema': runner.schema, 'runId': plan['runId'], 'attemptId': uuid.uuid4().hex, 'environmentId': uuid.uuid4().hex,
         'planSha256': expected, 'target': profile['target'], 'status': 'prepared', 'preparedUtcMs': now,
         'started': None, 'stopping': None, 'executionDeadlineUtcMs': None, 'stopDeadlineUtcMs': None,
         'creationAttempted': False, 'nodes': [], 'resources': [], 'physicalTarget': None, 'kubeconfigSha256': None,
         'terminal': None, 'inFlight': None, 'commandCount': 0, 'commands': [], 'lastObservation': None,
-        'runtimeBinding': capacity.runtime_binding(profile, plan['profileSha256']), 'sizing': profile['sizing'], 'ownedData': None,
+        'runtimeBinding': runner.binding(profile, plan['profileSha256']), 'sizing': profile['sizing'], 'ownedData': None,
         'cleanup': {'disposition': 'not-requested', 'remainingNodeIds': [], 'unverified': True}}
-    atomic(evidence / 'campaign-state.json', record, exclusive=True)
+    atomic(evidence / runner.state_name, record, exclusive=True)
     atomic(evidence / 'environment.json', {'apiVersion': 'v1', 'kind': 'List', 'items': objects})
     atomic(evidence / 'dapr-values.json', environment.dapr_values(plan['environment']['daprImages']))
-    q = CampaignQualification(evidence)
+    q = runner(evidence)
     try:
         atomic(evidence / 'test-environment.json', q.descriptor())
         q.validate_descriptor()
