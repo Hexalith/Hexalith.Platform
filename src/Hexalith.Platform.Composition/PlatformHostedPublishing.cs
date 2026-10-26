@@ -15,23 +15,23 @@ public static class PlatformHostedPublishing
         ArgumentNullException.ThrowIfNull(graph);
         return JsonSerializer.SerializeToElement(new
         {
-        schema = "hexalith.platform.application-graph.v1",
-        workloads = graph.Workloads.Select(w => new
-        {
-            identity = w.Identity, resourceId = w.ResourceId, appId = w.AppId, readiness = w.ReadinessEndpoint,
-            environment = graph.Dapr.Environment(PlatformDeclarationSet.Id(w.Module.Declaration), w.ServerId),
-            inputs = w.Module.Declaration.GetProperty("runtime").GetProperty("extensions").EnumerateArray()
-                .SelectMany(e => e.GetProperty("configurationInputs").EnumerateArray()).Select(i => new
-                {
-                    key = i.GetProperty("key").GetString(), source = i.GetProperty("source").GetString(), reference = i.GetProperty("reference").GetString(),
-                }).ToArray(),
-            publicRoutes = w.Module.Declaration.GetProperty("surfaces").GetProperty("interfaces").EnumerateArray()
-                .Where(i => i.GetProperty("server").GetString() == w.ServerId && i.GetProperty("exposure").GetString() == "public")
-                .Select(i => i.GetProperty("routePrefix").GetString()).Distinct().ToArray(),
-            // Namespace and trust are parameters in the chart. ACL operations come only from this helper.
-            accessControl = graph.Dapr.AccessControl(w.AppId, "__APPLICATION_NAMESPACE__", "__TRUST_DOMAIN__"),
-        }).ToArray(),
-        capabilities = graph.Dapr.Capabilities, subscriptions = graph.Dapr.Subscriptions,
+            schema = "hexalith.platform.application-graph.v1",
+            workloads = graph.Workloads.Select(w => new
+            {
+                identity = w.Identity, resourceId = w.ResourceId, appId = w.AppId, readiness = w.ReadinessEndpoint,
+                environment = graph.Dapr.Environment(PlatformDeclarationSet.Id(w.Module.Declaration), w.ServerId),
+                inputs = w.Module.Declaration.GetProperty("runtime").GetProperty("extensions").EnumerateArray()
+                    .SelectMany(e => e.GetProperty("configurationInputs").EnumerateArray()).Select(i => new
+                    {
+                        key = i.GetProperty("key").GetString(), source = i.GetProperty("source").GetString(), reference = i.GetProperty("reference").GetString(),
+                    }).ToArray(),
+                publicRoutes = w.Module.Declaration.GetProperty("surfaces").GetProperty("interfaces").EnumerateArray()
+                    .Where(i => i.GetProperty("server").GetString() == w.ServerId && i.GetProperty("exposure").GetString() == "public")
+                    .Select(i => i.GetProperty("routePrefix").GetString()).Distinct().ToArray(),
+                // Namespace and trust are parameters in the chart. ACL operations come only from this helper.
+                accessControl = graph.Dapr.AccessControl(w.AppId, "__APPLICATION_NAMESPACE__", "__TRUST_DOMAIN__"),
+            }).ToArray(),
+            capabilities = graph.Dapr.Capabilities, subscriptions = graph.Dapr.Subscriptions,
         });
     }
 
