@@ -37,6 +37,10 @@ public sealed class PlatformOwnerServicesTests
             client["optionalClientScopes"]!.AsArray().ShouldAllBe(scope => scope!.GetValue<string>().StartsWith("platform-owner-", StringComparison.Ordinal));
             JsonNode tenant = client["protocolMappers"]!.AsArray().Single(mapper => mapper!["config"]?["claim.name"]?.GetValue<string>() == "tenant_id")!;
             tenant["config"]!["claim.value"]!.GetValue<string>().ShouldBe("tenant-alpha");
+            tenant["config"]!["access.token.claim"]!.GetValue<string>().ShouldBe("true");
+            JsonNode subject = client["protocolMappers"]!.AsArray().Single(mapper => mapper!["name"]?.GetValue<string>() == "owner-subject")!;
+            subject["protocolMapper"]!.GetValue<string>().ShouldBe("oidc-sub-mapper");
+            subject["config"]!["access.token.claim"]!.GetValue<string>().ShouldBe("true");
             client["protocolMappers"]!.AsArray().Any(mapper => mapper!["config"]?["claim.name"]?.GetValue<string>() == "eventstore:tenant")
                 .ShouldBeFalse("Owner tokens must not carry EventStore's tenant claim.");
         }
