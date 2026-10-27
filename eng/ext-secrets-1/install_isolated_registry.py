@@ -29,6 +29,13 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode()
 
 
+def creation_identity(output):
+    fields = output.decode().split()
+    if len(fields) != 2 or not all(fields):
+        raise RuntimeError('original-create-response-identity-unavailable')
+    return {'uid': fields[0], 'resourceVersion': fields[1]}
+
+
 def sha(value):
     return hashlib.sha256(value).hexdigest()
 
@@ -112,12 +119,14 @@ class Installer:
         if kube(*args).stdout.strip():
             raise RuntimeError('create-name-already-exists:' + obj['kind'] + '/' + metadata['name'])
         # Even Secret creation uses name output only; full Secret objects are never read back.
-        kube('create', '-f', '-', '-o', 'name', data=canonical(obj))
+        result = kube('create', '-f', '-', '-o', 'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}', data=canonical(obj))
+        identity = creation_identity(result.stdout)
         self.created.append(reference(obj))
         self.write('created-resource-references.json', self.created)
+        return identity
 
     def secret(self, name, fields):
-        self.create({'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': name}, 'type': 'Opaque',
+        return self.create({'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': name}, 'type': 'Opaque',
                      'data': {key: base64.b64encode(value.encode()).decode() for key, value in fields.items()}})
 
     def secret_field(self, name, field):
