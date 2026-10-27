@@ -7,6 +7,7 @@ internal static class DaprExportQualificationOperation
     private static readonly AsyncLocal<CancellationToken?> Current=new();
     private static readonly AsyncLocal<TimeSpan?> Budgets=new();
     internal static TimeSpan? BudgetOverride { get=>Budgets.Value;set=>Budgets.Value=value; }
+    internal static int ActiveOwners=>4-Slots.CurrentCount;
 
     internal static async Task<T?> RunAsync<T>(Func<CancellationToken,Task<T?>> work,Action<T> discard,CancellationToken caller) where T:class
     {

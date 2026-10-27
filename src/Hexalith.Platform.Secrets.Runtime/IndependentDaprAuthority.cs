@@ -45,6 +45,8 @@ public sealed class IndependentDaprAuthority
     /// <summary>Reads one enrolled immutable original with the actual signed authority response for independent historical correlation.</summary>
     public Task<IndependentAuthorityReadEvidence?> ReadOriginalEvidenceAsync(string role,string requestId,CancellationToken cancellationToken=default)
         =>InvokeVerifiedAsync("qualification-lookup-original",new { role,requestId },cancellationToken);
+    internal Task<IndependentAuthorityReadEvidence?> ReadCurrentReplayReadinessAsync(CancellationToken token)
+        =>InvokeVerifiedAsync("replay-read-current-ready",new { },token);
     private async Task<IndependentAuthorityReadEvidence?> InvokeVerifiedAsync(string method,object payload,CancellationToken cancellationToken)
     {
         if (!SecretsProvisioning.IsReference(method)) return default;
@@ -81,7 +83,7 @@ public sealed class IndependentDaprAuthority
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (Exception) { return default; }
     }
-    private static bool Current(IndependentAuthoritySignedResponse response,long now)
+    internal static bool Current(IndependentAuthoritySignedResponse response,long now)
         =>response.ObservedAt<=now && response.ObservedAt>=now-30 && response.ValidUntil>now;
     private sealed record Request(string Protocol, string EnrollmentId, string Scope, string TrustRevision, string Method, string Nonce, JsonElement Payload);
 }

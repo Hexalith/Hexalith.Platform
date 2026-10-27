@@ -30,6 +30,7 @@ internal sealed class ProtectedArchiveStore:IDisposable
         _config=config;_directory=HeldArchiveDirectory.Acquire(config.Directory);
         try
         {
+            if(config.ChunkBytes is >=4096 and <=65536 && 65536%config.ChunkBytes!=0) throw new IOException("External.EnrolledProtectedArchiveChunkGeometryDividing64KiBLiabilityQuantum");
             if(config.StorageProtocol!="Ext4PrivateWrittenNoSnapshotsV1" || config.ChunkBytes is <4096 or >65536 || config.ChunkBytes%4096!=0 || config.ChunkCount is <1 or >65536 || config.MaximumMetadataBytes is <65536 or >32*1024*1024
                 || config.ArchiveRoots.Count is <1 or >64 || Digest(_directory.Read("allocation-enrollment.json",65536)??throw new IOException("Existing protected allocation enrollment required."))!=config.EnrollmentSha256.ToLowerInvariant())
                 throw new IOException("External.EnrolledProtectedArchiveAllocationV1");
@@ -98,13 +99,21 @@ internal sealed class ProtectedArchiveStore:IDisposable
     public void ReleaseUnused(string ticket)
     { lock(Mutation) {  ArchiveVolumeFence.RequireCurrentDestination(_config.Directory);foreach(var item in Scan().Where(v=>v.Frame?.Ticket==ticket && v.Frame.State=="Reserved" && v.Frame.Publication is null)) WriteHeader(item.Index,new(item.Frame!.Generation+1,"Free"),false);_data.Flush(true);  } }
     internal sealed record TransferChunk(int Index,long Generation);
-    internal TransferChunk[] PlanTransfer(string source,long bytes)
+    internal void RequireReservable(string ticket,long bytes)
     { lock(Mutation) {
         ArchiveVolumeFence.RequireCurrentDestination(_config.Directory);
-        if(bytes<=0) throw new IOException("Positive exact funded legacy transfer required.");
+        if(bytes<0) throw new IOException("Positive fixed reservation required.");var all=Scan();
+        long needed=checked((bytes+_config.ChunkBytes-1)/_config.ChunkBytes);
+        if(all.LongCount(value=>value.Frame?.Ticket==ticket || value.Frame?.State=="Free")<needed) throw new IOException("Protected archive inode/entry/private-block capacity exhausted before admission.");
+    } }
+    internal TransferChunk[] PlanTransfer(string source,long bytes,long remaining)
+    { lock(Mutation) {
+        ArchiveVolumeFence.RequireCurrentDestination(_config.Directory);
+        if(bytes<=0 || remaining<0) throw new IOException("Positive exact funded legacy transfer required.");
         int count=checked((int)((bytes+_config.ChunkBytes-1)/_config.ChunkBytes));
-        var selected=Scan().Where(v=>v.Frame?.Ticket==source && v.Frame.State=="Reserved" && v.Frame.Publication is null).Take(count).ToArray();
-        if(selected.Length!=count) throw new IOException("Exact unused funded legacy chunks unavailable; preserve published/preparing liabilities.");
+        var eligible=Scan().Where(v=>v.Frame?.Ticket==source && v.Frame.State=="Reserved" && v.Frame.Publication is null).ToArray();
+        if(eligible.LongLength<count+checked((remaining+_config.ChunkBytes-1)/_config.ChunkBytes)) throw new IOException("Exact disjoint funded legacy split chunks unavailable; preserve all remaining/published/preparing liabilities.");
+        var selected=eligible.Take(count).ToArray();
         return selected.Select(v=>new TransferChunk(v.Index,v.Frame!.Generation)).ToArray();
     } }
     internal void TransferReserved(string source,string target,TransferChunk[] chunks,Action? boundary=null)
@@ -114,12 +123,15 @@ internal sealed class ProtectedArchiveStore:IDisposable
         var all=Scan();
         foreach(var chunk in chunks)
         {
+            _token.ThrowIfCancellationRequested();BoundedDurableFileOperation.CurrentToken.ThrowIfCancellationRequested();
             if(chunk.Index<0 || chunk.Index>=all.Count) throw new IOException("Unknown protected transfer chunk.");
             var frame=all[chunk.Index].Frame;
             if(frame?.State!="Reserved" || frame.Publication is not null) throw new IOException("Unknown funded transfer ownership; preserve liability.");
             if(frame.Ticket==target && frame.Generation==chunk.Generation+1) continue;
             if(frame.Ticket!=source || frame.Generation!=chunk.Generation) throw new IOException("Funded transfer ownership changed.");
-            WriteHeader(chunk.Index,frame with { Generation=checked(frame.Generation+1),Ticket=target });boundary?.Invoke();
+            WriteHeader(chunk.Index,frame with { Generation=checked(frame.Generation+1),Ticket=target });
+            _token.ThrowIfCancellationRequested();BoundedDurableFileOperation.CurrentToken.ThrowIfCancellationRequested();boundary?.Invoke();
+            _token.ThrowIfCancellationRequested();BoundedDurableFileOperation.CurrentToken.ThrowIfCancellationRequested();
         }
     } }
     /// <summary>Publishes into reserved fixed blocks. Commit header follows durable data; lost acknowledgements recover exact original bytes.</summary>

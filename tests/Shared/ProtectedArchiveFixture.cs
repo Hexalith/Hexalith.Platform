@@ -7,10 +7,10 @@ namespace Hexalith.Platform.Tests;
 // Disposable externally provisioned source fixtures only; production has no genesis/provisioning fallback.
 internal static class ProtectedArchiveFixture
 {
-    internal static ProtectedArchiveAllocationInstallation Enroll(string pool,IEnumerable<string> roots,long bytes,int metadata=4*1024*1024)
+    internal static ProtectedArchiveAllocationInstallation Enroll(string pool,IEnumerable<string> roots,long bytes,int metadata=4*1024*1024,int chunkBytes=65536)
     {
         foreach(string name in new[]{"pool.lock","capacity.lock"}) if(!File.Exists(Path.Combine(pool,name))) using(var file=File.Create(Path.Combine(pool,name))) file.Flush(true);
-        const int chunk=65536;int count=checked((int)((bytes+chunk-1)/chunk));
+        int chunk=chunkBytes;int count=checked((int)((bytes+chunk-1)/chunk));
         string data=Path.Combine(pool,"allocation-data.bin"),m0=Path.Combine(pool,"allocation-metadata-0.bin"),m1=Path.Combine(pool,"allocation-metadata-1.bin");
         string Make(string path,long size)
         {

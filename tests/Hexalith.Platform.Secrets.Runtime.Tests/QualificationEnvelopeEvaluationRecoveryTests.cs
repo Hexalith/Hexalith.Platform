@@ -72,6 +72,17 @@ public sealed class QualificationEnvelopeEvaluationRecoveryTests
         var exact=lossy.AttemptedInnerResult.ShouldNotBeNull();string originalBytes=exact.ToJsonString();
         exact["firstStatus"]!.GetValue<string>().ShouldBe("Succeeded");exact["exactRetryStatus"]!.GetValue<string>().ShouldBe("Succeeded");
         keyReads.ShouldBeGreaterThan(0);profileReads.ShouldBeGreaterThan(0);registerCalls.ShouldBe(caseId=="S2.byte-identical-replay"?2:0);
+        exact.ContainsKey("originalAuthenticationStatus").ShouldBeFalse();
+        if(loss=="outer-before-retain")
+        {
+            JsonNode.DeepEquals(await Source().ReadVerifyAsync(request,TestContext.Current.CancellationToken),exact).ShouldBeTrue();
+            var outerRead=Substitute.For<IQualificationOriginalStore>();outerRead.LookupResultAsync("executor",request["requestId"]!.GetValue<string>()+":case-result",Arg.Any<CancellationToken>()).Returns(exact);
+            var readRequest=(JsonObject)request.DeepClone();var scope=readRequest["enrolledScope"]!.AsObject();scope["logicalId"]=new string('d',64);scope["targetIds"]=new JsonArray();scope["providerCopyIds"]=new JsonArray();scope["issuer"]=identity.Issuer;
+            if(firstSeen is not null) scope["nonceDigest"]=QualificationProtocolSchema.Digest(new JsonObject { ["nonce"]=firstSeen.Intent.DeliveryNonce });
+            var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(readRequest,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(1,[],[],[],[],new JsonObject { ["domainIdempotencyOriginal"]=new JsonObject { ["outcome"]="DomainIdempotent" } }));
+            var observation=await new QualificationEnvelopeOriginalReader(outerRead,audit,Source()).ReadAsync(readRequest,TestContext.Current.CancellationToken);observation.ShouldNotBeNull();
+            JsonNode.DeepEquals(observation.Source["independentEnvelopeVerification"],exact).ShouldBeTrue();
+        }
         var beforeRecovery=(profileReads,keyReads,registerCalls,replayReads);
         clock.Advance(TimeSpan.FromSeconds(301));authority.Restart();
         var recovered=await Workflow().Lookup(request,TestContext.Current.CancellationToken);

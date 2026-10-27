@@ -44,7 +44,8 @@ public sealed class QualificationMeasuredCaseProjector(QualificationProofBinding
                     return Block("IndependentSignedExactNativeCaseState");
                 if(QualificationTemporalCaseWorkflow.Supported(id) && (proof.Source["independentTemporalVerification"] is not JsonObject temporal || temporal["temporalEvidenceVersion"]?.GetValue<int>()!=2
                     || state["temporalEvaluation"]?["version"]?.GetValue<int>()!=2 || !JsonNode.DeepEquals(state["temporalEvaluation"]?["evaluatedAt"],temporal["checkedAt"])
-                    || !JsonNode.DeepEquals(state["timing"]?["checkedAt"],temporal["checkedAt"]) || state["temporalEvaluation"]?["originalResultSha256"]?.GetValue<string>()!=proof.OriginalReceiptSha256)) return Block("ExactOwnedTemporalDecisionV2");
+                    || !JsonNode.DeepEquals(state["timing"]?["checkedAt"],temporal["checkedAt"]) || state["temporalEvaluation"]?["originalResultSha256"]?.GetValue<string>()!=proof.OriginalReceiptSha256
+                    || !QualificationTemporalOriginalReader.ValidPrecision(id,temporal,state,proof.Source["nativeTemporalPrecision"] as JsonObject))) return Block("ExactOwnedTemporalDecisionV2");
                 if(!ValidCensus(proof.Source)) return Block("CompleteExactSurfaceAndTargetMutationCensusSchema");
                 foreach(var mutation in proof.Source["targetMutations"]!.AsArray().Cast<JsonObject>())
                 {

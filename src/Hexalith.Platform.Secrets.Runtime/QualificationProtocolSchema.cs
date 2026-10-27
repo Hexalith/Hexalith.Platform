@@ -183,7 +183,7 @@ internal static class QualificationProtocolSchema
         if (state["timing"] is not JsonObject timing || !Exact(timing, "checkedAt exclusiveExpiry releasedAt authorityChangedAt rotatedAt overlapEndsAt")
             || timing.Any(p => p.Value is not null && !Integer(p.Value))) { return false; }
         if(state.ContainsKey("temporalEvaluation") && state["temporalEvaluation"] is not JsonObject) return false;
-        if(state["temporalEvaluation"] is JsonObject evaluation && (!Exact(evaluation,"version evaluatedAt originalResultSha256") || evaluation["version"]?.GetValue<int>()!=2
+        if(state["temporalEvaluation"] is JsonObject evaluation && (!Exact(evaluation,"version evaluatedAt originalResultSha256") || SecretsProof.Integer(evaluation,"version")!=2
             || !Integers(evaluation,"evaluatedAt") || !JsonNode.DeepEquals(evaluation["evaluatedAt"],timing["checkedAt"]) || !JsonNode.DeepEquals(evaluation["originalResultSha256"],state["receiptId"]))) return false;
         if (state["rotation"] is not null && (state["rotation"] is not JsonObject rotation
             || !Exact(rotation, "previousKeyVersion currentKeyVersion rotatedAt oldVerifyUntil publicAnchorId publicAnchorVersion")

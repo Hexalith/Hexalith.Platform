@@ -66,11 +66,27 @@ public sealed class QualificationReceivingProjectionTests
     [InlineData("genuine")][InlineData("invented-receipt")][InlineData("other-mutation")][InlineData("principal")][InlineData("method")][InlineData("tenant")][InlineData("target")]
     [InlineData("missing-target")][InlineData("stale")][InlineData("reused")][InlineData("cross-incarnation")][InlineData("legacy")][InlineData("same-tenant-foreign")]
     public Task ActualSignedMutationOriginalNativeReaderProjectionAndUnchangedPythonConsumerCorrelateEveryMutation(string defect)=>ReceivingAsync("S1.reject.missing-config","none",null,defect);
+    [Theory]
+    [InlineData("S2.expiry.before")][InlineData("S2.expiry.at")][InlineData("S2.expiry.after")]
+    [InlineData("S2.overlap-before")][InlineData("S2.overlap-at")][InlineData("S2.overlap-after")]
+    public Task ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(string caseId)=>ReceivingAsync(caseId,"none",null);
+    [Theory]
+    [InlineData("S2.expiry.at")][InlineData("S2.overlap-at")]
+    public Task ActualTemporalPipelineRefusesFractionalSameMillisecondNativeBoundary(string caseId)=>ReceivingAsync(caseId,"fractional-native-boundary",null);
     private async Task ReceivingAsync(string caseId,string sourceFault,string? installedRole,string? mutationFault=null)
     {
         using var authority=new IndependentAuthorityReceiverTests.Fixture();
         using var executorKey=ECDsa.Create(ECCurve.NamedCurves.nistP256);using var observerKey=ECDsa.Create(ECCurve.NamedCurves.nistP256);
         var request=QualificationHostTests.Request();request["caseId"]=caseId;
+        bool temporalCase=caseId.StartsWith("S2.expiry.",StringComparison.Ordinal) || caseId.StartsWith("S2.overlap-",StringComparison.Ordinal);
+        if(temporalCase)
+        {
+            bool before=caseId.EndsWith("before",StringComparison.Ordinal),expiry=caseId.StartsWith("S2.expiry.",StringComparison.Ordinal);
+            request["scenario"]!["outcomes"]=new JsonArray(before?"Verified":expiry?"Expired":"Denied");
+            request["scenario"]!["boundary"]=expiry?caseId[(caseId.LastIndexOf('.')+1)..]:"none";
+            request["enrolledScope"]!["exclusiveExpiry"]=1700000601000L;
+            if(!expiry && before) { request["scenario"]!["expected"]!.AsObject().Remove("forbiddenEffects");request["scenario"]!["expected"]!["retainedEnvelopeVerifier"]=1; }
+        }
         if(caseId=="S3.exact-independent-decision") { request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");metrics["exactIndependentDecision"]=1; }
         if(caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)) { request["scenario"]!["outcomes"]=new JsonArray("Resolved");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");metrics["exactReferenceCount"]=1;metrics["independentlyCurrentInventory"]=1; }
         if(caseId is "S3.aes256gcm" or "S3.es256-offline-anchor") { request["scenario"]!["outcomes"]=new JsonArray("Verified");var metrics=request["scenario"]!["expected"]!.AsObject();metrics.Remove("forbiddenEffects");if(caseId=="S3.aes256gcm") { metrics["authenticatedWrap"]=1;metrics["ownedPlaintextCleared"]=1; } else { metrics["detachedEs256"]=1;metrics["publicAnchorRetained"]=1; } }
@@ -88,6 +104,7 @@ public sealed class QualificationReceivingProjectionTests
         IQualificationOriginalStore originals=new InstalledQualificationOriginalStore(authority.Client());
         var interruption=new InterruptOriginalStore(originals,sourceFault);originals=interruption;
         using var audit=new FileAuditFixture(originals,original);
+        var temporal=temporalCase?await TemporalSourceAsync(originals,audit,original,sourceFault=="fractional-native-boundary"):default;
         using var mutation=mutationFault is null?null:await QualificationMutationSourceFixture.CreateAsync(original,TestContext.Current.CancellationToken);
         var mutationTrust=mutation?.Trust;
         if(mutation is not null)
@@ -116,7 +133,7 @@ public sealed class QualificationReceivingProjectionTests
         var rotationFaults=new JsonObject();var envelope=Envelope(authority,caseId);var decision=Decision(caseId);var inventory=caseId=="S1.rotation-invalidation"?Rotation(originals,audit,original,rotationFaults):Inventory(originals,audit,caseId,original);
         using var exportFixture=new ExportQualificationFixture();var exportWorkflow=new QualificationExportCaseWorkflow(exportFixture.Engine(),originals,new Dictionary<string,ExportQualificationInput>{{caseId,exportFixture.Input(original["caseTargetId"]!.GetValue<string>())}});
         using var capabilityKey=ECDsa.Create(ECCurve.NamedCurves.nistP256);var capability=Capability(caseId,original,originals,capabilityKey);
-        IQualificationObservedOriginalReader rawReader=caseId=="S4.capability-canonical-14-fields"?new QualificationCapabilityOriginalReader(originals,audit,capability):caseId.StartsWith("S4.capability-substitution.",StringComparison.Ordinal)?new QualificationDeniedOriginalReader(originals,audit,capability.ReadVerifyAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationOriginalReader(originals,audit):IsExport(caseId)?new QualificationExportOriginalReader(originals,audit,exportWorkflow):caseId.StartsWith("S3.",StringComparison.Ordinal)?new QualificationDecisionOriginalReader(originals,audit,decision):(caseId=="S1.rotation-invalidation" || caseId.StartsWith("S1.inventory.",StringComparison.Ordinal))?inventory.Reader:new QualificationDeniedOriginalReader(originals,audit,envelope.ReadVerifyAsync);
+        IQualificationObservedOriginalReader rawReader=temporalCase?temporal.Reader:caseId=="S4.capability-canonical-14-fields"?new QualificationCapabilityOriginalReader(originals,audit,capability):caseId.StartsWith("S4.capability-substitution.",StringComparison.Ordinal)?new QualificationDeniedOriginalReader(originals,audit,capability.ReadVerifyAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationOriginalReader(originals,audit):IsExport(caseId)?new QualificationExportOriginalReader(originals,audit,exportWorkflow):caseId.StartsWith("S3.",StringComparison.Ordinal)?new QualificationDecisionOriginalReader(originals,audit,decision):(caseId=="S1.rotation-invalidation" || caseId.StartsWith("S1.inventory.",StringComparison.Ordinal))?inventory.Reader:new QualificationDeniedOriginalReader(originals,audit,envelope.ReadVerifyAsync);
         var observerRole=new QualificationOwnerRole("observer","observer","fixture-v1",observerKey.ExportSubjectPublicKeyInfoPem());
         using var sourceAuthority=new IndependentAuthorityReceiverTests.Fixture();sourceAuthority.State=sourceAuthority.State with { Callers=sourceAuthority.State.Callers.Select(value=>value with { Role="observer",Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original","qualification-observation-original-preflight"] }).ToArray() };
         var sourceReceiver=new QualificationOwnerOperationHandler(observerRole,observerKey,new InstalledQualificationOriginalStore(sourceAuthority.Client()),new Dictionary<string,IQualificationOwnerCaseDriver>(),TimeProvider.System,rawReader);
@@ -126,15 +143,23 @@ public sealed class QualificationReceivingProjectionTests
         var sourceReader=new DaprQualificationObservedOriginalReader(sourceHost.Client());
         byte[] anchor=Encoding.ASCII.GetBytes(observerKey.ExportSubjectPublicKeyInfoPem());
         var trust=new QualificationProofBinding("observer","fixture-v1",anchor,Convert.ToHexStringLower(SHA256.HashData(anchor)));
-        var workflows=new[]{caseId.StartsWith("S4.capability",StringComparison.Ordinal)?QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,capability.ExecuteAsync,capability.LookupAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():(caseId=="S1.rotation-invalidation" || caseId.StartsWith("S1.inventory.",StringComparison.Ordinal))?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
+        var workflows=new[]{temporalCase?temporal.Workflow:caseId.StartsWith("S4.capability",StringComparison.Ordinal)?QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,capability.ExecuteAsync,capability.LookupAsync):caseId=="S1.reject.missing-config"?new QualificationMissingConfigurationWorkflow(originals).Registration:IsExport(caseId)?exportWorkflow.Registrations().Single():caseId.StartsWith("S3.",StringComparison.Ordinal)?decision.Registrations(originals).Single():(caseId=="S1.rotation-invalidation" || caseId.StartsWith("S1.inventory.",StringComparison.Ordinal))?inventory.Workflow:QualificationRuntimeWorkflowCatalog.Retained(caseId,originals,envelope.ExecuteAsync)};
         var actualWorkflow=workflows.Single();workflows=[actualWorkflow with {
-            Execute=async (value,token)=> { var result=await actualWorkflow.Execute(value,token);if(result is not null) await audit.RecordCaseBoundaryAsync(false,token);return result; },
+            Execute=async (value,token)=> { var result=await actualWorkflow.Execute(value,token);if(result is not null && !(temporalCase && audit.Effects>0)) await audit.RecordCaseBoundaryAsync(false,token);return result; },
             Lookup=async (value,token)=> { var result=await actualWorkflow.Lookup(value,token);if(result is not null) await audit.RecordCaseBoundaryAsync(true,token);return result; },
             Resume=actualWorkflow.Resume is null?null:async (value,token)=> { var result=await actualWorkflow.Resume(value,token);if(result is not null) await audit.RecordCaseBoundaryAsync(false,token);return result; } }];
         var drivers=QualificationDriverComposition.Create(workflows,originals,audit,sourceReader,trust,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}},mutationTrust:mutationTrust);
         (await drivers[caseId].PreflightAsync(original,TestContext.Current.CancellationToken)).ShouldBeEmpty();audit.Reads.ShouldBe(0);audit.Controls.ShouldBe(0);
-        (await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",TestContext.Current.CancellationToken)).ShouldBeNull();
+        if(temporalCase) (await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        else (await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",TestContext.Current.CancellationToken)).ShouldBeNull();
         sourceAuthority.MutationSaves.ShouldBe(0);sourceAuthority.OrderingSaves.ShouldBeGreaterThan(0);
+        if(temporalCase && sourceFault=="fractional-native-boundary")
+        {
+            string exact=(await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",TestContext.Current.CancellationToken))!.ToJsonString();
+            (await rawReader.ReadAsync(original,TestContext.Current.CancellationToken)).ShouldBeNull();
+            (await drivers[caseId].ExecuteAsync(original,TestContext.Current.CancellationToken)).ShouldBeNull();audit.Controls.ShouldBe(0);audit.Reads.ShouldBeGreaterThanOrEqualTo(1);
+            (await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",TestContext.Current.CancellationToken))!.ToJsonString().ShouldBe(exact);return;
+        }
         if(caseId=="S1.reject.missing-config" && mutationFault is null)
         {
             var enrolledCallers=sourceAuthority.State.Callers;sourceAuthority.State=sourceAuthority.State with { Callers=enrolledCallers.Select(value=>value with { Methods=value.Methods.Where(method=>method!="qualification-begin-original").ToArray() }).ToArray() };
@@ -206,7 +231,7 @@ public sealed class QualificationReceivingProjectionTests
         authority.State=authority.State with { Callers=authority.State.Callers.Select(value=>value with { Role="observer",Methods=value.Methods.Concat(["qualification-read-original:executor"]).ToArray() }).ToArray() };
         JsonObject observation=(JsonObject)(await observer.HandleAsync("qualification-observer-observe",JsonSerializer.SerializeToElement(original),authority.State.Callers[0] with { Role="observer" },authority.State,TestContext.Current.CancellationToken))!;
         audit.Controls.ShouldBe(2);audit.Reads.ShouldBe(4);
-        execution["payload"]!["outcome"]!.GetValue<string>().ShouldBe(caseId is "S3.exact-independent-decision" or "S3.aes256gcm" or "S3.es256-offline-anchor" or "S4.capability-canonical-14-fields"?"Verified":caseId=="S1.rotation-invalidation"?"Invalidated":caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?"Resolved":"Denied");
+        execution["payload"]!["outcome"]!.GetValue<string>().ShouldBe(temporalCase?caseId.EndsWith("before",StringComparison.Ordinal)?"Verified":caseId.StartsWith("S2.expiry.",StringComparison.Ordinal)?"Expired":"Denied":caseId is "S3.exact-independent-decision" or "S3.aes256gcm" or "S3.es256-offline-anchor" or "S4.capability-canonical-14-fields"?"Verified":caseId=="S1.rotation-invalidation"?"Invalidated":caseId.StartsWith("S1.inventory.",StringComparison.Ordinal)?"Resolved":"Denied");
         observation["payload"]!["metrics"]!["persistedProofCount"]!.GetValue<long>().ShouldBe(4);
         var anchors=new Dictionary<string,QualificationProofBinding> { ["executor"]=Binding(executorKey,"executor"),["observer"]=trust };
         var verifier=new QualificationProofVerifier(anchors);
@@ -224,7 +249,7 @@ public sealed class QualificationReceivingProjectionTests
         if(lostInner is not null) JsonNode.DeepEquals(lostInner,retained["snapshots"]![0]!["sourceProof"]).ShouldBeTrue();
         var tampered=(JsonObject)retained.DeepClone();tampered["snapshots"]![0]!["sourceProof"]!["OriginalReceiptSha256"]=new string('f',64);
         new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project("observer",original,tampered).ShouldBeNull();
-        if(caseId=="S1.reject.missing-config" && mutationFault is null)
+        if((caseId=="S1.reject.missing-config" && mutationFault is null) || temporalCase)
         {
             var projector=new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}});
             var retainedStage=retained["snapshots"]![0]!["sourceProof"]!.Deserialize<QualificationObservedOriginal>(CustodyBindingContract.Json)!;
@@ -271,6 +296,13 @@ public sealed class QualificationReceivingProjectionTests
                 }
                 else projected.ShouldBeNull(defect);
             }
+        }
+        if(temporalCase)
+        {
+            var contradictory=(JsonObject)retained.DeepClone();
+            foreach(var row in contradictory["snapshots"]!.AsArray()) row!["source"]!["nativeTemporalPrecision"]!["evaluatedAtExact"]=JsonSerializer.SerializeToNode(new DateTimeOffset(2023,1,1,0,0,0,TimeSpan.Zero),CustodyBindingContract.Json);
+            Resign(contradictory,observerKey);
+            new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project("observer",original,contradictory).ShouldBeNull();
         }
         await VerifyPythonAsync(request,execution,observation,executorKey,observerKey);
         if(caseId=="S1.reject.missing-config" && sourceFault=="none")
@@ -421,6 +453,29 @@ public sealed class QualificationReceivingProjectionTests
         return new(authority,TimeProvider.System,new Dictionary<string,QualificationDecisionCaseInput>{{caseId,new("tenant",manifest,artifact,caseId=="S3.decision-reject.contract"?basis with { ContractId="other-independently-expected-contract" }:basis,SignedOriginalBasis:basis)}});
     }
 
+    private static async Task<(QualificationSourceWorkflow Workflow,IQualificationObservedOriginalReader Reader)> TemporalSourceAsync(IQualificationOriginalStore originals,FileAuditFixture audit,JsonObject request,bool fractional)
+    {
+        string id=request["caseId"]!.GetValue<string>();bool overlap=id.StartsWith("S2.overlap-",StringComparison.Ordinal);
+        var edge=DateTimeOffset.FromUnixTimeMilliseconds(1700000601000).AddTicks(5000);var clock=new TemporalFixtureClock(edge.AddSeconds(-300));
+        var profile=new PlatformSigningProfile("fixture-r1","fixture-issuer","fixture-audience",edge.AddDays(-1),edge.AddDays(1),TimeSpan.FromSeconds(300),TimeSpan.FromSeconds(30),TimeSpan.FromSeconds(600),TimeSpan.FromDays(1),TimeSpan.FromDays(7));
+        var profiles=Substitute.For<IPlatformSigningProfileProvider>();profiles.GetCurrent().Returns(profile);bool retained=false;
+        var metadata=new PlatformHmacKeyMetadata("v1",PlatformHmacKeyState.Active,edge.AddDays(-1),edge.AddDays(1),null);
+        var keys=Substitute.For<IPlatformHmacKeyProvider>();keys.ResolveAsync(Arg.Any<PlatformHmacScope>(),Arg.Any<string?>(),Arg.Any<CancellationToken>()).Returns(call=>ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded,new(call.Arg<PlatformHmacScope>(),retained?metadata with { State=PlatformHmacKeyState.Retained,RetiredAt=edge.AddSeconds(-600) }:metadata,new byte[32]))));
+        var auth=new TrustedEnvelopeAuthenticator(keys,profiles,clock);var identity=new TrustedEnvelopeIdentity(1,"fixture-r1","fixture-issuer",new(TrustedPrincipalKind.User,"tenant","actor","party",1,"roles",null,null,null,null),"Contracts.EditProposal","EditProposal","tenant","interaction","correlation","cause",["tenant","User","actor","EditProposal","client-key"],"fingerprint","digest-v1","fixture-audience","logical-command");
+        var envelope=(await auth.IssueAsync(identity,TimeSpan.FromSeconds(300),TestContext.Current.CancellationToken)).Envelope!;
+        clock.Now=edge.AddTicks(fractional?1:id.EndsWith("before",StringComparison.Ordinal)?-10000:id.EndsWith("after",StringComparison.Ordinal)?10000:0);retained=overlap;
+        var workflow=new QualificationTemporalCaseWorkflow(auth,keys,profiles,clock,originals,new Dictionary<string,QualificationTemporalCaseInput>{{id,new(envelope,identity,QualificationProtocolSchema.Digest(request["enrolledScope"]!))}});
+        var claimed=clock.Now;if(overlap && fractional) clock.Now=edge;
+        var original=await workflow.ObserveAsync(request,TestContext.Current.CancellationToken);original.ShouldNotBeNull();
+        // Seed an independently retained counterexample carrying the actual fractional timestamp:
+        // the source's fresh exact-at workflow correctly refuses to manufacture it.
+        if(overlap && fractional) { clock.Now=claimed;original["evaluatedAtExact"]=JsonSerializer.SerializeToNode(claimed,CustodyBindingContract.Json);original["checkedAt"]=claimed.ToUnixTimeMilliseconds(); }
+        string locator=request["requestId"]!.GetValue<string>()+":case-result";await originals.BeginAsync("executor",locator,request,TestContext.Current.CancellationToken);await originals.RetainAsync("executor",locator,original,TestContext.Current.CancellationToken);
+        audit.Transform=value=> { var facts=(JsonObject)value.Facts!.DeepClone();facts["temporalOriginal"]=original.DeepClone();if(!overlap) { bool before=id.EndsWith("before",StringComparison.Ordinal);facts["linearization"]=new JsonObject { ["boundary"]=id[(id.LastIndexOf('.')+1)..],["triggerPosition"]=before?3L:2L,["effectPosition"]=before?2L:3L,["winner"]=before?"Effect":"Trigger" }; }if(overlap) facts["rotationOriginal"]=new JsonObject { ["previousKeyVersion"]="v1",["currentKeyVersion"]="v2",["rotatedAt"]=edge.AddSeconds(-600).ToUnixTimeMilliseconds(),["rotatedAtExact"]=JsonSerializer.SerializeToNode(edge.AddSeconds(-600),CustodyBindingContract.Json),["oldVerifyUntil"]=metadata.VerifyUntil.ToUnixTimeMilliseconds(),["publicAnchorId"]="anchor",["publicAnchorVersion"]="v1" };return value with { Facts=facts }; };
+        await audit.RecordCaseBoundaryAsync(false,TestContext.Current.CancellationToken);
+        return (workflow.Registrations().Single(),new QualificationTemporalOriginalReader(originals,audit));
+    }
+    private sealed class TemporalFixtureClock(DateTimeOffset now):TimeProvider { internal DateTimeOffset Now=now;public override DateTimeOffset GetUtcNow()=>Now; }
     private static QualificationEnvelopeCaseWorkflow Envelope(IndependentAuthorityReceiverTests.Fixture fixture,string caseId)
     {
         var profiles=Substitute.For<IPlatformSigningProfileProvider>();var keys=Substitute.For<IPlatformHmacKeyProvider>();DateTimeOffset now=DateTimeOffset.UtcNow;
@@ -463,7 +518,7 @@ public sealed class QualificationReceivingProjectionTests
     {
         private readonly string _directory=CreateDirectory();private readonly ECDsa _key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
         private readonly Dictionary<string,QualificationRecoveryControlOriginal> _controls=[];
-        private long _originalRevision;private string? _originalReceipt;private string? _stage;internal int Reads,Controls,Effects;internal bool FailNextRead;
+        private long? _expiryAt,_verificationAt;private long _originalRevision;private string? _originalReceipt;private string? _stage;internal int Reads,Controls,Effects;internal bool FailNextRead;
         internal Func<QualificationNativeCaseAudit,QualificationNativeCaseAudit>? Transform;
         private static string CreateDirectory()
         { string path=Path.Combine(Path.GetTempPath(),"story54-native-audit-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(path);foreach(string surface in Surfaces) Directory.CreateDirectory(Path.Combine(path,surface));return path; }
@@ -471,7 +526,7 @@ public sealed class QualificationReceivingProjectionTests
         private JsonObject Append(string kind)
         {
             string journal=Path.Combine(_directory,"audit.jsonl");long position=File.Exists(journal)?File.ReadLines(journal).LongCount()+1:1;
-            var row=new JsonObject { ["kind"]=kind,["position"]=position,["keyVersion"]=null,["guardRevision"]=0,["blockSetRevision"]=0,["occurredAt"]=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() };
+            var row=new JsonObject { ["kind"]=kind,["position"]=position,["keyVersion"]=null,["guardRevision"]=0,["blockSetRevision"]=0,["occurredAt"]=kind=="Expiry"?_expiryAt??throw new InvalidOperationException("Exact retained expiry receipt time required"):kind=="Verify"?_verificationAt??throw new InvalidOperationException("Exact retained verification receipt time required"):DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() };
             row["requestId"]=original["requestId"]!.DeepClone();row["tenantId"]=original["enrolledScope"]!["tenantId"]!.DeepClone();row["originalReceiptId"]=_originalReceipt;
             row["receiptId"]=_originalReceipt??throw new InvalidOperationException("Fixture original must be durably read before audit publication.");File.AppendAllText(journal,row.ToJsonString()+"\n");return row;
         }
@@ -480,7 +535,8 @@ public sealed class QualificationReceivingProjectionTests
             string suffix=original["caseId"]!.GetValue<string>()=="S1.reject.missing-config"?":missing-config":":case-result";
             var retained=await originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+suffix,token)??throw new InvalidOperationException("Fixture boundary requires the actual retained native case original");
             _originalReceipt=QualificationProtocolSchema.Digest(retained);
-            if(!lookup) { Effects++;if(_originalRevision!=0) throw new InvalidOperationException("Case effect repeated");_originalRevision=Append("OriginalPersisted")["position"]!.GetValue<long>();_stage="AfterEffect"; }
+            if(original["caseId"]!.GetValue<string>().StartsWith("S2.expiry.",StringComparison.Ordinal)) { _expiryAt=retained["originalEnvelope"]!["ExpiresAt"]!.Deserialize<DateTimeOffset>().ToUnixTimeMilliseconds();_verificationAt=retained["checkedAt"]!.GetValue<long>(); }
+            if(!lookup) { Effects++;if(_originalRevision!=0) throw new InvalidOperationException("Case effect repeated");_originalRevision=Append("OriginalPersisted")["position"]!.GetValue<long>();_stage="AfterEffect";if(original["caseId"]!.GetValue<string>().StartsWith("S2.expiry.",StringComparison.Ordinal)) { bool before=original["caseId"]!.GetValue<string>().EndsWith("before",StringComparison.Ordinal);Append(before?"Verify":"Expiry");Append(before?"Expiry":"Verify"); } }
             else { if(_originalRevision==0) throw new InvalidOperationException("Missing original"); } // Actual readonly lookups do not create backend read events.
         }
         public async Task<QualificationNativeCaseAudit?> ReadAsync(JsonObject request,CancellationToken token)

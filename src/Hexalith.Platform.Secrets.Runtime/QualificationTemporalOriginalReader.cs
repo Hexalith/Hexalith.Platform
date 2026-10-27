@@ -48,7 +48,7 @@ public sealed class QualificationTemporalOriginalReader(IQualificationOriginalSt
         string receipt=QualificationProtocolSchema.Digest(retained);var state=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
         state["outcome"]=retained["outcome"]!.DeepClone();state["status"]=retained["outcome"]!.DeepClone();
         state["timing"]!["checkedAt"]=retained["checkedAt"]!.DeepClone();
-        state["temporalEvaluation"]=new JsonObject { ["version"]=2,["evaluatedAtExact"]=JsonSerializer.SerializeToNode(actualEvaluation,CustodyBindingContract.Json),["evaluatedAt"]=retained["checkedAt"]!.DeepClone(),["originalResultSha256"]=receipt };
+        state["temporalEvaluation"]=new JsonObject { ["version"]=2,["evaluatedAt"]=retained["checkedAt"]!.DeepClone(),["originalResultSha256"]=receipt };
         if(request["caseId"]!.GetValue<string>().StartsWith("S2.expiry.",StringComparison.Ordinal))
         {
             long expires=retained["originalEnvelope"]!["ExpiresAt"]!.Deserialize<DateTimeOffset>().ToUnixTimeMilliseconds();
@@ -58,11 +58,38 @@ public sealed class QualificationTemporalOriginalReader(IQualificationOriginalSt
         if(request["caseId"]!.GetValue<string>().StartsWith("S2.overlap-",StringComparison.Ordinal))
         {
             if(native.Facts["rotationOriginal"] is not JsonObject rotation) return null;
-            state["rotation"]=rotation.DeepClone();state["keyVersion"]=retained["originalEnvelope"]!["SigningKeyVersion"]!.DeepClone();
+            state["rotation"]=rotation.DeepClone();state["rotation"]!.AsObject().Remove("rotatedAtExact");state["keyVersion"]=retained["originalEnvelope"]!["SigningKeyVersion"]!.DeepClone();
             state["timing"]!["rotatedAt"]=rotation["rotatedAt"]!.DeepClone();state["timing"]!["overlapEndsAt"]=rotation["rotatedAt"]!.GetValue<long>()+retained["rotationOverlapMilliseconds"]!.GetValue<long>();
         }
-        return new(requestId,receipt,"temporal:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
-            ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["independentTemporalVerification"]=independentlyPersisted.DeepClone() });
+        DateTimeOffset? boundary=caseId.StartsWith("S2.expiry.",StringComparison.Ordinal)?retained["originalEnvelope"]!["ExpiresAt"]!.Deserialize<DateTimeOffset>():caseId.StartsWith("S2.overlap-",StringComparison.Ordinal)?retained["keyMetadata"]!["RetiredAt"]!.Deserialize<DateTimeOffset>().AddMilliseconds(600000):null;
+        var precision=new JsonObject { ["evaluatedAtExact"]=JsonSerializer.SerializeToNode(actualEvaluation,CustodyBindingContract.Json),["boundaryExact"]=JsonSerializer.SerializeToNode(boundary,CustodyBindingContract.Json),["rotationOriginal"]=native.Facts?["rotationOriginal"]?.DeepClone() };
+        if(!ValidPrecision(caseId,retained,state,precision)) return null;
+        return new(requestId,receipt,"temporal:"+native.OriginalRevision,new JsonObject { ["nativeTemporalPrecision"]=precision,["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+            ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=native.Facts?["linearization"]?.DeepClone()??new JsonObject(),["independentTemporalVerification"]=independentlyPersisted.DeepClone() });
+    }
+    internal static bool ValidPrecision(string id,JsonObject original,JsonObject state,JsonObject? precision)
+    {
+        if(precision is null || precision["evaluatedAtExact"] is null) return false;
+        bool overlap=id.StartsWith("S2.overlap-",StringComparison.Ordinal),expiry=id.StartsWith("S2.expiry.",StringComparison.Ordinal);
+        var actual=overlap?original["evaluatedAtExact"]!.Deserialize<DateTimeOffset>():original["authenticationDecision"]!.Deserialize<Hexalith.Platform.Custody.TrustedEnvelopeResult>(CustodyBindingContract.Json)!.EvaluatedAt;
+        if(actual is null || precision["evaluatedAtExact"]!.Deserialize<DateTimeOffset>()!=actual || original["checkedAt"]!.GetValue<long>()!=actual.Value.ToUnixTimeMilliseconds()
+            || state["timing"]!["checkedAt"]!.GetValue<long>()!=actual.Value.ToUnixTimeMilliseconds()) return false;
+        DateTimeOffset? edge=null;
+        if(expiry)
+        {
+            edge=original["originalEnvelope"]!["ExpiresAt"]!.Deserialize<DateTimeOffset>();
+            if(state["exclusiveExpiry"]!.GetValue<long>()!=edge.Value.ToUnixTimeMilliseconds() || state["timing"]!["exclusiveExpiry"]!.GetValue<long>()!=edge.Value.ToUnixTimeMilliseconds()) return false;
+        }
+        if(overlap)
+        {
+            if(precision["rotationOriginal"] is not JsonObject native || native["rotatedAtExact"] is null || original["rotationOverlapMilliseconds"]!.GetValue<long>()!=600000) return false;
+            var retired=original["keyMetadata"]!["RetiredAt"]!.Deserialize<DateTimeOffset>();edge=retired.AddMilliseconds(600000);
+            var projected=(JsonObject)native.DeepClone();projected.Remove("rotatedAtExact");
+            if(native["rotatedAtExact"]!.Deserialize<DateTimeOffset>()!=retired || native["rotatedAt"]!.GetValue<long>()!=retired.ToUnixTimeMilliseconds() || !JsonNode.DeepEquals(projected,state["rotation"])
+                || state["timing"]!["rotatedAt"]!.GetValue<long>()!=retired.ToUnixTimeMilliseconds() || state["timing"]!["overlapEndsAt"]!.GetValue<long>()!=edge.Value.ToUnixTimeMilliseconds()) return false;
+        }
+        if(edge is null) return precision["boundaryExact"] is null;
+        return precision["boundaryExact"]?.Deserialize<DateTimeOffset>()==edge && ExactSide(id,actual.Value,edge.Value);
     }
     private static bool ExactSide(string id,DateTimeOffset evaluated,DateTimeOffset edge)
     {

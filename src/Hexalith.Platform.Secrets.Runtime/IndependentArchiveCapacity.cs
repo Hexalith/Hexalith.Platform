@@ -80,7 +80,7 @@ internal sealed class IndependentArchiveCapacity(IndependentArchiveCapacityInsta
         string key=Ticket("legacy","pending");
         if(!state.Tickets.TryGetValue(key,out var legacy) || legacy.Remaining<liability) throw new IOException("Exact legacy physical completion reconciliation required.");
         if(liability<=0) throw new IOException("Positive exact legacy completion liability required.");
-        var chunks=_protected.Value?.PlanTransfer(configuration.Directory+"|"+key,liability);
+        var chunks=_protected.Value?.PlanTransfer(configuration.Directory+"|"+key,liability,legacy.Remaining-liability);
         state.Tickets[key]=legacy with { Remaining=legacy.Remaining-liability };
         if(state.Transfers.Count+state.Tickets.Values.Sum(value=>value.TransferSlotsRemaining)+768>4096) throw new IOException("Legacy completion metadata requires exact reconciliation.");
         state.Tickets[ticket]=new(owner,"original",liability,liability,revision,liability,liability,requestCommitment??Hash(ticket+"|legacy"),role,requestId,768,768,384);
@@ -130,6 +130,7 @@ internal sealed class IndependentArchiveCapacity(IndependentArchiveCapacityInsta
         // The durable charge precedes allocation; every subsequent operation recovers all charged extents before admission.
         if(state.Tickets.Values.Any(value=>value.InitialBytes is null) || state.Transfers.Count+state.Tickets.Values.Sum(value=>value.TransferSlotsRemaining)+transferSlots>4096)
             throw new IOException("Shared completion transfer metadata unavailable; exact legacy reconciliation required.");
+        _protected.Value?.RequireReservable(configuration.Directory+"|"+ticket,bytes);
         state.Tickets[ticket]=new(owner,kind,bytes,completion,InitialBytes:bytes,InitialCompletion:completion,CommitmentSha256:commitment??Hash(ticket+"|"+bytes),Role:role,RequestId:requestId,InitialTransferSlots:transferSlots,TransferSlotsRemaining:transferSlots,CompletionTransferSlots:completion>0?384:0);
         await Save(held,state,token).ConfigureAwait(false);Allocate(held,ticket,bytes);Fault?.Invoke("reserved");
     }

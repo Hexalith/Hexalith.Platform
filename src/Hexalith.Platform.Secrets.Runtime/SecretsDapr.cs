@@ -66,7 +66,12 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
         return await ReadBoundedAsync(stream, cancellationToken,maximumBytes).ConfigureAwait(false);
     }
 
-    internal static async Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+    internal static Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+        =>UseMountedBearerAsync(reference,value=>Encoding.ASCII.GetString(value),cancellationToken);
+    internal static Task<byte[]?> ReadMountedBearerIdentityAsync(string reference,CancellationToken cancellationToken)
+        =>UseMountedBearerAsync(reference,value=>SHA256.HashData(value),cancellationToken);
+    private delegate T MountedBearerConsumer<T>(ReadOnlySpan<byte> value);
+    private static async Task<T?> UseMountedBearerAsync<T>(string reference,MountedBearerConsumer<T> use,CancellationToken cancellationToken) where T:class
     {
         const int maximumBytes = 8192;
         if (!SecretsProvisioning.IsReference(reference) || !reference.StartsWith("file:/", StringComparison.Ordinal)) { return null; }
@@ -99,7 +104,7 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
                 if (used > 0 && bytes[used - 1] == (byte)'\r') { used--; }
             }
             if (used == 0 || bytes.AsSpan(0, used).ContainsAnyExceptInRange((byte)33, (byte)126)) { return null; }
-            return Encoding.ASCII.GetString(bytes, 0, used);
+            cancellationToken.ThrowIfCancellationRequested();return use(bytes.AsSpan(0,used));
         }
         finally { CryptographicOperations.ZeroMemory(bytes); }
     }

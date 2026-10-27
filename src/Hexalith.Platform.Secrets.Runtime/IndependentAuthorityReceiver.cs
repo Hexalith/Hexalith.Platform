@@ -576,6 +576,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
         bool Target(ReplicatedSecuritySpoolTarget target) => target == state.Spool && target.ValidUntil > clock.GetUtcNow();
         switch (method)
         {
+            case "replay-read-current-ready": return (Decision(recordingSource is not null && caller.Role=="replay-registrar"
+                && new[]{"replay-register-exact","replay-lookup-exact","replay-lookup-first-seen"}.All(value=>caller.Methods.Contains(value,StringComparer.Ordinal))),false);
             case "spool-current": return (state.Spool is { } current && Target(current) ? current : null, false);
             case "spool-authorize":
                 var auth = Read<SpoolAuthorization>();

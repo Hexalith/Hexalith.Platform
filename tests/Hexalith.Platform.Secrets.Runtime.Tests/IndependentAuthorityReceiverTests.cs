@@ -219,9 +219,28 @@ public sealed class IndependentAuthorityReceiverTests
             "Contracts.EditProposal","EditProposal","tenant-a","interaction-a","correlation","cause",["tenant-a","User","actor-a","EditProposal","client-key"],"fingerprint","digest-v1","fixture-audience","logical-command");
         string caseId="S2.substitution."+field;
         var driver=new QualificationEnvelopeCaseWorkflow(authenticator,replay,fixture.Client(),new Dictionary<string,TrustedEnvelopeIdentity>{{caseId,identity}});
-        var request=new System.Text.Json.Nodes.JsonObject { ["caseId"]=caseId,["requestId"]="isolated-"+field,["enrolledScope"]=new System.Text.Json.Nodes.JsonObject { ["tenantId"]="tenant-a" } };
+        var request=new System.Text.Json.Nodes.JsonObject { ["caseId"]=caseId,["requestId"]="isolated-"+field,["enrolledScope"]=new System.Text.Json.Nodes.JsonObject { ["tenantId"]="tenant-a",["logicalId"]="logical",["targetIds"]=new System.Text.Json.Nodes.JsonArray(),["providerCopyIds"]=new System.Text.Json.Nodes.JsonArray() } };
         var first=await driver.ExecuteAsync(request,TestContext.Current.CancellationToken); first.ShouldNotBeNull();
         first["firstStatus"]!.GetValue<string>().ShouldNotBe("Succeeded");
+        if(field is not ("issued-at" or "expires-at"))
+        {
+            first.ContainsKey("originalAuthenticationStatus").ShouldBeFalse();
+            // Existing non-timestamp result bodies retain their source20 shape and remain
+            // independently verifiable through the actual retained-original reader.
+            var store=new InstalledQualificationOriginalStore(fixture.Client());await store.BeginAsync("executor","isolated-"+field+":case-result",request,TestContext.Current.CancellationToken);await store.RetainAsync("executor","isolated-"+field+":case-result",first,TestContext.Current.CancellationToken);
+            var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(request,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(1,[],[],[],[],new System.Text.Json.Nodes.JsonObject()));
+            (await new QualificationDeniedOriginalReader(store,audit,driver.ReadVerifyAsync).ReadAsync(request,TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        }
+        if(field is "issued-at" or "expires-at")
+        {
+            first["originalAuthenticationStatus"]!.GetValue<string>().ShouldBe("Succeeded");first["firstStatus"]!.GetValue<string>().ShouldBe("InvalidTag");first["exactRetryStatus"]!.GetValue<string>().ShouldBe("InvalidTag");
+            var store=new InstalledQualificationOriginalStore(fixture.Client());await store.BeginAsync("executor","isolated-"+field+":case-result",request,TestContext.Current.CancellationToken);await store.RetainAsync("executor","isolated-"+field+":case-result",first,TestContext.Current.CancellationToken);
+            var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(request,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(1,[],[],[],[],new System.Text.Json.Nodes.JsonObject()));
+            var reader=new QualificationDeniedOriginalReader(store,audit,driver.ReadVerifyAsync);(await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldNotBeNull();
+            var falsePolicy=(System.Text.Json.Nodes.JsonObject)first.DeepClone();falsePolicy["firstStatus"]="Invalid";falsePolicy["exactRetryStatus"]="Invalid";
+            var forgedStore=Substitute.For<IQualificationOriginalStore>();forgedStore.LookupResultAsync("executor","isolated-"+field+":case-result",Arg.Any<CancellationToken>()).Returns(falsePolicy);
+            (await new QualificationDeniedOriginalReader(forgedStore,audit,(_,_)=>Task.FromResult<System.Text.Json.Nodes.JsonObject?>(falsePolicy)).ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
+        }
         fixture.Restart();
         var retried=await new QualificationEnvelopeCaseWorkflow(authenticator,replay,fixture.Client(),new Dictionary<string,TrustedEnvelopeIdentity>{{caseId,identity}}).ExecuteAsync(request,TestContext.Current.CancellationToken);
         System.Text.Json.Nodes.JsonNode.DeepEquals(first,retried).ShouldBeTrue();
@@ -375,6 +394,24 @@ public sealed class IndependentAuthorityReceiverTests
     }
 
     private sealed record Permission(bool Allowed);
+
+    [Fact]
+    public async Task ActualReplayReadinessReceiverChecksCurrentGrantAndTrustWithoutRegisteringOrReadingAnInventedNonce()
+    {
+        using var fixture=new Fixture();var token=TestContext.Current.CancellationToken;
+        var granted=fixture.State.Callers.Select(value=>value with { Role="replay-registrar",Methods=["replay-read-current-ready","replay-register-exact","replay-lookup-exact","replay-lookup-first-seen"] }).ToArray();
+        fixture.State=fixture.State with { Callers=granted };var client=fixture.Client();
+        (await client.InvokeAsync<Permission>("replay-read-current-ready",new { },token))!.Allowed.ShouldBeTrue();
+        fixture.State=fixture.State with { Callers=granted.Select(value=>value with { Revoked=true }).ToArray() };
+        (await client.InvokeAsync<Permission>("replay-read-current-ready",new { },token)).ShouldBeNull();
+        fixture.State=fixture.State with { Callers=granted,ValidUntil=DateTimeOffset.UtcNow.AddSeconds(-1) };
+        (await client.InvokeAsync<Permission>("replay-read-current-ready",new { },token)).ShouldBeNull();
+        fixture.State=fixture.State with { ValidUntil=DateTimeOffset.UtcNow.AddHours(1),Callers=granted.Select(value=>value with { Methods=["replay-read-current-ready"] }).ToArray() };
+        (await client.InvokeAsync<Permission>("replay-read-current-ready",new { },token))!.Allowed.ShouldBeFalse();
+        fixture.State=fixture.State with { Callers=granted };fixture.Restart();
+        (await client.InvokeAsync<Permission>("replay-read-current-ready",new { },token))!.Allowed.ShouldBeTrue();
+        fixture.RecordingSource.ReceivedCalls().ShouldBeEmpty();fixture.State.Originals.ShouldBeEmpty();fixture.State.PrivateOriginalsCount.ShouldBe(0);
+    }
 
     internal sealed class Fixture : IDisposable
     {

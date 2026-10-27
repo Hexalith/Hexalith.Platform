@@ -29,7 +29,7 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
         ArgumentNullException.ThrowIfNull(input);
         var profile=enrolledProfiles[input.ExportId];bool active=use!=ExportQualificationMaterialUse.Unwrap;
         var reader=new DaprExportQualificationReferenceReader(client,inventory,authority);
-        byte[]? export=null,kek=null,encoded=null;ECDsa? signer=null;bool transferred=false;
+        byte[]? export=null,kek=null,encoded=null,anchor=null;ECDsa? signer=null;bool transferred=false;
         try
         {
             var bindings=use==ExportQualificationMaterialUse.Sign?new[]{profile.Signer!}:new[]{profile.ExportKey!,profile.Kek!};
@@ -39,7 +39,7 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
                 var reference=profile.Signer!;
                 encoded=await reader.ReadAsync(reference,true,value=>reference.Codec=="Pkcs8DerBase64"?DaprExportQualificationReferenceReader.Base64(value):DaprExportQualificationReferenceReader.Pem(value,"PRIVATE KEY"),cancellationToken).ConfigureAwait(false);
                 if(encoded is null) return null;int encodedLength=encoded.Length;signer=ECDsa.Create();signer.ImportPkcs8PrivateKey(encoded,out int read);CryptographicOperations.ZeroMemory(encoded);encoded=null;
-                var trust=await independentlyPublishedTrust.ResolveAsync(input,cancellationToken).ConfigureAwait(false);cancellationToken.ThrowIfCancellationRequested();
+                var trust=await independentlyPublishedTrust.ResolveAsync(input,cancellationToken).ConfigureAwait(false);anchor=trust?.SubjectPublicKeyInfo;cancellationToken.ThrowIfCancellationRequested();
                 if(read!=encodedLength || signer.ExportParameters(false).Curve.Oid.Value!="1.2.840.10045.3.1.7" || trust is null || trust.TenantId!=input.TenantId || trust.SigningKeyVersion!=input.SigningKeyVersion
                     || !signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(trust.SubjectPublicKeyInfo)) return null;
             }
@@ -54,6 +54,6 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
             var result=new ExportQualificationMaterial(export,kek,signer);transferred=true;return result;
         }
         catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return null; }
-        finally { if(encoded is not null) CryptographicOperations.ZeroMemory(encoded);if(!transferred) { if(export is not null) CryptographicOperations.ZeroMemory(export);if(kek is not null) CryptographicOperations.ZeroMemory(kek);signer?.Dispose(); } }
+        finally { if(anchor is not null) CryptographicOperations.ZeroMemory(anchor);if(encoded is not null) CryptographicOperations.ZeroMemory(encoded);if(!transferred) { if(export is not null) CryptographicOperations.ZeroMemory(export);if(kek is not null) CryptographicOperations.ZeroMemory(kek);signer?.Dispose(); } }
     }
 }

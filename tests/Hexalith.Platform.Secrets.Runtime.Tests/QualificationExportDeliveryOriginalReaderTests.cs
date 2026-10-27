@@ -13,6 +13,39 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class QualificationExportDeliveryOriginalReaderTests
 {
+    [Fact]
+    public async Task LegacyReceivingV1DenialRecoversOuterV3ExactBodyAndHistoricalTimeWithoutRedelivery()
+    {
+        var token=TestContext.Current.CancellationToken;using var executionAuthority=new IndependentAuthorityReceiverTests.Fixture();using var denialAuthority=new IndependentAuthorityReceiverTests.Fixture();
+        denialAuthority.State=denialAuthority.State with { Callers=denialAuthority.State.Callers.Select(value=>value with { Role="private-export-delivery-denial-v1",Methods=["qualification-begin-original","qualification-lookup-original"] }).ToArray() };
+        executionAuthority.State=executionAuthority.State with { Callers=executionAuthority.State.Callers.Select(value=>value with { Role="executor",Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray() };
+        var store=new InstalledQualificationOriginalStore(executionAuthority.Client());
+        var original=new ExportKeyDeliveryIdentity("tenant","delivery","export",1,"principal","key-use","audience",DateTimeOffset.UtcNow.AddDays(-1),"v1","target",1);
+        var supplied=original with { ExportId="export-substituted" };
+        var historical=new DateTimeOffset(2026,10,20,12,34,56,TimeSpan.Zero).AddTicks(1234);
+        var denial=new ExportKeyDeliveryDenialOriginal("ExportKeyDeliveryReceivingDenial.v1",supplied,new(original,ExportKeyDeliveryState.Delivered,historical.AddSeconds(-1)),historical);
+        denial.IsExact(supplied).ShouldBeTrue();string exact=JsonSerializer.Serialize(denial,CustodyBindingContract.Json);
+        // This independently retained native original is the only supplied recovery source.
+        var denialStore=new InstalledExportKeyDeliveryDenialOriginalStore(denialAuthority.Client());
+        (await denialStore.RetainAsync(denial,token)).ShouldBe(denial);denialAuthority.Restart();
+        var authority=Substitute.For<IExportKeyDeliveryAuthority>();authority.AuthorizeOperationAsync(Arg.Any<ExportKeyDeliveryIdentity>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(true);
+        var native=Substitute.For<IExportKeyDirectDeliveryProvider>();
+        var actor=new ExportKeyDeliveryActor(ActorHost.CreateForTest<ExportKeyDeliveryActor>(new ActorTestOptions { ActorId=new(original.ActorId) }),TimeProvider.System,authority,native,denialStore);
+        const string caseId="S3.delivery-substitution.export-id";var request=QualificationHostTests.Request();request["caseId"]=caseId;request["requestId"]="legacy-denial";
+        var workflow=new QualificationExportDeliveryWorkflow(store,new Dictionary<string,QualificationExportDeliveryInput>{{caseId,new(original,QualificationProtocolSchema.Digest(request["enrolledScope"]!))}},_=>actor);
+        var recovered=await workflow.LookupAsync(request,token);recovered.ShouldNotBeNull();recovered["deliveryOrigin"]!.GetValue<string>().ShouldBe("ExactReceivingDeliverResponse.v3");
+        recovered["receivingDenialOriginal"]!.ToJsonString().ShouldBe(JsonNode.Parse(exact)!.ToJsonString());string body=recovered.ToJsonString();
+        var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(request,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(7,[],[],[],[],new JsonObject { ["principalDeliveryDenialOriginal"]=JsonNode.Parse(exact) }));
+        var reader=new QualificationExportDeliveryOriginalReader(store,audit,workflow);
+        for(int retry=0;retry<2;retry++)
+        {
+            var observation=await reader.ReadAsync(request,token);observation.ShouldNotBeNull();observation.Source["state"]!["outcome"]!.GetValue<string>().ShouldBe("Denied");
+            observation.Source["independentReceivingDenialOriginal"]!.ToJsonString().ShouldBe(JsonNode.Parse(exact)!.ToJsonString());
+            (await workflow.LookupAsync(request,token))!.ToJsonString().ShouldBe(body);
+        }
+        (await store.LookupResultAsync("executor","legacy-denial:case-delivery-denial-v3",token))!.ToJsonString().ShouldBe(body);
+        native.ReceivedCalls().ShouldBeEmpty();JsonSerializer.Serialize(await actor.LookupReceivingDenialAsync(supplied),CustodyBindingContract.Json).ShouldBe(exact);
+    }
     [Theory]
     [InlineData("agreement")][InlineData("execution")][InlineData("receiving")][InlineData("native")]
     public async Task ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery(string changed)

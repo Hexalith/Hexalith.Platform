@@ -13,7 +13,9 @@ public sealed class ExportQualificationEngine(IExportQualificationMaterialSource
         return gate.Missing.Count!=0?gate.Missing:await materials.PreflightAsync(input,Signature(caseId)?ExportQualificationMaterialUse.Sign:ExportQualificationMaterialUse.Wrap,token).ConfigureAwait(false);
     }
     /// <summary>Creates one exact export artifact using independently resolved dedicated material, then verifies it through the same production primitives.</summary>
-    public async Task<ExportQualificationOriginal?> ExecuteAsync(string caseId,ExportQualificationInput input,CancellationToken token)
+    public Task<ExportQualificationOriginal?> ExecuteAsync(string caseId,ExportQualificationInput input,CancellationToken token)
+        =>DaprExportQualificationOperation.RunAsync(owned=>ExecuteOwnedAsync(caseId,input,owned),_=> { },token);
+    private async Task<ExportQualificationOriginal?> ExecuteOwnedAsync(string caseId,ExportQualificationInput input,CancellationToken token)
     {
         ArgumentNullException.ThrowIfNull(input);
         var use=Signature(caseId)?ExportQualificationMaterialUse.Sign:ExportQualificationMaterialUse.Wrap;
@@ -45,7 +47,9 @@ public sealed class ExportQualificationEngine(IExportQualificationMaterialSource
         owned.Dispose();return result with { OwnedBuffersCleared=owned.Cleared };
     }
     /// <summary>Independently reopens and verifies the exact original without fresh wrapping/signing. Every denial is produced by the actual crypto core.</summary>
-    public async Task<ExportQualificationObservation?> ObserveAsync(ExportQualificationOriginal original,ExportQualificationInput input,CancellationToken token)
+    public Task<ExportQualificationObservation?> ObserveAsync(ExportQualificationOriginal original,ExportQualificationInput input,CancellationToken token)
+        =>DaprExportQualificationOperation.RunAsync(owned=>ObserveOwnedAsync(original,input,owned),_=> { },token);
+    private async Task<ExportQualificationObservation?> ObserveOwnedAsync(ExportQualificationOriginal original,ExportQualificationInput input,CancellationToken token)
     {
         ArgumentNullException.ThrowIfNull(original);
         ArgumentNullException.ThrowIfNull(input);

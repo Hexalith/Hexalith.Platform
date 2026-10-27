@@ -14,8 +14,12 @@ public static class AgentsOwningProcessComposition
         AgentsOwningProcessInstallation installation, IGovernanceScopeGuard installedPrivateGuard, TimeProvider? clock = null,PrivateExportKeyDeliveryOwner? privateDeliveryOwner=null)
     {
         TimeProvider actualClock = clock ?? TimeProvider.System;
-        if (!Independent(installation.SpoolAuthority,installation.Recorder)
-            || !Independent(installation.ProtectionEngine,installation.ProtectionObserver))
+        using var compositionBudget=new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        bool independent;
+        try { independent=InstalledCredentialIndependence.CheckAsync(installation.SpoolAuthority,installation.Recorder,compositionBudget.Token).ConfigureAwait(false).GetAwaiter().GetResult()
+            && InstalledCredentialIndependence.CheckAsync(installation.ProtectionEngine,installation.ProtectionObserver,compositionBudget.Token).ConfigureAwait(false).GetAwaiter().GetResult(); }
+        catch(Exception) { independent=false; }
+        if (!independent)
             throw new ArgumentException("Independent spool/recorder and engine/observer installations required.");
         var transport = new DaprSecretsInvoker(dapr);
         if(installation.ExportDeliveryDenialOriginals is not null && privateDeliveryOwner is null) throw new InvalidOperationException("InstalledPrivateExportKeyDeliveryActorOwnerAndNativeAuthorityPorts");
@@ -27,24 +31,33 @@ public static class AgentsOwningProcessComposition
         var protection = new Fr34ProtectionGate(installation.ProtectionTarget, new DaprFr34ProtectionEngine(Authority(installation.ProtectionEngine)),
             new DaprFr34PersistedReader(Authority(installation.ProtectionObserver)), new DaprFr34CanaryAuthority(Authority(installation.ProtectionObserver)), actualClock);
         services.AddSingleton(actualClock);
+        services.AddPlatformCustody();
         services.AddPrivateTrustedEnvelopeVerifier(new DaprIndependentReplayRegistrar(Authority(installation.ReplayAuthority)));
         string? compromiseMissing = services.AddPrivateCompromise(installation.Secrets, transport, installation.CompromiseSubscription,
             new EventStoreDeletionCapabilityGuardRevocationMirror(installedPrivateGuard, actualClock), actualClock);
         if (compromiseMissing is not null) throw new InvalidOperationException("Missing installed owning-process input: " + compromiseMissing);
         services.AddPrivateSecurityDenialRecorder(spool);
-        services.AddPrivateSecurityObservationDrainWorker(spool, installation.DrainInterval, installation.DrainMaximumCount);
         services.AddSingleton(protection);
         services.AddHostedService<Fr34ProtectionStartupGate>();
+        services.AddSingleton(provider=>
+        {
+            try { return new AgentsIngressReadiness(provider.GetRequiredService<TrustedEnvelopeReplayVerifier>(),provider.GetRequiredService<PlatformSecurityDenialRecorder>(),
+                provider.GetRequiredService<TrustedEnvelopeAuthenticator>(),provider.GetRequiredService<PlatformHmacService>(),provider.GetRequiredService<IPlatformHmacKeyProvider>(),provider.GetRequiredService<IPlatformSigningProfileProvider>(),
+                Authority(installation.ReplayAuthority),installation,actualClock); }
+            catch(Exception) { throw new InvalidOperationException("DependencyNotAvailable: InstalledConstructiblePrivateIngressAuthenticatorHmacProviderAndProfileGraph"); }
+        });
+        services.AddHostedService(provider=>provider.GetRequiredService<AgentsIngressReadiness>());
+        services.AddPrivateSecurityObservationDrainWorker(spool, installation.DrainInterval, installation.DrainMaximumCount);
         services.AddHealthChecks().AddCheck<Fr34ProtectionReadinessCheck>("agents-protection-fr34", tags: ["ready"])
-            .AddCheck("agents-security-audit", new SpoolReadiness(spool), tags: ["ready"]);
+            .AddCheck("agents-security-audit", new SpoolReadiness(spool), tags: ["ready"])
+            .AddCheck<AgentsIngressReadiness>("agents-private-ingress",tags:["ready"]);
         return services;
     }
     internal static bool Independent(IndependentDaprAuthorityBinding first,IndependentDaprAuthorityBinding second)
     {
-        if(first.AppId==second.AppId || NormalizeCredential(first.CredentialReference)==NormalizeCredential(second.CredentialReference)) return false;
-        using var a=System.Security.Cryptography.ECDsa.Create();using var b=System.Security.Cryptography.ECDsa.Create();
-        a.ImportFromPem(first.PublicKeyPem);b.ImportFromPem(second.PublicKeyPem);
-        return !a.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(b.ExportSubjectPublicKeyInfo());
+        using var budget=new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        try { return InstalledCredentialIndependence.CheckAsync(first,second,budget.Token).ConfigureAwait(false).GetAwaiter().GetResult(); }
+        catch(Exception) { return false; }
     }
     internal static string NormalizeCredential(string reference)
     {

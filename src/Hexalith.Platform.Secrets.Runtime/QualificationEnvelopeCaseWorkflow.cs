@@ -125,9 +125,11 @@ public sealed class QualificationEnvelopeCaseWorkflow(TrustedEnvelopeAuthenticat
             }
             finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(canonical);System.Security.Cryptography.CryptographicOperations.ZeroMemory(tag);System.Security.Cryptography.CryptographicOperations.ZeroMemory(complete); }
         }
-        return new JsonObject { ["caseId"]=caseId,["requestId"]=requestId,["originalEnvelopeSha256"]=CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(envelope)),
+        var evaluation=new JsonObject { ["caseId"]=caseId,["requestId"]=requestId,["originalEnvelopeSha256"]=CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(envelope)),
             ["expectedIdentity"]=JsonSerializer.SerializeToNode(expected,CustodyBindingContract.Json),["suppliedEnvelope"]=JsonSerializer.SerializeToNode(supplied,CustodyBindingContract.Json),
-            ["firstStatus"]=first.Status.ToString(),["exactRetryStatus"]=exact.Status.ToString(),["originalAuthenticationStatus"]=(await envelopes.VerifyAsync(envelope,identity,token).ConfigureAwait(false)).Status.ToString(),["replayOriginal"]=JsonSerializer.SerializeToNode(replayOriginal,CustodyBindingContract.Json) };
+            ["firstStatus"]=first.Status.ToString(),["exactRetryStatus"]=exact.Status.ToString(),["replayOriginal"]=JsonSerializer.SerializeToNode(replayOriginal,CustodyBindingContract.Json) };
+        if(field is "issued-at" or "expires-at") evaluation["originalAuthenticationStatus"]=(await envelopes.VerifyAsync(envelope,identity,token).ConfigureAwait(false)).Status.ToString();
+        return evaluation;
     }
     private static bool SameIdentity(TrustedEnvelopeIdentity a,TrustedEnvelopeIdentity b)=>TrustedEnvelopeCodec.Identity(a).AsSpan().SequenceEqual(TrustedEnvelopeCodec.Identity(b));
     private static bool IntendedChallenge(string id,QualificationReplayChallengeInput input)
