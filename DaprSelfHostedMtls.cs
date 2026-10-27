@@ -1,5 +1,8 @@
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
+using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 
@@ -19,6 +22,136 @@ public static class DaprSelfHostedMtls
     /// <summary>The delay between credential read attempts (20 attempts ≈ 9.5 seconds of budget).</summary>
     private static readonly TimeSpan CredentialReadRetryDelay = TimeSpan.FromMilliseconds(500);
 
+    /// <summary>Adds the shared private mTLS control plane for all already-declared local project sidecars.</summary>
+    /// <param name="builder">The complete local application model.</param>
+    /// <param name="repositoryRoot">The owning repository, where credentials must never be written.</param>
+    /// <param name="sentryConfigurationPath">The Sentry configuration selecting mTLS.</param>
+    /// <returns>The private run and certificate directories, which the caller removes after disposing the application.</returns>
+    public static (string RunDirectory, string CertificateDirectory) AddLocalApplicationInfrastructure(
+        IDistributedApplicationBuilder builder,
+        string repositoryRoot,
+        string sentryConfigurationPath)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        if (!builder.ExecutionContext.IsRunMode)
+            throw new InvalidOperationException("Self-hosted Dapr identity infrastructure is local-run only.");
+        ProjectResource[] applications = builder.Resources.OfType<ProjectResource>()
+            .Where(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Any()).ToArray();
+        if (applications.Length == 0)
+            throw new InvalidOperationException("Declare the application sidecars before configuring their shared identity infrastructure.");
+        string runDirectory = Path.Combine(Path.GetTempPath(), "hexalith-dapr", Guid.NewGuid().ToString("N"));
+        string certificateParent = ResolveCertificateParent(builder, repositoryRoot, runDirectory, [repositoryRoot]);
+        string certificates = CertificateDirectory(certificateParent, runDirectory);
+        CompositionWorkspace.CreatePrivateDirectory(runDirectory);
+        try
+        {
+            CompositionRunPorts ports = CompositionPortAllocator.Allocate(applications.Length);
+            var (sentry, _) = AddSentry(builder, sentryConfigurationPath, repositoryRoot, runDirectory,
+                ports.PlacementHealth, checkoutRoots: [repositoryRoot]);
+            var (placement, scheduler) = AddControlPlane(builder, sentry, certificates,
+                Path.Combine(runDirectory, "scheduler"), ports.Placement, ports.Scheduler);
+            string runtimeHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME")
+                ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            for (int index = 0; index < applications.Length; index++)
+            {
+                ProjectResource application = applications[index];
+                IDaprSidecarResource sidecar = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+                DaprSidecarOptionsAnnotation annotation = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+                CompositionDaprSidecarPorts allocated = ports.ModuleDapr[index];
+                sidecar.Annotations[sidecar.Annotations.IndexOf(annotation)] = new DaprSidecarOptionsAnnotation(annotation.Options with
+                {
+                    RuntimePath = annotation.Options.RuntimePath ?? runtimeHome,
+                    PlacementHostAddress = "localhost:" + ports.Placement,
+                    SchedulerHostAddress = "localhost:" + ports.Scheduler,
+                    DaprHttpPort = annotation.Options.DaprHttpPort ?? allocated.Http,
+                    DaprGrpcPort = annotation.Options.DaprGrpcPort ?? allocated.Grpc,
+                    DaprInternalGrpcPort = annotation.Options.DaprInternalGrpcPort ?? allocated.InternalGrpc,
+                    MetricsPort = annotation.Options.MetricsPort ?? allocated.Metrics,
+                });
+                ConfigureSidecar(builder.CreateResourceBuilder(application), sidecar, sentry, certificates, placement, scheduler);
+            }
+            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(
+                new DaprSelfHostedMtlsSubscriber(applications, certificates, "localhost:" + ports.PlacementHealth));
+            return (runDirectory, certificates);
+        }
+        catch
+        {
+            _ = CompositionWorkspace.TryDeleteAsync(certificates, CancellationToken.None).GetAwaiter().GetResult();
+            _ = CompositionWorkspace.TryDeleteAsync(runDirectory, CancellationToken.None).GetAwaiter().GetResult();
+            throw;
+        }
+    }
+
+    /// <summary>Applies the shared native-runtime and credential binding after Aspire creates a sidecar executable.</summary>
+    /// <param name="model">The prepared model, containing the generated executable.</param>
+    /// <param name="application">The sidecar's owning application.</param>
+    /// <param name="certificateDirectory">The private Sentry issuer directory, when mTLS is enabled.</param>
+    /// <param name="sentryAddress">The isolated Sentry endpoint, when mTLS is enabled.</param>
+    /// <returns>The generated sidecar executable for any additional owner-specific bindings.</returns>
+    public static ExecutableResource BindGeneratedSidecar(
+        DistributedApplicationModel model,
+        IResource application,
+        string? certificateDirectory = null,
+        string? sentryAddress = null)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+        ArgumentNullException.ThrowIfNull(application);
+        ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>()
+            .Single(resource => resource.Name == application.Name + "-dapr-cli");
+        if (sentryAddress is not null)
+        {
+            string runtimeHome = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations
+                .OfType<DaprSidecarOptionsAnnotation>().Single().Options.RuntimePath
+                ?? throw new InvalidDataException("An isolated Sentry endpoint requires the selected Dapr runtime home.");
+            string runtime = Path.Combine(runtimeHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd");
+            if (!File.Exists(runtime)) throw new InvalidDataException($"The selected Dapr native runtime is unavailable at '{runtime}'. Install the catalog-pinned runtime; isolated Sentry requires native daprd.");
+            sidecar.Annotations.OfType<ExecutableAnnotation>().Last().Command = runtime;
+            sidecar.Annotations.Add(new CommandLineArgsCallbackAnnotation((CommandLineArgsCallbackContext context) =>
+            {
+                IList<object> arguments = context.Args;
+                // The CLI hardcodes Sentry port 50001. Reuse its generated native arguments with the allocated endpoint.
+                if (arguments.Count == 0 || arguments[0] is not "run"
+                    || arguments.OfType<string>().Any(argument => argument is "--run-file" or "--"))
+                    throw new InvalidDataException("The selected isolated sidecar requires a sidecar-only Dapr run command.");
+                arguments.RemoveAt(0);
+                int runtimePath = arguments.IndexOf("--runtime-path");
+                if (runtimePath < 0 || runtimePath + 1 >= arguments.Count)
+                    throw new InvalidDataException("The selected isolated sidecar has no explicit Dapr runtime path.");
+                arguments.RemoveAt(runtimePath + 1);
+                arguments.RemoveAt(runtimePath);
+                arguments.Add("--enable-mtls");
+                arguments.Add("--sentry-address");
+                int port = model.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations
+                    .OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port
+                    ?? throw new InvalidDataException("The current Sentry listener has no allocated host port.");
+                arguments.Add(sentryAddress[..(sentryAddress.LastIndexOf(':') + 1)] + port.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                return Task.CompletedTask;
+            }));
+        }
+        foreach (EndpointAnnotation endpoint in sidecar.Annotations.OfType<EndpointAnnotation>().Where(endpoint => endpoint.Name is "http" or "grpc" or "metrics"))
+        {
+            endpoint.TargetPort = endpoint.Port;
+            endpoint.IsProxied = false;
+        }
+        if (certificateDirectory is not null)
+            sidecar.Annotations.Add(new EnvironmentCallbackAnnotation(async context =>
+            {
+                foreach (var credential in new[] { ("DAPR_TRUST_ANCHORS", "ca.crt"), ("DAPR_CERT_CHAIN", "issuer.crt"), ("DAPR_CERT_KEY", "issuer.key") })
+                    context.EnvironmentVariables[credential.Item1] = await ReadCredentialAsync(certificateDirectory, credential.Item2,
+                        context.CancellationToken).ConfigureAwait(false);
+                context.EnvironmentVariables["DAPR_CONTROLPLANE_TRUST_DOMAIN"] = "localhost";
+                context.EnvironmentVariables["DAPR_CONTROLPLANE_NAMESPACE"] = "default";
+                context.EnvironmentVariables["NAMESPACE"] = "default";
+            }));
+        return sidecar;
+    }
+
+    private static string CertificateDirectory(string parent, string runDirectory)
+    {
+        string identity = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Path.GetFullPath(runDirectory))))[..32];
+        return Path.Combine(parent, "dapr-credentials-" + identity);
+    }
+
     /// <summary>Adds Sentry with an allocated host listener and a private issuer directory.</summary>
     internal static (IResourceBuilder<ContainerResource> Sentry, string CertificateDirectory) AddSentry(
         IDistributedApplicationBuilder builder,
@@ -33,8 +166,7 @@ public static class DaprSelfHostedMtls
         ArgumentException.ThrowIfNullOrWhiteSpace(sentryConfigurationPath);
 
         string parent = ResolveCertificateParent(builder, platformRoot, runDirectory, checkoutRoots);
-        string identity = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Path.GetFullPath(runDirectory))))[..32];
-        string certificateDirectory = Path.Combine(parent, "dapr-credentials-" + identity);
+        string certificateDirectory = CertificateDirectory(parent, runDirectory);
         if (new DirectoryInfo(certificateDirectory).LinkTarget is not null)
             throw new InvalidOperationException($"Private Sentry credential directory '{certificateDirectory}' must not be a symbolic link.");
         // Builds preflight and execution compose the same workspace. Reuse only that run's private child.

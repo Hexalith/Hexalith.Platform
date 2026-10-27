@@ -28,3 +28,7 @@ _bmad-output/implementation-artifacts/evidence/1-13/pass-4/builds-pass4.patch -t
 # Preserve exact Story 2.5 runtime/source hashes and captured failure-output bytes.
 _bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/** -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-5/delta-review-fixes-20261025/** -text -whitespace
+
+# The shared Dapr source follows this repository's CRLF EditorConfig policy.
+# Check the default whitespace rules while treating its required CR as a line ending.
+DaprSelfHostedMtls*.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

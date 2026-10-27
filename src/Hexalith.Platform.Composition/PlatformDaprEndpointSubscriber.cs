@@ -34,61 +34,18 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
         foreach (IResource application in applications.ToArray())
         {
             PlatformServerBinding? server = servers.SingleOrDefault(server => server.ResourceId == application.Name);
-            ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == application.Name + "-dapr-cli");
-            if (sentryAddress is not null)
-            {
-                string runtimeHome = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations
-                    .OfType<DaprSidecarOptionsAnnotation>().Single().Options.RuntimePath
-                    ?? throw new InvalidDataException("An isolated Sentry endpoint requires the selected Dapr runtime home.");
-                string runtime = Path.Combine(runtimeHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd");
-                if (!File.Exists(runtime)) throw new InvalidDataException($"The selected Dapr native runtime is unavailable at '{runtime}'. Install the catalog-pinned runtime; isolated Sentry requires native daprd.");
-                sidecar.Annotations.OfType<ExecutableAnnotation>().Last().Command = runtime;
+            ExecutableResource sidecar = DaprSelfHostedMtls.BindGeneratedSidecar(model, application, certificateDirectory, sentryAddress);
+            if (sentryAddress is not null && workspace is not null && servers.Count > 0)
                 sidecar.Annotations.Add(new CommandLineArgsCallbackAnnotation(async context =>
-                {
-                    IList<object> arguments = context.Args;
-                    // Dapr CLI 1.18.0 hardcodes localhost:50001 when it enables mTLS. Use the
-                    // same verified native runtime and generated callbacks, with its supported flag.
-                    if (arguments.Count == 0 || arguments[0] is not "run"
-                        || arguments.OfType<string>().Any(argument => argument is "--run-file" or "--"))
-                        throw new InvalidDataException("The selected isolated sidecar requires a sidecar-only Dapr run command.");
-                    arguments.RemoveAt(0);
-                    int runtimePath = arguments.IndexOf("--runtime-path");
-                    if (runtimePath < 0 || runtimePath + 1 >= arguments.Count)
-                        throw new InvalidDataException("The selected isolated sidecar has no explicit Dapr runtime path.");
-                    arguments.RemoveAt(runtimePath + 1);
-                    arguments.RemoveAt(runtimePath);
-                    arguments.Add("--enable-mtls");
-                    arguments.Add("--sentry-address");
-                    // Qualification adapters may replace the model endpoint after composition.
-                    int port = model.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations
-                        .OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port
-                        ?? throw new InvalidDataException("The current Sentry listener has no allocated host port.");
-                    arguments.Add(sentryAddress[..(sentryAddress.LastIndexOf(':') + 1)] + port.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                    if (workspace is not null && servers.Count > 0)
-                        File.WriteAllText(ListenerInventoryPath(workspace, application.Name), System.Text.Json.JsonSerializer.Serialize(new
-                        {
-                            Resource = application.Name,
-                            Listeners = await NativeListenerPortsAsync(arguments, context.CancellationToken).ConfigureAwait(false),
-                        }));
-                }));
-            }
-            foreach (EndpointAnnotation endpoint in sidecar.Annotations.OfType<EndpointAnnotation>().Where(endpoint => endpoint.Name is "http" or "grpc" or "metrics"))
-            {
-                endpoint.TargetPort = endpoint.Port;
-                endpoint.IsProxied = false;
-            }
-            sidecar.Annotations.Add(new EnvironmentCallbackAnnotation(async context =>
+                    File.WriteAllText(ListenerInventoryPath(workspace, application.Name), System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        Resource = application.Name,
+                        Listeners = await NativeListenerPortsAsync(context.Args, context.CancellationToken).ConfigureAwait(false),
+                    }))));
+            sidecar.Annotations.Add(new EnvironmentCallbackAnnotation(context =>
             {
                 foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })
                     if (server is not null && server.Environment.TryGetValue(token, out string? value)) context.EnvironmentVariables[token] = value;
-                if (certificateDirectory is not null)
-                {
-                    foreach (var credential in new[] { ("DAPR_TRUST_ANCHORS", "ca.crt"), ("DAPR_CERT_CHAIN", "issuer.crt"), ("DAPR_CERT_KEY", "issuer.key") })
-                        context.EnvironmentVariables[credential.Item1] = await DaprSelfHostedMtls.ReadCredentialAsync(certificateDirectory, credential.Item2, 20, TimeSpan.FromMilliseconds(500), static (delay, token) => Task.Delay(delay, token), context.CancellationToken).ConfigureAwait(false);
-                    context.EnvironmentVariables["DAPR_CONTROLPLANE_TRUST_DOMAIN"] = "localhost";
-                    context.EnvironmentVariables["DAPR_CONTROLPLANE_NAMESPACE"] = "default";
-                    context.EnvironmentVariables["NAMESPACE"] = "default";
-                }
             }));
         }
     }
