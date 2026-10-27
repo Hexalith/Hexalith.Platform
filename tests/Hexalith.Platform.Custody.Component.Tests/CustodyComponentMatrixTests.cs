@@ -143,7 +143,7 @@ public sealed class CustodyComponentMatrixTests
         Decrypts(store, other).ShouldBeFalse();
         store.RetainsPlainDek(other).ShouldBeFalse();
         Decrypts(store, foreign, 3).ShouldBeTrue();
-        witness.TryRepromote("g0").ShouldBeFalse();
+        CustodyOutsideWitness.TryRepromote("g0").ShouldBeFalse();
     }
 
     [Fact]

@@ -9,6 +9,7 @@ public sealed class ExportQualificationEngine(IExportQualificationMaterialSource
     /// <summary>Reports exact missing private export protocols before effects.</summary>
     public async Task<IReadOnlyList<string>> PreflightAsync(string caseId,ExportQualificationInput input,CancellationToken token)
     {
+        if (input is null) return Supported(caseId) ? ["ExactValidExportManifestAndContext"] : ["SupportedExportQualificationCase"];
         var gate=await PublicGateAsync(caseId,input,token).ConfigureAwait(false);
         return gate.Missing.Count!=0?gate.Missing:await materials.PreflightAsync(input,Signature(caseId)?ExportQualificationMaterialUse.Sign:ExportQualificationMaterialUse.Wrap,token).ConfigureAwait(false);
     }

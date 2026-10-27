@@ -138,7 +138,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
 
     internal bool TryRepromoteEpoch(string generation)
     {
-        lock (_gate) { return Witness is not null && Witness.TryRepromote(generation); }
+        lock (_gate) { return Witness is not null && CustodyOutsideWitness.TryRepromote(generation); }
     }
 
     internal byte[] CaptureVolume()

@@ -140,7 +140,7 @@ internal sealed class CustodyOutsideWitness : ICustodyOutsideWitness, ICustodyOr
         _successors.Clear();
     }
 
-    internal bool TryRepromote(string generation)
+    internal static bool TryRepromote(string generation)
     {
         // Volume bytes cannot make a retired or restored epoch current.
         _ = generation;

@@ -11,12 +11,26 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
 {
     /// <summary>Returns an authenticated envelope only after a complete exact original replay receipt and final current crypto/time/profile checks.</summary>
     public async Task<TrustedEnvelopeResult> VerifyAsync(TrustedEnvelope envelope, TrustedEnvelopeIdentity expected, CancellationToken cancellationToken = default)
-        =>await VerifyCoreAsync(envelope,expected,null,cancellationToken).ConfigureAwait(false);
+    {
+        if (envelope is null)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return new(CustodyStatus.Unavailable);
+        }
+        return await VerifyCoreAsync(envelope,expected,null,cancellationToken).ConfigureAwait(false);
+    }
 
     /// <summary>Reconfirms current authentication after the final awaited readiness, without another replay registration.</summary>
     public Task<TrustedEnvelopeResult> VerifyForAdmissionAsync(TrustedEnvelope envelope,TrustedEnvelopeIdentity expected,
         Func<CancellationToken,Task<bool>> readiness,CancellationToken cancellationToken=default)
-        =>VerifyCoreAsync(envelope,expected,readiness??throw new ArgumentNullException(nameof(readiness)),cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(readiness);
+        if (envelope is null)
+            return cancellationToken.IsCancellationRequested
+                ? Task.FromCanceled<TrustedEnvelopeResult>(cancellationToken)
+                : Task.FromResult(new TrustedEnvelopeResult(CustodyStatus.Unavailable));
+        return VerifyCoreAsync(envelope,expected,readiness,cancellationToken);
+    }
 
     private async Task<TrustedEnvelopeResult> VerifyCoreAsync(TrustedEnvelope envelope,TrustedEnvelopeIdentity expected,
         Func<CancellationToken,Task<bool>>? readiness,CancellationToken cancellationToken)

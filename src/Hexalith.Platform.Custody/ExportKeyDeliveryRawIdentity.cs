@@ -7,7 +7,11 @@ public sealed record ExportKeyDeliveryRawIdentity(string TenantId,string Deliver
     string RequesterActorId,string Purpose,string Audience,DateTimeOffset ExclusiveExpiry,string LifecycleVersion,string StoreTarget,int ContractVersion)
 {
     /// <summary>Captures fields without invoking address/contract validation or releasing material.</summary>
-    public static ExportKeyDeliveryRawIdentity Capture(ExportKeyDeliveryIdentity value)=>new(value.TenantId,value.DeliveryId,value.ExportId,value.CommitAcknowledgementRevision,value.RequesterActorId,value.Purpose,value.Audience,value.ExclusiveExpiry,value.LifecycleVersion,value.StoreTarget,value.ContractVersion);
+    public static ExportKeyDeliveryRawIdentity Capture(ExportKeyDeliveryIdentity value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        return new(value.TenantId,value.DeliveryId,value.ExportId,value.CommitAcknowledgementRevision,value.RequesterActorId,value.Purpose,value.Audience,value.ExclusiveExpiry,value.LifecycleVersion,value.StoreTarget,value.ContractVersion);
+    }
     internal ExportKeyDeliveryIdentity Identity()=>new(TenantId,DeliveryId,ExportId,CommitAcknowledgementRevision,RequesterActorId,Purpose,Audience,ExclusiveExpiry,LifecycleVersion,StoreTarget,ContractVersion);
     internal void ValidateBounds()
     {
