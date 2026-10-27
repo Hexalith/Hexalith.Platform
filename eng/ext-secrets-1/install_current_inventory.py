@@ -21,22 +21,92 @@ def application_request(token, *args, allowed=(0,)):
                 data=bytes(token) + b'\n', allowed=allowed)
 
 
-def delete_matching_credential_secret(name, token):
-    # One native GET observes only the selected field and its exact deletion
-    # preconditions. A replacement between GET and DELETE fails the precondition.
+def require_creation_identity(identity):
+    if not isinstance(identity, dict) or any(not isinstance(identity.get(key), str) or not identity[key] for key in ('uid', 'resourceVersion')):
+        raise RuntimeError('original-secret-creation-identity-required')
+    return {key: identity[key] for key in ('uid', 'resourceVersion')}
+
+
+def secret_identity(name):
+    fields = kube('get', 'secret', name, '-n', NS, '--ignore-not-found', '-o',
+        'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.decode().split()
+    if not fields:
+        return None
+    if len(fields) != 2:
+        raise RuntimeError('credential-secret-observation-malformed')
+    return {'uid': fields[0], 'resourceVersion': fields[1]}
+
+
+def read_pinned_credential_secret(name, identity):
+    expected = require_creation_identity(identity)
     observed = kube('get', 'secret', name, '-n', NS, '--ignore-not-found', '-o',
                     'jsonpath={.data.token}{" "}{.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.split()
-    if not observed:
-        return
     if len(observed) != 3:
         raise RuntimeError('credential-secret-observation-malformed')
     encoded, uid, version = observed
-    decoded = base64.b64decode(encoded, validate=True)
-    if len(decoded) == len(token) and hmac.compare_digest(decoded, bytes(token)):
+    if {'uid': uid.decode(), 'resourceVersion': version.decode()} != expected:
+        raise RuntimeError('original-credential-secret-identity-changed')
+    return bytearray(base64.b64decode(encoded, validate=True))
 
-        kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/' + name, '-f', '-',
-             data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions',
-                             'preconditions': {'uid': uid.decode(), 'resourceVersion': version.decode()}}))
+
+def delete_matching_credential_secret(name, token=None, *, identity=None):
+    expected = require_creation_identity(identity)
+    observed = secret_identity(name)
+    if observed is None:
+        return
+    if observed != expected:
+        raise RuntimeError('original-credential-secret-identity-changed-no-delete')
+    if token is not None:
+        decoded = read_pinned_credential_secret(name, expected)
+        try:
+            if not hmac.compare_digest(decoded, bytes(token)):
+                raise RuntimeError('original-credential-secret-value-mismatch-no-delete')
+        finally:
+            decoded[:] = b'\0' * len(decoded)
+    kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/' + name, '-f', '-',
+        data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions', 'preconditions': expected}))
+
+
+def cleanup_journaled_credential(installer, path, name, token=None):
+    """Resume acknowledged cleanup only; unknown issuance/revocation/deletion never repeats an effect."""
+    journal = json.loads(path.read_text())
+    if journal.get('revocationPhase') != 'Acknowledged':
+        if journal.get('revocationPhase') == 'Started' or not journal.get('accessor'):
+            raise RuntimeError('original-credential-revocation-or-issuance-needs-reconciliation')
+        recovered = None
+        try:
+            if token is None:
+                recovered = read_pinned_credential_secret(name, journal.get('secretIdentity'))
+                lookup = json.loads(application_request(recovered, 'token', 'lookup', '-format=json').stdout)['data']
+                if lookup.get('accessor') != journal['accessor']:
+                    raise RuntimeError('original-credential-accessor-changed-no-revocation')
+                token = recovered
+            journal['revocationPhase'] = 'Started'
+            durable_write(path, journal)
+            application_request(token, 'token', 'revoke', '-self')
+            journal.update({'revocationPhase': 'Acknowledged', 'phase': 'Revoked'})
+            durable_write(path, journal)
+        finally:
+            if recovered is not None:
+                recovered[:] = b'\0' * len(recovered)
+    if journal.get('secretRemovalPhase') == 'Acknowledged':
+        return journal
+    identity = journal.get('secretIdentity')
+    if identity is None:
+        if journal.get('secretCreationPhase') != 'NotStarted':
+            raise RuntimeError('original-secret-creation-identity-required-for-cleanup')
+    else:
+        require_creation_identity(identity)
+        if journal.get('secretRemovalPhase') == 'Started':
+            if secret_identity(name) is not None:
+                raise RuntimeError('original-secret-removal-outcome-needs-reconciliation')
+        else:
+            journal['secretRemovalPhase'] = 'Started'
+            durable_write(path, journal)
+            delete_matching_credential_secret(name, identity=identity)
+    journal.update({'secretRemovalPhase': 'Acknowledged', 'phase': 'RevokedAndOwnedSecretRemoved'})
+    durable_write(path, journal)
+    return journal
 
 
 def create_metadata_credential(installer):

@@ -103,6 +103,7 @@ public sealed class CustodyTests
     [InlineData("missing-bearer", 401)]
     [InlineData("wrong-issuer", 401)]
     [InlineData("wrong-audience", 401)]
+    [InlineData("audience-trailing-slash", 401)]
     [InlineData("expired", 401)]
     [InlineData("wrong-signature", 401)]
     [InlineData("foreign-caller", 403)]
@@ -125,19 +126,24 @@ public sealed class CustodyTests
         (await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldNotContain("public-test");
     }
 
-    [Fact]
-    public async Task AuthenticatedReceiverUsesExistingHmacServiceWithSourceFixtureKeys()
+    [Theory]
+    [InlineData("[\"source-fixture-only\"]", "\u000119:source-fixture-only\u001f")]
+    [InlineData("[\"different\",null,\"\"]", "\u00019:different\u001f\u00000:\u001f\u00010:\u001f")]
+    public async Task AuthenticatedReceiverUsesExistingHmacServiceWithSourceFixtureKeys(string componentsJson, string canonicalSuffix)
     {
         await using Fixture fixture = await Fixture.Start(bound: true);
         using var request = new HttpRequestMessage(HttpMethod.Post, "/digest");
         request.Headers.Add("dapr-api-token", "offline-channel");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", fixture.Token("valid"));
-        request.Content = new StringContent("{\"tenantId\":\"tenant-a\",\"components\":[\"source-fixture-only\"]}", Encoding.UTF8, "application/json");
+        request.Content = new StringContent("{\"tenantId\":\"tenant-a\",\"components\":" + componentsJson + "}", Encoding.UTF8, "application/json");
         using HttpResponseMessage response = await fixture.Client.SendAsync(request, TestContext.Current.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         JsonObject body = JsonNode.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken))!.AsObject();
         body["keyVersion"]!.GetValue<string>().ShouldBe("offline-v1");
-        body["digest"]!.GetValue<string>().Length.ShouldBe(64);
+        // Independent AD-29 bytes: present marker, UTF-16 length, colon, text, U+001F.
+        byte[] expectedBytes = Encoding.UTF8.GetBytes("\u000113:ContentDigest\u001f\u00018:tenant-a\u001f" + canonicalSuffix);
+        string expected = Convert.ToHexStringLower(HMACSHA256.HashData(Enumerable.Repeat((byte)0x42, 32).ToArray(), expectedBytes));
+        body["digest"]!.GetValue<string>().ShouldBe(expected);
     }
 
     [Fact]
@@ -192,7 +198,7 @@ public sealed class CustodyTests
                 new("eventstore:tenant", scenario == "wrong-tenant" ? "tenant-b" : "tenant-a")];
             if (scenario != "missing-operation") { claims.Add(new("eventstore:operation", "custody:digest")); }
             return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(scenario == "wrong-issuer" ? "https://foreign.example" : Issuer,
-                scenario == "wrong-audience" ? "foreign" : "ext-secrets-1-custody", claims,
+                scenario == "wrong-audience" ? "foreign" : scenario == "audience-trailing-slash" ? "ext-secrets-1-custody/" : "ext-secrets-1-custody", claims,
                 DateTime.UtcNow.AddMinutes(-2), scenario == "expired" ? DateTime.UtcNow.AddMinutes(-1) : DateTime.UtcNow.AddMinutes(1),
                 new SigningCredentials(new RsaSecurityKey(scenario == "wrong-signature" ? other : signing), SecurityAlgorithms.RsaSha256)));
         }
