@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -55,6 +56,24 @@ public sealed class CustodyTests
         provider.GetRequiredService<IPlatformHmacKeyProvider>().ShouldBeOfType<DaprPlatformHmacKeyProvider>();
         provider.GetRequiredService<IPlatformSigningProfileProvider>().ShouldBeOfType<DaprPlatformSigningProfileProvider>();
         provider.GetRequiredService<IDaprPlatformHmacAuthority>().ShouldBeOfType<DaprHmacAuthorityAdapter>();
+    }
+
+    [Theory]
+    [InlineData("current", true)]
+    [InlineData("missing", false)]
+    [InlineData("revoked", false)]
+    [InlineData("stale", false)]
+    [InlineData("foreign-store", false)]
+    [InlineData("foreign-scope", false)]
+    public async Task ReadinessRequiresAllFourCurrentExactProofs(string scenario, bool expected)
+    {
+        SecretsRuntimeConfiguration runtime = Runtime();
+        JsonArray allowed = [];
+        foreach (string tenant in new[] { "tenant-a", "tenant-b" })
+        foreach (string purpose in new[] { "TrustedEnvelope", "ContentDigest" })
+        { allowed.Add(new JsonObject { ["tenantId"] = tenant, ["purpose"] = purpose }); }
+        var binding = new CustodyBinding(runtime, new ProofAuthority(runtime.ExpectedProfile!, scenario), allowed, null, () => true);
+        (await binding.ReadyAsync(TestContext.Current.CancellationToken)).ShouldBe(expected);
     }
 
     [Theory]
@@ -107,6 +126,21 @@ public sealed class CustodyTests
     }
 
     [Fact]
+    public async Task AuthenticatedReceiverUsesExistingHmacServiceWithSourceFixtureKeys()
+    {
+        await using Fixture fixture = await Fixture.Start(bound: true);
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/digest");
+        request.Headers.Add("dapr-api-token", "offline-channel");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", fixture.Token("valid"));
+        request.Content = new StringContent("{\"tenantId\":\"tenant-a\",\"components\":[\"source-fixture-only\"]}", Encoding.UTF8, "application/json");
+        using HttpResponseMessage response = await fixture.Client.SendAsync(request, TestContext.Current.CancellationToken);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        JsonObject body = JsonNode.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken))!.AsObject();
+        body["keyVersion"]!.GetValue<string>().ShouldBe("offline-v1");
+        body["digest"]!.GetValue<string>().Length.ShouldBe(64);
+    }
+
+    [Fact]
     public async Task HealthIsMetadataOnlyAndCannotClaimAvailability()
     {
         await using Fixture fixture = await Fixture.Start();
@@ -123,6 +157,31 @@ public sealed class CustodyTests
         { Methods.Add(method); return Task.FromResult<string?>(null); }
     }
 
+    private sealed class ProofAuthority(PlatformSigningProfile profile, string scenario) : IDaprPlatformHmacAuthority
+    {
+        public PlatformSigningProfile? GetCurrentProfile(string reference) => profile;
+        public ValueTask<DaprPlatformHmacInventory?> ResolveAsync(string reference, PlatformHmacScope scope, string? version, CancellationToken token)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            return ValueTask.FromResult<DaprPlatformHmacInventory?>(scenario == "missing" ? null : new(reference, "stable-revision",
+                scenario == "foreign-scope" ? new("foreign", scope.Purpose) : scope,
+                new("offline-v1", scenario == "revoked" ? PlatformHmacKeyState.Revoked : PlatformHmacKeyState.Active, now.AddHours(-1), now.AddHours(1), null),
+                scenario == "foreign-store" ? "foreign" : "store", "credential", "exact-reference", "2", "hmacKey", now.AddSeconds(-1),
+                scenario == "stale" ? now.AddSeconds(-1) : now.AddSeconds(20)));
+        }
+    }
+
+    private sealed class FixtureKeys : IPlatformHmacKeyProvider
+    {
+        public ValueTask<PlatformHmacKeyResolution> ResolveAsync(PlatformHmacScope scope, string? version = null, CancellationToken cancellationToken = default)
+            => ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded, new(scope,
+                new("offline-v1", PlatformHmacKeyState.Active, DateTimeOffset.UtcNow.AddHours(-1), DateTimeOffset.UtcNow.AddHours(1), null),
+                Enumerable.Repeat((byte)0x42, 32).ToArray())));
+    }
+
+    private sealed class FixtureProfile(PlatformSigningProfile profile) : IPlatformSigningProfileProvider
+    { public PlatformSigningProfile? GetCurrent() => profile; }
+
     private sealed class Fixture(WebApplication app, RSA signing, HttpClient client) : IAsyncDisposable
     {
         public HttpClient Client { get; } = client;
@@ -137,7 +196,7 @@ public sealed class CustodyTests
                 DateTime.UtcNow.AddMinutes(-2), scenario == "expired" ? DateTime.UtcNow.AddMinutes(-1) : DateTime.UtcNow.AddMinutes(1),
                 new SigningCredentials(new RsaSecurityKey(scenario == "wrong-signature" ? other : signing), SecurityAlgorithms.RsaSha256)));
         }
-        public static async Task<Fixture> Start()
+        public static async Task<Fixture> Start(bool bound = false)
         {
             var builder = WebApplication.CreateBuilder();
             builder.Logging.ClearProviders();
@@ -153,6 +212,11 @@ public sealed class CustodyTests
                 options.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(configuration);
             });
             CustodyBinding binding = CustodyBinding.Compose(builder.Services, new(), new DenyingInvoker(), Allowed(), () => false);
+            if (bound)
+            {
+                builder.Services.Replace(ServiceDescriptor.Singleton<IPlatformHmacKeyProvider>(new FixtureKeys()));
+                builder.Services.Replace(ServiceDescriptor.Singleton<IPlatformSigningProfileProvider>(new FixtureProfile(Runtime().ExpectedProfile!)));
+            }
             WebApplication app = builder.Build();
             CustodyHttp.Map(app, binding);
             await app.StartAsync(TestContext.Current.CancellationToken);

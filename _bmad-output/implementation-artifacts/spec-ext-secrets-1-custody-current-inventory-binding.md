@@ -2,7 +2,7 @@
 title: EXT-SECRETS-1 custody and current-inventory binding
 type: feature
 created: 2026-10-16
-status: in-progress
+status: in-review
 route: dispatch
 baseline_commit: b2890d20575356239555df5b113e3100c1d594c1
 review_loop_iteration: 0
@@ -67,7 +67,7 @@ context: []
 
 **Execution:**
 - [x] `custody-inventory-20261016/discovery.json` — read-only Kubernetes, Dapr, OpenBao mount/TLS, and tenant-registry names. References only.
-- [ ] Namespace `ext-secrets-1-isolated` — apply a read-only policy, restricted token, and `secretstores.hashicorp.vault` component only when mount, TLS, and two tenants were discovered. Mount token and CA by reference.
+- [x] Namespace `ext-secrets-1-isolated` — apply a read-only policy, restricted token, and `secretstores.hashicorp.vault` component only when mount, TLS, and two tenants were discovered. Mount token and CA by reference.
 - [x] `custody-inventory-20261016/tenant-inventory.json` — publish discovered tenant A/B and current opaque-key to numeric KV2 mappings, or leave it unenrolled.
 - [x] `isolated-runtime-20261016/runtime-reference.json` — set provider, credential, inventory, authority, tenant A/B, issuer, audience, profile version, validity, and revocation only from facts. Set `callTimeout` to 30 only with an installed provider. Preserve host, provider, timing, and Open disposition.
 - [x] `custody-inventory-20261016/blockers.json` — each remaining required null: input, owner, and next action.
@@ -79,11 +79,11 @@ context: []
 - [x] `Hexalith.Platform.slnx`, `eng/ext-secrets-1/README.md` — register host/tests and document administration, observed installation, safe credential replacement and unresolved gates.
 - [x] New evidence `authority-installation-<timestamp>/` — retain authenticated admin receipts, independent credential/storage boundary, native metadata, per-null blockers and health; bind only actual current references. Withhold custody activation while expired keys or absent actual custody composition remain.
 
-- [ ] `eng/ext-secrets-1/bind_isolated_custody.py` — inspect original authority/key/credential/resource journals and current installed metadata/health; verify original authority receipts against authenticated state and renew the profile through a new revision-checked operation only if needed.
-- [ ] Same continuation — provision current separately restricted data and metadata credentials using existing unchanged policies; generate exactly four successor versions inside OpenBao, CAS against verified current versions, append mappings preserving original validity records, and retain original native write receipts. Unknown outcomes stop for exact reconciliation; never repeat a key write.
-- [ ] `src/Hexalith.Platform.Secrets.Custody/`, its focused tests and solution registration — implement the actual custody composition and fail-closed authenticated workload; build and run focused source tests.
-- [ ] Same continuation — enroll actual UID-qualified inventory/custody host and caller identities and exact current key statuses through authenticated owner administration; install/mount credential and CA references only after current prerequisites are verified. Preserve production and other pre-existing resources; only narrowly scoped isolated inventory/authority/custody updates are authorized.
-- [ ] New `custody-binding-<timestamp>/` evidence and this spec/README — retain public journals, receipts, successor metadata, profile and enrollment references, image/source provenance, metadata/health, preservation and credential-exposure checks; update only verified public runtime fields and record each remaining blocker with exact input, owner and next action. Do not run Live or installed contract/cohort cases or claim availability.
+- [x] `eng/ext-secrets-1/bind_isolated_custody.py` — inspect original authority/key/credential/resource journals and current installed metadata/health; verify original authority receipts against authenticated state and renew the profile through a new revision-checked operation only if needed.
+- [x] Same continuation — provision current separately restricted data and metadata credentials using existing unchanged policies; generate exactly four successor versions inside OpenBao, CAS against verified current versions, append mappings preserving original validity records, and retain original native write receipts. Unknown outcomes stop for exact reconciliation; never repeat a key write.
+- [x] `src/Hexalith.Platform.Secrets.Custody/`, its focused tests and solution registration — implement the actual custody composition and fail-closed authenticated workload; build and run focused source tests.
+- [x] Same continuation — enroll actual UID-qualified inventory/custody host and caller identities and exact current key statuses through authenticated owner administration; install/mount credential and CA references only after current prerequisites are verified. Preserve production and other pre-existing resources; only narrowly scoped isolated inventory/authority/custody updates are authorized.
+- [x] New `custody-binding-<timestamp>/` evidence and this spec/README — retain public journals, receipts, successor metadata, profile and enrollment references, image/source provenance, metadata/health, preservation and credential-exposure checks; update only verified public runtime fields and record each remaining blocker with exact input, owner and next action. Do not run Live or installed contract/cohort cases or claim availability.
 
 **Acceptance Criteria:**
 - Given mount, TLS, and two distinct tenants, when installation finishes, then the new namespace holds the provider and restricted credential reference, and production objects are unchanged.
@@ -98,6 +98,9 @@ context: []
 ## Implementation Notes
 
 ### 2026-10-27 explicit isolated custody continuation authorization
+
+Implementation necessity under the authorized binding: installed source metadata checks proved the existing provider ingress excludes both isolated consumers. A new additive, run-owned Kubernetes NetworkPolicy may select only the existing `hexalith-keys` server pods in `openbao` and allow only the combined namespace `ext-secrets-1-isolated` plus pod app labels `inventory` or `ext-secrets-1-custody` on TCP/8200. This supplies the route needed by the explicitly authorized binding; it changes no existing NetworkPolicy, OpenBao ACL policy, workload, service or Memories object. Verify actual selectors/endpoints, use create-only UID-journaled provisioning, and include the new policy in preservation evidence. No broader ingress or other namespace source is authorized.
+
 
 Before implementation, the owner explicitly authorized: (1) verify the installed profile/revocation authority and renew its profile through authenticated owner administration if needed, preserving existing operation receipts; (2) create successor versions for only the four expired HMAC mappings in `ext-secrets-1-isolated`, preserving original versions and validity records and never extending expired versions; (3) provision current, separately restricted data and metadata credentials; (4) implement the actual custody workload using existing custody services, `IDaprPlatformHmacAuthority` and `AddExplicitHmac`, enroll inventory/authority identities, and mount credentials/CA references only after verified current prerequisites. This supersedes the earlier successor/key-creation exclusion and “outside approved scope” statements below for these four mappings only. Implementation and bounded isolated installation are authorized without another approval checkpoint. All other constraints remain.
 
@@ -133,6 +136,20 @@ Updated only eight newly verified authority fields in the public runtime referen
 Verification passed 65 authority tests, 55 existing inventory tests, 11 installer tests and 3 preload tests. Parent inspection and [17 coordinator checks](../../../../../hexalith-secrets-evidence/ext-secrets-1/authority-installation-20261027T173655237972Z/coordinator-verification.json) independently verified source/image provenance, live metadata/health, preservation, persisted restart outcome, per-null blockers and unchanged constants. All 926 pre-existing Kubernetes objects, OpenBao mount/auth/policy fingerprints, original key metadata and the Agents register were preserved. Literal/base64 credential scanning found zero matches; the temporary observer was revoked and its Secret removed, and temporary image-preload credentials/Pods were removed. No Live or installed contract case ran. Full Build review/completion remains gated by the incomplete custody/provider binding.
 
 ## Spec Change Log
+
+### 2026-10-27 isolated custody binding implementation
+
+[Continuation evidence](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-binding-20261027T182648692778Z/) retains all original journals, four CAS=1 native write request IDs/receipts, exact original and successor metadata, separate current credential references, eight authenticated enrollment receipts, image/source provenance and every failed preflight/recovery observation. Exactly one numeric version-2 successor was generated inside OpenBao for each authorized expired mapping. Original version-1 native records and opaque validity mappings are unchanged. Effective retention allows ten versions and has no automatic deletion. A new exact-scope temporary provisioner policy/token supplied permissions absent from the operator identity; its token was revoked and its owned Secret/policy removed without changing existing policies.
+
+The existing authority profile and original two administration receipts were verified against authenticated state. Its profile remains current until `2026-10-28T17:37:33.663741Z`, so renewal was unnecessary. Revision `e19e68c9537246148141ec9d3841cfe4:10` now includes actual UID-qualified inventory/custody hosts, separate enabled query callers and four exact successor statuses. The new custody host uses `AddPlatformCustody`, `IDaprPlatformHmacAuthority` and `AddExplicitHmac`; it adds no lifecycle provider or decision signer. Runtime references now bind the current restricted data credential and `ext-secrets-1-inventory`. All remaining 42 null references retain exact owners and next actions in `blockers.json`.
+
+Both public runtime files use regular `subPath` mounts under canonical `/run/...` paths, as required by the shipped no-follow file reader; original failed mount/update journals are preserved. The new additive provider ingress policy is `openbao/NetworkPolicy/ext-secrets-1-custody-provider-29a4ace57e04@uid:4d6c461e-6c19-42fd-a9d1-bf3995200d6b`. It permits only the approved combined namespace/app selectors on TCP/8200. It changes no existing policy, workload or service. Metadata-only source diagnosis established successful authenticated profile/trust/native-enrollment reads and identified the previously denied provider route before that correction.
+
+At `2026-10-27T18:45:25Z`, custody, inventory and authority health/readiness all returned HTTP 200. Preservation checked 939 pre-existing Kubernetes objects: only the four explicitly authorized isolated references changed; no unexpected original object changed. Existing OpenBao mount/auth/policy fingerprints, original journals, old key metadata/validity and the Agents register are preserved. Literal/base64 credential scanning found zero matches. Focused verification passed 26 custody tests, 56 inventory tests and 19 continuation tests, plus Release container publishing. No provider key-data read, installed cryptographic operation, Live or contract/cohort case ran. Dependency availability and qualification remain false; status stays `in-progress` pending the root Build review/completion phase.
+
+The continuation began against scope-expansion baseline `73903003acd33ba341e12aa3c495992bab8b0eda`. A concurrent owner version-control operation advanced shared HEAD to `9ead86f9061695bf3e30bcb0e020c0b830ddaf7e`; this implementation neither staged nor committed that operation and preserved the shared checkout. Exact source/image observations are retained separately from the settled target `f448db29493c1b30b0f18380188fe99b8b7606fe`.
+
+Four reused source files changed concurrently after the recorded build snapshot: `SecurityEventRecorderLookup.cs`, `IndependentAuthorityHttpApplication.cs`, `IndependentAuthorityReceiver.cs` and `IndependentAuthorityReceiverInstallation.cs`. The installed immutable images contain the recorded build outputs; current new host/HMAC entry sources match that snapshot. The evidence explicitly records the broader checkout divergence and exact build/publish file inventory. No unrelated code was rebuilt or reverted. A source-only follow-up moves provider ingress creation after original-journal/current-prerequisite and preservation checks, including on recovery; two focused ordering tests passed. The completed installer was not rerun for that source-only change.
 
 ### 2026-10-27 explicit successor and actual custody authorization
 
