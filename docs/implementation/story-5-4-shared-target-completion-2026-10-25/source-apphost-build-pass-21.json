@@ -1,0 +1,50 @@
+{
+  "name": "final7-apphost-captured-build",
+  "command": [
+    "dotnet",
+    "build",
+    "apphost.cs",
+    "--artifacts-path",
+    "/tmp/story54-round21-w94zzt2w/final7-apphost",
+    "-p:NuGetLockFilePath=/tmp/story54-round21-w94zzt2w/final7-locks-apphost/$(MSBuildProjectName).lock.json",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:UseNuGetDeps=false",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "-p:HexalithBuildsResolvedRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round21-w94zzt2w/capture7-apphost.targets"
+  ],
+  "log": "/tmp/story54-round21-w94zzt2w/logs/final7-apphost-captured-build.log",
+  "logSha256": "70a045ce0c2c6e51828f7c808e33a3ec416a17455e0546169a4098d4c0bed606",
+  "exitCode": 0,
+  "passed": true,
+  "seconds": 68.13537645339966,
+  "sourceFreeze": "/tmp/story54-round21-w94zzt2w/freeze-observation.json",
+  "buildEnvironment": {
+    "CustomAfterMicrosoftCommonTargets": "/tmp/story54-round21-w94zzt2w/capture7-apphost.targets"
+  },
+  "fixtureOnly": true,
+  "installedQualification": false,
+  "replacesOnlyCaptureOrderingBoundary": "final6-actual-file-apphost-build",
+  "entrypoint": {
+    "path": "/tmp/story54-round21-w94zzt2w/verification-source/apphost.cs",
+    "sha256": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891"
+  },
+  "logicalCanonicalEntrypoint": "/home/administrator/projects/hexalith/platform/apphost.cs",
+  "canonicalCopiedBytesEqual": true,
+  "assembly": {
+    "path": "/tmp/story54-round21-w94zzt2w/final7-apphost/bin/debug/apphost.dll",
+    "sha256": "bd511a0e48663157fea7576c21879df9b2b7cdadf196c4202940d5cbdbaccb86"
+  },
+  "buildOnly": true,
+  "startRunOrResourceActivation": false,
+  "frozenHostedPublishingExactlyOnce": true,
+  "immutableEventStoreCopy": true,
+  "actualEvidence": null,
+  "diagnosticWarnings": [
+    "ASPIRE010"
+  ],
+  "warningFreeClaimed": false
+}

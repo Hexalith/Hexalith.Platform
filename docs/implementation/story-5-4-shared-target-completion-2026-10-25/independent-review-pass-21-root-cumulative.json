@@ -1,0 +1,154 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T12:37:53.384167+00:00",
+  "reviewPass": "21-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review21_blind",
+    "/root/review21_edge",
+    "/root/review21_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-hw9qz_67/scope.json",
+  "reviewDiffSha256": "828151a3548370b77e8c5f691ef7cd9a261fe3495b7e691502f35597256a97bd",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "B1/B7/B8/B10 carry exact unchanged prior rejected claims, with no repeated verification or deferral. Other claims traced independently; gap trusted as filed. No findings grouped by shared theme or fix.",
+  "findings": [
+    {
+      "id": "R21B-1",
+      "verdict": "false",
+      "evidence": "carried R20B-10/R8E-3: same execution-profile whole-image refusal and same claim, with the same unselected installed whole-image/native-loader measurement contract. Prior rejected route remains without further verification, patch or deferral. No actual accepted complete installed bundle or selected measurement protocol exists; full source/driver/delivery flags remain false.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-2",
+      "verdict": "false",
+      "evidence": "The claimed empty missing_inputs case does not exist in the closed REQUIRED inventory: all eight complete phase cases retain at least one specific external native invariant. The four measure implementations cover only individual sub-invariants, never a complete required case; the observer caller checks missing_inputs before dispatch and verify correctly refuses incomplete native semantics. Removing the final fallback or dispatching partial measurements cannot establish any complete supported case. No owner flag can select the absent native invariant protocols.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-3",
+      "verdict": "false",
+      "evidence": "Fresh exact expiry/overlap evaluation requires the explicitly unselected immutable native evaluator/timestamp protocol. No such evaluator, protocol, accepted installation or immutable native input is supplied; sampling the current clock or replaying a retained result cannot truthfully create that native observation. Execute checks preflight before effects, while supported independently retained original ingestion and exact precision verification are implemented. Registrations remain explicitly partial, zero complete; the refusal prevents invented qualification rather than rejecting a demonstrated supported installed input.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-4",
+      "verdict": "false",
+      "evidence": "Recovery.lifecycle additionally needs actual native lost-result injection and lookup-outage control semantics, not only a wrap/manifest input or the existing lookup API. No selected controller/proof protocol or installed input provides those effects; preflight rejects before BeginAsync/client effects. Ordinary lifecycle calls and exact lookup recovery remain implemented separately. The supported prefix does not advertise a complete driver: all registrations and delivery flags remain partial/false. No demonstrated supported installed recovery control is rejected.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-5",
+      "verdict": "false",
+      "evidence": "The requested alternative of clearly scoping this as partial already holds: the executable summary, closed driver inventory, source boundary audit and remaining ledger explicitly show185 partial registrations,49 external-protocol-dependent unregistered cases and0 complete drivers. Missing selected native restart/restore/incarnation/history/outbox/all-holder census protocols are named inputs; current public EventStore/Dapr adapters do not supply those immutable semantics. No complete source or installation-only readiness is claimed, and no actual complete native input is being refused. Changing only this build specification is also not a source fix.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-6",
+      "verdict": "medium",
+      "evidence": "Actual shipped executor/observer/enrollment templates mount whole ConfigMap /references and Secret /role-credentials volumes, while both bounded loaders reject every symbolic path component. Root temporary AtomicWriter-style runtime.json -> ..data/runtime.json layout fails actual Python acquire with ELOOP40; a regular file succeeds. Runtime args select precisely /references/runtime.json, so an otherwise filled proposed deployment cannot load its input. The README projected-link statement specifically concerns the qualification caller bearer transport, whose separate Dapr reader supports projected secrets; that valid support does not extend to the role runtime configuration loader or make the shipped full ConfigMap mount usable. Align proposed mounts and precise file-loader support without weakening private no-follow guards.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R21B-7",
+      "verdict": "false",
+      "evidence": "carried R18B-7/R16B-3: same nonempty damaged ProtectedArchiveStore header/alternate-bank claim and conservative ReadHeader guard. A checksum-valid older bank cannot prove whether the damaged newer bank durably published a different admitted liability, so fallback could authorize overwriting uncertain work. The prior rejected route remains without new verification, patch or deferral; no independently enrolled atomic-write guarantee or safe recoverable interruption proof is supplied. This differs from the missing/zeroed initialized-bank defect already repaired.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-8",
+      "verdict": "false",
+      "evidence": "carried R19B-10: same OpenFile SafeFileHandle then Inspect/statx exception claim; the relevant mechanism is unchanged. Prior triage found no reachable supported post-open statx failure and the reviewer withdrew that claim. Retain the rejected route without another hypothetical fault seam, verification, patch or deferral.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21B-9",
+      "verdict": "medium",
+      "evidence": "Root actual frozen ImmutableFileArchive published one byte into a disposable three-chunk protected fixture. Its deterministic ordinary ticket retained131072 bytes including the unused second chunk; an exact retry still retained131072 and a second one-byte publication failed capacity. Publish reserves payload+65536 but never calls existing ReleaseUnused, including its matching-original early return. Release only provably unused Reserved chunks after exact durable publication/retry under the existing fence; retain published/preparing/unknown liabilities.",
+      "route": "patch"
+    },
+    {
+      "id": "R21B-10",
+      "verdict": "false",
+      "evidence": "carried R17B-6: same provably_unstarted CPython-handle and unsupported-runtime claim; its current predicate is unchanged. Missing or ambiguous interpreter internals deliberately return false so potentially launched work retains ownership; supported fixtures distinguish prestart, OS-launch, bootstrap and completed ownership. No broader runtime qualification or demonstrated incorrect release exists. Keep the rejected route without re-verification, new version-selection policy, patch or deferral.",
+      "route": "rejected"
+    },
+    {
+      "id": "R21E-1",
+      "verdict": "high",
+      "evidence": "Receiver qualification-retain-result writes ResultRetainedRevision=current.Revision+1, publishes its immutable StoredEntry/AVL nodes in ApplyPrivateOriginalAsync, then calls SaveCurrentAsync with the old etag. No cross-replica head/publication fence or rollback bounds losing CAS attempts. Actual frozen index probe from the same admitted root produced3 first frames,2 additional frames after an unrelated prospective revision advance, and0 for an unchanged revision; the finite physical ticket permanently debits each distinct publication/transfer. Repeated losing attempts can exhaust an already admitted result completion reserve. Stabilize durable result publication/retry accounting across authority/index contention; do not merely enlarge capacity or reclaim uncertain published history.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R21V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed without root test/search verification: the receiving RPC unchanged-identity positive starts from preseeded Delivered state, so replacing its DeliverAsyncCoreAsync branch with LookupAsyncCoreAsync leaves existing tests green while fresh receiving requests never deliver. Add the actual receiving RPC with an empty actor, unchanged identity, anchored journal/in-memory state and real actor behavior; assert terminal Delivered and the persisted outcome. Preserve substitution/no-redelivery coverage.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R21B-6"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Actual shipped executor/observer/enrollment templates mount whole ConfigMap /references and Secret /role-credentials volumes, while both bounded loaders reject every symbolic path component. Root temporary AtomicWriter-style runtime.json -> ..data/runtime.json layout fails actual Python acquire with ELOOP40; a regular file succeeds. Runtime args select precisely /references/runtime.json, so an otherwise filled proposed deployment cannot load its input. The README projected-link statement specifically concerns the qualification caller bearer transport, whose separate Dapr reader supports projected secrets; that valid support does not extend to the role runtime configuration loader or make the shipped full ConfigMap mount usable. Align proposed mounts and precise file-loader support without weakening private no-follow guards."
+    },
+    {
+      "members": [
+        "R21B-9"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Root actual frozen ImmutableFileArchive published one byte into a disposable three-chunk protected fixture. Its deterministic ordinary ticket retained131072 bytes including the unused second chunk; an exact retry still retained131072 and a second one-byte publication failed capacity. Publish reserves payload+65536 but never calls existing ReleaseUnused, including its matching-original early return. Release only provably unused Reserved chunks after exact durable publication/retry under the existing fence; retain published/preparing/unknown liabilities."
+    },
+    {
+      "members": [
+        "R21E-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Receiver qualification-retain-result writes ResultRetainedRevision=current.Revision+1, publishes its immutable StoredEntry/AVL nodes in ApplyPrivateOriginalAsync, then calls SaveCurrentAsync with the old etag. No cross-replica head/publication fence or rollback bounds losing CAS attempts. Actual frozen index probe from the same admitted root produced3 first frames,2 additional frames after an unrelated prospective revision advance, and0 for an unchanged revision; the finite physical ticket permanently debits each distinct publication/transfer. Repeated losing attempts can exhaust an already admitted result completion reserve. Stabilize durable result publication/retry accounting across authority/index contention; do not merely enlarge capacity or reclaim uncertain published history."
+    },
+    {
+      "members": [
+        "R21V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed without root test/search verification: the receiving RPC unchanged-identity positive starts from preseeded Delivered state, so replacing its DeliverAsyncCoreAsync branch with LookupAsyncCoreAsync leaves existing tests green while fresh receiving requests never deliver. Add the actual receiving RPC with an empty actor, unchanged identity, anchored journal/in-memory state and real actor behavior; assert terminal Delivered and the persisted outcome. Preserve substitution/no-redelivery coverage."
+    }
+  ],
+  "filedFindingCount": 12,
+  "survivors": 4,
+  "rejected": 8,
+  "rootCauseGroups": 4,
+  "badSpecGroups": 2,
+  "patchGroups": 2,
+  "groupedOnly": [],
+  "rootIsolatedProbes": {
+    "directory": "/tmp/story54-root-review21-probes-cocktne8",
+    "hashManifest": "/tmp/story54-final-review-hw9qz_67/root-probe-artifact-hashes.json",
+    "hashManifestSha256": "f8541578fb82697b14b109e5c3414817db7ccd7456a7a70ec676b2669676744b",
+    "productionReferenceHashes": "/tmp/story54-final-review-hw9qz_67/root-probe-production-reference-hashes.json",
+    "results": [
+      "/tmp/story54-root-review21-probes-cocktne8/probe.log",
+      "/tmp/story54-root-review21-probes-cocktne8/projected-volume-probe.json"
+    ],
+    "scope": "Actual frozen ordinary archive/protected capacity and actual persistent index; source caller/CAS/capacity tracing establishes contention ordering. Temporary local projected layout exercises actual Python loader. No live K8s or authority service invoked.",
+    "fixtureOnly": true,
+    "installedQualification": false
+  },
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

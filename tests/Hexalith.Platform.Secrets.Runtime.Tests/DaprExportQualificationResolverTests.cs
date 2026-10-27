@@ -9,6 +9,39 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class DaprExportQualificationResolverTests
 {
+    [Fact]
+    public async Task SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall()
+    {
+        const string child="STORY54_EXPORT_COMPLETED_HANDOFF_CHILD";
+        if(Environment.GetEnvironmentVariable(child)!="isolated-v1")
+        {
+            // A separate test process owns this pool exclusively; unrelated late owners cannot
+            // make successful-return accounting nondeterministic or hide exhausted slots.
+            var start=new System.Diagnostics.ProcessStartInfo("dotnet") { UseShellExecute=false,RedirectStandardOutput=true,RedirectStandardError=true };
+            start.ArgumentList.Add(typeof(DaprExportQualificationResolverTests).Assembly.Location);start.ArgumentList.Add("-method");
+            start.ArgumentList.Add(typeof(DaprExportQualificationResolverTests).FullName+"."+nameof(SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall));
+            start.Environment[child]="isolated-v1";
+            using var process=System.Diagnostics.Process.Start(start)!;
+            var output=process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);var error=process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
+            try { await process.WaitForExitAsync(TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(30),TestContext.Current.CancellationToken); }
+            finally { if(!process.HasExited) { process.Kill(entireProcessTree:true);await process.WaitForExitAsync(CancellationToken.None).WaitAsync(TimeSpan.FromSeconds(5),TestContext.Current.CancellationToken); } }
+            string diagnostic=await output+await error;process.ExitCode.ShouldBe(0,diagnostic);
+            System.Text.RegularExpressions.Regex.IsMatch(diagnostic,@"Total:\s+1, Errors: 0, Failed: 0").ShouldBeTrue(diagnostic);return;
+        }
+        using var fixture=new Fixture();var material=fixture.Material();var trust=fixture.Trust();var engine=new ExportQualificationEngine(material,trust);
+        DaprExportQualificationOperation.ActiveOwners.ShouldBe(0);
+        for(int i=0;i<64;i++)
+        {
+            using var owned=await material.ResolveAsync(fixture.Input,ExportQualificationMaterialUse.Wrap,TestContext.Current.CancellationToken);
+            owned.ShouldNotBeNull();DaprExportQualificationOperation.ActiveOwners.ShouldBe(0);owned.Dispose();owned.Cleared.ShouldBeTrue();
+            (await trust.ResolveAsync(fixture.Input,TestContext.Current.CancellationToken)).ShouldNotBeNull();DaprExportQualificationOperation.ActiveOwners.ShouldBe(0);
+            var original=await engine.ExecuteAsync("S3.aes256gcm",fixture.Input,TestContext.Current.CancellationToken);original.ShouldNotBeNull();DaprExportQualificationOperation.ActiveOwners.ShouldBe(0);
+            var observed=await engine.ObserveAsync(original,fixture.Input,TestContext.Current.CancellationToken);observed.ShouldNotBeNull();observed.AuthenticatedWrap.ShouldBe(true);
+            DaprExportQualificationOperation.ActiveOwners.ShouldBe(0);
+        }
+        fixture.Responses.ShouldAllBe(value=>value.Count==0);
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

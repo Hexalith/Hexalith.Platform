@@ -1,0 +1,88 @@
+{
+  "observedAtUtc": "2026-10-27T13:14:11.236451+00:00",
+  "mutants": 8,
+  "verified": [
+    {
+      "name": "precommit-index-publication",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/precommit-index-publication/tests.xml",
+      "sha256": "c7a6e8bf4c71faf8de873501d1e5c6c26ee7284077884f1f96c8eed47a1f232b",
+      "selected": 1,
+      "semanticFailures": 1,
+      "messages": [
+        "Shouldly.ShouldAssertException : if(remaining is { } prior) charged.Remaining\n    should be\n404355874L\n    but was\n404224084L"
+      ]
+    },
+    {
+      "name": "unstable-result-revision",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/unstable-result-revision/tests.xml",
+      "sha256": "bc4584cad3f87c3178d05eefc3bde3849fd18bb33044c820f6ef9e5a0e4188d2",
+      "selected": 1,
+      "semanticFailures": 1,
+      "messages": [
+        "Shouldly.ShouldAssertException : if(remaining is { } prior) charged.Remaining\n    should be\n404289954L\n    but was\n404092306L"
+      ]
+    },
+    {
+      "name": "no-pending-result-help",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/no-pending-result-help/tests.xml",
+      "sha256": "9a1250ccb8dc4350ef9831ef488a3ea8824ee96dcad33414ca332cf0636c5251",
+      "selected": 1,
+      "semanticFailures": 1,
+      "messages": [
+        "Shouldly.ShouldAssertException : JsonNode.DeepEquals(await store.LookupResultAsync(\\\"executor\\\",\\\"committed\\\",token),result)\n    should be\nTrue\n    but was\nFalse"
+      ]
+    },
+    {
+      "name": "no-ordinary-cleanup",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/no-ordinary-cleanup/tests.xml",
+      "sha256": "2edcc15dd3c6f93faf6de3a36e53de7e18d3b20cceda96c5608cb6da33ff8b0c",
+      "selected": 2,
+      "semanticFailures": 2,
+      "messages": [
+        "Shouldly.ShouldAssertException : await Charge(first)\n    should be\n65536L\n    but was\n131072L",
+        "Shouldly.ShouldAssertException : await Charge(first)\n    should be\n65536L\n    but was\n131072L"
+      ]
+    },
+    {
+      "name": "no-exact-retry-cleanup",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/no-exact-retry-cleanup/tests.xml",
+      "sha256": "abec859035ddef1fe9ee80557f6f827c0319464c08ec595e06d56f92d6412bcd",
+      "selected": 2,
+      "semanticFailures": 1,
+      "messages": [
+        "Shouldly.ShouldAssertException : await Charge(first)\n    should be\n65536L\n    but was\n131072L"
+      ]
+    },
+    {
+      "name": "receiving-delivery-becomes-lookup",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/receiving-delivery-becomes-lookup/tests.xml",
+      "sha256": "53ff7efd5c4da4be2e4af54f4469cf1914144989c900a88e215505eb9a78d111",
+      "selected": 1,
+      "semanticFailures": 1,
+      "messages": [
+        "Shouldly.ShouldAssertException : first.State\n    should be\nExportKeyDeliveryState.Delivered\n    but was\nExportKeyDeliveryState.Unavailable"
+      ]
+    },
+    {
+      "name": "no-regular-config-subpath",
+      "log": "/tmp/story54-round22-1fctcr2b/guard-mutations/no-regular-config-subpath/tests.log",
+      "sha256": "ca7e3aa121d0e8984db3f184d705cadebba7d1b49deb1e39a79a3218043d714b",
+      "selectedMethods": 2,
+      "failedSubtests": 3,
+      "assertion": "Missing declared runtime configuration subPath for each of three frontend roles"
+    },
+    {
+      "name": "no-lookup-terminal-settlement",
+      "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/no-lookup-terminal-settlement/tests.xml",
+      "sha256": "97935e45ae0ff5cd26e44d43ab57870218e1e802860428d8ee2e245d84fd5e13",
+      "selected": 8,
+      "semanticFailures": 2,
+      "messages": [
+        "Shouldly.ShouldAssertException : pool.Ledger.Tickets.ContainsKey(ticket)\n    should be\nFalse\n    but was\nTrue",
+        "Shouldly.ShouldAssertException : pool.Ledger.Tickets.ContainsKey(ticket)\n    should be\nFalse\n    but was\nTrue"
+      ]
+    }
+  ],
+  "compilationTimeoutOrZeroSelectionCounted": false,
+  "installedQualification": false
+}

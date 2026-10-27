@@ -426,6 +426,7 @@ public sealed class IndependentAuthorityReceiverTests
         private readonly Func<IndependentArchiveCapacityInstallation,string,string,IndependentArchiveCapacity>? _capacityFactory;
         private readonly IReadOnlyList<IIndependentOwnerOperationHandler>? _handlers;
         internal string ArchiveDirectory=>_channel+"-archive";
+        internal string PrivateArchiveDirectory=>Path.Combine(ArchiveDirectory,"private-originals",Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { _installation.EnrollmentId,_installation.Scope,_installation.TrustRevision },CustodyBindingContract.Json))));
         internal IndependentAuthorityReceiver Receiver=>_receiver;
         private int _revision;
         internal IndependentAuthorityState State;
@@ -472,8 +473,9 @@ public sealed class IndependentAuthorityReceiverTests
         internal ISecretsCredentialBoundDaprInvoker PrivateTransport()=>new Transport(this);
         internal IndependentDaprAuthorityBinding PublicBinding=>new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1");
         internal IndependentDaprAuthority Client() => new(new Transport(this), new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1"), _clock);
+        internal IndependentDaprAuthority ReplicaClient() => new(new Transport(this,new IndependentAuthorityReceiver(_dapr,_installation,_signer,_clock,RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive) { CapacityFactory=_capacityFactory }),PublicBinding,_clock);
         public void Dispose() { _signer.Dispose(); _dapr.Dispose(); File.Delete(_channel); Directory.Delete(_channel + "-archive", true); }
-        private sealed class Transport(Fixture fixture) : ISecretsCredentialBoundDaprInvoker
+        private sealed class Transport(Fixture fixture,IndependentAuthorityReceiver? replica=null) : ISecretsCredentialBoundDaprInvoker
         {
             public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken) => Task.FromResult<string?>(null);
             public async Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
@@ -487,7 +489,7 @@ public sealed class IndependentAuthorityReceiverTests
                 var context = new DefaultHttpContext(); context.RequestServices = new ServiceCollection().AddLogging().BuildServiceProvider(); context.Request.Headers["dapr-api-token"] = "isolated-channel";
                 context.Request.Headers.Authorization = "Bearer " + fixture.Bearer;
                 context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(jsonBody)); context.Response.Body = new MemoryStream();
-                var result = await fixture._receiver.HandleAsync(context, method[(method.LastIndexOf('/') + 1)..], cancellationToken);
+                var result = await (replica??fixture._receiver).HandleAsync(context, method[(method.LastIndexOf('/') + 1)..], cancellationToken);
                 await result.ExecuteAsync(context);fixture.AfterResponse?.Invoke();
                 if(context.Response.StatusCode==200 && fixture.DropNextResponseMethod is { } dropped && method.EndsWith(dropped,StringComparison.Ordinal)) { fixture.DropNextResponseMethod=null;return null; }
                 return context.Response.StatusCode == 200 ? Encoding.UTF8.GetString(((MemoryStream)context.Response.Body).ToArray()) : null;

@@ -1,0 +1,84 @@
+{
+  "observedAtUtc": "2026-10-27T14:19:38.335132+00:00",
+  "allFinal": true,
+  "allLayersLaunchedBeforeHandling": true,
+  "reviewers": [
+    "/root/review22_blind",
+    "/root/review22_edge",
+    "/root/review22_gap"
+  ],
+  "blindFloor": "47705222/1000=47705.222kB;N=min(floor(sqrt(47705.222)+1),10)=10",
+  "blind": [
+    {
+      "id": "R22B-1",
+      "location": "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs:46;JointPhaseCommand.cs",
+      "claim": "Preparing-only protected index publication: ExistsAsync sees no Published original; retry generates new completedAt/signature and conflicts forever with unresolved publication. Retain exact signed candidate before publication or recover exact preparing original. Existing tests start with fully Published index."
+    },
+    {
+      "id": "R22B-2",
+      "location": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs:17",
+      "claim": "Provider retains all occurrence entries in _leases/_materialAttempts/_completedUses for lifetime; completion removes only _ownedRoots. Long-lived dynamic production grows memory and lease scans. Reclaim completed bookkeeping via independent completion state."
+    },
+    {
+      "id": "R22B-3",
+      "location": "eng/ext-host-1/prepare_acceptance.py:245",
+      "claim": "CLI returns exit0 after normal blocked packetPrepared:false/missingReferences/command mismatch reports; return nonzero for blocked/failed preparation."
+    },
+    {
+      "id": "R22B-4",
+      "location": "src/Hexalith.Platform.Composition/AgentsHostComposition.cs:40",
+      "claim": "Linux-only BoundedRegularFile now also used in Development; previously valid Windows/macOS development fails before profile/projects. Preserve bounded portable dev reader or establish Linux-only development requirement."
+    },
+    {
+      "id": "R22B-5",
+      "location": "eng/ext-secrets-1/prepare_acceptance.py:142;eng/ext-host-1/prepare_acceptance.py",
+      "claim": "Preparer rereads installed artifacts after admission validates hashes/installation proof; host rereads jointConfiguration/launchInventory/register. File mutation between reads can embed bytes differing from verified pins while packet claims complete. Use captured verified snapshots/revalidate embedded bytes."
+    },
+    {
+      "id": "R22B-6",
+      "location": "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveStore.cs:65",
+      "claim": "Individual RandomAccess.Read calls assume complete headers/geometry/metadata bodies despite permitted short reads before EOF. Valid resource may be misclassified damaged/missing; use exact positional loop/test."
+    },
+    {
+      "id": "R22B-7",
+      "location": "eng/ext-secrets-1/protected_logical_archive.py:58",
+      "claim": "Python accepts chunk12288 while current C# requires ChunkBytes divide65536; observer can accept incompatible enrollment. Align geometry and shared cases."
+    },
+    {
+      "id": "R22B-8",
+      "location": "eng/ext-secrets-1/phase_completion_pool.py:60",
+      "claim": "Dual headers verify checksums but not bank/generation parity or adjacency; highest inconsistent checksum-valid Free can override surviving reservation. Refuse impossible pairs."
+    },
+    {
+      "id": "R22B-9",
+      "location": "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeConfiguration.cs:96",
+      "claim": "Internal bounded-read timeout throws OperationCanceledException not caught by Load (only access/IO), escaping startup instead of unreadable-file-to-null unavailable behavior. Handle own timeout/test."
+    },
+    {
+      "id": "R22B-10",
+      "location": "eng/ext-secrets-1/prepare_acceptance.py:138",
+      "claim": "Writes blocked-inputs.json packetPrepared:true before packet/config/command/bindings; later write error leaves durable success marker/incomplete package. Construct/verify package then publish success last."
+    }
+  ],
+  "edge": [
+    {
+      "location": "eng/ext-secrets-1/coordinated_packets.py:292-295",
+      "trigger_condition": "Cryptography package unavailable while validating installed cohort service anchors",
+      "guard_snippet": "except (OSError, KeyError, TypeError, ValueError, ImportError): missing.append('JointConfiguration.services.' + role)",
+      "potential_consequence": "Packet preparation raises ImportError instead of persisting its missing-input refusal report."
+    }
+  ],
+  "gap": {
+    "location": "src/Hexalith.Platform.Secrets.Runtime/QualificationRetainedDigestOriginalReader.cs:14",
+    "consumer": "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs:85;QualificationMeasuredCaseProjector.cs:205",
+    "claim": "Preverified missing actual independent retained-digest reader positive and changed-provider revocation/material substitution refusal. Current recovery test only checks executor original recovery and never invokes the independent reader. Reusing retained instead of digests.ExecuteAsync would falsely Verified/current verifier1 while tests staygreen.",
+    "filedEvidence": "QualificationRuntimeReadRecoveryTests52/59\u201365 tests executor recovery; repository searches found no reader test; QualificationReceivingProjectionTests20 excludes S2.retained-digest.",
+    "missing": "Actual reader success with valid recorded-version provider; refuse after revoked/changed material while executor lookup remains historical.",
+    "filedDisposition": "patch",
+    "trustWithoutRootVerification": true
+  },
+  "rootTriageStarted": false,
+  "individualVerdictsRendered": false,
+  "rootVerificationOfReview22ClaimsStarted": false,
+  "userRequestedCleanStop": true
+}

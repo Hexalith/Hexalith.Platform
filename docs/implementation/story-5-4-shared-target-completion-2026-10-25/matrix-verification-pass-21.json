@@ -1,0 +1,126 @@
+{
+  "allFiveFrozenRowsHaveExecutedPassingSourceCoverage": true,
+  "rows": [
+    {
+      "matrixRow": "authority",
+      "passed": true,
+      "executedMatches": [
+        {
+          "coverage": "IndependentAuthorityReceiverTests",
+          "executedPassRows": 40,
+          "sample": "Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualQualificationOwnerReceiverSignsExactOriginalAndUncertainRestartUsesLookupOnly"
+        },
+        {
+          "coverage": "AgentsOwningProcessRegistrationTests",
+          "executedPassRows": 13,
+          "sample": "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"spool-key\\\")"
+        }
+      ]
+    },
+    {
+      "matrixRow": "replaySpool",
+      "passed": true,
+      "executedMatches": [
+        {
+          "coverage": "LegacyFundedChunkTransferTests",
+          "executedPassRows": 9,
+          "sample": "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.UnsupportedRoundingGeometryRefusesBeforeAnyFundedAdmissionOrMetadataMutation"
+        },
+        {
+          "coverage": "ProtectedArchiveAllocationTests",
+          "executedPassRows": 20,
+          "sample": "Hexalith.Platform.Secrets.Runtime.Tests.ProtectedArchiveAllocationTests.DamagedPublishedFixedHeaderBlocksWithoutReplacementOnRestart"
+        },
+        {
+          "coverage": "ReplicatedSecurityObservationSpoolTests",
+          "executedPassRows": 63,
+          "sample": "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.ReservationBeforeMissingPageRecoversOneArchiveOnRestart"
+        },
+        {
+          "coverage": "EventStorePrivateRecordingPortTests",
+          "executedPassRows": 42,
+          "sample": "Hexalith.Platform.Protection.Tests.EventStorePrivateRecordingPortTests.ActualReplayCaseRegisteredLookupRecoversNativeFirstSeenAfterCaseResultRetentionLoss"
+        }
+      ]
+    },
+    {
+      "matrixRow": "protection",
+      "passed": true,
+      "executedMatches": [
+        {
+          "coverage": "Fr34NativeReceivingTests",
+          "executedPassRows": 1,
+          "sample": "Hexalith.Platform.Protection.Tests.Fr34NativeReceivingTests.ActualReceivingReaderUsesNativePersistedBytesAndIndependentBindingForOwnershipCarrierAndErasure"
+        },
+        {
+          "coverage": "Fr34DynamicOccurrenceTests",
+          "executedPassRows": 66,
+          "sample": "Hexalith.Platform.Protection.Tests.Fr34DynamicOccurrenceTests.ActualEngineExplicitlyRefusesAndPreservesUnsafeLegacyRawOriginal"
+        },
+        {
+          "coverage": "JointPhaseNativePublisherTests",
+          "executedPassRows": 7,
+          "sample": "Hexalith.Platform.Protection.Tests.JointPhaseNativePublisherTests.EnrolledCanaryPublicationReadsTheActualReceivingComparisonAndRefusesNativeSubstitution(mutation: \\\"exact\\\")"
+        }
+      ]
+    },
+    {
+      "matrixRow": "cohort",
+      "passed": true,
+      "executedMatches": [
+        {
+          "coverage": "test_joint_live_phase_runner",
+          "registeredInExact350PassingSuite": 22,
+          "sample": "test_joint_live_phase_runner.JointRunnerTests.test_calendar_validation_uses_real_dates"
+        },
+        {
+          "coverage": "test_persisted_phase_observer",
+          "registeredInExact350PassingSuite": 9,
+          "sample": "test_persisted_phase_observer.PersistedObserverTests.test_independent_source_invariant_failure_denies_even_signed_owner_success"
+        },
+        {
+          "coverage": "test_complete_startup_owner",
+          "registeredInExact350PassingSuite": 4,
+          "sample": "test_complete_startup_owner.CompleteStartupOwnerTests.test_actual_main_uses_one_captured_profile_and_enters_serve_outside_acquisition"
+        }
+      ]
+    },
+    {
+      "matrixRow": "packets",
+      "passed": true,
+      "executedMatches": [
+        {
+          "coverage": "AgentsAcceptedDeploymentContextTests",
+          "executedPassRows": 12,
+          "sample": "Hexalith.Platform.Composition.Tests.AgentsAcceptedDeploymentContextTests.ParsingReferencesAloneDoesNotGrantProductionCompositionAuthority"
+        },
+        {
+          "coverage": "test_coordinated_packets",
+          "registeredInExact350PassingSuite": 10,
+          "sample": "test_coordinated_packets.CoordinatedPacketTests.test_binding_rows_are_replaced_and_malformed_context_has_named_blocker"
+        },
+        {
+          "coverage": "test_prepare_acceptance",
+          "registeredInExact350PassingSuite": 19,
+          "sample": "test_prepare_acceptance.AcceptancePreparationTests.test_anchor_files_are_bounded_and_special_files_do_not_block"
+        }
+      ]
+    }
+  ],
+  "actualCohortPhases": 0,
+  "actualAttemptsReserved": 0,
+  "completeInstalledPackets": 0,
+  "installedQualification": false,
+  "testSummary": {
+    "native": 32,
+    "custody": 781,
+    "runtime": 805,
+    "protection": 211,
+    "composition": 128,
+    "pythonSecrets": 350,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2322
+  },
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-21.json",
+  "independentReviewStatus": "Pending21"
+}

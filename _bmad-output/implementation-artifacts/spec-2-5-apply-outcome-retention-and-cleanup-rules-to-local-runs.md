@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -527,7 +527,7 @@ Builds implementation is committed locally as `0902fd6c527750ee3fc6832824f42b5b9
 
 Reviewed the five Builds story commits' implementation sources (`984c4d5`, `0ade5ec`, `b215213`, `7116b16`, `0902fd6`): 33 files, +2,366 / −556. Blind Hunter, Edge Case Hunter, Verification Gap, and Acceptance Auditor all completed. Verification Gap found no gaps. Verdicts were checked against the current sources.
 
-- [ ] [Review][Decision] A process that never starts is published as `failed` / `test-failure` while the command stays `unavailable` — `NativeTestExecutor.ExecuteSelectedAsync` persists execution timing before launch (`NativeTestExecutor.cs:361`). A later start failure is `HXR030` with status `unavailable` and `TerminalCause` left null (`NativeTestExecutor.cs:469`). `TestResultWriter.Cause` then returns `test-failure` because timing is set (`TestResultWriter.cs:190`), and every non-success, non-cancelled exit becomes outcome `failed` (`TestResultWriter.cs:58`). Command output and `test-result.json` disagree. The v1 cause table has no "process did not start" cause, so the published pair is ambiguous.
+- [ ] [Review][Patch] A post-readiness process that never starts is published as `failed` / `test-failure` with command status `failed`, keeping diagnostic `HXR030` [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:469] — resolved decision: once execution timing is open, use the existing cause rule. Do not change earlier `HXR030` results that happen before a run exists.
 
 - [ ] [Review][Patch] Outcome recovery does not wait, so a committed pass is kept as failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1289]
 - [ ] [Review][Patch] A startup-timeout retry can commit `startup-failure` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1820]

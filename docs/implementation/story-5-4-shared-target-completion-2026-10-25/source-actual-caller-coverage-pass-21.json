@@ -1,0 +1,65 @@
+{
+  "suites": {
+    "custody": {
+      "xml": {
+        "path": "/tmp/story54-round21-w94zzt2w/final3-local-evidence/local-tests.xml",
+        "sha256": "b3ca3f39ae3b2ba3ca664161788e5f55810d09cc7b77ffd4524929e1d0d75dfe"
+      },
+      "count": 781,
+      "priorExactRowsPreserved": 781,
+      "newRows": 0,
+      "failedSkippedNotRun": 0
+    },
+    "runtime": {
+      "xml": {
+        "path": "/tmp/story54-round21-w94zzt2w/final3-local-evidence/runtime-tests.xml",
+        "sha256": "f328997d822ef8b8f232a3e9869944982e104ffd89635678b8a48b0f7d5586a6"
+      },
+      "count": 805,
+      "priorExactRowsPreserved": 754,
+      "newRows": 51,
+      "failedSkippedNotRun": 0
+    },
+    "protection": {
+      "xml": {
+        "path": "/tmp/story54-round21-w94zzt2w/protection-tests3.xml",
+        "sha256": "ab5c5f733b34f38a8a0ded638f5d3e9914dcd32fe0743307e4345710f507ed38"
+      },
+      "count": 211,
+      "priorExactRowsPreserved": 211,
+      "newRows": 0,
+      "failedSkippedNotRun": 0
+    },
+    "composition": {
+      "xml": {
+        "path": "/tmp/story54-round21-w94zzt2w/composition-tests3.xml",
+        "sha256": "79faf19e67b923f8619ed76924e484b27441cbf879b9431c3f529c1db08d15bd"
+      },
+      "count": 128,
+      "priorExactRowsPreserved": 128,
+      "newRows": 0,
+      "failedSkippedNotRun": 0
+    }
+  },
+  "testSummary": {
+    "native": 32,
+    "custody": 781,
+    "runtime": 805,
+    "protection": 211,
+    "composition": 128,
+    "pythonSecrets": 350,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2322
+  },
+  "correctionMapping": {
+    "path": "/tmp/story54-round21-w94zzt2w/per-finding-corrections.json",
+    "sha256": "3083c74e869d06df7cec9ed31a5dbeb032a35d3f73ec1925fb6db106ba64ec6b"
+  },
+  "allPriorExactTestRowsPreserved": true,
+  "assertionsAndTimeoutsNotWeakened": true,
+  "sourceFreeze": {
+    "path": "/tmp/story54-round21-w94zzt2w/freeze-observation.json",
+    "sha256": "8366e8ff6c6696dc5c2bf217afbc73b0e1c3eb1a03994aa5855239cb47489bad"
+  },
+  "fixtureOnly": true
+}

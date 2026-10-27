@@ -1,0 +1,215 @@
+{
+  "schema": "platform.story54.pass21.late-diagnostic-body-evidence-supplement.v1",
+  "status": "FINAL",
+  "observedAtUtc": "2026-10-27T12:12:39.661994+00:00",
+  "sealedHandback": {
+    "path": "/tmp/story54-round21-w94zzt2w/handback.json",
+    "sha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa"
+  },
+  "supplementsOnly": {
+    "path": "/tmp/story54-round21-w94zzt2w/diagnostic-dependency-body-supplements.json",
+    "sha256": "09e361a951923e3bea3f72b1be4201740b409075713e5af92769403cab1cb4b1"
+  },
+  "sealedHandbackOrReportModified": false,
+  "purpose": "Close the19 specifically reported unmatched diagnostic portable-PDB document occurrences using checksum-authenticated late body recovery. This supplements rather than rewrites the original evidence. No final-positive result or installed qualification status changes.",
+  "resolverTestRecovery": {
+    "logicalDocument": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs",
+    "expectedSha256": "fa85e5e5cb518a29f850afa777e17b7b915c9586df6d3249040eaceed4751de1",
+    "retainedExactBody": {
+      "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs",
+      "sha256": "fa85e5e5cb518a29f850afa777e17b7b915c9586df6d3249040eaceed4751de1"
+    },
+    "pdb": {
+      "path": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.pdb",
+      "sha256": "0dba3393b096a2fd56ed18e8706659a9aab013ce2a1a6db4aeb5858b810f9bbf"
+    },
+    "pdbDocument": {
+      "path": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs",
+      "algorithm": "8829d00f-11b8-4213-878b-770e8597ac16",
+      "sha256": "fa85e5e5cb518a29f850afa777e17b7b915c9586df6d3249040eaceed4751de1"
+    },
+    "occurrencesResolved": 1,
+    "reconstructedAfterCompilation": true,
+    "wasOriginallyFrozenPerIteration": false,
+    "basis": "Retained diagnostic-source10 resolver body provides unchanged text. Read-only decompilation of diagnostic4 versus diagnostic5 identifies removal of the later two-case public-trust test and reversal of the later engine-wrapper harness to direct resolver invocation. Those exact text reversals reconstruct131 lines and hash to the actual diagnostic4 PDB SHA256. Matching the cryptographic document checksum authenticates the bytes; decompiled syntax alone is not treated as the original body.",
+    "retainedBaselineSnapshot": {
+      "path": "/tmp/story54-round21-w94zzt2w/diagnostic-source10.tar.gz",
+      "sha256": "54613a54728fea429dacd8488af285f02db4f3820040e66c4e9407e0dd911bbc"
+    },
+    "retainedBaselineBodySha256": "446ed2f7efa3af20e9c2dc2ea64dea6107b41000971d26afe0c8bef08b3feb54",
+    "reconstructionDiff": {
+      "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/reconstruction-from-source10.diff",
+      "sha256": "1662bf658fd4f36dc70911e80011cb34b205000a2835fab15edd38974a8c8269"
+    },
+    "deterministicRecoveryScript": {
+      "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/reconstruct-and-seal.py",
+      "sha256": "629d952bfe4847cdd59abdd395c9c277bcc0243031e8cbed2e773e62a24c48fe"
+    }
+  },
+  "parentMaterialSourceRecovery": {
+    "recoveredBy": "root",
+    "parentRetainedBody": {
+      "path": "/tmp/story54-root21-diagnostic-bodies-5nylawfv/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "sha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1"
+    },
+    "supplementRetainedCopy": {
+      "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "sha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1"
+    },
+    "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+    "occurrencesResolved": 18,
+    "basis": "Parent independently reconstructed this body by removing later public-anchor cleanup additions. This supplement separately verifies its exact SHA256 and retains the already recovered body."
+  },
+  "originalUnmatchedOccurrencesCovered": [
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs",
+      "expectedSha256": "fa85e5e5cb518a29f850afa777e17b7b915c9586df6d3249040eaceed4751de1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.ArchiveProcessFixture/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build4/artifacts/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.ArchiveProcessFixture/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Protection/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Executor/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Observer/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Custody.Component/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.Qualification.Enrollment/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    },
+    {
+      "pdb": "/tmp/story54-round21-w94zzt2w/diagnostic-build5/artifacts/bin/Hexalith.Platform.Secrets.Runtime/debug/Hexalith.Platform.Custody.pdb",
+      "logicalDocument": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "expectedSha256": "3d9ded95a3e0eefcd4eb9af3600e1d0b9c2bfc27dde7db4ed1958512c0edcaa1",
+      "retainedExactMatchingBody": []
+    }
+  ],
+  "resolvedSpecificOccurrenceCount": 19,
+  "specificUnresolvedOccurrenceCount": 0,
+  "diagnosticOutcomeUnchanged": {
+    "diagnosticBuild4Selected": 113,
+    "failed": 13,
+    "passed": 100,
+    "countsAsFinalPositivePass": false,
+    "earlierBuilds1To3ExactPerIterationRetentionLimitationRemains": true
+  },
+  "commands": {
+    "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/commands.json",
+    "sha256": "71f84e86ce76913d06bf3abb25a2b24565a4bc04191bfab1f2d29016cbaca5c5"
+  },
+  "readOnlyPdbProbe": {
+    "path": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/bin/Debug/net10.0/Probe.dll",
+    "sha256": "4ea35af5574898a856d44fb7513fadba1c68dff0542d3f3b42e0380e35d031f7"
+  },
+  "probePriorProvenance": {
+    "path": "/tmp/story54-round20-pvnnydzm/additional-verification-input-hashes.json",
+    "sha256": "eef027a7be7047e53f637b34ab295d999083f1943d6a43ce125139360c28ff82"
+  },
+  "protectedOriginalObjects": {
+    "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/protected-original-objects-unchanged.json",
+    "sha256": "53868ce45b6af378793b7997c07bb9b08aeeee9a9c63a7f40a74d452979507be"
+  },
+  "artifacts": {
+    "path": "/tmp/story54-round21-diagnostic-resolver-supplement-yrgqch6m/artifact-hashes.json",
+    "sha256": "5addc07e9d935fea3f1a9bfb3d6dcdd571de9e55a6343f1b8c633f5cf29ad80f",
+    "count": 11
+  },
+  "repositorySourceEdited": false,
+  "testsOrBuildsRun": false,
+  "actualEvidence": null,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "formalRootAcceptanceChanged": false
+}

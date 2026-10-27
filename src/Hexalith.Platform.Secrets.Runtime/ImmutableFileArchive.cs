@@ -23,10 +23,10 @@ public static class ImmutableFileArchive
                 using var protectedStore=ProtectedArchiveStore.Find(path,ct);
                 if(protectedStore is not null)
                 {
-                    byte[]? legacyOrRetained=protectedStore.Read(path,owned.Length);
-                    if(legacyOrRetained is not null) { if(!legacyOrRetained.AsSpan().SequenceEqual(owned)) throw new IOException("Conflicting exact legacy/protected immutable original.");return true; }
                     string ticket="ordinary:"+Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(path)));
-                    protectedStore.Reserve(ticket,owned.Length+65536L);beforeWrite?.Invoke();ct.ThrowIfCancellationRequested();protectedStore.Publish(ticket,path,owned);beforeDurability?.Invoke();return true;
+                    byte[]? legacyOrRetained=protectedStore.Read(path,owned.Length);
+                    if(legacyOrRetained is not null) { if(!legacyOrRetained.AsSpan().SequenceEqual(owned)) throw new IOException("Conflicting exact legacy/protected immutable original.");protectedStore.ReleaseUnused(ticket);return true; }
+                    protectedStore.Reserve(ticket,owned.Length+65536L);beforeWrite?.Invoke();ct.ThrowIfCancellationRequested();protectedStore.Publish(ticket,path,owned);beforeDurability?.Invoke();protectedStore.ReleaseUnused(ticket);return true;
                 }
                 using var directory=HeldArchiveDirectory.Acquire(Path.GetDirectoryName(path)!,true);
                 ArchiveVolumeFence.RequireCurrentDestination(Path.GetDirectoryName(path)!);

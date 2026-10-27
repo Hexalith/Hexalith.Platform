@@ -1,0 +1,372 @@
+{
+  "schema": "platform.story54.source-correction-pass22.handback.v1",
+  "status": "FINAL",
+  "observedAtUtc": "2026-10-27T13:57:57.649230+00:00",
+  "sourceCorrectionPass": 22,
+  "reviewLoopIteration": 22,
+  "refreezesIncrementReviewLoop": false,
+  "pass22CorrectionsImplementedAndComponentVerified": true,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "independentReviewComplete": false,
+  "sourceCorrectionStatus": "Four filed review21 corrections plus separately mapped root verification correction R22A1 implemented and component verified. This immutable FINAL descriptor awaits root acceptance and the independent review layers; no full source/driver/installed/shared-target completion is claimed.",
+  "provenance": "One sequential source editor; no children/delegation or recursive workflow. Disposable source, filesystem, crypto, in-memory head/actor, loopback and isolated child-process fixtures only. No actual Live/Full/cohort/phase/attempt, installed deployment/enrollment, consuming activation, physical qualification experiment, spending, accepted mutation or stage/commit/push. Actual canonical-byte AppHost compiled only, never Start/Run. Parent remote observation leaves all checkouts/indexes unchanged; exact immutable EventStore/HostedPublishing copies retained.",
+  "fullJointCaseCount": 234,
+  "partialQualificationDrivers": 185,
+  "externallyDependentUnregisteredDrivers": 49,
+  "completeQualificationDrivers": 0,
+  "historyDays": 365,
+  "productGates": "both open",
+  "loadedSpecAndContext": {
+    "path": "/tmp/story54-round22-1fctcr2b/loaded-context.json",
+    "sha256": "e4163aa43e7d8ac6ee6fb0e58a9465bd4e18a0598cb817886cda808aeeff3f43"
+  },
+  "loadedSpec": {
+    "path": "/tmp/story54-round22-1fctcr2b/loaded-context/0-spec-5-4-shared-target-completion.md",
+    "sha256": "9b17ac3e80e65024465c50d810211e4443a1ebcf5a3e719f1f093e77d93016be"
+  },
+  "currentSpecAmendment": {
+    "path": "/tmp/story54-round22-1fctcr2b/loaded-spec-R22A1.md",
+    "sha256": "05db0ae68fc0b6b2320b66aeacacf1a42139b8cce148d50955e25018be4f6acb"
+  },
+  "priorFinalHandback": {
+    "path": "/tmp/story54-round21-w94zzt2w/handback.json",
+    "sha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa"
+  },
+  "priorSource21Preservation": {
+    "path": "/tmp/story54-round22-1fctcr2b/prior-source21-artifact-preservation.json",
+    "sha256": "34cdbf602ec93627f0ddd487998879f777b7c59fb5dfa74a544fde52377c4ac2"
+  },
+  "freezeDescriptor": {
+    "path": "/tmp/story54-round22-1fctcr2b/freeze7-observation.json",
+    "sha256": "c1fceb1ebc3e34632aff69339dda3b0464461f0a2a7cb69cd8fdf8f69ba40cf9"
+  },
+  "logicalRepositoryRoot": "/home/administrator/projects/hexalith/platform",
+  "verificationSourceRoot": "/tmp/story54-round22-1fctcr2b/verification-source-7",
+  "ownedHashVerificationRoot": "/tmp/story54-round22-1fctcr2b/verification-source-7",
+  "sourceObservations": {
+    "freezeUtc": "2026-10-27T13:31:42.232712+00:00",
+    "headObserved": "4e7b2f086e0dbb0bd7b9a8327889f2ab845ec6a9",
+    "verificationSourceRoot": "/tmp/story54-round22-1fctcr2b/verification-source-7",
+    "ownedCount": 360,
+    "taskEditCount": 17,
+    "deltaCounts": {
+      "added": 6,
+      "changed": 11
+    },
+    "ownedSnapshotSha256": "171614647d2274d46febd622d8ae00a6f44f16bd9a45c69146e8ca0acb1473a8",
+    "capturedPublicSourceSha256": "f7501f61a0a4dcbda316efab5840555ad771e46367e2068498ecdda5c11e390e",
+    "sourceDependencyCount": 6719,
+    "acceptedTarget": null,
+    "fixtureOnly": true,
+    "installedQualification": false
+  },
+  "snapshot": {
+    "path": "/tmp/story54-round22-1fctcr2b/source-final.tar.gz",
+    "sha256": "171614647d2274d46febd622d8ae00a6f44f16bd9a45c69146e8ca0acb1473a8"
+  },
+  "capturedPublicSourceSnapshot": {
+    "path": "/tmp/story54-round22-1fctcr2b/captured-public-source-final.tar.gz",
+    "sha256": "f7501f61a0a4dcbda316efab5840555ad771e46367e2068498ecdda5c11e390e"
+  },
+  "capturedPublicSourceMap": {
+    "path": "/tmp/story54-round22-1fctcr2b/captured-platform-source-map-7.json",
+    "sha256": "b727f52809d91676a88d4da9dff6fd4e776b69f1690579a2cc2ce8c2382fdd3d"
+  },
+  "ownedFiles": {
+    "path": "/tmp/story54-round22-1fctcr2b/owned-files-final.json",
+    "sha256": "880ade29ca01a9998c1e3c3e4757e3485484daa5afe7b7f160ea03ee548f7426"
+  },
+  "ownedHashes": {
+    "path": "/tmp/story54-round22-1fctcr2b/owned-file-hashes-final.json",
+    "sha256": "5a09f297187e4dc7196c81bda36648223638518416ef5cbbb074ffdfeb5ddd5d"
+  },
+  "liveTaskEdits": {
+    "path": "/tmp/story54-round22-1fctcr2b/live-task-edit-hashes-final.json",
+    "sha256": "fc524e71aed75a71b5bdcde1fa12c6b9a6f2467ae4e8f3656caf840abb1d41c8"
+  },
+  "actualDelta": {
+    "path": "/tmp/story54-round22-1fctcr2b/source21-to22-delta-final.json",
+    "sha256": "675029957b1e454f954f699c4020a5d1117fb7410e621c5ee62237f9de07235d"
+  },
+  "actualDiff": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-source-delta.diff",
+    "sha256": "ad46e337ad38db2c11643b35d117c8cf53c3ba4500bed3941a5ad96f56218a20"
+  },
+  "sourceDependencies": {
+    "path": "/tmp/story54-round22-1fctcr2b/source-dependency-hashes-final2.json",
+    "sha256": "7044bc059a0ef73627fbcef1489fbd558429ec811a38c16e4c65b7ba64ced562"
+  },
+  "compiledArtifacts": {
+    "path": "/tmp/story54-round22-1fctcr2b/compiled-artifact-hashes.json",
+    "sha256": "d9d1decf1719b96d20f5e927922170b2742198c9a0093473b9583b184cf508fd"
+  },
+  "evaluatedMetadataAndLists": {
+    "path": "/tmp/story54-round22-1fctcr2b/evaluated-input-list-hashes.json",
+    "sha256": "891da01c9de1599a6b4640b3265c4422c1151471ea7cd3f02e8302598dd886bf"
+  },
+  "actualCompileInputs": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-compile-input-occurrences.json",
+    "sha256": "989e3900d2d33e66fba0b9d2c3413d4e2c2d2f8088a5eda93e6d1dc9722dd5bf"
+  },
+  "actualReferenceInputs": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-reference-input-occurrences.json",
+    "sha256": "a1572a0d37c00a9ae085c558ab534323210234fcd7a7d00697b5d434c5d1dd31"
+  },
+  "actualInputListVerification": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-input-list-verification.json",
+    "sha256": "2e11dce8e27fb533e240a3a9439f2969b983612cafc75c6d11e2a8f9c255db60"
+  },
+  "additionalVerificationInputs": {
+    "path": "/tmp/story54-round22-1fctcr2b/additional-verification-input-hashes2.json",
+    "sha256": "f857b40fae04d74feeae3c8a4f86195bce198fca8e76732e117b0ec65157c3bb"
+  },
+  "finalLogsAndEvidence": {
+    "path": "/tmp/story54-round22-1fctcr2b/final-log-and-evidence-hashes2.json",
+    "sha256": "16e4744641257d7cf3be16df6161567ceea896685e836f5ed27ae0880065faba"
+  },
+  "verification": {
+    "path": "/tmp/story54-round22-1fctcr2b/verification-final.json",
+    "sha256": "1db66bf4785decdfd8d9d84832b1f41ee9641ff41783768432e041acc8e45b9e"
+  },
+  "actualCallerCoverage": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-caller-coverage-final.json",
+    "sha256": "217b75dbf14e06c39e5379ed893a39041413c9d2b6f960f5cdaaa528e83a7d7b"
+  },
+  "acceptanceCategories": {
+    "path": "/tmp/story54-round22-1fctcr2b/acceptance-categories-final.json",
+    "sha256": "a47e24eb6eaf8bfe58a8e5c3ffb29bf779ed44221af09aa16502f60c96421f4e"
+  },
+  "frozenMatrixCoverage": {
+    "path": "/tmp/story54-round22-1fctcr2b/matrix-verification-final.json",
+    "sha256": "bdaa760750ad3a60487215573fd114fdbb188b2d2df4c7f2b12b655027fb2a3d"
+  },
+  "pythonDiscoveryExecutedScope": {
+    "path": "/tmp/story54-round22-1fctcr2b/python-discovery-executed-scope.json",
+    "sha256": "b0649dfa3ef729458e35b0ec38d052cc9e82d11e17938d910366a0f9dbac8b1e"
+  },
+  "correctionMapping": {
+    "path": "/tmp/story54-round22-1fctcr2b/per-finding-corrections.json",
+    "sha256": "13a533ec9d2191cef14508c737bb8fba70620a7c95eca8bf3b3f365c2f1ba963"
+  },
+  "filedRootCauseGroups": [
+    "R21E-1",
+    "R21B-6",
+    "R21B-9",
+    "R21V-1"
+  ],
+  "rootVerificationCorrection": "R22A1",
+  "meaningfulGuards": [
+    {
+      "path": "/tmp/story54-round22-1fctcr2b/guard-removal-results.json",
+      "sha256": "384f3edb6b54d43e831749662f8e246f96d5acdddb8ea37f1315fa4cb0d0242c"
+    },
+    {
+      "path": "/tmp/story54-round22-1fctcr2b/guard-removal-lookup-results.json",
+      "sha256": "824e57e75aefcdb3242969dab2a86f37adf7234bd76e247cb505522df5a3c5a3"
+    },
+    {
+      "path": "/tmp/story54-round22-1fctcr2b/guard-removal-handoff-results.json",
+      "sha256": "658abeef789d7eb8ffc348a304b98b232343888c941281048513902735d4421f"
+    }
+  ],
+  "handoffRedGreenProof": {
+    "path": "/tmp/story54-round22-1fctcr2b/handoff-probe-comparison.json",
+    "sha256": "b99acd16d8876cadeddbcfd6625a258ddaa4fda73a8c340a681314c1b0c1cb4b"
+  },
+  "handoffProbeArtifacts": {
+    "path": "/tmp/story54-round22-1fctcr2b/handoff-probe-artifact-hashes.json",
+    "sha256": "696ba259d261a2edb33a9c4e63635a2d3b7f8ea8aa64e69eb442edc0e306a492"
+  },
+  "actualPdbDocuments": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-pdb-documents.json",
+    "sha256": "114d47b0f70473c9d3d0f32fc992e2141b7c6d4d46d5d21425e7a7a580e162f2"
+  },
+  "actualPdbSourceVerification": {
+    "path": "/tmp/story54-round22-1fctcr2b/actual-pdb-source-verification.json",
+    "sha256": "fb2ea7f1f0c5301bb668075535c7fccad23549e25cfa29ef7b8b2489d8690dbb"
+  },
+  "pdbSummary": {
+    "pdbs": 2540,
+    "resolvedSourceDocumentOccurrences": 461919,
+    "exactHistoricalBodyMappings": 70,
+    "unavailableVendorOrGeneratedOccurrences": 7489,
+    "mismatches": 0,
+    "unavailableIsNotVerified": true
+  },
+  "historicalBoundaries": {
+    "path": "/tmp/story54-round22-1fctcr2b/historical-boundaries-final2.json",
+    "sha256": "d4e383a0922fb5d6cac50c3b8ab0f46ca64f866d5b57999efd595040fb663ff6"
+  },
+  "currentApphostBuildOnly": {
+    "path": "/tmp/story54-round22-1fctcr2b/apphost-verification.json",
+    "sha256": "c6d03c5d8a61830f576b27549527bed5852e3aaeac9845268aea13fda590142b"
+  },
+  "actualInstalledInputRefinements": {
+    "path": "/tmp/story54-round22-1fctcr2b/new-installation-requirements.json",
+    "sha256": "30fc2fb341c5c005131df3c48d4c6b81015d622091bc6076e261353c2b87f78f"
+  },
+  "preservation": {
+    "path": "/tmp/story54-round22-1fctcr2b/final-preservation-verification.json",
+    "sha256": "d93fc1ad8de950edba4231c9712729922aea7b1847907d62e76603670d6fea8d"
+  },
+  "finalDriftCheck": {
+    "path": "/tmp/story54-round22-1fctcr2b/final-drift-verification.json",
+    "sha256": "dcde3064255e2783f4cb8a89d5d5de3bfdfb678ac02812f65acd73c969676ba3"
+  },
+  "testSummary": {
+    "native": 32,
+    "custody": 785,
+    "runtime": 823,
+    "protection": 211,
+    "composition": 128,
+    "pythonSecrets": 352,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2346,
+    "newTaskTests": 21,
+    "existingAdditionalUnfilteredCustodyRows": 3
+  },
+  "sourceDependencyCount": 6784,
+  "ownedCount": 360,
+  "taskEditedPaths": 17,
+  "taskDeltaCounts": {
+    "added": 6,
+    "changed": 11,
+    "removed": 0
+  },
+  "guardSummary": {
+    "meaningfulMutations": 9,
+    "dotnetSelectedCases": 17,
+    "dotnetSemanticFailures": 10,
+    "pythonTests": 2,
+    "pythonFailingTest": 1,
+    "pythonRoleSubtestFailures": 3,
+    "compilationFailuresTimeoutsAndZeroSelectionCounted": false
+  },
+  "retainedUnaffectedLanes": "Python secrets352 is explicitly retained at frozen2, since Python source is unchanged; Host Python15 and unchanged release/model audit retain their original source21 provenance. All Native/Custody/Runtime/Protection/actual Composition/production Composition/AppHost dependency lanes use current frozen7.",
+  "missingActualInputs": {
+    "actualInstallationBundles": 13,
+    "exactOwnerReturns": 50,
+    "replacementPlatformIntegrationDate": null,
+    "replacementProtectionIntegrationDate": null,
+    "acceptedCompleteImmutableTarget": null,
+    "nativePhysicalTemporalWholeImageRecoveryRestartRestoreHistoryCensusAndCompleteProtectionProtocols": "still explicitly unselected/unqualified"
+  },
+  "effects": {
+    "actualCohortOrPhaseOrAttempt": false,
+    "installedEnrollmentOrDeployment": false,
+    "consumerActivation": false,
+    "physicalQualificationOrSpending": false,
+    "acceptedRecordsModified": false,
+    "stageCommitPush": false
+  },
+  "materialLimits": [
+    "All source/component passes and isolated fixture hashes establish no installed qualification or availability.",
+    "7489 generated/vendor PDB document occurrences remain explicitly unavailable/unverified; every resolved occurrence matches exact retained source, including historical body mappings.",
+    "Source4 full Runtime819/821 and focused5 34/35 remain failed original boundaries, independently diagnosed and corrected at later separately compiled freezes.",
+    "All prior diagnostics/probes/source2..6 positive and failed artifacts preserve their original exact inputs/binaries and are not relabeled against the current source."
+  ],
+  "rejectedInitialSeal": {
+    "path": "/tmp/story54-round22-1fctcr2b/initial-seal-rejection.json",
+    "sha256": "0f45b488b81baf43bedfb4922db63123ca57c473e3a850e54060139f541fb306"
+  },
+  "rootAcceptance": {
+    "observedAtUtc": "2026-10-27T14:07:16.480920+00:00",
+    "sourcePass": 22,
+    "status": "SourceAndComponentEvidenceAccepted_PendingIndependentReview22",
+    "handback": {
+      "path": "/tmp/story54-round22-1fctcr2b/handback-final2.json",
+      "sha256": "d287f366349ce22687b6558ba5359e5a575e81edcb000afd3dd2efdacb515f8c"
+    },
+    "snapshotSha256": "171614647d2274d46febd622d8ae00a6f44f16bd9a45c69146e8ca0acb1473a8",
+    "all17ActualDeltasRead": true,
+    "allPriorBeforeBytesAuthenticated": true,
+    "primaryComponentExecutions": 2346,
+    "guardRemovals": 9,
+    "rootEvidenceAudit": {
+      "path": "/tmp/story54-round22-1fctcr2b/root-final-evidence-pass22.json",
+      "sha256": "f03ede15c9f29b60abc30244cd99092b33c3353aabc9c339f5d3d9b372dcb019"
+    },
+    "sourceComplete": false,
+    "installedQualification": false,
+    "deliveryComplete": false
+  },
+  "rootAudit": {
+    "observedAtUtc": "2026-10-27T14:03:43.482906+00:00",
+    "handback": "/tmp/story54-round22-1fctcr2b/handback-final2.json",
+    "handbackSha256": "d287f366349ce22687b6558ba5359e5a575e81edcb000afd3dd2efdacb515f8c",
+    "snapshotSha256": "171614647d2274d46febd622d8ae00a6f44f16bd9a45c69146e8ca0acb1473a8",
+    "checks": {
+      "ownedHashes": {
+        "count": 360,
+        "mismatches": []
+      },
+      "sourceDependencies": {
+        "count": 6784,
+        "mismatches": []
+      },
+      "compiledArtifacts": {
+        "count": 18684,
+        "mismatches": []
+      },
+      "evaluatedMetadataAndLists": {
+        "count": 6918,
+        "mismatches": []
+      },
+      "finalLogsAndEvidence": {
+        "count": 3985,
+        "mismatches": []
+      },
+      "additionalVerificationInputs": {
+        "count": 65,
+        "mismatches": []
+      },
+      "handoffProbeArtifacts": {
+        "count": 78,
+        "mismatches": []
+      }
+    },
+    "liveOwnTaskEdits": 17,
+    "nestedDescriptorChecks": 64,
+    "finalVerificationLanes": 14,
+    "acceptanceCategories": 16,
+    "primaryComponentExecutions": 2346,
+    "allActualXmlAndNativeLogVerified": true,
+    "priorSource21ArtifactEntriesIndependentlyVerified": 33343,
+    "actualPdbRereadEqualsRecorded": true,
+    "pdbs": 2540,
+    "resolvedPdbSourceOccurrences": 461919,
+    "exactHistoricalBodyMappings": 70,
+    "explicitVendorGeneratedUnavailable": 7489,
+    "actualCompileOccurrences": 68905,
+    "pdbBackedCompileOccurrences": 68802,
+    "actualReferenceOccurrences": 136986,
+    "currentHostedPublishingPins": [
+      {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-apphost-artifacts/obj/Hexalith.Platform.Composition/debug/source22.compile.txt",
+        "sha256": "01ffbc371a451d20c030b6ce0a2b0aabb0936730920973270788fd826af61ec0",
+        "exactFrozenSourceOnce": true
+      },
+      {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-composition-artifacts/obj/Hexalith.Platform.Composition/debug/source22.compile.txt",
+        "sha256": "a1d74f657b751c6addaab3e6e9f1acd5cac9cc027382a030827276bc869879a8",
+        "exactFrozenSourceOnce": true
+      }
+    ],
+    "apphostCompileOnlyAndCanonicalBytesVerified": true,
+    "apphostDiagnosticWarnings": [
+      "ASPIRE010"
+    ],
+    "matrixNamedExecutedClassesVerified": true,
+    "allActualInstallationEvidenceNull": true,
+    "rootMeaningfulGuardAudits": [
+      "/tmp/story54-round22-1fctcr2b/root-early-mutation-verification.json",
+      "/tmp/story54-round22-1fctcr2b/root-handoff-green-guard-verification.json"
+    ],
+    "errors": [],
+    "installedQualification": false
+  },
+  "ordinarySourceCorrectionsRemainingBeforeIndependentReview": 0,
+  "formalIndependentReviewStatus": "PendingReview22"
+}
