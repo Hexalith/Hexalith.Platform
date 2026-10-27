@@ -27,7 +27,8 @@ public static class AuthorityHttp
                 options.RequireHttpsMetadata = true;
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters = new TokenValidationParameters { ValidateIssuer = true, ValidIssuer = issuer,
-                    ValidateAudience = true, ValidAudience = options.Audience, ValidateLifetime = true, ClockSkew = TimeSpan.Zero,
+                    ValidateAudience = true, ValidAudience = options.Audience, IgnoreTrailingSlashWhenValidatingAudience = false,
+                    ValidateLifetime = true, ClockSkew = TimeSpan.Zero,
                     ValidateIssuerSigningKey = true, ValidAlgorithms = [SecurityAlgorithms.RsaSha256] };
                 if (configuration["Authority:IssuerCaFile"] is { Length: > 0 } caFile)
                 {

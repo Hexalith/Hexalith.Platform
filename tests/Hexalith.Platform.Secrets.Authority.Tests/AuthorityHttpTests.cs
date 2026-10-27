@@ -38,6 +38,7 @@ public sealed class AuthorityHttpTests
     [InlineData("missing-operation", 403)]
     [InlineData("wrong-operation", 403)]
     [InlineData("wrong-audience", 401)]
+    [InlineData("audience-trailing-slash", 401)]
     [InlineData("wrong-issuer", 401)]
     [InlineData("expired", 401)]
     [InlineData("wrong-signature", 401)]
@@ -50,6 +51,7 @@ public sealed class AuthorityHttpTests
         {
             "missing-bearer" => null, "foreign-caller" => server.Token("foreign"), "missing-operation" => server.Token(operation: null),
             "wrong-operation" => server.Token(operation: "registry:query"), "wrong-audience" => server.Token(audience: "registry"),
+            "audience-trailing-slash" => server.Token(audience: "ext-secrets-1-hmac-authority/"),
             "wrong-issuer" => server.Token(issuer: "https://foreign.example"), "expired" => server.Token(expired: true),
             "wrong-signature" => server.Token(wrongSignature: true), "admin-token" => server.AdministratorToken, _ => server.Token(),
         };
@@ -60,6 +62,7 @@ public sealed class AuthorityHttpTests
 
     [Theory]
     [InlineData("query-identity", 401)]
+    [InlineData("audience-trailing-slash", 401)]
     [InlineData("foreign-administrator", 403)]
     [InlineData("missing-operation", 403)]
     [InlineData("query-channel", 401)]
@@ -72,7 +75,9 @@ public sealed class AuthorityHttpTests
         string token = scenario switch
         {
             "query-identity" => server.Token(), "foreign-administrator" => server.Token("foreign", "hmac:administer", "ext-secrets-1-hmac-authority-admin"),
-            "missing-operation" => server.Token(AuthorityTestState.Administrator, null, "ext-secrets-1-hmac-authority-admin"), _ => server.AdministratorToken,
+            "missing-operation" => server.Token(AuthorityTestState.Administrator, null, "ext-secrets-1-hmac-authority-admin"),
+            "audience-trailing-slash" => server.Token(AuthorityTestState.Administrator, "hmac:administer", "ext-secrets-1-hmac-authority-admin/"),
+            _ => server.AdministratorToken,
         };
         using var response = await Send(server, "admin/operations", operation, token,
             scenario == "query-channel" ? "offline-receiver-channel" : "offline-administrator-channel", administrator: true);
