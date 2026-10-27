@@ -167,6 +167,28 @@ The owner's “apply recommended” instruction authorizes the new authority imp
 
 ## Review Triage Log
 
+| Finding | Verdict | Route | Evidence / decision |
+| --- | --- | --- | --- |
+| B01 | medium | patch | replace_public re-stamps a stale supplied spec with a fresh resourceVersion; preserve its original update precondition. |
+| B02 | low | patch | IdentityModel audience normalization accepts a trailing slash despite the documented exact audience; explicitly disable that equivalence and test it. |
+| B03 | medium | patch | Final verify exempts entire mutable objects, allowing post-update drift or replacement; compare original UIDs and exact final journaled intent. |
+| B04 | maybe-false | defer | KV2 metadata publication has no CAS in this path. Whether another authorized writer can interleave during the restricted provisioner window is unverified; before future publication the provider owner must establish exclusive writer authority or a native conditional-publication mechanism. Current exact original/readback metadata was independently verified. |
+| B05 | medium | patch | Credential recovery validates policy/TTL but omits original native accessor and Secret creation identity; a same-policy substitute is accepted. |
+| B06 | medium | patch | Cleanup observes current deletion identity rather than pinning the original created Secret; a recreated same-token Secret can be deleted. |
+| B07 | low | defer | Earlier preload helper fails closed if cleanup succeeded before its completion marker was retained. This pre-existing operational recovery gap repeats no key operation; retain exact original UID cleanup reconciliation as follow-up. |
+| B08 | false | reject | Installed target has exactly one eligible node, node1, so both preloader and workloads use that node. Image eviction already remains an explicit provisioning dependency. |
+| B09 | medium | defer | Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB. Current state is small and verified; align client bounds before retained audit reaches that cap. |
+| B10 | false | reject | Initialized-without-snapshot deliberately fails closed, preventing deleted authority from resetting; no committed operation is lost or fabricated by this guard. Missing storage requires exact original-state reconciliation. |
+| B11 | medium | patch | Created-resource reuse checks UID/label only; verify original public intent and Secret creation identity without retaining credential values/hashes. |
+| B12 | low | patch | Known temporary provisioner issuance can remain after failure and partial cleanup is not resumable; journal revocation/owned cleanup and preserve unknown-operation evidence. |
+| E01 | medium | patch | Same resource intent drift as B11; retain the finding independently and fix the shared guard. |
+| E02 | medium | patch | Preload uses a later GET to obtain creation UID; use the actual create-response identity so cleanup cannot adopt a replacement. |
+| E03 | medium | patch | Same final UID/spec preservation gap as B03; compare each final authorized update against its original journal. |
+| E04 | medium | patch | A revocation followed by failed cleanup leaves Stored issuance; resume journaled cleanup before attempting revoked-credential lookup. |
+| V01 | medium | patch | The positive digest HTTP test asserts only length/version; assert independently calculated exact output for differing request components. |
+| V02 | medium | patch | Generator tests mock kube or the generator itself; execute the emitted shell against a hermetic bao shim and assert exact generated field/material, target, CAS and receipt-only output. |
+
+
 ## Design Notes
 
 HEAD `b2890d20575356239555df5b113e3100c1d594c1` stays dirty with unrelated files. New evidence is `custody-inventory-20261016` under the existing EXT-SECRETS-1 evidence root. Namespace `ext-secrets-1-isolated` already contains preserved objects. The approved new authority uses independent app identity, credentials and durable state. Rollback may delete only this run's newly created UID-qualified resources, never the existing namespace, workload, key or policy. Preserve public original journals on uncertain effects.

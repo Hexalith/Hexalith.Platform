@@ -1368,3 +1368,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Windows metadata reads ignore `respectSharing`.
   evidence: Not actionable now. `SelectedNativeTestReport.OpenWithoutBlocking` (`SelectedNativeTestReport.cs:203`) returns on the Windows branch before the Unix `flock` check, so `respectSharing: true` does not refuse an exclusive writer. Same Q3/W10 boundary as the existing Windows open-path deferral. The Unix interruption bug is a separate patch.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-custody-current-inventory-binding.md`
+  summary: B04 — KV2 metadata publication has no CAS in this path.
+  evidence: KV2 metadata publication has no CAS in this path. Whether another authorized writer can interleave during the restricted provisioner window is unverified; before future publication the provider owner must establish exclusive writer authority or a native conditional-publication mechanism. Current exact original/readback metadata was independently verified.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-custody-current-inventory-binding.md`
+  summary: B07 — Earlier preload helper fails closed if cleanup succeeded before its completion marker was retained.
+  evidence: Earlier preload helper fails closed if cleanup succeeded before its completion marker was retained. This pre-existing operational recovery gap repeats no key operation; retain exact original UID cleanup reconciliation as follow-up.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-custody-current-inventory-binding.md`
+  summary: B09 — Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB.
+  evidence: Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB. Current state is small and verified; align client bounds before retained audit reaches that cap.
