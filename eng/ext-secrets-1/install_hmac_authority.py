@@ -36,6 +36,8 @@ ADMIN_CLIENT = 'ext-secrets-1-hmac-owner'
 RUNTIME = Path('/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json')
 APPROVAL = Path('/home/administrator/hexalith-secrets-evidence/ext-secrets-1/custody-inventory-20261016/authority-discovery-20261027T171614Z/approval.json')
 OWNER_MAP = ROOT / 'eng/ext-secrets-1/provisioning/owner-input-map.json'
+# Match AuthorityRepository.MaximumStateBytes, including the complete retained audit.
+ADMINISTRATION_RESPONSE_LIMIT = 16 * 1024 * 1024
 
 
 def timestamp():
@@ -411,8 +413,8 @@ def administration_request(installer, method, path, body=None):
         connection.request(method, path, canonical(body) if body is not None else None,
             {'Authorization': 'Bearer ' + token['access_token'], 'authority-admin-token': channel, 'Content-Type': 'application/json'})
         response = connection.getresponse()
-        data = response.read(1024 * 1024 + 1)
-        if len(data) > 1024 * 1024 or response.status not in (200, 409):
+        data = response.read(ADMINISTRATION_RESPONSE_LIMIT + 1)
+        if len(data) > ADMINISTRATION_RESPONSE_LIMIT or response.status not in (200, 409):
             raise RuntimeError('authority-administration-failed:' + str(response.status))
         return response.status, json.loads(data)
     finally:

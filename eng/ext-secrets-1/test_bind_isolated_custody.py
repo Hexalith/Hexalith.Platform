@@ -213,28 +213,50 @@ else: raise SystemExit(73)
             installer = SimpleNamespace(evidence=Path(directory), tokens={'provisioner': bytearray(b'offline')},
                 metadata=lambda relative: deepcopy(state[relative]))
             durable_write(Path(directory) / 'provider-retention-config.json', {'max_versions': 0, 'delete_version_after': '0s'})
-            def generate(token, relative, cas):
-                self.assertEqual(cas, 1)
+            retained = []
+            for old in plan:
+                relative = old['secretReference']
+                before = deepcopy(state[relative])
                 native = {'created_time': datetime.now(timezone.utc).isoformat(), 'destroyed': False, 'deletion_time': ''}
                 state[relative]['versions']['2'] = native
                 state[relative]['current_version'] = 2
-                return {'requestId': 'native-' + relative, 'data': dict(native, version=2)}
-            def request(token, *args, data=b''):
-                if args[0] == 'read':
-                    return SimpleNamespace(stdout=b'{"data":{"max_versions":0,"delete_version_after":"0s"}}')
-                relative = args[1].split('/metadata/', 1)[1]
-                state[relative]['custom_metadata'] = json.loads(data)['custom_metadata']
-                return SimpleNamespace(stdout=b'{}')
-            with patch.object(subject, 'original_plan', return_value=plan), patch.object(subject, 'generate_successor_inside_provider', side_effect=generate) as native_write, patch.object(subject, 'provider_request', side_effect=request):
+                mapping = {'secretVersion': '2', 'state': 'Active', 'notBefore': native['created_time'],
+                    'verifyUntil': (subject.instant(native['created_time']) + subject.timedelta(days=7)).isoformat(), 'retiredAt': None}
+                opaque = 'retained-' + old['purpose'] + '-' + old['tenantId']
+                mappings = dict(old['mapping'], **{opaque: mapping})
+                state[relative]['custom_metadata']['ext-secrets-1.versionMappings'] = subject.canonical(mappings).decode()
+                retained.append({'original': old, 'opaqueVersion': opaque, 'phase': 'MetadataVerified', 'beforeMetadata': before,
+                    'nativeWriteReceipt': {'requestId': 'native-' + relative, 'data': dict(native, version=2)}})
+            durable_write(Path(directory) / 'successor-key-plan.json', retained)
+            with patch.object(subject, 'original_plan', return_value=plan), patch.object(subject, 'generate_successor_inside_provider') as native_write, patch.object(subject, 'provider_request') as provider:
                 first = subject.successors(installer)
                 second = subject.successors(installer)
-            self.assertEqual(native_write.call_count, 4)
+            native_write.assert_not_called()
+            provider.assert_not_called()
             self.assertEqual([item['nativeWriteReceipt'] for item in first], [item['nativeWriteReceipt'] for item in second])
             self.assertEqual([item['afterMetadata'] for item in first], [item['afterMetadata'] for item in second])
             for item in second:
                 self.assertEqual(item['phase'], 'MetadataVerified')
                 self.assertEqual(item['afterMetadata']['versions']['1'], item['beforeMetadata']['versions']['1'])
                 self.assertEqual(subject.validate_original(item, item['afterMetadata'], successor=True)[item['original']['opaqueVersion']], item['original']['mapping'][item['original']['opaqueVersion']])
+
+    def test_unfenced_future_metadata_publication_denied_before_provider_metadata_write(self):
+        with TemporaryDirectory() as directory:
+            old = original()
+            before = metadata(old)
+            current = deepcopy(before)
+            native = {'created_time': datetime.now(timezone.utc).isoformat(), 'destroyed': False, 'deletion_time': ''}
+            current['versions']['2'] = native
+            current['current_version'] = 2
+            retained = {'original': old, 'opaqueVersion': 'unpublished-successor', 'phase': 'NativeCreated',
+                        'beforeMetadata': before, 'nativeWriteReceipt': {'requestId': 'original-request', 'data': dict(native, version=2)}}
+            durable_write(Path(directory) / 'successor-key-plan.json', [retained] * 4)
+            installer = SimpleNamespace(evidence=Path(directory), metadata=lambda relative: current)
+            with patch.object(subject, 'original_plan', return_value=[old] * 4), patch.object(subject, 'provider_request') as provider:
+                with self.assertRaisesRegex(RuntimeError, 'provider-native-metadata-fence-required-no-publication'):
+                    subject.successors(installer)
+            provider.assert_not_called()
+            self.assertEqual(json.loads((Path(directory) / 'successor-key-plan.json').read_text())[0]['phase'], 'NativeCreated')
 
     def test_new_provisioner_policy_has_no_data_reads_or_foreign_paths(self):
         policy = subject.provisioning_policy([original()])

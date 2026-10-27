@@ -418,9 +418,10 @@ def successors(installer):
         if metadata['custom_metadata'] != custom:
             if metadata['custom_metadata'] != item['beforeMetadata']['custom_metadata']:
                 raise RuntimeError('successor-custom-metadata-conflict')
-            item['phase'] = 'MetadataPublicationStarted'
-            durable_write(path, plan)
-            provider_request(installer.tokens['provisioner'], 'write', MOUNT + '/metadata/' + relative, '-', data=canonical({'custom_metadata': custom}))
+            # A local journal/process lock cannot fence another provider writer.
+            # Completed publication still reconciles below; future writes require
+            # an independently verified provider-native conditional-write fence.
+            raise RuntimeError('provider-native-metadata-fence-required-no-publication')
         after = installer.metadata(relative)
         validate_original(item, after, successor=True)
         if after['custom_metadata'] != custom or after['versions']['2'] != native or after['current_version'] != 2:

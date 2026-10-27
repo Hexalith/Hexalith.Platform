@@ -1,11 +1,12 @@
 """Offline safety/recovery checks. No cluster or EXT-SECRETS-1 contract operation is invoked."""
 import json
+import io
 from copy import deepcopy
 from pathlib import Path
 import tempfile
 import types
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import install_hmac_authority as authority
 
@@ -13,6 +14,30 @@ IMAGE = 'registry.hexalith.com/ext-secrets-1-hmac-authority@sha256:' + 'a' * 64
 
 
 class AuthorityInstallationTests(unittest.TestCase):
+    def test_administration_response_accepts_full_repository_capacity_and_rejects_overflow_or_error(self):
+        installer = Mock()
+        installer.secret_field.return_value = 'synthetic-private-channel'
+        prefix, suffix = b'{"retainedAudit":"', b'"}'
+        limit = authority.ADMINISTRATION_RESPONSE_LIMIT
+        self.assertEqual(limit, 16 * 1024 * 1024)
+        for size, status, accepted in [(1024 * 1024 + 100, 200, True), (limit, 200, True), (limit + 1, 200, False), (20, 500, False)]:
+            raw = prefix + b'x' * (size - len(prefix) - len(suffix)) + suffix
+            response = Mock(status=status)
+            response.read.side_effect = io.BytesIO(raw).read
+            connection = Mock()
+            connection.getresponse.return_value = response
+            with self.subTest(size=size, status=status), patch.object(authority, 'Idp') as idp, patch.object(authority.http.client, 'HTTPConnection', return_value=connection):
+                idp.return_value.call.return_value = ({'access_token': 'synthetic-private-access'}, {})
+                if accepted:
+                    returned_status, document = authority.administration_request(installer, 'GET', '/admin/state')
+                    self.assertEqual(returned_status, 200)
+                    self.assertEqual(len(document['retainedAudit']), size - len(prefix) - len(suffix))
+                else:
+                    with self.assertRaisesRegex(RuntimeError, 'authority-administration-failed'):
+                        authority.administration_request(installer, 'GET', '/admin/state')
+            response.read.assert_called_once_with(limit + 1)
+            connection.close.assert_called_once()
+
     def test_creation_returns_native_response_identity_without_later_metadata_get(self):
         with tempfile.TemporaryDirectory() as directory:
             installer = self.instance(directory)

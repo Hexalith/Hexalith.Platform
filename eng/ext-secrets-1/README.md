@@ -326,3 +326,34 @@ Final reviewed images are `registry.hexalith.com/ext-secrets-1-hmac-authority@sh
 Provisioning recovery now requires original create-response identities, exact public intent, original credential accessors and deletion preconditions. Missing legacy intent or uncertain effects fail closed; never fabricate recovery records. Current health/metadata checks all return 200 and final coordinator checks pass 27/27. Dependency availability and qualification remain unclaimed; Live and installed contract/cohort cases were not run.
 
 Evidence is under `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/custody-review-installation-20261027T192149107119Z`; source/test corrections are in `custody-review-fixes-20261027T191047412463Z`. Original binding evidence and 42 null inputs with owner/actions remain in `custody-binding-20261027T182648692778Z`. Its `remaining-owner-actions.json` also records future writer fencing, interrupted preload reconciliation, administration response capacity, and profile/credential maintenance. Preserve existing policies, original versions/receipts, production, Memories, settled timing and the Agents register.
+
+### Separate isolated custody maintenance (2026-10-28)
+
+Use `maintain_isolated_custody.py` for the existing completed binding. Its `inspect` command reads current authority state, exact original credential identities/capabilities, key metadata and native runtime objects, then retains a deterministic public plan in a new evidence directory. `maintain` uses that same plan and new per-operation journals. Both commands preserve the completed installation and reconciliation directories.
+
+```bash
+python3 eng/ext-secrets-1/maintain_isolated_custody.py inspect \
+  --evidence /home/administrator/hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-run-<unique-id>
+python3 eng/ext-secrets-1/maintain_isolated_custody.py maintain \
+  --evidence /home/administrator/hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-run-<same-id>
+```
+
+The default read-only baseline is `custody-maintenance-20261027T234210095124Z`. Maintenance checks its original public fingerprints (including recursive fingerprints when present), all ten original owner receipts, exact current profile, two hosts/two callers and four existing successor statuses. Nine revision-checked operations extend only their owner-managed `validUntil` fields. The profile version and every `notBefore`, workload UID, key identity and technical key window stay exact. The new deadline is at most 24 hours from plan preparation and never exceeds any successor's technical expiry. The original four key expiries are on 2026-11-03 at 18:29 UTC; maintenance does not extend them.
+
+The existing two OpenBao credentials are read only with their original recorded Secret UID/resourceVersion and original issuance accessors. Legacy resource-journal identities remain identified as originally recorded metadata; they are never rewritten as create-response evidence. Policies and capabilities must remain restricted. Renewal retains the same credential and Secret, uses at most a 24-hour increment and cannot cross its seven-day absolute lifetime. A lease already covering the planned horizon needs no renewal. Expiry, nonrenewability, foreign identity, missing legacy UID/resourceVersion or an insufficient absolute lifetime produces an owner/action blocker. The separately scoped successor credential, new Secret, verified consumer cutover and old-credential revocation must be completed as separate authorized work; this command never issues or replaces credentials implicitly.
+
+Both runtime ConfigMaps and the current public runtime file receive the same profile deadline. Only the two UID-qualified isolated consumers restart, through native UID/resourceVersion-conditioned updates with retained public intent. Unknown runtime updates can reconcile only an exact current outcome. Unknown renewals retain before/current observations and require owner reconciliation, even when the observed expiry increased; renewal is never repeated. Interrupted administration can reuse only the exact journaled operation ID, payload and expected revision through the authority's durable idempotency check. Changed state, revoked/foreign records, receipt discontinuity and uncertain native cleanup stop.
+
+The authority administration response reader now accepts complete JSON through the repository's 16 MiB state capacity and rejects overflow/error responses. Interrupted preloads can reconcile completion only from retained original create-response identities, exact image/node/native-image evidence and confirmed absence of both transient resources. Normal cleanup allows bounded read-only disappearance waits. Recovery never recreates, pulls or repeats a delete; missing legacy evidence or a replacement object remains blocked. Future provider metadata publication fails before the write until a verified provider-native writer fence exists. A local process lock or caller assertion cannot satisfy that fence; already completed publication remains readable for reconciliation.
+
+Completion verifies all nine `/alive`, `/health` and `/ready` checks, coherent runtime copies, unchanged provider key metadata/policies and original journals, unchanged Agents register, and the same 42 null inputs. Public evidence reports owner/credential deadlines and retains zero provider-data reads, zero provider writes, zero contract operations, no Live run and dependency availability false.
+
+Focused offline verification:
+
+```bash
+python3 -m unittest discover -s eng/ext-secrets-1 -p test_maintain_isolated_custody.py -v
+python3 -m unittest discover -s eng/ext-secrets-1 -p test_preload_isolated_image.py -v
+python3 -m unittest discover -s eng/ext-secrets-1 -p test_install_hmac_authority.py -v
+python3 -m unittest discover -s eng/ext-secrets-1 -p test_bind_isolated_custody.py -v
+python3 -m unittest discover -s eng/ext-secrets-1 -p test_credential_cleanup.py -v
+```
