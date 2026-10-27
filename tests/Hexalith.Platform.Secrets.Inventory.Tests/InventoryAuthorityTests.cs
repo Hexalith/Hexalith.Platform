@@ -37,6 +37,27 @@ public sealed class InventoryAuthorityTests
     }
 
     [Fact]
+    public async Task SuccessorSelectionPreservesExpiredOriginalMapping()
+    {
+        JsonObject metadata = Metadata();
+        JsonObject mappings = JsonNode.Parse(metadata["custom_metadata"]!["ext-secrets-1.versionMappings"]!.GetValue<string>())!.AsObject();
+        JsonObject original = mappings["opaque-v7"]!.DeepClone().AsObject();
+        mappings["opaque-v7"]!["notBefore"] = DateTimeOffset.UtcNow.AddDays(-10).ToString("O");
+        mappings["opaque-v7"]!["verifyUntil"] = DateTimeOffset.UtcNow.AddDays(-3).ToString("O");
+        original["secretVersion"] = "2";
+        mappings["opaque-successor"] = original;
+        metadata["custom_metadata"]!["ext-secrets-1.versionMappings"] = mappings.ToJsonString();
+        metadata["current_version"] = 2;
+        metadata["versions"]!["2"] = metadata["versions"]!["1"]!.DeepClone();
+        var authority = Authority(new InventoryTestSources(InventorySources.ParseObject(metadata.ToJsonString())));
+        DaprPlatformHmacInventory? current = await authority.ResolveAsync("inventory", Scope, null, TestContext.Current.CancellationToken);
+        current.ShouldNotBeNull();
+        current.Metadata.Version.ShouldBe("opaque-successor");
+        current.SecretVersion.ShouldBe("2");
+        (await authority.ResolveAsync("inventory", Scope, "opaque-v7", TestContext.Current.CancellationToken)).ShouldBeNull();
+    }
+
+    [Fact]
     public async Task ExactNativeNanosecondCreationIsNotTruncatedBeforeMapping()
     {
         JsonObject metadata = Metadata();

@@ -94,7 +94,8 @@ public sealed class CurrentInventoryAuthority(
         JsonObject? mappings = InventorySources.ParseObject(encoded);
         if (mappings is null) { return null; }
         var candidates = mappings.Where(entry => entry.Value is JsonObject item
-            && (requestedVersion is not null ? entry.Key == requestedVersion : Text(item, "state") == "Active")).ToArray();
+            && (requestedVersion is not null ? entry.Key == requestedVersion : Text(item, "state") == "Active"
+                && Text(item, "secretVersion") == metadata["current_version"]?.ToJsonString())).ToArray();
         if (candidates.Length != 1 || !Reference(candidates[0].Key) || candidates[0].Value is not JsonObject mapping
             || Text(mapping, "secretVersion") is not { } numeric
             || !ulong.TryParse(numeric, NumberStyles.None, CultureInfo.InvariantCulture, out ulong backend) || backend == 0
