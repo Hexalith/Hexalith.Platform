@@ -142,7 +142,7 @@ internal static class OpenBaoNativeOperationsTests
             var installation=new NativeInstallation("OpenBaoTransit","fixture","head","/fixture/checkpoints","/fixture/originals",Fixture.Digest,"https://fixture.invalid/","transit",credential,
                 resources.ToDictionary(value=>value,_=>CustodyJson.Hash(CustodyJson.Bytes(metadata))),Fixture.Digest,TransitBindingProfiles:resources.ToDictionary(value=>value,_=>new OpenBaoTransitBindingProfile("OpenBaoTransit.AeadAssociatedData.V1",derived)));
             var profile=fixture.Profile with { Epochs=epochs,Keks=keks };fixture.Profile=profile;fixture.Verifier=new(profile,TimeProvider.System);fixture.Qualify();
-            using var native=new OpenBaoNativeOperations(profile,installation,fixture.Store,dapr,new NonOwningTransport(transport));var exchange=new KeyExchange(profile,fixture.Store,native,native,fixture.Verifier);
+            using var native=new OpenBaoNativeOperations(profile,installation,fixture.Store,dapr,new NonOwningTransport(transport));var exchange=new KeyExchange(profile,fixture.Store,native,native,fixture.Verifier,fixture.Publisher);
             SignedStatement Admission(Hexalith.Platform.Secrets.Runtime.CustodyBindingRequestV1 request)
             {
                 var use=request.WrapInput?.KeyUse??request.KeyUse!;

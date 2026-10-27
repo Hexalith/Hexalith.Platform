@@ -10,13 +10,16 @@ internal sealed record WrapPlan(Hexalith.Platform.Custody.CustodyKeyObjectIdenti
     long ExpectedRevision, string KekVersion, string OpaqueReference, string Epoch);
 internal sealed record WrappedResult(StoredRegistration Registration, CustodyBindingResponseV1 Response);
 
-internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore store, IEpochOperations epochs, IKeyAccess keys, StatementVerifier verifier)
+internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore store, IEpochOperations epochs, IKeyAccess keys, StatementVerifier verifier,
+    ICustodyRegistrationPublisher? publisher = null)
 {
     internal async Task<CustodyBindingResponseV1> ExecuteAsync(CustodyBindingRequestV1 request, CurrentState current, SignedStatement evidence, CancellationToken token)
     {
         var e = request.Envelope; var keyUse = request.WrapInput?.KeyUse ?? request.KeyUse;
         if ((request.WrapInput?.Identity ?? request.Registration?.Identity)?.Purpose != Hexalith.Platform.Custody.PlatformKeyPurpose.InteractionRootDek)
             throw new AuthorityUnavailableException("This profile enrolls interaction roots only.");
+        if (e.Operation == "wrap" && publisher is null)
+            throw new AuthorityUnavailableException("Independent registration publisher installation missing.");
         var admission = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(evidence.Payload));
         string[] roles = ["caller", "sdk", "sidecar", "uds", "grpc", "tls", "component", "native"];
         if (keyUse is null || current.Checkpoint.Frozen || e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest
@@ -68,7 +71,11 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
                 durable.NativeIntents[intentId] = durable.NativeIntents[intentId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
                 durable.NativeResults[intentId] = original;
                 durable.Deliveries[deliveryId] = durable.Deliveries[deliveryId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
-                await store.CommitAsync(admitted, durable, token); return response;
+                await store.CommitAsync(admitted, durable, token);
+                CryptographicOperations.ZeroMemory(kek);
+                CryptographicOperations.ZeroMemory(input.RootKey);
+                await PublishRegistrationAsync(registration.Registration, token);
+                return response;
             }
             finally { CryptographicOperations.ZeroMemory(kek); CryptographicOperations.ZeroMemory(input.RootKey); }
         }
@@ -107,7 +114,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         if (operation.Operation != "recover-wrap-result" || !verifier.Qualified(current,token)
             || !verifier.Verify(permission, "private-operation", current, CustodyJson.Hash(CustodyJson.Bytes(operation)), TimeSpan.FromSeconds(30))
             || !current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var intent) || intent.OperationId != operation.OriginalOperationId
-            || intent.Phase != CustodyBindingIntentPhase.SendCommitted
+            || intent.Phase is not (CustodyBindingIntentPhase.SendCommitted or CustodyBindingIntentPhase.ResultDurable or CustodyBindingIntentPhase.Closed)
             || !current.Checkpoint.NativeResults.TryGetValue(intent.IntentId + ":plan", out var planObject))
             throw new AuthorityUnavailableException("Exact admitted wrap recovery permission missing.");
         var plan = CustodyJson.Read<WrapPlan>(await store.ReadImmutableAsync(planObject, token));
@@ -118,13 +125,27 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             || r.KekVersion != plan.KekVersion || r.OpaqueWrappedKeyReference != plan.OpaqueReference || result.Registration.Epoch != plan.Epoch
             || result.Response.WrappedRegistration != r || result.Response.OperationId != plan.OperationId || result.Response.RequestDigest != plan.RequestDigest)
             throw new AuthorityUnavailableException("Original native result substitution.");
-        var next = SemanticProvider.Clone(current);
-        next.Registrations.Add(r.OpaqueWrappedKeyReference, result.Registration);
-        var response = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(result.Response),"original",tenant,"intent:"+intent.IntentId,token);
-        next.Originals[plan.OperationId] = next.Originals[plan.OperationId] with { Response = response };
-        next.NativeResults[intent.IntentId] = resultObject;
-        next.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
-        await store.CommitAsync(current, next, token);
+        if (intent.Phase == CustodyBindingIntentPhase.SendCommitted)
+        {
+            var next = SemanticProvider.Clone(current);
+            next.Registrations.Add(r.OpaqueWrappedKeyReference, result.Registration);
+            var response = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(result.Response),"original",tenant,"intent:"+intent.IntentId,token);
+            next.Originals[plan.OperationId] = next.Originals[plan.OperationId] with { Response = response };
+            next.NativeResults[intent.IntentId] = resultObject;
+            next.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
+            await store.CommitAsync(current, next, token);
+        }
+        await PublishRegistrationAsync(r, token);
+    }
+    internal async Task PublishRegistrationAsync(Hexalith.Platform.Custody.CustodyKeyRegistration registration, CancellationToken token)
+    {
+        if (publisher is null) throw new AuthorityUnavailableException("Independent registration publisher installation missing.");
+        var current = await store.ReadAsync(registration.Identity.TenantId, token);
+        var original = await SemanticProvider.ReadWrapOriginalAsync(store, current, registration, token);
+        // Only the exact durable value-free wrap original crosses the independent publisher boundary.
+        var retained = await publisher.PublishAsync(original.WrappedRegistration!, token).WaitAsync(token);
+        token.ThrowIfCancellationRequested();
+        if (retained != registration) throw new AuthorityUnavailableException("Independent registration publication unknown; recover this original only.");
     }
     internal async Task<CustodyBindingResponseV1> CompleteAsync(CustodyBindingRequestV1 request, CurrentState current,
         SignedStatement evidence, CancellationToken token)

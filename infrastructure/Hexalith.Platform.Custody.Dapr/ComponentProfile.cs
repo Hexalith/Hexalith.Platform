@@ -5,7 +5,8 @@ namespace Hexalith.Platform.Custody.Dapr;
 internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string Region, string TableArn, string TableId,
     BucketIdentity Checkpoints, BucketIdentity Originals, DateTimeOffset RetainUntil, long CompletionReserveBytes,
     string SocketPath, string ComponentSigningKeyPath, string ComponentPublicKeyPem, TrustedSigner[] Trust,
-    NativeEpoch[] Epochs, string[] Tenants, string QualificationStatementPath, TenantKek[] Keks, NativeInstallation? Native = null)
+    NativeEpoch[] Epochs, string[] Tenants, string QualificationStatementPath, TenantKek[] Keks, NativeInstallation? Native = null,
+    [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IndependentDaprAuthorityBinding? RegistrationPublisher = null)
 {
     internal string EnrollmentDigest => CustodyJson.Hash(CustodyJson.Bytes(Enrollment));
     // This includes private resource pins and trust, so a restored config cannot silently change them through Init.

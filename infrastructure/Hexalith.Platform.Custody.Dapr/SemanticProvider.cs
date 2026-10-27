@@ -64,18 +64,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             // This lookup has the registration projection's digest, not the ephemeral wrap-input
             // digest. Authenticate both against the independently retained original before returning
             // its unchanged receipt. Lookup never reconstructs a root or invokes a native method.
-            if (!current.Checkpoint.Registrations.TryGetValue(requestedRegistration.OpaqueWrappedKeyReference, out var stored)
-                || stored.Registration != requestedRegistration
-                || !current.Checkpoint.Originals.TryGetValue(requestedRegistration.OperationId, out var wrapOriginal)
-                || wrapOriginal.Operation != "wrap" || wrapOriginal.Manifest is not null || wrapOriginal.Response is null)
-                throw new AuthorityUnavailableException("Exact original wrapped registration unavailable.");
-            var original = CustodyJson.Read<CustodyBindingResponseV1>(await store.ReadImmutableAsync(wrapOriginal.Response, token));
-            if (original.ProtocolVersion != CustodyBindingContract.Protocol || original.OperationId != requestedRegistration.OperationId
-                || original.RequestDigest != wrapOriginal.RequestDigest || original.WrappedRegistration != requestedRegistration
-                || original.OriginalHeader is not null || original.Lifecycle is not null || original.Current is not null
-                || original.TransitionVerified is not null || original.Page is not null || original.ManifestStatus is not null
-                || original.KeyDelivery is not null || original.Delivery is not null || original.TransitionProof is not null)
-                throw new AuthorityUnavailableException("Retained wrap original binding mismatch.");
+            _ = await ReadWrapOriginalAsync(store, current, requestedRegistration, token);
             return Reply() with { Lifecycle = new(requestedRegistration.Identity, e.OperationId, e.RequestDigest,
                 CustodyKeyLifecycleStatus.Wrapped, requestedRegistration.WrapReceiptId, null) };
         }
@@ -87,7 +76,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 byte[] original = await store.ReadImmutableAsync(reference, token);
                 return originalOperation.Manifest is not null
                     ? Reply() with { OriginalHeader = Header(originalOperation.Manifest, reference, original.Length) }
-                    : CustodyJson.Read<CustodyBindingResponseV1>(original);
+                    : await RecoverOriginalResponseAsync(original, token);
             }
             return Pending(request); // An admitted uncertain original is never replayed or called NotStarted.
         }
@@ -176,6 +165,32 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 // No unsupported effect is inferred from a successful transport/authentication check.
                 throw new AuthorityUnavailableException("This effect has no qualified implementation and remains closed.");
         }
+    }
+    private async Task<CustodyBindingResponseV1> RecoverOriginalResponseAsync(byte[] bytes, CancellationToken token)
+    {
+        var original = CustodyJson.Read<CustodyBindingResponseV1>(bytes);
+        if (original.WrappedRegistration is { } registration)
+        {
+            if (keyExchange is null) throw new AuthorityUnavailableException("Registration publisher installation missing.");
+            await keyExchange.PublishRegistrationAsync(registration, token);
+        }
+        return original;
+    }
+    internal static async Task<CustodyBindingResponseV1> ReadWrapOriginalAsync(IAuthorityStore source, CurrentState current,
+        CustodyKeyRegistration registration, CancellationToken token)
+    {
+        if (!current.Checkpoint.Registrations.TryGetValue(registration.OpaqueWrappedKeyReference, out var stored)
+            || stored.Registration != registration || !current.Checkpoint.Originals.TryGetValue(registration.OperationId, out var wrap)
+            || wrap.Operation != "wrap" || wrap.Manifest is not null || wrap.Response is null)
+            throw new AuthorityUnavailableException("Exact original wrapped registration unavailable.");
+        var original = CustodyJson.Read<CustodyBindingResponseV1>(await source.ReadImmutableAsync(wrap.Response, token));
+        if (original.ProtocolVersion != CustodyBindingContract.Protocol || original.OperationId != registration.OperationId
+            || original.RequestDigest != wrap.RequestDigest || original.WrappedRegistration != registration
+            || original.OriginalHeader is not null || original.Lifecycle is not null || original.Current is not null
+            || original.TransitionVerified is not null || original.Page is not null || original.ManifestStatus is not null
+            || original.KeyDelivery is not null || original.Delivery is not null || original.TransitionProof is not null || original.ResultProof is not null)
+            throw new AuthorityUnavailableException("Retained wrap original binding mismatch.");
+        return original;
     }
     private async Task<CustodyBindingResponseV1> TransitionAsync(CustodyBindingRequestV1 request, CurrentState current, CancellationToken token)
     {

@@ -34,7 +34,13 @@ public static class IndependentAuthorityHttpApplication
         if (signer.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7"
             || !signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(verifier.ExportSubjectPublicKeyInfo())) return 2;
         using var dapr = new DaprClientBuilder().Build();
-        var receiver = new IndependentAuthorityReceiver(dapr, profile, signer, TimeProvider.System, recordingSource, ownerHandlers);
+        ICustodyRegistrationOriginalVerifier? registrationVerifier = profile.RegistrationVerifier is { } lookup
+            ? new DaprCustodyRegistrationOriginalVerifier(new CustodyLifecycleClient(dapr,
+                new Dictionary<string,string> { [CustodyLifecycleClient.LogicalRole] = lookup.BindingName }, lookup.OwnerPurposeScope,
+                lookup.EnrollmentJson, lookup.PublicKeyPem, new DaprCustodyAuthorizerClient(dapr,
+                    new Dictionary<string,string> { [DaprCustodyAuthorizerClient.LogicalRole] = lookup.AuthorizerAppId }, lookup.AuthorizerCredentialReference)))
+            : null;
+        var receiver = new IndependentAuthorityReceiver(dapr, profile, signer, TimeProvider.System, recordingSource, ownerHandlers, registrationVerifier:registrationVerifier);
         await using var app=BuildApplication(receiver,holderCompletionWorker);
         await RunServiceAsync(app,startupToken,lifetimeToken).ConfigureAwait(false); return 0;
         }

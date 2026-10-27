@@ -61,7 +61,10 @@ try
     }
     var verifier = new StatementVerifier(profile, TimeProvider.System);
     IEpochOperations epochs = native is not null ? native : new AwsEpochOperations(profile, kms!);
-    var exchange = new KeyExchange(profile, store, epochs, native is not null ? native : new AwsKeyAccess(profile, kms!), verifier);
+    ICustodyRegistrationPublisher? publisher = profile.RegistrationPublisher is { } publication
+        ? new DaprCustodyRegistrationPublisher(new IndependentDaprAuthority(new DaprSecretsInvoker(nativeDapr), publication, TimeProvider.System))
+        : null;
+    var exchange = new KeyExchange(profile, store, epochs, native is not null ? native : new AwsKeyAccess(profile, kms!), verifier, publisher);
     if (args[0] == "--worker")
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");

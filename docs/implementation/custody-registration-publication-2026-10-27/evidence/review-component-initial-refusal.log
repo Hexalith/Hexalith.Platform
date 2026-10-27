@@ -1,0 +1,7 @@
+FAIL registration-publication-loss-restart-and-no-native-resend Hexalith.Platform.Custody.Dapr.AuthorityUnavailableException: Independent registration publication unknown; recover this original only.
+   at Hexalith.Platform.Custody.Dapr.KeyExchange.PublishRegistrationAsync(CustodyKeyRegistration registration, CancellationToken token) in /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs:line 148
+   at Hexalith.Platform.Custody.Dapr.KeyExchange.ExecuteAsync(CustodyBindingRequestV1 request, CurrentState current, SignedStatement evidence, CancellationToken token) in /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs:line 77
+   at RegistrationPublicationTests.JoinedPublicationAsync() in /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationPublicationTests.cs:line 97
+   at RegistrationPublicationTests.Run() in /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationPublicationTests.cs:line 84
+   at Program.<Main>$(String[] args) in /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs:line 52
+sourceComponentOnly=true physicalQualification=false passed=0 failed=1

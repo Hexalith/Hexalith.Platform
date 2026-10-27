@@ -27,6 +27,7 @@ var tests = new (string, Func<Task>)[] {
     ("ephemeral-key-delivery-duplicate-and-holder-completion", Keys),
     ("lost-wrap-result-recovers-without-native-resend", LostWrap),
     ("registration-only-original-lookup-and-substitution-denial", RegistrationLookup),
+    ("registration-publication-loss-restart-and-no-native-resend", RegistrationPublicationTests.Run),
     ("independent-owner-genesis-and-consecutive-transitions", Anchors),
     ("hold-pin-release-and-complete-manifest-reservation", Holds),
     ("single-head-cas-and-app-restore-exclusions", Restore),
@@ -317,6 +318,8 @@ sealed class Fixture : IDisposable {
     readonly Dictionary<string, ECDsa> signers = new(); readonly ECDsa response = ECDsa.Create(ECCurve.NamedCurves.nistP256);
     internal ComponentProfile Profile; internal MemoryStore Store; internal FakeNative Native; internal StatementVerifier Verifier;
     internal KeyExchange Exchange; internal SemanticProvider Provider; internal RecoverableLifecycle Worker;
+    internal RegistrationPublisherFixture Publisher = new();
+    internal ECDsa OperationSigner => signers["private-operation"];
     internal string OwnerScope; int sequence; readonly string qualification = Path.GetTempFileName();
     internal Fixture(string? ownerDigest = null, string ownerScope = "owner", bool thirdEpoch = false) {
         OwnerScope = ownerScope;
@@ -330,8 +333,13 @@ sealed class Fixture : IDisposable {
             ["tenant", "other"], qualification, [new("tenant", "kek", "arn:aws:kms:eu-west-1:000000000000:key/r1", "r1", [1]), new("other", "kek", "arn:aws:kms:eu-west-1:000000000000:key/r2", "r2", [2])]);
         Profile.Validate();
         var checkpoint = new Checkpoint("tenant", Profile.EnrollmentDigest, 7, Digest, "e1", [], [], [], [], [], new() { [OwnerScope] = new(0, ownerDigest ?? Digest, null, null) }, null, [], [], []);
-        Store = new(Profile, checkpoint); Native = new(); Verifier = new(Profile, TimeProvider.System); Exchange = new(Profile, Store, Native, Native, Verifier);
+        Store = new(Profile, checkpoint); Native = new(); Verifier = new(Profile, TimeProvider.System); Exchange = new(Profile, Store, Native, Native, Verifier, Publisher);
         Provider = new(Profile, Store, Verifier, response, Exchange); Worker = new(Profile, Store, Native, Verifier, response);
+    }
+    internal void RestartPublication(ICustodyRegistrationPublisher? publisher)
+    {
+        Exchange = new(Profile, Store, Native, Native, Verifier, publisher);
+        Provider = new(Profile, Store, Verifier, response, Exchange);
     }
     internal void Qualify() { var q = new QualificationClaim(Profile.ProfileDigest, Profile.Enrollment.ArtifactProfileDigest, Digest, Digest, Digest, Profile.CompletionReserveBytes, Digest, Digest);
         File.WriteAllBytes(qualification, CustodyJson.Bytes(Sign("independent-observer", Profile.ProfileDigest, q))); }
@@ -427,7 +435,8 @@ sealed class FakeNative : IEpochOperations, IKeyAccess, IDisposable {
     public Task<byte[]> EncryptOuterKeyAsync(string epoch, string tenant, byte[] key, CancellationToken token) { Encrypts++; var nonce = RandomNumberGenerator.GetBytes(12); var cipher = new byte[32]; var tag = new byte[16]; using var aes = new AesGcm(epochs[epoch], 16); aes.Encrypt(nonce, key, cipher, tag); return Task.FromResult(nonce.Concat(cipher).Concat(tag).ToArray()); }
     public async Task<byte[]> ReencryptOuterKeyAsync(string source, string destination, string tenant, byte[] encryptedKey, CancellationToken token) { var plain = Decrypt(source, encryptedKey); try { return await EncryptOuterKeyAsync(destination, tenant, plain, token); } finally { CryptographicOperations.ZeroMemory(plain); } }
     public Task ScheduleSourceCutAsync(string epoch, string tenant, CancellationToken token) { Schedules++; if (FailScheduleAck) { FailScheduleAck = false; throw new AuthorityUnavailableException("Synthetic native acknowledgement loss."); } return Task.CompletedTask; }
-    public Task<byte[]> ReadTenantKekAsync(string tenant, string version, CancellationToken token) => Task.FromResult(kek.ToArray());
+    internal byte[]? LastTenantKek;
+    public Task<byte[]> ReadTenantKekAsync(string tenant, string version, CancellationToken token) => Task.FromResult(LastTenantKek=kek.ToArray());
     public Task<byte[]> ReadOuterKeyAsync(StoredRegistration registration, CancellationToken token) { Decrypts++; return Task.FromResult(Decrypt(registration.Epoch, registration.EncryptedOuterKey)); }
     byte[] Decrypt(string epoch, byte[] ciphertext) { byte[] plain = new byte[32]; using var aes = new AesGcm(epochs[epoch], 16); aes.Decrypt(ciphertext.AsSpan(0, 12), ciphertext.AsSpan(12, 32), ciphertext.AsSpan(44, 16), plain); return plain; }
     public void Dispose() { CryptographicOperations.ZeroMemory(kek); foreach (var key in epochs.Values) CryptographicOperations.ZeroMemory(key); }

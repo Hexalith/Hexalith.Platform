@@ -425,6 +425,7 @@ public sealed class IndependentAuthorityReceiverTests
         private readonly TimeProvider _clock;
         private readonly Func<IndependentArchiveCapacityInstallation,string,string,IndependentArchiveCapacity>? _capacityFactory;
         private readonly IReadOnlyList<IIndependentOwnerOperationHandler>? _handlers;
+        private readonly ICustodyRegistrationOriginalVerifier? _registrationVerifier;
         internal string ArchiveDirectory=>_channel+"-archive";
         internal string PrivateArchiveDirectory=>Path.Combine(ArchiveDirectory,"private-originals",Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { _installation.EnrollmentId,_installation.Scope,_installation.TrustRevision },CustodyBindingContract.Json))));
         internal IndependentAuthorityReceiver Receiver=>_receiver;
@@ -436,6 +437,8 @@ public sealed class IndependentAuthorityReceiverTests
         { if(SameAuthorityHead(State with { Revision=next.Revision },next)) OrderingSaves++;Saves++; }
         private static bool SameAuthorityHead(IndependentAuthorityState a,IndependentAuthorityState b)=>JsonSerializer.Serialize(a,CustodyBindingContract.Json)==JsonSerializer.Serialize(b,CustodyBindingContract.Json);
         internal string? DropNextResponseMethod,DropNextRequestMethod,DropRequestStage;
+        internal bool LoseReply;
+        internal Action? AfterRegistrationCommit;
         internal Func<IndependentAuthorityState,bool>? RejectHeadPublication;
         internal Func<IndependentAuthorityState,string,bool?>? HeadSaveOverride;
         internal bool CompleteDelayedHead(IndependentAuthorityState next,string etag)
@@ -447,8 +450,9 @@ public sealed class IndependentAuthorityReceiverTests
         internal string Bearer = "isolated-caller";
         internal ReplicatedSecuritySpoolTarget Target { get; } = new("isolated-spool", "isolated-epoch", "current-1", DateTimeOffset.UtcNow.AddHours(1));
         internal string Scope => Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch;
-        internal Fixture(IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateArchive=null,TimeProvider? clock=null,IReadOnlyList<IIndependentOwnerOperationHandler>? handlers=null,IndependentArchiveCapacityInstallation? capacity=null,Func<IndependentArchiveCapacityInstallation,string,string,IndependentArchiveCapacity>? capacityFactory=null,string stateKey="head")
+        internal Fixture(IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateArchive=null,TimeProvider? clock=null,IReadOnlyList<IIndependentOwnerOperationHandler>? handlers=null,IndependentArchiveCapacityInstallation? capacity=null,Func<IndependentArchiveCapacityInstallation,string,string,IndependentArchiveCapacity>? capacityFactory=null,string stateKey="head",ICustodyRegistrationOriginalVerifier? registrationVerifier=null)
         {
+            _registrationVerifier=registrationVerifier;
             _capacityFactory=capacityFactory;_handlers=handlers;
             _archiveStorage=archiveStorage??(capacity is null?Substitute.For<IIndependentArchiveStorage>():new IndependentArchiveStorage());if(archiveStorage is null && capacity is null) { _archiveStorage.AvailableBytes(Arg.Any<string>()).Returns(long.MaxValue);_archiveStorage.ProbeWritableAsync(Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(call=>new IndependentArchiveStorage().ProbeWritableAsync(call.Arg<string>(),call.Arg<CancellationToken>())); }_privateArchive=privateArchive;_clock=clock??TimeProvider.System;
             File.WriteAllText(_channel, "isolated-channel");
@@ -466,9 +470,9 @@ public sealed class IndependentAuthorityReceiverTests
                     if(HeadSaveOverride?.Invoke(next,call.ArgAt<string>(3)) is { } overridden) return overridden;
                     if(RejectHeadPublication?.Invoke(next)==true) { State=State with { Revision=checked(State.Revision+1) };_revision++;return false; }
                     CountSave(next);State=next;_revision++;return true; } });
-            _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive) { CapacityFactory=_capacityFactory };
+            _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive,registrationVerifier:_registrationVerifier) { CapacityFactory=_capacityFactory };
         }
-        internal void Restart() => _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive) { CapacityFactory=_capacityFactory };
+        internal void Restart() => _receiver = new(_dapr, _installation, _signer, _clock, RecordingSource,ownerHandlers:_handlers,archiveStorage:_archiveStorage,privateOriginalArchive:_privateArchive,registrationVerifier:_registrationVerifier) { CapacityFactory=_capacityFactory };
         internal void RevokeCaller() { lock(_headLock) { State=State with { Revision=checked(State.Revision+1),Callers=State.Callers.Select(value=>value with { Revoked=true }).ToArray() };_revision++; } }
         internal ISecretsCredentialBoundDaprInvoker PrivateTransport()=>new Transport(this);
         internal IndependentDaprAuthorityBinding PublicBinding=>new("isolated-owner", "file:/isolated-bearer", _signer.ExportSubjectPublicKeyInfoPem(), "isolated-enrollment", "isolated-owner", "current-1");
@@ -491,7 +495,9 @@ public sealed class IndependentAuthorityReceiverTests
                 context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(jsonBody)); context.Response.Body = new MemoryStream();
                 var result = await (replica??fixture._receiver).HandleAsync(context, method[(method.LastIndexOf('/') + 1)..], cancellationToken);
                 await result.ExecuteAsync(context);fixture.AfterResponse?.Invoke();
+                if(context.Response.StatusCode==200 && method.EndsWith("custody-publish-registration-original",StringComparison.Ordinal)) fixture.AfterRegistrationCommit?.Invoke();
                 if(context.Response.StatusCode==200 && fixture.DropNextResponseMethod is { } dropped && method.EndsWith(dropped,StringComparison.Ordinal)) { fixture.DropNextResponseMethod=null;return null; }
+                if(fixture.LoseReply) { fixture.LoseReply=false;return null; }
                 return context.Response.StatusCode == 200 ? Encoding.UTF8.GetString(((MemoryStream)context.Response.Body).ToArray()) : null;
             }
         }

@@ -1,0 +1,33 @@
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 213 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj (in 237 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Secrets.Qualification.Executor/Hexalith.Platform.Secrets.Qualification.Executor.csproj (in 219 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj (in 213 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 213 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj (in 214 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 201 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 213 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Secrets.Qualification.Enrollment/Hexalith.Platform.Secrets.Qualification.Enrollment.csproj (in 236 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj (in 211 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj (in 266 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Secrets.Qualification.Observer/Hexalith.Platform.Secrets.Qualification.Observer.csproj (in 229 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 213 ms).
+  Restored /home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj (in 213 ms).
+  Hexalith.Commons.UniqueIds -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.Commons.UniqueIds/debug/Hexalith.Commons.UniqueIds.dll
+  Successfully created package '/tmp/hexalith-custody-registration-20261027/runtime/package/debug/Hexalith.Commons.UniqueIds.1.0.0.nupkg'.
+  Successfully created package '/tmp/hexalith-custody-registration-20261027/runtime/package/debug/Hexalith.Commons.UniqueIds.1.0.0.snupkg'.
+  Hexalith.EventStore.Contracts -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.EventStore.Contracts/debug/Hexalith.EventStore.Contracts.dll
+  Hexalith.Platform.Custody -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.Platform.Custody/debug/Hexalith.Platform.Custody.dll
+/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody.Component/CustodyOutsideWitness.cs(143,19): error CA1822: Member 'TryRepromote' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj]
+  Hexalith.EventStore.Client -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.EventStore.Client/debug/Hexalith.EventStore.Client.dll
+  Hexalith.EventStore.ServiceDefaults -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.EventStore.ServiceDefaults/debug/Hexalith.EventStore.ServiceDefaults.dll
+  Hexalith.EventStore.DomainService -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.EventStore.DomainService/debug/Hexalith.EventStore.DomainService.dll
+  Hexalith.EventStore.Server -> /tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.EventStore.Server/debug/Hexalith.EventStore.Server.dll
+
+Build FAILED.
+
+/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody.Component/CustodyOutsideWitness.cs(143,19): error CA1822: Member 'TryRepromote' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:22.60

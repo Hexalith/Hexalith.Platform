@@ -411,3 +411,6 @@ _bmad/config.user.toml
 
 # Retain the exact custody foundation evidence, including failed/intermediate runs.
 !docs/implementation/custody-lifecycle-foundation-2026-10-25/verification/**/*.log
+
+# Retain only this registration delivery's verification logs.
+!docs/implementation/custody-registration-publication-2026-10-27/evidence/*.log

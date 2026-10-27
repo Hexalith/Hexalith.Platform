@@ -1,0 +1,76 @@
+{
+  "recordedAtUtc": "2026-10-27T18:03:20.447953+00:00",
+  "scope": "Reviewed registration-publication source slice only",
+  "sourceFilesUnchanged": 23,
+  "preservedUserFilesUnchanged": 4,
+  "packageLockDiffEmpty": true,
+  "diagnosticAssets": true,
+  "normalAnalyzerGate": "Failed; preserved original normal/focused build logs. No persistent suppression.",
+  "rootRuntime": {
+    "argv": [
+      "dotnet",
+      "/tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests",
+      "-xml",
+      "/tmp/agents-owner-prereq-registration-final-runtime.xml"
+    ],
+    "exitCode": 0,
+    "passed": 35,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "rootComponent": {
+    "argv": [
+      "dotnet",
+      "/tmp/hexalith-custody-registration-20261027/runtime/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll"
+    ],
+    "exitCode": 0,
+    "passed": 27,
+    "failed": 0,
+    "entireRegisteredSuite": true,
+    "physicalQualification": false
+  },
+  "executedRuntimeCopies": {
+    "Hexalith.Platform.Secrets.Runtime.Tests": "1474699734603d52af3b64867a6eb333be51f523ce5df5f64571116e79a12bc4",
+    "Hexalith.Platform.Custody.Dapr.Tests": "1474699734603d52af3b64867a6eb333be51f523ce5df5f64571116e79a12bc4"
+  },
+  "sources": {
+    ".gitignore": "32fb7adef0aff198384fc2722e0fecc10b0b1371b8fab15e91a0733bb9afe0ce",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OpenBaoNativeOperationsTests.cs": "9bf36baf919a5eb90ac457ae639ba74790c8efef6106b3add967c2e8698b60ff",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs": "a04a4ebb5a8642b9a99c539536312fe5f8d299d514cdbfa9a60f349d54a9807c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationAuthorityFixture.cs": "37efeb4e9fb97835f5403bd02d10a59cfbd7e9fea8adf3059ba92eeb8403d244",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationAuthorityStateTransport.cs": "a79d4ff4f2871bf6781f0cb1cd07fe15ef407a03550518cf3be5f369057017a5",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationPublicationTests.cs": "c8c3bf72bc887310950c97b6bf5675eef80de57802cb7ac025170746166db5aa",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/RegistrationPublisherFixture.cs": "971f46cfbb975e2116ef2cbe67634ef97e6ce6544c2e36cbe2cad0bbcabd3b4a",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs": "5635de5d237f4e00d8bb140c90c5c18d7a8383d650734f5d11cdf782ccb4dca9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "8ce917325c490ed2f134b41b0d171e7084949b8e899531c359fe2ee65b89e608",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs": "15794b4939d04d68f7c022694b7ddddb2fccc092cd9e68cf400442e0f3d93b31",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs": "6686e0ef9aef3c831b134d41705ce091fca96f232f478d6cd2659d66fbf1ea88",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs": "80422621e74d3399a7dc6dfd6705ba17eb94913b33894f637c4cb3bdfadebae6",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRegistrationPublication.cs": "b8b158e9ec039febceab932b1815aaa302aac8ed3ed2adcc2eb948589e0ace73",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRegistrationVerifierInstallation.cs": "906657387a78e4845e3b91bda078f537afd74e01ec10045b1395e18b3b95667d",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyRegistrationOriginalVerifier.cs": "871aab6af18ac50114932a25bd94bd1e1a60f53e6526f0649677c7a0a4e13d14",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyRegistrationPublisher.cs": "3fab0acf3296ccf5fbc5c6a1f2935d3e37c4e86dff38a9c077aa72d76d1daafc",
+    "src/Hexalith.Platform.Secrets.Runtime/ICustodyRegistrationOriginalVerifier.cs": "8016f8faa874c59b118c1d9d6d89b1f84acb186ef960997221d7bf235bf663bb",
+    "src/Hexalith.Platform.Secrets.Runtime/ICustodyRegistrationPublisher.cs": "719ef32c6ab7525e84aeefb76014530c29cf35b58e0361c265227d91b2d5e823",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs": "596614aa370df6fad969c1775f11e2493a4b2117323b854166f9a0138239a58b",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d38ce82064056433e54dea4abdfa94eed6ab40e9b4975b7e8cc96ec4c0ef9721",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiverInstallation.cs": "ed4b5892410c2a44e7b31e735a8e2944f85512ed69dafa9d332ef743cd26abd2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyRegistrationPublicationTests.cs": "25f6d9e0047edb0f74e9f8b0e4ccba2caab225ac1d79e164884e9d002a5122c9",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "2558b7961788c216f5e175d1f4856d59fbab84f9d1d1a731938cb86ed5ac45ba"
+  },
+  "evidenceFiles": {
+    "parent-final-component.log": "2e2c9aacb4d42eb84c06c7c2b6b45192dc1b2ea405e95f1f5918966a366a103a",
+    "parent-final-runtime.log": "e427cd5c97a7f142d69ea983ff7dc9f5ecf2fda024a461225664227596b302bd",
+    "parent-final-runtime.xml": "c024eb14dd642034658e881c391bdc97b9b0dd6265e51445b8f9c64b169fd826"
+  },
+  "dependencyAvailabilityChanged": false,
+  "qualificationAttemptExecuted": false,
+  "installedProvider": false,
+  "stagedOrCommitted": false
+}

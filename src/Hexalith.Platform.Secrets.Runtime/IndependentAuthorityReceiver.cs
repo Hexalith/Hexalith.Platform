@@ -11,7 +11,7 @@ using System.Text.Json.Nodes;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Receiving durable authority. All permission, anchor, original and recovery transitions share one conditional owner head.</summary>
-public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null,IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateOriginalArchive=null)
+public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAuthorityReceiverInstallation installation, ECDsa signer, TimeProvider clock, IPrivateRecordingEventStore? recordingSource = null, IReadOnlyList<IIndependentOwnerOperationHandler>? ownerHandlers = null,IIndependentArchiveStorage? archiveStorage=null,IIndependentContentArchive? privateOriginalArchive=null, ICustodyRegistrationOriginalVerifier? registrationVerifier=null)
 {
     private readonly AsyncLocal<List<string>?> _completedPhysicalTickets=new();
     private readonly SemaphoreSlim _receivingSlots=new(4,4);
@@ -266,6 +266,38 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
                 }
                 outcome = (recordingResult, false);
             }
+            else if (method == "custody-publish-registration-original")
+            {
+                var original = request.Payload.Deserialize<CustodyRegistrationPublication>(CustodyBindingContract.Json)?.original;
+                // Check the current restricted tenant grant before consulting the actual original.
+                if (original is null || grant.Role != "custody-registration-publisher" || grant.ScopeReference != original.Identity.TenantId)
+                    return Results.StatusCode(403);
+                CustodyKeyLifecycleActor.ValidateIdentity(original.Identity);
+                if (original.ExpectedRevision < 0 || !new[] { original.OperationId, original.KekVersion, original.OpaqueWrappedKeyReference, original.WrapReceiptId }.All(CustodyBindingContract.CustodyText)
+                    || registrationVerifier is null || !await registrationVerifier.VerifyAsync(original, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
+                    return Results.StatusCode(503);
+                // Actual lookup authorization may retain its prepare original on this same head.
+                // Compare publication against the surviving head after verification, never that earlier ETag.
+                var publisher = grant;
+                (state, etag) = await dapr.GetStateAndETagAsync<IndependentAuthorityState>(installation.Component, installation.StateKey,
+                    ConsistencyMode.Strong, cancellationToken: budget.Token).ConfigureAwait(false);
+                if (state is null || string.IsNullOrWhiteSpace(etag) || state.EnrollmentId != installation.EnrollmentId || state.Scope != installation.Scope
+                    || state.TrustRevision != installation.TrustRevision || state.ValidUntil <= clock.GetUtcNow()) return Results.StatusCode(503);
+                grant = Authenticate(context, state, method);
+                if (grant is null || grant.Identity != publisher.Identity || grant.Role != "custody-registration-publisher"
+                    || grant.ScopeReference != original.Identity.TenantId) return Results.StatusCode(403);
+                next = JsonSerializer.Deserialize<IndependentAuthorityState>(JsonSerializer.SerializeToUtf8Bytes(state, CustodyBindingContract.Json), CustodyBindingContract.Json)!;
+                var matches = state.Registrations.Values.Where(value => value.Identity == original.Identity
+                    || value.Identity.TenantId == original.Identity.TenantId && (value.OperationId == original.OperationId || value.OpaqueWrappedKeyReference == original.OpaqueWrappedKeyReference)).ToArray();
+                if (matches.Any(value => value != original)) return Results.StatusCode(409);
+                if (matches.Length == 0)
+                {
+                    if (next.Registrations.Count >= 1000) return Results.StatusCode(503);
+                    next.Registrations.Add(Hash(original.Identity), original);
+                }
+                // Even exact recovery crosses the shared CAS/revocation barrier after asynchronous verification.
+                outcome = (original, true);
+            }
             else if (ownerHandler is { } handler)
             {
                 var handling=recoverAdmitted?handler.RecoverAsync(method,request.Payload,grant,state,budget.Token):handler.HandleAsync(method,request.Payload,grant,state,budget.Token);
@@ -297,7 +329,8 @@ public sealed class IndependentAuthorityReceiver(DaprClient dapr, IndependentAut
             if (outcome.Mutated)
             {
                 next = next with { Revision = checked(next.Revision + 1) };
-                bool admission=method is "spool-admit-transition" or "spool-admit-recovery" or "qualification-begin-original";
+                bool admission=method is "spool-admit-transition" or "spool-admit-recovery" or "qualification-begin-original"
+                    || method == "custody-publish-registration-original" && next.Registrations.Count > state.Registrations.Count;
                 long headBound=32L*1024*1024-(admission?installation.CompletionReserveBytes:0);
                 if (headBound<=0 || JsonSerializer.SerializeToUtf8Bytes(next, CustodyBindingContract.Json).LongLength > headBound)
                     return Results.StatusCode(503); // Retained facts are never evicted to admit work.
