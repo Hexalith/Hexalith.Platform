@@ -1,4 +1,8 @@
 import json
+import base64
+import os
+import subprocess
+import sys
 from copy import deepcopy
 from contextlib import nullcontext
 from datetime import datetime, timezone
@@ -28,6 +32,146 @@ def metadata(old):
 
 
 class BindingTests(unittest.TestCase):
+    def test_actual_provider_shell_transports_only_synthetic_material_to_exact_cas_target(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            old = original()
+            encoded = base64.b64encode(bytes(range(32))).decode()
+            receipt = {'request_id': 'synthetic-native-request', 'data': {'version': 2, 'created_time': '2026-01-01T00:00:00Z', 'destroyed': False, 'deletion_time': ''}}
+            shim = root / 'bao'
+            shim.write_text('#!' + sys.executable + '\n' + '''import base64,json,os,sys
+from pathlib import Path
+args=sys.argv[1:]
+assert os.environ['BAO_TOKEN']=='synthetic-provisioner'
+assert os.environ['BAO_SKIP_VERIFY']=='false'
+if args==['write','-field=random_bytes','sys/tools/random/32','format=base64']:
+ print(base64.b64encode(bytes(range(32))).decode())
+elif len(args)==4 and args[:2]==['write','-format=json'] and args[3]=='-':
+ value=json.load(sys.stdin)
+ Path(os.environ['SHIM_RECORD']).write_text(json.dumps({'target':args[2],'body':value}))
+ print(os.environ['SHIM_RECEIPT'])
+else: raise SystemExit(73)
+''')
+            shim.chmod(0o700)
+            def native(*args, **kwargs):
+                index = args.index('-c')
+                env = {'PATH': directory, 'SHIM_RECORD': str(root / 'write.json'), 'SHIM_RECEIPT': json.dumps(receipt)}
+                result = subprocess.run(['/bin/sh', '-c', args[index + 1], *args[index + 2:]], input=kwargs['data'], capture_output=True, env=env, timeout=5)
+                self.assertEqual(result.returncode, 0, result.stderr.decode())
+                self.assertEqual(json.loads(result.stdout), receipt)
+                self.assertNotIn(encoded.encode(), result.stdout + result.stderr)
+                self.assertNotIn(b'synthetic-provisioner', result.stdout + result.stderr)
+                return result
+            with patch.object(subject, 'original_plan', return_value=[old]), patch.object(subject, 'kube', side_effect=native):
+                result = subject.generate_successor_inside_provider(bytearray(b'synthetic-provisioner'), old['secretReference'], 1)
+            self.assertEqual(json.loads((root / 'write.json').read_text()), {'target': subject.MOUNT + '/data/' + old['secretReference'],
+                'body': {'options': {'cas': 1}, 'data': {'hmacKey': encoded}}})
+            self.assertEqual(result, {'requestId': receipt['request_id'], 'data': receipt['data']})
+
+    def test_stale_supplied_spec_is_not_restamped_with_fresh_resource_version(self):
+        with TemporaryDirectory() as directory:
+            installer = SimpleNamespace(evidence=Path(directory))
+            current = {'kind': 'ConfigMap', 'metadata': {'name': 'ext-secrets-1-inventory-runtime', 'namespace': subject.NS, 'uid': 'original', 'resourceVersion': '2'}, 'data': {'public': 'concurrent-owner-edit'}}
+            supplied = deepcopy(current)
+            supplied['metadata']['resourceVersion'] = '1'
+            supplied['data']['public'] = 'stale-edit'
+            durable_write(Path(directory) / 'preserved-kubernetes-before.json', {'ConfigMap/' + subject.NS + '/ext-secrets-1-inventory-runtime': {'uid': 'original'}})
+            with patch.object(subject, 'kjson', return_value=current), patch.object(subject, 'kube') as native:
+                with self.assertRaisesRegex(RuntimeError, 'stale-supplied'):
+                    subject.replace_public(installer, 'ConfigMap', 'ext-secrets-1-inventory-runtime', supplied)
+            native.assert_not_called()
+
+    def final_intent_fixture(self, directory):
+        objects, before, after = {}, {}, {}
+        for key in subject.MUTABLE:
+            kind, namespace, name = key.split('/')
+            obj = {'kind': kind, 'metadata': {'name': name, 'namespace': namespace, 'uid': 'uid-' + name, 'resourceVersion': '9'}, 'spec': {'public': 'canonical-final-intent'}}
+            objects[key] = obj
+            before[key] = after[key] = {'uid': obj['metadata']['uid']}
+            suffix = '-canonical-runtime-file' if kind == 'Deployment' else ''
+            journal = {'phase': 'Replaced', 'uid': obj['metadata']['uid'], 'reference': key, 'intendedPublicObject': subject.public_object(obj)}
+            durable_write(Path(directory) / ('update-' + kind.lower() + '-' + name + suffix + '.json'), journal)
+        return SimpleNamespace(evidence=Path(directory)), objects, before, after
+
+    def test_final_verification_requires_original_uid_and_exact_intent_for_every_mutable(self):
+        with TemporaryDirectory() as directory:
+            installer, objects, before, after = self.final_intent_fixture(directory)
+            def read(*args): return objects[args[1] + '/' + args[4] + '/' + args[2]]
+            with patch.object(subject, 'kjson', side_effect=read):
+                subject.verify_final_public_intents(installer, before, after)
+                for key in subject.MUTABLE:
+                    original = objects[key]['spec']['public']
+                    objects[key]['spec']['public'] = 'unjournaled-owner-drift'
+                    with self.assertRaisesRegex(RuntimeError, 'unjournaled'):
+                        subject.verify_final_public_intents(installer, before, after)
+                    objects[key]['spec']['public'] = original
+                    changed = deepcopy(after)
+                    changed[key]['uid'] = 'replacement'
+                    with self.assertRaisesRegex(RuntimeError, 'original-uid'):
+                        subject.verify_final_public_intents(installer, before, changed)
+
+    def test_initial_deployment_intent_cannot_replace_final_canonical_mount_intent(self):
+        with TemporaryDirectory() as directory:
+            installer, objects, before, after = self.final_intent_fixture(directory)
+            key = 'Deployment/' + subject.NS + '/inventory'
+            objects[key]['spec']['public'] = 'obsolete-initial-mount'
+            durable_write(Path(directory) / 'update-deployment-inventory.json', {'phase': 'Replaced', 'uid': before[key]['uid'], 'reference': key,
+                'intendedPublicObject': subject.public_object(objects[key])})
+            with patch.object(subject, 'kjson', side_effect=lambda *args: objects[args[1] + '/' + args[4] + '/' + args[2]]):
+                with self.assertRaisesRegex(RuntimeError, 'unjournaled'):
+                    subject.verify_final_public_intents(installer, before, after)
+
+    def test_same_policy_token_with_different_native_accessor_is_not_adopted(self):
+        with TemporaryDirectory() as directory:
+            installer = subject.CustodyInstaller.__new__(subject.CustodyInstaller)
+            installer.evidence, installer.run, installer.tokens, installer.private_values = Path(directory), {'runId': 'original-run'}, {}, []
+            name = subject.APP + '-data-original-run'
+            durable_write(Path(directory) / 'data-credential-issuance.json', {'phase': 'Stored', 'policy': subject.DATA_POLICY, 'secretName': name,
+                'accessor': 'original-accessor', 'secretIdentity': {'uid': 'original', 'resourceVersion': '7'}})
+            candidate = bytearray(b'synthetic-substitute')
+            with patch.object(subject, 'read_pinned_credential_secret', return_value=candidate), patch.object(subject, 'application_request',
+                return_value=SimpleNamespace(stdout=json.dumps({'data': {'accessor': 'foreign-accessor', 'policies': [subject.DATA_POLICY], 'ttl': 100}}).encode())):
+                with self.assertRaisesRegex(RuntimeError, 'accessor-changed'):
+                    installer.credential('data', subject.DATA_POLICY)
+            self.assertEqual(installer.tokens, {})
+            self.assertTrue(all(value == 0 for value in candidate))
+
+    def test_known_provisioner_failure_invokes_run_owned_cleanup_and_wipes_transport(self):
+        with TemporaryDirectory() as directory:
+            installer = subject.CustodyInstaller.__new__(subject.CustodyInstaller)
+            installer.evidence, installer.tokens, installer.private_values, installer.token = Path(directory), {'provisioner': bytearray(b'synthetic-token')}, [], bytearray(b'synthetic-operator')
+            durable_write(Path(directory) / 'provisioner-credential-issuance.json', {'phase': 'Issued', 'accessor': 'original-accessor'})
+            durable_write(Path(directory) / 'provisioner-policy-journal.json', {'phase': 'Created'})
+            with patch.object(installer, 'remove_provisioner') as cleanup:
+                installer.close()
+            cleanup.assert_called_once()
+            self.assertEqual(installer.tokens, {})
+            self.assertTrue(all(value == 0 for value in installer.token))
+
+    def test_acknowledged_revocation_can_finish_partial_policy_cleanup_without_token_lookup(self):
+        with TemporaryDirectory() as directory:
+            installer = subject.CustodyInstaller.__new__(subject.CustodyInstaller)
+            installer.evidence, installer.run, installer.tokens = Path(directory), {'runId': 'original-run'}, {}
+            policy_name = subject.APP + '-successor-original-run'
+            policy_path = Path(directory) / 'provisioner-policy-journal.json'
+            durable_write(policy_path, {'phase': 'Created', 'runId': 'original-run', 'name': policy_name, 'policy': 'exact-public-scope'})
+            durable_write(Path(directory) / 'provisioner-credential-issuance.json', {'phase': 'RevokedAndOwnedSecretRemoved', 'secretName': 'original-secret',
+                'accessor': 'original-accessor', 'revocationPhase': 'Acknowledged', 'secretRemovalPhase': 'Acknowledged'})
+            def native(*args):
+                if args[:2] == ('policy', 'list'): return SimpleNamespace(stdout=json.dumps([policy_name]).encode())
+                if args[:2] == ('policy', 'read'): return SimpleNamespace(stdout=b'exact-public-scope')
+                raise RuntimeError('lost-policy-delete-response')
+            with patch.object(installer, 'bao', side_effect=native), patch('install_current_inventory.application_request') as credential:
+                with self.assertRaisesRegex(RuntimeError, 'lost-policy-delete'):
+                    installer.remove_provisioner()
+            credential.assert_not_called()
+            self.assertEqual(json.loads(policy_path.read_text())['removalPhase'], 'Started')
+            with patch.object(installer, 'bao', return_value=SimpleNamespace(stdout=b'[]')) as native, patch('install_current_inventory.application_request') as credential:
+                installer.remove_provisioner()
+            credential.assert_not_called()
+            native.assert_called_once_with('policy', 'list', '-format=json')
+            self.assertEqual(json.loads(policy_path.read_text())['phase'], 'Removed')
+
     def test_fresh_ingress_is_withheld_when_original_prerequisites_fail(self):
         with TemporaryDirectory() as directory:
             installer = SimpleNamespace(evidence=Path(directory))

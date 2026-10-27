@@ -10,18 +10,18 @@ import preload_isolated_image as image
 class PreloadOwnershipTests(unittest.TestCase):
     def run_preload(self, fail_pod_delete=False, missing_secret_identity=False):
         instance = Mock()
+        instance.create.side_effect = [None if missing_secret_identity else {'uid': 'original-secret-uid', 'resourceVersion': '17'},
+            {'uid': 'original-pod-uid', 'resourceVersion': '21'}]
         deletions = []
         def kube(*args, **kwargs):
             if args[0] == 'get':
-                if args[1] == 'secret':
-                    return types.SimpleNamespace(stdout=b'' if missing_secret_identity else b'original-secret-uid 17')
-                return types.SimpleNamespace(stdout=b'original-pod-uid')
+                raise AssertionError('Cleanup must use the original create response, never a later GET identity.')
             if args[0] == 'delete':
                 deletions.append((args[2], json.loads(kwargs['data'])))
                 if fail_pod_delete and '/pods/' in args[2]:
                     raise RuntimeError('conditional-deletion-denied')
             return types.SimpleNamespace(stdout=b'')
-        pod = {'spec': {'nodeName': 'isolated-node'}, 'status': {'containerStatuses': [{'imageID': 'native-exact-digest'}]}}
+        pod = {'metadata': {'uid': 'original-pod-uid'}, 'spec': {'nodeName': 'isolated-node'}, 'status': {'containerStatuses': [{'imageID': 'native-exact-digest'}]}}
         with patch.object(image, 'distribution_auth', return_value={'auth': 'transient-operator-credential'}), patch.object(image, 'kube', side_effect=kube), patch.object(image, 'kjson', return_value=pod):
             if fail_pod_delete or missing_secret_identity:
                 with self.assertRaisesRegex(RuntimeError, 'preload-owned-resource-cleanup-incomplete'):

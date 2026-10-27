@@ -48,16 +48,16 @@ class OperationalReviewTests(unittest.TestCase):
                         provisioning.install_data_credential(installer, provisioning.plan_keys())
                     revoke.assert_called_once_with(token, 'token', 'revoke', '-self')
                 self.assertTrue(all(value == 0 for value in token))
-                self.assertEqual(sum(args[0] == 'get' for args, _ in calls), 1)
-                self.assertEqual(sum(args[0] == 'delete' for args, _ in calls), int(observed_token == b'new-token'))
+                # The historical issuer supplies no original create identity; cleanup fails closed before observing/adopting a replacement.
+                self.assertEqual(sum(args[0] == 'get' for args, _ in calls), 0)
+                self.assertEqual(sum(args[0] == 'delete' for args, _ in calls), 0)
                 self.assertNotIn('new-token', journal.read_text())
 
     def test_metadata_cleanup_uses_the_single_selected_secret_observation(self):
-        encoded = base64.b64encode(b'new-token')
-        with patch.object(inventory, 'kube', side_effect=[SimpleNamespace(stdout=encoded + b' first-uid first-rv'), SimpleNamespace(stdout=b'')]) as native:
-            inventory.delete_matching_credential_secret('new-secret', b'new-token')
+        with patch.object(inventory, 'kube', side_effect=[SimpleNamespace(stdout=b'first-uid first-rv'), SimpleNamespace(stdout=b'')]) as native:
+            inventory.delete_matching_credential_secret('new-secret', identity={'uid': 'first-uid', 'resourceVersion': 'first-rv'})
         self.assertEqual(native.call_count, 2)
-        self.assertIn('{.data.token}', native.call_args_list[0].args[-1])
+        self.assertNotIn('{.data.token}', native.call_args_list[0].args[-1])
         self.assertIn('{.metadata.uid}', native.call_args_list[0].args[-1])
         self.assertEqual(json.loads(native.call_args_list[1].kwargs['data'])['preconditions'], {'uid': 'first-uid', 'resourceVersion': 'first-rv'})
 

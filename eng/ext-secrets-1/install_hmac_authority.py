@@ -22,11 +22,11 @@ import sys
 import time
 import uuid
 
-from install_isolated_registry import Installer, KUBE, NS, ROOT, REGISTER, canonical, env_secret, kube, kjson, reference, sha, snapshot
+from install_isolated_registry import Installer, KUBE, NS, ROOT, REGISTER, canonical, creation_identity, env_secret, kube, kjson, reference, sha, snapshot
 from native_journal import durable_write, journal_lock
 from preload_isolated_image import preload
 from provision_registry_identity import Idp, IDP_HOST, audience, hardcoded
-from install_current_inventory import application_request, delete_matching_credential_secret
+from install_current_inventory import application_request, cleanup_journaled_credential, read_pinned_credential_secret, secret_identity
 
 APP = 'ext-secrets-1-hmac-authority'
 REALM = APP
@@ -46,6 +46,29 @@ def exact_image(value):
     if not re.fullmatch(r'registry\.hexalith\.com/ext-secrets-1-hmac-authority@sha256:[0-9a-f]{64}', value):
         raise ValueError('An exact isolated authority image digest is required.')
     return value
+
+
+def declared_intent_matches(declared, observed):
+    if isinstance(declared, dict):
+        return isinstance(observed, dict) and all(key in observed and declared_intent_matches(value, observed[key]) for key, value in declared.items())
+    if isinstance(declared, list):
+        return isinstance(observed, list) and len(declared) == len(observed) and all(declared_intent_matches(a, b) for a, b in zip(declared, observed))
+    return type(declared) is type(observed) and declared == observed
+
+
+def secret_public_intent(obj):
+    return {key: deepcopy(value) for key, value in obj.items() if key not in ('data', 'stringData')} | {
+        'dataKeys': sorted(set(obj.get('data', {})) | set(obj.get('stringData', {})))}
+
+
+def normalized_created_public_object(obj):
+    public = {key: deepcopy(value) for key, value in obj.items() if key not in ('metadata', 'status')}
+    public['metadata'] = {key: deepcopy(obj['metadata'][key]) for key in ('name', 'namespace', 'labels', 'annotations') if key in obj['metadata']}
+    if obj.get('kind') == 'Deployment' and 'annotations' in public['metadata']:
+        public['metadata']['annotations'].pop('deployment.kubernetes.io/revision', None)
+        if not public['metadata']['annotations']:
+            del public['metadata']['annotations']
+    return public
 
 
 @contextmanager
@@ -108,11 +131,20 @@ class AuthorityInstaller(Installer):
             journal = json.loads(path.read_text())
             if journal['phase'] != 'Stored':
                 raise RuntimeError('original-metadata-observer-issuance-needs-reconciliation')
-            self.metadata_token = bytearray(self.secret_field(name, 'token').encode())
+            candidate = read_pinned_credential_secret(name, journal.get('secretIdentity'))
+            try:
+                lookup = json.loads(application_request(candidate, 'token', 'lookup', '-format=json').stdout)['data']
+                if lookup.get('accessor') != journal.get('accessor') or not journal.get('accessor'):
+                    raise RuntimeError('original-metadata-observer-accessor-changed')
+                self.metadata_token = candidate
+            finally:
+                if self.metadata_token is not candidate:
+                    candidate[:] = b'\0' * len(candidate)
         else:
             journal = {'phase': 'IssuanceStarted', 'issuanceId': uuid.uuid4().hex, 'startedAt': timestamp(),
                 'policy': 'ext-secrets-1-inventory-metadata-read', 'ttlSeconds': 1200, 'maximumTtlSeconds': 1200,
-                'renewable': False, 'secretReference': NS + '/Secret/' + name + '#token', 'existingPolicyChanged': False}
+                'renewable': False, 'secretReference': NS + '/Secret/' + name + '#token', 'existingPolicyChanged': False,
+                'secretCreationPhase': 'NotStarted'}
             self.write('metadata-observer-issuance.json', journal)
             try:
                 result = json.loads(self.bao('write', '-format=json', 'auth/token/create-orphan', '-', data=canonical({
@@ -121,15 +153,17 @@ class AuthorityInstaller(Installer):
                 self.metadata_token = bytearray(result['client_token'].encode())
                 journal.update({'phase': 'Issued', 'accessor': result['accessor'], 'leaseDuration': result['lease_duration'], 'issuedAt': timestamp()})
                 self.write('metadata-observer-issuance.json', journal)
-                self.secret(name, {'token': bytes(self.metadata_token).decode()})
-                journal['phase'] = 'Stored'
+                journal['secretCreationPhase'] = 'Started'
+                self.write('metadata-observer-issuance.json', journal)
+                journal['secretIdentity'] = self.secret(name, {'token': bytes(self.metadata_token).decode()})
+                journal.update({'phase': 'Stored', 'secretCreationPhase': 'Created'})
                 self.write('metadata-observer-issuance.json', journal)
             except Exception:
                 journal['phase'] = 'IssuanceUnknown' if self.metadata_token is None else 'CredentialCleanupPending'
                 self.write('metadata-observer-issuance.json', journal)
                 raise
         lookup = json.loads(application_request(self.metadata_token, 'token', 'lookup', '-format=json').stdout)['data']
-        if lookup['policies'] != ['ext-secrets-1-inventory-metadata-read']:
+        if lookup.get('accessor') != journal['accessor'] or lookup['policies'] != ['ext-secrets-1-inventory-metadata-read']:
             raise RuntimeError('metadata-observer-policy-mismatch')
         for forbidden in ['ext-secrets-1-isolated/data/*', 'secret/data/*', 'sys/policies/acl/*']:
             if json.loads(application_request(self.metadata_token, 'token', 'capabilities', '-format=json', forbidden).stdout) != ['deny']:
@@ -138,21 +172,13 @@ class AuthorityInstaller(Installer):
 
     def close(self):
         try:
-            if self.metadata_token is not None:
-                path = self.evidence / 'metadata-observer-issuance.json'
-                journal = json.loads(path.read_text())
-                try:
-                    application_request(self.metadata_token, 'token', 'revoke', '-self')
-                    delete_matching_credential_secret(APP + '-metadata-observer-token', self.metadata_token)
-                    journal.update({'phase': 'RevokedAndOwnedSecretRemoved', 'revokedAt': timestamp(), 'existingPolicyChanged': False})
-                except Exception:
-                    journal['phase'] = 'CredentialCleanupPending'
-                    raise
-                finally:
-                    self.write('metadata-observer-issuance.json', journal)
-                    self.metadata_token[:] = b'\0' * len(self.metadata_token)
-                    self.metadata_token = None
+            path = self.evidence / 'metadata-observer-issuance.json'
+            if path.exists() and json.loads(path.read_text()).get('accessor'):
+                cleanup_journaled_credential(self, path, APP + '-metadata-observer-token', self.metadata_token)
         finally:
+            if self.metadata_token is not None:
+                self.metadata_token[:] = b'\0' * len(self.metadata_token)
+                self.metadata_token = None
             super().close()
 
     def create(self, obj):
@@ -165,10 +191,19 @@ class AuthorityInstaller(Installer):
         if original:
             if original['phase'] != 'Created':
                 raise RuntimeError('original-resource-effect-unknown:' + ref)
-            observed = kjson('get', obj['kind'], metadata['name'], '-n', NS)
-            if observed['metadata']['uid'] != original['uid'] or observed['metadata'].get('labels', {}).get('hexalith.io/authority-installation') != self.run['runId']:
-                raise RuntimeError('original-resource-identity-changed:' + ref)
-            return
+            identity = original.get('creationIdentity')
+            if obj['kind'] == 'Secret':
+                if not identity or secret_identity(metadata['name']) != identity:
+                    raise RuntimeError('original-resource-identity-changed:' + ref)
+                if original.get('secretPublicIntent') != secret_public_intent(obj):
+                    raise RuntimeError('original-secret-declared-intent-unavailable-or-changed:' + ref)
+            else:
+                if 'declaredPublicIntent' not in original or 'createdPublicIntent' not in original or original['declaredPublicIntent'] != obj:
+                    raise RuntimeError('original-resource-declared-intent-unavailable-or-changed:' + ref)
+                observed = kjson('get', obj['kind'], metadata['name'], '-n', NS)
+                if not identity or observed['metadata']['uid'] != identity['uid'] or normalized_created_public_object(observed) != original['createdPublicIntent']:
+                    raise RuntimeError('original-resource-identity-or-intent-changed:' + ref)
+            return deepcopy(identity)
         if kube('get', obj['kind'], metadata['name'], '-n', NS, '--ignore-not-found', '-o', 'name').stdout.strip():
             raise RuntimeError('preserved-resource-name-overlap:' + ref)
         original = {'reference': ref, 'kind': obj['kind'], 'name': metadata['name'], 'phase': 'CreationStarted', 'startedAt': timestamp(),
@@ -176,17 +211,27 @@ class AuthorityInstaller(Installer):
         # No Secret value, hash of credential material or Secret object is journaled.
         if obj['kind'] != 'Secret':
             original['intentSha256'] = sha(canonical(obj))
+            original['declaredPublicIntent'] = deepcopy(obj)
+        else:
+            original['secretPublicIntent'] = secret_public_intent(obj)
         self.resources.append(original)
         self.write('resource-journal.json', self.resources)
         try:
-            kube('create', '-f', '-', '-o', 'name', data=canonical(obj))
-            observed = kube('get', obj['kind'], metadata['name'], '-n', NS, '-o', 'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.decode().split()
-            if len(observed) != 2:
-                raise RuntimeError('created-resource-metadata-unavailable')
-            original.update({'phase': 'Created', 'uid': observed[0], 'resourceVersion': observed[1], 'recordedAt': timestamp()})
+            output = 'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}' if obj['kind'] == 'Secret' else 'json'
+            result = kube('create', '-f', '-', '-o', output, data=canonical(obj))
+            if obj['kind'] == 'Secret':
+                identity = creation_identity(result.stdout)
+            else:
+                created = json.loads(result.stdout)
+                identity = {key: created['metadata'][key] for key in ('uid', 'resourceVersion')}
+                if not declared_intent_matches(obj, created):
+                    raise RuntimeError('native-created-resource-differs-from-declared-intent:' + ref)
+                original['createdPublicIntent'] = normalized_created_public_object(created)
+            original.update({'phase': 'Created', **identity, 'creationIdentity': identity, 'recordedAt': timestamp()})
             self.created.append(ref)
             self.write('resource-journal.json', self.resources)
             self.write('created-resource-references.json', self.created)
+            return deepcopy(identity)
         except Exception:
             original['phase'] = 'CreationUnknown'
             self.write('resource-journal.json', self.resources)

@@ -7,7 +7,7 @@ import subprocess
 import sys
 import hmac
 
-from install_isolated_registry import Installer, NS, canonical, env_secret, kube, kjson, sha
+from install_isolated_registry import Installer, NS, canonical, env_secret, kube, kjson, require_creation_identity, sha
 from preload_isolated_image import preload
 from provision_registry_identity import ISSUER
 from observe_provider_metadata import observe
@@ -19,12 +19,6 @@ def application_request(token, *args, allowed=(0,)):
               'BAO_CACERT=/openbao/userconfig/openbao-server-tls/ca.crt BAO_TLS_SERVER_NAME=hexalith-keys.openbao.svc.cluster.local BAO_SKIP_VERIFY=false; exec bao "$@"')
     return kube('exec', '-i', '-n', 'openbao', 'hexalith-keys-0', '--', 'sh', '-c', script, 'sh', *args,
                 data=bytes(token) + b'\n', allowed=allowed)
-
-
-def require_creation_identity(identity):
-    if not isinstance(identity, dict) or any(not isinstance(identity.get(key), str) or not identity[key] for key in ('uid', 'resourceVersion')):
-        raise RuntimeError('original-secret-creation-identity-required')
-    return {key: identity[key] for key in ('uid', 'resourceVersion')}
 
 
 def secret_identity(name):

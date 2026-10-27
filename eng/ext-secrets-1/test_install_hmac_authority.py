@@ -1,5 +1,6 @@
 """Offline safety/recovery checks. No cluster or EXT-SECRETS-1 contract operation is invoked."""
 import json
+from copy import deepcopy
 from pathlib import Path
 import tempfile
 import types
@@ -12,6 +13,81 @@ IMAGE = 'registry.hexalith.com/ext-secrets-1-hmac-authority@sha256:' + 'a' * 64
 
 
 class AuthorityInstallationTests(unittest.TestCase):
+    def test_creation_returns_native_response_identity_without_later_metadata_get(self):
+        with tempfile.TemporaryDirectory() as directory:
+            installer = self.instance(directory)
+            with patch.object(authority, 'kube', side_effect=[types.SimpleNamespace(stdout=b''), types.SimpleNamespace(stdout=b'created-uid 7')]) as native:
+                identity = installer.secret('original', {'token': 'synthetic-token'})
+            self.assertEqual(identity, {'uid': 'created-uid', 'resourceVersion': '7'})
+            self.assertEqual(native.call_count, 2)
+            self.assertEqual(native.call_args.args[0], 'create')
+            self.assertIn('jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}', native.call_args.args)
+
+    def test_recovery_checks_declared_public_intent_but_allows_server_defaults(self):
+        with tempfile.TemporaryDirectory() as directory:
+            installer = self.instance(directory)
+            obj = {'apiVersion': 'v1', 'kind': 'Service', 'metadata': {'name': 'original'},
+                'spec': {'selector': {'app': 'original'}, 'ports': [{'port': 8080}]}}
+            def create(*args, **kwargs):
+                if args[0] != 'create': return types.SimpleNamespace(stdout=b'')
+                created = json.loads(kwargs['data'])
+                created['metadata'].update(uid='created-uid', resourceVersion='7')
+                created['spec'].update(clusterIP='10.0.0.1')
+                created['spec']['ports'][0]['protocol'] = 'TCP'
+                return types.SimpleNamespace(stdout=json.dumps(created).encode())
+            with patch.object(authority, 'kube', side_effect=create):
+                installer.create(obj)
+            observed = deepcopy(installer.resources[0]['createdPublicIntent'])
+            observed['metadata'].update(uid='created-uid', resourceVersion='9')
+            observed['spec'].update(clusterIP='10.0.0.1')
+            observed['spec']['ports'][0]['protocol'] = 'TCP'
+            with patch.object(authority, 'kjson', return_value=observed), patch.object(authority, 'kube') as native:
+                self.assertEqual(installer.create(obj)['uid'], 'created-uid')
+            native.assert_not_called()
+            observed['spec']['ports'][0]['port'] = 8081
+            with patch.object(authority, 'kjson', return_value=observed), patch.object(authority, 'kube') as native:
+                with self.assertRaisesRegex(RuntimeError, 'intent-changed'):
+                    installer.create(obj)
+            native.assert_not_called()
+
+    def test_same_uid_new_behavior_field_cannot_be_adopted_as_server_default(self):
+        with tempfile.TemporaryDirectory() as directory:
+            installer = self.instance(directory)
+            obj = {'apiVersion': 'apps/v1', 'kind': 'Deployment', 'metadata': {'name': 'original'}, 'spec': {'template': {'spec': {'containers': [{'name': 'app', 'image': 'exact-digest'}]}}}}
+            def native(*args, **kwargs):
+                if args[0] != 'create': return types.SimpleNamespace(stdout=b'')
+                created = json.loads(kwargs['data'])
+                created['metadata'].update(uid='created-uid', resourceVersion='7')
+                return types.SimpleNamespace(stdout=json.dumps(created).encode())
+            with patch.object(authority, 'kube', side_effect=native):
+                installer.create(obj)
+            observed = deepcopy(installer.resources[0]['createdPublicIntent'])
+            observed['metadata'].update(uid='created-uid', resourceVersion='9')
+            observed['spec']['template']['spec']['hostNetwork'] = True
+            with patch.object(authority, 'kjson', return_value=observed):
+                with self.assertRaisesRegex(RuntimeError, 'intent-changed'):
+                    installer.create(obj)
+
+    def test_legacy_public_intent_hash_cannot_be_fabricated_into_recovery_intent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            installer = self.instance(directory)
+            installer.resources = [{'reference': 'ConfigMap/' + authority.NS + '/original', 'phase': 'Created',
+                'uid': 'created-uid', 'resourceVersion': '7', 'intentSha256': 'historical-hash-only'}]
+            with patch.object(authority, 'kube') as native, patch.object(authority, 'kjson') as read:
+                with self.assertRaisesRegex(RuntimeError, 'declared-intent-unavailable'):
+                    installer.create({'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'original'}, 'data': {'public': 'reference'}})
+            native.assert_not_called()
+            read.assert_not_called()
+
+    def test_secret_recovery_rejects_new_version_even_with_original_uid(self):
+        with tempfile.TemporaryDirectory() as directory:
+            installer = self.instance(directory)
+            with patch.object(authority, 'kube', side_effect=[types.SimpleNamespace(stdout=b''), types.SimpleNamespace(stdout=b'created-uid 7')]):
+                installer.secret('original', {'token': 'synthetic-token'})
+            with patch.object(authority, 'secret_identity', return_value={'uid': 'created-uid', 'resourceVersion': '8'}):
+                with self.assertRaisesRegex(RuntimeError, 'identity-changed'):
+                    installer.secret('original', {'token': 'synthetic-token'})
+
     def instance(self, directory):
         value = authority.AuthorityInstaller.__new__(authority.AuthorityInstaller)
         value.evidence = Path(directory)
@@ -38,7 +114,7 @@ class AuthorityInstallationTests(unittest.TestCase):
                     journal = json.loads(installer.journal_path.read_text())
                     self.assertEqual(journal[0]['phase'], 'CreationStarted')
                     self.assertNotIn('credential-value', installer.journal_path.read_text())
-                    return types.SimpleNamespace(stdout=b'secret/new-credential')
+                    return types.SimpleNamespace(stdout=b'uid-original 7')
                 return types.SimpleNamespace(stdout=b'uid-original 7' if any('jsonpath' in item for item in args) else b'')
             with patch.object(authority, 'kube', side_effect=native):
                 installer.secret('new-credential', {'token': 'credential-value'})
@@ -130,9 +206,9 @@ class AuthorityInstallationTests(unittest.TestCase):
                 return types.SimpleNamespace(stdout=json.dumps({'auth': {'client_token': 'offline-observer-credential', 'accessor': 'original-public-accessor', 'lease_duration': 1200}}).encode())
             def application(token, *args, **kwargs):
                 if args[:2] == ('token', 'lookup'):
-                    return types.SimpleNamespace(stdout=b'{"data":{"policies":["ext-secrets-1-inventory-metadata-read"]}}')
+                    return types.SimpleNamespace(stdout=b'{"data":{"accessor":"original-public-accessor","policies":["ext-secrets-1-inventory-metadata-read"]}}')
                 return types.SimpleNamespace(stdout=b'["deny"]')
-            with patch.object(installer, 'bao', side_effect=provision) as provider, patch.object(installer, 'secret'), patch.object(authority, 'application_request', side_effect=application), patch.object(authority, 'delete_matching_credential_secret') as remove:
+            with patch.object(installer, 'bao', side_effect=provision) as provider, patch.object(installer, 'secret', return_value={'uid': 'original-secret', 'resourceVersion': '7'}), patch.object(authority, 'application_request', side_effect=application), patch('install_current_inventory.application_request', side_effect=application), patch('install_current_inventory.delete_matching_credential_secret') as remove:
                 installer.metadata_credential()
                 installer.close()
                 self.assertEqual(provider.call_count, 1)
@@ -161,12 +237,12 @@ class AuthorityInstallationTests(unittest.TestCase):
             installer = self.instance(directory)
             installer.metadata_token = bytearray(b'offline-observer-credential')
             installer.write('metadata-observer-issuance.json', {'phase': 'Stored', 'accessor': 'original-public-accessor', 'existingPolicyChanged': False})
-            with patch.object(authority, 'application_request', side_effect=RuntimeError('native-revoke-unavailable')), patch.object(installer, 'bao') as provider:
+            with patch('install_current_inventory.application_request', side_effect=RuntimeError('native-revoke-unavailable')), patch.object(installer, 'bao') as provider:
                 with self.assertRaisesRegex(RuntimeError, 'native-revoke-unavailable'):
                     installer.close()
                 provider.assert_not_called()
             journal = json.loads((Path(directory) / 'metadata-observer-issuance.json').read_text())
-            self.assertEqual(journal['phase'], 'CredentialCleanupPending')
+            self.assertEqual(journal['revocationPhase'], 'Started')
             self.assertEqual(journal['accessor'], 'original-public-accessor')
             self.assertIsNone(installer.metadata_token)
 

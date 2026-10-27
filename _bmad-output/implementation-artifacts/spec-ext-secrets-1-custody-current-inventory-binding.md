@@ -2,7 +2,7 @@
 title: EXT-SECRETS-1 custody and current-inventory binding
 type: feature
 created: 2026-10-16
-status: in-review
+status: done
 route: dispatch
 baseline_commit: b2890d20575356239555df5b113e3100c1d594c1
 review_loop_iteration: 0
@@ -22,7 +22,7 @@ context: []
 
 **Always:** Reuse Dapr 1.18 and `openbao/StatefulSet/hexalith-keys`. Use operator credentials only for provisioning, then a new restricted application credential. Preserve 2026-10-08, target `f448db29493c1b30b0f18380188fe99b8b7606fe`, L/S/O/H/R = 300/30/600/86400/604800, Open export disposition, and decision keys outside Platform and Agents. Bind discovered current facts; new authority identities/profile records must come from real authorized provisioning and audited owner administration. Authority query and administrator credentials and persistent storage must be separate from custody/provider/registry credentials. Profiles resolve from authority state, never recursively through inventory. Permit new isolated authority resources and narrowly scoped changes to isolated inventory/custody enrollment. Preserve the unrelated dirty checkout. A missing input keeps this task incomplete and names that input, its owner, and the next action.
 
-**Never:** Fabricate pre-existing tenants, mounts, issuers, key versions, anchors, enrollment, independence, or Available status. Change original HMAC versions or validity records, or create successors outside the four explicitly authorized expired mappings. Never extend expired versions. Use operator or Memories credentials as application credentials. Change production workloads, keys, data, Memories, or existing OpenBao policies. Apply null proposed manifests. Edit the Agents register. Run Live or any contract case. Write credential values to git, evidence, or logs.
+**Never:** Fabricate pre-existing tenants, mounts, issuers, key versions, anchors, enrollment, independence, or Available status. Change original HMAC versions or validity records, or create successors outside the four explicitly authorized expired mappings. Never extend expired versions. Use operator or Memories credentials as application credentials. Change production workloads, production keys or data, Memories, or existing OpenBao policies. Apply null proposed manifests. Edit the Agents register. Run Live or any contract case. Write credential values to git, evidence, or logs.
 
 ## I/O & Edge-Case Matrix
 
@@ -195,9 +195,28 @@ HEAD `b2890d20575356239555df5b113e3100c1d594c1` stays dirty with unrelated files
 
 ## Verification
 
-The [coordinator verification](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-inventory-20261016/refresh-20261027T170637456955Z/coordinator-verification.json) passed 16 independent evidence checks. The matrix audit passes missing-input, production-overlap and metadata/health behavior; the facts-present installation row remains blocked by the unverified current credential and missing custody workload binding. Build has not advanced to review or completion.
+### Final isolated binding and Build result — 2026-10-27
+
+The isolated custody binding is complete. The original four expired version-1 HMAC records remain exact; four provider-generated CAS successors are verified at numeric version 2. Separately restricted data/metadata credentials and separate inventory/custody query identities are installed. Two UID-qualified hosts, two callers and four exact successor statuses are enrolled; authority revision is `e19e68c9537246148141ec9d3841cfe4:10`, with all original receipts retained. The existing profile remained current, so no renewal ran. It expires at `2026-10-28T17:37:33.663741Z` and remains owner-maintained.
+
+The actual host composes the existing custody services, `IDaprPlatformHmacAuthority` and `AddExplicitHmac`. Final immutable authority image is `registry.hexalith.com/ext-secrets-1-hmac-authority@sha256:ea2017a757192bb4e6bafe59b2a558a9a9e9671dc3f9f844fd243a6718bc8bfa`; custody image is `registry.hexalith.com/ext-secrets-1-custody@sha256:864428d5dc8405b7b1f1f450102ebe6ecd311a27ab9fd0b57e386c7391ddfc64`. Reviewed source hashes are identical before/after build and installation; native image IDs and installed assembly hashes match published artifacts. The historical inventory image retains its separately recorded build provenance.
+
+Build reviewed 18 findings independently: 13 findings were resolved in eight patch groups, two were refuted, and three operational follow-ups were recorded. Fixes cover exact audiences, original update/create identities, credential accessor/cleanup identity, exact final resource intent, and meaningful digest/shell execution tests. Raw focused test evidence records 30 authority HTTP tests, 28 custody tests, 61 Python tests, and 19 affected installer/preloader rechecks after the last source refinement. The earlier 56 inventory tests remain passing evidence for the unchanged inventory selection fix.
+
+All nine installed `/alive`, `/health`, `/ready` checks pass. The final independent coordinator passed 27/27 checks, including original state/receipt continuity, exact current credentials, key metadata, images/assemblies, preservation and credential exposure. Relative to the review baseline, only two image fields changed. Of the original 939 objects, exactly five authorized isolated objects changed: inventory runtime ConfigMap, inventory/authority Dapr configurations, inventory Deployment, and authority StatefulSet image. All production/Memories workloads, original versions/validity, existing OpenBao mount/auth/policy fingerprints, settled constants, original evidence/journals and the Agents register are preserved. Temporary provisioning/image credentials and Pods are removed. No provider key-data read, extra key write, Live or installed contract/cohort case ran.
+
+Completion is limited to the authorized isolated custody binding. EXT-SECRETS-1 remains Committed and unavailable, with qualification unclaimed. Forty-two remaining null references retain exact owners/actions; future metadata-writer fencing, preload completion recovery and administration-response capacity remain recorded operational follow-ups. These do not authorize repeating the completed successor operation.
+
+Evidence: [final independent verification](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-review-installation-20261027T192149107119Z/coordinator-verification.json), [reviewed source/test receipts](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-review-fixes-20261027T191047412463Z/review-fixes-handoff.json), [original binding/receipts](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-binding-20261027T182648692778Z/run.json), [remaining exact owner actions](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-binding-20261027T182648692778Z/remaining-owner-actions.json).
+
+
+**Historical verification, superseded by the final result above:** The [coordinator verification](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-inventory-20261016/refresh-20261027T170637456955Z/coordinator-verification.json) passed 16 independent evidence checks. The matrix audit passes missing-input, production-overlap and metadata/health behavior; the facts-present installation row remains blocked by the unverified current credential and missing custody workload binding. Build has not advanced to review or completion.
 
 **Commands:**
 - `kubectl get namespace,component.dapr.io -n ext-secrets-1-isolated` and `kubectl get statefulset hexalith-keys -n openbao` — expected: new objects only after a real apply; OpenBao replicas unchanged.
 - Parse `runtime-reference.json` — expected: settled timing and Open disposition unchanged; new fields match discovery; missing fields stay null.
 - `git status --short` — expected: the same unrelated dirty paths, plus this spec.
+
+### Review correction installation
+
+The Build review found exact-audience normalization and provisioning recovery defects. The approved actual-workload implementation includes applying these corrections. Replace only the image field of the existing isolated authority StatefulSet and custody Deployment with reviewed immutable digests, under original UID/resourceVersion/image tests and durable new update journals. Preserve inventory image/configuration, provider component, all credentials/CA references, all key versions and validity, authority storage, state revision and every operation receipt. Recheck current profile/credentials/mappings before these updates. Use new review evidence; do not rerun key, credential, enrollment or original installation operations. Verify metadata/health and image/source provenance afterward, including all original preservation boundaries.

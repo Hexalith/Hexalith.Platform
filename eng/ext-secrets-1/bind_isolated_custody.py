@@ -22,7 +22,7 @@ import uuid
 
 from install_isolated_registry import Installer, NS, ROOT, REGISTER, BAO_CA, BAO_NAME, canonical, env_secret, kube, kjson, sha, snapshot
 from install_current_inventory import application_request
-from install_current_inventory import delete_matching_credential_secret
+from install_current_inventory import cleanup_journaled_credential, read_pinned_credential_secret
 from install_hmac_authority import AuthorityInstaller, APP as AUTHORITY, REALM, ISSUER, QUERY_CLIENT, ADMIN_CLIENT, RUNTIME, forward, administration_request, owner_operation, timestamp
 from native_journal import durable_write, journal_lock
 from preload_isolated_image import preload
@@ -153,11 +153,17 @@ class CustodyInstaller(AuthorityInstaller):
         self.private_values = [bytes(self.token)]
 
     def close(self):
-        for token in self.tokens.values():
-            token[:] = b'\0' * len(token)
-        self.tokens.clear()
-        self.private_values.clear()
-        Installer.close(self)
+        try:
+            issuance = self.evidence / 'provisioner-credential-issuance.json'
+            policy = self.evidence / 'provisioner-policy-journal.json'
+            if issuance.exists() and policy.exists() and json.loads(policy.read_text())['phase'] != 'Removed' and json.loads(issuance.read_text()).get('accessor'):
+                self.remove_provisioner()
+        finally:
+            for token in self.tokens.values():
+                token[:] = b'\0' * len(token)
+            self.tokens.clear()
+            self.private_values.clear()
+            Installer.close(self)
 
     def secret_field(self, name, field):
         value = Installer.secret_field(self, name, field)
@@ -174,14 +180,22 @@ class CustodyInstaller(AuthorityInstaller):
         name = APP + '-' + role + '-' + self.run['runId'][:12]
         if path.exists():
             journal = json.loads(path.read_text())
-            if journal['phase'] != 'Stored':
+            if journal['phase'] != 'Stored' or journal.get('policy') != policy or journal.get('secretName') != name:
                 raise RuntimeError('original-' + role + '-credential-issuance-needs-reconciliation')
-            token = bytearray(self.secret_field(name, 'token').encode())
+            token = read_pinned_credential_secret(name, journal.get('secretIdentity'))
+            try:
+                lookup = json.loads(application_request(token, 'token', 'lookup', '-format=json').stdout)['data']
+                if not journal.get('accessor') or lookup.get('accessor') != journal['accessor']:
+                    raise RuntimeError('original-' + role + '-credential-accessor-changed')
+            except Exception:
+                token[:] = b'\0' * len(token)
+                raise
         else:
             if kube('get', 'secret', name, '-n', NS, '--ignore-not-found', '-o', 'name').stdout.strip():
                 raise RuntimeError('new-credential-name-overlap')
             journal = {'phase': 'IssuanceStarted', 'issuanceId': uuid.uuid4().hex, 'policy': policy, 'startedAt': timestamp(),
-                'secretName': name, 'credentialReference': NS + '/Secret/' + name + '#token', 'existingPolicyChanged': False}
+                'secretName': name, 'credentialReference': NS + '/Secret/' + name + '#token', 'existingPolicyChanged': False,
+                'secretCreationPhase': 'NotStarted'}
             durable_write(path, journal, create_only=True)
             token = None
             try:
@@ -190,21 +204,22 @@ class CustodyInstaller(AuthorityInstaller):
                     'ttl': '1200s' if role == 'provisioner' else '24h', 'explicit_max_ttl': '1200s' if role == 'provisioner' else '168h',
                     'renewable': role != 'provisioner'})).stdout)['auth']
                 token = bytearray(auth.pop('client_token').encode())
+                self.tokens[role] = token
                 self.private_values.append(bytes(token))
                 journal.update({'phase': 'Issued', 'accessor': auth['accessor'], 'leaseDuration': auth['lease_duration'], 'issuedAt': timestamp()})
                 durable_write(path, journal)
-                self.secret(name, {'token': bytes(token).decode()})
-                journal['phase'] = 'Stored'
+                journal['secretCreationPhase'] = 'Started'
+                durable_write(path, journal)
+                journal['secretIdentity'] = self.secret(name, {'token': bytes(token).decode()})
+                journal.update({'phase': 'Stored', 'secretCreationPhase': 'Created'})
                 durable_write(path, journal)
             except Exception:
                 journal['phase'] = 'IssuanceUnknown' if token is None else 'CredentialStorageNeedsReconciliation'
                 durable_write(path, journal)
-                if token is not None:
-                    token[:] = b'\0' * len(token)
                 raise
         self.tokens[role] = token
         lookup = json.loads(application_request(token, 'token', 'lookup', '-format=json').stdout)['data']
-        if lookup['policies'] != [policy] or lookup['ttl'] <= 0:
+        if lookup.get('accessor') != journal['accessor'] or lookup['policies'] != [policy] or lookup['ttl'] <= 0:
             raise RuntimeError('current-' + role + '-credential-policy-or-lease-mismatch')
         for forbidden in ('secret/data/*', 'sys/policies/acl/*', MOUNT + '/data/*' if role in ('metadata', 'provisioner') else MOUNT + '/metadata/*'):
             if json.loads(application_request(token, 'token', 'capabilities', '-format=json', forbidden).stdout) != ['deny']:
@@ -254,18 +269,31 @@ class CustodyInstaller(AuthorityInstaller):
         journal = json.loads(policy_path.read_text())
         issuance_path = self.evidence / 'provisioner-credential-issuance.json'
         issuance = json.loads(issuance_path.read_text())
-        token = self.tokens['provisioner']
-        application_request(token, 'token', 'revoke', '-self')
-        delete_matching_credential_secret(issuance['secretName'], token)
-        issuance.update({'phase': 'RevokedAndOwnedSecretRemoved', 'revokedAt': timestamp()})
-        self.write(issuance_path.name, issuance)
-        if self.bao('policy', 'read', journal['name']).stdout.strip() != journal['policy'].encode().strip():
-            raise RuntimeError('run-owned-provisioner-policy-changed-no-delete')
-        self.bao('policy', 'delete', journal['name'])
-        journal.update({'phase': 'Removed', 'removedAt': timestamp()})
+        if journal.get('runId') != self.run['runId'] or journal.get('name') != APP + '-successor-' + self.run['runId'][:12]:
+            raise RuntimeError('original-run-owned-provisioner-policy-required-no-delete')
+        try:
+            cleanup_journaled_credential(self, issuance_path, issuance['secretName'], self.tokens.get('provisioner'))
+        finally:
+            if json.loads(issuance_path.read_text()).get('revocationPhase') == 'Acknowledged':
+                token = self.tokens.pop('provisioner', None)
+                if token is not None:
+                    token[:] = b'\0' * len(token)
+        names = json.loads(self.bao('policy', 'list', '-format=json').stdout)
+        if journal.get('removalPhase') == 'Started':
+            if journal['name'] in names:
+                raise RuntimeError('original-provisioner-policy-removal-outcome-needs-reconciliation')
+        elif journal['name'] not in names:
+            if journal['phase'] != 'Removed':
+                raise RuntimeError('original-provisioner-policy-unexpectedly-absent')
+            return
+        else:
+            if self.bao('policy', 'read', journal['name']).stdout.strip() != journal['policy'].encode().strip():
+                raise RuntimeError('run-owned-provisioner-policy-changed-no-delete')
+            journal['removalPhase'] = 'Started'
+            self.write(policy_path.name, journal)
+            self.bao('policy', 'delete', journal['name'])
+        journal.update({'phase': 'Removed', 'removalPhase': 'Acknowledged', 'removedAt': timestamp()})
         self.write(policy_path.name, journal)
-        token[:] = b'\0' * len(token)
-        del self.tokens['provisioner']
 
 
 def preserve_original_journals(installer):
@@ -462,7 +490,10 @@ def replace_public(installer, kind, name, value, journal_suffix=''):
     path = installer.evidence / ('update-' + kind.lower() + '-' + name + journal_suffix + '.json')
     material = deepcopy(value)
     material.pop('status', None)
-    material['metadata'] = deepcopy(before['metadata'])
+    supplied = value.get('metadata', {})
+    if supplied.get('uid') != before['metadata']['uid'] or not supplied.get('resourceVersion'):
+        raise RuntimeError('original-supplied-update-precondition-required')
+    material['metadata'] = deepcopy(supplied)
     material['metadata'].pop('managedFields', None)
     # Exact native resourceVersion is the update precondition.
     intended = public_object(material)
@@ -475,6 +506,8 @@ def replace_public(installer, kind, name, value, journal_suffix=''):
         journal.update({'phase': 'ReconciledCurrent', 'observedResourceVersion': before['metadata']['resourceVersion']})
         installer.write(path.name, journal)
         return
+    if supplied['resourceVersion'] != before['metadata']['resourceVersion']:
+        raise RuntimeError('stale-supplied-update-resource-version-no-replace')
     journal = {'phase': 'ReplacementStarted', 'reference': key, 'uid': before['metadata']['uid'],
         'expectedResourceVersion': before['metadata']['resourceVersion'], 'intendedPublicObject': intended,
         'originalPublicObject': public_object(before), 'intentSha256': sha(canonical(intended))}
@@ -695,6 +728,7 @@ def http_health(service, port):
 def verify(installer, plan):
     before = json.loads((installer.evidence / 'preserved-kubernetes-before.json').read_text())
     after = snapshot()
+    verify_final_public_intents(installer, before, after)
     changed = [key for key, value in before.items() if after.get(key) != value]
     unexpected = sorted(set(changed) - MUTABLE)
     openbao_same = json.loads((installer.evidence / 'preserved-openbao-before.json').read_text()) == installer.openbao_snapshot()
@@ -718,6 +752,33 @@ def verify(installer, plan):
     if any(health[name]['/ready']['status'] != 200 for name in ('custody', 'inventory', 'authority')):
         raise RuntimeError('current-metadata-readiness-not-established')
     return health
+
+
+def verify_final_public_intents(installer, before, after):
+    final_journals = {
+        'Deployment/' + NS + '/inventory': 'update-deployment-inventory-canonical-runtime-file.json',
+        'ConfigMap/' + NS + '/ext-secrets-1-inventory-runtime': 'update-configmap-ext-secrets-1-inventory-runtime.json',
+        'Configuration/' + NS + '/ext-secrets-1-inventory': 'update-configuration-ext-secrets-1-inventory.json',
+        'Configuration/' + NS + '/' + AUTHORITY: 'update-configuration-' + AUTHORITY + '.json',
+    }
+    owned_key = 'Deployment/' + NS + '/' + APP
+    owned = next((item for item in getattr(installer, 'resources', []) if item['reference'] == owned_key and item['phase'] == 'Created'), None)
+    if owned:
+        final_journals[owned_key] = 'update-deployment-' + APP + '-canonical-runtime-file.json'
+    for key, name in final_journals.items():
+        original = before.get(key) or (owned if key == owned_key else None)
+        if not original or after.get(key, {}).get('uid') != original['uid']:
+            raise RuntimeError('final-isolated-resource-original-uid-mismatch:' + key)
+        path = installer.evidence / name
+        if not path.exists():
+            raise RuntimeError('final-isolated-public-intent-journal-required:' + key)
+        journal = json.loads(path.read_text())
+        if journal.get('uid') != original['uid'] or journal.get('reference') != key or journal.get('phase') not in ('Replaced', 'ReconciledCurrent') or 'intendedPublicObject' not in journal:
+            raise RuntimeError('final-isolated-public-intent-unverified:' + key)
+        kind, namespace, resource_name = key.split('/')
+        observed = kjson('get', kind, resource_name, '-n', namespace)
+        if observed['metadata']['uid'] != original['uid'] or public_object(observed) != public_object(journal['intendedPublicObject']):
+            raise RuntimeError('unjournaled-final-isolated-resource-drift:' + key)
 
 
 def record_observation(installer, name, value):
@@ -912,6 +973,8 @@ def main():
                 return 0
             installer = CustodyInstaller(evidence, args.custody_image, args.inventory_image)
             install(installer)
+            installer.close()
+            installer = None
         print('isolated-custody-metadata-bound; dependency remains unavailable; Live and contract cases unrun', flush=True)
         return 0
     except Exception as error:
@@ -928,7 +991,13 @@ def main():
         return 1
     finally:
         if installer is not None:
-            installer.close()
+            try:
+                installer.close()
+            except Exception:
+                durable_write(evidence / ('credential-cleanup-failure-' + uuid.uuid4().hex + '.json'), {
+                    'observedAt': timestamp(), 'owner': 'Provider credential administrator',
+                    'action': 'Reconcile the original revocation/Secret/policy cleanup journals; do not repeat an uncertain operation.',
+                    'originalJournalsRetained': True, 'dependencyAvailable': False})
 
 
 if __name__ == '__main__':

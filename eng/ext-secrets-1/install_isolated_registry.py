@@ -36,6 +36,12 @@ def creation_identity(output):
     return {'uid': fields[0], 'resourceVersion': fields[1]}
 
 
+def require_creation_identity(identity):
+    if not isinstance(identity, dict) or any(not isinstance(identity.get(key), str) or not identity[key] for key in ('uid', 'resourceVersion')):
+        raise RuntimeError('original-secret-creation-identity-required')
+    return {key: identity[key] for key in ('uid', 'resourceVersion')}
+
+
 def sha(value):
     return hashlib.sha256(value).hexdigest()
 
