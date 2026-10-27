@@ -1,0 +1,223 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T20:17:37.972142+00:00",
+  "reviewPass": "14-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review14_blind",
+    "/root/review14_edge",
+    "/root/review14_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-958ti3x7/scope.json",
+  "reviewDiffSha256": "54c4f0f7759c6a4a9e5d11929ccebf9604d33ead7dfef6730ae068ae0def2912",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "findings": [
+    {
+      "id": "R14B-1",
+      "verdict": "high",
+      "evidence": "CustodyIndependentRoleReceiver reads/deserializes a candidate128MiB frame before scoped workload authentication and has no receiving semaphore. Program limits each body but not concurrent bodies/responses. The separate IndependentAuthorityReceiver four-slot ownership does not wrap this service endpoint. A valid app-channel caller can therefore create unbounded concurrent large receiving allocations.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-2",
+      "verdict": "high",
+      "evidence": "CustodyIndependentRoleReceiver receives only an Allowed boolean from custody-role-authorize, then awaits current/native/control/original reads and preparation admission before returning. Sign uses now+30s independently of workload expiry, and none of its prepare/observe/authorize success exits revalidates that workload grant. The authority authenticates its own service caller at each RPC, which does not recheck the distinct original workload grant at issuance.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-3",
+      "verdict": "high",
+      "evidence": "existing_database checks an absolute lexical path and opens SQLite mode=rw, but neither parent/final link nor enrolled database inode/placement is checked. Root disposable probe used the same absolute link: it first read fixture1, then fixture2 after link replacement. Both authority and phase owner reconnect through this helper, so a path can silently select different surviving history. No upstream pinned database/journal placement gate exists.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-4",
+      "verdict": "medium",
+      "evidence": "CohortAuthorityStore.reserve inserts the caller attemptId without any type/format/length check. Root used the existing disposable store fixture and retained a990000-character invalid identifier; no executor/phase/effect was run. Later publish carries both request and result identity and can exceed the1MiB frame. The coordinator already generates UUIDs, so validate that existing closed shape before a new INSERT.",
+      "route": "patch"
+    },
+    {
+      "id": "R14B-5",
+      "verdict": "high",
+      "evidence": "PreparePrivatePublicationAsync reserves physical bytes before publication-count/free-space checks and the head CAS. Both refusal and losing CAS return without releasing or durably reconciling that unadmitted ticket. The spool reservation has the same before-CAS order. EnsureLegacyAsync only adjusts legacy coverage; it never reconciles abandoned tickets. This is a new independent pool defect, distinct from earlier native immutable-object/CAS accounting.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-6",
+      "verdict": "high",
+      "evidence": "IndependentArchiveCapacity.ReserveAsync accepts any existing ticket with no comparison of owner/kind/initial bytes/completion or immutable request commitment. If a smaller terminal-at-admission pre-CAS reservation survives failure, a later nonterminal request with the same role/id can pass this method and admit a larger liability on that smaller reservation. The subsequent owner-publication equality check cannot reject a previous request whose head CAS never committed.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-7",
+      "verdict": "high",
+      "evidence": "RetainedPhaseOwner durably inserts phase_originals(request,NULL), commits, and invokes the native executor before allocating result_json in a later transaction. No physical/SQLite result or journal completion capacity is reserved at admission, and there is no shared transfer fence/installed capacity protocol for this path. FULL synchronous transactions preserve old state but cannot allocate missing completion space after effects. Unknown prevents resend; it does not supply the promised retained completion.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-8",
+      "verdict": "medium",
+      "evidence": "CoordinatedProtectionAcceptance.CanonicalHash explicitly emits unescaped Unicode, while joint_live_phase_runner.canonical uses ensure_ascii=True. Runner preflight validates required binding fields but permits unique extensions; accepted packet generation hashes the complete binding. A legitimate extension containing Unicode therefore has different producer/consumer digests. Rejecting preserved extension fields would violate complete commitment preservation; one exact interoperable encoding is needed.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14B-9",
+      "verdict": "false",
+      "evidence": "The actual dynamic receiving producer is finite: Fr34OccurrenceProducer.Valid caps one constructor-owned recipe at128 slots and32 read uses per slot, Resolve/Material can return only those exact claims/uses, and Fr34OccurrenceOperationHandler requires its exact recipe hash under current authority. Static enrolledProfiles are also finite. There is no implemented live recipe replenishment/rollover; that exact external protocol remains a blocker. Retaining duplicate-prevention identifiers for this bounded admitted set does not establish the alleged unbounded normal production path. Removing them would weaken the existing no-repeat guard.",
+      "route": "rejected"
+    },
+    {
+      "id": "R14B-10",
+      "verdict": "high",
+      "evidence": "Production ValidateAcceptedContext seals all profile values including source-root strings, but no accepted source/artifact inventory covers the sibling bytes. RequireProject only reads the csproj, then AddProject builds/launches the live path. Editing another source file at the same accepted path leaves the accepted seal and every gate unchanged. This is distinct from corrected R11B-1 profile/dictionary mutation: the profile itself is unchanged here.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14E-1",
+      "verdict": "high",
+      "evidence": "Reserve/Commit check current serialized ledger size but reserve no transfer-marker slot or future ledger growth. Root reran the reviewer disposable harness compiling unchanged source:4096 outstanding transfers admit a new ticket, and its first result publication then throws Bounded shared capacity metadata exhausted. The4MiB ledger also has the same unreserved future-growth boundary. Source byte quotas alone do not protect completion metadata.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14E-2",
+      "verdict": "high",
+      "evidence": "EnsureLegacyAsync subtracts every original ticket admitted at or before the revision, including one whose result is already durable but whose ticket has not settled. The receiver exposes that window between head commit and SettleCompletedTicketsAsync. Root reran the unchanged-source harness: reconciliation released an unrelated1MiB legacy reserve, and subsequent settlement left it zero. Earlier zero-row settlement guards cover a later window, not this still-positive completed ticket.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R14V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap, trusted as filed: ObserveAsync now copies target.SourceVersion into a new record, but actual spool/owning-process fixtures use target version0. Recorder tests construct version2 records directly. Removing propagation leaves both suites green while newly observed version2 installations route to the legacy stream. Add actual Observe/restart/drain coverage of persisted version and exact hashed receipt destination.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R14B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "CustodyIndependentRoleReceiver reads/deserializes a candidate128MiB frame before scoped workload authentication and has no receiving semaphore. Program limits each body but not concurrent bodies/responses. The separate IndependentAuthorityReceiver four-slot ownership does not wrap this service endpoint. A valid app-channel caller can therefore create unbounded concurrent large receiving allocations."
+    },
+    {
+      "members": [
+        "R14B-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "CustodyIndependentRoleReceiver receives only an Allowed boolean from custody-role-authorize, then awaits current/native/control/original reads and preparation admission before returning. Sign uses now+30s independently of workload expiry, and none of its prepare/observe/authorize success exits revalidates that workload grant. The authority authenticates its own service caller at each RPC, which does not recheck the distinct original workload grant at issuance."
+    },
+    {
+      "members": [
+        "R14B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "existing_database checks an absolute lexical path and opens SQLite mode=rw, but neither parent/final link nor enrolled database inode/placement is checked. Root disposable probe used the same absolute link: it first read fixture1, then fixture2 after link replacement. Both authority and phase owner reconnect through this helper, so a path can silently select different surviving history. No upstream pinned database/journal placement gate exists."
+    },
+    {
+      "members": [
+        "R14B-4"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "CohortAuthorityStore.reserve inserts the caller attemptId without any type/format/length check. Root used the existing disposable store fixture and retained a990000-character invalid identifier; no executor/phase/effect was run. Later publish carries both request and result identity and can exceed the1MiB frame. The coordinator already generates UUIDs, so validate that existing closed shape before a new INSERT."
+    },
+    {
+      "members": [
+        "R14B-5"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "PreparePrivatePublicationAsync reserves physical bytes before publication-count/free-space checks and the head CAS. Both refusal and losing CAS return without releasing or durably reconciling that unadmitted ticket. The spool reservation has the same before-CAS order. EnsureLegacyAsync only adjusts legacy coverage; it never reconciles abandoned tickets. This is a new independent pool defect, distinct from earlier native immutable-object/CAS accounting."
+    },
+    {
+      "members": [
+        "R14B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "IndependentArchiveCapacity.ReserveAsync accepts any existing ticket with no comparison of owner/kind/initial bytes/completion or immutable request commitment. If a smaller terminal-at-admission pre-CAS reservation survives failure, a later nonterminal request with the same role/id can pass this method and admit a larger liability on that smaller reservation. The subsequent owner-publication equality check cannot reject a previous request whose head CAS never committed."
+    },
+    {
+      "members": [
+        "R14B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "RetainedPhaseOwner durably inserts phase_originals(request,NULL), commits, and invokes the native executor before allocating result_json in a later transaction. No physical/SQLite result or journal completion capacity is reserved at admission, and there is no shared transfer fence/installed capacity protocol for this path. FULL synchronous transactions preserve old state but cannot allocate missing completion space after effects. Unknown prevents resend; it does not supply the promised retained completion."
+    },
+    {
+      "members": [
+        "R14B-8"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "CoordinatedProtectionAcceptance.CanonicalHash explicitly emits unescaped Unicode, while joint_live_phase_runner.canonical uses ensure_ascii=True. Runner preflight validates required binding fields but permits unique extensions; accepted packet generation hashes the complete binding. A legitimate extension containing Unicode therefore has different producer/consumer digests. Rejecting preserved extension fields would violate complete commitment preservation; one exact interoperable encoding is needed."
+    },
+    {
+      "members": [
+        "R14B-10"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Production ValidateAcceptedContext seals all profile values including source-root strings, but no accepted source/artifact inventory covers the sibling bytes. RequireProject only reads the csproj, then AddProject builds/launches the live path. Editing another source file at the same accepted path leaves the accepted seal and every gate unchanged. This is distinct from corrected R11B-1 profile/dictionary mutation: the profile itself is unchanged here."
+    },
+    {
+      "members": [
+        "R14E-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Reserve/Commit check current serialized ledger size but reserve no transfer-marker slot or future ledger growth. Root reran the reviewer disposable harness compiling unchanged source:4096 outstanding transfers admit a new ticket, and its first result publication then throws Bounded shared capacity metadata exhausted. The4MiB ledger also has the same unreserved future-growth boundary. Source byte quotas alone do not protect completion metadata."
+    },
+    {
+      "members": [
+        "R14E-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "EnsureLegacyAsync subtracts every original ticket admitted at or before the revision, including one whose result is already durable but whose ticket has not settled. The receiver exposes that window between head commit and SettleCompletedTicketsAsync. Root reran the unchanged-source harness: reconciliation released an unrelated1MiB legacy reserve, and subsequent settlement left it zero. Earlier zero-row settlement guards cover a later window, not this still-positive completed ticket."
+    },
+    {
+      "members": [
+        "R14V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap, trusted as filed: ObserveAsync now copies target.SourceVersion into a new record, but actual spool/owning-process fixtures use target version0. Recorder tests construct version2 records directly. Removing propagation leaves both suites green while newly observed version2 installations route to the legacy stream. Add actual Observe/restart/drain coverage of persisted version and exact hashed receipt destination."
+    }
+  ],
+  "filedFindingCount": 13,
+  "survivors": 12,
+  "rejected": 1,
+  "rootCauseGroups": 12,
+  "rootReproductions": {
+    "physicalHarness": "/tmp/story54-edge-repro/repro.csproj",
+    "physicalHarnessSourceSha256": "3cdf531d9a642b429e073ced9c7662b7324e68ac461f41c5d5c44e13de9abbd2",
+    "physicalOutput": [
+      "New ticket admitted while Transfers.Count = 4096",
+      "Admitted result blocked: Bounded shared capacity metadata exhausted.",
+      "Remaining reserve for still-pending legacy 1048576-byte liability after other completion: 0"
+    ],
+    "sqlitePlacementProbe": {
+      "selectedBefore": 1,
+      "sameLocatorAfterSymlinkSwap": 2
+    },
+    "invalidAttemptFixtureLength": 990000,
+    "actualInstalledEvidence": false,
+    "nativeOrCohortEffects": 0
+  },
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

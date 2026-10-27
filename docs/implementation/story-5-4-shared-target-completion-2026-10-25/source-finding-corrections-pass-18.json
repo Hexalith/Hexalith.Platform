@@ -1,0 +1,111 @@
+[
+  {
+    "finding": "R17B-1",
+    "correction": "One caller-linked startup deadline captures source and receiving profiles once, then delegates the captured receiving profile with the independent original lifetime.",
+    "source": "src/Hexalith.Platform.Protection/JointPhaseSourceExecutable.cs",
+    "sourceSha256": "2ade59770c58ba985875fe8dfd6faf7352c82a51923c912d38c36c0ada324005",
+    "actualCallerTest": "JointPhaseSourceStartupTests",
+    "newFocusedRows": 2,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17B-2",
+    "correction": "Both FR34 handlers require receiver current-head reread/CAS. Result policy binds exact target, common authorization revision, recipe and trust; command policy includes exact consulted caller/principal workload grants, method purposes, revocation and expiry. Unrelated journals remain outside policy. The same policy is checked again after awaited final conditional admission, including nested expiry without a head-byte change.",
+    "source": "src/Hexalith.Platform.Protection/Fr34CommandAuthorizationHandler.cs",
+    "sourceSha256": "0e25197d5ac5a431a966a748b52a7ff31bcafa581c2e7945e414816dde94d9e6",
+    "actualCallerTest": "ActualCommandAndOccurrenceRepliesRereadExactCurrentAuthorityAfterAwaitedOriginalRead",
+    "newFocusedRows": 17,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null,
+    "postCasActualCallerTest": "ActualCommandReplyRechecksNestedExpiryAfterAwaitedFinalConditionalAdmission",
+    "postCasRows": 2,
+    "postCasRedGreenEvidence": {
+      "path": "/tmp/story54-round18-x22jbu27/post-cas-red-green-evidence.json",
+      "sha256": "754808bc434f126352ce08d46cbfd06c3fef037e4cf8cee2c1a413ab00f27dfc"
+    }
+  },
+  {
+    "finding": "R17B-3",
+    "correction": "Connection-owned documented public SQLite VFS implements main IO over its own exact independently enrolled descriptor. DELETE journals use held parent; main descriptor identity and namespace changes are checked inside xOpen. No process-wide FD attribution or private object layout. Per-connection public ABI callbacks are retained through actual native final close.",
+    "source": "eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+    "sourceSha256": "f58e01156e042f156d6b4d4c2f420681c8486580d1733b6dba65981f01ae75e8",
+    "actualCallerTest": "ActualSqliteConnectionOwnershipTests",
+    "newFocusedRows": 6,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17B-4",
+    "correction": "Private selected input reads use readv directly into one writable bytearray, including a growth sentinel. Every owned region clears on parsing success, faults, growth, cancellation and late reads. No private hashing or immutable os.read chunks.",
+    "source": "eng/ext-secrets-1/bounded_file_io.py",
+    "sourceSha256": "d4797d27e461d0c3f3f6346d5e0740eb6b36fbfa70a523e9c9ecce07f646e5e2",
+    "actualCallerTest": "PrivateFileOwnershipTests",
+    "newFocusedRows": 2,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17B-5",
+    "correction": "All three actual qualification Programs acquire a finite receiver owner before authentication/body/JSON/dispatch. One linked acquisition deadline and tracked leaf tasks retain owners through late authenticators, body reads, providers, original writes and response delivery/client loss.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpReceiver.cs",
+    "sourceSha256": "aeae798fc41d42fbcff50774cee67200863080fbd13888268421b3b93fc30b95",
+    "actualCallerTest": "QualificationHttpOwnershipTests",
+    "newFocusedRows": 10,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17B-7",
+    "correction": "Proof verifier and installed role composition rethrow actual caller cancellation. Composition checks cancellation before missing-input interpretation and through anchor loading before DI registration. Malformed inputs still refuse; internal timeout interpretation remains separate.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/QualificationProofVerifier.cs",
+    "sourceSha256": "10d054d9ce7bf65ba2cb213d46ab3cbdabff63391f910797c6a941a8e249a4af",
+    "actualCallerTest": "CallerCancellationPropagatesBeforeAuthenticationCompositionOrPublicVerification",
+    "newFocusedRows": 1,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null,
+    "existingCancellationRegression": "BoundedRoleStartupTests retains its four input rows and three roles; the caller-cancelled composition branch now asserts the required OperationCanceledException and empty DI. Both existing 2-second process startup checks remain unchanged.",
+    "isolatedExistingStartupRowsPassed": 6,
+    "historicalFailedFullRuntimeXml": "/tmp/story54-round18-x22jbu27/historical/freeze-3/final-serial-local-evidence/runtime-tests.xml"
+  },
+  {
+    "finding": "R17B-9",
+    "correction": "Persisted source observer now reads REQUIRED from the single closed_phase_invariants mapping. Full existing source/phase/inventory cases remain unchanged.",
+    "source": "eng/ext-secrets-1/joint_authority_service.py",
+    "sourceSha256": "854f064ef26d7e39eb61dd74c8e0c3b3540dc1d02b6a502f9162d11f8c0b627d",
+    "actualCallerTest": "full secrets Python suite",
+    "newFocusedRows": null,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17B-10",
+    "correction": "Fixed closed-vocabulary process counters distinguish timeout, saturation, actual conditional-save conflict, malformed request/enrolled state, incomplete current enrollment, refusal, storage/handler failures and caller cancellation. No bodies, exceptions, IDs, locators, hashes or untrusted text are stored or emitted; no durable diagnostic IO, queue, timer or external collector.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingDiagnostics.cs",
+    "sourceSha256": "afc364c1c0999cb1567762589ba45f61edfc3a1eb3fcf4f3e9e1cf5a3be6c957",
+    "actualCallerTest": "IndependentReceivingDiagnosticTests",
+    "newFocusedRows": 4,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17E-1",
+    "correction": "At-boundary effect and trigger tasks are joined with Task.WhenAll before propagating either failure or collecting ordered observations. Actual receiving workflow keeps the still running trigger and its exact ordinal/input original until settled.",
+    "source": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+    "sourceSha256": "6315fdd9852df9c33f6a500196cb2222c5324cc254948c696b6a4bc4f0210cf2",
+    "actualCallerTest": "QualificationGuardJoinTests",
+    "newFocusedRows": 1,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  },
+  {
+    "finding": "R17V-1",
+    "correction": "Actual replay registration/receiving/native source commits, then case-result retention fails. A recreated registered workflow recovers through QualificationBoundSourceCaseDriver.LookupAsync, retaining the exact original receipt with unchanged first-seen command bytes/event identity, one native registration, and current exact read scope. Missing stage protocol remains unavailable.",
+    "source": "src/Hexalith.Platform.Protection/QualificationReplayCaseWorkflow.cs",
+    "sourceSha256": "3ae1ca8198f05ceea9a25554811ecc7386f1b986f0146b14ce073fdb4d4369d7",
+    "actualCallerTest": "ActualReplayCaseRegisteredLookupRecoversNativeFirstSeenAfterCaseResultRetentionLoss",
+    "newFocusedRows": 1,
+    "fixtureOnly": true,
+    "actualInstalledEvidence": null
+  }
+]

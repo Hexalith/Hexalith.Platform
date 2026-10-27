@@ -33,6 +33,8 @@ internal interface IAuthorityStore
 {
     Task<CurrentState> ReadAsync(string tenant, CancellationToken cancellationToken);
     Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken cancellationToken);
+    Task<ObjectVersion> PutCompletionImmutableAsync(ReadOnlyMemory<byte> bytes,string category,string tenant,string operationId,CancellationToken token)=>PutImmutableAsync(bytes,category,token);
+    Task<ObjectVersion> PutIntentCompletionAsync(ReadOnlyMemory<byte> bytes,string locator,string tenant,string operationId,CancellationToken token)=>PutIntentResultAsync(bytes,locator,token);
     Task<byte[]> ReadImmutableAsync(ObjectVersion version, CancellationToken cancellationToken);
     Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken cancellationToken);
     Task<ObjectVersion?> FindIntentResultAsync(string locator, CancellationToken cancellationToken);

@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Globalization;
 using Dapr.Client;
 
 namespace Hexalith.Platform.Custody;
@@ -10,13 +11,14 @@ internal sealed class DaprExportQualificationReferenceReader(DaprClient client,I
     internal async Task<byte[]?> ReadAsync(DaprExportQualificationReference reference,bool active,Func<string,byte[]> decode,CancellationToken token)
     {
         if(new[]{reference.Component,reference.Key,reference.Version,reference.Field}.Any(value=>string.IsNullOrWhiteSpace(value) || value.Length>2048 || value.Any(char.IsControl))) return null;
+        if(!ulong.TryParse(reference.Version,NumberStyles.None,CultureInfo.InvariantCulture,out ulong nativeVersion) || nativeVersion==0
+            || nativeVersion.ToString(CultureInfo.InvariantCulture)!=reference.Version) return null;
         var before=await CurrentAsync(reference,active,token).ConfigureAwait(false);if(before is null) return null;
         Dictionary<string,string>? response=null;byte[]? decoded=null;bool transferred=false;
         try
         {
             var pending=client.GetSecretAsync(reference.Component,reference.Key,new Dictionary<string,string>{{"version_id",reference.Version}},token);
-            try { response=await pending.WaitAsync(token).ConfigureAwait(false); }
-            catch { _=pending.ContinueWith(task=> { if(task.Status==TaskStatus.RanToCompletion) task.Result.Clear();else _=task.Exception; },CancellationToken.None,TaskContinuationOptions.ExecuteSynchronously,TaskScheduler.Default);throw; }
+            response=await pending.ConfigureAwait(false);
             token.ThrowIfCancellationRequested();
             if(response.Count!=1 || !response.TryGetValue(reference.Field,out string? field) || field.Length is 0 or >16384) return null;
             decoded=decode(field);response.Clear();response=null;
@@ -28,9 +30,9 @@ internal sealed class DaprExportQualificationReferenceReader(DaprClient client,I
     }
     internal async Task<PlatformKeyInventorySnapshot?> CurrentAsync(DaprExportQualificationReference reference,bool active,CancellationToken token)
     {
-        var key=reference.InventoryKey;
+        token.ThrowIfCancellationRequested();var key=reference.InventoryKey;
         if(!await authority.AuthorizeOperationAsync(key,"ResolveExportQualificationMaterial",token).ConfigureAwait(false)) return null;
-        var state=await inventory.ReadAsync(key).WaitAsync(token).ConfigureAwait(false);
+        token.ThrowIfCancellationRequested();var state=await inventory.ReadAsync(key).ConfigureAwait(false);token.ThrowIfCancellationRequested();
         if(state.TenantId!=key.TenantId || state.Purpose!=key.Purpose || state.KeyAlias!=key.KeyAlias || state.Revision<1
             || state.Versions.Count(value=>value.Key==key && (value.State==PlatformHmacKeyState.Active || !active && value.State==PlatformHmacKeyState.Retained))!=1
             || !await authority.ValidateStateAsync(key,state.Revision,Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(state))),token).ConfigureAwait(false)) return null;

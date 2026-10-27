@@ -1,0 +1,50 @@
+[
+  {
+    "dependency": "EXT-SECRETS-1",
+    "observedAtUtc": "2026-10-26T06:10:47.120886+00:00",
+    "argv": [
+      "python3",
+      "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/prepare_acceptance.py",
+      "--root",
+      "/home/administrator/projects/hexalith/platform",
+      "--configuration",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z/runtime-reference.json",
+      "--output",
+      "/tmp/story54-owner-resume-m_0cm83d/secrets-packet-preparation",
+      "--artifacts-argument",
+      "/tmp/story54-owner-resume-m_0cm83d/future-secrets-artifacts",
+      "--evidence-argument",
+      "/tmp/story54-owner-resume-m_0cm83d/future-secrets-evidence",
+      "--register",
+      "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+    ],
+    "exitCode": 2,
+    "stdout": "EXT-SECRETS-1.prepare.stdout.json",
+    "stderr": "EXT-SECRETS-1.prepare.stderr.log",
+    "scriptSha256": "e2d192e51f8bc22d72b1decbf8e0c2df7a4755aa036594ee5f980fe3d9be9d3a",
+    "preparationOnly": true,
+    "liveOwnerCommandExecuted": false
+  },
+  {
+    "dependency": "EXT-HOST-1",
+    "observedAtUtc": "2026-10-26T06:10:47.434027+00:00",
+    "argv": [
+      "python3",
+      "/home/administrator/projects/hexalith/platform/eng/ext-host-1/prepare_acceptance.py",
+      "--root",
+      "/home/administrator/projects/hexalith/platform",
+      "--profile",
+      "/home/administrator/hexalith-host-evidence/ext-host-1/runtime-composition-abbec40/agents-deployment-profile.json",
+      "--output",
+      "/tmp/story54-owner-resume-m_0cm83d/host-packet-preparation",
+      "--register",
+      "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+    ],
+    "exitCode": 2,
+    "stdout": "EXT-HOST-1.prepare.stdout.json",
+    "stderr": "EXT-HOST-1.prepare.stderr.log",
+    "scriptSha256": "a072fb0a7b772d5503a793c002b87ecf35252c1aa8cd576909dec87a47d5deef",
+    "preparationOnly": true,
+    "liveOwnerCommandExecuted": false
+  }
+]

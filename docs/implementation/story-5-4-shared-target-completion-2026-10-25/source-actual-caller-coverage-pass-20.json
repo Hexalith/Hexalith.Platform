@@ -1,0 +1,76 @@
+{
+  "suites": {
+    "custody": {
+      "xml": {
+        "path": "/tmp/story54-round20-pvnnydzm/final3-serial-local-evidence/local-tests.xml",
+        "sha256": "191d995e65f7f6eed634492914a528b55b3f1a239fc4bb45d349d7910a4187dd"
+      },
+      "count": 781,
+      "priorExactNamesPreserved": 781,
+      "newRows": 0,
+      "failedSkippedNotRun": 0
+    },
+    "runtime": {
+      "xml": {
+        "path": "/tmp/story54-round20-pvnnydzm/final3-serial-local-evidence/runtime-tests.xml",
+        "sha256": "e96e02ffcbcaac952cabf9e7f359df8b06babee35e73d3992323570fcd644d63"
+      },
+      "count": 754,
+      "priorExactNamesPreserved": 719,
+      "newRows": 35,
+      "failedSkippedNotRun": 0
+    },
+    "protection": {
+      "xml": {
+        "path": "/tmp/story54-round20-pvnnydzm/protection-tests.xml",
+        "sha256": "959ff68cf9fa4dc7289a00ad44a6e5b9e03a2c25d2789c94a7ec7e567d6eaa39"
+      },
+      "count": 211,
+      "priorExactNamesPreserved": 205,
+      "newRows": 6,
+      "failedSkippedNotRun": 0
+    },
+    "composition": {
+      "xml": {
+        "path": "/tmp/story54-round20-pvnnydzm/composition-final4-tests-captured.xml",
+        "sha256": "70928f008fe7701c817795ae0145271ce8c5a27f28a49c6d03ef76498291e8e6"
+      },
+      "count": 128,
+      "priorExactNamesPreserved": 116,
+      "newRows": 12,
+      "failedSkippedNotRun": 0
+    }
+  },
+  "correctionMapping": {
+    "path": "/tmp/story54-round20-pvnnydzm/per-finding-corrections.json",
+    "sha256": "5a57dbfafd3d6a47692f9ad2d34535a2bd7d044774cb653d44943777eacb01c7"
+  },
+  "testSummary": {
+    "native": 32,
+    "custody": 781,
+    "runtime": 754,
+    "protection": 211,
+    "composition": 128,
+    "pythonSecrets": 350,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2271
+  },
+  "sourceFreeze": {
+    "freezeUtc": "2026-10-27T09:10:10.537903+00:00",
+    "head": "73bebc0a336ebf68cee77ab0114d96dde66c386d",
+    "ownedCount": 338,
+    "sourceDependencyCount": 5829,
+    "snapshotSha256": "50347ef131b85efd1e597e34f757b79cf507c400f6a15f71fbdc23226113a37c",
+    "deltaCounts": {
+      "added": 9,
+      "changed": 23,
+      "removed": 0
+    },
+    "fixtureOnly": true,
+    "actualEvidence": null,
+    "acceptedTarget": null
+  },
+  "allOldAssertionsTimeoutsInternalConcurrencyRetained": true,
+  "authorityOnlyExpectationAdjustmentsExplicit": true,
+  "fixtureOnly": true
+}

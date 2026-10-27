@@ -29,6 +29,11 @@ class CoordinatedPacketTests(unittest.TestCase):
         # Isolate packet binding mechanics from the explicitly incomplete shipped driver inventory.
         self.driver_patch = patch('coordinated_packets.driver_blockers', return_value=[])
         self.driver_patch.start(); self.addCleanup(self.driver_patch.stop)
+        # Isolated packet/inventory mechanics cannot supply the absent independent whole-image protocol.
+        image_patch=patch('execution_profile.installed_image_blockers',return_value=[])
+        image_patch.start();self.addCleanup(image_patch.stop)
+        launch_patch=patch('launch_inventory.blockers',return_value=[])
+        launch_patch.start();self.addCleanup(launch_patch.stop)
         self.temp = tempfile.TemporaryDirectory(prefix="fixture-shared-packet-")
         self.addCleanup(self.temp.cleanup)
         self.directory = Path(self.temp.name)
@@ -39,6 +44,8 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.profile["replicaCount"] = 3
         for name in host.REFERENCE_KEYS:
             self.profile[name] = "fixture-" + name
+        from test_launch_inventory import fixture_listeners,fixture_ui_artifacts
+        self.profile['listeners']=fixture_listeners()
         self.profile_path = self.directory / "host.json"
         self.profile_path.write_bytes(host.canonical(self.profile))
         self.joint = self.directory / "joint configuration.json"
@@ -77,6 +84,8 @@ class CoordinatedPacketTests(unittest.TestCase):
             if name == 'custodyConfiguration': path = self.fixture.path
             elif name == 'hostProfile': path = self.profile_path
             elif name == 'jointConfiguration': path = self.joint
+            elif name == 'launchInventory':
+                path=self.directory/'launchInventory.json';path.write_bytes(q.canonical({'protocol':'AcceptedCompleteImmutableLaunchGraphV1','resources':[{'resource':resource,'listener':value,'entryPoint':'executable','files':[{'path':name,'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest()} for name,body in fixture_ui_artifacts(self.profile['listeners']['agents-ui']['uiHost']).items()]} for resource,value in self.profile['listeners'].items()]}))
             elif name.endswith('Anchor'): path = Path(self.fixture.config['qualification'][name[:-6]]['publicAnchorFile'])
             else:
                 path = self.directory / (name + '.json')
@@ -94,9 +103,9 @@ class CoordinatedPacketTests(unittest.TestCase):
                    'profileSha256':artifacts['hostProfile']['sha256'],'protectionProfileSha256':artifacts['protectionProfile']['sha256'],
                    'currentTrustSha256':artifacts['publicTrust']['sha256'],'installedImageSha256':artifacts['installedImageInventory']['sha256'],
                    **{r+'AnchorSha256':artifacts[r+'Anchor']['sha256'] for r in ('executor','observer','enrollment')}}
-        profiles = {str(phase):{'phase':phase,'cases':partitions()[phase],'command':[str(executable)],'environment':{},
-                    'workingDirectory':str(self.directory),'completionTimeoutSeconds':30,
-                    'artifacts':[{'path':str(executable),'sha256':hashlib.sha256(executable.read_bytes()).hexdigest()}]} for phase in range(4)}
+        from test_execution_profile import fixture_profile
+        profiles = {str(phase):fixture_profile(self.directory/('phase-'+str(phase)),phase,partitions()[phase]) for phase in range(4)}
+        binding['launchInventorySha256']=digest(q.read_json(artifacts['launchInventory']['path']))
         binding['phaseExecutionProfileSha256'] = {phase:digest(profile) for phase,profile in profiles.items()}
         for profile in profiles.values(): profile['bindingDigest'] = digest(binding)
         services = {}
@@ -108,6 +117,12 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.joint_configuration = {'binding':binding,'phaseExecutionProfiles':profiles,'services':services,'daprEndpoint':'http://127.0.0.1:3500','daprCredentialReference':'file:/fixture/dapr'}
         self.joint.write_bytes(q.canonical(self.joint_configuration))
         artifacts['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+        protection_binding = {'targetCommit': binding['protectionCommit'], 'integrationDate': self.profile['integrationDate'],
+            'profileSha256': artifacts['protectionProfile']['sha256'], 'configurationSha256': artifacts['jointConfiguration']['sha256'], 'planSha256': digest(full_plan())}
+        protection_section = coordinated.section(self.fixture.register.read_text(), 'EXT-PROTECTION-1')
+        protection_section_retargeted = protection_section.replace(f'| `TargetVersionOrCommit` | `{self.fixture.target}` |', f'| `TargetVersionOrCommit` | `{binding["protectionCommit"]}` |')
+        revised = coordinated.replace_binding_row(protection_section_retargeted, 'ProtectionQualificationBinding', protection_binding)
+        self.fixture.register.write_text(self.fixture.register.read_text().replace(protection_section, revised))
         self.context = {'sourceCommit': self.fixture.target, 'acceptedRegisterSha256': hashlib.sha256(self.fixture.register.read_bytes()).hexdigest(),
                         'platformIntegrationDate': self.profile['integrationDate'], 'protectionIntegrationDate': self.profile['integrationDate'],
                         'installedArtifacts': artifacts, 'planSha256': digest(full_plan()), 'exactCommands': self.commands,
@@ -124,6 +139,26 @@ class CoordinatedPacketTests(unittest.TestCase):
         Path(self.context['installationProofFile']).write_bytes(q.canonical(proof))
         self.context_path.write_bytes(q.canonical(self.context))
 
+    def test_common_runner_requires_exact_protection_binding_before_creating_live_ports(self):
+        import joint_live_phase_runner as runner
+        binding=self.joint_configuration['binding']
+        pins={'configurationSha256':hashlib.sha256(self.joint.read_bytes()).hexdigest(),'bindingSha256':digest(binding),'planSha256':digest(full_plan())}
+        text=self.fixture.register.read_text()
+        for record in ('EXT-SECRETS-1','EXT-HOST-1'):
+            before=coordinated.section(text,record);text=text.replace(before,coordinated.replace_binding_row(before,'JointQualificationBinding',pins))
+        original=coordinated.section(text,'EXT-PROTECTION-1')
+        for fault in ('missing','profile','configuration','plan'):
+            if fault=='missing':
+                changed=__import__('re').sub(r'\| `ProtectionQualificationBinding` \| `[^`]+` \|\n','',original)
+            else:
+                value=q.decode_json(__import__('re').search(r'\| `ProtectionQualificationBinding` \| `([^`]+)` \|',original).group(1))
+                value[{'profile':'profileSha256','configuration':'configurationSha256','plan':'planSha256'}[fault]]='f'*64
+                changed=coordinated.replace_binding_row(original,'ProtectionQualificationBinding',value)
+            self.fixture.register.write_text(text.replace(original,changed))
+            with patch.object(runner,'validate_source_checkout'),patch.object(runner,'DaprCohortRpc',side_effect=AssertionError('no live ports')) as ports:
+                with self.assertRaises(runner.Blocked) as refusal:runner.run_installed_cohort(self.joint,self.fixture.register)
+                self.assertIn('ExactAcceptedProtectionConfigurationProfileAndPlan',refusal.exception.missing);ports.assert_not_called()
+
     def test_complete_pair_preserves_commitments_scope_and_exact_coupled_commands(self):
         secret = secrets_prepare.prepare(self.fixture.root, self.fixture.path, self.secret_output,
                                          register=self.fixture.register, coordination_context=self.context_path)
@@ -134,6 +169,7 @@ class CoordinatedPacketTests(unittest.TestCase):
             packet = q.read_json(output / 'replacement-acceptance-packet.json')
             self.assertEqual(self.commands[record], packet['exactCommand'])
             self.assertIn('PLATFORM_JOINT_COHORT_CONFIGURATION=', packet['exactCommand'])
+            self.assertEqual(q.read_json(self.context['installedArtifacts']['launchInventory']['path']),packet['launchInventory'])
             self.assertFalse(packet['dependencyAvailable'])
             self.assertIsNone(packet['acceptedReplacementCommit'])
             self.assertEqual(self.fixture.target, packet['candidateCommit'])
@@ -143,6 +179,15 @@ class CoordinatedPacketTests(unittest.TestCase):
                 self.assertIn('365-day history; both Product gates remain Open.', preserved['proposedVerbatimSection'])
                 self.assertFalse(preserved['accepted'])
         self.assertEqual([], self.fixture.calls)
+
+    def test_launch_inventory_is_required_and_cannot_be_substituted_under_an_old_joint_binding(self):
+        path=Path(self.context['installedArtifacts']['launchInventory']['path']);path.write_bytes(q.canonical({'changed':'public launch bytes'}))
+        self.context['installedArtifacts']['launchInventory']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest();self.sign_context()
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertIn('ExactAcceptedCompleteLaunchInventoryBinding',missing)
+        del self.context['installedArtifacts']['launchInventory'];self.sign_context()
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertIn('installedArtifacts.launchInventory',missing);self.assertEqual([],self.fixture.calls)
 
     def test_signed_installation_cannot_be_reused_for_changed_command_date_or_artifact(self):
         self.context['exactCommands'] = dict(self.commands, **{'EXT-HOST-1': self.commands['EXT-HOST-1'] + ' changed'})
@@ -182,6 +227,11 @@ class CoordinatedPacketTests(unittest.TestCase):
         for profile in self.joint_configuration['phaseExecutionProfiles'].values(): profile['bindingDigest'] = digest(binding)
         self.joint.write_bytes(q.canonical(self.joint_configuration))
         self.context['installedArtifacts']['jointConfiguration']['sha256'] = hashlib.sha256(self.joint.read_bytes()).hexdigest()
+        text=self.fixture.register.read_text();section=coordinated.section(text,'EXT-PROTECTION-1')
+        match=__import__('re').search(r'\| `ProtectionQualificationBinding` \| `([^`]+)` \|',section)
+        pins=q.decode_json(match[1]);pins['configurationSha256']=self.context['installedArtifacts']['jointConfiguration']['sha256']
+        self.fixture.register.write_text(text.replace(section,coordinated.replace_binding_row(section,'ProtectionQualificationBinding',pins)))
+        self.context['acceptedRegisterSha256']=hashlib.sha256(self.fixture.register.read_bytes()).hexdigest()
         self.sign_context()
         report = secrets_prepare.prepare(self.fixture.root,self.fixture.path,self.secret_output,register=self.fixture.register,coordination_context=self.context_path)
         self.assertTrue(report['packetPrepared'],report)
@@ -221,6 +271,39 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.assertFalse((self.secret_output / 'runtime-reference.json').exists())
         self.assertFalse((self.secret_output / 'replacement-acceptance-packet.json').exists())
         self.assertEqual([], self.fixture.calls)
+
+    def test_closed_assertion_grammar_rejects_resigned_printf_and_weakened_prefixes(self):
+        for record,command in self.commands.items():
+            self.assertTrue(coordinated.valid_owner_command(command,record,self.fixture.target,str(self.joint)))
+            suffix=command[command.index('env '):]
+            mutations=[
+                'printf '+shlex.quote(self.fixture.target+' status --porcelain')+' && '+suffix,
+                command.replace('test "$(git','echo "$(git',1),
+                command.replace('" = "','" != "',1),
+                command.replace(' && test -z ',' || test -z ',1),
+                command.replace('git -C ../platform rev-parse','git -C ../other rev-parse',1),
+                command.replace('status --porcelain','status --porcelain --untracked-files=no'),
+                '# '+command,
+                'false && '+command,
+                command.replace(' && env ',' ; env '),
+            ]
+            for mutation in mutations:
+                self.assertFalse(coordinated.valid_owner_command(mutation,record,self.fixture.target,str(self.joint)),mutation)
+
+    def test_resigned_printf_prefix_is_rejected_by_actual_packet_admission(self):
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertEqual([],missing)
+        for record,original in self.commands.items():
+            suffix=original[original.index('env '):]
+            changed='printf '+shlex.quote(self.fixture.target+' status --porcelain')+' && '+suffix
+            before=self.fixture.register.read_text()
+            self.fixture.register.write_text(before.replace(original,changed))
+            self.context['exactCommands']=dict(self.commands,**{record:changed});self.sign_context()
+            missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+            self.assertIn(record+'.ClosedCompleteOwnerCommand',missing)
+            self.assertNotIn('IndependentCurrentInstallationProof',missing)
+            self.fixture.register.write_text(before)
+        self.context['exactCommands']=self.commands;self.sign_context()
 
 
 if __name__ == '__main__':

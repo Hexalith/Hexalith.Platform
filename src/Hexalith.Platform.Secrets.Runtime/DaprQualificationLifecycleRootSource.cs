@@ -13,7 +13,7 @@ public sealed class DaprQualificationLifecycleRootSource(DaprClient dapr,ICustod
     public async Task<byte[]?> ReadAsync(CustodyKeyRegistration registration,CustodyKeyUse use,CancellationToken token)
     {
         if(!enrolledReferences.TryGetValue(registration.OperationId,out var reference) || reference is not { Component.Length:>0,Key.Length:>0,Version.Length:>0,Field.Length:>0 }
-            || use.OriginalRootReference!=registration.OpaqueWrappedKeyReference) return null;
+            || !QualificationNativeVersion.IsPinned(reference.Version) || use.OriginalRootReference!=registration.OpaqueWrappedKeyReference) return null;
         string identity=CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(new { registration,use,reference }));
         if(!await authority.AuthorizeOperationAsync(identity,"ReadQualificationLifecycleRoot",token).ConfigureAwait(false)) return null;
         var pending=dapr.GetSecretAsync(reference.Component,reference.Key,new Dictionary<string,string> { ["version_id"]=reference.Version },token);

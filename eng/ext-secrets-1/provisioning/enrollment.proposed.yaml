@@ -28,6 +28,8 @@ spec:
           image: ${OWNER_ENROLLMENT_IMAGE_DIGEST}
           args: ["/references/runtime.json"]
           env:
+            - name: PLATFORM_QUALIFICATION_INSTALLATION
+              value: /references/qualification-installation.json
             # Separate role secret shared only by this app and its own sidecar.
             - name: APP_API_TOKEN
               valueFrom:
@@ -43,24 +45,53 @@ spec:
             capabilities:
               drop: [ALL]
           volumeMounts:
+            # Individual subPath binds present regular files; whole AtomicWriter directories
+            # are incompatible with selected configuration/private no-follow readers.
             - name: references
-              mountPath: /references
+              mountPath: /references/runtime.json
+              subPath: runtime.json
+              readOnly: true
+            - name: references
+              mountPath: /references/qualification-installation.json
+              subPath: qualification-installation.json
               readOnly: true
             - name: journal
               mountPath: /journal
             - name: role-credentials
-              mountPath: /role-credentials
+              mountPath: ${OWNER_ENROLLMENT_SCOPE_AUTHORITY_CREDENTIAL_FILE}
+              subPath: ${OWNER_ENROLLMENT_SCOPE_AUTHORITY_CREDENTIAL_KEY}
+              readOnly: true
+            - name: role-credentials
+              mountPath: ${OWNER_ENROLLMENT_ORIGINAL_AUTHORITY_CREDENTIAL_FILE}
+              subPath: ${OWNER_ENROLLMENT_ORIGINAL_AUTHORITY_CREDENTIAL_KEY}
+              readOnly: true
+            - name: role-credentials
+              mountPath: ${OWNER_ENROLLMENT_OWNER_CREDENTIAL_FILE}
+              subPath: ${OWNER_ENROLLMENT_OWNER_CREDENTIAL_KEY}
               readOnly: true
       volumes:
         - name: references
           configMap:
             name: ${OWNER_ENROLLMENT_REFERENCE_CONFIG}
+            items:
+              - key: runtime.json
+                path: runtime.json
+              - key: qualification-installation.json
+                path: qualification-installation.json
         - name: journal
           persistentVolumeClaim:
             claimName: ${OWNER_ENROLLMENT_INDEPENDENT_JOURNAL_PVC}
         - name: role-credentials
           secret:
             secretName: ${OWNER_ENROLLMENT_RESTRICTED_CREDENTIAL_SECRET}
+            # Exact independently returned Secret keys; never create credentials here.
+            items:
+              - key: ${OWNER_ENROLLMENT_SCOPE_AUTHORITY_CREDENTIAL_KEY}
+                path: ${OWNER_ENROLLMENT_SCOPE_AUTHORITY_CREDENTIAL_KEY}
+              - key: ${OWNER_ENROLLMENT_ORIGINAL_AUTHORITY_CREDENTIAL_KEY}
+                path: ${OWNER_ENROLLMENT_ORIGINAL_AUTHORITY_CREDENTIAL_KEY}
+              - key: ${OWNER_ENROLLMENT_OWNER_CREDENTIAL_KEY}
+                path: ${OWNER_ENROLLMENT_OWNER_CREDENTIAL_KEY}
 ---
 # The storage owner supplies access modes, storageClassName, size and nonrollback evidence.
 apiVersion: v1

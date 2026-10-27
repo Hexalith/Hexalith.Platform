@@ -18,26 +18,51 @@ def preload(installer, image):
     name = 'ext-secrets-1-preload-' + suffix
     secret_created = False
     pod_created = False
+    secret_identity = None
+    pod_uid = None
     try:
         installer.create({'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': name}, 'type': 'kubernetes.io/dockerconfigjson',
                           'data': {'.dockerconfigjson': base64.b64encode(canonical({'auths': {'registry.hexalith.com': distribution_auth()}})).decode()}})
         secret_created = True
+        secret_identity = kube('get', 'secret', name, '-n', NS, '-o',
+                               'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.decode().split()
+        if len(secret_identity) != 2:
+            raise RuntimeError('preload-original-secret-identity-unavailable')
         installer.create({'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': name}, 'spec': {
             'serviceAccountName': 'ext-secrets-1-registry', 'automountServiceAccountToken': False, 'restartPolicy': 'Never',
             'imagePullSecrets': [{'name': name}], 'securityContext': {'runAsNonRoot': True, 'runAsUser': 1654, 'seccompProfile': {'type': 'RuntimeDefault'}},
             'containers': [{'name': 'preload', 'image': image, 'imagePullPolicy': 'IfNotPresent', 'command': ['/bin/true'],
                             'securityContext': {'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL']}}}]}})
         pod_created = True
+        pod_uid = kube('get', 'pod', name, '-n', NS, '-o', 'jsonpath={.metadata.uid}').stdout.decode().strip()
+        if not pod_uid:
+            raise RuntimeError('preload-original-pod-identity-unavailable')
         kube('wait', 'pod/' + name, '-n', NS, '--for=jsonpath={.status.phase}=Succeeded', '--timeout=50s', timeout=55)
         pod = kjson('get', 'pod', name, '-n', NS)
         installer.write('preloaded-image-' + suffix + '.json', {'image': image, 'node': pod['spec']['nodeName'],
                          'nativeImageId': pod['status']['containerStatuses'][0]['imageID'], 'provisioningCredentialRetained': False,
                          'credentialMountedInProcess': False})
     finally:
+        cleanup_failed = False
         if pod_created:
-            kube('delete', 'pod', name, '-n', NS, '--wait=false')
+            try:
+                if not pod_uid:
+                    raise RuntimeError('preload-original-pod-cleanup-unknown')
+                kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/pods/' + name, '-f', '-',
+                     data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions', 'preconditions': {'uid': pod_uid}}))
+            except Exception:
+                cleanup_failed = True
         if secret_created:
-            kube('delete', 'secret', name, '-n', NS)
+            try:
+                if not secret_identity or len(secret_identity) != 2:
+                    raise RuntimeError('preload-original-secret-cleanup-unknown')
+                kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/' + name, '-f', '-',
+                     data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions',
+                                     'preconditions': {'uid': secret_identity[0], 'resourceVersion': secret_identity[1]}}))
+            except Exception:
+                cleanup_failed = True
+        if cleanup_failed:
+            raise RuntimeError('preload-owned-resource-cleanup-incomplete')
 
 
 if __name__ == '__main__':

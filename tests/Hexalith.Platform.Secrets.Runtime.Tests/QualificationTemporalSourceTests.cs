@@ -24,10 +24,16 @@ public sealed class QualificationTemporalSourceTests
         var originals=Substitute.For<IQualificationOriginalStore>();JsonObject? retained=null;
         originals.LookupResultAsync("executor",Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>Task.FromResult(retained));
         var workflow=new QualificationTemporalCaseWorkflow(auth,keys,profiles,clock,originals,new Dictionary<string,QualificationTemporalCaseInput>{{id,new(issuance.Envelope,identity,QualificationProtocolSchema.Digest(request["enrolledScope"]!))}});
-        var actual=await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken);actual! ["outcome"]!.GetValue<string>().ShouldBe(outcome);retained=actual;
+        (await workflow.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol");
+        (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
+        // Independently supplied historical exact original remains readable; no source clock evaluation supplies it.
+        var actual=new JsonObject { ["caseId"]=id,["requestId"]=request["requestId"]!.DeepClone(),["outcome"]=outcome,["status"]=outcome=="Verified"?"Succeeded":"Expired",["authenticationDecision"]=JsonSerializer.SerializeToNode(new TrustedEnvelopeResult(outcome=="Verified"?CustodyStatus.Succeeded:CustodyStatus.Expired,EvaluatedAt:clock.Now),CustodyBindingContract.Json),["temporalEvidenceVersion"]=2,["checkedAt"]=clock.Now.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(issuance.Envelope,CustodyBindingContract.Json) };retained=actual;
         var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(request,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(1,[],[],[],[],new JsonObject { ["temporalOriginal"]=actual.DeepClone() }));
         clock.Now=issuance.Envelope.ExpiresAt.AddHours(1);
         (await auth.VerifyAsync(issuance.Envelope,identity,TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyStatus.Expired);
+        (await workflow.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldBeEmpty();
+        var registration=workflow.Registrations().Single();(await registration.Preflight(request,TestContext.Current.CancellationToken)).ShouldBeEmpty();
+        (await registration.Lookup(request,TestContext.Current.CancellationToken))!.ToJsonString().ShouldBe(actual.ToJsonString());
         var observed=await new QualificationTemporalOriginalReader(originals,audit).ReadAsync(request,TestContext.Current.CancellationToken);
         observed!.Source["state"]!["outcome"]!.GetValue<string>().ShouldBe(outcome);
         var changed=(JsonObject)actual.DeepClone();changed["checkedAt"]=0;
@@ -43,8 +49,8 @@ public sealed class QualificationTemporalSourceTests
         var envelope=(await auth.IssueAsync(identity,TimeSpan.FromSeconds(300),TestContext.Current.CancellationToken)).Envelope!;
         var scope=new JsonObject { ["tenantId"]="tenant" };var request=new JsonObject { ["caseId"]="S2.expiry.at",["requestId"]="request",["enrolledScope"]=scope,["checkedAt"]=envelope.ExpiresAt.ToUnixTimeMilliseconds() };
         var originals=Substitute.For<IQualificationOriginalStore>();var workflow=new QualificationTemporalCaseWorkflow(auth,keys,profiles,clock,originals,new Dictionary<string,QualificationTemporalCaseInput>{{"S2.expiry.at",new(envelope,identity,QualificationProtocolSchema.Digest(scope))}});
-        (await workflow.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.NativeTemporalEvaluatorAtExactBoundary.S2.expiry.at");
-        (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();originals.ReceivedCalls().ShouldBeEmpty();
+        (await workflow.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol");
+        (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();await originals.DidNotReceive().BeginAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>());
     }
     private sealed class Clock:TimeProvider { public DateTimeOffset Now=new(2026,10,25,0,0,0,TimeSpan.Zero);public override DateTimeOffset GetUtcNow()=>Now; }
     private sealed class Keys(Clock clock):IPlatformHmacKeyProvider

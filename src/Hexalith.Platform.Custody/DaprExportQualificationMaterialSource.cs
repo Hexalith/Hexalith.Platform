@@ -21,38 +21,39 @@ public sealed class DaprExportQualificationMaterialSource(DaprClient client,IPla
         return Task.FromResult<IReadOnlyList<string>>(valid?[]:["ExactDedicatedExportPurposeVersionReferenceAndCodec"]);
     }
     /// <inheritdoc />
-    public async Task<ExportQualificationMaterial?> ResolveAsync(ExportQualificationInput input,ExportQualificationMaterialUse use,CancellationToken cancellationToken)
+    public Task<ExportQualificationMaterial?> ResolveAsync(ExportQualificationInput input,ExportQualificationMaterialUse use,CancellationToken cancellationToken)
+        =>DaprExportQualificationOperation.RunAsync(token=>ResolveOwnedAsync(input,use,token),value=>value.Dispose(),cancellationToken);
+    private async Task<ExportQualificationMaterial?> ResolveOwnedAsync(ExportQualificationInput input,ExportQualificationMaterialUse use,CancellationToken cancellationToken)
     {
         if((await PreflightAsync(input,use,cancellationToken).ConfigureAwait(false)).Count!=0) return null;
         ArgumentNullException.ThrowIfNull(input);
         var profile=enrolledProfiles[input.ExportId];bool active=use!=ExportQualificationMaterialUse.Unwrap;
         var reader=new DaprExportQualificationReferenceReader(client,inventory,authority);
-        using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));
-        byte[]? export=null,kek=null,encoded=null;ECDsa? signer=null;bool transferred=false;
+        byte[]? export=null,kek=null,encoded=null,anchor=null;ECDsa? signer=null;bool transferred=false;
         try
         {
             var bindings=use==ExportQualificationMaterialUse.Sign?new[]{profile.Signer!}:new[]{profile.ExportKey!,profile.Kek!};
-            var before=new List<PlatformKeyInventorySnapshot>();foreach(var binding in bindings) { var state=await reader.CurrentAsync(binding,active,budget.Token).ConfigureAwait(false);if(state is null) return null;before.Add(state); }
+            var before=new List<PlatformKeyInventorySnapshot>();foreach(var binding in bindings) { var state=await reader.CurrentAsync(binding,active,cancellationToken).ConfigureAwait(false);if(state is null) return null;before.Add(state); }
             if(use==ExportQualificationMaterialUse.Sign)
             {
                 var reference=profile.Signer!;
-                encoded=await reader.ReadAsync(reference,true,value=>reference.Codec=="Pkcs8DerBase64"?DaprExportQualificationReferenceReader.Base64(value):DaprExportQualificationReferenceReader.Pem(value,"PRIVATE KEY"),budget.Token).ConfigureAwait(false);
+                encoded=await reader.ReadAsync(reference,true,value=>reference.Codec=="Pkcs8DerBase64"?DaprExportQualificationReferenceReader.Base64(value):DaprExportQualificationReferenceReader.Pem(value,"PRIVATE KEY"),cancellationToken).ConfigureAwait(false);
                 if(encoded is null) return null;int encodedLength=encoded.Length;signer=ECDsa.Create();signer.ImportPkcs8PrivateKey(encoded,out int read);CryptographicOperations.ZeroMemory(encoded);encoded=null;
-                var trust=await independentlyPublishedTrust.ResolveAsync(input,budget.Token).ConfigureAwait(false);budget.Token.ThrowIfCancellationRequested();
+                var trust=await independentlyPublishedTrust.ResolveAsync(input,cancellationToken).ConfigureAwait(false);anchor=trust?.SubjectPublicKeyInfo;cancellationToken.ThrowIfCancellationRequested();
                 if(read!=encodedLength || signer.ExportParameters(false).Curve.Oid.Value!="1.2.840.10045.3.1.7" || trust is null || trust.TenantId!=input.TenantId || trust.SigningKeyVersion!=input.SigningKeyVersion
                     || !signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(trust.SubjectPublicKeyInfo)) return null;
             }
             else
             {
-                export=await reader.ReadAsync(profile.ExportKey!,active,value=>DaprExportQualificationReferenceReader.Base64(value,32),budget.Token).ConfigureAwait(false);
-                kek=await reader.ReadAsync(profile.Kek!,active,value=>DaprExportQualificationReferenceReader.Base64(value,32),budget.Token).ConfigureAwait(false);
+                export=await reader.ReadAsync(profile.ExportKey!,active,value=>DaprExportQualificationReferenceReader.Base64(value,32),cancellationToken).ConfigureAwait(false);
+                kek=await reader.ReadAsync(profile.Kek!,active,value=>DaprExportQualificationReferenceReader.Base64(value,32),cancellationToken).ConfigureAwait(false);
                 if(export is null || kek is null) return null;
             }
-            for(int index=0;index<bindings.Length;index++) { var current=await reader.CurrentAsync(bindings[index],active,budget.Token).ConfigureAwait(false);if(current is null || !DaprExportQualificationReferenceReader.Same(before[index],current)) return null; }
-            budget.Token.ThrowIfCancellationRequested();if(profile.ValidUntil<=clock.GetUtcNow()) return null;
+            for(int index=0;index<bindings.Length;index++) { var current=await reader.CurrentAsync(bindings[index],active,cancellationToken).ConfigureAwait(false);if(current is null || !DaprExportQualificationReferenceReader.Same(before[index],current)) return null; }
+            cancellationToken.ThrowIfCancellationRequested();if(profile.ValidUntil<=clock.GetUtcNow()) return null;
             var result=new ExportQualificationMaterial(export,kek,signer);transferred=true;return result;
         }
         catch(Exception) { cancellationToken.ThrowIfCancellationRequested();return null; }
-        finally { if(encoded is not null) CryptographicOperations.ZeroMemory(encoded);if(!transferred) { if(export is not null) CryptographicOperations.ZeroMemory(export);if(kek is not null) CryptographicOperations.ZeroMemory(kek);signer?.Dispose(); } }
+        finally { if(anchor is not null) CryptographicOperations.ZeroMemory(anchor);if(encoded is not null) CryptographicOperations.ZeroMemory(encoded);if(!transferred) { if(export is not null) CryptographicOperations.ZeroMemory(export);if(kek is not null) CryptographicOperations.ZeroMemory(kek);signer?.Dispose(); } }
     }
 }

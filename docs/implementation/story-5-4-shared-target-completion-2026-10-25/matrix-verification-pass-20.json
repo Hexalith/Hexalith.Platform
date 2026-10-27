@@ -1,0 +1,150 @@
+{
+  "observedAtUtc": "2026-10-27T09:42:54.497444+00:00",
+  "rows": [
+    {
+      "matrixRow": "authority",
+      "passed": true,
+      "coveringTests": [
+        {
+          "test": "IndependentResultCurrentAuthorityTests",
+          "executedPassingRows": 13
+        },
+        {
+          "test": "DirectNestedResultAuthorityTests",
+          "executedPassingRows": 6
+        },
+        {
+          "test": "Fr34DynamicOccurrenceTests",
+          "executedPassingRows": 66
+        }
+      ]
+    },
+    {
+      "matrixRow": "replaySpool",
+      "passed": true,
+      "coveringTests": [
+        {
+          "test": "ProtectedArchiveHeaderLiabilityTests",
+          "executedPassingRows": 14
+        },
+        {
+          "test": "QualificationChallengeRetryTests",
+          "executedPassingRows": 2
+        },
+        {
+          "test": "EventStorePrivateRecordingPortTests",
+          "executedPassingRows": 42
+        },
+        {
+          "test": "ReplicatedSecurityObservationSpoolTests",
+          "executedPassingRows": 63
+        }
+      ]
+    },
+    {
+      "matrixRow": "protection",
+      "passed": true,
+      "coveringTests": [
+        {
+          "test": "JointPhaseNativePublisherTests",
+          "executedPassingRows": 7
+        },
+        {
+          "test": "RestrictedPrivateCommandReceivingTests",
+          "executedPassingRows": 7
+        },
+        {
+          "test": "Fr34NativeReceivingTests",
+          "executedPassingRows": 1
+        }
+      ]
+    },
+    {
+      "matrixRow": "cohort",
+      "passed": true,
+      "coveringTests": [
+        {
+          "test": "test_joint_live_phase_runner",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_joint_live_phase_runner.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        },
+        {
+          "test": "test_persisted_phase_observer",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_persisted_phase_observer.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        },
+        {
+          "test": "test_complete_startup_owner",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_complete_startup_owner.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        }
+      ]
+    },
+    {
+      "matrixRow": "packets",
+      "passed": true,
+      "coveringTests": [
+        {
+          "test": "AgentsAcceptedDeploymentContextTests",
+          "executedPassingRows": 12
+        },
+        {
+          "test": "test_coordinated_packets",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_coordinated_packets.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        },
+        {
+          "test": "test_prepare_acceptance",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_prepare_acceptance.py",
+            "/home/administrator/projects/hexalith/platform/eng/ext-host-1/test_prepare_acceptance.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        },
+        {
+          "test": "test_launch_inventory",
+          "sourceFiles": [
+            "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/test_launch_inventory.py"
+          ],
+          "execution": "Passed full Python350/Host15 discovery without filters/skips; source bodies captured."
+        }
+      ]
+    }
+  ],
+  "allFiveFrozenRowsHaveExecutedPassingSourceCoverage": true,
+  "full234CaseScopePreserved": true,
+  "partialRegistered": 185,
+  "externalDependentUnregistered": 49,
+  "completeDrivers": 0,
+  "historyDays": 365,
+  "bothProductGates": "open, accepted record bytes preserved",
+  "actualCohortPhasesExecuted": 0,
+  "actualAttemptsReserved": 0,
+  "installedQualification": false,
+  "sourceHandbackSha256": "dfa1a8793ac3b7886a4b161b60e5cb5916910ccd42349c9b888ad081472e7fd1",
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-20.json",
+  "independentReviewStatus": "Pending20",
+  "testSummary": {
+    "native": 32,
+    "custody": 781,
+    "runtime": 754,
+    "protection": 211,
+    "composition": 128,
+    "pythonSecrets": 350,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2271
+  },
+  "all719PriorRuntimeRowsRetained": true,
+  "all781PriorCustodyRowsRetained": true,
+  "all205PriorProtectionRowsRetained": true,
+  "all116PriorCompositionRowsRetained": true,
+  "testCountRule": "2271 primary component executions,16 final categories; unchanged source3 scopes retain their original consumed inputs/compiled/evaluated/log provenance. Only Composition.Tests fixture changes after source3; all128 affected rows rerun. No failure/stopped invocation or equivalent mutant survivor becomes a pass."
+}

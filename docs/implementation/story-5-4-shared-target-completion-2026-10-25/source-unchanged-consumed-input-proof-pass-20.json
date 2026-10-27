@@ -1,0 +1,98 @@
+{
+  "onlyChangedSinceFreeze3": [
+    {
+      "path": "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchDirectoryCensusTests.cs",
+      "beforeSha256": "d84ed7b4a771768d77f72f11b42e9fbd39d4bfc48aea7583beb7b1227b516ed1",
+      "afterSha256": "ccffbe79668022a5a40f8388f2b87d7b95ac13b58250391e395b9813c3f8161e"
+    }
+  ],
+  "allOtherOwnedSourceBytesIdentical": true,
+  "allProductionSourceBytesIdentical": true,
+  "scope": "The sole change is the Composition.Tests descriptor-count fixture. Native/Custody/Runtime/Python/Protection and full production Composition compile/run inputs retain their exact source3 bytes and compiled/evaluated artifacts; only affected actual Composition.Tests is rebuilt/rerun. Root independently audits consumed-input equivalence rather than attributing old binaries to the new global snapshot.",
+  "retainedCompiledAndEvaluatedArtifactManifest": "/tmp/story54-round20-pvnnydzm/historical-freeze-3-hashes.json",
+  "source3Snapshot": {
+    "path": "/tmp/story54-round20-pvnnydzm/historical-freeze-3/source-final.tar.gz",
+    "sha256": "28fed4337327e9b80b30cd51f2abf22d50020922b5fd096fc1e258ea26560d26"
+  },
+  "source4Snapshot": {
+    "path": "/tmp/story54-round20-pvnnydzm/source-final.tar.gz",
+    "sha256": "50347ef131b85efd1e597e34f757b79cf507c400f6a15f71fbdc23226113a37c"
+  },
+  "diagnostic": "Unchanged original composition binary reproduces +73. Separately compiled instrumented fixture identifies72 framework/dependency DLL handles and1inotify, no fixture archive handles. It is a different test binary; original raw assertion remains unchanged.",
+  "assertions": "Original <16 and names retained; extra strict absence-of-fixture-archive-descriptors assertion added.",
+  "actualPdbConsumedInputEvidence": {
+    "groups": {
+      "custodyRuntime": {
+        "pdbs": 176,
+        "documents": 34072,
+        "censusFixtureDocuments": [],
+        "manifest": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/custodyRuntime.json",
+        "sha256": "1b6997e4fd7ea585f662bedeaa3e07536c294c55810450076e9883cbe524ae2e"
+      },
+      "protection": {
+        "pdbs": 54,
+        "documents": 10677,
+        "censusFixtureDocuments": [],
+        "manifest": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/protection.json",
+        "sha256": "9d3d8aa49f876e54b89a677e4828b5aa4b0ceeeab1ea7aefa52edad78a54f57a"
+      },
+      "composition4": {
+        "pdbs": 7,
+        "documents": 1100,
+        "censusFixtureDocuments": [
+          {
+            "path": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchDirectoryCensusTests.cs",
+            "algorithm": "8829d00f-11b8-4213-878b-770e8597ac16",
+            "sha256": "ccffbe79668022a5a40f8388f2b87d7b95ac13b58250391e395b9813c3f8161e"
+          }
+        ],
+        "manifest": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/composition4.json",
+        "sha256": "8ffb31f84dd4297c0099801133585e75d766935cc22a80c0eea5d01a65de63d0"
+      },
+      "diagnostic": {
+        "pdbs": 7,
+        "documents": 1100,
+        "censusFixtureDocuments": [
+          {
+            "path": "/tmp/story54-round20-pvnnydzm/composition-fd-diagnostic/AcceptedLaunchDirectoryCensusTests.cs",
+            "algorithm": "8829d00f-11b8-4213-878b-770e8597ac16",
+            "sha256": "93385fd32a70ecab6c2533f030dee461ed9a56330969ad4e908fb1d97acd7143"
+          }
+        ],
+        "manifest": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/diagnostic.json",
+        "sha256": "04e63538d7c08f809e876c907fdbdeac40fbeedb21242a2f553f2e98318dd848"
+      },
+      "native": {
+        "pdbs": 62,
+        "documents": 11839,
+        "censusFixtureDocuments": [],
+        "manifest": "/tmp/story54-round20-pvnnydzm/consumed-input-probe/native.json",
+        "sha256": "12326d6f23beec4ec57c78036a875ba84261704a94233d193a990cc0076e3a9a"
+      }
+    },
+    "verification": {
+      "custodyRuntime": {
+        "knownSourceDocumentsVerified": 33464,
+        "externalUnavailableSourceDocuments": 608,
+        "nonSHA256Documents": 0,
+        "mismatches": [],
+        "changedCompositionFixtureAbsentFromActualPdbDocuments": true
+      },
+      "protection": {
+        "knownSourceDocumentsVerified": 10505,
+        "externalUnavailableSourceDocuments": 172,
+        "nonSHA256Documents": 0,
+        "mismatches": [],
+        "changedCompositionFixtureAbsentFromActualPdbDocuments": true
+      },
+      "native": {
+        "knownSourceDocumentsVerified": 11660,
+        "externalUnavailableSourceDocuments": 179,
+        "nonSHA256Documents": 0,
+        "mismatches": [],
+        "changedCompositionFixtureAbsentFromActualPdbDocuments": true
+      }
+    },
+    "scope": "PDB document hashes identify the source actually consumed by retained passed binaries. Resolvable SHA256 documents match current bytes; unavailable vendor-source paths are recorded as unavailable and their compiled public DLL bytes are retained separately. The sole changed fixture is absent from every unaffected-scope PDB and present in final Composition4."
+  }
+}

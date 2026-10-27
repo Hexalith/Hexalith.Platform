@@ -7,16 +7,32 @@ from joint_live_phase_runner import calendar_date, digest, full_plan
 from case_driver_inventory import blockers as driver_blockers
 
 REQUIRED_ARTIFACTS = ("custodyConfiguration", "hostProfile", "protectionProfile", "providerProfile", "authorityEnrollment",
-                      "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan", "jointConfiguration")
+                      "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan", "jointConfiguration", "launchInventory")
 
 
-def section(text, record):
-    match = re.search(r"^### " + re.escape(record) + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)
-    return match.group(0) if match else ""
+def section(text, record, *, complete=False):
+    matches = list(re.finditer(r"^### " + re.escape(record) + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S))
+    if not matches: return ''
+    if len(matches) != 1:
+        raise ValueError('ExactlyOneAcceptedSection.'+record)
+    value=matches[0].group(0)
+    rows=re.findall(r"^\| `([^`]+)` \| (.*?) \|\s*$",value,re.M)
+    names=[name for name,_ in rows]
+    if len(names)!=len(set(names)):
+        raise ValueError('UniqueAcceptedCommitmentFields.'+record)
+    for name in (('Owner','Repository','RequiredArtifact','TargetVersionOrCommit','TargetIntegrationDate','CompatibilityContractAndVerificationCommand','RequiredEvidenceLevel','AcceptedStatus','ConsumingStories') if complete else ()):
+        if names.count(name)!=1: raise ValueError('ExactlyOneAcceptedCommitment.'+record+'.'+name)
+    return value
 
 
 def admission(context_path, register_path, candidate, clean, profile_date=None):
-    missing, hashes, context = driver_blockers(), {}, {}
+    import bounded_file_io as selected_io
+    try: return selected_io.run(lambda:_admission(context_path,register_path,candidate,clean,profile_date))
+    except TimeoutError: return ["CoordinatedAdmissionInputDeadlineOrCapacity"],{},{}
+
+
+def _admission(context_path, register_path, candidate, clean, profile_date=None):
+    missing, hashes, context = list(driver_blockers()), {}, {}
     if context_path is None:
         return ["ExplicitCoordinatedInstallationContext", "ExplicitPlatformIntegrationDate", "ExplicitProtectionIntegrationDate"], {}, {}
     import qualify as q
@@ -30,6 +46,8 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
         if hashlib.sha256(raw).hexdigest() != context.get("acceptedRegisterSha256"):
             missing.append("ExactAcceptedRegisterBytes")
         text = raw.decode("utf-8")
+        for record in ("EXT-SECRETS-1","EXT-HOST-1","EXT-PROTECTION-1"):
+            if not section(text,record,complete=True): raise ValueError('CompleteAcceptedSection.'+record)
         for name in ("platformIntegrationDate", "protectionIntegrationDate"):
             try:
                 calendar_date(context.get(name))
@@ -59,7 +77,22 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
         try:
             joint = q.read_json(context["installedArtifacts"]["jointConfiguration"]["path"])
             missing.extend(validate_joint_configuration(joint, hashes, context))
-        except (OSError, ValueError, TypeError, KeyError):
+            from launch_inventory import blockers as launch_blockers
+            launch=q.read_json(context["installedArtifacts"]["launchInventory"]["path"])
+            if joint["binding"].get("launchInventorySha256")!=digest(launch):missing.append("ExactAcceptedCompleteLaunchInventoryBinding")
+            missing.extend(launch_blockers(launch,q.read_json(context["installedArtifacts"]["hostProfile"]["path"])))
+            protection = section(text, "EXT-PROTECTION-1")
+            expected_protection = {"targetCommit": joint["binding"]["protectionCommit"],
+                "integrationDate": calendar_date(context["protectionIntegrationDate"]),
+                "profileSha256": hashes["protectionProfileSha256"],
+                "configurationSha256": hashes["jointConfigurationSha256"], "planSha256": digest(full_plan())}
+            accepted_protection = re.search(r"\| `ProtectionQualificationBinding` \| `([^`]+)` \|", protection)
+            if (accepted_protection is None or q.decode_json(accepted_protection[1]) != expected_protection
+                    or f'| `TargetVersionOrCommit` | `{expected_protection["targetCommit"]}` |' not in protection
+                    or not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", protection)):
+                missing.append("ExactAcceptedCompleteProtectionBinding")
+            context["acceptedProtectionSectionSha256"] = hashlib.sha256(protection.encode()).hexdigest()
+        except (OSError,ValueError,TypeError,KeyError,AttributeError):
             missing.append("JointConfiguration.Structure")
         anchors = []
         for name in ("executorAnchor", "observerAnchor", "enrollmentAnchor"):
@@ -111,6 +144,8 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
                 try:
                     accepted_command=re.search(r'Command: `([^`]+)`',section(text,record))
                     tokens=shlex.split(command)
+                    if not valid_owner_command(command,record,candidate,context["installedArtifacts"]["jointConfiguration"]["path"]):
+                        missing.append(record+".ClosedCompleteOwnerCommand")
                     if accepted_command is None or accepted_command[1]!=command:
                         missing.append(record+".EqualAcceptedCoordinatedCommand")
                     joint_argument="PLATFORM_JOINT_COHORT_CONFIGURATION="+context["installedArtifacts"]["jointConfiguration"]["path"]
@@ -136,14 +171,61 @@ def admission(context_path, register_path, candidate, clean, profile_date=None):
         return ["ValidExplicitCoordinatedInstallationContext"], hashes, context
 
 
+def valid_owner_command(command, record, candidate, joint_path):
+    """Recognize the shipped shell grammar without evaluating any untrusted command."""
+    import shlex
+    prefix = (f'test "$(git -C ../platform rev-parse HEAD)" = "{candidate}" && '
+              'test -z "$(git -C ../platform status --porcelain)" && ')
+    if not isinstance(command, str) or not re.fullmatch(r'[a-f0-9]{40}', candidate or '') or not command.startswith(prefix):
+        return False
+    remainder = command[len(prefix):]
+    try:
+        tokens = shlex.split(remainder)
+        names = ['PLATFORM_JOINT_COHORT_CONFIGURATION']
+        if record == 'EXT-SECRETS-1':
+            names += ['EXT_SECRETS_1_RUNTIME_CONFIGURATION', 'EXT_SECRETS_1_ACCEPTANCE_PACKET']
+            owner = ['pwsh', '-NoProfile', '-File', '../platform/eng/verify-ext-secrets-1.ps1']
+            flags = ['-Mode', 'Live', '-EventStoreSourceRoot', None, '-ArtifactsDirectory', None, '-EvidenceDirectory', None]
+        elif record == 'EXT-HOST-1':
+            owner = ['bash', '../platform/eng/verify-agents-host.sh']
+            flags = ['--mode', 'Full', '--artifacts-path', None, '--profile', None]
+        else:
+            return False
+        if tokens[:1] != ['env'] or len(tokens) != 1 + len(names) + len(owner) + len(flags):
+            return False
+        assignments = tokens[1:1+len(names)]
+        for name, item in zip(names, assignments):
+            if not item.startswith(name+'=') or not Path(item[len(name)+1:]).is_absolute():
+                return False
+        if assignments[0] != names[0]+'='+joint_path:
+            return False
+        tail = tokens[1+len(names):]
+        if tail[:len(owner)] != owner or any(expected is not None and actual != expected for actual, expected in zip(tail[len(owner):], flags)):
+            return False
+        # Canonical quoting makes every supplied path literal, including shell metacharacters.
+        canonical = 'env ' + ' '.join(name+'='+shlex.quote(item[len(name)+1:]) for name,item in zip(names,assignments)) + ' ' + shlex.join(tail)
+        return remainder == canonical
+    except (ValueError, TypeError, IndexError):
+        return False
+
+
 def shared_binding(installed_hashes, coordinated):
     from cases import plan_digest
     return {"jointConfigurationFile": coordinated["installedArtifacts"]["jointConfiguration"]["path"], "jointConfigurationSha256": installed_hashes["jointConfigurationSha256"],
             "configurationSha256": __import__("qualify").digest(__import__("qualify").read_json(coordinated["installedArtifacts"]["custodyConfiguration"]["path"])),
             "configurationRawSha256": installed_hashes["custodyConfigurationSha256"],
             "profileSha256": installed_hashes["hostProfileSha256"], "planSha256": plan_digest(),
-            "cohortPlanSha256": digest(full_plan()),
+            "cohortPlanSha256": digest(full_plan()),"launchInventorySha256":installed_hashes["launchInventorySha256"],
+            "protectionBinding": protection_binding(installed_hashes, coordinated),
             **{name + "AnchorSha256": installed_hashes[name + "AnchorSha256"] for name in ("executor", "observer", "enrollment")}}
+
+
+def protection_binding(installed_hashes, coordinated):
+    import qualify as q
+    joint = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])
+    return {"targetCommit": joint["binding"]["protectionCommit"], "integrationDate": calendar_date(coordinated["protectionIntegrationDate"]),
+        "profileSha256": installed_hashes["protectionProfileSha256"], "configurationSha256": installed_hashes["jointConfigurationSha256"],
+        "planSha256": digest(full_plan()), "acceptedSectionSha256": coordinated["acceptedProtectionSectionSha256"]}
 
 
 def records(register_path, target, platform_date, commands, bindings):
@@ -160,7 +242,7 @@ def records(register_path, target, platform_date, commands, bindings):
         joint_binding = {"configurationSha256": bindings["jointConfigurationSha256"], "bindingSha256": digest(joint["binding"]), "planSha256": digest(full_plan())}
         proposed = replace_binding_row(proposed, "JointQualificationBinding", joint_binding)
         if record == "EXT-SECRETS-1":
-            proposed = re.sub(r"(\| `RuntimeQualificationBinding` \| )`[^`]+`", lambda m: m[1] + "`" + json.dumps(bindings, sort_keys=True, separators=(",", ":")) + "`", proposed)
+            proposed = replace_binding_row(proposed, "RuntimeQualificationBinding", bindings)
         result[record] = {"acceptedSectionSha256": hashlib.sha256(original.encode()).hexdigest(), "acceptedVerbatimSection": original,
                           "proposedVerbatimSection": replace_binding_row(proposed, "HostQualificationBinding", bindings) if record == "EXT-HOST-1" else proposed, "RuntimeQualificationBinding": bindings, "accepted": False, "availability": False}
     return result
@@ -223,14 +305,14 @@ def validate_joint_configuration(config, installed_hashes=None, context=None):
                         or pins[str(phase)] != digest({k:v for k,v in profile.items() if k != 'bindingDigest'}) \
                         or profile.get('bindingDigest') != digest(binding) or not isinstance(profile.get('command'), list) \
                         or not profile['command'] or any(not isinstance(arg, str) or not arg for arg in profile['command']) \
+                        or profile['command'].count("--phase-command") != 1 or profile.get("recoveryCommand") != ["--phase-finalize" if arg == "--phase-command" else arg for arg in profile["command"]] \
                         or not isinstance(profile.get('environment'), dict) or any(not isinstance(k,str) or not isinstance(v,str) for k,v in profile['environment'].items()) \
                         or not isinstance(profile.get('workingDirectory'), str) or not Path(profile['workingDirectory']).is_absolute() \
                         or type(profile.get('completionTimeoutSeconds')) is not int or not 1 <= profile['completionTimeoutSeconds'] <= 86400 \
                         or not isinstance(profile.get('artifacts'), list) or not profile['artifacts']:
                     raise ValueError()
-                for artifact in profile['artifacts']:
-                    if not isinstance(artifact, dict) or hashlib.sha256(q.bounded_public_file(artifact['path'], 1024*1024)).hexdigest() != artifact['sha256']: raise ValueError()
-                if profile['command'][0] not in [item['path'] for item in profile['artifacts']]: raise ValueError()
+                from execution_profile import validate_execution_profile
+                missing.extend('JointConfiguration.phaseExecutionProfiles.'+str(phase)+'.'+item for item in validate_execution_profile(profile))
             except (OSError, KeyError, ValueError, TypeError): missing.append('JointConfiguration.phaseExecutionProfiles.' + str(phase))
     if installed_hashes is not None and context is not None:
         mapping = {'profileSha256':'hostProfileSha256','protectionProfileSha256':'protectionProfileSha256','currentTrustSha256':'publicTrustSha256',

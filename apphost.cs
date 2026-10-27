@@ -13,5 +13,7 @@ using Aspire.Hosting;
 using Hexalith.Platform.Composition;
 
 var builder = DistributedApplication.CreateBuilder(args);
+using var acceptedLaunch = AgentsHostComposition.OwnLaunch(builder);
 PlatformAppModel.ComposeEntry(builder);
-builder.Build().Run();
+using var application = acceptedLaunch.Build();
+application.Run();

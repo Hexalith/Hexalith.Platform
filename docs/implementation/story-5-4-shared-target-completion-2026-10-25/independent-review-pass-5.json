@@ -1,0 +1,274 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-25T22:36:55.191231+00:00",
+  "reviewPass": 5,
+  "reviewLoopIterationAfterTriage": 5,
+  "status": "SourceCorrectionsHandedBack_IndependentReview6Pending",
+  "reviewers": [
+    "/root/review5_blind",
+    "/root/review5_edge",
+    "/root/review5_gap"
+  ],
+  "contextFree": true,
+  "sourceScopeManifest": "/tmp/story54-final-review-wxvrx5a0/scope.json",
+  "reviewDiffSha256": "6e46e3566d502d5fc8b59b9866c6e252266fd3310ed2a2a49fc9db49ea824708",
+  "findings": [
+    {
+      "id": "B5-1",
+      "verdict": "high",
+      "evidence": "EventStorePrivateRecordingPort begins private replay/security originals but never calls terminal retention after exact native Recorded results. The new reserved completion liability consequently remains charged for every successful operation, eventually denying new ingress.",
+      "route": "bad_spec \u2014 retain exact native completions and settle liability durably"
+    },
+    {
+      "id": "B5-2",
+      "verdict": "high",
+      "evidence": "Indexed recording-recovery-dispatch-admit creates an absent base original directly through Store after creating its recovery original; that insertion does not reserve/increment completion liability. Later retention can subtract an uncharged original and strand other reservations.",
+      "route": "bad_spec \u2014 centralize/reconcile all original creation and completion accounting"
+    },
+    {
+      "id": "B5-3",
+      "verdict": "high",
+      "evidence": "ValidOwnerRequest verifies hash shape only, while ValidRequest verifies canonical derivation. Direct receiving drivers admit arbitrary new request IDs for the same current attempt/case/scope; current attempt and case authorization does not prove that canonical ID.",
+      "route": "bad_spec \u2014 bind receiving admission to canonical complete public identity"
+    },
+    {
+      "id": "B5-4",
+      "verdict": "high",
+      "evidence": "Receiver authenticates a head snapshot, awaits recording/custom handlers and returns Mutated=false. No same-head CAS orders those effect admissions against a committed caller revocation before dispatch. Native inner identities do not establish current outer caller admission.",
+      "route": "bad_spec \u2014 durable exact admission under the revocation ordering boundary before external effects"
+    },
+    {
+      "id": "B5-5",
+      "verdict": "high",
+      "evidence": "ObservationOrchestrator retains snapshots only after all stages. Retry creates new AfterEffect/AfterRestart reads while looking up already executed controls; it can label later state as missing historical stages.",
+      "route": "bad_spec \u2014 immutable per-stage retention before later control admission"
+    },
+    {
+      "id": "B5-6",
+      "verdict": "high",
+      "evidence": "run_installed_cohort explicitly applies binding-row checks only to the two Platform records; protection's accepted target/date/status are checked but its ProtectionQualificationBinding is skipped. Packet preparation/C# validation elsewhere does not guard direct runner admission.",
+      "route": "patch \u2014 compare the existing complete protection binding before live ports"
+    },
+    {
+      "id": "B5-7",
+      "verdict": "high",
+      "evidence": "Execution profile admission checks listed hashes and only requires command[0] among them. dotnet plus an unlisted DLL/config passes, and environment/argument loaded files can change without invalidating the profile; dispatch only rechecks the same incomplete list.",
+      "route": "bad_spec \u2014 complete constrained execution dependency/configuration inventory and dispatch/recovery checks"
+    },
+    {
+      "id": "B5-8",
+      "verdict": "high",
+      "evidence": "Cohort HTTP serving reads headers before setting a timeout, then uses a socket inactivity timeout for rfile.read(length) before authentication. Trickle traffic can retain unbounded ThreadingHTTPServer threads indefinitely.",
+      "route": "bad_spec \u2014 total acquisition deadline and bounded receiving capacity"
+    },
+    {
+      "id": "B5-9",
+      "verdict": "false",
+      "evidence": "Source intentionally denies when independently pre-admitted roots/uses are exhausted; the ledger already explicitly requires replenishment inputs/protocol and identifies 128/32 as source bounds rather than installed capacity. A service with exhausted required native inputs does not have all required healthy dependencies. No complete installed packet or continuous-capacity qualification is claimed.",
+      "route": "rejected \u2014 preserve and name the exact missing independently authorized replenishment/recipe-rollover protocol; never generate admissions"
+    },
+    {
+      "id": "B5-10",
+      "verdict": "high",
+      "evidence": "Temporal Preflight checks only input/profile. Execute later compares one System clock sample to the enrolled exact edge, while authenticator verification takes another sample; checkedAt is not the actual evaluation instant. The inventory's missing native protocol does not make this source preflight refuse.",
+      "route": "bad_spec \u2014 exact native evaluation/timestamp or explicit pre-admission refusal"
+    },
+    {
+      "id": "E5-1",
+      "verdict": "high",
+      "evidence": "Spool Admit writes distinct large immutable admission files before its head CAS. Concurrent ordinary callers reach that path before their primary pending CAS; a losing admission leaves charged physical bytes without a reservation, potentially consuming the winning completion floor. No local/distributed writer serialization prevents it.",
+      "route": "bad_spec \u2014 reserve spool publication/completion under authority CAS before large writes"
+    },
+    {
+      "id": "E5-2",
+      "verdict": "high",
+      "evidence": "Independently confirms B5-6 with a complete isolated fixture: changing only accepted protection profile pins still reaches the runner. Current source checks show the same skipped row.",
+      "route": "patch \u2014 shared protection binding check"
+    },
+    {
+      "id": "E5-3",
+      "verdict": "high",
+      "evidence": "Baseline Program explicitly disabled logging/metrics on KMS/Dynamo/S3 clients; current composition removed those flags. AwsKeyAccess receives decrypted KEK/root bodies and no other local SDK suppression replaces them; global SDK response logging can expose those bodies.",
+      "route": "patch \u2014 restore explicit suppression on retained compatibility clients without executing AWS"
+    },
+    {
+      "id": "V5-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: no OpenBao test calls ScheduleSourceCutAsync; the HTTP fixture rejects DELETE and lifecycle tests substitute FakeNative. Removing the actual deletion would leave checked tests green while lifecycle retains scheduling acknowledgement.",
+      "route": "patch \u2014 stateful isolated native source-cut/survivor verification"
+    },
+    {
+      "id": "V5-2",
+      "verdict": "high",
+      "evidence": "Pre-verified: only the missing-authority OpenBao reencryption refusal is tested; successful survivor migration uses FakeNative/AWS. Unconditionally refusing the real OpenBao path is undetected.",
+      "route": "patch \u2014 independently admitted native survivor reencryption success"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "B5-1"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-2"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-3"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-4"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-5"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-6",
+        "E5-2"
+      ],
+      "route": "patch",
+      "verdict": "high",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeInRederivation"
+    },
+    {
+      "members": [
+        "B5-7"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-8"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B5-9"
+      ],
+      "route": "rejected",
+      "verdict": "false"
+    },
+    {
+      "members": [
+        "B5-10"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "E5-1"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "E5-3"
+      ],
+      "route": "patch",
+      "verdict": "high",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeInRederivation"
+    },
+    {
+      "members": [
+        "V5-1"
+      ],
+      "route": "patch",
+      "verdict": "high",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeInRederivation"
+    },
+    {
+      "members": [
+        "V5-2"
+      ],
+      "route": "patch",
+      "verdict": "high",
+      "processing": "MootAsSeparatePatchDuringBadSpecRederivation_IncludeInRederivation"
+    }
+  ],
+  "acceptedRecordChangesAuthorized": false,
+  "installedQualification": false,
+  "fullSourceComplete": false,
+  "deliveryComplete": false,
+  "implementationCorrectionEvidence": {
+    "B5-1": {
+      "status": "Corrected",
+      "correction": "Real private recording port retains exact event/receipt completions for the logical base and active native transport, handles native/result-retention acknowledgment loss, settles terminal failed recovery transports and releases each successful liability. Actual port plus receiving authority completed 10,025 recordings with zero pending completion budget and retained history."
+    },
+    "B5-2": {
+      "status": "Corrected",
+      "correction": "Aged absent base creation uses charged ordinary Begin; direct dispatch cannot insert a missing uncharged base. Versioned bounded reconciliation recomputes old non-null undercharged counters. Tight-capacity absent-base/recovery and legacy settlement tests pass; exact authenticated absent-to-unsent progression retains the original grant/native prefix."
+    },
+    "B5-3": {
+      "status": "Corrected",
+      "correction": "Every public/cohort/direct owner caller carries the complete canonical request. Receiving schema verifies canonical derivation and independently fixed full plan expectations before driver/original admission. Executor/observer/enrollment arbitrary hash and changed complete input tests deny without effects."
+    },
+    "B5-4": {
+      "status": "Corrected",
+      "correction": "Exact canonical payload digest plus caller/grant/method binding is durably indexed under the same surviving revocation CAS before external effects. Frame nonce cannot create another original. Custom unknown recovery denies by default; shipped read/recovery paths are explicit. Revocation-winning, admission-winning, concurrent/lost admission and restart tests pass. No plaintext/credential request body is archived by this admission layer."
+    },
+    "B5-5": {
+      "status": "Corrected_HistoricalSnapshotProtocolStillRequired",
+      "correction": "Each stage body and signed control original is retained before later controls. Retry uses immutable bodies. Missing stages after an interrupted already-admitted control remain Unknown with External.ExactHistoricalSignedStageSnapshotProtocol or External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol; source does not relabel current reads."
+    },
+    "B5-6": {
+      "status": "Corrected",
+      "correction": "The common runner compares the complete accepted protection target/date/profile/configuration/plan binding before creating live ports. Missing and substituted binding tests pass."
+    },
+    "B5-7": {
+      "status": "Corrected_AppRuntimeInventory_FullNativeImageMeasurementBlocked",
+      "correction": "Supported shipped dotnet argv only; complete supplied app/runtime census, entry DLL/deps/runtimeconfig/installation/public-input pins, bounded streaming hashes and restricted environment are rechecked at preflight, dispatch and metadata-only recovery. Private signing/credential/assertion mounts remain outside public hashes under existing purpose-bound trust. Full readiness/packet preparation retains External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol; owner completeness flags cannot satisfy it. Isolated positive packet/metadata fixtures explicitly substitute only that absent external measurement boundary."
+    },
+    "B5-8": {
+      "status": "Corrected",
+      "correction": "Bounded unauthenticated connection slots plus a monotonic acquisition timer cover request line, bounded headers and complete bounded body. Real loopback slow-header/body, saturation and malformed duplicate/transfer/oversize framing fixtures never dispatch. Admitted work keeps its original uncertainty independently of the client socket."
+    },
+    "B5-10": {
+      "status": "Corrected_SelectedNativeEvaluatorMissing",
+      "correction": "Expiry/overlap preflight names External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol before new native case admission; immutable retained historical originals remain readable. No fake production clock/evaluation instant is supplied."
+    },
+    "E5-1": {
+      "status": "Corrected",
+      "correction": "Spool publication/completion reserves exact stable transition liability in the independently surviving conditional head before large archive writes. Distinct losing writers publish no large bytes. Completion liability releases only after durable exact recorded publication; legacy admitted/lost-head originals acquire/recover a reservation. Actual archive concurrency/capacity/CAS-loss/restart tests pass."
+    },
+    "E5-2": {
+      "status": "Corrected",
+      "correction": "Same complete common-runner protection binding correction as B5-6."
+    },
+    "E5-3": {
+      "status": "Corrected",
+      "correction": "Retained compatibility configs explicitly disable logging and metrics; supported SDK configuration factory and focused non-network regression pass. No AWS operation or installation ran."
+    },
+    "V5-1": {
+      "status": "Corrected",
+      "correction": "Stateful isolated OpenBao transport supports actual DELETE. Real RecoverableLifecycle.ScheduleCutAsync reaches the adapter, cuts exactly the enrolled source once, retains awaiting-final-evidence and leaves survivor ciphertext usable. This proves no physical all-copy property."
+    },
+    "V5-2": {
+      "status": "Corrected",
+      "correction": "Actual OpenBao cross-key reencryption consumes an actual receiving signed independent holder original, preserves the root under destination after source unavailability and refuses signed destination/binding/missing-authority substitutions. Both derived/non-derived fixtures pass."
+    }
+  }
+}

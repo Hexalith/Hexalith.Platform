@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -451,3 +451,115 @@ All sixteen original accepted fixes and all seven additional workflow patch grou
 D2 (process creation identity before PID deletion) and D3 (exact captured-secret filtering for optional metadata archives) are pre-existing and remain deferred. D1, CB3, CE1 and the owner-approved Q3 native-process limitation are carried. Fresh live qualification remains gated by Aspire 13.6.1 versus required 13.6.3; package qualification still requires authoritative published artifacts, and Windows/macOS native runtime qualification is not claimed. The build spec is done and sprint entry is review.
 
 Builds implementation is committed locally as `7116b1672c58fda4f480ed77c9898bfec34622c9`. The Platform completion commit records its gitlink and this tracking/evidence; this workflow does not push.
+
+### Review Findings — delta review (2026-10-25)
+
+This pass reviewed only what changed after the full-story review: Builds `b215213`..`7116b16`, limited to the story's 54 files (22 changed, including the 1-line `0c73550` merge), plus Platform `d681029`..`HEAD` for `docs/contracts/test-environment-v1.md`. That is 24 files and 1,489 diff lines, covering fixes P1–P16 and C1–C7. All four layers completed: Blind Hunter (BH), Edge Case Hunter (EH), Verification Gap (VG) and Acceptance Auditor (AA). Each of the 34 observations got its own verdict before grouping. The result is **0 decision-needed, 9 patch, 1 defer and 21 rejected**. The owner decisions Q1(a), Q2(a) and Q3(c) are unchanged. The Auditor confirmed that every one of P1–P16 and C1–C7 has a matching change.
+
+- [x] [Review][Patch] W1 — No test accepts a committed `unavailable`/PrerequisiteUnavailable record (medium; VG2) [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs:251]. C4's pairing arm at `CompositionRunStateStore.cs:137` can be deleted or mis-coded with every test still passing. If that happens, a missing-prerequisite native run (HXR030, status `unavailable`) fails its second recording, automatic cleanup stays pending, `down --run-id` returns HXR023 permanently and `list` marks the owner unverifiable. Add positive rows for `unavailable`/PrerequisiteUnavailable and `cancelled`/Cancelled. Each should assert `ValidOutcome`, `ReadCommittedOutcomeAsync`, and a successful listing that contains the owner.
+- [x] [Review][Patch] W2 — The owner naming in the listing's per-owner exception path is never tested (medium; VG3) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:68]. If the P5 `unverifiableOwners.Add` in that catch is deleted, an owner whose `selected-test.json` or `execution-activation.json` holds non-JSON bytes drops out of `list`, and `list` reports success. Add "unreadable" rows for both files to `UnverifiableObservationNamesOwnerAsync`. Assert TopologyOrLifecycle, the healthy peer, and the owner ID in HXR024.
+- [x] [Review][Patch] W3 — The session-less recording path restores an unvalidated committed outcome (low; VG other) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1273]. When `session` is null, `selected-test.json` is read with `CompositionDocumentStore.TryReadAsync` and copied into the command status and outcome at :1298. That bypasses C4's rule that undefined enums and unsupported status/exit pairs never become restored outcomes. Use the validating `engine.ReadCommittedOutcomeAsync`, which :1288 already uses.
+- [x] [Review][Patch] W4 — An exact `down` that refuses unverifiable metadata omits the run-derived workspace leftover (low; AA3) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1146]. `IncompleteDown()` reports empty lists. The C2/C3/C4 tests assert that the workspace survives, but `down.Remaining` never names `workspace:<runId>`, although `WorkspaceFor(runId)` is known without trusting state. That breaks the matrix rule "report exact known leftovers". Include the workspace when its directory exists, as `:2149` already does.
+- [x] [Review][Patch] W5 — The contract omits the reader rule that unavailable resources require unavailable readiness (low; BH8+AA4) [docs/contracts/test-environment-v1.md:39]. C7 pins HXT104 for `environment.resources: not-yet-populated` combined with populated readiness, even an empty readiness array, and the published schema accepts that shape. Schema-only fixture validators therefore accept documents the Builds reader refuses. State the rule beside the P16 paragraph.
+- [x] [Review][Patch] W6 — The README still says exact cleanup accepts an omitted manifest, with no qualification (low; AA5+BH13) [references/Hexalith.Builds/README.md:459]. Since P6, `down --run-id … --evidence` without `--manifest` is refused with HXC001. Say that `--evidence` requires `--manifest`.
+- [x] [Review][Patch] W7 — The HXE149 message and remediation do not mention the new cleanup requirement (low; BH5) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Evidence/ReadinessEvidenceValidator.cs:340]. A passed readiness row that references a `completed`, exit-0 artifact with leftovers is refused with the message "must reference a successful module-run artifact" and the remediation "Reference a completed run-evidence artifact with a successful outcome" (:377). Operators get no sign that unverified cleanup caused the refusal. Name verified selected cleanup in both texts.
+- [x] [Review][Patch] W8 — The success branch of the P4 evidence-failure merge is untested (low; BH14) [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs:37]. The only `evidenceFails` row also fails cleanup, so `MergeEvidenceFailure` takes its non-success branch. Reverting the success branch at `ModuleCommandExecutionService.cs:1571` to the old construction would drop `testResultPath` and earlier diagnostics after a clean pass whose evidence write fails, and no test would catch it. Add a clean-pass, evidence-failure row that asserts `testResultPath`, the evidence diagnostic's rule ID and the Q1(a) exit code.
+- [x] [Review][Patch] W9 — The fallback reads owner cancellation twice (low; EH1) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1225]. `fallbackTerminalCause` and `result` each read `cancellationToken.IsCancellationRequested`. If the owner cancels between the two reads, a `cancelled`/HXC130 outcome gets the durable cause `execution-timeout`, or HXT007 gets `run-cancelled`. Read the value once.
+- [x] [Review][Defer] W10 — The Windows no-follow, shared-read open path never runs during verification [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:203] — deferred (medium; VG1+BH10): every workflow runs on `ubuntu-latest`, the spec excludes CI workflow changes, and Windows native runtime qualification is deferred by owner decision Q3. During that qualification, run the C1/C6 reader theories and runner metadata reads on Windows. Re-check two rejected findings at the same time: BH9/EH7 (non-link reparse tags are refused) and EH6 (the raw `CreateFileW` call has no long-path prefix).
+
+#### Rejected
+
+- AA1 — `low`: P1 prescribed the finite metadata allowance, and a retained failure stops nothing, so the declared stop limit does not apply. HXT008 occurs only when survivor discovery takes longer than 5 s. The committed outcome and retention survive, and `down` rediscovers the resources.
+- EH3 — `low`: same path. If discovery plus recording exceeds the shared 5 s, the result is the explicit unverified placeholder plus HXT008, not lost retention. A second budget would add complexity for a slow-scan case.
+- AA2 — `false`: no producer commits `withdrawn`. The runner writes only `completed`, `failed`, `unavailable` and `cancelled`, and the v1 writer maps exit Cancelled to `cancelled`.
+- BH3/AA6/EH4 — `low`: the rollback's receipt write fails only if the same receipt write has just succeeded under the transaction lock and then a disk-full or permission change intervenes. Preserving the conflict exception would need another guard.
+- BH1 — `low`: refusing deletion when ownership metadata cannot be verified is the intended fail-closed, exact-owner rule, and the situation only arises with corrupt or tampered state. A purge or recovery command would be new public surface. The reportable leftover is patch W4.
+- BH2 — `false`: every runner producer pairs status and exit code within C4's arms. `NativeTestExecutor.Failed` maps PrerequisiteUnavailable to `unavailable`, `FailAndTearDownAsync` maps Cancelled to `cancelled`, and every `PlatformRefusal` caller that passes Cancelled sets `cancelled`. No writer bug is demonstrated.
+- BH4/EH8 — `low`: owner decision Q1(a), implemented as P15, scoped the gate to `selectedTestRun`. Ordinary-run evidence has never carried cleanup observations, and adding them would change the evidence schema.
+- BH6 — `false`: the `isEmpty` half cannot be isolated, because the artifact validator already rejects `removed` with a non-empty remainder (`ModuleRunEvidenceArtifactValidator.cs:481-482`). The `removed` success row proves the hash rebinding works, so the HXE205/HXE149 in the failing rows come from cleanup.
+- BH7 — `false`: non-regular inputs are still refused. Devices fail the seekable/positive-length check (HXT105), and directories fail on read. The lock check matches the runner's .NET writers, which use flock, and published results are renamed into place atomically.
+- BH9/EH7 — `low`: Windows-only, and it errs on the fail-closed side. A correct fix would have to reopen non-link reparse points without `OPEN_REPARSE_POINT` and re-verify their identity. Carried into W10.
+- EH6 — `low`: Windows-only, and it needs a path of 260 or more characters on a host without LongPathsEnabled. Carried into W10.
+- BH10 (remaining claims) — `false`: Unix open failures are equally generic, Windows `CreateFile` sharing already enforces exclusive writers, `FileMode.Open` equals `OPEN_EXISTING` (3), and the constants are the standard values. The untested part is W10.
+- BH11/EH2 — `maybe-false`, would be `low`: the else-branch keeps the pre-existing HXT007 "execution lifetime" label, and P11 aligned the cause with that label. A mislabel would need a non-owner, non-startup OCE after the session exists but before execution timing is set. To settle it, trace which inner bounds can throw there. The reflection-based test is a maintenance concern, as with BH19 earlier.
+- BH12/EH5 — `low`: adding a structured owner field would add surface. Non-run-ID file names are deliberately not echoed. The outer catch fires only on root-level failures, where nothing has been verified yet. An unbounded message needs many corrupt owners.
+- BH13 (remaining claims) — `low`: HXC001 is the CLI's standard usage refusal. `--profile` and `--filter` were already ignored on exact down before this diff. The test without `compositionOptions` causes no reachable harm while the guard holds.
+- BH15 — `low`: test maintenance only. Every failure mode still fails the test, and none produces a false pass.
+- EH9 — `low`: the archives are optional, and the v1 result references none of them (`TestResultWriter` has no archive references). Only the retention path that falls back before the native callback lacks the copy. Restoring it would let archival use the survivor allowance again, which the isolated `archiveMetadata:false` correction removed.
+
+
+### Delta-review fixes — resumed build, 2026-10-25
+
+All nine accepted delta corrections W1–W9 are implemented. Committed outcome recovery now validates sessionless records, incomplete exact cleanup names surviving run-derived workspaces, and one owner-cancellation observation selects the fallback status and cause. Positive terminal/listing cases and clean-pass evidence-export failure now have executed regression coverage; contract, README and HXE149 guidance match the implemented rules. Owner decisions and W10/prior deferrals are unchanged.
+
+Parent verification on unchanged source passes **698/698 Module cases, 182/182 Evidence cases and 1/1 Platform cleanup-helper case** (881 total), with no failures, errors, skips or unrun cases. The additional focused lane passes 29/29. All three individual Debug builds pass with zero warnings/errors. All seven matrix rows, all nine accepted finding mappings, 59 source fingerprints, schema byte parity and relocated retained-evidence validation pass. Exact commands, complete XML and the two superseded analyzer failures are retained in [verification](evidence/2-5/delta-review-fixes-20261025/pre-workflow-review/verification.json), [finding mapping](evidence/2-5/delta-review-fixes-20261025/pre-workflow-review/review-findings-verification.json) and [matrix audit](evidence/2-5/delta-review-fixes-20261025/pre-workflow-review/matrix-audit.json). Independent workflow review follows.
+
+Fresh live qualification remains gated by installed Aspire 13.6.1 versus required 13.6.3; Docker 29.8.2 is available. No new package or Windows/macOS native qualification is claimed.
+
+
+### Resumed delta workflow triage — 2026-10-25
+
+All three configured review layers completed before triage. The edge-case reviewer returned no findings and the verification-gap reviewer found no gaps. The blind reviewer filed six observations; each receives its own verdict below before grouping. Four direct corrections remain. The pre-review 881-case verification and source snapshot are preserved under `delta-review-fixes-20261025/pre-workflow-review/`.
+
+| Finding | Verdict | Route and verified evidence |
+| --- | --- | --- |
+| B1 | medium | Patch: The new sessionless read invokes ReadCommittedOutcomeAsync, whose outcome lock refuses contention immediately. Both recovery attempts can run while another finalizer holds the lock, so the command retains its startup result despite a valid committed cancellation/unavailability. Permit bounded waiting for this new caller within its existing metadata allowance; preserve other callers' existing non-wait behavior. |
+| B2 | low | Rejected: A valid active owner followed by corrupt separate terminal metadata can lose prior container/process/claim observations from the refusal output. Cleanup remains explicitly unverified and deletes nothing. Recovering those observations requires an additional partial-validation/recovery path for damaged metadata; this is not an everyday state or a direct correction. The run-derived workspace is now reported without trusting the corrupt record. |
+| B3 | low | Patch: HXE149 also reports unsuccessful non-selected artifacts, so its message must qualify the selected-cleanup condition just as the hint does. A direct wording correction is sufficient. |
+| B4 | medium | Patch: The new sessionless command regression only checks malformed rejection. The positive reader/listing theory does not execute that caller, so a blanket command-level recovery refusal could pass. Add valid cancelled/unavailable command cases that restore the committed outcome; include the contention scenario for B1. |
+| B5 | false | Rejected: ReadIfExistsAsync wraps invalid JSON in IOException, and directory occupancy also throws IOException. Both therefore execute the same per-owner catch and owner-ID insertion. The new invalid-JSON cases already detect removal of that catch's insertion while requiring the healthy peer; no separate unverified behavior is demonstrated. |
+| B6 | low | Patch: The clean-pass evidence-export-failure row does not compare rendered remaining resources or exclude HXR023. Add direct output assertions against its verified-empty cleanup observation. |
+
+B1 and B4 remain separate findings: the lock behavior and missing positive command coverage are distinct defects, even though one contention case can cover both. No new deferral or intent change is required.
+
+
+### Final delta workflow result — 2026-10-25
+
+All nine original delta fixes and all four accepted workflow corrections are complete. Final unchanged-source verification passes **702/702 Module cases, 182/182 Evidence cases and 1/1 Platform cleanup-helper case** (885 total), with no failures, errors, skips or unrun cases. All three individual Debug builds have zero warnings/errors. The four review corrections also pass 26 focused Module cases and four focused Evidence cases. All seven lifecycle matrix rows, nine original finding mappings, four workflow finding mappings, 59 source fingerprints, schema byte parity and relocated retained-evidence validation pass.
+
+The earlier 881-case result and superseded build observations remain under `pre-workflow-review/`; final commands, complete XML, compressed logs and reviewed/final diffs are retained in [final verification](evidence/2-5/delta-review-fixes-20261025/verification.json), [workflow review](evidence/2-5/delta-review-fixes-20261025/workflow-review.json) and [workflow finding verification](evidence/2-5/delta-review-fixes-20261025/workflow-review-findings-verification.json). The frozen intent and original baseline revisions are unchanged.
+
+No new deferral was added. W10, D1, D2, D3, CB3, CE1 and owner decision Q3 remain as recorded. Fresh live qualification remains gated by Aspire 13.6.1 versus required 13.6.3; no new package or Windows/macOS native qualification is claimed. The build spec is done and sprint tracking is review.
+
+Builds implementation is committed locally as `0902fd6c527750ee3fc6832824f42b5b9bfdcfa6`. The Platform completion commit records its gitlink, final evidence and tracking. No push was performed.
+
+### Review Findings — implementation sources (2026-10-26)
+
+Reviewed the five Builds story commits' implementation sources (`984c4d5`, `0ade5ec`, `b215213`, `7116b16`, `0902fd6`): 33 files, +2,366 / −556. Blind Hunter, Edge Case Hunter, Verification Gap, and Acceptance Auditor all completed. Verification Gap found no gaps. Verdicts were checked against the current sources.
+
+- [ ] [Review][Patch] A post-readiness process that never starts is published as `failed` / `test-failure` with command status `failed`, keeping diagnostic `HXR030` [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:469] — resolved decision: once execution timing is open, use the existing cause rule. Do not change earlier `HXR030` results that happen before a run exists.
+
+- [ ] [Review][Patch] Outcome recovery does not wait, so a committed pass is kept as failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1289]
+- [ ] [Review][Patch] A startup-timeout retry can commit `startup-failure` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1820]
+- [ ] [Review][Patch] A claim-lookup failure omits a known workspace leftover [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:852]
+- [ ] [Review][Patch] A non-directory workspace path is omitted from owned observation [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:850]
+- [ ] [Review][Patch] Evidence cleanup validation throws when `selectedTestRun` is the wrong shape [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [ ] [Review][Patch] Evidence cleanup proof trusts `isEmpty` and ignores recorded leftover ids [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [ ] [Review][Patch] Listing drops a valid owner when `selected-test.json` or execution timing fails checks [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:32]
+- [ ] [Review][Patch] A missing cleanup field is shown as `not-requested` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs:61]
+- [ ] [Review][Patch] An interrupted `flock` is reported as an exclusive hold [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:233]
+- [ ] [Review][Patch] A symlink at `cleanup-request.json` suppresses failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1758]
+- [ ] [Review][Patch] Selected metadata copies follow a symlink destination [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+- [ ] [Review][Patch] A missing `run` binding escapes outcome recording [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:729]
+- [ ] [Review][Patch] `FindOwned` can skip a torn claim without uncertainty [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:171]
+- [ ] [Review][Patch] Terminal result publication does not flush to disk before rename [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs:137]
+- [ ] [Review][Patch] Listing reports `failure-retained` when cleanup is already `complete` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:93]
+- [ ] [Review][Patch] Selected metadata copies are created with the process umask [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+
+- [x] [Review][Defer] `ClaimedPorts` still opens every claim with `File.OpenRead` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:148] — deferred: pre-existing port scan; the story's new claim reads use the nonblocking opener, and this method was not introduced by these commits.
+- [x] [Review][Defer] One bad Windows session SID aborts owned-process discovery [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs:213] — deferred: not actionable now; owner decision Q3 leaves Windows/macOS native qualification out of this story, and the dev lane is Linux/WSL.
+- [x] [Review][Defer] Windows metadata reads ignore `respectSharing` [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:203] — deferred: not actionable now; same Q3/W10 Windows qualification boundary. The Unix `flock` path is in the patch list.
+
+#### Rejected
+
+- `false` — Non-Linux process discovery never consults the Windows/macOS reader. `FindAsync` calls `CompositionProcessEnvironmentReader.Find` whenever the host is not Linux (`CompositionRunResourceScanner.cs:38`).
+- `false` — Unverified discovery always burns five one-second delays. `IsEmpty` is false while discovery is unverified, and those retries are the existing cleanup bound (`CompositionRunResourceScanner.cs:57`).
+- `low` — Later publications replace retention `recordedAt` and cleanup `observedAt`. Terminal `recordedAt` stays `TerminalAtUtc`. Those other clocks are later observations; preserving the first retention clock needs a prior-document merge and is not an everyday failure.
+- `false` — Human `list` omits the creation timestamp, rounds age, and always prints `hold-deadline` as unavailable. The spec requires age plus explicitly unavailable admission/hold data. Integer `age-seconds` is that age field (`ToolDiagnosticFormatter.cs:80`).
+- `false` — Exact `down` accepts the placeholder manifest `unused-manifest-for-exact-run`. `ExecuteExactDownAsync` returns before manifest load, and the CLI refuses that placeholder together with `--evidence` (`ModuleCommandApplication.cs:230`).
+- `false` — A passed command can still exit successfully when later cleanup is incomplete. The spec requires the committed terminal outcome to stay the command outcome while cleanup errors remain diagnostics.
+- `low` — Each result update leaves prior `lifecycle-*.json` files. Those files are the immutable content-addressed diagnostics the latest result names. Deleting them is extra retention logic, not an everyday failure.
+- `false` — `InitializeStateAsync` accepts any deserialized state. It returns an existing state only after `ReadOwnedStateAsync` accepts schema, run, attempt, and environment (`CompositionEngine.cs:2198`).
+- `false` — A receipt-bound claim file that is absent is dropped without uncertainty. `FileNotFoundException` is verified absence. Unreadable claim paths already call `onUnverified` (`CompositionResourceClaimStore.cs:197`).
+- `low` — Deleting the receipt temp can hide the original write error. `File.Delete` of a missing temp does not throw, so a successful move is preserved. A double failure is not an everyday path, and catching it adds another branch.
+- `false` — Cancellation during a metadata read ignores the stopping allowance. `ReadExactlyAsync` receives that token, and the cancellation catch returns (`CompositionEngine.cs:1060`).

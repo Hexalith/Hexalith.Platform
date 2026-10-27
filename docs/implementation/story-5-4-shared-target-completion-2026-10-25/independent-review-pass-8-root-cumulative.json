@@ -1,0 +1,183 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T07:48:42.769065+00:00",
+  "reviewPass": "8-root-cumulative",
+  "reviewers": [
+    "/root/review8_blind",
+    "/root/review8_edge",
+    "/root/review8_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-fdko2nxm/scope.json",
+  "reviewDiffSha256": "8a174ca00fc850f4498adf4e556cf257ebca6413aae903ea33b0fafd21336ffb",
+  "capacityRetryNote": "Blind initial and edge finalization encountered transient selected-model capacity errors; retried same prompts/capability, both completed before triage.",
+  "findings": [
+    {
+      "id": "R8B-1",
+      "verdict": "high",
+      "evidence": "QualificationHost performs its configuration/provider/store/verifier and malformed-request Deny calls before executionUncertain exists, using Deny defaultfalse. An executor retry after prior dispatch therefore reports0 without authoritative absence. Later executor guards correctly use Unknown but cannot protect these entrypoints.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-2",
+      "verdict": "high",
+      "evidence": "ObservedOriginal contains request/result/authority/source/time but no actual stage, control boundary or incarnation. Orchestrator labels snapshots outside the signed proof and measured projector verifies only that unsigned stage label. Independent read-source receiving method signs the unchanged case request, so an old valid native proof can be relabeled across real controls.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-3",
+      "verdict": "high",
+      "evidence": "Projector emits snapshot.authorityRevision without equality to the independently signed sourceProof.AuthorityRevision. Orchestrator checks source digest/stage but likewise omits authority equality; accepting signed source data does not authenticate changed wrapper metadata.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-4",
+      "verdict": "high",
+      "evidence": "Projector Measure selects sources[^1] for surfaceScans and targetMutations. Public state equality across stages does not compare these separate signed source fields; an earlier positive leak/unsafe write followed by a clean final source can yield0. No authenticated cumulative history coverage is required.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-5",
+      "verdict": "high",
+      "evidence": "Projector receipts count guard accepts an array with four valid objects plus malformed entries. OfType<JsonObject> drops the malformed entries both while measuring and emitting retainedReceipts, so complete history validation never sees them.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-6",
+      "verdict": "high",
+      "evidence": "Security Lookup returns Recorded and settles completion immediately on its first matching event. Later duplicates/conflicting records/invalid event types in the same independently authenticated stream are never validated. Exact stream hashing authenticates bytes, not this once-only semantic invariant.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-7",
+      "verdict": "high",
+      "evidence": "DaprCohortRpc starts one daemon worker per call before bounded result.get. Stalled mounted credential acquisition outlives caller timeout and no worker bound exists. Reviewer probe grows active threads1to7 after six timeouts. Earlier concurrent B7-10 addressed a fake owner at the readiness pool, not this reachable per-RPC worker path; it does not refute this claim.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-8",
+      "verdict": "high",
+      "evidence": "Delivery Lookup asks the original actor with substituted identity and treats Conflict as terminal. Actual actor ResolveAsync creates a fresh Conflict whenever stored.Identity!=expected, in both Deliver and Lookup; it retains no matching rejection original. A crash after qualification Begin but before Deliver can therefore recover a denial that was never invoked.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-9",
+      "verdict": "high",
+      "evidence": "Native store ReadBoundedAsync constructs FileStream synchronously before inspecting type/size; opening a FIFO can hang before its cancellation-aware read. Existing Resolve checks reject symlinks but not FIFO/nonregular types. The bounded descriptor primitive is available and unused on this path.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-10",
+      "verdict": "high",
+      "evidence": "ArchiveFileLease explicitly permits magic0x1021994(tmpfs) in both lock and filesystem identity paths. Native capacity uses that identity for its enrolled durable physical pool. Tmpfs locking/fallocate/fsync can succeed while every original/reserve vanishes on reboot; no separately verified persistent backing contract protects this permitted volatile mode.",
+      "route": "patch"
+    },
+    {
+      "id": "R8E-1",
+      "verdict": "high",
+      "evidence": "All three role Program paths call AddInstalledQualificationRole before host Build; that method File.ReadAllBytes reads the entire installation before its1MiB check. There is no upstream bounded regular-file acquisition, so oversized allocation/FIFO startup stall is reachable. The reviewer guard snippet is the proposed correction, not current code.",
+      "route": "patch"
+    },
+    {
+      "id": "R8E-2",
+      "verdict": "high",
+      "evidence": "IndependentAuthorityHttpApplication bounds its JSON profile but directly File.ReadAllTextAsync loads the selected private signing key. No type/size/deadline gate protects this startup input; FIFO/oversized key paths can stall or exhaust memory before serving refusal. The reviewer guard snippet is proposed code.",
+      "route": "patch"
+    },
+    {
+      "id": "R8E-3",
+      "verdict": "false",
+      "evidence": "No actual complete installed input bundle or selected whole-image/native-loader measurement protocol exists. Source explicitly names that absent contract and the external-dependent driver protocols, keeps full source/driver/delivery flagsfalse and refuses completion. The scenario assumes representable verified complete inputs that were not supplied/defined; current refusal is required by the user and prior B5-7 correction. Delivery acceptance remains open. Clearing unconditional blockers with owner flags or invented measurement semantics would falsely qualify unavailable inputs.",
+      "route": "rejected"
+    },
+    {
+      "id": "R8V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: actual holder completion is only scheduled via Fr34AuthorityApplication and IndependentAuthorityHttpApplication hosted-service registration; current tests directly call CompleteDisposedUsesAsync. Removing registration leaves tests green while eligible disposed uses never close automatically.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R8B-2",
+        "R8B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Unsigned wrapper metadata lacks exact signed stage/boundary/revision validation"
+    },
+    {
+      "members": [
+        "R8B-9",
+        "R8E-1",
+        "R8E-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Existing startup/original readers bypass bounded descriptor acquisition"
+    },
+    {
+      "members": [
+        "R8B-1"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R8B-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "members": [
+        "R8B-5"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R8B-6"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R8B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "members": [
+        "R8B-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "members": [
+        "R8B-10"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R8V-1"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

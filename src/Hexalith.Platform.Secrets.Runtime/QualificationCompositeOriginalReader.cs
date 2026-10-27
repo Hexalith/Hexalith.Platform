@@ -6,6 +6,10 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class QualificationCompositeOriginalReader(IReadOnlyDictionary<string,IQualificationObservedOriginalReader> readers):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>SecretsProof.Text(original,"caseId") is { } id && readers.TryGetValue(id,out var reader)
+        ?reader.PreflightStagesAsync(original,token):Task.FromResult<IReadOnlyList<string>>(["IndependentExactCaseSourceReader"]);
+
+    /// <inheritdoc />
     public Task<QualificationObservedOriginal?> ReadAsync(JsonObject original,CancellationToken cancellationToken)=>SecretsProof.Text(original,"caseId") is { } id && readers.TryGetValue(id,out var reader)
         ?reader.ReadAsync(original,cancellationToken):Task.FromResult<QualificationObservedOriginal?>(null);
 }

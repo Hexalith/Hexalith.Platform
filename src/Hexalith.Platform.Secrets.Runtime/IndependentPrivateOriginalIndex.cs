@@ -6,13 +6,34 @@ namespace Hexalith.Platform.Secrets.Runtime;
 internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive archive)
 {
     internal sealed record Entry(string Role,string RequestId,IndependentOriginal Original,string? PreviousValueSha256);
+    private sealed record StoredEntry(string Schema,string Role,string RequestId,string RequestSha256,string? ResultSha256,
+        string SubmissionState,long RetainedRevision,long ResultRetainedRevision,string? ActiveTransportMessageId,bool FinalAtAdmission,string? PreviousValueSha256,[property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IndependentCommandDispatchBinding? DispatchBinding=null);
     private sealed record Node(string KeySha256,string ValueSha256,string? Left,string? Right,int Height);
     private readonly Dictionary<string,Node> _nodes=new(StringComparer.Ordinal);
+    internal sealed record LiabilityEntry(string Role,string RequestId,bool Pending);
+    internal async Task<(IReadOnlyList<LiabilityEntry> Entries,IReadOnlyList<string> Remaining)> PageAsync(IReadOnlyList<string> cursor,int limit,CancellationToken token)
+    {
+        var pending=new Stack<string>(cursor.Reverse());var entries=new List<LiabilityEntry>();
+        while(pending.Count>0 && entries.Count<limit)
+        {
+            var node=await LoadAsync(pending.Pop(),token).ConfigureAwait(false);
+            byte[] bytes=await archive.ReadAsync(node.ValueSha256,token).ConfigureAwait(false);CustodyBindingContract.RejectDuplicateProperties(bytes);using var document=JsonDocument.Parse(bytes);var root=document.RootElement;
+            string role=root.GetProperty("Role").GetString()!,id=root.GetProperty("RequestId").GetString()!;
+            if(Key(role,id)!=node.KeySha256) throw new IOException("Original liability identity substitution.");
+            bool modern=root.TryGetProperty("Schema",out var schema);if(modern && schema.GetString()!="private-original-v2") throw new IOException("Known immutable original schema required.");
+            var original=modern?root:root.GetProperty("Original");bool terminal=original.TryGetProperty("FinalAtAdmission",out var final) && final.GetBoolean();
+            bool incomplete=modern?root.GetProperty("ResultSha256").ValueKind==JsonValueKind.Null:original.GetProperty("Result").ValueKind==JsonValueKind.Null;
+            entries.Add(new(role,id,incomplete && !terminal));
+            if(node.Right is not null) pending.Push(node.Right);if(node.Left is not null) pending.Push(node.Left);
+            if(pending.Count>64) throw new IOException("Bounded original migration cursor exceeded.");
+            if(!modern) break; // A legacy body can be 64 MiB. Persist progress after that one bounded read.
+        }
+        return (entries,pending.ToArray());
+    }
     internal async Task<Entry?> ReadAsync(string? root,string role,string requestId,CancellationToken token)
     {
         var value=await FindAsync(root,Key(role,requestId),token).ConfigureAwait(false);if(value is null) return null;
-        byte[] bytes=await archive.ReadAsync(value,token).ConfigureAwait(false);CustodyBindingContract.RejectDuplicateProperties(bytes);
-        var entry=JsonSerializer.Deserialize<Entry>(bytes,CustodyBindingContract.Json)??throw new IOException("Exact private original required.");
+        var entry=await ReadVersionAsync(value,token).ConfigureAwait(false);
         if(entry.Role!=role || entry.RequestId!=requestId) throw new IOException("Private original identity substitution.");return entry;
     }
     internal async Task<(string Root,bool First)> SetAsync(string? root,string role,string requestId,IndependentOriginal original,CancellationToken token)
@@ -24,8 +45,25 @@ internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive
             if(!Same(prior.Original.Request,original.Request) || prior.Original.Result is { } recorded && !Same(recorded,original.Result)) throw new IOException("Immutable original/result substitution.");
             if(Same(prior.Original,original)) return (root!,false);
         }
-        string value=await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(new Entry(role,requestId,original,priorHash),CustodyBindingContract.Json),token).ConfigureAwait(false);
+        // Large request/result bodies have stable hashes independent of admission/result revision or a contended head CAS.
+        string requestHash=await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(original.Request,CustodyBindingContract.Json),token).ConfigureAwait(false);
+        string? resultHash=original.Result is { } result?await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(result,CustodyBindingContract.Json),token).ConfigureAwait(false):null;
+        byte[] body=JsonSerializer.SerializeToUtf8Bytes(new StoredEntry("private-original-v2",role,requestId,requestHash,resultHash,original.SubmissionState,original.RetainedRevision,
+            original.ResultRetainedRevision,original.ActiveTransportMessageId,original.FinalAtAdmission,priorHash,original.DispatchBinding),CustodyBindingContract.Json);
+        if(body.Length>CustodyBindingContract.MaximumOriginalBytes) throw new IOException("Bounded immutable original body exceeded.");
+        string value=await archive.PublishAsync(body,token).ConfigureAwait(false);
         return (await InsertAsync(root,key,value,token).ConfigureAwait(false),priorHash is null);
+    }
+    internal async Task<Entry> ReadVersionAsync(string hash,CancellationToken token)
+    {
+        byte[] bytes=await archive.ReadAsync(hash,token).ConfigureAwait(false);CustodyBindingContract.RejectDuplicateProperties(bytes);
+        using var document=JsonDocument.Parse(bytes);
+        if(!document.RootElement.TryGetProperty("Schema",out _)) return JsonSerializer.Deserialize<Entry>(bytes,CustodyBindingContract.Json)??throw new IOException("Exact legacy private original required.");
+        var stored=JsonSerializer.Deserialize<StoredEntry>(bytes,CustodyBindingContract.Json)??throw new IOException("Exact private original required.");
+        if(stored.Schema!="private-original-v2" || !CustodyBindingContract.Digest(stored.RequestSha256) || stored.ResultSha256 is not null && !CustodyBindingContract.Digest(stored.ResultSha256)) throw new IOException("Exact private body references required.");
+        using var request=JsonDocument.Parse(await archive.ReadAsync(stored.RequestSha256,token).ConfigureAwait(false));
+        using var result=stored.ResultSha256 is null?null:JsonDocument.Parse(await archive.ReadAsync(stored.ResultSha256,token).ConfigureAwait(false));
+        return new(stored.Role,stored.RequestId,new(request.RootElement.Clone(),result?.RootElement.Clone(),stored.SubmissionState,stored.RetainedRevision,stored.ResultRetainedRevision,stored.ActiveTransportMessageId,stored.FinalAtAdmission,stored.DispatchBinding),stored.PreviousValueSha256);
     }
     private async Task<string?> FindAsync(string? root,string key,CancellationToken token)
     {
@@ -82,7 +120,7 @@ internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive
         node=JsonSerializer.Deserialize<Node>(bytes,CustodyBindingContract.Json)??throw new IOException("Exact index node required.");
         if(!CustodyBindingContract.Digest(node.KeySha256) || !CustodyBindingContract.Digest(node.ValueSha256) || node.Left is not null && !CustodyBindingContract.Digest(node.Left)
             || node.Right is not null && !CustodyBindingContract.Digest(node.Right) || node.Height is <1 or >64) throw new IOException("Malformed immutable index node.");
-        _nodes.Add(hash,node);return node;
+        if(_nodes.Count>=512) _nodes.Clear();_nodes[hash]=node;return node;
     }
     private async Task<string> SaveAsync(Node node,CancellationToken token)
     { string hash=await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(node,CustodyBindingContract.Json),token).ConfigureAwait(false);_nodes[hash]=node;return hash; }

@@ -1,0 +1,88 @@
+{
+  "schema": "platform.story-5.4.preservation-verification.v1",
+  "observedAtUtc": "2026-10-27T13:10:38.998524+00:00",
+  "acceptedFiles": [
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "initialSha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+      "observedSha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+      "byteIdentical": true
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-25.md",
+      "initialSha256": "509c32f6111a0b9e454ed9cac0ba990be79e35476e3acc8f7f15f568b5dede9a",
+      "observedSha256": "509c32f6111a0b9e454ed9cac0ba990be79e35476e3acc8f7f15f568b5dede9a",
+      "byteIdentical": true
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/implementation-artifacts/tests/story-5-4-reconciliation-2026-10-25/platform-owner-packets.md",
+      "initialSha256": "2206c4380507dcec3df2e7d3f1d517b8114939eef5d2663cc9571c8cda144fc7",
+      "observedSha256": "2206c4380507dcec3df2e7d3f1d517b8114939eef5d2663cc9571c8cda144fc7",
+      "byteIdentical": true
+    }
+  ],
+  "frozenIntentByteIdentical": true,
+  "frozenIntentSha256": "22a68017041611fdf0d729b10c0c2ecee95606151ce49f48f8dd68fcc6b748ec",
+  "initialLocalHead": "8b712a05cdae8880ccd9c7f7dd355ec2ffe6952b",
+  "observedLocalHead": "b117945e2ba7911fd2c47843f866487341300398",
+  "qualificationEvidence": false,
+  "note": "Shared checkout revisions can advance through concurrent external work. This check preserves accepted artifacts and the frozen intent; it does not claim the entire shared checkout was unchanged.",
+  "ownerReturnFormSha256": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d",
+  "exactMissingOwnerReturnCount": 50,
+  "exactLedgerMatchesOwnerNullPaths": true,
+  "requiredInstallationBundleCount": 13,
+  "commitmentArchiveVerification": [
+    {
+      "dependency": "EXT-SECRETS-1",
+      "fieldCount": 10,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RuntimeQualificationBinding",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "379dd16f8fe7947326d10d5d3a9efbec9e7aeaa741dee3442eb23e78f251f7a4"
+    },
+    {
+      "dependency": "EXT-HOST-1",
+      "fieldCount": 9,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "4a3fbc7fe82e6f9830385e0fe9e29ad16ab626354808fd7bb78d6b4ad12736a1"
+    },
+    {
+      "dependency": "EXT-PROTECTION-1",
+      "fieldCount": 9,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "53437cdab453bdd640fece4cede3eabf965c9305d08c32c655e4357bc8f204dd"
+    }
+  ]
+}

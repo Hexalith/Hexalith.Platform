@@ -23,9 +23,9 @@
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
   </ItemGroup>
   <ItemGroup><None Update="Declarations/*.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
-  <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /><Compile Include="../../DaprSelfHostedMtlsSubscriber.cs" Link="DaprSelfHostedMtlsSubscriber.cs" /></ItemGroup>
   <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Composition.Tests" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj" /></ItemGroup>
-  <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /><ProjectReference Include="../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" /></ItemGroup>
   <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/public-joint-plan.json" LogicalName="ExtSecretsFullJointPlan" /></ItemGroup>
 </Project>

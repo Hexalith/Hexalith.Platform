@@ -1,0 +1,67 @@
+{
+  "schema": "platform.story54.pass17.source-corrections.v1",
+  "sourceFreeze": "/tmp/story54-round17-o5yl0kjz/source-final.tar.gz",
+  "sourceAndComponentEvidenceOnly": true,
+  "actualInstalledEvidence": null,
+  "findings": [
+    {
+      "id": "R16B-1",
+      "change": "Reject embedded NUL in every relative archive native operation before P/Invoke.",
+      "actualCallerCoverage": "ArchiveNamespaceOwnershipTests: read/open/delete/rename source/rename final/unnamed-link final preserve accepted-original.json; valid names remain readable."
+    },
+    {
+      "id": "R16B-2",
+      "change": "Unmarked immutable publication and write probes own unnamed O_TMPFILE inodes and atomically link flushed originals. Held-directory publication fencing serializes every exact final name and retains existing permanent per-file leases. Generic suffix cleanup refuses. Native and Runtime legacy metadata rewrite capabilities require fresh O_EXCL creation, hold the exact descriptor, and clean only their own matching unpublished inode; existing candidates remain unchanged. Protected fixed metadata resources remain unchanged.",
+      "actualCallerCoverage": "Actual cross-process writers, ordinary writer fence, cancellation/late durability, restart and crash regressions; accepted .pending/probe/former-lock names, both publication orders, simultaneous fresh names, conflict and lost acknowledgement; actual native reopened capacity retains ambiguous metadata bytes; actual exclusive-created metadata owner cleanup."
+    },
+    {
+      "id": "R16B-4",
+      "change": "Canonical SQL provisions a singleton slot with a nonempty TEXT identity. Independent installation must insert the actual identity before runtime. Fixture initialization executes that exact canonical DDL. Existing-only runtime validates the entire identity row set and SQL types without creating or inferring a row.",
+      "actualCallerCoverage": "Canonical full schema provisioning and actual HeldSqliteConnection open; missing/mismatched identity, empty/null identities and extra/malformed slots refuse."
+    },
+    {
+      "id": "R16B-5",
+      "change": "Effective local process execute access is checked through the held entrypoint descriptor before registration, retaining immutable identity and loader checks.",
+      "actualCallerCoverage": "Actual accepted Aspire model with immutable-kernel fixture proof: nonexecutable entrypoint refuses with zero new resources; executable seven-resource baseline passes. Python accepted inventory mirrors executable eligibility."
+    },
+    {
+      "id": "R16B-6",
+      "change": "Accepted AspNetCoreHttpListenerV1 bindings cover the seven distinct owner/API/UI resource roles, with explicit bounded address, port and endpoint names. Profile raw bytes, model seal and complete inventory/joint pins bind them. Complete keys, conflicts, substitutions and existing endpoint conflicts refuse before adding resources. Actual AddExecutable arguments, ASPNETCORE_URLS and unproxied endpoint/TargetHost receive the exact accepted values. Source evidence distinguishes six existing WebApplication hosts from the Agents.UI Razor library. The agents-ui key requires an independently accepted actual FrontComposer UI-host contract, exact graph-pinned contract/component/registration artifacts and matching actual held contract bytes; no host is invented or seam activated.",
+      "actualCallerCoverage": "Actual Aspire composition for shared service roots with distinct listeners, missing/extra/conflicting/wrong-role/address/port, accepted inventory substitution with valid outer pins, sealed-model substitution and existing endpoint conflict. Independent equality-guard removal causes exactly the intended substitution regression to fail. Explicit missing UI host, wrong component/registration identities with valid outer hashes, and actual-contract substitution with all actual file/profile/inventory pins valid refuse at the intended guard."
+    },
+    {
+      "id": "R16B-7",
+      "change": "Only a complete unpartitioned owner execute path can advertise exact-target owner-acceptance permission. Every explicit phase selection remains false, including an empty or explicitly complete selection.",
+      "actualCallerCoverage": "Actual execute results for unpartitioned full plan, empty, partial and explicitly full selections. Dependency availability remains false; permission guard removal is caught."
+    },
+    {
+      "id": "R16B-8",
+      "change": "One original monotonic HTTP acquisition deadline remains active through mounted channel and current exact SQLite workload-grant authentication. Only real successful current authentication cancels its timer and transfers ownership before dispatch. Late reads cannot dispatch. Timer/socket closure never releases a blocked worker charge; genuine completion releases it once. AuthenticationAcquisition has its own named production module.",
+      "actualCallerCoverage": "Actual CohortHttpApplication and loopback HTTP with blocked channel and grant acquisition: deadline-bound caller refusal, zero late dispatch, retained saturation and later cleanup/recovery. Successfully authenticated work exceeds the acquisition interval and returns normally. Existing startup acknowledgement/worker ownership suite retained; deadline-guard removal is caught."
+    },
+    {
+      "id": "R16B-10",
+      "change": "Actual owner-query client signs through the owned UTF8 span callback and source-owned query overload of OwnedWorkloadProof. Canonical requester/query scope and copied EventStore BoundOwnerQueryProof wire semantics remain exact. Owned DER bytes clear on success/failure/cancellation; no immutable private-key string or general DI registration is introduced.",
+      "actualCallerCoverage": "Actual copied SDK acceptance and caller/principal/tenant/domain/aggregate/query/payload/expiry/key-size substitution rejection; real client requests, missing/FIFO/changed mounts, cancellation before transport and captured decoded-buffer zeroing. Cleanup-guard removal is caught."
+    },
+    {
+      "id": "R16V-1",
+      "change": "Added the requested concrete governance installation/authority regressions without changing correct production authority behavior.",
+      "actualCallerCoverage": "Actual CustodyGovernanceGuardInstallation + GovernanceGuardAuthority over the Dapr state-read port: positive exact evidence, restored enrollment revision, digest substitution, absent evidence and authorization withdrawn during actual Dapr read all propagate correct results through both read and lookup. Independent state/digest and late authorization guard removals are caught."
+    }
+  ],
+  "unchangedBoundaries": {
+    "fullJointCases": 234,
+    "partialDrivers": 185,
+    "externallyDependentUnregisteredDrivers": 49,
+    "completeDrivers": 0,
+    "historyDays": 365,
+    "productGates": "both open",
+    "rejectedReview16Rows": [
+      "R16B-3",
+      "R16B-9"
+    ],
+    "nativeHistoricalPerOperationProtocols": "remain external blockers; no arbitrary corruption fallback, remeasurement or rewritten signed originals"
+  },
+  "uiRoleClarification": "/tmp/story54-round17-o5yl0kjz/loaded-ui-role-clarification.json"
+}

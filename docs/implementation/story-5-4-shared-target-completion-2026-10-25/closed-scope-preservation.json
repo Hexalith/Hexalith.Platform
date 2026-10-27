@@ -1,0 +1,36 @@
+{
+  "schema": "platform.story-5.4.closed-scope-preservation.v1",
+  "observedAtUtc": "2026-10-26T10:51:42.472590+00:00",
+  "operation": "Pure plan construction and partition validation; no owner/cohort/attempt ports constructed or called.",
+  "fullPlanSemanticSha256": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99",
+  "phaseOrder": [
+    "protection",
+    "secrets",
+    "host-refusing-consumers",
+    "mutual"
+  ],
+  "partitionSizes": {
+    "0": 1,
+    "1": 70,
+    "2": 3,
+    "3": 168
+  },
+  "disjointComplete": true,
+  "secretCaseCount": 234,
+  "hostRequirements": [
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "v21",
+    "v23"
+  ],
+  "identityHistoryDays": 365,
+  "openProductGates": [
+    "OD-HUMAN-EXACT-CONVERSATION-SCOPE-1",
+    "OD-GOVERNANCE-CLASS-RANGE-SCOPE-1"
+  ],
+  "cohortPhasesExecuted": 0,
+  "attemptsReserved": 0,
+  "installedQualification": false
+}

@@ -9,8 +9,24 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Actual receiving FR-34 engine and independently persisted observation operations. No owner-provided verification flags are accepted.</summary>
 public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine, Fr34EventStoreCanaryReader independentReader,
-    IInteractionProtectionBindingProvider independentBindings, TimeProvider clock) : IIndependentOwnerOperationHandler
+    IInteractionProtectionBindingProvider independentBindings, TimeProvider clock,IFr34UnsealMeasurement? independentMeasurements=null) : IIndependentOwnerOperationHandler
 {
+    /// <inheritdoc />
+    public bool RequiresCurrentResultAdmission(string method)=>Methods.Contains(method);
+    /// <inheritdoc />
+    public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
+        =>QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision },CustodyBindingContract.Json)!);
+    /// <inheritdoc />
+    public void ReleaseResult(string method,object? result)
+    {
+        byte[]? bytes=method=="fr34-unseal"?result as byte[]:method=="fr34-replay"?(result as Hexalith.EventStore.Contracts.Security.PayloadUnprotectionOutcome)?.PayloadBytes:null;
+        if(bytes is not null) CryptographicOperations.ZeroMemory(bytes);
+    }
+    /// <inheritdoc />
+    public bool IsReadOnly(string method)=>method is "fr34-read-persisted" or "fr34-observe-current" or "fr34-verify-ownership" or "fr34-verify-carrier" or "fr34-confirm-destroyed";
+    /// <inheritdoc />
+    public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
+        =>method is "fr34-unseal" or "fr34-replay" ? Task.FromResult<object?>(null) : HandleAsync(method,payload,caller,current,token);
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["fr34-seal-persist", "fr34-unseal", "fr34-destroy", "fr34-replay",
         "fr34-read-persisted", "fr34-observe-current", "fr34-verify-ownership", "fr34-verify-carrier", "fr34-confirm-destroyed"], StringComparer.Ordinal);
@@ -19,14 +35,16 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
     {
         var target = current.Fr34Target;
         if (target is null || current.ValidUntil <= clock.GetUtcNow() || !engine.IsActualTarget(target)
-            || caller.ScopeReference != target.TenantId + "|fr34") throw new InvalidOperationException("Exact current FR-34 enrollment required.");
+            || caller.ScopeReference != target.TenantId + "|fr34" || string.IsNullOrWhiteSpace(current.Fr34AuthorizationRevision)) throw new InvalidOperationException("Exact current FR-34 enrollment and common authorization revision required.");
         bool engineMethod = method is "fr34-seal-persist" or "fr34-unseal" or "fr34-destroy" or "fr34-replay";
         if (caller.Role != (engineMethod ? "fr34-engine" : "fr34-observer")) throw new InvalidOperationException("Independent FR-34 role required.");
         T Read<T>() => payload.Deserialize<T>(CustodyBindingContract.Json) ?? throw new InvalidOperationException("Closed FR-34 request required.");
         object Decision(bool allowed) => new { Allowed = allowed };
-        var authorization = new Fr34CanaryAuthorization(target, current.Revision.ToString(CultureInfo.InvariantCulture), clock.GetUtcNow(), current.ValidUntil);
+        // Independently enrolled policy/target/trust/recipe revision, shared by engine and observer. Journal progress is never policy authority.
+        string authorizationRevision=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { target,current.Fr34AuthorizationRevision,current.TrustRevision,current.Fr34RecipeSha256 },CustodyBindingContract.Json)!);
+        var authorization = new Fr34CanaryAuthorization(target, authorizationRevision, clock.GetUtcNow(), current.ValidUntil);
         bool Current(Fr34CanaryAuthorization admitted) => admitted.Target == target && admitted.AuthorityRevision == authorization.AuthorityRevision
-            && admitted.ObservedAt <= clock.GetUtcNow() && admitted.ValidUntil == current.ValidUntil && admitted.ValidUntil > clock.GetUtcNow();
+            && admitted.ObservedAt <= clock.GetUtcNow() && admitted.ValidUntil <= current.ValidUntil && admitted.ValidUntil > clock.GetUtcNow();
         async Task<Fr34StoredCanary?> Owned(Fr34CanaryReference reference)
         {
             if (reference.Target != target) return null;
@@ -49,10 +67,11 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
             case "fr34-verify-carrier":
                 var carrier = Read<Carrier>();
                 var storedCarrier = await Owned(carrier.reference).ConfigureAwait(false);
-                return Decision(carrier.expected == target && carrier.originalCanaryId == carrier.reference.CanaryId && Current(carrier.admitted)
+                bool exactCarrier=carrier.expected == target && carrier.originalCanaryId == carrier.reference.CanaryId && Current(carrier.admitted)
                     && storedCarrier is not null && carrier.observation.Reference == carrier.reference
                     && storedCarrier.Protected.PayloadBytes.AsSpan().SequenceEqual(carrier.observation.Bytes)
-                    && JsonSerializer.Serialize(storedCarrier.Protected.Metadata) == JsonSerializer.Serialize(carrier.observation.Metadata));
+                    && JsonSerializer.Serialize(storedCarrier.Protected.Metadata) == JsonSerializer.Serialize(carrier.observation.Metadata);
+                return Decision(exactCarrier);
             case "fr34-read-persisted":
                 var read = Read<Reference>().reference;
                 return await Owned(read).ConfigureAwait(false) is not null ? await independentReader.ReadAsync(read, cancellationToken).ConfigureAwait(false) : null;
@@ -64,7 +83,19 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
                 return Decision(binding is not null && await independentBindings.IsIrreversiblyErasedAsync(binding, cancellationToken).ConfigureAwait(false));
             case "fr34-unseal":
                 var unseal = Read<Reference>().reference;
-                return await Owned(unseal).ConfigureAwait(false) is not null ? await engine.UnsealAsync(unseal, cancellationToken).ConfigureAwait(false) : null;
+                if(await Owned(unseal).ConfigureAwait(false) is null) return null;
+                var opened=await engine.UnsealAsync(unseal,cancellationToken).ConfigureAwait(false);
+                bool transferred=false;
+                try
+                {
+                    if(opened is not null && independentMeasurements is not null)
+                    {
+                        var measured=await independentMeasurements.RecordUnsealAsync(unseal,opened,cancellationToken).ConfigureAwait(false);
+                        if(measured is not { PersistedPlaintextAbsent:true,UnsealEqual:true }) return null;
+                    }
+                    cancellationToken.ThrowIfCancellationRequested();transferred=true;return opened;
+                }
+                finally { if(!transferred && opened is not null) CryptographicOperations.ZeroMemory(opened); }
             case "fr34-destroy":
                 var destroy = Read<Reference>().reference;
                 return Decision(await Owned(destroy).ConfigureAwait(false) is not null && await engine.DestroyAsync(destroy, cancellationToken).ConfigureAwait(false));

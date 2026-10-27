@@ -18,23 +18,24 @@ if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" 
 }
 try
 {
-    var profile = ComponentProfile.Load(args[1]); profile.Validate();
+    using var startupBudget=new CancellationTokenSource(TimeSpan.FromSeconds(30));
+    var profile = CustodyJson.Read<ComponentProfile>(await BoundedRegularFile.ReadAsync(args[1],1024*1024,startupBudget.Token)); profile.Validate();
     if (args[0] == "--check-profile") { Console.WriteLine(profile.ProfileDigest); return 0; }
-    StartupGuard.Validate(args[0], profile.SocketPath);
-    var roleInstallation = args[0] is "--serve-role" or "--serve-owner-authority" && args.Length == 3 ? CustodyJson.Read<CustodyRoleInstallation>(File.ReadAllBytes(args[2])) : null;
+    _=await BoundedDurableFileOperation.RunAsync(ct=> { StartupGuard.Validate(args[0],profile.SocketPath);ct.ThrowIfCancellationRequested();return Task.FromResult(true); },startupBudget.Token);
+    var roleInstallation = args[0] is "--serve-role" or "--serve-owner-authority" && args.Length == 3 ? CustodyJson.Read<CustodyRoleInstallation>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token)) : null;
     if (args[0] == "--serve-role" && roleInstallation is null) throw new AuthorityUnavailableException("Independent role installation required.");
-    using var signer = ECDsa.Create(); signer.ImportFromPem(File.ReadAllText(roleInstallation?.SigningKeyFile ?? profile.ComponentSigningKeyPath));
+    using var signer = ECDsa.Create(); await BoundedRegularFile.UseUtf8SpanAsync(roleInstallation?.SigningKeyFile ?? profile.ComponentSigningKeyPath,16384,value=>{ signer.ImportFromPem(value);return true; },startupBudget.Token);
     using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(roleInstallation is null ? profile.ComponentPublicKeyPem :
         profile.Trust.Single(t => t.KeyId == roleInstallation.SignerId && t.Purpose == (roleInstallation.Role switch { "authorizer" => "private-operation", "observer" => "independent-observer", _ => roleInstallation.Role })).PublicKeyPem);
     if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(publicSigner.ExportSubjectPublicKeyInfo()))
         throw new AuthorityUnavailableException("Installed response signer mismatch.");
     using var nativeDapr = new Dapr.Client.DaprClientBuilder().Build();
     // The AWS reference remains explicit compatibility source; an absent native profile never selects an installation.
-    var credentials = profile.Native is null ? ReferenceBackendCredentials.Load() : null;
+    var credentials = profile.Native is null ? ReferenceBackendCredentials.Load(startupBudget.Token) : null;
     var region = credentials is null ? null : RegionEndpoint.GetBySystemName(profile.Region);
-    using var kms = credentials is null ? null : new AmazonKeyManagementServiceClient(credentials, new AmazonKeyManagementServiceConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
-    using var dynamo = credentials is null ? null : new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
-    using var s3 = credentials is null ? null : new AmazonS3Client(credentials, new AmazonS3Config { RegionEndpoint = region, MaxErrorRetry = 0, AllowAutoRedirect = false, IgnoreConfiguredEndpointUrls = true });
+    using var kms = credentials is null ? null : new AmazonKeyManagementServiceClient(credentials, AwsCompatibilityClientConfiguration.Kms(region));
+    using var dynamo = credentials is null ? null : new AmazonDynamoDBClient(credentials, AwsCompatibilityClientConfiguration.Dynamo(region));
+    using var s3 = credentials is null ? null : new AmazonS3Client(credentials, AwsCompatibilityClientConfiguration.S3(region));
     IAuthorityStore store = profile.Native is { } installed
         ? new NativeDaprAuthorityStore(profile, installed, nativeDapr, TimeProvider.System)
         : new AwsAuthorityStore(profile, dynamo!, s3!, TimeProvider.System);
@@ -64,7 +65,7 @@ try
     if (args[0] == "--worker")
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");
-        var packet = CustodyJson.Read<WorkerPacket>(File.ReadAllBytes(args[2]));
+        var packet = CustodyJson.Read<WorkerPacket>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token));
         await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier, signer), packet, CancellationToken.None, exchange);
         Console.WriteLine("Worker command retained; only independently verified final publication establishes a terminal original."); return 0;
     }

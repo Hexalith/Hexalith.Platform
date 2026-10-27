@@ -1,0 +1,435 @@
+{
+  "schema": "platform.story54.round8.implementation-handback.v1",
+  "observedAtUtc": "2026-10-26T07:22:54.597123+00:00",
+  "status": "SourceCorrectionsHandbackPendingIndependentReview",
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "completeQualificationDriverCount": 0,
+  "qualificationCaseCount": 234,
+  "ordinarySourceCorrectionsRemainingAtImplementationAudit": [],
+  "replacementTarget": null,
+  "replacementPlatformIntegrationDate": null,
+  "replacementProtectionIntegrationDate": null,
+  "ownedFiles": "/tmp/story54-round8-2ivn725l/owned-files.json",
+  "ownedFileHashes": "/tmp/story54-round8-2ivn725l/owned-hashes.json",
+  "ownedFileHashesSha256": "c313f340a6633c34c9b74454d5bbfe600fa8ab9e854c395e70fec803638870d4",
+  "ownedFileCount": 81,
+  "sourceSnapshot": "/tmp/story54-round8-2ivn725l/source-snapshot",
+  "beforeSnapshot": "/tmp/story54-round8-2ivn725l/before",
+  "sourceObservations": "/tmp/story54-round8-2ivn725l/source-observations.json",
+  "compiledDependencyHashes": "/tmp/story54-round8-2ivn725l/compiled-dependency-hashes.json",
+  "lateSourceDrift": "/tmp/story54-round8-2ivn725l/late-source-drift.json",
+  "corrections": [
+    {
+      "ids": [
+        "B7-1",
+        "E7-1"
+      ],
+      "correction": "Authenticated held-manifest denial is retained under its exact original operation/attempt/head/pin vector; only a verified denial makes NotStarted terminal. Real workflow/audit reader preserves it after pin release and rejects substituted originals.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestDenial.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleOriginalReader.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/LifecycleQualificationRecoveryTests.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-2",
+        "V7-1"
+      ],
+      "correction": "Pre-effect wrap identity resolves the full retained native registration, including the originally generated receipt, without root reread or another wrap. Actual KeyExchange plus NativeDaprAuthorityStore loses the first response, refuses equivalent ordinary publication of the same result bytes after pressure, completes through admitted reserves, and recovers the exact registration.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyWrapOriginalIdentity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReservedWrapTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-3",
+        "E7-2"
+      ],
+      "correction": "Abandonment charges the exact active retirement completion and excludes closed copy intents from incidental checkpoint completion selection. Actual lifecycle/native store fixture preserves closed-copy and survivor-source history.",
+      "sourceFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReservedWrapTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-4",
+        "E7-3",
+        "R7B-11"
+      ],
+      "correction": "Fixed physical metadata allocation covers both bounded ledger versions plus overhead; reserve-transfer, atomic rewrite, settlement, restart and renamed-ledger acknowledgement loss conserve the floor under the global fence. Logical admission includes the metadata liability.",
+      "sourceFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativePhysicalCapacityTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7E-1"
+      ],
+      "correction": "Exact interrupted never-published temporary is reclaimed under the same permanent publication lock before free-space refusal. Native capacity fixture terminates a distinct flock-owning writer and injects zero free bytes while that temporary exists; exact recovery succeeds after reclaim.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativePhysicalCapacityTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-5",
+        "B7-6"
+      ],
+      "correction": "Dispatch compares the whole validated recovery command to its signed bound request and rechecks workload/proof time after awaited publication at conditional admission. Tests reject tenant/domain/aggregate/type/correlation/extensions substitutions, expiry during publication and revocation-winning ordering while originals stay Unsent.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-7"
+      ],
+      "correction": "Fresh owner framing is ordered with current outer caller authority by a post-handler same-head CAS; repeated valid calls keep fresh nonces. Real handler/receiver fixture revokes during the independent control read and denies the new proof.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "verificationFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-8"
+      ],
+      "correction": "Updated only affected native production/test dependency locks and passed the supported Release package-mode locked restore. Source-linked builds restore explicit intended dependency properties afterward.",
+      "sourceFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json",
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json"
+      ],
+      "verificationFiles": [],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "B7-9"
+      ],
+      "correction": "Caller deadline encloses synchronous open/stat/read on at most four outstanding acquisition workers. Timed-out workers retain slots/descriptors until return and clean up/cancel; failed byte buffers clear. No-follow regular-file/size/change checks and immutable-file/subPath requirements remain.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedInstallationAndPublicationTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "V7-2"
+      ],
+      "correction": "Actual QualificationEventStoreAuditReader plus receiving authority covers lifecycle/delivery terminal-v2 migration, unresolved legacy uncertainty and substituted exact original denial.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/QualificationNativeAuditTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-1"
+      ],
+      "correction": "Retained-attempt recovery authenticates the current set and exact phase chain without reacquiring all consumed readiness or reserving again. Fresh bounded readiness is requested only for truly unstarted first delivery or authenticated OwnerAbsent conditional delivery.",
+      "sourceFiles": [
+        "eng/ext-secrets-1/joint_live_phase_runner.py"
+      ],
+      "verificationFiles": [
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-2"
+      ],
+      "correction": "Existing outer append/recovery admission reaches the actual recorder durable guarded recovery; queued/dispatched unknown work stays lookup-only. Actual receiving/recording fixtures cover before-Begin, unsent, queued, rejection, native/result loss and revocation.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-3"
+      ],
+      "correction": "Compromise step recovery reruns the supported idempotent subscriber authentication and exact protection plus mirror confirmation, rather than inferring success from protection lookup alone.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-4"
+      ],
+      "correction": "Envelope-substitution recipes refuse before effects on External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol; existing bool authentication cannot establish a retained definitive rejection. False/Unavailable remains uncertain.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-6"
+      ],
+      "correction": "Normal command and metadata finalizer require current signed exact retained-phase admission through the existing owned phase-admission receiver, preserving target binding, phase/predecessor/request and partition. Cross-language real Python authority/C# reader tests exercise current, nonexistent/substituted/unretained/wrong-predecessor requests.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationAttemptAuthority.cs",
+        "src/Hexalith.Platform.Protection/JointPhaseCommand.cs",
+        "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs",
+        "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationFreshCohortReceivingTests.cs",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-7",
+        "R7B-8"
+      ],
+      "correction": "Every signed snapshot requires the exact six unique surfaces, nonnegative integral counts and checked arithmetic. Every target mutation must be an object with typed tenant/authorization/classification fields before metrics can count it. Signed negative cancellation, duplicate/missing/extra surfaces and malformed/missing/mistyped mutation fields deny.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationCopyCensusTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationReceivingProjectionTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7B-9"
+      ],
+      "correction": "Compromise metric correlates the immediately preceding same-batch/seal/manifest attestation and key from retained issue receipts with its exact mirrored protection revocation/affected batch. Missing predecessor is a named protocol blocker; unrelated prior key revocation yields zero.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    },
+    {
+      "ids": [
+        "R7V-1"
+      ],
+      "correction": "Concrete provider workflow sees two distinct independently valid inventory revisions straddling its one pinned secret response, returns null and clears the response.",
+      "sourceFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationProviderCredentialWorkflow.cs"
+      ],
+      "verificationFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationResolutionSourceTests.cs"
+      ],
+      "disposition": "SourceCorrection_RequiresIndependentReview_InstalledQualificationNotEstablished"
+    }
+  ],
+  "verification": [
+    {
+      "name": "runtimeBuild",
+      "command": "dotnet build tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj --artifacts-path /tmp/story54-round8-2ivn725l/final-runtime -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round8-2ivn725l/final-locks-runtime/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round8-2ivn725l/runtime-final-build.log",
+      "logSha256": "915d8e7b4648ce1b341aec9fde8f9394d75a4f97490c09f2957a0d431e7a9a6f",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "protectionBuild",
+      "command": "dotnet build tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj --artifacts-path /tmp/story54-round8-2ivn725l/final-protection -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round8-2ivn725l/final-locks-protection/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round8-2ivn725l/protection-final-build.log",
+      "logSha256": "aa4c76d8b2409ebba1f75c2fd9e524d49cef61dc170341888ce894a72cabfb3c",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "nativeBuild",
+      "command": "dotnet build infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj --artifacts-path /tmp/story54-round8-2ivn725l/final-native -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-round8-2ivn725l/final-locks-native/$(MSBuildProjectName).lock.json' -m:1",
+      "log": "/tmp/story54-round8-2ivn725l/native-final-build.log",
+      "logSha256": "dbd41390a75869507bdfc0c9c5f960fe6ce4d439ebe8ddcce11a4aba864bb4e6",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "runtimeTests",
+      "command": "dotnet /tmp/story54-round8-2ivn725l/final-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName!~IndependentOriginalIndexTests'",
+      "log": "/tmp/story54-round8-2ivn725l/final-runtime-tests.log",
+      "logSha256": "e514102c64c970fe4e0bcf3286e309bc88cd5f155ee92cc4d252dfddf5c28ada",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 429
+    },
+    {
+      "name": "protectionTests",
+      "command": "dotnet /tmp/story54-round8-2ivn725l/final-protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+      "log": "/tmp/story54-round8-2ivn725l/final-protection-tests.log",
+      "logSha256": "4e88749f68bfcf66268aceffdac3685ef94082e8216ceae06860a5c8ded687af",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 107
+    },
+    {
+      "name": "nativeTests",
+      "command": "dotnet /tmp/story54-round8-2ivn725l/final-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "log": "/tmp/story54-round8-2ivn725l/final-native-complete-tests.log",
+      "logSha256": "5222a911de20865591b8f9377d510526cf5e7cb9a9afe5f373404bf1b018f52a",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 29
+    },
+    {
+      "name": "indexHistoryTests",
+      "command": "dotnet /tmp/story54-round8-2ivn725l/build-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName~IndependentOriginalIndexTests'",
+      "log": "/tmp/story54-round8-2ivn725l/runtime-history-verified.log",
+      "logSha256": "23051d1c71cbb2d929b5667b162971a019f3f64bd8580907273f5f16339d2a5e",
+      "passed": true,
+      "boundary": "Earlier build-runtime source-linked graph: exact same production index/archive/authority source. Before final lifecycle-reader manifest operation correlation and test-only native/recorder additions; not restated as a full final-graph rerun.",
+      "passedCases": 8
+    },
+    {
+      "name": "protectionFocused",
+      "command": "dotnet /tmp/story54-round8-2ivn725l/final-protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll -filterVSTest 'FullyQualifiedName~ExistingOuterRecorderAdmission|FullyQualifiedName~PublicationCannotAdmit|FullyQualifiedName~ReplayTerminalRecoveryReceivingBoundary|FullyQualifiedName~QualificationGuardSourceTests|FullyQualifiedName~QualificationNativeAuditTests|FullyQualifiedName~JointPhaseCommandTests'",
+      "log": "/tmp/story54-round8-2ivn725l/final-protection-focused-tests.log",
+      "logSha256": "9f17f0bb8ecdbfca52accd52c428a4a0acbccf9209b903da63c4d647e4dda7f9",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 33
+    },
+    {
+      "name": "secretsPython",
+      "command": "python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py'",
+      "log": "/tmp/story54-round8-2ivn725l/secrets-python-verified.log",
+      "logSha256": "dd9c1675ae5c761a872901003631205897c82e8435bb60b8ec1c0b739e588b70",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 276
+    },
+    {
+      "name": "hostPython",
+      "command": "python3 -m unittest discover -s eng/ext-host-1 -p 'test_*.py'",
+      "log": "/tmp/story54-round8-2ivn725l/host-python-verified.log",
+      "logSha256": "20bfd4db882e57ff1b4aabcc523f70ce74de3e15a1f3fcd78993b19cb97cc380",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only.",
+      "passedCases": 14
+    },
+    {
+      "name": "releasePackageLockedRestore",
+      "command": "dotnet restore infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj --locked-mode -p:Configuration=Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithCommonsFromSource=false",
+      "log": "/tmp/story54-round8-2ivn725l/locked-restore-verified.log",
+      "logSha256": "d898d6e198776ae04f057d016d58db5189352f00bd2a813c77d4372fccfcb137",
+      "passed": true,
+      "boundary": "Supported Release/package-reference graph; only the two tracked native package locks changed. Subsequent source builds explicitly restored the intended sibling EventStore/source Commons graph."
+    },
+    {
+      "name": "whitespace",
+      "command": "git diff --check -- <task source prefixes>; scan every owned C#/Python/project/JSON file including untracked files for trailing whitespace",
+      "log": "/tmp/story54-round8-2ivn725l/final-whitespace.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true,
+      "boundary": "Final scoped source and source-linked dependency graph; isolated fixtures only."
+    }
+  ],
+  "remainingExternalContracts": [
+    "External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol is absent; the closed substitution recipes deny before effect admission.",
+    "Native archive installation must independently enroll supported Linux local atomic fencing, physical allocation, capacity genesis, quota and the fixed 64 MiB plus 64 KiB metadata floor on the same actual filesystem as checkpoint/original roots. Source fixtures do not qualify installed storage.",
+    "Linux descriptor acquisition requires immutable absolute regular files with no symlink component; exact subPath/bind mounts remain required. Arbitrarily stalled syscalls remain bounded to four outstanding workers with finite caller deadlines and eventual cleanup.",
+    "All previously named actual native Register/Reserve/Block/Activate operation originals, historical source snapshots/stages/controllers, complete surface/log/trace/copy census, independent holder completion and root/read-use replenishment protocols remain missing where identified. No unsupported driver is marked complete.",
+    "Actual independent service/storage/trust/current grants, physical all-copy non-revival and survivor evidence, native image/loader measurement, exact installations/hashes, coordinated owner dates and complete accepted immutable target remain required. No source/component pass supplies these."
+  ],
+  "provenance": {
+    "externalWriterDetected": true,
+    "note": "An unidentified concurrent writer supplied pre-effect wrap/held-denial corrections and overlapping bounded-acquisition/receiver changes after this task started. Changes were preserved, inspected and reconciled sequentially in place; no process was killed or unrelated work reverted. The final source snapshot has zero drift from its recorded hashes.",
+    "externalCorrectionPaths": [
+      "src/Hexalith.Platform.Secrets.Runtime/CustodyWrapOriginalIdentity.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestDenial.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs",
+      "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleCaseWorkflow.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleOriginalReader.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs",
+      "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+    ],
+    "diagnosticLogsNotFinalEvidence": [
+      "runtime-tests.log",
+      "runtime-tests-final.log",
+      "runtime-tests-verified.log",
+      "native-tests-initial.log",
+      "native-tests-final.log",
+      "native-tests-second.log",
+      "protection-focused.log",
+      "secrets-python.log"
+    ],
+    "diagnosticNote": "Old runtime-tests-verified.log contains the removed overlapping short-timeout regression failure (430/1) and is diagnostic despite its name. Final-runtime-tests.log is the passing final 429-test boundary. Builds and their dependent tests completed sequentially; final-* artifact directories were not rebuilt while their tests ran."
+  },
+  "preservation": {
+    "liveOwnerCommands": 0,
+    "liveCohortPhases": 0,
+    "liveAttemptReservations": 0,
+    "installations": 0,
+    "externalPhysicalExperiments": 0,
+    "spending": 0,
+    "acceptedRecordMutations": 0,
+    "sourceCommitsOrPushes": 0,
+    "fetches": 0,
+    "rootWorkflowOrAuditDocumentEdits": 0
+  }
+}

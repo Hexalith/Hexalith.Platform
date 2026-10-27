@@ -1,0 +1,178 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T06:43:18.914256+00:00",
+  "reviewPass": "7-root-cumulative",
+  "reviewers": [
+    "/root/review7_blind",
+    "/root/review7_edge",
+    "/root/review7_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-ovpzq1y1/scope.json",
+  "reviewDiffSha256": "997989e976fe0928c8ebbfa4314dd71951ca9a99a0fde1c20c430f8a87602405",
+  "findings": [
+    {
+      "id": "R7B-1",
+      "verdict": "high",
+      "evidence": "Runner._run unconditionally obtains all four mutable preflights and reserve readiness even after signed retained-attempt lookup; consumed or expired inputs can therefore prevent exact completed-phase lookup. Current-set authentication is required separately; no upstream recovery bypass exists.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-2",
+      "verdict": "high",
+      "evidence": "Receiver skips security-observation-append for every existing outer admission, including interruption before inner AppendAsync. Real recorder AppendAsync already proves DefinitiveAbsent/RetainedUnsent and uses a durable dispatch barrier; ordinary drain cannot reach that permitted path.",
+      "route": "patch"
+    },
+    {
+      "id": "R7B-3",
+      "verdict": "high",
+      "evidence": "Compromise Step retry checks only consumption.LookupRevocationAsync!=null. Actual subscriber.ReceiveAsync additionally authenticates and confirms the same exact guard mirror; failure between block and mirror therefore becomes false success on recovery.",
+      "route": "patch"
+    },
+    {
+      "id": "R7B-4",
+      "verdict": "high",
+      "evidence": "Compromise false is always treated as unknown, including cataloged authenticated substitution-rejection cases. ReceiveAsync bool conflates definitive rejection and unsettled outcomes. Those recipes cannot produce their expected measured denial or name the missing rejected-original protocol before admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-5",
+      "verdict": "false",
+      "evidence": "Missing Register/Reserve/Block/Activate operation-original APIs are already explicit external contracts, and full driver flags remain false. Supported ordinary first operations can complete and retain their exact results; loss remains named Unknown without resend, as the intent requires. Unconditionally blocking every ordinary first operation because a future loss might require an absent API would discard independently supported implementation.",
+      "route": "rejected"
+    },
+    {
+      "id": "R7B-6",
+      "verdict": "high",
+      "evidence": "Normal JointPhaseCommandExecutable composition bypasses even the existing CohortAttempt validation and JointPhaseCommand only validates local phase/binding/cases. No receiving current retained-phase authorization protects supplied attempt/request/predecessor before native workflow dispatch.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-7",
+      "verdict": "high",
+      "evidence": "Measured projector accepts signed surface scans without nonnegative count/unique exact-surface validation; an additional negative matchCount can cancel actual leakage to zero. Signed source authenticity does not validate its census semantics.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-8",
+      "verdict": "high",
+      "evidence": "Measured projector forbiddenEffects/foreignEffects filters targetMutations through OfType<JsonObject>, silently dropping malformed nonobject writes. Neither native supplement correlation nor signed observation checks validates this per-entry schema upstream.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-9",
+      "verdict": "high",
+      "evidence": "Guard invariant capabilityCompromiseBlockProof accepts any affected old-key revocation different from the current key. Current/retained guard receipts can contain an unrelated historical revocation, so this does not prove the exact predecessor capability/attestation replacement block.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-10",
+      "verdict": "false",
+      "evidence": "Real GuardOriginalReader calls exact signer.LookupAsync(payload) and rejects payload/state mismatch. The shipped signing actor CaptureOutcome validates NoIssueProof payload/signing-request/detached-JWS digest and original-time bounds; ReadAsync reconciles the entire retained outcome through independent authority.ValidateStateAsync. ObsoleteUnissued only persists proof after two exact authenticated noIssueAuthority reads. Counting those independently verified original proofs does not accept arbitrary non-null input from the installed source.",
+      "route": "rejected"
+    },
+    {
+      "id": "R7B-11",
+      "verdict": "high",
+      "evidence": "carried: existing concurrent B7-4/E7-3 row has the same unchanged SaveAsync claim. Ledger atomic replacement may need32MiB before releasing a pending reserve while physical admission preserves only64KiB overhead. Keep that existing bad_spec route and do not create a second fix.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7E-1",
+      "verdict": "high",
+      "evidence": "Native capacity checks AvailableFreeSpace before ImmutableFileArchive obtains publication ownership and deletes an interrupted path.pending. After reserve transfer and a killed writer, that temporary can consume the reserved space and exact retries permanently fail before reclaiming it. This is distinct from ledger rewrite headroom.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified coverage gap: only concrete provider-credential workflow test returns the same independently valid inventory snapshot before/after GetSecret. It cannot detect removal of the equality guard; add valid revision change during response and assert null plus cleanup.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R7B-1"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-2"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-3"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-4"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-6"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-7"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-8"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-9"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7B-11"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7E-1"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "R7V-1"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "concurrentReviewNote": "A concurrent workspace review appended its own B7/E7/V7 rows to the spec during this review. Preserve them; root findings are independently namespaced R7. R7B-11 carries the identical existing ledger-rewrite claim."
+}

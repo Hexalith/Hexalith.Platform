@@ -128,6 +128,10 @@ class ChartTests(unittest.TestCase):
         for d in deployments:
             pod = d['spec']['template']
             app = pod['spec']['containers'][0]
+            self.assertEqual(d['metadata']['name'], pod['spec']['serviceAccountName'])
+            if d['metadata']['name'] == 'memories':
+                self.assertTrue(any(v.get('configMap', {}).get('name') == 'access-telemetry-qualification-gate' for v in pod['spec']['volumes']))
+                self.assertTrue(any(v['name'] == 'HEXALITH_QUALIFICATION_WRITER' and 'fieldRef' in v['valueFrom'] for v in app['env']))
             self.assertEqual({'cpu': '400m', 'memory': '640Mi', 'ephemeral-storage': '384Mi'}, app['resources']['limits'])
             self.assertEqual('100m', pod['metadata']['annotations']['dapr.io/sidecar-cpu-limit'])
             self.assertEqual('128Mi', pod['metadata']['annotations']['dapr.io/sidecar-memory-limit'])

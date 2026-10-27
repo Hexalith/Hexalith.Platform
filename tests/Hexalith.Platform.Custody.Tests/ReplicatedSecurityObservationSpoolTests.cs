@@ -9,6 +9,27 @@ namespace Hexalith.Platform.Custody.Tests;
 /// <summary>Actual component/CAS/recovery source and serialized persisted end-state under synthetic authorities/backends; no replica, backup or production proof.</summary>
 public sealed class ReplicatedSecurityObservationSpoolTests
 {
+    [Fact]
+    public async Task LegacySerializedAcknowledgementsAndPendingLocatorsRemainExactAcrossRestart()
+    {
+        var f=new SecuritySpoolFixture();string day=f.Clock.Now.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture);
+        var first=new SecurityObservationRecord(SecuritySpoolFixture.Intent("legacy-acknowledged"),f.Clock.Now,day,1,null);
+        string locator=new Hexalith.EventStore.Contracts.Identity.AggregateIdentity(first.Intent.RoutingTenantId,"agents","SecurityEventLog-"+day).ActorId;
+        first=first with { Receipt=new(first.Intent.ObservationId,first.Intent.RoutingTenantId,day,ReplicatedSecurityObservationSpool.IntentDigest(first.Intent),locator,1,"legacy-event") };
+        var pending=new SecurityObservationRecord(SecuritySpoolFixture.Intent("legacy-pending"),f.Clock.Now,day,2,null);
+        // These are the original five serialized fields; adding source-version support must not rewrite or rehash them.
+        byte[] original=JsonSerializer.SerializeToUtf8Bytes(new { first.Intent,first.ObservedAt,first.UtcDay,first.Sequence,first.Receipt });
+        JsonSerializer.SerializeToUtf8Bytes(first).ShouldBe(original);
+        var state=new SecuritySpoolSnapshot(f.Target.InstallationEpoch,3,[first,pending]);f.Persisted=JsonSerializer.SerializeToUtf8Bytes(state);f.Anchor=3;
+        f.AnchorDigest=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(f.Persisted));
+        var restarted=new ReplicatedSecurityObservationSpool(f.Client,f.Clock,f.Authority,f.Recorder);
+        (await restarted.LookupAsync(first.Intent,TestContext.Current.CancellationToken)).ShouldBe(first);
+        (await restarted.LookupAsync(pending.Intent,TestContext.Current.CancellationToken)).ShouldBe(pending);
+        ReplicatedSecurityObservationSpool.SourceStream(pending).ShouldBe(locator);
+        (await restarted.DrainAsync(1,TestContext.Current.CancellationToken)).ShouldBe(1);f.Recorded[pending.Intent.ObservationId].SourceStreamId.ShouldBe(locator);
+        JsonSerializer.SerializeToUtf8Bytes(f.Read()!.Records[0]).ShouldBe(original);
+    }
+
     /// <summary>Readiness needs the existing recorder on both an empty and fully acknowledged namespace.</summary>
     [Theory]
     [InlineData(false)]

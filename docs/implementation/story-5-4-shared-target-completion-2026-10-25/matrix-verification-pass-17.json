@@ -1,0 +1,108 @@
+{
+  "schema": "platform.story-5.4.matrix-audit.v1",
+  "observedAtUtc": "2026-10-27T03:13:26.776294+00:00",
+  "sourceHandbackSha256": "3c624ca44daece23d760d155c73ef888527dfd1acaaf51d86f35aa434411170a",
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-17.json",
+  "frozenMatrixRowCount": 5,
+  "independentReviewStatus": "Pending17",
+  "rootRuntimeXmlCoverage": {
+    "ArchiveNamespaceOwnershipTests": 9,
+    "ProtectedArchiveAllocationTests": 20,
+    "IndependentCapacityCommitmentTests": 9,
+    "IndependentOriginalIndexTests": 8,
+    "QualificationDecisionSemanticTests": 20,
+    "QualificationOwningLifetimeTests": 2,
+    "JointPhaseFinalizerEntrypointTests": 5
+  },
+  "actualAspireCases": 97,
+  "testCountRule": "All676 Runtime/781 selected Custody rows pass with no failures/skips/not-run; every prior667 Runtime and781 custody name retained. Native32/Python333/Protection180/Aspire97/host15 pass on the same final freeze. Artifact-scoped Runtime collection serialization retains all assertions/timeouts/concurrency. Fixture evidence only.",
+  "rows": [
+    {
+      "matrixScenario": "Authority",
+      "coveringTests": [
+        "IndependentEffectAdmissionTests",
+        "QualificationDecisionSemanticTests",
+        "QualificationOwningLifetimeTests",
+        "ConcreteInstalledRoleCompositionServesVerifiedActualOwnerProof",
+        "Native independent-role current grant/late issuance cases",
+        "CustodyGovernanceGuardInstallationTests.ActualGovernanceInstallationAndAuthorityPropagateIndependentCurrentStateRefusal",
+        "OwnedWorkloadProofTests.ActualOwnedQueryProofMatchesSdkAndClearsDecodedPrivateBuffersOnEveryExit"
+      ],
+      "passedLanes": [
+        "final-runtime-tests",
+        "final-native-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Replay/spool",
+      "coveringTests": [
+        "EventStorePrivateRecordingPortTests.ActualEnvelopeWorkflowSeedsAuthenticFirstSeenThenChallengesActualReceivingBoundary",
+        "IndependentOriginalIndexTests",
+        "IndependentCapacityCommitmentTests",
+        "IndependentRecoveryArchiveTests",
+        "ProtectedArchiveAllocationTests",
+        "ActualVersionTwoObservationPersistsAcrossRestartAndDrainsToTheExactNativeHashedReceiptStream",
+        "ArchiveNamespaceOwnershipTests",
+        "NativeReopenedReserveTests retained ambiguous metadata candidate"
+      ],
+      "passedLanes": [
+        "final-runtime-tests",
+        "final-protection",
+        "final-native-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Protection",
+      "coveringTests": [
+        "Fr34DynamicOccurrenceTests",
+        "Fr34AuthorityHostingTests",
+        "QualificationNativeAuditTests",
+        "ActualSignedMutationOriginalNativeReaderProjectionAndUnchangedPythonConsumerCorrelateEveryMutation"
+      ],
+      "passedLanes": [
+        "final-protection",
+        "final-runtime-tests",
+        "final-native-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Cohort",
+      "coveringTests": [
+        "JointRunnerTests",
+        "PhaseCapacityAndAttemptTests.test_damaged_completed_frame_blocks_without_lookup_or_replacement",
+        "StartupAcknowledgementOwnershipTests",
+        "QualificationTemporalDecisionTests",
+        "JointPhaseFinalizerEntrypointTests",
+        "QualificationFreshCohortReceivingTests",
+        "AuthenticationDeadlineTests",
+        "PhasePermissionTests"
+      ],
+      "passedLanes": [
+        "final-python-secrets",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Packets",
+      "coveringTests": [
+        "PythonCanonicalBindingTests",
+        "AcceptedLaunchBoundaryTests",
+        "AcceptedLaunchDirectoryCensusTests",
+        "Python complete coordinated/host/secrets preparation and detached76-input refusal",
+        "AcceptedResourceListenerTests actual15 listener/UI guards",
+        "ProvisioningTests canonical SQLite singleton",
+        "Python launch inventory explicit UI host contract and actual bytes"
+      ],
+      "passedLanes": [
+        "final-focused-composition",
+        "final-python-host",
+        "final-python-secrets"
+      ]
+    }
+  ],
+  "installedQualification": false,
+  "completeSharedTargetPacket": false,
+  "actualMissingInputsRemainDeliveryBlockers": true,
+  "all667PriorRuntimeRowsRetained": true,
+  "all781PriorCustodyRowsRetained": true
+}

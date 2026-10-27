@@ -4,6 +4,7 @@ Ports must be independently enrolled, current authenticated owner services. A Py
 callback or local flag is never installation evidence. There is deliberately no CLI
 that constructs live ports from repository paths or starts an attempt.
 """
+from worker_startup_ownership import provably_unstarted
 from datetime import date
 import hashlib
 import json
@@ -11,6 +12,8 @@ import os
 from pathlib import Path
 import re
 import uuid
+import threading
+from concurrent.futures import ThreadPoolExecutor, wait
 
 from cases import plan, wire_plan
 
@@ -68,9 +71,11 @@ def full_plan():
 class Blocked(Exception):
     def __init__(self, *missing):
         self.missing = sorted(set(missing))
-        self.effects_started = False
-        self.attempt_state = "NotReserved"
-        self.effect_state = "NotDispatched"
+        # Local admission failures cannot establish absence of an earlier retained attempt.
+        self.effects_started = True
+        self.attempt_state = "LookupRequired"
+        self.effect_state = "Unknown"
+        self.attempt_id = self.phase_request_id = None
         super().__init__("DependencyNotAvailable: EXT-SECRETS-1, EXT-HOST-1")
 
 
@@ -87,7 +92,7 @@ class JointLivePhaseRunner:
         self.binding = json.loads(canonical(binding))
         self.authority, self.owners = authority, owners
 
-    def preflight(self):
+    def preflight(self, execution=True):
         missing = []
         b = self.binding
         if not re.fullmatch(r"[0-9a-f]{40}", str(b.get("platformCommit", ""))):
@@ -115,34 +120,81 @@ class JointLivePhaseRunner:
         if set(self.owners) != set(PHASES):
             missing.append("InstalledIndependentPhaseOwners")
         readiness = []
-        if not missing:
-            for phase, name in enumerate(PHASES):
-                report = self.owners[name].preflight(b, phase, partitions()[phase])
-                missing.extend(report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]))
-                readiness.append(report.get("readiness"))
+        if not missing and execution:
+            # Independent read-only readiness has no execution ordering dependency.
+            # One total budget keeps the complete signed set fresh at reserve.
+            pool = ThreadPoolExecutor(max_workers=4)
+            futures = [pool.submit(self.owners[name].preflight, b, phase, partitions()[phase])
+                       for phase, name in enumerate(PHASES)]
+            try:
+                _, pending = wait(futures, timeout=REQUEST_DEADLINE_SECONDS)
+                if pending:
+                    raise Blocked("BoundedFreshPhaseReadinessSet")
+                for future in futures:
+                    report = future.result()
+                    missing.extend(report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]))
+                    readiness.append(report.get("readiness"))
+            finally:
+                for future in futures:
+                    future.cancel()
+                pool.shutdown(wait=False, cancel_futures=True)
         if missing:
             raise Blocked(*missing)
         self._readiness = readiness
         return digest(b)
 
     def run(self):
-        self.attempt_state, self.effect_state = "NotReserved", "NotDispatched"
+        self.attempt_state, self.effect_state = "LookupRequired", "Unknown"
+        self.attempt_id = self.phase_request_id = None
         try:
             return self._run()
         except Exception as error:
             blocked = error if isinstance(error, Blocked) else Blocked("ExactOriginalLookupRequired")
             blocked.attempt_state, blocked.effect_state = self.attempt_state, self.effect_state
+            blocked.attempt_id, blocked.phase_request_id = self.attempt_id, self.phase_request_id
             blocked.effects_started = self.effect_state != "NotDispatched"
             raise blocked from None
 
+    def run_complete(self):
+        result = self.run()
+        try:
+            if not verify_complete_result(result, self.binding, self.authority):
+                raise Blocked("SameCompletePairedOwnerResult")
+        except Exception as error:
+            blocked = error if isinstance(error, Blocked) else Blocked("SameCompletePairedOwnerResult")
+            blocked.attempt_state, blocked.effect_state = self.attempt_state, self.effect_state
+            blocked.attempt_id, blocked.phase_request_id = self.attempt_id, self.phase_request_id
+            blocked.effects_started = self.effect_state != "NotDispatched"
+            raise blocked from None
+        return result
+
     def _run(self):
-        key = self.preflight()  # reserves nothing, including on refusal
-        self.attempt_state = "ReservationUnknown"
-        retained = self.authority.reserve(self.binding, str(uuid.uuid4()), self._readiness)
+        # Establish retained uncertainty before any mutable owner readiness can fail.
+        key = digest(self.binding)
+        retained_state = self.authority.lookup_attempt(self.binding)
+        if not isinstance(retained_state, dict) or retained_state.get("bindingDigest") != key:
+            raise Blocked("AuthoritativeRetainedAttemptLookupRequired")
+        if retained_state.get("state") == "Absent" and retained_state.get("effectState") == "NotDispatched":
+            self.attempt_state, self.effect_state = "NotReserved", "NotDispatched"
+        elif retained_state.get("state") == "Retained" and retained_state.get("attemptId"):
+            self.attempt_state, self.attempt_id = "Reserved", retained_state["attemptId"]
+            self.phase_request_id = retained_state.get("phaseRequestId")
+            self.effect_state = retained_state.get("effectState") if retained_state.get("effectState") in ("Unknown", "NotDispatched") else "Unknown"
+        else:
+            raise Blocked("AuthoritativeRetainedAttemptLookupRequired")
+        key = self.preflight(execution=self.attempt_id is None)  # current accepted set remains mandatory for recovery
+        if self.attempt_id is None:
+            self.attempt_state, self.effect_state = "ReservationUnknown", "Unknown"
+            proposed_attempt = str(uuid.uuid4())
+            self.attempt_id = proposed_attempt
+            retained = self.authority.reserve(self.binding, proposed_attempt, self._readiness)
+        else:
+            retained = retained_state
         if retained.get("bindingDigest") != key or not retained.get("attemptId"):
             raise Blocked("ExactRetainedAttempt")
         self.attempt_state = "Reserved"
         attempt = retained["attemptId"]
+        self.attempt_id = attempt
         previous = key
         for phase, name in enumerate(PHASES):
             if not self.authority.current(self.binding):
@@ -150,13 +202,32 @@ class JointLivePhaseRunner:
             request = {"protocol": PROTOCOL, "attemptId": attempt, "bindingDigest": key,
                        "phase": phase, "owner": name, "previousSha256": previous,
                        "cases": partitions()[phase], "requestId": digest([attempt, key, phase, previous])}
+            self.phase_request_id = request["requestId"]
             # False means an original may already have executed. Only exact lookup is legal.
             self.effect_state = "Unknown" # A retained predecessor may already have dispatched.
             first = self.authority.retain(request)
             owner = self.owners[name]
+            if first:
+                report = owner.preflight(self.binding, phase, request["cases"])
+                if report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]):
+                    raise Blocked(*report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]))
             try:
                 self.effect_state = "Dispatched" if first else "Unknown"
                 result = owner.execute(request) if first else owner.lookup(request)
+                if not first and isinstance(result, dict) and result.get("payload", {}).get("state") == "OwnerAbsent":
+                    import time
+                    proof = result["payload"]; now = int(time.time())
+                    if (not self.authority.verify(request, result) or proof.get("requestId") != request["requestId"]
+                            or proof.get("requestSha256") != digest(request) or proof.get("attemptId") != attempt
+                            or proof.get("bindingDigest") != key or proof.get("phase") != phase
+                            or not now - 30 <= proof.get("observedAt", 0) <= now < proof.get("validUntil", 0) <= proof["observedAt"] + 30
+                            or not hasattr(owner, "execute_if_absent")):
+                        raise Blocked("ExactCurrentOwnerAbsenceRequired")
+                    report = owner.preflight(self.binding, phase, request["cases"])
+                    if report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]):
+                        raise Blocked(*report.get("missingInputs", ["CurrentInstalledPhaseReadiness"]))
+                    self.effect_state = "Dispatched"
+                    result = owner.execute_if_absent(request, result)
             except Exception:
                 result = None
             if result is None:
@@ -168,7 +239,7 @@ class JointLivePhaseRunner:
                 raise Blocked("ExactOriginalPhaseIdentity")
             # Persist failed/uncertain signed outcomes as well as success; never reset an attempt.
             self.authority.publish(request, result)
-            if payload.get("state") != "Passed" or payload.get("passedCases") != request["cases"]:
+            if payload.get("state") != "Passed" or not valid_phase_partition(payload, request["cases"]):
                 raise Blocked("CompletePairedCohortPass", request["requestId"])
             self.effect_state = "Observed"
             previous = digest(result)
@@ -177,11 +248,24 @@ class JointLivePhaseRunner:
                 "cohortPassed": True, "dependencyAvailable": False, "acceptanceMutation": False}
 
 
+def valid_phase_partition(payload, expected):
+    """Passed originals contain exactly the ordered closed partition and no adverse cases."""
+    if not isinstance(payload, dict):
+        return False
+    if payload.get("state") != "Passed":
+        return payload.get("state") in ("Failed", "Blocked", "Unknown")
+    return (payload.get("passedCases") == expected
+            and all(payload.get(name, []) == [] for name in ("failedCases", "missingCases", "unknownCases")))
+
+
 def verify_complete_result(result, binding, authority):
     """Both owner entrypoints use the same independent exact retained completion lookup."""
     if authority is None or not authority.current(binding):
         return False
     return authority.verify_completion(binding, result) and result.get("bindingDigest") == digest(binding) and result.get("cohortPassed") is True
+
+_RPC_WORKERS = threading.BoundedSemaphore(4)
+
 
 class DaprCohortRpc:
     """Concrete Dapr-only private transport with public ES256 verification and a bounded deadline."""
@@ -228,13 +312,18 @@ class DaprCohortRpc:
             raise Blocked("LoopbackDaprEndpoint")
         deadline, result = time.monotonic() + REQUEST_DEADLINE_SECONDS, queue.Queue(maxsize=1)
         connection = http.client.HTTPConnection(parsed.hostname, parsed.port or 80, timeout=REQUEST_DEADLINE_SECONDS)
+        cancelled = threading.Event()
+        workers = _RPC_WORKERS
         def remaining():
+            if cancelled.is_set(): raise TimeoutError("CohortMonotonicDeadline")
             seconds = deadline - time.monotonic()
             if seconds <= 0: raise TimeoutError("CohortMonotonicDeadline")
             return seconds
         def read():
             try:
+                remaining()
                 bearer = self.q.read_mounted_credential(self.descriptor["credentialReference"], "CohortWorkloadCredential")
+                remaining()
                 channel = self.q.read_mounted_credential(self.dapr_credential_reference, "CohortDaprCredential")
                 connection.timeout = remaining(); connection.connect()
                 connection.sock.settimeout(remaining())
@@ -255,7 +344,21 @@ class DaprCohortRpc:
                 result.put((False, error))
             finally:
                 connection.close()
-        threading.Thread(target=read, daemon=True).start()
+                workers.release()
+        if not workers.acquire(timeout=remaining()):
+            raise Blocked("BoundedCohortRpcWorkers")
+        worker = None
+        try:
+            remaining()
+            worker = threading.Thread(target=read, daemon=True, name="cohort-rpc")
+            worker.start()
+        except BaseException:
+            if provably_unstarted(worker):
+                workers.release()
+                connection.close()
+            else:
+                cancelled.set()  # genuine completion retains connection/slot cleanup
+            raise
         try:
             succeeded, raw = result.get(timeout=remaining())
             remaining()
@@ -263,10 +366,12 @@ class DaprCohortRpc:
         except queue.Empty:
             raise Blocked("CohortMonotonicDeadline") from None
         finally:
+            cancelled.set()
             if connection.sock is not None:
                 try: connection.sock.shutdown(socket.SHUT_RDWR)
                 except OSError: pass
             connection.close()
+        if time.monotonic() >= deadline: raise Blocked("CohortMonotonicDeadline")
         envelope = self.q.decode_json(raw)
         if not self.verify(envelope):
             raise Blocked("SignedCurrentCohortProof")
@@ -276,6 +381,7 @@ class DaprCohortRpc:
         if (proof.get("requestId") != request_id or proof.get("method") != method or proof.get("requestSha256") != hashlib.sha256(body).hexdigest()
                 or not now - 30 <= proof.get("observedAt", 0) <= now or not now < proof.get("validUntil", 0) <= proof["observedAt"] + 30):
             raise Blocked("ExactCurrentCohortResponse")
+        if time.monotonic() >= deadline: raise Blocked("CohortMonotonicDeadline")
         return proof["result"]
 
 
@@ -294,6 +400,9 @@ class DaprCohortAuthority:
 
     def current(self, binding):
         return self.rpc.call("current", {"binding": binding}).get("current") is True
+
+    def lookup_attempt(self, binding):
+        return self.rpc.call("lookup-attempt", {"binding":binding})
 
     def reserve(self, binding, attempt, readiness):
         return self.rpc.call("reserve", {"binding": binding, "attemptId": attempt, "ownerReadiness": readiness})
@@ -325,8 +434,24 @@ class DaprPhaseOwner:
     def lookup(self, request):
         return self.rpc.call("lookup", request)
 
+    def execute_if_absent(self, request, absence):
+        return self.rpc.call("execute-if-absent", {"request": request, "absence": absence})
+
 
 def run_installed_cohort(configuration_path, register_path):
+    """Preserve uncertainty through every local refusal before authenticated retained-attempt lookup."""
+    try:
+        import bounded_file_io as selected_io
+        runner=selected_io.run(lambda:_prepare_installed_cohort(configuration_path,register_path))
+        # The admitted multi-phase job keeps its separately accepted whole-phase budgets.
+        return runner.run_complete()
+    except Blocked:
+        raise
+    except Exception:
+        raise Blocked("ValidCoordinatedInstallationAndExactOriginalLookup") from None
+
+
+def _prepare_installed_cohort(configuration_path, register_path):
     """Common owner entrypoint; requires an explicit externally enrolled installation, never synthesizes ports."""
     import qualify as q
     configuration_bytes = q.bounded_public_file(configuration_path, 1024 * 1024)
@@ -340,8 +465,8 @@ def run_installed_cohort(configuration_path, register_path):
     register = q.bounded_public_file(register_path, 1024 * 1024)
     text = register.decode("utf-8")
     for record in ("EXT-SECRETS-1", "EXT-HOST-1", "EXT-PROTECTION-1"):
-        match = re.search(r"^### " + record + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)
-        section = match.group(1) if match else ""
+        from coordinated_packets import section as accepted_section
+        section = accepted_section(text,record,complete=True)
         target = binding["platformCommit"] if record != "EXT-PROTECTION-1" else binding.get("protectionCommit")
         integration = binding["platformIntegrationDate"] if record != "EXT-PROTECTION-1" else binding["protectionIntegrationDate"]
         if (f'| `TargetVersionOrCommit` | `{target}` |' not in section or f'| `TargetIntegrationDate` | `{integration}` |' not in section
@@ -353,6 +478,13 @@ def run_installed_cohort(configuration_path, register_path):
                         "bindingSha256": digest(binding), "planSha256": digest(full_plan())}
             if pins is None or q.decode_json(pins.group(1)) != expected:
                 raise Blocked("ExactAcceptedJointConfigurationAndTrust")
+        else:
+            pins = re.search(r"\| `ProtectionQualificationBinding` \| `([^`]+)` \|", section)
+            expected = {"targetCommit": binding["protectionCommit"], "integrationDate": integration,
+                        "profileSha256": binding["protectionProfileSha256"],
+                        "configurationSha256": hashlib.sha256(configuration_bytes).hexdigest(), "planSha256": digest(full_plan())}
+            if pins is None or q.decode_json(pins.group(1)) != expected:
+                raise Blocked("ExactAcceptedProtectionConfigurationProfileAndPlan")
     endpoint = config["daprEndpoint"]
     from urllib.parse import urlparse
     parsed = urlparse(endpoint)
@@ -360,10 +492,7 @@ def run_installed_cohort(configuration_path, register_path):
         raise Blocked("LoopbackDaprEndpoint")
     owners = {name: DaprPhaseOwner(DaprCohortRpc(config["services"][name], endpoint, config["daprCredentialReference"])) for name in PHASES}
     authority = DaprCohortAuthority(DaprCohortRpc(config["services"]["authority"], endpoint, config["daprCredentialReference"]), owners)
-    result = JointLivePhaseRunner(binding, authority, owners).run()
-    if not verify_complete_result(result, binding, authority):
-        raise Blocked("SameCompletePairedOwnerResult")
-    return result
+    return JointLivePhaseRunner(binding, authority, owners)
 
 
 def validate_source_checkout(binding, root=None):

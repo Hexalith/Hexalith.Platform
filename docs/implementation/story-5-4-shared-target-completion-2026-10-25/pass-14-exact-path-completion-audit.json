@@ -1,0 +1,54 @@
+{
+  "schema": "platform.story54.pass14.R13B2.exact-path-completion.v1",
+  "reviewLoopIteration": 14,
+  "isNewReviewLoop": false,
+  "sourceOnly": true,
+  "installedQualification": false,
+  "priorR13B2ClaimSuperseded": true,
+  "preservedHistoricalPrior": {
+    "priorFinal": "/tmp/story54-round14-dzemnvc0/handback.json",
+    "historicalPreservation": "/tmp/story54-round14-dzemnvc0/historical/pre-R13B2-path-completion-20261026T191941388988Z",
+    "priorHandbackSha256": "35d5d69d54d19cafb99cb485edb05ebdfec3817b5ed67d6dd9ba4a0436dfddac",
+    "priorSnapshotSha256": "acadc21cadac093c123118dc58fca925a8c9ed4f953d58fb0cbb59cbd1c7e348"
+  },
+  "changedFiles": [
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationReferenceReader.cs",
+      "beforeSha256": "3a9602c6d914e0df3c02d82f365e898bf8fafa2e9a1ae4fc381ce43be5ec344b",
+      "afterSha256": "465730bb1613fcc4b23bd224dac9024db5842ee7f8aaafaec000d853c7dd8e3d"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+      "beforeSha256": "16da409afafe6084dfece58c42288d72129a65135c1b39b28fffa63ab5534408",
+      "afterSha256": "8e70ae403608f201937efb25c33cc747eeb5d1c2e9bb636d0108bf6a1453ec9f"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs",
+      "beforeSha256": "d906977e573448f5aac3efece9a446b16e0ddf6954ea95206520d07a11404eb8",
+      "afterSha256": "b4fec34a5a783c993ed29f48fd8b1c537158a00b7eeb17a4e1d01db9c26a0408"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationReferenceReaderTests.cs",
+      "beforeSha256": null,
+      "afterSha256": "62a6cef76a6a1028edc0ce873e3ad0641aafbd80a4f2f157ca4adb46dc1f252e"
+    }
+  ],
+  "guardRule": "ulong.TryParse(nativeSelector, NumberStyles.None, CultureInfo.InvariantCulture), nonzero, and exact invariant decimal reserialization equality before GetSecret. This matches the existing HMAC native selector contract; logical inventory versions remain strings.",
+  "focusedLanes": [
+    {
+      "log": "/tmp/story54-round14-path-correction-cj4m9ror/focused-export-reader.log",
+      "sha256": "edd0fba53ae68d99be30573eb455288b77e04a0abd8a95d24c45c219aa0e62d9",
+      "passedCases": 25
+    },
+    {
+      "log": "/tmp/story54-round14-path-correction-cj4m9ror/focused-occurrence-provider.log",
+      "sha256": "6163fbfbd12b3e7b174628c12a51c2d2af989010145672e050de79a4c8a80acf",
+      "passedCases": 22
+    }
+  ],
+  "additionalUsefulEarlierGuardsPreserved": [
+    "DaprQualificationLifecycleRootSource",
+    "QualificationProviderCredentialWorkflow"
+  ],
+  "remainingExternalInputsUnchanged": true
+}

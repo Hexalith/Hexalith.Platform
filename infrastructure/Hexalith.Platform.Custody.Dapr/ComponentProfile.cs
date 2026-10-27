@@ -54,5 +54,5 @@ internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string
         if (Trust.Select(t => Fingerprint(t.PublicKeyPem)).Append(Fingerprint(ComponentPublicKeyPem)).Distinct(StringComparer.Ordinal).Count() != Trust.Length + 1)
             throw new AuthorityUnavailableException("Signing roles must be independent.");
     }
-    internal static ComponentProfile Load(string path) => CustodyJson.Read<ComponentProfile>(File.ReadAllBytes(path));
+    internal static ComponentProfile Load(string path) => CustodyJson.Read<ComponentProfile>(BoundedRegularFile.ReadAsync(path,1024*1024).GetAwaiter().GetResult());
 }

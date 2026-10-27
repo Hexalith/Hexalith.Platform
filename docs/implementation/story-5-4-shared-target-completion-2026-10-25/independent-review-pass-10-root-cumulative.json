@@ -1,0 +1,191 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T11:40:10.925112+00:00",
+  "reviewPass": "10-root-cumulative",
+  "reviewers": [
+    "/root/review10_blind",
+    "/root/review10_edge",
+    "/root/review10_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-f0gk381k/scope.json",
+  "reviewDiffSha256": "5dad7b5c18fe07bf48142318163dea1a52c8ca2a777f3bb33d14e0bdbfc871f9",
+  "findings": [
+    {
+      "id": "R10B-1",
+      "verdict": "high",
+      "evidence": "JointPhaseCommandExecutable.RunAsync creates a30s CTS at entry and passes it through command.ExecuteAsync. InstalledPhaseExecutor separately permits completionTimeoutSeconds up to86400. Startup/input bounds now cancel an otherwise accepted longer admitted partition; subsequent owner recovery is metadata-only and cannot execute missing cases.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-2",
+      "verdict": "high",
+      "evidence": "QualificationOwnerOperationHandler validates QualificationBindings/QualificationCases before awaited source work. The final receiver result barrier compares enrollment/scope/trust and the caller grant only; neither dictionary nor the relevant enrollment policy is compared/revalidated. A surviving-head policy replacement with the same valid grant can therefore precede newly framed old-enrollment evidence.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-3",
+      "verdict": "high",
+      "evidence": "Fr34OwnerOperationHandler has no RequiresCurrentResultAdmission override. Its actual persisted-reader and unseal paths await native/read operations, while the receiver only invokes the surviving current-result barrier for opted-in handlers. Revocation or changed FR34 target policy during that work is absent from the final result check.",
+      "route": "patch"
+    },
+    {
+      "id": "R10B-4",
+      "verdict": "high",
+      "evidence": "fr34-unseal sets transferred=true and returns its owned plaintext byte[]; its finally deliberately clears only failed transfers. Receiver serialization and return have no corresponding success/failure ownership cleanup. fr34-replay returns PayloadUnprotectionOutcome, which can likewise own plaintext. No downstream reader can clear these distinct server arrays.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-5",
+      "verdict": "high",
+      "evidence": "The signed response uses min(now+30,state.ValidUntil) but not grant.ValidUntil. The grant is checked at issuance only, so an authenticated response arriving after a short caller grant expiry can still pass the Dapr client response-time boundary for the remaining30s window.",
+      "route": "patch"
+    },
+    {
+      "id": "R10B-6",
+      "verdict": "high",
+      "evidence": "coordinated_packets.admission requires candidate/status text in a command and validates an exact suffix plus equality with the accepted section. It never verifies that the prefix executes the two Git assertions. The isolated re-signed printf prefix retains those tokens/suffix and passes this guard, so the purported complete command need not perform its mandatory checkout checks.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-7",
+      "verdict": "high",
+      "evidence": "Production AgentsHostComposition.TryCompose directly File.ReadAllText reads the selected profile/register/packet. No held descriptor, size limit or total startup deadline protects those reads; a FIFO or oversized selected file reaches the actual startup path before profile refusal. The pass10 bounded startup audit omitted this different AppHost caller.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-8",
+      "verdict": "high",
+      "evidence": "QualificationInventoryRotationOriginalReader creates a denied nonmaterial state and changes only outcome/status. rotation/keyVersion/timing.rotatedAt stay null. Its actual returned source state is what the projector signs, while qualify.check_timing_and_attestations explicitly requires actual rotation fields for S1.rotation-invalidation. A successful source rotation cannot produce the required admissible observation even when the native facts are supplied.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-9",
+      "verdict": "high",
+      "evidence": "AddInstalledAgentsOwningProcess rejects equal app IDs for spool/recorder and engine/observer, then directly constructs both accepted authorities. There is no comparison of public-key identity or credential binding for these pairs, so distinct IDs with one signing key and one mounted credential pass the claimed independence guard.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10B-10",
+      "verdict": "medium",
+      "evidence": "PublishCoreAsync first awaits worker admission and clones ReadOnlyMemory only inside its scheduled action. WaitAsync cancellation can complete the public task while that initial copy is still using caller-owned memory, which an async caller may then clear/reuse/return. The later token check prevents publication after cancellation but does not repair this input-lifetime violation; do not claim corrupted finals were demonstrated.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10E-1",
+      "verdict": "high",
+      "evidence": "Spool reservation admission rejects null pending liability only, ignoring OriginalLiabilityVersion. Existing OriginalCompletionLiabilityTests explicitly represent a restored nonnull0/version0 undercount. Unlike private-original mutation, this spool path never initializes/migrates liabilities before using that0 to allocate archive space, so pending private completion headroom may be spent.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R10V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified: cumulative16KiB header guard has no boundary test. Changing MAX_HEADERS to32KiB leaves the checked server test green, while a promptly sent17KiB loopback header changes from rejection/no dispatch to HTTP200/one dispatch. A within-limit positive and over-limit negative must exercise the actual receiver.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R10B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "JointPhaseCommandExecutable.RunAsync creates a30s CTS at entry and passes it through command.ExecuteAsync. InstalledPhaseExecutor separately permits completionTimeoutSeconds up to86400. Startup/input bounds now cancel an otherwise accepted longer admitted partition; subsequent owner recovery is metadata-only and cannot execute missing cases."
+    },
+    {
+      "members": [
+        "R10B-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationOwnerOperationHandler validates QualificationBindings/QualificationCases before awaited source work. The final receiver result barrier compares enrollment/scope/trust and the caller grant only; neither dictionary nor the relevant enrollment policy is compared/revalidated. A surviving-head policy replacement with the same valid grant can therefore precede newly framed old-enrollment evidence."
+    },
+    {
+      "members": [
+        "R10B-3"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Fr34OwnerOperationHandler has no RequiresCurrentResultAdmission override. Its actual persisted-reader and unseal paths await native/read operations, while the receiver only invokes the surviving current-result barrier for opted-in handlers. Revocation or changed FR34 target policy during that work is absent from the final result check."
+    },
+    {
+      "members": [
+        "R10B-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "fr34-unseal sets transferred=true and returns its owned plaintext byte[]; its finally deliberately clears only failed transfers. Receiver serialization and return have no corresponding success/failure ownership cleanup. fr34-replay returns PayloadUnprotectionOutcome, which can likewise own plaintext. No downstream reader can clear these distinct server arrays."
+    },
+    {
+      "members": [
+        "R10B-5"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "The signed response uses min(now+30,state.ValidUntil) but not grant.ValidUntil. The grant is checked at issuance only, so an authenticated response arriving after a short caller grant expiry can still pass the Dapr client response-time boundary for the remaining30s window."
+    },
+    {
+      "members": [
+        "R10B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "coordinated_packets.admission requires candidate/status text in a command and validates an exact suffix plus equality with the accepted section. It never verifies that the prefix executes the two Git assertions. The isolated re-signed printf prefix retains those tokens/suffix and passes this guard, so the purported complete command need not perform its mandatory checkout checks."
+    },
+    {
+      "members": [
+        "R10B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Production AgentsHostComposition.TryCompose directly File.ReadAllText reads the selected profile/register/packet. No held descriptor, size limit or total startup deadline protects those reads; a FIFO or oversized selected file reaches the actual startup path before profile refusal. The pass10 bounded startup audit omitted this different AppHost caller."
+    },
+    {
+      "members": [
+        "R10B-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationInventoryRotationOriginalReader creates a denied nonmaterial state and changes only outcome/status. rotation/keyVersion/timing.rotatedAt stay null. Its actual returned source state is what the projector signs, while qualify.check_timing_and_attestations explicitly requires actual rotation fields for S1.rotation-invalidation. A successful source rotation cannot produce the required admissible observation even when the native facts are supplied."
+    },
+    {
+      "members": [
+        "R10B-9"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "AddInstalledAgentsOwningProcess rejects equal app IDs for spool/recorder and engine/observer, then directly constructs both accepted authorities. There is no comparison of public-key identity or credential binding for these pairs, so distinct IDs with one signing key and one mounted credential pass the claimed independence guard."
+    },
+    {
+      "members": [
+        "R10B-10"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "PublishCoreAsync first awaits worker admission and clones ReadOnlyMemory only inside its scheduled action. WaitAsync cancellation can complete the public task while that initial copy is still using caller-owned memory, which an async caller may then clear/reuse/return. The later token check prevents publication after cancellation but does not repair this input-lifetime violation; do not claim corrupted finals were demonstrated."
+    },
+    {
+      "members": [
+        "R10E-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Spool reservation admission rejects null pending liability only, ignoring OriginalLiabilityVersion. Existing OriginalCompletionLiabilityTests explicitly represent a restored nonnull0/version0 undercount. Unlike private-original mutation, this spool path never initializes/migrates liabilities before using that0 to allocate archive space, so pending private completion headroom may be spent."
+    },
+    {
+      "members": [
+        "R10V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified: cumulative16KiB header guard has no boundary test. Changing MAX_HEADERS to32KiB leaves the checked server test green, while a promptly sent17KiB loopback header changes from rejection/no dispatch to HTTP200/one dispatch. A within-limit positive and over-limit negative must exercise the actual receiver."
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

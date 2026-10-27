@@ -143,6 +143,34 @@ class QualifierFailureTests(unittest.TestCase):
             self.assertTrue(q.record['commands'][-1]['timedOut'])
             self.assertTrue((q.evidence / q.record['commands'][-1]['log']).exists())
 
+    def test_early_leader_exit_and_cancellation_reap_descendant_writer(self):
+        import selectors
+        for cancel in (False, True):
+            with self.subTest(cancel=cancel), self.qualification() as q:
+                marker = q.temp / 'writer.pid'
+                script = ("import os,pathlib,sys,time\n"
+                          "child=os.fork()\n"
+                          "if child == 0:\n"
+                          " pathlib.Path(sys.argv[1]).write_text(str(os.getpid()))\n"
+                          " while True:\n  os.write(1,b'writer-output\\n'); time.sleep(.01)\n"
+                          "while not pathlib.Path(sys.argv[1]).exists(): time.sleep(.001)\n")
+                if cancel:
+                    def cancel_after_parent_exit(*args, **kwargs):
+                        deadline = time.monotonic() + 2
+                        while not marker.exists() and time.monotonic() < deadline:
+                            time.sleep(.005)
+                        time.sleep(.05)
+                        raise KeyboardInterrupt
+                    with patch.object(selectors.EpollSelector, 'select', cancel_after_parent_exit), self.assertRaises(KeyboardInterrupt):
+                        q.run([sys.executable, '-c', script, marker], timeout=3, maximum_output_bytes=4096)
+                else:
+                    result = q.run([sys.executable, '-c', script, marker], timeout=3, maximum_output_bytes=4096)
+                    self.assertEqual(0, result.returncode)
+                self.assertTrue(marker.exists())
+                self.assertFalse(Path('/proc/' + marker.read_text()).exists(), 'owned writer was not reaped')
+                self.assertTrue(q.record['commands'][-1]['processGroupTerminated'])
+                self.assertLessEqual(q.record['commands'][-1]['capturedBytes'], 4096)
+
     def test_sigterm_during_command_is_recorded_and_cleans_private_files_and_children(self):
         with tempfile.TemporaryDirectory(prefix='h45-signal-fixture-') as directory:
             evidence = Path(directory)

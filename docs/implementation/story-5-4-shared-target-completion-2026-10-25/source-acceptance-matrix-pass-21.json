@@ -1,0 +1,134 @@
+{
+  "groups": [
+    {
+      "group": "R20B-2/R20E-1",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveStore.cs"
+      ],
+      "coverage": [
+        "ProtectedArchiveAllocationTests.ExplicitInterruptedMetadataRecoversOnlyACompleteBankWithoutLegacyRollback"
+      ],
+      "change": "Validates both initialized consecutive metadata banks, commits complete data-durable intents, and reuses the generation already owned by an incomplete intent. Repeated retry/reopen preserves damaged/unknown safeguards.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-3",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveStore.cs"
+      ],
+      "coverage": [
+        "LegacyFundedChunkTransferTests"
+      ],
+      "change": "Durable exact transfer intent binds original ticket commitment and exact reserved chunk/generation ownership. Recovery precedes unrelated allocation; only eligible unused chunks transfer under the existing pool/volume fence. New admissions preflight physical resources before ledger charge. Per-chunk cancellation retains the intent. Unsupported non-dividing64KiB geometry and unfunded rounded splits refuse before ownership mutation.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-4",
+      "sources": [
+        "src/Hexalith.Platform.Custody/DaprExportQualificationOperation.cs",
+        "src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+        "src/Hexalith.Platform.Custody/DaprExportQualificationTrustSource.cs",
+        "src/Hexalith.Platform.Custody/DaprExportQualificationReferenceReader.cs",
+        "src/Hexalith.Platform.Custody/ExportQualificationEngine.cs"
+      ],
+      "coverage": [
+        "DaprExportQualificationResolverTests",
+        "DaprExportQualificationReferenceReaderTests"
+      ],
+      "change": "One shared four-slot owning worker covers complete resolver/engine authorization, inventory, native GetSecret, trust, decode/import, rechecks and cleanup. Nested Dapr resolvers reuse the same budget. Caller cancellation and own timeout return promptly while ignored collaborators keep ownership charged until completion and untransferred private keys/signers/late results are cleared/disposed.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-5",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalCaseWorkflow.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalOriginalReader.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationProtocolSchema.cs"
+      ],
+      "coverage": [
+        "NativeTemporalPrecisionTests",
+        "QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision",
+        "QualificationReceivingProjectionTests.ActualTemporalPipelineRefusesFractionalSameMillisecondNativeBoundary"
+      ],
+      "change": "Retains full native/authenticator precision, independently correlates exact expiry/rotation edges and projected millisecond sides, and refuses missing or lossy exact timing. Signed source precision stays outside unchanged closed public state/rotation shapes. Projector revalidates the exact basis. Corrects protocol Int64 normalization. Actual receiving/projector/Python positives and contradictory/fractional negatives exercise the full source chain; the fresh native temporal protocol stays unavailable.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-6",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsIngressReadiness.cs"
+      ],
+      "coverage": [
+        "AgentsOwningProcessRegistrationTests"
+      ],
+      "change": "Constructs actual verifier/denial factories and validates default/missing/unconstructible HMAC/profile/key dependencies through a named startup refusal. Startup gates precede the private drain worker. Registrar/spool/credentials remain private captures.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-7",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsIngressReadiness.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs"
+      ],
+      "coverage": [
+        "AgentsOwningProcessRegistrationTests.ActualCompositionRunsStartupAndEveryRegisteredReadinessEvaluationThroughFreshAuthoritiesAndFailureRefuses",
+        "IndependentAuthorityReceiverTests.ActualReplayReadinessReceiverChecksCurrentGrantAndTrustWithoutRegisteringOrReadingAnInventedNonce"
+      ],
+      "change": "Adds narrow current replay readiness under the actual current authenticated receiver grant. Every readiness evaluation checks the captured profile, tenant envelope/system-security keys and mounted separation with bounded late ownership; signed replay proof expiry and final key/profile eligibility survive awaited operations. No nonce registration, signing, observation or dispatch for readiness.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-8",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeCaseWorkflow.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs"
+      ],
+      "coverage": [
+        "IndependentAuthorityReceiverTests.ShippedEnvelopeWorkflowUsesRealHmacAndExactRetainedIssuanceForEverySubstitution"
+      ],
+      "change": "Timestamp substitutions use298s legitimate baseline margin and prove successful unmodified authentication plus actual InvalidTag on both attempts. The independent reader refuses generic time-policy rejection for these timestamp qualifications, while exact retained originals/replay identities survive.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20B-9",
+      "sources": [
+        "src/Hexalith.Platform.Secrets.Runtime/InstalledCredentialIndependence.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/SecretsDapr.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsIngressReadiness.cs"
+      ],
+      "coverage": [
+        "AgentsOwningProcessRegistrationTests"
+      ],
+      "change": "Compares actual mounted bearer identities privately using the exact transport descriptor/parser, including trailing filename spaces, projected symlinks, CRLF normalization and rotation. Copied/hardlinked aliases and repeated path/app/key identities refuse. The internal comparison digests are cleared and never published as installation evidence.",
+      "componentOnly": true,
+      "installedEvidence": null
+    },
+    {
+      "group": "R20V-1",
+      "sources": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliveryOriginalReaderTests.cs"
+      ],
+      "coverage": [
+        "QualificationExportDeliveryOriginalReaderTests.LegacyReceivingV1DenialRecoversOuterV3ExactBodyAndHistoricalTimeWithoutRedelivery"
+      ],
+      "change": "Seeds an actual independently retained receiving-v1 original and uses the real actor lookup, workflow legacy fallback and original reader to recover byte-identical outer-v3 denial with exact historical timestamp and zero native delivery effect. Existing v2/v4 and uncertain legacy tests remain.",
+      "componentOnly": true,
+      "installedEvidence": null
+    }
+  ],
+  "sourceHandbackSha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa",
+  "independentReviewComplete": false,
+  "installedQualification": false
+}

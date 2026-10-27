@@ -1,0 +1,200 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T10:10:10.667670+00:00",
+  "reviewPass": "20-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review20_blind",
+    "/root/review20_edge",
+    "/root/review20_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-a6lq600z/scope.json",
+  "reviewDiffSha256": "4c924bd0d47110fce33d88506b900a8a9785d1272450849b0d0daf45fb533103",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "R20B-10 carries unchanged R8E-3 verdict/route without re-verification. All other claims differ from prior rows; B1 is the repeated preliminary process-path misread, not a previously filed row. Credential alias finding differs from repaired equal key/path comparison.",
+  "findings": [
+    {
+      "id": "R20B-1",
+      "verdict": "false",
+      "evidence": "AcceptedLaunchArtifactLease.AcquireCore sets Root to HeldArchiveDirectory.HeldPath; that property uses /proc/Environment.ProcessId/fd/Descriptor, not /proc/self/fd. EntryPoint is derived from that Root, and the actual AddExecutable caller passes both exact values. The cited separate-process self-resolution defect therefore does not occur. No production startup is needed or authorized.",
+      "route": "rejected"
+    },
+    {
+      "id": "R20B-2",
+      "verdict": "high",
+      "evidence": "Root ran the actual frozen ProtectedArchiveStore against an isolated enrolled temporary archive: committed generation3 survived an intent-only generation4, ReadMetadata recovered committed-three, then WriteMetadata retried as generation5 in the incomplete bank. Reopening rejected the gap2. Preserve/reuse the interrupted generation or otherwise maintain valid consecutive recovery without discarding unknown liability.",
+      "route": "patch"
+    },
+    {
+      "id": "R20B-3",
+      "verdict": "high",
+      "evidence": "Root exercised actual IndependentArchiveCapacity with exactly two fixed chunks and two legacy completion liabilities. EnsureLegacyAsync reserved131072 bytes; ClaimLegacyAsync for65536 durably split the ledger but failed capacity, with legacy still owning131072 and the new ticket0. Allocate only releases when remaining reaches0; Reserve never shrinks a nonzero ticket. Legacy admission/completion migration can strand already funded work.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-4",
+      "verdict": "medium",
+      "evidence": "Root called actual DaprExportQualificationMaterialSource with an allowed injected inventory authority whose AuthorizeOperationAsync ignored cancellation. After genuine caller cancellation the ResolveAsync task remained incomplete until the authority was released. CurrentAsync directly awaits authorization and validation, and material resolution also directly awaits independentlyPublishedTrust; its30s CTS cannot bound ignoring collaborators. Engine callers await this source directly; private decoded buffers may remain owned across later ignored awaits.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-5",
+      "verdict": "high",
+      "evidence": "Root supplied a matching independently retained temporal original to the actual reader with EvaluatedAt exactly expiry+1tick. The reader returned a state whose checkedAt-exclusiveExpiry was0ms, so the exact-at classifier would accept an after-boundary evaluation. The fresh native-temporal preflight remains blocked, but the supported retained-original read path bypasses fresh evaluation and contains no precision guard. Preserve native precision/validate exact representability before producing boundary qualification state.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-6",
+      "verdict": "medium",
+      "evidence": "Root invoked actual AddInstalledAgentsOwningProcess with accepted separate bindings; resolving its registered TrustedEnvelopeReplayVerifier threw because TrustedEnvelopeAuthenticator was not registered. PlatformHmacService and signing-profile dependencies were also absent. The actual startup service only invokes FR34, and the existing owning-process health fixture succeeds without resolving these ingress factories. Require the complete ingress graph to construct/validate during owning-process startup; unavailable defaults must not silently establish readiness.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-7",
+      "verdict": "medium",
+      "evidence": "The actual owning-process ready registrations capture only FR34 protection and spool. ReplayAuthority is captured solely inside the replay verifier; neither registered health check nor Fr34ProtectionStartupGate reads it, or current HMAC/profile eligibility. Its independent revocation/outage can therefore leave both ready checks healthy while every ingress admission fails. Add read-only current dependency readiness through the same private installed graph without nonce registration, signing, observation or dispatch effects. This remains distinct from missing factory construction.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-8",
+      "verdict": "medium",
+      "evidence": "Root issued an actual valid300s envelope and applied the workflow timing substitutions. Both returned Invalid with zero key-provider reads: shifting IssuedAt back1s or ExpiresAt forward1s creates a301s lifetime rejected before MAC. QualificationDeniedOriginalReader accepts generic Invalid for these cases, so the workflow cannot establish authenticated timestamp coverage. Keep mutations otherwise temporally valid and require the actual cryptographic rejection for those timestamp cases.",
+      "route": "patch"
+    },
+    {
+      "id": "R20B-9",
+      "verdict": "high",
+      "evidence": "Root actual owning-process composition accepted distinct app IDs, separate imported P256 keys and separate mounted files all containing the same bearer. Independent compares normalized paths only; hardlink/copy aliases are not credential independence. The independent receivers authenticate the bearer hash for their enrolled method grants, so the shared credential spans both accepted roles. Validate the actual independently bound credential/principal identity, preserve rotation/currentness and reject duplicate/aliased bindings without exposing private material.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R20B-10",
+      "verdict": "false",
+      "evidence": "carried R8E-3: same execution-profile whole-image blocker and same claim, and the current code still explicitly refuses the unselected whole-image/native-loader measurement contract. No actual complete installed input bundle or selected protocol exists; full source/driver/delivery flags remain false and the ledger clearly scopes the incompleteness. Retain the prior rejected route without new verification, invented semantics, patch or deferral.",
+      "route": "rejected"
+    },
+    {
+      "id": "R20E-1",
+      "verdict": "high",
+      "evidence": "Root independently reproduced the filed interrupted-intent metadata retry with the actual frozen production assembly: committed3 plus incomplete4 recovers3, next write becomes5 in that same bank, reopen rejects nonconsecutive generations. This is the same verified defect as R20B-2; no installed crash/durability qualification is claimed from the isolated fixture.",
+      "route": "patch"
+    },
+    {
+      "id": "R20V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed, with no root test/search verification: successful receiving-v1 delivery denial and outer-v3 legacy recovery have no actual positive reader/workflow fixture; only v2/v4 success and legacy-uncertainty refusal are covered. Add independently retained v1 denial -> LookupAsync v3 recovery -> actual reader matching denial with unchanged historical body/time, no redelivery; removing legacy fallback must fail the regression.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R20B-2",
+        "R20E-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Root ran the actual frozen ProtectedArchiveStore against an isolated enrolled temporary archive: committed generation3 survived an intent-only generation4, ReadMetadata recovered committed-three, then WriteMetadata retried as generation5 in the incomplete bank. Reopening rejected the gap2. Preserve/reuse the interrupted generation or otherwise maintain valid consecutive recovery without discarding unknown liability."
+    },
+    {
+      "members": [
+        "R20B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root exercised actual IndependentArchiveCapacity with exactly two fixed chunks and two legacy completion liabilities. EnsureLegacyAsync reserved131072 bytes; ClaimLegacyAsync for65536 durably split the ledger but failed capacity, with legacy still owning131072 and the new ticket0. Allocate only releases when remaining reaches0; Reserve never shrinks a nonzero ticket. Legacy admission/completion migration can strand already funded work."
+    },
+    {
+      "members": [
+        "R20B-4"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Root called actual DaprExportQualificationMaterialSource with an allowed injected inventory authority whose AuthorizeOperationAsync ignored cancellation. After genuine caller cancellation the ResolveAsync task remained incomplete until the authority was released. CurrentAsync directly awaits authorization and validation, and material resolution also directly awaits independentlyPublishedTrust; its30s CTS cannot bound ignoring collaborators. Engine callers await this source directly; private decoded buffers may remain owned across later ignored awaits."
+    },
+    {
+      "members": [
+        "R20B-5"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root supplied a matching independently retained temporal original to the actual reader with EvaluatedAt exactly expiry+1tick. The reader returned a state whose checkedAt-exclusiveExpiry was0ms, so the exact-at classifier would accept an after-boundary evaluation. The fresh native-temporal preflight remains blocked, but the supported retained-original read path bypasses fresh evaluation and contains no precision guard. Preserve native precision/validate exact representability before producing boundary qualification state."
+    },
+    {
+      "members": [
+        "R20B-6"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Root invoked actual AddInstalledAgentsOwningProcess with accepted separate bindings; resolving its registered TrustedEnvelopeReplayVerifier threw because TrustedEnvelopeAuthenticator was not registered. PlatformHmacService and signing-profile dependencies were also absent. The actual startup service only invokes FR34, and the existing owning-process health fixture succeeds without resolving these ingress factories. Require the complete ingress graph to construct/validate during owning-process startup; unavailable defaults must not silently establish readiness."
+    },
+    {
+      "members": [
+        "R20B-7"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "The actual owning-process ready registrations capture only FR34 protection and spool. ReplayAuthority is captured solely inside the replay verifier; neither registered health check nor Fr34ProtectionStartupGate reads it, or current HMAC/profile eligibility. Its independent revocation/outage can therefore leave both ready checks healthy while every ingress admission fails. Add read-only current dependency readiness through the same private installed graph without nonce registration, signing, observation or dispatch effects. This remains distinct from missing factory construction."
+    },
+    {
+      "members": [
+        "R20B-8"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Root issued an actual valid300s envelope and applied the workflow timing substitutions. Both returned Invalid with zero key-provider reads: shifting IssuedAt back1s or ExpiresAt forward1s creates a301s lifetime rejected before MAC. QualificationDeniedOriginalReader accepts generic Invalid for these cases, so the workflow cannot establish authenticated timestamp coverage. Keep mutations otherwise temporally valid and require the actual cryptographic rejection for those timestamp cases."
+    },
+    {
+      "members": [
+        "R20B-9"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root actual owning-process composition accepted distinct app IDs, separate imported P256 keys and separate mounted files all containing the same bearer. Independent compares normalized paths only; hardlink/copy aliases are not credential independence. The independent receivers authenticate the bearer hash for their enrolled method grants, so the shared credential spans both accepted roles. Validate the actual independently bound credential/principal identity, preserve rotation/currentness and reject duplicate/aliased bindings without exposing private material."
+    },
+    {
+      "members": [
+        "R20V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed, with no root test/search verification: successful receiving-v1 delivery denial and outer-v3 legacy recovery have no actual positive reader/workflow fixture; only v2/v4 success and legacy-uncertainty refusal are covered. Add independently retained v1 denial -> LookupAsync v3 recovery -> actual reader matching denial with unchanged historical body/time, no redelivery; removing legacy fallback must fail the regression."
+    }
+  ],
+  "filedFindingCount": 12,
+  "survivors": 10,
+  "rejected": 2,
+  "rootCauseGroups": 9,
+  "badSpecGroups": 6,
+  "patchGroups": 3,
+  "groupedOnly": [
+    [
+      "R20B-2",
+      "R20E-1"
+    ]
+  ],
+  "rootIsolatedProbes": {
+    "directory": "/tmp/story54-root-review20-probes-9ie0w7m1",
+    "hashManifest": "/tmp/story54-final-review-a6lq600z/root-probe-artifact-hashes.json",
+    "hashManifestSha256": "ed884260038ce0fc6eb5668e279a1466d069a5fed690026c7aebf06dc5736f4a",
+    "actualProductionAssemblies": "/tmp/story54-round20-pvnnydzm/final3-serial-local-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug",
+    "results": [
+      "/tmp/story54-root-review20-probes-9ie0w7m1/run.log",
+      "/tmp/story54-root-review20-probes-9ie0w7m1/di-and-timing/run.log"
+    ],
+    "diagnostic": "Initial compilation missing two null public-anchor constructor arguments; exact initial source and compiler log retained separately. Final successfully compiled probe and separate DI/timing probe outputs retained; no production source or prior compiled artifact changed.",
+    "fixtureOnly": true,
+    "installedQualification": false
+  },
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

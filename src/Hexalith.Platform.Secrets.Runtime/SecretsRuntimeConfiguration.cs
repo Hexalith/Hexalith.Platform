@@ -93,9 +93,7 @@ public sealed record SecretsRuntimeConfiguration
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         try
         {
-            using FileStream stream = File.OpenRead(path);
-            using var reader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false);
-            return Parse(reader.ReadToEnd());
+            return BoundedRegularFile.UseUtf8Async(Path.GetFullPath(path),1024*1024,Parse).GetAwaiter().GetResult();
         }
         catch (UnauthorizedAccessException) { return null; }
         catch (IOException) { return null; }

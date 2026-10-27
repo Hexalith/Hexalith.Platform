@@ -3,7 +3,7 @@
 {{- end -}}
 
 {{- define "reference.validate" -}}
-{{- if and .Values.capacityProfile (ne .Values.capacityProfile "PG-FINITE-CAMPAIGN-1") -}}{{ fail "unknown capacity profile" }}{{- end -}}
+{{- if and .Values.capacityProfile (not (has .Values.capacityProfile (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1"))) -}}{{ fail "unknown capacity profile" }}{{- end -}}
 {{- if not (has .Values.mode (list "normal" "recovery" "remove-workloads")) -}}{{ fail "unknown mode" }}{{- end -}}
 {{- if not (regexMatch "^[1-3]$" (toString .Values.replicas)) -}}{{ fail "replicas must be an integer in 1..3" }}{{- end -}}
 {{- range $value := list .Values.imagePullSecret .Values.environment.componentConfigMap .Values.gateway.name .Values.gateway.sectionName .Values.environment.trustDomain .Values.environment.controlPlaneTrustDomain -}}
@@ -48,7 +48,7 @@
 {{- $image := required (printf "image binding missing for %s" .identity) (index $.Values.images .identity) -}}
 {{- if not (regexMatch "^([a-z0-9][a-z0-9.-]*(:[0-9]+)?/)?[a-z0-9][a-z0-9./_-]*@sha256:[a-f0-9]{64}$" $image) -}}{{ fail "images require repository@sha256 digest; tags are forbidden" }}{{- end -}}
 {{- $b := required (printf "bindings missing for %s" .identity) (index $.Values.bindings .identity) -}}
-{{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" -}}
+{{- if has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1") -}}
 {{- $replicas := 1 -}}
 {{- if has .identity (list "memories/server" "memories/telemetry") -}}{{- $replicas = 2 -}}{{- end -}}
 {{- if ne (toString $b.replicas) (toString $replicas) -}}{{ fail "finite campaign replica allocation differs" }}{{- end -}}
@@ -287,9 +287,18 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- range $key, $value := dict "ASPNETCORE_URLS" (dict "value" "http://0.0.0.0:8080") "Dapr__DeclarativeSubscriptions" (dict "value" "true") "APP_API_TOKEN" (dict "valueFrom" (dict "secretKeyRef" $binding.appToken)) "DAPR_API_TOKEN" (dict "valueFrom" (dict "secretKeyRef" $binding.apiToken)) -}}
 {{- include "reference.put" (dict "key" $key "entry" $value "environment" $env "seen" $seen) -}}
 {{- end -}}
-{{- if and (eq (default "" $root.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1") (hasPrefix "memories/" $workload.identity) -}}
+{{- if and (has (default "" $root.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1")) (hasPrefix "memories/" $workload.identity) -}}
 {{- include "reference.put" (dict "key" "ASPNETCORE_ENVIRONMENT" "entry" (dict "value" "Qualification") "environment" $env "seen" $seen) -}}
-{{- include "reference.put" (dict "key" "AccessTelemetryQualification__ProfileId" "entry" (dict "value" "PG-FINITE-CAMPAIGN-1") "environment" $env "seen" $seen) -}}
+{{- if eq $workload.identity "memories/server" -}}
+{{- include "reference.put" (dict "key" "AccessTelemetryQualification__GatePath" "entry" (dict "value" "/var/run/hexalith/access-telemetry-qualification/gate.json") "environment" $env "seen" $seen) -}}
+{{- include "reference.put" (dict "key" "HEXALITH_QUALIFICATION_WRITER" "entry" (dict "valueFrom" (dict "fieldRef" (dict "fieldPath" "metadata.name"))) "environment" $env "seen" $seen) -}}
+{{- end -}}
+{{- if eq $root.Values.capacityProfile "PG-INDEPENDENT-CALIBRATION-1" -}}
+{{- range $setting, $key := dict "IndependentCalibrationRunId" "calibrationRunId" "IndependentCalibrationPlanHash" "calibrationPlanSha256" -}}
+{{- include "reference.put" (dict "key" (printf "AccessTelemetryQualification__%s" $setting) "entry" (dict "valueFrom" (dict "configMapKeyRef" (dict "name" "access-telemetry-campaign-identity" "key" $key))) "environment" $env "seen" $seen) -}}
+{{- end -}}
+{{- end -}}
+{{- include "reference.put" (dict "key" "AccessTelemetryQualification__ProfileId" "entry" (dict "value" $root.Values.capacityProfile) "environment" $env "seen" $seen) -}}
 {{- include "reference.put" (dict "key" "AccessTelemetryQualification__ApprovedProfileHash" "entry" (dict "valueFrom" (dict "configMapKeyRef" (dict "name" "access-telemetry-campaign-identity" "key" "profileSha256"))) "environment" $env "seen" $seen) -}}
 {{- end -}}
 {{- range $key, $value := $env }}

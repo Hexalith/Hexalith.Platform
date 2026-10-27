@@ -10,6 +10,8 @@ namespace Hexalith.Platform.Custody.Dapr;
 internal sealed class CustodyOwnerOperationHandler(ComponentProfile profile, IAuthorityStore store, IndependentDaprAuthority originals,
     string signerId, ECDsa signer, TimeProvider clock) : IIndependentOwnerOperationHandler
 {
+    public bool IsReadOnly(string method) => method == "custody-owner-call";
+    public bool RequiresCurrentResultAdmission(string method) => method == "custody-owner-call";
     public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["custody-owner-call"], StringComparer.Ordinal);
     public async Task<object?> HandleAsync(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState enrolled, CancellationToken cancellationToken)
     {

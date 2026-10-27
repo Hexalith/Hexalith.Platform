@@ -4,7 +4,16 @@ namespace Hexalith.Platform.Custody;
 public sealed class IndependentDecisionManifestVerifier(TimeProvider clock, IIndependentDecisionAuthority? authority = null)
 {
     /// <summary>Verifies exact nonempty approvers/evaluations/root-or-effective-predecessor/freshness/current revocation and denies recorder/custodian actor substitution.</summary>
-    public async Task<bool> VerifyAsync(DecisionAuthorityManifest manifest, string detachedJws, DecisionAuthorityExpectedBasis expected, CancellationToken cancellationToken = default)
+    public Task<bool> VerifyAsync(DecisionAuthorityManifest manifest, string detachedJws, DecisionAuthorityExpectedBasis expected, CancellationToken cancellationToken = default)
+        =>VerifyCoreAsync(manifest,detachedJws,expected,null,cancellationToken);
+    // Qualification preflight authenticates unchanged signed content and actual approvers while separately
+    // requiring the independently current expected policy. This supplies no domain approval for a mismatch.
+    internal Task<bool> VerifySignedOriginalAsync(DecisionAuthorityManifest manifest,string detachedJws,DecisionAuthorityExpectedBasis currentExpected,DecisionAuthorityExpectedBasis signedContent,CancellationToken token)
+    {
+        ArgumentNullException.ThrowIfNull(signedContent);
+        return VerifyCoreAsync(manifest,detachedJws,currentExpected,signedContent,token);
+    }
+    private async Task<bool> VerifyCoreAsync(DecisionAuthorityManifest manifest,string detachedJws,DecisionAuthorityExpectedBasis expected,DecisionAuthorityExpectedBasis? signedContent,CancellationToken cancellationToken)
     {
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
         try
@@ -16,13 +25,16 @@ public sealed class IndependentDecisionManifestVerifier(TimeProvider clock, IInd
                 ArgumentNullException.ThrowIfNull(expected);
                 return Task.FromResult(expected with { AffectedEvaluations = DecisionAuthorityManifestCodec.Sorted(expected.AffectedEvaluations), RequiredRoles = DecisionAuthorityManifestCodec.Sorted(expected.RequiredRoles) });
             }).ConfigureAwait(false);
-            if (authority is null || detachedJws is not { Length: > 0 and <= 16384 } || !Matches(owned, basis)) { budget.Check(); return false; }
+            // Ordinary verification reuses its one owned basis for policy and signed semantics.
+            // Only the explicit qualification helper captures a separate signed-content basis.
+            var approvalBasis=signedContent is null?basis:await budget.ReadAsync(()=>Task.FromResult(signedContent with { AffectedEvaluations=DecisionAuthorityManifestCodec.Sorted(signedContent.AffectedEvaluations),RequiredRoles=DecisionAuthorityManifestCodec.Sorted(signedContent.RequiredRoles) })).ConfigureAwait(false);
+            if (authority is null || detachedJws is not { Length: > 0 and <= 16384 } || !Matches(owned, approvalBasis)) { budget.Check(); return false; }
             var profile = await budget.ReadAsync(async () => Capture(await authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None).ConfigureAwait(false))).ConfigureAwait(false);
             if (profile is null || !Current(profile, owned) || !await budget.ReadAsync(() => authority.VerifyExpectedBasisAsync(basis, Capture(profile)!, CancellationToken.None)).ConfigureAwait(false)) { budget.Check(); return false; }
             if (owned.Approvers.Any(a => profile.ForbiddenApprovalActors.Contains(a.ActorId, StringComparer.Ordinal)) || !DecisionAuthorityManifestCodec.Verify(owned, profile, detachedJws)) { budget.Check(); return false; }
             foreach (var approver in owned.Approvers)
             {
-                budget.Check(); if (!await budget.ReadAsync(() => authority.VerifyApproverAsync(basis, approver, owned.IssuedAt, CancellationToken.None)).ConfigureAwait(false)) { budget.Check(); return false; }
+                budget.Check(); if (!await budget.ReadAsync(() => authority.VerifyApproverAsync(approvalBasis, approver, owned.IssuedAt, CancellationToken.None)).ConfigureAwait(false)) { budget.Check(); return false; }
             }
             var final = await budget.ReadAsync(async () => Capture(await authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None).ConfigureAwait(false))).ConfigureAwait(false);
             bool same = final is not null && final.ProfileRevision == profile.ProfileRevision && final.Issuer == profile.Issuer && final.Audience == profile.Audience
@@ -30,7 +42,7 @@ public sealed class IndependentDecisionManifestVerifier(TimeProvider clock, IInd
                 && final.SubjectPublicKeyInfo.AsSpan().SequenceEqual(profile.SubjectPublicKeyInfo) && final.ForbiddenApprovalActors.SequenceEqual(profile.ForbiddenApprovalActors)
                 && final.MaximumManifestLifetime == profile.MaximumManifestLifetime && final.ValidFrom == profile.ValidFrom && final.ValidUntil == profile.ValidUntil && Current(final, owned);
             bool result = same && await budget.ReadAsync(() => authority.VerifyExpectedBasisAsync(basis, Capture(final)!, CancellationToken.None)).ConfigureAwait(false);
-            if (result) { result = await budget.ReadAsync(() => authority.VerifyAuthorityBoundaryAsync(basis, owned, Capture(final)!, CancellationToken.None)).ConfigureAwait(false); }
+            if (result) { result = await budget.ReadAsync(() => authority.VerifyAuthorityBoundaryAsync(approvalBasis, owned, Capture(final)!, CancellationToken.None)).ConfigureAwait(false); }
             // Time is checked after the last authority await. Coherent role revocation is independently attested,
             // never inferred from the static public-anchor publication revision.
             budget.Check(); return result && final is not null && Current(final, owned);

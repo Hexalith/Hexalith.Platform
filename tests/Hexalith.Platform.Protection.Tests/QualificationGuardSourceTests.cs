@@ -21,6 +21,31 @@ public sealed class QualificationGuardSourceTests
             ["2:Block"]=JsonSerializer.SerializeToElement(new QualificationGuardStep(QualificationGuardStepKind.Block,Block:new("tenant","batch","block","integrity")),CustodyBindingContract.Json),
             ["3:Activate"]=JsonSerializer.SerializeToElement(new QualificationGuardStep(QualificationGuardStepKind.Activate,Activation:new("activate","block",1,"replacement",batch)),CustodyBindingContract.Json) };
     }
+    [Theory]
+    [InlineData(true)][InlineData(false)]
+    public async Task CompromiseStepRecoveryRequiresCurrentAuthenticationAndExactGuardMirror(bool authenticated)
+    {
+        var scope=new JsonObject { ["tenantId"]="tenant",["batchId"]="batch" };
+        var envelope=new DeletionCapabilityRevocationEnvelope("issuer","audience","tenant","DeletionBatchCapabilitySigningKey","v1",1,1,"event",new string('a',64));
+        var receipt=new DeletionCapabilityRevocationReceipt(envelope,1,1,"receipt",["batch"]);
+        var authentication=Substitute.For<IDeletionCapabilityRevocationAuthenticator>();var registrar=Substitute.For<IDeletionCapabilityCompromiseRegistrar>();var mirror=Substitute.For<IDeletionCapabilityGuardRevocationMirror>();
+        authentication.VerifyAsync(envelope,"signed",Arg.Any<CancellationToken>()).Returns(authenticated?new DeletionCapabilityRevocationAuthorization(envelope,"current",DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddMinutes(1)):null);
+        registrar.LookupAsync(envelope,Arg.Any<CancellationToken>()).Returns(receipt);bool mirrored=false;
+        mirror.LookupAsync(envelope,Arg.Any<CancellationToken>()).Returns(_=>mirrored?receipt:null);
+        mirror.RecordAsync(Arg.Any<DeletionCapabilityRevocationReceipt>(),Arg.Any<CancellationToken>()).Returns(_=> { mirrored=true;return Task.FromResult(true); });
+        var subscriber=new DeletionCapabilityRevocationSubscriber(new("issuer","audience","tenant"),authentication,registrar,mirror,TimeProvider.System);
+        var definition=new QualificationGuardCaseDefinition("v23.compromise-complete-enumeration","tenant","batch",QualificationProtocolSchema.Digest(scope),[],new(QualificationGuardStepKind.Compromise,Compromise:envelope,SignedRevocationEvidence:"signed"),null,"none",[]);
+        var originals=Substitute.For<IQualificationOriginalStore>();originals.BeginAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(false);
+        var workflow=new QualificationGuardCaseWorkflow(Substitute.For<IGovernanceScopeGuard>(),Substitute.For<IDeletionProtectionOwner>(),Substitute.For<IDeletionConsumptionActor>(),Substitute.For<IDeletionCapabilitySigningActor>(),originals,new Dictionary<string,QualificationGuardCaseDefinition>{{definition.CaseId,definition}},subscriber);
+        var request=new JsonObject { ["caseId"]=definition.CaseId,["requestId"]=new string('b',64),["enrolledScope"]=scope };
+        if(authenticated) { (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldNotBeNull();mirrored.ShouldBeTrue();await mirror.Received(1).RecordAsync(Arg.Is<DeletionCapabilityRevocationReceipt>(value=>value.Envelope==envelope && value.ReceiptId==receipt.ReceiptId),Arg.Any<CancellationToken>()); }
+        else { await Should.ThrowAsync<InvalidOperationException>(()=>workflow.ExecuteAsync(request,TestContext.Current.CancellationToken));mirror.ReceivedCalls().ShouldBeEmpty(); }
+        await registrar.DidNotReceive().RegisterAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(),Arg.Any<CancellationToken>());
+        request["caseId"]="v23.compromise-envelope-substitution.issuer";
+        var rejected=definition with { CaseId=request["caseId"]!.GetValue<string>() };
+        var closed=new QualificationGuardCaseWorkflow(Substitute.For<IGovernanceScopeGuard>(),Substitute.For<IDeletionProtectionOwner>(),Substitute.For<IDeletionConsumptionActor>(),Substitute.For<IDeletionCapabilitySigningActor>(),originals,new Dictionary<string,QualificationGuardCaseDefinition>{{rejected.CaseId,rejected}},subscriber);
+        (await closed.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol");
+    }
     [Fact]
     public void ClosedRecipeRejectsChangedOperationOrderingAndUnknownArguments()
     {
@@ -49,6 +74,23 @@ public sealed class QualificationGuardSourceTests
         consumption.ReceivedCalls().ShouldBeEmpty(); signer.ReceivedCalls().ShouldBeEmpty(); guard.ReceivedCalls().ShouldBeEmpty();
         protection.ReceivedCalls().Count().ShouldBe(1);
     }
+    [Theory]
+    [InlineData(QualificationGuardStepKind.Register)][InlineData(QualificationGuardStepKind.Reserve)][InlineData(QualificationGuardStepKind.Block)][InlineData(QualificationGuardStepKind.Activate)]
+    public async Task LostNativeStepNeverSubstitutesMutableBatchOutcomeOrDispatchesLaterStep(QualificationGuardStepKind kind)
+    {
+        var scope=new JsonObject { ["tenantId"]="tenant",["batchId"]="batch" };string hash=QualificationProtocolSchema.Digest(scope);var batch=Batch();
+        var lost=kind switch { QualificationGuardStepKind.Block=>new QualificationGuardStep(kind,Block:new("tenant","batch","block","integrity")),QualificationGuardStepKind.Activate=>new QualificationGuardStep(kind,Activation:new("activate","block",1,"replacement",batch)),_=>new QualificationGuardStep(kind,Batch:batch) };
+        var after=new QualificationGuardStep(QualificationGuardStepKind.Register,Batch:batch);
+        var definition=new QualificationGuardCaseDefinition("v23.no-false-replacement","tenant","batch",hash,[],lost,null,"none",[after]);
+        var guard=Substitute.For<IGovernanceScopeGuard>();var protection=Substitute.For<IDeletionProtectionOwner>();var consumption=Substitute.For<IDeletionConsumptionActor>();var signer=Substitute.For<IDeletionCapabilitySigningActor>();var originals=Substitute.For<IQualificationOriginalStore>();
+        originals.BeginAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(false);
+        protection.LookupAsync("tenant","batch",Arg.Any<CancellationToken>()).Returns(new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.ConsumptionBlocked,10,1,"different-current-batch",null,null,null,[]));
+        var subscriber=new DeletionCapabilityRevocationSubscriber(new("issuer","audience","tenant"),Substitute.For<IDeletionCapabilityRevocationAuthenticator>(),Substitute.For<IDeletionCapabilityCompromiseRegistrar>(),Substitute.For<IDeletionCapabilityGuardRevocationMirror>(),TimeProvider.System);
+        var workflow=new QualificationGuardCaseWorkflow(guard,protection,consumption,signer,originals,new Dictionary<string,QualificationGuardCaseDefinition>{{definition.CaseId,definition}},subscriber);
+        var request=new JsonObject { ["requestId"]=new string('c',64),["caseId"]=definition.CaseId,["enrolledScope"]=scope };
+        var error=await Should.ThrowAsync<InvalidOperationException>(()=>workflow.ExecuteAsync(request,TestContext.Current.CancellationToken));error.Message.ShouldContain("ExactNativeOperationOriginalProtocol."+kind);
+        protection.ReceivedCalls().ShouldBeEmpty();consumption.ReceivedCalls().ShouldBeEmpty();guard.ReceivedCalls().ShouldBeEmpty();signer.ReceivedCalls().ShouldBeEmpty();
+    }
     [Fact]
     public void TypedProjectionUsesActualTargetVectorsAndDoesNotInventMissingPhysicalOrHistoryMeasurements()
     {
@@ -57,9 +99,35 @@ public sealed class QualificationGuardSourceTests
         var guard=new TenantGovernanceGuardState("tenant","installation",1,"epoch","legacy","writers",null,[],[deletion],[],[],[],[]);
         var outcome=new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.Consumed,1,0,"receipt",null,null,null,[new(new("tenant","other","alias"),"batch","target-receipt")]);
         var changed=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,outcome,[],["atomicAllOrNone","globalKeyBlock","leakCount"]);
-        changed.Metrics["atomicAllOrNone"].ShouldBe(0); changed.Metrics.ContainsKey("globalKeyBlock").ShouldBeFalse();
+        changed.Metrics["atomicAllOrNone"].ShouldBe(0); changed.Metrics["globalKeyBlock"].ShouldBe(0);
         changed.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.leakCount");
         var correct=outcome with { TargetReceipts=[new(new("tenant","interaction","alias"),"batch","target-receipt")] };
         QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,correct,[],["atomicAllOrNone"]).Metrics["atomicAllOrNone"].ShouldBe(1);
+        var misleading=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,correct,[],["raceWinners","immutableReservation","completeAffectedBatchEnumeration"]);
+        misleading.Metrics.ShouldBeEmpty();
+        foreach(string metric in new[]{"raceWinners","immutableReservation","completeAffectedBatchEnumeration"}) misleading.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol."+metric);
+    }
+    [Theory]
+    [InlineData(2,1)][InlineData(3,0)]
+    public void SuccessorOrdinalComesFromActualRetainedIssueCapabilitiesAndSubstitutedIssueCannotSupplyIt(long ordinal,long expected)
+    {
+        var predecessor=Batch().Capability;var successor=predecessor with { AttestationOrdinal=ordinal,CapabilityKeyVersion="v2",IntendedIssuedGuardRevision=4 };
+        var batch=new GovernanceBatchState("batch","Accepted",0,[new("tenant","interaction","alias")],predecessor.ManifestDigest,ordinal,"v2","digest","new-issue","dispatch","Consumed","receipt",["target-receipt"],1,[]) {
+            Capability=successor,IssuedGuardRevision=5,SigningRequestId="successor-signing" };
+        var deletion=new GovernanceDeletionState("deletion",new("tenant","ExactInteraction","interaction",""),new string('b',64),1,[],[],[],[],[],"seal",[batch],false,false);
+        var receipts=new[] { new GovernanceProtocolReceipt("old",new string('a',64),"Committed",2,0,"batch","old-issue") { Capability=predecessor },
+            new GovernanceProtocolReceipt("new",new string('b',64),"Committed",5,0,"batch","new-issue") { Capability=successor,SigningRequestId="successor-signing" } };
+        var guard=new TenantGovernanceGuardState("tenant","installation",6,"epoch","legacy","writers",null,[],[deletion],[],[],receipts,["v1"]);
+        var outcome=new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.Consumed,3,1,"receipt",null,null,null,[]);
+        QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,outcome,[],["nextAttestationOrdinal"]).Metrics["nextAttestationOrdinal"].ShouldBe(expected);
+        var unrelated=new DeletionCapabilityRevocationReceipt(new("issuer","audience","tenant","DeletionBatchCapabilitySigningKey","unrelated-old",1,1,"event",new string('e',64)),1,1,"block",["batch"]);
+        var unrelatedProjection=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard with { Revocations=[unrelated] },outcome,[],["capabilityCompromiseBlockProof"]);
+        if(ordinal==2) unrelatedProjection.Metrics["capabilityCompromiseBlockProof"].ShouldBe(0);else unrelatedProjection.Metrics.ShouldBeEmpty();
+        var correlated=unrelated with { Envelope=unrelated.Envelope with { KeyVersion=predecessor.CapabilityKeyVersion } };
+        var exactProjection=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard with { Revocations=[correlated] },outcome,[],["capabilityCompromiseBlockProof"]);
+        if(ordinal==2) exactProjection.Metrics["capabilityCompromiseBlockProof"].ShouldBe(1);else exactProjection.Metrics.ShouldBeEmpty();
+        var substituted=guard with { Receipts=[receipts[0],receipts[1] with { Capability=successor with { TenantId="foreign" } }] };
+        var denied=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",substituted,outcome,[],["nextAttestationOrdinal"]);
+        denied.Metrics.ShouldNotContainKey("nextAttestationOrdinal");denied.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.nextAttestationOrdinal");
     }
 }

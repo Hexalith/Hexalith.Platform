@@ -7,34 +7,6 @@ using Hexalith.Platform.Custody;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
-/// <summary>One exact enrolled recipient and transport delivery. Retries retain all five fields.</summary>
-public sealed record CustodyKeyUse(string KeyUseLeaseId, string DeliveryAttemptId, string RecipientProcessIncarnation,
-    string TransportIncarnation, string OriginalRootReference);
-
-/// <summary>Owned ephemeral root. Dispose clears its backing array; completion still requires independent holder evidence.</summary>
-public sealed class CustodyReleasedKey : IDisposable
-{
-    private byte[]? _bytes;
-    internal CustodyReleasedKey(byte[] bytes) => _bytes = bytes;
-    /// <summary>Borrowed key bytes, valid only before disposal. Consumers must register every additional copy.</summary>
-    [System.Text.Json.Serialization.JsonIgnore]
-    public ReadOnlyMemory<byte> Bytes => _bytes ?? throw new ObjectDisposedException(nameof(CustodyReleasedKey));
-    // Transfers the sole owned native response buffer to a private occurrence owner; no additional plaintext copy.
-    internal byte[] TransferOwnership() => Interlocked.Exchange(ref _bytes,null) ?? throw new ObjectDisposedException(nameof(CustodyReleasedKey));
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        byte[]? bytes = Interlocked.Exchange(ref _bytes, null);
-        if (bytes is not null) CryptographicOperations.ZeroMemory(bytes);
-    }
-}
-
-/// <summary>Value-free delivery status, optionally owning a one-time key response.</summary>
-public sealed record CustodyKeyUseResult(string State, CustodyReleasedKey? Key = null, bool HoldersCompleted = false);
-
-/// <summary>A complete authenticated manifest result and its independent restore-barrier receipt.</summary>
-public sealed record CustodyManifestOriginal(DeletionManifestProviderResult Result, string? RestoreBarrierReceiptId);
-
 /// <summary>Public Dapr-only custody operations. Construction does not install an authorizer, native provider, trust or DI.</summary>
 public sealed class CustodyLifecycleClient
 {
@@ -125,6 +97,23 @@ public sealed class CustodyLifecycleClient
         CustodyKeyLifecycleRequest? request = null, CancellationToken cancellationToken = default)
         => InBudgetAsync(cancellationToken, budget => LifecycleAsync(registration, request, true, budget), () => Missing(registration, request));
 
+    /// <summary>Recovers the complete enrolled registration only after the native receiver verifies its retained wrap response and exact registration digest/receipt.</summary>
+    public async Task<CustodyKeyRegistration?> LookupRegistrationOriginalAsync(CustodyKeyRegistration registration,CancellationToken token=default)
+    {
+        var original=await LookupOriginalAsync(registration,null,token).ConfigureAwait(false);
+        return original.Status==CustodyKeyLifecycleStatus.Wrapped && original.Identity==registration.Identity && original.OperationId==registration.OperationId
+            && original.ReceiptId==registration.WrapReceiptId && original.RequestDigest==CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(registration))
+            ?registration:null;
+    }
+
+    /// <summary>Recovers the complete retained native wrap result using only its original pre-effect identity.</summary>
+    public Task<CustodyKeyRegistration?> LookupRegistrationOriginalAsync(CustodyWrapOriginalIdentity original,CancellationToken token=default)
+        =>InBudgetAsync<CustodyKeyRegistration?>(token,async budget=>
+        {
+            var result=await CallAsync("lookup-original",original.Identity.TenantId,original.OperationId,new { WrapOriginal=original },e=>new(e,WrapOriginal:original),budget).ConfigureAwait(false);
+            return result?.Response.WrappedRegistration;
+        },()=>null);
+
     internal async Task<CustodyKeyLifecycleOutcome> LifecycleAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest? lifecycle,
         bool lookup, CustodyOperationBudget budget)
     {
@@ -169,7 +158,7 @@ public sealed class CustodyLifecycleClient
         if (call is null) return UnknownManifest(original, reservationReceiptId);
         if (call.Response.ManifestStatus is { } status)
             return Verify(JsonSerializer.SerializeToUtf8Bytes(status with { Signature = [] }, CustodyBindingContract.Json), status.Signature)
-                ? new(status.Result, null) : UnknownManifest(original, reservationReceiptId);
+                ? new(status.Result, null,status.Denial) : UnknownManifest(original, reservationReceiptId);
         if (call.Response.OriginalHeader is not { } header) return UnknownManifest(original, reservationReceiptId);
         var assembled = await CustodyBindingOriginalAssembler.AssembleAsync(call.Request, header,
             new OriginalPages(this, original.Capability.TenantId, id, budget), new OriginalAuthority(this, header), budget.Remaining, budget.Token);

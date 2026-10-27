@@ -27,6 +27,24 @@ def write_trx(results, name):
 
 
 class VerifyFullTests(unittest.TestCase):
+    def test_joint_route_requires_exact_supplied_raw_profile_before_any_cohort_contact(self):
+        import hashlib
+        platform=Path(__file__).resolve().parents[2]
+        sys.path.insert(0,str(platform / "eng/ext-secrets-1"))
+        with tempfile.TemporaryDirectory() as temp:
+            directory=Path(temp);profile=directory/'profile.json';profile.write_bytes(b'{ "fixture" : true }\n')
+            joint=directory/'joint.json';joint.write_text(json.dumps({'binding':{'profileSha256':hashlib.sha256(profile.read_bytes()).hexdigest()}}))
+            with patch.dict(os.environ,{'PLATFORM_JOINT_COHORT_CONFIGURATION':str(joint)}), patch('joint_live_phase_runner.run_installed_cohort',return_value={'cohortPassed':True}) as cohort:
+                for invalid in (None,str(directory/'missing'),str(directory/'bad')):
+                    (directory/'bad').write_text('{')
+                    self.assertEqual(1,verify.verify(platform,directory/'artifacts',invalid))
+                cohort.assert_not_called()
+                self.assertEqual(0,verify.verify(platform,directory/'artifacts',str(profile)))
+                self.assertEqual(1,cohort.call_count)
+                profile.write_text('{"fixture":true}')
+                self.assertEqual(1,verify.verify(platform,directory/'artifacts',str(profile)))
+                self.assertEqual(1,cohort.call_count)
+
     def test_release_configuration_reaches_both_real_full_probe_compile_commands(self):
         platform = Path(__file__).resolve().parents[2]
         script = platform / "eng/verify-agents-host.sh"

@@ -1,0 +1,105 @@
+[
+  {
+    "group": "R21E-1",
+    "source": [
+      "IndependentAuthorityReceiver.cs",
+      "IndependentAuthorityState.cs",
+      "IndependentOriginalResultCommit.cs"
+    ],
+    "changes": [
+      "Publish only the stable result body before a conditional authority commit. Losing prospective revisions/index roots publish no variable frames.",
+      "Commit the exact result hash, original hash, frozen index root and actual retained authority revision before deterministic metadata/history/AVL materialization.",
+      "Every authorized receiving replica first helps materialize an outstanding committed result; bounded CAS loss returns unknown without a resend or a larger reserve.",
+      "An authenticated exact terminal-original lookup reconciles only its own unused ticket after final-head/settlement loss; pending/unknown originals and outstanding transfers retain ownership.",
+      "Terminal lookup cleanup is optional when the legacy installation has no ArchiveCapacity configuration; completed historical originals remain exactly readable and new admission still refuses."
+    ],
+    "actualCaller": "InstalledQualificationOriginalStore -> credential-bound fixture transport -> real IndependentAuthorityReceiver.HandleAsync -> actual Dapr head CAS fixture -> real IndependentPrivateOriginalIndex/IndependentArchiveCapacity/ProtectedArchiveStore",
+    "coverage": [
+      "FiniteAdmittedPoolSurvivesRepeatedResultCasLossIndexAdvancesAndReplicaMaterialization",
+      "EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds:8 boundaries",
+      "ResultCommitAdmissionAndSignedRecoveryRequireCurrentExactCallerWhileDurableFactSurvivesRevocation",
+      "CommittedResultSurvivesRevocationButOnlyACurrentAuthorizedReaderCanRecoverItsOriginal",
+      "CompletedLegacyOriginalRemainsExactlyReadableWithoutANewPhysicalPoolInstallation"
+    ],
+    "literalReplicas": 3,
+    "reserveEnlarged": false,
+    "runtimeGenesis": false,
+    "externalInstalledContractInvented": false,
+    "fixtureOnly": true
+  },
+  {
+    "group": "R21B-6",
+    "source": [
+      "provisioning/executor.proposed.yaml",
+      "provisioning/observer.proposed.yaml",
+      "provisioning/enrollment.proposed.yaml",
+      "provisioning/regular-file-layout.md",
+      "README.md"
+    ],
+    "changes": [
+      "Mount the two selected public configuration keys individually at their original /references locators, and explicitly select the existing qualification installation API.",
+      "Mount all three consumed authority bearer files individually using exact independently returned OWNER key/path placeholders. No private key/anchor or credential is fabricated.",
+      "Document public frontend versus separately installed receiving signer files, strict no-follow selected/private readers, and the supported separate Dapr bearer projected-link/newline/rotation reader.",
+      "Document immutable subPath lifetime, replacement objects and pod restart; cite official Kubernetes Secret/ConfigMap semantics."
+    ],
+    "actualCaller": "C# SecretsRuntimeConfiguration.Load/AddInstalledQualificationRole/LoadSignerAsync; Python qualify.bounded_public_file/bounded_file_io.use_private; manifest consistency checks for all3 Program.cs entrypoints",
+    "coverage": [
+      "ActualSelectedRuntimeInstallationAndPrivateSignerRejectAtomicWriterKeysAndAcceptRegularMounts:3 roles",
+      "RegularRoleMountLayoutTests:2 tests, all3 role/layout subcases"
+    ],
+    "applied": false,
+    "installedQualification": false
+  },
+  {
+    "group": "R21B-9",
+    "source": [
+      "ImmutableFileArchive.cs"
+    ],
+    "changes": [
+      "After exact durable protected ordinary publication, release only deterministic-ticket Reserved chunks using the existing fence and ReleaseUnused.",
+      "An exact matching-original retry performs the same safe cleanup after an interruption; conflicts throw before cleanup, and Published/Preparing/ambiguous frames remain protected by existing ReleaseUnused semantics."
+    ],
+    "actualCaller": "ImmutableFileArchive.PublishAsync/PublishWithHooksAsync -> actual protected three-chunk pool under ArchiveVolumeFence",
+    "coverage": [
+      "ExactDurablePublicationAndInterruptedRetryReleaseOnlyUnusedOrdinaryChunks:2 rows",
+      "existing cancellation/late-worker/damaged-header/physical allocation suites"
+    ],
+    "fixtureOnly": true
+  },
+  {
+    "group": "R21V-1",
+    "source": [
+      "ExportKeyDeliveryActorTests.cs"
+    ],
+    "changes": [
+      "Add a fresh empty-state unchanged-identity DeliverReceivedAsync positive against the real actor, anchored journal/in-memory actor state and currently authorized isolated provider.",
+      "Require Delivered, exactly one direct release, exact persisted terminal native outcome and retry/serialized-restart preservation after expiry with no redelivery."
+    ],
+    "actualCaller": "ExportKeyDeliveryActor.DeliverReceivedAsync -> DeliverAsyncCoreAsync -> isolated authorized IExportKeyDirectDeliveryProvider.ReleaseAsync -> real anchored actor persistence",
+    "coverage": [
+      "FreshUnchangedReceivingRpcDeliversOnceAndRetainsExactTerminalOutcome"
+    ],
+    "productionDeliveryChanged": false,
+    "fixtureOnly": true
+  },
+  {
+    "group": "R22A1",
+    "source": [
+      "src/Hexalith.Platform.Custody/DaprExportQualificationOperation.cs",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs"
+    ],
+    "change": "Private lock-protected work-finished/caller-finished/released flags synchronously settle exactly once when the second party finishes. Successful material transfer returns capacity immediately; genuinely late ignored collaborators and private discard remain charged. Original admission bound, budgets, nested ownership, cancellation and zeroing remain unchanged.",
+    "actualCaller": "Isolated child xUnit process -> actual material/trust sources and AES engine -> production DaprExportQualificationOperation; separate exact assembly red/green probe",
+    "coverage": [
+      "SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall:64 sequential real resolver/trust/execute/observe cycles",
+      "All20 original resolver cancellation/timeout/late nonzero clearing cases retained",
+      "Exact production assembly10,000 immediately completed RunAsync calls"
+    ],
+    "redProbe": "/tmp/story54-round22-1fctcr2b/handoff-probe.log",
+    "rootIndependentRed": "/tmp/story54-round22-1fctcr2b/root-handoff-defect-red-verification.json",
+    "greenProbe": "/tmp/story54-round22-1fctcr2b/handoff-green7-probe.log",
+    "guard": "/tmp/story54-round22-1fctcr2b/guard-removal-handoff-results.json",
+    "fixtureOnly": true,
+    "installedQualification": false
+  }
+]

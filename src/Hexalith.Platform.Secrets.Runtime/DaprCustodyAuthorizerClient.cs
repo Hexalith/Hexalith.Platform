@@ -8,7 +8,8 @@ public sealed record CustodyCallIntent(string Operation, string TenantId, string
 
 /// <summary>Fresh independent current/control framing, with installed transport and holder profile pins.</summary>
 public sealed record CustodyPreparedCall(string EnvelopeJson, int MaximumRequestMessageBytes,
-    string TransportProfileDigest, string? KeyClosureProfileDigest);
+    string TransportProfileDigest, string? KeyClosureProfileDigest,
+    [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyRoleWorkloadGrant? WorkloadGrant=null);
 
 /// <summary>Independent private-operation/control/observer statements bound to the exact request hash.</summary>
 public sealed record CustodyCallAuthorization(string RequestSha256, IReadOnlyDictionary<string, string> Metadata);

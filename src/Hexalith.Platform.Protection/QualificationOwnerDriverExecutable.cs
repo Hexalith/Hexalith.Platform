@@ -18,16 +18,17 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public static class QualificationOwnerDriverExecutable
 {
     /// <summary>Runs only with explicit independently installed bindings. Missing ordinary source and selected recovery protocols remain named blockers before effects.</summary>
-    public static async Task<int> RunAsync(string role,string? installationPath)
+    public static async Task<int> RunAsync(string role,string? installationPath,CancellationToken lifetimeToken=default)
     {
+        using var startupBudget=CancellationTokenSource.CreateLinkedTokenSource(lifetimeToken);startupBudget.CancelAfter(TimeSpan.FromSeconds(30));var token=startupBudget.Token;
         if(string.IsNullOrWhiteSpace(installationPath)) return 2;
-        byte[] bytes=await File.ReadAllBytesAsync(installationPath).ConfigureAwait(false);
+        byte[] bytes=await BoundedRegularFile.ReadAsync(installationPath,1024*1024,token).ConfigureAwait(false);
         if(bytes.Length is 0 or >1024*1024) return 2;
         CustodyBindingContract.RejectDuplicateProperties(bytes);
         var installed=JsonSerializer.Deserialize<QualificationOwnerDriverInstallation>(bytes,CustodyBindingContract.Json);
         if(installed is null || installed.Role.Role!=role || !Path.IsPathFullyQualified(installed.RoleSigningKeyFile) || !Path.IsPathFullyQualified(installed.ReceivingInstallationPath)
             || installed.ExecutorOriginals.AppId==installed.IndependentSource.AppId || installed.Role.Identity==installed.ObserverTrust.Identity && role!="observer") return 2;
-        using var signer=ECDsa.Create();signer.ImportFromPem(await File.ReadAllTextAsync(installed.RoleSigningKeyFile).ConfigureAwait(false));
+        using var signer=await IndependentAuthorityHttpApplication.LoadSignerAsync(installed.RoleSigningKeyFile,token).ConfigureAwait(false);
         using var dapr=new Dapr.Client.DaprClientBuilder().Build();
         IndependentDaprAuthority Authority(IndependentDaprAuthorityBinding binding)=>new(new DaprSecretsInvoker(dapr),binding,TimeProvider.System);
         var executorOriginals=new InstalledQualificationOriginalStore(Authority(installed.ExecutorOriginals));
@@ -40,22 +41,38 @@ public static class QualificationOwnerDriverExecutable
         ICustodyOwnerStateAuthority Owner(CustodyLifecycleInstallation value)=>new CustodyOwnerAuthority(dapr,value.BindingName,value.TenantId,value.OwnerScope,value.EnrollmentJson,value.PublicKeyPem,new DaprCustodyOwnerCallSource(Authority(value.OwnerAuthority)));
         using var gatewayHttp=new HttpClient(new SocketsHttpHandler { AllowAutoRedirect=false,UseProxy=false }) { Timeout=TimeSpan.FromSeconds(30),BaseAddress=protectionInstallation?.EventStoreEndpoint };
         IEventStoreGatewayClient? gateway=null;
+        QualificationOwnerQueryClient? queries=null;
         if(protectionInstallation is { EventStoreEndpoint:{ IsAbsoluteUri:true,Scheme:"https" },GatewayCredentials:{ } credentials,ReadAuthority:{ } readAuthority,AuditScopes:{ } auditScopes })
         {
             var proofs=new QualificationGatewayReadProofs(credentials,Owner(readAuthority),auditScopes.Values.SelectMany(value=>value.NativeStreams).Distinct().ToArray(),TimeProvider.System);
             gateway=new EventStoreGatewayClient(gatewayHttp,Options.Create(new EventStoreGatewayClientOptions { BaseAddress=protectionInstallation.EventStoreEndpoint,UseWorkloadTransport=true,MaxStreamReadResponseBytes=1024*1024 }),proofs,proofs);
+            queries=new(gatewayHttp,credentials,Owner(readAuthority),auditScopes.Values.SelectMany(value=>value.ProjectionQueries).Distinct().ToArray(),TimeProvider.System);
         }
-        var audit=new QualificationEventStoreCaseAuditReader(gateway is null || protectionInstallation?.AuditScopes is null?null:new QualificationEventStoreAuditReader(Authority(installed.ExecutorOriginals),gateway,TimeProvider.System,protectionInstallation.AuditScopes));
+        var audit=new QualificationEventStoreCaseAuditReader(gateway is null || protectionInstallation?.AuditScopes is null?null:new QualificationEventStoreAuditReader(Authority(installed.ExecutorOriginals),gateway,TimeProvider.System,protectionInstallation.AuditScopes,queries));
         var sourceReaders=new Dictionary<string,IQualificationObservedOriginalReader>(StringComparer.Ordinal) { ["S1.reject.missing-config"]=new QualificationMissingConfigurationOriginalReader(executorOriginals,audit) };
-        using var services=RuntimeServices(installed,dapr);
+        var loadedRuntimeConfiguration=installed.RuntimeConfigurationFile is null?null:SecretsRuntimeConfiguration.Parse(Encoding.UTF8.GetString(await BoundedRegularFile.ReadAsync(installed.RuntimeConfigurationFile,1024*1024,token).ConfigureAwait(false)));
+        using var services=RuntimeServices(installed,dapr,loadedRuntimeConfiguration);
+        var foreignServices=new List<ServiceProvider>();
+        try
+        {
+        var foreignAuthenticators=new Dictionary<string,TrustedEnvelopeAuthenticator>(StringComparer.Ordinal);
+        foreach(var challenge in installed.ReplayChallenges??[])
+            if(challenge.Value.ForeignRuntimeConfigurationFile is { } foreignPath)
+            {
+                var foreignConfig=SecretsRuntimeConfiguration.Parse(Encoding.UTF8.GetString(await BoundedRegularFile.ReadAsync(foreignPath,1024*1024,token).ConfigureAwait(false)));
+                var foreign=RuntimeServices(installed with { RuntimeConfigurationFile=foreignPath },dapr,foreignConfig)!;foreignServices.Add(foreign);
+                foreignAuthenticators.Add(challenge.Key,foreign.GetRequiredService<TrustedEnvelopeAuthenticator>());
+            }
         if(installed.RuntimeCaseInputs is { } inputs && services?.GetService<IPlatformKeyInventoryAuthority>() is { } inventory)
         {
             var raw=new QualificationRuntimeSourceDriver(new QualificationInventoryActorRouter(),inventory,services.GetRequiredService<PlatformHmacService>(),services.GetRequiredService<TrustedEnvelopeAuthenticator>(),inputs);
-            var runtimeConfiguration=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile!)!;
+            var runtimeConfiguration=loadedRuntimeConfiguration!;
             var replayCredential=PrivateReplayCredentialBinding.TryCapture(runtimeConfiguration.ReplayRegistrarReference,runtimeConfiguration.ReplayRegistrarCredentialReference,revision:1);
             var lookupRegistrar=replayCredential is null?null:new DaprReplayRegistrarAdapter(runtimeConfiguration,new DaprSecretsInvoker(dapr),TimeProvider.System,replayCredential);
-            var envelopes=services.GetService<TrustedEnvelopeReplayVerifier>() is { } replay && installed.EnvelopeCaseIdentities is { } identities
-                ?new QualificationEnvelopeCaseWorkflow(services.GetRequiredService<TrustedEnvelopeAuthenticator>(),replay,Authority(installed.ExecutorOriginals),identities,lookupRegistrar):null;
+            ITrustedEnvelopeReplayRegistrar? challengeRegistrar=installed.ReplayChallengeRegistrar is { } registrarBinding?new DaprIndependentReplayRegistrar(Authority(registrarBinding)):lookupRegistrar;
+            var replay=installed.ReplayChallengeRegistrar is not null?new TrustedEnvelopeReplayVerifier(services.GetRequiredService<TrustedEnvelopeAuthenticator>(),challengeRegistrar!,services.GetRequiredService<IPlatformSigningProfileProvider>(),TimeProvider.System):services.GetService<TrustedEnvelopeReplayVerifier>();
+            var envelopes=replay is not null && installed.EnvelopeCaseIdentities is { } identities
+                ?new QualificationEnvelopeCaseWorkflow(services.GetRequiredService<TrustedEnvelopeAuthenticator>(),replay,Authority(installed.ExecutorOriginals),identities,challengeRegistrar,replayChallenges:installed.ReplayChallenges,foreignAuthenticators:foreignAuthenticators):null;
             var capability=services.GetService<IDeletionCapabilitySigningTrustProvider>() is { } trust && installed.CapabilityCasePayloads is { } payloads
                 ?new QualificationCapabilityCaseWorkflow(new QualificationSigningActorRouter(),trust,executorOriginals,payloads):null;
             var ids=inputs.Keys.Concat(installed.EnvelopeCaseIdentities?.Keys??Enumerable.Empty<string>()).Concat(installed.CapabilityCasePayloads?.Keys??Enumerable.Empty<string>()).Distinct(StringComparer.Ordinal).ToArray();
@@ -65,11 +82,14 @@ public static class QualificationOwnerDriverExecutable
             var inventoryReader=new QualificationInventoryOriginalReader(new QualificationInventoryActorRouter(),inventory,executorOriginals,audit,inventoryKeys);
             foreach(var workflow in runtimeWorkflows)
             {
+                if(workflow.CaseId=="S2.retained-digest") sourceReaders[workflow.CaseId]=new QualificationRetainedDigestOriginalReader(executorOriginals,audit,raw);
                 if(workflow.CaseId.StartsWith("S1.inventory.",StringComparison.Ordinal)) sourceReaders[workflow.CaseId]=inventoryReader;
                 if(envelopes is not null && workflow.CaseId is "S2.canonical-hmac" or "S2.byte-identical-replay")
                     sourceReaders[workflow.CaseId]=new QualificationEnvelopeOriginalReader(executorOriginals,audit,envelopes);
                 if(envelopes is not null && (workflow.CaseId.StartsWith("S2.substitution.",StringComparison.Ordinal) || workflow.CaseId.StartsWith("S2.replay-reject.",StringComparison.Ordinal)))
                     sourceReaders[workflow.CaseId]=new QualificationDeniedOriginalReader(executorOriginals,audit,envelopes.ReadVerifyAsync);
+                if(capability is not null && workflow.CaseId=="S4.capability-canonical-14-fields")
+                    sourceReaders[workflow.CaseId]=new QualificationCapabilityOriginalReader(executorOriginals,audit,capability);
                 if(capability is not null && workflow.CaseId.StartsWith("S4.capability-substitution.",StringComparison.Ordinal))
                     sourceReaders[workflow.CaseId]=new QualificationDeniedOriginalReader(executorOriginals,audit,capability.ReadVerifyAsync);
             }
@@ -93,7 +113,7 @@ public static class QualificationOwnerDriverExecutable
                 var registrations=resolution.Registrations(executorOriginals);workflows.AddRange(registrations);
                 foreach(var registration in registrations) sourceReaders[registration.CaseId]=new QualificationResolutionOriginalReader(executorOriginals,audit,resolution.ResolveAsync);
             }
-            var configuration=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile!)!;
+            var configuration=loadedRuntimeConfiguration!;
             var missingReference=new QualificationMissingReferenceWorkflow(configuration,new DaprSecretsInvoker(dapr));
             workflows.Add(missingReference.Registration(executorOriginals));sourceReaders["S1.reject.missing-reference"]=new QualificationResolutionOriginalReader(executorOriginals,audit,missingReference.VerifyAsync);
         }
@@ -118,7 +138,7 @@ public static class QualificationOwnerDriverExecutable
         }
         if(services is not null && protectionInstallation?.ReplayCases is { } replayInputs)
         {
-            var config=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile!)!;
+            var config=loadedRuntimeConfiguration!;
             var credential=PrivateReplayCredentialBinding.TryCapture(config.ReplayRegistrarReference,config.ReplayRegistrarCredentialReference,revision:1);
             if(credential is not null)
             {
@@ -149,28 +169,23 @@ public static class QualificationOwnerDriverExecutable
             IndependentEvidenceComponent:{ } evidenceComponent,EvidenceResources:{ } resources,EvidenceAuthorities:{ } evidenceOwners,GuardArguments:{ } arguments,GuardDefinitions:{ } definitions,RevocationSubscription:{ } subscription }
             && services?.GetService<IDeletionCapabilityRevocationAuthenticator>() is { } revocation)
         {
-            var installedCells=new CustodyGuardedStateInstallation(target,protectionInstallation.GuardTargetRevision,Owner(targetOwner),cells.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),receipts.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),TimeProvider.System);
-            var evidence=new CustodyGovernanceGuardInstallation(dapr,evidenceComponent,resources,evidenceOwners.ToDictionary(pair=>pair.Key,pair=>Owner(pair.Value)),TimeProvider.System);
-            var guarded=new DaprGuardedStateTransaction(dapr,TimeProvider.System,new GuardedStateTransactionAuthority(installedCells));
-            var guard=new GovernanceScopeGuardOwner(guarded,TimeProvider.System,new GovernanceGuardAuthority(evidence));
-            var proxies=ActorProxy.DefaultProxyFactory;
-            var protection=new DaprDeletionProtectionOwner(target.TenantId,proxies,TimeProvider.System);
-            var consumption=ActorProxy.Create<IDeletionConsumptionActor>(new ActorId(DeletionConsumptionActor.GetActorId(target.TenantId)),DeletionConsumptionActor.ActorTypeName);
-            var signerActor=new QualificationSigningActorRouter();
-            var subscriber=new DeletionCapabilityRevocationSubscriber(subscription,revocation,new DaprDeletionCapabilityCompromiseRegistrar(proxies),new EventStoreDeletionCapabilityGuardRevocationMirror(guard,TimeProvider.System),TimeProvider.System);
-            var compiled=definitions.ToDictionary(pair=>pair.Key,pair=>QualificationGuardRecipeCatalog.Compile(pair.Key,pair.Value.TenantId,pair.Value.BatchId,pair.Value.EnrolledScopeSha256,arguments[pair.Key]),StringComparer.Ordinal);
-            var guardedWorkflow=new QualificationGuardCaseWorkflow(guard,protection,consumption,signerActor,executorOriginals,compiled,subscriber);
-            var registrations=guardedWorkflow.Registrations();workflows.AddRange(registrations);
-            foreach(var registration in registrations) sourceReaders[registration.CaseId]=new QualificationGuardOriginalReader(guard,protection,signerActor,executorOriginals,audit,compiled);
+            var ports=QualificationGuardProductionComposition.Create(dapr,loadedRuntimeConfiguration!,protectionInstallation,executorOriginals);
+            var registrations=ports.Workflow.Registrations();workflows.AddRange(registrations);
+            foreach(var registration in registrations) sourceReaders[registration.CaseId]=new QualificationGuardOriginalReader(ports.Guard,ports.Protection,ports.Signing,executorOriginals,audit,ports.Definitions);
         }
         var readers=workflows.ToDictionary(value=>value.CaseId,_=>(IReadOnlyList<string>)["External.SelectedNativeRecoveryControlReceiptHistory","External.CompleteInstalledLogAndTraceAccessAndCensus","External.NativeOutboxSnapshotAndAllHolderPhysicalCopyReadProtocols"],StringComparer.Ordinal);
-        var drivers=QualificationDriverComposition.Create(workflows,executorOriginals,recovery,source,observerTrust,readers);
-        return await QualificationOwnerApplication.RunAsync(installed.ReceivingInstallationPath,installed.Role,signer,roleOriginals,drivers,independentSourceReader:new QualificationCompositeOriginalReader(sourceReaders)).ConfigureAwait(false);
+        var targetMappings=protectionInstallation?.AuditScopes?.Values.SelectMany(scope=>(scope.DispatchOriginals??[]).Select(reference=>
+            new KeyValuePair<string,string>(QualificationMutationTrust.TargetKey(scope.TenantId,reference.Domain,reference.AggregateId),reference.TargetId)))
+            .GroupBy(value=>value.Key,StringComparer.Ordinal).ToArray();
+        if(targetMappings?.Any(group=>group.Select(value=>value.Value).Distinct(StringComparer.Ordinal).Count()!=1)==true) throw new InvalidOperationException("Conflicting independently enrolled native mutation target mappings.");
+        var mutationTrust=targetMappings is null?null:new QualificationMutationTrust(installed.ExecutorOriginals,targetMappings.ToDictionary(group=>group.Key,group=>group.First().Value,StringComparer.Ordinal));
+        var drivers=QualificationDriverComposition.Create(workflows,executorOriginals,recovery,source,observerTrust,readers,mutationTrust:mutationTrust);
+        return await QualificationOwnerApplication.RunWithStartupBudgetAsync(installed.ReceivingInstallationPath,installed.Role,signer,roleOriginals,drivers,null,new QualificationCompositeOriginalReader(sourceReaders),lifetimeToken,startupToken:token).ConfigureAwait(false);
+        } finally { foreach(var foreign in foreignServices) foreign.Dispose(); }
     }
-    private static ServiceProvider? RuntimeServices(QualificationOwnerDriverInstallation installed,Dapr.Client.DaprClient dapr)
+    private static ServiceProvider? RuntimeServices(QualificationOwnerDriverInstallation installed,Dapr.Client.DaprClient dapr,SecretsRuntimeConfiguration? configuration)
     {
         if(installed.RuntimeConfigurationFile is null) return null;
-        var configuration=SecretsRuntimeConfiguration.Load(installed.RuntimeConfigurationFile);
         if(configuration is null) throw new InvalidOperationException("Explicit runtime configuration required.");
         var services=new ServiceCollection();services.AddSingleton(dapr);services.AddSingleton(TimeProvider.System);
         var invoker=new DaprSecretsInvoker(dapr);

@@ -60,12 +60,18 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
         if (bearer is not null) { request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearer); }
         using HttpResponseMessage response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode) { return null; }
-        if (response.Content.Headers.ContentLength > SecretsProof.MaximumBytes) { return null; }
+        int maximumBytes=method.StartsWith("platform-independent/v1/",StringComparison.Ordinal)?CustodyBindingContract.MaximumIndependentAuthorityFrameBytes-1:SecretsProof.MaximumBytes;
+        if (response.Content.Headers.ContentLength > maximumBytes) { return null; }
         using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
-        return await ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
+        return await ReadBoundedAsync(stream, cancellationToken,maximumBytes).ConfigureAwait(false);
     }
 
-    internal static async Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+    internal static Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+        =>UseMountedBearerAsync(reference,value=>Encoding.ASCII.GetString(value),cancellationToken);
+    internal static Task<byte[]?> ReadMountedBearerIdentityAsync(string reference,CancellationToken cancellationToken)
+        =>UseMountedBearerAsync(reference,value=>SHA256.HashData(value),cancellationToken);
+    private delegate T MountedBearerConsumer<T>(ReadOnlySpan<byte> value);
+    private static async Task<T?> UseMountedBearerAsync<T>(string reference,MountedBearerConsumer<T> use,CancellationToken cancellationToken) where T:class
     {
         const int maximumBytes = 8192;
         if (!SecretsProvisioning.IsReference(reference) || !reference.StartsWith("file:/", StringComparison.Ordinal)) { return null; }
@@ -98,7 +104,7 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
                 if (used > 0 && bytes[used - 1] == (byte)'\r') { used--; }
             }
             if (used == 0 || bytes.AsSpan(0, used).ContainsAnyExceptInRange((byte)33, (byte)126)) { return null; }
-            return Encoding.ASCII.GetString(bytes, 0, used);
+            cancellationToken.ThrowIfCancellationRequested();return use(bytes.AsSpan(0,used));
         }
         finally { CryptographicOperations.ZeroMemory(bytes); }
     }
@@ -109,19 +115,18 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
     internal static async Task<string?> ReadBoundedAsync(Stream stream, CancellationToken cancellationToken, int maximumBytes = SecretsProof.MaximumBytes)
     {
         if (maximumBytes is <= 0 or > CustodyBindingContract.CandidateRequestMessageBytes) return null;
-        byte[] bytes = new byte[maximumBytes + 1];
-        int used = 0;
-        while (used < bytes.Length)
+        using var bytes=new MemoryStream();byte[] buffer=new byte[65536];
+        while(true)
         {
-            int count = await stream.ReadAsync(bytes.AsMemory(used), cancellationToken).ConfigureAwait(false);
-            if (count == 0)
+            int count=await stream.ReadAsync(buffer.AsMemory(0,Math.Min(buffer.Length,maximumBytes+1-(int)bytes.Length)),cancellationToken).ConfigureAwait(false);
+            if(count==0)
             {
-                try { return new UTF8Encoding(false, true).GetString(bytes, 0, used); }
-                catch (DecoderFallbackException) { return null; }
+                try { return new UTF8Encoding(false,true).GetString(bytes.GetBuffer(),0,(int)bytes.Length); }
+                catch(DecoderFallbackException) { return null; }
             }
-            used += count;
+            await bytes.WriteAsync(buffer.AsMemory(0,count),cancellationToken).ConfigureAwait(false);
+            if(bytes.Length>maximumBytes) return null;
         }
-        return null;
     }
 }
 

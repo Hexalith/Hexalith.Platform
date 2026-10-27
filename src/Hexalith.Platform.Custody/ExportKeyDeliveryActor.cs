@@ -10,8 +10,9 @@ namespace Hexalith.Platform.Custody;
 /// <param name="clock">Current exclusive-expiry clock.</param>
 /// <param name="authority">Independent current identity/lifecycle authority.</param>
 /// <param name="provider">Qualified direct principal delivery owner with atomic release and exact lookup.</param>
+/// <param name="denialOriginals">Optional independently enrolled immutable receiving-denial store; absence grants no historical denial evidence.</param>
 public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, IExportKeyDeliveryAuthority? authority = null,
-    IExportKeyDirectDeliveryProvider? provider = null) : Actor(host), IExportKeyDeliveryActor
+    IExportKeyDirectDeliveryProvider? provider = null,IExportKeyDeliveryDenialOriginalStore? denialOriginals = null) : Actor(host), IExportKeyDeliveryActor
 {
     private readonly PrivateActorStateIoLifetime _stateIo = new();
     private const string StateKey = "export-key-delivery-v1";
@@ -40,7 +41,7 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
         Check(identity);
         if (authority is null || !await budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, "DeliverExportKey")).ConfigureAwait(false)) { return new(identity, ExportKeyDeliveryState.Unavailable); }
         ExportKeyDeliveryOutcome? existing = await ReadAsync(budget, identity, true).ConfigureAwait(false);
-        if (existing is not null) { return await ResolveAsync(identity, existing, budget).ConfigureAwait(false); }
+        if (existing is not null) { return await ResolveAsync(identity, existing, budget,true).ConfigureAwait(false); }
         if (provider is null || authority is null) { return new(identity, ExportKeyDeliveryState.Unavailable); }
         if (clock.GetUtcNow() >= identity.ExclusiveExpiry) { return await SaveAsync(budget, new(identity, ExportKeyDeliveryState.NotDelivered, Reason: "expired")).ConfigureAwait(false); }
         if (!await budget.ReadAsync(() => authority.AuthorizeAsync(identity)).ConfigureAwait(false))
@@ -76,6 +77,69 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
         }
         catch (TimeoutException) { return uncertainty ?? new(identity, ExportKeyDeliveryState.Unavailable); }
     }
+    /// <inheritdoc />
+    public async Task<ExportKeyDeliveryDenialOriginal?> LookupReceivingDenialAsync(ExportKeyDeliveryIdentity identity)
+    {
+        Check(identity);var budget=new PrivateOwnerOperationDeadline(clock,CancellationToken.None);
+        try
+        {
+            if(authority is null || denialOriginals is null || !await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(identity,"LookupExportKeyReceivingDenial")).ConfigureAwait(false)) return null;
+            var original=await budget.ReadAsync(()=>denialOriginals.LookupAsync(identity)).ConfigureAwait(false);
+            if(original is null || !original.IsExact(identity) || !await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(identity,"LookupExportKeyReceivingDenial")).ConfigureAwait(false)) return null;
+            return original;
+        }
+        catch(TimeoutException) { return null; }
+    }
+    /// <inheritdoc />
+    public async Task<ExportKeyDeliveryReceivingResult> DeliverReceivedAsync(ExportKeyDeliveryReceivingRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);request.ValidateBounds();Check(request.Target);
+        var budget=new PrivateOwnerOperationDeadline(clock,CancellationToken.None);
+        try
+        {
+            if(authority is null || !await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"DeliverExportKey")).ConfigureAwait(false)) return new(request.Supplied,ExportKeyDeliveryState.Unavailable);
+            if(request.Supplied==ExportKeyDeliveryRawIdentity.Capture(request.Target))
+            {
+                budget.Check();_stateIo.CheckReady();var delivered=await DeliverAsyncCoreAsync(request.Target,budget).ConfigureAwait(false);
+                if(!await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"DeliverExportKey")).ConfigureAwait(false)) return new(request.Supplied,ExportKeyDeliveryState.Unavailable);
+                budget.Check();return new(request.Supplied,delivered.State,NativeOutcome:delivered);
+            }
+            if(denialOriginals is null) return new(request.Supplied,ExportKeyDeliveryState.Unknown);
+            if(await budget.ReadAsync(()=>denialOriginals.LookupReceivedAsync(request)).ConfigureAwait(false) is { } old && old.IsExact(request))
+            {
+                if(!await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"DeliverExportKey")).ConfigureAwait(false)) return new(request.Supplied,ExportKeyDeliveryState.Unavailable);
+                budget.Check();return new(request.Supplied,ExportKeyDeliveryState.Conflict,old);
+            }
+            string? rejectedAt=null;var supplied=request.Supplied.Identity();
+            // This is the same actual input/address validator used by ordinary DeliverAsync.
+            try { Check(supplied); } catch(ArgumentException) { rejectedAt="DeliverInputValidation"; }
+            var retained=await ReadAsync(budget,request.Target).ConfigureAwait(false);
+            if(retained is null || retained.Identity!=request.Target) return new(request.Supplied,ExportKeyDeliveryState.Unknown);
+            if(rejectedAt is null)
+            {
+                // Execute the same actual retained-identity comparison as ordinary delivery, without a material release.
+                var rejected=await ResolveAsync(supplied,retained,budget).ConfigureAwait(false);
+                if(rejected.State!=ExportKeyDeliveryState.Conflict) return new(request.Supplied,ExportKeyDeliveryState.Unknown);
+                rejectedAt="RetainedIdentityConflict";
+            }
+            var original=await budget.ReadAsync(()=>denialOriginals.RetainReceivedAsync(new("ExportKeyDeliveryReceivingDenial.v2",request.Target,request.Supplied,retained,clock.GetUtcNow(),rejectedAt))).ConfigureAwait(false);
+            if(original is null || !original.IsExact(request) || !await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"DeliverExportKey")).ConfigureAwait(false)) return new(request.Supplied,ExportKeyDeliveryState.Unknown);
+            return new(request.Supplied,ExportKeyDeliveryState.Conflict,original);
+        }
+        catch(TimeoutException) { return new(request.Supplied,ExportKeyDeliveryState.Unknown); }
+    }
+    /// <inheritdoc />
+    public async Task<ExportKeyDeliveryReceivingDenialOriginal?> LookupReceivingRejectionAsync(ExportKeyDeliveryReceivingRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);request.ValidateBounds();Check(request.Target);var budget=new PrivateOwnerOperationDeadline(clock,CancellationToken.None);
+        try
+        {
+            if(authority is null || denialOriginals is null || !await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"LookupExportKeyReceivingDenial")).ConfigureAwait(false)) return null;
+            var original=await budget.ReadAsync(()=>denialOriginals.LookupReceivedAsync(request)).ConfigureAwait(false);
+            return original is not null && original.IsExact(request) && await budget.ReadAsync(()=>authority.AuthorizeOperationAsync(request.Target,"LookupExportKeyReceivingDenial")).ConfigureAwait(false)?original:null;
+        }
+        catch(TimeoutException) { return null; }
+    }
     private async Task<ExportKeyDeliveryOutcome> LookupAsyncCoreAsync(ExportKeyDeliveryIdentity identity, PrivateOwnerOperationDeadline budget)
     {
         Check(identity);
@@ -84,9 +148,18 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
         return existing is null ? new(identity, ExportKeyDeliveryState.Unavailable)
             : await ResolveAsync(identity, existing, budget).ConfigureAwait(false);
     }
-    private async Task<ExportKeyDeliveryOutcome> ResolveAsync(ExportKeyDeliveryIdentity expected, ExportKeyDeliveryOutcome existing, PrivateOwnerOperationDeadline budget)
+    private async Task<ExportKeyDeliveryOutcome> ResolveAsync(ExportKeyDeliveryIdentity expected, ExportKeyDeliveryOutcome existing, PrivateOwnerOperationDeadline budget,bool receivingDelivery=false)
     {
-        if (existing.Identity != expected) { return new(expected, ExportKeyDeliveryState.Conflict); }
+        if (existing.Identity != expected)
+        {
+            if(receivingDelivery && denialOriginals is not null)
+            {
+                var exact=await budget.ReadAsync(()=>denialOriginals.LookupAsync(expected)).ConfigureAwait(false);
+                exact??=await budget.ReadAsync(()=>denialOriginals.RetainAsync(new("ExportKeyDeliveryReceivingDenial.v1",expected,existing,clock.GetUtcNow()))).ConfigureAwait(false);
+                if(exact is null || !exact.IsExact(expected)) return new(expected,ExportKeyDeliveryState.Unknown);
+            }
+            return new(expected, ExportKeyDeliveryState.Conflict);
+        }
         if (existing.State is ExportKeyDeliveryState.Delivered or ExportKeyDeliveryState.NotDelivered) { return existing; }
         if (provider is null) { return new(expected, ExportKeyDeliveryState.Unavailable); }
         try { return await RetainProviderOutcomeAsync(expected, await budget.ReadAsync(() => provider.LookupAsync(expected)).ConfigureAwait(false), budget).ConfigureAwait(false); }

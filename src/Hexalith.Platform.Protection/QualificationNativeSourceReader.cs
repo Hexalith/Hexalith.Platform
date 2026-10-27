@@ -24,7 +24,7 @@ public sealed class QualificationNativeSourceReader(IEventStoreGatewayClient pri
             {
                 if(item.NativeEventDigest is not { Length:64 } nativeDigest) return null;
                 records.Add(new(item.SequenceNumber,item.MessageId,item.EventTypeName,Convert.ToHexStringLower(SHA256.HashData(item.Payload)),
-                    nativeDigest,item.ProtectionMetadata?.Scheme,item.ProtectionMetadata?.KeyAlias));
+                    nativeDigest,item.ProtectionMetadata?.Scheme,item.ProtectionMetadata?.KeyAlias,item.Timestamp,item.UserId));
             }
             observations.Add(new(identity,proof,records));
         }

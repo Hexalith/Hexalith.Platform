@@ -1,0 +1,291 @@
+{
+  "requiredMutations": [
+    {
+      "name": "governance-state-binding-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding-artifacts",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding-locks/$(MSBuildProjectName).lock.json",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding.targets",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding-build.log",
+      "logSha256": "923f60bb4aa00665263f0132a4cfc6aef1872414dcd0dab64ab0c3777990235b",
+      "exitCode": 0,
+      "expectedFailure": false,
+      "passed": true
+    },
+    {
+      "name": "governance-state-binding-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding-artifacts/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "-method",
+        "*ActualGovernanceInstallationAndAuthorityPropagateIndependentCurrentStateRefusal"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-state-binding-kill.log",
+      "logSha256": "2d08af9ab41a477afd5e0976c25bf55efd9c282be0a9a3fc7e0f01e4252078ee",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "passed": true
+    },
+    {
+      "name": "governance-late-revocation-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation-artifacts",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation-locks/$(MSBuildProjectName).lock.json",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation.targets",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation-build.log",
+      "logSha256": "2fb4baca3408bb9c8ee6b22cecf5b64cc6fdc6c48324ef0b580dbd41e9240a25",
+      "exitCode": 0,
+      "expectedFailure": false,
+      "passed": true
+    },
+    {
+      "name": "governance-late-revocation-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation-artifacts/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "-method",
+        "*ActualGovernanceInstallationAndAuthorityPropagateIndependentCurrentStateRefusal"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/governance-late-revocation-kill.log",
+      "logSha256": "bba79186f37438f3d11c7dadc4950a708cd4d2eb930d899c59725d686ab7cb71",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "passed": true
+    },
+    {
+      "name": "query-private-cleanup-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup-artifacts",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup-locks/$(MSBuildProjectName).lock.json",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup.targets",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup-build.log",
+      "logSha256": "8c77ac39fc91d5c5afc13b437136d7071584883f8ab077baa7e1fc4cd5a9367c",
+      "exitCode": 0,
+      "expectedFailure": false,
+      "passed": true
+    },
+    {
+      "name": "query-private-cleanup-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup-artifacts/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "-method",
+        "*ActualOwnedQueryProofMatchesSdkAndClearsDecodedPrivateBuffersOnEveryExit",
+        "-method",
+        "*ActualOwnerQueryClientCancelsAfterPrivateProofAcquisitionWithoutTransportAndClearsItsDecodedKey"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/query-private-cleanup-kill.log",
+      "logSha256": "d0dd1f3a8183e8535b221db8a7db72a4fb78e6019267db26d1457de9ac803da0",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "passed": true
+    },
+    {
+      "name": "phase-permission-kill",
+      "command": [
+        "python3",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/phase-permission-runner.py"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/phase-permission-kill.log",
+      "logSha256": "44eef2695ca9392abb77d476f399cc0ec7aaee9978a4f3912810d372a48a7e53",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "passed": true
+    },
+    {
+      "name": "authentication-deadline-kill",
+      "command": [
+        "python3",
+        "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/authentication-deadline-runner.py"
+      ],
+      "log": "/tmp/story54-round17-o5yl0kjz/mutations-ui-final/authentication-deadline-kill.log",
+      "logSha256": "96a5b15a21d89f0bf8587778dc969d597b748de8a24f91776d4a8e2e776b3836",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "passed": true
+    }
+  ],
+  "isolatedListenerAndUiHostGuards": [
+    {
+      "name": "listener-equality-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/listener-equality/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "expectedFailingCase": null,
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/listener-equality/build.log",
+      "logSha256": "d15f2930112e383ea889869f3a7f99d3b5684fc90a4dae66a26caa161b0702ef",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "listener-equality-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/listener-equality/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "*AcceptedResourceListenerTests"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "expectedFailingCase": "inventory-substitution",
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/listener-equality/kill.log",
+      "logSha256": "767e11114cdbb3da6a989a3dbddb72505692a7dab04813aca0135fe9b06ce4cd",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-contract-actual-bytes-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-contract-actual-bytes/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "expectedFailingCase": null,
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-contract-actual-bytes/build.log",
+      "logSha256": "ad5fe39f03a3638ec224117be258f1ea673b05fb53222b5c0e6227772a0d4572",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-contract-actual-bytes-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-contract-actual-bytes/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "*AcceptedResourceListenerTests"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "expectedFailingCase": "ui-host-contract-bytes",
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-contract-actual-bytes/kill.log",
+      "logSha256": "bc33e0dee0c46641f159c603d911c5a06be7823a3084b1a0ba9857367c49f997",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-component-identity-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-component-identity/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "expectedFailingCase": null,
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-component-identity/build.log",
+      "logSha256": "7902501ffefa91a8a06dd8d6481505aa87109689013c8aae7c6bd70a8100faa9",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-component-identity-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-component-identity/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "*AcceptedResourceListenerTests"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "expectedFailingCase": "wrong-ui-component",
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-component-identity/kill.log",
+      "logSha256": "3b4f4654fd8ad4cb06a225a472817ae11550b42d071b1d60ff73e7f56ccf799c",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-registration-identity-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-registration-identity/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "expectedFailingCase": null,
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-registration-identity/build.log",
+      "logSha256": "0c988a83e5d0cbbcc1a93a60efa05eae8d01b5694bde55e83857391ea390ce40",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    },
+    {
+      "name": "ui-registration-identity-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-registration-identity/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "*AcceptedResourceListenerTests"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "expectedFailingCase": "wrong-ui-registration",
+      "passed": true,
+      "log": "/tmp/story54-round17-o5yl0kjz/composition-guards-ui-final/ui-registration-identity/kill.log",
+      "logSha256": "2b3ac240c1c525cccd9618e489351ecfa9651dac7b2aa178814f16d3130f0fb7",
+      "sourceFreeze": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+    }
+  ],
+  "productionFilesUnchanged": true,
+  "fixtureOnly": true,
+  "sourceFreeze": {
+    "path": "/tmp/story54-round17-o5yl0kjz/source-final.tar.gz",
+    "sha256": "2d87eebf40d3696cb89215e392999fc6dd96f4fde00d4930a29c7c789e2f3321"
+  },
+  "preFreezeMutationRunsAreHistoricalOnly": [
+    {
+      "path": "/tmp/story54-round17-o5yl0kjz/mutation-verification.json",
+      "sha256": "8e04dec005c71b59f34e4fb1db40cfc46f38a91ac2239e3388696e19d380bce9"
+    },
+    {
+      "path": "/tmp/story54-round17-o5yl0kjz/mutation-verification-v2.json",
+      "sha256": "132002d3d919a65038dad174b5ec4fdb1fe1e83e926d6ad716b7dcd2bbb77b54"
+    },
+    {
+      "path": "/tmp/story54-round17-o5yl0kjz/mutation-verification-final.json",
+      "sha256": "61a36ab8efbad50225d8f440181033ece7c02335d329702a748275ffde4f57a5"
+    }
+  ]
+}

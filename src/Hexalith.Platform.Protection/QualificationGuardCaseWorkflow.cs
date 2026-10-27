@@ -13,7 +13,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
     IReadOnlyDictionary<string,QualificationGuardCaseDefinition> definitions, DeletionCapabilityRevocationSubscriber compromiseSubscriber)
 {
     /// <summary>Registers the exact closed recipes, preserving their native owner lookup behavior.</summary>
-    public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>definitions.Keys.Select(id=>new QualificationSourceWorkflow(id,ExecuteAsync,LookupAsync,PreflightAsync)).ToArray();
+    public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>definitions.Keys.Select(id=>new QualificationSourceWorkflow(id,ExecuteAsync,LookupAsync,PreflightAsync,ExecuteAsync)).ToArray();
     /// <summary>Checks all exact typed steps before effects, including lookup-only recovery identities.</summary>
     public Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken token)
     {
@@ -21,15 +21,17 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
         if(id is null || !definitions.TryGetValue(id,out var definition) || original["enrolledScope"] is not JsonObject scope || QualificationProtocolDigest(scope)!=definition.EnrolledScopeSha256
             || definition.Before.Concat([definition.Effect]).Concat(definition.Trigger is { } trigger?[trigger]:[]).Concat(definition.After).Any(step=>!Scoped(step,definition)))
             return Task.FromResult<IReadOnlyList<string>>(["ExactClosedGuardCaseRecipeAndTargets"]);
-        return Task.FromResult<IReadOnlyList<string>>([]);
+        if(id.StartsWith("v23.compromise-envelope-substitution.",StringComparison.Ordinal)) return Task.FromResult<IReadOnlyList<string>>(["External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol"]);
+        return Task.FromResult<IReadOnlyList<string>>(id.StartsWith("Recovery.",StringComparison.Ordinal)?["External.ExactNativeLostResultInjectionAndLookupOutageControllerProtocol."+id.Split('.')[1]]:[]);
     }
     /// <summary>Recovers only the exact retained complete result; step recovery remains typed owner lookup.</summary>
     public Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken token)=>originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",token);
     /// <summary>Runs the exact enrolled operation recipe. An uncertain retained step uses only exact owner lookup after restart.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject original,CancellationToken token)
     {
+        if((await PreflightAsync(original,token).ConfigureAwait(false)).Count!=0) return null;
         string? id=original["caseId"]?.GetValue<string>();
-        if (id is null || !id.StartsWith("S4.",StringComparison.Ordinal) && !id.StartsWith("v23.",StringComparison.Ordinal)
+        if (id is null || !id.StartsWith("S4.",StringComparison.Ordinal) && !id.StartsWith("v23.",StringComparison.Ordinal) && !id.StartsWith("Recovery.",StringComparison.Ordinal)
             || !definitions.TryGetValue(id,out var definition) || definition.CaseId!=id || original["enrolledScope"] is not JsonObject scope
             || QualificationProtocolDigest(scope)!=definition.EnrolledScopeSha256 || scope["tenantId"]?.GetValue<string>()!=definition.TenantId
             || scope["batchId"]?.GetValue<string>()!=definition.BatchId || definition.Boundary is not ("before" or "at" or "after" or "none")) return null;
@@ -49,12 +51,11 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
             object? result=step.Kind switch {
                 QualificationGuardStepKind.Guard => first ? await guard.ExecuteAsync(step.Transition!,step.Targets??[],token).ConfigureAwait(false)
                     : (await guard.ReadAsync(definition.TenantId,token).ConfigureAwait(false))?.Receipts.SingleOrDefault(r=>r.OperationId==step.Transition!.OperationId),
-                QualificationGuardStepKind.Register => first ? await protection.RegisterAsync(step.Batch!,token).ConfigureAwait(false) : await protection.LookupAsync(definition.TenantId,definition.BatchId,token).ConfigureAwait(false),
-                QualificationGuardStepKind.Reserve => first ? await protection.ReserveAndConsumeAsync(step.Batch!,token).ConfigureAwait(false) : await protection.LookupAsync(definition.TenantId,definition.BatchId,token).ConfigureAwait(false),
-                QualificationGuardStepKind.Block => first ? await consumption.BlockAsync(step.Block!).WaitAsync(token).ConfigureAwait(false) : await consumption.LookupAsync(definition.TenantId,definition.BatchId).WaitAsync(token).ConfigureAwait(false),
-                QualificationGuardStepKind.Compromise => first ? await compromiseSubscriber.ReceiveAsync(step.Compromise!,step.SignedRevocationEvidence!,token).ConfigureAwait(false)
-                    : await consumption.LookupRevocationAsync(step.Compromise!).WaitAsync(token).ConfigureAwait(false) is not null,
-                QualificationGuardStepKind.Activate => first ? await protection.ActivateAsync(step.Activation!,token).ConfigureAwait(false) : await protection.LookupAsync(definition.TenantId,definition.BatchId,token).ConfigureAwait(false),
+                QualificationGuardStepKind.Register => first ? await protection.RegisterAsync(step.Batch!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Register"),
+                QualificationGuardStepKind.Reserve => first ? await protection.ReserveAndConsumeAsync(step.Batch!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Reserve"),
+                QualificationGuardStepKind.Block => first ? await consumption.BlockAsync(step.Block!).WaitAsync(token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Block"),
+                QualificationGuardStepKind.Compromise => await compromiseSubscriber.ReceiveAsync(step.Compromise!,step.SignedRevocationEvidence!,token).ConfigureAwait(false),
+                QualificationGuardStepKind.Activate => first ? await protection.ActivateAsync(step.Activation!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Activate"),
                 QualificationGuardStepKind.Sign => first ? await signer.SignAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false),
                 QualificationGuardStepKind.ObsoleteUnissued => first ? await signer.ObsoleteUnissuedAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false),
                 _ => null };
@@ -64,7 +65,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
                 || step.Kind==QualificationGuardStepKind.Compromise && result is false
                 || result is GovernanceProtocolReceipt { Status:"Unknown" or "Unavailable" })
                 throw new InvalidOperationException("Exact original remains pending; later steps cannot dispatch.");
-            var encoded=(JsonObject)JsonSerializer.SerializeToNode(new { stepId,step.Kind,result },CustodyBindingContract.Json)!;
+            var encoded=(JsonObject)JsonSerializer.SerializeToNode(new { stepId,step.Kind,transitionOperation=step.Transition?.Operation,result },CustodyBindingContract.Json)!;
             await originals.RetainAsync("executor",stepId,encoded,token).ConfigureAwait(false);
             return encoded;
         }
@@ -73,6 +74,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
         if(definition.Trigger is not null && definition.Boundary=="at")
         {
             var effect=Step(definition.Effect); var trigger=Step(definition.Trigger);
+            await Task.WhenAll(effect,trigger).ConfigureAwait(false);
             observations.Add(await effect.ConfigureAwait(false)); observations.Add(await trigger.ConfigureAwait(false));
         }
         else observations.Add(await Step(definition.Effect).ConfigureAwait(false));

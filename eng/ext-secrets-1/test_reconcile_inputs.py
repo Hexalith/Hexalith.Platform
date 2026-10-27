@@ -33,6 +33,29 @@ class InputReconciliationTests(unittest.TestCase):
     def prepare(self, name="packet", **kwargs):
         return r.reconcile(self.original, self.configuration, self.root / name, observed_at=1792368000, **kwargs)
 
+    def test_accepted_policy_uses_explicit_future_and_leap_register_dates(self):
+        for index,day in enumerate(("2027-11-30","2028-02-29")):
+            register=self.root/f"dated-{index}.md"
+            target="a"*40
+            register.write_text("### EXT-SECRETS-1 — Platform Secret Resolution\n"
+                "| `TargetVersionOrCommit` | `"+target+"` |\n| `AcceptedStatus` | `Committed` |\n"
+                "| `TargetIntegrationDate` | `"+day+"` |\n"
+                '| `CompatibilityContractAndVerificationCommand` | Command: `test "'+target+'" && status --porcelain` |\n'
+                "### EXT-EXPORT-STORE-1\n")
+            self.prepare(name=f"dated-output-{index}",register=register)
+            policy=q.read_json(self.root/f"dated-output-{index}"/"input-resolution-provisioning-requests.json")["acceptedPolicy"]
+            self.assertEqual(day,policy["integrationDate"]);self.assertEqual([],policy["missingInputs"])
+
+    def test_missing_date_is_explicit_null_and_malformed_date_cannot_repeat_historical_promise(self):
+        self.prepare(name="no-register")
+        policy=q.read_json(self.root/"no-register/input-resolution-provisioning-requests.json")["acceptedPolicy"]
+        self.assertIsNone(policy["integrationDate"]);self.assertIn("ExplicitAcceptedRegisterIntegrationDate",policy["missingInputs"])
+        for index,day in enumerate(("2027-02-29","2028-2-29","2028-02-29junk")):
+            register=self.root/f"bad-date-{index}.md"
+            register.write_text("### EXT-SECRETS-1 — Platform Secret Resolution\n| `AcceptedStatus` | `Committed` |\n| `TargetIntegrationDate` | `"+day+"` |\n")
+            with self.assertRaises(ValueError): self.prepare(name=f"bad-output-{index}",register=register,target="a"*40)
+            self.assertFalse((self.root/f"bad-output-{index}").exists())
+
     def test_all_original_67_names_retained_once_with_owners_actions_and_dependencies(self):
         report = self.prepare()
         rows = report["inputs"]

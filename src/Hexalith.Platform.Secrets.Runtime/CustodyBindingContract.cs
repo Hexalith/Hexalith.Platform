@@ -40,7 +40,8 @@ internal sealed record CustodyBindingWrapInputV1(CustodyKeyObjectIdentity Identi
 internal sealed record CustodyBindingRequestV1(CustodyBindingEnvelopeV1 Envelope, CustodyKeyRegistration? Registration = null,
     CustodyKeyLifecycleRequest? Lifecycle = null, CustodyBindingManifestV1? Manifest = null,
     AnchoredStateTransition? Transition = null, CustodyBindingPageReadV1? Page = null, CustodyBindingKeyUseV1? KeyUse = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] CustodyBindingWrapInputV1? WrapInput = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] CustodyBindingWrapInputV1? WrapInput = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] CustodyWrapOriginalIdentity? WrapOriginal = null);
 
 internal static class CustodyBindingContract
 {
@@ -58,6 +59,8 @@ internal static class CustodyBindingContract
         + 128 * 4096 * 6 + 1024 * 1024;
     internal const int MaximumPageBytes = 256 * 1024;
     internal const int MaximumPageFrameBytes = 1024 * 1024;
+    // Independent owner heads may carry a full 32MiB spool transition (base64), or a 64MiB immutable original.
+    internal const int MaximumIndependentAuthorityFrameBytes = CandidateRequestMessageBytes;
     // A complete value-free original has <=1000 receipts, each with five <=2048 UTF-16 strings
     // (three target components, batch, receipt), at most six JSON bytes per UTF-16 code unit.
     // 1000*(5*2048*6+256) + 16*2048*6 + 16384 < 64 MiB, including wrapper/signature overhead.
@@ -79,6 +82,7 @@ internal static class CustodyBindingContract
     // signed JCS bytes are carried separately; transport escaping never changes their signing identity.
     internal static string OriginalRequestDigest(CustodyBindingRequestV1 request)
     {
+        if(request.WrapOriginal is { } original) return Hash(JsonSerializer.SerializeToUtf8Bytes(original));
         if (request.WrapInput is { } wrap)
         {
             byte[] ephemeral = JsonSerializer.SerializeToUtf8Bytes(wrap);
@@ -166,7 +170,7 @@ internal static class CustodyBindingContract
             {
                 CustodyKeyLifecycleActor.ValidateIdentity(input.Identity);
                 return e.Operation == "wrap" && r.Registration is null && r.Manifest is null && r.Transition is null && r.Page is null
-                    && r.KeyUse is null && r.Lifecycle is null && input.Identity.TenantId == e.TenantId
+                    && r.KeyUse is null && r.Lifecycle is null && r.WrapOriginal is null && input.Identity.TenantId == e.TenantId
                     && input.Identity.StoreTarget == e.Enrollment.StoreTarget && input.OperationId == e.OperationId
                     && input.ExpectedRevision >= 0 && CustodyText(input.KekVersion)
                     && CustodyText(input.OpaqueWrappedKeyReference) && input.RootKey is { Length: 32 }
@@ -175,6 +179,14 @@ internal static class CustodyBindingContract
                     && k.OriginalRootReference == input.OpaqueWrappedKeyReference;
             }
             int branches = (r.Registration is null ? 0 : 1) + (r.Manifest is null ? 0 : 1) + (r.Transition is null ? 0 : 1) + (r.Page is null ? 0 : 1);
+            if(r.WrapOriginal is { } original)
+            {
+                CustodyKeyLifecycleActor.ValidateIdentity(original.Identity);
+                return e.Operation=="lookup-original" && branches==0 && r.Lifecycle is null && r.KeyUse is null
+                    && original.Identity.TenantId==e.TenantId && original.Identity.StoreTarget==e.Enrollment.StoreTarget
+                    && original.OperationId==e.OperationId && original.ExpectedRevision>=0
+                    && CustodyText(original.KekVersion) && CustodyText(original.OpaqueWrappedKeyReference);
+            }
             switch (e.Operation)
             {
                 case "admit-transition": case "record-transition": case "recover-transition": case "verify-transition": case "lookup-transition":

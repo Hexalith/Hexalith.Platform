@@ -1,0 +1,117 @@
+{
+  "schema": "platform.story54.pass15.installation-requirements.v1",
+  "actualInstalledEvidence": null,
+  "requirements": [
+    {
+      "input": "External.ExactIndependentlyEnrolledSqliteStorageIdentity",
+      "sourceProtocol": "LinuxEnrolledSqliteDeleteJournalV1",
+      "fields": [
+        "storageEnrollment.path",
+        "storageEnrollment.identity",
+        "storageEnrollment.components[].path/device/inode",
+        "storageEnrollment.writerProtocol=DirectoryFlockAndImmutableNamespaceV1",
+        "storageEnrollment.placementEvidenceSha256",
+        "existing database_storage_enrollment(slot=1,identity)"
+      ],
+      "requirements": [
+        "Existing-only authority and phase-owner databases and schemas, exact full path-component and main-file identities, DELETE-journal placement; WAL/shm refuse.",
+        "Actual independently current enrollment, persistent directory flock/no-follow descriptor semantics, immutable namespace/exclusive participating-writer controls, durable FULL SQLite commit, independent replication and placement outside application restore remain external.",
+        "Existing database identity and journal placement are verified through held no-follow descriptors, actual newly opened SQLite writable descriptor identity and transaction checks; no production genesis is created.",
+        "Source locally requires the same supported persistent Linux ext4/XFS/Btrfs filesystem families as the reviewed archive foundation for both held SQLite database and parent; volatile/tmpfs/unsupported families refuse before opening SQLite. This local fact does not establish independent replication or restore placement."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.EnrolledPreallocatedSharedPhaseCompletionSlotsV1",
+      "sourceProtocol": "PreallocatedSharedPhaseCompletionSlotsV1",
+      "fields": [
+        "completionCapacity.directory/identity/device/inode/enrollmentSha256/slots",
+        "Existing phase-completion-capacity.bin genesis and fully allocated fixed slots"
+      ],
+      "sourceLimits": {
+        "slotsMinimum": 1,
+        "slotsMaximum": 1024,
+        "requestBytesPerSlot": 1048576,
+        "signedResultBytesPerSlot": 1048576,
+        "headerCopiesPerSlot": 2,
+        "headerBytes": 4096,
+        "slotStrideBytes": 2109440,
+        "maximumInspectedFiemapExtents": 65536,
+        "slotAlignmentBytes": 4096
+      },
+      "requirements": [
+        "All selected phase-owner databases must share the enrolled pool directory and directory-flock namespace, with exact existing file identity, independently provisioned genesis and physically allocated persistent extents.",
+        "Actual os.pwrite/fsync and metadata/persistence/replication/outside-restore ownership guarantees remain externally evidenced. Slot completion performs no new SQLite page, rollback-journal, WAL, directory-entry or result-file allocation.",
+        "Historical SQLite result_json originals stay exact. Pending/unknown admitted slots remain charged; only exact authoritative unadmitted owner absence under the shared directory fence allows reuse.",
+        "Read-only bounded FIEMAP must prove complete private allocated/preallocated coverage of the existing pool: sparse, unknown, delayed, encoded/inline/tail/unaligned and shared/COW extents refuse. No fresh allocation or free-space probe is performed during completion. Actual persistent filesystem write/allocation semantics and exclusion of future sharing/snapshots/nonparticipating writers remain independent null-evidence requirements.",
+        "The implemented fixed-slot in-place completion protocol supports ext4/XFS only. Btrfs is refused even for an unshared current FIEMAP map; no NOCOW flag is set or inferred. A separately selected Btrfs in-place/NOCOW protocol and actual independently provisioned proof would be a distinct required implementation/input. SQLite identity admission retains the reviewed persistent-family allowlist; this narrower rule applies to the fixed completion pool.",
+        "The held database, DELETE-journal parent and completion pool must use the same enrolled device; cross-device file/journal or pool bind placement refuses before admission.",
+        "Before native admission, the source materializes only an exact proved free slot (including alternate Free headers and its padded data regions) and verifies private written extent coverage. Existing admitted/prior slots require private written coverage; free unmaterialized extents are allowed only before admission. Completion never converts unwritten extents or allocates new extent metadata. Slot starts/strides are4KiB aligned. Workload expiry is rechecked immediately after materialization at the final SQL INSERT boundary."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false,
+      "supportingPrimaryDocumentation": "https://btrfs.readthedocs.io/en/stable/Administration.html"
+    },
+    {
+      "input": "External.CurrentCustodyRoleWorkloadIssuanceContract",
+      "requirements": [
+        "Both actual role receivers and independent caller-scope authority must install the same exact source contract: custody-role-authorize returns CustodyRoleWorkloadGrant, then issues CustodyRoleIssuance at the conditional revocation head for the exact workload bearer hash/identity/role/scope/intent/method/response commitment.",
+        "Existing independently enrolled workload and separate role/service credentials, current grant validity and signer trust remain required. Legacy Allowed-only replies deny; no local grant or signer enrollment is supplied.",
+        "Actual Dapr/server request/response memory, process count and bounded four-owner transport capacity remain independently measured inputs."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.ExactIndependentPhysicalReservationCommitmentsAndMetadataCoverage",
+      "requirements": [
+        "Existing independently reconciled capacity.json must retain every old original and transfer. Exact immutable ticket owner/kind/request commitment, initial bytes/completion budgets, role/id and initial/remaining transfer-slot commitments are required; unknown legacy commitments refuse conflicting reuse and new admission until exact reconciliation supplies their facts.",
+        "Every source head-admission and unadmitted-ticket reconciliation participates in the shared volume/pool fence. An acknowledged conditional owner-head barrier must fence delayed old-etag admissions before exact nonadmission reclamation; unknown/lost barriers retain charges.",
+        "Completion coverage is subtracted only for tickets proven to match the exact still-pending current owner-head originals/publications, including body commitment. Completed-but-unsettled and zero-row tickets cannot release other pending originals.",
+        "A recovery archive interrupted before any immutable signed file exists uses exactly one grant-bound transfer identity and its already reserved1MiB maximum frame charge, independent of ECDSA signature randomness. Any existing immutable signed bytes remain exact; already archived reissues require fresh current authorization CAS but no settled physical ticket."
+      ],
+      "sourceLimits": {
+        "maximumLedgerBytes": 4194304,
+        "maximumUnsettledTransfersIncludingReservedSlots": 4096,
+        "defaultOriginalTransferSlots": 768,
+        "protectedOriginalCompletionTransferSlots": 384,
+        "perReservedTransferSerializedGrowthBytes": 256,
+        "perTicketFutureMetadataBytes": 256,
+        "physicalMetadataFloorBytes": 8454144
+      },
+      "actualSizingAndReconciledGenesis": null,
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AcceptedCompleteImmutableLaunchGraphV1",
+      "sourceProtocol": "AcceptedCompleteImmutableLaunchGraphV1",
+      "fields": [
+        "installedArtifacts.launchInventory.path/sha256/enrollmentReference",
+        "jointBinding.launchInventorySha256 (complete canonical semantic manifest)",
+        "packet.launchInventory (complete preserved object)",
+        "launchInventory.resources[seven exact siblings].root/directoryIdentity/entryPoint/files[path,bytes,sha256]"
+      ],
+      "requirements": [
+        "Both coordinated packet producers require the actual independently enrolled public manifest, raw file digest and current independent installation proof; its complete canonical binding is included in the shared joint binding.",
+        "Production Services roots now select existing independently accepted published release bundles. Production never builds mutable sibling project/source roots under the old acceptance; Development project composition remains available.",
+        "Every file and directory in the selected complete graph must be present, pinned and no-follow acquired; files require fs-verity plus immutable inode flags and all directories require immutable namespace flags. Process-anchored held directory descriptors survive ancestor-name replacement.",
+        "Actual accepted immutable release, fs-verity support, privilege/exclusive namespace administration and whole-image/native-loader closure evidence remain missing. Fixture kernel overrides are internal test seams, never installed proof."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AcceptedWholeImageNativeLoaderClosureV1",
+      "sourceSupportedSelectedProtocol": "SelfContainedStaticElfV1",
+      "requirements": [
+        "Each graph requires executionProtocol=SelfContainedStaticElfV1 and wholeImageNativeLoaderClosure.protocol=IndependentlyAcceptedStaticElfKernelClosureV1 with an actual independently accepted evidenceSha256.",
+        "Available source validates a supported native 64-bit little-endian static ELF kernel-load map matching the host architecture. Scripts, .NET entrypoints and ELF dynamic interpreter/runtime selection refuse; their exact complete selected protocols and independent evidence remain missing.",
+        "Accepted immutable file pins do not supply actual whole-image/native-loader measurement, physical closure, complete qualification or availability. Existing full whole-image/native-loader blockers remain open."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "lanes": {
+    "module-focused": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "0a54b9c5-ffac-4f12-80de-5427a6b0de8c",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-25",
+      "run-time": "21:32:01",
+      "start-rtf": "2026-10-25T21:32:01.9620595+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-25T21:32:03.7723524+00:00",
+      "not-run": "0",
+      "passed": "26",
+      "skipped": "0",
+      "time": "1.811",
+      "time-rtf": "00:00:01.8110000",
+      "total": "26"
+    },
+    "evidence-focused": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "de9a4515-6379-4ee9-9207-0adc3698b975",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll",
+      "run-date": "2026-10-25",
+      "run-time": "21:32:46",
+      "start-rtf": "2026-10-25T21:32:46.9940179+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-25T21:32:47.4369910+00:00",
+      "not-run": "0",
+      "passed": "4",
+      "skipped": "0",
+      "time": "0.443",
+      "time-rtf": "00:00:00.4430000",
+      "total": "4"
+    }
+  },
+  "builds": "Both individual Debug builds passed with zero warnings/errors",
+  "sourceHashesUnchanged": 9,
+  "broaderVerification": "Deferred to parent as instructed",
+  "changes": [
+    "Sessionless committed recovery waits within its existing metadata token; other recovery calls still default to no wait.",
+    "Four command cases preserve cancellation/unavailability and durable cause/time under brief finalization contention with no additional cleanup.",
+    "HXE149 cleanup requirement is qualified for selected runs.",
+    "Successful cleanup plus evidence-export failure asserts a verified empty command remainder and no HXR023."
+  ]
+}

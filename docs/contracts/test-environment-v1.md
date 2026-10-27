@@ -38,7 +38,11 @@ all fields required by that branch. Composition and catalog identities retain
 their direct known-value objects (`id`/`contentIdentity` and `commit`/`instanceId`).
 Composition, catalog and `environment.resources` also accept the same explicit
 `not-yet-populated` object while unavailable; resources otherwise use their
-defined array of observed resources.
+defined array of observed resources. When `environment.resources` is
+`not-yet-populated`, `environment.readiness` must also be `not-yet-populated`.
+The reader refuses populated readiness, including an empty readiness array,
+as `HXT104` when resources are unavailable. This cross-field rule applies in
+addition to schema validation.
 Do not use null, an omitted binding, an empty
 object, fabricated identities, catalog identities substituted for candidate
 identities, or a configured tool pin substituted for the executing tool.

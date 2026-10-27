@@ -145,30 +145,18 @@
           "Grpc.Core.Api": "2.84.0"
         }
       },
-      "hexalith.commons.uniqueids": {
-        "type": "Project",
-        "dependencies": {
-          "ByteAether.Ulid": "[1.4.2, )"
-        }
-      },
-      "hexalith.eventstore.contracts": {
-        "type": "Project",
-        "dependencies": {
-          "Hexalith.Commons.UniqueIds": "[1.0.0, )"
-        }
-      },
       "hexalith.platform.custody": {
         "type": "Project",
         "dependencies": {
           "Dapr.Actors": "[1.18.10, )",
           "Dapr.Client": "[1.18.10, )",
-          "Hexalith.EventStore.Contracts": "[3.127.0, )"
+          "Hexalith.EventStore.Contracts": "[3.128.0, )"
         }
       },
       "hexalith.platform.custody.component": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Contracts": "[3.127.0, )",
+          "Hexalith.EventStore.Contracts": "[3.128.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )"
         }
       },
@@ -176,6 +164,7 @@
         "type": "Project",
         "dependencies": {
           "Dapr.Client": "[1.18.10, )",
+          "Hexalith.EventStore.Client": "[3.128.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )"
         }
@@ -221,6 +210,37 @@
         "contentHash": "o14kDW7VGMdam+d60mcpvjRcOC5+klto1Ck8zPpTqqbMP37nh1itrnVahbOL1w1XYZezsbTuIC99iERO7SRXPQ==",
         "dependencies": {
           "Grpc.Net.Client": "2.84.0"
+        }
+      },
+      "Hexalith.Commons.UniqueIds": {
+        "type": "CentralTransitive",
+        "requested": "[2.30.3, )",
+        "resolved": "2.30.3",
+        "contentHash": "e0tQgVfkT4CkozW/fO1Nl0i4m9dmfk4/Er6WJXjOduSftvHW2bo3ppIQQ/ncYwpC+2hUlqezwWMeFpjZzd+1Tw==",
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2"
+        }
+      },
+      "Hexalith.EventStore.Client": {
+        "type": "CentralTransitive",
+        "requested": "[3.128.0, )",
+        "resolved": "3.128.0",
+        "contentHash": "d7VEBahyodbY9o94to0nBMFSZ1L8zyHZnsgYcoHd/vEShrPKPBIxgAZ/MBgaZHxIMmt8GXiky0j4uPuuxl4I8w==",
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2",
+          "Dapr.Client": "1.18.10",
+          "Hexalith.Commons.UniqueIds": "2.30.3",
+          "Hexalith.EventStore.Contracts": "3.128.0"
+        }
+      },
+      "Hexalith.EventStore.Contracts": {
+        "type": "CentralTransitive",
+        "requested": "[3.128.0, )",
+        "resolved": "3.128.0",
+        "contentHash": "YQok6MYWVzfyg+AkAOdsr7Ez7Y71/XtG/Idzlvx6u8ulXkObem1fX1BWVQ2OC3vLh3yuwTpRziYpx4yblJKtuw==",
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2",
+          "Hexalith.Commons.UniqueIds": "2.30.3"
         }
       }
     }

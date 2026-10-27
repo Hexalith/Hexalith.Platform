@@ -5,4 +5,5 @@ namespace Hexalith.Platform.Custody;
 /// <param name="InstallationEpoch">Independent current restore/installation namespace.</param>
 /// <param name="AuthorityRevision">Current independent target/credential/replica/failure-model qualification.</param>
 /// <param name="ValidUntil">Exclusive current qualification expiry.</param>
-public sealed record ReplicatedSecuritySpoolTarget(string ComponentName, string InstallationEpoch, string AuthorityRevision, DateTimeOffset ValidUntil);
+/// <param name="SourceVersion">Zero preserves the exact legacy source; two explicitly selects the independently enrolled hashed source.</param>
+public sealed record ReplicatedSecuritySpoolTarget(string ComponentName, string InstallationEpoch, string AuthorityRevision, DateTimeOffset ValidUntil, [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)] int SourceVersion=0);

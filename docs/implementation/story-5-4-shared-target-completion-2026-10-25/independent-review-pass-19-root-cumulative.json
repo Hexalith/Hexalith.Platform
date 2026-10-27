@@ -1,0 +1,270 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T07:40:34.056734+00:00",
+  "reviewPass": "19-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review19_blind",
+    "/root/review19_edge",
+    "/root/review19_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-46ur38rr/scope.json",
+  "reviewDiffSha256": "fe393ce5f1a66cbcc99a5711bb353876322d469c9ffba81f795afa8a4611420c",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "No identical unchanged location-and-claim carry applies. Zeroed header acceptance differs from the prior rejected nonempty damaged-header refusal; verify independently. B2/B8/B10 withdrawn after specific supported-path checks. Gap trusted as filed.",
+  "findings": [
+    {
+      "id": "R19B-1",
+      "verdict": "high",
+      "evidence": "Root independently ran the exact current ReadHeader/WriteHeader methods in a temporary file fixture: generation2 Free plus generation3 Reserved reads Reserved; zeroing the generation3 bank changes it to Free. Reserve explicitly treats this as reusable. This differs from the rejected nonempty-damage claim R16B3/R18B7: zero banks are silently skipped. Preserve initialized/unknown liabilities, including zeroed alternatives and known-used fully missing headers.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19B-2",
+      "verdict": "false",
+      "evidence": "The POSIX lock-release observation is true but its competing writer ignored the mandatory DirectoryFlockAndImmutableNamespaceV1 contract. Every supported HeldSqliteConnection acquires exclusive parent flock before SQLite and holds its parent descriptor through connection/VFS close. Participating writers cannot compete during verify. The reviewer retracted the supported-path defect after this caller trace.",
+      "route": "rejected"
+    },
+    {
+      "id": "R19B-3",
+      "verdict": "high",
+      "evidence": "Root invoked the actual frozen receiver/client/receiving fixture and changed its surviving caller to Revoked during recordingSource.LookupAsync for replay-lookup-exact. AllCallersRevoked=True yet a newly signed Object returned, with Saves=0. The final current-head barrier only covers opt-in handlers/replay-lookup-first-seen. Actual production mapping calls this receiver directly; direct security lookup and the non-opt-in JointPhaseSourceOperationHandler have the same missing final authorization ordering.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19B-4",
+      "verdict": "medium",
+      "evidence": "RunChallengeAsync makes one changed-delivery replay.VerifyAsync call then fills both firstStatus and exactRetryStatus from that single rejection. The registered challenge-v2 caller can therefore publish a successful retry assertion that was never observed. Perform and retain the actual second verification, with exact first-seen unchanged and unavailable retry remaining unknown.",
+      "route": "patch"
+    },
+    {
+      "id": "R19B-5",
+      "verdict": "medium",
+      "evidence": "Root called actual HandleAsync with a genuine caller cancellation while its Dapr initial state task ignored the token. It remained incomplete after cancellation until the task was released. Production IndependentAuthorityHttpApplication maps straight to this receiver, with no upstream WaitAsync owner. Track the complete Core task and bound the caller wait while retaining the slot/late cleanup until real completion.",
+      "route": "patch"
+    },
+    {
+      "id": "R19B-6",
+      "verdict": "medium",
+      "evidence": "main wraps only _load_installed_startup in selected_io.run. It then constructs Dapr owner trust, CohortAuthorityStore schema, observer anchor/key and retained owner before constructing/serving the app outside that original context. Individual subsequent reads get fresh budgets; schema/constructor work can exceed total startup acquisition. Compose the complete captured application under one total bounded owner and enter serving lifetime afterward.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19B-7",
+      "verdict": "medium",
+      "evidence": "Root passed a 120-byte ET_EXEC native-machine fixture with one PT_NULL program header, zero PT_LOAD segments and entrypoint0 to the actual Python _static_elf validator; it accepted. C# ValidateStaticElf performs the same type/interpreter-only check. Both feed executable eligibility before production graph composition. Require coherent bounded load maps and a file-backed executable entrypoint, preserving external immutable/kernel/whole-image acceptance; structural fixture validation is not installed loader qualification.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19B-8",
+      "verdict": "false",
+      "evidence": "The sole production BindAsync caller first checks a retained stage result, then begins the immutable stage admission. Any retry after witness publication/lost acknowledgement has firstStage=False and throws before native read/BindAsync. It cannot create a second occurredAt/body. The deliberately unknown historical-stage original still requires its separately logged installed protocol; the reviewer retracted after this upstream gate was traced.",
+      "route": "rejected"
+    },
+    {
+      "id": "R19B-9",
+      "verdict": "medium",
+      "evidence": "Root ran actual HeldArchiveDirectory.Acquire inside BoundedDurableFileOperation and cancelled its active token at the existing allocation hook immediately before mkdir. Cancelled=True and Created=True, because Acquire never consults the active token while traversing/allocating. Check between traversal/syscall/allocation steps so a late blocking return cannot admit further mutations after expiry, while retaining the worker/handles until cleanup.",
+      "route": "patch"
+    },
+    {
+      "id": "R19B-10",
+      "verdict": "false",
+      "evidence": "Inspect throws only after statx failure; no ordinary supported path showing that failure following a successful acquired regular-file open was established. The reviewer withdrew the actionable finding, identifying only hypothetical underlying storage failure/general exception-safety reasoning. No arbitrary fault-injection branch or speculative new seam is added.",
+      "route": "rejected"
+    },
+    {
+      "id": "R19E-1",
+      "verdict": "medium",
+      "evidence": "ImmutableFileArchive publishes native path and .measurement through ProtectedArchiveStore when an enrolled marker is present. LookupAsync tests File.Exists for both logical originals before BoundedRegularFile can use its existing protected-reader fallback; protected-only retained measurements therefore return null. Use the exact logical archive reader/presence contract, preserving signature/request validation and recovery without remeasurement.",
+      "route": "patch"
+    },
+    {
+      "id": "R19E-2",
+      "verdict": "medium",
+      "evidence": "MetadataFinalizer reads case bytes through BoundedRegularFile (which supports protected slots), but File.Exists(index) misses a protected-only published owner index after result-retention loss. It generates a new timestamp/signature then ImmutableFileArchive rejects conflicting exact bytes. Detect/read/validate the retained logical index and retain those exact bytes instead.",
+      "route": "patch"
+    },
+    {
+      "id": "R19E-3",
+      "verdict": "medium",
+      "evidence": "JointPhaseCommand has an independent File.Exists(originalPath) recovery gate before its exact owner-index validation. Protected-only publication with lost result acknowledgement skips that recovery branch and later tries another signed immutable index, which conflicts. Recover the existing logical signed original and case hashes without rerunning effects or generating new evidence.",
+      "route": "patch"
+    },
+    {
+      "id": "R19E-4",
+      "verdict": "medium",
+      "evidence": "The actual C# owner command and source publisher use ImmutableFileArchive, which selects the protected fixed-slot backend. PersistedPhaseObserver reads owner-original.json, case files and source envelopes only through selected_io.read physical open; that reader has no protected-slot fallback. Complete signed protected originals therefore produce Unknown despite available exact retained bytes. Implement a bounded authenticated read-only cross-language logical archive reader or equivalent existing exact-original source integration, without creating/enrolling/remeasuring anything.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19E-5",
+      "verdict": "high",
+      "evidence": "Root exact-method temporary fixture independently confirms a zeroed newer Reserved copy exposes older Free. This is the same ReadHeader defect as R19B1, distinct from historical nonempty damaged-header refusal. No installed allocation/crash property is claimed from the fixture.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R19V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed, without root test/search verification: actual JointPhaseNativeSourcePublisher tests never enroll a nonempty Fr34Canaries list or its concrete DaprFr34MeasuredOriginalReader. Add actual receiving/native comparison through the signed payload and reference/digest/native-proof mismatch refusal; removing the loop must fail a regression.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R19B-1",
+        "R19E-5"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root independently ran the exact current ReadHeader/WriteHeader methods in a temporary file fixture: generation2 Free plus generation3 Reserved reads Reserved; zeroing the generation3 bank changes it to Free. Reserve explicitly treats this as reusable. This differs from the rejected nonempty-damage claim R16B3/R18B7: zero banks are silently skipped. Preserve initialized/unknown liabilities, including zeroed alternatives and known-used fully missing headers."
+    },
+    {
+      "members": [
+        "R19B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root invoked the actual frozen receiver/client/receiving fixture and changed its surviving caller to Revoked during recordingSource.LookupAsync for replay-lookup-exact. AllCallersRevoked=True yet a newly signed Object returned, with Saves=0. The final current-head barrier only covers opt-in handlers/replay-lookup-first-seen. Actual production mapping calls this receiver directly; direct security lookup and the non-opt-in JointPhaseSourceOperationHandler have the same missing final authorization ordering."
+    },
+    {
+      "members": [
+        "R19B-6"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "main wraps only _load_installed_startup in selected_io.run. It then constructs Dapr owner trust, CohortAuthorityStore schema, observer anchor/key and retained owner before constructing/serving the app outside that original context. Individual subsequent reads get fresh budgets; schema/constructor work can exceed total startup acquisition. Compose the complete captured application under one total bounded owner and enter serving lifetime afterward."
+    },
+    {
+      "members": [
+        "R19B-7"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Root passed a 120-byte ET_EXEC native-machine fixture with one PT_NULL program header, zero PT_LOAD segments and entrypoint0 to the actual Python _static_elf validator; it accepted. C# ValidateStaticElf performs the same type/interpreter-only check. Both feed executable eligibility before production graph composition. Require coherent bounded load maps and a file-backed executable entrypoint, preserving external immutable/kernel/whole-image acceptance; structural fixture validation is not installed loader qualification."
+    },
+    {
+      "members": [
+        "R19E-4"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "The actual C# owner command and source publisher use ImmutableFileArchive, which selects the protected fixed-slot backend. PersistedPhaseObserver reads owner-original.json, case files and source envelopes only through selected_io.read physical open; that reader has no protected-slot fallback. Complete signed protected originals therefore produce Unknown despite available exact retained bytes. Implement a bounded authenticated read-only cross-language logical archive reader or equivalent existing exact-original source integration, without creating/enrolling/remeasuring anything."
+    },
+    {
+      "members": [
+        "R19B-4"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "RunChallengeAsync makes one changed-delivery replay.VerifyAsync call then fills both firstStatus and exactRetryStatus from that single rejection. The registered challenge-v2 caller can therefore publish a successful retry assertion that was never observed. Perform and retain the actual second verification, with exact first-seen unchanged and unavailable retry remaining unknown."
+    },
+    {
+      "members": [
+        "R19B-5"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Root called actual HandleAsync with a genuine caller cancellation while its Dapr initial state task ignored the token. It remained incomplete after cancellation until the task was released. Production IndependentAuthorityHttpApplication maps straight to this receiver, with no upstream WaitAsync owner. Track the complete Core task and bound the caller wait while retaining the slot/late cleanup until real completion."
+    },
+    {
+      "members": [
+        "R19B-9"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Root ran actual HeldArchiveDirectory.Acquire inside BoundedDurableFileOperation and cancelled its active token at the existing allocation hook immediately before mkdir. Cancelled=True and Created=True, because Acquire never consults the active token while traversing/allocating. Check between traversal/syscall/allocation steps so a late blocking return cannot admit further mutations after expiry, while retaining the worker/handles until cleanup."
+    },
+    {
+      "members": [
+        "R19E-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "ImmutableFileArchive publishes native path and .measurement through ProtectedArchiveStore when an enrolled marker is present. LookupAsync tests File.Exists for both logical originals before BoundedRegularFile can use its existing protected-reader fallback; protected-only retained measurements therefore return null. Use the exact logical archive reader/presence contract, preserving signature/request validation and recovery without remeasurement."
+    },
+    {
+      "members": [
+        "R19E-2"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "MetadataFinalizer reads case bytes through BoundedRegularFile (which supports protected slots), but File.Exists(index) misses a protected-only published owner index after result-retention loss. It generates a new timestamp/signature then ImmutableFileArchive rejects conflicting exact bytes. Detect/read/validate the retained logical index and retain those exact bytes instead."
+    },
+    {
+      "members": [
+        "R19E-3"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "JointPhaseCommand has an independent File.Exists(originalPath) recovery gate before its exact owner-index validation. Protected-only publication with lost result acknowledgement skips that recovery branch and later tries another signed immutable index, which conflicts. Recover the existing logical signed original and case hashes without rerunning effects or generating new evidence."
+    },
+    {
+      "members": [
+        "R19V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed, without root test/search verification: actual JointPhaseNativeSourcePublisher tests never enroll a nonempty Fr34Canaries list or its concrete DaprFr34MeasuredOriginalReader. Add actual receiving/native comparison through the signed payload and reference/digest/native-proof mismatch refusal; removing the loop must fail a regression."
+    }
+  ],
+  "filedFindingCount": 16,
+  "survivors": 13,
+  "rejected": 3,
+  "rootCauseGroups": 12,
+  "badSpecGroups": 5,
+  "patchGroups": 7,
+  "groupedOnly": [
+    [
+      "R19B-1",
+      "R19E-5"
+    ]
+  ],
+  "rootIsolatedProbes": {
+    "directory": "/tmp/story54-root-review19-probes-820xqbp1",
+    "hashManifest": {
+      "path": "/tmp/story54-final-review-46ur38rr/root-probe-artifact-hashes.json",
+      "sha256": "0cebc362cb4938cedd225c7d19dc54f41ecfcb8ab35a4c8a294f38945812c084",
+      "count": 292
+    },
+    "runtimeFinalLog": "/tmp/story54-root-review19-probes-820xqbp1/runtime/run4.log",
+    "headerFinalLog": "/tmp/story54-root-review19-probes-820xqbp1/header/run.log",
+    "elfResult": "/tmp/story54-root-review19-probes-820xqbp1/elf-result.json",
+    "diagnostics": "Three scaffolding diagnostics retained separately: missing Custody import, recursive default compile of copied historical Program, then reflection constructor count. Their sources/project/logs survive; diagnostic compiled outputs were not separately preserved and are not claimed immutable or verification passes. Final run4 actual production assembly probe and exact-method header/ELF fixtures provide the findings evidence.",
+    "fixtureOnly": true,
+    "installedQualification": false,
+    "productionEffects": 0
+  },
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true,
+  "postTriageSameContractRefinements": [
+    {
+      "finding": "R19B-3",
+      "observedAtUtc": "2026-10-27T07:49:04.963498+00:00",
+      "actualOutcome": "Source19 actual spool-current returns signed Object after caller revoked inside AvailableBytes; original granted head is still used.",
+      "evidence": "/tmp/story54-root-review19-probes-820xqbp1/spool-read/run.log",
+      "artifactHashes": {
+        "path": "/tmp/story54-root-review19-probes-820xqbp1/spool-read/artifact-hashes.json",
+        "sha256": "e91e079ed4c4953349b9712c0141c4051429d3811b2272cfd4ecc8e575353138"
+      },
+      "newFindingGroup": false
+    },
+    {
+      "finding": "R19E-1/R19E-2/R19E-3",
+      "observedAtUtc": "2026-10-27T07:49:04.963561+00:00",
+      "requirement": "New synchronous protected-store scans need the already required bounded caller/late-worker ownership in actual async callers; no automatic enclosing durable worker exists.",
+      "sourceAudit": "/tmp/story54-root20-provisional-delta-rz47gzdu",
+      "newFindingGroup": false
+    }
+  ]
+}

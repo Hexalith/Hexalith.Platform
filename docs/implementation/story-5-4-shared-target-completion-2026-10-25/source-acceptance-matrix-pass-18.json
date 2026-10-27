@@ -1,0 +1,68 @@
+{
+  "schema": "platform.story54.root-acceptance-matrix-pass18.v1",
+  "snapshotSha256": "0d54da5cb43bec897422408eae1a9321aae114573f6ba39267414e4858c86775",
+  "groups": [
+    {
+      "finding": "R17B-1",
+      "implemented": true,
+      "change": "One caller-linked startup deadline captures source and receiving profiles once, then delegates the captured receiving profile with the independent original lifetime.",
+      "actualCallerCoverage": "JointPhaseSourceStartupTests"
+    },
+    {
+      "finding": "R17B-2",
+      "implemented": true,
+      "change": "Both FR34 handlers require receiver current-head reread/CAS. Result policy binds exact target, common authorization revision, recipe and trust; command policy includes exact consulted caller/principal workload grants, method purposes, revocation and expiry. Unrelated journals remain outside policy. The same policy is checked again after awaited final conditional admission, including nested expiry without a head-byte change.",
+      "actualCallerCoverage": "ActualCommandAndOccurrenceRepliesRereadExactCurrentAuthorityAfterAwaitedOriginalRead"
+    },
+    {
+      "finding": "R17B-3",
+      "implemented": true,
+      "change": "Connection-owned documented public SQLite VFS implements main IO over its own exact independently enrolled descriptor. DELETE journals use held parent; main descriptor identity and namespace changes are checked inside xOpen. No process-wide FD attribution or private object layout. Per-connection public ABI callbacks are retained through actual native final close.",
+      "actualCallerCoverage": "ActualSqliteConnectionOwnershipTests"
+    },
+    {
+      "finding": "R17B-4",
+      "implemented": true,
+      "change": "Private selected input reads use readv directly into one writable bytearray, including a growth sentinel. Every owned region clears on parsing success, faults, growth, cancellation and late reads. No private hashing or immutable os.read chunks.",
+      "actualCallerCoverage": "PrivateFileOwnershipTests"
+    },
+    {
+      "finding": "R17B-5",
+      "implemented": true,
+      "change": "All three actual qualification Programs acquire a finite receiver owner before authentication/body/JSON/dispatch. One linked acquisition deadline and tracked leaf tasks retain owners through late authenticators, body reads, providers, original writes and response delivery/client loss.",
+      "actualCallerCoverage": "QualificationHttpOwnershipTests"
+    },
+    {
+      "finding": "R17B-7",
+      "implemented": true,
+      "change": "Proof verifier and installed role composition rethrow actual caller cancellation. Composition checks cancellation before missing-input interpretation and through anchor loading before DI registration. Malformed inputs still refuse; internal timeout interpretation remains separate.",
+      "actualCallerCoverage": "CallerCancellationPropagatesBeforeAuthenticationCompositionOrPublicVerification"
+    },
+    {
+      "finding": "R17B-9",
+      "implemented": true,
+      "change": "Persisted source observer now reads REQUIRED from the single closed_phase_invariants mapping. Full existing source/phase/inventory cases remain unchanged.",
+      "actualCallerCoverage": "full secrets Python suite"
+    },
+    {
+      "finding": "R17B-10",
+      "implemented": true,
+      "change": "Fixed closed-vocabulary process counters distinguish timeout, saturation, actual conditional-save conflict, malformed request/enrolled state, incomplete current enrollment, refusal, storage/handler failures and caller cancellation. No bodies, exceptions, IDs, locators, hashes or untrusted text are stored or emitted; no durable diagnostic IO, queue, timer or external collector.",
+      "actualCallerCoverage": "IndependentReceivingDiagnosticTests"
+    },
+    {
+      "finding": "R17E-1",
+      "implemented": true,
+      "change": "At-boundary effect and trigger tasks are joined with Task.WhenAll before propagating either failure or collecting ordered observations. Actual receiving workflow keeps the still running trigger and its exact ordinal/input original until settled.",
+      "actualCallerCoverage": "QualificationGuardJoinTests"
+    },
+    {
+      "finding": "R17V-1",
+      "implemented": true,
+      "change": "Actual replay registration/receiving/native source commits, then case-result retention fails. A recreated registered workflow recovers through QualificationBoundSourceCaseDriver.LookupAsync, retaining the exact original receipt with unchanged first-seen command bytes/event identity, one native registration, and current exact read scope. Missing stage protocol remains unavailable.",
+      "actualCallerCoverage": "ActualReplayCaseRegisteredLookupRecoversNativeFirstSeenAfterCaseResultRetentionLoss"
+    }
+  ],
+  "independentReviewComplete": false,
+  "installedQualification": false
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "platform.story-5.4.matrix-audit.v1",
+  "observedAtUtc": "2026-10-26T19:58:50.983129+00:00",
+  "sourceHandbackSha256": "0e66d990606d4012e439aa7587d9011787618ca2c92b54549074b49f4f3afe09",
+  "frozenMatrixRowCount": 5,
+  "rows": [
+    {
+      "matrixScenario": "Authority",
+      "coveringTests": [
+        "IndependentEffectAdmissionTests.RevocationWinningTheSurvivingAdmissionCasDeniesReplayAndCustomOwnerBeforeEffects",
+        "IndependentEffectAdmissionTests.AdmissionWinningBeforeRevocationDoesNotHoldNativeWorkLockAndLaterCallsDeny",
+        "ActualQualificationLookupResultOrdersCurrentRevocationAndPreservesRetainedProof",
+        "eng/ext-secrets-1/test_pass10_boundaries.py",
+        "Actual installed-role serving and current enrollment refresh, including restart/loss/revocation"
+      ],
+      "passedLanes": [
+        "runtime-final-local",
+        "python-final-local"
+      ],
+      "scope": "Actual receiving head order with disposable grants/source reads; no installed trust claimed."
+    },
+    {
+      "matrixScenario": "Replay/spool",
+      "coveringTests": [
+        "IndependentAuthorityReceiverTests",
+        "IndependentRecoveryArchiveTests",
+        "IndependentOriginalIndexTests",
+        "EventStorePrivateRecordingPortTests",
+        "ActualArchivePreflightAndSpoolReadUseOneCallerBudget"
+      ],
+      "passedLanes": [
+        "runtime-final-local",
+        "final-protection"
+      ],
+      "scope": "Actual recorder/original barriers, denial recovery and durable fixture IO; selected unavailable physical/protocol evidence remains pending."
+    },
+    {
+      "matrixScenario": "Protection",
+      "coveringTests": [
+        "Fr34DynamicOccurrenceTests",
+        "Fr34AuthorityHostingTests.ActualOwningHostAutomaticallyRetriesDisposedNativeUseUntilIndependentHolderOriginalCloses",
+        "QualificationNativeAuditTests",
+        "NativeDurabilityOwnershipTests",
+        "Content-free actual FR34 original archive and legacy plaintext refusal",
+        "Authenticated exact native mutation/target/incarnation evidence through unchanged Python verifier"
+      ],
+      "passedLanes": [
+        "final-protection",
+        "native-final-local"
+      ],
+      "scope": "Actual source engine/owning hosted-worker and native adapter fixture paths, original substitution and refusal; no physical qualification."
+    },
+    {
+      "matrixScenario": "Cohort",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "eng/ext-secrets-1/test_outer_cohort_uncertainty.py",
+        "JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect",
+        "ConcreteSecretsAdapterThroughPhaseCommandValidatesObserverOriginal"
+      ],
+      "passedLanes": [
+        "python-final-local",
+        "runtime-final-local"
+      ],
+      "scope": "Disjoint complete four-phase plan, ordering/failure/unknown recovery and real metadata-only CLI under disposable admitted fixtures; no real cohort/attempt."
+    },
+    {
+      "matrixScenario": "Packets",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_coordinated_packets.py",
+        "eng/ext-secrets-1/test_prepare_acceptance.py",
+        "eng/ext-host-1/test_prepare_acceptance.py",
+        "AgentsAcceptedDeploymentContextTests",
+        "AgentsAcceptedModelIdentityTests and duplicate accepted-input parsing",
+        "Single captured configuration snapshot and later-resource conflict refusal before registration"
+      ],
+      "passedLanes": [
+        "python-final-local",
+        "final-python-host",
+        "final-focused-composition"
+      ],
+      "scope": "Exact accepted records/date/raw byte pins, all complete scope and absent-input refusal; full packet remains blocked."
+    }
+  ],
+  "allSourceMatrixRowsCoveredAndPassed": true,
+  "qualificationCaseCount": 234,
+  "completeQualificationDriverCount": 0,
+  "independentReviewStatus": "PendingReview14",
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "testCountRule": "Runtime608 includes all8 complete index-history rows and actual installed-role/renewal/mutation/export reader regressions. Runtime collections are serialized via an explicitly hashed runner input; every test/concurrency assertion remains enabled. Earlier scheduling failure is preserved separately.",
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-14.json",
+  "actualCompositionCases": 68,
+  "rootRuntimeXmlCoverage": {
+    "IndependentOriginalIndexTests": 8,
+    "ConcreteInstalledRoleCompositionServesVerifiedActualOwnerProof": 3,
+    "ReceivingEnrollmentAdmitsItsOwnOriginalAndRetainsExactSignedProofAcrossLostReplyAndLaterClock": 1,
+    "DaprExportQualificationReferenceReaderTests": 18,
+    "ActualSignedMutationOriginalNativeReaderProjectionAndUnchangedPythonConsumerCorrelateEveryMutation": 13
+  }
+}

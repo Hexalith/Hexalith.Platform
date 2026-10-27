@@ -1,0 +1,146 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T06:36:47.547242+00:00",
+  "reviewPass": 7,
+  "status": "SourceCorrectionsRequired",
+  "scopeFile": "/tmp/story54-owner-review-6q5n0jbp/scope.json",
+  "reviewers": [
+    "/root/review_blind",
+    "/root/review_edge",
+    "/root/review_gap"
+  ],
+  "allLayersCompletedBeforeTriage": true,
+  "findings": [
+    {
+      "id": "B7-1",
+      "verdict": "high",
+      "evidence": "QualificationLifecycleCaseWorkflow.TerminalBody accepts only Consumed manifests; QualificationLifecycleOriginalReader needs a definitive non-consumed held-manifest outcome for S3.hold-pin. Current workflow cannot reach that denial observation.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-2",
+      "verdict": "high",
+      "evidence": "LookupRegistrationOriginalAsync requires and echoes an already-complete registration, but KeyEnvelopeBuilder generates the receipt during first wrap. The new test pre-wraps; first-response-loss recovery lacks the receipt it requires.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-3",
+      "verdict": "high",
+      "evidence": "AbandonSuccessorAsync selects intents[0] including closed copy intents; native EnsureCompletionAsync rejects closed reservations even with an active retirement intent.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-4",
+      "verdict": "high",
+      "evidence": "NativeArchiveCapacity.SaveAsync rewrites a ledger up to 32 MiB before releasing completion blocks; admission preserves only 64 KiB physical overhead. A near-full filesystem can strand admitted completions.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-5",
+      "verdict": "high",
+      "evidence": "Recovery branches validate a top-level SubmitCommandRequest, but DispatchBinding compares its signed command only through payload/id/role-compatible domain. Tenant/aggregate/type/extensions can differ at the conditional admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-6",
+      "verdict": "high",
+      "evidence": "DispatchBinding checks workload expiry/proof time before awaited archive writes; final CAS only rechecks the storage caller and authority expiry. The distinct workload/proof can expire before admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-7",
+      "verdict": "high",
+      "evidence": "Custody-owner-call now bypasses the externalEffect CAS as read-only, and the receiver performs no post-handler current-head authorization. A grant revocation during native/control reads can precede return of a fresh proof.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-8",
+      "verdict": "medium",
+      "evidence": "NSubstitute was added directly and project references changed without the tracked dependency lock updates. The supported Release/package-reference locked restore reports NU1004.",
+      "route": "patch"
+    },
+    {
+      "id": "B7-9",
+      "verdict": "high",
+      "evidence": "BoundedRegularFile performs openat/statx and regular-file reads without a cancellable outer execution bound; cancellation checks cannot interrupt a stalled filesystem syscall and no storage-contract constraint prevents that path.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-10",
+      "verdict": "false",
+      "evidence": "The installed constructor creates only DaprPhaseOwner instances. Their preflight delegates to DaprCohortRpc.call, whose queue wait has an absolute 30-second deadline independent of its daemon I/O worker; decoded proof/signature work is bounded. A permanently blocking substituted fake owner does not demonstrate a reachable installed executor-thread leak at the cited new pool.",
+      "route": "rejected"
+    },
+    {
+      "id": "E7-1",
+      "verdict": "high",
+      "evidence": "Same verified held-manifest terminal-filter defect as B7-1.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "E7-2",
+      "verdict": "high",
+      "evidence": "Same verified closed-first-copy completion reservation defect as B7-3.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "E7-3",
+      "verdict": "high",
+      "evidence": "Same verified missing physical ledger-rewrite floor as B7-4.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "V7-1",
+      "verdict": "high",
+      "evidence": "Pre-verified gap: native completion test directly writes 8 MiB under 16 MiB ordinary headroom; it neither proves reserved publication nor executes KeyExchange with NativeDaprAuthorityStore under exhausted ordinary capacity.",
+      "route": "patch"
+    },
+    {
+      "id": "V7-2",
+      "verdict": "high",
+      "evidence": "Pre-verified gap: current audit-reader test uses S1 missing-config only. Workflow terminal-v2 tests never exercise the changed lifecycle/delivery audit consumer and its exact substituted-original rejection.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    [
+      "B7-1",
+      "E7-1"
+    ],
+    [
+      "B7-2"
+    ],
+    [
+      "B7-3",
+      "E7-2"
+    ],
+    [
+      "B7-4",
+      "E7-3"
+    ],
+    [
+      "B7-5"
+    ],
+    [
+      "B7-6"
+    ],
+    [
+      "B7-7"
+    ],
+    [
+      "B7-8"
+    ],
+    [
+      "B7-9"
+    ],
+    [
+      "V7-1"
+    ],
+    [
+      "V7-2"
+    ]
+  ],
+  "fullSourceComplete": false,
+  "installedQualification": false,
+  "completeReplacementPacket": false
+}

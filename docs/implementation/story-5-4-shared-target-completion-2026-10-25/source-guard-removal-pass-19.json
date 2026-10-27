@@ -1,0 +1,487 @@
+[
+  {
+    "name": "denial-reader-correlation",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryOriginalReader.cs",
+    "sourceSha256": "cb148b283f653348c6817b19b0757c5d48c01cf02e7c4fa7d1bf95c0b2878627",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/QualificationExportDeliveryOriginalReader.cs",
+    "mutationSourceSha256": "a995d33b958d7737dc2d5b6722781820766b32045697fbcab9fbf326cb2804bc",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 4,
+    "expectedFailures": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/denial-reader-correlation/tests.log",
+    "testLogSha256": "a6a2c57cc15f81fb919238bbed6e46ed411feec68b58c76cf7aba1e6654632d2",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "private-growth-sentinel",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs",
+    "sourceSha256": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/BoundedRegularFile.cs",
+    "mutationSourceSha256": "dc4c8154fe6444343d3e3643290e7856ab0473c3f72aa3ad79dafdb12975cd16",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 5,
+    "expectedFailures": 1,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/private-growth-sentinel/tests.log",
+    "testLogSha256": "bbcb53a0e54381074c468049ed3cd2cb636768312e4a6f31098450d4690a8ef4",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "private-read-ahead-buffer",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs",
+    "sourceSha256": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/BoundedRegularFile.cs",
+    "mutationSourceSha256": "573b1a68b277e4e1933d70dfe2a26c7fd47fbca25f05cd8ff27443ec9b25befa",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualDirectPrivateReadHasNoAdditionalLargeReadAheadAllocation",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 1,
+    "expectedFailures": 1,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/private-read-ahead-buffer/tests.log",
+    "testLogSha256": "c33c2c823444f18ead08ca5e8ce0377a5dd6aa8f7e5fd707805d4715920f5973",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "qualification-final-freshness",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/QualificationProofVerifier.cs",
+    "sourceSha256": "06e4420826a2bab80c59bf0268cc1484ce5a224fabeadc7591e0ffccd3f8d503",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/QualificationProofVerifier.cs",
+    "mutationSourceSha256": "842a76164d775e2dffd9b1c22380846a0b47cce4fbea4949ed70fae2ef6e8d8b",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 5,
+    "expectedFailures": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/qualification-final-freshness/tests.log",
+    "testLogSha256": "55e1d864a1446fa409c877d8e89b4441184a91384d4bb9913b038ec7f6a51505",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "authority-evidence-final-freshness",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs",
+    "sourceSha256": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/IndependentDaprAuthority.cs",
+    "mutationSourceSha256": "1617a98b66b9a8d4bf8438c7dc2ae0b76cd50c4610a4aaa7c6e7d27fdf49ab44",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 8,
+    "expectedFailures": 4,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-evidence-final-freshness/tests.log",
+    "testLogSha256": "49a4898657724d6bacf403678a2c42a15e4be3612b02fff2b6b0e4b6ecd0cc9e",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "authority-decoded-final-freshness",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs",
+    "sourceSha256": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/IndependentDaprAuthority.cs",
+    "mutationSourceSha256": "d015eac03f8335788777b428526c91b32eac737e584d723fe956bf6d7ccf9039",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicAuthorityReturnRechecksAfterItsActualPayloadDecoder",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 3,
+    "expectedFailures": 1,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/authority-decoded-final-freshness/tests.log",
+    "testLogSha256": "0f8eaeed97d24516eb48c3fda678f4bb54e57dcb712dc6ebf68c918a435c645a",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "public-owner-timeout-semantics",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs",
+    "sourceSha256": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/IndependentDaprAuthority.cs",
+    "mutationSourceSha256": "b1c2a5e644ef9297fe1512db5b3ddea45e8aaebecc973d42329bc37e1384d63c",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicOwnerBudgetKeepsInternalTimeoutDistinctFromOriginalCallerCancellation",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 2,
+    "expectedFailures": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/public-owner-timeout-semantics/tests.log",
+    "testLogSha256": "075dda1a38024fffc11820ae63e44fd79a097b8cc4e2920941c7a7d5525d8620",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "public-null-evidence-cancellation",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs",
+    "sourceSha256": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/IndependentDaprAuthority.cs",
+    "mutationSourceSha256": "3dbdc3559585007e638fc09e6afdb11add54614cc3ecedd865fc2c042f78eeb4",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/mutation.targets"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicNullEvidenceStillObservesOriginalCallerCancellation",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 2,
+    "expectedFailures": 1,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/public-null-evidence-cancellation/tests.log",
+    "testLogSha256": "ff08648d7d95fe3dc92597beab03d0db98756686fedf455fbf62374a9385b0ee",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "launch-failed-build-owner",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs",
+    "sourceSha256": "08bbbfd556e4874ab6fa90a1fbf57238385e1fb62f8f4792cab35a5d2d76ee95",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/launch-failed-build-owner/AcceptedLaunchLifetime.cs",
+    "mutationSourceSha256": "f98e6393f735152a24d48cc731bd0ec2ebf9388af4334f89f9c6345990dbb952",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/launch-failed-build-owner/focused/FocusedComposition.csproj",
+        "-m:1"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/launch-failed-build-owner/focused/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.AcceptedLaunchLifetimeTests.ActualAcceptedCompositionOwnsEveryLeaseBeforeBuildAndTransfersOnlyOnSuccess",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/launch-failed-build-owner/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 5,
+    "expectedFailures": 3,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/launch-failed-build-owner/tests.log",
+    "testLogSha256": "c6064696b5b87c5b72156a4be54d2bb83a3e1a1c94c16826dc89ff00f29aeb1e",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "admission-final-auth-order",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs",
+    "sourceSha256": "5d4298c905980fd2d68fd08d08e5407079f123e5f2bc61e7960a133ad5621b43",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/TrustedEnvelopeReplayVerifier.cs",
+    "mutationSourceSha256": "47734f94aa38ede890d8e40187db7fa7126ed8066e0bba99cb2682a3309ea872",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/mutation.targets"
+      ],
+      [
+        "dotnet",
+        "build",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/focused/FocusedComposition.csproj",
+        "-m:1"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/focused/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 5,
+    "expectedFailures": 3,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/admission-final-auth-order/tests.log",
+    "testLogSha256": "8afc972dfc995402daad318b3de775ad92d34bc0c36cc6dfbd46421e064c308c",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "replay-conflict-provenance",
+    "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs",
+    "sourceSha256": "5d4298c905980fd2d68fd08d08e5407079f123e5f2bc61e7960a133ad5621b43",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/TrustedEnvelopeReplayVerifier.cs",
+    "mutationSourceSha256": "0ac72a8dc42b1d0b050b5f5c95df1d5eb305ab1110bc12a2d9e6c5cf0d726bda",
+    "buildCommands": [
+      [
+        "dotnet",
+        "build",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/artifacts",
+        "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/locks/$(MSBuildProjectName).lock.json",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-m:1",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/mutation.targets"
+      ],
+      [
+        "dotnet",
+        "build",
+        "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/focused/FocusedComposition.csproj",
+        "-m:1"
+      ]
+    ],
+    "testCommand": [
+      "dotnet",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/focused/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal",
+      "-result-xml",
+      "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/tests.xml"
+    ],
+    "exitCode": 1,
+    "selected": 8,
+    "expectedFailures": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/replay-conflict-provenance/tests.log",
+    "testLogSha256": "e44e5316822fa3b90a0ba30627301366c09520087d0b9ce16c198d1bc13eaa30",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "sqlite-delete-barrier",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/sqlite-delete-barrier/enrolled_sqlite_vfs.py",
+    "mutationSourceSha256": "f186246b59920393229301456f0bf7c127a9dd01e24e870c5c698aa9bddc627e",
+    "testCommand": [
+      "python3",
+      "-X",
+      "faulthandler",
+      "-m",
+      "unittest",
+      "test_pass19_sqlite_and_phase.RollbackDeleteBarrierTests"
+    ],
+    "workingDirectory": "/tmp/story54-round19-i9zg3sye/guard-mutations/sqlite-delete-barrier",
+    "exitCode": 1,
+    "selected": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/sqlite-delete-barrier/tests.log",
+    "testLogSha256": "9125ab2b99de746078742f31cb2bf163eab6fda0bde8cfb3a74b798db9336702",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  },
+  {
+    "name": "damaged-phase-liability",
+    "mutationSource": "/tmp/story54-round19-i9zg3sye/guard-mutations/damaged-phase-liability/phase_completion_pool.py",
+    "mutationSourceSha256": "a9b45ea3c9a6a668330c25bc8a14af13d86dda0e3bf5fd12a6c7d49f5b8bbed1",
+    "testCommand": [
+      "python3",
+      "-X",
+      "faulthandler",
+      "-m",
+      "unittest",
+      "test_pass19_sqlite_and_phase.DamagedPhaseHeaderLiabilityTests"
+    ],
+    "workingDirectory": "/tmp/story54-round19-i9zg3sye/guard-mutations/damaged-phase-liability",
+    "exitCode": 1,
+    "selected": 2,
+    "passed": true,
+    "testLog": "/tmp/story54-round19-i9zg3sye/guard-mutations/damaged-phase-liability/tests.log",
+    "testLogSha256": "7b6be42df095b890c4c56920f446799a37f108df9e6f6d2c89ac95ae67643ae8",
+    "countsAsFinalPass": false,
+    "fixtureOnly": true
+  }
+]

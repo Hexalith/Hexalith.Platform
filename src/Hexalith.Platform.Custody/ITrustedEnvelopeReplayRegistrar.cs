@@ -9,6 +9,8 @@ public interface ITrustedEnvelopeReplayRegistrar
     /// <summary>Conditionally records first creation only, or returns the original exact authenticated receipt without comparing retry times.</summary>
     Task<TrustedEnvelopeReplayReceipt?> RegisterAsync(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt,
         TimeSpan retention, CancellationToken cancellationToken = default);
+    /// <summary>Reads authenticated first-seen metadata at the same issuer/nonce even when delivery fields conflict. It never registers or renews.</summary>
+    Task<TrustedEnvelopeReplayReceipt?> LookupFirstSeenAsync(TrustedEnvelopeReplayIntent intent,CancellationToken cancellationToken=default)=>Task.FromResult<TrustedEnvelopeReplayReceipt?>(null);
     /// <summary>Reads only the original exact issuer/nonce source; absent/unknown/changed target fields cannot create or renew it.</summary>
     Task<TrustedEnvelopeReplayReceipt?> LookupAsync(TrustedEnvelopeReplayIntent intent, CancellationToken cancellationToken = default);
 }

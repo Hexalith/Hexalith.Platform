@@ -93,23 +93,19 @@ def get(value, path):
 
 
 def bounded_public_file(path, limit, *, forbidden_inodes=()):
-    # Open nonblocking before inspecting the descriptor: FIFOs/devices/symlinks cannot stall a proof check.
-    descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
-    try:
-        metadata = os.fstat(descriptor)
-        if (metadata.st_dev, metadata.st_ino) in forbidden_inodes:
-            raise ValueError("configured credential cannot be public evidence")
-        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > limit:
-            raise ValueError("bounded regular public file required")
-        data = bytearray()
-        while len(data) <= limit:
-            chunk = os.read(descriptor, min(65536, limit + 1 - len(data)))
-            if not chunk:
-                return bytes(data)
-            data.extend(chunk)
-        raise ValueError("public file exceeds bound")
-    finally:
-        os.close(descriptor)
+    import bounded_file_io as selected_io
+    # Only leading relative dot components can be normalized against physical cwd.
+    # Never erase an interior link/.. component before the held no-follow walk.
+    raw=os.fspath(path)
+    if not os.path.isabs(raw):
+        base=os.getcwd();parts=raw.split(os.sep)
+        while parts and parts[0] in (".","..",""):
+            component=parts.pop(0)
+            if component=="..": base=os.path.dirname(base)
+        if any(component in (".","..","") for component in parts):
+            raise ValueError("SafeRelativePublicInputLocator")
+        raw=os.path.join(base,*parts)
+    return selected_io.read(raw,limit,forbidden_inodes=forbidden_inodes)
 
 
 def read_json(path):
@@ -642,6 +638,10 @@ def check_observation(case, payload, execution, request):
         raise QualificationFailed("UnexpectedRaceProof")
 
 
+def temporal_case(case_id):
+    return case_id.startswith(('S2.expiry.','S2.overlap-')) or case_id in ('S2.future-skew','S2.maximum-lifetime','S2.emergency-redispatch')
+
+
 def check_persisted_state(case, payload, execution, request):
     states = [s["state"] for s in payload["snapshots"]]
     keys = {"requestId", "outcome", "receiptId", "tenantId", "logicalId", "sealId", "batchId", "manifestDigest",
@@ -649,6 +649,7 @@ def check_persisted_state(case, payload, execution, request):
             "activeCredentialIds", "providerCopyIds", "erasedCopyIds", "journalRevision", "deliveredAt", "exclusiveExpiry",
             "replayNamespace", "replayTenant", "nonceDigest", "firstSeenAt", "retainUntil", "actualIssuedGuardRevision", "attempts",
             "replayIssuer", "timing", "rotation", "attestationHistory"}
+    if temporal_case(case.id): keys.add("temporalEvaluation")
     scope = request["enrolledScope"]
     for state in states:
         if not isinstance(state, dict) or set(state) != keys or state["requestId"] != request["requestId"] \
@@ -710,6 +711,11 @@ def check_persisted_state(case, payload, execution, request):
             check_attempts(state)
         elif state["attempts"]:
             raise QualificationFailed("UnexpectedSigningAttempts")
+        if temporal_case(case.id):
+            evaluation=state['temporalEvaluation']
+            if (not isinstance(evaluation,dict) or set(evaluation)!={'version','evaluatedAt','originalResultSha256'} or type(evaluation['version']) is not int or evaluation['version']!=2
+                    or type(evaluation['evaluatedAt']) is not int or evaluation['evaluatedAt']<0 or evaluation['evaluatedAt']!=state['timing']['checkedAt'] or evaluation['originalResultSha256']!=state['receiptId']):
+                raise QualificationFailed('ExactOwnedTemporalDecisionV2')
         check_timing_and_attestations(case, state, scope)
     # All four independent reads reproduce the exact original identity/outcome/receipt after restart/restore/lookup.
     if any(s != states[0] for s in states[1:]):
@@ -1179,7 +1185,7 @@ def execute(config, target, binding, transport, persist=lambda name, value: None
     if [r["caseId"] for r in results] != [c.id for c in selected_cases]:
         raise QualificationFailed("IncompletePlan")
     return {"code": "QualificationPassed" if case_ids is None else "PhaseQualificationPassed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
-            "permitsOwnerAcceptanceForExactTarget": True, "targetCommit": target, "runId": run,
+            "permitsOwnerAcceptanceForExactTarget": case_ids is None, "targetCommit": target, "runId": run,
             "planSha256": plan_digest(), "caseCount": len(results), "enrollmentProof": enrolled, "cases": results}
 
 
@@ -1236,8 +1242,9 @@ def main():
                 result = run_installed_cohort(cohort_configuration, register)
             except Blocked as error:
                 effects_started = error.effects_started
-                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state}
+                cohort_failure = {"attemptState": error.attempt_state, "effectState": error.effect_state,"attemptId":error.attempt_id,"phaseRequestId":error.phase_request_id}
                 raise Unavailable(*error.missing) from None
+            effects_started=True
             (evidence / "joint-cohort-result.json").write_bytes(canonical(result))
             print("JointCohortPassed: EXT-SECRETS-1, EXT-HOST-1; acceptance unchanged.")
             return 0
@@ -1259,7 +1266,7 @@ def main():
         exit_code = 2
     except ReplacementAcceptancePacket:
         result = {"code": "ReplacementAcceptancePacket", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
-                  "effectsStarted": effects_started, "qualificationEffects": 0}
+                  "effectsStarted": effects_started, "qualificationEffects": "Unknown" if effects_started else 0}
         exit_code = 4
     except Exception:
         # Provider error strings and arbitrary response content never enter evidence, logs or stdout.

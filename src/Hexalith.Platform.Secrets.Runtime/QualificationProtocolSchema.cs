@@ -50,21 +50,23 @@ internal static class QualificationProtocolSchema
             || !JsonNode.DeepEquals(scenario["boundary"], schema["boundary"])
             || scenario["expected"] is not JsonObject expected
             || !expected.Select(item => item.Key).ToHashSet(StringComparer.Ordinal).SetEquals(((JsonArray)schema["metrics"]!).Select(item => item!.GetValue<string>()))
-            || expected.Any(item => !Integer(item.Value))
+            || expected.Any(item => !Integer(item.Value)) || !JsonNode.DeepEquals(expected,schema["expected"])
             || scenario["persistedStages"] is not JsonArray stages || !stages.Select(item => item?.ToString()).SequenceEqual(new[] { "AfterEffect", "AfterRestart", "AfterRestore", "AfterLookup" })) { return false; }
         return true;
     }
 
     internal static bool ValidOwnerRequest(string role,JsonObject request)
     {
-        const string common="protocol runId targetCommit isolatedTargetId planSha256 requestId";
-        if(role is not ("executor" or "observer" or "enrollment") || !Exact(request,common+(role=="enrollment"?" operation":" caseId caseTargetId enrolledScope"))
-            || !SecretsProof.SameText(request,"protocol","EXT-SECRETS-1.qualification.v1") || !SecretsProof.SameText(request,"planSha256",PlanSha256)
-            || !Texts(request,"runId isolatedTargetId") || !Hashes(request,"requestId") || SecretsProof.Text(request,"targetCommit") is not { Length:40 } commit
-            || !commit.All(char.IsAsciiHexDigitLower)) return false;
-        return role=="enrollment" ? SecretsProof.SameText(request,"operation","enroll") : Case(SecretsProof.Text(request,"caseId")) is not null
-            && Hashes(request,"caseTargetId") && request["enrolledScope"] is JsonObject scope && ValidScope(scope)
-            && JsonNode.DeepEquals(scope["logicalId"],request["caseTargetId"]);
+        return ValidRequest(role,role switch { "executor"=>"execute","observer"=>"observe",_=>"enroll" },request);
+    }
+
+    internal static JsonObject CaseRequest(JsonObject common,string caseId,JsonObject enrolled)
+    {
+        var value=new JsonObject();foreach(string field in new[]{"protocol","runId","targetCommit","isolatedTargetId","planSha256"}) value[field]=common[field]!.DeepClone();
+        var schema=Case(caseId)??throw new ArgumentException("Exact shipped case required.");
+        value["caseId"]=caseId;value["caseTargetId"]=enrolled["caseTargetId"]!.DeepClone();value["enrolledScope"]=enrolled["enrolledScope"]!.DeepClone();
+        value["scenario"]=new JsonObject { ["outcomes"]=schema["outcomes"]!.DeepClone(),["expected"]=schema["expected"]!.DeepClone(),["boundary"]=schema["boundary"]!.DeepClone(),["persistedStages"]=new JsonArray("AfterEffect","AfterRestart","AfterRestore","AfterLookup") };
+        value["requestId"]=Digest(value);return value;
     }
 
     private static bool ValidScope(JsonObject scope)
@@ -134,6 +136,7 @@ internal static class QualificationProtocolSchema
                 || !JsonNode.DeepEquals(snapshot["originalRequestId"], payload["requestId"])
                 || !JsonNode.DeepEquals(snapshot["originalResultSha256"], payload["resultSha256"])
                 || snapshot["state"] is not JsonObject state || !ValidState(state)
+                || QualificationTemporalCaseWorkflow.Supported(SecretsProof.Text(payload,"caseId")!)!=state.ContainsKey("temporalEvaluation")
                 || !SecretsProof.SameText(snapshot, "stateSha256", Digest(state))
                 || !JsonNode.DeepEquals(state["requestId"], payload["requestId"])
                 || !JsonNode.DeepEquals(state["outcome"], payload["outcome"]) || !JsonNode.DeepEquals(state["status"], payload["outcome"])
@@ -156,13 +159,19 @@ internal static class QualificationProtocolSchema
         return true;
     }
 
+    internal static bool ValidNativeReceipt(JsonObject item)
+        => Exact(item,ReceiptFields+" requestId tenantId originalReceiptId") && ValidReceipt(item) && Hashes(item,"requestId originalReceiptId") && Texts(item,"tenantId");
+
+    internal static JsonObject PublicReceipt(JsonObject native)
+        =>new(native.Where(pair=>Words(ReceiptFields).Contains(pair.Key,StringComparer.Ordinal)).Select(pair=>new KeyValuePair<string,JsonNode?>(pair.Key,pair.Value?.DeepClone())));
+
     private static bool ValidReceipt(JsonObject item)
         => Texts(item, "kind") && ReceiptKinds.Contains(SecretsProof.Text(item, "kind")!) && Hashes(item, "receiptId") && NullableText(item["keyVersion"])
             && Integers(item, "position guardRevision blockSetRevision occurredAt");
 
     private static bool ValidState(JsonObject state)
     {
-        if (!Exact(state, StateFields) || !Texts(state, "outcome tenantId logicalId status") || !Hashes(state, "requestId receiptId")
+        if (!Exact(state, StateFields+(state.ContainsKey("temporalEvaluation")?" temporalEvaluation":"")) || !Texts(state, "outcome tenantId logicalId status") || !Hashes(state, "requestId receiptId")
             || !Integers(state, "journalRevision", minimum: 1)) { return false; }
         foreach (string field in Words("sealId batchId keyVersion replayNamespace replayTenant replayIssuer"))
         { if (!NullableText(state[field])) { return false; } }
@@ -173,6 +182,9 @@ internal static class QualificationProtocolSchema
         { if (!Strings(state[field], hash: true)) { return false; } }
         if (state["timing"] is not JsonObject timing || !Exact(timing, "checkedAt exclusiveExpiry releasedAt authorityChangedAt rotatedAt overlapEndsAt")
             || timing.Any(p => p.Value is not null && !Integer(p.Value))) { return false; }
+        if(state.ContainsKey("temporalEvaluation") && state["temporalEvaluation"] is not JsonObject) return false;
+        if(state["temporalEvaluation"] is JsonObject evaluation && (!Exact(evaluation,"version evaluatedAt originalResultSha256") || SecretsProof.Integer(evaluation,"version")!=2
+            || !Integers(evaluation,"evaluatedAt") || !JsonNode.DeepEquals(evaluation["evaluatedAt"],timing["checkedAt"]) || !JsonNode.DeepEquals(evaluation["originalResultSha256"],state["receiptId"]))) return false;
         if (state["rotation"] is not null && (state["rotation"] is not JsonObject rotation
             || !Exact(rotation, "previousKeyVersion currentKeyVersion rotatedAt oldVerifyUntil publicAnchorId publicAnchorVersion")
             || !Texts(rotation, "previousKeyVersion currentKeyVersion publicAnchorId publicAnchorVersion") || !Integers(rotation, "rotatedAt oldVerifyUntil"))) { return false; }

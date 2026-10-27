@@ -31,6 +31,31 @@ public sealed class ExportKeyDeliveryActorTests
         await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
     }
 
+    /// <summary>A fresh unchanged receiving RPC must execute delivery, retain its terminal original and never redeliver on retry/restart.</summary>
+    [Fact]
+    public async Task FreshUnchangedReceivingRpcDeliversOnceAndRetainsExactTerminalOutcome()
+    {
+        var clock = new CustodyFixtureClock(); var identity = Identity(clock); var backend = new InMemoryStateManager();
+        var authority = Authority(); var provider = Substitute.For<IExportKeyDirectDeliveryProvider>();
+        var terminal = new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Delivered, clock.Now);
+        provider.ReleaseAsync(identity, Arg.Any<CancellationToken>()).Returns(terminal);
+        backend.CommittedState.ShouldBeEmpty();
+        var request = new ExportKeyDeliveryReceivingRequest(identity, ExportKeyDeliveryRawIdentity.Capture(identity));
+        var actor = Actor(identity, backend, clock, authority, provider);
+        var first = await actor.DeliverReceivedAsync(request);
+        first.State.ShouldBe(ExportKeyDeliveryState.Delivered); first.NativeOutcome.ShouldBe(terminal); first.Requested.ShouldBe(request.Supplied);
+        var saved = backend.CommittedState.Single(); saved.Value.ShouldBe(terminal);
+        (await actor.DeliverReceivedAsync(request)).ShouldBe(first);
+        var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<ExportKeyDeliveryOutcome>(JsonSerializer.SerializeToUtf8Bytes(saved.Value))!, TestContext.Current.CancellationToken);
+        await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        clock.Now = identity.ExclusiveExpiry.AddMinutes(1);
+        (await Actor(identity, restored, clock, authority, provider).DeliverReceivedAsync(request)).ShouldBe(first);
+        restored.CommittedState.Single().Value.ShouldBe(terminal);
+        await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
+        await provider.DidNotReceive().LookupAsync(identity, Arg.Any<CancellationToken>());
+    }
+
     private static ExportKeyDeliveryIdentity Identity(CustodyFixtureClock clock) => new("tenant-a", "delivery-1", "export-1", 7,
         "actor-1", "export-download", "principal-direct-channel", clock.Now.AddMinutes(1), "lifecycle-v1", "store-v1", 1);
     private static ExportKeyDeliveryActor Actor(ExportKeyDeliveryIdentity identity, IActorStateManager backend, TimeProvider clock,

@@ -15,7 +15,10 @@ using Hexalith.Platform.Custody.Dapr;
 // All keys, stores and observer claims below are disposable component fixtures. No network/native
 // resource is opened. A fixture PASS is source evidence only and cannot satisfy physical qualification.
 var tests = new (string, Func<Task>)[] {
+    ("native-durability-worker-fence-held-directory-and-exact-retry",NativeDurabilityOwnershipTests.Run),
+    ("native-bounded-regular-original-and-enrollment-acquisition",NativeBoundedArchiveTests.Run),
     ("independent-role-receiver-current-original-expiry-and-substitution", IndependentRoleReceiverTests.Run),
+    ("qualification-lifecycle-terminal-original-and-complete-registration-recovery", LifecycleQualificationRecoveryTests.Run),
     ("public-lifecycle-real-sdk-authorizer-key-cleanup-and-refusals", PublicLifecycleTests.Run),
     ("actual-lifecycle-actor-diverged-owner-and-custody-revisions", ActorLifecycleIntegrationTests.Run),
     ("public-lifecycle-cancellation-and-shared-operation-deadline", PublicLifecycleCancellationTests.Run),
@@ -31,12 +34,16 @@ var tests = new (string, Func<Task>)[] {
     ("shared-cut-independent-closure-and-exact-original-pages", Lifecycle),
     ("public-owner-adapter-real-sdk-signed-genesis-and-transition-wire", OwnerAdapter),
     ("eventstore-published-owner-bridge-exact-framing-and-recovery", EventStoreOwnerBridgeTests.Run),
+    ("native-reopened-sparse-and-punched-physical-reserves",NativeReopenedReserveTests.Run),
+    ("real-native-local-capacity-fencing-pressure-and-exact-retry", NativePhysicalCapacityTests.Run),
+    ("actual-keyexchange-native-reserved-wrap-and-pre-effect-identity-recovery", NativeReservedWrapTests.Run),
     ("real-native-store-identity-immutable-cas-and-loss", NativeStoreTests.Run),
     ("serving-startup-and-disjoint-profile-lanes", ReviewRegressionTests.StartupAndProfiles),
     ("canonical-delivery-tuples-and-retained-use-denial", ReviewRegressionTests.DeliveryTuples),
     ("signed-pre-cycle-hold-reservation-denial", ReviewRegressionTests.SignedHoldReservations),
     ("binding-service-init-and-invoke-boundary", ServiceBoundaryTests.Run),
     ("real-aws-key-adapters-and-contexts", AwsKeyAdapterTests.Run),
+    ("compatibility-client-logging-metrics-suppression", CompatibilityConfigurationTests.Run),
     ("real-openbao-http-metadata-derivation-and-aead-binding", OpenBaoNativeOperationsTests.Run),
     ("uncertain-successor-retirement-abandonment-and-replacement", SuccessorRetirement),
     ("maximum-manifest-transition-immutable-index-roundtrip", CheckpointCapacityTests.Run),
@@ -148,10 +155,12 @@ static async Task Holds() {
     var free = (await f.Call(f.Wrap("free", "a-free-object"))).WrappedRegistration!;
     var pin = f.Pin(registration, false); await f.Call(pin);
     var before = f.Store.State.Head;
-    await Closed(() => f.Call(f.Manifest([free, registration])));
-    Check(f.Store.State.Checkpoint.Cycle is null && f.Store.State.Head == before && f.Native.Schedules == 0,
+    var denied=await f.Call(f.Manifest([free, registration]));
+    Check(denied.ManifestStatus?.Denial is not null && f.Store.State.Checkpoint.Cycle is null && f.Store.State.Head.Revision == before.Revision+1 && f.Native.Schedules == 0,
         "Pinned second target allowed a partial manifest effect.");
-    await f.Call(f.Pin(registration, true)); await f.Call(f.Manifest([free, registration]));
+    await f.Call(f.Pin(registration, true));
+    Check((await f.Call(f.Manifest([free,registration]))).ManifestStatus?.Denial?.ReceiptId==denied.ManifestStatus!.Denial!.ReceiptId,"Later pin state rewrote immutable held denial.");
+    var nextManifest=f.Manifest([free,registration]);nextManifest=nextManifest with { Envelope=nextManifest.Envelope with { OperationId="destroy-after-release" } };await f.Call(nextManifest);
     await Closed(() => f.Call(f.Pin(registration, false))); Check(f.Store.State.Checkpoint.Pins.Count == 0, "Late hold pinned dispatched target.");
     var frozen = f.Wrap("after-freeze"); await Closed(() => f.Call(frozen)); Check(f.Native.Encrypts == 2, "Frozen allocation sent native key.");
 }

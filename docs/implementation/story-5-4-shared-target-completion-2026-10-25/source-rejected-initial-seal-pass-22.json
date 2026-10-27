@@ -1,0 +1,15 @@
+{
+  "status": "RejectedInitialSeal",
+  "reason": "Initial log manifest included seal-final.log while the descriptor writer was still running; its initial empty SHA differs from the completed writer output. This is a metadata self-reference, not a source/test/PDB change.",
+  "rejectedDescriptorPath": "/tmp/story54-round22-1fctcr2b/handback.json",
+  "rejectedDescriptorSha256": "cd690b331683e31e34f3808f8117584907982fe30a1c621fc0dde55dafe6ddad",
+  "rejectedLogManifestPath": "/tmp/story54-round22-1fctcr2b/final-log-and-evidence-hashes.json",
+  "rejectedLogManifestSha256": "694a5ab98d40a43395d990f4f1c96d3013b4b7c0ef99817ee1160bae3263d595",
+  "ownWriterLogPath": "/tmp/story54-round22-1fctcr2b/seal-final.log",
+  "incorrectlyCapturedOwnLogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "completedOwnLogSha256": "e94125feea9dfe12db23cabadf1ebf9ceff80783f57c77f3deb099821a9c72c5",
+  "allOriginalRejectedFilesPreserved": true,
+  "replacementDescriptorPath": "/tmp/story54-round22-1fctcr2b/handback-final2.json",
+  "sourceOrBinaryChange": false,
+  "testsRepeated": false
+}

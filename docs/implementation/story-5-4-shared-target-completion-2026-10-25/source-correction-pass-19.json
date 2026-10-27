@@ -1,0 +1,1021 @@
+{
+  "schema": "platform.story54.source-correction-pass19.handback.v1",
+  "status": "FINAL",
+  "observedAtUtc": "2026-10-27T06:53:07.103656+00:00",
+  "sourceCorrectionPass": 19,
+  "reviewLoopIteration": 19,
+  "refreezesIncrementReviewLoop": false,
+  "pass19CorrectionsImplementedAndComponentVerified": true,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "independentReviewComplete": false,
+  "sourceCorrectionStatus": "All nine grouped pass19 source corrections implemented and component verified, including zeroed/missing initialized phase headers and both public authority cancellation refinements. Formal root review and full installed delivery remain pending.",
+  "provenance": "One sequential editor; no children or workflow recursion. Disposable source/cryptographic/filesystem/SQLite/loopback fixtures only. No actual cohort/phase/attempt or Live/Full owner command, installed service launch, installation/enrollment, consumer activation, physical qualification experiment, spending, accepted-record edit, sibling-source edit or VCS stage/commit/push/fetch. Actual canonical apphost was built only, never started/run.",
+  "fullJointCaseCount": 234,
+  "partialQualificationDrivers": 185,
+  "externallyDependentUnregisteredDrivers": 49,
+  "completeQualificationDrivers": 0,
+  "historyDays": 365,
+  "productGates": "both open",
+  "loadedSpecAndContext": {
+    "path": "/tmp/story54-round19-i9zg3sye/loaded-context.json",
+    "sha256": "b86c2c8a04fa2cdac08ce7762db54cf478481464397b15880d419dc0ca415381",
+    "count": 6
+  },
+  "initialLoadedSpec": {
+    "path": "/tmp/story54-round19-i9zg3sye/loaded-spec-before-parent-clarification.md",
+    "sha256": "d8690555a06523cc8756be84d743305fbfd9e45250f1d715a8417b0eb820208c"
+  },
+  "clarifiedLoadedSpec": {
+    "path": "/tmp/story54-round19-i9zg3sye/loaded-spec-current.md",
+    "sha256": "dc99abce692129fc092adc899c877e07a5b11abb9c4795dbf1ccfedee0a98ddf"
+  },
+  "priorFinalHandback": {
+    "path": "/tmp/story54-round18-x22jbu27/handback.json",
+    "sha256": "fd518db1c6ed826085e66ac99f1f057e25a9905fd4f3a40bd24ceac03fb5e5b0"
+  },
+  "priorFinalSnapshot": {
+    "path": "/tmp/story54-round18-x22jbu27/source-final.tar.gz",
+    "sha256": "0d54da5cb43bec897422408eae1a9321aae114573f6ba39267414e4858c86775"
+  },
+  "sourceObservations": {
+    "freezeUtc": "2026-10-27T06:13:55.524170+00:00",
+    "head": "bed9e8ccd4c6fa03a9a7f0857b1a95960320e3ad",
+    "ownedCount": 328,
+    "sourceDependencyCount": 5815,
+    "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+    "deltaCounts": {
+      "added": 8,
+      "changed": 16,
+      "removed": 0
+    },
+    "fixtureOnly": true,
+    "actualEvidence": null,
+    "acceptedTarget": null,
+    "headAtHandback": "bed9e8ccd4c6fa03a9a7f0857b1a95960320e3ad",
+    "sourceBytesUnchangedAfterFreeze": true,
+    "sourceSnapshotIsAcceptedTarget": false,
+    "declaredObservedEventStoreRevision": "458f0cf38e43452655e6c307fa80debdf595a8db",
+    "liveSiblingStabilityClaimed": false
+  },
+  "snapshot": {
+    "path": "/tmp/story54-round19-i9zg3sye/source-final.tar.gz",
+    "sha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072"
+  },
+  "ownedFiles": {
+    "path": "/tmp/story54-round19-i9zg3sye/owned-files-final.json",
+    "sha256": "648784e582cabfd4827289b5644029c64cebb95167fdbb01221b5ad547aefe53",
+    "count": 328
+  },
+  "ownedHashes": {
+    "path": "/tmp/story54-round19-i9zg3sye/owned-file-hashes-final.json",
+    "sha256": "95d6e20ef643ca7256de33428a3fe3d296ef469a579b249a36ce9604893a2c6a"
+  },
+  "newlyOwnedBaselineInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/newly-owned-existing-baseline-inputs.json",
+    "sha256": "49f1f36cfac6d0412344e7f46bd7964f1e6a68e47ea18d3abe1fdc60512d1d1f",
+    "count": 3,
+    "note": "apphost.cs, ingress test and spool harness are newly owned EXISTING source. apphost before body matches the exact initial read/HEAD reconstruction; no source18 input hash exists for that file."
+  },
+  "sourceDelta": {
+    "path": "/tmp/story54-round19-i9zg3sye/pass19-actual-source-delta.json",
+    "sha256": "ce1ec5e5d32d859d7187d5e30fce754daa6e94006afe3fb839775bf1508807c8",
+    "newSourceCount": 8,
+    "changedSourceCount": 16,
+    "removedSourceCount": 0
+  },
+  "actualSourceDiff": {
+    "path": "/tmp/story54-round19-i9zg3sye/actual-source-delta.diff",
+    "sha256": "998e501124a15ae5d721f74f85cd86efe8a00e32c65635b55d52ed9236352b78"
+  },
+  "sourceDependencies": {
+    "path": "/tmp/story54-round19-i9zg3sye/source-dependency-hashes-final.json",
+    "sha256": "5b6738768c45f1f510cd5cc8c958b49b70bbb707b0b626c60e9d9e03ec4a406a",
+    "count": 5815,
+    "immutableCopy": {
+      "path": "/tmp/story54-round13-hjh0_6e_/immutable-dependency-source-copy.json",
+      "sha256": "e9b2b684240650ade60ffc79704f39d5e2f544f934b2d47cddba76a5446bfa33"
+    },
+    "copiedFileCount": 2343,
+    "declaredObservedRevision": "458f0cf38e43452655e6c307fa80debdf595a8db",
+    "scopedEventStoreBuildHook": {
+      "path": "/tmp/story54-round13-hjh0_6e_/copied-eventstore-build-provenance.targets",
+      "sha256": "0644346de93f6468790fe51ce148f4b6f2953e4531aa4301819deab73cd60a3d"
+    },
+    "compositionSourceCopy": {
+      "path": "/tmp/story54-round13-hjh0_6e_/immutable-composition-source-copy.json",
+      "sha256": "d261cea625107f5cb9d81f74ca5f6b31216a2e0cb962add1e58e34b6dd3a6de6"
+    },
+    "compositionCompileSubstitution": {
+      "path": "/tmp/story54-round13-hjh0_6e_/copied-eventstore-and-composition-input.targets",
+      "sha256": "667422be8a13276c4a80e6e3e0c4dabc505461a57ebe034e9ea926d15eace33f"
+    }
+  },
+  "compiledDependencies": {
+    "path": "/tmp/story54-round19-i9zg3sye/compiled-dependency-hashes-final.json",
+    "sha256": "c6f00479048cdcb09e5623d4a58872d9a57ec7d9a1f5c0223841589bf4b5d286",
+    "count": 3133,
+    "boundary": "Final .NET source/component bin roots and Python bytecode, including actual build-only apphost. No installed image/loader closure claim."
+  },
+  "evaluatedBuildMetadata": {
+    "path": "/tmp/story54-round19-i9zg3sye/evaluated-build-metadata-hashes-final.json",
+    "sha256": "c5a2390b688d726254c0612409bafcec094ea34549c10cb7b7217637b84c94bb",
+    "count": 341
+  },
+  "actualCanonicalApphostBuild": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-verification.json",
+    "sha256": "2b72e81b00cb788a7af9ab64c88a49433c1d026732159a381b1d8f2def12cde8"
+  },
+  "apphostCompileInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-compile-input-hashes.json",
+    "sha256": "a9b8eda4a26b18b01984659c7fc1da5d204303d0ad8b88c292252f03e1b42422"
+  },
+  "apphostReferenceInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-reference-input-hashes.json",
+    "sha256": "a5f0703d0a1bf49aedf9ad06a0a0e33ecff1c3314c1d71680c93124959a33960"
+  },
+  "apphostEvaluatedLists": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-input-list-hashes.json",
+    "sha256": "b76986c32fb71152c1d4523c95e0813f116d733ed02a0a05d5d6fb289aee2d8c"
+  },
+  "verification": {
+    "path": "/tmp/story54-round19-i9zg3sye/verification-final-complete.json",
+    "sha256": "b16673242832d46c4d784c6a79016ffb9fd42b20ecdc96773ec6d9544c80319b",
+    "laneCount": 16,
+    "allPassed": true,
+    "testSummary": {
+      "native": 32,
+      "custodySelectedByLocalGate": 781,
+      "runtime": 719,
+      "pythonSecrets": 345,
+      "protection": 205,
+      "actualAspireComposition": 116,
+      "pythonHost": 15,
+      "totalComponentTestExecutions": 2213
+    }
+  },
+  "originalAggregateLocalCommandPassed": false,
+  "aggregateLocalDisposition": "The original Local invocation on this same final source had one unchanged HTTP timer-ordering assertion failure and remains failed historical evidence. Native32/Custody781 passes are retained; focusedHTTP6 and all719 Runtime rows were rerun unchanged after competing pass19 builds/tests ended, followed by remaining Python/build/Protection/Aspire/restore checks. Individual final component passes are reported directly; the failed aggregate command is never relabeled green.",
+  "isolatedRuntimeSchedulingComparison": {
+    "path": "/tmp/story54-round19-i9zg3sye/runtime-scheduling-comparison.json",
+    "sha256": "50afa89eabaf61d44622ca322fefedaf31b6776bfa1e702347f0cc20ee4df9db"
+  },
+  "actualCallerCoverage": {
+    "path": "/tmp/story54-round19-i9zg3sye/actual-caller-coverage-final.json",
+    "sha256": "f30008e1b6162f8dcf39a853b82672b995253dd14d10dc772738ee9cd9aa9de7"
+  },
+  "frozenMatrixCoverage": {
+    "path": "/tmp/story54-round19-i9zg3sye/matrix-verification-final.json",
+    "sha256": "c06dea60a1e67916bd10776a5b0df4377271becbabaf19c5e04d19b928325fb8"
+  },
+  "priorSource18ArtifactPreservation": {
+    "path": "/tmp/story54-round19-i9zg3sye/prior-source18-artifact-preservation.json",
+    "sha256": "4d0cb73dae7116e0706c8b663571b704ad9f5ded30415d4c4438291f806928f5"
+  },
+  "priorWorkspaceBytecodePreservation": {
+    "path": "/tmp/story54-round19-i9zg3sye/source18-bytecode-preservation.json",
+    "sha256": "6441ced3150d51582af85499f0ff331b68ada30d634c9ffa16966e2456e0662d"
+  },
+  "perFindingCorrections": {
+    "path": "/tmp/story54-round19-i9zg3sye/per-finding-corrections.json",
+    "sha256": "831e722880c322f0bce578fcc87515bdba6d0771c4ab6800eb203c171ca210fa"
+  },
+  "focusedCurrentRuntime": {
+    "path": "/tmp/story54-round19-i9zg3sye/final-cancellation-focus.xml",
+    "sha256": "d8841f5b63e91f828fa8a2278f1364ce6080d4b098e87e77cc982b1427147726",
+    "passed": 30,
+    "notAdditionalUniqueCases": true
+  },
+  "focusedExistingCancellation": {
+    "path": "/tmp/story54-round19-i9zg3sye/final-old-cancellation-focus.xml",
+    "sha256": "b6fb096844d25f4a42c734a6f0438ae64937c79ca32663a8a39f0795a5b2303d",
+    "passed": 2,
+    "notAdditionalUniqueCases": true
+  },
+  "focusedHttpOwnership": {
+    "path": "/tmp/story54-round19-i9zg3sye/http-ownership-focused.xml",
+    "sha256": "c84c894de0c34edcb3d702470934745e8a67b81b31625b831bb0bc6545095c6a",
+    "passed": 6,
+    "notAdditionalUniqueCases": true
+  },
+  "guardRemovalVerification": {
+    "path": "/tmp/story54-round19-i9zg3sye/guard-removal-final.json",
+    "sha256": "1aa9cdce04790481c1ac6902118cae4842bdbcf7949451a78a898d05d80c7991",
+    "laneCount": 13,
+    "countsAsFinalPositivePasses": false
+  },
+  "guardMutationArtifacts": {
+    "path": "/tmp/story54-round19-i9zg3sye/guard-mutation-artifact-hashes.json",
+    "sha256": "896d07a305faa2cb37db2f023ec43b8deadd99d8a672e79982bfa585fdde9e82"
+  },
+  "newOrRefinedInstallationInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/new-installation-requirements.json",
+    "sha256": "9f822b38963888a949853c375fb0fd7f3f970de45f341dd5b25e4e11a1404353",
+    "actualEvidence": null
+  },
+  "preservation": {
+    "path": "/tmp/story54-round19-i9zg3sye/preservation-audit-final.json",
+    "sha256": "ba1adb2c4adbb3f75c6c606a8dc6389add36578523a437e8493b3cfa9e72b7e5"
+  },
+  "finalLogsAndEvidence": {
+    "path": "/tmp/story54-round19-i9zg3sye/final-log-and-evidence-hashes.json",
+    "sha256": "347d56e6d6463886d44df37782f02b148ac1233b6c165e69a8b4d5ec84743e58"
+  },
+  "historicalBoundaries": {
+    "path": "/tmp/story54-round19-i9zg3sye/historical-boundaries-final.json",
+    "sha256": "c22f3bbf7840624b8b1c3934463add1a9e7749ab0f362872ac9b693cb468608b"
+  },
+  "allDiagnosticAndMutationArtifacts": {
+    "path": "/tmp/story54-round19-i9zg3sye/all-diagnostic-and-mutation-artifact-hashes.json",
+    "sha256": "04f2c45d61ad0a99653af1fe7ddf342e05036184823cb2335cfe995cdf10fbfb"
+  },
+  "finalDriftVerification": {
+    "path": "/tmp/story54-round19-i9zg3sye/final-drift-verification.json",
+    "sha256": "1201c39bf152054cf82e0f349b94f63f647b0af65ada71e35634fae28f564883"
+  },
+  "incompleteOrRisky": [
+    "No installed qualification, complete shared-target packet, accepted complete immutable target or replacement owner dates exists. Availability remains unestablished.",
+    "Actual independent storage/current authority/trust/role placement, physical all-copy/nonrollback proof, whole-image/.NET/dynamic-loader closure, complete native/history/protection/host/UI-host protocols and all prior named installation inputs remain unresolved; new/refined evidence is null.",
+    "Production accepted graph callers must use the explicit canonical OwnLaunch/Build lifetime. The source composes this boundary and refuses an unowned production graph; actual installed image/entrypoint deployment remains externally enrolled.",
+    "One unchanged HTTP-ownership timer assertion failed during the competing-build Runtime run. Its complete719-case failed boundary, compiled inputs and native thread-state observation are retained; managed pending-task state remains unknown. The same binary/assertions/timeouts subsequently pass focused6 and full719 alone. This comparison supplies component scheduling evidence, not installed timing qualification.",
+    "Early diagnostic build folders were reused. Their available final compiled states and all logs/source snapshots are preserved; overwritten per-iteration early binaries are not claimed as immutable captured boundaries. Every explicit failed/stopped freeze and all inherited source18 boundaries remain intact.",
+    "Formal root independent review is pending; source/component passes establish no complete driver, dependency availability or delivery completion."
+  ],
+  "actualEvidence": null,
+  "acceptedCompleteImmutableTarget": null,
+  "availabilityEstablished": false,
+  "handbackSha256": "2c9dbda5e439ef79d0524d1cafcb80fd9a352a33d11ecb5bde3c76c80c36c16c",
+  "rootVerification": {
+    "schema": "platform.story-5.4.root-handback-verification.v1",
+    "observedAtUtc": "2026-10-27T06:56:04.200756+00:00",
+    "handbackSha256": "2c9dbda5e439ef79d0524d1cafcb80fd9a352a33d11ecb5bde3c76c80c36c16c",
+    "checks": {
+      "ownedHashes": {
+        "count": 328,
+        "mismatches": []
+      },
+      "sourceDependencies": {
+        "count": 5815,
+        "mismatches": []
+      },
+      "compiledDependencies": {
+        "count": 3133,
+        "mismatches": []
+      },
+      "evaluatedBuildMetadata": {
+        "count": 341,
+        "mismatches": []
+      }
+    },
+    "verificationLanes": 16,
+    "verifiedLogs": 66,
+    "nestedHandbackReferencesVerified": 100,
+    "snapshotHashMatches": true,
+    "errors": [],
+    "installedQualification": false
+  },
+  "rootSourceAcceptanceAudit": {
+    "schema": "platform.story54.root-source-acceptance-pass19.v1",
+    "observedAtUtc": "2026-10-27T07:02:44.178999+00:00",
+    "handbackSha256": "2c9dbda5e439ef79d0524d1cafcb80fd9a352a33d11ecb5bde3c76c80c36c16c",
+    "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+    "sourceCodeAudit": {
+      "observedAtUtc": "2026-10-27T06:15:29.954429+00:00",
+      "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+      "checks": {
+        "owned-file-hashes-final.json": {
+          "count": 328,
+          "mismatches": []
+        },
+        "source-dependency-hashes-final.json": {
+          "count": 5815,
+          "mismatches": []
+        }
+      },
+      "all24CumulativeFileDeltasRead": true,
+      "initial23FileDeltasRead": true,
+      "corrective6FileDeltasRead": true,
+      "newFiles": 8,
+      "changedFiles": 16,
+      "removedFiles": 0,
+      "newlyOwnedExistingInputs": 3,
+      "newlyOwnedExistingChanged": 1,
+      "apphostBefore": "Exact initial observed/HEAD-matching capturedbefore, absent source18inputmanifest; explicitlynotclaimedsource18hash",
+      "beforeBytesUnavailable": [],
+      "initialActualDelta": "/tmp/story54-root-actual-delta-wdl3u88r",
+      "finalActualDelta": "/tmp/story54-root-actual-delta-dvr5gr48",
+      "correctiveDelta": "/tmp/story54-root19-corrective-delta-13t4q4lx",
+      "finalVerificationPending": true,
+      "independentReviewPending": true,
+      "installedQualification": false,
+      "callerCancellationCorrective2FileDeltasRead": true,
+      "callerCorrectiveDelta": "/tmp/story54-root19-caller-correction-0r_fo3d1",
+      "historicalThirdSnapshotSha256": "dca82f2357d6378daa051f27802bf76c59aae0206571935bfaaeb9c6c3d8d25f"
+    },
+    "rootHashVerification": {
+      "schema": "platform.story-5.4.root-handback-verification.v1",
+      "observedAtUtc": "2026-10-27T06:56:04.200756+00:00",
+      "handbackSha256": "2c9dbda5e439ef79d0524d1cafcb80fd9a352a33d11ecb5bde3c76c80c36c16c",
+      "checks": {
+        "ownedHashes": {
+          "count": 328,
+          "mismatches": []
+        },
+        "sourceDependencies": {
+          "count": 5815,
+          "mismatches": []
+        },
+        "compiledDependencies": {
+          "count": 3133,
+          "mismatches": []
+        },
+        "evaluatedBuildMetadata": {
+          "count": 341,
+          "mismatches": []
+        }
+      },
+      "verificationLanes": 16,
+      "verifiedLogs": 66,
+      "nestedHandbackReferencesVerified": 100,
+      "snapshotHashMatches": true,
+      "errors": [],
+      "installedQualification": false
+    },
+    "rootFinalEvidence": {
+      "observedAtUtc": "2026-10-27T06:59:43.445172+00:00",
+      "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+      "history": [
+        {
+          "name": "all-diagnostic-and-mutation-artifact-hashes.json",
+          "count": 39873,
+          "mismatches": [],
+          "manifestSha256": "04f2c45d61ad0a99653af1fe7ddf342e05036184823cb2335cfe995cdf10fbfb"
+        },
+        {
+          "name": "guard-mutation-artifact-hashes.json",
+          "count": 11379,
+          "mismatches": [],
+          "manifestSha256": "896d07a305faa2cb37db2f023ec43b8deadd99d8a672e79982bfa585fdde9e82"
+        },
+        {
+          "name": "historical-freeze-1-hashes.json",
+          "count": 7325,
+          "mismatches": [],
+          "manifestSha256": "9acc40deec4d5a9cbd544933984f1baf731fa4e5d434eb005bacd9fb42ef988d"
+        },
+        {
+          "name": "historical-freeze-2-hashes.json",
+          "count": 6377,
+          "mismatches": [],
+          "manifestSha256": "edc3ba95e8bc15a03214310bf4252c2333083cf0f144ae17061ad44cb9b760c0"
+        },
+        {
+          "name": "historical-freeze-3-hashes.json",
+          "count": 12899,
+          "mismatches": [],
+          "manifestSha256": "839a30ecb0399911a5f454baf07e0e3224e2e18dcc6732b7325c03c83242b51c"
+        },
+        {
+          "name": "historical-http-timing-failure-hashes.json",
+          "count": 14,
+          "mismatches": [],
+          "manifestSha256": "f171caaa1de30450b5a9fe29a8dae584fef88f8474cf75dfb78c67ece8db90c2"
+        }
+      ],
+      "xml": {
+        "runtime": {
+          "count": 719,
+          "allPassed": true,
+          "priorNamesRetained": 689,
+          "newNames": [
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime(boundary: \\\"before\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime(boundary: \\\"cancel\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime(boundary: \\\"exclusive\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime(boundary: \\\"expired\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.ActualP256QualificationVerifierRechecksFinalCurrentTimeAndPreservesAuthenticatedOriginalTime(boundary: \\\"historical\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicAuthorityReturnRechecksAfterItsActualPayloadDecoder(outcome: \\\"cancel\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicAuthorityReturnRechecksAfterItsActualPayloadDecoder(outcome: \\\"expiry\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicAuthorityReturnRechecksAfterItsActualPayloadDecoder(outcome: \\\"valid\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicNullEvidenceStillObservesOriginalCallerCancellation(alreadyCancelled: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicNullEvidenceStillObservesOriginalCallerCancellation(alreadyCancelled: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicOwnerBudgetKeepsInternalTimeoutDistinctFromOriginalCallerCancellation(callerCancels: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.PublicOwnerBudgetKeepsInternalTimeoutDistinctFromOriginalCallerCancellation(callerCancels: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: -1, cancelled: False, evidenceOnly: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: -1, cancelled: False, evidenceOnly: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 0, cancelled: False, evidenceOnly: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 0, cancelled: False, evidenceOnly: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 0, cancelled: True, evidenceOnly: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 0, cancelled: True, evidenceOnly: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 1, cancelled: False, evidenceOnly: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.CurrentProofReturnTests.RealSignedAuthorityEvidenceIsCurrentAfterEncodingAndCrypto(expiryOffset: 1, cancelled: False, evidenceOnly: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualDirectPrivateReadHasNoAdditionalLargeReadAheadAllocation",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial(fault: \\\"cancel\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial(fault: \\\"growth\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial(fault: \\\"late\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial(fault: \\\"parse-failure\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial(fault: \\\"valid\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery(changed: \\\"agreement\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery(changed: \\\"execution\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery(changed: \\\"native\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.ShippedReaderRequiresAllThreeIndependentlyRetainedDenialBodiesAndNeverRepeatsDelivery(changed: \\\"receiving\\\")"
+          ],
+          "xmlSha256": "95ab973cc9a44440abf19983a995dcc5b3c306809ae17f0156356ea073a3f533"
+        },
+        "custody": {
+          "count": 781,
+          "allPassed": true,
+          "priorNamesRetained": 781,
+          "newNames": [],
+          "xmlSha256": "1a285544e8a4def38b8e5126ae50499765497d95134b65b026e9a0d1da3e315c"
+        },
+        "protection": {
+          "count": 205,
+          "allPassed": true,
+          "priorNamesRetained": 205,
+          "newNames": [],
+          "xmlSha256": "97ba644fcef3de5903a3c85440d6ff6de2b126d9e6c1b7e213ab825b883cade8"
+        },
+        "composition": {
+          "count": 116,
+          "allPassed": true,
+          "priorNamesRetained": 0,
+          "newNames": null,
+          "xmlSha256": "68f0dcd83333e2c08242eec03d11d6513c2a73f8955dbe7af5b87769d136367d"
+        }
+      },
+      "runtimeClassCoverage": {
+        "CurrentProofReturnTests": 20,
+        "PrivateAcquisitionBufferTests": 6,
+        "QualificationExportDeliveryOriginalReaderTests": 4,
+        "QualificationHttpOwnershipTests": 11,
+        "BoundedRoleStartupTests": 6
+      },
+      "compositionMethodCoverage": {
+        "ActualAcceptedCompositionOwnsEveryLeaseBeforeBuildAndTransfersOnlyOnSuccess": 5,
+        "ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen": 5,
+        "ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal": 8,
+        "ClassifiedDenialRequiresActualDurableObservationBeforeResultAndMissingCaptureRemainsUnavailable": 1
+      },
+      "allFinalLanesPassed": true,
+      "finalLaneCount": 16,
+      "componentExecutions": 2213,
+      "testSummary": {
+        "native": 32,
+        "custodySelectedByLocalGate": 781,
+        "runtime": 719,
+        "pythonSecrets": 345,
+        "protection": 205,
+        "actualAspireComposition": 116,
+        "pythonHost": 15,
+        "totalComponentTestExecutions": 2213
+      },
+      "mutationLanes": 13,
+      "allMutantsCaught": true,
+      "rootMutationVerification": {
+        "observedAtUtc": "2026-10-27T06:59:34.071267+00:00",
+        "all13CaughtWithoutSchedulingTimeout": true,
+        "mutations": [
+          {
+            "name": "denial-reader-correlation",
+            "selected": 4,
+            "failed": 2,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "a6a2c57cc15f81fb919238bbed6e46ed411feec68b58c76cf7aba1e6654632d2",
+            "passed": true
+          },
+          {
+            "name": "private-growth-sentinel",
+            "selected": 5,
+            "failed": 1,
+            "semanticGuardFailures": 1,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "bbcb53a0e54381074c468049ed3cd2cb636768312e4a6f31098450d4690a8ef4",
+            "passed": true
+          },
+          {
+            "name": "private-read-ahead-buffer",
+            "selected": 1,
+            "failed": 1,
+            "semanticGuardFailures": 1,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "c33c2c823444f18ead08ca5e8ce0377a5dd6aa8f7e5fd707805d4715920f5973",
+            "passed": true
+          },
+          {
+            "name": "qualification-final-freshness",
+            "selected": 5,
+            "failed": 2,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "55e1d864a1446fa409c877d8e89b4441184a91384d4bb9913b038ec7f6a51505",
+            "passed": true
+          },
+          {
+            "name": "authority-evidence-final-freshness",
+            "selected": 8,
+            "failed": 4,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 2,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "49a4898657724d6bacf403678a2c42a15e4be3612b02fff2b6b0e4b6ecd0cc9e",
+            "passed": true
+          },
+          {
+            "name": "authority-decoded-final-freshness",
+            "selected": 3,
+            "failed": 1,
+            "semanticGuardFailures": 1,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "0f8eaeed97d24516eb48c3fda678f4bb54e57dcb712dc6ebf68c918a435c645a",
+            "passed": true
+          },
+          {
+            "name": "public-owner-timeout-semantics",
+            "selected": 2,
+            "failed": 2,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": true,
+            "logSha256": "075dda1a38024fffc11820ae63e44fd79a097b8cc4e2920941c7a7d5525d8620",
+            "passed": true
+          },
+          {
+            "name": "public-null-evidence-cancellation",
+            "selected": 2,
+            "failed": 1,
+            "semanticGuardFailures": 1,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "ff08648d7d95fe3dc92597beab03d0db98756686fedf455fbf62374a9385b0ee",
+            "passed": true
+          },
+          {
+            "name": "launch-failed-build-owner",
+            "selected": 5,
+            "failed": 3,
+            "semanticGuardFailures": 3,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "c6064696b5b87c5b72156a4be54d2bb83a3e1a1c94c16826dc89ff00f29aeb1e",
+            "passed": true
+          },
+          {
+            "name": "admission-final-auth-order",
+            "selected": 5,
+            "failed": 3,
+            "semanticGuardFailures": 3,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "8afc972dfc995402daad318b3de775ad92d34bc0c36cc6dfbd46421e064c308c",
+            "passed": true
+          },
+          {
+            "name": "replay-conflict-provenance",
+            "selected": 8,
+            "failed": 2,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "e44e5316822fa3b90a0ba30627301366c09520087d0b9ce16c198d1bc13eaa30",
+            "passed": true
+          },
+          {
+            "name": "sqlite-delete-barrier",
+            "selected": 2,
+            "failed": 2,
+            "semanticGuardFailures": 2,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "9125ab2b99de746078742f31cb2bf163eab6fda0bde8cfb3a74b798db9336702",
+            "passed": true
+          },
+          {
+            "name": "damaged-phase-liability",
+            "selected": 2,
+            "failed": 18,
+            "semanticGuardFailures": 18,
+            "readCountOnlyFailures": 0,
+            "schedulingTimeoutFailures": 0,
+            "expectedBudgetCancellationIsGuardOutcome": false,
+            "logSha256": "7b6be42df095b890c4c56920f446799a37f108df9e6f6d2c89ac95ae67643ae8",
+            "passed": true
+          }
+        ],
+        "fixtureOnly": true,
+        "installedQualification": false
+      },
+      "priorCompiledPreservation": {
+        "compiledCount": 2108,
+        "mismatches": [],
+        "workspaceBytecodeExactReconstructedCopies": 2,
+        "rawOldManifestsNotRewritten": true,
+        "mutableHistoricalProbePointerUsesAlreadyRetainedExactRedCopy": true,
+        "originalHashMatchedCopies": [
+          {
+            "path": "/tmp/story54-round19-i9zg3sye/historical/source18-recovered-bytecode/eng/ext-secrets-1/__pycache__/phase_completion_pool.cpython-314.pyc",
+            "sha256": "d247d0d641a5c7553bd27ff09b0a22168cf527bb60acb523ed92059408cdabda",
+            "matchesOldCompiledManifest": true
+          },
+          {
+            "path": "/tmp/story54-round19-i9zg3sye/historical/source18-recovered-bytecode/eng/ext-secrets-1/__pycache__/enrolled_sqlite_vfs.cpython-314.pyc",
+            "sha256": "3669b3ef203bfd6093edf82fe98b2c14469c201d0c2fb6dfaec8cd7504ad8623",
+            "matchesOldCompiledManifest": true
+          }
+        ]
+      },
+      "newOrRefinedInstallationInputs": 2,
+      "allActualEvidenceNull": true,
+      "actualApphostBuildAudit": {
+        "observedAtUtc": "2026-10-27T06:21:28.653090+00:00",
+        "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+        "apphostVerificationSha256": "2b72e81b00cb788a7af9ab64c88a49433c1d026732159a381b1d8f2def12cde8",
+        "checks": {
+          "compileInputs": {
+            "count": 1621,
+            "mismatches": []
+          },
+          "referenceInputs": {
+            "count": 432,
+            "mismatches": []
+          },
+          "evaluatedLists": {
+            "count": 52,
+            "mismatches": []
+          },
+          "entrypoint": {
+            "sha256": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891",
+            "matches": true
+          },
+          "assembly": {
+            "sha256": "ed991d79da5d304b29ae9cedfb08c4e72623b724b1dd5a2ba117345941a334b0",
+            "matches": true
+          },
+          "inputCaptureTarget": {
+            "sha256": "3d7e449fbfec0da56dce5ce4accca39155cdbf27833a46f3de629ff6d0464c0d",
+            "matches": true
+          }
+        },
+        "copiedHostedPublishingExactlyOnce": true,
+        "buildOnly": true,
+        "resourceStartRunActivation": false,
+        "installedQualification": false
+      },
+      "failedAggregateLocalInvocationNeverRelabeled": true,
+      "installedQualification": false
+    },
+    "sourceTaskBoundary": "Nine review18 source correction groups component-verified. Formal independent review19 pending. Actual installation/protocol evidence, owner dates and accepted complete target remain missing.",
+    "independentReview": "Pending19",
+    "sourceComplete": false,
+    "installedQualification": false,
+    "deliveryComplete": false
+  },
+  "ownedSourceHashes": {
+    "apphost.cs": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891",
+    "eng/ext-host-1/prepare_acceptance.py": "215799a15aa13286ae479ff30e95869bdbdc135539de0708a4db9a0e74b381dc",
+    "eng/ext-host-1/test_prepare_acceptance.py": "5fd62cc009623d64b6e47a0bdd96facbe80ccb503397fb54af4fea6b31bb532a",
+    "eng/ext-secrets-1/authentication_acquisition.py": "9da1b05d2a8fc318d569cebfe784b8d5ecebdcfad63ccf18302121214814eb80",
+    "eng/ext-secrets-1/bounded_cohort_http.py": "3bed3b7a26a96223a4a9ddd8d229daec20ab14be46c7a00d46fc90f4ece057fb",
+    "eng/ext-secrets-1/bounded_file_io.py": "d4797d27e461d0c3f3f6346d5e0740eb6b36fbfa70a523e9c9ecce07f646e5e2",
+    "eng/ext-secrets-1/case-driver-inventory.json": "6ace84b7f52bb0d4b7c6cfa33607ddee652fde7fd0da0782f1ab7ed5f436c1c5",
+    "eng/ext-secrets-1/coordinated_packets.py": "d7485b642ea3ad7432a437a0ca751714531fd510464b7003407c485387941333",
+    "eng/ext-secrets-1/enrolled_sqlite.py": "ff49ed15d17f8849176d4baf9a8ee64d269115d636eb56022c560266f54e733a",
+    "eng/ext-secrets-1/enrolled_sqlite_vfs.py": "474416d055ec16ea32d858532ef8aa44148d2680bd2a9bb6559a889f47715b7e",
+    "eng/ext-secrets-1/execution_profile.py": "5b7291c46d8255bc1e11bff85bc19b83dd2a38b8f20046f46a1ff3e06429bc82",
+    "eng/ext-secrets-1/joint-authority-schema.sql": "a0f74e3f7a06fe23c568b80c0af139a6580ad3478343eb7ea0ec842f82821540",
+    "eng/ext-secrets-1/joint_authority_service.py": "854f064ef26d7e39eb61dd74c8e0c3b3540dc1d02b6a502f9162d11f8c0b627d",
+    "eng/ext-secrets-1/joint_live_phase_runner.py": "05a1e6f297cfd2a635e8a981472cc2467e25ee07b3958a745ef7aa0cd6c2b47c",
+    "eng/ext-secrets-1/launch_inventory.py": "698a8a52a07e3b19235df9d353baf95ef59ad27a18b57e7a9c1b3ed4dd446fa9",
+    "eng/ext-secrets-1/linux_persistent_storage.py": "a4b606b15fb42a9bcc2a6fa22108bdca1354a3ea12b4ef38fa16fddc09a2f8b2",
+    "eng/ext-secrets-1/phase_completion_pool.py": "6328bf950ec44b443d118705110985f2eefd5563baf0c188486e7e098ab175d4",
+    "eng/ext-secrets-1/prepare_acceptance.py": "84618dd897ce426c130ced01d2df5b7c395650627ad1bbb6734951d65b664802",
+    "eng/ext-secrets-1/qualify.py": "8af9b23d0d3bc6dffbecf3d3fccaea7517f294323419900c0b62c0604361d1c3",
+    "eng/ext-secrets-1/sqlite_storage_fixture.py": "a88b9ecf972fb719de2973b3314c3439070d081e02c7b873de8d4dfbcdf1eb76",
+    "eng/ext-secrets-1/sqlite_vfs_abi.py": "070d7d57e780dd5dcabda8891d3d68582c80298d7681c818515fc97e898615e4",
+    "eng/ext-secrets-1/test_bounded_cohort_http.py": "fefd891ed844a84362ed453f488c9a7b832703d2712770febce632242f5a41bc",
+    "eng/ext-secrets-1/test_case_driver_inventory.py": "e98df5fac52c3836f336b2cb3f27e3f6160fdba3b6eb44f25e7fdb5c00b15007",
+    "eng/ext-secrets-1/test_coordinated_packets.py": "7042f152fba9408fa27bb6cb0737bd2acfac97bc2d4f7756a5d7e9f9fdd9d028",
+    "eng/ext-secrets-1/test_execution_profile.py": "b047eb49acb086572789a9aa781f6f6d72b4c6849328c7ef6002906f9a2e5858",
+    "eng/ext-secrets-1/test_joint_admission_ordering.py": "3ba5a81b67280d068e4fccd33513ea00bd29f8a1fa262a0084c9172973c31c6f",
+    "eng/ext-secrets-1/test_joint_live_phase_runner.py": "04706f4c5498665170df06f4615c1dd9d90045eb9c9aee5d0fff9ecac40e8a9f",
+    "eng/ext-secrets-1/test_launch_inventory.py": "993acec0f331010a432e28482bd5dc6ce116ba3b2faf4cd64e490708f77b150b",
+    "eng/ext-secrets-1/test_native_local_gate.py": "564de414fd01c39bf6e4f88a94dcf158d1b82fb52f2dee2a7640601a2fc54016",
+    "eng/ext-secrets-1/test_outer_cohort_uncertainty.py": "5a101b53e08887147e2e3f65342fba32d4f08a9a462cd580545e128a8ebf0e1c",
+    "eng/ext-secrets-1/test_pass10_boundaries.py": "b2cc745fbbbc60514351c67f9ae346668c410492a385a7d18cac45ca4b3eb5ca",
+    "eng/ext-secrets-1/test_pass12_boundaries.py": "3a19024e6062209fe17b122f780ce6a4c3cbb1352b425879688d9b55a0595da9",
+    "eng/ext-secrets-1/test_pass13_boundaries.py": "562d842533898f7b073c498765b15f25b341f81dbe41cba330066b1599d78af8",
+    "eng/ext-secrets-1/test_pass15_storage.py": "7fc43a6b6f1ce1937c3c50bfa9756d12a2c6465631807e2e2a3d33c3a8c2f5c9",
+    "eng/ext-secrets-1/test_pass16_startup_ownership.py": "2ca70d95896c20806d990851b2b378dd7112301f1d9fdd75d04437f584fd6bc9",
+    "eng/ext-secrets-1/test_pass17_authentication_deadline.py": "551b7b3e1909264e2f5bdf29ec06caa2e7a5e4e9f07fdc2048d7cdc2c0394f8b",
+    "eng/ext-secrets-1/test_pass17_storage_and_permissions.py": "3d40c3e008c79a3a24b0e592ece600f0ee0a3a343423bb746222bd02d04f2f3d",
+    "eng/ext-secrets-1/test_pass18_file_and_sqlite.py": "e86712ea67c0014121cb56726ba856306126c095222b6a3d67a43ed39eb18b54",
+    "eng/ext-secrets-1/test_pass19_sqlite_and_phase.py": "764f32a42162dab634b9147326f5f7f849351088062447a275f2f05a1d882625",
+    "eng/ext-secrets-1/test_prepare_acceptance.py": "7a03176c9d62a78b5630a658439ab11d8a0aefe5d3c62ecf73f1de09ead1c0ac",
+    "eng/ext-secrets-1/test_qualify.py": "ccf48bc02c98c1ec49e39d0ecbaeba37a3c91f483c3efb123535386f6f982b49",
+    "eng/ext-secrets-1/test_recovery_proof_deadline.py": "a749f6166e73c7546c6743d135b5ae62705275ee563a33faedec5efee2389d0a",
+    "eng/ext-secrets-1/worker_startup_ownership.py": "90ba87261e645a706dea06cdb04a592cfc7c5cfd07040791e494c17285cfda08",
+    "eng/verify-ext-secrets-1.ps1": "214fe196710fc85449a3e55e4ce91a79cf7975aa1f184505c24f42c0ab6d028e",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj": "7a098ff2a23ce76f9547650269cdb7b034256a518269a3c9f5ba0116a652c477",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs": "711fba977080aa39f94d8ebbfa7bd260d296224db9bf4d5005de9a773d727d7b",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/LifecycleQualificationRecoveryTests.cs": "fcda7c34a191e9274355ab1fcc51dd7f0f6755c06aeb35e66ae87baa55f71674",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeBoundedArchiveTests.cs": "f5d58989b8f6789c4307c5e171c913dca9b239b6e7d36c4168b2e145c45d19d6",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeDurabilityOwnershipTests.cs": "f1064517ffc5d9248194a825eb78461f1f48b19210f3a80168356bdce45c4178",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativePhysicalCapacityTests.cs": "8457b0f5024eb5c0d0e7560a8085282f264ed6f7376ef1c905d28f850f03a943",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReopenedReserveTests.cs": "7db2433c5d2913f183182b353d6ee40c5872842a7a30415cdb017887228ad85d",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReservedWrapTests.cs": "5390c95a6fad16084e5c0e258fe79b5ad8fa83a08346c5d65efea1fd244f29e0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs": "6d03fbb890df9e56eda220fe5f3c7da2d6b61c298226202325d0bc1744cfd775",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json": "3fcb94aca3ef72ebdb21b2ab93db0c46389f6b7cf0dc9a2bdeaedf909fd4d8f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs": "a6ecca6f5cb967bc88b397391f07f7f9e5b3936faa07893e483764c96ee989de",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs": "adc8b7ef150f0462a4ead3820fe061a6669289a0e60879a63b88e1083913fa3c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "19babed18b0f48832a8ae63d24f02b4ef8f9444dd621a4c8eada82a675c73e1a",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyOwnerOperationHandler.cs": "e44be49ed10c29e336389c69cc7c6dd5f509ca35f0e30c8a4e4af989828df59f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs": "b3323eb665d4f8840bb747fbcdf89ee66fc3d3ec65afce5aa0720197212d9917",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs": "310a09b86d6c66810d8300aee1fa9355009c05b95993f8a2339ef49caf138ed8",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityInstallation.cs": "1f83a91d800166b1e81649b4fba613c8fad232079dae2348c1485b71ea2f2677",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityState.cs": "d319c6d66a054f6ba364841e03a62e03a3acad3c8fe1ed6ff695ddb0aaee2d4f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeCompletionReservation.cs": "c442a4f2b0fd833b84cd7dc99ee2fc8404db0092f29ca6b26b77575b680b56cb",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs": "dd304b0b1db9c67f1e85882df29b3d9a89e4e0c6955664fe786aeaefabe5d10c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeInstallation.cs": "507617e4cfd88f776b5f20f86af93438c2a77cf1e5b6406a47d8edd424f0fa68",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativePublicationReservation.cs": "91ae3161785ceca1e1eb979bca4d35ae03d4c91bb71f013b915f2e1779a0bec0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs": "6bcefea5dc8b6e9a6f87bdc9d865391f6d9a443a59da343ca506a164d8931466",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs": "2543f80c82396d274b97ec50d0bacd47934aaa650170ccac47a14a56cc9886f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ReferenceBackendCredentials.cs": "15246609912a7174bf7f6903382d9790ef3184a23861b72c9e1e8e67bdc3e8a8",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs": "cf9f6ef32749b0977ef451d9e2f3cc8f9104a224ac8cfbff70c26f967c39c80f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SignedStatement.cs": "4769f387a3a994f4d14461a6a330e64378f5cc9be43afe279973e22b0738b8d0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/StatementVerifier.cs": "a94ed09a5a3dc554d607ca24965f72a7bbd8120c554aa525c09f78b788fa2f20",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/WorkerEntry.cs": "704023f0fcbee235a74913441308369a08bf081cdf6db9dc0f0afb192102130b",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json": "a3b5f8b873c9ac2f9c701f3f8d55094608d1a0a139b03725f1a6591d0dc2971a",
+    "src/Hexalith.Platform.Composition/AcceptedDependencyRecords.cs": "5ff92bd47d6e18a04bcbd13f6407756a329b2efd6742f558d000e211d352e32d",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchArtifactLease.cs": "8b710c7a76b433bf0fa742ee3b16638074a003cf4e22efc25be40e5dc7a65634",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchLeaseOwner.cs": "3666fff71ae86022ca791218880f6abb295640ac7ed9a8db45de27c017d01e39",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs": "08bbbfd556e4874ab6fa90a1fbf57238385e1fb62f8f4792cab35a5d2d76ee95",
+    "src/Hexalith.Platform.Composition/AcceptedListenerBindings.cs": "3774d514f2c27e5d26106c4c393d28c68873fd837e4d1c1af6ebe67f3e50ffbf",
+    "src/Hexalith.Platform.Composition/AcceptedResourceListener.cs": "625d33e42afe07f62b9b479b086b61a8ac8fa450a9c5895f6280361d2b6947bc",
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "1b7e83575454d661a6d1cee1f7d21dce2ad5061301a68b932819498b67941f25",
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs": "358c955a44a872aa3ab3aef0efe9db7bb4bb3ffe4245efc0066a3182094c6573",
+    "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "93eb6f405e6e16bcaa441c7f92886ad118eac01eb7994cc3a0cdd90cc70a8776",
+    "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs": "048184a0d3e2cd970f4314fb893e1a1e047feb9509434fcca2ba8ae279642e00",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "a4749e940cbd34fbf2c7584a160cee243fde55d18a58d7bd34a0040dff28e7f8",
+    "src/Hexalith.Platform.Composition/PythonCanonicalJson.cs": "ee2cde753d50bae2942ac64f2bfc42e089e51f08d9c8429eb60f95d2d38612e9",
+    "src/Hexalith.Platform.Custody/DaprExportQualificationReferenceReader.cs": "465730bb1613fcc4b23bd224dac9024db5842ee7f8aaafaec000d853c7dd8e3d",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryActor.cs": "4198b0b8ad15661d262e3d1e1aacd55a654099630a0a919893f1d70986b303ae",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryDenialOriginal.cs": "2fcf7999af14ad1ff0786c9f198a93cc3b943b5a7ed28353e62f70334e74da5f",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryRawIdentity.cs": "1ed9eb2c88cbfaf508dd2be3ccae5b6bc14088447eaeb1619e946158bf853e1e",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingDenialOriginal.cs": "4a1b42d8668248c4a892094c008ff6ac56fc44812455ad414b9f8339d4ee39b8",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingRequest.cs": "fe24468f33f7c99e01fa083b986a6881c090fb6c35036ff1f177cee8f2f970e4",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingResult.cs": "1cb35fbc07c9361f6032059dc0e2ac5b09daa964bf3546b7602aaaf59fd65ea1",
+    "src/Hexalith.Platform.Custody/ExportQualificationEngine.cs": "17b68483094f5db8383996918fce546a10c7a7fc8e7b089dca68ff40442f1028",
+    "src/Hexalith.Platform.Custody/ExportQualificationOriginal.cs": "23bf1c38c10bac254ec08785b16386e94ca888078624089fd9fc7452f2154ba6",
+    "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj": "652fd929c570d75863bab4e8389aff3e3e6bba092ded2737b36c81d6aa991117",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryActor.cs": "e41a65fc279039fca616fd0dd99feb996c1280c4a87ba2b76163226b3c68dbe7",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryDenialOriginalStore.cs": "ba7e7ef8470b6b50595a99327009f5966c47584b64416bda5b58335f13a76ff4",
+    "src/Hexalith.Platform.Custody/ITrustedEnvelopeReplayRegistrar.cs": "1ac256743bf75d71937fb8e582a582567e195891af0d6ada36f02de92a73bdfe",
+    "src/Hexalith.Platform.Custody/IndependentDecisionManifestVerifier.cs": "ceeb8a39b93e5d2509d3144ee9f6b3a9892c299e362573c65363c30013ab5a1a",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs": "de97f8a48db0f1b4e6de1f34403f6bdb290f8a6af476fdd45106a767d311df48",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeDenialCause.cs": "4da03e3844f9a69afb9c351f8a76d6d436093420c4195af22306ff0b5ec79c04",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs": "5d4298c905980fd2d68fd08d08e5407079f123e5f2bc61e7960a133ad5621b43",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeResult.cs": "30e0caa267c5243d87cc7e5fd5f362c17e90257c42bdd16682ce201afd2cdcd5",
+    "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs": "8e70ae403608f201937efb25c33cc747eeb5d1c2e9bb636d0108bf6a1453ec9f",
+    "src/Hexalith.Platform.Protection/DaprFr34MeasuredOriginalReader.cs": "0f99e08a6a0e180e3fb63cc93d39a8e2575177c3a11343c07ee36548bd1c3ce8",
+    "src/Hexalith.Platform.Protection/EventStoreFr34CanaryEngine.cs": "f7dcd0c6722818040f3fe547bd3f05e860e7d28f758e2a86ae72cd549e651395",
+    "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs": "faa1bc256f3e509a9824a1579ce425a0db7bb65b3175524156ad257107fa8414",
+    "src/Hexalith.Platform.Protection/Fr34AuthorityApplication.cs": "b363850a4556d989204d2a227a6872d3ce6d4e91d1fa65aad396218980ba4c24",
+    "src/Hexalith.Platform.Protection/Fr34CanaryCommandProofSource.cs": "a0f190d042f1bac4f4d3bcf2f569350c1dec9d079087e0918debcd2d259925cd",
+    "src/Hexalith.Platform.Protection/Fr34CommandAuthorizationHandler.cs": "0e25197d5ac5a431a966a748b52a7ff31bcafa581c2e7945e414816dde94d9e6",
+    "src/Hexalith.Platform.Protection/Fr34IndependentOriginalCollector.cs": "0852c0dd9319e7ea006d609271e12dcfa490432745ebdc5c827c2162b376411f",
+    "src/Hexalith.Platform.Protection/Fr34MeasuredCanaryOriginal.cs": "26ebae5cfba8c5b43f90eb2023158f89357eca3893d6d979d2e10faef99082d4",
+    "src/Hexalith.Platform.Protection/Fr34OccurrenceOperationHandler.cs": "f2cd7dd6578590164bc686dee478a50118b2e1c1075cacf478edf57683612d76",
+    "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs": "01f141573b9ebfd9b9ca3605456016b8a75497a56ae0b08b91d558e5e7819506",
+    "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj": "c49758086c8b1a9cad672b067888a6e39f2a942d74c8323a939e8b0fae5becce",
+    "src/Hexalith.Platform.Protection/JointPhaseCommand.cs": "b52e86315b4511d4042815a85e3825dd05532e7d367d6b631ddbe9469fbcf88b",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs": "88fd9ff8c533e3bbd35a526be28cf8ffb3895872f4bff0cdaed727b841fc33ed",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandInstallation.cs": "829dd21eac888919674cb6afcfe00384bce0442c6c15813f02edad5ef070d9d9",
+    "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs": "c676fd1982ad71748b5dce1a71c930badd47a32752f350d4c45eb140ed239579",
+    "src/Hexalith.Platform.Protection/JointPhaseNativeSourcePublisher.cs": "f2f4f07db5bc9b9de52a0b1d0b47cc77dd3bfa93c067e36ac18a42cdb7fe0fc9",
+    "src/Hexalith.Platform.Protection/JointPhaseOriginalStores.cs": "3f0f571a2ce99a656c8068d684d6658421577832f5990733b2166b1960e9a488",
+    "src/Hexalith.Platform.Protection/JointPhaseRequestRecipe.cs": "3633db55904e66cba9f0e5caeb0c88e22756991e66672d0edd8e5c520d551a84",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceExecutable.cs": "2ade59770c58ba985875fe8dfd6faf7352c82a51923c912d38c36c0ada324005",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceOperationHandler.cs": "d4af0f1b69e4ff83d2bec18eee3a96750409d9642c92a15389e3284c8d80c4d8",
+    "src/Hexalith.Platform.Protection/OwnedWorkloadProof.cs": "435bb6849e9fec71d0f07d906aef1ba930b11b2d2dab8847a4284b83d54f32df",
+    "src/Hexalith.Platform.Protection/QualificationDispatchOriginalReference.cs": "610c5f9bf3a817efe09d2e1d716ee83ae0dc0a71a3ccb8f0ef719a8d0408a3ae",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs": "32730889db61917c7cd3558216febbfce9fca6de5bb531900332bf55f0c5cebc",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditScope.cs": "e2922179859d280c24eca6f54f8519026007594ec1c1085cbd13f40eb6df247d",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditSnapshot.cs": "dcf4ea5685bd8630f08aaf03be63796d325734e5af25e622aa3a573ce2182444",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs": "1a857eb06102afedd06a73c4e5dd2a2641d686cfa75d5faf7925929b40979073",
+    "src/Hexalith.Platform.Protection/QualificationGatewayReadProofs.cs": "cfbf094e891fa1049b80c06618cd2bad92009dac451e2a84de19d8b62ff8cc53",
+    "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs": "6315fdd9852df9c33f6a500196cb2222c5324cc254948c696b6a4bc4f0210cf2",
+    "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs": "57e1ec888f451be1e50eec25b32eb6571d7d2a8936a3c18c26166bdc7ca66449",
+    "src/Hexalith.Platform.Protection/QualificationGuardOriginalReader.cs": "2c996276b253bfeabcb7f8016a80e06c875aeaab314244ad4d4a7d29fa469f8b",
+    "src/Hexalith.Platform.Protection/QualificationNativeEvent.cs": "3661a288de81a42b9a7310cd232867704456475af2410f455922c79df92d1b41",
+    "src/Hexalith.Platform.Protection/QualificationNativeSourceReader.cs": "0450aa9ed8eb7b8404e7880fd14a7aaa2210529a5bc54109116b54829d3b904f",
+    "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs": "c69aaf4d574f18ce16bef557010a96bfc4c762705a54b97036c23dc5db5b82ca",
+    "src/Hexalith.Platform.Protection/QualificationOwnerQueryClient.cs": "ee7fe5803313672c52867c57d41363cbde043ddf95a46b59897b79d070b31379",
+    "src/Hexalith.Platform.Protection/QualificationReplayOriginalReader.cs": "7c2c5bd4998f54008784e151540218e2feb78c636e3a306d6fb808ded13a4864",
+    "src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs": "3bc542885aa0fa61aa2ef3f3267a22a7cb4c8c5454211a6dea3cba4743d93531",
+    "src/Hexalith.Platform.Secrets.Qualification.Enrollment/Program.cs": "b3fa1123b340324b2ab8119fa2eab1f3b1e5ee091c1ef55532c726974b5a3534",
+    "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs": "00db4fbec359f787f6a8a16fee3a5650d6c2dfaea168413cb61ac779659fe98a",
+    "src/Hexalith.Platform.Secrets.Qualification.Observer/Program.cs": "1160e6fd4f309043662ff7190dea11df15cc161eb1372be8cd704a7c40e741bf",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs": "529e1d5af7090f05360da579f74719ec82f75eaccf02b5a822c6fb82d6b22170",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs": "dbe7916ec26770fb54fe195269896523fa03d4261e63936e9052c858db15000a",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveAllocationProof.cs": "629b0a6ccabab0fcd8c394ccd70cb9886f32abc40f4ca0b330fe79824b599fd3",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveFileLease.cs": "55f622a8d9ff586ccffb6c36b9ffa46b4bc7886f00f46823bcef42f7c12ada4d",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveVolumeFence.cs": "794e45a4f932e192829a09fa0f5b41eab47f1dd5c0fc213c8c472a3d1039782c",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedDurableFileOperation.cs": "3997bc7792c658e655444ae7441778aed585f3df6279219f9c1b543aaa59e673",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs": "de0334b0824e6bf7f66a317eebd78f2a7081c5e29478cca286e76baa8fea385e",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs": "c29e081ca4739e71d671199824f7eac24faafc5c582c6822d31802d3ac28833b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs": "260e08da76dad9b389c46cccf03229c59dd6d68802fd3bfce1279e3dfe9f6b24",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestDenial.cs": "c65145869293803703ac55d98b7970f0668571ba0b282d1aac1c2331a229effb",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestOriginal.cs": "cbbeea60fa5bd18295242440352c17c95b31b88b026f479e561da80d27c0038b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleIssuance.cs": "b1e678b63dd8b2f62992b6ad1015a56f73dd23ed6c7aca40ac258a2202d6a8f2",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleWorkloadGrant.cs": "39897831cdf45855012576227584d4305a7628f0df781b3af7eadfe28a57e4e9",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyWrapOriginalIdentity.cs": "d9ed956444c662be18f3767c2ad3636aeb86d5ab87202a41116e279b847794ac",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs": "39f59c284daf0f7ccdd5fb6668ae81b5b480a0862c1151d914d80257f804c5f9",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprIndependentReplayRegistrar.cs": "176e9d06344643d18104f47e761e074f8e5574a1c54b598fedab32b1dd2879f0",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationAttemptAuthority.cs": "1f2de60e44507c082ce9adfe5f7485104db332d7a0ebaffb12e2eeea350d6ca9",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationLifecycleRootSource.cs": "a65910cd22f9c66303b0ee6e5e0656e5f8f4917c15ba363c7bc497e4a5bd1eca",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationObservedOriginalReader.cs": "3cec99e7754151a5944a4dc26d93fd1269f2b61254eeaf704831cbf87a5f8860",
+    "src/Hexalith.Platform.Secrets.Runtime/ExportKeyDeliveryDenialComposition.cs": "34b69161683e30ed7ac185bd56581c25b8d1be72c0566a53e3c40128d3b4866b",
+    "src/Hexalith.Platform.Secrets.Runtime/Fr34CommandFingerprint.cs": "86fd5d2a7da0d094bfc8c82d9c9449597d27a440963cc5ed5e15bfb2f0384c44",
+    "src/Hexalith.Platform.Secrets.Runtime/HeldArchiveDirectory.cs": "5fc3a1f2c40c092715542c37ba109438f74c26e876a7986d3b416677e1cd39bf",
+    "src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj": "4e3319f8c61b297073e6d3118bc7fcf794ac7276ed625a1979daae0cb1fc2580",
+    "src/Hexalith.Platform.Secrets.Runtime/IIndependentOwnerOperationHandler.cs": "bc2c8a5beabec6e31fc79eba533303ad1cffd47200bba56e97a2a91b4204df18",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationNativeCaseAuditReader.cs": "358834553bc571d04065608a0b97151ec6702836762a7d7d7b11392f21b4ab1c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationObservedOriginalReader.cs": "f5b3bb0f27a775c0fd50be20cd47d9f2ff0463bce6dd8bedf3bc84c96df56d8c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationOriginalStore.cs": "b4031bc232ab2215b8cf725cff39d166d8d3a57c8494df2aa10cf832cd716474",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationSafetyInvalidationPort.cs": "8a5b2ad3ada6bf6c30599329aea757a31df1f3b442bf3db6d443a6b9f579126e",
+    "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs": "9b3b5c71c84e22e8d6599c92f24ed102079a5028ddd31d72925479720dbd7a50",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "d926817fe995d25685648f30bf0e1db7362b916085b5e469b39688968902d708",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacityInstallation.cs": "96c380695cb789ce52f10ae63dec5b83d127fdb0feb114fb0bb33531ba410531",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveStorage.cs": "b10fa44003177f65142c9d38d9c3ea9a023eec15547f051ef9157c7a3a40496a",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs": "a696d60eeef636c46a2df73613591f4ff3f047283d13c5d827c73f6be64f0c46",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReadEvidence.cs": "645cfaee2d61a142741dd588fd6fc231027cfd3b35a5701fa9f387380047b8d6",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "f07d917910e26fc450158fd4b85b78f405ea3f3f541b944253586188b7c56f23",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiverInstallation.cs": "dc1ba476cb6ba8f15ee21451a7b8125794854acbbfb568bef6ff993c54daa8f5",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthoritySignedResponse.cs": "030b91a49247611ff69d67e6766a9facab58afd2000af3f014f9d098537f829e",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs": "a7aaa52e538546de2ae4cff95740d309b10288e9de6191ceb4deb1dbbce9f985",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCapacityContentArchive.cs": "cb490e9d3ea19ea3d3e5a34995f986681ff6eb6ef088dff9b4b194f5626187df",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCommandDispatchBinding.cs": "b32f421476ff733f538124cd2d0b2384aeff91de9b5492df139aa6f77f815015",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCommandDispatchFacts.cs": "e65b7cdce31d2f6d189dd6f194c71e225c5c2e4affece43df8774f5fc61c51b2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentFileContentArchive.cs": "9dbfe02e21d4b3cabbd00c2c0c35cffef41799c267441bd592bf63afd7bfbdb2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentOriginal.cs": "8aeb6eab4fa920afd7a263b634aa04e450a8f91ed3702952cb9eb7b9c91fb462",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentPrivateOriginalIndex.cs": "8f768cc2a58ad8c30aa8fdce9e4ecd2a9181eb66ed8a39acc4484953cce3a990",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingDiagnostics.cs": "afc364c1c0999cb1567762589ba45f61edfc3a1eb3fcf4f3e9e1cf5a3be6c957",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingFailure.cs": "a12cff4fc2382dbe66a4f7c862006c26e3c1b3febcc8d510afa6d49c6ae1e419",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingOwnership.cs": "61887a711573a0c3fed716b77a806766670196c5edc516aedbdac903a18e12b5",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentRecoveryGrantArchive.cs": "167beeb057b664a9747546f36d3d046a96231bcadd459f691ed3b7828295a6fe",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledExportKeyDeliveryDenialOriginalStore.cs": "7b27efc91c194620822ff95779447af6b2194bda089960a50671f4a999640963",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs": "079dc3949527835dcbe7db054a83ca2ca4e0f48f86b7e2edd520e8ff521c1e40",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationOriginalStore.cs": "e52190d1febadb4b89bbeec8000532e52dd495dd251c623371eaa064f49129a9",
+    "src/Hexalith.Platform.Secrets.Runtime/OwnedArchiveTemporaryFile.cs": "668f24fa74b3f77664a15a66c976482a527946118ecace2eba704930b77546ae",
+    "src/Hexalith.Platform.Secrets.Runtime/PrivateExportKeyDeliveryOwner.cs": "88418d4f48532604bc289dce96145d883f2e7f1829de6ea38f32e13638393f34",
+    "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveAllocationInstallation.cs": "6373830d1a25b46043ca3b6216b02db6c495795fd797a2fcd667535bc83a13cf",
+    "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveStore.cs": "a8495aa863fc6984eb159ae24a78d3ff5a6e5ccb2f3a21d75e18db62abf5e402",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationBoundSourceCaseDriver.cs": "c05ac358a0b2ba7c856c9a4f6c2b1b342726991d1b4ea4b0e87d10255cdb9520",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCapabilityOriginalReader.cs": "b5c7abc6c339d650f635ae7e8160339eba10d9c4bfb9fbf68fee3c6d2226c2fb",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCohortAttemptBinding.cs": "7782bc0182adccc0890099c90cb2a1cadb9f126c9fe7259deaacc339b64f630a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCompositeOriginalReader.cs": "9220c77146a9bc1505ad873d3015c21a96724b435df7842f0d0b2476c0477f4c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionCaseInput.cs": "cf4dc0e5ac528465fca935d658a5722d6cd5ad4fd1937ca4e1cb1c2f4f52a3dc",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionCaseWorkflow.cs": "4f9d960b0b0cfbd09f661a5df89d8f68d1ca016916a6ac851308913fdc0c2ac4",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionOriginalReader.cs": "69f32369086497155e285f0615da72970b76fb6a627e9e5eb38d9029905e83e7",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs": "e5398714417d8b3fec6aad6f97ecb0d476932307cc35892cb176b3446b2171d3",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs": "af6cfdf091c96555f4c11f4c4adae0ad2a4196cbe42a44cf98e4ccdeb56529c0",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeCaseWorkflow.cs": "31ad0fd1026f59705bc8afccf79dc13caebafab8c77bffa9455488b1813f3496",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeOriginalReader.cs": "857d5f6050338c9cb6b86ad9cf86f72e7ed414e26b2ec6cc90a64406e31c2998",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryOriginalReader.cs": "cb148b283f653348c6817b19b0757c5d48c01cf02e7c4fa7d1bf95c0b2878627",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryWorkflow.cs": "3ca048e9a421f63778d7bb2e37c7c94caa642b81cb02103c1c3d3f3267933d3a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportOriginalReader.cs": "e51ad115400178577baf7b70df9b793e18371ca1ac5ca3299e8376880a1ec90c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHost.cs": "b0004f907148c20dcab1c815ac74cb06be07cf4e07d94fe26292761bc0523022",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpHost.cs": "100df7b4959cabe413546cec505951528763f89cdca339b844f7e8530e778d28",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpReceiver.cs": "aeae798fc41d42fbcff50774cee67200863080fbd13888268421b3b93fc30b95",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryOriginalReader.cs": "ed971913e577a3d8c2d643bb8f4bd270deda3a6b8ffce04ba591f6c11b5b7eec",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationOriginalReader.cs": "8f23476fd90d1c3bd379b399412e5391a218c832a14f5aa075fb551ded80a13f",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationWorkflow.cs": "5422d0c9b27d488704e7cd61840573f996db6db38d95660cad8165f2b937e45c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleCaseWorkflow.cs": "965114a32e7c555c9689a087aff3ecfec0977e53e75eec641a330e0096ddddad",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleOriginalReader.cs": "29a14bdd0b301d23f36c8171c875f3c64a6e536199109bcb2a754e6560504f07",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs": "7ad86ef8fb63932f700a92bb7235ec353d3a6fa5a101385f9844f36716a3bc14",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMissingConfigurationOriginalReader.cs": "0c23d34ea680c6b5306cca62c30a43e3fecaeac68075246bf336304e72a031e2",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMutationTrust.cs": "be18b8b0e82bbf364b6f8ae9f445f0cef093d7bc47e710ed8f45746b42910060",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeMutationEvidence.cs": "22a5388ddddaa93fe44f8883811415b33bf17561dbbf409fb02d289e7b8b11df",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeStageBoundary.cs": "dd18f0ea84b73ce7e9b807b5cef65911e802f31133f17274f69afed4a03e6698",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeVersion.cs": "64d2d53762acb3650209b83ccdf9b4e5ba1d610d2e3e39adfb0a535a6b84dca4",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs": "34cf865da328815d9ce776b74cab004bf98739a3c14bb1d4146039548edec279",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStage.cs": "be2485b104710b72563d67bf4b9d59608b58fa39b30d8b1d1bdb6cda80e011e6",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageEvidence.cs": "562e38380127e6e4c7791c1ea82cec873423c77fd922865eb98b164abff7d5b1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageRequest.cs": "8069e679043530992db3abc2b067700b14de93965c6a01dc2154378a4d74767f",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationWitnesses.cs": "9c8e03143ea08d03a3b5f2e64bfc5c2fa662081cb2e1fb633faee834f5f2054a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservedOriginal.cs": "9263d42d1b34d13ffa748688e43dcfd59742d7796bf0e37c892a98d2e5be9c23",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOriginalLookup.cs": "975aef229f0f623bbc1441b6dd6e385c1bc539a20344e90d938e22d2859d3441",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerApplication.cs": "4d04b5baacdfb8cb370dd4812bdc8db713b05f3632c92e56599d60086852b146",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerDriverInstallation.cs": "252805429d402bd95ea8459b5af27d26df7cf482ebf7d4aec7f8aae0e573f709",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs": "cb6576002045440a85d2e0e05db94290db52eb2804c10867adb7fb79a7fd8324",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProofVerifier.cs": "06e4420826a2bab80c59bf0268cc1484ce5a224fabeadc7591e0ffccd3f8d503",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProtocolSchema.cs": "24aadcbda7dcb920a3ea348b703c509fb96a916a4e3e2bc2351aca8583f57688",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProviderCredentialWorkflow.cs": "e034ee1f073f88dab085c9a40f76061e109e24c588591699fa05f8e70b51a4b1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationReplayChallengeInput.cs": "cf54a58ac5a1d56a9ddd73d620860b76d9e4a4c1f200c48d87171fc23fc77ede",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationResolutionOriginalReader.cs": "a10e0e322f31eeae07b4875e0a7d0b4d9abe3052e8dc55a4d20b0ef3dd8dfa94",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRetainedDigestOriginalReader.cs": "3320f4a5e8d4c8eee4bdaf12418e7d8078df3243ae27d0fa37351a7abbb43342",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRotationOriginal.cs": "cb4b694b61329a6e5d5d5deb0e5f88b68d47697830cf0ee643c9877a8dc1325d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRuntimeWorkflowCatalog.cs": "9024a9e57e144c5f4ba63e7790c167d60c1a226359087874618a11897acb526d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalCaseWorkflow.cs": "70e848948ca477c60aa98a3c24437507ba4c1fee137727d1e662e1134d002025",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalOriginalReader.cs": "20f3335c77adb45600ca997f6c718429ca42dca3db631a3b4d0b2a575caf0de1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTerminalResult.cs": "f48d0b4be5a53d355488d46b836ea3e3c5f1a182c6c6de0802278904c5f8098d",
+    "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeConfiguration.cs": "7a6f16d7fd3f7e13835c2e02ff29e41654b14e064f300b97b1f5d8f317fccbff",
+    "src/Hexalith.Platform.Secrets.Runtime/Utf8SpanConsumer.cs": "f973350ed6e783cc0a8332b51f68ad0a596831c887dca0e9a34a8e830c557016",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchBoundaryTests.cs": "6f5bd2f2994c1b0d218e21dee07f536604664e234bffb50c9003c0ec517dc5c3",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchDirectoryCensusTests.cs": "d84ed7b4a771768d77f72f11b42e9fbd39d4bfc48aea7583beb7b1227b516ed1",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchFixture.cs": "b15572c5a459213c114381691c74a2158917b886293bed605a6bf5aee108ea54",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchLifetimeTests.cs": "31edc124141474d72f88bf2c2bd4b44bcdcc358e69a6d6cdc55efaeddc057ec8",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedResourceListenerTests.cs": "fcd14ca8f7600c286d7c8461922742edb26ac2989756eaabad4e0b20d6fea6a9",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs": "05ef0b484773d7471cf741f2161352486ebbddc5a843a371a2d0a7b9706378c4",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedModelIdentityTests.cs": "46f7f7adecc40d5b34b85ad6fe57641d43d95930c54bea4c590ea544b34b66ab",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAdmissionCurrentBoundaryTests.cs": "4075086988643fc625b673842bc0f45e358624ec5b3d7defef08710fd79c52d2",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs": "9c6a2b9c12a859e8d9cd7cea9a25ddbe4812980fae9488362b191cdb181a24a0",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsIngressDenialTests.cs": "72b201c2f6a9de5adbb958780a527b61aab472b0055d9be7fbdc76e19c9c8d7a",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsSpoolHarness.cs": "b002d6c7e8571c769dd1c3c1e3dd27b2a81c93cd5208649c7e6389de7ad06fe5",
+    "tests/Hexalith.Platform.Composition.Tests/PythonCanonicalBindingTests.cs": "52a9c04a4159938aa04c6c2509b641b5b784ea005ae64f245f270b9b507a0245",
+    "tests/Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs": "308c97b42dfb863ccf64406276c57b3509a60f1a144127c842db04ce7a8a1d8b",
+    "tests/Hexalith.Platform.Protection.Tests/BoundedPhaseSignerTests.cs": "ecea013bea9919e91e3f2860e32b3fdbef391321121101a302cb9a187dac1d9f",
+    "tests/Hexalith.Platform.Protection.Tests/CustodyGovernanceGuardInstallationTests.cs": "639fc670911d5f26e8ef48423b49d8e24bd3384f43ae3451321074753a9e7da4",
+    "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs": "b4fec34a5a783c993ed29f48fd8b1c537158a00b7eeb17a4e1d01db9c26a0408",
+    "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs": "68f48cdf8267d7a371dd62b4ae628232bf7b7eb1e46a7e41ad6452d64e3e07d7",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34AuthorityHostingTests.cs": "331a449738e5f2ac3fc44e9e849db980c2f0ff74f5b398f726be4a6865d16a59",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34DynamicOccurrenceTests.cs": "ca646def9e0e305bce81aa47352b6404bf339c5cd112b11d4ec72ccfa5721728",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34IndependentCollectorTests.cs": "16984b2046dede1a277494ad1a279513eb3222aae733c8d06f6a189f9b56ce6d",
+    "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj": "c6704ee8efb6adb518e80afa1687d3c76e128af3100afae9be5ec950841bc522",
+    "tests/Hexalith.Platform.Protection.Tests/IndependentReceivingDiagnosticTests.cs": "862c00ab471b025da59b177dbd8f346b1343fc6511059151028721bb515795e9",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseCommandTests.cs": "61be47483c0ce34ef6e1d22da657c2122c00ab419787d51074e98d484f3ba54b",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseNativePublisherTests.cs": "1c555b04a153dc80778cb56f5c8950715983ccc16fd2ea312c1bf24681f86461",
+    "tests/Hexalith.Platform.Protection.Tests/OwnedWorkloadProofTests.cs": "7ad8ae4bbda1de57c0a1f118134c56d02c6c59b8e810894642fa4b5e354cb4c9",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGatewayReadProofReceivingTests.cs": "5f52559bfbbf774603534735259f6a05c3decee01e45d61684206427807ed26b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGuardJoinTests.cs": "7c8516dcf1826fe7f37b629a72fd385857e910eade4b3ee73ccac357d63ee5a9",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs": "34c5afd082389da4a875915be6a526edc88425617532dbf786c1c98d4929c81b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationNativeAuditTests.cs": "4de9abf60ee11ad2c4bfc2e5791e193f535701a9c3fae124c9ea546da693bae2",
+    "tests/Hexalith.Platform.Protection.Tests/ReceivingAuthorityFixture.cs": "0891f9ef8c6dab94393d36c793399bf65bb040029d19754a4ab5cbb15aea3230",
+    "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs": "bd0a8371b1b43bb61a8c487cc67b892ee99a23ff88146babb7f186c359bb9c9f",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Hexalith.Platform.Secrets.ArchiveProcessFixture.csproj": "295b530b03e72a5c6dec906376116da7c9af3d1d9aecda2dc8b857c18da237ed",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Program.cs": "cd59e64f199f43c4cf89f988183afc4d5e2b226834f834655b6987e5254673d2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/AgentsOwningProcessRegistrationTests.cs": "c710d4c55c203b44c0e7b85d2750bc0735c19b101e233d2ec884dce9a63e06e6",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveInputOwnershipTests.cs": "1aacc36536e5b0283a47557539541ea4870a29cd69949f67264e1ec137fb47bd",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveNamespaceOwnershipTests.cs": "ae901fe12f2c94a22f422e7c28154a282c88d8e81421c5f0d4db5f10e9508d04",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveOrdinaryWriterFenceTests.cs": "7eaae33b0c894bd33ae053a2890d5d1cf53dd5b22fa84e69739618a4628abbb7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedInstallationAndPublicationTests.cs": "bc697570ca072e93cb657cea842d2b1766b414cd67bc16a1f727140feffc5ae1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedRoleStartupTests.cs": "1ed6ad366fffff3c4f59d9ee6fb1afe0780cefda7c467a32361c8554f7bc1630",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ConcreteJointSecretsAdapterRegression.cs": "018b7a87c60df4f38ff28a1c68a6f379b1db3d3a401363b98bcd155c4dab70b6",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/CurrentProofReturnTests.cs": "54cfc943fdfaf60ae4ff7dd832afa23178f6b0d99ddeb652699f1f97092f75c0",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationReferenceReaderTests.cs": "62a6cef76a6a1028edc0ce873e3ad0641aafbd80a4f2f157ca4adb46dc1f252e",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ExportQualificationAdmissionTests.cs": "08e94e4d5dd57b47f40a142b790547191e3df2b9dd2cc8005003ae241b532faf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "5bf04e1322c2de1223be6367ccc8d5562395d1ff99116be975f6df4824bb7aa7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj": "09fc4c4d04c50e372a3cdd0e307d55596845aeed5385c4e7fc15e3c187851bf7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentOriginalIndexTests.cs": "02a8feaf3ac092a305f63e88481dce93f7002e17bcc09cae0e0bfc98895113bc",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "2d2a38ec195915437543b1d10cd051c7209c839e25e0871f9a35284416f54198",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs": "3321206755f8cf40bc63853a9b9ee15692e46defd5c70d503c161f42949b655a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/InstalledQualificationRoleServingFixture.cs": "fdce123a8b2ed925c8618282700feb2b9519ca4dfd9a0718992b967ff5f0638c",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseFinalizerEntrypointTests.cs": "dd7b9dce1cfe93ebe54f8e371057de412dc1e2b70a1c39c5da5de0fff63677b4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseSourceStartupTests.cs": "67d07b17220869e152f998c57c30286bcdd832091876f2657177f12006143faf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/NestedDurableBudgetTests.cs": "e3a487b79e8d5a0d8e472446f9c2c9b5a15a6f85e2fd40b3cf1443adc1aeb2bd",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/OriginalCompletionLiabilityTests.cs": "7d15d6351ecf028317ba436861ecfe11b546318be1e7a3c180f81612de951d0a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Pass13OwnershipTests.cs": "2419108df8c01f78827171ea1e868f4f49e7aacd5e5d07b1ad724dbf8e28d535",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/PrivateAcquisitionBufferTests.cs": "0597cd3d752c2317385a2f9db2c7079138e644654387e92b102dfbc0dcc8a3e8",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ProtectedArchiveAllocationTests.cs": "eca006a3cba397fbeddacffb0ffd768fe48d2bc983e42f100adfdc2fc5c6de62",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationCopyCensusTests.cs": "4886464a0ee8c78d49c8a42d3cde3b82c1b2a97a7f06e3763baa4f57f807d42b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationDecisionSemanticTests.cs": "985e774b4e04a9831c712764312b2e33da9f6fff5f572ae36d5f2b43bf6bfa83",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationDeliveryDenialReceivingTests.cs": "a835202d17262eeb4cab02781e5247142e6a35c0695405cd62ad6e254914e0b2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationEnvelopeSubstitutionTests.cs": "6a9828b7416dc05f18f6f1ecfbed7d3926a28504e3ed9f4e62965858120f1d3a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliveryOriginalReaderTests.cs": "19f7bd7c4dea8838927d3ab200b9f68953b69f4b28c152bdb2af7d880beb6a73",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliverySourceTests.cs": "85937c294a2e0023a22498a43783456dc5c8c713eabb356d1b0e29f2c8e007a8",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationFreshCohortReceivingTests.cs": "3206b1092cd61fb8cd022b6ed7d97cc5ad10f6c2a236a7fd442c8dfcb337aa79",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHostTests.cs": "b29091b6ac7a30423a7d4d19fa4c8c2529573201c07603715292930f40e7490b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHttpOwnershipTests.cs": "17db369e45a16f64984d337ff85d5e5f5162ed869c97eac9da8ef965b515c129",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationLifecycleRootSourceTests.cs": "ba68b4d1323800fd9723b18e316c813067ef8c6c8e84cd1b952c0a003b0449b1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationMutationSourceFixture.cs": "82889a9e25257bb7933bb661f0b018ee3e99b586f6225b35ed9f06091f115a0a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationObservationOrchestratorTests.cs": "559ef3d14f29ca9a908894bbe250db39116cf1ddd1445a21bae14b92fb552164",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationOwningLifetimeTests.cs": "64dc719e98b83f902f8f51c64c2d8f462bd2e7c79fcfddb68123dafba75044a4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationReceivingProjectionTests.cs": "8c97ba39844923c960e04f2e5212fdbde2aa81bb347239f35871c2d281dd5ea7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationResolutionSourceTests.cs": "82e2aa14b963fbc2224b8fecdadcc254463e07f3788d349508cce60035fb4ccf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationTemporalDecisionTests.cs": "183fac348881ae06cfdf187c236fe170ab3b92a0238d3e2ead2246e2ba6e12de",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationTemporalSourceTests.cs": "2c60408724022bf2cf28716e5202f0fb64aee8fa8ea33ef545ca0d2fbfb511b5",
+    "tests/Shared/ProtectedArchiveFixture.cs": "337c5e19c18878404e95d06ce00b0ad6c9e0ea1abcc4be08fd4eacfbb28240ab"
+  }
+}

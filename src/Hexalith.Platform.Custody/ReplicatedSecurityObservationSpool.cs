@@ -55,7 +55,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
                     || intent.RetainedServerReceiptKey is not null && record.Intent.RetainedServerReceiptKey == intent.RetainedServerReceiptKey, budget).ConfigureAwait(false);
             if (prior is not null) { return prior.Intent == intent && await StillCurrentAsync(target, "Observe", intent, budget).ConfigureAwait(false) ? prior : null; }
             DateTimeOffset observed = clock.GetUtcNow();
-            SecurityObservationRecord record = new(intent, observed, observed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), checked(state.ArchivedObservedCount + state.Records.Count + 1L), null);
+            SecurityObservationRecord record = new(intent, observed, observed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), checked(state.ArchivedObservedCount + state.Records.Count + 1L), null,target.SourceVersion);
             var next = state with { Revision = checked(state.Revision + 1), Records = state.Records.Append(record).ToArray() };
             budget.Check();
             if (!FitsWithReceiptReserve(next, budget))
@@ -281,8 +281,16 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     public static string IntentDigest(SecurityObservationIntent intent) { ValidateIntent(intent); return Digest(intent); }
     /// <summary>Gets the exact source owner identity required by the restricted recorder credential.</summary>
     public static string SourceStream(SecurityObservationRecord record)
-    { ArgumentNullException.ThrowIfNull(record); return new AggregateIdentity(record.Intent.RoutingTenantId, "security-event-log",
-        Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", record.Intent.RoutingTenantId, record.UtcDay])))).ActorId; }
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        string legacy=new AggregateIdentity(record.Intent.RoutingTenantId,"agents","SecurityEventLog-"+record.UtcDay).ActorId;
+        string current=new AggregateIdentity(record.Intent.RoutingTenantId,"security-event-log",Convert.ToHexStringLower(SHA256.HashData(
+            PlatformCanonicalBytes.Identity(["security-event-log",record.Intent.RoutingTenantId,record.UtcDay])))).ActorId;
+        if(record.SourceVersion is not (0 or 2)) throw new InvalidOperationException("Exact enrolled recorder source version required.");
+        // Old acknowledgements retain their exact source identity and digest bytes. Unacknowledged unversioned originals stay on their historical legacy locator.
+        if(record.SourceVersion==0 && record.Receipt?.SourceStreamId==current) return current;
+        return record.SourceVersion==2?current:legacy;
+    }
     private async Task<ReplicatedSecuritySpoolTarget?> CurrentAsync(string method, SecurityObservationIntent? intent, PrivateOwnerOperationDeadline budget)
     {
         if (authority is null) { return null; } var target = await budget.ReadAsync(() => authority.GetCurrentAsync(CancellationToken.None)).ConfigureAwait(false);
@@ -292,7 +300,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private async Task<bool> StillCurrentAsync(ReplicatedSecuritySpoolTarget original, string method, SecurityObservationIntent? intent, PrivateOwnerOperationDeadline budget)
         => await CurrentAsync(method, intent, budget).ConfigureAwait(false) == original;
     private bool ValidTarget(ReplicatedSecuritySpoolTarget target)
-    { Text(target.ComponentName); Text(target.InstallationEpoch); Text(target.AuthorityRevision); return target.ValidUntil.Offset == TimeSpan.Zero && clock.GetUtcNow() < target.ValidUntil; }
+    { Text(target.ComponentName); Text(target.InstallationEpoch); Text(target.AuthorityRevision); return target.SourceVersion is 0 or 2 && target.ValidUntil.Offset == TimeSpan.Zero && clock.GetUtcNow() < target.ValidUntil; }
     private static string PendingKey(ReplicatedSecuritySpoolTarget target) => Key(target) + "-pending-transition-v1";
     private static string ArchiveKey(ReplicatedSecuritySpoolTarget target, long page, string digest)
         => Key(target) + "/archive/" + page.ToString(CultureInfo.InvariantCulture) + "/" + digest;

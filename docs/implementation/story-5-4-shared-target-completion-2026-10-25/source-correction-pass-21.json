@@ -1,0 +1,1220 @@
+{
+  "schema": "platform.story54.source-correction-pass21.handback.v1",
+  "status": "FINAL",
+  "observedAtUtc": "2026-10-27T12:02:29.407512+00:00",
+  "sourceCorrectionPass": 21,
+  "reviewLoopIteration": 21,
+  "refreezesIncrementReviewLoop": false,
+  "pass21CorrectionsImplementedAndComponentVerified": true,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "independentReviewComplete": false,
+  "sourceCorrectionStatus": "All nine grouped pass21 corrections are implemented and component verified. This FINAL descriptor freezes the implementation handback; it is not formal root acceptance or complete installed delivery.",
+  "provenance": "One sequential editor; no children or recursive workflow. Source, cryptographic, filesystem, SQLite and loopback fixtures only. No actual cohort/phase/attempt or Live/Full owner command, installed service launch, installation/enrollment, consumer activation, physical qualification experiment, spending, accepted-record edit, sibling-source edit or VCS stage/commit/push/fetch. Actual canonical-byte AppHost compiled only, never Start/Run.",
+  "fullJointCaseCount": 234,
+  "partialQualificationDrivers": 185,
+  "externallyDependentUnregisteredDrivers": 49,
+  "completeQualificationDrivers": 0,
+  "historyDays": 365,
+  "productGates": "both open",
+  "loadedSpecAndContext": {
+    "path": "/tmp/story54-round21-w94zzt2w/loaded-context.json",
+    "sha256": "cf7ca56118241d7c25ba382e5fe094b769a814344559eafda892c5b50fc830a3",
+    "count": 6
+  },
+  "loadedSpec": {
+    "path": "/tmp/story54-round21-w94zzt2w/loaded-spec.md",
+    "sha256": "592a164fad71d21e48a2a225130edb2614a62f2f40a8d37eaa8f4b024a12809d"
+  },
+  "loadedSpecAmendmentBasis": {
+    "path": "/tmp/story54-round21-w94zzt2w/loaded-spec-final-basis.json",
+    "sha256": "e3a0cdc33ed65b9e9f1259793d9d5209ca5370968f714b7c3119ff9af0cb4fc6"
+  },
+  "finalLoadedSpec": {
+    "path": "/tmp/story54-round21-w94zzt2w/loaded-spec-final-basis.md",
+    "sha256": "ce7137b29b8065183df1a8c640e1d41e45fa3b883043fd71a52a89e48a016002"
+  },
+  "priorFinalHandback": {
+    "path": "/tmp/story54-round20-pvnnydzm/handback.json",
+    "sha256": "dfa1a8793ac3b7886a4b161b60e5cb5916910ccd42349c9b888ad081472e7fd1"
+  },
+  "priorFinalSnapshot": {
+    "path": "/tmp/story54-round20-pvnnydzm/source-final.tar.gz",
+    "sha256": "50347ef131b85efd1e597e34f757b79cf507c400f6a15f71fbdc23226113a37c"
+  },
+  "sourceObservations": {
+    "freezeUtc": "2026-10-27T11:11:14.606133+00:00",
+    "headObservedAtFreeze": "4e7b2f086e0dbb0bd7b9a8327889f2ab845ec6a9",
+    "head": "4e7b2f086e0dbb0bd7b9a8327889f2ab845ec6a9",
+    "logicalRepositoryRoot": "/home/administrator/projects/hexalith/platform",
+    "verificationSourceRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+    "ownedHashVerificationRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+    "liveTaskEditedPathCount": 29,
+    "liveUnrelatedSourceFreezeClaimed": false,
+    "ownedCount": 348,
+    "sourceDependencyCount": 6686,
+    "snapshotSha256": "922266907401efa63a57a168aa0463d9cb361f63ab3147bbe7a42a36b67d6535",
+    "capturedPublicSourceSnapshotSha256": "8f119b6fa7a7758ad427d8b57e7361c08261268f7ab7a9d5f2674f25ba059a3e",
+    "deltaCounts": {
+      "added": 5,
+      "changed": 25,
+      "removed": 0
+    },
+    "taskEditDeltaCounts": {
+      "added": 5,
+      "changed": 24,
+      "removed": 0
+    },
+    "concurrentCompositionDeltaCount": 1,
+    "fixtureOnly": true,
+    "actualEvidence": null,
+    "acceptedTarget": null,
+    "additionalHostPublicClosureAtUtc": "2026-10-27T11:36:38.107489+00:00"
+  },
+  "freezeDescriptor": {
+    "path": "/tmp/story54-round21-w94zzt2w/freeze-observation.json",
+    "sha256": "8366e8ff6c6696dc5c2bf217afbc73b0e1c3eb1a03994aa5855239cb47489bad"
+  },
+  "logicalRepositoryRoot": "/home/administrator/projects/hexalith/platform",
+  "verificationSourceRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+  "ownedHashVerificationRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+  "liveUnrelatedSourceFreezeClaimed": false,
+  "snapshot": {
+    "path": "/tmp/story54-round21-w94zzt2w/source-final.tar.gz",
+    "sha256": "922266907401efa63a57a168aa0463d9cb361f63ab3147bbe7a42a36b67d6535"
+  },
+  "capturedPublicSourceSnapshot": {
+    "path": "/tmp/story54-round21-w94zzt2w/captured-public-source-final.tar.gz",
+    "sha256": "8f119b6fa7a7758ad427d8b57e7361c08261268f7ab7a9d5f2674f25ba059a3e"
+  },
+  "capturedPublicSourceMap": {
+    "path": "/tmp/story54-round21-w94zzt2w/captured-platform-source-map.json",
+    "sha256": "110aca905420658545db72047f54342243dac2c9c1103528796fdcd124eb81b7"
+  },
+  "logicalToCapturedSourceMapping": {
+    "path": "/tmp/story54-round21-w94zzt2w/logical-to-captured-source-retargeting.json",
+    "sha256": "11d07bec8afb4ffd7310524bc892877f87083dfd1af815363ecb70361b8bbf02",
+    "count": 1179
+  },
+  "ownedFiles": {
+    "path": "/tmp/story54-round21-w94zzt2w/owned-files-final.json",
+    "sha256": "83a436ea1e517bec3721261d6ce80e72d1180eb9acf810e9cecde3b0a538e08b",
+    "count": 348
+  },
+  "ownedHashes": {
+    "path": "/tmp/story54-round21-w94zzt2w/owned-file-hashes-final.json",
+    "sha256": "257b7ddd36368ec784ebf5134fdd33d4f16d105f17fe8630c642bb3248984e0e"
+  },
+  "liveTaskEditedHashes": {
+    "path": "/tmp/story54-round21-w94zzt2w/live-owned-edit-hashes-final.json",
+    "sha256": "d0ccd9c83c452d190db19ce46c95dd9b43a66b4c8381a67fdf614ed511049a72",
+    "count": 29
+  },
+  "taskEditDelta": {
+    "path": "/tmp/story54-round21-w94zzt2w/pass21-owned-edit-delta.json",
+    "sha256": "e2e903be18f511ede667c44c4140a27de6e02483eb980fb4c347045ce7888839",
+    "newSourceCount": 5,
+    "changedSourceCount": 24,
+    "removedSourceCount": 0
+  },
+  "taskOnlySourceDiff": {
+    "path": "/tmp/story54-round21-w94zzt2w/owned-task-source-delta.diff",
+    "sha256": "a4cdbbb9828d233ec03229578b3345de64268d42a1fd2277d93df04f4f444812"
+  },
+  "sourceDelta": {
+    "path": "/tmp/story54-round21-w94zzt2w/pass21-actual-source-delta.json",
+    "sha256": "a5c72b3fd4b0f4c6125920f2efb26a21d218d8efb730dd34937cb536cf0583ed",
+    "newSourceCount": 5,
+    "changedSourceCount": 25,
+    "removedSourceCount": 0,
+    "includesOneUnownedConcurrentCompositionProjectChange": true
+  },
+  "actualSourceDiff": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-source-delta.diff",
+    "sha256": "90e4a0378c1ec44e74e0073906b0272564d91df1f12b16282f90a24268913125",
+    "scope": "Cumulative observed delta, including the separately identified external Composition.csproj overlay; taskOnlySourceDiff excludes that overlay."
+  },
+  "ownershipCorrection": {
+    "path": "/tmp/story54-round21-w94zzt2w/freeze-ownership-manifest-correction.json",
+    "sha256": "8292b960f65bd8f0b9596a32458bc16107a290978ceb955f44f178774cf29a9d"
+  },
+  "newlyOwnedBaselineInputs": {
+    "path": "/tmp/story54-round21-w94zzt2w/newly-owned-existing-baseline-inputs.json",
+    "sha256": "857a50bd55cb1366f1a48393f3e1c2ffc143b0dc7022d684db97c40540db4ea0",
+    "count": 5,
+    "note": "All five EXISTING before bodies match authenticated source20 dependency hashes; four were recovered from exact git73beb bodies and SecretsDapr was reconstructed after its edit then hash-authenticated. MaterialSource, TrustSource and ResolverTests were actually edited by this pass; their initial concurrent label was an ownership-manifest mistake, corrected without rewriting history."
+  },
+  "unownedConcurrentSourceObservations": {
+    "path": "/tmp/story54-round21-w94zzt2w/unowned-concurrent-source-observations.json",
+    "sha256": "d8962a1800240406f855e38caad0d6c2e27078592a524faa2de4b161048b9fb5"
+  },
+  "concurrentCompositionInputObservations": {
+    "path": "/tmp/story54-round21-w94zzt2w/concurrent-composition-input-observations.json",
+    "sha256": "bb67e12dcfb355c751cb5b80bb27a1479178d149d49bdffd68aa1ab4769a00ae"
+  },
+  "sourceDependencies": {
+    "path": "/tmp/story54-round21-w94zzt2w/source-dependency-hashes-final.json",
+    "sha256": "de844156ed3dd64f309454b9aca10270c17e5a53d6165e63e2fe1c152117febc",
+    "count": 6686,
+    "scope": "Actual physical captured platform, immutable EventStore/HostedPublishing and observed supporting source inputs; logical paths are mapped separately."
+  },
+  "compiledDependencies": {
+    "path": "/tmp/story54-round21-w94zzt2w/compiled-dependency-hashes-final.json",
+    "sha256": "911e941e7e21b7a58550aaafb223fe182af0fe36816335ea225bc6dd24259478",
+    "count": 2724,
+    "scope": "Final component/AppHost compiled outputs and Python bytecode. Earlier failed and guard outputs are separate."
+  },
+  "evaluatedBuildMetadata": {
+    "path": "/tmp/story54-round21-w94zzt2w/evaluated-build-metadata-hashes-final.json",
+    "sha256": "28e6ba07701f85217c3dc85a1fcd1e593445b6a1cbe02ba636db7291dc94640d",
+    "count": 1550
+  },
+  "additionalVerificationInputs": {
+    "path": "/tmp/story54-round21-w94zzt2w/additional-verification-input-hashes.json",
+    "sha256": "597863fc8972d1076ad862dc916bc794b28a83326db6a9df2d672364413bca0a",
+    "count": 303
+  },
+  "actualCompileInputs": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-compile-input-hashes.json",
+    "sha256": "91dee913a9ba69b8f817cae9a5f677d4472520dcd5f71503d233589fe9ab6d28",
+    "count": 2902
+  },
+  "actualReferenceInputs": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-reference-input-hashes.json",
+    "sha256": "88c0c54bd01cc2f4db2dcab9e00837f25afd7a16d072aea78393d8750c4f0ec4",
+    "count": 532
+  },
+  "actualEvaluatedLists": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-evaluated-input-list-hashes.json",
+    "sha256": "ea10711d42e36433e12f06df7ef51f2ad5629fd3546f6fc8ca8ea5ebc32107ed",
+    "count": 356
+  },
+  "externalCompileSourceBodies": {
+    "path": "/tmp/story54-round21-w94zzt2w/external-compile-source-bodies.json",
+    "sha256": "385e87d306ab832a3d411405c70fc7c6aa1272ffaadcdb8a4524dad5ea2f7766",
+    "count": 413
+  },
+  "actualPdbDocuments": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-final-pdb-documents.json",
+    "sha256": "db5a2a1d2ebc81160d00740892585982a4099453bf4eb65e929450c22c2bac76"
+  },
+  "actualPdbSourceVerification": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-final-pdb-source-verification.json",
+    "sha256": "77e900b5951e50c678926e16ba304cd192a7b6712247a969dc17a9ec176b44ca",
+    "pdbCount": 342,
+    "resolvedDocumentOccurrences": 61189,
+    "unavailableVendorOrGeneratedDocumentOccurrences": 877,
+    "mismatchCount": 0
+  },
+  "actualCanonicalApphostBuild": {
+    "path": "/tmp/story54-round21-w94zzt2w/apphost-verification.json",
+    "sha256": "6a7420f0dbad4a460e7a15c4717b52211d813b097ee6a9a8120b45f25f97fd01",
+    "buildOnly": true,
+    "warningFreeClaimed": false,
+    "diagnosticWarnings": [
+      "ASPIRE010"
+    ]
+  },
+  "verification": {
+    "path": "/tmp/story54-round21-w94zzt2w/verification-final-complete.json",
+    "sha256": "7007a417125da4d28791ba1b1f2b2304b839ad212f69825102e925291ecb535e",
+    "laneCount": 16,
+    "allPassed": true,
+    "testSummary": {
+      "native": 32,
+      "custody": 781,
+      "runtime": 805,
+      "protection": 211,
+      "composition": 128,
+      "pythonSecrets": 350,
+      "pythonHost": 15,
+      "totalComponentTestExecutions": 2322
+    }
+  },
+  "verificationInputBoundaries": "Final3 isolated public source drives Native32/Custody781/Runtime805/PythonSecrets350 and Protection211. The unchanged final captured sources drive actual Composition128, PythonHost15 and locked Release restore. Final7 recaptures/rebuilds actual production Composition and canonical-byte AppHost after correcting only capture-target ordering; portable PDBs prove both prior and final builds compiled the same exact immutable HostedPublishing source. No earlier failed binary is attributed to a newer snapshot.",
+  "immutableDependencySelection": {
+    "eventStoreRevision": "458f0cf38e43452655e6c307fa80debdf595a8db",
+    "eventStoreSourceRoot": "/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+    "hostedPublishing": {
+      "path": "/tmp/story54-round13-hjh0_6e_/platform-composition-input/PlatformHostedPublishing.cs",
+      "sha256": "ff0d90e0a10c6a1dd92b16129a9ca368c690838b43abd833b374f7694cd5a9d6"
+    },
+    "buildsRoot": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "buildsSourceEditedByThisPass": false,
+    "analyzersDisabled": false
+  },
+  "actualCallerCoverage": {
+    "path": "/tmp/story54-round21-w94zzt2w/actual-caller-coverage-final.json",
+    "sha256": "4f0ba7dcadeb2a7aceb2897f1ba48446d85cf0de27de112289468f2c710b0f94"
+  },
+  "frozenMatrixCoverage": {
+    "path": "/tmp/story54-round21-w94zzt2w/matrix-verification-final.json",
+    "sha256": "b7bd2d20f0df9eafdce57df2c4a9208709f83ba68c86a482aa74429c4cc27072"
+  },
+  "perFindingCorrections": {
+    "path": "/tmp/story54-round21-w94zzt2w/per-finding-corrections.json",
+    "sha256": "3083c74e869d06df7cec9ed31a5dbeb032a35d3f73ec1925fb6db106ba64ec6b",
+    "groupCount": 9
+  },
+  "timestampCompatibility": "Only issued-at/expires-at emit the new originalAuthenticationStatus evidence. Non-timestamp canonical/replay and legacy recovery result shapes remain unchanged; exact historical names/assertions/timeouts and actual retained-reader compatibility pass in all805 Runtime rows.",
+  "temporalClassifierCompatibility": "Exact native100ns basis is retained and authenticated in signed source.nativeTemporalPrecision. The existing closed public temporalEvaluation/rotation shapes and Python classifier remain coherent and unchanged. Reader-to-signed-receiver-to-projector-to-actual-Python positive and contradictory/fractional negative fixtures pass; fresh installed native temporal protocol remains unavailable.",
+  "guardRemovalVerification": {
+    "path": "/tmp/story54-round21-w94zzt2w/guard-removal-final.json",
+    "sha256": "e581001985354f0856292c17489326aec73a747b5d192c19e14afa178527cdf0",
+    "laneCount": 11,
+    "allCaught": true,
+    "selectedCaseExecutions": 60,
+    "semanticFailures": 27,
+    "countsAsFinalPositivePasses": false
+  },
+  "guardMutationArtifacts": {
+    "path": "/tmp/story54-round21-w94zzt2w/guard-mutation-artifact-hashes.json",
+    "sha256": "d00bb32930ca55d5bb82b9f4bc4c3c8b9eaa0a6d616dff6d7e93cec2445fa484",
+    "count": 11836
+  },
+  "priorSource20Preservation": {
+    "path": "/tmp/story54-round21-w94zzt2w/prior-source20-preservation.json",
+    "sha256": "36890ff0814d3b657ab28059c266e3198a3e06ac72804bf903dd23f54318f40f",
+    "ownedOldSnapshotBodiesVerified": 338,
+    "sourceDependencyInputsVerified": 5829,
+    "unresolvedCount": 0
+  },
+  "priorSource20ArtifactPreservation": {
+    "path": "/tmp/story54-round21-w94zzt2w/prior-source20-artifact-preservation.json",
+    "sha256": "0be375ae32c582bccdfba47671d7239a479037a152963ee777abbf25f863119e"
+  },
+  "historicalBoundaries": {
+    "path": "/tmp/story54-round21-w94zzt2w/historical-boundaries-final.json",
+    "sha256": "e19c84bcfa289e124ce2268f126cb715d016127ba3c10a3126f7c3c68270ebe0"
+  },
+  "allDiagnosticArtifacts": {
+    "path": "/tmp/story54-round21-w94zzt2w/all-diagnostic-artifact-hashes.json",
+    "sha256": "27f61f2e2e0eecddb4a5d008866267f797e61370f98bdb362e324d4ba31e7adf",
+    "count": 9830
+  },
+  "diagnosticActualPdbDocuments": {
+    "path": "/tmp/story54-round21-w94zzt2w/diagnostic-actual-pdb-documents.json",
+    "sha256": "b589c7eecf3441c1db786954282928cb48813b58d7263f7c1445d430009a9e29"
+  },
+  "diagnosticDependencyBodySupplements": {
+    "path": "/tmp/story54-round21-w94zzt2w/diagnostic-dependency-body-supplements.json",
+    "sha256": "09e361a951923e3bea3f72b1be4201740b409075713e5af92769403cab1cb4b1"
+  },
+  "newOrRefinedInstallationInputs": {
+    "path": "/tmp/story54-round21-w94zzt2w/new-installation-requirements.json",
+    "sha256": "73f1dfdf1e658dc6df78b1c0a08d951ed8e47a800879fe6b4bfade0c9d317450",
+    "actualEvidence": null
+  },
+  "finalLogsAndEvidence": {
+    "path": "/tmp/story54-round21-w94zzt2w/final-log-and-evidence-hashes.json",
+    "sha256": "f8855eb7e3910c0033e48ab73428e47ca459135e1d314c1d253cce75219f7084",
+    "count": 66
+  },
+  "finalDriftVerification": {
+    "path": "/tmp/story54-round21-w94zzt2w/final-drift-verification.json",
+    "sha256": "c97287ddb856b7204fc152a8a47d72270b670abd54b417b6812165c1006969a7"
+  },
+  "incompleteOrRisky": [
+    "No installed qualification, complete shared-target packet, accepted complete immutable target or coordinated replacement dates exists. The13 actual installation bundles and50 owner-null returns remain delivery blockers; all refined actual evidence values remain null.",
+    "Actual independent authority/trust/placement/read credentials, initialized storage and funded transfer recovery enrollment, physical all-copy/nonrollback proof, static whole-image/kernel and dynamic/.NET/interpreter closure, complete native/history/protection/host/UI-host protocols remain unresolved.",
+    "Unsupported fixed-chunk geometries that do not divide64KiB now explicitly refuse before any liability admission. Real enrollment must supply the named compatible geometry and independently reconciled pre-existing funding.",
+    "All earlier failed, stopped, zero-selection, ownership-manifest, source-preflight, alias-style, missing-host-closure, AppHost-argument and capture-order diagnostics remain retained as separate boundaries. The first full Runtime aggregate had6 failures; the final separate805 run passes. The original decoded-clear mutant compilation failure is not counted; its compiled corrected mutant fails a real private-buffer assertion.",
+    "Builds1-3 reused preliminary outputs; not every exact per-iteration source body/binary is separately available. Logs, later frozen snapshots, actual retained PDB documents and matching dependency-body supplements remain; no missing early exact snapshot is invented.",
+    "Portable-PDB verification authenticates resolvable actual source bytes. The877 unavailable vendor/generated document occurrences remain explicitly unavailable with their public compiled artifacts retained; this supplies no installed loader qualification.",
+    "Unrelated live composition/subscriber edits are preserved and mapped to captured physical inputs. The whole live checkout is not claimed frozen. Actual AppHost has the existing ASPIRE010 bundle diagnostic and was compile-only.",
+    "Formal root independent review is pending. Component/guard passes establish no complete qualification driver, external dependency availability or full installed shared-target delivery."
+  ],
+  "actualEvidence": null,
+  "acceptedCompleteImmutableTarget": null,
+  "coordinatedOwnerDates": null,
+  "availabilityEstablished": false,
+  "handbackSha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa",
+  "rootSourceAcceptanceAudit": {
+    "schema": "platform.story54.root-source-acceptance-pass21.v1",
+    "observedAtUtc": "2026-10-27T12:13:18.275830+00:00",
+    "handbackSha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa",
+    "snapshotSha256": "922266907401efa63a57a168aa0463d9cb361f63ab3147bbe7a42a36b67d6535",
+    "sourceCodeAudit": {
+      "observedAtUtc": "2026-10-27T12:03:21.090372+00:00",
+      "snapshotSha256": "922266907401efa63a57a168aa0463d9cb361f63ab3147bbe7a42a36b67d6535",
+      "actualDeltaDirectory": "/tmp/story54-root-actual-delta-k1fbmf8u",
+      "allActualDeltasRead": true,
+      "all30CumulativeActualDeltasRead": true,
+      "previous28FileDelta": "/tmp/story54-root-actual-delta-oc6o0rck",
+      "corrective5FileDelta": "/tmp/story54-root-actual-delta-r8a71beu",
+      "allCorrectiveDeltasRead": true,
+      "beforeBytesUnavailable": [],
+      "taskFiles": 29,
+      "taskNewFiles": 5,
+      "taskChangedFiles": 24,
+      "externalConcurrentOwnedPathChanges": [
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+      ],
+      "externalChangeAttribution": "Source owner did not edit the additional linked mTLS subscriber include; separately captured current public dependency preserved.",
+      "newlyOwnedFiles": 10,
+      "capturedOwned": {
+        "count": 348,
+        "mismatches": []
+      },
+      "capturedSources": {
+        "count": 6682,
+        "mismatches": []
+      },
+      "liveOwnTaskEdits": {
+        "count": 29,
+        "mismatches": []
+      },
+      "physicalSourceRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+      "sourceOwnerFinal": true,
+      "allFinalVerificationPending": true,
+      "independentReviewPending": true,
+      "installedQualification": false,
+      "handbackSha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa",
+      "finalOwnedCount": 348,
+      "finalSourceInputCount": 6686,
+      "verificationSourceRoot": "/tmp/story54-round21-w94zzt2w/verification-source"
+    },
+    "rootHashVerification": {
+      "ownedHashVerificationRoot": "/tmp/story54-round21-w94zzt2w/verification-source",
+      "schema": "platform.story-5.4.root-handback-verification.v1",
+      "observedAtUtc": "2026-10-27T12:02:45.916893+00:00",
+      "handbackSha256": "9e36558c2730e1e967f89869c9cb5c3dcf46a5ecb69f3c54e2dc3883c0f214aa",
+      "checks": {
+        "ownedHashes": {
+          "count": 348,
+          "mismatches": []
+        },
+        "sourceDependencies": {
+          "count": 6686,
+          "mismatches": []
+        },
+        "compiledDependencies": {
+          "count": 2724,
+          "mismatches": []
+        },
+        "evaluatedBuildMetadata": {
+          "count": 1550,
+          "mismatches": []
+        },
+        "liveOwnTaskEdits": {
+          "count": 29,
+          "mismatches": []
+        }
+      },
+      "verificationLanes": 16,
+      "verifiedLogs": 66,
+      "nestedHandbackReferencesVerified": 55,
+      "snapshotHashMatches": true,
+      "errors": [],
+      "installedQualification": false
+    },
+    "rootFinalEvidence": {
+      "observedAtUtc": "2026-10-27T12:07:46.818610+00:00",
+      "snapshotSha256": "922266907401efa63a57a168aa0463d9cb361f63ab3147bbe7a42a36b67d6535",
+      "checks": {
+        "additionalVerificationInputs": {
+          "count": 303,
+          "mismatches": []
+        },
+        "actualCompileInputs": {
+          "count": 2902,
+          "mismatches": []
+        },
+        "actualReferenceInputs": {
+          "count": 532,
+          "mismatches": []
+        },
+        "actualEvaluatedLists": {
+          "count": 356,
+          "mismatches": []
+        },
+        "allDiagnosticArtifacts": {
+          "count": 9830,
+          "mismatches": []
+        },
+        "guardMutationArtifacts": {
+          "count": 11836,
+          "mismatches": []
+        },
+        "prior:compiled-dependency-hashes-final.json": {
+          "count": 2720,
+          "mismatches": []
+        },
+        "prior:evaluated-build-metadata-hashes-final.json": {
+          "count": 1218,
+          "mismatches": []
+        },
+        "prior:final-log-and-evidence-hashes.json": {
+          "count": 62,
+          "mismatches": []
+        },
+        "prior:all-diagnostic-and-mutation-artifact-hashes.json": {
+          "count": 21870,
+          "mismatches": []
+        }
+      },
+      "history": [
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-1-all-hashes.json",
+          "count": 11,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-2-all-hashes.json",
+          "count": 15,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-3-before-ownership-census-all-hashes.json",
+          "count": 11,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-4-concurrent-input-refusal-all-hashes.json",
+          "count": 13,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-5-before-captured-source-all-hashes.json",
+          "count": 12,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-captured-composition-alias-failure-all-hashes.json",
+          "count": 49,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-captured-host-closure-failure-all-hashes.json",
+          "count": 7,
+          "mismatches": []
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/historical-capture-order-diagnostic-all-hashes.json",
+          "count": 104,
+          "mismatches": []
+        }
+      ],
+      "xml": {
+        "runtime": {
+          "count": 805,
+          "priorNamesRetained": 754,
+          "newNames": [
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"copied-bearer-newline\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"copied-bearer\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"hardlink-bearer\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"spaced-path-bearer\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualPrivateFactoriesAndStartupRefuseUnavailableOrUnconstructibleIngress(defect: \\\"key-construction\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualPrivateFactoriesAndStartupRefuseUnavailableOrUnconstructibleIngress(defect: \\\"missing\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualPrivateFactoriesAndStartupRefuseUnavailableOrUnconstructibleIngress(defect: \\\"profile-construction\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualPublicTrustResolverOwnsCancellationIgnoringAuthorizationUntilCleanup(timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualPublicTrustResolverOwnsCancellationIgnoringAuthorizationUntilCleanup(timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"authorization\\\", timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"authorization\\\", timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"inventory\\\", timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"inventory\\\", timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"native\\\", timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"native\\\", timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"post-decode-validation\\\", timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"post-decode-validation\\\", timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"trust\\\", timeout: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.ActualResolversAndEngineReturnWithinOneBudgetWhileIgnoredCollaboratorsRemainOwned(boundary: \\\"trust\\\", timeout: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.BoundedExportOwnershipKeepsFourLatePrivateResultsChargedUntilTheyAreCleared",
+            "Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualReplayReadinessReceiverChecksCurrentGrantAndTrustWithoutRegisteringOrReadingAnInventedNonce",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"cancel-first-transfer\\\", occurrence: 1)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"legacy-chunk-transferred\\\", occurrence: 1)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"legacy-chunk-transferred\\\", occurrence: 2)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"legacy-claim-ledger-durable\\\", occurrence: 1)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"legacy-transfer-completed\\\", occurrence: 1)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"legacy-transfer-durable\\\", occurrence: 1)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.TwoAdmittedLegacyLiabilitiesTransferTheirActualFullPoolFundingAndRecoverEveryOwnershipBoundary(boundary: \\\"none\\\", occurrence: 0)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.UnfundedRoundedSplitPreservesAllExistingLiabilityBeforeChangingLedgerOrHeaders",
+            "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.UnsupportedRoundingGeometryRefusesBeforeAnyFundedAdmissionOrMetadataMutation",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.after\\\", ticks: 1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.after\\\", ticks: 10000, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.at\\\", ticks: 0, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.at\\\", ticks: 1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.before\\\", ticks: -1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.expiry.before\\\", ticks: -10000, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-after\\\", ticks: 1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-after\\\", ticks: 10000, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-at\\\", ticks: 0, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-at\\\", ticks: 1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-before\\\", ticks: -1, supported: False)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.NativeTemporalPrecisionTests.ActualRetainedReaderPreservesNativeFractionalSideAndRefusesLossyMillisecondClassification(id: \\\"S2.overlap-before\\\", ticks: -10000, supported: True)",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationExportDeliveryOriginalReaderTests.LegacyReceivingV1DenialRecoversOuterV3ExactBodyAndHistoricalTimeWithoutRedelivery",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalPipelineRefusesFractionalSameMillisecondNativeBoundary(caseId: \\\"S2.expiry.at\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalPipelineRefusesFractionalSameMillisecondNativeBoundary(caseId: \\\"S2.overlap-at\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.expiry.after\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.expiry.at\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.expiry.before\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.overlap-after\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.overlap-at\\\")",
+            "Hexalith.Platform.Secrets.Runtime.Tests.QualificationReceivingProjectionTests.ActualTemporalReaderSignedReceivingProjectorAndPythonClassifierPreserveExactNativePrecision(caseId: \\\"S2.overlap-before\\\")"
+          ],
+          "allPassed": true
+        },
+        "custody": {
+          "count": 781,
+          "priorNamesRetained": 781,
+          "newNames": [],
+          "allPassed": true
+        },
+        "protection": {
+          "count": 211,
+          "priorNamesRetained": 211,
+          "newNames": [],
+          "allPassed": true
+        },
+        "composition": {
+          "count": 128,
+          "priorNamesRetained": 128,
+          "newNames": [],
+          "allPassed": true
+        }
+      },
+      "allFinalLanesPassed": true,
+      "finalLaneCount": 16,
+      "componentExecutions": 2322,
+      "testSummary": {
+        "native": 32,
+        "custody": 781,
+        "runtime": 805,
+        "protection": 211,
+        "composition": 128,
+        "pythonSecrets": 350,
+        "pythonHost": 15,
+        "totalComponentTestExecutions": 2322
+      },
+      "mutationLanes": 11,
+      "mutationSelected": 60,
+      "mutationSemanticFailures": 27,
+      "newOrRefinedInstallationInputs": 6,
+      "allActualEvidenceNull": true,
+      "pdbCount": 342,
+      "pdbResolvedDocumentOccurrences": 61189,
+      "pdbUnavailableExplicit": 877,
+      "actualPdbRereadEqualsRecorded": true,
+      "actualApphostExactCanonicalBytes": true,
+      "apphostDiagnosticWarnings": [
+        "ASPIRE010"
+      ],
+      "actualHostedPublishingCompilePins": [
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/inputs7-apphost/Hexalith.Platform.Composition.compile.txt",
+          "sha256": "8af3da4cf941f0f1ec747c0dbb6dfaffa2b7955709ecfbb62a20c06918a930d6",
+          "exactPinOnce": true
+        },
+        {
+          "path": "/tmp/story54-round21-w94zzt2w/inputs7-composition/Hexalith.Platform.Composition.compile.txt",
+          "sha256": "04d8d47cb62399abcf185a839b6ab4512ec7d95cd70654e03ab56ccb13d8ea66",
+          "exactPinOnce": true
+        }
+      ],
+      "installedQualification": false
+    },
+    "rootMutationVerification": {
+      "selected": 60,
+      "semanticFailures": 27,
+      "mutations": [
+        {
+          "name": "funded-transfer",
+          "selected": 7,
+          "semanticFailures": 7,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/funded-transfer/tests.xml",
+          "xmlSha256": "2dd823517e3080fa3849b9a8d2ea16378ec0f096b05f515ce8153d9bc329c3d8",
+          "messages": [
+            "Shouldly.ShouldAssertException : Task `Claim(Pool(fault:true),first)`\n    should throw\nSystem.OperationCanceledException\n    but threw\nSystem.IO.IOException",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission.",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission.",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission.",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission.",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission.",
+            "System.IO.IOException : Protected archive inode/entry/private-block capacity exhausted before admission."
+          ]
+        },
+        {
+          "name": "metadata-generation-reuse",
+          "selected": 2,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/metadata-generation-reuse/tests.xml",
+          "xmlSha256": "5b354b26e63039bf62b2013a53dfdad9f764338c2c19b1596a3a40770dd31820",
+          "messages": [
+            "System.IO.IOException : Unknown missing initialized archive metadata; independently enrolled dual initial metadata required."
+          ]
+        },
+        {
+          "name": "late-export-disposal",
+          "selected": 1,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/late-export-disposal/tests.xml",
+          "xmlSha256": "3a9019c2449c59e1b5109bc0fc8ad34f21976942c9acbca0cb4db935c268c917",
+          "messages": [
+            "System.InvalidOperationException : Late private export results were not all cleared."
+          ]
+        },
+        {
+          "name": "decoded-export-clear",
+          "selected": 3,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/decoded-export-clear-corrected/tests.xml",
+          "xmlSha256": "32e119e17855c52f2b00c1dbd4b53f058822eb6c4d9eaf34cd3d9dd1caaadb0c",
+          "messages": [
+            "Shouldly.ShouldAssertException : if(revokeAfterRead) { actual.ShouldBeNull();decoded\n    should satisfy the condition\n(value == 0)\n    but\n[84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84]\n    do not"
+          ]
+        },
+        {
+          "name": "native-tick-side",
+          "selected": 12,
+          "semanticFailures": 2,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/native-tick-side/tests.xml",
+          "xmlSha256": "33ab357d0fc7c1ae50bad69af348a4cf968adb896eb4fea648685fb12735df55",
+          "messages": [
+            "Shouldly.ShouldAssertException : else actual\n    should be null but was\nQualificationObservedOriginal { RequestId = 1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467, OriginalReceiptSha256 = 020887c297cdda68e735abc8a90347fbb87be49336119c621de9459a76db2bfb, AuthorityRevision = temporal:1, Source = {\n  \\\"nativeTemporalPrecision\\\": {\n    \\\"evaluatedAtExact\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\",\n    \\\"boundaryExact\\\": \\\"2026-10-25T12:00:00.0005\\\\u002B00:00\\\",\n    \\\"rotationOriginal\\\": {\n      \\\"rotatedAt\\\": 1792929000000,\n      \\\"rotatedAtExact\\\": \\\"2026-10-25T11:50:00.0005\\\\u002B00:00\\\"\n    }\n  },\n  \\\"state\\\": {\n    \\\"sealId\\\": null,\n    \\\"batchId\\\": null,\n    \\\"manifestDigest\\\": null,\n    \\\"attestationOrdinal\\\": null,\n    \\\"keyVersion\\\": null,\n    \\\"deliveredAt\\\": null,\n    \\\"exclusiveExpiry\\\": 1792929600000,\n    \\\"replayNamespace\\\": null,\n    \\\"replayTenant\\\": null,\n    \\\"nonceDigest\\\": null,\n    \\\"firstSeenAt\\\": null,\n    \\\"retainUntil\\\": null,\n    \\\"actualIssuedGuardRevision\\\": null,\n    \\\"replayIssuer\\\": null,\n    \\\"rotation\\\": null,\n    \\\"destroyedTargetIds\\\": [],\n    \\\"pinnedTargetIds\\\": [],\n    \\\"activeCredentialIds\\\": [],\n    \\\"erasedCopyIds\\\": [],\n    \\\"attempts\\\": [],\n    \\\"attestationHistory\\\": [],\n    \\\"requestId\\\": \\\"1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467\\\",\n    \\\"outcome\\\": \\\"Expired\\\",\n    \\\"status\\\": \\\"Expired\\\",\n    \\\"receiptId\\\": \\\"020887c297cdda68e735abc8a90347fbb87be49336119c621de9459a76db2bfb\\\",\n    \\\"tenantId\\\": \\\"tenant\\\",\n    \\\"logicalId\\\": \\\"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\\\",\n    \\\"targetIds\\\": [\n      \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"\n    ],\n    \\\"providerCopyIds\\\": [],\n    \\\"journalRevision\\\": 1,\n    \\\"timing\\\": {\n      \\\"checkedAt\\\": 1792929600000,\n      \\\"exclusiveExpiry\\\": 1792929600000,\n      \\\"releasedAt\\\": null,\n      \\\"authorityChangedAt\\\": null,\n      \\\"rotatedAt\\\": null,\n      \\\"overlapEndsAt\\\": null\n    },\n    \\\"temporalEvaluation\\\": {\n      \\\"version\\\": 2,\n      \\\"evaluatedAt\\\": 1792929600000,\n      \\\"originalResultSha256\\\": \\\"020887c297cdda68e735abc8a90347fbb87be49336119c621de9459a76db2bfb\\\"\n    }\n  },\n  \\\"nativeStageBoundary\\\": null,\n  \\\"receipts\\\": [],\n  \\\"nativeMutationSources\\\": null,\n  \\\"targetMutations\\\": [],\n  \\\"surfaceScans\\\": [],\n  \\\"copyCensus\\\": [],\n  \\\"linearization\\\": {},\n  \\\"independentTemporalVerification\\\": {\n    \\\"caseId\\\": \\\"S2.expiry.at\\\",\n    \\\"requestId\\\": \\\"1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467\\\",\n    \\\"outcome\\\": \\\"Expired\\\",\n    \\\"status\\\": \\\"Expired\\\",\n    \\\"temporalEvidenceVersion\\\": 2,\n    \\\"checkedAt\\\": 1792929600000,\n    \\\"evaluatedAtExact\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\",\n    \\\"authenticationDecision\\\": {\n      \\\"Status\\\": \\\"Expired\\\",\n      \\\"Envelope\\\": null,\n      \\\"EvaluatedAt\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\"\n    },\n    \\\"originalEnvelope\\\": {\n      \\\"ExpiresAt\\\": \\\"2026-10-25T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"SigningKeyVersion\\\": \\\"v1\\\"\n    },\n    \\\"keyMetadata\\\": {\n      \\\"Version\\\": \\\"v1\\\",\n      \\\"State\\\": \\\"Retained\\\",\n      \\\"NotBefore\\\": \\\"2026-10-24T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"VerifyUntil\\\": \\\"2026-10-26T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"RetiredAt\\\": \\\"2026-10-25T11:50:00.0005\\\\u002B00:00\\\"\n    },\n    \\\"rotationOverlapMilliseconds\\\": 600000\n  }\n}, ObservationIdentity = , ObservationVersion = , ObservedAt = 0, ValidUntil = 0, Signature = , StageEvidence =  }",
+            "Shouldly.ShouldAssertException : else actual\n    should be null but was\nQualificationObservedOriginal { RequestId = 1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467, OriginalReceiptSha256 = 0190b3335b8f1bbdc0b40009a79da7b4968c54a4e3c33fc545bf9c0549ccde5d, AuthorityRevision = temporal:1, Source = {\n  \\\"nativeTemporalPrecision\\\": {\n    \\\"evaluatedAtExact\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\",\n    \\\"boundaryExact\\\": \\\"2026-10-25T12:00:00.0005\\\\u002B00:00\\\",\n    \\\"rotationOriginal\\\": {\n      \\\"rotatedAt\\\": 1792929000000,\n      \\\"rotatedAtExact\\\": \\\"2026-10-25T11:50:00.0005\\\\u002B00:00\\\"\n    }\n  },\n  \\\"state\\\": {\n    \\\"sealId\\\": null,\n    \\\"batchId\\\": null,\n    \\\"manifestDigest\\\": null,\n    \\\"attestationOrdinal\\\": null,\n    \\\"keyVersion\\\": \\\"v1\\\",\n    \\\"deliveredAt\\\": null,\n    \\\"exclusiveExpiry\\\": null,\n    \\\"replayNamespace\\\": null,\n    \\\"replayTenant\\\": null,\n    \\\"nonceDigest\\\": null,\n    \\\"firstSeenAt\\\": null,\n    \\\"retainUntil\\\": null,\n    \\\"actualIssuedGuardRevision\\\": null,\n    \\\"replayIssuer\\\": null,\n    \\\"rotation\\\": {\n      \\\"rotatedAt\\\": 1792929000000\n    },\n    \\\"destroyedTargetIds\\\": [],\n    \\\"pinnedTargetIds\\\": [],\n    \\\"activeCredentialIds\\\": [],\n    \\\"erasedCopyIds\\\": [],\n    \\\"attempts\\\": [],\n    \\\"attestationHistory\\\": [],\n    \\\"requestId\\\": \\\"1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467\\\",\n    \\\"outcome\\\": \\\"Denied\\\",\n    \\\"status\\\": \\\"Denied\\\",\n    \\\"receiptId\\\": \\\"0190b3335b8f1bbdc0b40009a79da7b4968c54a4e3c33fc545bf9c0549ccde5d\\\",\n    \\\"tenantId\\\": \\\"tenant\\\",\n    \\\"logicalId\\\": \\\"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\\\",\n    \\\"targetIds\\\": [\n      \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"\n    ],\n    \\\"providerCopyIds\\\": [],\n    \\\"journalRevision\\\": 1,\n    \\\"timing\\\": {\n      \\\"checkedAt\\\": 1792929600000,\n      \\\"exclusiveExpiry\\\": null,\n      \\\"releasedAt\\\": null,\n      \\\"authorityChangedAt\\\": null,\n      \\\"rotatedAt\\\": 1792929000000,\n      \\\"overlapEndsAt\\\": 1792929600000\n    },\n    \\\"temporalEvaluation\\\": {\n      \\\"version\\\": 2,\n      \\\"evaluatedAt\\\": 1792929600000,\n      \\\"originalResultSha256\\\": \\\"0190b3335b8f1bbdc0b40009a79da7b4968c54a4e3c33fc545bf9c0549ccde5d\\\"\n    }\n  },\n  \\\"nativeStageBoundary\\\": null,\n  \\\"receipts\\\": [],\n  \\\"nativeMutationSources\\\": null,\n  \\\"targetMutations\\\": [],\n  \\\"surfaceScans\\\": [],\n  \\\"copyCensus\\\": [],\n  \\\"linearization\\\": {},\n  \\\"independentTemporalVerification\\\": {\n    \\\"caseId\\\": \\\"S2.overlap-at\\\",\n    \\\"requestId\\\": \\\"1ae53da64299aafd9a13d93846120f5e9479646dd60172577c38cf35afc05467\\\",\n    \\\"outcome\\\": \\\"Denied\\\",\n    \\\"status\\\": \\\"OutsideKeyWindow\\\",\n    \\\"temporalEvidenceVersion\\\": 2,\n    \\\"checkedAt\\\": 1792929600000,\n    \\\"evaluatedAtExact\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\",\n    \\\"authenticationDecision\\\": {\n      \\\"Status\\\": \\\"OutsideKeyWindow\\\",\n      \\\"Envelope\\\": null,\n      \\\"EvaluatedAt\\\": \\\"2026-10-25T12:00:00.0005001\\\\u002B00:00\\\"\n    },\n    \\\"originalEnvelope\\\": {\n      \\\"ExpiresAt\\\": \\\"2026-10-25T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"SigningKeyVersion\\\": \\\"v1\\\"\n    },\n    \\\"keyMetadata\\\": {\n      \\\"Version\\\": \\\"v1\\\",\n      \\\"State\\\": \\\"Retained\\\",\n      \\\"NotBefore\\\": \\\"2026-10-24T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"VerifyUntil\\\": \\\"2026-10-26T12:00:00.0005\\\\u002B00:00\\\",\n      \\\"RetiredAt\\\": \\\"2026-10-25T11:50:00.0005\\\\u002B00:00\\\"\n    },\n    \\\"rotationOverlapMilliseconds\\\": 600000\n  }\n}, ObservationIdentity = , ObservationVersion = , ObservedAt = 0, ValidUntil = 0, Signature = , StageEvidence =  }"
+          ]
+        },
+        {
+          "name": "signed-temporal-precision",
+          "selected": 6,
+          "semanticFailures": 6,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/signed-temporal-precision/tests.xml",
+          "xmlSha256": "2b1e1c4c3e2f8d337bab801292cbe0a0d5a37fbfaf58699e7372ee25b40f0f21",
+          "messages": [
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Verified], [\\\"resultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"forbiddenEffects\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]]]]]], [\\\"linearization\\\" => [[\\\"boundary\\\" => before], [\\\"triggerPosition\\\" => 20], [\\\"effectPosition\\\" => 16], [\\\"winner\\\" => Effect]]], [\\\"proofReferences\\\" => [9d617e165c2f4232370722a7fc6e0750e642f7f9352ae43fd947090e8c73bfb8, 7b1b1778ec54f6cd3e7b75cebed0e4a91f664a6b977cb014453cbf2bcbab07e3, cab88c188291f389b7ae1b2e5cbdb9b757fcf7a5e0611399a7748e0bc8597e18, 385c459683ece4cb66efa8ad7b451157c3e1dffb5e8842d145ce663a129f1521, 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101747457], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000600999], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101748116], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101748510], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101749128], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5], [\\\"requestId\\\" => 0f38afa206bca8698237d8fef88ca153d77c8cf852a83270ec5322248326b7cc], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => faca798eeb0592f91543c5a1260b9c0904c4e7d6214ab9fbdb1369774cb47a41], [\\\"originalReceiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101747457], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000600999], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101748116], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101748510], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101749128], [\\\"receiptId\\\" => 2a1117f5e9502be4d5bd40dbaca697d479e0bd5c8491a7dd45188f363f9ca0c5]]]]]",
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Expired], [\\\"resultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"forbiddenEffects\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]]]]]], [\\\"linearization\\\" => [[\\\"boundary\\\" => at], [\\\"triggerPosition\\\" => 16], [\\\"effectPosition\\\" => 20], [\\\"winner\\\" => Trigger]]], [\\\"proofReferences\\\" => [bf28bb76c7aa3cc8d0f79f2828c7d66b655036474afe282dbbf66ffbd504f893, 2790a4c71e3c7eb4ef3db5409519424549b1e430930acee12efce9447926fae1, ccb96a57b6293d7dddedcb0463fd7f5e5fdbca383b48400e1da54d26a340b2f4, 1897ad0db11f4d2d405a5780fd4028ea47c0790fbbd5b89674acc59ec424dcae, 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101750053], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101750685], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101751149], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101751860], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78], [\\\"requestId\\\" => fa0e00598ee9b8fdb8e47c2e44c358912cb102acd2120174a97a416e0ce4d330], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 8bf646d4bd634951638555e8739af63dead0afbcd210fc61e65944d6aee333f7], [\\\"originalReceiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101750053], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101750685], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101751149], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101751860], [\\\"receiptId\\\" => 8a86173843990360b433cb26d4e86be2b81c9d3f80eedaf634eda9dea265ee78]]]]]",
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Expired], [\\\"resultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"forbiddenEffects\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => null], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => null], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"outcome\\\" => Expired], [\\\"status\\\" => Expired], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => 1700000601000], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => null], [\\\"overlapEndsAt\\\" => null]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]]]]]], [\\\"linearization\\\" => [[\\\"boundary\\\" => after], [\\\"triggerPosition\\\" => 16], [\\\"effectPosition\\\" => 20], [\\\"winner\\\" => Trigger]]], [\\\"proofReferences\\\" => [f045d68422403cc21811d526b80c7b207af48dcfe72d66f6324aee5beb20d25b, a5aabed932165a1140cf85303b34058032a7cc4b8aeb58c1bc2749dc1966a65e, 324525a33b9533846a51bc4e98f330e7e862a6b0c9e3ef278f9d6e7da6528701, 1dcbab12dc907424ffd0bdbc51bc58c87e280f27643c5e76bfcd059c598ef5ac, 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101752664], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601001], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101753291], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101753782], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101754390], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7], [\\\"requestId\\\" => a6c138c0f8bc4d89e5baa435a46aed36d0c42ecfdd38f5a66363bfee117b4778], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 7057f4c62cdf743a733479b3742dfb1ac51b887c686b2d412f60e9b1236018da], [\\\"originalReceiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101752664], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Expiry], [\\\"position\\\" => 16], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601000], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Verify], [\\\"position\\\" => 20], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1700000601001], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 40], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101753291], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 62], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101753782], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 86], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101754390], [\\\"receiptId\\\" => 0cfdfdd301a711652b5b72a2f58802b4a1fd7bf1e651f512c137a1ffbe214bb7]]]]]",
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Verified], [\\\"resultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4], [\\\"retainedEnvelopeVerifier\\\" => 1]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"outcome\\\" => Verified], [\\\"status\\\" => Verified], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000600999], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000600999], [\\\"originalResultSha256\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]]]]]], [\\\"linearization\\\" => [] ({})], [\\\"proofReferences\\\" => [f0ae51194820bf66ab5745a157b02a9f1873680abc6750453d2978cf1d0d740a, 46a6123735e73a12080d75505254e6ad07954fb557e6c7ce853d0439988f6094, 088c0019dbc856424d9c816e056a803df11259a1681d123d400c960e28ab0455, 1bed23a6447cf4d8fe2403831866a0fdcba2dce75dc1bb54d6555970e917a240, 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755187], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"originalReceiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755640], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"originalReceiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755967], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"originalReceiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101756538], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1], [\\\"requestId\\\" => 3fa6bca84fd76b8b6737e664e55f8cdee1eb8f97a31040777685e2266b5c06af], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 0592ecefc92b0997309b072232a2c1c1b572977ea1d2fae1badadffa171a6f54], [\\\"originalReceiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755187], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755640], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101755967], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101756538], [\\\"receiptId\\\" => 62629123cc72d4c1d267bbb765dd2d67d0a23975dae6eda04556ceb96ebd4ec1]]]]]",
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Denied], [\\\"resultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"forbiddenEffects\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601000], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601000], [\\\"originalResultSha256\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]]]]]], [\\\"linearization\\\" => [] ({})], [\\\"proofReferences\\\" => [188971c80367731ac348b8790908f666d70b53fe604f953624a6a88ed73a2110, 68dfabca3ab71434b2892ae22485efdad8b5e620d589a2bd7b19dbeecd02650d, 05097ea64cd377c208e3ae88d8cac948e62cf7f82fb56f2219059ca51522750a, 032806a041660190d009fc42a2b74ef2913f525156b68da2479fe0574a15359a, 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757217], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"originalReceiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757638], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"originalReceiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757981], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"originalReceiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101758459], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e], [\\\"requestId\\\" => ca866e979bdf60382961af2f0d06bbecdaf024f0a6a7a48cf5e593ebd743a845], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 9fafb2287a674de5a7ffbce4e3aee5f0564efc076a693a8ff6308322a3899371], [\\\"originalReceiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757217], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757638], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101757981], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101758459], [\\\"receiptId\\\" => 0649bcf5efea48be518a618e539ddf638a4560e3a036e2257d12cd9fd893203e]]]]]",
+            "Shouldly.ShouldAssertException : new QualificationMeasuredCaseProjector(trust,audit,new Dictionary<string,IReadOnlyList<string>>{{caseId,[]}}).Project(\\\"observer\\\",original,contradictory)\n    should be null but was\n[[\\\"outcome\\\" => Denied], [\\\"resultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"metrics\\\" => [[\\\"allCopyRevival\\\" => 0], [\\\"forbiddenEffects\\\" => 0], [\\\"foreignEffects\\\" => 0], [\\\"immutableIdentity\\\" => 1], [\\\"immutableOutcome\\\" => 1], [\\\"leakCount\\\" => 0], [\\\"persistedProofCount\\\" => 4]]], [\\\"snapshots\\\" => [[[\\\"stage\\\" => AfterEffect], [\\\"originalRequestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]]]], [[\\\"stage\\\" => AfterRestart], [\\\"originalRequestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]]]], [[\\\"stage\\\" => AfterRestore], [\\\"originalRequestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]]]], [[\\\"stage\\\" => AfterLookup], [\\\"originalRequestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"authorityRevision\\\" => temporal:1], [\\\"state\\\" => [[\\\"sealId\\\" => null], [\\\"batchId\\\" => null], [\\\"manifestDigest\\\" => null], [\\\"attestationOrdinal\\\" => null], [\\\"keyVersion\\\" => v1], [\\\"deliveredAt\\\" => null], [\\\"exclusiveExpiry\\\" => null], [\\\"replayNamespace\\\" => null], [\\\"replayTenant\\\" => null], [\\\"nonceDigest\\\" => null], [\\\"firstSeenAt\\\" => null], [\\\"retainUntil\\\" => null], [\\\"actualIssuedGuardRevision\\\" => null], [\\\"replayIssuer\\\" => null], [\\\"rotation\\\" => [[\\\"previousKeyVersion\\\" => v1], [\\\"currentKeyVersion\\\" => v2], [\\\"rotatedAt\\\" => 1700000001000], [\\\"oldVerifyUntil\\\" => 1700087001000], [\\\"publicAnchorId\\\" => anchor], [\\\"publicAnchorVersion\\\" => v1]]], [\\\"destroyedTargetIds\\\" => [] ([])], [\\\"pinnedTargetIds\\\" => [] ([])], [\\\"activeCredentialIds\\\" => [] ([])], [\\\"erasedCopyIds\\\" => [] ([])], [\\\"attempts\\\" => [] ([])], [\\\"attestationHistory\\\" => [] ([])], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"outcome\\\" => Denied], [\\\"status\\\" => Denied], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"tenantId\\\" => tenant], [\\\"logicalId\\\" => dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd], [\\\"targetIds\\\" => [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]], [\\\"providerCopyIds\\\" => [] ([])], [\\\"journalRevision\\\" => 1], [\\\"timing\\\" => [[\\\"checkedAt\\\" => 1700000601001], [\\\"exclusiveExpiry\\\" => null], [\\\"releasedAt\\\" => null], [\\\"authorityChangedAt\\\" => null], [\\\"rotatedAt\\\" => 1700000001000], [\\\"overlapEndsAt\\\" => 1700000601000]]], [\\\"temporalEvaluation\\\" => [[\\\"version\\\" => 2], [\\\"evaluatedAt\\\" => 1700000601001], [\\\"originalResultSha256\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]]]]]], [\\\"linearization\\\" => [] ({})], [\\\"proofReferences\\\" => [a16cc749b0c38c5a12e460e8867706adcf091f3af1ca43a3a4199bd9e80d5985, d328fb747a419d897a211a30e58017026e3ba5ad71b00be02070fa2d519522ca, 7e44b48fb697565d448e25020ded4ad51d5628a1a48cdd824e31ee7652cc6e29, 3ba3596a3b0e378c7f7c848d6b185adae294f5315ad878d11fa173c4da43eb47, 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [\\\"trace\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759152], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"originalReceiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759577], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"originalReceiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759932], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"originalReceiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101760444], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1], [\\\"requestId\\\" => 4c4bd2c0c735a750d5687ec698f432ba243ca5b19070b9775f26d390f8ff29df], [\\\"tenantId\\\" => tenant], [\\\"batchId\\\" => null], [\\\"stateSha256\\\" => 6594948230bcf98042d906801be4504d7cb08415092095878562e3891711912b], [\\\"originalReceiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]], [\\\"retainedReceipts\\\" => [[[\\\"kind\\\" => OriginalPersisted], [\\\"position\\\" => 12], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759152], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Restart], [\\\"position\\\" => 28], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759577], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Restore], [\\\"position\\\" => 46], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101759932], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]], [[\\\"kind\\\" => Lookup], [\\\"position\\\" => 66], [\\\"keyVersion\\\" => null], [\\\"guardRevision\\\" => 0], [\\\"blockSetRevision\\\" => 0], [\\\"occurredAt\\\" => 1793101760444], [\\\"receiptId\\\" => 5fcd9dd0ddaaf67a6dbca6e14c7014d46b6e5a9c1f2d729a462fab91b8b00ee1]]]]]"
+          ]
+        },
+        {
+          "name": "actual-ingress-startup",
+          "selected": 1,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/actual-ingress-startup/tests.xml",
+          "xmlSha256": "9a991f4bf2c63f2940a392a014292c84d1234024c015d6d36ab49c22f42d7206",
+          "messages": [
+            "System.InvalidOperationException : Sequence contains no elements"
+          ]
+        },
+        {
+          "name": "replay-final-expiry",
+          "selected": 1,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/replay-final-expiry/tests.xml",
+          "xmlSha256": "dca5b3c5933a93aee2dbebfa6fd223931a583ac3d804b30cfe5ceb4f74e249f3",
+          "messages": [
+            "Shouldly.ShouldAssertException : fixture.ReplayTtlSeconds=1;keyRead=async { await Task.Yield();readyClock.Offset=TimeSpan.FromSeconds(3); };(await Ingress())\n    should be\nHealthStatus.Unhealthy\n    but was\nHealthStatus.Healthy"
+          ]
+        },
+        {
+          "name": "mounted-credential-identity",
+          "selected": 9,
+          "semanticFailures": 4,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/mounted-credential-identity/tests.xml",
+          "xmlSha256": "541c15340161c0655894cb42d10d19bf79038840175479e7c147f5e1b01df207",
+          "messages": [
+            "Shouldly.ShouldAssertException : `Compose`\n    should throw\nSystem.ArgumentException\n    but did not",
+            "Shouldly.ShouldAssertException : `Compose`\n    should throw\nSystem.ArgumentException\n    but did not",
+            "Shouldly.ShouldAssertException : `Compose`\n    should throw\nSystem.ArgumentException\n    but did not",
+            "Shouldly.ShouldAssertException : `Compose`\n    should throw\nSystem.ArgumentException\n    but did not"
+          ]
+        },
+        {
+          "name": "timestamp-tag-evidence",
+          "selected": 17,
+          "semanticFailures": 2,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/timestamp-tag-evidence/tests.xml",
+          "xmlSha256": "9c7d84d99844919db525824ddd89d0c24072cdb61f2a6a9b0f9f975ef73a5633",
+          "messages": [
+            "Shouldly.ShouldAssertException : first[\\\"originalAuthenticationStatus\\\"]!.GetValue<string>()\n    should be\n\\\"InvalidTag\\\"\n    but was\n\\\"Invalid\\\"\n    difference\nDifference     |                                     |    |    |   \n               |                                    \\\\|/  \\\\|/  \\\\|/  \nIndex          | 0    1    2    3    4    5    6    7    8    9    \nExpected Value | I    n    v    a    l    i    d    T    a    g    \nActual Value   | I    n    v    a    l    i    d                   \nExpected Code  | 73   110  118  97   108  105  100  84   97   103  \nActual Code    | 73   110  118  97   108  105  100                 ",
+            "Shouldly.ShouldAssertException : first[\\\"originalAuthenticationStatus\\\"]!.GetValue<string>()\n    should be\n\\\"InvalidTag\\\"\n    but was\n\\\"Invalid\\\"\n    difference\nDifference     |                                     |    |    |   \n               |                                    \\\\|/  \\\\|/  \\\\|/  \nIndex          | 0    1    2    3    4    5    6    7    8    9    \nExpected Value | I    n    v    a    l    i    d    T    a    g    \nActual Value   | I    n    v    a    l    i    d                   \nExpected Code  | 73   110  118  97   108  105  100  84   97   103  \nActual Code    | 73   110  118  97   108  105  100                 "
+          ]
+        },
+        {
+          "name": "legacy-denial-fallback",
+          "selected": 1,
+          "semanticFailures": 1,
+          "xml": "/tmp/story54-round21-w94zzt2w/guard-mutations/legacy-denial-fallback/tests.xml",
+          "xmlSha256": "01034d5f0fbbd38ef28020183b055bc2b14260e3f1628dbe141e60972a79905a",
+          "messages": [
+            "Shouldly.ShouldAssertException : wait workflow.LookupAsync(request,token);recovered\n    should not be null but was"
+          ]
+        }
+      ],
+      "installedQualification": false
+    },
+    "rootFrozenMatrixAudit": {
+      "allFiveFrozenRowsHaveExecutedPassingSourceCoverage": true,
+      "rows": [
+        {
+          "matrixRow": "authority",
+          "passed": true,
+          "executedMatches": [
+            {
+              "coverage": "IndependentAuthorityReceiverTests",
+              "executedPassRows": 40,
+              "sample": "Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualQualificationOwnerReceiverSignsExactOriginalAndUncertainRestartUsesLookupOnly"
+            },
+            {
+              "coverage": "AgentsOwningProcessRegistrationTests",
+              "executedPassRows": 13,
+              "sample": "Hexalith.Platform.Secrets.Runtime.Tests.AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings(mutation: \\\"spool-key\\\")"
+            }
+          ]
+        },
+        {
+          "matrixRow": "replaySpool",
+          "passed": true,
+          "executedMatches": [
+            {
+              "coverage": "LegacyFundedChunkTransferTests",
+              "executedPassRows": 9,
+              "sample": "Hexalith.Platform.Secrets.Runtime.Tests.LegacyFundedChunkTransferTests.UnsupportedRoundingGeometryRefusesBeforeAnyFundedAdmissionOrMetadataMutation"
+            },
+            {
+              "coverage": "ProtectedArchiveAllocationTests",
+              "executedPassRows": 20,
+              "sample": "Hexalith.Platform.Secrets.Runtime.Tests.ProtectedArchiveAllocationTests.DamagedPublishedFixedHeaderBlocksWithoutReplacementOnRestart"
+            },
+            {
+              "coverage": "ReplicatedSecurityObservationSpoolTests",
+              "executedPassRows": 63,
+              "sample": "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.ReservationBeforeMissingPageRecoversOneArchiveOnRestart"
+            },
+            {
+              "coverage": "EventStorePrivateRecordingPortTests",
+              "executedPassRows": 42,
+              "sample": "Hexalith.Platform.Protection.Tests.EventStorePrivateRecordingPortTests.ActualReplayCaseRegisteredLookupRecoversNativeFirstSeenAfterCaseResultRetentionLoss"
+            }
+          ]
+        },
+        {
+          "matrixRow": "protection",
+          "passed": true,
+          "executedMatches": [
+            {
+              "coverage": "Fr34NativeReceivingTests",
+              "executedPassRows": 1,
+              "sample": "Hexalith.Platform.Protection.Tests.Fr34NativeReceivingTests.ActualReceivingReaderUsesNativePersistedBytesAndIndependentBindingForOwnershipCarrierAndErasure"
+            },
+            {
+              "coverage": "Fr34DynamicOccurrenceTests",
+              "executedPassRows": 66,
+              "sample": "Hexalith.Platform.Protection.Tests.Fr34DynamicOccurrenceTests.ActualEngineExplicitlyRefusesAndPreservesUnsafeLegacyRawOriginal"
+            },
+            {
+              "coverage": "JointPhaseNativePublisherTests",
+              "executedPassRows": 7,
+              "sample": "Hexalith.Platform.Protection.Tests.JointPhaseNativePublisherTests.EnrolledCanaryPublicationReadsTheActualReceivingComparisonAndRefusesNativeSubstitution(mutation: \\\"exact\\\")"
+            }
+          ]
+        },
+        {
+          "matrixRow": "cohort",
+          "passed": true,
+          "executedMatches": [
+            {
+              "coverage": "test_joint_live_phase_runner",
+              "registeredInExact350PassingSuite": 22,
+              "sample": "test_joint_live_phase_runner.JointRunnerTests.test_calendar_validation_uses_real_dates"
+            },
+            {
+              "coverage": "test_persisted_phase_observer",
+              "registeredInExact350PassingSuite": 9,
+              "sample": "test_persisted_phase_observer.PersistedObserverTests.test_independent_source_invariant_failure_denies_even_signed_owner_success"
+            },
+            {
+              "coverage": "test_complete_startup_owner",
+              "registeredInExact350PassingSuite": 4,
+              "sample": "test_complete_startup_owner.CompleteStartupOwnerTests.test_actual_main_uses_one_captured_profile_and_enters_serve_outside_acquisition"
+            }
+          ]
+        },
+        {
+          "matrixRow": "packets",
+          "passed": true,
+          "executedMatches": [
+            {
+              "coverage": "AgentsAcceptedDeploymentContextTests",
+              "executedPassRows": 12,
+              "sample": "Hexalith.Platform.Composition.Tests.AgentsAcceptedDeploymentContextTests.ParsingReferencesAloneDoesNotGrantProductionCompositionAuthority"
+            },
+            {
+              "coverage": "test_coordinated_packets",
+              "registeredInExact350PassingSuite": 10,
+              "sample": "test_coordinated_packets.CoordinatedPacketTests.test_binding_rows_are_replaced_and_malformed_context_has_named_blocker"
+            },
+            {
+              "coverage": "test_prepare_acceptance",
+              "registeredInExact350PassingSuite": 19,
+              "sample": "test_prepare_acceptance.AcceptancePreparationTests.test_anchor_files_are_bounded_and_special_files_do_not_block"
+            }
+          ]
+        }
+      ],
+      "actualCohortPhases": 0,
+      "actualAttemptsReserved": 0,
+      "completeInstalledPackets": 0,
+      "installedQualification": false
+    },
+    "independentReview": "Pending21",
+    "sourceTaskBoundary": "All9 review20 source groups verified in29 task edits. One concurrent project include and other public dependency inputs are separately attributed and captured. Independent review21 pending. Actual installed inputs/protocols/trust/physical evidence, owner dates and accepted complete target remain missing.",
+    "sourceComplete": false,
+    "installedQualification": false,
+    "deliveryComplete": false
+  },
+  "ownedSourceHashes": {
+    "apphost.cs": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891",
+    "eng/ext-host-1/prepare_acceptance.py": "215799a15aa13286ae479ff30e95869bdbdc135539de0708a4db9a0e74b381dc",
+    "eng/ext-host-1/test_prepare_acceptance.py": "5fd62cc009623d64b6e47a0bdd96facbe80ccb503397fb54af4fea6b31bb532a",
+    "eng/ext-secrets-1/authentication_acquisition.py": "9da1b05d2a8fc318d569cebfe784b8d5ecebdcfad63ccf18302121214814eb80",
+    "eng/ext-secrets-1/bounded_cohort_http.py": "3bed3b7a26a96223a4a9ddd8d229daec20ab14be46c7a00d46fc90f4ece057fb",
+    "eng/ext-secrets-1/bounded_file_io.py": "d4797d27e461d0c3f3f6346d5e0740eb6b36fbfa70a523e9c9ecce07f646e5e2",
+    "eng/ext-secrets-1/case-driver-inventory.json": "6ace84b7f52bb0d4b7c6cfa33607ddee652fde7fd0da0782f1ab7ed5f436c1c5",
+    "eng/ext-secrets-1/coordinated_packets.py": "d7485b642ea3ad7432a437a0ca751714531fd510464b7003407c485387941333",
+    "eng/ext-secrets-1/enrolled_sqlite.py": "ff49ed15d17f8849176d4baf9a8ee64d269115d636eb56022c560266f54e733a",
+    "eng/ext-secrets-1/enrolled_sqlite_vfs.py": "474416d055ec16ea32d858532ef8aa44148d2680bd2a9bb6559a889f47715b7e",
+    "eng/ext-secrets-1/execution_profile.py": "5b7291c46d8255bc1e11bff85bc19b83dd2a38b8f20046f46a1ff3e06429bc82",
+    "eng/ext-secrets-1/joint-authority-schema.sql": "a0f74e3f7a06fe23c568b80c0af139a6580ad3478343eb7ea0ec842f82821540",
+    "eng/ext-secrets-1/joint_authority_service.py": "7876bccc19c99f5863555d3a0f282ee823359e121d6000b8b85335708a4faa57",
+    "eng/ext-secrets-1/joint_live_phase_runner.py": "05a1e6f297cfd2a635e8a981472cc2467e25ee07b3958a745ef7aa0cd6c2b47c",
+    "eng/ext-secrets-1/launch_inventory.py": "b6bb8c7f61c6210d586be171271b01761d45ff4f5ebb3dcd6c5d82bbdd72658c",
+    "eng/ext-secrets-1/linux_persistent_storage.py": "a4b606b15fb42a9bcc2a6fa22108bdca1354a3ea12b4ef38fa16fddc09a2f8b2",
+    "eng/ext-secrets-1/phase_completion_pool.py": "6328bf950ec44b443d118705110985f2eefd5563baf0c188486e7e098ab175d4",
+    "eng/ext-secrets-1/prepare_acceptance.py": "84618dd897ce426c130ced01d2df5b7c395650627ad1bbb6734951d65b664802",
+    "eng/ext-secrets-1/protected_archive_observer_fixture.py": "f9a5660de45cd8a9b92681ced7441b25b20195fbd4af08358d9b9bdb9e725500",
+    "eng/ext-secrets-1/protected_logical_archive.py": "84e2d68853f669376247aa465621fe3064d0bf4545ee7009e59f2b29c581d59e",
+    "eng/ext-secrets-1/qualify.py": "8af9b23d0d3bc6dffbecf3d3fccaea7517f294323419900c0b62c0604361d1c3",
+    "eng/ext-secrets-1/sqlite_storage_fixture.py": "a88b9ecf972fb719de2973b3314c3439070d081e02c7b873de8d4dfbcdf1eb76",
+    "eng/ext-secrets-1/sqlite_vfs_abi.py": "070d7d57e780dd5dcabda8891d3d68582c80298d7681c818515fc97e898615e4",
+    "eng/ext-secrets-1/test_bounded_cohort_http.py": "fefd891ed844a84362ed453f488c9a7b832703d2712770febce632242f5a41bc",
+    "eng/ext-secrets-1/test_case_driver_inventory.py": "e98df5fac52c3836f336b2cb3f27e3f6160fdba3b6eb44f25e7fdb5c00b15007",
+    "eng/ext-secrets-1/test_complete_startup_owner.py": "ce49cd6a6771170702b2111e5a0831a261835b7bb5cac5fbc846c724d12c920e",
+    "eng/ext-secrets-1/test_coordinated_packets.py": "7042f152fba9408fa27bb6cb0737bd2acfac97bc2d4f7756a5d7e9f9fdd9d028",
+    "eng/ext-secrets-1/test_execution_profile.py": "b047eb49acb086572789a9aa781f6f6d72b4c6849328c7ef6002906f9a2e5858",
+    "eng/ext-secrets-1/test_joint_admission_ordering.py": "3ba5a81b67280d068e4fccd33513ea00bd29f8a1fa262a0084c9172973c31c6f",
+    "eng/ext-secrets-1/test_joint_live_phase_runner.py": "04706f4c5498665170df06f4615c1dd9d90045eb9c9aee5d0fff9ecac40e8a9f",
+    "eng/ext-secrets-1/test_launch_inventory.py": "b7977d7694b8d8219175ef23b96ae1e59897f03d9891e2d9e9a62c00990275a8",
+    "eng/ext-secrets-1/test_native_local_gate.py": "564de414fd01c39bf6e4f88a94dcf158d1b82fb52f2dee2a7640601a2fc54016",
+    "eng/ext-secrets-1/test_outer_cohort_uncertainty.py": "5a101b53e08887147e2e3f65342fba32d4f08a9a462cd580545e128a8ebf0e1c",
+    "eng/ext-secrets-1/test_pass10_boundaries.py": "b2cc745fbbbc60514351c67f9ae346668c410492a385a7d18cac45ca4b3eb5ca",
+    "eng/ext-secrets-1/test_pass12_boundaries.py": "3a19024e6062209fe17b122f780ce6a4c3cbb1352b425879688d9b55a0595da9",
+    "eng/ext-secrets-1/test_pass13_boundaries.py": "562d842533898f7b073c498765b15f25b341f81dbe41cba330066b1599d78af8",
+    "eng/ext-secrets-1/test_pass15_storage.py": "7fc43a6b6f1ce1937c3c50bfa9756d12a2c6465631807e2e2a3d33c3a8c2f5c9",
+    "eng/ext-secrets-1/test_pass16_startup_ownership.py": "2ca70d95896c20806d990851b2b378dd7112301f1d9fdd75d04437f584fd6bc9",
+    "eng/ext-secrets-1/test_pass17_authentication_deadline.py": "551b7b3e1909264e2f5bdf29ec06caa2e7a5e4e9f07fdc2048d7cdc2c0394f8b",
+    "eng/ext-secrets-1/test_pass17_storage_and_permissions.py": "3d40c3e008c79a3a24b0e592ece600f0ee0a3a343423bb746222bd02d04f2f3d",
+    "eng/ext-secrets-1/test_pass18_file_and_sqlite.py": "e86712ea67c0014121cb56726ba856306126c095222b6a3d67a43ed39eb18b54",
+    "eng/ext-secrets-1/test_pass19_sqlite_and_phase.py": "764f32a42162dab634b9147326f5f7f849351088062447a275f2f05a1d882625",
+    "eng/ext-secrets-1/test_prepare_acceptance.py": "7a03176c9d62a78b5630a658439ab11d8a0aefe5d3c62ecf73f1de09ead1c0ac",
+    "eng/ext-secrets-1/test_qualify.py": "ccf48bc02c98c1ec49e39d0ecbaeba37a3c91f483c3efb123535386f6f982b49",
+    "eng/ext-secrets-1/test_recovery_proof_deadline.py": "a749f6166e73c7546c6743d135b5ae62705275ee563a33faedec5efee2389d0a",
+    "eng/ext-secrets-1/test_static_elf_structure.py": "0e3939a5654cf321ca49717feabc9fe8a4fdaeda7166dc952b1628829c65505e",
+    "eng/ext-secrets-1/worker_startup_ownership.py": "90ba87261e645a706dea06cdb04a592cfc7c5cfd07040791e494c17285cfda08",
+    "eng/verify-ext-secrets-1.ps1": "214fe196710fc85449a3e55e4ce91a79cf7975aa1f184505c24f42c0ab6d028e",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj": "7a098ff2a23ce76f9547650269cdb7b034256a518269a3c9f5ba0116a652c477",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs": "711fba977080aa39f94d8ebbfa7bd260d296224db9bf4d5005de9a773d727d7b",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/LifecycleQualificationRecoveryTests.cs": "fcda7c34a191e9274355ab1fcc51dd7f0f6755c06aeb35e66ae87baa55f71674",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeBoundedArchiveTests.cs": "f5d58989b8f6789c4307c5e171c913dca9b239b6e7d36c4168b2e145c45d19d6",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeDurabilityOwnershipTests.cs": "f851f015ab7517da3f29fa9c1897abefe828cecf5341a3830d3eedd536f8451d",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativePhysicalCapacityTests.cs": "2ffbb80dbe7486034196edde69a1d47e17458b7e58b7ab20d3e9f12c518241c4",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReopenedReserveTests.cs": "fedb3bcd4629b3d70a2dce02a3a916d4769c575ff4a52a9a0b1980efc7129f50",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReservedWrapTests.cs": "f14aed6aaf0e8e885e06a0a095eaa8b12a443f6b5cbda9e2d380305beff96801",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/OpenBaoNativeOperationsTests.cs": "bcb899264da3cbec984f59f04ab0033551016377d6d952b6c7290ef6462df74f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs": "6d03fbb890df9e56eda220fe5f3c7da2d6b61c298226202325d0bc1744cfd775",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json": "3fcb94aca3ef72ebdb21b2ab93db0c46389f6b7cf0dc9a2bdeaedf909fd4d8f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs": "a6ecca6f5cb967bc88b397391f07f7f9e5b3936faa07893e483764c96ee989de",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs": "adc8b7ef150f0462a4ead3820fe061a6669289a0e60879a63b88e1083913fa3c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "19babed18b0f48832a8ae63d24f02b4ef8f9444dd621a4c8eada82a675c73e1a",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyOwnerOperationHandler.cs": "e44be49ed10c29e336389c69cc7c6dd5f509ca35f0e30c8a4e4af989828df59f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs": "b3323eb665d4f8840bb747fbcdf89ee66fc3d3ec65afce5aa0720197212d9917",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs": "310a09b86d6c66810d8300aee1fa9355009c05b95993f8a2339ef49caf138ed8",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityInstallation.cs": "1f83a91d800166b1e81649b4fba613c8fad232079dae2348c1485b71ea2f2677",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityState.cs": "d319c6d66a054f6ba364841e03a62e03a3acad3c8fe1ed6ff695ddb0aaee2d4f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeCompletionReservation.cs": "c442a4f2b0fd833b84cd7dc99ee2fc8404db0092f29ca6b26b77575b680b56cb",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs": "dd304b0b1db9c67f1e85882df29b3d9a89e4e0c6955664fe786aeaefabe5d10c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeInstallation.cs": "507617e4cfd88f776b5f20f86af93438c2a77cf1e5b6406a47d8edd424f0fa68",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativePublicationReservation.cs": "91ae3161785ceca1e1eb979bca4d35ae03d4c91bb71f013b915f2e1779a0bec0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs": "6bcefea5dc8b6e9a6f87bdc9d865391f6d9a443a59da343ca506a164d8931466",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs": "2543f80c82396d274b97ec50d0bacd47934aaa650170ccac47a14a56cc9886f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ReferenceBackendCredentials.cs": "15246609912a7174bf7f6903382d9790ef3184a23861b72c9e1e8e67bdc3e8a8",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs": "cf9f6ef32749b0977ef451d9e2f3cc8f9104a224ac8cfbff70c26f967c39c80f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SignedStatement.cs": "4769f387a3a994f4d14461a6a330e64378f5cc9be43afe279973e22b0738b8d0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/StatementVerifier.cs": "a94ed09a5a3dc554d607ca24965f72a7bbd8120c554aa525c09f78b788fa2f20",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/WorkerEntry.cs": "704023f0fcbee235a74913441308369a08bf081cdf6db9dc0f0afb192102130b",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json": "a3b5f8b873c9ac2f9c701f3f8d55094608d1a0a139b03725f1a6591d0dc2971a",
+    "src/Hexalith.Platform.Composition/AcceptedDependencyRecords.cs": "5ff92bd47d6e18a04bcbd13f6407756a329b2efd6742f558d000e211d352e32d",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchArtifactLease.cs": "bf81c81653536a4cf896543ca1ed09107106fee7d5d3693b13ab17fd5a04c412",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchLeaseOwner.cs": "3666fff71ae86022ca791218880f6abb295640ac7ed9a8db45de27c017d01e39",
+    "src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs": "08bbbfd556e4874ab6fa90a1fbf57238385e1fb62f8f4792cab35a5d2d76ee95",
+    "src/Hexalith.Platform.Composition/AcceptedListenerBindings.cs": "3774d514f2c27e5d26106c4c393d28c68873fd837e4d1c1af6ebe67f3e50ffbf",
+    "src/Hexalith.Platform.Composition/AcceptedResourceListener.cs": "625d33e42afe07f62b9b479b086b61a8ac8fa450a9c5895f6280361d2b6947bc",
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "1b7e83575454d661a6d1cee1f7d21dce2ad5061301a68b932819498b67941f25",
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs": "358c955a44a872aa3ab3aef0efe9db7bb4bb3ffe4245efc0066a3182094c6573",
+    "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "93eb6f405e6e16bcaa441c7f92886ad118eac01eb7994cc3a0cdd90cc70a8776",
+    "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs": "048184a0d3e2cd970f4314fb893e1a1e047feb9509434fcca2ba8ae279642e00",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "262ada299b0244a99b1b36fd0e4bbf66a99dfda5a3b54cb8954dfe652271b424",
+    "src/Hexalith.Platform.Composition/PythonCanonicalJson.cs": "ee2cde753d50bae2942ac64f2bfc42e089e51f08d9c8429eb60f95d2d38612e9",
+    "src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs": "a18cb3d234b63cb8253d4dcff1c12313ea6ecca42fc57c50f292e9e4f16a2643",
+    "src/Hexalith.Platform.Custody/DaprExportQualificationOperation.cs": "24ece2b6a6e97ec17b4ca25d6a3d6837bd7a7830ae8eeecbe4603758314d1e9f",
+    "src/Hexalith.Platform.Custody/DaprExportQualificationReferenceReader.cs": "c7dc0ef20a27d552795858c5215597cf3dea2b2bcc3ce916904cefcc14bbba79",
+    "src/Hexalith.Platform.Custody/DaprExportQualificationTrustSource.cs": "141571d89b7e897a498c880865771e2a3abf1d3eeb6a5745e60a26d6e901913b",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryActor.cs": "4198b0b8ad15661d262e3d1e1aacd55a654099630a0a919893f1d70986b303ae",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryDenialOriginal.cs": "2fcf7999af14ad1ff0786c9f198a93cc3b943b5a7ed28353e62f70334e74da5f",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryRawIdentity.cs": "1ed9eb2c88cbfaf508dd2be3ccae5b6bc14088447eaeb1619e946158bf853e1e",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingDenialOriginal.cs": "4a1b42d8668248c4a892094c008ff6ac56fc44812455ad414b9f8339d4ee39b8",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingRequest.cs": "fe24468f33f7c99e01fa083b986a6881c090fb6c35036ff1f177cee8f2f970e4",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingResult.cs": "1cb35fbc07c9361f6032059dc0e2ac5b09daa964bf3546b7602aaaf59fd65ea1",
+    "src/Hexalith.Platform.Custody/ExportQualificationEngine.cs": "ebb0448be7882e4010bb4f91e6de7de03ecf8f7c786cbe271c1da2e05ef17a8b",
+    "src/Hexalith.Platform.Custody/ExportQualificationOriginal.cs": "23bf1c38c10bac254ec08785b16386e94ca888078624089fd9fc7452f2154ba6",
+    "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj": "652fd929c570d75863bab4e8389aff3e3e6bba092ded2737b36c81d6aa991117",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryActor.cs": "e41a65fc279039fca616fd0dd99feb996c1280c4a87ba2b76163226b3c68dbe7",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryDenialOriginalStore.cs": "ba7e7ef8470b6b50595a99327009f5966c47584b64416bda5b58335f13a76ff4",
+    "src/Hexalith.Platform.Custody/ITrustedEnvelopeReplayRegistrar.cs": "1ac256743bf75d71937fb8e582a582567e195891af0d6ada36f02de92a73bdfe",
+    "src/Hexalith.Platform.Custody/IndependentDecisionManifestVerifier.cs": "ceeb8a39b93e5d2509d3144ee9f6b3a9892c299e362573c65363c30013ab5a1a",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs": "de97f8a48db0f1b4e6de1f34403f6bdb290f8a6af476fdd45106a767d311df48",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeDenialCause.cs": "4da03e3844f9a69afb9c351f8a76d6d436093420c4195af22306ff0b5ec79c04",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs": "5d4298c905980fd2d68fd08d08e5407079f123e5f2bc61e7960a133ad5621b43",
+    "src/Hexalith.Platform.Custody/TrustedEnvelopeResult.cs": "30e0caa267c5243d87cc7e5fd5f362c17e90257c42bdd16682ce201afd2cdcd5",
+    "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs": "8e70ae403608f201937efb25c33cc747eeb5d1c2e9bb636d0108bf6a1453ec9f",
+    "src/Hexalith.Platform.Protection/DaprFr34MeasuredOriginalReader.cs": "0f99e08a6a0e180e3fb63cc93d39a8e2575177c3a11343c07ee36548bd1c3ce8",
+    "src/Hexalith.Platform.Protection/EventStoreFr34CanaryEngine.cs": "f7dcd0c6722818040f3fe547bd3f05e860e7d28f758e2a86ae72cd549e651395",
+    "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs": "faa1bc256f3e509a9824a1579ce425a0db7bb65b3175524156ad257107fa8414",
+    "src/Hexalith.Platform.Protection/Fr34AuthorityApplication.cs": "b363850a4556d989204d2a227a6872d3ce6d4e91d1fa65aad396218980ba4c24",
+    "src/Hexalith.Platform.Protection/Fr34CanaryCommandProofSource.cs": "a0f190d042f1bac4f4d3bcf2f569350c1dec9d079087e0918debcd2d259925cd",
+    "src/Hexalith.Platform.Protection/Fr34CommandAuthorizationHandler.cs": "0e25197d5ac5a431a966a748b52a7ff31bcafa581c2e7945e414816dde94d9e6",
+    "src/Hexalith.Platform.Protection/Fr34IndependentOriginalCollector.cs": "0852c0dd9319e7ea006d609271e12dcfa490432745ebdc5c827c2162b376411f",
+    "src/Hexalith.Platform.Protection/Fr34MeasuredCanaryOriginal.cs": "26ebae5cfba8c5b43f90eb2023158f89357eca3893d6d979d2e10faef99082d4",
+    "src/Hexalith.Platform.Protection/Fr34OccurrenceOperationHandler.cs": "f2cd7dd6578590164bc686dee478a50118b2e1c1075cacf478edf57683612d76",
+    "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs": "01f141573b9ebfd9b9ca3605456016b8a75497a56ae0b08b91d558e5e7819506",
+    "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj": "c49758086c8b1a9cad672b067888a6e39f2a942d74c8323a939e8b0fae5becce",
+    "src/Hexalith.Platform.Protection/JointPhaseCommand.cs": "180b711182fdd5458bbb17d29f664e14f07ec790a90db311d1903198cebd0fb5",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs": "88fd9ff8c533e3bbd35a526be28cf8ffb3895872f4bff0cdaed727b841fc33ed",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandInstallation.cs": "829dd21eac888919674cb6afcfe00384bce0442c6c15813f02edad5ef070d9d9",
+    "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs": "3da936be117212f0ced22da30248af7d4fe5bafaf4811a89bf257c79f68269ba",
+    "src/Hexalith.Platform.Protection/JointPhaseNativeSourcePublisher.cs": "890c3ccdcacbbaf6bfc751778563d7433ee5373eac128f3e0597e418c6b79eb8",
+    "src/Hexalith.Platform.Protection/JointPhaseOriginalStores.cs": "3f0f571a2ce99a656c8068d684d6658421577832f5990733b2166b1960e9a488",
+    "src/Hexalith.Platform.Protection/JointPhaseRequestRecipe.cs": "3633db55904e66cba9f0e5caeb0c88e22756991e66672d0edd8e5c520d551a84",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceExecutable.cs": "2ade59770c58ba985875fe8dfd6faf7352c82a51923c912d38c36c0ada324005",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceOperationHandler.cs": "d4af0f1b69e4ff83d2bec18eee3a96750409d9642c92a15389e3284c8d80c4d8",
+    "src/Hexalith.Platform.Protection/OwnedWorkloadProof.cs": "435bb6849e9fec71d0f07d906aef1ba930b11b2d2dab8847a4284b83d54f32df",
+    "src/Hexalith.Platform.Protection/QualificationDispatchOriginalReference.cs": "610c5f9bf3a817efe09d2e1d716ee83ae0dc0a71a3ccb8f0ef719a8d0408a3ae",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs": "32730889db61917c7cd3558216febbfce9fca6de5bb531900332bf55f0c5cebc",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditScope.cs": "e2922179859d280c24eca6f54f8519026007594ec1c1085cbd13f40eb6df247d",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditSnapshot.cs": "dcf4ea5685bd8630f08aaf03be63796d325734e5af25e622aa3a573ce2182444",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs": "1a857eb06102afedd06a73c4e5dd2a2641d686cfa75d5faf7925929b40979073",
+    "src/Hexalith.Platform.Protection/QualificationGatewayReadProofs.cs": "cfbf094e891fa1049b80c06618cd2bad92009dac451e2a84de19d8b62ff8cc53",
+    "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs": "6315fdd9852df9c33f6a500196cb2222c5324cc254948c696b6a4bc4f0210cf2",
+    "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs": "57e1ec888f451be1e50eec25b32eb6571d7d2a8936a3c18c26166bdc7ca66449",
+    "src/Hexalith.Platform.Protection/QualificationGuardOriginalReader.cs": "2c996276b253bfeabcb7f8016a80e06c875aeaab314244ad4d4a7d29fa469f8b",
+    "src/Hexalith.Platform.Protection/QualificationNativeEvent.cs": "3661a288de81a42b9a7310cd232867704456475af2410f455922c79df92d1b41",
+    "src/Hexalith.Platform.Protection/QualificationNativeSourceReader.cs": "0450aa9ed8eb7b8404e7880fd14a7aaa2210529a5bc54109116b54829d3b904f",
+    "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs": "c69aaf4d574f18ce16bef557010a96bfc4c762705a54b97036c23dc5db5b82ca",
+    "src/Hexalith.Platform.Protection/QualificationOwnerQueryClient.cs": "ee7fe5803313672c52867c57d41363cbde043ddf95a46b59897b79d070b31379",
+    "src/Hexalith.Platform.Protection/QualificationReplayOriginalReader.cs": "7c2c5bd4998f54008784e151540218e2feb78c636e3a306d6fb808ded13a4864",
+    "src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs": "3bc542885aa0fa61aa2ef3f3267a22a7cb4c8c5454211a6dea3cba4743d93531",
+    "src/Hexalith.Platform.Secrets.Qualification.Enrollment/Program.cs": "b3fa1123b340324b2ab8119fa2eab1f3b1e5ee091c1ef55532c726974b5a3534",
+    "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs": "00db4fbec359f787f6a8a16fee3a5650d6c2dfaea168413cb61ac779659fe98a",
+    "src/Hexalith.Platform.Secrets.Qualification.Observer/Program.cs": "1160e6fd4f309043662ff7190dea11df15cc161eb1372be8cd704a7c40e741bf",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsIngressReadiness.cs": "d235e23fa1e41fa9c8d132209a11193eba46f6b04147be63506295b0a71e20fd",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs": "848815a2dc258af8976c8a5ad93b88f9d79a0128846042c9d4573178168c5aee",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs": "dbe7916ec26770fb54fe195269896523fa03d4261e63936e9052c858db15000a",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveAllocationProof.cs": "629b0a6ccabab0fcd8c394ccd70cb9886f32abc40f4ca0b330fe79824b599fd3",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveFileLease.cs": "55f622a8d9ff586ccffb6c36b9ffa46b4bc7886f00f46823bcef42f7c12ada4d",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveVolumeFence.cs": "794e45a4f932e192829a09fa0f5b41eab47f1dd5c0fc213c8c472a3d1039782c",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedDurableFileOperation.cs": "3997bc7792c658e655444ae7441778aed585f3df6279219f9c1b543aaa59e673",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs": "de0334b0824e6bf7f66a317eebd78f2a7081c5e29478cca286e76baa8fea385e",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs": "c29e081ca4739e71d671199824f7eac24faafc5c582c6822d31802d3ac28833b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs": "260e08da76dad9b389c46cccf03229c59dd6d68802fd3bfce1279e3dfe9f6b24",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestDenial.cs": "c65145869293803703ac55d98b7970f0668571ba0b282d1aac1c2331a229effb",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestOriginal.cs": "cbbeea60fa5bd18295242440352c17c95b31b88b026f479e561da80d27c0038b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleIssuance.cs": "b1e678b63dd8b2f62992b6ad1015a56f73dd23ed6c7aca40ac258a2202d6a8f2",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleWorkloadGrant.cs": "39897831cdf45855012576227584d4305a7628f0df781b3af7eadfe28a57e4e9",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyWrapOriginalIdentity.cs": "d9ed956444c662be18f3767c2ad3636aeb86d5ab87202a41116e279b847794ac",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs": "39f59c284daf0f7ccdd5fb6668ae81b5b480a0862c1151d914d80257f804c5f9",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprIndependentReplayRegistrar.cs": "176e9d06344643d18104f47e761e074f8e5574a1c54b598fedab32b1dd2879f0",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationAttemptAuthority.cs": "1f2de60e44507c082ce9adfe5f7485104db332d7a0ebaffb12e2eeea350d6ca9",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationLifecycleRootSource.cs": "a65910cd22f9c66303b0ee6e5e0656e5f8f4917c15ba363c7bc497e4a5bd1eca",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationObservedOriginalReader.cs": "3cec99e7754151a5944a4dc26d93fd1269f2b61254eeaf704831cbf87a5f8860",
+    "src/Hexalith.Platform.Secrets.Runtime/ExportKeyDeliveryDenialComposition.cs": "34b69161683e30ed7ac185bd56581c25b8d1be72c0566a53e3c40128d3b4866b",
+    "src/Hexalith.Platform.Secrets.Runtime/Fr34CommandFingerprint.cs": "86fd5d2a7da0d094bfc8c82d9c9449597d27a440963cc5ed5e15bfb2f0384c44",
+    "src/Hexalith.Platform.Secrets.Runtime/HeldArchiveDirectory.cs": "708331747a7f60692b30093f2e5f491d56d286a6942241e46fb514efb08975a3",
+    "src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj": "4e3319f8c61b297073e6d3118bc7fcf794ac7276ed625a1979daae0cb1fc2580",
+    "src/Hexalith.Platform.Secrets.Runtime/IIndependentOwnerOperationHandler.cs": "bc2c8a5beabec6e31fc79eba533303ad1cffd47200bba56e97a2a91b4204df18",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationNativeCaseAuditReader.cs": "358834553bc571d04065608a0b97151ec6702836762a7d7d7b11392f21b4ab1c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationObservedOriginalReader.cs": "f5b3bb0f27a775c0fd50be20cd47d9f2ff0463bce6dd8bedf3bc84c96df56d8c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationOriginalStore.cs": "b4031bc232ab2215b8cf725cff39d166d8d3a57c8494df2aa10cf832cd716474",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationSafetyInvalidationPort.cs": "8a5b2ad3ada6bf6c30599329aea757a31df1f3b442bf3db6d443a6b9f579126e",
+    "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs": "9b3b5c71c84e22e8d6599c92f24ed102079a5028ddd31d72925479720dbd7a50",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "15403b9877ad39e681fb67f4accb8ceda25054625bad2687b61e5c2ad261cbd0",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacityInstallation.cs": "96c380695cb789ce52f10ae63dec5b83d127fdb0feb114fb0bb33531ba410531",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveStorage.cs": "b10fa44003177f65142c9d38d9c3ea9a023eec15547f051ef9157c7a3a40496a",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs": "a696d60eeef636c46a2df73613591f4ff3f047283d13c5d827c73f6be64f0c46",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReadEvidence.cs": "645cfaee2d61a142741dd588fd6fc231027cfd3b35a5701fa9f387380047b8d6",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d3f495926f59e9564e38a8dd84c5f1319320a9f2949be4f1b3133dbd96621d29",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiverInstallation.cs": "dc1ba476cb6ba8f15ee21451a7b8125794854acbbfb568bef6ff993c54daa8f5",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthoritySignedResponse.cs": "030b91a49247611ff69d67e6766a9facab58afd2000af3f014f9d098537f829e",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs": "a7aaa52e538546de2ae4cff95740d309b10288e9de6191ceb4deb1dbbce9f985",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCapacityContentArchive.cs": "cb490e9d3ea19ea3d3e5a34995f986681ff6eb6ef088dff9b4b194f5626187df",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCommandDispatchBinding.cs": "b32f421476ff733f538124cd2d0b2384aeff91de9b5492df139aa6f77f815015",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCommandDispatchFacts.cs": "e65b7cdce31d2f6d189dd6f194c71e225c5c2e4affece43df8774f5fc61c51b2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs": "e6a2ddb3ac7434c612dd54720b0db581bf878a658bc67e7287c7923749873241",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentFileContentArchive.cs": "9dbfe02e21d4b3cabbd00c2c0c35cffef41799c267441bd592bf63afd7bfbdb2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentOriginal.cs": "8aeb6eab4fa920afd7a263b634aa04e450a8f91ed3702952cb9eb7b9c91fb462",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentPrivateOriginalIndex.cs": "8f768cc2a58ad8c30aa8fdce9e4ecd2a9181eb66ed8a39acc4484953cce3a990",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingDiagnostics.cs": "afc364c1c0999cb1567762589ba45f61edfc3a1eb3fcf4f3e9e1cf5a3be6c957",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingFailure.cs": "a12cff4fc2382dbe66a4f7c862006c26e3c1b3febcc8d510afa6d49c6ae1e419",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentReceivingOwnership.cs": "61887a711573a0c3fed716b77a806766670196c5edc516aedbdac903a18e12b5",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentRecoveryGrantArchive.cs": "167beeb057b664a9747546f36d3d046a96231bcadd459f691ed3b7828295a6fe",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledCredentialIndependence.cs": "3d2bb56072e5ae407b28a362192e0d0bcc3ee3fdd595800c79adfd77c1ebca5d",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledExportKeyDeliveryDenialOriginalStore.cs": "7b27efc91c194620822ff95779447af6b2194bda089960a50671f4a999640963",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs": "079dc3949527835dcbe7db054a83ca2ca4e0f48f86b7e2edd520e8ff521c1e40",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationOriginalStore.cs": "e52190d1febadb4b89bbeec8000532e52dd495dd251c623371eaa064f49129a9",
+    "src/Hexalith.Platform.Secrets.Runtime/OwnedArchiveTemporaryFile.cs": "668f24fa74b3f77664a15a66c976482a527946118ecace2eba704930b77546ae",
+    "src/Hexalith.Platform.Secrets.Runtime/PrivateExportKeyDeliveryOwner.cs": "88418d4f48532604bc289dce96145d883f2e7f1829de6ea38f32e13638393f34",
+    "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveAllocationInstallation.cs": "6373830d1a25b46043ca3b6216b02db6c495795fd797a2fcd667535bc83a13cf",
+    "src/Hexalith.Platform.Secrets.Runtime/ProtectedArchiveStore.cs": "2bb50dd77eaf97fc20ca77f309a6cc54ec7b1d44ad36ef5664fcd43c3245f1bd",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationBoundSourceCaseDriver.cs": "c05ac358a0b2ba7c856c9a4f6c2b1b342726991d1b4ea4b0e87d10255cdb9520",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCapabilityOriginalReader.cs": "b5c7abc6c339d650f635ae7e8160339eba10d9c4bfb9fbf68fee3c6d2226c2fb",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCohortAttemptBinding.cs": "7782bc0182adccc0890099c90cb2a1cadb9f126c9fe7259deaacc339b64f630a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCompositeOriginalReader.cs": "9220c77146a9bc1505ad873d3015c21a96724b435df7842f0d0b2476c0477f4c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionCaseInput.cs": "cf4dc0e5ac528465fca935d658a5722d6cd5ad4fd1937ca4e1cb1c2f4f52a3dc",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionCaseWorkflow.cs": "4f9d960b0b0cfbd09f661a5df89d8f68d1ca016916a6ac851308913fdc0c2ac4",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionOriginalReader.cs": "69f32369086497155e285f0615da72970b76fb6a627e9e5eb38d9029905e83e7",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs": "10527054c09b7a09fcc1e3a38261e117ea9564daf26d600fd6f305088e1e3818",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs": "af6cfdf091c96555f4c11f4c4adae0ad2a4196cbe42a44cf98e4ccdeb56529c0",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeCaseWorkflow.cs": "2ae4ce2e40557bbeccb886a9573c726dce6d5b0300fab9b497396cfd0282d2f2",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeOriginalReader.cs": "857d5f6050338c9cb6b86ad9cf86f72e7ed414e26b2ec6cc90a64406e31c2998",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryOriginalReader.cs": "cb148b283f653348c6817b19b0757c5d48c01cf02e7c4fa7d1bf95c0b2878627",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryWorkflow.cs": "3ca048e9a421f63778d7bb2e37c7c94caa642b81cb02103c1c3d3f3267933d3a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportOriginalReader.cs": "e51ad115400178577baf7b70df9b793e18371ca1ac5ca3299e8376880a1ec90c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHost.cs": "b0004f907148c20dcab1c815ac74cb06be07cf4e07d94fe26292761bc0523022",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpHost.cs": "100df7b4959cabe413546cec505951528763f89cdca339b844f7e8530e778d28",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpReceiver.cs": "aeae798fc41d42fbcff50774cee67200863080fbd13888268421b3b93fc30b95",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryOriginalReader.cs": "ed971913e577a3d8c2d643bb8f4bd270deda3a6b8ffce04ba591f6c11b5b7eec",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationOriginalReader.cs": "8f23476fd90d1c3bd379b399412e5391a218c832a14f5aa075fb551ded80a13f",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationWorkflow.cs": "5422d0c9b27d488704e7cd61840573f996db6db38d95660cad8165f2b937e45c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleCaseWorkflow.cs": "965114a32e7c555c9689a087aff3ecfec0977e53e75eec641a330e0096ddddad",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleOriginalReader.cs": "29a14bdd0b301d23f36c8171c875f3c64a6e536199109bcb2a754e6560504f07",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs": "ec8956ba2d060834bd7a3164706c88a51afa05f895be421c3e825c91ea0f5378",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMissingConfigurationOriginalReader.cs": "0c23d34ea680c6b5306cca62c30a43e3fecaeac68075246bf336304e72a031e2",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMutationTrust.cs": "be18b8b0e82bbf364b6f8ae9f445f0cef093d7bc47e710ed8f45746b42910060",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeMutationEvidence.cs": "22a5388ddddaa93fe44f8883811415b33bf17561dbbf409fb02d289e7b8b11df",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeStageBoundary.cs": "dd18f0ea84b73ce7e9b807b5cef65911e802f31133f17274f69afed4a03e6698",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeVersion.cs": "64d2d53762acb3650209b83ccdf9b4e5ba1d610d2e3e39adfb0a535a6b84dca4",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs": "34cf865da328815d9ce776b74cab004bf98739a3c14bb1d4146039548edec279",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStage.cs": "be2485b104710b72563d67bf4b9d59608b58fa39b30d8b1d1bdb6cda80e011e6",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageEvidence.cs": "562e38380127e6e4c7791c1ea82cec873423c77fd922865eb98b164abff7d5b1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageRequest.cs": "8069e679043530992db3abc2b067700b14de93965c6a01dc2154378a4d74767f",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationWitnesses.cs": "9c8e03143ea08d03a3b5f2e64bfc5c2fa662081cb2e1fb633faee834f5f2054a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservedOriginal.cs": "9263d42d1b34d13ffa748688e43dcfd59742d7796bf0e37c892a98d2e5be9c23",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOriginalLookup.cs": "975aef229f0f623bbc1441b6dd6e385c1bc539a20344e90d938e22d2859d3441",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerApplication.cs": "4d04b5baacdfb8cb370dd4812bdc8db713b05f3632c92e56599d60086852b146",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerDriverInstallation.cs": "252805429d402bd95ea8459b5af27d26df7cf482ebf7d4aec7f8aae0e573f709",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs": "cb6576002045440a85d2e0e05db94290db52eb2804c10867adb7fb79a7fd8324",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProofVerifier.cs": "06e4420826a2bab80c59bf0268cc1484ce5a224fabeadc7591e0ffccd3f8d503",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProtocolSchema.cs": "9ea68b8b6305e8153cac819f95a231bfc72ab2d78829f44936b24b154968e69e",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProviderCredentialWorkflow.cs": "e034ee1f073f88dab085c9a40f76061e109e24c588591699fa05f8e70b51a4b1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationReplayChallengeInput.cs": "cf54a58ac5a1d56a9ddd73d620860b76d9e4a4c1f200c48d87171fc23fc77ede",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationResolutionOriginalReader.cs": "a10e0e322f31eeae07b4875e0a7d0b4d9abe3052e8dc55a4d20b0ef3dd8dfa94",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRetainedDigestOriginalReader.cs": "3320f4a5e8d4c8eee4bdaf12418e7d8078df3243ae27d0fa37351a7abbb43342",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRotationOriginal.cs": "cb4b694b61329a6e5d5d5deb0e5f88b68d47697830cf0ee643c9877a8dc1325d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRuntimeWorkflowCatalog.cs": "9024a9e57e144c5f4ba63e7790c167d60c1a226359087874618a11897acb526d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalCaseWorkflow.cs": "253ee01437ab3a4394577327bfeee4eadf8f1a1cb9bf380d28c5361824104c8d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalOriginalReader.cs": "5fcabc2a8da7a0ff27c65b780e01d39afb97effb4e111f33da7feb2dca70e987",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTerminalResult.cs": "f48d0b4be5a53d355488d46b836ea3e3c5f1a182c6c6de0802278904c5f8098d",
+    "src/Hexalith.Platform.Secrets.Runtime/SecretsDapr.cs": "31b97ecea9e9a314c0d183383958c5c72d7ea1009323b89d222b429ca75a1ab2",
+    "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeConfiguration.cs": "7a6f16d7fd3f7e13835c2e02ff29e41654b14e064f300b97b1f5d8f317fccbff",
+    "src/Hexalith.Platform.Secrets.Runtime/Utf8SpanConsumer.cs": "f973350ed6e783cc0a8332b51f68ad0a596831c887dca0e9a34a8e830c557016",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchBoundaryTests.cs": "b2f72c90c1d73499f3cd88b574b3f2d19d8b743a415c643aae71fc417a452a26",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchDirectoryCensusTests.cs": "ccffbe79668022a5a40f8388f2b87d7b95ac13b58250391e395b9813c3f8161e",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchFixture.cs": "b15572c5a459213c114381691c74a2158917b886293bed605a6bf5aee108ea54",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchLifetimeTests.cs": "31edc124141474d72f88bf2c2bd4b44bcdcc358e69a6d6cdc55efaeddc057ec8",
+    "tests/Hexalith.Platform.Composition.Tests/AcceptedResourceListenerTests.cs": "fcd14ca8f7600c286d7c8461922742edb26ac2989756eaabad4e0b20d6fea6a9",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs": "05ef0b484773d7471cf741f2161352486ebbddc5a843a371a2d0a7b9706378c4",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedModelIdentityTests.cs": "46f7f7adecc40d5b34b85ad6fe57641d43d95930c54bea4c590ea544b34b66ab",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAdmissionCurrentBoundaryTests.cs": "4075086988643fc625b673842bc0f45e358624ec5b3d7defef08710fd79c52d2",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs": "9c6a2b9c12a859e8d9cd7cea9a25ddbe4812980fae9488362b191cdb181a24a0",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsIngressDenialTests.cs": "72b201c2f6a9de5adbb958780a527b61aab472b0055d9be7fbdc76e19c9c8d7a",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsSpoolHarness.cs": "b002d6c7e8571c769dd1c3c1e3dd27b2a81c93cd5208649c7e6389de7ad06fe5",
+    "tests/Hexalith.Platform.Composition.Tests/PythonCanonicalBindingTests.cs": "52a9c04a4159938aa04c6c2509b641b5b784ea005ae64f245f270b9b507a0245",
+    "tests/Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs": "308c97b42dfb863ccf64406276c57b3509a60f1a144127c842db04ce7a8a1d8b",
+    "tests/Hexalith.Platform.Protection.Tests/BoundedPhaseSignerTests.cs": "ecea013bea9919e91e3f2860e32b3fdbef391321121101a302cb9a187dac1d9f",
+    "tests/Hexalith.Platform.Protection.Tests/CustodyGovernanceGuardInstallationTests.cs": "639fc670911d5f26e8ef48423b49d8e24bd3384f43ae3451321074753a9e7da4",
+    "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs": "b4fec34a5a783c993ed29f48fd8b1c537158a00b7eeb17a4e1d01db9c26a0408",
+    "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs": "68f48cdf8267d7a371dd62b4ae628232bf7b7eb1e46a7e41ad6452d64e3e07d7",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34AuthorityHostingTests.cs": "331a449738e5f2ac3fc44e9e849db980c2f0ff74f5b398f726be4a6865d16a59",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34DynamicOccurrenceTests.cs": "ca646def9e0e305bce81aa47352b6404bf339c5cd112b11d4ec72ccfa5721728",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34IndependentCollectorTests.cs": "16984b2046dede1a277494ad1a279513eb3222aae733c8d06f6a189f9b56ce6d",
+    "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj": "0f1f0efb50ee65e636ade6bb19771c5ddfed9331df953753437f8cdca32cce68",
+    "tests/Hexalith.Platform.Protection.Tests/IndependentReceivingDiagnosticTests.cs": "862c00ab471b025da59b177dbd8f346b1343fc6511059151028721bb515795e9",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseCommandTests.cs": "61be47483c0ce34ef6e1d22da657c2122c00ab419787d51074e98d484f3ba54b",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseNativePublisherTests.cs": "e39f1fbfb8a80c47230fd244673aa28a6e4df5bd7c64b93255461b18c0f56813",
+    "tests/Hexalith.Platform.Protection.Tests/OwnedWorkloadProofTests.cs": "7ad8ae4bbda1de57c0a1f118134c56d02c6c59b8e810894642fa4b5e354cb4c9",
+    "tests/Hexalith.Platform.Protection.Tests/ProtectedJointOriginalRecoveryTests.cs": "f49626ac626466361399cb5ce12fd9ecea768f90a80d4725a944ae0708a942fb",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGatewayReadProofReceivingTests.cs": "5f52559bfbbf774603534735259f6a05c3decee01e45d61684206427807ed26b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGuardJoinTests.cs": "7c8516dcf1826fe7f37b629a72fd385857e910eade4b3ee73ccac357d63ee5a9",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs": "34c5afd082389da4a875915be6a526edc88425617532dbf786c1c98d4929c81b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationNativeAuditTests.cs": "4de9abf60ee11ad2c4bfc2e5791e193f535701a9c3fae124c9ea546da693bae2",
+    "tests/Hexalith.Platform.Protection.Tests/ReceivingAuthorityFixture.cs": "0891f9ef8c6dab94393d36c793399bf65bb040029d19754a4ab5cbb15aea3230",
+    "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs": "bd0a8371b1b43bb61a8c487cc67b892ee99a23ff88146babb7f186c359bb9c9f",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Hexalith.Platform.Secrets.ArchiveProcessFixture.csproj": "295b530b03e72a5c6dec906376116da7c9af3d1d9aecda2dc8b857c18da237ed",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Program.cs": "cd59e64f199f43c4cf89f988183afc4d5e2b226834f834655b6987e5254673d2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/AgentsOwningProcessRegistrationTests.cs": "8b1528cbb6ac8bad822ab86d791e2caddc7b450c21299ceb518a30d2d3f52ff4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveInputOwnershipTests.cs": "1aacc36536e5b0283a47557539541ea4870a29cd69949f67264e1ec137fb47bd",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveNamespaceOwnershipTests.cs": "ae901fe12f2c94a22f422e7c28154a282c88d8e81421c5f0d4db5f10e9508d04",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveOrdinaryWriterFenceTests.cs": "7eaae33b0c894bd33ae053a2890d5d1cf53dd5b22fa84e69739618a4628abbb7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedInstallationAndPublicationTests.cs": "bc697570ca072e93cb657cea842d2b1766b414cd67bc16a1f727140feffc5ae1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedRoleStartupTests.cs": "1ed6ad366fffff3c4f59d9ee6fb1afe0780cefda7c467a32361c8554f7bc1630",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ConcreteJointSecretsAdapterRegression.cs": "018b7a87c60df4f38ff28a1c68a6f379b1db3d3a401363b98bcd155c4dab70b6",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/CurrentProofReturnTests.cs": "54cfc943fdfaf60ae4ff7dd832afa23178f6b0d99ddeb652699f1f97092f75c0",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationReferenceReaderTests.cs": "62a6cef76a6a1028edc0ce873e3ad0641aafbd80a4f2f157ca4adb46dc1f252e",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs": "050ec238a310776ca9072579538cc1d6f0a509753a949f2bbbc584582eb3edb5",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/DirectNestedResultAuthorityTests.cs": "0d4db5971b8249e568eba54c8db9486e8ce24a39a23d5ae7b6dd19fa81ac8fee",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ExportQualificationAdmissionTests.cs": "08e94e4d5dd57b47f40a142b790547191e3df2b9dd2cc8005003ae241b532faf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "5bf04e1322c2de1223be6367ccc8d5562395d1ff99116be975f6df4824bb7aa7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj": "09fc4c4d04c50e372a3cdd0e307d55596845aeed5385c4e7fc15e3c187851bf7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "d38bbd0b16eb0d1eb87577ac26a81c7b120e21db90ba1b79bef65ca2b3148887",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentOriginalIndexTests.cs": "02a8feaf3ac092a305f63e88481dce93f7002e17bcc09cae0e0bfc98895113bc",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "2d2a38ec195915437543b1d10cd051c7209c839e25e0871f9a35284416f54198",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs": "3321206755f8cf40bc63853a9b9ee15692e46defd5c70d503c161f42949b655a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentResultCurrentAuthorityTests.cs": "1f0caacdb229ef57bca2baf7a829ed54795403806a4727b40508beac8f35871c",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/InstalledQualificationRoleServingFixture.cs": "fdce123a8b2ed925c8618282700feb2b9519ca4dfd9a0718992b967ff5f0638c",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseFinalizerEntrypointTests.cs": "dd7b9dce1cfe93ebe54f8e371057de412dc1e2b70a1c39c5da5de0fff63677b4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseSourceStartupTests.cs": "67d07b17220869e152f998c57c30286bcdd832091876f2657177f12006143faf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/LegacyFundedChunkTransferTests.cs": "7ee6ab0e76a88033a8ef3ec7cc9d8516335a1c788c7ec71278ab94d48310e738",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/NativeTemporalPrecisionTests.cs": "42964b5b20b694d2bf5dcff8889f69fd0227255a06886d80935af4fcebd905a2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/NestedDurableBudgetTests.cs": "e3a487b79e8d5a0d8e472446f9c2c9b5a15a6f85e2fd40b3cf1443adc1aeb2bd",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/OriginalCompletionLiabilityTests.cs": "7d15d6351ecf028317ba436861ecfe11b546318be1e7a3c180f81612de951d0a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Pass13OwnershipTests.cs": "2419108df8c01f78827171ea1e868f4f49e7aacd5e5d07b1ad724dbf8e28d535",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/PrivateAcquisitionBufferTests.cs": "0597cd3d752c2317385a2f9db2c7079138e644654387e92b102dfbc0dcc8a3e8",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ProtectedArchiveAllocationTests.cs": "b2f968b355dd962db2204972a5882f1198ebcb376ba96cf86134f87a3fd63eb1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ProtectedArchiveHeaderLiabilityTests.cs": "05a8d5a018d085e20c3fb4674745e7483fbd921b86d85aaed4628b563923c1b4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationChallengeRetryTests.cs": "0559db7cc2ca332022c91e6280dfa31817bf39c5d840a0a2433fc6f831803d73",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationCopyCensusTests.cs": "4886464a0ee8c78d49c8a42d3cde3b82c1b2a97a7f06e3763baa4f57f807d42b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationDecisionSemanticTests.cs": "985e774b4e04a9831c712764312b2e33da9f6fff5f572ae36d5f2b43bf6bfa83",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationDeliveryDenialReceivingTests.cs": "a835202d17262eeb4cab02781e5247142e6a35c0695405cd62ad6e254914e0b2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationEnvelopeEvaluationRecoveryTests.cs": "d0f16273c70704116fd68b401201e7d28786bf10ce82aa9f6b3a50956c44a7ea",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationEnvelopeSubstitutionTests.cs": "6a9828b7416dc05f18f6f1ecfbed7d3926a28504e3ed9f4e62965858120f1d3a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliveryOriginalReaderTests.cs": "96b3fbe775a484385027b56c26be766a841fecc328048677807c498c6a252b69",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliverySourceTests.cs": "85937c294a2e0023a22498a43783456dc5c8c713eabb356d1b0e29f2c8e007a8",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationFreshCohortReceivingTests.cs": "3206b1092cd61fb8cd022b6ed7d97cc5ad10f6c2a236a7fd442c8dfcb337aa79",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHostTests.cs": "b29091b6ac7a30423a7d4d19fa4c8c2529573201c07603715292930f40e7490b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHttpOwnershipTests.cs": "17db369e45a16f64984d337ff85d5e5f5162ed869c97eac9da8ef965b515c129",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationLifecycleRootSourceTests.cs": "ba68b4d1323800fd9723b18e316c813067ef8c6c8e84cd1b952c0a003b0449b1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationMutationSourceFixture.cs": "82889a9e25257bb7933bb661f0b018ee3e99b586f6225b35ed9f06091f115a0a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationObservationOrchestratorTests.cs": "559ef3d14f29ca9a908894bbe250db39116cf1ddd1445a21bae14b92fb552164",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationOwningLifetimeTests.cs": "64dc719e98b83f902f8f51c64c2d8f462bd2e7c79fcfddb68123dafba75044a4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationReceivingProjectionTests.cs": "d521cdf097261295b5a5facbca7759104ea49504828a8677cc27c0d645d0f550",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationResolutionSourceTests.cs": "82e2aa14b963fbc2224b8fecdadcc254463e07f3788d349508cce60035fb4ccf",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationTemporalDecisionTests.cs": "183fac348881ae06cfdf187c236fe170ab3b92a0238d3e2ead2246e2ba6e12de",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationTemporalSourceTests.cs": "2c60408724022bf2cf28716e5202f0fb64aee8fa8ea33ef545ca0d2fbfb511b5",
+    "tests/Shared/ProtectedArchiveFixture.cs": "fe560b16e0c0845d1be4f5b059ff2fded0127c71c06bb933742037c0934cadc1"
+  }
+}

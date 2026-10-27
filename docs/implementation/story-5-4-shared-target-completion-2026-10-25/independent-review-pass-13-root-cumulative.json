@@ -1,0 +1,179 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T18:17:44.040313+00:00",
+  "reviewPass": "13-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review13_blind",
+    "/root/review13_edge",
+    "/root/review13_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "edgeFindings": [],
+  "scopeManifest": "/tmp/story54-final-review-03mrge3k/scope.json",
+  "reviewDiffSha256": "a443ee97c9c0b1824edb76048d144214e0ddc5cf434f4f5729c8cc630914b759",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "withdrawnIntermediate": [
+    "Blind historical enrollment original_time suspicion withdrawn after exact-line check and passing regression; not a filed finding."
+  ],
+  "findings": [
+    {
+      "id": "R13B-1",
+      "verdict": "high",
+      "evidence": "QualificationOwnerOperationHandler returns the retained signed-proof for enrollment after validating it at its original observedAt. Python enroll() uses the same deterministic requestId and verifies each refresh at current time before new execute calls. The retained <=30s envelope therefore expires permanently for a continuing attempt; historic executor/observer proof preservation does not refresh current enrollment authority.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R13B-2",
+      "verdict": "high",
+      "evidence": "Both named readers pass the independently configured native version to GetSecret as version_id without canonical positive numeric validation. Current-before/after inventory checks bind the logical inventory key, but do not turn native selector0/current/latest into an immutable native version. The existing HMAC reader already checks canonical positive numeric native versions. These are new story source paths.",
+      "route": "patch"
+    },
+    {
+      "id": "R13B-3",
+      "verdict": "high",
+      "evidence": "ExportQualificationEngine.PreflightAsync delegates only material availability; Execute validates manifest length but not the foreign-anchor case before resolving material and signing. Observe then ImportSubjectPublicKeyInfo on ForeignPublicAnchor??[] throws for missing/malformed input, and the actual current key is not excluded as a foreign anchor. No upstream engine case-specific gate resolves this.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R13B-4",
+      "verdict": "high",
+      "evidence": "Projector ValidCensus accepts any nonempty authorizationReceiptId string. Subsequent mutation checks only detect conflicting copies of one mutation id; ValidHistory binds receipt order but never authenticates/correlates the mutation authorization reference. Measure(forbiddenEffects) counts only null references, so an invented nonempty reference produces zero. This is distinct from prior R7B-8 malformed/nonobject entry filtering.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R13B-5",
+      "verdict": "high",
+      "evidence": "ValidCensus requires targetTenantId but no exact object/stream/target identity for each mutation. Enrolled state logicalId/targetIds are validated separately and do not locate every recorded mutation. Measure(foreignEffects) checks tenant equality alone, so a write to another object in the same tenant is indistinguishable from an in-scope mutation.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R13B-6",
+      "verdict": "high",
+      "evidence": "ExportQualificationTrust already carries PublicAnchorId and PublicAnchorVersion, but ExportQualificationOriginal persists only the SPKI hash; Observe tests only that hash for PublicAnchorRetained. Republishing identical key bytes under a different id/version therefore reports retention of the original anchor. Existing logical signing-key version equality does not compare those independent anchor identities.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R13B-7",
+      "verdict": "high",
+      "evidence": "CohortAuthorityStore validates the workload grant at transaction entry. Phase retain can verify a predecessor and publish verifies its owner before INSERT, without another grant/time check. The filed isolated100\u2192102 clock reproduction persists a result after valid_until101. Reservation alone has the late check; response-signing refusal cannot undo the durable publication.",
+      "route": "patch"
+    },
+    {
+      "id": "R13B-8",
+      "verdict": "high",
+      "evidence": "Secrets prepare captures configuration_bytes then read_public_configuration reacquires the path. That helper parses its own second bounded read; the already available parse_public_configuration(data) is not used. Thus semantic pins can refer to a different snapshot from detached bytes/hash. Path(configuration).resolve also removes selected-path symlink identity before the held no-follow reader.",
+      "route": "patch"
+    },
+    {
+      "id": "R13B-9",
+      "verdict": "medium",
+      "evidence": "TryCompose catches InvalidOperationException around ComposeCore. ComposeCore validates project inputs then adds seven resources sequentially without prechecking existing resource names. A later duplicate name can throw after earlier siblings have been registered; TryCompose returns false with those new model resources remaining, violating its no-resource refusal contract for optional callers.",
+      "route": "patch"
+    },
+    {
+      "id": "R13B-10",
+      "verdict": "medium",
+      "evidence": "bounded_cohort_http acquires its connection slot and records a deadline, then Timer.start runs before the cleanup try. Its RuntimeError leaks the slot/deadline/socket ownership; the filed max_connections1 reproduction cannot admit another connection. Existing worker cleanup never runs because worker startup was not reached.",
+      "route": "patch"
+    },
+    {
+      "id": "R13V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: only invalid input calls reach AddInstalledQualificationRole in tests; successful HTTP tests inject TestProvider/TestStore/CallerAuthenticator. Removing concrete executor provider registration leaves those tests green while the real endpoint resolves no provider and returns503 for a valid installed bundle. The serving DI/auth/original/authority chain needs actual positive fixture coverage.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R13B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationOwnerOperationHandler returns the retained signed-proof for enrollment after validating it at its original observedAt. Python enroll() uses the same deterministic requestId and verifies each refresh at current time before new execute calls. The retained <=30s envelope therefore expires permanently for a continuing attempt; historic executor/observer proof preservation does not refresh current enrollment authority."
+    },
+    {
+      "members": [
+        "R13B-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Both named readers pass the independently configured native version to GetSecret as version_id without canonical positive numeric validation. Current-before/after inventory checks bind the logical inventory key, but do not turn native selector0/current/latest into an immutable native version. The existing HMAC reader already checks canonical positive numeric native versions. These are new story source paths."
+    },
+    {
+      "members": [
+        "R13B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "ExportQualificationEngine.PreflightAsync delegates only material availability; Execute validates manifest length but not the foreign-anchor case before resolving material and signing. Observe then ImportSubjectPublicKeyInfo on ForeignPublicAnchor??[] throws for missing/malformed input, and the actual current key is not excluded as a foreign anchor. No upstream engine case-specific gate resolves this."
+    },
+    {
+      "members": [
+        "R13B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "ExportQualificationTrust already carries PublicAnchorId and PublicAnchorVersion, but ExportQualificationOriginal persists only the SPKI hash; Observe tests only that hash for PublicAnchorRetained. Republishing identical key bytes under a different id/version therefore reports retention of the original anchor. Existing logical signing-key version equality does not compare those independent anchor identities."
+    },
+    {
+      "members": [
+        "R13B-7"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "CohortAuthorityStore validates the workload grant at transaction entry. Phase retain can verify a predecessor and publish verifies its owner before INSERT, without another grant/time check. The filed isolated100\u2192102 clock reproduction persists a result after valid_until101. Reservation alone has the late check; response-signing refusal cannot undo the durable publication."
+    },
+    {
+      "members": [
+        "R13B-8"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Secrets prepare captures configuration_bytes then read_public_configuration reacquires the path. That helper parses its own second bounded read; the already available parse_public_configuration(data) is not used. Thus semantic pins can refer to a different snapshot from detached bytes/hash. Path(configuration).resolve also removes selected-path symlink identity before the held no-follow reader."
+    },
+    {
+      "members": [
+        "R13B-9"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "TryCompose catches InvalidOperationException around ComposeCore. ComposeCore validates project inputs then adds seven resources sequentially without prechecking existing resource names. A later duplicate name can throw after earlier siblings have been registered; TryCompose returns false with those new model resources remaining, violating its no-resource refusal contract for optional callers."
+    },
+    {
+      "members": [
+        "R13B-10"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "bounded_cohort_http acquires its connection slot and records a deadline, then Timer.start runs before the cleanup try. Its RuntimeError leaks the slot/deadline/socket ownership; the filed max_connections1 reproduction cannot admit another connection. Existing worker cleanup never runs because worker startup was not reached."
+    },
+    {
+      "members": [
+        "R13V-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Pre-verified: only invalid input calls reach AddInstalledQualificationRole in tests; successful HTTP tests inject TestProvider/TestStore/CallerAuthenticator. Removing concrete executor provider registration leaves those tests green while the real endpoint resolves no provider and returns503 for a valid installed bundle. The serving DI/auth/original/authority chain needs actual positive fixture coverage."
+    },
+    {
+      "members": [
+        "R13B-4",
+        "R13B-5"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "The native mutation census contract lacks authenticated exact authorization and resource-target correlation; the same incomplete mutation evidence object causes both falsely zero unsafe metrics."
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

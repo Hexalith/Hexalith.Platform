@@ -1,0 +1,20 @@
+{
+  "observedAtUtc": "2026-10-27T13:36:10.638702+00:00",
+  "sameRedAndGreenProbeProgramSha256": "a466713b602cc8881d8c6fce5d6f977ebe7e56e1133c1b8999e174aebfed9928",
+  "actualCurrentProductionAssemblySha256": "26cfcad19d919b8018ebdd1125e2fd4d05ce042c5105b09cca04e499897957db",
+  "rootReranCurrentGreenProbe": {
+    "iterations": 10000,
+    "rejected": 0,
+    "pendingAfterReturn": 0,
+    "actualComponent": "/tmp/story54-round22-1fctcr2b/handoff-green7-probe/bin/Debug/net10.0/Hexalith.Platform.Custody.dll",
+    "fixtureOnly": true,
+    "installedQualification": false
+  },
+  "redRootVerification": "/tmp/story54-round22-1fctcr2b/root-handoff-defect-red-verification.json",
+  "meaningfulOldCodeGuard": {
+    "xml": "/tmp/story54-round22-1fctcr2b/guard-mutations/old-asynchronous-export-handoff/tests.xml",
+    "sha256": "4f2a771925cb160014523eb87d450807af6d0c14937de8b56af58cb600be8ed9",
+    "message": "Shouldly.ShouldAssertException : wait output+await error;process.ExitCode\n    should be\n0\n    but was\n1\n\nAdditional Info:\n    xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)\n  Discovering: Hexalith.Platform.Secrets.Runtime.Tests\n  Discovered:  Hexalith.Platform.Secrets.Runtime.Tests\n  Starting:    Hexalith.Platform.Secrets.Runtime.Tests\n    Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall [FAIL]\n      Shouldly.ShouldAssertException : owned.ShouldNotBeNull();DaprExportQualificationOperation.ActiveOwners\n          should be\n      0\n          but was\n      1\n      Stack Trace:\n        /tmp/story54-round22-1fctcr2b/guard-mutations/old-asynchronous-export-handoff/source/tests/Hexalith.Platform.Secrets.Runtime.Tests/DaprExportQualificationResolverTests.cs(36,0): at Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall()\n           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n        --- End of stack trace from previous location ---\n           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n  Finished:    Hexalith.Platform.Secrets.Runtime.Tests (ID = 'bf51cbba0e944460a07a1cea6c54a95e2bfd3d49aa2c7c5147beee26f9351844')\n=== TEST EXECUTION SUMMARY ===\n   Hexalith.Platform.Secrets.Runtime.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.261s\n"
+  },
+  "installedQualification": false
+}

@@ -47,7 +47,7 @@ public sealed class Fr34NativeReceivingTests
         using var authority=new ReceivingAuthorityFixture("fr34-engine");
         var engine=new EventStoreFr34CanaryEngine(actualEngine,reader,gateway,Substitute.For<IEventStoreGatewayBoundCommandProofSource>(),authority.Authority,"private-worker",null!,Substitute.For<ICustodyReservedManifestSource>());
         var handler=new Fr34OwnerOperationHandler(engine,reader,bindings,TimeProvider.System);
-        var state=authority.State with { Fr34Target=target };
+        var state=authority.State with { Fr34Target=target,Fr34AuthorizationRevision="independent-policy-1" };
         var caller=state.Callers[0] with { Role="fr34-observer",ScopeReference="tenant-a|fr34" };
         var current=(Fr34CanaryAuthorization?)await handler.HandleAsync("fr34-observe-current",Wire(new { expected=target }),caller,state,TestContext.Current.CancellationToken);
         current.ShouldNotBeNull();

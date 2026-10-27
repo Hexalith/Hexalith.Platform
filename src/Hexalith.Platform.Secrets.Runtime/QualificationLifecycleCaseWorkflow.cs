@@ -17,6 +17,7 @@ public sealed class QualificationLifecycleCaseWorkflow(CustodyLifecycleClient cl
     {
         token.ThrowIfCancellationRequested();var input=Input(request);if(input is null) return Task.FromResult<IReadOnlyList<string>>(["ExactEnrolledCustodyCaseIdentityAndReservation"]);
         string id=request["caseId"]!.GetValue<string>();
+        if(id.StartsWith("Recovery.lifecycle.",StringComparison.Ordinal)) return Task.FromResult<IReadOnlyList<string>>(["External.ExactNativeLifecycleLostResultInjectionAndLookupOutageControllerProtocol"]);
         return Task.FromResult<IReadOnlyList<string>>(id=="S3.lifecycle.wrap" && roots is null?["External.OriginalCanaryRootAndCompleteNativeHolderAdmissionProtocol"]:[]);
     }
     /// <summary>Retains admission before the real client call; an admitted unknown result is lookup-only.</summary>
@@ -46,31 +47,44 @@ public sealed class QualificationLifecycleCaseWorkflow(CustodyLifecycleClient cl
         }
         else if(input.Manifest is { } manifest) actual=await client.ExecuteManifestOriginalAsync(manifest,input.ReservationReceiptId!,false,token).ConfigureAwait(false);
         else actual=await client.ExecuteLifecycleAsync(input.Registration,input.Lifecycle!,token).ConfigureAwait(false);
-        if(actual is null) return null;
+        if(!Terminal(actual)) return null;
         var result=new JsonObject { ["caseId"]=id,["requestId"]=requestId,["actual"]=JsonSerializer.SerializeToNode(actual,CustodyBindingContract.Json) };
-        await originals.RetainAsync("executor",requestId+":case-result",result,token).ConfigureAwait(false);return result;
+        await QualificationTerminalResult.RetainAsync(originals,request,result,token).ConfigureAwait(false);return result;
     }
     /// <summary>Retrieves exact native originals without reissuing wrap/unwrap or repeating a manifest. Lost delivery remains unknown until independent holder observation.</summary>
     public async Task<JsonObject?> LookupAsync(JsonObject request,CancellationToken token)
     {
         var input=Input(request);if(input is null) return null;string requestId=request["requestId"]!.GetValue<string>();
-        if(await originals.LookupResultAsync("executor",requestId+":case-result",token).ConfigureAwait(false) is { } retained) return retained;
+        if(await ReadTerminalAsync(request,token).ConfigureAwait(false) is { } retained) return retained;
         if(request["caseId"]!.GetValue<string>()=="S3.lifecycle.unwrap") return null;
-        object actual=input.Manifest is { } manifest?await client.ExecuteManifestOriginalAsync(manifest,input.ReservationReceiptId!,true,token).ConfigureAwait(false):
+        object? actual=request["caseId"]!.GetValue<string>()=="S3.lifecycle.wrap"?await client.LookupRegistrationOriginalAsync(WrapIdentity(input.Registration),token).ConfigureAwait(false):input.Manifest is { } manifest?await client.ExecuteManifestOriginalAsync(manifest,input.ReservationReceiptId!,true,token).ConfigureAwait(false):
             await client.LookupOriginalAsync(input.Registration,input.Lifecycle,token).ConfigureAwait(false);
-        if(actual is CustodyKeyLifecycleOutcome { Status:CustodyKeyLifecycleStatus.Unknown or CustodyKeyLifecycleStatus.Unavailable }
-            || actual is CustodyManifestOriginal { Result.State:DeletionManifestProviderState.Unknown }) return null;
+        if(!Terminal(actual)) return null;
         var result=new JsonObject { ["caseId"]=request["caseId"]!.DeepClone(),["requestId"]=requestId,["actual"]=JsonSerializer.SerializeToNode(actual,CustodyBindingContract.Json) };
-        await originals.RetainAsync("executor",requestId+":case-result",result,token).ConfigureAwait(false);return result;
+        await QualificationTerminalResult.RetainAsync(originals,request,result,token).ConfigureAwait(false);return result;
     }
     /// <summary>Reads current independently authenticated native original only, with no effect admission.</summary>
     public async Task<JsonNode?> ObserveNativeAsync(JsonObject request,CancellationToken token)
     {
         var input=Input(request);if(input is null) return null;
-        object actual=input.Manifest is { } manifest?await client.ExecuteManifestOriginalAsync(manifest,input.ReservationReceiptId!,true,token).ConfigureAwait(false):
+        object? actual=request["caseId"]!.GetValue<string>()=="S3.lifecycle.wrap"?await client.LookupRegistrationOriginalAsync(WrapIdentity(input.Registration),token).ConfigureAwait(false):input.Manifest is { } manifest?await client.ExecuteManifestOriginalAsync(manifest,input.ReservationReceiptId!,true,token).ConfigureAwait(false):
             await client.LookupOriginalAsync(input.Registration,input.Lifecycle,token).ConfigureAwait(false);
         return JsonSerializer.SerializeToNode(actual,CustodyBindingContract.Json);
     }
+    private static CustodyWrapOriginalIdentity WrapIdentity(CustodyKeyRegistration registration)=>new(registration.Identity,registration.OperationId,registration.ExpectedRevision,registration.KekVersion,registration.OpaqueWrappedKeyReference);
+    /// <summary>Reads terminal evidence, never a legacy retained uncertain observation.</summary>
+    public Task<JsonObject?> ReadTerminalAsync(JsonObject request,CancellationToken token)=>QualificationTerminalResult.ReadAsync(originals,request["requestId"]!.GetValue<string>(),TerminalBody,token);
+    internal static bool TerminalBody(JsonObject value)
+    {
+        var actual=value["actual"];if(actual is null) return false;
+        if(actual["Status"]?.GetValue<string>() is { } status) return status is not ("Unknown" or "Unavailable");
+        if(actual["Result"]?["State"]?.GetValue<string>() is { } manifest) return manifest=="Consumed"
+            || manifest=="NotStarted" && actual["Denial"] is JsonObject denial && denial["ReceiptId"]?.GetValue<string>() is { Length:>0 }
+                && denial["RequestAttemptId"]?.GetValue<string>() is { Length:>0 } && denial["Pins"] is JsonArray { Count:>0 };
+        if(actual["State"]?.GetValue<string>() is { } delivery) return delivery=="Released" && actual["OwnedPlaintextCleared"]?.GetValue<bool>()==true;
+        return actual["WrapReceiptId"]?.GetValue<string>() is { Length:>0 };
+    }
+    private static bool Terminal(object? value)=>value is not null && TerminalBody(new JsonObject { ["actual"]=JsonSerializer.SerializeToNode(value,CustodyBindingContract.Json) });
     private QualificationLifecycleCaseInput? Input(JsonObject request)
     {
         string? id=SecretsProof.Text(request,"caseId");if(id is null || !Supported(id) || !inputs.TryGetValue(id,out var input) || request["enrolledScope"] is not JsonObject scope
@@ -82,5 +96,5 @@ public sealed class QualificationLifecycleCaseWorkflow(CustodyLifecycleClient cl
             || !input.Manifest.Targets.Contains(new(input.Registration.Identity.TenantId,input.Registration.Identity.ObjectId,input.Registration.Identity.KeyAlias))?null:input;
     }
     /// <summary>Gets the closed supported lifecycle group.</summary>
-    public static bool Supported(string id)=>id is "S3.lifecycle.wrap" or "S3.lifecycle.unwrap" or "S3.lifecycle.pin" or "S3.lifecycle.unpin" or "S3.lifecycle.destroy" or "S3.hold-pin";
+    public static bool Supported(string id)=>id is "S3.lifecycle.wrap" or "S3.lifecycle.unwrap" or "S3.lifecycle.pin" or "S3.lifecycle.unpin" or "S3.lifecycle.destroy" or "S3.hold-pin" || id.StartsWith("Recovery.lifecycle.",StringComparison.Ordinal);
 }

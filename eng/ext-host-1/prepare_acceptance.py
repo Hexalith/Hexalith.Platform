@@ -82,7 +82,7 @@ def reference(value, name):
 
 
 def missing_references(profile):
-    if not isinstance(profile, dict) or sorted(profile) != sorted(ROOT_KEYS):
+    if not isinstance(profile, dict) or sorted(profile) != sorted([*ROOT_KEYS, *(["listeners"] if "listeners" in profile else [])]):
         raise ValueError("profile rejected an unknown or incomplete setting")
     if profile.get("host") != "192.168.1.30" or profile.get("partiesBranch") != "B":
         raise ValueError("profile rejected accepted constants")
@@ -127,14 +127,20 @@ def plan():
 
 
 def prepare(root, output, profile_path=None, register=None, coordination_context=None):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ext-secrets-1"))
+    import bounded_file_io as selected_io
+    return selected_io.run(lambda: _prepare(root, output, profile_path, register, coordination_context))
+
+
+def _prepare(root, output, profile_path=None, register=None, coordination_context=None):
     root, output = Path(root).resolve(), Path(output).resolve()
     if output == root or output.is_relative_to(root):
         raise ValueError("detached output must be outside candidate checkout")
     if output.exists():
         raise ValueError("fresh detached output directory required")
-    profile = load_profile(profile_path) if profile_path else default_profile()
+    profile_bytes = profile_snapshot(profile_path) if profile_path else canonical(default_profile())
+    profile = decode_profile(profile_bytes)
     missing = missing_references(profile)
-    profile_bytes = Path(profile_path).read_bytes() if profile_path else canonical(profile)
     head = git(root, "rev-parse", "HEAD")
     if not COMMIT.fullmatch(head) or git(root, "status", "--porcelain"):
         raise ValueError("clean candidate checkout required")
@@ -184,6 +190,11 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
     from coordinated_packets import records, shared_binding
     from joint_live_phase_runner import full_plan, digest as cohort_digest
     packet["cohortPlanSha256"] = cohort_digest(full_plan())
+    from coordinated_packets import protection_binding
+    packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
+    packet["jointBinding"] = load_profile(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
+    packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
+    packet["launchInventory"] = load_profile(coordinated["installedArtifacts"]["launchInventory"]["path"])
     packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
     (output / "joint-qualification-plan.json").write_bytes(canonical(full_plan()))
     (output / "agents-deployment-profile.json").write_bytes(profile_bytes)
@@ -193,13 +204,23 @@ def prepare(root, output, profile_path=None, register=None, coordination_context
             "effects": 0, "missingReferences": missing, "candidateCommit": head}
 
 
+def profile_snapshot(path):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ext-secrets-1"))
+    import qualify as q
+    return q.bounded_public_file(path, 1024*1024)
+
+
 def load_profile(path):
+    return decode_profile(profile_snapshot(path))
+
+
+def decode_profile(raw):
     def pairs(items):
         keys = [key for key, _ in items]
         if len(keys) != len(set(keys)):
             raise ValueError("profile rejected an unknown or incomplete setting")
         return dict(items)
-    return json.loads(Path(path).read_text(), object_pairs_hook=pairs)
+    return json.loads(raw, object_pairs_hook=pairs)
 
 
 def main():

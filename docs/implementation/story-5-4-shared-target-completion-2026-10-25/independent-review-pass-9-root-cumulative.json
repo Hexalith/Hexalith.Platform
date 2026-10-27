@@ -1,0 +1,205 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T10:24:23.290652+00:00",
+  "reviewPass": "9-root-cumulative",
+  "reviewers": [
+    "/root/review9_blind",
+    "/root/review9_edge",
+    "/root/review9_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-f4gwlzcu/scope.json",
+  "reviewDiffSha256": "4be22c26696bfa939884b300853df79676ef9c91270556dcae5a038202da9830",
+  "findings": [
+    {
+      "id": "R9B-1",
+      "verdict": "high",
+      "evidence": "execution_profile.py requires the installation bytes in the phase profile artifact pins; coordinated_packets.py pins that profile inside the binding, while JointPhaseCommandExecutable requires installation Scope.BindingDigest and CohortAttempt.BindingDigest to equal the resulting binding digest. Excluding only the profile bindingDigest leaves an indirect content-hash cycle. The existing positive inventory fixture uses an empty installation, so it does not establish a constructible real installation.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R9B-2",
+      "verdict": "high",
+      "evidence": "QualificationOwnerOperationHandler does not override RequiresCurrentResultAdmission. Its real read-source/observe/lookup/enroll paths await source or original reads and construct/return signed proofs under the earlier caller snapshot. IndependentAuthorityReceiver conditionally rechecks the surviving current head only when that opt-in is true; its final expiry check does not detect committed revocation.",
+      "route": "patch"
+    },
+    {
+      "id": "R9B-3",
+      "verdict": "high",
+      "evidence": "CohortHttpApplication reads workload_grants, closes the connection, dispatches an awaited/blocking observer operation, then signs a response using the old row. PersistedPhaseObserver does not perform a final same-head grant check. Authority effect admission transactions do not protect issuance of this observer response after revocation wins.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R9B-4",
+      "verdict": "high",
+      "evidence": "DeliverReceivedAsync returns a cached exact rejection immediately after awaited LookupReceivedAsync. Fresh rejection and explicit rejection lookup paths both reauthorize after the read, but this cached branch bypasses them and can return Conflict after current DeliverExportKey authority has been revoked.",
+      "route": "patch"
+    },
+    {
+      "id": "R9B-5",
+      "verdict": "high",
+      "evidence": "JointPhaseCommandExecutable.OpenSignerAsync checks FileInfo then uses File.ReadAllTextAsync for both PEMs. Neither the parent path nor the later open is held or descriptor bounded; replacement by FIFO or a growing file can stall/allocate past the caller budget. The earlier R8E-2 fix covered a different receiving-host startup caller.",
+      "route": "patch"
+    },
+    {
+      "id": "R9B-6",
+      "verdict": "high",
+      "evidence": "validate_execution_inventory opens launcher and entry paths before regular-file/size acquisition and loads each configuration with read_bytes before checking its size. file_hash also checks a pathname before a later ordinary open and has no total IO deadline. Selected startup FIFO/replacement/stalled IO is reachable before the eventual profile refusal.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R9B-7",
+      "verdict": "high",
+      "evidence": "joint_authority_service.main reads the selected signing key with ordinary open and read(8193), without a held no-follow regular-file acquisition or deadline. The size argument does not bound a FIFO open or stalled filesystem call before serving a refusal.",
+      "route": "patch"
+    },
+    {
+      "id": "R9B-8",
+      "verdict": "high",
+      "evidence": "ImmutableFileArchive calls recursive EnsureDirectory before creating its deadline; subsequent Flush(true), rename and directory fsync are synchronous and are not interrupted by the cancellation token. ArchiveFileLease open/stat calls likewise precede async cancellation points. A stalled installed filesystem can therefore retain an unbounded caller despite a nominal finite operation budget.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R9B-9",
+      "verdict": "high",
+      "evidence": "ImmutableFileArchive holds only the lock-file descriptor and continues to create/move/fsync using the mutable directory pathname. Swapping that directory to a symlink in its actual beforeWrite hook redirects temporary/final publication and can return success for bytes outside the enrolled location. EnsureDirectory earlier link checks do not anchor later use.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R9B-10",
+      "verdict": "high",
+      "evidence": "All four joint_authority_service SQLite connection sites concatenate an unescaped database path into a URI with mode=rw. A path containing ?mode=rwc# makes the appended mode fragment ineffective and can create an unenrolled database before schema refusal. Literal filesystem names must not become SQLite URI options.",
+      "route": "patch"
+    },
+    {
+      "id": "R9E-1",
+      "verdict": "high",
+      "evidence": "RestrictedPrivateCommandProofSource uses FileInfo followed by File.ReadAllTextAsync on its private mounted RSA key after current admission. File replacement by FIFO can block synchronously before the cancellable read task exists; size/type and deadline are not tied to the acquired descriptor.",
+      "route": "patch"
+    },
+    {
+      "id": "R9E-2",
+      "verdict": "high",
+      "evidence": "Fr34CanaryCommandProofSource has the same FileInfo/ReadAllTextAsync gap on the actual private canary signing path. A final-component LinkTarget sample does not prevent later FIFO replacement or a symbolic parent.",
+      "route": "patch"
+    },
+    {
+      "id": "R9E-3",
+      "verdict": "high",
+      "evidence": "Both QualificationGatewayReadProofs assertion and RSA-key paths perform FileInfo sampling followed by unbounded pathname ReadAllTextAsync. Current permission rechecks do not bound file acquisition or prevent a replacement/growing file from blocking a native read proof.",
+      "route": "patch"
+    },
+    {
+      "id": "R9E-4",
+      "verdict": "high",
+      "evidence": "QualificationOwnerQueryClient.Mounted uses FileInfo then ReadAllTextAsync for both private assertion and signing material. Its outer 30-second cancellation source cannot interrupt a synchronous blocking FIFO open; the actual HTTP query path reaches this acquisition.",
+      "route": "patch"
+    },
+    {
+      "id": "R9E-5",
+      "verdict": "high",
+      "evidence": "JointPhaseCommandExecutable.OpenSignerAsync has the same verified unbounded signer acquisition as R9B-5. Individual verdict precedes grouping; this is a second reviewer of the same current defect, not a carried prior triage row.",
+      "route": "patch"
+    },
+    {
+      "id": "R9V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: the real executor Program forwards --phase-finalize to RunAsync, but Python recovery tests replace Popen and C# tests invoke the metadata finalizer directly. Removing entrypoint flag forwarding leaves those tests green while real recovery enters ordinary workflow composition. Add an isolated real entrypoint regression with missing normal runtime inputs.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R9B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Indirect binding/profile/installation content-hash cycle"
+    },
+    {
+      "members": [
+        "R9B-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Missing current-result admission opt-in for signed qualification results"
+    },
+    {
+      "members": [
+        "R9B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Python response issuance is not ordered against surviving caller revocation"
+    },
+    {
+      "members": [
+        "R9B-4"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Cached receiving rejection bypasses post-read authority"
+    },
+    {
+      "members": [
+        "R9B-5",
+        "R9E-1",
+        "R9E-2",
+        "R9E-3",
+        "R9E-4",
+        "R9E-5"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Mounted C# proof/signing inputs bypass existing bounded descriptor reader"
+    },
+    {
+      "members": [
+        "R9B-6",
+        "R9B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Python selected executable/configuration/signing acquisition lacks bounded descriptor ownership"
+    },
+    {
+      "members": [
+        "R9B-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Durable publication synchronous IO lacks a bounded caller/worker protocol"
+    },
+    {
+      "members": [
+        "R9B-9"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Publication uses mutable pathnames instead of held directory identity"
+    },
+    {
+      "members": [
+        "R9B-10"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Unescaped SQLite URI path bypasses existing-only open mode"
+    },
+    {
+      "members": [
+        "R9V-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Real metadata-finalize entrypoint recovery lacks regression coverage"
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

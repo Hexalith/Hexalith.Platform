@@ -13,4 +13,4 @@ namespace Hexalith.Platform.Secrets.Runtime;
 /// <summary>Explicit independently administered service/store and signing installation. It is not enrollment authority.</summary>
 public sealed record IndependentAuthorityReceiverInstallation(string EnrollmentId, string Scope, string TrustRevision,
     string Component, string StateKey, string SigningKeyFile, string PublicKeyPem, string AppChannelTokenReference, IndependentDaprAuthorityBinding? RecorderAuthority = null,
-    string? OriginalArchiveDirectory = null, string? ArchiveEnrollmentSha256 = null, long CompletionReserveBytes = 0, IndependentDaprAuthorityBinding? RecoverySpoolAuthority = null);
+    string? OriginalArchiveDirectory = null, string? ArchiveEnrollmentSha256 = null, long CompletionReserveBytes = 0, IndependentDaprAuthorityBinding? RecoverySpoolAuthority = null,QualificationCohortAttemptBinding? CohortAttempt=null,IndependentArchiveCapacityInstallation? ArchiveCapacity=null);

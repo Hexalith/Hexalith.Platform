@@ -12,24 +12,33 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
     public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>inputs.Keys.Where(Supported).Select(id=>QualificationRuntimeWorkflowCatalog.Retained(id,originals,ExecuteAsync)
         with { Preflight=PreflightAsync }).ToArray();
     /// <summary>Validates real current temporal conditions; supplied clocks and expected outcome flags are not accepted.</summary>
-    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
+    public async Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token)
     {
-        token.ThrowIfCancellationRequested();var input=Input(request);var profile=profiles.GetCurrent();
-        if(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())) return Task.FromResult<IReadOnlyList<string>>(["ExactTemporalOriginalAndCurrentProfile"]);
+        token.ThrowIfCancellationRequested();
+        if(SecretsProof.Text(request,"requestId") is { } originalId && await originals.LookupResultAsync("executor",originalId+":case-result",token).ConfigureAwait(false) is not null) return [];
+        var input=Input(request);var profile=profiles.GetCurrent();
+        if(SecretsProof.Text(request,"caseId") is { } id && (id.StartsWith("S2.expiry.",StringComparison.Ordinal) || id.StartsWith("S2.overlap-",StringComparison.Ordinal)))
+            return ["External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol"];
+        return input is null || profile is null || !profile.IsValid(clock.GetUtcNow())?["ExactTemporalOriginalAndCurrentProfile"]:[];
+    }
+    private bool FirstBoundaryAdmitted(JsonObject request)
+    {
+        var input=Input(request);var profile=profiles.GetCurrent();if(input is null || profile is null) return false;
         string id=request["caseId"]!.GetValue<string>();var now=clock.GetUtcNow();var envelope=input.Envelope;
-        bool condition=id switch {
+        return id switch {
             "S2.expiry.before"=>now<envelope.ExpiresAt && now>=envelope.ExpiresAt.AddSeconds(-1),
             "S2.expiry.at"=>now==envelope.ExpiresAt,
             "S2.expiry.after"=>now>envelope.ExpiresAt,
             "S2.future-skew"=>envelope.IssuedAt>now+profile.ClockSkew,
             "S2.maximum-lifetime"=>envelope.ExpiresAt-envelope.IssuedAt>profile.MaximumLifetime,
             _=>true };
-        return Task.FromResult<IReadOnlyList<string>>(condition?[]:["External.NativeTemporalEvaluatorAtExactBoundary."+id]);
     }
     /// <summary>Executes only the actual temporal check, or emergency reissuance after independently established current revocation.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
     {
         if((await PreflightAsync(request,token).ConfigureAwait(false)).Count!=0) return null;
+        if(await originals.LookupResultAsync("executor",request["requestId"]!.GetValue<string>()+":case-result",token).ConfigureAwait(false) is { } retained) return retained;
+        if(!FirstBoundaryAdmitted(request)) return null;
         return await EvaluateAsync(request,true,token).ConfigureAwait(false);
     }
     /// <summary>Repeats current verification only. Emergency issued bytes are retrieved from their exact durable original, never reissued.</summary>
@@ -46,7 +55,7 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
         var input=Input(request);var profile=profiles.GetCurrent();if(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())) return null;
         string id=request["caseId"]!.GetValue<string>();string requestId=request["requestId"]!.GetValue<string>();
         var envelope=input.Envelope;var scope=new PlatformHmacScope(input.Identity.TargetTenantId,PlatformHmacPurpose.TrustedEnvelope);
-        DateTimeOffset checkedAt=clock.GetUtcNow();CustodyStatus status;PlatformHmacKeyMetadata? metadata=null;TrustedEnvelope? replacement=null;
+        DateTimeOffset checkedAt;CustodyStatus status;PlatformHmacKeyMetadata? metadata=null;TrustedEnvelope? replacement=null;TrustedEnvelopeResult? decision=null;
         if(id.StartsWith("S2.overlap-",StringComparison.Ordinal))
         {
             // L=300 and O=600: a delivery cannot remain live until this key boundary. Measure key eligibility separately, without relaxing either limit.
@@ -58,7 +67,8 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
         }
         else
         {
-            status=(await authenticator.VerifyAsync(envelope,input.Identity,token).ConfigureAwait(false)).Status;
+            decision=await authenticator.VerifyAsync(envelope,input.Identity,token).ConfigureAwait(false);
+            if(decision.EvaluatedAt is not { } actualDecision) return null;checkedAt=actualDecision;status=decision.Status;
             if(id=="S2.emergency-redispatch")
             {
                 if(status!=CustodyStatus.RevokedKey) return null;
@@ -71,11 +81,12 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
                 }
                 var retained=await originals.LookupResultAsync("executor",issuanceId,token).ConfigureAwait(false);
                 replacement=retained?.Deserialize<TrustedEnvelopeResult>(CustodyBindingContract.Json)?.Envelope;if(replacement is null) return null;
-                status=(await authenticator.VerifyAsync(replacement,input.Identity,token).ConfigureAwait(false)).Status;
+                decision=await authenticator.VerifyAsync(replacement,input.Identity,token).ConfigureAwait(false);
+                if(decision.EvaluatedAt is not { } replacementDecision) return null;checkedAt=replacementDecision;status=decision.Status;
             }
         }
         return new JsonObject { ["caseId"]=id,["requestId"]=requestId,["status"]=status.ToString(),["outcome"]=status==CustodyStatus.Succeeded?"Verified":status==CustodyStatus.Expired?"Expired":"Denied",
-            ["checkedAt"]=checkedAt.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(envelope,CustodyBindingContract.Json),
+            ["authenticationDecision"]=JsonSerializer.SerializeToNode(decision,CustodyBindingContract.Json),["temporalEvidenceVersion"]=2,["evaluatedAtExact"]=JsonSerializer.SerializeToNode(checkedAt,CustodyBindingContract.Json),["checkedAt"]=checkedAt.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(envelope,CustodyBindingContract.Json),
             ["replacementEnvelope"]=JsonSerializer.SerializeToNode(replacement,CustodyBindingContract.Json),["keyMetadata"]=JsonSerializer.SerializeToNode(metadata,CustodyBindingContract.Json),
             ["rotationOverlapMilliseconds"]=(long)profile.RotationOverlap.TotalMilliseconds };
     }

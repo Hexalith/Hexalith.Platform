@@ -1,0 +1,134 @@
+{
+  "lanes": {
+    "module-focused": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "dfe2d122-1e0a-406b-9f53-512a84825d52",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-25",
+      "run-time": "21:12:38",
+      "start-rtf": "2026-10-25T21:12:38.5070887+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-25T21:12:39.9315758+00:00",
+      "not-run": "0",
+      "passed": "29",
+      "skipped": "0",
+      "time": "1.425",
+      "time-rtf": "00:00:01.4250000",
+      "total": "29"
+    },
+    "module-tests": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "c3a77703-26a2-42d0-aae7-53adf4047826",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-25",
+      "run-time": "21:13:31",
+      "start-rtf": "2026-10-25T21:13:31.2460950+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-25T21:17:04.7493944+00:00",
+      "not-run": "0",
+      "passed": "698",
+      "skipped": "0",
+      "time": "213.512",
+      "time-rtf": "00:03:33.5120000",
+      "total": "698"
+    },
+    "evidence-tests": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "102afba1-cabe-437c-bd81-7e392fbb3a5b",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll",
+      "run-date": "2026-10-25",
+      "run-time": "21:17:04",
+      "start-rtf": "2026-10-25T21:17:04.9692112+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-25T21:17:08.7759631+00:00",
+      "not-run": "0",
+      "passed": "182",
+      "skipped": "0",
+      "time": "3.807",
+      "time-rtf": "00:00:03.8070000",
+      "total": "182"
+    }
+  },
+  "builds": "Module.Tests and Evidence.Tests Debug builds: zero warnings and errors",
+  "verifiedChangedSourceFiles": 9,
+  "findings": {
+    "W1": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.SupportedTerminalMetadataRestoresAndListsAsync(status: \\\"unavailable\\\", exitCode: PrerequisiteUnavailable, category: PrerequisiteUnavailable)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.SupportedTerminalMetadataRestoresAndListsAsync(status: \\\"cancelled\\\", exitCode: Cancelled, category: Cancelled)"
+    ],
+    "W2": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"outcome\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"activation\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"unreadable-outcome\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"unreadable-activation\\\")"
+    ],
+    "W3": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: True)"
+    ],
+    "W4": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.NullCommittedResourceEntryReturnsStructuredUncertaintyAsync",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.NullTrackedReadinessReturnsStructuredUncertaintyAsync",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.DiscoveryFailuresPreventCompleteCleanupAsync",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"exit-code\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"phase\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"category\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"completed-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"failed-with-success\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"failed-with-cancelled\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unavailable-with-success\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unavailable-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"cancelled-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"withdrawn-with-failure\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.MalformedTerminalMetadataRefusesRestorationAsync(fault: \\\"unknown-status\\\")"
+    ],
+    "W5": [
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: False, populatedReadiness: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: False, populatedReadiness: True)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: True, populatedReadiness: False)",
+      "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests.UnavailableResourcesRequireUnavailableReadiness(result: True, populatedReadiness: True)"
+    ],
+    "W6": [
+      "README.md explicitly states that --evidence requires --manifest."
+    ],
+    "W7": [
+      "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.CompletedSelectedEvidenceRequiresVerifiedCleanupAsync(scenario: \\\"removed\\\")",
+      "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.CompletedSelectedEvidenceRequiresVerifiedCleanupAsync(scenario: \\\"unknown\\\")",
+      "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.CompletedSelectedEvidenceRequiresVerifiedCleanupAsync(scenario: \\\"workspace\\\")",
+      "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.CompletedSelectedEvidenceRequiresVerifiedCleanupAsync(scenario: \\\"unverified\\\")"
+    ],
+    "W8": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True)"
+    ],
+    "W9": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExhaustedExecutionLifetimeBeforeNativeReturnRecordsTimeoutCauseAsync"
+    ]
+  },
+  "W9SourceAudit": "One owner-cancellation snapshot selects both fallback cause and command result.",
+  "freshLiveQualification": false,
+  "packageRuntimeQualification": false,
+  "nativeWindowsMacOSQualification": false,
+  "carriedDeferrals": [
+    "W10",
+    "D1",
+    "D2",
+    "D3",
+    "CB3",
+    "CE1",
+    "Q3"
+  ]
+}

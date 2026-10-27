@@ -1,0 +1,135 @@
+{
+  "observedAtUtc": "2026-10-27T13:52:24.837351+00:00",
+  "snapshotSha256": "171614647d2274d46febd622d8ae00a6f44f16bd9a45c69146e8ca0acb1473a8",
+  "actualCurrent7Suites": {
+    "runtime": {
+      "executedRows": 823,
+      "allPassed": true,
+      "priorNamesRetained": 805,
+      "newNames": [
+        "Hexalith.Platform.Secrets.Runtime.Tests.DaprExportQualificationResolverTests.SequentialActualMaterialTrustAndEngineCallsReturnTheirCompletedOwnerCapacityBeforeTheNextCall",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.CommittedResultSurvivesRevocationButOnlyACurrentAuthorizedReaderCanRecoverItsOriginal",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.CompletedLegacyOriginalRemainsExactlyReadableWithoutANewPhysicalPoolInstallation",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"before-settle\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"body-published\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"body-transferred\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"intent-ack\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"materialization-ack\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"metadata-published\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"metadata-transferred\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.EveryDurableResultBoundaryRecoversExactOriginalWithoutNewAdmissionOrCompletionFunds(boundary: \\\"settled-zero\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.FiniteAdmittedPoolSurvivesRepeatedResultCasLossIndexAdvancesAndReplicaMaterialization",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentResultCommitTests.ResultCommitAdmissionAndSignedRecoveryRequireCurrentExactCallerWhileDurableFactSurvivesRevocation",
+        "Hexalith.Platform.Secrets.Runtime.Tests.OrdinaryArchiveReservationSettlementTests.ExactDurablePublicationAndInterruptedRetryReleaseOnlyUnusedOrdinaryChunks(interrupt: False)",
+        "Hexalith.Platform.Secrets.Runtime.Tests.OrdinaryArchiveReservationSettlementTests.ExactDurablePublicationAndInterruptedRetryReleaseOnlyUnusedOrdinaryChunks(interrupt: True)",
+        "Hexalith.Platform.Secrets.Runtime.Tests.QualificationRegularMountLayoutTests.ActualSelectedRuntimeInstallationAndPrivateSignerRejectAtomicWriterKeysAndAcceptRegularMounts(role: \\\"enrollment\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.QualificationRegularMountLayoutTests.ActualSelectedRuntimeInstallationAndPrivateSignerRejectAtomicWriterKeysAndAcceptRegularMounts(role: \\\"executor\\\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.QualificationRegularMountLayoutTests.ActualSelectedRuntimeInstallationAndPrivateSignerRejectAtomicWriterKeysAndAcceptRegularMounts(role: \\\"observer\\\")"
+      ],
+      "xml": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-runtime-tests.xml",
+        "sha256": "001252c65049844a67b82a01bfe2ba56c132a5123c2729a590ee9df39325f3e4"
+      },
+      "log": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-runtime-tests.log",
+        "sha256": "186babf3b0df6c04fe4f06d3432604a1f920a4eb1c5817e9ca856c7981b2e6b8"
+      }
+    },
+    "custody": {
+      "executedRows": 785,
+      "allPassed": true,
+      "priorNamesRetained": 781,
+      "newNames": [
+        "Hexalith.Platform.Custody.Tests.ExportKeyDeliveryActorTests.FreshUnchangedReceivingRpcDeliversOnceAndRetainsExactTerminalOutcome",
+        "Hexalith.Platform.Custody.Tests.PrivateStory54AuthorityTests.LostSpoolAcknowledgementStaysPendingUntilTheWorkerRestarts",
+        "Hexalith.Platform.Custody.Tests.PrivateStory54AuthorityTests.NullEndpointOrStaleSpoolAuthorityWritesNothing",
+        "Hexalith.Platform.Custody.Tests.PrivateStory54AuthorityTests.SuppliedP256CredentialSignsOnceAndChangedOrMissingCredentialsWriteNothing"
+      ],
+      "xml": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-custody-tests.xml",
+        "sha256": "7012b88a1cc329df1d4e7f7c20a073e68ceaba504f09f0d16942a448785be18b"
+      },
+      "log": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-custody-tests.log",
+        "sha256": "f461d0afee59227e8aea25c705e3e3c8a988e77021c7dd91021c6a42989938e8"
+      }
+    },
+    "protection": {
+      "executedRows": 211,
+      "allPassed": true,
+      "priorNamesRetained": 211,
+      "newNames": [],
+      "xml": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-protection-tests.xml",
+        "sha256": "3db8dedefb8d0b76fe308edf0de0f2e2a58719d0f7778c69c49191f7452a9f55"
+      },
+      "log": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-protection-tests.log",
+        "sha256": "5d1c97e5b32ee1582c38103b8e68f616f1f9902516d420f977d3ae5a6a1fb73c"
+      }
+    },
+    "composition": {
+      "executedRows": 128,
+      "allPassed": true,
+      "priorNamesRetained": 128,
+      "newNames": [],
+      "xml": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-composition-tests.xml",
+        "sha256": "54e2ab53b6fe9a5d336d9c0eea55d7b5ca32f8ea52f8094663f8e9cc0ed60233"
+      },
+      "log": {
+        "path": "/tmp/story54-round22-1fctcr2b/final7-actual-composition-tests.log",
+        "sha256": "e52282c63555bb9945dad3e685c79037e065533bdbd9c965abbcca6530871987"
+      }
+    },
+    "native": {
+      "executedRows": 32,
+      "allPassed": true,
+      "unfilteredCommand": [
+        "dotnet",
+        "/tmp/story54-round22-1fctcr2b/native7-artifacts/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll"
+      ],
+      "noSkippedOrUnrun": true,
+      "actualNativeCaseNames": [
+        "native-durability-worker-fence-held-directory-and-exact-retry",
+        "native-bounded-regular-original-and-enrollment-acquisition",
+        "independent-role-receiver-current-original-expiry-and-substitution",
+        "qualification-lifecycle-terminal-original-and-complete-registration-recovery",
+        "public-lifecycle-real-sdk-authorizer-key-cleanup-and-refusals",
+        "actual-lifecycle-actor-diverged-owner-and-custody-revisions",
+        "public-lifecycle-cancellation-and-shared-operation-deadline",
+        "explicit-scoped-reference-credentials-without-default-fallback",
+        "missing-qualification-and-enrollment-close-effects",
+        "ephemeral-key-delivery-duplicate-and-holder-completion",
+        "lost-wrap-result-recovers-without-native-resend",
+        "registration-only-original-lookup-and-substitution-denial",
+        "independent-owner-genesis-and-consecutive-transitions",
+        "hold-pin-release-and-complete-manifest-reservation",
+        "single-head-cas-and-app-restore-exclusions",
+        "complete-protobuf-unknown-field-and-metadata-bounds",
+        "shared-cut-independent-closure-and-exact-original-pages",
+        "public-owner-adapter-real-sdk-signed-genesis-and-transition-wire",
+        "eventstore-published-owner-bridge-exact-framing-and-recovery",
+        "native-reopened-sparse-and-punched-physical-reserves",
+        "real-native-local-capacity-fencing-pressure-and-exact-retry",
+        "actual-keyexchange-native-reserved-wrap-and-pre-effect-identity-recovery",
+        "real-native-store-identity-immutable-cas-and-loss",
+        "serving-startup-and-disjoint-profile-lanes",
+        "canonical-delivery-tuples-and-retained-use-denial",
+        "signed-pre-cycle-hold-reservation-denial",
+        "binding-service-init-and-invoke-boundary",
+        "real-aws-key-adapters-and-contexts",
+        "compatibility-client-logging-metrics-suppression",
+        "real-openbao-http-metadata-derivation-and-aead-binding",
+        "uncertain-successor-retirement-abandonment-and-replacement",
+        "maximum-manifest-transition-immutable-index-roundtrip"
+      ],
+      "log": {
+        "path": "/tmp/story54-round22-1fctcr2b/native7-tests.log",
+        "sha256": "a7c4b57a692a4bfb711b0278c1272a13c15447e1331f5d634112e4fcf00842ea"
+      }
+    }
+  },
+  "failedSource4AggregateRemainsFailed": true,
+  "installedQualification": false
+}

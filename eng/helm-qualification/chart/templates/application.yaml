@@ -23,6 +23,9 @@ spec:
       annotations:
         {{- include "reference.dapr" (dict "workload" . "binding" $binding) | nindent 8 }}
     spec:
+      {{- if has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1") }}
+      serviceAccountName: {{ .resourceId }}
+      {{- end }}
       automountServiceAccountToken: true
       imagePullSecrets:
         - name: {{ $.Values.imagePullSecret }}
@@ -32,7 +35,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: {{ if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}{{ default "app" $binding.containerName }}{{ else }}app{{ end }}
+        - name: {{ if has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1") }}{{ default "app" $binding.containerName }}{{ else }}app{{ end }}
           image: {{ index $.Values.images .identity | quote }}
           ports:
             - name: http
@@ -48,11 +51,16 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            {{- if and (has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1")) (eq .identity "memories/server") }}
+            - name: access-telemetry-qualification-gate
+              mountPath: /var/run/hexalith/access-telemetry-qualification
+              readOnly: true
+            {{- end }}
             - name: environment-components
               mountPath: /etc/hexalith/environment
               readOnly: true
           resources:
-            {{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}
+            {{- if has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1") }}
             {{- toYaml $binding.resources | nindent 12 }}
             {{- else }}
             requests: {cpu: 10m, memory: 32Mi}
@@ -60,11 +68,16 @@ spec:
             {{- end }}
       volumes:
         - name: tmp
-          {{- if eq (default "" $.Values.capacityProfile) "PG-FINITE-CAMPAIGN-1" }}
+          {{- if has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1") }}
           emptyDir: {sizeLimit: 128Mi}
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- if and (has (default "" $.Values.capacityProfile) (list "PG-FINITE-CAMPAIGN-1" "PG-INDEPENDENT-CALIBRATION-1")) (eq .identity "memories/server") }}
+        - name: access-telemetry-qualification-gate
+          configMap:
+            name: access-telemetry-qualification-gate
+        {{- end }}
         - name: environment-components
           configMap:
             name: {{ $.Values.environment.componentConfigMap }}

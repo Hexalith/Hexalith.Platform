@@ -37,10 +37,11 @@ internal sealed class SecuritySpoolFixture
     internal int RecoveryRequests { get; private set; }
     internal Dictionary<string, byte[]> Journal { get; } = [];
     internal Dictionary<string, SecurityEventRecordReceipt> Recorded { get; } = [];
-    internal SecuritySpoolFixture()
+    internal SecuritySpoolFixture(int sourceVersion=0,DateTimeOffset? now=null)
     {
-        Target = new("synthetic-independent-spool", "installed-epoch-1", "qualified-synthetic-binding-1", Clock.Now.AddDays(2));
-        AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(new(Target.InstallationEpoch, 0, []));
+        if(now is { } observed) Clock.Now=observed;
+        Target = new("synthetic-independent-spool", "installed-epoch-1", "qualified-synthetic-binding-1", Clock.Now.AddDays(2),SourceVersion:sourceVersion);
+        AnchorDigest = Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolSnapshot(Target.InstallationEpoch,0,[]))));
         Authority.GetCurrentAsync(Arg.Any<CancellationToken>()).Returns(Target);
         Authority.AuthorizeAsync(Target, Arg.Any<string>(), Arg.Any<SecurityObservationIntent?>(), Arg.Any<CancellationToken>()).Returns(true);
         Authority.AuthorizeOriginalLookupAsync(Target, Arg.Any<SecurityObservationOriginalLookup>(), Arg.Any<CancellationToken>()).Returns(true);

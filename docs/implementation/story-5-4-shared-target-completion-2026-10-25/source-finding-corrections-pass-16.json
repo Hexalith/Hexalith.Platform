@@ -1,0 +1,226 @@
+{
+  "schema": "platform.story54.pass16.corrections.v1",
+  "sourceFreeze": "/tmp/story54-round16-zg30xg8e/freeze-observation.json",
+  "independentReviewComplete": false,
+  "actualInstalledEvidence": null,
+  "groups": [
+    {
+      "finding": "R15B-1",
+      "change": "Startup and service lifetime are separate. The installed driver carries the original host token through one inherited startup deadline; the captured validated receiving profile is used once, then the actual app waits for host cancellation.",
+      "sourceFiles": [
+        "QualificationOwnerApplication.cs",
+        "IndependentAuthorityHttpApplication.cs",
+        "QualificationOwnerDriverExecutable.cs"
+      ],
+      "actualCallerTests": [
+        "QualificationOwningLifetimeTests"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-2",
+      "change": "Authentic original and same-nonce changed deliveries are independently authenticated before the actual replay registrar is challenged. Same-issuer changed-fields/cross-tenant reach the native issuer+nonce conflict registrar. Foreign issuer is authenticated by its own current profile then challenges the receiving issuer/profile. First-seen lookup is read-only and the original/native event remains exact. Admitted fresh issuance is retained, unknown issuance/challenge is never repeated, and exact evaluation recovery does not reauthenticate expired deliveries.",
+      "sourceFiles": [
+        "QualificationEnvelopeCaseWorkflow.cs",
+        "TrustedEnvelopeAuthenticator.cs",
+        "TrustedEnvelopeReplayVerifier.cs",
+        "DaprIndependentReplayRegistrar.cs",
+        "IndependentAuthorityReceiver.cs",
+        "EventStorePrivateRecordingPort.cs"
+      ],
+      "actualCallerTests": [
+        "EventStorePrivateRecordingPortTests.ActualEnvelopeWorkflowSeedsAuthenticFirstSeenThenChallengesActualReceivingBoundary"
+      ],
+      "newOrRefinedInputs": [
+        "External.AuthenticatedReplayConflictCaseInputsAndReceivingRegistrar"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-3",
+      "change": "Independent role recipes require the full actual signature/current expected-basis/expiry/approver/anchor verifier before role work and again at the final return boundary. Incomplete/null manifests cannot bypass crypto.",
+      "sourceFiles": [
+        "QualificationDecisionCaseWorkflow.cs",
+        "IndependentDecisionManifestVerifier.cs"
+      ],
+      "actualCallerTests": [
+        "QualificationDecisionSemanticTests.IndependentRoleRequiresTheCompleteActualVerifier"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-4",
+      "change": "Semantic decision negatives keep the original signed manifest and detached JWS unchanged. A separate signed-original basis proves crypto/approvers while the independently current expected basis differs only in the intended semantic component. Missing actual signed prerequisites block before effects; production has no signing/approval creation. Ordinary public verification reuses one owned expected basis for policy and signed-content matching; only the explicit internal qualification helper may capture a distinct signed basis. Stateful evaluation/role sets demonstrate both vulnerable acceptance and valid-first-snapshot refusal before the correction, then all4 regressions pass.",
+      "sourceFiles": [
+        "QualificationDecisionCaseInput.cs",
+        "QualificationDecisionCaseWorkflow.cs",
+        "IndependentDecisionManifestVerifier.cs"
+      ],
+      "actualCallerTests": [
+        "QualificationDecisionSemanticTests.SemanticNegativesUseUnchangedCryptographicallyValidIndependentOriginals",
+        "QualificationDecisionSemanticTests.PublicVerifierKeepsOneOwnedBasisAcrossPolicyAndSemanticMatching"
+      ],
+      "newOrRefinedInputs": [
+        "External.IndependentlySignedDecisionSemanticOriginal"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-5",
+      "change": "Principal-kind and fingerprint substitutions always choose a different structurally valid replacement, explicitly prove the component changed and retain expected/supplied identity facts. Already-Workflow and zero-fingerprint baselines exercise the actual verifier.",
+      "sourceFiles": [
+        "QualificationEnvelopeCaseWorkflow.cs"
+      ],
+      "actualCallerTests": [
+        "QualificationEnvelopeSubstitutionTests"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-6",
+      "change": "Both real archive pools admit disjoint pre-existing fixed data chunks and dual fixed metadata banks before an effect. Completion overwrites held private written blocks without new files/directories/temp/locks/rename/truncation. Logical locators remain immutable; ordinary/independent/native writers reject conflicting legacy bytes and recover identical originals. Metadata generations distinguish genuine initial zero genesis from damaged committed/nonempty banks. Damaged published headers remain unknown. Header paths are fixed digest descriptors, with maximum complete descriptor serialization checked before admission, including a 4096-character Unicode/escaped locator. New locator, extent and metadata reads use the existing owned bounded worker/caller token; native intent lookup has no direct unbounded Exists.",
+      "sourceFiles": [
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs",
+        "ImmutableFileArchive.cs",
+        "BoundedRegularFile.cs",
+        "NativeDaprAuthorityStore.cs"
+      ],
+      "actualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "IndependentPhysicalCapacityTests",
+        "IndependentRecoveryArchiveTests",
+        "ArchiveOrdinaryWriterFenceTests",
+        "NativePhysicalCapacityTests",
+        "NativeReopenedReserveTests",
+        "NativeReservedWrapTests",
+        "NativeDurabilityOwnershipTests"
+      ],
+      "newOrRefinedInputs": [
+        "External.EnrolledProtectedArchiveAllocationV1"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-7",
+      "change": "No-follow held resources require regular single-link descriptors, exact enrolled device/inode, distinct data/bank inodes, same fenced device and fixed geometry stored in the data inode. Logical reservations own disjoint fixed chunk ranges; aliases cannot reinterpret geometry or double count shared resources. Legacy unknown ownership remains charged and is never repaired destructively.",
+      "sourceFiles": [
+        "ArchiveAllocationProof.cs",
+        "ArchiveFileLease.cs",
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs"
+      ],
+      "actualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "NativeReopenedReserveTests",
+        "NativeDurabilityOwnershipTests"
+      ],
+      "newOrRefinedInputs": [
+        "External.EnrolledProtectedArchiveAllocationV1"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-8",
+      "change": "Actual bounded FIEMAP validation proves complete private written extents and rejects sparse/shared/unwritten/delayed/unknown/unsupported maps. The selected in-place fixed-resource protocol supports ext4 only and explicitly requires no future snapshot/COW sharing. Checks repeat before transfer/commit; no fresh allocation is inferred from size or fallocate.",
+      "sourceFiles": [
+        "ArchiveAllocationProof.cs",
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs"
+      ],
+      "actualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "NativeReopenedReserveTests"
+      ],
+      "newOrRefinedInputs": [
+        "External.EnrolledProtectedArchiveAllocationV1"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-9",
+      "change": "Every ordinary/configured participant resolves the actual full-filesystem mounted-root identity using bounded mount namespace inspection. Unprovable subtree aliases reject before allocation; configured pins remain exact. Opaque nested fence ownership and safe non-pool publication stay intact.",
+      "sourceFiles": [
+        "ArchiveVolumeFence.cs",
+        "ArchiveFileLease.cs",
+        "ImmutableFileArchive.cs"
+      ],
+      "actualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "ArchiveOrdinaryWriterFenceTests"
+      ],
+      "newOrRefinedInputs": [
+        "External.CanonicalArchiveVolumeNamespaceAndExclusiveWriterPolicy"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15B-10",
+      "change": "The authenticator returns its actual owned decision timestamp, including early key/time decisions and final current-authority decision. Temporal workflow retains the selected original/replacement decision. Version2 raw/state/Python framing binds timestamp and exact raw-result digest; old temporal originals lacking exact timing remain historical/incomplete without rewriting. External native expiry/overlap boundaries stay blocked.",
+      "sourceFiles": [
+        "TrustedEnvelopeResult.cs",
+        "TrustedEnvelopeAuthenticator.cs",
+        "QualificationTemporalCaseWorkflow.cs",
+        "QualificationTemporalOriginalReader.cs",
+        "QualificationProtocolSchema.cs",
+        "QualificationMeasuredCaseProjector.cs",
+        "qualify.py"
+      ],
+      "actualCallerTests": [
+        "QualificationTemporalDecisionTests",
+        "QualificationTemporalSourceTests",
+        "test_qualify.TemporalTests"
+      ],
+      "newOrRefinedInputs": [
+        "External.VersionedExactTemporalDecisionOriginals"
+      ],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15E-1/R15E-2",
+      "change": "One coherent startup-ownership helper proves prelaunch failure under CPython limbo/native-handle synchronization. Null ident alone is unknown. File/RPC and actual HTTP timer/worker paths retain capacity through prebootstrap acknowledgement loss, release once on genuine completion and retain connection/timer cleanup.",
+      "sourceFiles": [
+        "worker_startup_ownership.py",
+        "bounded_file_io.py",
+        "joint_live_phase_runner.py",
+        "bounded_cohort_http.py"
+      ],
+      "actualCallerTests": [
+        "test_pass16_startup_ownership",
+        "test_bounded_cohort_http"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15E-3",
+      "change": "Accepted artifact acquisition bounds directories10000, all entries20000, files10000 and depth64 before retaining another handle. Refusal disposes all acquired handles and occurs before Aspire resources are composed.",
+      "sourceFiles": [
+        "AcceptedLaunchArtifactLease.cs"
+      ],
+      "actualCallerTests": [
+        "AcceptedLaunchDirectoryCensusTests"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    },
+    {
+      "finding": "R15V-1",
+      "change": "Actual RetainedPhaseOwner regression completes an enrolled phase, corrupts its result-body byte, then proves lookup/execute/restart preserve unknown completion and identical damaged bytes with no executor lookup or repeat. A disposable guard-removal mutation must fail this regression.",
+      "sourceFiles": [
+        "test_pass15_storage.py"
+      ],
+      "actualCallerTests": [
+        "PhaseCapacityAndAttemptTests.test_damaged_completed_frame_blocks_without_lookup_or_replacement"
+      ],
+      "newOrRefinedInputs": [],
+      "fixtureOnly": true
+    }
+  ]
+}

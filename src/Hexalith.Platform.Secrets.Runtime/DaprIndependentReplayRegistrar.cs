@@ -14,6 +14,12 @@ public sealed class DaprIndependentReplayRegistrar(IndependentDaprAuthority auth
         return result?.Intent == intent && result.SourceRevision == 1 && result.RetainUntil == result.FirstSeenAt.Add(retention) ? result : null;
     }
     /// <inheritdoc />
+    public async Task<TrustedEnvelopeReplayReceipt?> LookupFirstSeenAsync(TrustedEnvelopeReplayIntent intent,CancellationToken cancellationToken=default)
+    {
+        var result=await authority.InvokeAsync<TrustedEnvelopeReplayReceipt>("replay-lookup-first-seen",new { intent },cancellationToken).ConfigureAwait(false);
+        return result?.Intent.Issuer==intent.Issuer && result.Intent.DeliveryNonce==intent.DeliveryNonce && result.SourceRevision==1?result:null;
+    }
+    /// <inheritdoc />
     public async Task<TrustedEnvelopeReplayReceipt?> LookupAsync(TrustedEnvelopeReplayIntent intent, CancellationToken cancellationToken = default)
     {
         var result = await authority.InvokeAsync<TrustedEnvelopeReplayReceipt>("replay-lookup-exact", new { intent }, cancellationToken).ConfigureAwait(false);

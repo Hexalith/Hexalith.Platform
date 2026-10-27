@@ -9,11 +9,21 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class QualificationResolutionSourceTests
 {
+    [Theory]
+    [InlineData("")][InlineData("0")][InlineData("current")][InlineData("latest")][InlineData("alias")][InlineData("+1")][InlineData("-1")][InlineData("01")][InlineData("1 ")][InlineData("18446744073709551616")]
+    public async Task ProviderCredentialRejectsUnpinnedNativeVersionBeforeAnyRead(string version)
+    {
+        using var client=Substitute.For<DaprClient>();var actor=Substitute.For<IPlatformKeyInventoryActor>();var authority=Substitute.For<IPlatformKeyInventoryAuthority>();
+        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";
+        var key=new PlatformKeyVersion("tenant",PlatformKeyPurpose.ProviderCredential,"provider-credential","logical-v7","native-provider","outside-authority",null,null);
+        var workflow=new QualificationProviderCredentialWorkflow(client,actor,authority,new(key,"exact-store","isolated/provider/token","token",version,QualificationProtocolSchema.Digest(request["enrolledScope"]!)));
+        (await workflow.ResolveAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();client.ReceivedCalls().ShouldBeEmpty();actor.ReceivedCalls().ShouldBeEmpty();
+    }
     [Fact]
     public async Task ExactPrivateProviderCredentialUsesCurrentActorAuthorityAndOnlyOnePinnedSecretRead()
     {
         var client=Substitute.For<DaprClient>();var actor=Substitute.For<IPlatformKeyInventoryActor>();var authority=Substitute.For<IPlatformKeyInventoryAuthority>();
-        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";request.Remove("scenario");
+        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";
         var key=new PlatformKeyVersion("tenant",PlatformKeyPurpose.ProviderCredential,"provider-credential","v7","native-provider","outside-authority",null,null);
         var state=new PlatformKeyInventorySnapshot("tenant",PlatformKeyPurpose.ProviderCredential,key.KeyAlias,9,[new(key,PlatformHmacKeyState.Active,9)],[]);
         actor.ReadAsync(key).Returns(state);authority.AuthorizeOperationAsync(key,"ResolveProviderCredential",Arg.Any<CancellationToken>()).Returns(true);
@@ -28,6 +38,24 @@ public sealed class QualificationResolutionSourceTests
         var changed=(JsonObject)request.DeepClone();changed["enrolledScope"]!["tenantId"]="foreign";
         (await workflow.ResolveAsync(changed,TestContext.Current.CancellationToken)).ShouldBeNull();
         await client.Received(1).GetSecretAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>());
+    }
+    [Fact]
+    public async Task RevisionChangeDuringPinnedCredentialResponseDeniesAndClearsResponse()
+    {
+        var client=Substitute.For<DaprClient>();var actor=Substitute.For<IPlatformKeyInventoryActor>();var authority=Substitute.For<IPlatformKeyInventoryAuthority>();
+        var request=QualificationHostTests.Request();request["caseId"]="S1.exact-provider-credential";
+        var key=new PlatformKeyVersion("tenant",PlatformKeyPurpose.ProviderCredential,"provider-credential","v7","native-provider","outside-authority",null,null);
+        var before=new PlatformKeyInventorySnapshot("tenant",PlatformKeyPurpose.ProviderCredential,key.KeyAlias,9,[new(key,PlatformHmacKeyState.Active,9)],[]);
+        var after=before with { Revision=10 };bool advanced=false;
+        actor.ReadAsync(key).Returns(_=>advanced?after:before);
+        authority.AuthorizeOperationAsync(key,"ResolveProviderCredential",Arg.Any<CancellationToken>()).Returns(true);
+        foreach(var snapshot in new[]{before,after}) authority.ValidateStateAsync(key,snapshot.Revision,CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(snapshot)),Arg.Any<CancellationToken>()).Returns(true);
+        var response=new Dictionary<string,string>{{"token","isolated-private-value"}};
+        client.GetSecretAsync("exact-store","isolated/provider/token",Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(call=>
+        { call.ArgAt<IReadOnlyDictionary<string,string>>(2)["version_id"].ShouldBe("7");advanced=true;return response; });
+        var workflow=new QualificationProviderCredentialWorkflow(client,actor,authority,new(key,"exact-store","isolated/provider/token","token","7",QualificationProtocolSchema.Digest(request["enrolledScope"]!)));
+        (await workflow.ResolveAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();response.ShouldBeEmpty();
+        await actor.Received(2).ReadAsync(key);await client.Received(1).GetSecretAsync("exact-store","isolated/provider/token",Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>());
     }
     [Fact]
     public async Task MissingReferenceUsesActualAdmissionAndDoesNotCallTransport()

@@ -10,4 +10,5 @@ public sealed record QualificationProtectionInstallation(Uri? EventStoreEndpoint
     Dictionary<string,CustodyLifecycleInstallation>? GuardCellAuthorities=null,Dictionary<string,CustodyLifecycleInstallation>? GuardReceiptAuthorities=null,
     string? IndependentEvidenceComponent=null,Dictionary<string,QualificationGuardEvidenceEnrollment>? EvidenceResources=null,
     Dictionary<string,CustodyLifecycleInstallation>? EvidenceAuthorities=null,Dictionary<string,Dictionary<string,System.Text.Json.JsonElement>>? GuardArguments=null,
-    Dictionary<string,QualificationGuardCaseDefinition>? GuardDefinitions=null,Hexalith.Platform.Custody.DeletionCapabilityRevocationSubscription? RevocationSubscription=null,Dictionary<string,QualificationReplayCaseInput>? ReplayCases=null);
+    Dictionary<string,QualificationGuardCaseDefinition>? GuardDefinitions=null,Hexalith.Platform.Custody.DeletionCapabilityRevocationSubscription? RevocationSubscription=null,Dictionary<string,QualificationReplayCaseInput>? ReplayCases=null,
+    IndependentDaprAuthorityBinding? GuardTransactionOriginals=null);

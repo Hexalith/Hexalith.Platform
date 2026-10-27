@@ -6,6 +6,8 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class QualificationEnvelopeOriginalReader(IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,QualificationEnvelopeCaseWorkflow verifier):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");if(id is not ("S2.canonical-hmac" or "S2.byte-identical-replay") || requestId is null) return null;
@@ -17,7 +19,7 @@ public sealed class QualificationEnvelopeOriginalReader(IQualificationOriginalSt
         string receipt=QualificationProtocolSchema.Digest(retained);var state=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
         state["outcome"]=id=="S2.canonical-hmac"?"Verified":native.Facts!["domainIdempotencyOriginal"]!["outcome"]!.DeepClone();state["status"]=state["outcome"]!.DeepClone();
         if(id=="S2.byte-identical-replay" && !QualificationReplayStateProjection.Apply(state,verified["replayOriginal"]!,(JsonObject)request["enrolledScope"]!)) return null;
-        return new(requestId,receipt,"envelope:"+native.OriginalRevision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"envelope:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["independentEnvelopeVerification"]=verified.DeepClone() });
     }
 }

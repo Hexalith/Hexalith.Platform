@@ -1,0 +1,215 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-25T23:31:58.148789+00:00",
+  "reviewPass": 6,
+  "reviewLoopIterationAfterTriage": 6,
+  "status": "SourceCorrectionsInProgress_UserReviewLimitOverride",
+  "reviewers": [
+    "/root/review6_blind",
+    "/root/review6_edge",
+    "/root/review6_gap"
+  ],
+  "contextFree": true,
+  "sourceScopeManifest": "/tmp/story54-final-review-2pdua1ym/scope.json",
+  "reviewDiffSha256": "9469a3464d543453373311fec6b8ed4284c862099667f02354d11444544f919b",
+  "findings": [
+    {
+      "id": "B6-1",
+      "verdict": "high",
+      "evidence": "CustodyOwnerOperationHandler only implements Methods/Handle. Default IsReadOnly=false and default RecoverAsync throws; stable DaprCustodyOwnerCallSource payloads therefore admit once then reject repeated read-current/verify framing. The handler itself reads current/control originals and signs framing, rather than executing the owner transition.",
+      "route": "patch \u2014 correctly classify framing and verify repeated actual receiving calls"
+    },
+    {
+      "id": "B6-2",
+      "verdict": "high",
+      "evidence": "Runner sets attempt_state=ReservationUnknown before reserve but leaves the earlier signed-absence effect state NotDispatched. Another coordinator may already have reserved/dispatched when this response is lost; the failure then reports zero.",
+      "route": "patch \u2014 set conservative effect uncertainty before reserve and test the race"
+    },
+    {
+      "id": "B6-3",
+      "verdict": "high",
+      "evidence": "FR34 RecoverAsync delegates to HandleAsync for unseal/replay. Their actual unprotect paths call the material provider; after a prior holder completes, retry can allocate another read profile and produce a later outcome under the admitted original.",
+      "route": "patch \u2014 exact retained/native result or Unknown, without another read release"
+    },
+    {
+      "id": "B6-4",
+      "verdict": "high",
+      "evidence": "Lifecycle Execute retains any non-null actual outcome; delivery Execute likewise retains Unknown/Unavailable. Both Lookup methods return that case-result before consulting native originals, permanently sealing transient uncertainty even when completion is later readable.",
+      "route": "bad_spec \u2014 preserve pending uncertainty separately and settle only exact terminal originals, retaining legacy evidence"
+    },
+    {
+      "id": "B6-5",
+      "verdict": "high",
+      "evidence": "Wrap execution serializes CustodyKeyRegistration, but missing outer-result recovery serializes client.LookupOriginalAsync's CustodyKeyLifecycleOutcome under the same actual field. Equal request identity can therefore recover a different result schema/body.",
+      "route": "patch \u2014 recover the verified original registration representation or remain Unknown"
+    },
+    {
+      "id": "B6-6",
+      "verdict": "high",
+      "evidence": "recording-command-authorize checks Workload(caller,principal,domain), while both dispatch-admit branches only test original-store caller/bytes/Unsent. The checked workload identity/principal is not bound into dispatch; its revocation can win between proof and dispatch without being checked at CAS.",
+      "route": "bad_spec \u2014 bind/revalidate exact workload authorization at dispatch admission"
+    },
+    {
+      "id": "B6-7",
+      "verdict": "high",
+      "evidence": "NativeDaprAuthorityStore publishes archive/checkpoint objects before conditional head commit, using GUID locators. CompletionReserveBytes only reduces serialized checkpoint allowance; no physical free-space reservation or pending completion accounting exists in this store. Failed CAS leaves additional charged physical objects.",
+      "route": "bad_spec \u2014 surviving physical completion/publication accounting and stable native archive retry"
+    },
+    {
+      "id": "B6-8",
+      "verdict": "high",
+      "evidence": "JointPhaseSourceOperationHandler recovery calls Handle/Publish again. If no final file exists after an admitted failed publication, the publisher rereads current guard/protection/streams and signs those later facts as the original phase observation. There is no retained first observation body to recover.",
+      "route": "bad_spec \u2014 immutable inner native measurement publication or Unknown"
+    },
+    {
+      "id": "B6-9",
+      "verdict": "high",
+      "evidence": "Both installation readers call File.ReadAllBytesAsync before checking bytes.Length. Their stated bounds do not prevent oversized allocation or nonregular-path stalls; no upstream bounded descriptor acquisition protects these entrypoints.",
+      "route": "patch \u2014 bounded regular-file acquisition with a finite deadline before allocation"
+    },
+    {
+      "id": "B6-10",
+      "verdict": "high",
+      "evidence": "Preflight obtains four independent readiness receipts sequentially; each call may take under 30 seconds while their combined elapsed time exceeds the authority's 30-second receipt window. Reservation rejects otherwise healthy complete inputs.",
+      "route": "patch \u2014 acquire independent readiness as a bounded fresh set"
+    },
+    {
+      "id": "E6-1",
+      "verdict": "high",
+      "evidence": "Independently confirms the same owner-framing default recovery failure as B6-1 through the actual interface defaults and stable caller payload.",
+      "route": "patch \u2014 shared owner framing correction"
+    },
+    {
+      "id": "E6-2",
+      "verdict": "high",
+      "evidence": "Receiver sends every already-admitted replay-register-exact request only to LookupAsync. The actual RegisterAsync contains guarded retained-unsent/definitive-native-no-event recovery, so the outer retry never reaches that permitted recovery branch.",
+      "route": "patch \u2014 reach exact guarded registration recovery while unknown dispatch remains lookup-only"
+    },
+    {
+      "id": "E6-3",
+      "verdict": "high",
+      "evidence": "Matching publication reservations permit concurrent exact retries. ImmutableFileArchive writes a full unique temporary file before checking the final path and has no per-path writer ownership. Duplicate large copies can consume multiple times the single reserved write budget, including across receiving instances.",
+      "route": "bad_spec \u2014 bounded cross-instance exact publication ownership/deduplication preserving atomic durability"
+    },
+    {
+      "id": "V6-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: native audit tests replace IEventStoreGatewayClient and never exercise QualificationGatewayReadProofs. Changing the mounted stream proof's caller leaves current tests green while the real receiver rejects its caller binding.",
+      "route": "patch \u2014 actual adapter/client/receiving proof and current-revocation regression"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "B6-1",
+        "E6-1"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-2"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-3"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-4"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-5"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-6"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-7"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-8"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-9"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B6-10"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "E6-2"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "E6-3"
+      ],
+      "route": "bad_spec",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "V6-1"
+      ],
+      "route": "patch",
+      "verdict": "high"
+    }
+  ],
+  "haltRule": {
+    "skill": ".agents/skills/bmad-build/SKILL.md",
+    "step": ".agents/skills/bmad-build/step-04-review.md:62",
+    "quote": "If it exceeds 5, HALT and escalate to the human.",
+    "limit": 5,
+    "counter": 6,
+    "overrideReceived": true
+  },
+  "sourcePatchesAppliedAfterTriage": false,
+  "sourcePreserved": true,
+  "acceptedRecordChangesAuthorized": false,
+  "installedQualification": false,
+  "fullSourceComplete": false,
+  "deliveryComplete": false,
+  "userOverride": {
+    "received": true,
+    "userReply": "yes",
+    "scope": "Override the five-loop BMAD review halt for continuing this already authorized source implementation and review to completion. No installation/cohort/physical/commitment authorization is added.",
+    "observedAtUtc": "2026-10-26T05:22:46.311693+00:00"
+  }
+}

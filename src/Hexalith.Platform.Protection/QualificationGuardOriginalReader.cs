@@ -11,6 +11,8 @@ public sealed class QualificationGuardOriginalReader(IGovernanceScopeGuard guard
     IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,IReadOnlyDictionary<string,QualificationGuardCaseDefinition> definitions):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
@@ -35,15 +37,38 @@ public sealed class QualificationGuardOriginalReader(IGovernanceScopeGuard guard
         var projected=QualificationGuardInvariantProjection.Project(definition.TenantId,deletion.RequestId,definition.BatchId,state,batch,signing,QualificationProtocolSchema.MetricNames(id));
         string receipt=QualificationProtocolSchema.Digest(retained);var publicState=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
         string outcome=batch.Status switch { DeletionConsumptionStatus.Consumed=>"Consumed",DeletionConsumptionStatus.AlreadyDestroyedByBatch=>"AlreadyDestroyed",DeletionConsumptionStatus.Unconsumed=>"Unconsumed",DeletionConsumptionStatus.ConsumptionBlocked=>"Blocked",_=>batch.Status.ToString() };
-        if(retained["operations"] is JsonArray operations && operations.LastOrDefault()?["result"]?["Status"] is JsonValue status && status.TryGetValue<string>(out string? actualStatus)) outcome=actualStatus;
+        if(retained["operations"] is JsonArray operations && operations.LastOrDefault() is JsonObject last)
+        {
+            string? status=last["result"]?["Status"]?.GetValue<string>();
+            if(status=="Committed") outcome=last["transitionOperation"]?.GetValue<string>() switch { "RecordBatchIssued"=>"Issued","CommitDispatch"=>"DeletionBatchDispatchAuthorized","CommitCompletion"=>"CompletionSealed","ActivateSuccessor"=>"Verified",_=>status };
+            else if(status is not null) outcome=status switch { "AlreadyDestroyedByBatch"=>"AlreadyDestroyed","ActivationBlockedByReplacementKeyCompromise"=>"ActivationBlocked","ConsumptionBlocked"=>"Blocked",_=>status };
+            if(last["result"]?["State"]?.GetValue<string>() is { } signStatus) outcome=signStatus=="SignedAttestationObsoleteUnissued"?"ObsoleteUnissued":signStatus;
+        }
         publicState["outcome"]=outcome;publicState["status"]=outcome;publicState["sealId"]=deletion.SealId;publicState["batchId"]=issued.BatchId;
         publicState["manifestDigest"]=issued.ManifestDigest;publicState["keyVersion"]=issued.CapabilityKeyVersion;publicState["actualIssuedGuardRevision"]=issued.IssuedGuardRevision;
-        publicState["attestationOrdinal"]=issued.Capability?.AttestationOrdinal;publicState["attempts"]=JsonSerializer.SerializeToNode(signing,CustodyBindingContract.Json);
+        publicState["attestationOrdinal"]=issued.Capability?.AttestationOrdinal;publicState["attempts"]=new JsonArray();
+        if(id is "v23.two-consecutive-stale-signing-attempts" or "v23.stale-attempt-with-rotation")
+        {
+            var attempts=new JsonArray();
+            foreach(var attempt in signing.OrderBy(value=>value.Payload.SigningAttemptOrdinal))
+            {
+                bool issuedAttempt=issued.Capability==attempt.Payload && issued.IssuedGuardRevision>attempt.Payload.IntendedIssuedGuardRevision;
+                attempts.Add(new JsonObject { ["sealId"]=attempt.Payload.DestructionSealId,["batchId"]=attempt.Payload.BatchId,["manifestDigest"]=attempt.Payload.ManifestDigest,
+                    ["attestationOrdinal"]=attempt.Payload.AttestationOrdinal,["signingAttemptOrdinal"]=attempt.Payload.SigningAttemptOrdinal,["intendedGuardRevision"]=attempt.Payload.IntendedIssuedGuardRevision,
+                    ["actualIssuedGuardRevision"]=issuedAttempt?issued.IssuedGuardRevision:null,["keyVersion"]=attempt.Payload.CapabilityKeyVersion,["requestId"]=attempt.SigningRequestId.ToLowerInvariant(),
+                    ["outcome"]=issuedAttempt?"Issued":attempt.State==DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued?"ObsoleteUnissued":attempt.State.ToString(),
+                    ["noIssueProofSha256"]=attempt.NoIssueProof is null?null:QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(attempt.NoIssueProof,CustodyBindingContract.Json)!) });
+            }
+            publicState["attempts"]=attempts;
+        }
         // The audit supplement must supply independently authenticated exact target-ID mappings; input labels cannot classify physical destruction.
         if(native.Facts?["destroyedTargetIds"] is JsonArray destroyed) publicState["destroyedTargetIds"]=destroyed.DeepClone();
         else if(batch.TargetReceipts.Count!=0) return null;
-        if(native.Facts?["activeCredentialIds"] is JsonArray active) publicState["activeCredentialIds"]=active.DeepClone();else return null;
-        return new(requestId,receipt,state.InstallationId+":"+state.Revision,new JsonObject { ["state"]=publicState,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        var credentials=new JsonArray();
+        if(issued.Capability is not null && issued.IssuedGuardRevision>0 && issued.DetachedJws.Length>0 && !state.CompromisedKeyVersions.Contains(issued.CapabilityKeyVersion,StringComparer.Ordinal))
+            credentials.Add(QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { issued.Capability,issued.DetachedJws },CustodyBindingContract.Json)!));
+        publicState["activeCredentialIds"]=credentials;
+        return new(requestId,receipt,state.InstallationId+":"+state.Revision,new JsonObject { ["state"]=publicState,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=native.Facts?["linearization"]?.DeepClone()??new JsonObject(),
             ["independentOwnerInvariants"]=JsonSerializer.SerializeToNode(projected,CustodyBindingContract.Json),["guardState"]=JsonSerializer.SerializeToNode(state,CustodyBindingContract.Json),
             ["protectionState"]=JsonSerializer.SerializeToNode(batch,CustodyBindingContract.Json),["signingOriginals"]=JsonSerializer.SerializeToNode(signing,CustodyBindingContract.Json) });

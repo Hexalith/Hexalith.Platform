@@ -1,0 +1,84 @@
+{
+  "frozenAndDiagnosticBoundaries": [
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-1-all-hashes.json",
+      "sha256": "0ebc0331cfa1c827a558ffb540ea83b1eeb6d067943855760348b18042098805",
+      "entries": 11
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-2-all-hashes.json",
+      "sha256": "e334e1272af0910cb3edb671dd130f021cff4fbafd83a6d1e5f9c7a5602ecc3e",
+      "entries": 15
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-3-before-ownership-census-all-hashes.json",
+      "sha256": "387101f9060906a7eed209d2caeaffcd99f442c26e0f5574b577795f8e747c47",
+      "entries": 11
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-4-concurrent-input-refusal-all-hashes.json",
+      "sha256": "c0bad5285577c01a2442bd2d17f86a0275b9eeab72c7f6ac1a304f0cfcf06853",
+      "entries": 13
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-freeze-5-before-captured-source-all-hashes.json",
+      "sha256": "40d67c3dcb624c0e1b2c2e363a08ceb45ecdf553f174edcb0cc6d43420b87952",
+      "entries": 12
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-captured-composition-alias-failure-all-hashes.json",
+      "sha256": "9c471a95445369ecb3d370322c5297906743ece094acda020a1bfe7717412d10",
+      "entries": 49
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-captured-host-closure-failure-all-hashes.json",
+      "sha256": "2cba83311f65ac27462f0b9b1e4b3cba15d50b37979445399d5138ef00d31403",
+      "entries": 7
+    },
+    {
+      "path": "/tmp/story54-round21-w94zzt2w/historical-capture-order-diagnostic-all-hashes.json",
+      "sha256": "daaf05b5f3beaa84b8437292caf1bc8f89ce4044815fb52361e01f538116746b",
+      "entries": 104
+    }
+  ],
+  "diagnosticOutcomes": {
+    "path": "/tmp/story54-round21-w94zzt2w/historical-diagnostic-outcomes.json",
+    "sha256": "55dce5d9db49f90000758674d1392ae0479c011ac30eeb73727ac212121a4af7"
+  },
+  "initialFullAggregate": {
+    "verification": {
+      "path": "/tmp/story54-round21-w94zzt2w/verification-final.json",
+      "sha256": "6ee072a1ff36533881fe5a9ff3c398ce2bd7159dbcd421fa777863e25525e20d"
+    },
+    "nativePassed": 32,
+    "custodyPassed": 781,
+    "runtimeTotal": 805,
+    "runtimePassed": 799,
+    "runtimeFailed": 6,
+    "aggregatePassed": false,
+    "cause": "Unconditional extra original authentication call changed non-timestamp legacy shapes/profile read counts; the subsequent conditional evidence correction was independently rebuilt and all805 exact rows passed."
+  },
+  "earlyDiagnosticOutputs": "Builds1-3 logs are retained, but reused preliminary output paths mean not every per-iteration binary/source body is separately available. No exact per-iteration snapshot is invented. Explicit later snapshots, actual PDB documents and matching dependency-body supplements are retained.",
+  "zeroSelectionRun": "temporal-ingress8 selected0; not a positive verification pass. Separate temporal6 and ingress13 executions retain their actual outcomes.",
+  "failedMutantCompilation": "decoded-export-clear original mutant failed unused-local CS0219; not counted as a guard catch. Corrected mutation uses the local, compiles, selects3 and fails1 actual private-buffer assertion.",
+  "unsupportedApphostArgument": {
+    "path": "/tmp/story54-round21-w94zzt2w/logs/final5-actual-file-apphost-build.log",
+    "sha256": "e35c093b11f149753e4feaa459ae9844098736af45b426602ff5260b5892b2f7"
+  },
+  "actualApphostDiagnosticWarning": "ASPIRE010 notes the CLI bundle is disabled; AppHost is compile-only and never Start/Run. No warning is relabeled a warning-free build.",
+  "captureOrderDiagnostic": {
+    "path": "/tmp/story54-round21-w94zzt2w/composition-capture-order-actual-pdb.json",
+    "sha256": "5e59b2a9483139e0313e97bf6b43b52395c7776a5dc3ee8e9540b3d98d313a69"
+  },
+  "actualOldAndFinalPdbPin": "Both original and recaptured Composition/AppHost builds consumed the same exact immutable HostedPublishing copy; only the evaluated-list ordering was corrected.",
+  "oldSource20Evidence": {
+    "path": "/tmp/story54-round21-w94zzt2w/prior-source20-preservation.json",
+    "sha256": "36890ff0814d3b657ab28059c266e3198a3e06ac72804bf903dd23f54318f40f"
+  },
+  "oldSource20Artifacts": {
+    "path": "/tmp/story54-round21-w94zzt2w/prior-source20-artifact-preservation.json",
+    "sha256": "0be375ae32c582bccdfba47671d7239a479037a152963ee777abbf25f863119e"
+  },
+  "sourceCorrectionIteration": 21,
+  "fixtureOnly": true
+}
