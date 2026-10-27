@@ -1,0 +1,38 @@
+[
+  {
+    "input": "External.EnrolledNativeMutationDispatchOriginalV2",
+    "requirement": "Actual independent dispatch-original authority AppId/enrollment/scope/current trust and P-256 public anchor; mounted private read credential; qualification-lookup-original plus narrowly enrolled qualification-read-original:private-replay/private-security-observation/fr34-engine grants as selected. No general role read or dispatch grant is inferred.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  },
+  {
+    "input": "External.ExactNativeMutationTargetMappingsV2",
+    "requirement": "Each selected QualificationEventStoreAuditScope.DispatchOriginals entry supplies the existing role, exact workload message ID, exact logical TargetId, Domain and AggregateId. Its Scope TenantId and matching NativeStreams/WorkloadMessageIds are pinned by the installed configuration. Conflicting native stream-to-target mappings deny startup. Source derives QualificationMutationTrust from these actual supplied mappings and the declared original authority.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  },
+  {
+    "input": "External.NativeMutationSupportedEventStoreFactsV2",
+    "requirement": "For a selected EventStore workload command, actual terminal Completed status with EventCount/CommittedEventSequence and full native source-v1 stream/event proof must correlate with a real IndependentCommandDispatchV2 original. The actual native event principal (UserId), timestamp, stream incarnation, sequence, event identity and raw digest are preserved and verified. Timestamp is the native event timestamp as supplied by this protocol; authorization time/revision are distinct actual CAS facts. Missing status, subject, time, exact event or authorization denies completeness.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  },
+  {
+    "input": "External.CompleteNativeMutationCensusAndStageSourcesV2",
+    "requirement": "Independent complete surface/control/incarnation/copy census supplement must correlate with the actual native source snapshot and enumerate every selected native event exactly once. Available source assembly attaches verified authorization evidence and nativeMutationSources; a receipt label alone grants no qualification. Non-EventStore custody/inventory/control mutations still require their actually selected authoritative native authorization/target/time protocol; none is manufactured or replaced by an empty census.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  },
+  {
+    "input": "External.LegacyMutationAuthorizationIncompleteness",
+    "requirement": "Raw legacy originals/signatures remain unchanged. A nonempty legacy census or dispatch original without versioned exact authorization/target facts remains incomplete, with a named preflight/read/projector blocker. No native proof, event time, mapping or principal is reconstructed from a current label.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  },
+  {
+    "input": "External.PublicExportAnchorIdentityRetention",
+    "requirement": "Current independently installed export public anchor ID, version and exact supported P-256 SPKI remain external. New signed export originals retain all three under ExportQualificationAnchorV2. Missing legacy anchor identity/version produces unknown PublicAnchorRetained and an unqualified metric; fixture anchors are not installed values.",
+    "actualInstalledEvidence": null,
+    "fixtureEstablishesInstallation": false
+  }
+]

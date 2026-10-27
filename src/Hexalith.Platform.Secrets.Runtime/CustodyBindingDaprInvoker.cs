@@ -15,7 +15,8 @@ internal sealed record CustodyBindingCurrentReadV1(string RequestAttemptId, stri
 internal sealed record CustodyBindingTransitionProofV1(string RequestAttemptId, string Challenge, AuthorityEnrollmentV1 Authority,
     string Operation, string ScopeId, long OwnerRevision, string OwnerDigest, string TransitionDigest, string State, byte[] Signature);
 internal sealed record CustodyBindingManifestStatusV1(DeletionManifestProviderResult Result, AuthorityEnrollmentV1 Authority,
-    string ManifestDigest, byte[] Signature);
+    string ManifestDigest, byte[] Signature,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyManifestDenial? Denial=null);
 
 internal sealed record CustodyBindingResponseV1(string ProtocolVersion, string OperationId, string RequestDigest,
     CustodyBindingOriginalHeaderV1? OriginalHeader = null, CustodyKeyLifecycleOutcome? Lifecycle = null,
@@ -140,7 +141,8 @@ internal sealed class CustodyBindingDaprInvoker
                         || nonterminal.TenantId != request.Envelope.TenantId || nonterminal.BatchId != manifest.Original.Capability.BatchId
                         || nonterminal.ReservationReceiptId != manifest.ProtectionReservationReceiptId || nonterminal.TargetReceipts is not { Count: 0 }
                         || status.Authority != request.Envelope.Enrollment || status.ManifestDigest != manifest.Original.Capability.ManifestDigest
-                        || status.Signature is not { Length: > 0 and <= 8192 }) { return new(CustodyBindingTransportState.Unknown); }
+                        || status.Signature is not { Length: > 0 and <= 8192 }
+                        || status.Denial is { } denial && (nonterminal.State!=DeletionManifestProviderState.NotStarted || !denial.Matches(manifest.Original,manifest.ProtectionReservationReceiptId))) { return new(CustodyBindingTransportState.Unknown); }
                 }
                 else if (response.OriginalHeader is not { } h || !h.Valid() || h.Authority != request.Envelope.Enrollment
                     || h.TenantId != request.Envelope.TenantId || h.OperationId != request.Envelope.OperationId
@@ -164,6 +166,13 @@ internal sealed class CustodyBindingDaprInvoker
             else if (request.Envelope.Operation == "complete-key-use")
             {
                 if (response.Delivery is not { } completed || completed.KeyUse != request.KeyUse) return new(CustodyBindingTransportState.Unknown);
+            }
+            else if(request.WrapOriginal is { } wrapOriginal)
+            {
+                if(response.WrappedRegistration is not { } recovered || recovered.Identity!=wrapOriginal.Identity || recovered.OperationId!=wrapOriginal.OperationId
+                    || recovered.ExpectedRevision!=wrapOriginal.ExpectedRevision || recovered.KekVersion!=wrapOriginal.KekVersion
+                    || recovered.OpaqueWrappedKeyReference!=wrapOriginal.OpaqueWrappedKeyReference || !CustodyBindingContract.Text(recovered.WrapReceiptId))
+                    return new(CustodyBindingTransportState.Unknown);
             }
             else if (request.Registration is { } registration)
             {

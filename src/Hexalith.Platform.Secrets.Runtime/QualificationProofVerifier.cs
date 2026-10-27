@@ -50,8 +50,13 @@ public sealed class QualificationProofVerifier(IReadOnlyDictionary<string, Quali
             cancellationToken.ThrowIfCancellationRequested();
             bool valid = key.VerifyData(bytes, signature, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
             cancellationToken.ThrowIfCancellationRequested();
+            current=(clock ?? TimeProvider.System).GetUtcNow().ToUnixTimeSeconds();
+            cancellationToken.ThrowIfCancellationRequested();
+            now=originalTime??current;
+            if(now>current || observed>now || observed<now-30 || until<=now) return false;
             return valid;
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (Exception) { return false; }
     }
 

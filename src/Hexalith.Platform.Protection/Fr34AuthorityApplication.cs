@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Owning-process FR-34 composition. The real engine, disjoint archive reader, retained manifests and independent binding source are mandatory installed dependencies.</summary>
 public static class Fr34AuthorityApplication
 {
+    /// <summary>Builds the owning host with the same automatic holder-completion registration used by the installed service.</summary>
+    public static Microsoft.AspNetCore.Builder.WebApplication BuildOwningApplication(IndependentAuthorityReceiver receiver,Fr34ProductionPorts production)
+        =>IndependentAuthorityHttpApplication.BuildApplication(receiver,new CustodyOccurrenceHolderCompletionWorker(production.Keys));
     /// <summary>Serves the concrete Platform-owned source composition; no default candidate delivery provider is used.</summary>
     public static Task<int> RunAsync(string installation,Fr34ProductionPorts production,Fr34EventStoreCanaryReader reader,
         Hexalith.EventStore.Client.Gateway.IEventStoreGatewayClient privateWriteGateway,Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource proof,

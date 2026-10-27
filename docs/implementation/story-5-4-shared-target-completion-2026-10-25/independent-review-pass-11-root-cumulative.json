@@ -1,0 +1,178 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T13:18:14.980467+00:00",
+  "reviewPass": "11b-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review11b_blind",
+    "/root/review11b_edge",
+    "/root/review11b_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "edgeFindings": [],
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true,
+    "prior11aInterruptedAndDiscarded": true,
+    "setupEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/review-setup-pass-11.json"
+  },
+  "scopeManifest": "/tmp/story54-claims-isolated-review11-yafolfa4/scope.json",
+  "fullCumulativeDiff": "/tmp/story54-final-review-nu5qmdz3/changes.diff",
+  "reviewDiffSha256": "25577f58b997b2004600ace4235f41dd34b806cfda5b6207d54da0e1e6f33893",
+  "findings": [
+    {
+      "id": "R11B-1",
+      "verdict": "high",
+      "evidence": "AgentsDeploymentProfileModel is a public record with copied internal AcceptedContextValidated=true and an IReadOnlyDictionary backed by the mutable validation dictionary. Public Compose only checks that flag, so with-copied references/roots or in-place Services edits can retain production acceptance without matching accepted bytes/model.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11B-2",
+      "verdict": "high",
+      "evidence": "ValidateAcceptedContext and protection Binding parse packet/embedded binding JSON with JsonDocument.Parse and GetProperty; no recursive duplicate guard protects these inputs. Last-property interpretation can accept contradictory candidates/bindings that the Python decoder refuses. Root profile RequireKeys does not guard these separate packet/binding parses.",
+      "route": "patch"
+    },
+    {
+      "id": "R11B-3",
+      "verdict": "high",
+      "evidence": "Both C# section helpers use Regex.Match (first section) and acceptance uses substring/any matching status rows. A duplicate record section or contradictory target/date/status row leaves a matching row in the selected section and can pass; binding-row uniqueness alone does not validate standard commitments or duplicate sections.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11B-4",
+      "verdict": "high",
+      "evidence": "Installed cohort and coordinated admission call qualify.bounded_public_file/read_json/read_public_anchor. That helper synchronously os.open/fstat/read uses final-component O_NOFOLLOW only, no total deadline/worker bound and no after-read mutation check. O_NONBLOCK rejects FIFOs but cannot bound a stalled regular-file filesystem operation; parent symlinks remain followed.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11B-5",
+      "verdict": "medium",
+      "evidence": "Both nested durable-operation branches pass the supplied token directly and skip CurrentToken. A valid nested RunAsync with its default token therefore loses the documented owning deadline; a cooperative asynchronous wait cannot observe cancellation and can strand the outer occupied worker. This is distinct from intentionally retaining workers through uninterruptible kernel cleanup.",
+      "route": "patch"
+    },
+    {
+      "id": "R11B-6",
+      "verdict": "high",
+      "evidence": "EventStoreFr34CanaryEngine creates a base64 plaintext PersistFr34Canary payload and retains command.Payload as the fr34-engine qualification original before protected submission. The independent immutable archive therefore keeps a reversible plaintext copy after native DEK destruction. Response-buffer cleanup does not remove this separately persisted input.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11B-7",
+      "verdict": "high",
+      "evidence": "Rotation Registration explicitly supplies Resume=ExecuteAsync, whose individual native steps have durable original barriers. QualificationDriverComposition drops Resume, and BoundSourceCaseDriver only invokes execute or lookup. Actual owning-role lookup after inner progress with missing case-result reaches rotation.LookupAsync (outer result only), so the explicitly safe continuation is unreachable.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11B-8",
+      "verdict": "false",
+      "evidence": "CustodyLifecycleClient explicitly documents LookupOriginal(registration,null) as registration provenance; SemanticProvider verifies and returns the original Wrapped registration under the wrap operation. The unwrap observer separately requires request-bound keyDeliveryOriginal and allHoldersCompleted. Those intentionally distinct provenance/delivery facts do not establish a wrong unwrap lookup; replacing the wrap lookup with an unwrap ID would call a lifecycle-original protocol that does not retain raw unwrap results. The filed one-operation-ID premise is not the implemented native contract.",
+      "route": "rejected"
+    },
+    {
+      "id": "R11B-9",
+      "verdict": "high",
+      "evidence": "CohortAuthorityStore.reserve samples now before four verify_owner calls and uses that stale value for each receipt, then INSERTs without a fresh expiry/grant check. The isolated filed fixture advances1000\u21921002 during verification with receipts expiring1001 and still inserts. The database lock orders revocation but does not stop wall-clock expiry.",
+      "route": "patch"
+    },
+    {
+      "id": "R11B-10",
+      "verdict": "high",
+      "evidence": "The native source publisher serializes all bounded streams into one envelope and publishes it through the64MiB archive without a1MiB envelope check. Its exact LookupAsync and persisted Python source observer both cap reads at1MiB. Multiple valid source responses can therefore create a retained original that its own recovery/observer cannot read.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R11V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: no test constructs concrete JointSecretsCaseExecutor. Existing CLI BudgetSecrets injection and direct owner-handler fixtures bypass its observer Original proof check; removing that condition leaves those tests green while invalid/substituted observer evidence can be published by the phase command.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R11B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "AgentsDeploymentProfileModel is a public record with copied internal AcceptedContextValidated=true and an IReadOnlyDictionary backed by the mutable validation dictionary. Public Compose only checks that flag, so with-copied references/roots or in-place Services edits can retain production acceptance without matching accepted bytes/model."
+    },
+    {
+      "members": [
+        "R11B-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "ValidateAcceptedContext and protection Binding parse packet/embedded binding JSON with JsonDocument.Parse and GetProperty; no recursive duplicate guard protects these inputs. Last-property interpretation can accept contradictory candidates/bindings that the Python decoder refuses. Root profile RequireKeys does not guard these separate packet/binding parses."
+    },
+    {
+      "members": [
+        "R11B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Both C# section helpers use Regex.Match (first section) and acceptance uses substring/any matching status rows. A duplicate record section or contradictory target/date/status row leaves a matching row in the selected section and can pass; binding-row uniqueness alone does not validate standard commitments or duplicate sections."
+    },
+    {
+      "members": [
+        "R11B-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Installed cohort and coordinated admission call qualify.bounded_public_file/read_json/read_public_anchor. That helper synchronously os.open/fstat/read uses final-component O_NOFOLLOW only, no total deadline/worker bound and no after-read mutation check. O_NONBLOCK rejects FIFOs but cannot bound a stalled regular-file filesystem operation; parent symlinks remain followed."
+    },
+    {
+      "members": [
+        "R11B-5"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Both nested durable-operation branches pass the supplied token directly and skip CurrentToken. A valid nested RunAsync with its default token therefore loses the documented owning deadline; a cooperative asynchronous wait cannot observe cancellation and can strand the outer occupied worker. This is distinct from intentionally retaining workers through uninterruptible kernel cleanup."
+    },
+    {
+      "members": [
+        "R11B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "EventStoreFr34CanaryEngine creates a base64 plaintext PersistFr34Canary payload and retains command.Payload as the fr34-engine qualification original before protected submission. The independent immutable archive therefore keeps a reversible plaintext copy after native DEK destruction. Response-buffer cleanup does not remove this separately persisted input."
+    },
+    {
+      "members": [
+        "R11B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Rotation Registration explicitly supplies Resume=ExecuteAsync, whose individual native steps have durable original barriers. QualificationDriverComposition drops Resume, and BoundSourceCaseDriver only invokes execute or lookup. Actual owning-role lookup after inner progress with missing case-result reaches rotation.LookupAsync (outer result only), so the explicitly safe continuation is unreachable."
+    },
+    {
+      "members": [
+        "R11B-9"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "CohortAuthorityStore.reserve samples now before four verify_owner calls and uses that stale value for each receipt, then INSERTs without a fresh expiry/grant check. The isolated filed fixture advances1000\u21921002 during verification with receipts expiring1001 and still inserts. The database lock orders revocation but does not stop wall-clock expiry."
+    },
+    {
+      "members": [
+        "R11B-10"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "The native source publisher serializes all bounded streams into one envelope and publishes it through the64MiB archive without a1MiB envelope check. Its exact LookupAsync and persisted Python source observer both cap reads at1MiB. Multiple valid source responses can therefore create a retained original that its own recovery/observer cannot read."
+    },
+    {
+      "members": [
+        "R11V-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Pre-verified: no test constructs concrete JointSecretsCaseExecutor. Existing CLI BudgetSecrets injection and direct owner-handler fixtures bypass its observer Original proof check; removing that condition leaves those tests green while invalid/substituted observer evidence can be published by the phase command."
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

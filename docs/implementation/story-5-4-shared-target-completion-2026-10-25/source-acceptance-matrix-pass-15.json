@@ -1,0 +1,411 @@
+{
+  "schema": "platform.story54.pass15.source-acceptance-matrix.v1",
+  "rows": [
+    {
+      "finding": "R14B-1",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Finite custody-role ingress ownership",
+      "sourceAndTestFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs"
+      ],
+      "testFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs"
+      ],
+      "frozenHashes": {
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs": "711fba977080aa39f94d8ebbfa7bd260d296224db9bf4d5005de9a773d727d7b",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "19babed18b0f48832a8ae63d24f02b4ef8f9444dd621a4c8eada82a675c73e1a",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs": "20e53d60b7e668189a89d4ba3606c26906578fe6342c564aed2dd21d1633e5e8",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88"
+      },
+      "meaningfulCoverage": [
+        "Actual loopback HTTP prepare and malformed/oversized-body refusal; actual role receiver saturation before candidate reads; startup failure/recovery; four acknowledged blocked private calls retained after cancellation."
+      ],
+      "passingFinalLanes": [
+        "final-native-tests",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-2",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Exact current role workload issuance",
+      "sourceAndTestFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/SignedStatement.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleWorkloadGrant.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleIssuance.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs"
+      ],
+      "testFiles": [
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs"
+      ],
+      "frozenHashes": {
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs": "711fba977080aa39f94d8ebbfa7bd260d296224db9bf4d5005de9a773d727d7b",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "19babed18b0f48832a8ae63d24f02b4ef8f9444dd621a4c8eada82a675c73e1a",
+        "infrastructure/Hexalith.Platform.Custody.Dapr/SignedStatement.cs": "4769f387a3a994f4d14461a6a330e64378f5cc9be43afe279973e22b0738b8d0",
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleIssuance.cs": "b1e678b63dd8b2f62992b6ad1015a56f73dd23ed6c7aca40ac258a2202d6a8f2",
+        "src/Hexalith.Platform.Secrets.Runtime/CustodyRoleWorkloadGrant.cs": "39897831cdf45855012576227584d4305a7628f0df781b3af7eadfe28a57e4e9",
+        "src/Hexalith.Platform.Secrets.Runtime/DaprCustodyAuthorizerClient.cs": "39f59c284daf0f7ccdd5fb6668ae81b5b480a0862c1151d914d80257f804c5f9",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d402002413de6721770970cc2cea9ae60000ade5462e5c6c672899005da7721c",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88"
+      },
+      "meaningfulCoverage": [
+        "Actual independent receiver issuance/revocation CAS; prepare/authorize/control/native/direct observer revocation and exclusive expiry during awaited reads; exact repeated preparation, historical optional signature fields and typed comparison preserving original raw bytes."
+      ],
+      "passingFinalLanes": [
+        "final-native-tests",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-3",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Enrolled held SQLite identity and placement",
+      "sourceAndTestFiles": [
+        "eng/ext-secrets-1/enrolled_sqlite.py",
+        "eng/ext-secrets-1/joint_authority_service.py",
+        "eng/ext-secrets-1/linux_persistent_storage.py"
+      ],
+      "testFiles": [
+        "eng/ext-secrets-1/test_pass15_storage.py",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py"
+      ],
+      "frozenHashes": {
+        "eng/ext-secrets-1/enrolled_sqlite.py": "e17ec28f8a86d3804549f03bb257b282f55b8380f627f60a71f8c58f4ec3a865",
+        "eng/ext-secrets-1/joint_authority_service.py": "a9510c9f163a53f48355db03b4a06fef9688737ebceec9a011f98c275d9bb4e7",
+        "eng/ext-secrets-1/linux_persistent_storage.py": "a4b606b15fb42a9bcc2a6fa22108bdca1354a3ea12b4ef38fa16fddc09a2f8b2",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py": "3ba5a81b67280d068e4fccd33513ea00bd29f8a1fa262a0084c9172973c31c6f",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py": "04706f4c5498665170df06f4615c1dd9d90045eb9c9aee5d0fff9ecac40e8a9f",
+        "eng/ext-secrets-1/test_pass15_storage.py": "24a820db53c69b760350fc2ec85aba2e33a3cb72baa72ab6862501cbda203c32",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "5bf04e1322c2de1223be6367ccc8d5562395d1ff99116be975f6df4824bb7aa7"
+      },
+      "meaningfulCoverage": [
+        "Disposable exact identity/restart, final and parent links, journal/WAL/shm boundaries, replacement during open and transaction, original rollback preservation and current workload mutation ordering.",
+        "Disposable tmpfs refusal, restored-locator SQLite descriptor substitution, shared/unknown/sparse pool-extent denial before native dispatch, and unshared-but-default-COW Btrfs refusal. Fixed-slot writes implement ext4/XFS only and perform no fresh allocation/probe at completion."
+      ],
+      "passingFinalLanes": [
+        "final-python-secrets",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-4",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Canonical bounded new attempt identifiers",
+      "sourceAndTestFiles": [
+        "eng/ext-secrets-1/joint_authority_service.py"
+      ],
+      "testFiles": [
+        "eng/ext-secrets-1/test_pass15_storage.py",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py"
+      ],
+      "frozenHashes": {
+        "eng/ext-secrets-1/joint_authority_service.py": "a9510c9f163a53f48355db03b4a06fef9688737ebceec9a011f98c275d9bb4e7",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py": "3ba5a81b67280d068e4fccd33513ea00bd29f8a1fa262a0084c9172973c31c6f",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py": "04706f4c5498665170df06f4615c1dd9d90045eb9c9aee5d0fff9ecac40e8a9f",
+        "eng/ext-secrets-1/test_pass15_storage.py": "24a820db53c69b760350fc2ec85aba2e33a3cb72baa72ab6862501cbda203c32",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "5bf04e1322c2de1223be6367ccc8d5562395d1ff99116be975f6df4824bb7aa7"
+      },
+      "meaningfulCoverage": [
+        "Disposable malformed/nonstring/990000-character/uppercase/braced IDs refuse without INSERT; valid UUID runner paths and exact legacy-row lookup/recovery."
+      ],
+      "passingFinalLanes": [
+        "final-python-secrets",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-5",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Recoverable unadmitted physical preparation",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentRecoveryGrantArchive.cs"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs"
+      ],
+      "frozenHashes": {
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "353ad37898fd9bea0df4fd4598a524d3921bfd77b81e2566ccf3f1f2b997d782",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d402002413de6721770970cc2cea9ae60000ade5462e5c6c672899005da7721c",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentRecoveryGrantArchive.cs": "167beeb057b664a9747546f36d3d046a96231bcadd459f691ed3b7828295a6fe",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "43e7df113ffe9693c7f6b862c85a6d29532fe07ed603ed916667313ad7d1bc22",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs": "433724aa42bcb7c3b652e13e59fdedbaea247384fdcb2d7dcb256604f0c05e03"
+      },
+      "meaningfulCoverage": [
+        "Actual receiving count-limit refusal, repeated distinct losing CAS, delayed old-etag CAS after proven reclamation, uncertain barrier preservation, restart, concurrent exact retry and lost successful reply; shared real receiver pressure/completion fixtures.",
+        "Actual retained recovery grant after lost publication uses one immutable grant-bound reserved transfer across randomized ECDSA re-signing before publication; existing immutable signature bytes remain unchanged and settled archived reissue completes after ordinary free-space/probe denial."
+      ],
+      "passingFinalLanes": [
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-6",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Immutable physical budget commitments",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs"
+      ],
+      "frozenHashes": {
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "353ad37898fd9bea0df4fd4598a524d3921bfd77b81e2566ccf3f1f2b997d782",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d402002413de6721770970cc2cea9ae60000ade5462e5c6c672899005da7721c",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "43e7df113ffe9693c7f6b862c85a6d29532fe07ed603ed916667313ad7d1bc22",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs": "433724aa42bcb7c3b652e13e59fdedbaea247384fdcb2d7dcb256604f0c05e03"
+      },
+      "meaningfulCoverage": [
+        "Actual uncertain terminal-at-admission preparation versus larger nonterminal and changed-body requests at the same role/id; identical retry; direct immutable owner/budget/body comparison after partial transfer.",
+        "Actual retained recovery grant after lost publication uses one immutable grant-bound reserved transfer across randomized ECDSA re-signing before publication; existing immutable signature bytes remain unchanged and settled archived reissue completes after ordinary free-space/probe denial."
+      ],
+      "passingFinalLanes": [
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-7",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Existing durable shared phase completion capacity",
+      "sourceAndTestFiles": [
+        "eng/ext-secrets-1/phase_completion_pool.py",
+        "eng/ext-secrets-1/joint_authority_service.py",
+        "eng/ext-secrets-1/linux_persistent_storage.py"
+      ],
+      "testFiles": [
+        "eng/ext-secrets-1/test_pass15_storage.py",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py"
+      ],
+      "frozenHashes": {
+        "eng/ext-secrets-1/joint_authority_service.py": "a9510c9f163a53f48355db03b4a06fef9688737ebceec9a011f98c275d9bb4e7",
+        "eng/ext-secrets-1/linux_persistent_storage.py": "a4b606b15fb42a9bcc2a6fa22108bdca1354a3ea12b4ef38fa16fddc09a2f8b2",
+        "eng/ext-secrets-1/phase_completion_pool.py": "a9b45ea3c9a6a668330c25bc8a14af13d86dda0e3bf5fd12a6c7d49f5b8bbed1",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py": "3ba5a81b67280d068e4fccd33513ea00bd29f8a1fa262a0084c9172973c31c6f",
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py": "04706f4c5498665170df06f4615c1dd9d90045eb9c9aee5d0fff9ecac40e8a9f",
+        "eng/ext-secrets-1/test_pass15_storage.py": "24a820db53c69b760350fc2ec85aba2e33a3cb72baa72ab6862501cbda203c32",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "5bf04e1322c2de1223be6367ccc8d5562395d1ff99116be975f6df4824bb7aa7"
+      },
+      "meaningfulCoverage": [
+        "Actual disposable retained phase owner refuses missing capacity before dispatch; lost completion-header acknowledgment retains exact signed frame and recovers after restart without native lookup/resend; injected ordinary allocation refusal during completion and NULL SQL result recovery.",
+        "Disposable tmpfs refusal, restored-locator SQLite descriptor substitution, shared/unknown/sparse pool-extent denial before native dispatch, and unshared-but-default-COW Btrfs refusal. Fixed-slot writes implement ext4/XFS only and perform no fresh allocation/probe at completion.",
+        "Selected free-slot materialization and4KiB alignment precede SQL/native admission; a failed materialization leaves no admission/dispatch and recovers exactly. Expiry winning during materialization denies at the final SQL boundary. Admitted completion requires private written extents and does not allocate/convert unwritten extents."
+      ],
+      "passingFinalLanes": [
+        "final-python-secrets",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14B-8",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Exact complete Python/C# binding encoding",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Composition/PythonCanonicalJson.cs",
+        "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Composition.Tests/PythonCanonicalBindingTests.cs",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs"
+      ],
+      "frozenHashes": {
+        "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs": "048184a0d3e2cd970f4314fb893e1a1e047feb9509434fcca2ba8ae279642e00",
+        "src/Hexalith.Platform.Composition/PythonCanonicalJson.cs": "ee2cde753d50bae2942ac64f2bfc42e089e51f08d9c8429eb60f95d2d38612e9",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs": "c91e5d330f7790e45bdc59e1b597592165d98cb4f55833c84003f5e7fa8e61d8",
+        "tests/Hexalith.Platform.Composition.Tests/PythonCanonicalBindingTests.cs": "52a9c04a4159938aa04c6c2509b641b5b784ea005ae64f245f270b9b507a0245"
+      },
+      "meaningfulCoverage": [
+        "Actual Python-to-C# byte interoperability over non-ASCII values/keys, controls/DEL/escaping/supplementary keys, ordering, arrays/objects/null/bools, big integers, negative zero, exponent thresholds and finite double boundaries; real Python-prepared accepted packet consumption."
+      ],
+      "passingFinalLanes": [
+        "final-focused-composition",
+        "final-python-secrets",
+        "final-python-host"
+      ]
+    },
+    {
+      "finding": "R14B-10",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Accepted stable immutable launched sibling graph",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Composition/AcceptedLaunchArtifactLease.cs",
+        "src/Hexalith.Platform.Composition/AcceptedLaunchLeaseOwner.cs",
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs",
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs",
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs",
+        "eng/ext-secrets-1/launch_inventory.py",
+        "eng/ext-secrets-1/coordinated_packets.py",
+        "eng/ext-secrets-1/prepare_acceptance.py",
+        "eng/ext-host-1/prepare_acceptance.py"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchBoundaryTests.cs",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs",
+        "eng/ext-secrets-1/test_launch_inventory.py",
+        "eng/ext-secrets-1/test_coordinated_packets.py"
+      ],
+      "frozenHashes": {
+        "eng/ext-host-1/prepare_acceptance.py": "d42b87c518e9b0fc0e90e400a5ce2dadbafd38d44717f1c0b2fa1b12927979ff",
+        "eng/ext-secrets-1/coordinated_packets.py": "d7485b642ea3ad7432a437a0ca751714531fd510464b7003407c485387941333",
+        "eng/ext-secrets-1/launch_inventory.py": "db71c9e53f060109fb857bdb0778adbc16504ad8efea4259e3723735185a518a",
+        "eng/ext-secrets-1/prepare_acceptance.py": "84618dd897ce426c130ced01d2df5b7c395650627ad1bbb6734951d65b664802",
+        "eng/ext-secrets-1/test_coordinated_packets.py": "22313ba357ad21c1dfde2c617cbd732183a9b510187db23f98ccf8c9bc324017",
+        "eng/ext-secrets-1/test_launch_inventory.py": "192fed70df50bba2523b88fb1b33d0bc82c8002b72eb37f371ca00456a303296",
+        "src/Hexalith.Platform.Composition/AcceptedLaunchArtifactLease.cs": "641f366cce6eef823cce0a09955fa6952f9b9ae75cf732f820033d62357a0124",
+        "src/Hexalith.Platform.Composition/AcceptedLaunchLeaseOwner.cs": "f51f514c445d1b5f4d3003205006097c3880157247b8538b3111fc95b9e6f15b",
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "5b0b9eaa44a248c39778024c60dd772db5d3032410d971eb9f9f6240d6f11ce6",
+        "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs": "e957b0a7bd8b9e08fc6e24abaf16d5de2127be3a562bfa2f57fc51682aff9969",
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "34b1792a8c3b1cc9ab83a76ecc744790e6ee8fb7df2c955dcb4878981b54cfd0",
+        "tests/Hexalith.Platform.Composition.Tests/AcceptedLaunchBoundaryTests.cs": "3536eef7af2d73512e931e56a72b6ec425c620fc571d983a226e4aab8141bd59",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs": "fb56c28edc1a927337c8507bc00dd64c37ea017eb47c52df9b9c1df709da3d13"
+      },
+      "meaningfulCoverage": [
+        "Actual Aspire builder accepted graph, changed nonproject source/project/dependency/unlisted member/replacement and immutable-kernel refusal with preexisting unrelated resource preservation; accepted stable fixture graph and Build/Dispose release; scripts and dynamic loaders refuse even when their bytes are re-pinned; production Python mutable graph refusal, complete fixture graph under explicit fixture-only kernel proof, changed bytes and packet substitution."
+      ],
+      "passingFinalLanes": [
+        "final-full-composition-build",
+        "final-focused-composition",
+        "final-python-secrets",
+        "final-python-host"
+      ]
+    },
+    {
+      "finding": "R14E-1",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Protected transfer slots and serialized completion metadata",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentCapacityContentArchive.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs"
+      ],
+      "frozenHashes": {
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "353ad37898fd9bea0df4fd4598a524d3921bfd77b81e2566ccf3f1f2b997d782",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d402002413de6721770970cc2cea9ae60000ade5462e5c6c672899005da7721c",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentCapacityContentArchive.cs": "cb490e9d3ea19ea3d3e5a34995f986681ff6eb6ef088dff9b4b194f5626187df",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "43e7df113ffe9693c7f6b862c85a6d29532fe07ed603ed916667313ad7d1bc22",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentRecoveryArchiveTests.cs": "433724aa42bcb7c3b652e13e59fdedbaea247384fdcb2d7dcb256604f0c05e03"
+      },
+      "meaningfulCoverage": [
+        "Exact4096 transfer-marker and4MiB serialized-growth boundaries reject new ingress while already admitted completion succeeds; immutable budget metadata and real competing receiver/lost publication/restart pressure cases.",
+        "Actual retained recovery grant after lost publication uses one immutable grant-bound reserved transfer across randomized ECDSA re-signing before publication; existing immutable signature bytes remain unchanged and settled archived reissue completes after ordinary free-space/probe denial."
+      ],
+      "passingFinalLanes": [
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14E-2",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Exact current still-pending physical coverage",
+      "sourceAndTestFiles": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs"
+      ],
+      "frozenHashes": {
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveCapacity.cs": "353ad37898fd9bea0df4fd4598a524d3921bfd77b81e2566ccf3f1f2b997d782",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "d402002413de6721770970cc2cea9ae60000ade5462e5c6c672899005da7721c",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "cc7a68b092d09cb5574fec5bc56e61f39d01a037479929149c3d134d96595b88",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentCapacityCommitmentTests.cs": "e7b0243c45c08abe5958cc964ca6583252f1fcb84a1f76920ab57e61756e8631",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentPhysicalCapacityTests.cs": "43e7df113ffe9693c7f6b862c85a6d29532fe07ed603ed916667313ad7d1bc22"
+      },
+      "meaningfulCoverage": [
+        "Completed-but-positive unsettled ticket with unrelated pending legacy reserve, settlement and restart/stale revision; actual receiving commit/settle paths and existing interrupted zero-row settlement source fixture."
+      ],
+      "passingFinalLanes": [
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "finding": "R14V-1",
+      "sourceCorrectionStatus": "ImplementedAndVerifiedSourceOnly",
+      "independentReviewStatus": "Pending",
+      "actualInstalledEvidence": null,
+      "correctionTitle": "Actual version2 observe/restart/native receipt routing",
+      "sourceAndTestFiles": [
+        "tests/Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs",
+        "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj"
+      ],
+      "testFiles": [
+        "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs"
+      ],
+      "frozenHashes": {
+        "tests/Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs": "308c97b42dfb863ccf64406276c57b3509a60f1a144127c842db04ce7a8a1d8b",
+        "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs": "1cf25f45438733d52429cdacd4a6f389bb35573bc13af649ed9c90069d42804c",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj": "c6704ee8efb6adb518e80afa1687d3c76e128af3100afae9be5ec950841bc522"
+      },
+      "meaningfulCoverage": [
+        "Persisted SourceVersion2, exact hashed security-event-log aggregate/receipt stream and native recorder command assertions; legacy version0 exact locator tests remain enabled."
+      ],
+      "passingFinalLanes": [
+        "final-protection",
+        "final-custody-tests"
+      ]
+    }
+  ],
+  "rejectedFindingPreserved": {
+    "finding": "R14B-9",
+    "disposition": "RejectedByRootActualFiniteProducerAudit",
+    "safeHistoricalIdentifiersPruned": false
+  },
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "completeQualificationDrivers": 0
+}

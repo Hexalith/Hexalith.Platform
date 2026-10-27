@@ -1,0 +1,25 @@
+{
+  "observedAtUtc": "2026-10-26T12:45:29.586240+00:00",
+  "reason": "Claims spec appeared in cumulative diff, violating staged claims isolation for all3 review layers. All3 interrupted before any FINAL/triage; their output will not be used.",
+  "priorFullCumulativeDiff": "/tmp/story54-final-review-nu5qmdz3/changes.diff",
+  "claimsIsolatedReviewDiff": "/tmp/story54-claims-isolated-review11-yafolfa4/changes.diff",
+  "excludedOnly": "_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md",
+  "productionSourceChanged": false,
+  "correctedLayers": [
+    "/root/review11b_blind",
+    "/root/review11b_edge",
+    "/root/review11b_gap"
+  ],
+  "fullCumulativeScopeRetained": true,
+  "reviewScope": {
+    "manifest": "/tmp/story54-claims-isolated-review11-yafolfa4/scope.json",
+    "files": 474,
+    "diffBytes": 7082120,
+    "diffSha256": "25577f58b997b2004600ace4235f41dd34b806cfda5b6207d54da0e1e6f33893",
+    "fullCumulativeDiff": "/tmp/story54-final-review-nu5qmdz3/changes.diff",
+    "claimsSpecExcludedFromContent": true
+  },
+  "allPrior11aReportsDiscardedWithoutTriage": true,
+  "sourceAndTestEvidenceUnchanged": true,
+  "installedQualification": false
+}

@@ -5,6 +5,9 @@ namespace Hexalith.Platform.Secrets.Runtime;
 /// <summary>Independently provisioned atomic, durable, nonrollback original store; not an in-memory substitute.</summary>
 public interface IQualificationOriginalStore
 {
+    /// <summary>Checks the actual current independent observer original writer/read capabilities and enrolled archive, without creating a future case original.</summary>
+    Task<IReadOnlyList<string>> PreflightObservationAsync(CancellationToken cancellationToken)
+        =>Task.FromResult<IReadOnlyList<string>>(["InstalledIndependentObservationOriginalReadWriteAndArchiveCapabilities"]);
     /// <summary>Atomically retains the complete request before an effect. Existing identities return false; changed bytes must throw.</summary>
     Task<bool> BeginAsync(string role, string requestId, JsonObject original, CancellationToken cancellationToken);
     /// <summary>Admits a closed once-only lease/release whose protocol is terminal at admission; no fictitious later result is reserved.</summary>

@@ -18,8 +18,9 @@ public sealed class QualificationInventoryRotationWorkflow(IPlatformKeyInventory
             || old.Action!=PlatformKeyInventoryAction.InstallCurrent || next.Action!=PlatformKeyInventoryAction.InstallCurrent || old.Key.TenantId!=next.Key.TenantId
             || old.Key.Purpose!=next.Key.Purpose || old.Key.KeyAlias!=next.Key.KeyAlias || old.Key.Version==next.Key.Version || next.ExpectedInventoryRevision!=old.ExpectedInventoryRevision+1
             || input.DigestScope.TenantId!=old.Key.TenantId || scope["tenantId"]?.GetValue<string>()!=old.Key.TenantId) return ["ExactIndependentlyProvisionedRotationArguments"];
-        return invalidation is null?["SelectedSafetyVerdictInvalidationConsumerAndNativeReader","SelectedNativeKeyVersionRotationControl"]:
-            await invalidation.PreflightAsync(input,token).ConfigureAwait(false);
+        if(!SecretsProvisioning.IsReference(next.Key.PublicAnchorId) || !SecretsProvisioning.IsReference(next.Key.PublicAnchorVersion)) return ["ExactNativeSuccessorPublicAnchorIdentityAndVersion"];
+        if(invalidation is null) return ["SelectedSafetyVerdictInvalidationConsumerAndNativeReader","SelectedNativeKeyVersionRotationControl","External.ExactNativeRotationTimeRetainedVerifierAndPublicAnchorOriginalProtocol"];
+        return (await invalidation.PreflightAsync(input,token).ConfigureAwait(false)).Concat(await invalidation.PreflightRotationOriginalAsync(input,token).ConfigureAwait(false)).Distinct(StringComparer.Ordinal).ToArray();
     }
     /// <summary>Executes only exact admitted source steps. A previously admitted unknown step uses actor/native original lookup and cannot resend.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject original,CancellationToken token)
@@ -53,8 +54,17 @@ public sealed class QualificationInventoryRotationWorkflow(IPlatformKeyInventory
         bool first=await originals.BeginAsync("executor",consumeId,(JsonObject)JsonSerializer.SerializeToNode(signal,CustodyBindingContract.Json)!,token).ConfigureAwait(false);
         string? receipt=first?await invalidation!.PublishAsync(signal,token).ConfigureAwait(false):await invalidation!.LookupAsync(signal,token).ConfigureAwait(false);
         if(receipt is not { Length:64 }) return null;
+        string rotationId=requestId+":native-rotation-v1";
+        await originals.BeginAsync("executor",rotationId,(JsonObject)JsonSerializer.SerializeToNode(signal,CustodyBindingContract.Json)!,token).ConfigureAwait(false);
+        var native=(await originals.LookupResultAsync("executor",rotationId,token).ConfigureAwait(false))?.Deserialize<QualificationRotationOriginal>(CustodyBindingContract.Json)
+            ??await invalidation!.ReadRotationOriginalAsync(signal,token).ConfigureAwait(false);
+        if(native is null || native.Signal!=signal || native.InvalidationReceiptSha256!=receipt || native.RotatedAt<=0 || native.OldVerifyUntil<=native.RotatedAt
+            || native.PublicAnchorId!=signal.Key.PublicAnchorId || native.PublicAnchorVersion!=signal.Key.PublicAnchorVersion
+            || !SecretsProvisioning.IsReference(native.PublicAnchorId) || !SecretsProvisioning.IsReference(native.PublicAnchorVersion)) return null;
+        await originals.RetainAsync("executor",rotationId,(JsonObject)JsonSerializer.SerializeToNode(native,CustodyBindingContract.Json)!,token).ConfigureAwait(false);
         var read=await ObserveAsync(original,token).ConfigureAwait(false);if(read is null) return null;
-        read["invalidationReceiptSha256"]=receipt;read["originalDigest"]=retained.DeepClone();
+        read["invalidationReceiptSha256"]=receipt;read["originalDigest"]=retained.DeepClone();read["nativeRotationOriginal"]=JsonSerializer.SerializeToNode(native,CustodyBindingContract.Json);
+        read["previousKey"]=JsonSerializer.SerializeToNode(input.InstallOriginal.Key,CustodyBindingContract.Json);
         await originals.RetainAsync("executor",requestId+":case-result",read,token).ConfigureAwait(false);return read;
     }
     /// <summary>Reads actual current versions/signals, retained old digest and real native consumer verdicts. It performs no rotation or invalidation.</summary>
@@ -68,6 +78,9 @@ public sealed class QualificationInventoryRotationWorkflow(IPlatformKeyInventory
         return new JsonObject { ["caseId"]="S1.rotation-invalidation",["requestId"]=original["requestId"]!.DeepClone(),["inventory"]=JsonSerializer.SerializeToNode(state,CustodyBindingContract.Json),
             ["retainedDigest"]=JsonSerializer.SerializeToNode(retained,CustodyBindingContract.Json),["safetyVerdicts"]=JsonSerializer.SerializeToNode(verdicts,CustodyBindingContract.Json) };
     }
+    /// <summary>Reads the selected immutable native timing/retention witness without changing inventory or delivering another invalidation.</summary>
+    public Task<QualificationRotationOriginal?> ReadNativeOriginalAsync(PlatformKeyInventorySignal signal,CancellationToken token)
+        =>invalidation?.ReadRotationOriginalAsync(signal,token)??Task.FromResult<QualificationRotationOriginal?>(null);
     /// <summary>Reads only the exact original full case result after an unknown source effect.</summary>
     public Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken token)=>originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",token);
 }

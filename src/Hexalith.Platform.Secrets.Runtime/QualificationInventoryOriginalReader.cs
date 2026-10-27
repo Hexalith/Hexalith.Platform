@@ -9,6 +9,8 @@ public sealed class QualificationInventoryOriginalReader(IPlatformKeyInventoryAc
     IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,IReadOnlyDictionary<string,PlatformKeyVersion> enrolledKeys):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
@@ -25,7 +27,7 @@ public sealed class QualificationInventoryOriginalReader(IPlatformKeyInventoryAc
         var native=await audit.ReadAsync(request,token).ConfigureAwait(false);if(native is null || native.OriginalRevision<1) return null;
         string receipt=QualificationProtocolSchema.Digest(retained!);var state=QualificationDeniedCaseState.Create(request,native.OriginalRevision,receipt);
         state["outcome"]="Resolved";state["status"]="Resolved";state["keyVersion"]=key.Version;
-        return new(requestId,receipt,"inventory:"+current.Revision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"inventory:"+current.Revision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),
             ["inventoryState"]=JsonSerializer.SerializeToNode(current,CustodyBindingContract.Json),["inventoryKey"]=JsonSerializer.SerializeToNode(key,CustodyBindingContract.Json),["inventoryAuthorityRevision"]=current.Revision });
     }

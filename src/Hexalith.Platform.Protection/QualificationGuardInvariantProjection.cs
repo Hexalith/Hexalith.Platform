@@ -40,7 +40,7 @@ public static class QualificationGuardInvariantProjection
                 "exactNewKeyBlockReceipt" when known => guard.Revocations.LongCount(value=>value.Envelope.KeyVersion==protection.BlockedKeyVersion && value.AffectedBatchIds.Contains(batchId,StringComparer.Ordinal) && value.Envelope.RevocationRevision==protection.RevocationRevision),
                 // Current batches and revocation receipts do not expose a complete affected-set snapshot at the recorded revocation revision.
                 "completeAffectedBatchEnumeration" => null,
-                "capabilityCompromiseBlockProof" => guard.Revocations.Any(value=>value.AffectedBatchIds.Contains(batchId,StringComparer.Ordinal) && value.Envelope.KeyVersion!=batch.CapabilityKeyVersion) ? 1:0,
+                "capabilityCompromiseBlockProof" => PredecessorCompromise(guard,batch),
                 "successorDispatchProof" => batch.DispatchReceiptId.Length>0 && batch.DispatchGuardRevision>batch.IssuedGuardRevision && batch.IssuedGuardRevision>0 && guard.Receipts.Any(value=>value.ReceiptId==batch.DispatchReceiptId) ? 1:0,
                 "nextAttestationOrdinal" => NextAttestationOrdinal(guard,batch),
                 "exactNoIssueProof" when signing.Count>0 => signing.Count(value=>value.NoIssueProof is not null),
@@ -49,11 +49,25 @@ public static class QualificationGuardInvariantProjection
             {
                 missing.Add("IndependentMeasuredOwnerHistoryOrBoundaryProtocol."+metric);
                 if(metric is "raceWinners" or "immutableReservation") missing.Add("External.ExactCompetingProtectionOperationOriginalAndReservationHistoryProtocol");
+                if(metric=="capabilityCompromiseBlockProof") missing.Add("External.ExactPredecessorCapabilityProtectionBlockAndGuardMirrorHistoryProtocol");
                 if(metric=="completeAffectedBatchEnumeration") missing.Add("External.CompleteAffectedBatchSetAtRecordedRevocationRevisionProtocol");
             }
             else metrics[metric]=measured.Value;
         }
         return new(metrics,missing);
+    }
+    private static long? PredecessorCompromise(TenantGovernanceGuardState guard,GovernanceBatchState batch)
+    {
+        if(batch.Capability is not { } current || current.AttestationOrdinal<2) return null;
+        var prior=guard.Receipts.Where(value=>value.Status=="Committed" && value.GuardHighWater<batch.IssuedGuardRevision && value.Capability is { } cap
+            && cap.TenantId==current.TenantId && cap.DeletionRequestId==current.DeletionRequestId && cap.DestructionSealId==current.DestructionSealId
+            && cap.BatchId==current.BatchId && cap.ManifestDigest==current.ManifestDigest && cap.BatchKind==current.BatchKind && cap.BatchOrdinal==current.BatchOrdinal
+            && cap.AttestationOrdinal==current.AttestationOrdinal-1).OrderByDescending(value=>value.GuardHighWater).FirstOrDefault();
+        if(prior?.Capability is not { } predecessor) return null;
+        // The typed mirror retains the exact protection-owner revocation receipt, including its affected batch set.
+        return guard.Revocations.Any(value=>value.Envelope.TenantId==predecessor.TenantId && value.Envelope.KeyVersion==predecessor.CapabilityKeyVersion
+            && value.Envelope.KeyFamily=="DeletionBatchCapabilitySigningKey" && value.AffectedBatchIds.Contains(predecessor.BatchId,StringComparer.Ordinal)
+            && value.OwnerRevision>0 && value.KeyBlockSetRevision>0 && !string.IsNullOrWhiteSpace(value.ReceiptId))?1:0;
     }
     private static int FieldCount(DeletionBatchCapabilityV1 payload)
     {

@@ -23,7 +23,9 @@ public static class QualificationRuntimeWorkflowCatalog
             if(execute is null) continue;
             Func<JsonObject,CancellationToken,Task<JsonObject?>> recover=id.StartsWith("S1.inventory.",StringComparison.Ordinal) || id=="S2.retained-digest"?runtimeOriginals.LookupAsync:
                 id.StartsWith("S4.capability",StringComparison.Ordinal)?capability!.LookupAsync:envelope!.LookupAsync;
-            result.Add(Retained(id,originals,execute,recover));
+            var registration=Retained(id,originals,execute,recover);
+            if(id.StartsWith("S2.replay-reject.",StringComparison.Ordinal)) registration=registration with { Preflight=envelope!.PreflightAsync };
+            result.Add(registration);
         }
         return result;
     }

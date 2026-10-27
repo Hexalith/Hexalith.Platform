@@ -1,3 +1,5 @@
+using Hexalith.Platform.Secrets.Runtime;
+
 namespace Hexalith.Platform.Custody.Dapr;
 internal sealed record WorkerPacket(string Action, string TenantId, WorkerOperation? Operation, SignedStatement Evidence, byte[]? ExactOriginal,
     string? OutputPath = null);
@@ -22,7 +24,17 @@ internal static class WorkerEntry
     {
         if (!Path.IsPathFullyQualified(packet.OutputPath!)) throw new AuthorityUnavailableException("Absolute new original output path required.");
         byte[] bytes = await worker.PrepareOriginalAsync(packet.TenantId, packet.Evidence, token);
-        using var output = new FileStream(packet.OutputPath!, FileMode.CreateNew, FileAccess.Write, FileShare.None);
-        await output.WriteAsync(bytes, token); output.Flush(flushToDisk: true);
+        try
+        {
+            _=await ArchiveVolumeFence.RunForPublicationAsync(Path.GetDirectoryName(packet.OutputPath!)!,async ct=>
+            {
+                using var directory=HeldArchiveDirectory.Acquire(Path.GetDirectoryName(packet.OutputPath!)!);
+                ArchiveVolumeFence.RequireCurrentDestination(Path.GetDirectoryName(packet.OutputPath!)!);
+                using(var output=new FileStream(directory.OpenFile(Path.GetFileName(packet.OutputPath!),0x40|0x80|1),FileAccess.Write))
+                { await output.WriteAsync(bytes,ct).ConfigureAwait(false);await output.FlushAsync(ct).ConfigureAwait(false);output.Flush(flushToDisk:true); }
+                directory.Flush();directory.VerifyLocator();ct.ThrowIfCancellationRequested();return true;
+            },token).ConfigureAwait(false);
+        }
+        finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(bytes); }
     }
 }

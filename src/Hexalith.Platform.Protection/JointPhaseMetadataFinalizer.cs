@@ -5,14 +5,15 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Metadata-only recovery. Reads exact immutable case files and the admitted owner request; never constructs a workflow, material provider or native effect port.</summary>
-public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,IQualificationOriginalStore originals,string directory,ECDsa signer)
+public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,IQualificationOriginalStore originals,string directory,ECDsa signer,Func<JsonObject,CancellationToken,Task<bool>>? phaseAdmission=null)
 {
     /// <summary>Publishes only the missing signed index. Independent persisted observation is still required to establish any result.</summary>
     public async Task<JsonObject?> FinalizeAsync(JsonObject request,CancellationToken token)
     {
+        if(phaseAdmission is null || !await phaseAdmission(request,token).ConfigureAwait(false)) return null;
         string? id=request["requestId"]?.GetValue<string>();
         if(id is not { Length:64 } || !id.All(char.IsAsciiHexDigitLower) || request["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest
-            || request["phase"]?.GetValue<int>()!=accepted.Phase || request["cases"] is not JsonArray cases
+            || JointPhaseRequestRecipe.Phase(request)!=accepted.Phase || request["cases"] is not JsonArray cases
             || !cases.Select(value=>value!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal) || !Path.IsPathFullyQualified(directory)
             || await originals.ReadAdmissionAsync("joint-phase-command",id,request,token).ConfigureAwait(false)!=QualificationOriginalAdmissionState.Admitted) return null;
         if(await originals.LookupResultAsync("joint-phase-command",id,token).ConfigureAwait(false) is { } retained) return retained;
@@ -33,7 +34,7 @@ public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,
             observations.Add(new JsonObject { ["caseId"]=caseId,["evidenceSha256"]=Convert.ToHexStringLower(SHA256.HashData(bytes)) });
         }
         JsonObject result;
-        if(File.Exists(index))
+        if(await ProtectedArchiveStore.ExistsAsync(index,token).ConfigureAwait(false))
         {
             result=SecretsProof.Parse(System.Text.Encoding.UTF8.GetString(await Read(index,token).ConfigureAwait(false)))!;
             if(result?["payload"] is not JsonObject old || old["requestSha256"]?.GetValue<string>()!=QualificationProtocolSchema.Digest(request)
@@ -51,7 +52,6 @@ public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,
     }
     private static async Task<byte[]> Read(string path,CancellationToken token)
     {
-        var info=new FileInfo(path);if(!info.Exists || info.LinkTarget is not null || info.Length is <=0 or >1024*1024) throw new IOException("ExactBoundedImmutablePhaseEvidence");
-        byte[] bytes=await File.ReadAllBytesAsync(path,token).ConfigureAwait(false);CustodyBindingContract.RejectDuplicateProperties(bytes);return bytes;
+        byte[] bytes=await BoundedRegularFile.ReadAsync(path,1024*1024,token).ConfigureAwait(false);CustodyBindingContract.RejectDuplicateProperties(bytes);return bytes;
     }
 }

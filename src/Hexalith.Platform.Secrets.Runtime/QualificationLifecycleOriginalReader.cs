@@ -10,12 +10,15 @@ public sealed class QualificationLifecycleOriginalReader(IQualificationOriginalS
     QualificationLifecycleCaseWorkflow workflow,IReadOnlyDictionary<string,QualificationLifecycleCaseInput> inputs):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(originals);
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");if(id is null || requestId is null || !inputs.TryGetValue(id,out var input)) return null;
-        var retained=await originals.LookupResultAsync("executor",requestId+":case-result",token).ConfigureAwait(false);var native=await audit.ReadAsync(request,token).ConfigureAwait(false);
+        var retained=await workflow.ReadTerminalAsync(request,token).ConfigureAwait(false);var native=await audit.ReadAsync(request,token).ConfigureAwait(false);
         if(retained is null || native?.Facts?["lifecycleOriginal"] is not JsonObject originalFact || !JsonNode.DeepEquals(originalFact,retained)
-            || native.Facts["lifecycleReservationOriginal"] is not JsonObject reservation || reservation["operationId"]?.GetValue<string>()!=(input.Lifecycle?.OperationId??input.Registration.OperationId)
+            || native.Facts["lifecycleReservationOriginal"] is not JsonObject reservation || reservation["operationId"]?.GetValue<string>()!=(input.Manifest is { } nativeManifest?CustodyLifecycleClient.ManifestOperationId(nativeManifest,input.ReservationReceiptId!):input.Lifecycle?.OperationId??input.Registration.OperationId)
             || reservation["requestId"]?.GetValue<string>()!=requestId || reservation["receiptId"]?.GetValue<string>() is not { Length:>0 }) return null;
         var actual=await workflow.ObserveNativeAsync(request,token).ConfigureAwait(false);if(actual is null) return null;
         long exact=0,pins=0;string? outcome=null;
@@ -25,7 +28,18 @@ public sealed class QualificationLifecycleOriginalReader(IQualificationOriginalS
             if(observed.Result.TenantId!=manifest.Capability.TenantId || observed.Result.BatchId!=manifest.Capability.BatchId || observed.Result.ReservationReceiptId!=input.ReservationReceiptId) return null;
             if(observed.Result.State==DeletionManifestProviderState.Consumed && observed.RestoreBarrierReceiptId is not null
                 && observed.Result.TargetReceipts.Count==manifest.Targets.Count && observed.Result.TargetReceipts.All(value=>manifest.Targets.Contains(value.Target))) { exact=observed.Result.TargetReceipts.Count;outcome="Completed"; }
-            if(id=="S3.hold-pin" && native.Facts["retainedPins"] is JsonArray retainedPins && observed.Result.State!=DeletionManifestProviderState.Consumed) { pins=retainedPins.Count;outcome="Denied"; }
+            if(id=="S3.hold-pin" && observed.Result.State==DeletionManifestProviderState.NotStarted && observed.Denial is { } denial
+                && denial.Matches(manifest,input.ReservationReceiptId!) && JsonNode.DeepEquals(retained["actual"],actual)
+                && native.Facts["retainedPins"] is JsonArray retainedPins && JsonNode.DeepEquals(retainedPins,JsonSerializer.SerializeToNode(denial.Pins,CustodyBindingContract.Json)))
+                { pins=retainedPins.Count;outcome="Denied"; }
+        }
+        else if(id=="S3.lifecycle.wrap")
+        {
+            var observed=actual.Deserialize<CustodyKeyRegistration>(CustodyBindingContract.Json);
+            if(observed is null || observed.Identity!=input.Registration.Identity || observed.OperationId!=input.Registration.OperationId
+                || observed.ExpectedRevision!=input.Registration.ExpectedRevision || observed.KekVersion!=input.Registration.KekVersion
+                || observed.OpaqueWrappedKeyReference!=input.Registration.OpaqueWrappedKeyReference || !JsonNode.DeepEquals(retained["actual"],actual)) return null;
+            exact=1;outcome="Completed";
         }
         else
         {
@@ -46,7 +60,7 @@ public sealed class QualificationLifecycleOriginalReader(IQualificationOriginalS
             if(native.Facts["destroyedTargetIds"] is not JsonArray destroyed || native.Facts["pinnedTargetIds"] is not JsonArray pinned) return null;
             state["destroyedTargetIds"]=destroyed.DeepClone();state["pinnedTargetIds"]=pinned.DeepClone();
         }
-        return new(requestId,receipt,"custody:"+native.OriginalRevision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"custody:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["independentLifecycleVerification"]=new JsonObject { ["ExactReceiptCount"]=exact,["CurrentReservationCount"]=1,["RetainedPinCount"]=pins },["nativeOriginal"]=actual });
     }
 }

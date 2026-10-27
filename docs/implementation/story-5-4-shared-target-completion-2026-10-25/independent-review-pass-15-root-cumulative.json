@@ -1,0 +1,225 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T22:59:34.019923+00:00",
+  "reviewPass": "15-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review15_blind",
+    "/root/review15_edge",
+    "/root/review15_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-qs2fv5a4/scope.json",
+  "reviewDiffSha256": "f2761df96b0573a1b370f388dc0494d43f30679370c7284866e90b74a4024c67",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "No identical unchanged location and claim; wrapper lifetime differs from direct application; post-launch acknowledgement differs from pre-start failure; generic bind-alias bypass differs from configured matching-pin rejection.",
+  "findings": [
+    {
+      "id": "R15B-1",
+      "verdict": "high",
+      "evidence": "QualificationOwnerApplication.RunWithStartupBudgetAsync replaces the caller lifetime token with its 30-second startup budget and passes it to IndependentAuthorityHttpApplication.RunAsync. That application correctly separates its own startup token but receives the already expiring outer token as WaitForShutdownAsync lifetime. The owning service therefore stops after startup budget expiration. The older direct-application regression does not cover this wrapper.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-2",
+      "verdict": "high",
+      "evidence": "QualificationEnvelopeCaseWorkflow changes only expected identity for the three replay-reject cases; supplied remains the original envelope. TrustedEnvelopeReplayVerifier returns on authenticator failure before RegisterAsync, and this recipe never seeds a successful original nonce. Its denied result therefore does not exercise changed authenticated delivery against the private first-seen guard.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-3",
+      "verdict": "high",
+      "evidence": "QualificationDecisionCaseWorkflow independent-role branch checks profile/basis/approvers/boundaries without calling the existing complete IndependentDecisionManifestVerifier. It can emit verified=true without a valid DetachedJws, current expiry or complete manifest. The existing full verifier already supplies these guards in the other branch.",
+      "route": "patch"
+    },
+    {
+      "id": "R15B-4",
+      "verdict": "high",
+      "evidence": "QualificationDecisionCaseWorkflow mutates approvers, predecessor, contract, version, affected evaluations and role fields of the signed manifest while retaining input.DetachedJws. The original signature then fails independently of the intended semantic check, so these negative recipes can pass with that semantic guard broken. Existing preflight does not establish cryptographic validity for these mutated inputs.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-5",
+      "verdict": "medium",
+      "evidence": "QualificationEnvelopeCaseWorkflow assigns principal Kind=Workflow and fingerprint=64 zeroes without checking they differ. Actual installed identity dictionaries flow to this workflow without a human-kind constraint; TrustedPrincipal.IsValid admits Workflow and the codec admits the zero fingerprint. A valid enrolled baseline can therefore make either substitution a no-op.",
+      "route": "patch"
+    },
+    {
+      "id": "R15B-6",
+      "verdict": "high",
+      "evidence": "IndependentArchiveCapacity and NativeArchiveCapacity reserve byte blocks, but later completion paths still create publication/temp/lock files and directory entries. Their byte and JSON/transfer-slot budgets do not pre-admit those filesystem inode/metadata allocations. Inode exhaustion after an admitted effect can thus prevent the promised retained completion even with reserved byte capacity.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-7",
+      "verdict": "high",
+      "evidence": "Both capacity implementations reopen existing reservation files through HeldArchiveDirectory.OpenFile, which checks regular-file mode but neither single-link ownership nor distinct inode identity. Existing hardlinked reservation paths can count one physical allocation twice; transferring/truncating one also destroys the other liability coverage.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-8",
+      "verdict": "high",
+      "evidence": "Both C# archive pools admit supported persistent Btrfs/XFS storage and fallocate existing reserve files without proving private releasable extents. Reflink/snapshot sharing can retain those blocks when the reserve is truncated, defeating transfer to admitted completion. The Python fixed-slot private-written-extent checks do not cover these C# pools.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-9",
+      "verdict": "high",
+      "evidence": "ArchiveVolumeFence derives a lock inode by climbing the current pathname mount ancestry. Configured pools with the same expected pin correctly reject a different inode; however generic RunForPublicationAsync passes no expectedIdentity. A subtree bind alias can therefore let an ordinary generic writer lock a different inode on the same filesystem while a configured pool owns its enrolled fence. All participating writers do not necessarily share one physical-volume fence.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15B-10",
+      "verdict": "high",
+      "evidence": "QualificationTemporalCaseWorkflow captures checkedAt before awaiting authentication. The authenticator makes actual clock/current-authority decisions after awaited reads, and emergency replacement also verifies a newly issued envelope while retaining the old timestamp. Reachable future-skew, maximum-lifetime and emergency paths can therefore report a different evaluation time from the actual decision. Existing expiry/overlap protocol blockers do not cover these paths.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R15E-1",
+      "verdict": "high",
+      "evidence": "bounded_file_io.run releases its semaphore unconditionally when Thread.start raises, while the worker finally also releases it. A startup acknowledgement failure after launch leaves a live worker uncharged and permits a fifth active worker; eventual cleanup double releases. The isolated reviewer probe demonstrated the live worker plus four newly acquired slots.",
+      "route": "patch"
+    },
+    {
+      "id": "R15E-2",
+      "verdict": "high",
+      "evidence": "joint_live_phase_runner RPC startup likewise releases its semaphore when Thread.start raises after launching. The live RPC loses its capacity charge before its finally runs. This is the same demonstrated post-launch startup-acknowledgement ownership defect as R15E-1, independently graded before grouping.",
+      "route": "patch"
+    },
+    {
+      "id": "R15E-3",
+      "verdict": "medium",
+      "evidence": "AcceptedLaunchArtifactLease.Walk bounds file count and depth but retains an open handle for every directory without a directory census bound. A graph with many empty directories can exhaust startup descriptors despite few inventoried files. The Python producer has a bounded directory census; the C# accepted admission also needs its own matching bounded walk and cleanup.",
+      "route": "patch"
+    },
+    {
+      "id": "R15V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap, trusted as filed: no current regression corrupts a Completed phase body through RetainedPhaseOwner. Removing PreserveUnknownDamagedCompletionOriginal leaves the existing 11 phase/receiving tests green, while the disposable mutation probe invokes executor.lookup and replaces the damaged original. Add the filed actual-caller regression asserting block, zero lookup and exact damaged bytes retained.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R15B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationOwnerApplication.RunWithStartupBudgetAsync replaces the caller lifetime token with its 30-second startup budget and passes it to IndependentAuthorityHttpApplication.RunAsync. That application correctly separates its own startup token but receives the already expiring outer token as WaitForShutdownAsync lifetime. The owning service therefore stops after startup budget expiration. The older direct-application regression does not cover this wrapper."
+    },
+    {
+      "members": [
+        "R15B-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationEnvelopeCaseWorkflow changes only expected identity for the three replay-reject cases; supplied remains the original envelope. TrustedEnvelopeReplayVerifier returns on authenticator failure before RegisterAsync, and this recipe never seeds a successful original nonce. Its denied result therefore does not exercise changed authenticated delivery against the private first-seen guard."
+    },
+    {
+      "members": [
+        "R15B-3"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "QualificationDecisionCaseWorkflow independent-role branch checks profile/basis/approvers/boundaries without calling the existing complete IndependentDecisionManifestVerifier. It can emit verified=true without a valid DetachedJws, current expiry or complete manifest. The existing full verifier already supplies these guards in the other branch."
+    },
+    {
+      "members": [
+        "R15B-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationDecisionCaseWorkflow mutates approvers, predecessor, contract, version, affected evaluations and role fields of the signed manifest while retaining input.DetachedJws. The original signature then fails independently of the intended semantic check, so these negative recipes can pass with that semantic guard broken. Existing preflight does not establish cryptographic validity for these mutated inputs."
+    },
+    {
+      "members": [
+        "R15B-5"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "QualificationEnvelopeCaseWorkflow assigns principal Kind=Workflow and fingerprint=64 zeroes without checking they differ. Actual installed identity dictionaries flow to this workflow without a human-kind constraint; TrustedPrincipal.IsValid admits Workflow and the codec admits the zero fingerprint. A valid enrolled baseline can therefore make either substitution a no-op."
+    },
+    {
+      "members": [
+        "R15B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "IndependentArchiveCapacity and NativeArchiveCapacity reserve byte blocks, but later completion paths still create publication/temp/lock files and directory entries. Their byte and JSON/transfer-slot budgets do not pre-admit those filesystem inode/metadata allocations. Inode exhaustion after an admitted effect can thus prevent the promised retained completion even with reserved byte capacity."
+    },
+    {
+      "members": [
+        "R15B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Both capacity implementations reopen existing reservation files through HeldArchiveDirectory.OpenFile, which checks regular-file mode but neither single-link ownership nor distinct inode identity. Existing hardlinked reservation paths can count one physical allocation twice; transferring/truncating one also destroys the other liability coverage."
+    },
+    {
+      "members": [
+        "R15B-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Both C# archive pools admit supported persistent Btrfs/XFS storage and fallocate existing reserve files without proving private releasable extents. Reflink/snapshot sharing can retain those blocks when the reserve is truncated, defeating transfer to admitted completion. The Python fixed-slot private-written-extent checks do not cover these C# pools."
+    },
+    {
+      "members": [
+        "R15B-9"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "ArchiveVolumeFence derives a lock inode by climbing the current pathname mount ancestry. Configured pools with the same expected pin correctly reject a different inode; however generic RunForPublicationAsync passes no expectedIdentity. A subtree bind alias can therefore let an ordinary generic writer lock a different inode on the same filesystem while a configured pool owns its enrolled fence. All participating writers do not necessarily share one physical-volume fence."
+    },
+    {
+      "members": [
+        "R15B-10"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "QualificationTemporalCaseWorkflow captures checkedAt before awaiting authentication. The authenticator makes actual clock/current-authority decisions after awaited reads, and emergency replacement also verifies a newly issued envelope while retaining the old timestamp. Reachable future-skew, maximum-lifetime and emergency paths can therefore report a different evaluation time from the actual decision. Existing expiry/overlap protocol blockers do not cover these paths."
+    },
+    {
+      "members": [
+        "R15E-1",
+        "R15E-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "bounded_file_io.run releases its semaphore unconditionally when Thread.start raises, while the worker finally also releases it. A startup acknowledgement failure after launch leaves a live worker uncharged and permits a fifth active worker; eventual cleanup double releases. The isolated reviewer probe demonstrated the live worker plus four newly acquired slots."
+    },
+    {
+      "members": [
+        "R15E-3"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "AcceptedLaunchArtifactLease.Walk bounds file count and depth but retains an open handle for every directory without a directory census bound. A graph with many empty directories can exhaust startup descriptors despite few inventoried files. The Python producer has a bounded directory census; the C# accepted admission also needs its own matching bounded walk and cleanup."
+    },
+    {
+      "members": [
+        "R15V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap, trusted as filed: no current regression corrupts a Completed phase body through RetainedPhaseOwner. Removing PreserveUnknownDamagedCompletionOriginal leaves the existing 11 phase/receiving tests green, while the disposable mutation probe invokes executor.lookup and replaces the damaged original. Add the filed actual-caller regression asserting block, zero lookup and exact damaged bytes retained."
+    }
+  ],
+  "filedFindingCount": 14,
+  "survivors": 14,
+  "rejected": 0,
+  "rootCauseGroups": 13,
+  "badSpecGroups": 8,
+  "patchGroups": 5,
+  "installedQualification": false,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "status": "SourceCorrectionsRequired",
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

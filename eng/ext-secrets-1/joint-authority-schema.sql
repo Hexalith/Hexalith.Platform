@@ -1,4 +1,7 @@
 -- Provision only under independent installation/enrollment authority. Runtime never runs this migration.
+-- The independent installer must initialize the actual nonempty identity row before runtime opens this database.
+-- Identity is externally enrolled with the held database inode and DELETE journal placement; runtime may not infer it.
+CREATE TABLE IF NOT EXISTS database_storage_enrollment(slot INTEGER PRIMARY KEY CHECK(slot=1), identity TEXT NOT NULL CHECK(typeof(identity)='text' AND length(trim(identity))>0));
 CREATE TABLE accepted_sets(binding_digest TEXT PRIMARY KEY, binding_json BLOB NOT NULL, accepted INTEGER NOT NULL CHECK(accepted IN (0,1)));
 CREATE TABLE current_set(slot INTEGER PRIMARY KEY CHECK(slot=1), binding_digest TEXT NOT NULL REFERENCES accepted_sets(binding_digest));
 CREATE TABLE attempts(binding_digest TEXT PRIMARY KEY REFERENCES accepted_sets(binding_digest), attempt_id TEXT NOT NULL UNIQUE);

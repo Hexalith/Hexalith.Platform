@@ -15,6 +15,7 @@ public sealed class QualificationProviderCredentialWorkflow(DaprClient client,IP
     {
         if(SecretsProof.Text(original,"caseId")!="S1.exact-provider-credential" || original["enrolledScope"] is not JsonObject scope || QualificationProtocolSchema.Digest(scope)!=input.EnrolledScopeSha256
             || SecretsProof.Text(scope,"tenantId")!=input.Key.TenantId || input.Key.Purpose!=PlatformKeyPurpose.ProviderCredential
+            || !QualificationNativeVersion.IsPinned(input.SecretVersion)
             || new[]{input.SecretStore,input.SecretReference,input.SecretField,input.SecretVersion}.Any(value=>!SecretsProvisioning.IsReference(value))) return null;
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));
         async Task<PlatformKeyInventorySnapshot?> Current()

@@ -1,0 +1,808 @@
+{
+  "schema": "platform.story54.round11.handback.v1",
+  "observedAtUtc": "2026-10-26T12:30:56.480976+00:00",
+  "status": "Pass11SourceCorrectionsVerified_PendingIndependentReview",
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "completeSharedTargetPacket": false,
+  "replacementTarget": null,
+  "replacementPlatformIntegrationDate": null,
+  "replacementProtectionIntegrationDate": null,
+  "ordinarySourceCorrectionsRemainingAtImplementationAudit": [],
+  "independentReviewRequired": true,
+  "findingCount": 12,
+  "ownedFiles": "/tmp/story54-round11-2wovv3vq/owned-files-final.json",
+  "ownedFileCount": 183,
+  "ownedFileHashes": "/tmp/story54-round11-2wovv3vq/owned-file-hashes-final.json",
+  "ownedFileHashesSha256": "2c34ccde596b721033e48e183e219b4a95d6b89f22561cb383de067ae3159202",
+  "changedOrNewFilesSincePass10": 35,
+  "pass11ChangeHashes": "/tmp/story54-round11-2wovv3vq/pass11-change-hashes.json",
+  "sourceSnapshot": "/tmp/story54-round11-2wovv3vq/source-final.tar.gz",
+  "sourceSnapshotSha256": "f2e5a4cc0bcf78212e56445338f65591d2b5833aa7e28dad9dbbb1cc52894a86",
+  "sourceObservations": "/tmp/story54-round11-2wovv3vq/source-observations.json",
+  "sourceDependencyHashes": "/tmp/story54-round11-2wovv3vq/source-dependency-hashes-final.json",
+  "sourceDependencyHashCount": 3616,
+  "sourceDependencyCaptureBoundary": {
+    "preAndPostFinalGraphSourceHashes": "/tmp/story54-round11-2wovv3vq/source-dependency-hashes-before-final.json",
+    "driftCount": 0,
+    "additionalActualCompositionToolingSource": "/tmp/story54-round11-2wovv3vq/additional-composition-tooling-source-hashes.json",
+    "additionalCaptureTiming": "Captured immediately after successful actual full production Composition build; compiled Tooling and all loaded dependency-file hashes are separately retained. No installed image measurement is claimed."
+  },
+  "compiledDependencyHashes": "/tmp/story54-round11-2wovv3vq/compiled-dependency-hashes-final.json",
+  "compiledDependencyHashCount": 2096,
+  "verification": "/tmp/story54-round11-2wovv3vq/verification-final.json",
+  "corrections": {
+    "R10B-1": {
+      "source": [
+        "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs",
+        "src/Hexalith.Platform.Protection/JointPhaseCommandInstallation.cs",
+        "eng/ext-secrets-1/execution_profile.py"
+      ],
+      "behavior": "The startup/input budget is separate from the accepted finite whole-phase deadline measured from entry. The byte-pinned acyclic v2 installation carries CompletionTimeoutSeconds, exactly matched to the profile's completionTimeoutSeconds. Native/RPC freshness is unchanged. Metadata-only recovery refuses partial missing evidence with exit 3 without executing cases.",
+      "tests": [
+        "JointPhaseFinalizerEntrypointTests (five modes)",
+        "ExecutionProfileTests.test_actual_v2_installation_pins_same_finite_whole_phase_bound_as_profile"
+      ],
+      "testBoundary": "Actual RunAsync shared control path and real authenticated retained-phase receiver, short startup override, actual JointPhaseCommand with isolated owning secrets port, actual receiving call cancellation; also the shipped metadata-finalize CLI. Fixture native operations are not installed case qualification.",
+      "remaining": "Each independently accepted installed phase profile/installation must supply and pin its actual equal whole-phase bound; no value was inferred."
+    },
+    "R10B-2": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/IIndependentOwnerOperationHandler.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs",
+        "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs"
+      ],
+      "behavior": "Capture canonical operation-specific semantic policy immediately before handler work and compare under final surviving-head current grant admission. Qualification binds target/plan policy and the relevant exact case (all cases for enrollment); FR34 binds target, authorization revision, recipe and trust. Unrelated journal progress is excluded.",
+      "tests": [
+        "IndependentAuthorityReceiverTests.ActualQualificationLookupResultOrdersCurrentRevocationAndPreservesRetainedProof",
+        "Fr34DynamicOccurrenceTests.ActualSensitiveReceivingResultsOrderSemanticPolicyAndClearTransferredServerArrays"
+      ],
+      "remaining": "Actual independent current-head/trust/role installations remain missing."
+    },
+    "R10B-3": {
+      "source": [
+        "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "behavior": "Every actual FR34 owner method opts into the current-result admission contract; the final boundary rechecks policy, caller and exclusive expiry after awaited work/admission. Already admitted unseal/replay recovery remains lookup-only with no material re-release.",
+      "tests": [
+        "Fr34DynamicOccurrenceTests.ActualSensitiveReceivingResultsOrderSemanticPolicyAndClearTransferredServerArrays",
+        "Fr34DynamicOccurrenceTests.LostUnsealAndReplayRecoveryNeverReleaseAnotherNativeUseEvenAfterCompletionAndErasure"
+      ],
+      "remaining": "Exact independently retained native plaintext-result recovery without another material release is still unavailable and remains Unknown."
+    },
+    "R10B-4": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/IIndependentOwnerOperationHandler.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs",
+        "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs"
+      ],
+      "behavior": "Explicit handler-to-receiver result cleanup clears transferred unseal/replay server arrays through a finally on every result path, including late asynchronous completion after cancellation. Owned payload/signing byte buffers are cleared after framing; owned wire bytes are cleared at transport completion/failure and registered for response disposal. The wire shape is preserved without a Runtime-to-Protection dependency.",
+      "tests": [
+        "Fr34DynamicOccurrenceTests.ActualSensitiveReceivingResultsOrderSemanticPolicyAndClearTransferredServerArrays (success, revocation/policy denial, expiry, cancellation, signing failure and transport failure)",
+        "Fr34DynamicOccurrenceTests.ActualUnsealReceiverClearsItsRetainedOpenedArrayWhenObservationThrowsOrCancels"
+      ],
+      "remaining": "These logical ownership tests establish no physical/all-copy, runtime-managed-copy or transport erasure. Actual independently verified holder/copy closure remains an installation/physical blocker."
+    },
+    "R10B-5": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "behavior": "Signed response validity is the minimum of the existing 30-second proof window, current authority expiry and actual caller-grant expiry; cancellation and exclusive expiry are checked after awaited result admission.",
+      "tests": [
+        "IndependentAuthorityReceiverTests.ActualSignedResponseCannotOutliveItsCallerGrantDuringDelayedTransport",
+        "Fr34DynamicOccurrenceTests.ActualSensitiveReceivingResultsOrderSemanticPolicyAndClearTransferredServerArrays"
+      ],
+      "remaining": "No proof/RPC freshness window was widened."
+    },
+    "R10B-6": {
+      "source": [
+        "eng/ext-secrets-1/coordinated_packets.py"
+      ],
+      "behavior": "Recognize the complete closed executable grammar: exact Git HEAD equality and clean assertions, exact candidate/root/operators, canonical literal environment assignments and owner suffix/configuration path. No command is evaluated for validation and accepted commands are never rewritten.",
+      "tests": [
+        "CoordinatedPacketTests.test_closed_assertion_grammar_rejects_resigned_printf_and_weakened_prefixes",
+        "CoordinatedPacketTests.test_resigned_printf_prefix_is_rejected_by_actual_packet_admission",
+        "CoordinatedPacketTests.test_complete_pair_preserves_commitments_scope_and_exact_coupled_commands"
+      ],
+      "remaining": "A new command form requires explicit owner acceptance; no genuine command/record was changed."
+    },
+    "R10B-7": {
+      "source": [
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+      ],
+      "behavior": "Actual TryCompose acquires exact bounded no-follow regular profile/register/packet and seven project metadata files under one total startup deadline, with strict UTF-8 round-trip and safe production false/zero-resource refusal. Development's existing missing-checkout FileNotFoundException is preserved. The shared Runtime primitive is reused through an acyclic project reference; no tracked Composition lock exists to update.",
+      "tests": [
+        "AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition (19 rows)",
+        "AgentsAcceptedDeploymentContextTests (12 rows)"
+      ],
+      "testBoundary": "The complete real production Composition project builds with its actual source graph. Focused tests compile actual production files and real Aspire 13.6.3 resource APIs, without starting an AppHost/resource.",
+      "remaining": "Actual independently installed production profile/services/trust and acceptance inputs remain missing."
+    },
+    "R10B-8": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationRotationOriginal.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/IQualificationSafetyInvalidationPort.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationWorkflow.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationOriginalReader.cs",
+        "eng/ext-secrets-1/case-driver-inventory.json"
+      ],
+      "behavior": "Retain exact actual inventory changes/invalidation receipt and a selected typed native rotation-time/retained-verifier/public-anchor original. The observer re-reads that exact native original, authenticates current inventory/signal/key/retained predecessor, and assembles the rotation/current-key/timing schema required by the unchanged checker. Missing selected native facts or anchor identity refuse read-only preflight before rotation.",
+      "tests": [
+        "QualificationReceivingProjectionTests.ConcreteReceivingDriverAndSignedNativeProjectionPassExistingPythonVerifierAndRejectSubstitution (S1.rotation-invalidation normal/lost response, altered native time/version/retention/anchor and unchanged Python checker rejection)"
+      ],
+      "remaining": "External.ExactNativeRotationTimeRetainedVerifierAndPublicAnchorOriginalProtocol is genuinely unavailable in the selected installation. No observer clock or expected scope supplies actual rotation facts. The complete driver remains false."
+    },
+    "R10B-9": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs",
+        "src/Hexalith.Platform.Protection/JointPhaseOriginalStores.cs"
+      ],
+      "behavior": "Required independent spool/recorder and engine/observer pairs reject equal app IDs, equal imported cryptographic public-key identity and equal normalized private credential binding. Credential-bound phase original stores also reject normalized alias reuse. Legitimate common authority/head dependencies remain supported.",
+      "tests": [
+        "AgentsOwningProcessRegistrationTests.ActualCompositionRequiresDistinctImportedKeysAndNormalizedPrivateBindings",
+        "AgentsOwningProcessRegistrationTests.ActualCompositionRunsStartupAndEveryRegisteredReadinessEvaluationThroughFreshAuthoritiesAndFailureRefuses"
+      ],
+      "testBoundary": "A valid differently wrapped PEM encoding imports to the same public key; no private credential bytes are hashed. An attempted compressed-point fixture was rejected by this .NET importer and is retained only as a diagnostic, not counted as a passing independence test.",
+      "remaining": "Configuration rejection/acceptance does not establish independent administration, placement, credentials or trust installation."
+    },
+    "R10B-10": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/BoundedDurableFileOperation.cs",
+        "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs"
+      ],
+      "behavior": "Acquire bounded worker capacity before copying input, complete that owned copy on the public task's continuation before handing it to a cancellation-returning worker, and retain slot/buffer/fence through real cleanup. Cancelled queued callers allocate/read no input copy. Existing late-publication token checks, exact retry fencing and physical accounting remain intact.",
+      "tests": [
+        "ArchiveInputOwnershipTests.CancellationCannotReturnCallerBufferWhileItsInitialOwnedCopyIsStillReading",
+        "ArchiveInputOwnershipTests.CancelledQueuedPublicationDoesNotReadOrCopyCallerBufferAfterReturning",
+        "BoundedInstallationAndPublicationTests",
+        "IndependentOriginalIndexTests"
+      ],
+      "remaining": "No corrupted immutable final was claimed or demonstrated by the original finding; no physical erasure is inferred."
+    },
+    "R10E-1": {
+      "source": [
+        "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+      ],
+      "behavior": "Spool admission/recording/recovery durably drive the existing bounded index/legacy liability migration under the same conditional head before spending completion capacity. Version-zero non-null undercounts and null totals cannot fund spool publication; archive-only pending originals and reservations remain charged. Fresh empty enrollment progresses without an unrelated private mutation.",
+      "tests": [
+        "OriginalCompletionLiabilityTests.ActualSpoolMigratesRestoredVersionZeroAndNullTotalsBeforeSpendingPrivateCompletionCapacity",
+        "IndependentAuthorityReceiverTests",
+        "OriginalCompletionLiabilityTests.LegacyIndexLiabilitiesMigrateInBoundedDurablePagesWithoutRepeatingHistoryOrMutatingOriginals",
+        "IndependentOriginalIndexTests"
+      ],
+      "remaining": "Actual enrolled durable archive allocation/fencing/capacity and outside-restore authority remain missing."
+    },
+    "R10V-1": {
+      "source": [
+        "eng/ext-secrets-1/test_bounded_cohort_http.py"
+      ],
+      "behavior": "Real loopback tests send exactly 16KiB and 17KiB cumulative request-line/header bytes promptly, with both one padding header and aggregate small headers. Within-limit requests dispatch once; over-limit requests dispatch zero times. Existing production MAX_HEADERS remains 16KiB.",
+      "tests": [
+        "BoundedHttpTests.test_actual_cumulative_16k_header_boundary_includes_request_line_and_small_headers",
+        "test-local MAX_HEADERS=32KiB mutation killed by the 17KiB request"
+      ],
+      "remaining": "Loopback fixture evidence only; no production listener or real cohort ran."
+    }
+  },
+  "logHashes": "/tmp/story54-round11-2wovv3vq/verification-log-hashes-final.json",
+  "diagnostics": "/tmp/story54-round11-2wovv3vq/diagnostic-log-hashes.json",
+  "diagnosticsRule": "Intermediate failures, unsupported compressed-point fixture and earlier source/binary boundaries are retained separately and are not final passes.",
+  "preservedPreviousHandback": "/tmp/story54-round10-lgzpd6yr/handback.json",
+  "preservedExternalContracts": [
+    "Actual independently accepted profile/installation completion bounds with exact equal byte pins remain unprovided.",
+    "External.ExactNativeRotationTimeRetainedVerifierAndPublicAnchorOriginalProtocol remains unavailable; absence blocks before rotation.",
+    "All previously named native/history/census/physical/installed-image, role/authority/archive/trust/credential installation and independent administration/placement contracts remain missing.",
+    "Explicit accepted coordinated replacement dates, complete immutable accepted Platform/protection targets and both complete replacement packets remain unavailable.",
+    "The234-case plan,185 registered partial source operations/readers,49 externally dependent unregistered cases,0 complete drivers,365-day history and both Product gates remain intact."
+  ],
+  "finalDriftCheck": {
+    "owned": 0,
+    "preAndPostSourceDependencies": 0,
+    "compiledDependencies": 0,
+    "logs": 0,
+    "sourceSnapshot": 0
+  },
+  "effects": {
+    "realOwnerLiveFullCommands": 0,
+    "realCohortPhases": 0,
+    "realAttemptReservations": 0,
+    "installations": 0,
+    "physicalExperiments": 0,
+    "spending": 0,
+    "acceptedCommitmentMutations": 0,
+    "stagingCommitPushFetch": 0
+  },
+  "provenance": "Single sequential source editor; no subagents or sibling source edits. Tests use disposable scoped native/source/authority fixtures only. Source/component evidence establishes no installed qualification or availability.",
+  "verificationSha256": "eb18049de5f9ad6f86e9c90e6393d24b63f9d9d9e5dfaf93d45f6ab30ea7cc1c",
+  "logHashesSha256": "a85e6360dc99f06f7138d96cf4a81d6484c9bd8a5d0fb8bbe083bb7298f7460f",
+  "handbackSha256": "3726ded58f68228c328b80e2318bb27f34a205062827985e3a8f27a7ce1b2131",
+  "rootVerification": {
+    "schema": "platform.story-5.4.root-handback-verification.v1",
+    "observedAtUtc": "2026-10-26T12:34:27.212149+00:00",
+    "handbackSha256": "3726ded58f68228c328b80e2318bb27f34a205062827985e3a8f27a7ce1b2131",
+    "checks": {
+      "ownedFileHashes": {
+        "count": 183,
+        "mismatches": []
+      },
+      "compiledDependencyHashes": {
+        "count": 2096,
+        "mismatches": []
+      },
+      "sourceDependencyHashes": {
+        "count": 3616,
+        "mismatches": []
+      },
+      "logHashes": {
+        "count": 18,
+        "mismatches": []
+      }
+    },
+    "verificationLanes": 18,
+    "snapshotHashMatches": true,
+    "installedQualification": false
+  },
+  "ownedSourceHashes": {
+    "eng/ext-secrets-1/bounded_file_io.py": "aa9b191584aa5837bce88a6295f77c74999579e6d99c590b101afded9badd5f8",
+    "eng/ext-secrets-1/case-driver-inventory.json": "6ace84b7f52bb0d4b7c6cfa33607ddee652fde7fd0da0782f1ab7ed5f436c1c5",
+    "eng/ext-secrets-1/coordinated_packets.py": "62f615dd5f9d03dfadf7aaedb9ed70779f99e27ed13b3781ef97dccede4b696f",
+    "eng/ext-secrets-1/execution_profile.py": "5b7291c46d8255bc1e11bff85bc19b83dd2a38b8f20046f46a1ff3e06429bc82",
+    "eng/ext-secrets-1/joint_authority_service.py": "02fb12050a5967bf8138f2837103aff256ff6f6cbcc4d6ce63a71e6d27026f0c",
+    "eng/ext-secrets-1/joint_live_phase_runner.py": "ca0bd119e06eb5a9eb591d80076b79bd0848e01dabf2fe08ef06c7470ced4b0b",
+    "eng/ext-secrets-1/test_bounded_cohort_http.py": "ae165dc650488ef6b0f8e18b6aa8cee3935fe721a6c14ed4bd35b3e6890eaff0",
+    "eng/ext-secrets-1/test_case_driver_inventory.py": "e98df5fac52c3836f336b2cb3f27e3f6160fdba3b6eb44f25e7fdb5c00b15007",
+    "eng/ext-secrets-1/test_coordinated_packets.py": "ddb269dc13a5e3e720f480102ec682211f70ecedced6a7173230e975d74a5c79",
+    "eng/ext-secrets-1/test_execution_profile.py": "b047eb49acb086572789a9aa781f6f6d72b4c6849328c7ef6002906f9a2e5858",
+    "eng/ext-secrets-1/test_joint_admission_ordering.py": "cdfcbeb1b77502c45562ab83eebb9c61aa50b04792efde242fed87f6784a0af8",
+    "eng/ext-secrets-1/test_joint_live_phase_runner.py": "85652a2d2807c59d8259f24ec9d54a968bc2f17b07671100c3d1281bef487af7",
+    "eng/ext-secrets-1/test_outer_cohort_uncertainty.py": "5a101b53e08887147e2e3f65342fba32d4f08a9a462cd580545e128a8ebf0e1c",
+    "eng/ext-secrets-1/test_pass10_boundaries.py": "950cb48329628eb3edbcfb4b69c42c39b4a2c5662fcdfdfad21f7d0b7382afe1",
+    "eng/ext-secrets-1/test_recovery_proof_deadline.py": "a749f6166e73c7546c6743d135b5ae62705275ee563a33faedec5efee2389d0a",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj": "cda3a092cf2405391c6aa67a02ae2c4afefcb3f2ead4fa0e01d83afb90a2758b",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/IndependentRoleReceiverTests.cs": "6bd227d5174d9459851ce0cf1886a23892521d0604a13dd230adc1d924eeb618",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/LifecycleQualificationRecoveryTests.cs": "fcda7c34a191e9274355ab1fcc51dd7f0f6755c06aeb35e66ae87baa55f71674",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeBoundedArchiveTests.cs": "f5d58989b8f6789c4307c5e171c913dca9b239b6e7d36c4168b2e145c45d19d6",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeDurabilityOwnershipTests.cs": "76645458a7ed7838a142c46188e22d66ace7680fff2a1aace19818da695d4852",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativePhysicalCapacityTests.cs": "9719f251c2e7d3311ca78baa3e801f080bbe35d4fc70b0821741c4aa2c4b47fe",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/NativeReservedWrapTests.cs": "580b4973f744a987f23ef52443b1ddf3e6ad798abc36b143548673a3ab612214",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Program.cs": "80bb65adaa577f8b0a72cf02e940d0b50721c37cc115c284f481c2d143e6d297",
+    "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/packages.lock.json": "3fcb94aca3ef72ebdb21b2ab93db0c46389f6b7cf0dc9a2bdeaedf909fd4d8f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/AuthorityModel.cs": "a6ecca6f5cb967bc88b397391f07f7f9e5b3936faa07893e483764c96ee989de",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ComponentProfile.cs": "adc8b7ef150f0462a4ead3820fe061a6669289a0e60879a63b88e1083913fa3c",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyIndependentRoleReceiver.cs": "dce86b7ca515b5d8b5276a81608d4d38d0e9e19331f859a9847737eb1390ec61",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/CustodyOwnerOperationHandler.cs": "e44be49ed10c29e336389c69cc7c6dd5f509ca35f0e30c8a4e4af989828df59f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/KeyExchange.cs": "b3323eb665d4f8840bb747fbcdf89ee66fc3d3ec65afce5aa0720197212d9917",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs": "e37b108b264140c59c830615e32a3d27de484921f5e5be568672477912b91a10",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityInstallation.cs": "518f812f6df4e22b5e3e4ff3dfcb52186ed9dd3389d8f19f8dcca498da8ec2a6",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityState.cs": "d319c6d66a054f6ba364841e03a62e03a3acad3c8fe1ed6ff695ddb0aaee2d4f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeCompletionReservation.cs": "c442a4f2b0fd833b84cd7dc99ee2fc8404db0092f29ca6b26b77575b680b56cb",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs": "fba5af87ea52b4afb21c6b08f107c959a9feb8d4531376e5ceb01d1d276f6e43",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativeInstallation.cs": "507617e4cfd88f776b5f20f86af93438c2a77cf1e5b6406a47d8edd424f0fa68",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/NativePublicationReservation.cs": "91ae3161785ceca1e1eb979bca4d35ae03d4c91bb71f013b915f2e1779a0bec0",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/Program.cs": "fe6ef541eb447dd6b9e0bb3f900db528d16e4d25d637389fc17d214377a045d1",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/RecoverableLifecycle.cs": "2543f80c82396d274b97ec50d0bacd47934aaa650170ccac47a14a56cc9886f9",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/ReferenceBackendCredentials.cs": "02991a8bad02e624407ba1a1c28e9610611e5fe9b6a34a75b2ebb6737a464497",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/SemanticProvider.cs": "cf9f6ef32749b0977ef451d9e2f3cc8f9104a224ac8cfbff70c26f967c39c80f",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/StatementVerifier.cs": "a94ed09a5a3dc554d607ca24965f72a7bbd8120c554aa525c09f78b788fa2f20",
+    "infrastructure/Hexalith.Platform.Custody.Dapr/packages.lock.json": "a3b5f8b873c9ac2f9c701f3f8d55094608d1a0a139b03725f1a6591d0dc2971a",
+    "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "65c68f6fd1f8bb2616c4fd328874f09eeffd90e9059e4a21088223bebdb3d278",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "a4749e940cbd34fbf2c7584a160cee243fde55d18a58d7bd34a0040dff28e7f8",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryActor.cs": "4198b0b8ad15661d262e3d1e1aacd55a654099630a0a919893f1d70986b303ae",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryDenialOriginal.cs": "2fcf7999af14ad1ff0786c9f198a93cc3b943b5a7ed28353e62f70334e74da5f",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryRawIdentity.cs": "1ed9eb2c88cbfaf508dd2be3ccae5b6bc14088447eaeb1619e946158bf853e1e",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingDenialOriginal.cs": "4a1b42d8668248c4a892094c008ff6ac56fc44812455ad414b9f8339d4ee39b8",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingRequest.cs": "fe24468f33f7c99e01fa083b986a6881c090fb6c35036ff1f177cee8f2f970e4",
+    "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingResult.cs": "1cb35fbc07c9361f6032059dc0e2ac5b09daa964bf3546b7602aaaf59fd65ea1",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryActor.cs": "e41a65fc279039fca616fd0dd99feb996c1280c4a87ba2b76163226b3c68dbe7",
+    "src/Hexalith.Platform.Custody/IExportKeyDeliveryDenialOriginalStore.cs": "ba7e7ef8470b6b50595a99327009f5966c47584b64416bda5b58335f13a76ff4",
+    "src/Hexalith.Platform.Protection/EventStoreFr34CanaryEngine.cs": "7e117a40cfdebdd70e344b060d83e814afea2d0149a012295246f3953fb031da",
+    "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs": "09ea8b3b1ac9566fbe2b651b2afc322ebaec33d7fe26bfad90d133d1e582d76e",
+    "src/Hexalith.Platform.Protection/Fr34AuthorityApplication.cs": "b363850a4556d989204d2a227a6872d3ce6d4e91d1fa65aad396218980ba4c24",
+    "src/Hexalith.Platform.Protection/Fr34CanaryCommandProofSource.cs": "cd4af4c344dd5ebe0502db00dd6d06783bf01a4121d4a79dbbc253372aa661af",
+    "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs": "01f141573b9ebfd9b9ca3605456016b8a75497a56ae0b08b91d558e5e7819506",
+    "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj": "c49758086c8b1a9cad672b067888a6e39f2a942d74c8323a939e8b0fae5becce",
+    "src/Hexalith.Platform.Protection/JointPhaseCommand.cs": "b52e86315b4511d4042815a85e3825dd05532e7d367d6b631ddbe9469fbcf88b",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs": "6073d3cdf15f05dc01232a51527c4d00cb86c587719cadc58c16de7c23e67f49",
+    "src/Hexalith.Platform.Protection/JointPhaseCommandInstallation.cs": "829dd21eac888919674cb6afcfe00384bce0442c6c15813f02edad5ef070d9d9",
+    "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs": "c676fd1982ad71748b5dce1a71c930badd47a32752f350d4c45eb140ed239579",
+    "src/Hexalith.Platform.Protection/JointPhaseNativeSourcePublisher.cs": "825cd08d19d7e7a9c74b9ab5d2fa2428f5a8ee86d187bc4e564030e558fa5b27",
+    "src/Hexalith.Platform.Protection/JointPhaseOriginalStores.cs": "3f0f571a2ce99a656c8068d684d6658421577832f5990733b2166b1960e9a488",
+    "src/Hexalith.Platform.Protection/JointPhaseRequestRecipe.cs": "3633db55904e66cba9f0e5caeb0c88e22756991e66672d0edd8e5c520d551a84",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceExecutable.cs": "0edccc6cdeda4bb0c2e8f1856d5da3d7999bea77f5dfded57db2a3fdeca1e9d9",
+    "src/Hexalith.Platform.Protection/JointPhaseSourceOperationHandler.cs": "d4af0f1b69e4ff83d2bec18eee3a96750409d9642c92a15389e3284c8d80c4d8",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs": "f5bcacabb505e3ba9e83ddf55f246d2c4ad8db21e42ea2b501340c9c5b68588d",
+    "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs": "a0f52b431b9c7489c973a7801a921930213019c626378f3780bb33e74bbc2405",
+    "src/Hexalith.Platform.Protection/QualificationGatewayReadProofs.cs": "7a0cbddc09382cb4ca6e688f84274b259336a770d48d1e96a9af191d4464d911",
+    "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs": "c4d6dea3a947320314e405ea66c31b4fcadbb628cd9c85663b8a336fdc1f0e66",
+    "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs": "57e1ec888f451be1e50eec25b32eb6571d7d2a8936a3c18c26166bdc7ca66449",
+    "src/Hexalith.Platform.Protection/QualificationGuardOriginalReader.cs": "6baf6f050a3b8b51451af3ba9d814c411e8f4760fa3651da08b0f4a0f319c5eb",
+    "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs": "52f8b55d6bd9c7d5206bb79cb1a52dfdb866e76de088d41df28787ed683e37a4",
+    "src/Hexalith.Platform.Protection/QualificationOwnerQueryClient.cs": "a700cd64992c0e155c833cf564ee79cf5ddbde8d9290a0d70c0f9494abbddc32",
+    "src/Hexalith.Platform.Protection/QualificationReplayOriginalReader.cs": "a2262e8cdd4c787f974ab4b12bffedcaef04d7cac2366a6ff43c43e36b267884",
+    "src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs": "ed4d82fbf8a51a8c0cb5ebdacf927e60c9a6593964849072942908f2cea1531a",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessComposition.cs": "529e1d5af7090f05360da579f74719ec82f75eaccf02b5a822c6fb82d6b22170",
+    "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs": "dbe7916ec26770fb54fe195269896523fa03d4261e63936e9052c858db15000a",
+    "src/Hexalith.Platform.Secrets.Runtime/ArchiveFileLease.cs": "cd3e7111fc3a86c0c8507dba643b918e69e824db45c2c8cb94c6bf3a4b176c25",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedDurableFileOperation.cs": "c8aa944952d99dc978ca8c79b37451010a7ed62eb37f24d534d3ce3dc93636f9",
+    "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs": "b79665f31f3d6c6bc5b1b54a0937ba4a80755ca36b768a030bac29f69780757d",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingContract.cs": "de0334b0824e6bf7f66a317eebd78f2a7081c5e29478cca286e76baa8fea385e",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyBindingDaprInvoker.cs": "c29e081ca4739e71d671199824f7eac24faafc5c582c6822d31802d3ac28833b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyLifecycleClient.cs": "260e08da76dad9b389c46cccf03229c59dd6d68802fd3bfce1279e3dfe9f6b24",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestDenial.cs": "c65145869293803703ac55d98b7970f0668571ba0b282d1aac1c2331a229effb",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyManifestOriginal.cs": "cbbeea60fa5bd18295242440352c17c95b31b88b026f479e561da80d27c0038b",
+    "src/Hexalith.Platform.Secrets.Runtime/CustodyWrapOriginalIdentity.cs": "d9ed956444c662be18f3767c2ad3636aeb86d5ab87202a41116e279b847794ac",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationAttemptAuthority.cs": "1f2de60e44507c082ce9adfe5f7485104db332d7a0ebaffb12e2eeea350d6ca9",
+    "src/Hexalith.Platform.Secrets.Runtime/DaprQualificationObservedOriginalReader.cs": "3cec99e7754151a5944a4dc26d93fd1269f2b61254eeaf704831cbf87a5f8860",
+    "src/Hexalith.Platform.Secrets.Runtime/ExportKeyDeliveryDenialComposition.cs": "34b69161683e30ed7ac185bd56581c25b8d1be72c0566a53e3c40128d3b4866b",
+    "src/Hexalith.Platform.Secrets.Runtime/HeldArchiveDirectory.cs": "b53849390468ab99bcf13cb9cb01ef8ba44198fb78bba2c4a8df2b2adbda9dc7",
+    "src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj": "4e3319f8c61b297073e6d3118bc7fcf794ac7276ed625a1979daae0cb1fc2580",
+    "src/Hexalith.Platform.Secrets.Runtime/IIndependentOwnerOperationHandler.cs": "bc2c8a5beabec6e31fc79eba533303ad1cffd47200bba56e97a2a91b4204df18",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationNativeCaseAuditReader.cs": "358834553bc571d04065608a0b97151ec6702836762a7d7d7b11392f21b4ab1c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationObservedOriginalReader.cs": "f5b3bb0f27a775c0fd50be20cd47d9f2ff0463bce6dd8bedf3bc84c96df56d8c",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationOriginalStore.cs": "b4031bc232ab2215b8cf725cff39d166d8d3a57c8494df2aa10cf832cd716474",
+    "src/Hexalith.Platform.Secrets.Runtime/IQualificationSafetyInvalidationPort.cs": "8a5b2ad3ada6bf6c30599329aea757a31df1f3b442bf3db6d443a6b9f579126e",
+    "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs": "19fa79cd2f44b67578c138914e326722b74c64756c15677bdccfc93d5321546f",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentArchiveStorage.cs": "2c3898a8d55c42305b42f0d5b039d0ae7314ff76d8bcdc43d4499e4788169051",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityHttpApplication.cs": "f528aec20a6d1c64532361cf72950ad76dd44a229a8364e96a43eb8ef399848d",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs": "911431e8bf1ba67d45965fa57da8476cf1bcff9625dfaa4365b7935fab1e5834",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs": "a7aaa52e538546de2ae4cff95740d309b10288e9de6191ceb4deb1dbbce9f985",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentCommandDispatchBinding.cs": "f6343923a8cdce28435ed985c03bdfeb7424b5fc5eaee1c6820f3ca56a57f06f",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentFileContentArchive.cs": "9dbfe02e21d4b3cabbd00c2c0c35cffef41799c267441bd592bf63afd7bfbdb2",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentOriginal.cs": "8aeb6eab4fa920afd7a263b634aa04e450a8f91ed3702952cb9eb7b9c91fb462",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentPrivateOriginalIndex.cs": "8f768cc2a58ad8c30aa8fdce9e4ecd2a9181eb66ed8a39acc4484953cce3a990",
+    "src/Hexalith.Platform.Secrets.Runtime/IndependentRecoveryGrantArchive.cs": "7e0582e95e5b5c0ebbd867c47a9baabfc7a9626838364b449e58b5401af7a7a9",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledExportKeyDeliveryDenialOriginalStore.cs": "7b27efc91c194620822ff95779447af6b2194bda089960a50671f4a999640963",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationComposition.cs": "ceb355caa2deb8a86e2488e888d5679309da04d3d7f0e730412442b231f122f7",
+    "src/Hexalith.Platform.Secrets.Runtime/InstalledQualificationOriginalStore.cs": "e52190d1febadb4b89bbeec8000532e52dd495dd251c623371eaa064f49129a9",
+    "src/Hexalith.Platform.Secrets.Runtime/PrivateExportKeyDeliveryOwner.cs": "88418d4f48532604bc289dce96145d883f2e7f1829de6ea38f32e13638393f34",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationBoundSourceCaseDriver.cs": "59b179063fbe0c60d8028a0e6cc2c786dcc96c8ed150d1e1fb173c0753e7da3d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCapabilityOriginalReader.cs": "ff04a21e0ebf77cb896389ce549fdbb087ed1220fdd9cdbf1a887b77a26f79fc",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCohortAttemptBinding.cs": "7782bc0182adccc0890099c90cb2a1cadb9f126c9fe7259deaacc339b64f630a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationCompositeOriginalReader.cs": "9220c77146a9bc1505ad873d3015c21a96724b435df7842f0d0b2476c0477f4c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDecisionOriginalReader.cs": "65c0afe0164b4e3f86f93932a91653c96679b9befdae7fe3ba8bfa855edd216e",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDeniedOriginalReader.cs": "ec2a41e0c6842a421cd09241e1650b4570cbca6877b6fd80ac2d3b90d138e303",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationDriverComposition.cs": "99105d6f3b430a783c89ffb0322c18ecd9ade74374ff438e3c805723da4d4f43",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationEnvelopeOriginalReader.cs": "5a379cbb20e36bf05edb12777f0e5372694ee79b71a977e28ff86e139db87872",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryOriginalReader.cs": "1ee538e1a0c22a7a249f03dd0c285ee2cb086993065dc49ae38f105d50b27933",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportDeliveryWorkflow.cs": "3ca048e9a421f63778d7bb2e37c7c94caa642b81cb02103c1c3d3f3267933d3a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationExportOriginalReader.cs": "8838e610c8819a314d827e021e629db0e5cbe5b0bfab6e0145fbd2379fe6fe41",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHost.cs": "fe1177d1b959a782647ce9767c5a91b286dda3a54f7fe435e840a07d57b44dc0",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationHttpHost.cs": "322077f4f96dff76b7ebbb35f78e2ce1e311620cda2412deaec2c967c5b8268d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryOriginalReader.cs": "802ae3c013983f454c9675bd7134385ec807c89b6da4168fb0e6fadd1f54c8f8",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationOriginalReader.cs": "d864cdb5aaddc33c32ae6d05097d69c3f3fa4d16c9c2beb750672509263c3288",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationInventoryRotationWorkflow.cs": "5422d0c9b27d488704e7cd61840573f996db6db38d95660cad8165f2b937e45c",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleCaseWorkflow.cs": "965114a32e7c555c9689a087aff3ecfec0977e53e75eec641a330e0096ddddad",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationLifecycleOriginalReader.cs": "3d042de0f1a032c5bfb6321c216135ffb7d7edc1b40407bb8ee78140b2c8a837",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMeasuredCaseProjector.cs": "8450c575170b9b1e75217abcf45230a50b4b7e1ab3c768f2396f549440583fae",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationMissingConfigurationOriginalReader.cs": "88e84c241dbc7b3abbb397a4fd0242b7bf02c0e9428fb6c209eca2fb4c9770d2",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationNativeStageBoundary.cs": "dd18f0ea84b73ce7e9b807b5cef65911e802f31133f17274f69afed4a03e6698",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationOrchestrator.cs": "34cf865da328815d9ce776b74cab004bf98739a3c14bb1d4146039548edec279",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStage.cs": "be2485b104710b72563d67bf4b9d59608b58fa39b30d8b1d1bdb6cda80e011e6",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageEvidence.cs": "562e38380127e6e4c7791c1ea82cec873423c77fd922865eb98b164abff7d5b1",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationStageRequest.cs": "8069e679043530992db3abc2b067700b14de93965c6a01dc2154378a4d74767f",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservationWitnesses.cs": "9c8e03143ea08d03a3b5f2e64bfc5c2fa662081cb2e1fb633faee834f5f2054a",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationObservedOriginal.cs": "9263d42d1b34d13ffa748688e43dcfd59742d7796bf0e37c892a98d2e5be9c23",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOriginalLookup.cs": "975aef229f0f623bbc1441b6dd6e385c1bc539a20344e90d938e22d2859d3441",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerApplication.cs": "aa44960858d5d01ad0048caeed71414d6b3b7a20d9cdd60a943702634047aec2",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationOwnerOperationHandler.cs": "74d3c6ead4807d0d25a7bedf08e5b7ad6932bc15f04217c34f71372600a25cd7",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationProtocolSchema.cs": "c9c71816d4cd8efe13fc8fa84f9eaf77d133036c5eccc2e6ecf9662118fa8b70",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationResolutionOriginalReader.cs": "b35a74b843bdac697003c83b1536f3009165b9ff8d76541a0ca05c770504cbca",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRetainedDigestOriginalReader.cs": "417fc25b73d3ea97337d2b6a83593c23c3b084143ada11018f1b1fa62dff0d37",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationRotationOriginal.cs": "cb4b694b61329a6e5d5d5deb0e5f88b68d47697830cf0ee643c9877a8dc1325d",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTemporalOriginalReader.cs": "a81c74a1dba39a10c66c8fd8c8a0b5bd1533fa1437abddaf7fa0cf82b6336b1e",
+    "src/Hexalith.Platform.Secrets.Runtime/QualificationTerminalResult.cs": "f48d0b4be5a53d355488d46b836ea3e3c5f1a182c6c6de0802278904c5f8098d",
+    "src/Hexalith.Platform.Secrets.Runtime/SecretsRuntimeConfiguration.cs": "7a6f16d7fd3f7e13835c2e02ff29e41654b14e064f300b97b1f5d8f317fccbff",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs": "d91bd749204cce4be464a19f014b6e4aeee010e99298d73f0e94274087cda188",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs": "f5a2aef3a08fbec0f71bf92ab91baac23d59488955bcf503e5b66a62c7a1692e",
+    "tests/Hexalith.Platform.Protection.Tests/BoundedPhaseSignerTests.cs": "ecea013bea9919e91e3f2860e32b3fdbef391321121101a302cb9a187dac1d9f",
+    "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs": "d906977e573448f5aac3efece9a446b16e0ddf6954ea95206520d07a11404eb8",
+    "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs": "1fd5f09d52b49cb8ba130cf6d0e63ac4aa7c68056034cee352e94c80891938a5",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34AuthorityHostingTests.cs": "331a449738e5f2ac3fc44e9e849db980c2f0ff74f5b398f726be4a6865d16a59",
+    "tests/Hexalith.Platform.Protection.Tests/Fr34DynamicOccurrenceTests.cs": "6049d5b25e49a64706d32e5f272e52938d0a2fd90b94d7735e486f7917c99d2d",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseCommandTests.cs": "61be47483c0ce34ef6e1d22da657c2122c00ab419787d51074e98d484f3ba54b",
+    "tests/Hexalith.Platform.Protection.Tests/JointPhaseNativePublisherTests.cs": "c24ce0e0645a2c4e5b490b312cc1d17a3f701c35d249bd4fbd0a33015542f61e",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGatewayReadProofReceivingTests.cs": "5f52559bfbbf774603534735259f6a05c3decee01e45d61684206427807ed26b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs": "34c5afd082389da4a875915be6a526edc88425617532dbf786c1c98d4929c81b",
+    "tests/Hexalith.Platform.Protection.Tests/QualificationNativeAuditTests.cs": "4f691a647d2c5f1f99fdfc6208178d3c4c33baf3d1b4643ae3cd9f3779da19f3",
+    "tests/Hexalith.Platform.Protection.Tests/ReceivingAuthorityFixture.cs": "d2d96368489163e58b1aad20321a59cc24ab588bdcc9c411b6b4a3b9f50d3abf",
+    "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs": "bd0a8371b1b43bb61a8c487cc67b892ee99a23ff88146babb7f186c359bb9c9f",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Hexalith.Platform.Secrets.ArchiveProcessFixture.csproj": "295b530b03e72a5c6dec906376116da7c9af3d1d9aecda2dc8b857c18da237ed",
+    "tests/Hexalith.Platform.Secrets.ArchiveProcessFixture/Program.cs": "97f673295f8dd5e9cd4784158a4c7821e9b7d7481bff2fa4327eca13d4eb286b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/AgentsOwningProcessRegistrationTests.cs": "c710d4c55c203b44c0e7b85d2750bc0735c19b101e233d2ec884dce9a63e06e6",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/ArchiveInputOwnershipTests.cs": "1aacc36536e5b0283a47557539541ea4870a29cd69949f67264e1ec137fb47bd",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedInstallationAndPublicationTests.cs": "e2fef38bb8367ddeb10954d7137acecc0241c1801837266d5b658fc3c551d729",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedRoleStartupTests.cs": "9d337fa2b8d60b5bc7ac11ce6e0c328fab3e1e8c34edbdf504a3d7727bdd1ca7",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Fixtures/current_cohort_protocol.py": "29f36853a291862350ef1ae8de1c3d10091315f6bc1d43b9cf69119a4520b749",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj": "2562543422e062ff9d4eca4e03588db6604385db22aec6b60041469c7c80a9c1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs": "434d2456fa1cecd33039ebd6b1203f239bfdaf92f06c2afb5aa7ec09b8f48fe1",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentOriginalIndexTests.cs": "02a8feaf3ac092a305f63e88481dce93f7002e17bcc09cae0e0bfc98895113bc",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseFinalizerEntrypointTests.cs": "dd7b9dce1cfe93ebe54f8e371057de412dc1e2b70a1c39c5da5de0fff63677b4",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/OriginalCompletionLiabilityTests.cs": "7ae09eccaad95dd384b686c826dd9fce4aebd4a9a93f11fe94e51a51d06cf916",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationCopyCensusTests.cs": "4886464a0ee8c78d49c8a42d3cde3b82c1b2a97a7f06e3763baa4f57f807d42b",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationDeliveryDenialReceivingTests.cs": "a835202d17262eeb4cab02781e5247142e6a35c0695405cd62ad6e254914e0b2",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliverySourceTests.cs": "85937c294a2e0023a22498a43783456dc5c8c713eabb356d1b0e29f2c8e007a8",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationFreshCohortReceivingTests.cs": "3206b1092cd61fb8cd022b6ed7d97cc5ad10f6c2a236a7fd442c8dfcb337aa79",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHostTests.cs": "8459bfda1468013197ee400ba8d4fa7a8d6d242ed718755cf3d10305b80dff88",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationObservationOrchestratorTests.cs": "559ef3d14f29ca9a908894bbe250db39116cf1ddd1445a21bae14b92fb552164",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationReceivingProjectionTests.cs": "3c135c3965b53d6cec1eb98360d7a704d4a3462a55c765035c50a6b4fd90f68a",
+    "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationResolutionSourceTests.cs": "75493c9c5f37228823fc3fbe0a51f133990b4c580d084bfcafe33d7345061f1a"
+  },
+  "verificationRecords": [
+    {
+      "name": "build-runtime-verified",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round11-2wovv3vq/final-runtime-verified",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round11-2wovv3vq/final-locks-runtime-verified/$(MSBuildProjectName).lock.json",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-build-runtime-verified.log",
+      "logSha256": "11353f16929b96437725ef08a94df03b51dea89fa8d3927aba0e8f575eaa81c2",
+      "exitCode": 0,
+      "seconds": 36.82602381706238,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification."
+    },
+    {
+      "name": "runtime-verified",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/final-runtime-verified/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+        "-filterVSTest",
+        "FullyQualifiedName!~IndependentOriginalIndexTests"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-runtime-verified.log",
+      "logSha256": "a28a369dba88bb88ffeb9ff00e94de7e8002c539f828b6f3203ef04092614326",
+      "exitCode": 0,
+      "seconds": 64.76995491981506,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 497
+    },
+    {
+      "name": "index-history-verified",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/final-runtime-verified/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+        "-filterVSTest",
+        "FullyQualifiedName~IndependentOriginalIndexTests"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-index-history-verified.log",
+      "logSha256": "636e43dc8363572d916fe3bf6d341332dd0e62785c0183008a2002402f5f2739",
+      "exitCode": 0,
+      "seconds": 207.69733572006226,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 8
+    },
+    {
+      "name": "build-protection",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round11-2wovv3vq/final-protection",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round11-2wovv3vq/final-locks-protection/$(MSBuildProjectName).lock.json",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-build-protection.log",
+      "logSha256": "6d0b46b694d523ed01d41f642c2a8221b555035c9f3cda75eb9739268cf06541",
+      "exitCode": 0,
+      "seconds": 32.03772783279419,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification."
+    },
+    {
+      "name": "protection",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/final-protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-protection.log",
+      "logSha256": "b81ca74f33aa4c335eb80b92cc029ee39ee3db35e28b2bbe50cafeb7474011af",
+      "exitCode": 0,
+      "seconds": 155.2401304244995,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 127
+    },
+    {
+      "name": "build-native",
+      "command": [
+        "dotnet",
+        "build",
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round11-2wovv3vq/final-native",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round11-2wovv3vq/final-locks-native/$(MSBuildProjectName).lock.json",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-build-native.log",
+      "logSha256": "27ac7a4e15b08fb20ba8955f5e476742b5c9c8f0ec6065c2ee85a3c5caa45cd5",
+      "exitCode": 0,
+      "seconds": 35.26294183731079,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification."
+    },
+    {
+      "name": "native",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/final-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-native.log",
+      "logSha256": "48f0b7c1e198640262c073431cda84b080b74a0e3b37e6a3dd74613acb0ed34e",
+      "exitCode": 0,
+      "seconds": 9.110469818115234,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 31
+    },
+    {
+      "name": "python-secrets",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-secrets-1",
+        "-p",
+        "test_*.py"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-python-secrets.log",
+      "logSha256": "1705eeaa770f2d8e7059ac75eb81776aec0b116062086d73f12397b3ff90fc55",
+      "exitCode": 0,
+      "seconds": 41.80431914329529,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 289
+    },
+    {
+      "name": "python-host",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-host-1",
+        "-p",
+        "test_*.py"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-python-host.log",
+      "logSha256": "7f96fcd21762b463fcc08895a72b1e8992a54ba315135b3c30b4a9fa3bb8d086",
+      "exitCode": 0,
+      "seconds": 0.44045138359069824,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 14
+    },
+    {
+      "name": "build-custody",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round11-2wovv3vq/final-custody",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round11-2wovv3vq/final-locks-custody/$(MSBuildProjectName).lock.json",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-build-custody.log",
+      "logSha256": "25e9e0d510834c4044dbeeed2bd1dd50d8ea6aba985d45e237a8436dc9903338",
+      "exitCode": 0,
+      "seconds": 21.635884284973145,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification."
+    },
+    {
+      "name": "custody",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/final-custody/bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll",
+        "-filterVSTest",
+        "FullyQualifiedName~ExportKeyDeliveryActorTests"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-custody.log",
+      "logSha256": "73a244f0dc8e50ed15da8be2f8fd2666398d8d89322f232181dd47ac7489a08e",
+      "exitCode": 0,
+      "seconds": 0.5575985908508301,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification.",
+      "passedCases": 27
+    },
+    {
+      "name": "locked-release-package-restore",
+      "command": [
+        "dotnet",
+        "restore",
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+        "--locked-mode",
+        "-p:Configuration=Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:HexalithCommonsFromSource=false"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-locked-release-package-restore.log",
+      "logSha256": "40d104602671164ab3958225da3e1c8cabd55f0251d6df6bc911d9d5a24f44ce",
+      "exitCode": 0,
+      "seconds": 1.1307401657104492,
+      "passed": true,
+      "boundary": "Current source/component fixtures only; no installed qualification."
+    },
+    {
+      "name": "full-production-composition-build",
+      "command": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round11-2wovv3vq/full-composition-verified",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round11-2wovv3vq/locks-full-composition-verified/$(MSBuildProjectName).lock.json",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/full-composition-verified-build.log",
+      "logSha256": "d92041a9a74abbc84e8a47d382a63deea0875ef2d3d2c201f583b7ec301ce526",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "Complete actual production Composition project and source reference graph, zero warnings/errors. No AppHost/resources started."
+    },
+    {
+      "name": "actual-composition-focused-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-round11-2wovv3vq/composition-verified/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/verified-composition-build.log",
+      "logSha256": "484ed55a2f86b61e86f8a19116f1f79ba808bde0f4adadee4ea5e05aee68ae51",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "Actual4 production files (including TryCompose),2 repository test files, real Aspire13.6.3 APIs, exact Runtime/Custody/Contracts assemblies and embedded full plan. Complete production project also builds independently above."
+    },
+    {
+      "name": "actual-composition-focused-tests",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round11-2wovv3vq/composition-verified/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/verified-composition-tests.log",
+      "logSha256": "4fdf6ed8cd851e017f10fc9292cf6fe15845b7c46f4b828619a056fd765b37dc",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "Actual TryCompose/model/source tests with disposable metadata; no AppHost/resource execution.",
+      "passedCases": 31
+    },
+    {
+      "name": "header-32k-mutation",
+      "command": [
+        "python3",
+        "/tmp/story54-round11-2wovv3vq/header-limit-mutation.py"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/header-limit-mutation.log",
+      "logSha256": "f04bacb373bf48bbd33e1b582d43464d128336735a0d21a4114cdce14b3a1704",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "Expected mutation failure is evidence that the real16KiB test detects widening; production source remains16KiB.",
+      "expectedOutcome": "MutationKilled",
+      "expectedFailedTests": 1
+    },
+    {
+      "name": "scoped-whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "src/Hexalith.Platform.Composition",
+        "src/Hexalith.Platform.Secrets.Runtime",
+        "src/Hexalith.Platform.Protection",
+        "src/Hexalith.Platform.Custody",
+        "infrastructure/Hexalith.Platform.Custody.Dapr",
+        "infrastructure/Hexalith.Platform.Custody.Dapr.Tests",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsHostStartupBoundaryTests.cs",
+        "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs",
+        "tests/Hexalith.Platform.Protection.Tests",
+        "eng/ext-secrets-1",
+        "eng/ext-host-1"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-whitespace.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "Task-owned scoped tracked diff. Separate owned-file whitespace scan includes untracked files."
+    },
+    {
+      "name": "all-owned-whitespace",
+      "command": [
+        "python3",
+        "/tmp/story54-round11-2wovv3vq/scan-owned-whitespace.py"
+      ],
+      "log": "/tmp/story54-round11-2wovv3vq/logs/final-owned-whitespace.log",
+      "logSha256": "1cb2f79853a6ec8be1ace7914dfdd3374a5c2f0cfb487872ba2f38161f636b3b",
+      "exitCode": 0,
+      "passed": true,
+      "boundary": "All183 owned files, including untracked additions."
+    }
+  ],
+  "sourceObservationRecords": {
+    "head": "b117945e2ba7911fd2c47843f866487341300398",
+    "originMain": "b117945e2ba7911fd2c47843f866487341300398",
+    "acceptedTarget": false
+  },
+  "compiledDependencyEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/compiled-dependencies-pass-11.json",
+  "sourceDependencyEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-dependencies-pass-11.json",
+  "diagnosticLogHashes": {
+    "/tmp/story54-round11-2wovv3vq/logs/final-python-supervisor.log": "302c1363637ebcd004c9a4818f99e466b94485f4cd54fa50a93f01f3b9cf8a35",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-second.log": "5336e4d82b25d62ed02a5d6582fabcae91cdbd6256a3345d988bc0ecadb616ca",
+    "/tmp/story54-round11-2wovv3vq/logs/final-protection-supervisor.log": "10a7314666f368bef9581182322b7a1297785122a095e9687f41fc966bc867c1",
+    "/tmp/story54-round11-2wovv3vq/logs/build-protection-second.log": "a35afb1174b03e297d9fe8d35be9005570cfb9d8a40beab3ba6790b144a894e2",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-initial.log": "1fd026f127c4eeae98e308299eaa7271cf57bed15f1627c0d3851ae180e46104",
+    "/tmp/story54-round11-2wovv3vq/logs/runtime-focused-second.log": "5d8b722abeb6e3e17cd536cf96d7c2a817964790d5343445269b40390a065c0c",
+    "/tmp/story54-round11-2wovv3vq/logs/final-native-supervisor.log": "26ebb42a33d93a1dc858de831618225b4dea28ff53c0d2aa72ea5af34d8a9341",
+    "/tmp/story54-round11-2wovv3vq/logs/build-composition-initial.log": "58e69713854c309cb3d7734881dd9f229cbe6d033f5c00226bb4d1497835333a",
+    "/tmp/story54-round11-2wovv3vq/logs/build-native-final.log": "109de97ee2d43e2aa0bc7c148c4d36dfbd34f3117af44382c3caf7ba7fd5a5a1",
+    "/tmp/story54-round11-2wovv3vq/logs/final-runtime-supervisor.log": "2db279d49bf092f30b7480caf7a84ef47a76284621c66f85a58a7e68ad676d0a",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-eighth.log": "a8553393e56cd0b86ce571926f976fe7fbf97367e44a002e475277bda5b8c6b0",
+    "/tmp/story54-round11-2wovv3vq/logs/protection-sensitive-focused.log": "abd09776a95b5e156cb9194b2f04340f8ab264f12bbea5899654583608d767b4",
+    "/tmp/story54-round11-2wovv3vq/logs/python-secrets.log": "01a9b59d89616526029c64c7bcc87638dff05a6572906d31bec714b8b44faf3f",
+    "/tmp/story54-round11-2wovv3vq/logs/build-composition-second.log": "55683b0681d9b7f36c4d6188d8bfc8c779fbdf9340583580101358394bea9726",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-seventh.log": "7a09b6404e9e91952b806a59845daea8d7f4e37a6710d4b8dd82e8f9f9f64168",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-fourth.log": "39daba355c0a902850579f7ae81b6083722923707b159891bd5d24730e766ecc",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-fifth.log": "1eef47b4b7460716b3fc7ab4888ece86ea1718c422e04a89eb783fdbbd98ddce",
+    "/tmp/story54-round11-2wovv3vq/logs/runtime-focused-initial.log": "270433ef5fb2a8a9b4fab669fd7ada0e764c23ddf79182e8fe27502469093cf8",
+    "/tmp/story54-round11-2wovv3vq/logs/build-protection-initial.log": "9ed13eaaf8c894e1416833e2eda9977d8a30960efff1b65028faaffe898d4d18",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-third.log": "8593f86e846db47146a2ea813aab58bf0435d2a18d2128c3b64790d6bb17bda1",
+    "/tmp/story54-round11-2wovv3vq/logs/final-custody-supervisor.log": "2c2bf17d0c94f2cc9f214c6a599741e04ddad958d457d8ffc609dd48e15c7f9a",
+    "/tmp/story54-round11-2wovv3vq/logs/full-composition-diagnostic.log": "e21b2e32d54bbc0ca509c4eade7105236d14053500945ea1738b9ec28392c584",
+    "/tmp/story54-round11-2wovv3vq/logs/final-runtime-verified-supervisor.log": "f5e960ce7d5a80c1d600e434dfbc51537bea7ab1be8a3417187232683126c893",
+    "/tmp/story54-round11-2wovv3vq/logs/python-host.log": "f368d0f5c504f5add3478a056ca0e8700d3ae942508f97f531aa4633f0644376",
+    "/tmp/story54-round11-2wovv3vq/logs/build-runtime-sixth.log": "011a0f513d6f5f8e76c2ed59b40b1854f73e99016d9b7a9bb865ef541f620992",
+    "/tmp/story54-round11-2wovv3vq/logs/final-build-runtime.log": "eadc95537beaf8f3faed7746400e5af612718b7961894237d92c9af219e1b3d8",
+    "/tmp/story54-round11-2wovv3vq/logs/build-composition-final.log": "70be914d25d19733b8f5f0da07f8e7945a27f903274de41c44bd41c66929f88b",
+    "/tmp/story54-round11-2wovv3vq/logs/python-command-focused.log": "8127c3e883d6a72e0ad33c3ebceca1efc1aa178710fb6751622702db1f4cdb1d",
+    "/tmp/story54-round11-2wovv3vq/logs/python-command-second.log": "e91b481f19e12476ad9404a0a9b9f1df170c26ad5dcdd31ca22cc8edc49d6b5c",
+    "/tmp/story54-round11-2wovv3vq/logs/composition-second.log": "3334bbe70d0320895c7c498895772dc32cf08f7aee70fd1c2ac28f30fbc6b65d",
+    "/tmp/story54-round11-2wovv3vq/logs/protection-final.log": "40707342d717633d6d3babf548f41f509c25891dc7213471b64391dc34c33446",
+    "/tmp/story54-round11-2wovv3vq/logs/build-composition-third.log": "1f94b4f9089ece4e1b235f38e62cbd5b48aac0575cf0d07ecdd452d4ec077c5e",
+    "/tmp/story54-round11-2wovv3vq/logs/final-runtime.log": "185981ecb944c0f11023b4b35a77a3527aed68873a6c0d3e7a15fcdeb49cdf28",
+    "/tmp/story54-round11-2wovv3vq/logs/composition-initial.log": "82a290a5d2ca4d9d7dffdfde7c44fa5a3656adc341548e9bfa34d761aeff4db5",
+    "/tmp/story54-round11-2wovv3vq/logs/runtime-final.log": "6d07cddd00ee984922332c4f0cf3c782f26b2d69979002c924343b6c5ea6d07f"
+  }
+}

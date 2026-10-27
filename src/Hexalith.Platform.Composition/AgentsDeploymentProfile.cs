@@ -87,7 +87,7 @@ public static class AgentsDeploymentProfile
     }
     private static AgentsDeploymentProfileModel ValidateAcceptedContextCore(string json,string acceptedRegister,string acceptedPacket)
     {
-        using JsonDocument packet = JsonDocument.Parse(acceptedPacket);
+        using JsonDocument packet = AcceptedDependencyRecords.Json(acceptedPacket);
         string target = packet.RootElement.GetProperty("candidateCommit").GetString()!;
         string date = packet.RootElement.GetProperty("platformIntegrationDate").GetString()!;
         if (!System.Text.RegularExpressions.Regex.IsMatch(target, "^[0-9a-f]{40}$")
@@ -98,18 +98,14 @@ public static class AgentsDeploymentProfile
             throw new InvalidDataException("Accepted packet must bind exact profile bytes and complete shared plan.");
         foreach (string record in new[] { "EXT-HOST-1", "EXT-SECRETS-1" })
         {
-            var section = System.Text.RegularExpressions.Regex.Match(acceptedRegister,
-                @"^### " + System.Text.RegularExpressions.Regex.Escape(record) + @"\b[^\n]*\n(.*?)(?=^### |^## |\z)",
-                System.Text.RegularExpressions.RegexOptions.Multiline | System.Text.RegularExpressions.RegexOptions.Singleline).Value;
-            if (!section.Contains("| `TargetVersionOrCommit` | `" + target + "` |", StringComparison.Ordinal)
-                || !section.Contains("| `TargetIntegrationDate` | `" + date + "` |", StringComparison.Ordinal)
-                || !System.Text.RegularExpressions.Regex.IsMatch(section, @"\| `AcceptedStatus` \| `(?:Committed|Available)` \|"))
+            string section=AcceptedDependencyRecords.Section(acceptedRegister,record);
+            if (AcceptedDependencyRecords.Value(section,"TargetVersionOrCommit")!="`"+target+"`"
+                || AcceptedDependencyRecords.Value(section,"TargetIntegrationDate")!="`"+date+"`"
+                || AcceptedDependencyRecords.Value(section,"AcceptedStatus") is not ("`Committed`" or "`Available`"))
                 throw new InvalidDataException("Accepted coordinated target/date context required.");
             if (record == "EXT-HOST-1")
             {
-                var binding = System.Text.RegularExpressions.Regex.Match(section, @"\| `HostQualificationBinding` \| `([^`]+)` \|");
-                if (!binding.Success) throw new InvalidDataException("Accepted host profile/plan binding required.");
-                using JsonDocument pins = JsonDocument.Parse(binding.Groups[1].Value);
+                using JsonDocument pins = AcceptedDependencyRecords.Binding(section,"HostQualificationBinding");
                 if (pins.RootElement.GetProperty("profileSha256").GetString() != profilePin.GetString()
                     || pins.RootElement.GetProperty("cohortPlanSha256").GetString() != planPin.GetString())
                     throw new InvalidDataException("Accepted host profile or plan bytes changed.");
@@ -117,7 +113,15 @@ public static class AgentsDeploymentProfile
         }
         AgentsDeploymentProfileModel model = ValidateAccepted(json, date, date);
         CoordinatedProtectionAcceptance.Validate(packet.RootElement,acceptedRegister,target,date,profilePin.GetString()!,planPin.GetString()!);
-        return model with { AcceptedContextValidated = true };
+        if(packet.RootElement.TryGetProperty("launchInventory",out var launch))
+        {
+            string launchHash=CoordinatedProtectionAcceptance.CanonicalHash(launch);
+            if(packet.RootElement.GetProperty("jointBinding").GetProperty("launchInventorySha256").GetString()!=launchHash)
+                throw new InvalidDataException("Accepted complete launch inventory digest changed.");
+            model=model with { AcceptedLaunchInventoryJson=launch.GetRawText() };
+            _=AcceptedListenerBindings.Validate(launch,model);
+        }
+        model=model.Snapshot();return model with { AcceptedContextValidated = true,AcceptedModelSeal=model.ModelSeal() };
     }
 
     /// <summary>Names every empty reference slot. Secrets and unknown keys still fail closed.</summary>
@@ -139,7 +143,7 @@ public static class AgentsDeploymentProfile
         }
         if (profile.ValueKind != JsonValueKind.Object)
             throw new InvalidDataException("Agents deployment profile must be an object.");
-        RequireKeys(profile, RootKeys, "Agents deployment profile");
+        RequireKeys(profile, profile.TryGetProperty("listeners",out _)?[..RootKeys,"listeners"]:RootKeys, "Agents deployment profile");
         if (RequiredString(profile, "host") != Host)
             throw new InvalidDataException("Agents deployment profile requires host 192.168.1.30.");
         if (!DateOnly.TryParseExact(RequiredString(profile, "integrationDate"), "yyyy-MM-dd",
@@ -187,7 +191,7 @@ public static class AgentsDeploymentProfile
             serviceRoots, references["currentTenant"], references["globalAdministrator"], references["humanIdentity"],
             references["approverEvidence"], references["replay"], references["recorder"], references["worker"],
             references["spoolBackend"], replicaCount, references["failureModel"], references["protectionEngine"],
-            references["protectionObserver"], references["partiesBinding"], references["conversationsBinding"], RequiredString(profile, "integrationDate")), missing);
+            references["protectionObserver"], references["partiesBinding"], references["conversationsBinding"], RequiredString(profile, "integrationDate")) { ListenerBindingsJson=profile.TryGetProperty("listeners",out var listeners)?listeners.GetRawText():null }, missing);
     }
 
     private static void RequireKeys(JsonElement element, IReadOnlyList<string> expected, string scope)

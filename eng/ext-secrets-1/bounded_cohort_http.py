@@ -1,11 +1,25 @@
 """Bounded unauthenticated acquisition for the independent cohort receiver."""
+from worker_startup_ownership import provably_unstarted, retain_until_workers_stop
 import socket
 import threading
 import time
+import contextvars
+from authentication_acquisition import AuthenticationAcquisition
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 MAX_HEADERS = 16 * 1024
 MAX_BODY = 1024 * 1024
+_acquisition = contextvars.ContextVar('cohort_http_acquisition', default=None)
+
+
+def check_authentication_acquisition():
+    acquisition = _acquisition.get()
+    if acquisition is not None: acquisition.check()
+
+
+def admit_authenticated_work():
+    acquisition = _acquisition.get()
+    if acquisition is not None: acquisition.admit()
 
 
 class HeaderReader:
@@ -48,22 +62,50 @@ def make_server(application, host, port, *, acquisition_timeout=30, max_connecti
             def expire():
                 try: request.shutdown(socket.SHUT_RDWR)
                 except OSError: pass
-            request.settimeout(acquisition_timeout)
-            timer = threading.Timer(acquisition_timeout, expire)
-            timer.daemon = True
-            self.deadlines[request] = (time.monotonic() + acquisition_timeout, timer)
-            timer.start()
-            try: super().process_request(request, address)
-            except Exception:
-                timer.cancel(); self.deadlines.pop(request, None); self.slots.release()
+            timer = None
+            worker = None
+            acquisition = AuthenticationAcquisition(time.monotonic() + acquisition_timeout, expire)
+            def cleanup():
+                self.deadlines.pop(request, None)
                 self.shutdown_request(request)
+                self.slots.release()
+            claim, finish_setup = retain_until_workers_stop(cleanup)
+            finish_timer = finish_worker = None
+            try:
+                request.settimeout(acquisition_timeout)
+                finish_timer = claim()
+                timer = threading.Timer(max(0, acquisition.deadline-time.monotonic()), acquisition.expire)
+                acquisition.timer = timer
+                timer.daemon = True
+                run_timer = timer.run
+                def timed():
+                    try: run_timer()
+                    finally: finish_timer()
+                timer.run = timed
+                self.deadlines[request] = (acquisition.deadline, timer)
+                timer.start()
+                finish_worker = claim()
+                def serve():
+                    context = _acquisition.set(acquisition)
+                    try: self.process_request_thread(request, address)
+                    finally:
+                        _acquisition.reset(context)
+                        finish_worker()
+                worker = threading.Thread(target=serve, daemon=self.daemon_threads)
+                worker.start()
+            except BaseException:
+                unstarted = finish_worker is None or provably_unstarted(worker)
+                if unstarted and timer is not None: timer.cancel()
+                if finish_worker is not None and unstarted: finish_worker()
+                if finish_timer is not None and provably_unstarted(timer): finish_timer()
+            finally:
+                finish_setup()
 
         def process_request_thread(self, request, address):
             try: super().process_request_thread(request, address)
             finally:
                 value = self.deadlines.pop(request, None)
                 if value: value[1].cancel()
-                self.slots.release()
 
         def handle_error(self, request, address):
             pass  # Never log unauthenticated bodies, credentials or native results.
@@ -90,8 +132,8 @@ def make_server(application, host, port, *, acquisition_timeout=30, max_connecti
                 body = self.rfile.read(length)
                 deadline, timer = self.server.deadlines[self.connection]
                 if len(body) != length or time.monotonic() >= deadline: raise ValueError('deadline')
-                timer.cancel()
-                # Native work survives client connection closure under its own admitted-original semantics.
+                # Current channel and workload authentication still own this original deadline.
+                # Only the real authenticator transfers ownership to admitted native work.
                 result = application.handle(self.path[len('/joint/v1/'):], self.headers, body)
                 data = canonical(result)
                 self.send_response(200); self.send_header('Content-Type', 'application/json')

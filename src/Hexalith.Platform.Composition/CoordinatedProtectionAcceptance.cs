@@ -26,9 +26,9 @@ internal static class CoordinatedProtectionAcceptance
         if(installed.GetProperty("hostProfileSha256").GetString()!=profilePin || installed.GetProperty("protectionProfileSha256").GetString()!=protectionProfile
             || installed.GetProperty("jointConfigurationSha256").GetString()!=config) throw new InvalidDataException("Installed raw pins differ from coordinated binding.");
         string section=Section(register,"EXT-PROTECTION-1");
-        if(!section.Contains("| `TargetVersionOrCommit` | `"+target+"` |",StringComparison.Ordinal)
-            || !section.Contains("| `TargetIntegrationDate` | `"+date+"` |",StringComparison.Ordinal)
-            || !Regex.IsMatch(section,@"\| `AcceptedStatus` \| `(?:Committed|Available)` \|")
+        if(AcceptedDependencyRecords.Value(section,"TargetVersionOrCommit")!="`"+target+"`"
+            || AcceptedDependencyRecords.Value(section,"TargetIntegrationDate")!="`"+date+"`"
+            || AcceptedDependencyRecords.Value(section,"AcceptedStatus") is not ("`Committed`" or "`Available`")
             || Hash(Encoding.UTF8.GetBytes(section))!=protection.GetProperty("acceptedSectionSha256").GetString())
             throw new InvalidDataException("Exact accepted protection commitment required.");
         using var accepted=Binding(section,"ProtectionQualificationBinding");
@@ -47,21 +47,8 @@ internal static class CoordinatedProtectionAcceptance
                 throw new InvalidDataException("Accepted owner raw configuration/profile/plan pins changed.");
         }
     }
-    private static string Section(string text,string id)=>Regex.Match(text,@"^### "+Regex.Escape(id)+@"\b[^\n]*\n(.*?)(?=^### |^## |\z)",RegexOptions.Multiline|RegexOptions.Singleline).Value;
-    private static JsonDocument Binding(string section,string name)
-    {
-        var rows=Regex.Matches(section,@"\| `"+name+@"` \| `([^`]+)` \|");
-        if(rows.Count!=1) throw new InvalidDataException("One complete accepted "+name+" required.");return JsonDocument.Parse(rows[0].Groups[1].Value);
-    }
-    private static string CanonicalHash(JsonElement value)
-    {
-        using var buffer=new MemoryStream();using(var writer=new Utf8JsonWriter(buffer,new JsonWriterOptions { Encoder=System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping })) Write(writer,value);
-        return Hash(buffer.ToArray());
-    }
-    private static void Write(Utf8JsonWriter writer,JsonElement value)
-    {
-        if(value.ValueKind==JsonValueKind.Object) { writer.WriteStartObject();foreach(var item in value.EnumerateObject().OrderBy(item=>item.Name,StringComparer.Ordinal)) { writer.WritePropertyName(item.Name);Write(writer,item.Value); }writer.WriteEndObject(); }
-        else if(value.ValueKind==JsonValueKind.Array) { writer.WriteStartArray();foreach(var item in value.EnumerateArray()) Write(writer,item);writer.WriteEndArray(); }else value.WriteTo(writer);
-    }
+    private static string Section(string text,string id)=>AcceptedDependencyRecords.Section(text,id);
+    private static JsonDocument Binding(string section,string name)=>AcceptedDependencyRecords.Binding(section,name);
+    internal static string CanonicalHash(JsonElement value)=>Hash(PythonCanonicalJson.Encode(value));
     private static string Hash(byte[] bytes)=>Convert.ToHexStringLower(SHA256.HashData(bytes));
 }

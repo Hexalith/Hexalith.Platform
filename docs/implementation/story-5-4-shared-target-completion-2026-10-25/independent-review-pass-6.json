@@ -3,7 +3,7 @@
   "observedAtUtc": "2026-10-25T23:31:58.148789+00:00",
   "reviewPass": 6,
   "reviewLoopIterationAfterTriage": 6,
-  "status": "EscalationRequired_ReviewLoopLimitReached",
+  "status": "SourceCorrectionsInProgress_UserReviewLimitOverride",
   "reviewers": [
     "/root/review6_blind",
     "/root/review6_edge",
@@ -198,12 +198,18 @@
     "quote": "If it exceeds 5, HALT and escalate to the human.",
     "limit": 5,
     "counter": 6,
-    "overrideReceived": false
+    "overrideReceived": true
   },
   "sourcePatchesAppliedAfterTriage": false,
   "sourcePreserved": true,
   "acceptedRecordChangesAuthorized": false,
   "installedQualification": false,
   "fullSourceComplete": false,
-  "deliveryComplete": false
+  "deliveryComplete": false,
+  "userOverride": {
+    "received": true,
+    "userReply": "yes",
+    "scope": "Override the five-loop BMAD review halt for continuing this already authorized source implementation and review to completion. No installation/cohort/physical/commitment authorization is added.",
+    "observedAtUtc": "2026-10-26T05:22:46.311693+00:00"
+  }
 }

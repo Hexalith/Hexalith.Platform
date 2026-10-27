@@ -12,6 +12,9 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority originals) : IQualificationOriginalStore
 {
     /// <inheritdoc />
+    public async Task<IReadOnlyList<string>> PreflightObservationAsync(CancellationToken token)
+        =>await originals.InvokeAsync<OriginalPermission>("qualification-observation-original-preflight",new { role="observer" },token).ConfigureAwait(false) is { Allowed:true }?[]:["InstalledIndependentObservationOriginalReadWriteAndArchiveCapabilities"];
+    /// <inheritdoc />
     public async Task<bool> BeginAsync(string role, string requestId, JsonObject original, CancellationToken cancellationToken)
     {
         var result = await originals.InvokeAsync<OriginalAdmission>("qualification-begin-original", new { role, requestId, original }, cancellationToken).ConfigureAwait(false);
@@ -50,7 +53,7 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
         if(result.ValueKind==JsonValueKind.Null) return new(true);
         if(result.ValueKind!=JsonValueKind.Object) return new(false);
         var value=result.Deserialize<IndependentOriginal>(CustodyBindingContract.Json);
-        return value is null?new(false):new(true,JsonNode.Parse(value.Request.GetRawText()) as JsonObject,value.Result is { } body?JsonNode.Parse(body.GetRawText()) as JsonObject:null);
+        return value is null?new(false):new(true,JsonNode.Parse(value.Request.GetRawText()) as JsonObject,value.Result is { } body?JsonNode.Parse(body.GetRawText()) as JsonObject:null,value.RetainedRevision);
     }
     /// <inheritdoc />
     public async Task<QualificationOriginalAdmissionState> ReadAdmissionAsync(string role,string requestId,JsonObject exactOriginal,CancellationToken token)
@@ -61,5 +64,6 @@ public sealed class InstalledQualificationOriginalStore(IndependentDaprAuthority
         var original=read.Deserialize<IndependentOriginal>(CustodyBindingContract.Json);
         return original is not null && JsonNode.DeepEquals(JsonNode.Parse(original.Request.GetRawText()),exactOriginal)?QualificationOriginalAdmissionState.Admitted:QualificationOriginalAdmissionState.Unknown;
     }
+    private sealed record OriginalPermission(bool Allowed);
     private sealed record OriginalAdmission(bool Exact, bool First);
 }

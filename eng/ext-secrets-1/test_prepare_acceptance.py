@@ -37,6 +37,27 @@ class AcceptancePreparationTests(unittest.TestCase):
         self.assertFalse((output / "replacement-acceptance-packet.json").exists())
         self.assertEqual([], self.fixture.calls)
 
+    def test_preparation_parses_exact_acquired_bytes_without_reopening_selected_configuration(self):
+        original=q.bounded_public_file
+        selected=Path(self.fixture.path).absolute();count=0
+        def acquired(path,*args,**kwargs):
+            nonlocal count
+            data=original(path,*args,**kwargs)
+            if Path(path)==selected:
+                count+=1
+                # Atomic replacement after acquisition must not change this snapshot's semantics.
+                self.fixture.path.with_suffix('.replacement').write_text('{}')
+                self.fixture.path.with_suffix('.replacement').replace(self.fixture.path)
+            return data
+        with patch.object(q,'bounded_public_file',side_effect=acquired),patch.object(q,'read_public_configuration',side_effect=AssertionError('second configuration read')):
+            report=prepare.prepare(self.fixture.root,self.fixture.path,Path(self.temp.name)/'one-snapshot')
+        self.assertEqual(1,count);self.assertNotIn('ValidPublicRuntimeReferenceConfiguration',report['missingInputs']);self.assertEqual([],self.fixture.calls)
+
+    def test_selected_symlink_identity_is_not_resolved_before_no_follow_acquisition(self):
+        link=Path(self.temp.name)/'selected-link.json';link.symlink_to(self.fixture.path)
+        report=prepare.prepare(self.fixture.root,link,Path(self.temp.name)/'symlink-blocked')
+        self.assertFalse(report['packetPrepared']);self.assertEqual(['PublicRuntimeConfiguration'],report['missingInputs']);self.assertEqual([],self.fixture.calls)
+
     def test_dirty_checkout_yields_only_blocked_report(self):
         (self.fixture.root / "uncommitted").write_text("changed")
         output = Path(self.temp.name) / "dirty"

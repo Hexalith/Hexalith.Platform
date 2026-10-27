@@ -20,6 +20,7 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
     public ValueTask<string?> IssueReplayRecoveryAsync(BoundWorkloadCommandRequest request,PrivateReplayRecoveryProof proof,CancellationToken token)=>IssueCoreAsync(request,null,token,proof);
     private async ValueTask<string?> IssueCoreAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant? grant,CancellationToken cancellationToken,PrivateReplayRecoveryProof? replayRecovery=null)
     {
+        using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));cancellationToken=budget.Token;
         if (request.PrincipalId != principal || request.Command.Extensions is { Count: > 0 }
             || request.Command.IdempotencyKey != request.Command.MessageId) return null;
         var command = request.Command;
@@ -46,10 +47,8 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
             : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken) is { Allowed:true };
         if(!admitted) return null;
         // Independent workload RSA key; this is not a decision approval issuer or capability signing family.
-        var info = new FileInfo(mountedRsaKeyFile);
-        if (!info.Exists || info.Length is <= 0 or > 16384) return null;
-        string key = (await File.ReadAllTextAsync(mountedRsaKeyFile, cancellationToken)).Trim();
-        return BoundWorkloadCommandProof.Issue(request, caller, key, clock.GetUtcNow());
+        return await BoundedRegularFile.TryUseUtf8SpanAsync(mountedRsaKeyFile,16384,key=>
+            OwnedWorkloadProof.Issue(request,caller,key,clock.GetUtcNow()),cancellationToken).ConfigureAwait(false);
     }
     private static bool ExactFields(JsonElement payload, string[] expected)
     {

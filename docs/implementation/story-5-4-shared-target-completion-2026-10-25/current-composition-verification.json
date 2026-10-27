@@ -1,0 +1,37 @@
+{
+  "directory": "/tmp/story54-root-current-composition-12qalnyb",
+  "verification": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story54-root-current-composition-12qalnyb/FocusedComposition.csproj",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story54-root-current-composition-12qalnyb/build.log",
+      "logSha256": "a24059d2b19989f440f0c3e46a32aa71a0b5ea3fa7960d8894563a822db8e128",
+      "elapsedSeconds": 2.04522765299771
+    },
+    {
+      "command": [
+        "dotnet",
+        "/tmp/story54-root-current-composition-12qalnyb/bin/Debug/net10.0/FocusedComposition.dll"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story54-root-current-composition-12qalnyb/test.log",
+      "logSha256": "a919f0d7da93443ae1a3600687fc42604eb6a1c3326f2ff7df08d013a3b822a2",
+      "elapsedSeconds": 0.43631486300728284
+    }
+  ],
+  "sourceHashes": {
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "f714951722df5633da2621913f9962d9cdbbf4faeaed2ab7e42684fcff0ce657",
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs": "a59f545b7f6435161d639bfc6f35df4bb31d84013d96bdf5468765da05d7fd51",
+    "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs": "0979d38d29aa862d3285a21d1aec33f2c4f2f40d71f7b92902b87bacdf9c86d7",
+    "tests/Hexalith.Platform.Composition.Tests/AgentsAcceptedDeploymentContextTests.cs": "8f305ad65b0ae39f27e47cd27d8d058acdd5b6874354d9b9192d6af919917ae9",
+    "eng/ext-secrets-1/public-joint-plan.json": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99"
+  },
+  "installedQualification": false,
+  "passedCases": 12,
+  "boundary": "Fresh isolated project compiles the actual3 production accepted-date/packet profile files, actual repository test file and full plan; does not start Aspire or an installed host."
+}

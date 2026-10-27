@@ -79,6 +79,9 @@ def state(request, outcome, case, result_sha):
             "status": "RevokedBlocked" if i == 1 else "Active", "sealId": scope["sealId"], "batchId": scope["batchId"], "manifestDigest": scope["manifestDigest"],
             "blockReceiptId": q.digest({"event": "Block", "case": case.id}), "dispatchReceiptId": q.digest({"event": "Dispatch", "case": case.id})} for i in (1, 2)]
         result["activeCredentialIds"] = [result["attestationHistory"][-1]["credentialId"]]
+    if q.temporal_case(case.id):
+        if result['timing']['checkedAt'] is None:result['timing']['checkedAt']=1
+        result['temporalEvaluation']={'version':2,'evaluatedAt':result['timing']['checkedAt'],'originalResultSha256':result_sha}
     return result
 
 
@@ -426,6 +429,17 @@ class QualificationTests(unittest.TestCase):
                 with self.assertRaises(q.QualificationFailed):
                     q.verify_signed(changed, "observer", self.fixture.config, self.fixture.binding)
 
+    def test_temporal_legacy_or_substituted_decision_framing_cannot_qualify(self):
+        for change in ('legacy','version','timestamp','receipt'):
+            case,payload,execution,request=self.sample('S2.future-skew');q.check_observation(case,payload,execution,request)
+            def mutate(state):
+                if change=='legacy':state.pop('temporalEvaluation')
+                elif change=='version':state['temporalEvaluation']['version']=1
+                elif change=='timestamp':state['temporalEvaluation']['evaluatedAt']+=1
+                else:state['temporalEvaluation']['originalResultSha256']='c'*64
+            self.change_states(payload,mutate)
+            with self.subTest(change=change),self.assertRaises(q.QualificationFailed):q.check_observation(case,payload,execution,request)
+
     def sample(self, name):
         case = next(c for c in plan() if c.id == name)
         request = {"protocol": q.PROTOCOL, "runId": "r", "targetCommit": self.fixture.target, "isolatedTargetId": "t",
@@ -624,7 +638,12 @@ class QualificationTests(unittest.TestCase):
 
     def change_states(self, payload, change):
         for snapshot in payload["snapshots"]:
+            before_time=snapshot['state']['timing']['checkedAt']
+            before_frame=snapshot['state'].get('temporalEvaluation',{}).get('evaluatedAt')
             change(snapshot["state"])
+            evaluation=snapshot['state'].get('temporalEvaluation')
+            if (isinstance(evaluation,dict) and snapshot['state']['timing']['checkedAt']!=before_time and evaluation.get('evaluatedAt')==before_frame):
+                evaluation['evaluatedAt']=snapshot['state']['timing']['checkedAt']
             snapshot["stateSha256"] = q.digest(snapshot["state"])
         for event in payload["trace"]:
             event["stateSha256"] = payload["snapshots"][0]["stateSha256"]

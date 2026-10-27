@@ -1,0 +1,113 @@
+{
+  "observedAtUtc": "2026-10-26T06:23:53.804971+00:00",
+  "status": "PreIndependentReview_SourceComponentOnly",
+  "handbackSha256": "1f0b03b1603fc56f65ce1681d4a0a27e1c2ad0b9e3413d5d2a776b8ae585b8d1",
+  "logs": [
+    {
+      "name": "runtimeBuild",
+      "path": "runtimeBuild.log",
+      "sha256": "05c96302f54cf30aafcc4e1e33108968f96f8548245abd59db8b42b2eec245a9",
+      "command": "dotnet build tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj --artifacts-path /tmp/story54-current-runtime -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-current-runtime-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "passed": true,
+      "boundary": "Final current full dependency graph; explicit sibling EventStore path."
+    },
+    {
+      "name": "protectionBuild",
+      "path": "protectionBuild.log",
+      "sha256": "c2795737d4b8e8b63fe2454002803191e647f82f0020bbbe7e8a8e6e445ac529",
+      "command": "dotnet build tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj --artifacts-path /tmp/story54-current-protection -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-current-protection-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "passed": true,
+      "boundary": "Final current full dependency graph; explicit sibling EventStore path."
+    },
+    {
+      "name": "nativeBuild",
+      "path": "nativeBuild.log",
+      "sha256": "965e4a4dd348fd44c219fa8675a04d8fbd77f81e929989a198fcd3ccaf37b699",
+      "command": "dotnet build infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj --artifacts-path /tmp/story54-current-native -p:UseHexalithProjectReferences=true -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -p:UseNuGetDeps=false '-p:NuGetLockFilePath=/tmp/story54-current-native-locks/$(MSBuildProjectName).lock.json' -m:1",
+      "passed": true,
+      "boundary": "Final current full dependency graph; explicit sibling EventStore path."
+    },
+    {
+      "name": "runtimeTests",
+      "path": "runtimeTests.log",
+      "sha256": "d3f6b9ad2d01542d95bcb680de129f066fe39eec319b5fc1c8684c2e2a75cebc",
+      "command": "dotnet /tmp/story54-current-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName!~IndependentOriginalIndexTests'",
+      "passed": true,
+      "boundary": "Final source/current dependency graph; excludes separately recorded index/history rows."
+    },
+    {
+      "name": "protectionTests",
+      "path": "protectionTests.log",
+      "sha256": "61493c07e72514cf7b2950be8f63e82926e5e2c41b2ab4ffd701b349be23728f",
+      "command": "dotnet /tmp/story54-current-protection/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+      "passed": true,
+      "boundary": "Final source/current dependency graph."
+    },
+    {
+      "name": "nativeTests",
+      "path": "nativeTests.log",
+      "sha256": "481abb476113c6437ac49c9588cf5194b8362e7ed8db384847f18e1f488fd0e6",
+      "command": "dotnet /tmp/story54-current-native/bin/Hexalith.Platform.Custody.Dapr.Tests/debug/Hexalith.Platform.Custody.Dapr.Tests.dll",
+      "passed": true,
+      "boundary": "Final source/current dependency graph; isolated OpenBao/physical filesystem adapters only."
+    },
+    {
+      "name": "indexHistoryTests",
+      "path": "indexHistoryTests.log",
+      "sha256": "c2ad1cbf30e77f076ca82ce1606eddd425eb02b235b9ddf985c4f563d0b74b98",
+      "command": "dotnet /tmp/story54-round7-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName~IndependentOriginalIndexTests'",
+      "passed": true,
+      "boundary": "Earlier retained dependency graph with same task production Runtime/index/archive source; before test-only child-process crash fixture enhancement and native-store settlement correction."
+    },
+    {
+      "name": "compositionTests",
+      "path": "compositionTests.log",
+      "sha256": "9bbd46d26688c31aeeb2e9290ed06c20cd6610e186dfbf712184e4c0769f17da",
+      "command": "dotnet /tmp/story54-round6-composition-focused/bin/Debug/net10.0/FocusedComposition.dll",
+      "passed": true,
+      "boundary": "Current source-linked focused accepted-context/cross-language packet project; no installed service composition."
+    },
+    {
+      "name": "secretsPython",
+      "path": "secretsPython.log",
+      "sha256": "fa9bb9d82530bfb5240d54d3e2a7641c5079e6cebfbe6e3c5c2ff364b9ba82a3",
+      "command": "python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py'",
+      "passed": true,
+      "boundary": "Current unchanged Python source; isolated fixtures only."
+    },
+    {
+      "name": "hostPython",
+      "path": "hostPython.log",
+      "sha256": "dfdce6d03fab1e03abb276de5becf945b8279c956a2944b834e431646033d916",
+      "command": "python3 -m unittest discover -s eng/ext-host-1 -p 'test_*.py'",
+      "passed": true,
+      "boundary": "Current unchanged Python source; isolated fixtures only."
+    },
+    {
+      "name": "publicationCrashFocused",
+      "path": "publicationCrashFocused.log",
+      "sha256": "4dcd61f005d524e1067bec885fc37bbea772dfbe681e51a2e736116727e335f6",
+      "command": "dotnet /tmp/story54-round7-runtime/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll -filterVSTest 'FullyQualifiedName~BoundedInstallationAndPublicationTests'",
+      "passed": true,
+      "boundary": "Later focused killed-child-process/cancellation/read-bounds verification; also included in final full Runtime run."
+    },
+    {
+      "name": "compositionBuild",
+      "path": "compositionBuild.log",
+      "sha256": "d54424ecd788489fa45305b9e9a01851ee5a5188e44cb6f589984db2cd924dae",
+      "command": "dotnet build /tmp/story54-round6-composition-focused/FocusedComposition.csproj -m:1",
+      "passed": true,
+      "boundary": null
+    },
+    {
+      "name": "whitespace",
+      "path": "whitespace.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": "git diff --check -- <57 exact paths from ownedFilesManifest>; scan every owned file including untracked files for trailing whitespace",
+      "passed": true,
+      "boundary": null
+    }
+  ],
+  "sourceDrift": [],
+  "installedQualification": false
+}

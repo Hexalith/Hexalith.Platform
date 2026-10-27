@@ -8,4 +8,5 @@ using Hexalith.Platform.Custody;
 namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>A complete authenticated manifest result and its independent restore-barrier receipt.</summary>
-public sealed record CustodyManifestOriginal(DeletionManifestProviderResult Result, string? RestoreBarrierReceiptId);
+public sealed record CustodyManifestOriginal(DeletionManifestProviderResult Result, string? RestoreBarrierReceiptId,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyManifestDenial? Denial=null);

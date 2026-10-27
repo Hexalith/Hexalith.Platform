@@ -13,9 +13,8 @@ public sealed class IndependentFileContentArchive(string directory):IIndependent
     /// <inheritdoc />
     public async Task<byte[]> ReadAsync(string sha256,CancellationToken token)
     {
-        string path=PathFor(sha256);var info=new FileInfo(path);
-        if(!info.Exists || info.LinkTarget is not null || info.Length is 0 or >CustodyBindingContract.MaximumOriginalBytes) throw new IOException("Exact immutable private original unavailable.");
-        byte[] bytes=await File.ReadAllBytesAsync(path,token).ConfigureAwait(false);
+        string path=PathFor(sha256);
+        byte[] bytes=await BoundedRegularFile.ReadAsync(path,CustodyBindingContract.MaximumOriginalBytes,token).ConfigureAwait(false);
         if(Convert.ToHexString(SHA256.HashData(bytes))!=sha256) throw new IOException("Private original digest mismatch.");return bytes;
     }
     private string PathFor(string hash)=>CustodyBindingContract.Digest(hash)?Path.Combine(directory,hash[..2],hash+".json"):throw new IOException("Exact archive digest required.");

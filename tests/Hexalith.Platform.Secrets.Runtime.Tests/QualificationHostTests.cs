@@ -34,7 +34,7 @@ public sealed class QualificationHostTests
     {
         QualificationHostResult result = await QualificationHost.HandleAsync(role, operation, Configuration(), Request(), null, null, null, TestContext.Current.CancellationToken, Caller());
         result.StatusCode.ShouldBe(503);
-        result.Body["qualificationEffects"]!.GetValue<int>().ShouldBe(0);
+        if(role=="executor") result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");else result.Body["qualificationEffects"]!.GetValue<int>().ShouldBe(0);
         result.Body.ToJsonString().ShouldContain("installedProviderSignerAndScopeAuthority");
         result.Body.ToJsonString().ShouldContain("independentDurableOriginalStore");
         result.Body.ToJsonString().ShouldContain("acceptedPublicProofVerifier");
@@ -53,12 +53,36 @@ public sealed class QualificationHostTests
             missing == "verifier" ? null : new TestVerifier(), TestContext.Current.CancellationToken, Caller());
         result.StatusCode.ShouldBe(503);
         result.Body["missingInputs"]!.AsArray().Select(value => value!.GetValue<string>()).ShouldBe([expected]);
-        result.Body["qualificationEffects"]!.GetValue<int>().ShouldBe(0);
+        result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");
         result.Body["productionMutationAllowed"]!.GetValue<bool>().ShouldBeFalse();
         provider.AuthorizedRequests.ShouldBeEmpty();
         provider.Operations.ShouldBeEmpty();
         store.Original.ShouldBeNull();
         store.Result.ShouldBeNull();
+    }
+
+    [Theory]
+    [InlineData("configuration")][InlineData("provider")][InlineData("store")][InlineData("verifier")][InlineData("malformed")][InlineData("caller")]
+    public async Task EarlyExecutorRefusalAfterDispatchPreservesUnknownAndKnownOriginalIdentity(string missing)
+    {
+        var provider=new TestProvider { Lose=true };var store=new TestStore();var request=Request();var token=TestContext.Current.CancellationToken;
+        await QualificationHost.HandleAsync("executor","execute",Configuration(),request,provider,store,new TestVerifier(),token,Caller());
+        provider.Operations.ShouldBe(["execute"]);
+        var retry=missing=="malformed"?(JsonObject)request.DeepClone():request;if(missing=="malformed") retry["caseId"]="malformed";
+        var result=await QualificationHost.HandleAsync("executor","execute",missing=="configuration"?new():Configuration(),retry,
+            missing=="provider"?null:provider,missing=="store"?null:store,missing=="verifier"?null:new TestVerifier(),token,missing=="caller"?null:Caller());
+        result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");result.Body["originalLookupRequired"]!.GetValue<bool>().ShouldBeTrue();
+        result.Body["requestId"]!.GetValue<string>().ShouldBe(request["requestId"]!.GetValue<string>());provider.Operations.ShouldBe(["execute"]);
+        var http=await QualificationHttpHost.HandleAsync("executor","execute",Configuration(),Context("wrong",false),"role-channel",null,provider,store,new TestVerifier(),token);
+        http.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");
+    }
+
+    [Fact]
+    public async Task MalformedIdentityHintsRemainUnknownWithoutReflectingRawNodes()
+    {
+        var request=Request();request["requestId"]=new JsonObject { ["raw"]="private-fixture-marker" };request["runId"]=new JsonArray("private-fixture-marker");
+        var result=await QualificationHost.HandleAsync("executor","execute",Configuration(),request,null,null,null,TestContext.Current.CancellationToken,Caller());
+        result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");result.Body["requestId"].ShouldBeNull();result.Body["runId"].ShouldBeNull();result.Body.ToJsonString().ShouldNotContain("private-fixture-marker");
     }
 
     [Fact]
@@ -170,7 +194,7 @@ public sealed class QualificationHostTests
         Should.Throw<ArgumentException>(() => new QualificationProofBinding("executor", "v1", Encoding.ASCII.GetBytes("/tmp/untrusted-public-anchor.fifo"), hash));
         using var cancellation = new CancellationTokenSource();
         cancellation.Cancel();
-        verifier.Verify("executor", Request(), envelope, cancellation.Token).ShouldBeFalse();
+        Should.Throw<OperationCanceledException>(()=>verifier.Verify("executor", Request(), envelope, cancellation.Token));
     }
 
     [Theory]
@@ -185,7 +209,7 @@ public sealed class QualificationHostTests
         DefaultHttpContext context = Context(token, scoped);
         QualificationHostResult result = await QualificationHttpHost.HandleAsync("executor", "execute", Configuration(), context, "role-channel", authenticator, provider, store, new TestVerifier(), TestContext.Current.CancellationToken);
         result.StatusCode.ShouldBe(503);
-        result.Body["qualificationEffects"]!.GetValue<int>().ShouldBe(0);
+        result.Body["qualificationEffects"]!.GetValue<string>().ShouldBe("Unknown");
         provider.AuthorizedRequests.ShouldBeEmpty();
         provider.Operations.ShouldBeEmpty();
         store.Original.ShouldBeNull();
@@ -250,7 +274,7 @@ public sealed class QualificationHostTests
         }
     }
 
-    private static JsonObject RolePayload(string role)
+    internal static JsonObject RolePayload(string role)
     {
         JsonObject payload = Payload(Request(role));
         payload["identity"] = role;

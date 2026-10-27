@@ -23,8 +23,8 @@ class JointAdmissionTests(unittest.TestCase):
         state=f.authority.lookup_attempt(f.binding)
         f.owners[PHASES[2]].missing=['FixtureReadinessOutage']
         with self.assertRaises(Blocked) as failure:f.runner().run()
-        self.assertTrue(failure.exception.effects_started);self.assertEqual(state['attemptId'],failure.exception.attempt_id)
-        self.assertEqual('Unknown',failure.exception.effect_state)
+        self.assertTrue(failure.exception.effects_started);self.assertEqual(state["attemptId"],failure.exception.attempt_id)
+        self.assertEqual("Unknown",failure.exception.effect_state)
         with patch.object(f.authority,'lookup_attempt',side_effect=TimeoutError()):
             with self.assertRaises(Blocked) as unknown:f.runner().run()
         self.assertTrue(unknown.exception.effects_started);self.assertEqual('LookupRequired',unknown.exception.attempt_state)
@@ -42,7 +42,7 @@ class JointAdmissionTests(unittest.TestCase):
         f=self.fixture;credential='fixture-workload';now=int(time.time())
         with closing(sqlite3.connect(f.path)) as db,db:
             db.execute('INSERT OR REPLACE INTO workload_grants VALUES(?,?,?,0)',(hashlib.sha256(credential.encode()).hexdigest(),canonical([method]),now+300))
-        app=CohortHttpApplication(f.path,ec.generate_private_key(ec.SECP256R1()),dispatch,'file:/fixture-channel')
+        app=CohortHttpApplication(f.path,ec.generate_private_key(ec.SECP256R1()),dispatch,'file:/fixture-channel',storage=f.storage)
         body=canonical({'protocol':'OQ-5.4-1.joint.v1','requestId':'fixture-request','method':method,'payload':value})
         with patch('qualify.read_mounted_credential',return_value='channel'):
             return app.handle(method,{'dapr-api-token':'channel','Authorization':'Bearer '+credential},body)
@@ -50,7 +50,7 @@ class JointAdmissionTests(unittest.TestCase):
     def test_revocation_and_reservation_share_one_durable_ordering_boundary(self):
         f=self.fixture
         ready=[Owner().preflight(f.binding,p,partitions()[p])['readiness'] for p in range(4)]
-        value={'binding':f.binding,'attemptId':'isolated-ordering','ownerReadiness':ready}
+        value={'binding':f.binding,'attemptId':'c80fb602-a9e0-4c5f-96e7-23845bce0e36','ownerReadiness':ready}
         def revoke_then_dispatch(method,value):
             with closing(sqlite3.connect(f.path)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
             return f.store.dispatch(method,value)
@@ -60,7 +60,7 @@ class JointAdmissionTests(unittest.TestCase):
             result=f.store.dispatch(method,value)
             with closing(sqlite3.connect(f.path)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
             return result
-        self.assertEqual('isolated-ordering',self._app('reserve',value,admit_then_revoke)['payload']['result']['attemptId'])
+        with self.assertRaises(Blocked):self._app('reserve',value,admit_then_revoke)
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(1,db.execute('SELECT count(*) FROM attempts').fetchone()[0])
 
     def test_first_owner_admission_orders_revocation_without_holding_sql_lock_during_native_work(self):
@@ -78,14 +78,15 @@ class JointAdmissionTests(unittest.TestCase):
                 with closing(sqlite3.connect(f.path,timeout=1)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
                 return None
             def lookup(self,request):return None
-        executor=Executor();owner=RetainedPhaseOwner(f.path,0,f.binding,executor,lambda p:{'payload':p,'signature':'isolated'},IndependentAuthority())
+        executor=Executor();owner=RetainedPhaseOwner(f.path,0,f.binding,executor,lambda p:{'payload':p,'signature':'isolated'},IndependentAuthority(),storage=f.storage,completion_capacity=f.completion_capacity)
         def revoke_first(method,value):
             with closing(sqlite3.connect(f.path)) as db,db:db.execute('UPDATE workload_grants SET revoked=1')
             return owner.dispatch(method,value)
         with self.assertRaises(Blocked):self._app('execute',request,revoke_first)
         self.assertEqual(0,executor.count)
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(0,db.execute('SELECT count(*) FROM phase_originals').fetchone()[0])
-        self.assertIsNone(self._app('execute',request,owner.dispatch)['payload']['result']);self.assertEqual(1,executor.count)
+        with self.assertRaises(Blocked):self._app('execute',request,owner.dispatch)
+        self.assertEqual(1,executor.count)
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(1,db.execute('SELECT count(*) FROM phase_originals').fetchone()[0])
 
     def test_absence_challenges_remain_one_per_request_expire_and_are_consumed(self):
@@ -99,7 +100,7 @@ class JointAdmissionTests(unittest.TestCase):
             count=0
             def execute(self,r):self.count+=1;return 'Passed',r['cases'],{}
             def lookup(self,r):return None
-        executor=Executor();owner=RetainedPhaseOwner(f.path,0,f.binding,executor,lambda p:{'payload':p,'signature':'isolated-signature'},Rpc())
+        executor=Executor();owner=RetainedPhaseOwner(f.path,0,f.binding,executor,lambda p:{'payload':p,'signature':'isolated-signature'},Rpc(),storage=f.storage,completion_capacity=f.completion_capacity)
         proof=owner.dispatch('lookup',request)
         for _ in range(300):self.assertEqual(proof,owner.dispatch('lookup',request))
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(1,db.execute('SELECT count(*) FROM phase_absences').fetchone()[0])
@@ -112,3 +113,39 @@ class JointAdmissionTests(unittest.TestCase):
             self.assertEqual(first,owner.dispatch('execute-if-absent',{'request':request,'absence':new}))
         self.assertEqual(1,executor.count)
         with closing(sqlite3.connect(f.path)) as db:self.assertEqual(0,db.execute('SELECT count(*) FROM phase_absences').fetchone()[0])
+
+    def test_expiry_during_signed_predecessor_or_owner_verification_cannot_insert(self):
+        import base64
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.exceptions import InvalidSignature
+        for method in ('retain','publish'):
+            for expired in (101,102):
+                with self.subTest(method=method,expired=expired):
+                    f=self.fixture;key=digest(f.binding);attempt=f.authority.reserve(f.binding,'late-grant')['attemptId']
+                    signer=ec.generate_private_key(ec.SECP256R1());now=[100];advance=[False]
+                    def sign(value):return {'payload':value,'signature':base64.b64encode(signer.sign(canonical(value),ec.ECDSA(hashes.SHA256()))).decode()}
+                    def verify(phase,value):
+                        try:signer.public_key().verify(base64.b64decode(value['signature']),canonical(value['payload']),ec.ECDSA(hashes.SHA256()))
+                        except (ValueError,InvalidSignature):return False
+                        if advance[0] and phase==(0 if method=='retain' else 1):now[0]=expired
+                        return True
+                    f.store.verify_owner=verify
+                    def request(phase,previous):return {'protocol':'OQ-5.4-1.joint.v1','attemptId':attempt,'bindingDigest':key,'phase':phase,'owner':PHASES[phase],
+                        'previousSha256':previous,'cases':partitions()[phase],'requestId':digest([attempt,key,phase,previous])}
+                    first=request(0,key);f.store.dispatch('retain',{'request':first})
+                    result=sign({**{name:first[name] for name in ('requestId','attemptId','bindingDigest','phase','previousSha256')},'state':'Passed','passedCases':first['cases'],'ownerEvidenceSha256':'a'*64})
+                    f.store.dispatch('publish',{'request':first,'result':result});second=request(1,digest(result))
+                    if method=='publish':f.store.dispatch('retain',{'request':second})
+                    outcome=sign({**{name:second[name] for name in ('requestId','attemptId','bindingDigest','phase','previousSha256')},'state':'Passed','passedCases':second['cases'],'ownerEvidenceSha256':'b'*64})
+                    value={'request':second}|({'result':outcome} if method=='publish' else {})
+                    def dispatch(operation,value):
+                        with closing(sqlite3.connect(f.path)) as db,db:db.execute('UPDATE workload_grants SET valid_until=101')
+                        advance[0]=True
+                        return f.store.dispatch(operation,value)
+                    with patch('time.time',side_effect=lambda:now[0]):
+                        with self.assertRaises(Blocked):self._app(method,value,dispatch)
+                    with closing(sqlite3.connect(f.path)) as db,db:
+                        self.assertEqual(1 if method=='publish' else 0,db.execute('SELECT count(*) FROM originals WHERE phase=1').fetchone()[0])
+                        self.assertEqual(0,db.execute('SELECT count(*) FROM results WHERE request_id=?',(second['requestId'],)).fetchone()[0])
+                        db.execute('DELETE FROM results');db.execute('DELETE FROM originals');db.execute('DELETE FROM attempts');db.execute('DELETE FROM workload_grants')
+                    f.store.verify_owner=lambda phase,result:result.get('signature')=='isolated-signature'

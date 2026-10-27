@@ -12,20 +12,21 @@ ENTRY = 'Hexalith.Platform.Secrets.Qualification.Executor'
 MAX_FILE = 1024 * 1024 * 1024
 
 
+import bounded_file_io as selected_io
+
+
 def file_hash(path):
-    path = Path(path)
-    if not path.is_absolute() or path.is_symlink() or not path.is_file():
-        raise ValueError('ExactInstalledExecutionFile')
-    if not 0 < path.stat().st_size <= MAX_FILE:
-        raise ValueError('BoundedInstalledExecutionFile')
-    result = hashlib.sha256()
-    with path.open('rb') as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b''):
-            result.update(block)
-    return result.hexdigest()
+    return selected_io.file_hash(path, MAX_FILE)
 
 
 def validate_execution_inventory(profile):
+    try:
+        return selected_io.run(lambda: _validate_execution_inventory(profile))
+    except (OSError, ValueError, TimeoutError):
+        return ['BoundedInstalledExecutionInputAcquisition']
+
+
+def _validate_execution_inventory(profile):
     """Return named blockers; accepted descriptor pins are checked by its caller too."""
     try:
         command = profile['command']
@@ -44,11 +45,6 @@ def validate_execution_inventory(profile):
         launcher = Path(command[0])
         if len(command) == 3 and launcher.name != 'dotnet':
             raise ValueError()
-        with launcher.open('rb') as stream:
-            magic=stream.read(4)
-        if magic[:2]!=b'MZ' and magic!=b'\x7fELF': raise ValueError()
-        with entry.open('rb') as stream:
-            if stream.read(2)!=b'MZ': raise ValueError()
         artifacts = profile['artifacts']
         pins = {item['path']: item['sha256'] for item in artifacts}
         if len(pins) != len(artifacts) or any(not re.fullmatch('[a-f0-9]{64}', value) for value in pins.values()):
@@ -58,16 +54,7 @@ def validate_execution_inventory(profile):
             raise ValueError()
         census = set()
         for raw in roots:
-            root = Path(raw)
-            if not root.is_absolute() or root.is_symlink() or not root.is_dir():
-                raise ValueError()
-            for item in root.rglob('*'):
-                if item.is_symlink():
-                    raise ValueError()
-                if item.is_file():
-                    census.add(str(item))
-                if len(census) > 10000:
-                    raise ValueError()
+            census.update(selected_io.census(raw,10000-len(census)))
         # Full app/runtime directories are closed; extra, missing and replaced dependencies reject.
         if str(entry.parent) not in roots or str(launcher.parent) not in roots or not census.issubset(pins):
             raise ValueError()
@@ -89,21 +76,30 @@ def validate_execution_inventory(profile):
         if closure['installationFile'] not in closure['configurationFiles']:
             raise ValueError()
         # Every public file reference loaded by the installation graph is independently pinned.
-        private_keys={'ownersigningkeyfile','signingkeyfile','credentialfile','credentialreference','appchanneltokenreference','bearerreference','privatesigningkeyfile','sourcesigningkeyfile','rsapkcs8base64file','assertionfiles'}
+        private_keys={'ownersigningkeyfile','signingkeyfile','credentialfile','credentialreference','appchanneltokenreference','bearerreference','privatesigningkeyfile','sourcesigningkeyfile','rolesigningkeyfile','componentsigningkeypath','appchanneltokenfile','rsapkcs8base64file','assertionfiles'}
         private_paths=set()
         for raw in closure['configurationFiles']:
-            data = Path(raw).read_bytes()
+            data = selected_io.read(raw,1024*1024)
             if len(data) > 1024 * 1024:
                 raise ValueError()
             import qualify as q
             document = q.decode_json(data)
+            if raw==closure['installationFile'] and 'Scope' in document:
+                if (document.get('BindingSchema')!='Platform.JointPhaseInstallation.v2'
+                        or document['Scope'].get('BindingDigest')!=''
+                        or document.get('CohortAttempt',{}).get('BindingDigest')!=''):
+                    return ['UnsupportedCyclicJointPhaseInstallationBinding']
+                if type(document.get('CompletionTimeoutSeconds')) is not int or not 1<=document['CompletionTimeoutSeconds']<=86400 or document['CompletionTimeoutSeconds']!=profile.get('completionTimeoutSeconds'):
+                    return ['ExactPinnedWholePhaseCompletionTimeout']
+                if document['Scope'].get('Phase')!=profile['phase'] or document['Scope'].get('Cases')!=profile['cases']:
+                    return ['ExactAcyclicInstalledPhaseScope']
             def inspect(value, key=''):
                 if isinstance(value, dict):
                     for name, child in value.items(): inspect(child, key if key.lower()=='assertionfiles' else name)
                 elif isinstance(value, list):
                     for child in value: inspect(child, key)
                 elif isinstance(value,str):
-                    if key.lower() in private_keys:
+                    if key.lower() in private_keys or key.lower().endswith('credentialreference'):
                         path=value.removeprefix('file:')
                         if not Path(path).is_absolute(): raise ValueError()
                         private_paths.add(path)
@@ -112,6 +108,9 @@ def validate_execution_inventory(profile):
                             raise ValueError()
             inspect(document)
         if private_paths.intersection(pins): raise ValueError()
+        magic=selected_io.magic(launcher,MAX_FILE)
+        if magic[:2]!=b'MZ' and magic!=b'\x7fELF': raise ValueError()
+        if selected_io.magic(entry,MAX_FILE)[:2]!=b'MZ': raise ValueError()
         if any(file_hash(path) != expected for path, expected in pins.items()):
             return ['ExactInstalledExecutionDependencyBytes']
         return []

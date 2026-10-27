@@ -16,6 +16,28 @@ namespace Hexalith.Platform.Protection.Tests;
 
 public sealed class QualificationNativeAuditTests
 {
+    [System.Runtime.InteropServices.DllImport("libc",EntryPoint="mkfifo",SetLastError=true)] private static extern int Mkfifo(string path,int mode);
+    [Theory]
+    [InlineData("S3.lifecycle.pin")][InlineData("S3.principal-direct-delivery")]
+    public async Task ActualAuditAndReceivingAuthorityPreserveLegacyUncertaintyAndRequireExactVersionedTerminalOriginal(string caseId)
+    {
+        using var authority=new ReceivingAuthorityFixture("executor");var gateway=Substitute.For<IEventStoreGatewayClient>();string id=new('a',64);
+        var request=new JsonObject { ["caseId"]=caseId,["requestId"]=id,["enrolledScope"]=new JsonObject { ["tenantId"]="tenant" } };
+        JsonElement Body(string status)=>caseId.Contains("lifecycle",StringComparison.Ordinal)
+            ?JsonSerializer.SerializeToElement(new { actual=new { Status=status } }):JsonSerializer.SerializeToElement(new { delivery=new { State=status } });
+        var legacy=new IndependentOriginal(JsonSerializer.SerializeToElement(request),Body("Unknown"),RetainedRevision:1,ResultRetainedRevision:2);
+        authority.State=authority.State with { Revision=3,Originals=new() { ["executor:"+id+":case-result"]=legacy } };
+        var scope=new QualificationEventStoreAuditScope("tenant",QualificationProtocolSchema.Digest(request["enrolledScope"]!),[":case-result"],[],[],[]);
+        var reader=new QualificationEventStoreAuditReader(authority.Authority,gateway,TimeProvider.System,new Dictionary<string,QualificationEventStoreAuditScope>{{caseId,scope}});
+        (await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
+        var terminal=new IndependentOriginal(JsonSerializer.SerializeToElement(request),Body(caseId.Contains("lifecycle",StringComparison.Ordinal)?"Pinned":"Delivered"),RetainedRevision:4,ResultRetainedRevision:5);
+        authority.State=authority.State with { Revision=6,Originals=new(authority.State.Originals) { ["executor:"+id+":case-terminal-v2"]=terminal } };
+        var observed=await reader.ReadAsync(request,TestContext.Current.CancellationToken);observed.ShouldNotBeNull();JsonSerializer.Serialize(observed.Originals[":case-result"]).ShouldBe(JsonSerializer.Serialize(terminal));
+        authority.State.Originals["executor:"+id+":case-result"].ShouldBe(legacy);
+        var changed=(JsonObject)request.DeepClone();changed["enrolledScope"]!["tenantId"]="foreign";
+        authority.State.Originals["executor:"+id+":case-terminal-v2"]=terminal with { Request=JsonSerializer.SerializeToElement(changed) };
+        (await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();gateway.ReceivedCalls().ShouldBeEmpty();
+    }
     [Fact]
     public async Task ActualNativeWorkloadStatusStreamAndProjectionReadsRejectForeignStaleOrMissingProofAndDoNotInventFullAudit()
     {
@@ -56,6 +78,12 @@ public sealed class QualificationNativeAuditTests
         var actual=await reader.ReadAsync(request,TestContext.Current.CancellationToken);actual.ShouldNotBeNull();actual.NativeStreams.Single().Events.Single().PayloadSha256.ShouldBe(Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(item.Payload)));
         actual.Projections.Single().Metadata.Provenance.ShouldBe(QueryResponseProvenance.ProjectionBacked);actual.MissingInputs.ShouldNotBeEmpty();
         JsonSerializer.Serialize(actual).ShouldNotContain("actual-native-canary");JsonSerializer.Serialize(actual).ShouldNotContain("actual-projection-receipt");
+        foreach(string mounted in new[]{keyFile,tokenFile})
+        {
+            string saved=File.ReadAllText(mounted);File.Delete(mounted);Mkfifo(mounted,0x180).ShouldBe(0);
+            (await queryClient.ReadAsync(query,TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(1),TestContext.Current.CancellationToken)).ShouldBeNull();
+            File.Delete(mounted);File.WriteAllText(mounted,saved);
+        }
         foreign=true;(await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();foreign=false;
         missingNative=true;(await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();missingNative=false;
         stale=true;(await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
@@ -65,6 +93,28 @@ public sealed class QualificationNativeAuditTests
         (await queryClient.ReadAsync(query with { Payload=JsonSerializer.SerializeToElement(new { original="changed" }) },TestContext.Current.CancellationToken)).ShouldBeNull();
         File.Delete(tokenFile);(await reader.ReadAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
         gateway.ReceivedCalls().ShouldAllBe(call=>new[]{nameof(IEventStoreGatewayClient.ReadWorkloadStreamAsync),nameof(IEventStoreGatewayClient.GetWorkloadCommandStatusAsync)}.Contains(call.GetMethodInfo().Name));
+    }
+
+    [Fact]
+    public async Task ActualOwnerQueryClientCancelsAfterPrivateProofAcquisitionWithoutTransportAndClearsItsDecodedKey()
+    {
+        using var rsa=RSA.Create(2048);string key=Path.GetTempFileName(),assertion=Path.GetTempFileName();using var files=new Cleanup(key,assertion);
+        byte[] der=rsa.ExportPkcs8PrivateKey();await File.WriteAllBytesAsync(key,Encoding.UTF8.GetBytes(Convert.ToBase64String(der)),TestContext.Current.CancellationToken);CryptographicOperations.ZeroMemory(der);
+        await File.WriteAllTextAsync(assertion,"fixture-assertion",TestContext.Current.CancellationToken);
+        var query=new SubmitQueryRequest("tenant","domain","aggregate","ExactQuery",Payload:JsonSerializer.SerializeToElement(new { value=1 }));
+        string id=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { operation="eventstore:owner-authority-query",tenant="tenant",domain="domain" })));
+        var authority=Substitute.For<ICustodyOwnerStateAuthority>();authority.AuthorizeOperationAsync(Arg.Any<string>(),"ReadQualificationOwnerQuery",Arg.Any<CancellationToken>()).Returns(true);
+        int calls=0;using var handler=new QueryTransport(_=> { calls++;return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)); });using var http=new HttpClient(handler) { BaseAddress=new("https://fixture.invalid/") };
+        var client=new QualificationOwnerQueryClient(http,new("caller",key,new Dictionary<string,string>{{id,assertion}},"principal"),authority,[query],TimeProvider.System);
+        using var cancel=new CancellationTokenSource();byte[]? decoded=null;
+        try
+        {
+            OwnedWorkloadProof.DecodedPrivateKeyInspection=value=> { decoded=value;cancel.Cancel(); };
+            await Should.ThrowAsync<OperationCanceledException>(()=>client.ReadAsync(query,cancel.Token));
+            decoded.ShouldNotBeNull().ShouldAllBe(value=>value==0);calls.ShouldBe(0);
+        }
+        finally { OwnedWorkloadProof.DecodedPrivateKeyInspection=null; }
+        File.Delete(key);(await client.ReadAsync(query,TestContext.Current.CancellationToken)).ShouldBeNull();calls.ShouldBe(0);
     }
     private sealed class QueryTransport(Func<HttpRequestMessage,Task<HttpResponseMessage>> receive):HttpMessageHandler
     { protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage message,CancellationToken token)=>receive(message); }

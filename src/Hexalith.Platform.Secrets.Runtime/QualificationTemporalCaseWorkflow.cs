@@ -55,7 +55,7 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
         var input=Input(request);var profile=profiles.GetCurrent();if(input is null || profile is null || !profile.IsValid(clock.GetUtcNow())) return null;
         string id=request["caseId"]!.GetValue<string>();string requestId=request["requestId"]!.GetValue<string>();
         var envelope=input.Envelope;var scope=new PlatformHmacScope(input.Identity.TargetTenantId,PlatformHmacPurpose.TrustedEnvelope);
-        DateTimeOffset checkedAt=clock.GetUtcNow();CustodyStatus status;PlatformHmacKeyMetadata? metadata=null;TrustedEnvelope? replacement=null;
+        DateTimeOffset checkedAt;CustodyStatus status;PlatformHmacKeyMetadata? metadata=null;TrustedEnvelope? replacement=null;TrustedEnvelopeResult? decision=null;
         if(id.StartsWith("S2.overlap-",StringComparison.Ordinal))
         {
             // L=300 and O=600: a delivery cannot remain live until this key boundary. Measure key eligibility separately, without relaxing either limit.
@@ -67,7 +67,8 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
         }
         else
         {
-            status=(await authenticator.VerifyAsync(envelope,input.Identity,token).ConfigureAwait(false)).Status;
+            decision=await authenticator.VerifyAsync(envelope,input.Identity,token).ConfigureAwait(false);
+            if(decision.EvaluatedAt is not { } actualDecision) return null;checkedAt=actualDecision;status=decision.Status;
             if(id=="S2.emergency-redispatch")
             {
                 if(status!=CustodyStatus.RevokedKey) return null;
@@ -80,11 +81,12 @@ public sealed class QualificationTemporalCaseWorkflow(TrustedEnvelopeAuthenticat
                 }
                 var retained=await originals.LookupResultAsync("executor",issuanceId,token).ConfigureAwait(false);
                 replacement=retained?.Deserialize<TrustedEnvelopeResult>(CustodyBindingContract.Json)?.Envelope;if(replacement is null) return null;
-                status=(await authenticator.VerifyAsync(replacement,input.Identity,token).ConfigureAwait(false)).Status;
+                decision=await authenticator.VerifyAsync(replacement,input.Identity,token).ConfigureAwait(false);
+                if(decision.EvaluatedAt is not { } replacementDecision) return null;checkedAt=replacementDecision;status=decision.Status;
             }
         }
         return new JsonObject { ["caseId"]=id,["requestId"]=requestId,["status"]=status.ToString(),["outcome"]=status==CustodyStatus.Succeeded?"Verified":status==CustodyStatus.Expired?"Expired":"Denied",
-            ["checkedAt"]=checkedAt.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(envelope,CustodyBindingContract.Json),
+            ["authenticationDecision"]=JsonSerializer.SerializeToNode(decision,CustodyBindingContract.Json),["temporalEvidenceVersion"]=2,["evaluatedAtExact"]=JsonSerializer.SerializeToNode(checkedAt,CustodyBindingContract.Json),["checkedAt"]=checkedAt.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(envelope,CustodyBindingContract.Json),
             ["replacementEnvelope"]=JsonSerializer.SerializeToNode(replacement,CustodyBindingContract.Json),["keyMetadata"]=JsonSerializer.SerializeToNode(metadata,CustodyBindingContract.Json),
             ["rotationOverlapMilliseconds"]=(long)profile.RotationOverlap.TotalMilliseconds };
     }

@@ -10,6 +10,11 @@ namespace Hexalith.Platform.Protection;
 public sealed class Fr34OccurrenceOperationHandler(Fr34OccurrenceRecipe recipe,Fr34OccurrenceProducer producer,TimeProvider clock):IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
+    public bool RequiresCurrentResultAdmission(string method)=>Methods.Contains(method);
+    /// <inheritdoc />
+    public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
+        =>QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision },CustodyBindingContract.Json)!);
+    /// <inheritdoc />
     public bool IsReadOnly(string method)=>method is "fr34-pending-material" or "fr34-read-erasure";
     /// <inheritdoc />
     public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
@@ -20,7 +25,7 @@ public sealed class Fr34OccurrenceOperationHandler(Fr34OccurrenceRecipe recipe,F
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
     {
         if(caller.Role!="fr34-recipes" || caller.ScopeReference!=recipe.Target.TenantId+"|fr34" || caller.Revoked || caller.ValidUntil<=clock.GetUtcNow()
-            || current.ValidUntil<=clock.GetUtcNow() || current.Fr34Target!=recipe.Target || current.Fr34RecipeSha256!=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!) || !Methods.Contains(method)) throw new InvalidOperationException("CurrentIndependentBoundedFr34RecipeScope");
+            || current.ValidUntil<=clock.GetUtcNow() || string.IsNullOrWhiteSpace(current.Fr34AuthorizationRevision) || current.Fr34Target!=recipe.Target || current.Fr34RecipeSha256!=QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(recipe,CustodyBindingContract.Json)!) || !Methods.Contains(method)) throw new InvalidOperationException("CurrentIndependentBoundedFr34RecipeScope");
         switch(method)
         {
             case "fr34-resolve-occurrence": var resolve=payload.Deserialize<Resolve>(CustodyBindingContract.Json)!;return await producer.ResolveAsync(resolve.owner,resolve.occurrence,token).ConfigureAwait(false);

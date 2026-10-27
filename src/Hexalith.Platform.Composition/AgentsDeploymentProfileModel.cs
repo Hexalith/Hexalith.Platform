@@ -34,5 +34,23 @@ public sealed record AgentsDeploymentProfileModel(
     string ConversationsBinding,
     string IntegrationDate = "")
 {
+    internal string? ListenerBindingsJson { get; init; }
+    internal string? AcceptedLaunchInventoryJson { get; init; }
     internal bool AcceptedContextValidated { get; init; }
+    internal string? AcceptedModelSeal { get; init; }
+    internal AgentsDeploymentProfileModel Snapshot()
+        =>this with { Services=System.Collections.Frozen.FrozenDictionary.ToFrozenDictionary(Services,StringComparer.Ordinal) };
+    internal string ModelSeal()=>Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(new
+    {
+        Services=Services.OrderBy(item=>item.Key,StringComparer.Ordinal).Select(item=>new { item.Key,item.Value }).ToArray(),
+        CurrentTenant,GlobalAdministrator,HumanIdentity,ApproverEvidence,ReplayReference,RecorderReference,WorkerReference,
+        SpoolBackend,ReplicaCount,FailureModel,ProtectionEngine,ProtectionObserver,PartiesBinding,ConversationsBinding,IntegrationDate,AcceptedLaunchInventoryJson,ListenerBindingsJson
+    })));
+    internal AgentsDeploymentProfileModel CompositionSnapshot(bool production)
+    {
+        var snapshot=Snapshot();
+        if(production && (!snapshot.AcceptedContextValidated || snapshot.AcceptedModelSeal is null || snapshot.AcceptedModelSeal!=snapshot.ModelSeal()))
+            throw new InvalidDataException("Production profile differs from the immutable accepted model.");
+        return snapshot;
+    }
 }

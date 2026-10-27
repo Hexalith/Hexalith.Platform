@@ -35,5 +35,30 @@ class OuterUncertaintyTests(unittest.TestCase):
                     self.assertEqual('LookupRequired',report['attemptState'])
                     self.assertTrue(report['effectsStarted'])
 
+    def test_both_owner_failure_documents_preserve_reservation_loss_uncertainty_and_candidate_identity(self):
+        import joint_live_phase_runner as joint
+        from test_joint_live_phase_runner import JointRunnerTests, PHASES
+        fixture=JointRunnerTests();fixture.setUp()
+        try:
+            reserve=fixture.authority.reserve
+            def lose(binding,attempt,ready):
+                reserve(binding,"competing-fixture-reservation",ready)
+                raise TimeoutError("fixture reserve acknowledgment lost")
+            fixture.authority.reserve=lose
+            try: fixture.runner().run()
+            except joint.Blocked as error: failure=error
+            else: self.fail("fixture reserve loss should be uncertain")
+            with tempfile.TemporaryDirectory() as temp:
+                directory=Path(temp);root=directory/"platform";root.mkdir();profile=directory/"profile.json";profile.write_bytes(b'{"fixture":true}')
+                configuration=directory/"joint.json";configuration.write_text(json.dumps({"binding":{"profileSha256":hashlib.sha256(profile.read_bytes()).hexdigest()}}))
+                args=["qualify.py","--root",str(root),"--caller",str(root),"--eventstore-argument","../eventstore","--artifacts-argument",str(directory/"artifacts"),"--evidence-argument",str(directory/"evidence")]
+                with patch.dict(os.environ,{"PLATFORM_JOINT_COHORT_CONFIGURATION":str(configuration)}),patch.object(sys,"argv",args),patch.object(joint,"run_installed_cohort",side_effect=failure):
+                    self.assertEqual(2,q.main());self.assertEqual(1,host.verify(root,directory/"host",profile))
+                for report in (q.read_json(next((directory/"evidence").glob("attempt-*/live-evidence.json"))),q.read_json(directory/"host/joint-cohort-failure.json")):
+                    self.assertEqual("Unknown",report["qualificationEffects"]);self.assertEqual("Unknown",report["effectState"])
+                    self.assertEqual("ReservationUnknown",report["attemptState"]);self.assertEqual(failure.attempt_id,report["attemptId"])
+                    self.assertTrue(report["effectsStarted"])
+        finally: fixture.tearDown()
+
 
 if __name__=='__main__': unittest.main()

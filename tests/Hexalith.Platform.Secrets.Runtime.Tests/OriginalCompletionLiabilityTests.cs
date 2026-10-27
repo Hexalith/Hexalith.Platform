@@ -1,3 +1,4 @@
+using Hexalith.EventStore.Contracts.Security;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -99,6 +100,43 @@ public sealed class OriginalCompletionLiabilityTests
         (await authority.VerifyAgedOriginalRecoveryAsync(grant,current,TestContext.Current.CancellationToken)).ShouldBeTrue();
         foreach(var changed in new[]{current.NoRecordProof! with { CurrentTransportMessageId="foreign" },current.NoRecordProof! with { NativePrefixSha256=new string('F',64) },current.NoRecordProof! with { Basis="TerminalNoEvent" }})
         { current=current with { NoRecordProof=changed };(await authority.VerifyAgedOriginalRecoveryAsync(grant,current,TestContext.Current.CancellationToken)).ShouldBeFalse(); }
+    }
+    [Theory]
+    [InlineData(false,0)][InlineData(true,0)][InlineData(false,1)]
+    public async Task ActualSpoolMigratesRestoredVersionZeroAndNullTotalsBeforeSpendingPrivateCompletionCapacity(bool missing,int version)
+    {
+        var archive=new MemoryArchive();var storage=Substitute.For<IIndependentArchiveStorage>();long available=250L*1024*1024;
+        storage.AvailableBytes(Arg.Any<string>()).Returns(_=>available);
+        using var fixture=new IndependentAuthorityReceiverTests.Fixture(storage,archive);
+        var index=new IndependentPrivateOriginalIndex(archive);string? root=null;
+        for(int i=0;i<130;i++) root=(await index.SetAsync(root,"executor","old-"+i,new(JsonSerializer.SerializeToElement(new { id=i }),i==0?null:JsonSerializer.SerializeToElement(new { result=i })),TestContext.Current.CancellationToken)).Root;
+        fixture.State=fixture.State with { PrivateOriginalsRoot=root,PrivateOriginalsCount=130,PendingOriginalCompletionBytes=missing?null:version==1?4L*CustodyBindingContract.MaximumOriginalBytes+1024*1024:0,OriginalLiabilityVersion=version };
+        byte[] bytes="spool-under-pressure"u8.ToArray();var transition=new AnchoredStateTransition(fixture.Scope,0,1,new string('A',64),Convert.ToHexString(SHA256.HashData(bytes)),bytes);
+        var authority=new DaprReplicatedSpoolAuthority(fixture.Client());
+        for(int i=0;i<3;i++) { (await authority.AdmitTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeFalse();fixture.Restart(); }
+        fixture.State.OriginalLiabilityVersion.ShouldBe(1);fixture.State.PendingOriginalCompletionBytes.ShouldBe(4L*CustodyBindingContract.MaximumOriginalBytes+1024*1024);
+        fixture.State.SpoolPublication.ShouldBeNull();Directory.GetFiles(fixture.ArchiveDirectory,"admitted-*").ShouldBeEmpty();
+        available=500L*1024*1024;(await authority.AdmitTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();fixture.Restart();
+        (await authority.RecoverTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await authority.RecoverTransitionAsync(transition,TestContext.Current.CancellationToken)).ShouldBeTrue();fixture.State.SpoolPublication.ShouldBeNull();
+        fixture.State.PendingOriginalCompletionBytes.ShouldBe(4L*CustodyBindingContract.MaximumOriginalBytes+1024*1024);
+    }
+    [Fact]
+    public async Task FirstLargeLegacyOriginalMigratesBeforeFollowingEntriesAcrossCasLossAndRestart()
+    {
+        using var fixture=new IndependentAuthorityReceiverTests.Fixture();Permissions(fixture);
+        var large=JsonSerializer.SerializeToElement(new { retained=new string('x',2*1024*1024) });var normal=JsonSerializer.SerializeToElement(new { retained="exact-next-original" });
+        fixture.State.Originals.Add("executor:aaa-large",new(large,null));fixture.State.Originals.Add("executor:bbb-next",new(normal,null));
+        var store=new InstalledQualificationOriginalStore(fixture.Client());bool lost=false;
+        fixture.RejectHeadPublication=next=>next.PrivateOriginalsRoot!=fixture.State.PrivateOriginalsRoot && !lost && (lost=true);
+        await Should.ThrowAsync<InvalidOperationException>(()=>store.BeginAsync("executor","new",new JsonObject { ["input"]="valid" },TestContext.Current.CancellationToken));
+        fixture.State.Originals.ContainsKey("executor:aaa-large").ShouldBeTrue();fixture.Restart();
+        await store.BeginAsync("executor","new",new JsonObject { ["input"]="valid" },TestContext.Current.CancellationToken);
+        fixture.State.Originals.ContainsKey("executor:aaa-large").ShouldBeFalse();fixture.State.Originals.ContainsKey("executor:bbb-next").ShouldBeTrue();
+        await store.BeginAsync("executor","next-mutation",new JsonObject(),TestContext.Current.CancellationToken);
+        fixture.State.Originals.ContainsKey("executor:bbb-next").ShouldBeFalse();fixture.Restart();
+        (await store.LookupRequestAsync("executor","aaa-large",TestContext.Current.CancellationToken))!.ToJsonString().ShouldBe(large.GetRawText());
+        (await store.LookupRequestAsync("executor","bbb-next",TestContext.Current.CancellationToken))!.ToJsonString().ShouldBe(normal.GetRawText());
     }
     private static void Permissions(IndependentAuthorityReceiverTests.Fixture fixture)=>fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray() };
     private sealed class MemoryArchive:IIndependentContentArchive

@@ -8,6 +8,8 @@ public sealed class QualificationDeniedOriginalReader(IQualificationOriginalStor
     Func<JsonObject,CancellationToken,Task<JsonObject?>> independentlyVerify):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject original,CancellationToken cancellationToken)
     {
         string? caseId=SecretsProof.Text(original,"caseId"),requestId=SecretsProof.Text(original,"requestId");
@@ -22,6 +24,8 @@ public sealed class QualificationDeniedOriginalReader(IQualificationOriginalStor
         if(verifiedOriginal is null || !JsonNode.DeepEquals(raw,verifiedOriginal)) return null;
         if(envelope && (!Denial(SecretsProof.Text(raw,"firstStatus")) || !Denial(SecretsProof.Text(raw,"exactRetryStatus")))
             || capability && (raw["verified"] is not JsonValue verified || !verified.TryGetValue<bool>(out bool actual) || actual)) return null;
+        if(caseId is "S2.substitution.issued-at" or "S2.substitution.expires-at"
+            && (SecretsProof.Text(raw,"originalAuthenticationStatus")!="Succeeded" || SecretsProof.Text(raw,"firstStatus")!="InvalidTag" || SecretsProof.Text(raw,"exactRetryStatus")!="InvalidTag")) return null;
         string receipt=QualificationProtocolSchema.Digest(raw);
         var state=QualificationDeniedCaseState.Create(original,native.OriginalRevision,receipt);
         if(capability)
@@ -30,7 +34,7 @@ public sealed class QualificationDeniedOriginalReader(IQualificationOriginalStor
             foreach(var pair in new[]{("sealId","DestructionSealId"),("batchId","BatchId"),("manifestDigest","ManifestDigest"),("attestationOrdinal","AttestationOrdinal"),("keyVersion","CapabilityKeyVersion")})
                 state[pair.Item1]=payload[pair.Item2]?.DeepClone();
         }
-        return new(requestId,receipt,"original:"+native.OriginalRevision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"original:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["sourceOriginal"]=raw.DeepClone() });
     }
     private static bool Denial(string? value)=>Enum.TryParse<CustodyStatus>(value,out var status) && status is CustodyStatus.Denied or CustodyStatus.UnknownKey or CustodyStatus.RevokedKey or CustodyStatus.Invalid

@@ -522,3 +522,44 @@ The earlier 881-case result and superseded build observations remain under `pre-
 No new deferral was added. W10, D1, D2, D3, CB3, CE1 and owner decision Q3 remain as recorded. Fresh live qualification remains gated by Aspire 13.6.1 versus required 13.6.3; no new package or Windows/macOS native qualification is claimed. The build spec is done and sprint tracking is review.
 
 Builds implementation is committed locally as `0902fd6c527750ee3fc6832824f42b5b9bfdcfa6`. The Platform completion commit records its gitlink, final evidence and tracking. No push was performed.
+
+### Review Findings — implementation sources (2026-10-26)
+
+Reviewed the five Builds story commits' implementation sources (`984c4d5`, `0ade5ec`, `b215213`, `7116b16`, `0902fd6`): 33 files, +2,366 / −556. Blind Hunter, Edge Case Hunter, Verification Gap, and Acceptance Auditor all completed. Verification Gap found no gaps. Verdicts were checked against the current sources.
+
+- [ ] [Review][Decision] A process that never starts is published as `failed` / `test-failure` while the command stays `unavailable` — `NativeTestExecutor.ExecuteSelectedAsync` persists execution timing before launch (`NativeTestExecutor.cs:361`). A later start failure is `HXR030` with status `unavailable` and `TerminalCause` left null (`NativeTestExecutor.cs:469`). `TestResultWriter.Cause` then returns `test-failure` because timing is set (`TestResultWriter.cs:190`), and every non-success, non-cancelled exit becomes outcome `failed` (`TestResultWriter.cs:58`). Command output and `test-result.json` disagree. The v1 cause table has no "process did not start" cause, so the published pair is ambiguous.
+
+- [ ] [Review][Patch] Outcome recovery does not wait, so a committed pass is kept as failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1289]
+- [ ] [Review][Patch] A startup-timeout retry can commit `startup-failure` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1820]
+- [ ] [Review][Patch] A claim-lookup failure omits a known workspace leftover [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:852]
+- [ ] [Review][Patch] A non-directory workspace path is omitted from owned observation [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:850]
+- [ ] [Review][Patch] Evidence cleanup validation throws when `selectedTestRun` is the wrong shape [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [ ] [Review][Patch] Evidence cleanup proof trusts `isEmpty` and ignores recorded leftover ids [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [ ] [Review][Patch] Listing drops a valid owner when `selected-test.json` or execution timing fails checks [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:32]
+- [ ] [Review][Patch] A missing cleanup field is shown as `not-requested` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs:61]
+- [ ] [Review][Patch] An interrupted `flock` is reported as an exclusive hold [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:233]
+- [ ] [Review][Patch] A symlink at `cleanup-request.json` suppresses failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1758]
+- [ ] [Review][Patch] Selected metadata copies follow a symlink destination [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+- [ ] [Review][Patch] A missing `run` binding escapes outcome recording [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:729]
+- [ ] [Review][Patch] `FindOwned` can skip a torn claim without uncertainty [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:171]
+- [ ] [Review][Patch] Terminal result publication does not flush to disk before rename [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs:137]
+- [ ] [Review][Patch] Listing reports `failure-retained` when cleanup is already `complete` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:93]
+- [ ] [Review][Patch] Selected metadata copies are created with the process umask [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+
+- [x] [Review][Defer] `ClaimedPorts` still opens every claim with `File.OpenRead` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:148] — deferred: pre-existing port scan; the story's new claim reads use the nonblocking opener, and this method was not introduced by these commits.
+- [x] [Review][Defer] One bad Windows session SID aborts owned-process discovery [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs:213] — deferred: not actionable now; owner decision Q3 leaves Windows/macOS native qualification out of this story, and the dev lane is Linux/WSL.
+- [x] [Review][Defer] Windows metadata reads ignore `respectSharing` [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:203] — deferred: not actionable now; same Q3/W10 Windows qualification boundary. The Unix `flock` path is in the patch list.
+
+#### Rejected
+
+- `false` — Non-Linux process discovery never consults the Windows/macOS reader. `FindAsync` calls `CompositionProcessEnvironmentReader.Find` whenever the host is not Linux (`CompositionRunResourceScanner.cs:38`).
+- `false` — Unverified discovery always burns five one-second delays. `IsEmpty` is false while discovery is unverified, and those retries are the existing cleanup bound (`CompositionRunResourceScanner.cs:57`).
+- `low` — Later publications replace retention `recordedAt` and cleanup `observedAt`. Terminal `recordedAt` stays `TerminalAtUtc`. Those other clocks are later observations; preserving the first retention clock needs a prior-document merge and is not an everyday failure.
+- `false` — Human `list` omits the creation timestamp, rounds age, and always prints `hold-deadline` as unavailable. The spec requires age plus explicitly unavailable admission/hold data. Integer `age-seconds` is that age field (`ToolDiagnosticFormatter.cs:80`).
+- `false` — Exact `down` accepts the placeholder manifest `unused-manifest-for-exact-run`. `ExecuteExactDownAsync` returns before manifest load, and the CLI refuses that placeholder together with `--evidence` (`ModuleCommandApplication.cs:230`).
+- `false` — A passed command can still exit successfully when later cleanup is incomplete. The spec requires the committed terminal outcome to stay the command outcome while cleanup errors remain diagnostics.
+- `low` — Each result update leaves prior `lifecycle-*.json` files. Those files are the immutable content-addressed diagnostics the latest result names. Deleting them is extra retention logic, not an everyday failure.
+- `false` — `InitializeStateAsync` accepts any deserialized state. It returns an existing state only after `ReadOwnedStateAsync` accepts schema, run, attempt, and environment (`CompositionEngine.cs:2198`).
+- `false` — A receipt-bound claim file that is absent is dropped without uncertainty. `FileNotFoundException` is verified absence. Unreadable claim paths already call `onUnverified` (`CompositionResourceClaimStore.cs:197`).
+- `low` — Deleting the receipt temp can hide the original write error. `File.Delete` of a missing temp does not throw, so a successful move is preserved. A double failure is not an everyday path, and catching it adds another branch.
+- `false` — Cancellation during a metadata read ignores the stopping allowance. `ReadExactlyAsync` receives that token, and the cancellation catch returns (`CompositionEngine.cs:1060`).

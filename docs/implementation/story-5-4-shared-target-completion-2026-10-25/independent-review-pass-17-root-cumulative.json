@@ -1,0 +1,189 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T03:46:49.932397+00:00",
+  "reviewPass": "17-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review17_blind",
+    "/root/review17_edge",
+    "/root/review17_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-psv8giye/scope.json",
+  "reviewDiffSha256": "6324b5d7f6ad2709c5df79ad7165b3ad86f9e44d0079015def4fc12cd08b076f",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "No exact unchanged location-and-claim carry applies. Remaining native-source lifetime wrapper differs from the corrected QualificationOwnerApplication; Python immutable read bytes differ from prior C# private string adapters; SQLite foreign-descriptor false rejection differs from original exact acquisition/namespace substitution guards.",
+  "findings": [
+    {
+      "id": "R17B-1",
+      "verdict": "high",
+      "evidence": "JointPhaseSourceExecutable.RunAsync creates a30-second startup CTS and passes its token as IndependentAuthorityHttpApplication.RunAsync cancellationToken. RunAsync forwards that argument as RunCapturedAsync lifetimeToken, so successful source service startup is followed by shutdown at the outer deadline. The existing friend-accessible captured startup/lifetime API can repair this separate remaining wrapper without a new public surface.",
+      "route": "patch"
+    },
+    {
+      "id": "R17B-2",
+      "verdict": "high",
+      "evidence": "Both FR34 command-authorization and occurrence handlers inherit RequiresCurrentResultAdmission=false. Their current policy/caller checks precede awaited original/producer reads; IndependentAuthorityReceiver performs its late grant/policy reread and CAS only when that hook is true. These handlers can therefore receive a fresh signed result from a stale snapshot after a caller/recipe change. Reuse the existing current-result hooks, binding exactly the policy and nested workload grant actually consulted.",
+      "route": "patch"
+    },
+    {
+      "id": "R17B-3",
+      "verdict": "medium",
+      "evidence": "HeldSqliteConnection enumerates all newly opened O_RDWR regular descriptors in the process and rejects if any inode differs from the enrolled main database. Root reproduced ExactAcquiredSqliteMainDescriptorIdentity on the correct enrolled database by opening one unrelated writable file during sqlite3.connect. The shared open lock serializes SQLite opens but cannot serialize unrelated IO. Actual per-connection ownership must replace the ambient census without weakening main-inode/ABA protection.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R17B-4",
+      "verdict": "medium",
+      "evidence": "The private bounded_file_io scan calls os.read and copies its immutable bytes into a clearable bytearray. Root captured the returned os.read bytes during actual use_private: the bytearray was zeroed but fixture plaintext remained in the additional immutable read copy. Use owned writable buffers for private acquisition and preserve cleanup after late completion.",
+      "route": "patch"
+    },
+    {
+      "id": "R17B-5",
+      "verdict": "high",
+      "evidence": "The three qualification programs call QualificationHttpHost directly with no outer concurrency admission. It authenticates, reads and repeatedly parses/clones bounded bodies before calling remote providers; only the separate IndependentAuthorityReceiver has four-slot ownership. Per-request size/time limits do not bound simultaneous request buffers or authentication tasks at these public hosts. Add bounded ownership before that work and retain it through response and late children.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R17B-6",
+      "verdict": "false",
+      "evidence": "provably_unstarted explicitly certifies only a supported CPython native-handle/locked-registry state; False means ownership is not proved absent. Missing interpreter attributes deliberately retain Unknown rather than abandon a potentially launched worker, exactly as the selected failure contract requires. The current supported interpreter exercises the prestart/OS-launch/bootstrap/completed cases. No supported qualified-runtime guarantee or incorrect release was shown; the proposed additional portability gate does not establish a defect in this conservative predicate.",
+      "route": "rejected"
+    },
+    {
+      "id": "R17B-7",
+      "verdict": "medium",
+      "evidence": "QualificationProofVerifier.VerifyAt catches its own caller-token ThrowIfCancellationRequested as Exception and returns false. AddInstalledQualificationRole similarly converts cancellation from bounded acquisition into validEnrolledInstallationBundle. These public cancellation parameters therefore report bad input instead of cancellation. Preserve actual caller cancellation while retaining malformed-proof/installation refusal and internal timeout behavior.",
+      "route": "patch"
+    },
+    {
+      "id": "R17B-8",
+      "verdict": "false",
+      "evidence": "The current immutable OQ-5.4-1 schema has exactly234 cases, matching both the explicit count and exact ordered CaseSchema list guard. No current enrollment is inconsistent. The proposed bad state requires an unapproved scope/schema change; this work explicitly preserves the full234-case contract. An independent fixed-scope guard against a changed embedded list is not the claimed current validation failure.",
+      "route": "rejected"
+    },
+    {
+      "id": "R17B-9",
+      "verdict": "low",
+      "evidence": "PersistedPhaseObserver._verify_source_case duplicates exactly the REQUIRED invariant-name mapping used by closed_phase_invariants preflight/verification. Editing the authoritative mapping alone would make that named consumer validate another profile shape. The direct correction is to reuse REQUIRED and delete the duplicate literal; it adds no new guard or state and preserves every current required name.",
+      "route": "patch"
+    },
+    {
+      "id": "R17B-10",
+      "verdict": "medium",
+      "evidence": "IndependentAuthorityReceiver collapses unexpected failures to unclassified503 and its owning application clears all logging providers. Both classes are new since the baseline. Operators receive no bounded content-free indication distinguishing acquisition/storage/capacity or malformed-state failures, and conditional-write failures similarly lack a diagnosable category. Supply finite safe diagnostic outcomes/counters without disclosing private data or changing uncertainty/effect authority.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R17E-1",
+      "verdict": "high",
+      "evidence": "The at-boundary guard recipe starts both Step tasks, then awaits effect first. If effect throws while trigger is waiting on a native guard/actor task, the parent handler faults before trigger settles. Receiver ownership tracks the parent; the typed native actor calls are not all IndependentDaprAuthority invocations with their own tracking. Joining both already-started Step tasks before propagating failure prevents this demonstrated lifetime gap.",
+      "route": "patch"
+    },
+    {
+      "id": "R17V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed: no executable regression exercises QualificationReplayCaseWorkflow.LookupAsync through its registered callback after native replay registration commits but case-result retention is lost. Existing envelope workflow and Python hand-built observation tests cover another path. Add actual receiving/original-store recovery coverage proving the exact native first-seen receipt and recovered case result remain unchanged.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R17B-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "JointPhaseSourceExecutable.RunAsync creates a30-second startup CTS and passes its token as IndependentAuthorityHttpApplication.RunAsync cancellationToken. RunAsync forwards that argument as RunCapturedAsync lifetimeToken, so successful source service startup is followed by shutdown at the outer deadline. The existing friend-accessible captured startup/lifetime API can repair this separate remaining wrapper without a new public surface."
+    },
+    {
+      "members": [
+        "R17B-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Both FR34 command-authorization and occurrence handlers inherit RequiresCurrentResultAdmission=false. Their current policy/caller checks precede awaited original/producer reads; IndependentAuthorityReceiver performs its late grant/policy reread and CAS only when that hook is true. These handlers can therefore receive a fresh signed result from a stale snapshot after a caller/recipe change. Reuse the existing current-result hooks, binding exactly the policy and nested workload grant actually consulted."
+    },
+    {
+      "members": [
+        "R17B-3"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "HeldSqliteConnection enumerates all newly opened O_RDWR regular descriptors in the process and rejects if any inode differs from the enrolled main database. Root reproduced ExactAcquiredSqliteMainDescriptorIdentity on the correct enrolled database by opening one unrelated writable file during sqlite3.connect. The shared open lock serializes SQLite opens but cannot serialize unrelated IO. Actual per-connection ownership must replace the ambient census without weakening main-inode/ABA protection."
+    },
+    {
+      "members": [
+        "R17B-4"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "The private bounded_file_io scan calls os.read and copies its immutable bytes into a clearable bytearray. Root captured the returned os.read bytes during actual use_private: the bytearray was zeroed but fixture plaintext remained in the additional immutable read copy. Use owned writable buffers for private acquisition and preserve cleanup after late completion."
+    },
+    {
+      "members": [
+        "R17B-5"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "The three qualification programs call QualificationHttpHost directly with no outer concurrency admission. It authenticates, reads and repeatedly parses/clones bounded bodies before calling remote providers; only the separate IndependentAuthorityReceiver has four-slot ownership. Per-request size/time limits do not bound simultaneous request buffers or authentication tasks at these public hosts. Add bounded ownership before that work and retain it through response and late children."
+    },
+    {
+      "members": [
+        "R17B-7"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "QualificationProofVerifier.VerifyAt catches its own caller-token ThrowIfCancellationRequested as Exception and returns false. AddInstalledQualificationRole similarly converts cancellation from bounded acquisition into validEnrolledInstallationBundle. These public cancellation parameters therefore report bad input instead of cancellation. Preserve actual caller cancellation while retaining malformed-proof/installation refusal and internal timeout behavior."
+    },
+    {
+      "members": [
+        "R17B-9"
+      ],
+      "verdict": "low",
+      "route": "patch",
+      "cause": "PersistedPhaseObserver._verify_source_case duplicates exactly the REQUIRED invariant-name mapping used by closed_phase_invariants preflight/verification. Editing the authoritative mapping alone would make that named consumer validate another profile shape. The direct correction is to reuse REQUIRED and delete the duplicate literal; it adds no new guard or state and preserves every current required name."
+    },
+    {
+      "members": [
+        "R17B-10"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "IndependentAuthorityReceiver collapses unexpected failures to unclassified503 and its owning application clears all logging providers. Both classes are new since the baseline. Operators receive no bounded content-free indication distinguishing acquisition/storage/capacity or malformed-state failures, and conditional-write failures similarly lack a diagnosable category. Supply finite safe diagnostic outcomes/counters without disclosing private data or changing uncertainty/effect authority."
+    },
+    {
+      "members": [
+        "R17E-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "The at-boundary guard recipe starts both Step tasks, then awaits effect first. If effect throws while trigger is waiting on a native guard/actor task, the parent handler faults before trigger settles. Receiver ownership tracks the parent; the typed native actor calls are not all IndependentDaprAuthority invocations with their own tracking. Joining both already-started Step tasks before propagating failure prevents this demonstrated lifetime gap."
+    },
+    {
+      "members": [
+        "R17V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed: no executable regression exercises QualificationReplayCaseWorkflow.LookupAsync through its registered callback after native replay registration commits but case-result retention is lost. Existing envelope workflow and Python hand-built observation tests cover another path. Add actual receiving/original-store recovery coverage proving the exact native first-seen receipt and recovered case result remain unchanged."
+    }
+  ],
+  "filedFindingCount": 12,
+  "survivors": 10,
+  "rejected": 2,
+  "rootCauseGroups": 10,
+  "badSpecGroups": 3,
+  "patchGroups": 7,
+  "rootIsolatedProbe": "/tmp/story54-root-review17-probes.json",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "status": "SourceCorrectionsRequired",
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

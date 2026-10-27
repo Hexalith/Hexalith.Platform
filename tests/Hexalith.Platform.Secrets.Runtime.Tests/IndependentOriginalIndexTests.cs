@@ -13,8 +13,9 @@ public sealed class IndependentOriginalIndexTests
     public async Task MoreThanLifetimeCapCompletedOriginalsKeepOneBoundedHeadAndEveryExactArchivedBodyAndHistory(string role)
     {
         var archive=new MemoryArchive();var storage=Substitute.For<IIndependentArchiveStorage>();storage.AvailableBytes(Arg.Any<string>()).Returns(long.MaxValue);
+        using var proofKey=System.Security.Cryptography.RSA.Create(2048);
         using var fixture=new IndependentAuthorityReceiverTests.Fixture(storage,archive);
-        fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Role=role,Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original","recording-dispatch-admit"] }).ToArray() };
+        fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Role=role,Methods=["qualification-begin-original","qualification-retain-result","qualification-lookup-original","recording-dispatch-admit","recording-source:security-event-log"],CommandProofPublicKeySpkiBase64=Convert.ToBase64String(proofKey.ExportSubjectPublicKeyInfo()) }).ToArray() };
         var authority=fixture.Client();var originals=new InstalledQualificationOriginalStore(authority);
         int initialBytes=JsonSerializer.SerializeToUtf8Bytes(fixture.State).Length;
         const int count=10025;
@@ -23,7 +24,13 @@ public sealed class IndependentOriginalIndexTests
             string id=index.ToString("D26",System.Globalization.CultureInfo.InvariantCulture);
             var input=new JsonObject { ["securityObservationId"]="fixture-observation-"+index,["routingTenantId"]="tenant",["observedAt"]="2026-10-25T00:00:00Z",["utcDay"]="2026-10-25" };
             (await originals.BeginAsync(role,id,input,TestContext.Current.CancellationToken)).ShouldBeTrue();
-            if(role=="private-security-observation") (await authority.InvokeAsync<Permission>("recording-dispatch-admit",new { role=role,requestId=id,original=input },TestContext.Current.CancellationToken))!.Allowed.ShouldBeTrue();
+            if(role=="private-security-observation")
+            {
+                var command=new Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest(id,"tenant","security-event-log","aggregate","command",System.Text.Json.JsonSerializer.SerializeToElement(input),IdempotencyKey:id);
+                var bound=new Hexalith.EventStore.Contracts.Commands.BoundWorkloadCommandRequest(command,"scope");
+                string proof=Hexalith.EventStore.Client.Gateway.BoundWorkloadCommandProof.Issue(bound,"worker",Convert.ToBase64String(proofKey.ExportPkcs8PrivateKey()),DateTimeOffset.UtcNow);
+                (await authority.InvokeAsync<Permission>("recording-dispatch-admit",new { role=role,requestId=id,original=input,boundRequest=bound,workloadProof=proof },TestContext.Current.CancellationToken))!.Allowed.ShouldBeTrue();
+            }
             await originals.RetainAsync(role,id,new JsonObject { ["nativeReceipt"]="fixture-receipt-"+index },TestContext.Current.CancellationToken);
         }
         fixture.State.Originals.ShouldBeEmpty();fixture.State.PrivateOriginalsCount.ShouldBe(count);fixture.State.PrivateOriginalsRoot.ShouldNotBeNull();

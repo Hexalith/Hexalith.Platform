@@ -1,11 +1,11 @@
 {
   "schema": "platform.story-5.4.remaining-installation-ledger.v1",
-  "observedAtUtc": "2026-10-25T23:31:58.148789+00:00",
+  "observedAtUtc": "2026-10-27T10:10:10.667670+00:00",
   "deliveryStatus": "Blocked",
   "completeSharedTargetPacket": false,
   "dependencyAvailable": false,
   "installedQualification": false,
-  "sourceReviewStatus": "EscalationRequired_ReviewLoopLimitReached",
+  "sourceReviewStatus": "IndependentReview20ConfirmedCorrectionsRequired",
   "ownerReturnForm": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
   "ownerReturnFormSha256": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d",
   "missingOwnerReturns": [
@@ -528,7 +528,7 @@
     {
       "id": "AUTHORITY",
       "owner": "Independent authority/archive/recovery custodians",
-      "needed": "Pre-enrolled Dapr strong-CAS heads and immutable retained archives outside application backup/restore; actual replicas, failure domains, genesis/incarnations, completion reserve, retention and two-person recovery authority. Runtime creates no genesis."
+      "needed": "Pre-enrolled Dapr strong-CAS heads and immutable retained archives outside application backup/restore; actual replicas, failure domains, genesis/incarnations, completion reserve, retention and two-person recovery authority. Runtime creates no genesis. Independently enrolled LinuxSharedPhysicalArchiveCapacityV1 pool directory/enrollment hash and reconciled capacity.json genesis, actual physical quota/completion sizing, existing pending/retained/unknown-transfer inventory and the actual shared volume-fence device+inode identity across all native/independent participants and mount namespaces. Source metadata floor8MiB+64KiB and ticket bounds are not installed measurements."
     },
     {
       "id": "TRUST",
@@ -577,6 +577,28 @@
       "sourceDefinition": "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityState.cs",
       "installedCapacityEvidence": null,
       "sourceCorrectionStatus": "ImplementedAndFixtureVerified_InstalledCapacityMissing"
+    },
+    {
+      "id": "NATIVE_ARCHIVE_PHYSICAL_CAPACITY",
+      "owner": "Independent archive/storage custodian and Platform native-provider maintainer",
+      "needed": "Actual independently enrolled LinuxExclusiveLocalArchiveCapacityV1 capacity directory, existing enrollment marker and capacity.json genesis outside application restore, both archives on the same enrolled local filesystem, exclusive writers, verified flock/statx/posix_fallocate/fsync semantics, quota/free-space and measured completion bounds. Independently reconcile existing retained-byte census and pending identities. Source reserves at least10*64MiB per pending original/intent, with bounded outstanding publication metadata; source limits establish no installed capacity. Missing or unsupported storage refuses before native admission. Actual independently measured physical metadata floor must also cover 64MiB plus 64KiB across bounded atomic ledger replacements; source allocation limits are not installation evidence. Actual independently enrolled VolumeFenceIdentity (volume-root device+inode), matching every independent/native participant and mount namespace; source checks the held inode before flock. Missing/mismatching identity blocks admission.",
+      "sourceDefinition": "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityInstallation.cs",
+      "installationEvidence": null
+    },
+    {
+      "id": "CURRENT_WORKLOAD_DISPATCH_PROOF",
+      "owner": "Independent workload/security enrollment and current-authority custodians",
+      "needed": "Actual RSA SPKI public key>=2048bit independently enrolled for the exact workload caller/principal and recording-source permission under the surviving dispatch/revocation authority head; corresponding existing scoped private mount and exact command proof. Original-store credentials cannot substitute for workload authorization.",
+      "sourceDefinition": "src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs",
+      "installationEvidence": null
+    },
+    {
+      "id": "DELIVERY_DENIAL_ORIGINALS",
+      "owner": "Platform delivery-owner and independent immutable-original authority custodians",
+      "needed": "Actual supplied private delivery-owner actor registration/current authority/direct-provider ports and ExportDeliveryDenialOriginals binding to the independently enrolled private-export-delivery-denial-v1 authority outside application restore. The same private role retains legacy exact denials and new raw receiving-rejection-v2 originals; no legacy body is rewritten. Real writes remain captured at the actual receiver in the private actor activator. Scoped grants/credential mounts, persistent replicated storage/capacity and actual installed hashes remain required. Full field substitution source is implemented; Dapr routing/channel/framing failures before this receiver require their actual independent evidence.",
+      "sourceDefinition": "src/Hexalith.Platform.Secrets.Runtime/AgentsOwningProcessInstallation.cs",
+      "sourceWiring": "src/Hexalith.Platform.Secrets.Runtime/ExportKeyDeliveryDenialComposition.cs",
+      "installationEvidence": null
     }
   ],
   "installedHashes": {
@@ -794,13 +816,146 @@
   "completeQualificationDriverCount": 0,
   "qualificationCaseCount": 234,
   "externalProtocolDependentUnregisteredCaseCount": 49,
-  "closedDriverInventorySha256": "deeed36cd2763aea385fcab036e9d49ce3532aa63697c1ffab7df2f08b562f9a",
+  "closedDriverInventorySha256": "6ace84b7f52bb0d4b7c6cfa33607ddee652fde7fd0da0782f1ab7ed5f436c1c5",
   "closedNativeInvariantInventorySha256": "e9cd9d50c9657d0cfde50bb2f880412ed6f5e744142378cd002ba020491d8692",
-  "independentReviewEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-6.json",
+  "independentReviewEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-15-root-cumulative.json",
   "preservationEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/preservation-verification.json",
   "sourceVerificationEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-verification-history.json",
-  "latestSourceReviewTriage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-3.json",
-  "ordinarySourceCorrectionsRemaining": [
+  "latestSourceReviewTriage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-20-root-cumulative.json",
+  "ordinarySourceCorrectionsRemaining": 9,
+  "currentSourceEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/current-source-verification.json",
+  "ordinarySourceCorrectionHandbackIsIndependentApproval": false,
+  "latestSourceCorrectionHandbackSha256": "dfa1a8793ac3b7886a4b161b60e5cb5916910ccd42349c9b888ad081472e7fd1",
+  "latestExternalProtocolBoundaries": {
+    "schema": "platform.story54.round7.boundary-audit.v1",
+    "observedAtUtc": "2026-10-26T06:08:04.909006+00:00",
+    "sourceComplete": false,
+    "deliveryComplete": false,
+    "installedQualification": false,
+    "replacementTarget": null,
+    "replacementPlatformIntegrationDate": null,
+    "replacementProtectionIntegrationDate": null,
+    "fullCaseCount": 234,
+    "completeQualificationDriverCount": 0,
+    "priorExternalBoundariesPreserved": true,
+    "newOrReaffirmedExactProtocols": [
+      {
+        "id": "External.EnrolledCurrentWorkloadCommandProofPublicKeyAndSameHeadDispatchGrant",
+        "source": [
+          "src/Hexalith.Platform.Secrets.Runtime/IndependentCallerGrant.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityReceiver.cs"
+        ],
+        "required": "Independently enrolled RSA SPKI key (>=2048 bit), exact represented principal and recording-source permission in the original/dispatch authority surviving head. Private original-store credentials cannot substitute for this workload grant. No installed key/grant is supplied."
+      },
+      {
+        "id": "External.EnrolledAtomicNativeArchivePhysicalCapacityAndFencingProtocol",
+        "source": [
+          "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacityInstallation.cs",
+          "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs"
+        ],
+        "required": "Actual independently enrolled LinuxExclusiveLocalArchiveCapacityV1 directory, existing capacity.json genesis and enrollment marker outside application restore; exclusive writers, supported local flock/statx/posix_fallocate/directory-fsync semantics, same actual filesystem for both archive roots, measured quota and physical completion budget (source minimum 10*64 MiB per pending original/intent). Existing retained-byte census and old pending identities must be independently reconciled; startup creates no genesis or enrollment."
+      },
+      {
+        "id": "External.NativeArchiveAtomicPhysicalAllocationProtocol",
+        "source": [
+          "infrastructure/Hexalith.Platform.Custody.Dapr/NativeArchiveCapacity.cs"
+        ],
+        "required": "Actual filesystem support and scoped capacity for persistent preallocated pending completion blocks, durable capacity authority and bounded exact publication metadata. Missing/unsupported storage denies before native admission. Fixture allocation proves no installed capacity, physical key erasure or provider guarantee."
+      },
+      {
+        "id": "External.AtomicLocalArchiveFencingAndCapacityProtocol",
+        "source": [
+          "src/Hexalith.Platform.Secrets.Runtime/ArchiveFileLease.cs",
+          "src/Hexalith.Platform.Secrets.Runtime/ImmutableFileArchive.cs"
+        ],
+        "required": "Supported local Linux 64-bit filesystem with permanent per-path flock inode, regular no-follow acquisition, atomic rename and directory fsync. Network/unsupported storage refuses; no lock inode or accepted immutable final is removed. Exact duplicate writers allocate one full-size temporary only."
+      },
+      {
+        "id": "External.ExactHistoricalNativePhaseSourceSnapshotProtocol",
+        "source": [
+          "src/Hexalith.Platform.Protection/JointPhaseNativeSourcePublisher.cs",
+          "src/Hexalith.Platform.Protection/JointPhaseSourceOperationHandler.cs"
+        ],
+        "required": "If admitted first measurement failed before immutable signed inner retention, no available exact native historical snapshot can reconstruct its original. Recovery remains Unknown and never reads later live facts as its original. Surviving inner/final signed bytes recover exactly."
+      },
+      {
+        "id": "External.ExactNativeFr34UnsealOrReplayOriginalWithoutMaterialRereleaseProtocol",
+        "source": [
+          "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs"
+        ],
+        "required": "An admitted unseal/pre-erasure replay with no independently retained complete value result remains Unknown. Recovery never releases another read use, recomputes from changed erasure state or journals plaintext to enable retry. Existing seal/destruction exact recovery remains supported."
+      }
+    ],
+    "nativeCapacitySourceBounds": {
+      "maximumOriginalBytes": 67108864,
+      "minimumPerPendingCompletionBytes": 671088640,
+      "maximumConfiguredPendingRows": 30000,
+      "maximumOutstandingPublicationRows": 131072,
+      "reservedPublicationSlotsPerPending": 8,
+      "admissionMetadataReserveBytes": 1048576,
+      "limitsAreInstalledEvidence": false
+    },
+    "sourceBuildBoundary": {
+      "classification": "CurrentPlatformSourcesAgainstExactPriorCleanDependencyAssemblies",
+      "reason": "Concurrent EventStore source graph transiently failed because Routing/RouteCatalogCodec.cs referenced absent RouteCatalogValidator; no sibling source was edited/reset. Final Platform builds use BuildProjectReferences=false and exact dependency assembly hashes. No current full-sibling-source build or accepted replacement target is claimed.",
+      "diagnosticLog": "/tmp/story54-round7-protection-build-diagnostic-external-source-drift.log",
+      "dependencyHashes": "/tmp/story54-round7-prior-built-dependencies.json"
+    },
+    "qualificationRule": "All executions use isolated fixture inputs. No original installed hash, authority enrollment, key, physical proof, owner date, accepted target or availability is invented."
+  },
+  "requiredPoolReplenishmentProtocol": "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol",
+  "installedPoolReplenishmentEvidence": null,
+  "requiredUnselectedMeasurementAndHistoricalProtocols": [
+    "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol",
+    "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol",
+    "External.ExactHistoricalSignedStageSnapshotProtocol",
+    "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol",
+    "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol",
+    "External.EnrolledCurrentWorkloadCommandProofPublicKeyAndSameHeadDispatchGrant",
+    "External.EnrolledAtomicNativeArchivePhysicalCapacityAndFencingProtocol",
+    "External.NativeArchiveAtomicPhysicalAllocationProtocol",
+    "External.AtomicLocalArchiveFencingAndCapacityProtocol",
+    "External.ExactHistoricalNativePhaseSourceSnapshotProtocol",
+    "External.ExactNativeFr34UnsealOrReplayOriginalWithoutMaterialRereleaseProtocol",
+    "External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol",
+    "External.ExactNativeStageControlIncarnationAndHistoricalObservationProtocol"
+  ],
+  "installedMeasurementAndHistoricalProtocolEvidence": {
+    "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol": null,
+    "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol": null,
+    "External.ExactHistoricalSignedStageSnapshotProtocol": null,
+    "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol": null,
+    "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol": null,
+    "External.EnrolledCurrentWorkloadCommandProofPublicKeyAndSameHeadDispatchGrant": null,
+    "External.EnrolledAtomicNativeArchivePhysicalCapacityAndFencingProtocol": null,
+    "External.NativeArchiveAtomicPhysicalAllocationProtocol": null,
+    "External.AtomicLocalArchiveFencingAndCapacityProtocol": null,
+    "External.ExactHistoricalNativePhaseSourceSnapshotProtocol": null,
+    "External.ExactNativeFr34UnsealOrReplayOriginalWithoutMaterialRereleaseProtocol": null,
+    "External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol": null,
+    "External.ExactNativeStageControlIncarnationAndHistoricalObservationProtocol": null
+  },
+  "sourceWorkflowEscalation": {
+    "skill": ".agents/skills/bmad-build/SKILL.md",
+    "step": ".agents/skills/bmad-build/step-04-review.md:62",
+    "quote": "If it exceeds 5, HALT and escalate to the human.",
+    "limit": 5,
+    "counter": 6,
+    "overrideReceived": true
+  },
+  "sourceImplementationIsComplete": false,
+  "blockerSeparation": {
+    "source": "Independent review20 final:10 surviving findings in9 source/test groups require source21. Source20 2271 component executions remain historical component evidence. Actual installations/protocols/trust/physical evidence, owner dates and accepted complete target remain separate blockers.",
+    "installation": "All missing actual installations, protocol evidence, trust/hashes, owner dates and complete immutable target remain missing independently of the source escalation."
+  },
+  "reviewLimitOverride": {
+    "received": true,
+    "userReply": "yes",
+    "scope": "Override the five-loop BMAD review halt for continuing this already authorized source implementation and review to completion. No installation/cohort/physical/commitment authorization is added.",
+    "observedAtUtc": "2026-10-26T05:22:46.311693+00:00"
+  },
+  "sourceCorrectionHandback": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-20.json",
+  "previousSourceReviewFindingsAwaitingCorrectionReview": [
     {
       "id": "B6-1",
       "verdict": "high",
@@ -886,67 +1041,1008 @@
       "route": "patch \u2014 actual adapter/client/receiving proof and current-revocation regression"
     }
   ],
-  "currentSourceEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/current-source-verification.json",
-  "ordinarySourceCorrectionHandbackIsIndependentApproval": false,
-  "latestSourceCorrectionHandbackSha256": "78959098c6b29fa3696fa2f43f349b04d7813e4a1e4fe0bfac2a9c41113e1e71",
-  "latestExternalProtocolBoundaries": {
-    "schema": "platform.story54.round6.source-boundaries.v1",
-    "observedAtUtc": "2026-10-25T23:12:13.974349+00:00",
-    "sourceComplete": false,
-    "deliveryComplete": false,
-    "installedQualification": false,
-    "replacementTarget": null,
-    "replacementPlatformIntegrationDate": null,
-    "replacementProtectionIntegrationDate": null,
-    "newOrReaffirmedExactProtocols": [
-      "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol",
-      "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol",
-      "External.ExactHistoricalSignedStageSnapshotProtocol",
-      "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol",
-      "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol"
-    ],
-    "priorExternalBoundariesPreserved": [
-      "Actual eligible existing non-AWS installation/native registrations and immutable reserved manifests, actual original controls and physical all-copy/holder/restore evidence.",
-      "Independently enrolled outside-restore current authority/archive/trust, scopes, credential mounts and measured transport/storage capacity; source creates none.",
-      "Common independently current FR34 authorization revision/recipe binding and exact static or dynamic native manifest originals.",
-      "Dedicated guarded-transaction original credential/store and exact independently enrolled cell/receipt scopes. Complete primary plus receipt restore before any independent witness remains Unknown; no immutable native transaction-original API can resolve that absence.",
-      "External.CompleteAffectedBatchSetAtRecordedRevocationRevisionProtocol and External.ExactCompetingProtectionOperationOriginalAndReservationHistoryProtocol.",
-      "Existing exact Register/Reserve/Block/Activate native operation-original contracts, complete selected recovery/history/log/trace/physical census schemas and all previously recorded external protocols remain unavailable.",
-      "Explicit accepted protection binding/target/date/profile/config/plan and complete coordinated installed public input bundle.",
-      "Actual installed hashes, newly accepted immutable complete Platform target and explicit owner integration dates remain absent."
-    ],
-    "installedPoolReplenishmentEvidence": null,
-    "fullCaseCount": 234,
-    "completeQualificationDriverCount": 0,
-    "qualificationRule": "Only isolated source/component effects and trust were exercised. No native physical property, enrolled installation, owner date, accepted replacement, availability or complete source qualification is established."
-  },
-  "requiredPoolReplenishmentProtocol": "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol",
-  "installedPoolReplenishmentEvidence": null,
-  "requiredUnselectedMeasurementAndHistoricalProtocols": [
-    "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol",
-    "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol",
-    "External.ExactHistoricalSignedStageSnapshotProtocol",
-    "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol",
-    "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol"
+  "preservedConcurrentReview7Rows": [
+    {
+      "id": "B7-1",
+      "verdict": "high",
+      "evidence": "QualificationLifecycleCaseWorkflow.TerminalBody accepts only Consumed manifests; QualificationLifecycleOriginalReader needs a definitive non-consumed held-manifest outcome for S3.hold-pin. Current workflow cannot reach that denial observation.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-2",
+      "verdict": "high",
+      "evidence": "LookupRegistrationOriginalAsync requires and echoes an already-complete registration, but KeyEnvelopeBuilder generates the receipt during first wrap. The new test pre-wraps; first-response-loss recovery lacks the receipt it requires.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-3",
+      "verdict": "high",
+      "evidence": "AbandonSuccessorAsync selects intents[0] including closed copy intents; native EnsureCompletionAsync rejects closed reservations even with an active retirement intent.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-4",
+      "verdict": "high",
+      "evidence": "NativeArchiveCapacity.SaveAsync rewrites a ledger up to 32 MiB before releasing completion blocks; admission preserves only 64 KiB physical overhead. A near-full filesystem can strand admitted completions.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-5",
+      "verdict": "high",
+      "evidence": "Recovery branches validate a top-level SubmitCommandRequest, but DispatchBinding compares its signed command only through payload/id/role-compatible domain. Tenant/aggregate/type/extensions can differ at the conditional admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-6",
+      "verdict": "high",
+      "evidence": "DispatchBinding checks workload expiry/proof time before awaited archive writes; final CAS only rechecks the storage caller and authority expiry. The distinct workload/proof can expire before admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-7",
+      "verdict": "high",
+      "evidence": "Custody-owner-call now bypasses the externalEffect CAS as read-only, and the receiver performs no post-handler current-head authorization. A grant revocation during native/control reads can precede return of a fresh proof.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-8",
+      "verdict": "medium",
+      "evidence": "NSubstitute was added directly and project references changed without the tracked dependency lock updates. The supported Release/package-reference locked restore reports NU1004.",
+      "route": "patch"
+    },
+    {
+      "id": "B7-9",
+      "verdict": "high",
+      "evidence": "BoundedRegularFile performs openat/statx and regular-file reads without a cancellable outer execution bound; cancellation checks cannot interrupt a stalled filesystem syscall and no storage-contract constraint prevents that path.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "B7-10",
+      "verdict": "false",
+      "evidence": "The installed constructor creates only DaprPhaseOwner instances. Their preflight delegates to DaprCohortRpc.call, whose queue wait has an absolute 30-second deadline independent of its daemon I/O worker; decoded proof/signature work is bounded. A permanently blocking substituted fake owner does not demonstrate a reachable installed executor-thread leak at the cited new pool.",
+      "route": "rejected"
+    },
+    {
+      "id": "E7-1",
+      "verdict": "high",
+      "evidence": "Same verified held-manifest terminal-filter defect as B7-1.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "E7-2",
+      "verdict": "high",
+      "evidence": "Same verified closed-first-copy completion reservation defect as B7-3.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "E7-3",
+      "verdict": "high",
+      "evidence": "Same verified missing physical ledger-rewrite floor as B7-4.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "V7-1",
+      "verdict": "high",
+      "evidence": "Pre-verified gap: native completion test directly writes 8 MiB under 16 MiB ordinary headroom; it neither proves reserved publication nor executes KeyExchange with NativeDaprAuthorityStore under exhausted ordinary capacity.",
+      "route": "patch"
+    },
+    {
+      "id": "V7-2",
+      "verdict": "high",
+      "evidence": "Pre-verified gap: current audit-reader test uses S1 missing-config only. Workflow terminal-v2 tests never exercise the changed lifecycle/delivery audit consumer and its exact substituted-original rejection.",
+      "route": "patch"
+    }
   ],
-  "installedMeasurementAndHistoricalProtocolEvidence": {
-    "External.IndependentlyVerifiedInstalledImageAndNativeLoaderMeasurementProtocol": null,
-    "External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol": null,
-    "External.ExactHistoricalSignedStageSnapshotProtocol": null,
-    "External.ExactHistoricalStageSnapshotBeforeAlreadyAdmittedControlProtocol": null,
-    "IndependentlyAuthorizedNativeRootAndReadUseReplenishmentOrVersionedRecipeRolloverProtocol": null
+  "preservedConcurrentReviewProvenance": "Appended to the shared spec by concurrent workspace activity during root review; preserved separately from root context-free cumulative review. Both requirement sets are assigned to one sequential implementation agent.",
+  "priorRootSourceFindingsAwaitingReview8": [
+    {
+      "id": "R7B-1",
+      "verdict": "high",
+      "evidence": "Runner._run unconditionally obtains all four mutable preflights and reserve readiness even after signed retained-attempt lookup; consumed or expired inputs can therefore prevent exact completed-phase lookup. Current-set authentication is required separately; no upstream recovery bypass exists.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-2",
+      "verdict": "high",
+      "evidence": "Receiver skips security-observation-append for every existing outer admission, including interruption before inner AppendAsync. Real recorder AppendAsync already proves DefinitiveAbsent/RetainedUnsent and uses a durable dispatch barrier; ordinary drain cannot reach that permitted path.",
+      "route": "patch"
+    },
+    {
+      "id": "R7B-3",
+      "verdict": "high",
+      "evidence": "Compromise Step retry checks only consumption.LookupRevocationAsync!=null. Actual subscriber.ReceiveAsync additionally authenticates and confirms the same exact guard mirror; failure between block and mirror therefore becomes false success on recovery.",
+      "route": "patch"
+    },
+    {
+      "id": "R7B-4",
+      "verdict": "high",
+      "evidence": "Compromise false is always treated as unknown, including cataloged authenticated substitution-rejection cases. ReceiveAsync bool conflates definitive rejection and unsettled outcomes. Those recipes cannot produce their expected measured denial or name the missing rejected-original protocol before admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-6",
+      "verdict": "high",
+      "evidence": "Normal JointPhaseCommandExecutable composition bypasses even the existing CohortAttempt validation and JointPhaseCommand only validates local phase/binding/cases. No receiving current retained-phase authorization protects supplied attempt/request/predecessor before native workflow dispatch.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-7",
+      "verdict": "high",
+      "evidence": "Measured projector accepts signed surface scans without nonnegative count/unique exact-surface validation; an additional negative matchCount can cancel actual leakage to zero. Signed source authenticity does not validate its census semantics.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-8",
+      "verdict": "high",
+      "evidence": "Measured projector forbiddenEffects/foreignEffects filters targetMutations through OfType<JsonObject>, silently dropping malformed nonobject writes. Neither native supplement correlation nor signed observation checks validates this per-entry schema upstream.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-9",
+      "verdict": "high",
+      "evidence": "Guard invariant capabilityCompromiseBlockProof accepts any affected old-key revocation different from the current key. Current/retained guard receipts can contain an unrelated historical revocation, so this does not prove the exact predecessor capability/attestation replacement block.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7B-11",
+      "verdict": "high",
+      "evidence": "carried: existing concurrent B7-4/E7-3 row has the same unchanged SaveAsync claim. Ledger atomic replacement may need32MiB before releasing a pending reserve while physical admission preserves only64KiB overhead. Keep that existing bad_spec route and do not create a second fix.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7E-1",
+      "verdict": "high",
+      "evidence": "Native capacity checks AvailableFreeSpace before ImmutableFileArchive obtains publication ownership and deletes an interrupted path.pending. After reserve transfer and a killed writer, that temporary can consume the reserved space and exact retries permanently fail before reclaiming it. This is distinct from ledger rewrite headroom.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R7V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified coverage gap: only concrete provider-credential workflow test returns the same independently valid inventory snapshot before/after GetSecret. It cannot detect removal of the equality guard; add valid revision change during response and assert null plus cleanup.",
+      "route": "patch"
+    }
+  ],
+  "latestExternalContracts": [
+    {
+      "kind": "ActualInstallation",
+      "required": "Independent executor/observer/enrollment/native/denial original-store mounts, role grants, anchors, nonrollback placement, private actor activator/current target authority and actual image/loaded-input measurements. No fixture fills these values."
+    },
+    {
+      "kind": "SelectedNativeSemantics",
+      "required": "Complete six-surface log/trace/response/evidence and physical copy census correlated with actual native controls; actual process/storage incarnation and restore/history semantics; exact surviving native originals when measurement/effect retention did not complete."
+    },
+    {
+      "kind": "PublishedTypedAdapters",
+      "required": "EventStore native source-v1 supplies stream incarnation/head/digest and bounded actual originals/status/projection reads. These do not alone establish full process/storage histories or complete six-surface/copy facts. The selected complete supplement remains required before effects."
+    },
+    {
+      "kind": "BeforeReceiverDapr",
+      "required": "Actual private Dapr service/actor routing, channel authentication/ACL and malformed-frame rejection evidence before Platform dispatch. Raw candidate field rejection is owned and implemented; it is not evidence that a changed physical Dapr route was exercised."
+    },
+    {
+      "kind": "OtherPreservedProtocols",
+      "required": "Previously named exact native temporal evaluation/timestamp, rejected-envelope original, full native image/locked dependency closure, native attempt/history/copy/holder/physical closure and independent replenishment protocols remain blocked where genuinely unavailable."
+    },
+    {
+      "kind": "CoordinatedDelivery",
+      "required": "Root-owned actual resource/input reconciliation, explicit accepted replacement integration dates, full immutable accepted Platform target and both complete coordinated replacement packets. Current observed commits/source hashes are not accepted targets."
+    }
+  ],
+  "requiredRejectedCompromiseOriginal": {
+    "protocol": "External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol",
+    "owner": "Independent revocation authentication/original authority custodian",
+    "source": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+    "behavior": "Closed envelope-substitution denial recipes refuse in preflight; a boolean false cannot be promoted to an authenticated definitive rejection original.",
+    "installationEvidence": null
   },
-  "sourceWorkflowEscalation": {
-    "skill": ".agents/skills/bmad-build/SKILL.md",
-    "step": ".agents/skills/bmad-build/step-04-review.md:62",
-    "quote": "If it exceeds 5, HALT and escalate to the human.",
-    "limit": 5,
-    "counter": 6,
-    "overrideReceived": false
+  "stageObservationExternalBoundary": {
+    "protocol": "External.ExactNativeStageControlIncarnationAndHistoricalObservationProtocol",
+    "owner": "Independent audit/control and native storage/process instrumentation owners",
+    "sourceImplementationStatus": "Pass9SourceImplementationAndVerificationInProgress",
+    "requiredSemantics": [
+      "Complete independently correlated six-surface/copy snapshot for the actual native control boundary",
+      "Measured process/storage incarnation history correlated with signed restart/restore originals and native stream incarnation/head/digest",
+      "Exact historical facts when interruption occurred before independently retained measurement"
+    ],
+    "preflightRule": "Read-only selected-adapter readiness/schema/scope check before effects; cannot require the future case original. A supported fresh absent-result fixture is being verified.",
+    "installationEvidence": null,
+    "sourceOwnedLookupWitness": "Implemented in the trusted observing service using the actual supported typed native lookup and its independent original admission/publication revisions; no new backend read-event API is required. Final pass9 verification/review pending."
   },
-  "sourceImplementationIsComplete": false,
-  "blockerSeparation": {
-    "source": "Verified review findings remain; further source correction is held at the invoked build workflow review-loop limit.",
-    "installation": "All missing actual installations, protocol evidence, trust/hashes, owner dates and complete immutable target remain missing independently of the source escalation."
+  "stageObservationRequiredInstalledGrants": [
+    {
+      "caller": "Independently enrolled observer reader caller",
+      "method": "qualification-observer-lookup-source",
+      "evidence": null
+    },
+    {
+      "caller": "Private observer original-store caller",
+      "method": "qualification-observation-original-preflight",
+      "additional": "Existing scoped begin/retain/lookup permissions for exact source-owned originals also required.",
+      "evidence": null
+    }
+  ],
+  "priorReview8SourceFindingsAwaitingReview9": [
+    {
+      "id": "R8B-1",
+      "verdict": "high",
+      "evidence": "QualificationHost performs its configuration/provider/store/verifier and malformed-request Deny calls before executionUncertain exists, using Deny defaultfalse. An executor retry after prior dispatch therefore reports0 without authoritative absence. Later executor guards correctly use Unknown but cannot protect these entrypoints.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-2",
+      "verdict": "high",
+      "evidence": "ObservedOriginal contains request/result/authority/source/time but no actual stage, control boundary or incarnation. Orchestrator labels snapshots outside the signed proof and measured projector verifies only that unsigned stage label. Independent read-source receiving method signs the unchanged case request, so an old valid native proof can be relabeled across real controls.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-3",
+      "verdict": "high",
+      "evidence": "Projector emits snapshot.authorityRevision without equality to the independently signed sourceProof.AuthorityRevision. Orchestrator checks source digest/stage but likewise omits authority equality; accepting signed source data does not authenticate changed wrapper metadata.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-4",
+      "verdict": "high",
+      "evidence": "Projector Measure selects sources[^1] for surfaceScans and targetMutations. Public state equality across stages does not compare these separate signed source fields; an earlier positive leak/unsafe write followed by a clean final source can yield0. No authenticated cumulative history coverage is required.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-5",
+      "verdict": "high",
+      "evidence": "Projector receipts count guard accepts an array with four valid objects plus malformed entries. OfType<JsonObject> drops the malformed entries both while measuring and emitting retainedReceipts, so complete history validation never sees them.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-6",
+      "verdict": "high",
+      "evidence": "Security Lookup returns Recorded and settles completion immediately on its first matching event. Later duplicates/conflicting records/invalid event types in the same independently authenticated stream are never validated. Exact stream hashing authenticates bytes, not this once-only semantic invariant.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-7",
+      "verdict": "high",
+      "evidence": "DaprCohortRpc starts one daemon worker per call before bounded result.get. Stalled mounted credential acquisition outlives caller timeout and no worker bound exists. Reviewer probe grows active threads1to7 after six timeouts. Earlier concurrent B7-10 addressed a fake owner at the readiness pool, not this reachable per-RPC worker path; it does not refute this claim.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-8",
+      "verdict": "high",
+      "evidence": "Delivery Lookup asks the original actor with substituted identity and treats Conflict as terminal. Actual actor ResolveAsync creates a fresh Conflict whenever stored.Identity!=expected, in both Deliver and Lookup; it retains no matching rejection original. A crash after qualification Begin but before Deliver can therefore recover a denial that was never invoked.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8B-9",
+      "verdict": "high",
+      "evidence": "Native store ReadBoundedAsync constructs FileStream synchronously before inspecting type/size; opening a FIFO can hang before its cancellation-aware read. Existing Resolve checks reject symlinks but not FIFO/nonregular types. The bounded descriptor primitive is available and unused on this path.",
+      "route": "patch"
+    },
+    {
+      "id": "R8B-10",
+      "verdict": "high",
+      "evidence": "ArchiveFileLease explicitly permits magic0x1021994(tmpfs) in both lock and filesystem identity paths. Native capacity uses that identity for its enrolled durable physical pool. Tmpfs locking/fallocate/fsync can succeed while every original/reserve vanishes on reboot; no separately verified persistent backing contract protects this permitted volatile mode.",
+      "route": "patch"
+    },
+    {
+      "id": "R8E-1",
+      "verdict": "high",
+      "evidence": "All three role Program paths call AddInstalledQualificationRole before host Build; that method File.ReadAllBytes reads the entire installation before its1MiB check. There is no upstream bounded regular-file acquisition, so oversized allocation/FIFO startup stall is reachable. The reviewer guard snippet is the proposed correction, not current code.",
+      "route": "patch"
+    },
+    {
+      "id": "R8E-2",
+      "verdict": "high",
+      "evidence": "IndependentAuthorityHttpApplication bounds its JSON profile but directly File.ReadAllTextAsync loads the selected private signing key. No type/size/deadline gate protects this startup input; FIFO/oversized key paths can stall or exhaust memory before serving refusal. The reviewer guard snippet is proposed code.",
+      "route": "patch"
+    },
+    {
+      "id": "R8V-1",
+      "verdict": "high",
+      "evidence": "Pre-verified: actual holder completion is only scheduled via Fr34AuthorityApplication and IndependentAuthorityHttpApplication hosted-service registration; current tests directly call CompleteDisposedUsesAsync. Removing registration leaves tests green while eligible disposed uses never close automatically.",
+      "route": "patch"
+    }
+  ],
+  "ownedDeliverySubstitutionCount": 11,
+  "deliverySubstitutionCoverage": [
+    {
+      "caseId": "S3.delivery-substitution.tenant",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.Check (same actual Deliver structural/address validator)",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.delivery-id",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.Check (same actual Deliver structural/address validator)",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.export-id",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.ack-revision",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.requester",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.purpose",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.audience",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.expiry",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.lifecycle-version",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.store-target",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.ResolveAsync exact retained identity conflict",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    },
+    {
+      "caseId": "S3.delivery-substitution.contract-version",
+      "actualOwnedBoundary": "ExportKeyDeliveryActor.Check (same actual Deliver structural/address validator)",
+      "execution": "DeliverReceivedAsync on the unchanged original actor target",
+      "recovery": "LookupReceivingRejectionAsync -> independent immutable receiving-rejection-v2 original",
+      "privateStore": "InstalledExportKeyDeliveryDenialOriginalStore; captured only in private actor activator",
+      "tested": "QualificationDeliveryDenialReceivingTests lost actual response + changed current actor state; no second delivery/material release",
+      "outsideOwnedBoundary": "Dapr failures before actor dispatch, including wrong service/actual route, channel authentication and framing; these fixtures do not claim such receipts"
+    }
+  ],
+  "sourceOwnedObservationWitnesses": {
+    "status": "ImplementedAndFixtureVerified_PendingIndependentReview",
+    "source": "Versioned signed inner observations retained before reply, read-only exact lookup-source recovery and logical typed-native-lookup witness under independent original revision; no new backend read-event API required.",
+    "missingActualInputs": "Observer reader lookup-source and private original preflight/begin/retain/lookup grants, installed archives/credentials/trust remain missing."
+  },
+  "review9SourceFindingsAwaitingPass10": {
+    "findings": 16,
+    "rootCauseGroups": 10,
+    "sourceCorrectionsTested": true,
+    "independentCorrectionReview": "PendingReview10"
+  },
+  "sourceCorrectionPass": 20,
+  "requiredPhaseCompletionBudgets": {
+    "owner": "Independent qualification/phase installation owners",
+    "profileField": "completionTimeoutSeconds",
+    "v2InstallationField": "CompletionTimeoutSeconds",
+    "sourceAcceptedRangeSeconds": {
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "rule": "Every independently accepted phase profile must equal its byte-pinned v2 installation. Whole-phase budget includes startup; startup/individual RPC and proof windows remain distinct. No installed timing value is inferred.",
+    "actualInstalledValues": null,
+    "actualInstalledEvidence": null
+  },
+  "requiredNativeRotationOriginal": {
+    "caseId": "S1.rotation-invalidation",
+    "owner": "Platform inventory/native rotation and independent invalidation/observation owners",
+    "protocol": "External.ExactNativeRotationTimeRetainedVerifierAndPublicAnchorOriginalProtocol",
+    "requiredFacts": [
+      "exact correlation to authenticated inventory rotation signal",
+      "actual rotation time",
+      "actual old verifier retention boundary",
+      "actual public anchor identity/version",
+      "exact correlation to actual invalidation receipt"
+    ],
+    "sourceBoundary": "Workflow, exact retention, original reader and projection are implemented; selected protocol absence refuses in read-only preflight before rotation. Source fixtures are not installed evidence.",
+    "actualInstalledEvidence": null
+  },
+  "review10SourceFindingsAwaitingReview11": {
+    "findings": 12,
+    "sourceCorrectionsTested": true,
+    "rootHashVerified": true,
+    "independentCorrectionReview": "PendingReview11"
+  },
+  "requiredLegacyFr34PlaintextDisposition": {
+    "protocol": "External.LegacyFr34RetainedPlaintextOriginalCleanupUnproven",
+    "owner": "Independent archive/FR34 source and physical-closure custodians",
+    "sourceBehavior": "New exact complete-command fingerprints contain no reversible canary plaintext. Immutable legacy raw command/comparison originals remain preserved; affected canaries refuse reuse/qualification.",
+    "actualLegacyInventory": null,
+    "actualCleanupOrClosureEvidence": null,
+    "rule": "No historical original is deleted/rewritten and no erasure is inferred from source or fixtures."
+  },
+  "requiredAggregateNativeSourceCapacity": {
+    "sourceSupportedMaximumEnvelopeBytes": 67108864,
+    "scope": "Complete signed native-source envelope across all selected streams/history, exact .measurement/final recovery and Python observation. No truncation.",
+    "owner": "Independent source/archive/storage/transport and qualification installation custodians",
+    "actualInstalledSizingCapacityAndReserveEvidence": null,
+    "actualWorkerAndTransportSupportEvidence": null,
+    "rule": "Source bound is not measured installed capacity or complete native-history qualification."
+  },
+  "review11SourceFindingsAwaitingReview12": {
+    "survivors": 10,
+    "sourceCorrectionsTested": true,
+    "rootHashVerified": true,
+    "independentCorrectionReview": "PendingReview12",
+    "rejectedPremisePreserved": "R11B-8"
+  },
+  "requiredIndependentArchivePhysicalCapacity": {
+    "owner": "Independent authority/archive/storage/recovery custodians; Platform native-provider maintainer",
+    "protocol": "LinuxSharedPhysicalArchiveCapacityV1",
+    "missingProtocols": [
+      "External.EnrolledSharedIndependentArchivePhysicalCapacityV1",
+      "External.IndependentArchiveAtomicPhysicalAllocationProtocol"
+    ],
+    "sourceBehavior": "Existing-only shared durable capacity ledger and physically allocated per-operation tickets protect independent authority original/spool completion. Native and independent transfers hold the same independently enrolled volume-root device/inode fence. Unknown transfers and lost head/publication acknowledgments stay charged until exact recovery. Startup creates no enrollment or genesis.",
+    "sourceLimits": {
+      "maximumLedgerBytes": 4194304,
+      "metadataPhysicalFloorBytes": 8454144,
+      "maximumTicketsUpperBound": 30000,
+      "maximumUnsettledTransfers": 4096,
+      "maximumSignedRecoveryGrantBytes": 1048576,
+      "newRecoveryGrantPhysicalTicketBytes": 1179648,
+      "perPendingOriginalCompletionBytes": 269484032
+    },
+    "actualPoolDirectory": null,
+    "actualEnrollmentSha256": null,
+    "actualReconciledCapacityGenesis": null,
+    "actualOutsideApplicationRestoreAndReplicationEvidence": null,
+    "actualQuotaAndCompletionSizing": null,
+    "actualMaximumTickets": null,
+    "actualVolumeFenceDeviceAndInodeIdentity": null,
+    "actualCrossNamespaceSharedFenceMeasurement": null,
+    "actualExclusiveCompliantWriterAndAllocationSemanticsEvidence": null,
+    "actualRetainedPendingAndUnknownTransferReconciliation": null,
+    "actualTwoPersonRecoveryAuthority": null,
+    "rule": "All actual installed inputs remain missing. Source bounds, derived test inode identities, fixture quotas and allocated test blocks establish no installed capacity or physical closure."
+  },
+  "review12SourceFindingsAwaitingReview13": {
+    "survivors": 13,
+    "sourceCorrectionsTested": true,
+    "rootHashVerified": true,
+    "independentCorrectionReview": "PendingReview13"
+  },
+  "requiredNativeMutationAndExportAnchorInputs": [
+    {
+      "input": "External.EnrolledNativeMutationDispatchOriginalV2",
+      "requirement": "Actual independent dispatch-original authority AppId/enrollment/scope/current trust and P-256 public anchor; mounted private read credential; qualification-lookup-original plus narrowly enrolled qualification-read-original:private-replay/private-security-observation/fr34-engine grants as selected. No general role read or dispatch grant is inferred.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.ExactNativeMutationTargetMappingsV2",
+      "requirement": "Each selected QualificationEventStoreAuditScope.DispatchOriginals entry supplies the existing role, exact workload message ID, exact logical TargetId, Domain and AggregateId. Its Scope TenantId and matching NativeStreams/WorkloadMessageIds are pinned by the installed configuration. Conflicting native stream-to-target mappings deny startup. Source derives QualificationMutationTrust from these actual supplied mappings and the declared original authority.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.NativeMutationSupportedEventStoreFactsV2",
+      "requirement": "For a selected EventStore workload command, actual terminal Completed status with EventCount/CommittedEventSequence and full native source-v1 stream/event proof must correlate with a real IndependentCommandDispatchV2 original. The actual native event principal (UserId), timestamp, stream incarnation, sequence, event identity and raw digest are preserved and verified. Timestamp is the native event timestamp as supplied by this protocol; authorization time/revision are distinct actual CAS facts. Missing status, subject, time, exact event or authorization denies completeness.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.CompleteNativeMutationCensusAndStageSourcesV2",
+      "requirement": "Independent complete surface/control/incarnation/copy census supplement must correlate with the actual native source snapshot and enumerate every selected native event exactly once. Available source assembly attaches verified authorization evidence and nativeMutationSources; a receipt label alone grants no qualification. Non-EventStore custody/inventory/control mutations still require their actually selected authoritative native authorization/target/time protocol; none is manufactured or replaced by an empty census.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.LegacyMutationAuthorizationIncompleteness",
+      "requirement": "Raw legacy originals/signatures remain unchanged. A nonempty legacy census or dispatch original without versioned exact authorization/target facts remains incomplete, with a named preflight/read/projector blocker. No native proof, event time, mapping or principal is reconstructed from a current label.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.PublicExportAnchorIdentityRetention",
+      "requirement": "Current independently installed export public anchor ID, version and exact supported P-256 SPKI remain external. New signed export originals retain all three under ExportQualificationAnchorV2. Missing legacy anchor identity/version produces unknown PublicAnchorRetained and an unqualified metric; fixture anchors are not installed values.",
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    }
+  ],
+  "review13SourceFindingsAwaitingReview14": {
+    "survivors": 11,
+    "sourceCorrectionsTested": true,
+    "rootHashVerified": true,
+    "exactR13B2PathsConfirmed": true,
+    "independentCorrectionReview": "PendingReview14"
+  },
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "independentReviewEvidenceHistory": [
+    "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-6.json"
+  ],
+  "requiredSqliteCapacityRoleAndImmutableLaunchInputs": [
+    {
+      "input": "External.ExactIndependentlyEnrolledSqliteStorageIdentity",
+      "sourceProtocol": "LinuxEnrolledSqliteDeleteJournalV1",
+      "fields": [
+        "storageEnrollment.path",
+        "storageEnrollment.identity",
+        "storageEnrollment.components[].path/device/inode",
+        "storageEnrollment.writerProtocol=DirectoryFlockAndImmutableNamespaceV1",
+        "storageEnrollment.placementEvidenceSha256",
+        "existing database_storage_enrollment(slot=1,identity)"
+      ],
+      "requirements": [
+        "Existing-only authority and phase-owner databases and schemas, exact full path-component and main-file identities, DELETE-journal placement; WAL/shm refuse.",
+        "Actual independently current enrollment, persistent directory flock/no-follow descriptor semantics, immutable namespace/exclusive participating-writer controls, durable FULL SQLite commit, independent replication and placement outside application restore remain external.",
+        "Existing database identity and journal placement are verified through held no-follow descriptors, actual newly opened SQLite writable descriptor identity and transaction checks; no production genesis is created.",
+        "Source locally requires the same supported persistent Linux ext4/XFS/Btrfs filesystem families as the reviewed archive foundation for both held SQLite database and parent; volatile/tmpfs/unsupported families refuse before opening SQLite. This local fact does not establish independent replication or restore placement."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.EnrolledPreallocatedSharedPhaseCompletionSlotsV1",
+      "sourceProtocol": "PreallocatedSharedPhaseCompletionSlotsV1",
+      "fields": [
+        "completionCapacity.directory/identity/device/inode/enrollmentSha256/slots",
+        "Existing phase-completion-capacity.bin genesis and fully allocated fixed slots"
+      ],
+      "sourceLimits": {
+        "slotsMinimum": 1,
+        "slotsMaximum": 1024,
+        "requestBytesPerSlot": 1048576,
+        "signedResultBytesPerSlot": 1048576,
+        "headerCopiesPerSlot": 2,
+        "headerBytes": 4096,
+        "slotStrideBytes": 2109440,
+        "maximumInspectedFiemapExtents": 65536,
+        "slotAlignmentBytes": 4096
+      },
+      "requirements": [
+        "All selected phase-owner databases must share the enrolled pool directory and directory-flock namespace, with exact existing file identity, independently provisioned genesis and physically allocated persistent extents.",
+        "Actual os.pwrite/fsync and metadata/persistence/replication/outside-restore ownership guarantees remain externally evidenced. Slot completion performs no new SQLite page, rollback-journal, WAL, directory-entry or result-file allocation.",
+        "Historical SQLite result_json originals stay exact. Pending/unknown admitted slots remain charged; only exact authoritative unadmitted owner absence under the shared directory fence allows reuse.",
+        "Read-only bounded FIEMAP must prove complete private allocated/preallocated coverage of the existing pool: sparse, unknown, delayed, encoded/inline/tail/unaligned and shared/COW extents refuse. No fresh allocation or free-space probe is performed during completion. Actual persistent filesystem write/allocation semantics and exclusion of future sharing/snapshots/nonparticipating writers remain independent null-evidence requirements.",
+        "The implemented fixed-slot in-place completion protocol supports ext4/XFS only. Btrfs is refused even for an unshared current FIEMAP map; no NOCOW flag is set or inferred. A separately selected Btrfs in-place/NOCOW protocol and actual independently provisioned proof would be a distinct required implementation/input. SQLite identity admission retains the reviewed persistent-family allowlist; this narrower rule applies to the fixed completion pool.",
+        "The held database, DELETE-journal parent and completion pool must use the same enrolled device; cross-device file/journal or pool bind placement refuses before admission.",
+        "Before native admission, the source materializes only an exact proved free slot (including alternate Free headers and its padded data regions) and verifies private written extent coverage. Existing admitted/prior slots require private written coverage; free unmaterialized extents are allowed only before admission. Completion never converts unwritten extents or allocates new extent metadata. Slot starts/strides are4KiB aligned. Workload expiry is rechecked immediately after materialization at the final SQL INSERT boundary."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false,
+      "supportingPrimaryDocumentation": "https://btrfs.readthedocs.io/en/stable/Administration.html"
+    },
+    {
+      "input": "External.CurrentCustodyRoleWorkloadIssuanceContract",
+      "requirements": [
+        "Both actual role receivers and independent caller-scope authority must install the same exact source contract: custody-role-authorize returns CustodyRoleWorkloadGrant, then issues CustodyRoleIssuance at the conditional revocation head for the exact workload bearer hash/identity/role/scope/intent/method/response commitment.",
+        "Existing independently enrolled workload and separate role/service credentials, current grant validity and signer trust remain required. Legacy Allowed-only replies deny; no local grant or signer enrollment is supplied.",
+        "Actual Dapr/server request/response memory, process count and bounded four-owner transport capacity remain independently measured inputs."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.ExactIndependentPhysicalReservationCommitmentsAndMetadataCoverage",
+      "requirements": [
+        "Existing independently reconciled capacity.json must retain every old original and transfer. Exact immutable ticket owner/kind/request commitment, initial bytes/completion budgets, role/id and initial/remaining transfer-slot commitments are required; unknown legacy commitments refuse conflicting reuse and new admission until exact reconciliation supplies their facts.",
+        "Every source head-admission and unadmitted-ticket reconciliation participates in the shared volume/pool fence. An acknowledged conditional owner-head barrier must fence delayed old-etag admissions before exact nonadmission reclamation; unknown/lost barriers retain charges.",
+        "Completion coverage is subtracted only for tickets proven to match the exact still-pending current owner-head originals/publications, including body commitment. Completed-but-unsettled and zero-row tickets cannot release other pending originals.",
+        "A recovery archive interrupted before any immutable signed file exists uses exactly one grant-bound transfer identity and its already reserved1MiB maximum frame charge, independent of ECDSA signature randomness. Any existing immutable signed bytes remain exact; already archived reissues require fresh current authorization CAS but no settled physical ticket."
+      ],
+      "sourceLimits": {
+        "maximumLedgerBytes": 4194304,
+        "maximumUnsettledTransfersIncludingReservedSlots": 4096,
+        "defaultOriginalTransferSlots": 768,
+        "protectedOriginalCompletionTransferSlots": 384,
+        "perReservedTransferSerializedGrowthBytes": 256,
+        "perTicketFutureMetadataBytes": 256,
+        "physicalMetadataFloorBytes": 8454144
+      },
+      "actualSizingAndReconciledGenesis": null,
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AcceptedCompleteImmutableLaunchGraphV1",
+      "sourceProtocol": "AcceptedCompleteImmutableLaunchGraphV1",
+      "fields": [
+        "installedArtifacts.launchInventory.path/sha256/enrollmentReference",
+        "jointBinding.launchInventorySha256 (complete canonical semantic manifest)",
+        "packet.launchInventory (complete preserved object)",
+        "launchInventory.resources[seven exact siblings].root/directoryIdentity/entryPoint/files[path,bytes,sha256]"
+      ],
+      "requirements": [
+        "Both coordinated packet producers require the actual independently enrolled public manifest, raw file digest and current independent installation proof; its complete canonical binding is included in the shared joint binding.",
+        "Production Services roots now select existing independently accepted published release bundles. Production never builds mutable sibling project/source roots under the old acceptance; Development project composition remains available.",
+        "Every file and directory in the selected complete graph must be present, pinned and no-follow acquired; files require fs-verity plus immutable inode flags and all directories require immutable namespace flags. Process-anchored held directory descriptors survive ancestor-name replacement.",
+        "Actual accepted immutable release, fs-verity support, privilege/exclusive namespace administration and whole-image/native-loader closure evidence remain missing. Fixture kernel overrides are internal test seams, never installed proof."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AcceptedWholeImageNativeLoaderClosureV1",
+      "sourceSupportedSelectedProtocol": "SelfContainedStaticElfV1",
+      "requirements": [
+        "Each graph requires executionProtocol=SelfContainedStaticElfV1 and wholeImageNativeLoaderClosure.protocol=IndependentlyAcceptedStaticElfKernelClosureV1 with an actual independently accepted evidenceSha256.",
+        "Available source validates a supported native 64-bit little-endian static ELF kernel-load map matching the host architecture. Scripts, .NET entrypoints and ELF dynamic interpreter/runtime selection refuse; their exact complete selected protocols and independent evidence remain missing.",
+        "Accepted immutable file pins do not supply actual whole-image/native-loader measurement, physical closure, complete qualification or availability. Existing full whole-image/native-loader blockers remain open."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    }
+  ],
+  "pass15AdditionalInputsEvidence": {
+    "source": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-15.json",
+    "sha256": "b9dda12787be4cce50fd1b1d27267272e11a602c0fa1eccad72c57cb36c4563f",
+    "actualInstalledEvidence": null,
+    "sourceImplementationStatus": "Root source/hash/task/matrix verified; independent review15 pending, no installed qualification"
+  },
+  "review14SourceFindingsAwaitingReview15": {
+    "survivors": 12,
+    "rejected": 1,
+    "sourceCorrectionsTested": true,
+    "rootHashAndTaskMatrixVerified": true,
+    "independentCorrectionReview": "Pending15"
+  },
+  "requiredFixedArchiveReplayDecisionAndTemporalInputs": [
+    {
+      "input": "External.EnrolledProtectedArchiveAllocationV1",
+      "sourceProtocol": "Ext4PrivateWrittenNoSnapshotsV1",
+      "appliesTo": [
+        "IndependentArchiveCapacityInstallation.ProtectedAllocations",
+        "NativeArchiveCapacityInstallation.ProtectedAllocations",
+        "all ordinary writers under marked enrolled archive roots"
+      ],
+      "fields": [
+        "Directory",
+        "EnrollmentSha256",
+        "DataIdentity",
+        "Metadata0Identity",
+        "Metadata1Identity",
+        "ChunkBytes",
+        "ChunkCount",
+        "MaximumMetadataBytes",
+        "ArchiveRoots[path]=deviceMajor:deviceMinor:inode",
+        "StorageProtocol=Ext4PrivateWrittenNoSnapshotsV1"
+      ],
+      "existingOnlyResources": [
+        "allocation-enrollment.json",
+        "allocation-data.bin",
+        "allocation-metadata-0.bin",
+        "allocation-metadata-1.bin",
+        "pool.lock (independent) or capacity.lock (native)",
+        "capacity.json independently reconciled legacy genesis",
+        "archive-root .archive-allocation.json enrollment markers"
+      ],
+      "sourceLimits": {
+        "headerBytes": 8192,
+        "dataGeometryPrefixBytes": 8192,
+        "headerCopiesPerChunk": 2,
+        "chunkBytesMin": 4096,
+        "chunkBytesMax": 65536,
+        "chunkAlignment": 4096,
+        "chunkCountMax": 65536,
+        "archiveRootsMax": 64,
+        "maximumMetadataBytesMin": 65536,
+        "maximumMetadataBytesMax": 33554432,
+        "independentRequiredMaximumMetadataBytes": 4194304,
+        "nativeRequiredMaximumMetadataBytes": 33554432,
+        "maximumLocatorCharacters": 4096,
+        "maximumInspectedFiemapExtents": 65536,
+        "maximumCombinedPoolAndTicketCharacters": 256
+      },
+      "requirements": [
+        "Provision all three exact-size distinct regular single-link inodes and fixed geometry before new effects; data size=8192+ChunkCount*(16384+ChunkBytes), each metadata bank size=8192+MaximumMetadataBytes. Fully materialize private written extents and fsync before use. Source does not create enrollment, files, locks or genesis.",
+        "Actual supported ext4 persistent in-place overwrite, no future COW/snapshots/shared extents, fixed namespace and exclusive participating-writer policy, retained journal/metadata/persistence/replication and outside-application-restore placement must be independently established. FIEMAP/device/statx facts do not establish these operational guarantees.",
+        "Both banks may be all-zero only for genuine initial fixed-store genesis, with no surviving used chunks. Initial legacy ledger must contain all retained originals/outstanding tickets/transfers/commitments and is migrated to protected metadata before data reservations. Any later damaged committed/nonempty metadata or damaged Published header remains unknown and blocks without falling back to legacy genesis.",
+        "Account actual disjoint chunk budgets, old liabilities and all current independent/native original/result/index/history/recovery transfers; source quotas and fixture sizing are not installed capacity. Existing legacy exact original bytes/locators remain readable and conflicting fixed publications deny."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AuthenticatedReplayConflictCaseInputsAndReceivingRegistrar",
+      "fields": [
+        "ReplayChallenges[case].OriginalDelivery + ChangedDelivery OR ChangedIdentity for admitted fresh actual issuance",
+        "ReplayChallenges[foreign-issuer].ForeignRuntimeConfigurationFile",
+        "ReplayChallengeRegistrar optional separate actual replay role binding",
+        "receiving caller methods replay-register-exact/replay-lookup-exact/replay-lookup-first-seen"
+      ],
+      "requirements": [
+        "Provide actual authentic same-nonce original/changed deliveries for each exact case, or a current installed actual scoped HMAC issuance identity/key/profile recipe. Fresh challenge pair is admitted and retained before actual registrar actions; unknown outcomes remain lookup-only.",
+        "Changed-fields and cross-tenant must share the existing issuer+nonce key; changed fields/tenant are cryptographically authenticated then denied by actual first-seen conflict. Foreign issuer uses its separate independently current runtime authority/profile and challenges the receiving issuer/profile; cross-issuer key collisions are not required.",
+        "Actual registrar role/port must support read-only authenticated first-seen lookup and retain the original native event/receipt without renewal. No production fixture key/profile is supplied."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.IndependentlySignedDecisionSemanticOriginal",
+      "fields": [
+        "DecisionCaseInputs[case].OriginalManifest",
+        "DetachedJws",
+        "ExpectedBasis",
+        "SignedOriginalBasis",
+        "actual current independent decision authority/approver/anchor facts"
+      ],
+      "requirements": [
+        "Each semantic case requires a genuine unchanged independently signed manifest with a valid cryptographic original basis, and a separately independently current expected basis differing only in the intended component. Missing required roles must be an actual strict role-set addition.",
+        "Actual signature/current key/profile/anchor/approver/authority boundaries must validate. Source never signs approval evidence or rewrites a manifest to manufacture a negative; missing inputs block before effects."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.CanonicalArchiveVolumeNamespaceAndExclusiveWriterPolicy",
+      "requirements": [
+        "All actual configured/ordinary/native/independent writers must resolve the same independently enrolled full-filesystem mounted-root device/inode and fence inode. Linux mount namespace inspection must prove the mount root is the filesystem root; unprovable subtree bind aliases refuse before allocating.",
+        "Actual namespace stability, no unsafe nonparticipating writer/snapshot/restore and shared persistent flock/statx/FIEMAP/fsync semantics remain separately independently evidenced. Source never creates a bind mount or infers an actual pin."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.VersionedExactTemporalDecisionOriginals",
+      "sourceProtocol": "temporalEvidenceVersion=2; state.temporalEvaluation.version=2",
+      "requirements": [
+        "Temporal consumers require exact authenticationDecision.evaluatedAt (or independently owned native boundary original) correlated with checkedAt and the complete originalResultSha256. Producer/service installed versions must supply this exact framing.",
+        "Historical raw/signed originals lacking actual timing remain exact and incomplete; no retiming or rewrite. Existing native rotation overlap, exclusive expiry and historical validity boundary protocols remain exact missing external inputs until genuinely available."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    }
+  ],
+  "pass16AdditionalInputsEvidence": {
+    "path": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-16.json",
+    "sha256": "559cdbca8b075ecf0b73b42bb8e75bd7aa37f0283b3fee010c6e718fdc3b257c",
+    "requirements": 5,
+    "sourceImplementationStatus": "Root source/hash/task/matrix verified; review16 final with nine subsequent source corrections; no installed qualification",
+    "actualInstalledEvidence": null
+  },
+  "review15SourceFindingsAwaitingReview16": {
+    "individualFindings": 14,
+    "rootCauseGroups": 13,
+    "sourceCorrectionsTested": true,
+    "rootHashAndTaskMatrixVerified": true,
+    "independentCorrectionReview": "Review16FinalNineNewCorrectionsRequired"
+  },
+  "review16SourceCorrectionsRequired": {
+    "individualFindings": 11,
+    "survivors": 9,
+    "rejected": 2,
+    "rootCauseGroups": 9,
+    "sourcePass": 17,
+    "status": "SourceComponentVerified_PendingIndependentReview17",
+    "triage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-16-root-cumulative.json",
+    "sourceCorrectionsTested": true,
+    "rootHashXmlAndMatrixVerified": true
+  },
+  "agentsUiHostSourceBoundary": {
+    "sourceObservation": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/ui-host-source-observation-pass-17.json",
+    "sourceObservationSha256": "f3283b6c409faba618918ba1bbb1ea73e76db9a659a638dc20b4e605401eb2a8",
+    "sourceRole": "RazorClassLibraryWithDeferredFrontComposerHostProgram",
+    "existingWebApplicationHosts": 6,
+    "requiredActualInstallation": "Independently accepted actual FrontComposer UI-host executable, exact component/registration and listener contract, complete immutable launch inventory and installed evidence. No host is inferred from the library.",
+    "actualInstalledEvidence": null,
+    "consumingSeamActivated": false,
+    "sourceContractCorrectionStatus": "SourceImplementedAndComponentVerified_PendingIndependentReview17"
+  },
+  "requiredArchiveNamespaceSqliteListenerAndUiHostInputs": [
+    {
+      "id": "Pass17.UnnamedAtomicArchivePublication",
+      "status": "Refined existing storage contract",
+      "required": "Existing eligible persistent local archive filesystem must support descriptor-owned O_TMPFILE staging, atomic same-volume link through the held /proc/self/fd inode, directory fsync and participating held-directory/canonical-volume fencing. Unsupported native semantics refuse. No new production namespace or enrollment is created.",
+      "actualEvidence": null
+    },
+    {
+      "id": "Pass17.AmbiguousLegacyMetadataCandidate",
+      "status": "Refined conservative legacy recovery boundary",
+      "required": "A pre-existing named capacity rewrite candidate has no inferred ownership. Retain its exact bytes and original identity. Legacy metadata rewrite refuses that occupied name until independent exact reconciliation establishes its permitted disposition; existing protected fixed-metadata paths remain supported without deleting it. No automatic deletion or cleanup genesis is invented.",
+      "actualEvidence": null
+    },
+    {
+      "id": "Pass17.CanonicalExistingSqliteEnrollment",
+      "status": "Required independent initialization",
+      "required": "Independently provision the canonical database_storage_enrollment singleton DDL and actual nonempty identity row before runtime; bind the existing database inode, immutable namespace, participating writer protocol and persistent DELETE journal placement under independent installation authority. Runtime never initializes/infer identities.",
+      "actualEvidence": null
+    },
+    {
+      "id": "Pass17.CompleteAcceptedResourceListeners",
+      "status": "New exact named accepted binding requirement",
+      "required": "Independently accept complete listener bindings for eventstore, tenants, tenants-api, parties, conversations, agents and agents-ui. Supply each exact owner/API/UI role, AspNetCoreHttpListenerV1 protocol, address, port and unique endpoint name, coherent with all other local endpoint ownership and exact accepted whole-image entrypoints. Bind identical values through raw profile, immutable model seal, launch inventory and accepted coordinated joint binding. No production port or address is chosen by source.",
+      "sourceRequirement": "External.IndependentlyAcceptedCompleteResourceListenersV1",
+      "actualEvidence": null
+    },
+    {
+      "id": "Pass17.IntendedProcessExecutableAccess",
+      "status": "Refined accepted launch eligibility",
+      "required": "Existing accepted immutable entrypoints must be executable under the effective local process identity and actual mount/ACL at composition. Source checks the held inode, cannot chmod or infer access from hashes/fs-verity, and does not select a different runtime user.",
+      "sourceRequirement": "External.AcceptedExecutableEntrypointAccessV1",
+      "actualEvidence": null
+    },
+    {
+      "id": "Pass17.ActualAgentsUiHostContract",
+      "status": "Source-backed HOST installation blocker; Agents.UI is a Razor class library, not an existing seventh executable",
+      "required": "Supply an independently accepted actual FrontComposer UI-host executable and exact host/listener contract. Bind its real entrypoint, existing Hexalith.Agents.UI component identity/artifact hash, existing AgentsFrontComposerRegistration identity/artifact hash, --urls/ASPNETCORE_URLS behavior and independent integration-evidence digest. The exact public contract artifact and both component/registration artifacts must appear in the complete accepted launch inventory; actual held contract bytes must match the accepted metadata. No runnable host, integration, consuming seam or installation is generated by Platform.",
+      "sourceRequirement": "External.IndependentlyAcceptedAgentsUiHostListenerContractV1",
+      "actualEvidence": null
+    }
+  ],
+  "pass17AdditionalInputsEvidence": {
+    "path": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-17.json",
+    "sha256": "fbea35e145e7b792eacd449804a91b1cd455240f9fe8217ebcbef919876100d9",
+    "requirements": 6,
+    "actualInstalledEvidence": null
+  },
+  "review17SourceCorrectionsRequired": {
+    "findings": 12,
+    "survivors": 10,
+    "rejected": 2,
+    "rootCauseGroups": 10,
+    "sourcePass": 18,
+    "status": "SourceComponentVerified_PendingIndependentReview18",
+    "triage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-17-root-cumulative.json",
+    "sourceCorrectionsTested": true,
+    "rootHashXmlAndMatrixVerified": true
+  },
+  "requiredPublicSqliteVfsAndOuterReceivingInputs": [
+    {
+      "input": "LoadedSqlitePublicVfsDescriptorAcquisitionV1",
+      "required": "Independently accepted exact Linux CPython/_sqlite3/shared SQLite/ctypes/libffi/libc/dynamic-loader closure exposing the same loaded sqlite3 runtime public vfs_find/vfs_register/vfs_unregister ABI, threadsafe SQLite and supported v1/v2/v3 public VFS layout. The source adapter is implemented and fails closed on missing exports; no separate binary library is introduced. Existing enrolled singleton inode/components, persistent DELETE journal placement, immutable namespace, participating writer fence, restore/nonrollback and fixed completion resources remain mandatory.",
+      "source": [
+        "eng/ext-secrets-1/enrolled_sqlite.py",
+        "eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+        "eng/ext-secrets-1/sqlite_vfs_abi.py"
+      ],
+      "actualEvidence": null,
+      "fixtureObservationsAreInstallationEvidence": false
+    },
+    {
+      "input": "AcceptedQualificationOuterReceivingOwnershipAndFr34PolicyComposition",
+      "required": "Each actual independently enrolled role service must deploy the bounded owning HTTP entrypoint and exact current FR34 common target/recipe/trust/authorization revision plus command nested workload purpose/expiry/revocation grants. No new current authority, trust appointment, listener or consuming host is created by this source change.",
+      "source": [
+        "src/Hexalith.Platform.Secrets.Qualification.Executor/Program.cs",
+        "src/Hexalith.Platform.Secrets.Qualification.Observer/Program.cs",
+        "src/Hexalith.Platform.Secrets.Qualification.Enrollment/Program.cs",
+        "src/Hexalith.Platform.Protection/Fr34CommandAuthorizationHandler.cs",
+        "src/Hexalith.Platform.Protection/Fr34OccurrenceOperationHandler.cs"
+      ],
+      "actualEvidence": null
+    }
+  ],
+  "pass18AdditionalInputsEvidence": {
+    "path": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-18.json",
+    "sha256": "8c403e18c3e916e73448b26da51f5d5bc9a50a262da505871f4086381779ed73",
+    "requirements": 2,
+    "actualInstalledEvidence": null
+  },
+  "review18SourceCorrectionsRequired": {
+    "findings": 13,
+    "survivors": 10,
+    "rejected": 3,
+    "rootCauseGroups": 9,
+    "sourcePass": 19,
+    "status": "SourceComponentVerified_PendingIndependentReview19",
+    "triage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-18-root-cumulative.json",
+    "sourceCorrectionsTested": true,
+    "rootHashXmlApphostMatrixVerified": true
+  },
+  "requiredCanonicalLaunchAndSqliteDeleteBarrierInputs": [
+    {
+      "input": "ExactCanonicalAcceptedLaunchOwnershipAndFinalAdmissionComposition",
+      "required": "The independently accepted actual production host/whole-image graph must deploy the canonical explicit OwnLaunch/Build/disposal boundary and the same source-owned final-after-readiness verifier/typed denial path. Build/DI initialization failures must be owned before services resolve; actual executing image/loader/listener/UI-host identities and deployment remain independently enrolled existing prerequisites, not established by source/fixture graphs. No new host, listener, trust appointment, credential or enrollment is created.",
+      "source": [
+        "apphost.cs",
+        "src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs",
+        "src/Hexalith.Platform.Composition/AgentsHostComposition.cs"
+      ],
+      "actualEvidence": null
+    },
+    {
+      "input": "LoadedSqliteDeleteJournalPostRemovalHeldParentBarrier",
+      "required": "The independently accepted loaded public VFS/runtime/storage contract must support the held-parent directory fsync after DELETE journal unlink and propagate barrier failure before successful admission/dispatch. Existing exact singleton/enrolled inode, Linux public ABI/loader closure, persistent atomic DELETE journal, immutable namespace/participating writer fence, nonrollback placement, preallocated private completion resources, replication and physical durability evidence remain required. Local syscall/fixture order is not physical crash qualification. Damaged completion metadata remains unavailable until independently proved safe; an older valid Free header supplies no such proof.",
+      "source": [
+        "eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+        "eng/ext-secrets-1/phase_completion_pool.py"
+      ],
+      "actualEvidence": null
+    }
+  ],
+  "pass19AdditionalInputsEvidence": {
+    "path": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-19.json",
+    "sha256": "9f822b38963888a949853c375fb0fd7f3f970de45f341dd5b25e4e11a1404353",
+    "requirements": 2,
+    "actualInstalledEvidence": null
+  },
+  "review19SourceCorrectionsRequired": {
+    "findings": 16,
+    "survivors": 13,
+    "rejected": 3,
+    "rootCauseGroups": 12,
+    "sourcePass": 20,
+    "status": "SourceComponentVerified_PendingIndependentReview20",
+    "triage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-19-root-cumulative.json",
+    "sourceCorrectionsTested": true,
+    "rootHashXmlPdbApphostMatrixVerified": true
+  },
+  "requiredInitializedProtectedArchiveAndCurrentResultInputs": [
+    {
+      "id": "IndependentlyEnrolledProtectedArchiveInitializedBanksV1",
+      "needed": "Already independently initialized valid dual consecutive chunk frames and metadata banks on the enrolled disjoint private-written resources, with accepted genuine initial Free/ledger states. A missing bank, both-zero used state or indistinguishable empty genesis is Unknown; production never initializes/reconstructs/recycles it. Existing exact original wire and geometry remain binding.",
+      "actualEvidence": null
+    },
+    {
+      "id": "IndependentReadOnlyProtectedLogicalArchiveEnrollmentV1",
+      "needed": "Accepted observer-profile protectedArchiveAllocations entries pin exact public ProtectedArchiveAllocationInstallation configurations, enrollment SHA256, data/metadata identities and sizes, archive roots/identities and read-only access outside the restored application cut. Marker discovery supplies no trust. Actual private-written capacity, physical/nonrollback proof and read credentials remain missing.",
+      "actualEvidence": null
+    },
+    {
+      "id": "StructurallyEligibleStaticElfAndIndependentKernelClosureV1",
+      "needed": "Actual accepted immutable executable ET_EXEC load map with file-backed executable entrypoint plus existing fs-verity/effective X_OK/complete graph/listener/UI-host/whole-image/kernel acceptance. Structural component fixtures establish no installation. Dynamic/.NET/interpreter closure still needs its separately selected supported actual protocol.",
+      "actualEvidence": null
+    },
+    {
+      "id": "CompleteBoundedIndependentRoleStartupPlacementV1",
+      "needed": "One exact independently enrolled installed profile, existing role DB/schema/storage, trust, signer/mounted references, observer/owner and HTTP bindings that can all be acquired within the common finite startup budget; healthy serving lifetime is separate. Source tests create no actual role appointment, listener, credential, trust or enrollment.",
+      "actualEvidence": null
+    },
+    {
+      "id": "IndependentCurrentResultAuthorityHeadOrderingV1",
+      "needed": "Existing independently enrolled receiver-owned conditional-head write authority outside the application restore cut must support final result ordering after native/archive/original reads and exact prerequisite-head refresh. The requesting workload retains only its enrolled method/scope; no new trust appointment, general write privilege, effect renewal or native replay is inferred. Current nested grants and applicable time policy must remain valid through final CAS.",
+      "actualEvidence": null
+    }
+  ],
+  "pass20AdditionalInputsEvidence": {
+    "path": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-installation-inputs-pass-20.json",
+    "sha256": "a65ade19134a49af5810c417746033ddfa978fd31bf999191c234c08ee1db233",
+    "requirements": 5,
+    "actualInstalledEvidence": null
+  },
+  "review20SourceCorrectionsRequired": {
+    "findings": 12,
+    "survivors": 10,
+    "rejected": 2,
+    "rootCauseGroups": 9,
+    "sourcePass": 21,
+    "status": "InProgress",
+    "triage": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/independent-review-pass-20-root-cumulative.json"
   }
 }

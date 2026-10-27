@@ -11,6 +11,8 @@ public sealed class QualificationGuardOriginalReader(IGovernanceScopeGuard guard
     IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,IReadOnlyDictionary<string,QualificationGuardCaseDefinition> definitions):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
@@ -66,7 +68,7 @@ public sealed class QualificationGuardOriginalReader(IGovernanceScopeGuard guard
         if(issued.Capability is not null && issued.IssuedGuardRevision>0 && issued.DetachedJws.Length>0 && !state.CompromisedKeyVersions.Contains(issued.CapabilityKeyVersion,StringComparer.Ordinal))
             credentials.Add(QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { issued.Capability,issued.DetachedJws },CustodyBindingContract.Json)!));
         publicState["activeCredentialIds"]=credentials;
-        return new(requestId,receipt,state.InstallationId+":"+state.Revision,new JsonObject { ["state"]=publicState,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,state.InstallationId+":"+state.Revision,new JsonObject { ["state"]=publicState,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=native.Facts?["linearization"]?.DeepClone()??new JsonObject(),
             ["independentOwnerInvariants"]=JsonSerializer.SerializeToNode(projected,CustodyBindingContract.Json),["guardState"]=JsonSerializer.SerializeToNode(state,CustodyBindingContract.Json),
             ["protectionState"]=JsonSerializer.SerializeToNode(batch,CustodyBindingContract.Json),["signingOriginals"]=JsonSerializer.SerializeToNode(signing,CustodyBindingContract.Json) });

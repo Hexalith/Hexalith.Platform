@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup Condition="$([System.String]::Copy('$(MSBuildProjectFullPath)').StartsWith('/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore/'))">
+    <SourceRevisionId>458f0cf38e43452655e6c307fa80debdf595a8db</SourceRevisionId>
+  </PropertyGroup>
+  <Target Name="BindCopiedEventStoreFixtureSourceRevision" BeforeTargets="BindProtectionEngineSourceRevision" Condition="$([System.String]::Copy('$(MSBuildProjectFullPath)').StartsWith('/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore/'))">
+    <PropertyGroup><SourceRevisionId>458f0cf38e43452655e6c307fa80debdf595a8db</SourceRevisionId></PropertyGroup>
+  </Target>
+  <Target Name="UseFrozenCompositionDependency" BeforeTargets="CoreCompile" Condition="'$(MSBuildProjectFullPath)' == '/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'">
+    <ItemGroup>
+      <Compile Remove="@(Compile)" Condition="'%(Compile.FullPath)' == '/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs'" />
+      <Compile Include="/tmp/story54-round13-hjh0_6e_/platform-composition-input/PlatformHostedPublishing.cs" Link="PlatformHostedPublishing.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

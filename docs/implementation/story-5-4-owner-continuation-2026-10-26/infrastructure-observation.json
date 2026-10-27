@@ -1,0 +1,154 @@
+{
+  "schema": "platform.story-5.4.read-only-infrastructure.v1",
+  "queries": [
+    {
+      "name": "nodes",
+      "observedAtUtc": "2026-10-26T06:06:52.664792+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "nodes",
+        "-o",
+        "jsonpath={range .items[*]}{.metadata.name}{\"\\t\"}{.metadata.uid}{\"\\t\"}{.status.nodeInfo.kubeletVersion}{\"\\n\"}{end}"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "nodes.txt",
+      "stdoutSha256": "c565624fb0c83e154ccc9c46b1cf558e5ec4ff265415c0ea0cbf44f88e2b30fc",
+      "stderr": ""
+    },
+    {
+      "name": "workloads",
+      "observedAtUtc": "2026-10-26T06:06:52.959241+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "deployment,statefulset",
+        "-A",
+        "-o",
+        "custom-columns=KIND:.kind,NS:.metadata.namespace,NAME:.metadata.name,UID:.metadata.uid,READY:.status.readyReplicas,IMAGES:.spec.template.spec.containers[*].image"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "workloads.txt",
+      "stdoutSha256": "ca9b9532c91701580cf828cf7520315994206e6f5015e02ad34166d8f12ef94b",
+      "stderr": ""
+    },
+    {
+      "name": "placement",
+      "observedAtUtc": "2026-10-26T06:06:53.375734+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "pods",
+        "-A",
+        "-o",
+        "custom-columns=NS:.metadata.namespace,NAME:.metadata.name,NODE:.spec.nodeName,PHASE:.status.phase"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "placement.txt",
+      "stdoutSha256": "4a02be1ef9f3eb79e4b7a5746e14fa48da436038a0463948d93f69b6912e6be1",
+      "stderr": ""
+    },
+    {
+      "name": "components",
+      "observedAtUtc": "2026-10-26T06:06:53.622315+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "components.dapr.io",
+        "-A",
+        "-o",
+        "custom-columns=NS:.metadata.namespace,NAME:.metadata.name,UID:.metadata.uid,TYPE:.spec.type,VERSION:.spec.version,SCOPES:.scopes"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "components.txt",
+      "stdoutSha256": "caa3961417e8765075912ab0b7f3d89a536c048d1b2324c2b24d177111f60c21",
+      "stderr": ""
+    },
+    {
+      "name": "storage",
+      "observedAtUtc": "2026-10-26T06:06:53.918742+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "storageclass",
+        "-o",
+        "custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,RECLAIM:.reclaimPolicy"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "storage.txt",
+      "stdoutSha256": "3dcd10c3aa88a114f72f59e8118eb6d499b652dc3bef986a356bddd81f4b5e4f",
+      "stderr": ""
+    },
+    {
+      "name": "serviceaccounts",
+      "observedAtUtc": "2026-10-26T06:06:54.184611+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "serviceaccount",
+        "-n",
+        "ext-secrets-1-isolated",
+        "-o",
+        "custom-columns=NAME:.metadata.name,UID:.metadata.uid,AUTOMOUNT:.automountServiceAccountToken"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "serviceaccounts.txt",
+      "stdoutSha256": "13a9b6adb66570704cebef17b45e8a37fa7f84705a091725a2ac4499571f2581",
+      "stderr": ""
+    },
+    {
+      "name": "secret-metadata",
+      "observedAtUtc": "2026-10-26T06:06:54.465905+00:00",
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--context",
+        "jpiquot@local",
+        "--request-timeout=15s",
+        "get",
+        "secrets",
+        "-n",
+        "ext-secrets-1-isolated",
+        "-o",
+        "custom-columns=NAME:.metadata.name,UID:.metadata.uid,TYPE:.type,CREATED:.metadata.creationTimestamp"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "secret-metadata.txt",
+      "stdoutSha256": "68eed9d03fd28bb3d86c525ae00f594788d43ea8c57b22cc68e36dcda72fffd4",
+      "stderr": ""
+    }
+  ],
+  "mutations": 0,
+  "secretValuesRead": false
+}

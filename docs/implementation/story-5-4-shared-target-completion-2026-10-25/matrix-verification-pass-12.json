@@ -1,0 +1,93 @@
+{
+  "schema": "platform.story-5.4.matrix-audit.v1",
+  "observedAtUtc": "2026-10-26T14:26:05.020455+00:00",
+  "sourceHandbackSha256": "43497dd8b8baf365d4aa1b568c3e0d7c296c6ae4330daf65c92e99aa08640bc7",
+  "frozenMatrixRowCount": 5,
+  "rows": [
+    {
+      "matrixScenario": "Authority",
+      "coveringTests": [
+        "IndependentEffectAdmissionTests.RevocationWinningTheSurvivingAdmissionCasDeniesReplayAndCustomOwnerBeforeEffects",
+        "IndependentEffectAdmissionTests.AdmissionWinningBeforeRevocationDoesNotHoldNativeWorkLockAndLaterCallsDeny",
+        "ActualQualificationLookupResultOrdersCurrentRevocationAndPreservesRetainedProof",
+        "eng/ext-secrets-1/test_pass10_boundaries.py"
+      ],
+      "passedLanes": [
+        "runtime-verified",
+        "python-secrets"
+      ],
+      "scope": "Actual receiving head order with disposable grants/source reads; no installed trust claimed."
+    },
+    {
+      "matrixScenario": "Replay/spool",
+      "coveringTests": [
+        "IndependentAuthorityReceiverTests",
+        "IndependentRecoveryArchiveTests",
+        "IndependentOriginalIndexTests",
+        "EventStorePrivateRecordingPortTests",
+        "ActualArchivePreflightAndSpoolReadUseOneCallerBudget"
+      ],
+      "passedLanes": [
+        "runtime-verified",
+        "index-history-verified",
+        "protection"
+      ],
+      "scope": "Actual recorder/original barriers, denial recovery and durable fixture IO; selected unavailable physical/protocol evidence remains pending."
+    },
+    {
+      "matrixScenario": "Protection",
+      "coveringTests": [
+        "Fr34DynamicOccurrenceTests",
+        "Fr34AuthorityHostingTests.ActualOwningHostAutomaticallyRetriesDisposedNativeUseUntilIndependentHolderOriginalCloses",
+        "QualificationNativeAuditTests",
+        "NativeDurabilityOwnershipTests",
+        "Content-free actual FR34 original archive and legacy plaintext refusal"
+      ],
+      "passedLanes": [
+        "protection",
+        "native"
+      ],
+      "scope": "Actual source engine/owning hosted-worker and native adapter fixture paths, original substitution and refusal; no physical qualification."
+    },
+    {
+      "matrixScenario": "Cohort",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "eng/ext-secrets-1/test_outer_cohort_uncertainty.py",
+        "JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect",
+        "ConcreteSecretsAdapterThroughPhaseCommandValidatesObserverOriginal"
+      ],
+      "passedLanes": [
+        "python-secrets",
+        "runtime-verified"
+      ],
+      "scope": "Disjoint complete four-phase plan, ordering/failure/unknown recovery and real metadata-only CLI under disposable admitted fixtures; no real cohort/attempt."
+    },
+    {
+      "matrixScenario": "Packets",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_coordinated_packets.py",
+        "eng/ext-secrets-1/test_prepare_acceptance.py",
+        "eng/ext-host-1/test_prepare_acceptance.py",
+        "AgentsAcceptedDeploymentContextTests",
+        "AgentsAcceptedModelIdentityTests and duplicate accepted-input parsing"
+      ],
+      "passedLanes": [
+        "python-secrets",
+        "python-host",
+        "actual-composition-tests"
+      ],
+      "scope": "Exact accepted records/date/raw byte pins, all complete scope and absent-input refusal; full packet remains blocked."
+    }
+  ],
+  "allSourceMatrixRowsCoveredAndPassed": true,
+  "qualificationCaseCount": 234,
+  "completeQualificationDriverCount": 0,
+  "independentReviewStatus": "PendingReview12",
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "testCountRule": "Runtime511 includes concrete secrets-adapter/resume/budget/integration rows. Composition66 includes actual immutable acceptance/input-boundary/date tests. Mutation expected failure is negative evidence, not a positive case count.",
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-12.json",
+  "actualCompositionCases": 66
+}

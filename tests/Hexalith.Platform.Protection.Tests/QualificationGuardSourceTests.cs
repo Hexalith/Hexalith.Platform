@@ -21,6 +21,31 @@ public sealed class QualificationGuardSourceTests
             ["2:Block"]=JsonSerializer.SerializeToElement(new QualificationGuardStep(QualificationGuardStepKind.Block,Block:new("tenant","batch","block","integrity")),CustodyBindingContract.Json),
             ["3:Activate"]=JsonSerializer.SerializeToElement(new QualificationGuardStep(QualificationGuardStepKind.Activate,Activation:new("activate","block",1,"replacement",batch)),CustodyBindingContract.Json) };
     }
+    [Theory]
+    [InlineData(true)][InlineData(false)]
+    public async Task CompromiseStepRecoveryRequiresCurrentAuthenticationAndExactGuardMirror(bool authenticated)
+    {
+        var scope=new JsonObject { ["tenantId"]="tenant",["batchId"]="batch" };
+        var envelope=new DeletionCapabilityRevocationEnvelope("issuer","audience","tenant","DeletionBatchCapabilitySigningKey","v1",1,1,"event",new string('a',64));
+        var receipt=new DeletionCapabilityRevocationReceipt(envelope,1,1,"receipt",["batch"]);
+        var authentication=Substitute.For<IDeletionCapabilityRevocationAuthenticator>();var registrar=Substitute.For<IDeletionCapabilityCompromiseRegistrar>();var mirror=Substitute.For<IDeletionCapabilityGuardRevocationMirror>();
+        authentication.VerifyAsync(envelope,"signed",Arg.Any<CancellationToken>()).Returns(authenticated?new DeletionCapabilityRevocationAuthorization(envelope,"current",DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddMinutes(1)):null);
+        registrar.LookupAsync(envelope,Arg.Any<CancellationToken>()).Returns(receipt);bool mirrored=false;
+        mirror.LookupAsync(envelope,Arg.Any<CancellationToken>()).Returns(_=>mirrored?receipt:null);
+        mirror.RecordAsync(Arg.Any<DeletionCapabilityRevocationReceipt>(),Arg.Any<CancellationToken>()).Returns(_=> { mirrored=true;return Task.FromResult(true); });
+        var subscriber=new DeletionCapabilityRevocationSubscriber(new("issuer","audience","tenant"),authentication,registrar,mirror,TimeProvider.System);
+        var definition=new QualificationGuardCaseDefinition("v23.compromise-complete-enumeration","tenant","batch",QualificationProtocolSchema.Digest(scope),[],new(QualificationGuardStepKind.Compromise,Compromise:envelope,SignedRevocationEvidence:"signed"),null,"none",[]);
+        var originals=Substitute.For<IQualificationOriginalStore>();originals.BeginAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(false);
+        var workflow=new QualificationGuardCaseWorkflow(Substitute.For<IGovernanceScopeGuard>(),Substitute.For<IDeletionProtectionOwner>(),Substitute.For<IDeletionConsumptionActor>(),Substitute.For<IDeletionCapabilitySigningActor>(),originals,new Dictionary<string,QualificationGuardCaseDefinition>{{definition.CaseId,definition}},subscriber);
+        var request=new JsonObject { ["caseId"]=definition.CaseId,["requestId"]=new string('b',64),["enrolledScope"]=scope };
+        if(authenticated) { (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldNotBeNull();mirrored.ShouldBeTrue();await mirror.Received(1).RecordAsync(Arg.Is<DeletionCapabilityRevocationReceipt>(value=>value.Envelope==envelope && value.ReceiptId==receipt.ReceiptId),Arg.Any<CancellationToken>()); }
+        else { await Should.ThrowAsync<InvalidOperationException>(()=>workflow.ExecuteAsync(request,TestContext.Current.CancellationToken));mirror.ReceivedCalls().ShouldBeEmpty(); }
+        await registrar.DidNotReceive().RegisterAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(),Arg.Any<CancellationToken>());
+        request["caseId"]="v23.compromise-envelope-substitution.issuer";
+        var rejected=definition with { CaseId=request["caseId"]!.GetValue<string>() };
+        var closed=new QualificationGuardCaseWorkflow(Substitute.For<IGovernanceScopeGuard>(),Substitute.For<IDeletionProtectionOwner>(),Substitute.For<IDeletionConsumptionActor>(),Substitute.For<IDeletionCapabilitySigningActor>(),originals,new Dictionary<string,QualificationGuardCaseDefinition>{{rejected.CaseId,rejected}},subscriber);
+        (await closed.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol");
+    }
     [Fact]
     public void ClosedRecipeRejectsChangedOperationOrderingAndUnknownArguments()
     {
@@ -95,6 +120,12 @@ public sealed class QualificationGuardSourceTests
         var guard=new TenantGovernanceGuardState("tenant","installation",6,"epoch","legacy","writers",null,[],[deletion],[],[],receipts,["v1"]);
         var outcome=new DeletionConsumptionOutcome("tenant","batch",DeletionConsumptionStatus.Consumed,3,1,"receipt",null,null,null,[]);
         QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard,outcome,[],["nextAttestationOrdinal"]).Metrics["nextAttestationOrdinal"].ShouldBe(expected);
+        var unrelated=new DeletionCapabilityRevocationReceipt(new("issuer","audience","tenant","DeletionBatchCapabilitySigningKey","unrelated-old",1,1,"event",new string('e',64)),1,1,"block",["batch"]);
+        var unrelatedProjection=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard with { Revocations=[unrelated] },outcome,[],["capabilityCompromiseBlockProof"]);
+        if(ordinal==2) unrelatedProjection.Metrics["capabilityCompromiseBlockProof"].ShouldBe(0);else unrelatedProjection.Metrics.ShouldBeEmpty();
+        var correlated=unrelated with { Envelope=unrelated.Envelope with { KeyVersion=predecessor.CapabilityKeyVersion } };
+        var exactProjection=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",guard with { Revocations=[correlated] },outcome,[],["capabilityCompromiseBlockProof"]);
+        if(ordinal==2) exactProjection.Metrics["capabilityCompromiseBlockProof"].ShouldBe(1);else exactProjection.Metrics.ShouldBeEmpty();
         var substituted=guard with { Receipts=[receipts[0],receipts[1] with { Capability=successor with { TenantId="foreign" } }] };
         var denied=QualificationGuardInvariantProjection.Project("tenant","deletion","batch",substituted,outcome,[],["nextAttestationOrdinal"]);
         denied.Metrics.ShouldNotContainKey("nextAttestationOrdinal");denied.MissingProtocols.ShouldContain("IndependentMeasuredOwnerHistoryOrBoundaryProtocol.nextAttestationOrdinal");

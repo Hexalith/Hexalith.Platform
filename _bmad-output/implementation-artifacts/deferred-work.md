@@ -1354,3 +1354,17 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Run the Windows no-follow, shared-read metadata open path on Windows (W10).
   evidence: Medium, unverified on this Linux host. In Builds `7116b16`, `SelectedNativeTestReport.OpenWithoutBlocking` opens Windows files with `CreateFileW` (`FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_OVERLAPPED`) and rejects any reparse point through `GetFileInformationByHandleEx(FileAttributeTagInfo)` (lines 203-221). Every workflow runs on `ubuntu-latest`, so `FinalComponentSymlinksRefuseAtomically`, `ExclusiveLocksRefuseUntilReleased` and every runner metadata read take only the Unix branch. Dropping the reparse check, or the overlapped flag while `isAsync: true` stays, would ship with CI green. CI workflow changes are out of scope for story 2.5, and Windows native runtime qualification is deferred by owner decision Q3. During that qualification, also check two Windows-only defects: non-link reparse tags (cloud placeholders, dedup) are refused, and the raw path has no `\\?\` prefix for paths of 260 or more characters.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md (2026-10-26)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: `ClaimedPorts` still opens every claim with `File.OpenRead`.
+  evidence: Pre-existing. `CompositionResourceClaimStore.ClaimedPorts` (`CompositionResourceClaimStore.cs:148`) still uses `File.OpenRead` for every `*.json` claim, so one link, oversized file, or unreadable claim fails port discovery for every owner. The story's new receipt and owner reads use `OpenWithoutBlocking`. This method was not introduced by the five story commits.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: One bad Windows session SID aborts owned-process discovery.
+  evidence: Not actionable now. `CompositionProcessEnvironmentReader.ForeignWindowsProcesses` (`CompositionProcessEnvironmentReader.cs:213`) constructs `SecurityIdentifier` inside the WTS loop with no per-entry catch, so `ArgumentException` leaves `Find` and is not one of `RemoveAsync`'s teardown exceptions. Owner decision Q3 leaves Windows/macOS native qualification out of story 2.5, and the dev lane is Linux/WSL. Settle with that qualification.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Windows metadata reads ignore `respectSharing`.
+  evidence: Not actionable now. `SelectedNativeTestReport.OpenWithoutBlocking` (`SelectedNativeTestReport.cs:203`) returns on the Windows branch before the Unix `flock` check, so `respectSharing: true` does not refuse an exclusive writer. Same Q3/W10 boundary as the existing Windows open-path deferral. The Unix interruption bug is a separate patch.

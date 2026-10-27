@@ -1,0 +1,90 @@
+{
+  "schema": "platform.story-5.4.matrix-audit.v1",
+  "observedAtUtc": "2026-10-26T11:11:02.233157+00:00",
+  "sourceHandbackSha256": "9b676b2337e160a98bbec717cf9e174bc31dfd0b8a0c12b8759d5dc4cf82cd41",
+  "frozenMatrixRowCount": 5,
+  "rows": [
+    {
+      "matrixScenario": "Authority",
+      "coveringTests": [
+        "IndependentEffectAdmissionTests.RevocationWinningTheSurvivingAdmissionCasDeniesReplayAndCustomOwnerBeforeEffects",
+        "IndependentEffectAdmissionTests.AdmissionWinningBeforeRevocationDoesNotHoldNativeWorkLockAndLaterCallsDeny",
+        "ActualQualificationLookupResultOrdersCurrentRevocationAndPreservesRetainedProof",
+        "eng/ext-secrets-1/test_pass10_boundaries.py"
+      ],
+      "passedLanes": [
+        "runtime-final-tests",
+        "python-secrets"
+      ],
+      "scope": "Actual receiving head order with disposable grants/source reads; no installed trust claimed."
+    },
+    {
+      "matrixScenario": "Replay/spool",
+      "coveringTests": [
+        "IndependentAuthorityReceiverTests",
+        "IndependentRecoveryArchiveTests",
+        "IndependentOriginalIndexTests",
+        "EventStorePrivateRecordingPortTests",
+        "ActualArchivePreflightAndSpoolReadUseOneCallerBudget"
+      ],
+      "passedLanes": [
+        "runtime-final-tests",
+        "index-history-final-tests",
+        "protection-final-tests",
+        "deadline-and-real-cli-final-tests"
+      ],
+      "scope": "Actual recorder/original barriers, denial recovery and durable fixture IO; selected unavailable physical/protocol evidence remains pending."
+    },
+    {
+      "matrixScenario": "Protection",
+      "coveringTests": [
+        "Fr34DynamicOccurrenceTests",
+        "Fr34AuthorityHostingTests.ActualOwningHostAutomaticallyRetriesDisposedNativeUseUntilIndependentHolderOriginalCloses",
+        "QualificationNativeAuditTests",
+        "NativeDurabilityOwnershipTests"
+      ],
+      "passedLanes": [
+        "protection-final-tests",
+        "native-final-tests"
+      ],
+      "scope": "Actual source engine/owning hosted-worker and native adapter fixture paths, original substitution and refusal; no physical qualification."
+    },
+    {
+      "matrixScenario": "Cohort",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_joint_live_phase_runner.py",
+        "eng/ext-secrets-1/test_joint_admission_ordering.py",
+        "eng/ext-secrets-1/test_outer_cohort_uncertainty.py",
+        "JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect"
+      ],
+      "passedLanes": [
+        "python-secrets",
+        "runtime-final-tests",
+        "deadline-and-real-cli-final-tests"
+      ],
+      "scope": "Disjoint complete four-phase plan, ordering/failure/unknown recovery and real metadata-only CLI under disposable admitted fixtures; no real cohort/attempt."
+    },
+    {
+      "matrixScenario": "Packets",
+      "coveringTests": [
+        "eng/ext-secrets-1/test_coordinated_packets.py",
+        "eng/ext-secrets-1/test_prepare_acceptance.py",
+        "eng/ext-host-1/test_prepare_acceptance.py",
+        "AgentsAcceptedDeploymentContextTests"
+      ],
+      "passedLanes": [
+        "python-secrets",
+        "python-host",
+        "current-composition12"
+      ],
+      "scope": "Exact accepted records/date/raw byte pins, all complete scope and absent-input refusal; full packet remains blocked."
+    }
+  ],
+  "allSourceMatrixRowsCoveredAndPassed": true,
+  "qualificationCaseCount": 234,
+  "completeQualificationDriverCount": 0,
+  "independentReviewStatus": "PendingReview10",
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "testCountRule": "deadline/realCLI4 is a focused overlap in Runtime475, not4 additional unique cases. Composition12 is an additional focused source suite."
+}

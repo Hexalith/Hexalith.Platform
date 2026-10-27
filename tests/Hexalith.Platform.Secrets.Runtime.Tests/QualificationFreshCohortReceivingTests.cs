@@ -41,6 +41,21 @@ public sealed class QualificationFreshCohortReceivingTests
             string unchangedInstallation=JsonSerializer.Serialize(staticBindings);var store=new InstalledQualificationOriginalStore(originalAuthority.Client());
             // Recipes and all static receiving/trust inputs already exist before the retained authority chooses its unpredictable attempt.
             var retained=await PythonAsync(directory,"reserve",new JsonObject());string attempt=retained["attemptId"]!.GetValue<string>();Guid.TryParse(attempt,out _).ShouldBeTrue();
+            var admittedPhase=retained["phaseRequest"]!.AsObject();
+            (await attempts.ValidatePhaseAsync(admittedPhase,false,TestContext.Current.CancellationToken)).ShouldBeTrue();
+            (await attempts.ValidatePhaseAsync(admittedPhase,true,TestContext.Current.CancellationToken)).ShouldBeTrue();
+            foreach(string field in new[]{"attemptId","requestId","previousSha256","owner"})
+            {
+                var substituted=(JsonObject)admittedPhase.DeepClone();substituted[field]="substituted";
+                (await attempts.ValidatePhaseAsync(substituted,false,TestContext.Current.CancellationToken)).ShouldBeFalse();
+            }
+            using(var phaseKey=ECDsa.Create(ECCurve.NamedCurves.nistP256))
+            {
+                var rejectedCommand=new JointPhaseCommand(new(bindingDigest,recipe["targetCommit"]!.GetValue<string>(),1,admittedPhase["cases"]!.AsArray().Select(value=>value!.GetValue<string>()).ToArray()),store,new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow,JsonObject)>>(),null,directory,phaseKey,
+                    phaseAdmission:(value,ct)=>attempts.ValidatePhaseAsync(value,false,ct));
+                var substituted=(JsonObject)admittedPhase.DeepClone();substituted["attemptId"]="nonexistent";
+                (await rejectedCommand.ExecuteAsync(substituted,TestContext.Current.CancellationToken)).ShouldBeNull();rejectedCommand.MissingInputs.ShouldContain("CurrentExactRetainedPhaseAdmission");
+            }
             var phaseRequest=new JsonObject { ["attemptId"]=attempt,["bindingDigest"]=bindingDigest,["phase"]=1 };
             var scopeBinding=new JointPhaseCommandScope(bindingDigest,recipe["targetCommit"]!.GetValue<string>(),1,["secrets:"+recipe["caseId"]!.GetValue<string>()]);
             var full=JointPhaseRequestRecipe.Bind(recipe,phaseRequest,scopeBinding)!;var owner=(JsonObject)full.DeepClone();
@@ -88,7 +103,7 @@ public sealed class QualificationFreshCohortReceivingTests
     {
         public Task<string?> InvokeAsync(string app,string method,string body,CancellationToken token)=>throw new InvalidOperationException("Uncredentialed fixture call.");
         public async Task<string?> InvokeCredentialBoundAsync(string app,string credential,string method,string body,CancellationToken token)
-        { app.ShouldBe("fixture-cohort");credential.ShouldBe("file:/fixture-cohort");method.ShouldBe("joint/v1/qualification-attempt");return (await PythonAsync(directory,"rpc",JsonNode.Parse(body)!.AsObject())).ToJsonString(); }
+        { app.ShouldBe("fixture-cohort");credential.ShouldBe("file:/fixture-cohort");method.ShouldBeOneOf("joint/v1/qualification-attempt","joint/v1/phase-admission");return (await PythonAsync(directory,"rpc",JsonNode.Parse(body)!.AsObject())).ToJsonString(); }
     }
     private static async Task<JsonObject> PythonAsync(string directory,string mode,JsonObject request,[System.Runtime.CompilerServices.CallerFilePath]string source="")
     {

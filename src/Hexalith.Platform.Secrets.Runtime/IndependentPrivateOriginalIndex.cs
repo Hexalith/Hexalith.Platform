@@ -7,7 +7,7 @@ internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive
 {
     internal sealed record Entry(string Role,string RequestId,IndependentOriginal Original,string? PreviousValueSha256);
     private sealed record StoredEntry(string Schema,string Role,string RequestId,string RequestSha256,string? ResultSha256,
-        string SubmissionState,long RetainedRevision,long ResultRetainedRevision,string? ActiveTransportMessageId,bool FinalAtAdmission,string? PreviousValueSha256);
+        string SubmissionState,long RetainedRevision,long ResultRetainedRevision,string? ActiveTransportMessageId,bool FinalAtAdmission,string? PreviousValueSha256,[property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IndependentCommandDispatchBinding? DispatchBinding=null);
     private sealed record Node(string KeySha256,string ValueSha256,string? Left,string? Right,int Height);
     private readonly Dictionary<string,Node> _nodes=new(StringComparer.Ordinal);
     internal sealed record LiabilityEntry(string Role,string RequestId,bool Pending);
@@ -49,7 +49,7 @@ internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive
         string requestHash=await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(original.Request,CustodyBindingContract.Json),token).ConfigureAwait(false);
         string? resultHash=original.Result is { } result?await archive.PublishAsync(JsonSerializer.SerializeToUtf8Bytes(result,CustodyBindingContract.Json),token).ConfigureAwait(false):null;
         byte[] body=JsonSerializer.SerializeToUtf8Bytes(new StoredEntry("private-original-v2",role,requestId,requestHash,resultHash,original.SubmissionState,original.RetainedRevision,
-            original.ResultRetainedRevision,original.ActiveTransportMessageId,original.FinalAtAdmission,priorHash),CustodyBindingContract.Json);
+            original.ResultRetainedRevision,original.ActiveTransportMessageId,original.FinalAtAdmission,priorHash,original.DispatchBinding),CustodyBindingContract.Json);
         if(body.Length>CustodyBindingContract.MaximumOriginalBytes) throw new IOException("Bounded immutable original body exceeded.");
         string value=await archive.PublishAsync(body,token).ConfigureAwait(false);
         return (await InsertAsync(root,key,value,token).ConfigureAwait(false),priorHash is null);
@@ -63,7 +63,7 @@ internal sealed class IndependentPrivateOriginalIndex(IIndependentContentArchive
         if(stored.Schema!="private-original-v2" || !CustodyBindingContract.Digest(stored.RequestSha256) || stored.ResultSha256 is not null && !CustodyBindingContract.Digest(stored.ResultSha256)) throw new IOException("Exact private body references required.");
         using var request=JsonDocument.Parse(await archive.ReadAsync(stored.RequestSha256,token).ConfigureAwait(false));
         using var result=stored.ResultSha256 is null?null:JsonDocument.Parse(await archive.ReadAsync(stored.ResultSha256,token).ConfigureAwait(false));
-        return new(stored.Role,stored.RequestId,new(request.RootElement.Clone(),result?.RootElement.Clone(),stored.SubmissionState,stored.RetainedRevision,stored.ResultRetainedRevision,stored.ActiveTransportMessageId,stored.FinalAtAdmission),stored.PreviousValueSha256);
+        return new(stored.Role,stored.RequestId,new(request.RootElement.Clone(),result?.RootElement.Clone(),stored.SubmissionState,stored.RetainedRevision,stored.ResultRetainedRevision,stored.ActiveTransportMessageId,stored.FinalAtAdmission,stored.DispatchBinding),stored.PreviousValueSha256);
     }
     private async Task<string?> FindAsync(string? root,string key,CancellationToken token)
     {

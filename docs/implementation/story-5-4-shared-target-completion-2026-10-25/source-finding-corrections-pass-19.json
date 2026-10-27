@@ -1,0 +1,113 @@
+[
+  {
+    "finding": "R18B-8",
+    "correction": "Explicit OwnLaunch scope owns leases before acquisition, resource registration and abandoned/failed Build. Its guarded Build disposes on early lifetime/options/transfer failures and eagerly resolves the same factory-owned owner only after successful host construction. Canonical apphost uses this boundary. Production composition requires the scope; successful application disposal owns the descriptors.",
+    "source": "src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs",
+    "sourceSha256": "08bbbfd556e4874ab6fa90a1fbf57238385e1fb62f8f4792cab35a5d2d76ee95",
+    "actualCallerTests": [
+      "AcceptedLaunchLifetimeTests",
+      "AcceptedLaunchBoundaryTests",
+      "AcceptedResourceListenerTests"
+    ],
+    "focusedRows": 5,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-9",
+    "correction": "Verifier captures exact input identity and uses one bounded operation including both spool readiness reads. The final read-only authentication follows the last awaited readiness, and final replay/current-profile validation stays inside that bounded authenticator worker; only synchronous retention/cancellation checks then precede command construction. There is one replay registration, no new nonce or renewed receipt.",
+    "source": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs",
+    "sourceSha256": "5d4298c905980fd2d68fd08d08e5407079f123e5f2bc61e7960a133ad5621b43",
+    "actualCallerTests": [
+      "AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen"
+    ],
+    "focusedRows": 5,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-10",
+    "correction": "A finite versioned local enum on TrustedEnvelopeResult records only independently confirmed same-issuer/nonce first-seen conflicts. Admission maps that provenance to replay-conflict; ordinary provider Denied remains unavailable-owner. The local property is excluded from wire/original serialization. Actual verifier, admission, recorder and spool cover authentic conflicting challenges, provider Denied, unavailable registrar, invalid tag, original reply loss and pending-audit refusal.",
+    "source": "src/Hexalith.Platform.Custody/TrustedEnvelopeDenialCause.cs",
+    "sourceSha256": "4da03e3844f9a69afb9c351f8a76d6d436093420c4195af22306ff0b5ec79c04",
+    "actualCallerTests": [
+      "AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal"
+    ],
+    "focusedRows": 8,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-1",
+    "correction": "The actual per-connection VFS unconditionally fsyncs its held parent after journal unlink (including already absent journal) rather than trusting FULL sync_directory. Deletion/barrier failure marks the connection failed and cannot acknowledge commit or authorize native dispatch; reopen reads the actual surviving original without rewriting uncertainty.",
+    "source": "eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+    "sourceSha256": "474416d055ec16ea32d858532ef8aa44148d2680bd2a9bb6559a889f47715b7e",
+    "actualCallerTests": [
+      "RollbackDeleteBarrierTests"
+    ],
+    "focusedRows": 2,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-2/R18E-2",
+    "correction": "BoundedRegularFile uses positional RandomAccess directly into owned input/sentinel buffers in its existing bounded worker. No FileStream or implicit read-ahead buffer is created. Actual P256 private span parsing/signing, failure/cancellation/late ownership and measured same-thread acquisition allocation cover the extra-buffer defect without promising library/process erasure.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs",
+    "sourceSha256": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "actualCallerTests": [
+      "PrivateAcquisitionBufferTests"
+    ],
+    "focusedRows": 6,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-3",
+    "correction": "The distinct one-byte growth sentinel clears in finally on EOF, real growing-file rejection, cancellation and late acquisition. Failed owned inputs and span decode arrays retain their existing cleanup; successful bytes transfer to the owned consumer.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/BoundedRegularFile.cs",
+    "sourceSha256": "961411e0d044f0aa76e861f7e758cd8d6661348fcacc4a48234b31b6cc26c938",
+    "actualCallerTests": [
+      "PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial"
+    ],
+    "focusedRows": 5,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18B-6",
+    "correction": "Independent authority rechecks exclusive response freshness after signature/evidence encoding, and the public generic wrapper keeps one caller-linked deadline through payload decoding and rechecks before return. QualificationProofVerifier samples real current time after canonicalization/P256 verification while VerifyOriginal keeps authenticated historical time. Public verification checks its budget before and after awaited evidence, including null responses; original caller cancellation propagates while internal expiry returns unavailable/default. Real codecs, both evidence/public paths, converter-time advancement, before/exclusive/expired and historical fixtures cover each boundary.",
+    "source": "src/Hexalith.Platform.Secrets.Runtime/IndependentDaprAuthority.cs",
+    "sourceSha256": "47d9e001ec01a513c93366e3375b227c10b1afcfde51bb7ec1b3eebd16c43fa2",
+    "actualCallerTests": [
+      "CurrentProofReturnTests"
+    ],
+    "focusedRows": 20,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18E-1",
+    "correction": "Nonempty damaged headers and zeroed/missing initialized alternate copies preserve unknown completion metadata even beside an older Free/Reserved copy. Only the source-provable first Free write remains recoverable; both missing headers with committed frame metadata refuse. No database can reuse/reconstruct such a slot. Actual enrolled RetainedPhaseOwner restart/retry and second enrolled DB fixtures preserve A SQL/original/body bytes, retain the liability, and perform no second effect/lookup/reconstruction; prior damaged Completed-body regression remains unchanged.",
+    "source": "eng/ext-secrets-1/phase_completion_pool.py",
+    "sourceSha256": "6328bf950ec44b443d118705110985f2eefd5563baf0c188486e7e098ab175d4",
+    "actualCallerTests": [
+      "DamagedPhaseHeaderLiabilityTests",
+      "test_damaged_completed_frame_blocks_without_lookup_or_replacement"
+    ],
+    "focusedRows": 2,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  },
+  {
+    "finding": "R18V-1",
+    "correction": "New shipped reader regression executes actual delivery workflow registration against the real actor/private independent denial journal and actual executor original service. Agreement yields observation; each independently returned execution, receiving or controlled native denial mismatch yields null. All retained originals remain unchanged and no native release or duplicate delivery occurs. Disposable OR-to-AND guard mutation is checked separately.",
+    "source": "tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationExportDeliveryOriginalReaderTests.cs",
+    "sourceSha256": "19f7bd7c4dea8838927d3ab200b9f68953b69f4b28c152bdb2af7d880beb6a73",
+    "actualCallerTests": [
+      "QualificationExportDeliveryOriginalReaderTests"
+    ],
+    "focusedRows": 4,
+    "fixtureOnly": true,
+    "actualEvidence": null
+  }
+]

@@ -21,6 +21,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
         if(id is null || !definitions.TryGetValue(id,out var definition) || original["enrolledScope"] is not JsonObject scope || QualificationProtocolDigest(scope)!=definition.EnrolledScopeSha256
             || definition.Before.Concat([definition.Effect]).Concat(definition.Trigger is { } trigger?[trigger]:[]).Concat(definition.After).Any(step=>!Scoped(step,definition)))
             return Task.FromResult<IReadOnlyList<string>>(["ExactClosedGuardCaseRecipeAndTargets"]);
+        if(id.StartsWith("v23.compromise-envelope-substitution.",StringComparison.Ordinal)) return Task.FromResult<IReadOnlyList<string>>(["External.AuthenticatedExactCompromiseEnvelopeRejectedOriginalProtocol"]);
         return Task.FromResult<IReadOnlyList<string>>(id.StartsWith("Recovery.",StringComparison.Ordinal)?["External.ExactNativeLostResultInjectionAndLookupOutageControllerProtocol."+id.Split('.')[1]]:[]);
     }
     /// <summary>Recovers only the exact retained complete result; step recovery remains typed owner lookup.</summary>
@@ -53,8 +54,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
                 QualificationGuardStepKind.Register => first ? await protection.RegisterAsync(step.Batch!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Register"),
                 QualificationGuardStepKind.Reserve => first ? await protection.ReserveAndConsumeAsync(step.Batch!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Reserve"),
                 QualificationGuardStepKind.Block => first ? await consumption.BlockAsync(step.Block!).WaitAsync(token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Block"),
-                QualificationGuardStepKind.Compromise => first ? await compromiseSubscriber.ReceiveAsync(step.Compromise!,step.SignedRevocationEvidence!,token).ConfigureAwait(false)
-                    : await consumption.LookupRevocationAsync(step.Compromise!).WaitAsync(token).ConfigureAwait(false) is not null,
+                QualificationGuardStepKind.Compromise => await compromiseSubscriber.ReceiveAsync(step.Compromise!,step.SignedRevocationEvidence!,token).ConfigureAwait(false),
                 QualificationGuardStepKind.Activate => first ? await protection.ActivateAsync(step.Activation!,token).ConfigureAwait(false) : throw new InvalidOperationException("External.ExactNativeOperationOriginalProtocol.Activate"),
                 QualificationGuardStepKind.Sign => first ? await signer.SignAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false),
                 QualificationGuardStepKind.ObsoleteUnissued => first ? await signer.ObsoleteUnissuedAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false) : await signer.LookupAsync(step.Signing!).WaitAsync(token).ConfigureAwait(false),
@@ -74,6 +74,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
         if(definition.Trigger is not null && definition.Boundary=="at")
         {
             var effect=Step(definition.Effect); var trigger=Step(definition.Trigger);
+            await Task.WhenAll(effect,trigger).ConfigureAwait(false);
             observations.Add(await effect.ConfigureAwait(false)); observations.Add(await trigger.ConfigureAwait(false));
         }
         else observations.Add(await Step(definition.Effect).ConfigureAwait(false));

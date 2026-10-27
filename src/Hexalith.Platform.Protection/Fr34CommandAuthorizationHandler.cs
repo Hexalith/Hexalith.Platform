@@ -10,6 +10,18 @@ public sealed class Fr34CommandAuthorizationHandler(Fr34OccurrenceRecipe recipe,
     IndependentDaprAuthority commandOriginals,TimeProvider clock):IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
+    public bool RequiresCurrentResultAdmission(string method)=>Methods.Contains(method);
+    /// <inheritdoc />
+    public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
+    {
+        var request=payload.Deserialize<Request>(CustodyBindingContract.Json);
+        var workload=request is null?[]:current.Callers.Where(value=>value.Identity==request.caller && value.ScopeReference==request.principal).ToArray();
+        // Capture the exact consulted grant, including its purpose, expiry and revocation.
+        // An expired nested grant also invalidates a result even without a head edit.
+        return QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision,
+            workload,workloadCurrent=workload.Any(value=>!value.Revoked && value.ValidUntil>clock.GetUtcNow() && value.Methods.Contains("recording-source:fr34-canary",StringComparer.Ordinal)) },CustodyBindingContract.Json)!);
+    }
+    /// <inheritdoc />
     public bool IsReadOnly(string method)=>method is "fr34-command-authorize";
     /// <inheritdoc />
     public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
@@ -27,7 +39,7 @@ public sealed class Fr34CommandAuthorizationHandler(Fr34OccurrenceRecipe recipe,
                 && value.ValidUntil>clock.GetUtcNow() && value.Methods.Contains("recording-source:fr34-canary",StringComparer.Ordinal))) return new { Allowed=false };
         // The original-store port supports both immutable indexed originals and enrolled legacy originals. Missing/changed original bytes deny.
         var original=await commandOriginals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=request.command.MessageId },token).ConfigureAwait(false);
-        bool exact=original is { SubmissionState:"Unsent" } && JsonNode.DeepEquals(JsonNode.Parse(original.Request.GetRawText()),JsonNode.Parse(request.command.Payload.GetRawText()));
+        bool exact=original is { SubmissionState:"Unsent" } && Fr34CommandFingerprint.Matches(original.Request,request.command,request.principal);
         return new { Allowed=exact && await claims.VerifyCommandAsync(request.command,token).ConfigureAwait(false)
             && caller.ScopeReference==recipe.Target.TenantId+"|fr34" };
     }

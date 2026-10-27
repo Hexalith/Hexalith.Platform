@@ -14,28 +14,26 @@ public sealed class QualificationObservationOrchestratorTests
     [InlineData("AfterLookup",false)][InlineData("AfterLookup",true)]
     [InlineData("restart",false)][InlineData("restart",true)]
     [InlineData("restore",false)][InlineData("restore",true)]
-    public async Task InterruptionRetainsEveryHistoricalStageBeforeLaterControlsAndUnknownStageNeverRereadsCurrentState(string boundary,bool after)
+    public async Task IndependentSignedStagesRecoverBeforeLaterControlsWithoutRemeasuringRetainedStage(string boundary,bool after)
     {
         var request=QualificationHostTests.Request();string id=request["requestId"]!.GetValue<string>();var store=new Store();
-        string failedId=id+(boundary is "restart" or "restore"?":"+boundary:":observation-stage:"+boundary);
+        string failedId=id+(boundary is "restart" or "restore"?":"+boundary:":observation-stage-v2:"+boundary);
         store.Fail=failedId;store.After=after;
         var recovery=Substitute.For<IQualificationRecoveryController>();var reader=Substitute.For<IQualificationObservedOriginalReader>();
         recovery.PreflightAsync(Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(Array.Empty<string>());
+        var remoteStages=new Dictionary<string,QualificationObservedOriginal>();
+        reader.LookupStageAsync(Arg.Any<JsonObject>(),Arg.Any<QualificationObservationStageRequest>(),Arg.Any<CancellationToken>()).Returns(call=>remoteStages.GetValueOrDefault(call.ArgAt<QualificationObservationStageRequest>(1).Stage));
         string incarnation="effect";int effects=0,lookups=0,reads=0,controls=0;var originals=new Dictionary<string,QualificationRecoveryControlOriginal>();
         recovery.ExecuteAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(call=>
         { string operation=call.ArgAt<string>(0);controls++;var receipt=new QualificationRecoveryControlOriginal(id,id+":"+operation,operation,new string('a',40),"isolated",incarnation,operation,new string('b',64),new string('c',64));incarnation=operation;originals.Add(operation,receipt);return receipt; });
         recovery.LookupAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(call=>originals.GetValueOrDefault(call.ArgAt<string>(0)));
         recovery.Verify(Arg.Any<QualificationRecoveryControlOriginal>(),Arg.Any<JsonObject>()).Returns(true);
-        reader.ReadAsync(Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(_=>
-        { reads++;return new QualificationObservedOriginal(id,new string('b',64),"original-1",new JsonObject { ["state"]=new JsonObject { ["nativeReceipt"]="immutable" },["incarnation"]=incarnation }); });
+        reader.ReadStageAsync(Arg.Any<JsonObject>(),Arg.Any<QualificationObservationStageRequest>(),Arg.Any<CancellationToken>()).Returns(_=>
+        { reads++;var stage=_.ArgAt<QualificationObservationStageRequest>(1);var native=new QualificationNativeStageBoundary(stage.Stage,incarnation,"native-"+reads,stage.ControlOperationId,stage.Stage=="AfterEffect"?null:stage.ControlOriginalSha256??new string('d',64));
+            var measured=new QualificationObservedOriginal(id,new string('b',64),"original-1",new JsonObject { ["state"]=new JsonObject { ["nativeReceipt"]="immutable" },["incarnation"]=incarnation,["nativeStageBoundary"]=JsonSerializer.SerializeToNode(native,CustodyBindingContract.Json) },StageEvidence:new(stage,native));remoteStages.Add(stage.Stage,measured);return measured; });
         Task Effect(bool lookup,CancellationToken token) { if(lookup)lookups++;else effects++;return Task.CompletedTask; }
         await Should.ThrowAsync<IOException>(()=>new QualificationObservationOrchestrator(store,recovery,reader).ObserveAsync(request,Effect,TestContext.Current.CancellationToken));
-        int readBoundary=reads;incarnation="changed-after-failure";store.Fail=null;
-        if(!after || boundary is "restart" or "restore")
-        {
-            var failure=await Should.ThrowAsync<InvalidOperationException>(()=>new QualificationObservationOrchestrator(store,recovery,reader).ObserveAsync(request,Effect,TestContext.Current.CancellationToken));
-            failure.Message.ShouldContain("ExactHistoricalSignedStageSnapshotProtocol");reads.ShouldBe(readBoundary);effects.ShouldBe(1);return;
-        }
+        incarnation="changed-after-failure";store.Fail=null;
         var recovered=await new QualificationObservationOrchestrator(store,recovery,reader).ObserveAsync(request,Effect,TestContext.Current.CancellationToken);
         recovered.ShouldNotBeNull();effects.ShouldBe(1);controls.ShouldBe(2);reads.ShouldBe(4);
         var stages=recovered["snapshots"]!.AsArray();stages.Select(value=>value!["stage"]!.GetValue<string>()).ShouldBe(["AfterEffect","AfterRestart","AfterRestore","AfterLookup"]);

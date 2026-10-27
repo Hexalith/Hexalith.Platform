@@ -1,0 +1,151 @@
+{
+  "observedAtUtc": "2026-10-26T06:11:08.703295+00:00",
+  "files": [
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z/runtime-reference.json",
+      "classification": "HistoricalIncompleteRuntimeReference",
+      "exists": true,
+      "sha256": "31c28a9d1dd21eed8ca4d0c421088cb946b262c624ba461d0795cab92cd1feb3",
+      "qualificationBinding": false,
+      "size": 2355,
+      "missingFields": [
+        "qualification.daprApiCredentialReference",
+        "qualification.enrollment.appChannelCredentialReference",
+        "qualification.enrollment.appId",
+        "qualification.enrollment.callerAuthenticatorReference",
+        "qualification.enrollment.callerScopeAuthorityReference",
+        "qualification.enrollment.identity",
+        "qualification.enrollment.publicAnchorFile",
+        "qualification.enrollment.version",
+        "qualification.enrollmentCredentialReference",
+        "qualification.executor.appChannelCredentialReference",
+        "qualification.executor.appId",
+        "qualification.executor.callerAuthenticatorReference",
+        "qualification.executor.callerScopeAuthorityReference",
+        "qualification.executor.identity",
+        "qualification.executor.publicAnchorFile",
+        "qualification.executor.version",
+        "qualification.isolatedTargetId",
+        "qualification.observer.appChannelCredentialReference",
+        "qualification.observer.appId",
+        "qualification.observer.callerAuthenticatorReference",
+        "qualification.observer.callerScopeAuthorityReference",
+        "qualification.observer.identity",
+        "qualification.observer.publicAnchorFile",
+        "qualification.observer.version",
+        "runtime.acceptedReplacementCommit",
+        "runtime.actorRoleAuthorityReference",
+        "runtime.allCopyInventoryReference",
+        "runtime.allCopyLifecycleAuthorityReference",
+        "runtime.audience",
+        "runtime.authenticatedRequesterTransport",
+        "runtime.compromiseGuardMirrorReference",
+        "runtime.compromisePublisherReference",
+        "runtime.compromiseSubscriberCredentialReference",
+        "runtime.compromiseSubscriptionReference",
+        "runtime.currentInventoryAuthorityReference",
+        "runtime.currentRevocationReference",
+        "runtime.independentSignerAccount",
+        "runtime.independentSignerCredentialReference",
+        "runtime.issuer",
+        "runtime.migrationAuthorityReference",
+        "runtime.nonrollbackJournalReference",
+        "runtime.profileNotBefore",
+        "runtime.profileReference",
+        "runtime.profileValidUntil",
+        "runtime.profileVersion",
+        "runtime.protectionOwnerReference",
+        "runtime.publicAnchorRetentionReference",
+        "runtime.publicTrustReference",
+        "runtime.replayExactScope",
+        "runtime.replayRegistrarCredentialReference",
+        "runtime.restoreTarget"
+      ]
+    },
+    {
+      "path": "/home/administrator/hexalith-host-evidence/ext-host-1/runtime-composition-abbec40/agents-deployment-profile.json",
+      "classification": "HistoricalUnfilledHostProfile",
+      "exists": true,
+      "sha256": "f93680dfb9ae76f963005f0058622672c567612532591555e501dd3d13db7083",
+      "qualificationBinding": false,
+      "size": 545,
+      "missingFields": [
+        "approverEvidence",
+        "conversationsBinding",
+        "currentTenant",
+        "failureModel",
+        "globalAdministrator",
+        "humanIdentity",
+        "partiesBinding",
+        "protectionEngine",
+        "protectionObserver",
+        "recorder",
+        "replay",
+        "replicaCount",
+        "spoolBackend",
+        "worker"
+      ]
+    },
+    {
+      "path": "/home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json",
+      "classification": "MissingProtectionInstalledProfile",
+      "exists": false,
+      "sha256": null,
+      "qualificationBinding": false
+    },
+    {
+      "path": "/home/administrator/hexalith-conversations-evidence/ext-conv-ai-1/live-manifest.json",
+      "classification": "MissingConversationsInstalledManifest",
+      "exists": false,
+      "sha256": null,
+      "qualificationBinding": false
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z/provider-key-mappings.json",
+      "classification": "OperationalSecretMappings_NotSemanticErasureQualification",
+      "exists": true,
+      "sha256": "f4e650995f0b35882377e01fb4f30b3944b018aec136e16496b6d349dd595ffe",
+      "qualificationBinding": false,
+      "size": 5367,
+      "missingFields": [
+        "keys[0].mapping.hmac-83ede9ca-e916-4c5a-8aeb-667945049890.retiredAt",
+        "keys[0].writeReceipt.deletion_time",
+        "keys[1].mapping.hmac-f1026de1-089a-4080-80a1-047df2ec5f2c.retiredAt",
+        "keys[1].writeReceipt.deletion_time",
+        "keys[2].mapping.hmac-28fa3bd8-6c82-4e0b-bd18-b057e009b7cf.retiredAt",
+        "keys[2].writeReceipt.deletion_time",
+        "keys[3].mapping.hmac-ff2df17a-fa11-4cd9-8342-0246ed47225a.retiredAt",
+        "keys[3].writeReceipt.deletion_time",
+        "reservedSystemSecurityObservationKey"
+      ]
+    }
+  ],
+  "sourcePlans": {
+    "secrets": {
+      "sha256": "16dd493ff0414fea13be95f137d372e54088881550665aa3239a5814a9e862ed",
+      "classification": "CurrentSourcePlan_NotInstalledAcceptedPlan"
+    },
+    "host": {
+      "sha256": "cf758d56c2da22bcb709d40537ceb78bbdd0a113a7f7994aa4bebecc5bf593fd",
+      "classification": "CurrentSourcePlan_NotInstalledAcceptedPlan"
+    },
+    "joint": {
+      "sha256": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99",
+      "classification": "CurrentSourcePlan_NotInstalledAcceptedPlan"
+    }
+  },
+  "installedHashes": {
+    "providerProfile": null,
+    "custodyConfiguration": null,
+    "authorityEnrollment": null,
+    "publicTrust": null,
+    "executorAnchor": null,
+    "observerAnchor": null,
+    "enrollmentAnchor": null,
+    "hostInstalledProfile": null,
+    "protectionInstalledProfile": null,
+    "installedImageInventory": null,
+    "physicalQualificationPlan": null,
+    "jointConfiguration": null
+  }
+}

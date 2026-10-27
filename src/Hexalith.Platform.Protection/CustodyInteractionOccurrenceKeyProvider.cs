@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Globalization;
 using Dapr.Client;
 using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.PayloadProtection;
@@ -95,6 +96,8 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     {
         var current=await Current(identity,true,token).ConfigureAwait(false)??await Current(identity,false,token).ConfigureAwait(false);if(current is not { } exact) return null;
         var reference=exact.Profile.DigestReference;var key=reference.InventoryKey;
+        if(!ulong.TryParse(reference.NativeVersion,NumberStyles.None,CultureInfo.InvariantCulture,out ulong nativeVersion) || nativeVersion==0
+            || nativeVersion.ToString(CultureInfo.InvariantCulture)!=reference.NativeVersion) return null;
         if(key.TenantId!=identity.Target.TenantId || key.Purpose!=PlatformKeyPurpose.DigestKey || key.Version!=version || exact.Binding.DigestKeyVersion!=version) return null;
         async Task<bool> Authorized()
         {

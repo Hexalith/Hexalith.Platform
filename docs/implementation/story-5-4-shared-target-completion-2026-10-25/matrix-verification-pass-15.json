@@ -1,0 +1,96 @@
+{
+  "schema": "platform.story-5.4.matrix-audit.v1",
+  "observedAtUtc": "2026-10-26T22:33:39.381391+00:00",
+  "sourceHandbackSha256": "8bb280639c91b8592ff175f948863b9d91cf95562781d5f098f11857478a2832",
+  "sourceCorrectionEvidence": "docs/implementation/story-5-4-shared-target-completion-2026-10-25/source-correction-pass-15.json",
+  "frozenMatrixRowCount": 5,
+  "independentReviewStatus": "Pending15",
+  "rootRuntimeXmlCoverage": {
+    "IndependentOriginalIndexTests": 8,
+    "ConcreteInstalledRoleCompositionServesVerifiedActualOwnerProof": 3,
+    "ReceivingEnrollmentAdmitsItsOwnOriginalAndRetainsExactSignedProofAcrossLostReplyAndLaterClock": 1,
+    "DaprExportQualificationReferenceReaderTests": 18,
+    "ActualSignedMutationOriginalNativeReaderProjectionAndUnchangedPythonConsumerCorrelateEveryMutation": 13,
+    "IndependentEffectAdmissionTests": 3,
+    "IndependentCapacityCommitmentTests": 9,
+    "IndependentRecoveryArchiveTests": 2,
+    "CommittedRecoveryGrantFinishesAfterLostPublicationWithoutUnreservedProbeAllocation": 1,
+    "JointPhaseFinalizerEntrypointTests": 5,
+    "QualificationFreshCohortReceivingTests": 1
+  },
+  "actualCompositionCases": 79,
+  "testCountRule": "Runtime618 includes all8 complete index-history rows and9 exact capacity-commitment rows. All assertions/timeouts/concurrency tests enabled under hashed artifact-scoped serialized Runtime collections. Protection164/Composition79 logs confirm0 skipped/not-run; Python321/host15/native32 and actual Local781 pass. Historical failures/stops remain diagnostic.",
+  "rows": [
+    {
+      "matrixScenario": "Authority",
+      "coveringTests": [
+        "IndependentEffectAdmissionTests",
+        "ActualQualificationLookupResultOrdersCurrentRevocationAndPreservesRetainedProof",
+        "ConcreteInstalledRoleCompositionServesVerifiedActualOwnerProof",
+        "Actual native role receiver loopback prepare/authorize/observer current grant, expiry and response/late ownership"
+      ],
+      "passedLanes": [
+        "final-runtime-tests",
+        "final-native-tests",
+        "final-python-secrets"
+      ]
+    },
+    {
+      "matrixScenario": "Replay/spool",
+      "coveringTests": [
+        "IndependentOriginalIndexTests",
+        "IndependentCapacityCommitmentTests",
+        "IndependentRecoveryArchiveTests",
+        "ActualVersionTwoObservationPersistsAcrossRestartAndDrainsToTheExactNativeHashedReceiptStream",
+        "EventStorePrivateRecordingPortTests"
+      ],
+      "passedLanes": [
+        "final-runtime-tests",
+        "final-protection"
+      ]
+    },
+    {
+      "matrixScenario": "Protection",
+      "coveringTests": [
+        "Fr34DynamicOccurrenceTests",
+        "Fr34AuthorityHostingTests",
+        "QualificationNativeAuditTests",
+        "ActualSignedMutationOriginalNativeReaderProjectionAndUnchangedPythonConsumerCorrelateEveryMutation"
+      ],
+      "passedLanes": [
+        "final-protection",
+        "final-runtime-tests",
+        "final-native-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Cohort",
+      "coveringTests": [
+        "JointRunnerTests",
+        "Pass15StorageTests exact materialization/current authorization/failure/restart",
+        "JointPhaseFinalizerEntrypointTests",
+        "QualificationFreshCohortReceivingTests"
+      ],
+      "passedLanes": [
+        "final-python-secrets",
+        "final-runtime-tests"
+      ]
+    },
+    {
+      "matrixScenario": "Packets",
+      "coveringTests": [
+        "PythonCanonicalBindingTests.CompleteBindingEncodingMatchesActualPythonIncludingUniqueExtensionsAndLegacyAsciiIdentity",
+        "AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource",
+        "Python coordinated/host/secrets preparation suites and detached refusal76"
+      ],
+      "passedLanes": [
+        "final-focused-composition",
+        "final-python-secrets",
+        "final-python-host"
+      ]
+    }
+  ],
+  "installedQualification": false,
+  "completeSharedTargetPacket": false,
+  "actualMissingInputsRemainDeliveryBlockers": true
+}

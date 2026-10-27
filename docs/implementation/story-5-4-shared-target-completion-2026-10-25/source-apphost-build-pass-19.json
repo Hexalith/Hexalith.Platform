@@ -1,0 +1,54 @@
+{
+  "name": "final-actual-file-apphost-build",
+  "command": [
+    "dotnet",
+    "build",
+    "apphost.cs",
+    "--artifacts-path",
+    "/tmp/story54-round19-i9zg3sye/final-apphost",
+    "-p:NuGetLockFilePath=/tmp/story54-round19-i9zg3sye/final-locks-apphost/$(MSBuildProjectName).lock.json",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:UseNuGetDeps=false",
+    "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round19-i9zg3sye/apphost-public-input-capture.targets"
+  ],
+  "exitCode": 0,
+  "passed": true,
+  "log": "/tmp/story54-round19-i9zg3sye/apphost-final-build.log",
+  "logSha256": "a02ad860b55248aae28d940caba790465de34b97afa8a9ce0836797be823dcd4",
+  "entrypoint": {
+    "path": "/home/administrator/projects/hexalith/platform/apphost.cs",
+    "sha256": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891"
+  },
+  "assembly": {
+    "path": "/tmp/story54-round19-i9zg3sye/final-apphost/bin/debug/apphost.dll",
+    "sha256": "ed991d79da5d304b29ae9cedfb08c4e72623b724b1dd5a2ba117345941a334b0"
+  },
+  "inputCaptureTarget": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-public-input-capture.targets",
+    "sha256": "3d7e449fbfec0da56dce5ce4accca39155cdbf27833a46f3de629ff6d0464c0d"
+  },
+  "compileInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-compile-input-hashes.json",
+    "sha256": "a9b8eda4a26b18b01984659c7fc1da5d204303d0ad8b88c292252f03e1b42422",
+    "count": 1621
+  },
+  "referenceInputs": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-reference-input-hashes.json",
+    "sha256": "a5f0703d0a1bf49aedf9ad06a0a0e33ecff1c3314c1d71680c93124959a33960",
+    "count": 432
+  },
+  "evaluatedLists": {
+    "path": "/tmp/story54-round19-i9zg3sye/apphost-input-list-hashes.json",
+    "sha256": "b76986c32fb71152c1d4523c95e0813f116d733ed02a0a05d5d6fb289aee2d8c",
+    "count": 52
+  },
+  "copiedHostedPublishingExactlyOnce": true,
+  "frozenEventStorePublicCopyUsed": true,
+  "buildOnly": true,
+  "resourceStartRunActivation": false,
+  "actualEvidence": null,
+  "sourceSnapshotIsAcceptedTarget": false
+}

@@ -17,6 +17,26 @@ class CaseDriverInventoryTests(unittest.TestCase):
         self.assertIn('CaseDriver.S3.principal-direct-delivery.SelectedAuthenticatedPrincipalDeliveryTransportWithAtomicExpiryAndActorRevocation',blockers())
         self.assertTrue(any(name.startswith('CaseDriver.S4.migration.') for name in blockers()))
 
+    def test_all_eleven_actual_original_target_receivers_are_shipped_but_installation_and_native_census_remain_blocked(self):
+        inventory=load_inventory();rows=[row for row in inventory['cases'] if row['caseId'].startswith('S3.delivery-substitution.')]
+        self.assertEqual(11,len(rows))
+        for row in rows:
+            self.assertEqual('OwnedOriginalTargetReceivingAndExactDenialRecoveryShipped',row['sourceStatus'])
+            self.assertEqual('ActualOriginalTargetDeliverInputValidationAndRetainedIdentityConflict',row['receivingBoundary'])
+            self.assertNotIn('ExternalProtocolDependentSource.RestrictedPrincipalDeliveryReceivingDenialAndExactOriginalReader',row['requiredSourceImplementations'])
+            self.assertNotIn('SelectedRestrictedDeliveryReceivingBoundaryForChangedActorOrClosedIdentityAndIndependentDenialOriginalProtocol',row['requiredExternalInputs'])
+            self.assertIn('InstalledPrivateDaprActorRoutingChannelAuthenticationAndBeforeReceiverFailureEvidence',row['requiredExternalInputs'])
+            self.assertFalse(row['completeQualificationDriver'])
+
+    def test_stage_read_lookup_and_logical_witness_metadata_preserve_missing_native_scope(self):
+        observed=load_inventory()['observationSource']
+        self.assertTrue(observed['sourceOwnedSignedStageOriginalsAndReadonlyLookupWitnessesShipped'])
+        self.assertFalse(observed['completeQualification']);self.assertFalse(observed['installedQualification'])
+        self.assertEqual({'qualification-observer-source-preflight','qualification-observer-read-source','qualification-observer-lookup-source'},set(observed['receivingMethods']))
+        self.assertTrue(observed['remainingExternalSemantics'])
+        root=__import__('pathlib').Path(__file__).resolve().parents[2]
+        for path in observed['sourceImplementations']:self.assertTrue((root/path).is_file(),path)
+
     def test_compiled_full_plan_is_exact_source_bytes(self):
         from joint_live_phase_runner import canonical,full_plan
         from pathlib import Path

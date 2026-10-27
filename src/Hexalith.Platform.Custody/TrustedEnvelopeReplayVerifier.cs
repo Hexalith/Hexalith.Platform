@@ -11,12 +11,23 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
 {
     /// <summary>Returns an authenticated envelope only after a complete exact original replay receipt and final current crypto/time/profile checks.</summary>
     public async Task<TrustedEnvelopeResult> VerifyAsync(TrustedEnvelope envelope, TrustedEnvelopeIdentity expected, CancellationToken cancellationToken = default)
+        =>await VerifyCoreAsync(envelope,expected,null,cancellationToken).ConfigureAwait(false);
+
+    /// <summary>Reconfirms current authentication after the final awaited readiness, without another replay registration.</summary>
+    public Task<TrustedEnvelopeResult> VerifyForAdmissionAsync(TrustedEnvelope envelope,TrustedEnvelopeIdentity expected,
+        Func<CancellationToken,Task<bool>> readiness,CancellationToken cancellationToken=default)
+        =>VerifyCoreAsync(envelope,expected,readiness??throw new ArgumentNullException(nameof(readiness)),cancellationToken);
+
+    private async Task<TrustedEnvelopeResult> VerifyCoreAsync(TrustedEnvelope envelope,TrustedEnvelopeIdentity expected,
+        Func<CancellationToken,Task<bool>>? readiness,CancellationToken cancellationToken)
     {
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
         byte[]? canonical = null; byte[]? tag = null; byte[]? complete = null;
         try
         {
             budget.Check();
+            expected=TrustedEnvelopeCodec.Snapshot(expected);envelope=envelope with { Identity=TrustedEnvelopeCodec.Snapshot(envelope.Identity) };
+            if(readiness is not null && !await budget.ReadAsync(()=>readiness(cancellationToken)).ConfigureAwait(false)) return new(CustodyStatus.Unavailable);
             var profile = await budget.ReadAsync(() => Task.FromResult(profiles.GetCurrent())).ConfigureAwait(false);
             if (profile is null || !profile.IsValid(clock.GetUtcNow())) { return new(CustodyStatus.StaleProfile); }
             var authenticated = await budget.ReadAsync(() => authenticator.VerifyAsync(envelope, expected, CancellationToken.None)).ConfigureAwait(false);
@@ -31,14 +42,20 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
             catch (Exception) { budget.Check(); receipt = null; }
             if (receipt is null)
             { receipt = await budget.ReadAsync(() => registrar.LookupAsync(intent, CancellationToken.None)).ConfigureAwait(false); }
-            if (!Exact(receipt, intent, evaluatedAt, profile.ReplayRetention)) { return new(CustodyStatus.Unavailable); }
+            if (!Exact(receipt, intent, evaluatedAt, profile.ReplayRetention))
+            {
+                var firstSeen=await budget.ReadAsync(()=>registrar.LookupFirstSeenAsync(intent,CancellationToken.None)).ConfigureAwait(false);
+                if(firstSeen is not null && firstSeen.Intent!=intent && firstSeen.Intent.Issuer==intent.Issuer && firstSeen.Intent.DeliveryNonce==intent.DeliveryNonce
+                    && Exact(firstSeen,firstSeen.Intent,clock.GetUtcNow(),profile.ReplayRetention))
+                    return new(CustodyStatus.Denied,EvaluatedAt:clock.GetUtcNow()) { DenialCause=TrustedEnvelopeDenialCause.ReplayConflictV1 };
+                return new(CustodyStatus.Unavailable);
+            }
             var confirmed = await budget.ReadAsync(() => registrar.LookupAsync(intent, CancellationToken.None)).ConfigureAwait(false);
             if (confirmed != receipt) { return new(CustodyStatus.Unavailable); }
-            var final = await budget.ReadAsync(() => authenticator.VerifyAsync(captured, expected, CancellationToken.None)).ConfigureAwait(false);
+            if(readiness is not null && !await budget.ReadAsync(()=>readiness(cancellationToken)).ConfigureAwait(false)) return new(CustodyStatus.Unavailable);
+            var final = await budget.ReadAsync(() => authenticator.VerifyReplayAdmissionAsync(captured, expected, profile, profiles, CancellationToken.None)).ConfigureAwait(false);
             budget.Check();
-            var currentProfile = await budget.ReadAsync(() => Task.FromResult(profiles.GetCurrent())).ConfigureAwait(false);
-            budget.Check();
-            return currentProfile == profile && profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow(), profile.ReplayRetention)
+            return profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow(), profile.ReplayRetention)
                 ? final : new(CustodyStatus.StaleProfile);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return new(CustodyStatus.Unavailable); }

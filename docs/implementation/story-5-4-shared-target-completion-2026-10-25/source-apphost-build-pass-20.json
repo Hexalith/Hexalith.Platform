@@ -1,0 +1,53 @@
+{
+  "name": "final4-actual-file-apphost-build",
+  "command": [
+    "dotnet",
+    "build",
+    "apphost.cs",
+    "--artifacts-path",
+    "/tmp/story54-round20-pvnnydzm/final4-apphost",
+    "-p:NuGetLockFilePath=/tmp/story54-round20-pvnnydzm/final4-locks-apphost/$(MSBuildProjectName).lock.json",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:UseNuGetDeps=false",
+    "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round20-pvnnydzm/apphost-public-input-capture4.targets"
+  ],
+  "log": "/tmp/story54-round20-pvnnydzm/logs/final4-actual-file-apphost-build-corrected.log",
+  "logSha256": "d345e73dce84b304074b4c4a7b72c634656aa7365afc172c116fd52444171aaa",
+  "exitCode": 0,
+  "passed": true,
+  "seconds": 60.17236375808716,
+  "sourceFreeze": "/tmp/story54-round20-pvnnydzm/freeze-observation.json",
+  "fixtureOnly": true,
+  "buildOnly": true,
+  "unsupportedCliInvocationRetainedSeparately": "/tmp/story54-round20-pvnnydzm/apphost-cli-argument-failed-boundary.json",
+  "entrypoint": {
+    "path": "/home/administrator/projects/hexalith/platform/apphost.cs",
+    "sha256": "d9e26b380cf6dc5d7d62d2dd74e3b19ef04365889ca1c2f4e655b37d674a9891"
+  },
+  "assembly": {
+    "path": "/tmp/story54-round20-pvnnydzm/final4-apphost/bin/debug/apphost.dll",
+    "sha256": "e860c08497d224eb6fca65ae3078bd6ead422f7d60c703c5950b02b7f70283f4"
+  },
+  "compileInputs": {
+    "path": "/tmp/story54-round20-pvnnydzm/apphost-compile-input-hashes.json",
+    "sha256": "a15c948cb008cacf88ceeee649f685f12551555357c84b5ae1c97a6443b0db05",
+    "count": 1621
+  },
+  "referenceInputs": {
+    "path": "/tmp/story54-round20-pvnnydzm/apphost-reference-input-hashes.json",
+    "sha256": "db9b2220088757fab57659243eec35e9f111a478b44c9111fd112e643cd20785",
+    "count": 432
+  },
+  "evaluatedLists": {
+    "path": "/tmp/story54-round20-pvnnydzm/apphost-input-list-hashes.json",
+    "sha256": "e114cc2b6a2e49c1613c3d85b4bc372b47362da9b50ba10c2870f755ee8f1119",
+    "count": 52
+  },
+  "resourceStartRunActivation": false,
+  "frozenEventStoreCopy": true,
+  "frozenHostedPublishingCopyExactlyOnce": true,
+  "actualEvidence": null
+}

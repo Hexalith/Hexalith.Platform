@@ -10,4 +10,4 @@ public sealed record AgentsOwningProcessInstallation(IndependentDaprAuthorityBin
     IndependentDaprAuthorityBinding Recorder, IndependentDaprAuthorityBinding ReplayAuthority,
     SecretsRuntimeConfiguration Secrets, DeletionCapabilityRevocationSubscription CompromiseSubscription, IndependentDaprAuthorityBinding ProtectionEngine,
     IndependentDaprAuthorityBinding ProtectionObserver, Fr34ProtectionTarget ProtectionTarget,
-    TimeSpan DrainInterval, int DrainMaximumCount);
+    TimeSpan DrainInterval, int DrainMaximumCount,IndependentDaprAuthorityBinding? ExportDeliveryDenialOriginals=null);

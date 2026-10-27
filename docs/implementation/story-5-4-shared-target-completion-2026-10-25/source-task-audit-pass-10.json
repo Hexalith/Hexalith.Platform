@@ -1,0 +1,21 @@
+{
+  "schema": "platform.story-5.4.source-task-audit.v1",
+  "observedAtUtc": "2026-10-26T10:43:47.099417+00:00",
+  "id": "R10A1",
+  "verdict": "high",
+  "source": "eng/ext-secrets-1/execution_profile.py",
+  "fixtureOnly": true,
+  "actualPrivateCredentialReads": 0,
+  "testedFields": [
+    "RoleSigningKeyFile",
+    "ComponentSigningKeyPath",
+    "AppChannelTokenFile"
+  ],
+  "observedInventoryBlockers": {
+    "RoleSigningKeyFile": [],
+    "ComponentSigningKeyPath": [],
+    "AppChannelTokenFile": []
+  },
+  "finding": "Actual private input schema fields are absent from private census classification; public artifact pinning is accepted.",
+  "requiredDisposition": "Correct private mount exclusion and regression coverage in current pass10; actual installed qualification remains blocked."
+}

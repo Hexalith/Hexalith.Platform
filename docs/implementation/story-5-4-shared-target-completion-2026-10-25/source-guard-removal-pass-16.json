@@ -1,0 +1,138 @@
+{
+  "sourceSnapshot": {
+    "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+    "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+  },
+  "status": "PASSED_REQUIRED_GUARD_KILLS",
+  "positiveProductionSourceUnchanged": true,
+  "requiredKills": [
+    {
+      "name": "decision-match-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round16-zg30xg8e/mutations/decision-match-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+        "-method",
+        "*SemanticNegativesUseUnchangedCryptographicallyValidIndependentOriginals"
+      ],
+      "exitCode": 1,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/decision-match-kill.log",
+      "logSha256": "c12f945b3893a50a96095c8d9f53d5a16a183b84ff8640393cbde7ec9b43aa78",
+      "expectedFailure": true,
+      "passed": true,
+      "failureObserved": true
+    },
+    {
+      "name": "replay-guard-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round16-zg30xg8e/mutations/replay-semantic-guard-artifacts/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "-method",
+        "*ActualEnvelopeWorkflowSeedsAuthenticFirstSeenThenChallengesActualReceivingBoundary"
+      ],
+      "exitCode": 1,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/replay-guard-kill.log",
+      "logSha256": "f7ffc7f8aa403b69e3aa3516eeb3412f0700ff4ebd6298421dc7ebe0b0d5d669",
+      "expectedFailure": true,
+      "passed": true
+    },
+    {
+      "name": "damaged-completed-kill",
+      "command": [
+        "python3",
+        "/tmp/story54-round16-zg30xg8e/mutations/kill-damaged-completed.py"
+      ],
+      "exitCode": 1,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/damaged-completed-kill.log",
+      "logSha256": "1ff3a5c3f7e00108e5477b5ad571abf6e5e27f1bbe2294bca13e1cdfd39d07f0",
+      "expectedFailure": true,
+      "passed": true
+    }
+  ],
+  "buildLanes": [
+    {
+      "name": "decision-match-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round16-zg30xg8e/mutations/decision-match-artifacts",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round16-zg30xg8e/mutations/decision-match-locks/$(MSBuildProjectName).lock.json",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round16-zg30xg8e/mutations/decision-match.targets",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/decision-match-build.log",
+      "logSha256": "caa8e61d92dec7048dfb3e7a42659e0e40be8cbaa10c42f9c356b6884071bd4c",
+      "expectedFailure": false,
+      "passed": true
+    },
+    {
+      "name": "replay-guard-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--artifacts-path",
+        "/tmp/story54-round16-zg30xg8e/mutations/replay-semantic-guard-artifacts",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithCommonsFromSource=true",
+        "-p:UseNuGetDeps=false",
+        "-p:NuGetLockFilePath=/tmp/story54-round16-zg30xg8e/mutations/replay-semantic-locks/$(MSBuildProjectName).lock.json",
+        "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round16-zg30xg8e/mutations/replay-semantic-guard.targets",
+        "-m:1"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/replay-guard-build.log",
+      "logSha256": "212083e05d399e7dfbbfab49d47071797e71bef3222c68bd44fe421142f32744",
+      "expectedFailure": false,
+      "passed": true
+    }
+  ],
+  "killedFailures": {
+    "decisionSemanticCases": 6,
+    "sameIssuerAuthenticReplayCases": 4,
+    "damagedCompletedActualOwner": 1
+  },
+  "foreignIssuerCasesRemainAtActualReceivingProfileGuard": 2,
+  "nonIsolatingDiagnostic": {
+    "row": {
+      "name": "replay-conflict-kill",
+      "command": [
+        "dotnet",
+        "/tmp/story54-round16-zg30xg8e/mutations/replay-conflict-artifacts/bin/Hexalith.Platform.Protection.Tests/debug/Hexalith.Platform.Protection.Tests.dll",
+        "-method",
+        "*ActualEnvelopeWorkflowSeedsAuthenticFirstSeenThenChallengesActualReceivingBoundary"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story54-round16-zg30xg8e/mutations/replay-conflict-kill.log",
+      "logSha256": "130c141e82e3a0345573ec886364b48ecef2429a4f532102913a591c8c09b743",
+      "expectedFailure": true,
+      "passed": false,
+      "failureObserved": true
+    },
+    "interpretation": "Removing only low-level field comparisons left immutable receipt retention protection; all6 cases still denied. This diagnostic is not counted as a passing guard kill. The final mutation targets the actual replay first-seen conflict decision."
+  },
+  "mutationArtifacts": {
+    "path": "/tmp/story54-round16-zg30xg8e/mutation-artifact-hashes.json",
+    "sha256": "9e92afb966230c0dadf10634e83407581c27c359c9861ffcade7545ce9e2ba5f"
+  },
+  "scripts": [
+    {
+      "path": "/tmp/story54-round16-zg30xg8e/verify-mutations.py",
+      "sha256": "c8ba743a4a0b5bb70a12bc0688b2919624384e4f3f049b4f93450bd1741e7a2a"
+    },
+    {
+      "path": "/tmp/story54-round16-zg30xg8e/verify-replay-guard-mutation.py",
+      "sha256": "924b0c1774bec6fb45958de7530ed7710c74031c961ff4fc04370a713c30b4cd"
+    }
+  ],
+  "noProductionSourceEditedForMutations": true
+}

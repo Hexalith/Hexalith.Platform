@@ -12,10 +12,21 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
     IInteractionProtectionBindingProvider independentBindings, TimeProvider clock,IFr34UnsealMeasurement? independentMeasurements=null) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
+    public bool RequiresCurrentResultAdmission(string method)=>Methods.Contains(method);
+    /// <inheritdoc />
+    public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
+        =>QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision },CustodyBindingContract.Json)!);
+    /// <inheritdoc />
+    public void ReleaseResult(string method,object? result)
+    {
+        byte[]? bytes=method=="fr34-unseal"?result as byte[]:method=="fr34-replay"?(result as Hexalith.EventStore.Contracts.Security.PayloadUnprotectionOutcome)?.PayloadBytes:null;
+        if(bytes is not null) CryptographicOperations.ZeroMemory(bytes);
+    }
+    /// <inheritdoc />
     public bool IsReadOnly(string method)=>method is "fr34-read-persisted" or "fr34-observe-current" or "fr34-verify-ownership" or "fr34-verify-carrier" or "fr34-confirm-destroyed";
     /// <inheritdoc />
     public Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
-        =>HandleAsync(method,payload,caller,current,token);
+        =>method is "fr34-unseal" or "fr34-replay" ? Task.FromResult<object?>(null) : HandleAsync(method,payload,caller,current,token);
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["fr34-seal-persist", "fr34-unseal", "fr34-destroy", "fr34-replay",
         "fr34-read-persisted", "fr34-observe-current", "fr34-verify-ownership", "fr34-verify-carrier", "fr34-confirm-destroyed"], StringComparer.Ordinal);

@@ -1,8 +1,8 @@
 {
   "schema": "platform.story-5.4.packet-refusal-probe.v1",
-  "observedAtUtc": "2026-10-25T23:32:31.055449+00:00",
+  "observedAtUtc": "2026-10-27T08:50:26.964722+00:00",
   "installedQualification": false,
-  "outputDirectory": "/tmp/story54-final-packet-refusal-ftvimci8",
+  "outputDirectory": "/tmp/story54-root-review20-packet-refusal-uvbm3qow",
   "secrets": {
     "command": [
       "python3",
@@ -12,19 +12,19 @@
       "--configuration",
       "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/runtime-reference.example.json",
       "--output",
-      "/tmp/story54-final-packet-refusal-ftvimci8/secrets",
+      "/tmp/story54-root-review20-packet-refusal-uvbm3qow/secrets",
       "--artifacts-argument",
-      "/tmp/story54-final-packet-refusal-ftvimci8/not-run-artifacts",
+      "/tmp/story54-root-review20-packet-refusal-uvbm3qow/not-run-artifacts",
       "--evidence-argument",
-      "/tmp/story54-final-packet-refusal-ftvimci8/not-run-evidence",
+      "/tmp/story54-root-review20-packet-refusal-uvbm3qow/not-run-evidence",
       "--register",
       "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
     ],
     "exitCode": 2,
-    "stdoutSha256": "eaa8af5387c89a3e4b4979697c74ca96518ca763ca7928d5801eb4121347d8df",
+    "stdoutSha256": "721994fa1621c1b1fe896419040646933d507f4f6d533b2f846f5c64d4afd5a2",
     "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "report": {
-      "candidateCommit": "8e55c68dbc885aa1b61c300b9cfb120e3fd828ac",
+      "candidateCommit": "73bebc0a336ebf68cee77ab0114d96dde66c386d",
       "code": "DependencyNotAvailable",
       "completeReplacementPacket": false,
       "dependency": "EXT-SECRETS-1",
@@ -120,19 +120,18 @@
       "--root",
       "/home/administrator/projects/hexalith/platform",
       "--output",
-      "/tmp/story54-final-packet-refusal-ftvimci8/host",
+      "/tmp/story54-root-review20-packet-refusal-uvbm3qow/host",
       "--register",
       "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
     ],
     "exitCode": 2,
     "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stderrSha256": "a51d69b62a93a0f5763853b668cdd6900671338f5e4aad7a7806147672a09f98",
-    "refusal": "clean candidate checkout required",
-    "packetPrepared": false
+    "refusal": "clean candidate checkout required"
   },
   "cohortPhasesExecuted": 0,
   "attemptsReserved": 0,
   "installationEvidenceInvented": false,
-  "note": "Read-only detached packet preparation against actual pending public inputs and the changed shared checkout. No owner/cohort entrypoint was run. No complete replacement packet was generated.",
-  "previousProbeOutputDirectory": "/tmp/story54-final-packet-refusal-87lihrzt"
+  "previousProbeOutputDirectory": "/tmp/story54-root-review19-packet-refusal-ccwtk9fb",
+  "note": "Detached public-only source pass20 preparation. No Live/Full owner or cohort entrypoint executed; no installation files, private credentials, acceptance or target created."
 }

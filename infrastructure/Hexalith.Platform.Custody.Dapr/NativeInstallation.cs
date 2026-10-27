@@ -7,4 +7,4 @@ internal sealed record NativeInstallation(string Backend, string AuthorityCompon
     string OpenBaoHttpsUrl, string TransitMount, string CredentialFile,
     Dictionary<string, string> NativeKeyMetadataSha256, string PhysicalQualificationEvidenceSha256,
     string ProducerIncarnation = "", string TransportIncarnation = "", IndependentDaprAuthorityBinding? NativeOriginalAuthority = null,
-    Dictionary<string,OpenBaoTransitBindingProfile>? TransitBindingProfiles = null);
+    Dictionary<string,OpenBaoTransitBindingProfile>? TransitBindingProfiles = null,NativeArchiveCapacityInstallation? ArchiveCapacity=null);

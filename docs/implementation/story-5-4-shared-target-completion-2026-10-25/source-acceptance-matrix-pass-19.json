@@ -1,0 +1,83 @@
+{
+  "schema": "platform.story54.root-acceptance-matrix-pass19.v1",
+  "snapshotSha256": "79a508077169716346b4125734cd8d55866dc69e38094143325f899e449c5072",
+  "groups": [
+    {
+      "finding": "R18B-8",
+      "implemented": true,
+      "change": "Explicit OwnLaunch scope owns leases before acquisition, resource registration and abandoned/failed Build. Its guarded Build disposes on early lifetime/options/transfer failures and eagerly resolves the same factory-owned owner only after successful host construction. Canonical apphost uses this boundary. Production composition requires the scope; successful application disposal owns the descriptors.",
+      "actualCallerCoverage": [
+        "AcceptedLaunchLifetimeTests",
+        "AcceptedLaunchBoundaryTests",
+        "AcceptedResourceListenerTests"
+      ]
+    },
+    {
+      "finding": "R18B-9",
+      "implemented": true,
+      "change": "Verifier captures exact input identity and uses one bounded operation including both spool readiness reads. The final read-only authentication follows the last awaited readiness, and final replay/current-profile validation stays inside that bounded authenticator worker; only synchronous retention/cancellation checks then precede command construction. There is one replay registration, no new nonce or renewed receipt.",
+      "actualCallerCoverage": [
+        "AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen"
+      ]
+    },
+    {
+      "finding": "R18B-10",
+      "implemented": true,
+      "change": "A finite versioned local enum on TrustedEnvelopeResult records only independently confirmed same-issuer/nonce first-seen conflicts. Admission maps that provenance to replay-conflict; ordinary provider Denied remains unavailable-owner. The local property is excluded from wire/original serialization. Actual verifier, admission, recorder and spool cover authentic conflicting challenges, provider Denied, unavailable registrar, invalid tag, original reply loss and pending-audit refusal.",
+      "actualCallerCoverage": [
+        "AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal"
+      ]
+    },
+    {
+      "finding": "R18B-1",
+      "implemented": true,
+      "change": "The actual per-connection VFS unconditionally fsyncs its held parent after journal unlink (including already absent journal) rather than trusting FULL sync_directory. Deletion/barrier failure marks the connection failed and cannot acknowledge commit or authorize native dispatch; reopen reads the actual surviving original without rewriting uncertainty.",
+      "actualCallerCoverage": [
+        "RollbackDeleteBarrierTests"
+      ]
+    },
+    {
+      "finding": "R18B-2/R18E-2",
+      "implemented": true,
+      "change": "BoundedRegularFile uses positional RandomAccess directly into owned input/sentinel buffers in its existing bounded worker. No FileStream or implicit read-ahead buffer is created. Actual P256 private span parsing/signing, failure/cancellation/late ownership and measured same-thread acquisition allocation cover the extra-buffer defect without promising library/process erasure.",
+      "actualCallerCoverage": [
+        "PrivateAcquisitionBufferTests"
+      ]
+    },
+    {
+      "finding": "R18B-3",
+      "implemented": true,
+      "change": "The distinct one-byte growth sentinel clears in finally on EOF, real growing-file rejection, cancellation and late acquisition. Failed owned inputs and span decode arrays retain their existing cleanup; successful bytes transfer to the owned consumer.",
+      "actualCallerCoverage": [
+        "PrivateAcquisitionBufferTests.ActualPrivateSignerUsesOnlyOwnedReadRegionsAndClearsSentinelAndMaterial"
+      ]
+    },
+    {
+      "finding": "R18B-6",
+      "implemented": true,
+      "change": "Independent authority rechecks exclusive response freshness after signature/evidence encoding, and the public generic wrapper keeps one caller-linked deadline through payload decoding and rechecks before return. QualificationProofVerifier samples real current time after canonicalization/P256 verification while VerifyOriginal keeps authenticated historical time. Public verification checks its budget before and after awaited evidence, including null responses; original caller cancellation propagates while internal expiry returns unavailable/default. Real codecs, both evidence/public paths, converter-time advancement, before/exclusive/expired and historical fixtures cover each boundary.",
+      "actualCallerCoverage": [
+        "CurrentProofReturnTests"
+      ]
+    },
+    {
+      "finding": "R18E-1",
+      "implemented": true,
+      "change": "Nonempty damaged headers and zeroed/missing initialized alternate copies preserve unknown completion metadata even beside an older Free/Reserved copy. Only the source-provable first Free write remains recoverable; both missing headers with committed frame metadata refuse. No database can reuse/reconstruct such a slot. Actual enrolled RetainedPhaseOwner restart/retry and second enrolled DB fixtures preserve A SQL/original/body bytes, retain the liability, and perform no second effect/lookup/reconstruction; prior damaged Completed-body regression remains unchanged.",
+      "actualCallerCoverage": [
+        "DamagedPhaseHeaderLiabilityTests",
+        "test_damaged_completed_frame_blocks_without_lookup_or_replacement"
+      ]
+    },
+    {
+      "finding": "R18V-1",
+      "implemented": true,
+      "change": "New shipped reader regression executes actual delivery workflow registration against the real actor/private independent denial journal and actual executor original service. Agreement yields observation; each independently returned execution, receiving or controlled native denial mismatch yields null. All retained originals remain unchanged and no native release or duplicate delivery occurs. Disposable OR-to-AND guard mutation is checked separately.",
+      "actualCallerCoverage": [
+        "QualificationExportDeliveryOriginalReaderTests"
+      ]
+    }
+  ],
+  "independentReviewComplete": false,
+  "installedQualification": false
+}

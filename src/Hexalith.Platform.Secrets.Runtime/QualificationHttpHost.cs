@@ -17,22 +17,23 @@ public static class QualificationHttpHost
     {
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(context);
+        cancellationToken.ThrowIfCancellationRequested();
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         budget.CancelAfter(configuration.CallTimeout is { } timeout && timeout > TimeSpan.Zero && timeout <= TimeSpan.FromSeconds(30) ? timeout : TimeSpan.FromSeconds(30));
-        if (!ValidChannel(context.Request, appChannelToken)) { return QualificationHost.Deny([$"qualification.{role}.appChannelAuthentication"]); }
-        if (authenticator is null) { return QualificationHost.Deny([$"qualification.{role}.authenticatedCallerScope"]); }
-        bool executorDispatched = false;
+        if (!ValidChannel(context.Request, appChannelToken)) { return QualificationHost.Deny([$"qualification.{role}.appChannelAuthentication"], role == "executor"); }
+        if (authenticator is null) { return QualificationHost.Deny([$"qualification.{role}.authenticatedCallerScope"], role == "executor"); }
+        bool executorDispatched = role == "executor";
         try
         {
-            QualificationCallerContext? caller = await authenticator.AuthenticateAsync(context, role, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            QualificationCallerContext? caller = await IndependentReceivingOwnership.Observe(authenticator.AuthenticateAsync(context, role, budget.Token)).WaitAsync(budget.Token).ConfigureAwait(false);
             if (caller is null || !SecretsProvisioning.IsReference(caller.Identity) || !SecretsProvisioning.IsReference(caller.ScopeReference))
-            { return QualificationHost.Deny([$"qualification.{role}.authenticatedCallerScope"]); }
-            JsonObject? original = await QualificationHost.ReadRequestAsync(context.Request.Body, budget.Token).ConfigureAwait(false);
+            { return QualificationHost.Deny([$"qualification.{role}.authenticatedCallerScope"], role == "executor"); }
+            JsonObject? original = await IndependentReceivingOwnership.Observe(QualificationHost.ReadRequestAsync(context.Request.Body, budget.Token)).WaitAsync(budget.Token).ConfigureAwait(false);
             executorDispatched = role == "executor";
-            return await QualificationHost.HandleAsync(role, operation, configuration, original, provider, store, verifier, budget.Token, caller).ConfigureAwait(false);
+            return await IndependentReceivingOwnership.Observe(QualificationHost.HandleAsync(role, operation, configuration, original, provider, store, verifier, budget.Token, caller)).WaitAsync(budget.Token).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
-        catch (Exception) { return QualificationHost.Deny([executorDispatched ? "ExactOriginalLookupRequired" : $"qualification.{role}.authenticatedCallerScope"], executorDispatched); }
+        catch (Exception error) { IndependentReceivingDiagnostics.Record(error is IOException?IndependentReceivingFailure.StorageFailure:IndependentReceivingFailure.HandlerFailure);return QualificationHost.Deny([executorDispatched ? "ExactOriginalLookupRequired" : $"qualification.{role}.authenticatedCallerScope"], executorDispatched); }
     }
 
     private static bool ValidChannel(HttpRequest request, string? expected)

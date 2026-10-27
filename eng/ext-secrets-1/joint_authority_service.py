@@ -7,6 +7,16 @@ outside application restore. Installed storage/replication proof remains mandato
 import json
 import sqlite3
 import contextvars
+from pathlib import Path
+import bounded_file_io as selected_io
+
+from enrolled_sqlite import EnrolledSqliteStorage
+
+def existing_database(path, *, storage=None, **kwargs):
+    if not isinstance(storage,EnrolledSqliteStorage) or storage.path!=str(path):
+        raise ValueError("External.ExactIndependentlyEnrolledSqliteStorageIdentity")
+    return storage.connect(**kwargs)
+
 
 # A private request carries its workload identity into the same durable transaction
 # that admits work. No SQL lock is retained while a native effect or process runs.
@@ -22,12 +32,13 @@ def _authorize_admission(database, path):
         raise Blocked("CurrentExactCohortWorkloadScope")
 
 from contextlib import contextmanager, closing
-from joint_live_phase_runner import PROTOCOL, PHASES, partitions, canonical, digest, Blocked
+from joint_live_phase_runner import PROTOCOL, PHASES, partitions, canonical, digest, Blocked, valid_phase_partition
 
 
 class CohortAuthorityStore:
-    def __init__(self, path, verify_owner):
+    def __init__(self, path, verify_owner, storage=None):
         self.path, self.verify_owner = str(path), verify_owner
+        self.storage=storage
         # mode=rw prohibits creating a database or enrolling acceptance during startup.
         with self.connect() as database:
             for name in ("accepted_sets", "current_set", "attempts", "originals", "results"):
@@ -35,7 +46,7 @@ class CohortAuthorityStore:
 
     @contextmanager
     def connect(self):
-        database = sqlite3.connect("file:" + self.path + "?mode=rw", uri=True, timeout=10)
+        database = existing_database(self.path, storage=self.storage, timeout=10)
         database.execute("PRAGMA synchronous=FULL")
         database.execute("PRAGMA foreign_keys=ON")
         try:
@@ -107,7 +118,17 @@ class CohortAuthorityStore:
                             raise Blocked("CurrentInstalledOwnerReadinessBeforeReservation")
                     row = database.execute("SELECT attempt_id FROM attempts WHERE binding_digest=?", (key,)).fetchone()
                     if row is None:
-                        database.execute("INSERT INTO attempts(binding_digest,attempt_id) VALUES(?,?)", (key, value["attemptId"]))
+                        # Verification can consume the receipt/grant lifetime. Recheck at the insertion ordering point.
+                        current = int(time.time())
+                        _authorize_admission(database,self.path)
+                        if any(not current-30 <= item["payload"]["observedAt"] <= current < item["payload"]["validUntil"] <= item["payload"]["observedAt"]+30 for item in ready):
+                            raise Blocked("CurrentInstalledOwnerReadinessBeforeReservation")
+                        import uuid
+                        candidate = value.get("attemptId")
+                        if (not isinstance(candidate, str) or len(candidate) != 36
+                                or str(uuid.UUID(candidate)) != candidate):
+                            raise Blocked("CanonicalBoundedNewAttemptUuid")
+                        database.execute("INSERT INTO attempts(binding_digest,attempt_id) VALUES(?,?)", (key, candidate))
                         attempt = value["attemptId"]
                     else:
                         attempt = row[0]
@@ -123,7 +144,7 @@ class CohortAuthorityStore:
                         if len(rows) != 1:
                             return {"exact": False}
                         result = json.loads(rows[0][0]); payload = result["payload"]
-                        if payload.get("state") != "Passed" or payload.get("previousSha256") != previous or payload.get("passedCases") != partitions()[phase]:
+                        if payload.get("state") != "Passed" or payload.get("previousSha256") != previous or not valid_phase_partition(payload, partitions()[phase]):
                             return {"exact": False}
                         previous = digest(result)
                     return {"exact": candidate.get("resultSha256") == previous and candidate.get("cohortPassed") is True}
@@ -138,19 +159,21 @@ class CohortAuthorityStore:
             previous = key
             if phase:
                 rows = database.execute("SELECT r.result_json FROM originals o JOIN results r ON r.request_id=o.request_id WHERE o.attempt_id=? AND o.phase=?", (attempt, phase - 1)).fetchall()
-                if len(rows) != 1 or json.loads(rows[0][0])["payload"].get("state") != "Passed":
+                if len(rows) != 1 or not self.verify_owner(phase-1,json.loads(rows[0][0])) or (json.loads(rows[0][0])["payload"].get("state") != "Passed" or not valid_phase_partition(json.loads(rows[0][0])["payload"], partitions()[phase-1])):
                     raise Blocked("FixedCompletePhaseOrdering")
                 previous = digest(json.loads(rows[0][0]))
             if request.get("previousSha256") != previous or request.get("requestId") != digest([attempt, key, phase, previous]):
                 raise Blocked("ExactPhaseChainIdentity")
             original = database.execute("SELECT request_json FROM originals WHERE request_id=?", (request["requestId"],)).fetchone()
             if method == "phase-admission":
-                return {"exact": original is not None and bytes(original[0]) == canonical(request)}
+                return {"exact": original is not None and bytes(original[0]) == canonical(request)
+                    and ('targetCommit' not in value or value['targetCommit']==json.loads(binding_row[0]).get('platformCommit'))}
             if method == "retain":
                 if original is not None:
                     if bytes(original[0]) != canonical(request):
                         raise Blocked("ChangedOriginalPhase")
                     return {"first": False}
+                _authorize_admission(database, self.path)
                 database.execute("INSERT INTO originals(request_id,attempt_id,phase,request_json) VALUES(?,?,?,?)", (request["requestId"], attempt, phase, canonical(request)))
                 return {"first": True}
             if method == "publish":
@@ -160,22 +183,26 @@ class CohortAuthorityStore:
                 payload = result.get("payload", {})
                 if any(payload.get(name) != request[name] for name in ("requestId", "attemptId", "bindingDigest", "phase", "previousSha256")):
                     raise Blocked("ChangedPhaseOutcomeIdentity")
+                if not valid_phase_partition(payload, partitions()[phase]):
+                    raise Blocked("CompleteExactPhaseCasePartition")
                 prior = database.execute("SELECT result_json FROM results WHERE request_id=?", (request["requestId"],)).fetchone()
                 if prior is not None:
                     return {"exact": bytes(prior[0]) == canonical(result)}
+                _authorize_admission(database, self.path)
                 database.execute("INSERT INTO results(request_id,result_json) VALUES(?,?)", (request["requestId"], canonical(result)))
                 return {"exact": True}
             raise Blocked("InstalledAuthorityMethod")
 
 class RetainedPhaseOwner:
     """Receiving executor publication: ambiguous subprocess effects never repeat execute after restart."""
-    def __init__(self, path, phase, binding, executor, sign, authority):
+    def __init__(self, path, phase, binding, executor, sign, authority, storage=None, completion_capacity=None):
         self.path, self.phase, self.binding = str(path), phase, binding
         self.executor, self.sign, self.authority = executor, sign, authority
+        self.storage,self.completion_capacity=storage,completion_capacity
 
     @contextmanager
     def _connect(self):
-        database = sqlite3.connect("file:" + self.path + "?mode=rw", uri=True, timeout=10)
+        database = existing_database(self.path, storage=self.storage, timeout=10)
         database.execute("PRAGMA synchronous=FULL")
         try:
             yield database
@@ -198,6 +225,8 @@ class RetainedPhaseOwner:
                 with self._connect() as database:
                     database.execute("SELECT request_id,request_json,result_json FROM phase_originals LIMIT 0")
                     database.execute("SELECT request_id,nonce,absence_json FROM phase_absences LIMIT 0")
+                    if self.completion_capacity is None:raise Blocked("External.EnrolledPreallocatedSharedPhaseCompletionSlotsV1")
+                    self.completion_capacity.preflight(database)
             except sqlite3.Error:
                 missing.append("IndependentPhaseOriginalAndAbsenceStorageSchema")
             if not self.authority.call("current", {"binding": self.binding}).get("current"):
@@ -219,6 +248,11 @@ class RetainedPhaseOwner:
                 raise Blocked("ChangedRetainedPhaseOriginal")
             if original is not None and original[1] is not None:
                 return json.loads(original[1])
+            if self.completion_capacity is None:raise Blocked("External.EnrolledPreallocatedSharedPhaseCompletionSlotsV1")
+            if original is not None:
+                self.completion_capacity.reserve(db,request)
+                retained=self.completion_capacity.result(db,request)
+                if retained is not None:return retained
             first = original is None
             if first:
                 import time
@@ -234,6 +268,7 @@ class RetainedPhaseOwner:
                     proof = self.sign({"state": "OwnerAbsent", "requestId": request["requestId"], "requestSha256": digest(request),
                         "bindingDigest": digest(self.binding), "attemptId": request["attemptId"], "phase": self.phase,
                         "nonce": str(uuid.uuid4()), "observedAt": now, "validUntil": now + 30})
+                    _authorize_admission(db, self.path)
                     db.execute("INSERT INTO phase_absences VALUES(?,?,?)", (request["requestId"], proof["payload"]["nonce"], canonical(proof)))
                     return proof
                 if method == "execute-if-absent":
@@ -246,7 +281,10 @@ class RetainedPhaseOwner:
                             or proof.get("bindingDigest") != digest(self.binding) or proof.get("phase") != self.phase
                             or not now - 30 <= proof.get("observedAt", 0) <= now < proof.get("validUntil", 0) <= proof["observedAt"] + 30):
                         raise Blocked("ExactCurrentOwnerAbsenceRequired")
+                _authorize_admission(db, self.path)
                 db.execute("DELETE FROM phase_absences WHERE request_id=?", (request["requestId"],))
+                self.completion_capacity.reserve(db,request)
+                _authorize_admission(db,self.path)  # Materialization can consume the grant lifetime; order again at INSERT.
                 db.execute("INSERT INTO phase_originals VALUES(?,?,NULL)", (request["requestId"], canonical(request)))
         # The original is durable before dispatch. Unknown restarts only ask the executor for exact lookup.
         observed = self.executor.execute(request) if first else self.executor.lookup(request)
@@ -258,12 +296,12 @@ class RetainedPhaseOwner:
         result = self.sign({**{name: request[name] for name in ("attemptId", "bindingDigest", "phase", "previousSha256", "requestId")},
                             "state": state, "passedCases": passed, "ownerEvidenceSha256": digest(evidence)})
         with self._connect() as db:
-            db.execute("BEGIN IMMEDIATE")
-            _authorize_admission(db, self.path)
-            prior = db.execute("SELECT result_json FROM phase_originals WHERE request_id=?", (request["requestId"],)).fetchone()[0]
-            if prior is not None:
-                return json.loads(prior)
-            db.execute("UPDATE phase_originals SET result_json=? WHERE request_id=? AND result_json IS NULL", (canonical(result), request["requestId"]))
+            prior=db.execute("SELECT request_json,result_json FROM phase_originals WHERE request_id=?",(request["requestId"],)).fetchone()
+            if prior is None or bytes(prior[0])!=canonical(request):raise Blocked("ExactRetainedPhaseOriginalForCompletion")
+            if prior[1] is not None:return json.loads(prior[1])
+            # Fixed physically allocated publication is authoritative; no post-effect SQLite write,
+            # rollback journal, directory entry or metadata allocation is required to retain completion.
+            result=self.completion_capacity.result(db,request,result)
         return result
 
 
@@ -358,9 +396,10 @@ class InstalledPhaseExecutor:
 
 class CohortHttpApplication:
     """Authenticated bounded receiving host, using durable current workload grants and independent role signing."""
-    def __init__(self, database_path, signer, dispatch, app_channel_reference):
+    def __init__(self, database_path, signer, dispatch, app_channel_reference, storage=None):
         self.database_path, self.signer, self.dispatch = str(database_path), signer, dispatch
         self.app_channel_reference = app_channel_reference
+        self.storage=storage
 
     def handle(self, method, headers, body):
         import hashlib
@@ -370,7 +409,10 @@ class CohortHttpApplication:
         import qualify as q
         from cryptography.hazmat.primitives import hashes
         from cryptography.hazmat.primitives.asymmetric import ec
+        from bounded_cohort_http import check_authentication_acquisition, admit_authenticated_work
+        check_authentication_acquisition()
         channel = q.read_mounted_credential(self.app_channel_reference, "IndependentAppChannel")
+        check_authentication_acquisition()
         if len(body) > 1024 * 1024 or not hmac.compare_digest(headers.get("dapr-api-token", ""), channel):
             raise Blocked("IndependentAppChannel")
         bearer = headers.get("Authorization", "")
@@ -380,24 +422,43 @@ class CohortHttpApplication:
         if set(request) != {"protocol", "requestId", "method", "payload"} or request["protocol"] != PROTOCOL or request["method"] != method:
             raise Blocked("ClosedExactCohortRequest")
         now = int(time.time())
-        with closing(sqlite3.connect("file:" + self.database_path + "?mode=rw", uri=True)) as db:
+        with closing(existing_database(self.database_path,storage=self.storage)) as db:
             row = db.execute("SELECT methods_json,valid_until,revoked FROM workload_grants WHERE bearer_sha256=?", (hashlib.sha256(bearer[7:].encode()).hexdigest(),)).fetchone()
+        check_authentication_acquisition()
+        now = int(time.time())
         if row is None or row[2] or row[1] <= now or method not in json.loads(row[0]):
             raise Blocked("CurrentExactCohortWorkloadScope")
+        admit_authenticated_work()
         admission = _workload_admission.set((self.database_path, hashlib.sha256(bearer[7:].encode()).hexdigest(), method))
         try:
+            # Native work and subprocesses never hold the grant database transaction.
             result = self.dispatch(method, request["payload"])
+            with closing(existing_database(self.database_path,storage=self.storage)) as db:
+                db.execute("BEGIN IMMEDIATE")
+                try:
+                    _authorize_admission(db,self.database_path)
+                    current=db.execute("SELECT methods_json,valid_until,revoked FROM workload_grants WHERE bearer_sha256=?", (hashlib.sha256(bearer[7:].encode()).hexdigest(),)).fetchone()
+                    if current != row: raise Blocked("SameCurrentCohortResultGrant")
+                    issued=int(time.time())
+                    payload = {"requestId": request["requestId"], "method": method, "requestSha256": hashlib.sha256(body).hexdigest(),
+                               "observedAt": issued, "validUntil": min(issued + 30, current[1]), "result": result}
+                    signature = self.signer.sign(canonical(payload), ec.ECDSA(hashes.SHA256()))
+                    if int(time.time()) >= payload['validUntil']: raise Blocked("CurrentExactCohortWorkloadScope")
+                    db.commit()
+                except BaseException:
+                    db.rollback()
+                    raise
+            return {"payload": payload, "signature": base64.b64encode(signature).decode()}
         finally:
             _workload_admission.reset(admission)
-        payload = {"requestId": request["requestId"], "method": method, "requestSha256": hashlib.sha256(body).hexdigest(),
-                   "observedAt": now, "validUntil": min(now + 30, row[1]), "result": result}
-        signature = self.signer.sign(canonical(payload), ec.ECDSA(hashes.SHA256()))
-        return {"payload": payload, "signature": base64.b64encode(signature).decode()}
 
     def serve(self, host, port):
         from bounded_cohort_http import make_server
         with make_server(self,host,port) as server:
             server.serve_forever()
+
+NATIVE_SOURCE_ENVELOPE_MAX_BYTES=64*1024*1024
+
 
 class PersistedPhaseObserver:
     """Independent receiving reader of exact immutable owner originals and their persisted source evidence."""
@@ -406,13 +467,16 @@ class PersistedPhaseObserver:
         import qualify as q
         from cryptography.hazmat.primitives import serialization
         self.descriptor, self.binding, self.authority = descriptor, binding, authority
-        raw = q.read_public_anchor(descriptor["ownerOriginalAnchorFile"])
+        raw = selected_io.read(descriptor["ownerOriginalAnchorFile"],4096)
         if hashlib.sha256(raw).hexdigest() != descriptor["ownerOriginalAnchorSha256"]:
             raise Blocked("ExactIndependentPersistedOriginalTrust")
         q.public_key_identity(raw)
         self.key = serialization.load_pem_public_key(raw)
 
     def dispatch(self, method, value):
+        return selected_io.run(lambda:self._dispatch(method,value))
+
+    def _dispatch(self, method, value):
         import hashlib
         import base64
         from pathlib import Path
@@ -428,7 +492,7 @@ class PersistedPhaseObserver:
             missing = []
             for artifact in self.descriptor["installedArtifacts"]:
                 try:
-                    if hashlib.sha256(q.bounded_public_file(artifact["path"], 1024 * 1024)).hexdigest() != artifact["sha256"]:
+                    if hashlib.sha256(selected_io.read(artifact["path"], 1024 * 1024)).hexdigest() != artifact["sha256"]:
                         missing.append("ExactInstalledObserverInput")
                 except OSError:
                     missing.append("InstalledObserverInput")
@@ -448,7 +512,9 @@ class PersistedPhaseObserver:
             raise Blocked("ExactOriginalLocator")
         root = Path(self.descriptor["evidenceDirectory"]) / original_id
         try:
-            envelope = q.read_json(root / 'owner-original.json')
+            from protected_logical_archive import read as read_original
+            enrollments=self.descriptor.get('protectedArchiveAllocations',())
+            envelope = q.decode_json(read_original(root/'owner-original.json',1024*1024,enrollments))
             payload = envelope['payload']
             self.key.verify(base64.b64decode(envelope['signature'], validate=True), canonical(payload), ec.ECDSA(hashes.SHA256()))
             if payload.get('requestSha256') != digest(request) or payload.get('bindingDigest') != digest(self.binding):
@@ -458,7 +524,7 @@ class PersistedPhaseObserver:
                 raise Blocked('CompleteIndependentPersistedCasePartition')
             passed = []
             for item in observations:
-                data = q.bounded_public_file(root / (hashlib.sha256(item['caseId'].encode()).hexdigest() + '.json'), 1024 * 1024)
+                data = read_original(root / (hashlib.sha256(item['caseId'].encode()).hexdigest() + '.json'), 1024 * 1024,enrollments)
                 if hashlib.sha256(data).hexdigest() != item['evidenceSha256']:
                     raise Blocked('ExactPersistedOwnerEvidenceBytes')
                 evidence = q.decode_json(data)
@@ -502,23 +568,16 @@ class PersistedPhaseObserver:
         from cryptography.hazmat.primitives import serialization, hashes
         from cryptography.hazmat.primitives.asymmetric import ec
         profile = self.descriptor.get('sourceEvidence', {}).get(case_id)
-        required = {
-            'EXT-PROTECTION-1.complete-owner-command': {'G1','G2','G3','G4','G5','G6','G7'},
-            'host:H1': {'CurrentAuthenticatedOrigin','ExactPrivateReplayAcl','DurableDenialBeforeReturn','SpoolOutageBlocksIngress'},
-            'host:H2': {'CompleteInstalledComposition','BranchBIdentity','NoConsumerExecution'},
-            'host:all-consumers-refuse': {'EveryConsumerRefusesUnavailableDependency'},
-            'host:H3': {'ActualProductionEngine','PersistedPlaintextAbsence','UnsealEquality','IrreversibleErasedReplay','StartupAndEveryReadiness'},
-            'host:H4': {'CurrentMigrationEpoch','RepairFenceAtomicity','ExactBridgeCohort','SuccessorPreservesAllOwnerFacts'},
-            'host:v21': {'AcceptedOrdinalAtWrite','HoldSealLinearization','AttestationDispatchOrdering','CompletionBarrierOrdering'},
-            'host:v23': {'BlockReserveSameOwner','CompromiseSubscriberOnly','StableBatchSuccessorAttempts','ReplacementKeyBlockSetCompare','UnknownLookupOnly'},
-        }.get(case_id)
+        from closed_phase_invariants import REQUIRED
+        required = REQUIRED.get(case_id)
         if not isinstance(profile, dict) or required is None or not isinstance(profile.get('invariants'), dict) or set(profile['invariants']) != required:
             raise Blocked('InstalledCompleteCaseInvariantProfile', case_id)
-        raw_anchor = q.read_public_anchor(profile['anchorFile'])
-        if hashlib.sha256(raw_anchor).hexdigest() != profile['anchorSha256'] or q.public_key_identity(raw_anchor) == q.public_key_identity(q.read_public_anchor(self.descriptor['ownerOriginalAnchorFile'])):
+        raw_anchor = selected_io.read(profile['anchorFile'],4096)
+        if hashlib.sha256(raw_anchor).hexdigest() != profile['anchorSha256'] or q.public_key_identity(raw_anchor) == q.public_key_identity(selected_io.read(self.descriptor['ownerOriginalAnchorFile'],4096)):
             raise Blocked('IndependentPersistedSourceTrust')
         locator = Path(profile['directory']) / request['requestId'] / (hashlib.sha256(case_id.encode()).hexdigest() + '.json')
-        source_envelope = q.read_json(locator)
+        from protected_logical_archive import read as read_original
+        source_envelope = q.decode_json(read_original(locator,NATIVE_SOURCE_ENVELOPE_MAX_BYTES,self.descriptor.get('protectedArchiveAllocations',())))
         source = source_envelope['payload']
         key = serialization.load_pem_public_key(raw_anchor)
         key.verify(base64.b64decode(source_envelope['signature'], validate=True), canonical(source), ec.ECDSA(hashes.SHA256()))
@@ -536,35 +595,38 @@ class PersistedPhaseObserver:
 
 
 
-def main():
-    """Explicit installed receiving service. Provisioning database/trust/credentials is an external owner operation."""
-    import argparse
+def _load_installed_startup(installation_path):
     import hashlib
-    from pathlib import Path
     import qualify as q
     from cryptography.hazmat.primitives import serialization
-    from joint_live_phase_runner import DaprCohortRpc
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--installation', required=True)
-    args = parser.parse_args()
-    config = q.read_json(args.installation)
-    public = q.read_public_anchor(config['publicAnchorFile'])
-    with closing(sqlite3.connect('file:' + config['databasePath'] + '?mode=rw', uri=True)) as db:
+    raw = selected_io.read(installation_path,1024*1024)
+    config = q.decode_json(raw)
+    public = selected_io.read(config['publicAnchorFile'],4096)
+    with closing(existing_database(config['databasePath'],storage=EnrolledSqliteStorage(config['databasePath'],config.get('storageEnrollment')))) as db:
         enrollment = db.execute('SELECT public_anchor_sha256,profile_sha256 FROM service_enrollment WHERE role=?', (config['role'],)).fetchone()
-    if enrollment is None or enrollment[0] != hashlib.sha256(public).hexdigest() or enrollment[1] != hashlib.sha256(q.bounded_public_file(args.installation, 1024 * 1024)).hexdigest():
+    if enrollment is None or enrollment[0] != hashlib.sha256(public).hexdigest() or enrollment[1] != hashlib.sha256(raw).hexdigest():
         raise Blocked('IndependentServiceEnrollment')
-    with open(config['signingKeyFile'], 'rb') as handle:
-        signer = serialization.load_pem_private_key(handle.read(8193), password=None)
+    signer=selected_io.use_private(config['signingKeyFile'],8192,lambda material:serialization.load_pem_private_key(material,password=None))
     if signer.public_key().public_bytes(serialization.Encoding.DER, serialization.PublicFormat.SubjectPublicKeyInfo) != q.public_key_identity(public):
         raise Blocked('ExactEnrolledServiceSigner')
+    return config,public,signer
+
+
+def _build_installed_application(installation_path):
+    """One captured profile and one bounded acquisition owner across every role dependency."""
+    import qualify as q
+    from joint_live_phase_runner import DaprCohortRpc
+    config,public,signer=_load_installed_startup(installation_path)
+    selected_io.check()
     owners = {int(phase): DaprCohortRpc(descriptor, config['daprEndpoint'], config['daprCredentialReference'])
               for phase, descriptor in config.get('ownerTrust', {}).items()}
+    selected_io.check()
     if config['role'] == 'authority':
-        store = CohortAuthorityStore(config['databasePath'], lambda phase, result: owners[phase].verify(result))
+        store = CohortAuthorityStore(config['databasePath'], lambda phase, result: owners[phase].verify(result),storage=EnrolledSqliteStorage(config['databasePath'],config.get('storageEnrollment')))
         dispatch = store.dispatch
     elif config['role'] == 'observer':
         authority = DaprCohortRpc(config['authority'], config['daprEndpoint'], config['daprCredentialReference'])
-        if q.public_key_identity(q.read_public_anchor(config['observerProfile']['ownerOriginalAnchorFile'])) == q.public_key_identity(public):
+        if q.public_key_identity(selected_io.read(config['observerProfile']['ownerOriginalAnchorFile'],4096)) == q.public_key_identity(public):
             raise Blocked('IndependentPersistedObserverSourceSigner')
         dispatch = PersistedPhaseObserver(config['observerProfile'], config['binding'], authority).dispatch
     else:
@@ -576,10 +638,24 @@ def main():
             from cryptography.hazmat.primitives import hashes
             from cryptography.hazmat.primitives.asymmetric import ec
             return {'payload': payload, 'signature': base64.b64encode(signer.sign(canonical(payload), ec.ECDSA(hashes.SHA256()))).decode()}
+        from phase_completion_pool import EnrolledPhaseCompletionPool
         owner = RetainedPhaseOwner(config['databasePath'], phase, config['binding'],
-            InstalledPhaseExecutor(config['executor'], observer, config['binding']), sign, authority)
+            InstalledPhaseExecutor(config['executor'], observer, config['binding']), sign, authority,storage=EnrolledSqliteStorage(config['databasePath'],config.get('storageEnrollment')),completion_capacity=EnrolledPhaseCompletionPool(config.get('completionCapacity')))
         dispatch = owner.dispatch
-    CohortHttpApplication(config['databasePath'], signer, dispatch, config['appChannelCredentialReference']).serve(config['listenHost'], config['listenPort'])
+    selected_io.check()
+    application=CohortHttpApplication(config['databasePath'], signer, dispatch, config['appChannelCredentialReference'],storage=EnrolledSqliteStorage(config['databasePath'],config.get('storageEnrollment')))
+    selected_io.check()
+    return config,application
+
+
+def main():
+    """Acquire the complete installed application before entering its independent serving lifetime."""
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--installation',required=True)
+    args=parser.parse_args()
+    config,application=selected_io.run(lambda:_build_installed_application(args.installation))
+    application.serve(config['listenHost'],config['listenPort'])
 
 
 if __name__ == '__main__':

@@ -13,4 +13,10 @@
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../Shared/ProtectedArchiveFixture.cs" Link="ProtectedArchiveFixture.cs" />
+    <Compile Include="../Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs" Link="SecuritySpoolFixture.cs" />
+    <Compile Include="../Hexalith.Platform.Custody.Tests/CustodyFixtureClock.cs" Link="CustodyFixtureClock.cs" />
+    <Compile Include="../Hexalith.Platform.Custody.Tests/AnchoredFixtureJournal.cs" Link="AnchoredFixtureJournal.cs" />
+  </ItemGroup>
 </Project>

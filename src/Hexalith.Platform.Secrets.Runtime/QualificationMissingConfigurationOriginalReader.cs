@@ -7,6 +7,8 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed class QualificationMissingConfigurationOriginalReader(IQualificationOriginalStore readOnlyOriginals,IQualificationNativeCaseAuditReader audit):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject original,CancellationToken token)
     {
         if(SecretsProof.Text(original,"caseId")!="S1.reject.missing-config" || SecretsProof.Text(original,"requestId") is not { } requestId || original["enrolledScope"] is not JsonObject scope) return null;
@@ -17,7 +19,7 @@ public sealed class QualificationMissingConfigurationOriginalReader(IQualificati
             || !JsonNode.DeepEquals(actual["admission"],JsonSerializer.SerializeToNode(independentAdmission,CustodyBindingContract.Json)) || native is null || native.OriginalRevision<1) return null;
         string receipt=QualificationProtocolSchema.Digest(actual);
         var state=QualificationDeniedCaseState.Create(original,native.OriginalRevision,receipt);
-        return new(requestId,receipt,native.OriginalRevision.ToString(System.Globalization.CultureInfo.InvariantCulture),new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),
-            ["targetMutations"]=native.TargetMutations.DeepClone(),["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject() });
+        return new(requestId,receipt,native.OriginalRevision.ToString(System.Globalization.CultureInfo.InvariantCulture),new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),
+            ["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject() });
     }
 }

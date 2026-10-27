@@ -69,3 +69,48 @@ class ExecutionProfileTests(unittest.TestCase):
             profile['command']=['/usr/bin/python3',str(binary),'--phase-command']
             profile['recoveryCommand']=['/usr/bin/python3',str(binary),'--phase-finalize']
             self.assertTrue(validate_execution_inventory(profile))
+
+    def test_every_actual_private_schema_locator_stays_outside_public_hashes_and_allows_private_rotation(self):
+        from unittest.mock import patch
+        fields=('RoleSigningKeyFile','ComponentSigningKeyPath','AppChannelTokenFile','OwnerSigningKeyFile',
+            'SourceSigningKeyFile','SigningKeyFile','RsaPkcs8Base64File','CredentialFile','CredentialReference',
+            'AppChannelTokenReference','AuthorizerCredentialReference','HmacCredentialReference',
+            'IndependentSignerCredentialReference','CapabilitySignerCredentialReference','ReplayRegistrarCredentialReference',
+            'CompromiseSubscriberCredentialReference','DaprCredentialReference','AppChannelCredentialReference','BearerReference')
+        with tempfile.TemporaryDirectory() as temporary:
+            profile=fixture_profile(temporary);private=Path(temporary)/'private-mount';private.write_text('disposable-private-value')
+            installation=Path(profile['dependencyClosure']['installationFile'])
+            for field in fields:
+                with self.subTest(field=field):
+                    installation.write_text(json.dumps({field:str(private)}))
+                    for item in profile['artifacts']:
+                        if item['path']==str(installation):item['sha256']=hashlib.sha256(installation.read_bytes()).hexdigest()
+                    self.assertEqual([],validate_execution_inventory(profile))
+                    private.write_text('disposable-current-rotated-value')
+                    self.assertEqual([],validate_execution_inventory(profile))
+                    changed=deepcopy(profile);changed['artifacts'].append({'path':str(private),'sha256':'a'*64})
+                    with patch('bounded_file_io.file_hash',side_effect=AssertionError('No public file hashing after private census conflict')):
+                        self.assertTrue(validate_execution_inventory(changed))
+            # Public trust is still exact independently pinned public configuration.
+            anchor=Path(temporary)/'public.pem';anchor.write_text('fixture-public-anchor')
+            installation.write_text(json.dumps({'OwnerPublicKeyFile':str(anchor)}))
+            for item in profile['artifacts']:
+                if item['path']==str(installation):item['sha256']=hashlib.sha256(installation.read_bytes()).hexdigest()
+            profile['artifacts'].append({'path':str(anchor),'sha256':hashlib.sha256(anchor.read_bytes()).hexdigest()})
+            self.assertEqual([],validate_execution_inventory(profile));anchor.write_text('substituted-public-anchor')
+            self.assertTrue(validate_execution_inventory(profile))
+
+    def test_actual_v2_installation_pins_same_finite_whole_phase_bound_as_profile(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            profile=fixture_profile(temporary,phase=1,cases=['secrets:fixture'])
+            installation=Path(profile['dependencyClosure']['installationFile'])
+            document={'BindingSchema':'Platform.JointPhaseInstallation.v2','Scope':{'BindingDigest':'','Phase':1,'Cases':profile['cases']},'CohortAttempt':{'BindingDigest':''},'CompletionTimeoutSeconds':30}
+            for duration in (30,1,86400,0,86401,True,None):
+                document['CompletionTimeoutSeconds']=duration;installation.write_text(json.dumps(document))
+                for item in profile['artifacts']:
+                    if item['path']==str(installation): item['sha256']=hashlib.sha256(installation.read_bytes()).hexdigest()
+                self.assertEqual(duration==30,validate_execution_inventory(profile)==[],duration)
+            document['CompletionTimeoutSeconds']=86400;installation.write_text(json.dumps(document));profile['completionTimeoutSeconds']=86400
+            for item in profile['artifacts']:
+                if item['path']==str(installation): item['sha256']=hashlib.sha256(installation.read_bytes()).hexdigest()
+            self.assertEqual([],validate_execution_inventory(profile))

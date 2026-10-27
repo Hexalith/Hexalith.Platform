@@ -49,7 +49,7 @@ public sealed class JointPhaseCommandTests
             var publisher=Substitute.For<IJointPhaseNativeSourcePublisher>();publisher.PreflightAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(Task.FromResult<IReadOnlyList<string>>([]));
             publisher.PublishAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(new JsonObject { ["actualFixtureNativeReceipt"]=new string('b',64) });
             var command=new JointPhaseCommand(new("binding",new string('a',40),2,["host:v23"]),originals,
-                new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow,JsonObject)>>{{"host:v23",new[]{(first,Original(first.CaseId,"first")),(second,Original(second.CaseId,"second"))}}},publisher,directory,key);
+                new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow,JsonObject)>>{{"host:v23",new[]{(first,Original(first.CaseId,"first")),(second,Original(second.CaseId,"second"))}}},publisher,directory,key,phaseAdmission:(_,_)=>Task.FromResult(true));
             var request=new JsonObject { ["requestId"]=new string('b',64),["bindingDigest"]="binding",["phase"]=2,["attemptId"]="attempt",["cases"]=new JsonArray("host:v23") };
             var result=await command.ExecuteAsync(request,TestContext.Current.CancellationToken);
             if(crash=="unknown-first") { result.ShouldBeNull();firstEffects.ShouldBe(0);secondEffects.ShouldBe(0);lookups.ShouldBe(1);await publisher.DidNotReceive().PublishAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()); }
@@ -75,7 +75,7 @@ public sealed class JointPhaseCommandTests
                 string name=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("host:H1")))+".json";
                 await ImmutableFileArchive.PublishAsync(Path.Combine(directory,id,name),QualificationProofVerifier.CanonicalBytes(evidence),TestContext.Current.CancellationToken);
             }
-            var finalizer=new JointPhaseMetadataFinalizer(new("binding",new string('c',40),2,["host:H1"]),store,directory,key);
+            var finalizer=new JointPhaseMetadataFinalizer(new("binding",new string('c',40),2,["host:H1"]),store,directory,key,(_,_)=>Task.FromResult(true));
             if(state=="missing") await Should.ThrowAsync<IOException>(()=>finalizer.FinalizeAsync(request,TestContext.Current.CancellationToken));
             else
             {
@@ -99,7 +99,7 @@ public sealed class JointPhaseCommandTests
         publisher.PreflightAsync(Arg.Any<string>(),Arg.Any<JsonObject>(),Arg.Any<CancellationToken>()).Returns(Task.FromResult<IReadOnlyList<string>>(["ExactIndependentNativeSourceCaseScope"]));int effects=0;
         var workflow=new QualificationSourceWorkflow("v23.no-false-replacement",(_,_)=> { effects++;return Task.FromResult<JsonObject?>(new()); },(_,_)=>Task.FromResult<JsonObject?>(null),(_,_)=>Task.FromResult<IReadOnlyList<string>>([]));
         var original=new JsonObject { ["requestId"]="step",["runId"]="attempt",["targetCommit"]=new string('a',40),["caseId"]=workflow.CaseId };
-        var command=new JointPhaseCommand(new("binding",new string('a',40),2,["host:v23"]),originals,new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow,JsonObject)>>{{"host:v23",new[]{(workflow,original)}}},publisher,Path.GetTempPath(),key);
+        var command=new JointPhaseCommand(new("binding",new string('a',40),2,["host:v23"]),originals,new Dictionary<string,IReadOnlyList<(QualificationSourceWorkflow,JsonObject)>>{{"host:v23",new[]{(workflow,original)}}},publisher,Path.GetTempPath(),key,phaseAdmission:(_,_)=>Task.FromResult(true));
         var request=new JsonObject { ["requestId"]=new string('b',64),["bindingDigest"]="binding",["phase"]=2,["attemptId"]="attempt",["cases"]=new JsonArray("host:v23") };
         (await command.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();effects.ShouldBe(0);originals.ReceivedCalls().ShouldBeEmpty();
     }

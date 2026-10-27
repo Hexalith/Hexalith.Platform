@@ -1,0 +1,184 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T01:55:48.952877+00:00",
+  "reviewPass": "16-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review16_blind",
+    "/root/review16_edge",
+    "/root/review16_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "edgeCaseFinalFindings": [],
+  "scopeManifest": "/tmp/story54-final-review-lql6nob6/scope.json",
+  "reviewDiffSha256": "d5b7e49fead08f9bc195285e6042428f5239c54ccc79b99c61e68418c06cbc97",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "No identical unchanged location and claim. R12B8 concerned the general credential acquisition and other proof adapters; R16B10 is the separate remaining query call site. R5 header/body trickle differs from the post-body authentication window. Historical unknown-stage policy supports the R16B9 refutation, rather than a repeated actionable defect.",
+  "findings": [
+    {
+      "id": "R16B-1",
+      "verdict": "high",
+      "evidence": "HeldArchiveDirectory.Name admits embedded NUL. DeleteTemporary accepts accepted-original.json\\0.pending as a temporary, but native unlinkat truncates at NUL and deletes accepted-original.json; the reviewer exercised this actual helper with disposable files. Reject NUL before every native relative operation.",
+      "route": "patch"
+    },
+    {
+      "id": "R16B-2",
+      "verdict": "high",
+      "evidence": "The unmarked ImmutableFileArchive publication path uses finalName+.pending in the same namespace as final originals. A previously accepted immutable item.pending original is deleted by a later publication of item. The per-final lock and physical-volume fence serialize this deletion but do not prevent it. Protected-store mode has separate allocation and does not excuse the supported unmarked path.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R16B-3",
+      "verdict": "false",
+      "evidence": "A damaged nonzero protected-store header deliberately produces PreserveUnknownDamagedHeader. The other copy can be an older Preparing state while the damaged newer copy committed publication; its valid checksum alone cannot prove safe historical state or authorize rewriting it. The selected enrolled protocol explicitly blocks damage/unknown liabilities, and no independently provable recoverable interrupted state was supplied. This refusal is required conservative recovery rather than the claimed unsafe fallback omission.",
+      "route": "rejected"
+    },
+    {
+      "id": "R16B-4",
+      "verdict": "medium",
+      "evidence": "HeldSqliteConnection always selects database_storage_enrollment slot1, but the production joint-authority-schema.sql never creates that table. Only sqlite_storage_fixture.py silently creates it. A database provisioned from the advertised migration therefore cannot open through the production existing-only reader. Add the already-consumed enrollment DDL and explicit independent initialization contract without runtime provisioning.",
+      "route": "patch"
+    },
+    {
+      "id": "R16B-5",
+      "verdict": "medium",
+      "evidence": "AcceptedLaunchArtifactLease checks immutable identity, fs-verity, bytes and static ELF closure but never execution permission. A valid immutable nonexecutable ELF passes admission and reaches AddExecutable, where it cannot start. File hashes and immutable flags do not imply executable access. Check the held entrypoint before any resource is registered.",
+      "route": "patch"
+    },
+    {
+      "id": "R16B-6",
+      "verdict": "high",
+      "evidence": "The production AgentsHostComposition path adds seven executable resources with no listener arguments, endpoint annotations or per-resource listener environment. The accepted inventory/profile consumes no such bindings. Ordinary published ASP.NET applications then share the default listener and cannot compose successfully; two resources even share an accepted service root. Carry explicit independently accepted per-resource bindings and validate the complete set before registration.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R16B-7",
+      "verdict": "high",
+      "evidence": "qualify.execute returns permitsOwnerAcceptanceForExactTarget=true for every explicit case_ids selection, including the empty list. Its only selection check compares the requested and selected sets, so a partial PhaseQualificationPassed result incorrectly advertises full owner-acceptance eligibility. Only the complete-plan execution may set that permission.",
+      "route": "patch"
+    },
+    {
+      "id": "R16B-8",
+      "verdict": "high",
+      "evidence": "bounded_cohort_http cancels its total acquisition timer after the body, before CohortHttpApplication reads the mounted channel credential or current SQLite grant. An isolated probe of the actual application with a blocked credential read kept the socket open and its sole connection slot held beyond a .05-second acquisition deadline plus .15 seconds, with zero native dispatches. Preserve one deadline through actual authentication and transfer ownership only after admission.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R16B-9",
+      "verdict": "false",
+      "evidence": "The cited handler first returns an already retained signed stage. If admission exists without that signed wrapper, it preserves Unknown and never measures again. LookupStageAsync is documented as an already-retained signed-inner-stage lookup; its only production override invokes the remote same-handler lookup. The production composite/native readers provide no raw partial historical stage lookup. Failure before witness/signature retention therefore has no exact signed original to recover, while lost acknowledgements after retention already use the first lookup branch. Reconstructing an unretained historical measurement would violate the supported recovery boundary.",
+      "route": "rejected"
+    },
+    {
+      "id": "R16B-10",
+      "verdict": "medium",
+      "evidence": "QualificationOwnerQueryClient loads the mounted private RSA PKCS8 material with TryUseUtf8Async and returns it as an immutable string to BoundOwnerQueryProof.Issue. Clearing the acquired byte buffers leaves that managed private-key string alive. Other command/stream paths use owned span adapters, but this actual query client remains a separate uncovered key-material path. Add an interoperable owned-span query-proof adapter and clear its owned material.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R16V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed: the concrete CustodyGovernanceGuardInstallation ValidateState revision/digest check and late authorization during its Dapr state read lack a regression through GovernanceGuardAuthority. Existing CustodyGuardInstallationTests exercise a different adapter, and the actual-owner fixture replaces this authority. Add concrete adapter tests for restored/substituted state and authorization withdrawn during the read.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R16B-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "HeldArchiveDirectory.Name admits embedded NUL. DeleteTemporary accepts accepted-original.json\\0.pending as a temporary, but native unlinkat truncates at NUL and deletes accepted-original.json; the reviewer exercised this actual helper with disposable files. Reject NUL before every native relative operation."
+    },
+    {
+      "members": [
+        "R16B-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "The unmarked ImmutableFileArchive publication path uses finalName+.pending in the same namespace as final originals. A previously accepted immutable item.pending original is deleted by a later publication of item. The per-final lock and physical-volume fence serialize this deletion but do not prevent it. Protected-store mode has separate allocation and does not excuse the supported unmarked path."
+    },
+    {
+      "members": [
+        "R16B-4"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "HeldSqliteConnection always selects database_storage_enrollment slot1, but the production joint-authority-schema.sql never creates that table. Only sqlite_storage_fixture.py silently creates it. A database provisioned from the advertised migration therefore cannot open through the production existing-only reader. Add the already-consumed enrollment DDL and explicit independent initialization contract without runtime provisioning."
+    },
+    {
+      "members": [
+        "R16B-5"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "AcceptedLaunchArtifactLease checks immutable identity, fs-verity, bytes and static ELF closure but never execution permission. A valid immutable nonexecutable ELF passes admission and reaches AddExecutable, where it cannot start. File hashes and immutable flags do not imply executable access. Check the held entrypoint before any resource is registered."
+    },
+    {
+      "members": [
+        "R16B-6"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "The production AgentsHostComposition path adds seven executable resources with no listener arguments, endpoint annotations or per-resource listener environment. The accepted inventory/profile consumes no such bindings. Ordinary published ASP.NET applications then share the default listener and cannot compose successfully; two resources even share an accepted service root. Carry explicit independently accepted per-resource bindings and validate the complete set before registration."
+    },
+    {
+      "members": [
+        "R16B-7"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "qualify.execute returns permitsOwnerAcceptanceForExactTarget=true for every explicit case_ids selection, including the empty list. Its only selection check compares the requested and selected sets, so a partial PhaseQualificationPassed result incorrectly advertises full owner-acceptance eligibility. Only the complete-plan execution may set that permission."
+    },
+    {
+      "members": [
+        "R16B-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "bounded_cohort_http cancels its total acquisition timer after the body, before CohortHttpApplication reads the mounted channel credential or current SQLite grant. An isolated probe of the actual application with a blocked credential read kept the socket open and its sole connection slot held beyond a .05-second acquisition deadline plus .15 seconds, with zero native dispatches. Preserve one deadline through actual authentication and transfer ownership only after admission."
+    },
+    {
+      "members": [
+        "R16B-10"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "QualificationOwnerQueryClient loads the mounted private RSA PKCS8 material with TryUseUtf8Async and returns it as an immutable string to BoundOwnerQueryProof.Issue. Clearing the acquired byte buffers leaves that managed private-key string alive. Other command/stream paths use owned span adapters, but this actual query client remains a separate uncovered key-material path. Add an interoperable owned-span query-proof adapter and clear its owned material."
+    },
+    {
+      "members": [
+        "R16V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed: the concrete CustodyGovernanceGuardInstallation ValidateState revision/digest check and late authorization during its Dapr state read lack a regression through GovernanceGuardAuthority. Existing CustodyGuardInstallationTests exercise a different adapter, and the actual-owner fixture replaces this authority. Add concrete adapter tests for restored/substituted state and authorization withdrawn during the read."
+    }
+  ],
+  "filedFindingCount": 11,
+  "survivors": 9,
+  "rejected": 2,
+  "rootCauseGroups": 9,
+  "badSpecGroups": 4,
+  "patchGroups": 5,
+  "fixtureProbe": {
+    "path": "/tmp/story54-root-review16-http-auth-probe.py",
+    "sha256": "a254221285cdc54ff03a6eded3706cfeb418903aa1e875f3e95f3df9248b746c",
+    "configuredAcquisitionSeconds": 0.05,
+    "additionalWaitSeconds": 0.15,
+    "serverClosedAtDeadline": false,
+    "connectionSlotStillHeld": true,
+    "nativeDispatches": 0
+  },
+  "installedQualification": false,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "status": "SourceCorrectionsRequired",
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

@@ -13,6 +13,28 @@ namespace Hexalith.Platform.Protection.Tests;
 
 public sealed class CustodyOccurrenceProviderTests
 {
+    [Theory]
+    [InlineData("")][InlineData(" ")][InlineData("0")][InlineData("current")][InlineData("latest")][InlineData("alias")]
+    [InlineData("+1")][InlineData("-1")][InlineData("01")][InlineData("1.0")][InlineData("1e0")][InlineData(" 1")][InlineData("1 ")]
+    [InlineData("18446744073709551616")][InlineData("١")]
+    public async Task ActualOccurrenceDigestProviderRejectsUnpinnedNativeSelectorWithoutReadingSecretOrReleasingRoot(string nativeVersion)
+    {
+        using var fixture=new Fixture { DigestNativeVersion=nativeVersion };
+        (await fixture.Provider().ResolveDigestAsync(fixture.Identity,"digest-v1",TestContext.Current.CancellationToken)).ShouldBeNull();
+        fixture.SecretReads.ShouldBe(0);fixture.MaterialReleases.ShouldBe(0);fixture.InventoryReads.ShouldBe(0);fixture.InventoryAuthorizations.ShouldBe(0);
+        await fixture.Dapr.DidNotReceive().GetSecretAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>());
+    }
+    [Theory]
+    [InlineData("7",false)][InlineData("7",true)][InlineData("18446744073709551615",false)]
+    public async Task ActualOccurrenceDigestProviderPinsNativeVersionAndRetainsLogicalVersionCurrentChecksAndOwnership(string nativeVersion,bool revokeAfterRead)
+    {
+        using var fixture=new Fixture { DigestNativeVersion=nativeVersion,RevokeDigestDuringSecretRead=revokeAfterRead };
+        var digest=await fixture.Provider().ResolveDigestAsync(fixture.Identity,"digest-v1",TestContext.Current.CancellationToken);
+        fixture.SecretReads.ShouldBe(1);fixture.Response!.ShouldBeEmpty();fixture.InventoryAuthorizations.ShouldBe(2);fixture.MaterialReleases.ShouldBe(0);
+        if(revokeAfterRead) { digest.ShouldBeNull();fixture.InventoryReads.ShouldBe(1); }
+        else { digest.ShouldNotBeNull();fixture.InventoryReads.ShouldBe(2);digest.Bytes.ShouldAllBe(value=>value==71);digest.Version.ShouldBe("digest-v1");digest.Dispose();digest.Bytes.ShouldAllBe(value=>value==0); }
+        await fixture.Dapr.Received(1).GetSecretAsync(Arg.Any<string>(),Arg.Any<string>(),Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>());
+    }
     [Fact]
     public async Task ActualLeaseAndCurrentChecksReleaseNoMaterialAndOneRootBufferTransfersToDisposableOwner()
     {
@@ -73,14 +95,14 @@ public sealed class CustodyOccurrenceProviderTests
         (await fixture.Source.TryAcquireCompletionLeaseAsync(fixture.Record.Binding,TestContext.Current.CancellationToken)).ShouldBeFalse();
         (await fixture.Source.TryAcquireEncryptionLeaseAsync(fixture.Occurrence,fixture.Registry,TestContext.Current.CancellationToken)).ShouldBeFalse();
     }
-    private sealed class Fixture:IDisposable
+    internal sealed class Fixture:IDisposable
     {
         internal readonly DaprClient Dapr=Substitute.For<DaprClient>();internal readonly ICustodyOwnerStateAuthority Authority=Substitute.For<ICustodyOwnerStateAuthority>();
         internal readonly IInteractionOccurrenceRegistry Registry=Substitute.For<IInteractionOccurrenceRegistry>();private readonly ICustodyOccurrenceMaterialClient _material=Substitute.For<ICustodyOccurrenceMaterialClient>();
         private readonly IPlatformKeyInventoryActor _inventory=Substitute.For<IPlatformKeyInventoryActor>();private readonly IPlatformKeyInventoryAuthority _inventoryAuthority=Substitute.For<IPlatformKeyInventoryAuthority>();
         internal readonly InteractionOccurrenceIdentity Identity=new(new("tenant","interaction","alias"),new AggregateIdentity("tenant","domain","aggregate"),PayloadProtectionPayloadKind.Event,1,"event","root-v1","profile-v1");
         internal CustodyInteractionBindingRecord Record,Stored;internal readonly CustodyInteractionProtectionBindingSource Source;internal readonly InteractionOccurrenceRecord Occurrence;
-        internal byte[] Root=Enumerable.Repeat((byte)42,32).ToArray();internal CustodyReleasedKey? Released;internal int MaterialReleases,SecretReads,CompletionCalls;internal bool IndependentCompletion,LoseAnchorAcknowledgement;internal Dictionary<string,string>? Response;internal bool Revoked,Missing,InventoryRevoked;
+        internal byte[] Root=Enumerable.Repeat((byte)42,32).ToArray();internal CustodyReleasedKey? Released;internal int MaterialReleases,SecretReads,CompletionCalls,InventoryReads,InventoryAuthorizations;internal bool IndependentCompletion,LoseAnchorAcknowledgement;internal Dictionary<string,string>? Response;internal bool Revoked,Missing,InventoryRevoked,RevokeDigestDuringSecretRead;internal string DigestNativeVersion="7";
         private readonly Dictionary<string,AnchoredStateTransition> _pending=[],_admitted=[],_recorded=[];
         private readonly CustodyKeyRegistration _registration=new(new("tenant","interaction",PlatformKeyPurpose.InteractionRootDek,"alias","root-v1","lifecycle","store","contract"),"wrap",1,"kek-v1","opaque","wrap-receipt");private long _anchoredRevision=1;private string _anchor;
         internal Fixture()
@@ -102,15 +124,15 @@ public sealed class CustodyOccurrenceProviderTests
             Source=new(Dapr,new Dictionary<string,CustodyInteractionBindingResource>{{CustodyInteractionProtectionBindingSource.ResourceId(Identity.Owner,new(1,Identity.Kind,"event")),new("independent","binding","outside-scope",Authority)}});
             _material.LookupAsync(_registration,Arg.Any<CancellationToken>()).Returns(new CustodyKeyLifecycleOutcome(_registration.Identity,"wrap","digest",CustodyKeyLifecycleStatus.Wrapped,"wrap-receipt"));
             _material.UnwrapAsync(_registration,Arg.Any<string>(),Arg.Any<CustodyKeyUse>(),Arg.Any<CancellationToken>()).Returns(_=> { MaterialReleases++;return MaterialReleases==1?new CustodyKeyUseResult("Released",Released=new(Root)):new CustodyKeyUseResult("Unknown"); });
-            _material.CompleteAsync(_registration,Arg.Any<string>(),Arg.Any<CustodyKeyUse>(),Arg.Any<CancellationToken>()).Returns(call=> { CompletionCalls++;return new CustodyKeyUseResult(IndependentCompletion?"Closed":"Unknown",HoldersCompleted:IndependentCompletion); });
-            _inventoryAuthority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>!InventoryRevoked);
+            _material.CompleteAsync(_registration,Arg.Any<string>(),Arg.Any<CustodyKeyUse>(),Arg.Any<CancellationToken>()).Returns(call=> { call.ArgAt<string>(1).ShouldBe("holder-completion:"+CustodyMaterialUseIdentity.Digest(call.ArgAt<CustodyKeyUse>(2)));CompletionCalls++;return new CustodyKeyUseResult(IndependentCompletion?"Closed":"Unknown",HoldersCompleted:IndependentCompletion); });
+            _inventoryAuthority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=> { InventoryAuthorizations++;return !InventoryRevoked; });
             _inventoryAuthority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(),Arg.Any<long>(),Arg.Any<string>(),Arg.Any<CancellationToken>()).Returns(_=>!InventoryRevoked);
-            _inventory.ReadAsync(Arg.Any<PlatformKeyVersion>()).Returns(call=> { var key=call.Arg<PlatformKeyVersion>();return new PlatformKeyInventorySnapshot(key.TenantId,key.Purpose,key.KeyAlias,1,[new(key,PlatformHmacKeyState.Active,1)],[]); });
-            Dapr.GetSecretAsync("digest-store","digest-key",Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(call=> { call.ArgAt<IReadOnlyDictionary<string,string>>(2)["version_id"].ShouldBe("7");SecretReads++;return Response=new(){{"value",Convert.ToBase64String(Enumerable.Repeat((byte)71,32).ToArray())}}; });
+            _inventory.ReadAsync(Arg.Any<PlatformKeyVersion>()).Returns(call=> { InventoryReads++;var key=call.Arg<PlatformKeyVersion>();key.Version.ShouldBe("digest-v1");return new PlatformKeyInventorySnapshot(key.TenantId,key.Purpose,key.KeyAlias,1,[new(key,PlatformHmacKeyState.Active,1)],[]); });
+            Dapr.GetSecretAsync("digest-store","digest-key",Arg.Any<IReadOnlyDictionary<string,string>>(),Arg.Any<CancellationToken>()).Returns(call=> { call.ArgAt<IReadOnlyDictionary<string,string>>(2).ShouldBe(new Dictionary<string,string>{{"version_id",DigestNativeVersion}});SecretReads++;if(RevokeDigestDuringSecretRead) InventoryRevoked=true;return Response=new(){{"value",Convert.ToBase64String(Enumerable.Repeat((byte)71,32).ToArray())}}; });
         }
         internal CustodyInteractionOccurrenceKeyProvider Provider()
         {
-            var profile=new CustodyInteractionMaterialProfile(_registration,new("lease","attempt","process","transport","opaque"),new("digest-store","digest-key","7","value",new("tenant",PlatformKeyPurpose.DigestKey,"digest","digest-v1","native","authority",null,null)));
+            var profile=new CustodyInteractionMaterialProfile(_registration,new("lease","attempt","process","transport","opaque"),new("digest-store","digest-key",DigestNativeVersion,"value",new("tenant",PlatformKeyPurpose.DigestKey,"digest","digest-v1","native","authority",null,null)));
             return new(Dapr,_material,Source,Registry,_inventory,_inventoryAuthority,new Dictionary<string,CustodyInteractionMaterialProfile>{{CustodyInteractionOccurrenceKeyProvider.ProfileId(Identity,true),profile},{CustodyInteractionOccurrenceKeyProvider.ProfileId(Identity,false),profile}});
         }
         private static string Hash<T>(T value)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));

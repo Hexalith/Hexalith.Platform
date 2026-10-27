@@ -1,0 +1,210 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-26T14:50:06.750277+00:00",
+  "reviewPass": "12-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review12_blind",
+    "/root/review12_edge",
+    "/root/review12_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-qjqqh917/scope.json",
+  "reviewDiffSha256": "8bb8c1286397b9e358d08f7b771fe8a3b1a0734864145ea079e75e0c53888f01",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "findings": [
+    {
+      "id": "R12B-1",
+      "verdict": "high",
+      "evidence": "CohortAuthorityStore.publish verifies signer and chain identity but never validates the Passed case partition; predecessor admission checks only state. Thus a signed Passed/empty passedCases result admits the next retained phase and its effects before final completion rejects it. Existing runner-side final validation is too late.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-2",
+      "verdict": "medium",
+      "evidence": "The actual execution inventory calls recursive selected_io.census. Only regular files count toward maximum; empty directories consume unbounded traversal/depth until the deadline or Python recursion limit. RecursionError is outside both inventory exception filters and escapes its named-blocker API.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-3",
+      "verdict": "high",
+      "evidence": "Host prepare loads/validates selected profile text, then independently reopens unrestricted read_bytes for hashing/publication. A replacement can separate validated semantics from packet bytes. Both opens also precede the clean-checkout guard and admit a FIFO/blocking file, so that later guard does not bound acquisition.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-4",
+      "verdict": "high",
+      "evidence": "PreparePrivatePublicationAsync stores numeric completion liabilities in one Dapr head and compares DriveInfo free bytes. No physical allocation or filesystem-wide owner fence protects those bytes from another independent head sharing that volume; CurrentArchiveDirectory validates a marker hash rather than enforcing exclusive capacity. A later valid admission can spend the prior completion budget.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-5",
+      "verdict": "high",
+      "evidence": "NativeArchiveCapacity.Allocate only fallocates when requested bytes exceed logical Length. Reopening an existing sparse or hole-punched reserve of the expected length returns success and leaves its blocks unreserved. Every WithFence operation uses this path to recover pending physical budgets.",
+      "route": "patch"
+    },
+    {
+      "id": "R12B-6",
+      "verdict": "medium",
+      "evidence": "Migrate sums a legacy body before the 1MiB break; a supported larger inline original therefore makes zero progress every time it is first, retaining itself and all following originals in the bounded authority head. Per-original reads still work, but head growth/migration recovery remains stranded.",
+      "route": "patch"
+    },
+    {
+      "id": "R12B-7",
+      "verdict": "high",
+      "evidence": "BuildApplication sets only a per-request body limit. HandleAsync authenticates the app channel, acquires up to128MiB plus deserialization/serialization copies, then validates the workload grant. Concurrent requests have no receiving ownership bound, so valid-channel traffic can exhaust process memory before authorization. The four private-file workers do not cover the later body/response lifetime.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-8",
+      "verdict": "medium",
+      "evidence": "UseUtf8Async decodes into a clearable array then creates new string(chars).Trim(); all PEM/RSA private proof callers pass through that immutable secret copy. Clearing bytes/chars cannot clear it. Current EventStore proof Issue APIs also accept strings and allocate decoded key bytes without clearing, so a coherent owned-span adapter plus exact protocol compatibility is required rather than claiming full cleanup from the existing helper.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R12B-9",
+      "verdict": "high",
+      "evidence": "PersistFr34Canary stores Convert.ToBase64String(plaintext), while the collector measures absence only by searching decoded bytes. The native reader checks signed event identity/protection metadata, not actual absence of that reversible encoded content. A falsely protected native event containing the Base64 canary passes this particular measurement.",
+      "route": "patch"
+    },
+    {
+      "id": "R12B-10",
+      "verdict": "medium",
+      "evidence": "RunAsync replaces its caller token with the startup budget and calls app.RunAsync() without either token. After successful startup the original caller cannot stop the public operation. Passing the startup token instead would incorrectly stop the running service at30s.",
+      "route": "patch"
+    },
+    {
+      "id": "R12E-1",
+      "verdict": "high",
+      "evidence": "Installed startup parses bytes from its first selected_io read, then reopens the installation solely for enrollment SHA validation. The checked hash can match the independently enrolled file while the returned config came from another snapshot. Public-anchor/signer verification does not bind the differing non-key configuration fields.",
+      "route": "patch"
+    },
+    {
+      "id": "R12E-2",
+      "verdict": "medium",
+      "evidence": "bounded_file_io.run acquires its semaphore before Thread.start; a start exception bypasses worker finally and leaks that slot. Four such failures permanently exhaust selected-file acquisition. A direct release-on-start-failure correction preserves stalled-worker ownership.",
+      "route": "patch"
+    },
+    {
+      "id": "R12V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified: documented Local gate builds/runs Custody and Runtime plus Python but never the infrastructure console suite, and solution test discovery cannot run that console. Existing OpenBao roundtrip/associated_data/context/tenant substitution/deadline tests are consequently omitted from the advertised normal source gate.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R12B-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "CohortAuthorityStore.publish verifies signer and chain identity but never validates the Passed case partition; predecessor admission checks only state. Thus a signed Passed/empty passedCases result admits the next retained phase and its effects before final completion rejects it. Existing runner-side final validation is too late."
+    },
+    {
+      "members": [
+        "R12B-2"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "The actual execution inventory calls recursive selected_io.census. Only regular files count toward maximum; empty directories consume unbounded traversal/depth until the deadline or Python recursion limit. RecursionError is outside both inventory exception filters and escapes its named-blocker API."
+    },
+    {
+      "members": [
+        "R12B-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Host prepare loads/validates selected profile text, then independently reopens unrestricted read_bytes for hashing/publication. A replacement can separate validated semantics from packet bytes. Both opens also precede the clean-checkout guard and admit a FIFO/blocking file, so that later guard does not bound acquisition."
+    },
+    {
+      "members": [
+        "R12B-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "PreparePrivatePublicationAsync stores numeric completion liabilities in one Dapr head and compares DriveInfo free bytes. No physical allocation or filesystem-wide owner fence protects those bytes from another independent head sharing that volume; CurrentArchiveDirectory validates a marker hash rather than enforcing exclusive capacity. A later valid admission can spend the prior completion budget."
+    },
+    {
+      "members": [
+        "R12B-5"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "NativeArchiveCapacity.Allocate only fallocates when requested bytes exceed logical Length. Reopening an existing sparse or hole-punched reserve of the expected length returns success and leaves its blocks unreserved. Every WithFence operation uses this path to recover pending physical budgets."
+    },
+    {
+      "members": [
+        "R12B-6"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Migrate sums a legacy body before the 1MiB break; a supported larger inline original therefore makes zero progress every time it is first, retaining itself and all following originals in the bounded authority head. Per-original reads still work, but head growth/migration recovery remains stranded."
+    },
+    {
+      "members": [
+        "R12B-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "BuildApplication sets only a per-request body limit. HandleAsync authenticates the app channel, acquires up to128MiB plus deserialization/serialization copies, then validates the workload grant. Concurrent requests have no receiving ownership bound, so valid-channel traffic can exhaust process memory before authorization. The four private-file workers do not cover the later body/response lifetime."
+    },
+    {
+      "members": [
+        "R12B-8"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "UseUtf8Async decodes into a clearable array then creates new string(chars).Trim(); all PEM/RSA private proof callers pass through that immutable secret copy. Clearing bytes/chars cannot clear it. Current EventStore proof Issue APIs also accept strings and allocate decoded key bytes without clearing, so a coherent owned-span adapter plus exact protocol compatibility is required rather than claiming full cleanup from the existing helper."
+    },
+    {
+      "members": [
+        "R12B-9"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "PersistFr34Canary stores Convert.ToBase64String(plaintext), while the collector measures absence only by searching decoded bytes. The native reader checks signed event identity/protection metadata, not actual absence of that reversible encoded content. A falsely protected native event containing the Base64 canary passes this particular measurement."
+    },
+    {
+      "members": [
+        "R12B-10"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "RunAsync replaces its caller token with the startup budget and calls app.RunAsync() without either token. After successful startup the original caller cannot stop the public operation. Passing the startup token instead would incorrectly stop the running service at30s."
+    },
+    {
+      "members": [
+        "R12E-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Installed startup parses bytes from its first selected_io read, then reopens the installation solely for enrollment SHA validation. The checked hash can match the independently enrolled file while the returned config came from another snapshot. Public-anchor/signer verification does not bind the differing non-key configuration fields."
+    },
+    {
+      "members": [
+        "R12E-2"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "bounded_file_io.run acquires its semaphore before Thread.start; a start exception bypasses worker finally and leaks that slot. Four such failures permanently exhaust selected-file acquisition. A direct release-on-start-failure correction preserves stalled-worker ownership."
+    },
+    {
+      "members": [
+        "R12V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified: documented Local gate builds/runs Custody and Runtime plus Python but never the infrastructure console suite, and solution test discovery cannot run that console. Existing OpenBao roundtrip/associated_data/context/tenant substitution/deadline tests are consequently omitted from the advertised normal source gate."
+    }
+  ],
+  "status": "SourceCorrectionsRequired",
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

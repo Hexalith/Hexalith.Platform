@@ -1,0 +1,44 @@
+[
+  {
+    "repository": "copied-EventStore",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore/src/Hexalith.EventStore.PayloadProtection/Hexalith.EventStore.PayloadProtection.csproj",
+      "-nologo",
+      "-getProperty:SourceRevisionId",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round13-hjh0_6e_/copied-eventstore-build-provenance.targets"
+    ],
+    "exitCode": 0,
+    "declaredSourceRevisionId": "458f0cf38e43452655e6c307fa80debdf595a8db",
+    "stderr": ""
+  },
+  {
+    "repository": "Platform",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj",
+      "-nologo",
+      "-getProperty:SourceRevisionId",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round13-hjh0_6e_/copied-eventstore-build-provenance.targets"
+    ],
+    "exitCode": 0,
+    "declaredSourceRevisionId": "",
+    "stderr": ""
+  },
+  {
+    "repository": "Commons",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
+      "-nologo",
+      "-getProperty:SourceRevisionId",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/story54-round13-hjh0_6e_/copied-eventstore-build-provenance.targets"
+    ],
+    "exitCode": 0,
+    "declaredSourceRevisionId": "",
+    "stderr": ""
+  }
+]

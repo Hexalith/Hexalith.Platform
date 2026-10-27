@@ -1,0 +1,25 @@
+{
+  "observedAtUtc": "2026-10-26T06:09:50.761187+00:00",
+  "argv": [
+    "kubectl",
+    "--kubeconfig",
+    "/home/administrator/.kube/hexalith-production",
+    "--context",
+    "jpiquot@local",
+    "--request-timeout=15s",
+    "get",
+    "configmap",
+    "dapr-trust-bundle",
+    "-n",
+    "dapr-system",
+    "-o",
+    "json"
+  ],
+  "exitCode": 0,
+  "resourceUid": "100ca4a0-f340-4b06-837f-7c678c467df9",
+  "resourceVersion": "848824",
+  "classification": "ObservedTransportCA_NotQualificationRoleTrust",
+  "enrollmentProved": false,
+  "file": "observed-dapr-transport-ca.pem",
+  "sha256": "32241a03538035dcd13b3c0d848465ccb52b8cb45bb9961354f35ab39ccd4626"
+}

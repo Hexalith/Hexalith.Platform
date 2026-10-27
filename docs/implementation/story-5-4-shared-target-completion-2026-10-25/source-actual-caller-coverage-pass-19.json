@@ -1,0 +1,61 @@
+{
+  "suites": {
+    "runtime": {
+      "xml": {
+        "path": "/tmp/story54-round19-i9zg3sye/runtime-isolated-tests.xml",
+        "sha256": "95ab973cc9a44440abf19983a995dcc5b3c306809ae17f0156356ea073a3f533"
+      },
+      "count": 719,
+      "priorExactNamesPreserved": 689,
+      "newNames": 30,
+      "failedSkippedNotRun": 0
+    },
+    "custody": {
+      "xml": {
+        "path": "/tmp/story54-round19-i9zg3sye/final-serial-local-evidence/local-tests.xml",
+        "sha256": "1a285544e8a4def38b8e5126ae50499765497d95134b65b026e9a0d1da3e315c"
+      },
+      "count": 781,
+      "priorExactNamesPreserved": 781,
+      "newNames": 0,
+      "failedSkippedNotRun": 0
+    },
+    "protection": {
+      "xml": {
+        "path": "/tmp/story54-round19-i9zg3sye/protection-tests.xml",
+        "sha256": "97ba644fcef3de5903a3c85440d6ff6de2b126d9e6c1b7e213ab825b883cade8"
+      },
+      "count": 205,
+      "priorExactNamesPreserved": 205,
+      "newNames": 0,
+      "failedSkippedNotRun": 0
+    },
+    "composition": {
+      "xml": {
+        "path": "/tmp/story54-round19-i9zg3sye/composition-tests.xml",
+        "sha256": "68f0dcd83333e2c08242eec03d11d6513c2a73f8955dbe7af5b87769d136367d"
+      },
+      "count": 116,
+      "priorExactNamesPreserved": 0,
+      "newNames": null,
+      "failedSkippedNotRun": 0
+    }
+  },
+  "correctionMapping": {
+    "path": "/tmp/story54-round19-i9zg3sye/per-finding-corrections.json",
+    "sha256": "831e722880c322f0bce578fcc87515bdba6d0771c4ab6800eb203c171ca210fa"
+  },
+  "finalTestCounts": {
+    "native": 32,
+    "custodySelectedByLocalGate": 781,
+    "runtime": 719,
+    "pythonSecrets": 345,
+    "protection": 205,
+    "actualAspireComposition": 116,
+    "pythonHost": 15,
+    "totalComponentTestExecutions": 2213
+  },
+  "allAssertionsTimeoutsInternalConcurrencyEnabled": true,
+  "focusedOriginalProfileRows": 6,
+  "fixtureOnly": true
+}

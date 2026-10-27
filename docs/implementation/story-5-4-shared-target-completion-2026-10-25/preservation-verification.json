@@ -1,6 +1,6 @@
 {
   "schema": "platform.story-5.4.preservation-verification.v1",
-  "observedAtUtc": "2026-10-25T23:32:31.055449+00:00",
+  "observedAtUtc": "2026-10-27T09:33:33.193538+00:00",
   "acceptedFiles": [
     {
       "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
@@ -24,7 +24,65 @@
   "frozenIntentByteIdentical": true,
   "frozenIntentSha256": "22a68017041611fdf0d729b10c0c2ecee95606151ce49f48f8dd68fcc6b748ec",
   "initialLocalHead": "8b712a05cdae8880ccd9c7f7dd355ec2ffe6952b",
-  "observedLocalHead": "8e55c68dbc885aa1b61c300b9cfb120e3fd828ac",
+  "observedLocalHead": "b117945e2ba7911fd2c47843f866487341300398",
   "qualificationEvidence": false,
-  "note": "Shared checkout revisions can advance through concurrent external work. This check preserves accepted artifacts and the frozen intent; it does not claim the entire shared checkout was unchanged."
+  "note": "Shared checkout revisions can advance through concurrent external work. This check preserves accepted artifacts and the frozen intent; it does not claim the entire shared checkout was unchanged.",
+  "ownerReturnFormSha256": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d",
+  "exactMissingOwnerReturnCount": 50,
+  "exactLedgerMatchesOwnerNullPaths": true,
+  "requiredInstallationBundleCount": 13,
+  "commitmentArchiveVerification": [
+    {
+      "dependency": "EXT-SECRETS-1",
+      "fieldCount": 10,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RuntimeQualificationBinding",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "379dd16f8fe7947326d10d5d3a9efbec9e7aeaa741dee3442eb23e78f251f7a4"
+    },
+    {
+      "dependency": "EXT-HOST-1",
+      "fieldCount": 9,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "4a3fbc7fe82e6f9830385e0fe9e29ad16ab626354808fd7bb78d6b4ad12736a1"
+    },
+    {
+      "dependency": "EXT-PROTECTION-1",
+      "fieldCount": 9,
+      "fieldNames": [
+        "Owner",
+        "Repository",
+        "RequiredArtifact",
+        "TargetVersionOrCommit",
+        "TargetIntegrationDate",
+        "CompatibilityContractAndVerificationCommand",
+        "RequiredEvidenceLevel",
+        "AcceptedStatus",
+        "ConsumingStories"
+      ],
+      "verbatimPresentInAcceptedRegister": true,
+      "sectionSha256": "53437cdab453bdd640fece4cede3eabf965c9305d08c32c655e4357bc8f204dd"
+    }
+  ]
 }

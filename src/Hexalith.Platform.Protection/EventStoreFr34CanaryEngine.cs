@@ -27,7 +27,6 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     public async Task<Fr34CanaryReference?> SealAndPersistAsync(Fr34ProtectionTarget target, string canaryId, byte[] plaintext, CancellationToken cancellationToken = default)
     {
         if (!IsActualTarget(target) || canaryId.Length != 64 || !canaryId.All(char.IsAsciiHexDigit) || plaintext.Length is 0 or > 8192) return null;
-        if (await reader.ReadCanaryAsync(target, canaryId, cancellationToken).ConfigureAwait(false) is { } existing) return existing.Reference;
         var protectionTarget=new ProtectionTarget(target.TenantId,canaryId,"fr34-"+canaryId);
         if(dynamicEnrollment is not null)
         {
@@ -38,16 +37,21 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
         string id = EventStorePrivateRecordingPort.StableUlid("fr34", target.TenantId, canaryId);
         var command = new Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest(id,target.TenantId,"fr34-canary",canaryId,
             typeof(PersistFr34Canary).FullName!,JsonSerializer.SerializeToElement(payload,new JsonSerializerOptions(JsonSerializerDefaults.Web)),IdempotencyKey:id);
+        var fingerprint=Fr34CommandFingerprint.Create(command,privatePrincipal);
         var original = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },cancellationToken).ConfigureAwait(false);
+        if(original is not null && !Fr34CommandFingerprint.IsSafe(original.Request,privatePrincipal))
+            throw new InvalidOperationException("External.LegacyFr34RetainedPlaintextOriginalCleanupUnproven");
+        if (await reader.ReadCanaryAsync(target, canaryId, cancellationToken).ConfigureAwait(false) is { } existing)
+            return original is not null && Fr34CommandFingerprint.Matches(original.Request,command,privatePrincipal)?existing.Reference:null;
         if (original is null)
         {
-            if (await originals.InvokeAsync<Admission>("qualification-begin-original",new { role="fr34-engine",requestId=id,original=command.Payload },cancellationToken).ConfigureAwait(false) is not { Exact:true }) return null;
+            if (await originals.InvokeAsync<Admission>("qualification-begin-original",new { role="fr34-engine",requestId=id,original=fingerprint },cancellationToken).ConfigureAwait(false) is not { Exact:true }) return null;
             original = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },cancellationToken).ConfigureAwait(false);
         }
-        if (original?.Request.GetRawText() != command.Payload.GetRawText() || original.SubmissionState != "Unsent") return null;
+        if (original is null || !Fr34CommandFingerprint.Matches(original.Request,command,privatePrincipal) || original.SubmissionState != "Unsent") return null;
         var request = new Hexalith.EventStore.Contracts.Commands.BoundWorkloadCommandRequest(command,privatePrincipal);
         string? proof = await canaryProofs.IssueAsync(request,cancellationToken).ConfigureAwait(false);
-        if (proof is null || await originals.InvokeAsync<Permission>("recording-dispatch-admit",new { role="fr34-engine",requestId=id,original=command.Payload },cancellationToken).ConfigureAwait(false) is not { Allowed:true }) return null;
+        if (proof is null || await originals.InvokeAsync<Permission>("recording-dispatch-admit",new { role="fr34-engine",requestId=id,original=fingerprint,boundRequest=request,workloadProof=proof },cancellationToken).ConfigureAwait(false) is not { Allowed:true }) return null;
         _ = await privateWriteGateway.SubmitBoundWorkloadCommandAsync(request,proof,cancellationToken).ConfigureAwait(false);
         return (await reader.ReadCanaryAsync(target,canaryId,cancellationToken).ConfigureAwait(false))?.Reference;
     }
@@ -62,7 +66,7 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<bool> DestroyAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
-        if (!IsActualTarget(reference.Target) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
+        if (!IsActualTarget(reference.Target) || !await SafeOriginalAsync(reference,cancellationToken).ConfigureAwait(false) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
         // The independent control owner publishes this complete signed/reserved original; a locator is never authority.
         Fr34NativeManifestBinding? expected=null;
         if(dynamicEnrollment is not null)
@@ -83,9 +87,17 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<PayloadUnprotectionOutcome?> ReplayAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
-        if (!IsActualTarget(reference.Target) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } original) return null;
+        if (!IsActualTarget(reference.Target) || !await SafeOriginalAsync(reference,cancellationToken).ConfigureAwait(false) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } original) return null;
         return await engine.TryUnprotectEventPayloadAsync(original.Owner, original.Occurrence.PayloadTypeId, original.Protected.PayloadBytes,
             original.Protected.SerializationFormat, original.Protected.Metadata, original.Occurrence, cancellationToken).ConfigureAwait(false);
+    }
+    private async Task<bool> SafeOriginalAsync(Fr34CanaryReference reference,CancellationToken token)
+    {
+        string id=EventStorePrivateRecordingPort.StableUlid("fr34",reference.Target.TenantId,reference.CanaryId);
+        var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },token).ConfigureAwait(false);
+        if(original is null) return false;
+        if(!Fr34CommandFingerprint.IsSafe(original.Request,privatePrincipal)) throw new InvalidOperationException("External.LegacyFr34RetainedPlaintextOriginalCleanupUnproven");
+        return original.SubmissionState=="Dispatched";
     }
     private sealed record Admission(bool Exact,bool First);
     private sealed record Permission(bool Allowed);

@@ -1,0 +1,209 @@
+{
+  "schema": "platform.story-5.4.independent-review.v1",
+  "observedAtUtc": "2026-10-27T05:33:35.229001+00:00",
+  "reviewPass": "18-claims-isolated-root-cumulative",
+  "reviewers": [
+    "/root/review18_blind",
+    "/root/review18_edge",
+    "/root/review18_gap"
+  ],
+  "contextFree": true,
+  "allLayersFinalBeforeTriage": true,
+  "scopeManifest": "/tmp/story54-final-review-_0gqi8s4/scope.json",
+  "reviewDiffSha256": "2b4b0c1f6f10e030b3c1d536e52b1ac35d6c8143dbdb95663c6bf1d6f68b3c17",
+  "claimsIsolation": {
+    "specExcludedFromReviewContent": true,
+    "edgeReceivesSpecAtClaimsStageOnly": true,
+    "blindAndGapExplicitlyDoNotReadSpecs": true
+  },
+  "individualVerdictsBeforeGrouping": true,
+  "priorTriageComparison": "R18B-7 carries unchanged R16B-3 false/rejected with identical source hash; no verification or new patch/defer. Other findings are distinct locations/claims; the gap is trusted as filed.",
+  "findings": [
+    {
+      "id": "R18B-1",
+      "verdict": "high",
+      "evidence": "Root reproduced the actual loaded public VFS transaction: synchronous=2/FULL fsyncs journal/database/parent, then unlinks the journal with no following directory fsync. xDelete only syncs when SQLite supplies sync_directory, which FULL does not. Source therefore acknowledges the admission without its required durable journal-deletion barrier; no physical power-loss behavior is claimed measured. Add the held-parent barrier before successful acknowledgement.",
+      "route": "patch"
+    },
+    {
+      "id": "R18B-2",
+      "verdict": "medium",
+      "evidence": "The exact net10 FileStream(handle,Read,65536,false) constructor copies a small private fixture into its own buffer. Root independently reproduced owned input cleared=True while the disposed stream internal buffer still retained the complete marker. Actual BoundedRegularFile.ReadCoreAsync uses this constructor and only clears its returned input; private span callers cannot clear the hidden buffer.",
+      "route": "patch"
+    },
+    {
+      "id": "R18B-3",
+      "verdict": "medium",
+      "evidence": "ReadCoreAsync creates excess=new byte[1] for the actual post-size growth read; a growing private file can fill it before the explicit IOException. Its finally clears only bytes, and excess is neither transferred nor cleared on growth rejection/cancellation. This is a distinct owned temporary from the FileStream internal-buffer defect.",
+      "route": "patch"
+    },
+    {
+      "id": "R18B-4",
+      "verdict": "false",
+      "evidence": "The calls use Task.Run with the fixed default scheduler and CancellationToken.None. No supported non-catastrophic throw before worker launch was shown; the alleged path depended on hypothetical allocation exhaustion. After root requested actual reachability rather than arbitrary injected scheduler behavior, the reviewer withdrew the finding. Do not add an unproven early-release guard.",
+      "route": "rejected"
+    },
+    {
+      "id": "R18B-5",
+      "verdict": "false",
+      "evidence": "The receiver uses the same first selected bearer hash for initial current method authorization, transactional admission and final result grant, and compares the selected channel against its mounted credential. No supplied intermediary trusts a different header in an authorization fact used here, and no admission bypass of that selected first current grant was shown. The reviewer withdrew the claimed cross-hop harm as dependent on an unprovided intermediary. Duplicate rejection would be optional defensive validation.",
+      "route": "rejected"
+    },
+    {
+      "id": "R18B-6",
+      "verdict": "high",
+      "evidence": "IndependentDaprAuthority captures now before canonical serialization/VerifyData and never rereads it before returning evidence. Root used its actual frozen assembly, a real ephemeral P-256 signed exact-nonce response and a controlled advancing clock: it returned Object at1577836802 although the exclusive ValidUntil was1577836801. QualificationProofVerifier.VerifyAt likewise captures current before canonicalization/crypto and returns valid after only cancellation checks. Recheck final current proof time after expensive work while preserving explicitly historical VerifyOriginal semantics.",
+      "route": "patch"
+    },
+    {
+      "id": "R18B-7",
+      "verdict": "false",
+      "evidence": "carried R16B-3/rejected: A damaged nonzero protected-store header deliberately produces PreserveUnknownDamagedHeader. The alternate can be an older Preparing state while the damaged newer copy committed publication; a checksum cannot authorize historical reconstruction or reuse. The selected protocol conservatively preserves unknown liabilities. ProtectedArchiveStore bytes are unchanged from that logged verdict (a8495aa863fc6984eb159ae24a78d3ff5a6e5ccb2f3a21d75e18db62abf5e402), so claim verification is skipped and its prior route retained.",
+      "route": "rejected"
+    },
+    {
+      "id": "R18B-8",
+      "verdict": "medium",
+      "evidence": "Root exercised actual accepted composition with the existing disposable seven-graph fixture and an ordinary failing IHostApplicationLifetime registration. Build threw before HostOptions, the lazy lease owner was never resolved, and disposed=0/7. The acquisition catch ends before resource/DI setup and canonical ComposeEntry has no failure cleanup. Normal Build/Dispose tests cover another path. Production launch ownership must cover the entire acquisition-to-host lifetime and every failed transfer/build interval.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R18B-9",
+      "verdict": "high",
+      "evidence": "Root actual AdmitAsync fixtures advance envelope time or revoke its key during the final awaited spool readiness after replay verification: both printed readinessChanged=True constructed=1 result=True. No authentication follows that await. Although the two-await shape predates this story, the change opens production composition where the baseline unconditionally refused it and supplies actual independent replay/spool ports; the newly enabled production consumer exposes this current-authorization gap. A coherent final read-only authentication boundary must preserve exact first-seen ownership without renewing/reissuing native replay.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R18B-10",
+      "verdict": "medium",
+      "evidence": "Root actual verifier/Admit/recorder/spool fixture returned status=Denied and durably retained reason=unavailable-owner for a confirmed same-issuer/nonce first-seen conflict. The switch loses that cause. Mapping every Denied to replay-conflict is also incorrect: PlatformKeyResolution.Check propagates an actual provider Denied through the authenticator, and CustodyStatus.Denied denotes general disallowed scope/operation. Preserve explicit verified replay-conflict provenance through the result and recorder without inventing cause or rewriting retained originals.",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R18E-1",
+      "verdict": "high",
+      "evidence": "Root reproduced the filed source/SQLite fixture with physical checks mocked: A has a SQL original and generation3 Reserved header; damaging that copy makes _header return generation2 Free. B then takes the sole slot while SQL retains both A/B; A result lookup raises ExactRetainedPhaseCompletionCapacity. Reject unknown nonempty damaged metadata before falling back/reusing any valid older Free header, preserving exact admitted capacity/originals.",
+      "route": "patch"
+    },
+    {
+      "id": "R18E-2",
+      "verdict": "medium",
+      "evidence": "Root independently reproduced the same FileStream internal-buffer retention as R18B-2 using the exact source constructor. The private span consumer clears owned bytes/chars but has no handle to the complete additional disposed stream buffer. This is the identical acquisition-buffer defect, not a separate private growth-sentinel issue.",
+      "route": "patch"
+    },
+    {
+      "id": "R18V-1",
+      "verdict": "medium",
+      "evidence": "Pre-verified gap trusted as filed, without root test/search verification: QualificationExportDeliveryOriginalReader is only declared/registered, existing receiving-denial and projection tests do not invoke it. Its three-way execution/receiving/native denial correlation lacks a regression; changing || to && would accept one mismatching independent original without failing checked tests. Add the actual reader valid case and each independent mismatch through controlled existing delivery/audit fixtures.",
+      "route": "patch"
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "R18B-8"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Root exercised actual accepted composition with the existing disposable seven-graph fixture and an ordinary failing IHostApplicationLifetime registration. Build threw before HostOptions, the lazy lease owner was never resolved, and disposed=0/7. The acquisition catch ends before resource/DI setup and canonical ComposeEntry has no failure cleanup. Normal Build/Dispose tests cover another path. Production launch ownership must cover the entire acquisition-to-host lifetime and every failed transfer/build interval."
+    },
+    {
+      "members": [
+        "R18B-9"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "cause": "Root actual AdmitAsync fixtures advance envelope time or revoke its key during the final awaited spool readiness after replay verification: both printed readinessChanged=True constructed=1 result=True. No authentication follows that await. Although the two-await shape predates this story, the change opens production composition where the baseline unconditionally refused it and supplies actual independent replay/spool ports; the newly enabled production consumer exposes this current-authorization gap. A coherent final read-only authentication boundary must preserve exact first-seen ownership without renewing/reissuing native replay."
+    },
+    {
+      "members": [
+        "R18B-10"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "cause": "Root actual verifier/Admit/recorder/spool fixture returned status=Denied and durably retained reason=unavailable-owner for a confirmed same-issuer/nonce first-seen conflict. The switch loses that cause. Mapping every Denied to replay-conflict is also incorrect: PlatformKeyResolution.Check propagates an actual provider Denied through the authenticator, and CustodyStatus.Denied denotes general disallowed scope/operation. Preserve explicit verified replay-conflict provenance through the result and recorder without inventing cause or rewriting retained originals."
+    },
+    {
+      "members": [
+        "R18B-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Root reproduced the actual loaded public VFS transaction: synchronous=2/FULL fsyncs journal/database/parent, then unlinks the journal with no following directory fsync. xDelete only syncs when SQLite supplies sync_directory, which FULL does not. Source therefore acknowledges the admission without its required durable journal-deletion barrier; no physical power-loss behavior is claimed measured. Add the held-parent barrier before successful acknowledgement."
+    },
+    {
+      "members": [
+        "R18B-2",
+        "R18E-2"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "The exact net10 FileStream(handle,Read,65536,false) constructor copies a small private fixture into its own buffer. Root independently reproduced owned input cleared=True while the disposed stream internal buffer still retained the complete marker. Actual BoundedRegularFile.ReadCoreAsync uses this constructor and only clears its returned input; private span callers cannot clear the hidden buffer."
+    },
+    {
+      "members": [
+        "R18B-3"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "ReadCoreAsync creates excess=new byte[1] for the actual post-size growth read; a growing private file can fill it before the explicit IOException. Its finally clears only bytes, and excess is neither transferred nor cleared on growth rejection/cancellation. This is a distinct owned temporary from the FileStream internal-buffer defect."
+    },
+    {
+      "members": [
+        "R18B-6"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "IndependentDaprAuthority captures now before canonical serialization/VerifyData and never rereads it before returning evidence. Root used its actual frozen assembly, a real ephemeral P-256 signed exact-nonce response and a controlled advancing clock: it returned Object at1577836802 although the exclusive ValidUntil was1577836801. QualificationProofVerifier.VerifyAt likewise captures current before canonicalization/crypto and returns valid after only cancellation checks. Recheck final current proof time after expensive work while preserving explicitly historical VerifyOriginal semantics."
+    },
+    {
+      "members": [
+        "R18E-1"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "cause": "Root reproduced the filed source/SQLite fixture with physical checks mocked: A has a SQL original and generation3 Reserved header; damaging that copy makes _header return generation2 Free. B then takes the sole slot while SQL retains both A/B; A result lookup raises ExactRetainedPhaseCompletionCapacity. Reject unknown nonempty damaged metadata before falling back/reusing any valid older Free header, preserving exact admitted capacity/originals."
+    },
+    {
+      "members": [
+        "R18V-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "cause": "Pre-verified gap trusted as filed, without root test/search verification: QualificationExportDeliveryOriginalReader is only declared/registered, existing receiving-denial and projection tests do not invoke it. Its three-way execution/receiving/native denial correlation lacks a regression; changing || to && would accept one mismatching independent original without failing checked tests. Add the actual reader valid case and each independent mismatch through controlled existing delivery/audit fixtures."
+    }
+  ],
+  "filedFindingCount": 13,
+  "survivors": 10,
+  "rejected": 3,
+  "rootCauseGroups": 9,
+  "badSpecGroups": 3,
+  "patchGroups": 6,
+  "groupedOnly": [
+    [
+      "R18B-2",
+      "R18E-2"
+    ]
+  ],
+  "rootIsolatedProbes": {
+    "directory": "/tmp/story54-root-review18-probes-nvqewi50",
+    "hashManifest": {
+      "path": "/tmp/story54-final-review-_0gqi8s4/root-probe-artifact-hashes.json",
+      "sha256": "ae5593390b267198865bfc2de3b59e0e2d5efcf033eafe241f8353d25f6c0a6f",
+      "count": 1090
+    },
+    "sqliteProbe": "/tmp/story54-review18-sqlite-durability.py",
+    "phaseResult": "/tmp/story54-root-review18-probes-nvqewi50/phase/result.json",
+    "leaseFinalLog": "/tmp/story54-root-review18-probes-nvqewi50/lease2/tests.log",
+    "admissionFinalLog": "/tmp/story54-root-review18-probes-nvqewi50/admission2/tests.log",
+    "classification": "DisposableSourceFixturesOnly",
+    "productionEffects": 0,
+    "diagnostics": "lease1 combines assertions on one line and mislabels expression; lease2 separates them, exact failure is leases.All(IsDisposed). admission1 freshness fixture used wrong lowercase wire property and failed before clock; admission2 uses the actual Pascal-case codec and proves expired response acceptance. All compiled/source/log boundaries are retained; neither diagnostic is counted as a passing verification.",
+    "fixtureOnly": true
+  },
+  "sourceComplete": false,
+  "installedQualification": false,
+  "deliveryComplete": false,
+  "status": "SourceCorrectionsRequired",
+  "reviewLoopLimitOverrideRemainsEffective": true
+}

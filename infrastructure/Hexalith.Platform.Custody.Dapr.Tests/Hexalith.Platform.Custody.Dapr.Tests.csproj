@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable><GenerateDocumentationFile>false</GenerateDocumentationFile><RestorePackagesWithLockFile>true</RestorePackagesWithLockFile></PropertyGroup>
+  <ItemGroup><PackageReference Include="NSubstitute" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody.Dapr/Hexalith.Platform.Custody.Dapr.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" /></ItemGroup>
+  <ItemGroup><Compile Include="../../tests/Shared/ProtectedArchiveFixture.cs" Link="ProtectedArchiveFixture.cs" /></ItemGroup>
 </Project>

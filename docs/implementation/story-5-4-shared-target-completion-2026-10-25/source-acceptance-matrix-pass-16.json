@@ -1,0 +1,351 @@
+{
+  "schema": "platform.story54.pass16.acceptance-matrix.v1",
+  "groups": [
+    {
+      "finding": "R15B-1",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "QualificationOwningLifetimeTests"
+      ],
+      "sourceFiles": [
+        "QualificationOwnerApplication.cs",
+        "IndependentAuthorityHttpApplication.cs",
+        "QualificationOwnerDriverExecutable.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-2",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "EventStorePrivateRecordingPortTests.ActualEnvelopeWorkflowSeedsAuthenticFirstSeenThenChallengesActualReceivingBoundary"
+      ],
+      "sourceFiles": [
+        "QualificationEnvelopeCaseWorkflow.cs",
+        "TrustedEnvelopeAuthenticator.cs",
+        "TrustedEnvelopeReplayVerifier.cs",
+        "DaprIndependentReplayRegistrar.cs",
+        "IndependentAuthorityReceiver.cs",
+        "EventStorePrivateRecordingPort.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/mutation-verification-final.json",
+        "sha256": "f7c38a0cc257f0f9bc5c53b71e68cf708574cd81e8f208a711295168a555f9d0"
+      },
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-3",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "QualificationDecisionSemanticTests.IndependentRoleRequiresTheCompleteActualVerifier"
+      ],
+      "sourceFiles": [
+        "QualificationDecisionCaseWorkflow.cs",
+        "IndependentDecisionManifestVerifier.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-4",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "QualificationDecisionSemanticTests.SemanticNegativesUseUnchangedCryptographicallyValidIndependentOriginals",
+        "QualificationDecisionSemanticTests.PublicVerifierKeepsOneOwnedBasisAcrossPolicyAndSemanticMatching"
+      ],
+      "sourceFiles": [
+        "QualificationDecisionCaseInput.cs",
+        "QualificationDecisionCaseWorkflow.cs",
+        "IndependentDecisionManifestVerifier.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/mutation-verification-final.json",
+        "sha256": "f7c38a0cc257f0f9bc5c53b71e68cf708574cd81e8f208a711295168a555f9d0"
+      },
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-5",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "QualificationEnvelopeSubstitutionTests"
+      ],
+      "sourceFiles": [
+        "QualificationEnvelopeCaseWorkflow.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-6",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "IndependentPhysicalCapacityTests",
+        "IndependentRecoveryArchiveTests",
+        "ArchiveOrdinaryWriterFenceTests",
+        "NativePhysicalCapacityTests",
+        "NativeReopenedReserveTests",
+        "NativeReservedWrapTests",
+        "NativeDurabilityOwnershipTests"
+      ],
+      "sourceFiles": [
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs",
+        "ImmutableFileArchive.cs",
+        "BoundedRegularFile.cs",
+        "NativeDaprAuthorityStore.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-7",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "NativeReopenedReserveTests",
+        "NativeDurabilityOwnershipTests"
+      ],
+      "sourceFiles": [
+        "ArchiveAllocationProof.cs",
+        "ArchiveFileLease.cs",
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-8",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "NativeReopenedReserveTests"
+      ],
+      "sourceFiles": [
+        "ArchiveAllocationProof.cs",
+        "ProtectedArchiveStore.cs",
+        "IndependentArchiveCapacity.cs",
+        "NativeArchiveCapacity.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-9",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "ProtectedArchiveAllocationTests",
+        "ArchiveOrdinaryWriterFenceTests"
+      ],
+      "sourceFiles": [
+        "ArchiveVolumeFence.cs",
+        "ArchiveFileLease.cs",
+        "ImmutableFileArchive.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15B-10",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "QualificationTemporalDecisionTests",
+        "QualificationTemporalSourceTests",
+        "test_qualify.TemporalTests"
+      ],
+      "sourceFiles": [
+        "TrustedEnvelopeResult.cs",
+        "TrustedEnvelopeAuthenticator.cs",
+        "QualificationTemporalCaseWorkflow.cs",
+        "QualificationTemporalOriginalReader.cs",
+        "QualificationProtocolSchema.cs",
+        "QualificationMeasuredCaseProjector.cs",
+        "qualify.py"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15E-1/R15E-2",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "test_pass16_startup_ownership",
+        "test_bounded_cohort_http"
+      ],
+      "sourceFiles": [
+        "worker_startup_ownership.py",
+        "bounded_file_io.py",
+        "joint_live_phase_runner.py",
+        "bounded_cohort_http.py"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15E-3",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "AcceptedLaunchDirectoryCensusTests"
+      ],
+      "sourceFiles": [
+        "AcceptedLaunchArtifactLease.cs"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": null,
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    },
+    {
+      "finding": "R15V-1",
+      "status": "ImplementedAndRequiredComponentVerified_PendingIndependentReview",
+      "implemented": true,
+      "meaningfulActualCallerTests": [
+        "PhaseCapacityAndAttemptTests.test_damaged_completed_frame_blocks_without_lookup_or_replacement"
+      ],
+      "sourceFiles": [
+        "test_pass15_storage.py"
+      ],
+      "sourceSnapshot": {
+        "path": "/tmp/story54-round16-zg30xg8e/source-final.tar.gz",
+        "sha256": "0a6bab853c8426b5fa7af6d50f08ad90d1bcf841f8a331c447bce4fee60bf7e0"
+      },
+      "positiveVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/verification-final-complete.json",
+        "sha256": "f8743ad40ab555fc097abd90f82aa1b9e6df0e5cfdc9579b219eb51217e1b347"
+      },
+      "guardRemovalVerification": {
+        "path": "/tmp/story54-round16-zg30xg8e/mutation-verification-final.json",
+        "sha256": "f7c38a0cc257f0f9bc5c53b71e68cf708574cd81e8f208a711295168a555f9d0"
+      },
+      "actualInstalledEvidence": null,
+      "driverCompletenessPromoted": false
+    }
+  ],
+  "independentReviewComplete": false,
+  "sourceComplete": false,
+  "installedQualification": false
+}

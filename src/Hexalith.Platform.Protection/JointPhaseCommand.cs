@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Closed phase command implementation over shipped case workflows and independent native publication. Unknown originals use lookup only; complete phase readiness requires every exact mapped workflow/read protocol.</summary>
 public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualificationOriginalStore originals,IReadOnlyDictionary<string,IReadOnlyList<(QualificationSourceWorkflow Workflow,JsonObject Original)>> mappedCases,
-    IJointPhaseNativeSourcePublisher? independentPublisher,string evidenceDirectory,ECDsa ownerSigner,IJointSecretsCaseExecutor? secrets=null,IQualificationOriginalStore? executorOriginals=null)
+    IJointPhaseNativeSourcePublisher? independentPublisher,string evidenceDirectory,ECDsa ownerSigner,IJointSecretsCaseExecutor? secrets=null,IQualificationOriginalStore? executorOriginals=null,Func<JsonObject,CancellationToken,Task<bool>>? phaseAdmission=null)
 {
     /// <summary>Gets precise missing full-partition readiness inputs; native uncertainty after dispatch remains a retained unresolved original.</summary>
     public IReadOnlyList<string> MissingInputs { get; private set; }=[];
@@ -15,7 +15,8 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
     {
         if(request["requestId"]?.GetValue<string>() is not { Length:64 } requestId || !requestId.All(char.IsAsciiHexDigit) || request["cases"] is not JsonArray cases || cases.Count==0
             || !Path.IsPathFullyQualified(evidenceDirectory) || request["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest
-            || request["phase"]?.GetValue<int>()!=accepted.Phase || !cases.Select(value=>value!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal)) return null;
+            || JointPhaseRequestRecipe.Phase(request)!=accepted.Phase || !cases.Select(value=>value!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal)) return null;
+        if(phaseAdmission is null || !await phaseAdmission(request,token).ConfigureAwait(false)) { MissingInputs=["CurrentExactRetainedPhaseAdmission"];return null; }
         var work=new List<(string CaseId,IReadOnlyList<(QualificationSourceWorkflow Workflow,JsonObject Original)> Operations)>();
         foreach(var node in cases)
         {
@@ -33,17 +34,16 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
         _=await originals.BeginAsync("joint-phase-command",requestId,request,token).ConfigureAwait(false);
         if(await originals.LookupResultAsync("joint-phase-command",requestId,token).ConfigureAwait(false) is { } retained) return retained;
         string originalPath=Path.Combine(evidenceDirectory,requestId,"owner-original.json");
-        if(File.Exists(originalPath))
+        if(await ProtectedArchiveStore.ExistsAsync(originalPath,token).ConfigureAwait(false))
         {
-            var info=new FileInfo(originalPath);if(info.LinkTarget is not null || info.Length is <=0 or >1024*1024) return null;
-            var recovered=JsonNode.Parse(await File.ReadAllBytesAsync(originalPath,token).ConfigureAwait(false))!.AsObject();var old=recovered["payload"]!.AsObject();
+            var recovered=JsonNode.Parse(await BoundedRegularFile.ReadAsync(originalPath,1024*1024,token).ConfigureAwait(false))!.AsObject();var old=recovered["payload"]!.AsObject();
             if(old["requestSha256"]?.GetValue<string>()!=QualificationProtocolSchema.Digest(request) || old["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest
                 || old["observations"] is not JsonArray items || !items.Select(value=>value!["caseId"]!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal)
                 || !ownerSigner.VerifyData(QualificationProofVerifier.CanonicalBytes(old),Convert.FromBase64String(recovered["signature"]!.GetValue<string>()),HashAlgorithmName.SHA256,DSASignatureFormat.Rfc3279DerSequence)) return null;
             foreach(var item in items)
             {
                 string file=Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(item!["caseId"]!.GetValue<string>())))+".json";
-                byte[] actual=await File.ReadAllBytesAsync(Path.Combine(evidenceDirectory,requestId,file),token).ConfigureAwait(false);
+                byte[] actual=await BoundedRegularFile.ReadAsync(Path.Combine(evidenceDirectory,requestId,file),1024*1024,token).ConfigureAwait(false);
                 if(Convert.ToHexStringLower(SHA256.HashData(actual))!=item["evidenceSha256"]!.GetValue<string>()) return null;
             }
             await originals.RetainAsync("joint-phase-command",requestId,recovered,token).ConfigureAwait(false);return recovered;

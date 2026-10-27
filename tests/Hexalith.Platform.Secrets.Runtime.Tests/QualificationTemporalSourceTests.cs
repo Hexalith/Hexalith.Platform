@@ -27,7 +27,7 @@ public sealed class QualificationTemporalSourceTests
         (await workflow.PreflightAsync(request,TestContext.Current.CancellationToken)).ShouldContain("External.ImmutableNativeTemporalEvaluationWithActualTimestampProtocol");
         (await workflow.ExecuteAsync(request,TestContext.Current.CancellationToken)).ShouldBeNull();
         // Independently supplied historical exact original remains readable; no source clock evaluation supplies it.
-        var actual=new JsonObject { ["caseId"]=id,["requestId"]=request["requestId"]!.DeepClone(),["outcome"]=outcome,["checkedAt"]=clock.Now.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(issuance.Envelope,CustodyBindingContract.Json) };retained=actual;
+        var actual=new JsonObject { ["caseId"]=id,["requestId"]=request["requestId"]!.DeepClone(),["outcome"]=outcome,["status"]=outcome=="Verified"?"Succeeded":"Expired",["authenticationDecision"]=JsonSerializer.SerializeToNode(new TrustedEnvelopeResult(outcome=="Verified"?CustodyStatus.Succeeded:CustodyStatus.Expired,EvaluatedAt:clock.Now),CustodyBindingContract.Json),["temporalEvidenceVersion"]=2,["checkedAt"]=clock.Now.ToUnixTimeMilliseconds(),["originalEnvelope"]=JsonSerializer.SerializeToNode(issuance.Envelope,CustodyBindingContract.Json) };retained=actual;
         var audit=Substitute.For<IQualificationNativeCaseAuditReader>();audit.ReadAsync(request,Arg.Any<CancellationToken>()).Returns(new QualificationNativeCaseAudit(1,[],[],[],[],new JsonObject { ["temporalOriginal"]=actual.DeepClone() }));
         clock.Now=issuance.Envelope.ExpiresAt.AddHours(1);
         (await auth.VerifyAsync(issuance.Envelope,identity,TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyStatus.Expired);

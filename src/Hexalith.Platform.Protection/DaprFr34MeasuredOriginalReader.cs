@@ -14,6 +14,7 @@ public sealed class DaprFr34MeasuredOriginalReader(IndependentDaprAuthority orig
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-observer",requestId=id },token).ConfigureAwait(false);
         if(original?.Result is not { } result || original.Request.GetProperty("reference").Deserialize<Fr34CanaryReference>(CustodyBindingContract.Json)!=reference) return null;
         var measured=result.Deserialize<Fr34MeasuredCanaryOriginal>(CustodyBindingContract.Json);
+        if(measured is not null && measured.CommandOriginalProtocol!=Fr34CommandFingerprint.Protocol) throw new InvalidOperationException("External.LegacyFr34RetainedPlaintextOriginalCleanupUnproven");
         return measured?.Reference==reference && measured.EngineName==reference.Target.EngineId && measured.EngineRevision==reference.Target.EngineVersion
             && measured.SourceRevision==1 && measured.NativeEventDigest.Length==64?measured:null;
     }

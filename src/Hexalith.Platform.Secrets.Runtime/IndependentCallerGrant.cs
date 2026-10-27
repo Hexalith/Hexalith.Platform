@@ -12,4 +12,4 @@ namespace Hexalith.Platform.Secrets.Runtime;
 
 /// <summary>Externally provisioned current caller permission, retained with the authority head.</summary>
 public sealed record IndependentCallerGrant(string BearerSha256, string Identity, string ScopeReference,
-    string Role, string[] Methods, DateTimeOffset ValidUntil, bool Revoked);
+    string Role, string[] Methods, DateTimeOffset ValidUntil, bool Revoked,[property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] string? CommandProofPublicKeySpkiBase64=null);

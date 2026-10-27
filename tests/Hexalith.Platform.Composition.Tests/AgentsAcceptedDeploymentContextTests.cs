@@ -67,26 +67,28 @@ public sealed class AgentsAcceptedDeploymentContextTests
         string root=Path.GetDirectoryName(source)!;while(!File.Exists(Path.Combine(root,"eng/ext-secrets-1/test_coordinated_packets.py"))) root=Directory.GetParent(root)?.FullName??throw new IOException("Repository source fixture required.");return root;
     }
 
-    private static (string Json, string Register, string Packet) Inputs()
+    internal static (string Json, string Register, string Packet) Inputs(string? root=null,Action<JsonObject>? customizeListeners=null)
     {
         var profile = new Dictionary<string, object?>
         {
             ["host"] = "192.168.1.30", ["integrationDate"] = "2026-11-03", ["partiesBranch"] = "B",
             ["timing"] = new { L = 300, S = 30, O = 600, H = 86400, R = 604800 },
-            ["services"] = new { eventStore = "../eventstore", tenants = "../tenants", parties = "../parties", conversations = "../conversations", agents = "../agents" },
-            ["replicaCount"] = 3,
+            ["services"] = new { eventStore = root is null?"../eventstore":Path.Combine(root,"eventstore"), tenants = root is null?"../tenants":Path.Combine(root,"tenants"), parties = root is null?"../parties":Path.Combine(root,"parties"), conversations = root is null?"../conversations":Path.Combine(root,"conversations"), agents = root is null?"../agents":Path.Combine(root,"agents") },
+            ["replicaCount"] = 3, ["listeners"]=AcceptedLaunchFixture.Listeners(),
         };
         foreach (string name in new[] { "currentTenant", "globalAdministrator", "humanIdentity", "approverEvidence", "replay", "recorder", "worker", "spoolBackend", "failureModel", "protectionEngine", "protectionObserver", "partiesBinding", "conversationsBinding" }) profile[name] = name + "-ref";
+        customizeListeners?.Invoke((JsonObject)profile["listeners"]!);
         string json = JsonSerializer.Serialize(profile);
         string profileHash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(json)));
         string planHash = AgentsDeploymentProfile.ExpectedCohortPlanSha256; string target = new('a', 40);
         string config=new('d',64),protectionProfile=new('e',64),custodyRaw=new('f',64),semantic=new('b',64);
         var joint=new SortedDictionary<string,object> { ["platformCommit"]=target,["hostCommit"]=target,["secretsCommit"]=target,["protectionCommit"]=new string('b',40),
             ["platformIntegrationDate"]="2026-11-03",["protectionIntegrationDate"]="2026-11-05",["configurationSha256"]=semantic,["profileSha256"]=profileHash,["protectionProfileSha256"]=protectionProfile,["planSha256"]=planHash };
-        string fields = "\n| `TargetVersionOrCommit` | `" + target + "` |\n| `TargetIntegrationDate` | `2026-11-03` |\n| `AcceptedStatus` | `Committed` |\n";
+        string standard="| `Owner` | fixture-owner |\n| `Repository` | fixture-repository |\n| `RequiredArtifact` | complete-fixture-artifact |\n| `CompatibilityContractAndVerificationCommand` | fixture-command |\n| `RequiredEvidenceLevel` | Levels 4 and 5 |\n| `ConsumingStories` | 5.4; RQ-1 |\n";
+        string fields = standard+"\n| `TargetVersionOrCommit` | `" + target + "` |\n| `TargetIntegrationDate` | `2026-11-03` |\n| `AcceptedStatus` | `Committed` |\n";
         string pin = JsonSerializer.Serialize(new { profileSha256 = profileHash, cohortPlanSha256 = planHash,configurationRawSha256=custodyRaw,configurationSha256=semantic });
         var protection=new Dictionary<string,object> { ["targetCommit"]=new string('b',40),["integrationDate"]="2026-11-05",["profileSha256"]=protectionProfile,["configurationSha256"]=config,["planSha256"]=planHash };
-        string protectionSection="### EXT-PROTECTION-1 — Protection\n| `TargetVersionOrCommit` | `"+new string('b',40)+"` |\n| `TargetIntegrationDate` | `2026-11-05` |\n| `AcceptedStatus` | `Committed` |\n| `ProtectionQualificationBinding` | `"+JsonSerializer.Serialize(protection)+"` |\n";
+        string protectionSection="### EXT-PROTECTION-1 — Protection\n"+standard+"| `TargetVersionOrCommit` | `"+new string('b',40)+"` |\n| `TargetIntegrationDate` | `2026-11-05` |\n| `AcceptedStatus` | `Committed` |\n| `ProtectionQualificationBinding` | `"+JsonSerializer.Serialize(protection)+"` |\n";
         string jointPin=JsonSerializer.Serialize(new { configurationSha256=config,bindingSha256=Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(joint))),planSha256=planHash });
         string jointRow="| `JointQualificationBinding` | `"+jointPin+"` |\n";
         string register = "### EXT-HOST-1 — Host\n" + fields + "| `HostQualificationBinding` | `" + pin + "` |\n"+jointRow+"### EXT-SECRETS-1 — Secrets\n" + fields+"| `RuntimeQualificationBinding` | `"+pin+"` |\n"+jointRow+protectionSection;

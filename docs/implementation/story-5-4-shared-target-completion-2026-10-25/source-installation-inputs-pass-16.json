@@ -1,0 +1,112 @@
+{
+  "schema": "platform.story54.pass16.installation-requirements.v1",
+  "actualInstalledEvidence": null,
+  "requirements": [
+    {
+      "input": "External.EnrolledProtectedArchiveAllocationV1",
+      "sourceProtocol": "Ext4PrivateWrittenNoSnapshotsV1",
+      "appliesTo": [
+        "IndependentArchiveCapacityInstallation.ProtectedAllocations",
+        "NativeArchiveCapacityInstallation.ProtectedAllocations",
+        "all ordinary writers under marked enrolled archive roots"
+      ],
+      "fields": [
+        "Directory",
+        "EnrollmentSha256",
+        "DataIdentity",
+        "Metadata0Identity",
+        "Metadata1Identity",
+        "ChunkBytes",
+        "ChunkCount",
+        "MaximumMetadataBytes",
+        "ArchiveRoots[path]=deviceMajor:deviceMinor:inode",
+        "StorageProtocol=Ext4PrivateWrittenNoSnapshotsV1"
+      ],
+      "existingOnlyResources": [
+        "allocation-enrollment.json",
+        "allocation-data.bin",
+        "allocation-metadata-0.bin",
+        "allocation-metadata-1.bin",
+        "pool.lock (independent) or capacity.lock (native)",
+        "capacity.json independently reconciled legacy genesis",
+        "archive-root .archive-allocation.json enrollment markers"
+      ],
+      "sourceLimits": {
+        "headerBytes": 8192,
+        "dataGeometryPrefixBytes": 8192,
+        "headerCopiesPerChunk": 2,
+        "chunkBytesMin": 4096,
+        "chunkBytesMax": 65536,
+        "chunkAlignment": 4096,
+        "chunkCountMax": 65536,
+        "archiveRootsMax": 64,
+        "maximumMetadataBytesMin": 65536,
+        "maximumMetadataBytesMax": 33554432,
+        "independentRequiredMaximumMetadataBytes": 4194304,
+        "nativeRequiredMaximumMetadataBytes": 33554432,
+        "maximumLocatorCharacters": 4096,
+        "maximumInspectedFiemapExtents": 65536,
+        "maximumCombinedPoolAndTicketCharacters": 256
+      },
+      "requirements": [
+        "Provision all three exact-size distinct regular single-link inodes and fixed geometry before new effects; data size=8192+ChunkCount*(16384+ChunkBytes), each metadata bank size=8192+MaximumMetadataBytes. Fully materialize private written extents and fsync before use. Source does not create enrollment, files, locks or genesis.",
+        "Actual supported ext4 persistent in-place overwrite, no future COW/snapshots/shared extents, fixed namespace and exclusive participating-writer policy, retained journal/metadata/persistence/replication and outside-application-restore placement must be independently established. FIEMAP/device/statx facts do not establish these operational guarantees.",
+        "Both banks may be all-zero only for genuine initial fixed-store genesis, with no surviving used chunks. Initial legacy ledger must contain all retained originals/outstanding tickets/transfers/commitments and is migrated to protected metadata before data reservations. Any later damaged committed/nonempty metadata or damaged Published header remains unknown and blocks without falling back to legacy genesis.",
+        "Account actual disjoint chunk budgets, old liabilities and all current independent/native original/result/index/history/recovery transfers; source quotas and fixture sizing are not installed capacity. Existing legacy exact original bytes/locators remain readable and conflicting fixed publications deny."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.AuthenticatedReplayConflictCaseInputsAndReceivingRegistrar",
+      "fields": [
+        "ReplayChallenges[case].OriginalDelivery + ChangedDelivery OR ChangedIdentity for admitted fresh actual issuance",
+        "ReplayChallenges[foreign-issuer].ForeignRuntimeConfigurationFile",
+        "ReplayChallengeRegistrar optional separate actual replay role binding",
+        "receiving caller methods replay-register-exact/replay-lookup-exact/replay-lookup-first-seen"
+      ],
+      "requirements": [
+        "Provide actual authentic same-nonce original/changed deliveries for each exact case, or a current installed actual scoped HMAC issuance identity/key/profile recipe. Fresh challenge pair is admitted and retained before actual registrar actions; unknown outcomes remain lookup-only.",
+        "Changed-fields and cross-tenant must share the existing issuer+nonce key; changed fields/tenant are cryptographically authenticated then denied by actual first-seen conflict. Foreign issuer uses its separate independently current runtime authority/profile and challenges the receiving issuer/profile; cross-issuer key collisions are not required.",
+        "Actual registrar role/port must support read-only authenticated first-seen lookup and retain the original native event/receipt without renewal. No production fixture key/profile is supplied."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.IndependentlySignedDecisionSemanticOriginal",
+      "fields": [
+        "DecisionCaseInputs[case].OriginalManifest",
+        "DetachedJws",
+        "ExpectedBasis",
+        "SignedOriginalBasis",
+        "actual current independent decision authority/approver/anchor facts"
+      ],
+      "requirements": [
+        "Each semantic case requires a genuine unchanged independently signed manifest with a valid cryptographic original basis, and a separately independently current expected basis differing only in the intended component. Missing required roles must be an actual strict role-set addition.",
+        "Actual signature/current key/profile/anchor/approver/authority boundaries must validate. Source never signs approval evidence or rewrites a manifest to manufacture a negative; missing inputs block before effects."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.CanonicalArchiveVolumeNamespaceAndExclusiveWriterPolicy",
+      "requirements": [
+        "All actual configured/ordinary/native/independent writers must resolve the same independently enrolled full-filesystem mounted-root device/inode and fence inode. Linux mount namespace inspection must prove the mount root is the filesystem root; unprovable subtree bind aliases refuse before allocating.",
+        "Actual namespace stability, no unsafe nonparticipating writer/snapshot/restore and shared persistent flock/statx/FIEMAP/fsync semantics remain separately independently evidenced. Source never creates a bind mount or infers an actual pin."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    },
+    {
+      "input": "External.VersionedExactTemporalDecisionOriginals",
+      "sourceProtocol": "temporalEvidenceVersion=2; state.temporalEvaluation.version=2",
+      "requirements": [
+        "Temporal consumers require exact authenticationDecision.evaluatedAt (or independently owned native boundary original) correlated with checkedAt and the complete originalResultSha256. Producer/service installed versions must supply this exact framing.",
+        "Historical raw/signed originals lacking actual timing remain exact and incomplete; no retiming or rewrite. Existing native rotation overlap, exclusive expiry and historical validity boundary protocols remain exact missing external inputs until genuinely available."
+      ],
+      "actualInstalledEvidence": null,
+      "fixtureEstablishesInstallation": false
+    }
+  ]
+}

@@ -48,5 +48,30 @@ class PrepareAcceptanceTests(unittest.TestCase):
         self.assertNotIn("OPENBAO/SECRET/OPENBAO-SEAL", str(captured.exception))
 
 
+class ProfileSnapshotTests(unittest.TestCase):
+    def test_actual_prepare_acquires_profile_once_before_checkout_guard(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'candidate';root.mkdir();commit(root)
+            profile=Path(temp)/'profile';raw=prepare.canonical(prepare.default_profile());profile.write_bytes(raw)
+            real=prepare.profile_snapshot;reads=[]
+            def snapshot(path):
+                reads.append(path)
+                value=real(path)
+                profile.write_text('{"substituted":true}')
+                return value
+            with patch.object(prepare,'profile_snapshot',side_effect=snapshot):
+                report=prepare.prepare(root,Path(temp)/'output',str(profile))
+            self.assertEqual([str(profile)],reads);self.assertIn('replay',report['missingReferences'])
+            for kind in ('fifo','link','oversize','duplicate'):
+                profile.unlink()
+                if kind=='fifo':os.mkfifo(profile)
+                elif kind=='link':profile.symlink_to(root)
+                elif kind=='oversize':profile.write_bytes(b'x'*(1024*1024+1))
+                else:profile.write_bytes(raw.replace(b'"host":',b'"host":"192.168.1.30","host":'))
+                with self.assertRaises((ValueError,OSError)):
+                    prepare.prepare(root,Path(temp)/('output-'+kind),str(profile))
+
+
 if __name__ == "__main__":
     unittest.main()

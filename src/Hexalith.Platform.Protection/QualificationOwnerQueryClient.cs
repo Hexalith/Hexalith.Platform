@@ -24,13 +24,17 @@ public sealed class QualificationOwnerQueryClient(HttpClient http,QualificationM
         if(!await authority.AuthorizeOperationAsync(scope,"ReadQualificationOwnerQuery",budget.Token).ConfigureAwait(false)) return null;
         string assertionId=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { operation="eventstore:owner-authority-query",tenant=query.Tenant,domain=query.Domain })));
         if(!credentials.AssertionFiles.TryGetValue(assertionId,out var assertionFile)) return null;
-        string? assertion=await Mounted(assertionFile,budget.Token).ConfigureAwait(false),key=await Mounted(credentials.RsaPkcs8Base64File,budget.Token).ConfigureAwait(false);
-        if(assertion is null || key is null) return null;
+        string? assertion=await Mounted(assertionFile,budget.Token).ConfigureAwait(false);
+        if(assertion is null) return null;
+        string? proof=await BoundedRegularFile.TryUseUtf8SpanAsync(credentials.RsaPkcs8Base64File,16384,
+            material=>OwnedWorkloadProof.Issue(request,credentials.Caller,material,clock.GetUtcNow()),budget.Token).ConfigureAwait(false);
+        if(proof is null) return null;
         byte[] body=JsonSerializer.SerializeToUtf8Bytes(request,new JsonSerializerOptions(JsonSerializerDefaults.Web));if(body.Length>1024*1024) return null;
         using var message=new HttpRequestMessage(HttpMethod.Post,"api/v1/queries/owner-authority/workload") { Content=new ByteArrayContent(body) };
         message.Content.Headers.ContentType=new("application/json");message.Headers.Add("X-Hexalith-Workload-Assertion",assertion);
-        message.Headers.Add(BoundOwnerQueryProof.HeaderName,BoundOwnerQueryProof.Issue(request,credentials.Caller,key,clock.GetUtcNow()));
+        message.Headers.Add(BoundOwnerQueryProof.HeaderName,proof);
         if(!await authority.AuthorizeOperationAsync(scope,"ReadQualificationOwnerQuery",budget.Token).ConfigureAwait(false)) return null;
+        budget.Token.ThrowIfCancellationRequested();
         using var response=await http.SendAsync(message,HttpCompletionOption.ResponseHeadersRead,budget.Token).ConfigureAwait(false);
         if(response.StatusCode!=System.Net.HttpStatusCode.OK || response.RequestMessage?.RequestUri is { } actual && actual!=new Uri(endpoint,"api/v1/queries/owner-authority/workload")) return null;
         await using var input=await response.Content.ReadAsStreamAsync(budget.Token).ConfigureAwait(false);
@@ -44,8 +48,7 @@ public sealed class QualificationOwnerQueryClient(HttpClient http,QualificationM
         && query.Search is null && query.Filters is null && query.OrderBy is null && query.Freshness is null;
     private static async Task<string?> Mounted(string file,CancellationToken token)
     {
-        if(!Path.IsPathFullyQualified(file)) return null;var info=new FileInfo(file);
-        if(!info.Exists || info.LinkTarget is not null || info.Length is <=0 or >16384) return null;
-        string value=(await File.ReadAllTextAsync(file,token).ConfigureAwait(false)).Trim();return value.Length>0?value:null;
+        if(!Path.IsPathFullyQualified(file)) return null;
+        return await BoundedRegularFile.TryUseUtf8Async(file,16384,value=>value.Length>0?value:null,token).ConfigureAwait(false);
     }
 }

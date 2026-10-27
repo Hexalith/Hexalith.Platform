@@ -20,7 +20,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         var admission = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(evidence.Payload));
         string[] roles = ["caller", "sdk", "sidecar", "uds", "grpc", "tls", "component", "native"];
         if (keyUse is null || current.Checkpoint.Frozen || e.ExpectedCustodyRevision != current.Head.Revision || e.CheckpointDigest != current.Head.Digest
-            || current.Checkpoint.NativeIntents.Count >= 10000 || current.Checkpoint.Deliveries.Count >= 10000 || !verifier.Qualified(current)
+            || current.Checkpoint.NativeIntents.Count >= 10000 || current.Checkpoint.Deliveries.Count >= 10000 || !verifier.Qualified(current,token)
             || !verifier.Verify(evidence, "independent-observer", current, CustodyJson.Hash(CustodyJson.Bytes(admission)), TimeSpan.FromSeconds(30))
             || admission.KeyUse != keyUse || admission.RequestDigest != e.RequestDigest || admission.QualifiedProfileDigest != profile.ProfileDigest
             || !roles.All(role => admission.Holders.Any(h => h.Role == role))
@@ -61,8 +61,8 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
                 var response = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, WrappedRegistration: registration.Registration);
                 // The deterministic locator is derived from the permanently retained intent before any send.
                 // Object/CAS acknowledgement loss can recover this exact registration, never re-encrypt.
-                _ = await store.PutIntentResultAsync(CustodyJson.Bytes(new WrappedResult(registration, response)), CustodyJson.IntentLocator(e.TenantId, intentId), token);
-                var original = await store.PutImmutableAsync(CustodyJson.Bytes(response), "original", token);
+                _ = await store.PutIntentCompletionAsync(CustodyJson.Bytes(new WrappedResult(registration,response)),CustodyJson.IntentLocator(e.TenantId,intentId),e.TenantId,"intent:"+intentId,token);
+                var original = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(response),"original",e.TenantId,"intent:"+intentId,token);
                 var durable = SemanticProvider.Clone(admitted); durable.Registrations.Add(input.OpaqueWrappedKeyReference, registration);
                 durable.Originals[e.OperationId] = durable.Originals[e.OperationId] with { Response = original };
                 durable.NativeIntents[intentId] = durable.NativeIntents[intentId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
@@ -90,7 +90,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
                 var durable = SemanticProvider.Clone(released);
                 var status = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest,
                     Delivery: durable.Deliveries[deliveryId] with { Phase = CustodyBindingIntentPhase.ResultDurable });
-                var result = await store.PutImmutableAsync(CustodyJson.Bytes(status), "journal", token);
+                var result = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(status),"journal",e.TenantId,"intent:"+intentId,token);
                 durable.NativeResults[intentId] = result;
                 durable.NativeIntents[intentId] = durable.NativeIntents[intentId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
                 durable.Deliveries[deliveryId] = status.Delivery!;
@@ -104,7 +104,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
     internal async Task RecoverWrapAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
         var current = await store.ReadAsync(tenant, token);
-        if (operation.Operation != "recover-wrap-result" || !verifier.Qualified(current)
+        if (operation.Operation != "recover-wrap-result" || !verifier.Qualified(current,token)
             || !verifier.Verify(permission, "private-operation", current, CustodyJson.Hash(CustodyJson.Bytes(operation)), TimeSpan.FromSeconds(30))
             || !current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var intent) || intent.OperationId != operation.OriginalOperationId
             || intent.Phase != CustodyBindingIntentPhase.SendCommitted
@@ -120,7 +120,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             throw new AuthorityUnavailableException("Original native result substitution.");
         var next = SemanticProvider.Clone(current);
         next.Registrations.Add(r.OpaqueWrappedKeyReference, result.Registration);
-        var response = await store.PutImmutableAsync(CustodyJson.Bytes(result.Response), "original", token);
+        var response = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(result.Response),"original",tenant,"intent:"+intent.IntentId,token);
         next.Originals[plan.OperationId] = next.Originals[plan.OperationId] with { Response = response };
         next.NativeResults[intent.IntentId] = resultObject;
         next.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
@@ -151,7 +151,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         next.Deliveries[id] = delivery with { Phase = CustodyBindingIntentPhase.Closed,
             IoComplete = true, BuffersComplete = true, HolderInventoryComplete = true };
         // Completion can reconcile an uncertain unwrap, but never repairs an unknown native allocation/send.
-        var retained = await store.PutImmutableAsync(CustodyJson.Bytes(evidence), "journal", token);
+        var retained = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(evidence),"journal",e.TenantId,"intent:"+intentId,token);
         next.NativeResults[intentId + ":completion"] = retained;
         if (next.NativeIntents.TryGetValue(intentId, out var intent)
             && (intent.Phase == CustodyBindingIntentPhase.ResultDurable || !next.NativeResults.ContainsKey(intentId + ":plan")))

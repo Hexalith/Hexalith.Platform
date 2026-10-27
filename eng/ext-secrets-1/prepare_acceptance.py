@@ -13,7 +13,7 @@ from cases import plan_digest
 
 
 def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence", register=None, coordination_context=None):
-    root, configuration, output = Path(root).resolve(), Path(configuration).resolve(), Path(output).resolve()
+    root, configuration, output = Path(root).resolve(), Path(configuration).absolute(), Path(output).resolve()
     if output.is_relative_to(root):
         raise ValueError("detached output must be outside candidate checkout")
     if output.exists():
@@ -21,7 +21,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     output.mkdir(parents=True)
     try:
         configuration_bytes = q.bounded_public_file(configuration, 1024 * 1024)
-        config = q.read_public_configuration(configuration)
+        config = q.parse_public_configuration(configuration_bytes)
     except (q.Unavailable, OSError, ValueError, TypeError) as error:
         inputs = error.inputs if isinstance(error,q.Unavailable) else ["PublicRuntimeConfiguration"]
         report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "qualificationEffects": 0,
@@ -144,6 +144,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
         packet["jointBinding"] = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
         packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
+        packet["launchInventory"] = q.read_json(coordinated["installedArtifacts"]["launchInventory"]["path"])
         packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
         (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
         packet_path.write_bytes(q.canonical(packet))

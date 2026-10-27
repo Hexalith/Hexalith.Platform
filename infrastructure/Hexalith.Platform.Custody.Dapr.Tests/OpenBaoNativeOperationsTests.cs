@@ -92,12 +92,37 @@ internal static class OpenBaoNativeOperationsTests
         public void Dispose() { _dapr.Dispose();_signer.Dispose();File.Delete(_channel); }
         private sealed class HeadTransport(IndependentAuthorityState state):HttpMessageHandler
         {
-            internal IndependentAuthorityState State=state;
+            internal IndependentAuthorityState State=state;private int _revision=1;
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
             {
-                if(!request.RequestUri!.AbsolutePath.EndsWith("/GetState",StringComparison.Ordinal)) throw new Exception("Read-only holder source attempted mutation.");
-                _=await request.Content!.ReadAsByteArrayAsync(token);
-                using var wire=new MemoryStream();using(var proto=new CodedOutputStream(wire,true)) { proto.WriteTag(1,WireFormat.WireType.LengthDelimited);proto.WriteBytes(ByteString.CopyFrom(CustodyJson.Bytes(State)));proto.WriteTag(2,WireFormat.WireType.LengthDelimited);proto.WriteString("1");proto.Flush(); }
+                byte[] incoming=await request.Content!.ReadAsByteArrayAsync(token);bool read=request.RequestUri!.AbsolutePath.EndsWith("/GetState",StringComparison.Ordinal);
+                if(!read)
+                {
+                    if(!request.RequestUri.AbsolutePath.EndsWith("/SaveState",StringComparison.Ordinal)) throw new Exception("Unexpected holder source operation.");
+                    string store="",key="",etag="";byte[]? value=null;int entries=0;
+                    using var input=new CodedInputStream(incoming,5,incoming.Length-5);uint tag;
+                    while((tag=input.ReadTag())!=0)
+                    {
+                        if(WireFormat.GetTagFieldNumber(tag)==1) store=input.ReadString();
+                        else if(WireFormat.GetTagFieldNumber(tag)==2)
+                        {
+                            entries++;using var item=new CodedInputStream(input.ReadBytes().ToByteArray());uint itemTag;
+                            while((itemTag=item.ReadTag())!=0)
+                            {
+                                int field=WireFormat.GetTagFieldNumber(itemTag);
+                                if(field==1) key=item.ReadString();else if(field==2)value=item.ReadBytes().ToByteArray();
+                                else if(field==3) { using var version=new CodedInputStream(item.ReadBytes().ToByteArray());if(version.ReadTag()!=10)throw new Exception("Exact holder etag required.");etag=version.ReadString();if(version.ReadTag()!=0)throw new Exception("Closed holder etag required."); }
+                                else item.SkipLastField();
+                            }
+                        }
+                        else input.SkipLastField();
+                    }
+                    var next=value is null?null:JsonSerializer.Deserialize<IndependentAuthorityState>(value,new JsonSerializerOptions(CustodyBindingContract.Json) { PropertyNameCaseInsensitive=true });
+                    if(entries!=1 || store!="fixture" || key!="head" || etag!=_revision.ToString() || next is null || next.Revision!=State.Revision+1
+                        || !CustodyJson.Bytes(State with { Revision=next.Revision }).AsSpan().SequenceEqual(CustodyJson.Bytes(next))) throw new Exception("Holder result ordering cannot change any original or permission.");
+                    State=next;_revision++;
+                }
+                using var wire=new MemoryStream();if(read) using(var proto=new CodedOutputStream(wire,true)) { proto.WriteTag(1,WireFormat.WireType.LengthDelimited);proto.WriteBytes(ByteString.CopyFrom(CustodyJson.Bytes(State)));proto.WriteTag(2,WireFormat.WireType.LengthDelimited);proto.WriteString(_revision.ToString());proto.Flush(); }
                 byte[] payload=wire.ToArray(),framed=new byte[payload.Length+5];
                 System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(framed.AsSpan(1,4),payload.Length);payload.CopyTo(framed,5);
                 var response=new HttpResponseMessage(HttpStatusCode.OK) { Version=HttpVersion.Version20,Content=new ByteArrayContent(framed) };response.Content.Headers.ContentType=new("application/grpc");response.TrailingHeaders.Add("grpc-status","0");return response;

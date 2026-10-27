@@ -7,6 +7,8 @@ public sealed class QualificationResolutionOriginalReader(IQualificationOriginal
     Func<JsonObject,CancellationToken,Task<JsonObject?>> independentlyResolve):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject original,CancellationToken token)
     {
         string? requestId=SecretsProof.Text(original,"requestId");if(requestId is null) return null;
@@ -15,7 +17,7 @@ public sealed class QualificationResolutionOriginalReader(IQualificationOriginal
         if(retained is null || actual is null || !JsonNode.DeepEquals(retained,actual) || native is null || native.OriginalRevision<1 || actual["outcome"]?.GetValue<string>() is not ("Denied" or "Resolved")) return null;
         string receipt=QualificationProtocolSchema.Digest(retained);var state=QualificationDeniedCaseState.Create(original,native.OriginalRevision,receipt);
         state["outcome"]=actual["outcome"]!.DeepClone();state["status"]=state["outcome"]!.DeepClone();
-        return new(requestId,receipt,"resolution:"+native.OriginalRevision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"resolution:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["independentResolution"]=actual.DeepClone() });
     }
 }

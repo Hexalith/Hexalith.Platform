@@ -8,6 +8,16 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 public sealed class QualificationLifecycleRootSourceTests
 {
     [Theory]
+    [InlineData("")][InlineData("0")][InlineData("current")][InlineData("latest")][InlineData("alias")][InlineData("+1")][InlineData("-1")][InlineData("01")][InlineData(" 1")][InlineData("18446744073709551616")]
+    public async Task UnpinnedNativeVersionNeverCallsDapr(string version)
+    {
+        using var dapr=Substitute.For<DaprClient>();var authority=Substitute.For<ICustodyOwnerStateAuthority>();
+        var registration=new CustodyKeyRegistration(new("tenant","interaction",PlatformKeyPurpose.InteractionRootDek,"alias","root-v1","lifecycle-v1","native","v1"),"wrap",1,"kek-v1","opaque","wrap-receipt");
+        var source=new DaprQualificationLifecycleRootSource(dapr,authority,new Dictionary<string,QualificationLifecycleRootReference>{{"wrap",new("component","roots/exact",version,"value")}});
+        (await source.ReadAsync(registration,new("lease","attempt","process","transport","opaque"),TestContext.Current.CancellationToken)).ShouldBeNull();
+        dapr.ReceivedCalls().ShouldBeEmpty();authority.ReceivedCalls().ShouldBeEmpty();
+    }
+    [Theory]
     [InlineData(false)][InlineData(true)]
     public async Task ExactVersionFieldAndCurrentAuthoritySurroundPrivateRootAndClearTransportDictionary(bool revokeAfterRead)
     {

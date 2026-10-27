@@ -32,6 +32,8 @@ class CoordinatedPacketTests(unittest.TestCase):
         # Isolated packet/inventory mechanics cannot supply the absent independent whole-image protocol.
         image_patch=patch('execution_profile.installed_image_blockers',return_value=[])
         image_patch.start();self.addCleanup(image_patch.stop)
+        launch_patch=patch('launch_inventory.blockers',return_value=[])
+        launch_patch.start();self.addCleanup(launch_patch.stop)
         self.temp = tempfile.TemporaryDirectory(prefix="fixture-shared-packet-")
         self.addCleanup(self.temp.cleanup)
         self.directory = Path(self.temp.name)
@@ -42,6 +44,8 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.profile["replicaCount"] = 3
         for name in host.REFERENCE_KEYS:
             self.profile[name] = "fixture-" + name
+        from test_launch_inventory import fixture_listeners,fixture_ui_artifacts
+        self.profile['listeners']=fixture_listeners()
         self.profile_path = self.directory / "host.json"
         self.profile_path.write_bytes(host.canonical(self.profile))
         self.joint = self.directory / "joint configuration.json"
@@ -80,6 +84,8 @@ class CoordinatedPacketTests(unittest.TestCase):
             if name == 'custodyConfiguration': path = self.fixture.path
             elif name == 'hostProfile': path = self.profile_path
             elif name == 'jointConfiguration': path = self.joint
+            elif name == 'launchInventory':
+                path=self.directory/'launchInventory.json';path.write_bytes(q.canonical({'protocol':'AcceptedCompleteImmutableLaunchGraphV1','resources':[{'resource':resource,'listener':value,'entryPoint':'executable','files':[{'path':name,'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest()} for name,body in fixture_ui_artifacts(self.profile['listeners']['agents-ui']['uiHost']).items()]} for resource,value in self.profile['listeners'].items()]}))
             elif name.endswith('Anchor'): path = Path(self.fixture.config['qualification'][name[:-6]]['publicAnchorFile'])
             else:
                 path = self.directory / (name + '.json')
@@ -99,6 +105,7 @@ class CoordinatedPacketTests(unittest.TestCase):
                    **{r+'AnchorSha256':artifacts[r+'Anchor']['sha256'] for r in ('executor','observer','enrollment')}}
         from test_execution_profile import fixture_profile
         profiles = {str(phase):fixture_profile(self.directory/('phase-'+str(phase)),phase,partitions()[phase]) for phase in range(4)}
+        binding['launchInventorySha256']=digest(q.read_json(artifacts['launchInventory']['path']))
         binding['phaseExecutionProfileSha256'] = {phase:digest(profile) for phase,profile in profiles.items()}
         for profile in profiles.values(): profile['bindingDigest'] = digest(binding)
         services = {}
@@ -162,6 +169,7 @@ class CoordinatedPacketTests(unittest.TestCase):
             packet = q.read_json(output / 'replacement-acceptance-packet.json')
             self.assertEqual(self.commands[record], packet['exactCommand'])
             self.assertIn('PLATFORM_JOINT_COHORT_CONFIGURATION=', packet['exactCommand'])
+            self.assertEqual(q.read_json(self.context['installedArtifacts']['launchInventory']['path']),packet['launchInventory'])
             self.assertFalse(packet['dependencyAvailable'])
             self.assertIsNone(packet['acceptedReplacementCommit'])
             self.assertEqual(self.fixture.target, packet['candidateCommit'])
@@ -171,6 +179,15 @@ class CoordinatedPacketTests(unittest.TestCase):
                 self.assertIn('365-day history; both Product gates remain Open.', preserved['proposedVerbatimSection'])
                 self.assertFalse(preserved['accepted'])
         self.assertEqual([], self.fixture.calls)
+
+    def test_launch_inventory_is_required_and_cannot_be_substituted_under_an_old_joint_binding(self):
+        path=Path(self.context['installedArtifacts']['launchInventory']['path']);path.write_bytes(q.canonical({'changed':'public launch bytes'}))
+        self.context['installedArtifacts']['launchInventory']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest();self.sign_context()
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertIn('ExactAcceptedCompleteLaunchInventoryBinding',missing)
+        del self.context['installedArtifacts']['launchInventory'];self.sign_context()
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertIn('installedArtifacts.launchInventory',missing);self.assertEqual([],self.fixture.calls)
 
     def test_signed_installation_cannot_be_reused_for_changed_command_date_or_artifact(self):
         self.context['exactCommands'] = dict(self.commands, **{'EXT-HOST-1': self.commands['EXT-HOST-1'] + ' changed'})
@@ -254,6 +271,39 @@ class CoordinatedPacketTests(unittest.TestCase):
         self.assertFalse((self.secret_output / 'runtime-reference.json').exists())
         self.assertFalse((self.secret_output / 'replacement-acceptance-packet.json').exists())
         self.assertEqual([], self.fixture.calls)
+
+    def test_closed_assertion_grammar_rejects_resigned_printf_and_weakened_prefixes(self):
+        for record,command in self.commands.items():
+            self.assertTrue(coordinated.valid_owner_command(command,record,self.fixture.target,str(self.joint)))
+            suffix=command[command.index('env '):]
+            mutations=[
+                'printf '+shlex.quote(self.fixture.target+' status --porcelain')+' && '+suffix,
+                command.replace('test "$(git','echo "$(git',1),
+                command.replace('" = "','" != "',1),
+                command.replace(' && test -z ',' || test -z ',1),
+                command.replace('git -C ../platform rev-parse','git -C ../other rev-parse',1),
+                command.replace('status --porcelain','status --porcelain --untracked-files=no'),
+                '# '+command,
+                'false && '+command,
+                command.replace(' && env ',' ; env '),
+            ]
+            for mutation in mutations:
+                self.assertFalse(coordinated.valid_owner_command(mutation,record,self.fixture.target,str(self.joint)),mutation)
+
+    def test_resigned_printf_prefix_is_rejected_by_actual_packet_admission(self):
+        missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+        self.assertEqual([],missing)
+        for record,original in self.commands.items():
+            suffix=original[original.index('env '):]
+            changed='printf '+shlex.quote(self.fixture.target+' status --porcelain')+' && '+suffix
+            before=self.fixture.register.read_text()
+            self.fixture.register.write_text(before.replace(original,changed))
+            self.context['exactCommands']=dict(self.commands,**{record:changed});self.sign_context()
+            missing,_,_=coordinated.admission(self.context_path,self.fixture.register,self.fixture.target,True)
+            self.assertIn(record+'.ClosedCompleteOwnerCommand',missing)
+            self.assertNotIn('IndependentCurrentInstallationProof',missing)
+            self.fixture.register.write_text(before)
+        self.context['exactCommands']=self.commands;self.sign_context()
 
 
 if __name__ == '__main__':

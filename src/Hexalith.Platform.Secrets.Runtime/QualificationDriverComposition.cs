@@ -9,14 +9,14 @@ public static class QualificationDriverComposition
     /// <summary>Builds the same executable path for installed source operations and isolated fixture verification.</summary>
     public static IReadOnlyDictionary<string,IQualificationOwnerCaseDriver> Create(IReadOnlyList<QualificationSourceWorkflow> workflows,
         IQualificationOriginalStore executorOriginals,IQualificationRecoveryController recovery,IQualificationObservedOriginalReader independentReader,
-        QualificationProofBinding observerTrust,IReadOnlyDictionary<string,IReadOnlyList<string>> missingReaders,TimeProvider? clock=null)
+        QualificationProofBinding observerTrust,IReadOnlyDictionary<string,IReadOnlyList<string>> missingReaders,TimeProvider? clock=null,QualificationMutationTrust? mutationTrust=null)
     {
         if(workflows.Select(value=>value.CaseId).Distinct(StringComparer.Ordinal).Count()!=workflows.Count || workflows.Any(value=>!QualificationProtocolSchema.CaseIds.Contains(value.CaseId,StringComparer.Ordinal)))
             throw new ArgumentException("Exact shipped case workflow identities required.",nameof(workflows));
-        IQualificationMeasuredCaseProjector projector=new QualificationMeasuredCaseProjector(observerTrust,recovery,missingReaders,clock);
+        IQualificationMeasuredCaseProjector projector=new QualificationMeasuredCaseProjector(observerTrust,recovery,missingReaders,clock,mutationTrust);
         var observation=new QualificationObservationOrchestrator(executorOriginals,recovery,independentReader);
         return workflows.ToDictionary(value=>value.CaseId,value=>(IQualificationOwnerCaseDriver)new QualificationBoundSourceCaseDriver(value.CaseId,
-            async (original,token)=>(await value.Preflight(original,token).ConfigureAwait(false)).Concat(await recovery.PreflightAsync(original,token).ConfigureAwait(false)).Distinct(StringComparer.Ordinal).ToArray(),
-            value.Execute,value.Lookup,observation,projector,executorOriginals),StringComparer.Ordinal);
+            async (original,token)=>(await value.Preflight(original,token).ConfigureAwait(false)).Concat(await recovery.PreflightAsync(original,token).ConfigureAwait(false)).Concat(await independentReader.PreflightStagesAsync(original,token).ConfigureAwait(false)).Distinct(StringComparer.Ordinal).ToArray(),
+            value.Execute,value.Lookup,observation,projector,executorOriginals,value.Resume),StringComparer.Ordinal);
     }
 }

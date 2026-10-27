@@ -7,6 +7,8 @@ namespace Hexalith.Platform.Protection;
 public sealed class QualificationReplayOriginalReader(IQualificationOriginalStore originals,IQualificationNativeCaseAuditReader audit,QualificationReplayCaseWorkflow replay):IQualificationObservedOriginalReader
 {
     /// <inheritdoc />
+    public Task<IReadOnlyList<string>> PreflightStagesAsync(JsonObject original,CancellationToken token)=>audit.PreflightStagesAsync(original,token);
+    /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
         string? requestId=SecretsProof.Text(request,"requestId");if(requestId is null) return null;
@@ -17,7 +19,7 @@ public sealed class QualificationReplayOriginalReader(IQualificationOriginalStor
         state["outcome"]="Recorded";state["status"]="Recorded";
         var original=actual["replayOriginal"]!;
         if(!QualificationReplayStateProjection.Apply(state,original,(JsonObject)request["enrolledScope"]!)) return null;
-        return new(requestId,receipt,"replay:"+native.OriginalRevision,new JsonObject { ["state"]=state,["receipts"]=native.Receipts.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
+        return new(requestId,receipt,"replay:"+native.OriginalRevision,new JsonObject { ["state"]=state,["nativeStageBoundary"]=native.Facts?["nativeStageBoundary"]?.DeepClone(),["receipts"]=native.Receipts.DeepClone(),["nativeMutationSources"]=native.Facts?["nativeMutationSources"]?.DeepClone(),["targetMutations"]=native.TargetMutations.DeepClone(),
             ["surfaceScans"]=native.SurfaceScans.DeepClone(),["copyCensus"]=native.CopyCensus.DeepClone(),["linearization"]=new JsonObject(),["replayStreamCensus"]=census.DeepClone(),["independentReplayOriginal"]=original.DeepClone() });
     }
 }

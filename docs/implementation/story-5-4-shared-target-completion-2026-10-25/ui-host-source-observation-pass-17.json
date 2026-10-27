@@ -1,0 +1,98 @@
+{
+  "observedAtUtc": "2026-10-27T02:43:21.188477+00:00",
+  "scope": "Read-only source role observations, no sibling build substitution, stability, installation or port claim. Six WebApplication hosts; Agents.UI is a Razor library with a deferred host Program.cs. Its actual accepted host/listener contract remains an external input.",
+  "entries": [
+    {
+      "resource": "eventstore",
+      "path": "/tmp/story54-round13-hjh0_6e_/dependency-snapshot/eventstore/src/Hexalith.EventStore/Program.cs",
+      "sha256": "062b3467a2877dbb23cc9324b50b63608da879c2652e11274cc24446a0d4570e",
+      "sourceEvidence": [
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "app.Run();"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "tenants",
+      "path": "/home/administrator/projects/hexalith/tenants/src/Hexalith.Tenants/Program.cs",
+      "sha256": "d834063db3cc44fc898c4c79d0d3695fc61c9189f859ee6cf897cc8d748b4fe4",
+      "sourceEvidence": [
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "await app.RunAsync().ConfigureAwait(false);"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "tenants-api",
+      "path": "/home/administrator/projects/hexalith/tenants/src/Hexalith.Tenants.Api/Program.cs",
+      "sha256": "5df20c29ec77a50d3b6726168621006e521dfe83245c53a995f87314d7efebf1",
+      "sourceEvidence": [
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "app.Run();"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "parties",
+      "path": "/home/administrator/projects/hexalith/parties/src/Hexalith.Parties/Program.cs",
+      "sha256": "3468af3de7efc5eeff80ccd8c26ab61279e43c4b3b9dd9897ea4a401d1926d4a",
+      "sourceEvidence": [
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "app.Run();"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "conversations",
+      "path": "/home/administrator/projects/hexalith/conversations/src/Hexalith.Conversations.Server/Program.cs",
+      "sha256": "c5155b67f8478d4d74ec731161157d7e6d980ec1cfcd226e21409a1c4fef9ed9",
+      "sourceEvidence": [
+        "// <copyright file=\"Program.cs\" company=\"ITANEO\">",
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "app.Run();"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "agents",
+      "path": "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Program.cs",
+      "sha256": "fd2f14667cf84532731caee93502d6ea121a3a66df109df80ec6ff843ca195b9",
+      "sourceEvidence": [
+        "WebApplicationBuilder builder = WebApplication.CreateBuilder(args);",
+        "app.Run();"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "agents-ui-library",
+      "path": "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.UI/Hexalith.Agents.UI.csproj",
+      "sha256": "ef00f50d982159aac4d1af0a69680bc82be2c37500d3ed0ef0474715f05adc53",
+      "sourceEvidence": [
+        "<Project Sdk=\"Microsoft.NET.Sdk.Razor\">"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    },
+    {
+      "resource": "agents-ui-host-deferred",
+      "path": "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.UI/Composition/AgentsFrontComposerRegistration.cs",
+      "sha256": "0f0aa0b3a283c28600b350f59da9d176ea006602fd1cf85425105381018c14ec",
+      "sourceEvidence": [
+        "/// (UX-DR41). Registering the actual <c>AddAuthorizationCore(... AddPolicy(...))</c> lives in the deferred host",
+        "/// <c>Program.cs</c>; the constant + entry/page wiring is in scope.",
+        "/// <c>AddAuthorizationCore(... AddPolicy(...))</c> lives in the deferred host <c>Program.cs</c>; the constant +",
+        "/// lives in the deferred host <c>Program.cs</c>; the constant + entry/page wiring is in scope. (A host may gate this",
+        "/// (AD-12). Registering the actual <c>AddAuthorizationCore(... AddPolicy(...))</c> lives in the deferred host",
+        "/// <c>Program.cs</c>; the constant + entry/page wiring is in scope. (A host may gate this with"
+      ],
+      "actualInstalledImageEvidence": null,
+      "compileSubstitution": false
+    }
+  ]
+}

@@ -18,16 +18,16 @@ internal sealed record AbandonedSuccessor(string Generation, string[] IntentIds,
 internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityStore store, IEpochOperations epochs, StatementVerifier verifier,
     System.Security.Cryptography.ECDsa? originalSigner = null)
 {
-    private void Authorize(CurrentState current, WorkerOperation operation, SignedStatement permission)
+    private void Authorize(CurrentState current, WorkerOperation operation, SignedStatement permission,CancellationToken token)
     {
-        if (!CustodyBindingContract.Text(operation.ProducerIncarnation) || !verifier.Qualified(current) || !verifier.Verify(permission, "private-operation", current,
+        if (!CustodyBindingContract.Text(operation.ProducerIncarnation) || !verifier.Qualified(current,token) || !verifier.Verify(permission, "private-operation", current,
             CustodyJson.Hash(CustodyJson.Bytes(operation)), TimeSpan.FromSeconds(30))
             || current.Checkpoint.Cycle?.OperationId != operation.OriginalOperationId)
             throw new AuthorityUnavailableException("Exact current worker permission or qualified installation missing.");
     }
     internal async Task SelectSuccessorAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
-        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission);
+        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission,token);
         var cycle = current.Checkpoint.Cycle!;
         if (operation.Operation != "select-successor" || cycle.Phase != CyclePhase.Reserved || cycle.SuccessorEpoch is not null
             || operation.SourceEpoch != cycle.SourceEpoch || operation.DestinationEpoch == cycle.SourceEpoch
@@ -41,7 +41,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     }
     internal async Task CopySurvivorAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
-        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission);
+        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission,token);
         var cycle = current.Checkpoint.Cycle!;
         if (current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var originalIntent))
         {
@@ -61,7 +61,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
         // Any exception/cancellation after this point leaves a permanent send-unknown. No automatic resend.
         byte[] ciphertext = await epochs.ReencryptOuterKeyAsync(cycle.SourceEpoch, cycle.SuccessorEpoch!, tenant, registration.EncryptedOuterKey, token);
         var result = new CopyResult(operation.TargetReference, cycle.SuccessorEpoch!, ciphertext);
-        var retained = await store.PutIntentResultAsync(CustodyJson.Bytes(result), CustodyJson.IntentLocator(tenant, intent.IntentId), token);
+        var retained = await store.PutIntentCompletionAsync(CustodyJson.Bytes(result),CustodyJson.IntentLocator(tenant,intent.IntentId),tenant,"intent:"+intent.IntentId,token);
         var durable = SemanticProvider.Clone(sent);
         durable.NativeResults.Add(intent.IntentId, retained);
         durable.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
@@ -70,7 +70,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     }
     internal async Task RetireAlternateAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
-        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission); var cycle = current.Checkpoint.Cycle!;
+        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission,token); var cycle = current.Checkpoint.Cycle!;
         if (current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var originalIntent))
         {
             if (originalIntent.RequestDigest != CustodyJson.Hash(CustodyJson.Bytes(operation))) throw new AuthorityUnavailableException("Native retirement original conflict.");
@@ -88,7 +88,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
         if (successor) next = next with { Cycle = cycle with { Phase = CyclePhase.RetiringSuccessor } };
         next.NativeIntents.Add(intent.IntentId, intent); var sent = await store.CommitAsync(current, next, token);
         await epochs.ScheduleSourceCutAsync(operation.SourceEpoch, tenant, token);
-        var retained = await store.PutIntentResultAsync(CustodyJson.Bytes(new ScheduleResult(intent.IntentId, "ScheduleAcknowledgedNotErased")), CustodyJson.IntentLocator(tenant, intent.IntentId), token);
+        var retained = await store.PutIntentCompletionAsync(CustodyJson.Bytes(new ScheduleResult(intent.IntentId,"ScheduleAcknowledgedNotErased")),CustodyJson.IntentLocator(tenant,intent.IntentId),tenant,"intent:"+intent.IntentId,token);
         var durable = SemanticProvider.Clone(sent); durable.NativeResults.Add(intent.IntentId, retained);
         durable.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
         await store.CommitAsync(sent, durable, token);
@@ -97,19 +97,20 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     {
         var current = await store.ReadAsync(tenant, token); var cycle = current.Checkpoint.Cycle;
         var abandoned = CustodyJson.Read<AbandonedSuccessor>(CustodyJson.Bytes(evidence.Payload));
-        if (!verifier.Qualified(current) || !verifier.Verify(evidence, "independent-observer", current,
+        if (!verifier.Qualified(current,token) || !verifier.Verify(evidence, "independent-observer", current,
                 CustodyJson.Hash(CustodyJson.Bytes(abandoned)), TimeSpan.FromSeconds(30))
             || cycle is null || cycle.Phase != CyclePhase.RetiringSuccessor || cycle.SuccessorEpoch != abandoned.Generation
             || !new[] { abandoned.FinalDeletionEvidenceDigest, abandoned.ProducerTerminationDigest, abandoned.BufferClosureDigest }.All(CustodyBindingContract.Digest))
             throw new AuthorityUnavailableException("Independent permanent retirement and termination required before abandoning a successor.");
         var intents = current.Checkpoint.NativeIntents.Values.Where(i => i.OperationId == cycle.OperationId
             && (i.DestinationGeneration == abandoned.Generation || i.SourceGeneration == abandoned.Generation && i.DestinationGeneration == "retired")).ToArray();
-        if (intents.Count(i => i.SourceGeneration == abandoned.Generation && i.DestinationGeneration == "retired") != 1)
+        var retirements=intents.Where(i=>i.SourceGeneration==abandoned.Generation && i.DestinationGeneration=="retired" && i.Phase!=CustodyBindingIntentPhase.Closed).ToArray();
+        if (retirements.Length != 1)
             throw new AuthorityUnavailableException("Original successor retirement intent missing.");
         if (!abandoned.IntentIds.Order(StringComparer.Ordinal).SequenceEqual(intents.Select(i => i.IntentId).Order(StringComparer.Ordinal)))
             throw new AuthorityUnavailableException("Incomplete tainted producer inventory.");
         var next = SemanticProvider.Clone(current);
-        var original = await store.PutImmutableAsync(CustodyJson.Bytes(evidence), "journal", token);
+        var original = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(evidence),"journal",tenant,"intent:"+retirements[0].IntentId,token);
         foreach (var intent in intents)
         {
             if (intent.DestinationGeneration == abandoned.Generation)
@@ -143,7 +144,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     {
         var current = await store.ReadAsync(tenant, token); var cycle = current.Checkpoint.Cycle;
         var preparation = CustodyJson.Read<PreparationEvidence>(CustodyJson.Bytes(evidence.Payload)); var p = preparation.Claim;
-        if (!verifier.Qualified(current) || !verifier.Verify(evidence, "independent-observer", current,
+        if (!verifier.Qualified(current,token) || !verifier.Verify(evidence, "independent-observer", current,
                 CustodyJson.Hash(CustodyJson.Bytes(preparation)), TimeSpan.FromSeconds(30))
             || cycle is null || cycle.Phase != CyclePhase.Reserved || cycle.SuccessorEpoch is null
             || p.SourceEpoch != cycle.SourceEpoch || p.SuccessorEpoch != cycle.SuccessorEpoch
@@ -170,7 +171,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     }
     internal async Task ScheduleCutAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
-        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission);
+        var current = await store.ReadAsync(tenant, token); Authorize(current, operation, permission,token);
         var cycle = current.Checkpoint.Cycle!;
         if (current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var originalIntent))
         {
@@ -187,7 +188,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
         next.NativeIntents.Add(intent.IntentId, intent);
         var sent = await store.CommitAsync(current, next, token);
         await epochs.ScheduleSourceCutAsync(cycle.SourceEpoch, tenant, token);
-        var retained = await store.PutIntentResultAsync(CustodyJson.Bytes(new ScheduleResult(intent.IntentId, "ScheduleAcknowledgedNotErased")), CustodyJson.IntentLocator(tenant, intent.IntentId), token);
+        var retained = await store.PutIntentCompletionAsync(CustodyJson.Bytes(new ScheduleResult(intent.IntentId,"ScheduleAcknowledgedNotErased")),CustodyJson.IntentLocator(tenant,intent.IntentId),tenant,"intent:"+intent.IntentId,token);
         var durable = SemanticProvider.Clone(sent) with { Cycle = next.Cycle! with { Phase = CyclePhase.AwaitingFinalEvidence } };
         durable.NativeResults.Add(intent.IntentId, retained);
         durable.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
@@ -197,7 +198,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     {
         var current = await store.ReadAsync(tenant, token); var recovered = CustodyJson.Read<RecoveredNativeResult>(CustodyJson.Bytes(evidence.Payload));
         var cycle = current.Checkpoint.Cycle;
-        if (!verifier.Qualified(current) || !verifier.Verify(evidence, "independent-observer", current,
+        if (!verifier.Qualified(current,token) || !verifier.Verify(evidence, "independent-observer", current,
                 CustodyJson.Hash(CustodyJson.Bytes(recovered)), TimeSpan.FromSeconds(30))
             || cycle is null || !current.Checkpoint.NativeIntents.TryGetValue(recovered.IntentId, out var intent)
             || intent.OperationId != cycle.OperationId || intent.Phase != CustodyBindingIntentPhase.SendCommitted
@@ -231,7 +232,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
         var retained = await store.FindIntentResultAsync(locator, token);
         if (retained is not null && !(await store.ReadImmutableAsync(retained, token)).AsSpan().SequenceEqual(recovered.ExactResult))
             throw new AuthorityUnavailableException("Cannot replace original native result.");
-        retained ??= await store.PutIntentResultAsync(recovered.ExactResult, locator, token);
+        retained ??= await store.PutIntentCompletionAsync(recovered.ExactResult,locator,tenant,"intent:"+intent.IntentId,token);
         next.NativeResults[intent.IntentId] = retained;
         next.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
         await store.CommitAsync(current, next, token);
@@ -240,7 +241,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     {
         var current = await store.ReadAsync(tenant, token);
         var preparation = CustodyJson.Read<OriginalPreparationEvidence>(CustodyJson.Bytes(evidence.Payload)); var p = preparation.FinalObservation;
-        if (originalSigner is null || !verifier.Qualified(current) || p.OriginalSha256 != new string('0', 64)
+        if (originalSigner is null || !verifier.Qualified(current,token) || p.OriginalSha256 != new string('0', 64)
             || !verifier.Verify(evidence, "independent-observer", current, CustodyJson.Hash(CustodyJson.Bytes(preparation)), TimeSpan.FromSeconds(30)))
             throw new AuthorityUnavailableException("Independent final observation or component original signer missing.");
         var cycle = await RequireFinalFactsAsync(current, p, preparation.Inventory, token);
@@ -264,7 +265,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
             System.Security.Cryptography.DSASignatureFormat.Rfc3279DerSequence);
         byte[] bytes = CustodyJson.Bytes(unsigned with { Signature = signature });
         ValidateOriginal(tenant, cycle, p, bytes);
-        var retained = await store.PutIntentResultAsync(bytes, locator, token);
+        var retained = await store.PutIntentCompletionAsync(bytes,locator,tenant,"original:"+cycle.OperationId,token);
         return await store.ReadImmutableAsync(retained, token); // Retry/lost acknowledgement reads this signature; it never replaces it.
     }
     private async Task<Cycle> RequireFinalFactsAsync(CurrentState current, FinalClaim p, ClosureInventory inventory, CancellationToken token)
@@ -307,7 +308,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
     {
         var current = await store.ReadAsync(tenant, token);
         var publication = CustodyJson.Read<PublicationEvidence>(CustodyJson.Bytes(evidence.Payload)); var p = publication.Claim;
-        if (!verifier.Qualified(current) || !verifier.Verify(evidence, "independent-observer", current,
+        if (!verifier.Qualified(current,token) || !verifier.Verify(evidence, "independent-observer", current,
                 CustodyJson.Hash(CustodyJson.Bytes(publication)), TimeSpan.FromSeconds(30)) || p.OriginalSha256 != CustodyJson.Hash(exactOriginal))
             throw new AuthorityUnavailableException("Independent exact-original publication evidence missing.");
         var cycle = await RequireFinalFactsAsync(current, p, publication.Inventory, token);
@@ -316,7 +317,7 @@ internal sealed class RecoverableLifecycle(ComponentProfile profile, IAuthorityS
         if (prepared is null || !(await store.ReadImmutableAsync(prepared, token)).AsSpan().SequenceEqual(exactOriginal))
             throw new AuthorityUnavailableException("Publication must select the exact component-prepared immutable original.");
         // The independent statement signs the SHA256 of the exact original bytes including its original signature.
-        var retained = await store.PutImmutableAsync(exactOriginal, "original", token);
+        var retained = await store.PutCompletionImmutableAsync(exactOriginal,"original",tenant,"original:"+cycle.OperationId,token);
         var next = SemanticProvider.Clone(current) with { Cycle = cycle with { Phase = CyclePhase.Published } };
         next.Originals[cycle.OperationId] = next.Originals[cycle.OperationId] with { Response = retained };
         await store.CommitAsync(current, next, token); // Merge into current state, never restore the B1 checkpoint.
