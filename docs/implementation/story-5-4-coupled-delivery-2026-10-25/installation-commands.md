@@ -1,5 +1,10 @@
 # Non-AWS MVP installation command plan
 
+## MVP work-scope amendment — 2026-10-28
+
+The owner approved the [pragmatic MVP scope](../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md). **Advanced Luna/authority/WORM provisioning and full lifecycle installation are deferred from MVP work.** The conditional commands below remain the historical full-delivery runbook; they are not an MVP execution checklist. Existing operational service/profile/access maintenance uses its own accepted procedure and preservation prerequisites; do not replay a completed installer. No command in this runbook is executed by the amendment. Full dependency availability, independent decision authority, current Human/custody, FR-34 and qualification gates remain enforced; the amendment introduces no reduced live command. See [current owner scope](owner-decisions.json).
+
+
 The owner has excluded AWS from MVP. The prior cloud resource commands and AWS-reference component packaging have been removed from this active runbook; original bytes are retained only in the [superseded snapshot index](installation-evidence/superseded-aws-proposal/snapshot-index.json).
 
 This is a conditional runbook, not a script to execute as a whole. This correction executes **no cluster/provider/build/installation/qualification command**. Preserve host 192.168.1.30, timing, all originals/journals, OQ-5.4-1 and dependency availability. Variables require exact D1–D9 returns; private values stay with their custodians.

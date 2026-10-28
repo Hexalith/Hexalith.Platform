@@ -1,5 +1,14 @@
 # Coupled EXT-SECRETS-1 / EXT-HOST-1 MVP installation decision
 
+## Current approved MVP scope — later owner instruction, 2026-10-28
+
+The owner said **apply recommended** after the pragmatic custody assessment. Apply [DEC-5.4-MVP-CUSTODY-2026-10-28](../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md): prioritize existing operational OpenBao/inventory/HMAC and ordinary identity/authorization/revocation/replay/durable audit work; **defer the Luna/independent-authority/immutable-archive provisioning request from MVP work**. No custom custody platform or replacement cloud is selected. This supersedes the immediate procurement/installation next action in the earlier adoption and D2 request below; those records and their evidence remain historical.
+
+This is a bounded planning/development milestone, not live availability. Current Human/approver evidence still requires custody; history, protected content, export and destruction remain blocked where their complete dependencies are unavailable. Full accepted contracts/targets/dates/commands, FR-34, G1–G7, OQ-5.4-1 order and original attempt/recovery identities remain intact. No runtime gate is bypassed and parent Story 5.4 remains in progress. Ordinary software key deletion makes no backup-resistant erasure claim; OpenBao ObservedRevival, AWS exclusion, Branch B, accepted timing and 365-fixed-day history/exclusive expiry remain unchanged.
+
+[Current owner scope](owner-decisions.json) and [applied decision evidence](installation-evidence/mvp-scope-amendment-2026-10-28.json) govern current work. Reuse retained passing evidence; obtain current accepted profiles/credentials and required operational backup/restore inputs through existing owner procedures before future live work. No installer, maintenance operation, qualification or purchase ran for this amendment.
+
+
 Updated 2026-10-25 following the owner's correction: **“AWS is not MVP.”** AWS is excluded from the active MVP plan. The previous AWS recommendation, resource list, account/region work, provisioning commands and schedule are superseded. Their exact prior bytes are retained only as historical evidence in [snapshot-index.json](installation-evidence/superseded-aws-proposal/snapshot-index.json).
 
 Keep application host **192.168.1.30**, Parties **Branch B**, envelope **L/S/O/H/R = 300/30/600/86400/604800 seconds**, all original journals and OQ-5.4-1 unchanged. The accepted Platform pair remains `Committed` at `abbec4093715c1db854433119b32d4e16df20d08`, with missed date `2026-10-08`. The October 25 update authorized no deployment, trust enrollment, qualification, attempt reservation or availability change; the later owner instruction is recorded below.

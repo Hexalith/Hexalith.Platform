@@ -1,5 +1,10 @@
 # D2 resource resolution and provisioning request — 2026-10-28
 
+## Deferred from MVP work by later owner approval — 2026-10-28
+
+The owner approved the [pragmatic scope amendment](../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md). The provisioning/evaluation next action below is **deferred**, not the current MVP instruction. Retain this request and its conditional vendor assessment as evidence; no appliance, authority cluster or archive is selected or procured. Current work reuses installed operational services and keeps ordinary security controls. All dependent Human/history/content/export/erasure and full qualification gates remain enforced. A later explicit scope/resource decision is required to reopen this advanced provisioning path; see [owner-decisions.json](owner-decisions.json).
+
+
 No qualifying lifecycle key-erasure backend, independent current authority or immutable archive is identified in Platform's referenced configuration and installation evidence. **D2 is unresolved pending actual resources and access.** The completed work is a resource census and one supported-option assessment, not an installation. [Machine-readable findings and source hashes](installation-evidence/d2-resource-resolution-2026-10-28.json) bind this result; [owner-decisions.json](owner-decisions.json) records the delivery progress.
 
 ## What is available for reuse
