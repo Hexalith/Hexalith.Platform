@@ -2,6 +2,9 @@
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import base64
+import hashlib
+import json
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -14,13 +17,16 @@ NOW = datetime(2030, 1, 2, 1, 2, 3, 456780, timezone.utc)
 
 
 class Clock(datetime):
+    current = NOW
+
     @classmethod
     def now(cls, tz=None):
-        return NOW
+        return cls.current
 
 
 class MaintenanceTests(unittest.TestCase):
     def setUp(self):
+        Clock.current = NOW
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
@@ -48,9 +54,9 @@ class MaintenanceTests(unittest.TestCase):
                 opaque = tenant + '-' + purpose
                 mapping = {'notBefore': self.before, 'verifyUntil': (NOW + timedelta(days=5)).isoformat(), 'secretVersion': '2'}
                 self.successors.append({'original': {'tenantId': tenant, 'purpose': purpose, 'secretReference': relative},
-                                        'opaqueVersion': opaque, 'mapping': mapping})
+                                        'opaqueVersion': opaque, 'mapping': mapping, 'phase': 'MetadataVerified', 'secretVersion': '2'})
                 self.metadata[relative] = {'current_version': 2, 'versions': {'1': {'destroyed': False}, '2': {'destroyed': False}},
-                                           'custom_metadata': {'original-and-successor': opaque}}
+                                           'custom_metadata': {'ext-secrets-1.versionMappings': json.dumps({opaque: mapping})}}
                 key_statuses.append({'tenantId': tenant, 'purpose': purpose, 'version': opaque, 'profileVersion': self.profile['version'],
                                      'notBefore': self.before, 'validUntil': self.old_deadline, 'revoked': False})
         self.state = {'instanceId': 'original-instance', 'generation': 10, 'revision': 'original-instance:10',
@@ -69,6 +75,7 @@ class MaintenanceTests(unittest.TestCase):
             originals.append({'operationId': receipt['operationId'], 'source': str(source), 'receiptRetained': True})
         self.original_state = deepcopy(self.state)
         durable_write(self.baseline / 'authority-state.before.json', self.state)
+        durable_write(self.binding / 'owner-administered-state.json', self.state)
         durable_write(self.baseline / 'original-owner-receipts.json', originals)
         durable_write(self.baseline / 'key-metadata.before.json', self.metadata)
         durable_write(self.binding / 'successor-key-plan.json', self.successors)
@@ -99,23 +106,25 @@ class MaintenanceTests(unittest.TestCase):
                         'hmacCredentialReference': credential_originals['data']['credentialReference'],
                         'timing': {'L': 300, 'S': 30, 'O': 600, 'H': 86400, 'R': 604800}}}
         durable_write(self.runtime, self.public)
+        durable_write(self.binding / 'runtime-reference.json', self.public)
         self.objects = {}
         custody_runtime = subject.APP + '-runtime-' + 'a' * 12
         for kind, name in [('ConfigMap', 'ext-secrets-1-inventory-runtime'), ('ConfigMap', custody_runtime), ('Deployment', 'inventory'), ('Deployment', subject.APP)]:
             obj = {'kind': kind, 'apiVersion': 'v1', 'metadata': {'uid': 'uid-' + name, 'resourceVersion': '30', 'name': name, 'namespace': subject.NS}}
             if kind == 'ConfigMap':
-                import json
                 obj['data'] = {'runtime-reference.json': json.dumps(self.public)}
             else:
                 obj['spec'] = {'template': {'metadata': {'annotations': {}}, 'spec': {'volumes': [
                     {'name': 'runtime', 'configMap': {'name': 'ext-secrets-1-inventory-runtime' if name == 'inventory' else custody_runtime}}]}}}
             self.objects[kind + '/' + subject.NS + '/' + name] = obj
         durable_write(self.baseline / 'preserved-kubernetes-before.json', self.snapshot())
+        durable_write(self.baseline / 'preserved-openbao-before.json', {'existing-policy-hashes': 'preserved'})
         self.instance = subject.Maintenance.__new__(subject.Maintenance)
         self.instance.evidence, self.instance.baseline = self.evidence, self.baseline
         self.instance.tokens, self.instance.private_values = {}, []
         self.instance.openbao_snapshot = Mock(return_value={'existing-policy-hashes': 'preserved'})
         self.renewals, self.posts, self.replaces, self.lose_renewal, self.lose_post = [], [], [], None, False
+        self.capability_overrides, self.post_renewal_changes = {}, {}
         for target, value in [('BINDING', self.binding), ('RUNTIME', self.runtime), ('REGISTER', register), ('datetime', Clock),
                               ('application_request', self.application_request), ('administration_request', self.administration_request),
                               ('kjson', self.kjson), ('kube', self.kube), ('snapshot', self.snapshot),
@@ -130,8 +139,12 @@ class MaintenanceTests(unittest.TestCase):
         return bytearray(('synthetic-private-token-' + role).encode())
 
     def snapshot(self):
-        return {key: {'uid': value['metadata']['uid'], 'specSha256': subject.sha(subject.canonical(subject.public_object(value)))}
-                for key, value in self.objects.items()}
+        result = {}
+        for key, obj in self.objects.items():
+            material = {name: value for name, value in obj.items() if name not in ('metadata', 'status', 'kind', 'apiVersion')}
+            material['metadata'] = {name: obj['metadata'][name] for name in ('labels', 'annotations') if name in obj['metadata']}
+            result[key] = {'uid': obj['metadata']['uid'], 'specSha256': subject.sha(subject.canonical(material))}
+        return result
 
     def kjson(self, verb, kind, name, *args):
         self.assertEqual(verb, 'get')
@@ -160,15 +173,17 @@ class MaintenanceTests(unittest.TestCase):
         if args[:2] == ('token', 'lookup'):
             value = {'data': deepcopy(self.leases[role])}
         elif args[:2] == ('token', 'capabilities'):
-            value = ['deny'] if '*' in args[-1] else ['read']
+            value = self.capability_overrides.get((role, args[-1]), ['deny'] if '*' in args[-1] else ['read'])
         elif args[:2] == ('token', 'renew'):
             journal = subject.read(self.evidence / ('renewal-' + role + '.json'))
             self.assertEqual(journal['phase'], 'Started')
             increment = int(args[-1].split('=')[1][:-1])
             self.assertLessEqual(increment, 86400)
             self.renewals.append(role)
-            self.leases[role]['expire_time'] = (NOW + timedelta(seconds=increment)).isoformat()
+            cap = subject.instant(self.leases[role]['issue_time']) + timedelta(seconds=self.leases[role]['explicit_max_ttl'])
+            self.leases[role]['expire_time'] = min(Clock.current + timedelta(seconds=increment), cap).isoformat()
             self.leases[role]['ttl'] = increment
+            self.leases[role].update(self.post_renewal_changes.get(role, {}))
             if self.lose_renewal == role:
                 raise RuntimeError('lost-renewal-response')
             value = {'auth': {'client_token': bytes(token).decode()}}
@@ -181,25 +196,36 @@ class MaintenanceTests(unittest.TestCase):
     def administration_request(self, instance, method, path, operation=None):
         if method == 'GET':
             return 200, deepcopy(self.state)
-        journal = subject.read(self.evidence / ('owner-operation-' + str(len(self.posts)) + '.json')) if not self.posts else None
         self.posts.append(deepcopy(operation))
         existing = next((item for item in self.state['audit'] if item.get('operationId') == operation['operationId']), None)
         if existing:
             return 200, existing
         self.assertEqual(operation['expectedRevision'], self.state['revision'])
         plan = subject.read(self.evidence / 'maintenance-plan.json')
-        index = len(self.state['audit']) - 10
+        index = len(self.state['audit']) - len(plan['beforeState']['audit'])
         self.assertEqual(subject.read(self.evidence / ('owner-operation-' + str(index) + '.json'))['operation'], operation)
         self.assertEqual(operation, plan['operations'][index])
-        self.state = subject.expected_records(plan, index + 1)
-        audit = deepcopy(self.original_state['audit'])
-        # Reconstruct prior receipts from committed journals.
-        for previous in range(index):
-            audit.append(subject.read(self.evidence / ('owner-operation-' + str(previous) + '.json'))['receipt'])
+        # Model AuthorityRepository.Apply independently of the maintenance helper.
+        audit = deepcopy(self.state['audit'])
+        if operation['kind'] == 'PublishProfile':
+            self.state['profile'] = deepcopy(operation['profile'])
+        elif operation['kind'] == 'SetCaller':
+            caller = operation['caller']
+            self.state['callers'] = [item for item in self.state['callers'] if item['callerId'] != caller['callerId']] + [deepcopy(caller)]
+        elif operation['kind'] == 'SetInventoryHost':
+            host = operation['host']
+            self.state['hosts'] = [item for item in self.state['hosts'] if item['inventoryAuthorityReference'] != host['inventoryAuthorityReference']] + [deepcopy(host)]
+        elif operation['kind'] == 'SetKeyStatus':
+            status = operation['keyStatus']
+            self.state['keyStatuses'] = [item for item in self.state['keyStatuses']
+                if item['tenantId'] != status['tenantId'] or item['purpose'] != status['purpose'] or item['version'] != status['version']] + [deepcopy(status)]
+        else:
+            raise AssertionError('Unexpected owner operation: ' + operation['kind'])
+        generation = self.state['generation'] + 1
         receipt = {'operationId': operation['operationId'], 'administratorId': subject.ADMIN_CLIENT, 'kind': operation['kind'],
                    'payloadSha256': 'A' * 64, 'outcome': 'Applied', 'previousRevision': operation['expectedRevision'],
-                   'revision': 'original-instance:' + str(11 + index), 'recordedAt': NOW.isoformat()}
-        self.state.update(audit=audit + [receipt], generation=11 + index, revision=receipt['revision'])
+                   'revision': 'original-instance:' + str(generation), 'recordedAt': Clock.current.isoformat()}
+        self.state.update(audit=audit + [receipt], generation=generation, revision=receipt['revision'])
         if self.lose_post:
             self.lose_post = False
             raise RuntimeError('lost-owner-response')
@@ -222,8 +248,9 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(subject.null_paths(subject.read(self.runtime)), subject.null_paths(self.public))
         self.assertFalse(subject.read(self.evidence / 'completion.json')['dependencyAvailable'])
         self.assertTrue(subject.read(self.evidence / 'credential-exposure-check.json')['passed'])
-        for path in self.evidence.iterdir():
-            self.assertNotIn(b'synthetic-private-token', path.read_bytes())
+        for path in self.evidence.rglob('*'):
+            if path.is_file():
+                self.assertNotIn(b'synthetic-private-token', path.read_bytes())
 
     def test_owner_lost_response_reconciles_exact_operation_and_retains_all_original_outcomes(self):
         plan = subject.inspect(self.instance)
@@ -236,6 +263,35 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(self.posts[1], original)
         self.assertEqual(len(self.state['audit']), 19)
         self.assertEqual(self.state['audit'][:10], self.original_state['audit'])
+
+    def test_prefix_recovery_matches_repository_reordering_and_exact_committed_receipts(self):
+        plan = subject.inspect(self.instance)
+        plan_bytes = (self.evidence / 'maintenance-plan.json').read_bytes()
+        # The service has committed profile + first host; the second response was lost.
+        for index, operation in enumerate(plan['operations'][:2]):
+            path = self.evidence / ('owner-operation-' + str(index) + '.json')
+            journal = {'phase': 'Started', 'operation': operation}
+            durable_write(path, journal)
+            _, receipt = self.administration_request(self.instance, 'POST', '/admin/operations', operation)
+            if index == 0:
+                journal.update(phase='Committed', receipt=receipt)
+            else:
+                journal['phase'] = 'OutcomeUnknown'
+            durable_write(path, journal)
+        committed_prefix = deepcopy(self.state['audit'])
+        first_journal_bytes = (self.evidence / 'owner-operation-0.json').read_bytes()
+        self.assertEqual(self.state['revision'], 'original-instance:12')
+        self.assertEqual([host['inventoryAuthorityReference'] for host in self.state['hosts']], [subject.APP, subject.INVENTORY])
+        self.assertEqual(subject.validate_progress(self.instance, plan, self.state), 2)
+        subject.maintain_owner_records(self.instance, plan)
+        self.assertEqual(self.posts[2], plan['operations'][1])
+        self.assertEqual(self.state['audit'][:12], committed_prefix)
+        self.assertEqual(subject.read(self.evidence / 'owner-operation-1.json')['receipt'], committed_prefix[-1])
+        self.assertEqual((self.evidence / 'owner-operation-0.json').read_bytes(), first_journal_bytes)
+        self.assertEqual((self.evidence / 'maintenance-plan.json').read_bytes(), plan_bytes)
+        post_count = len(self.posts)
+        subject.maintain_owner_records(self.instance, plan)
+        self.assertEqual(len(self.posts), post_count)
 
     def test_unknown_renewal_is_observation_only_even_when_current_expiry_covers_plan(self):
         plan = subject.inspect(self.instance)
@@ -294,6 +350,9 @@ class MaintenanceTests(unittest.TestCase):
     def test_technical_deadline_caps_all_owner_records_without_extending_key_metadata(self):
         self.successors[0]['mapping']['verifyUntil'] = (NOW + timedelta(hours=4)).isoformat()
         durable_write(self.binding / 'successor-key-plan.json', self.successors)
+        item = self.successors[0]
+        self.metadata[item['original']['secretReference']]['custom_metadata']['ext-secrets-1.versionMappings'] = json.dumps({item['opaqueVersion']: item['mapping']})
+        durable_write(self.baseline / 'key-metadata.before.json', self.metadata)
         plan = subject.inspect(self.instance)
         self.assertEqual(subject.instant(plan['deadline']), NOW + timedelta(hours=4))
         for operation in plan['operations']:
@@ -303,10 +362,24 @@ class MaintenanceTests(unittest.TestCase):
 
     def test_dependent_runtime_copy_drift_denies_before_any_mutation(self):
         self.objects['ConfigMap/' + subject.NS + '/ext-secrets-1-inventory-runtime']['data']['runtime-reference.json'] = '{}'
-        with self.assertRaisesRegex(RuntimeError, 'runtime-copy-not-coherent'):
+        with self.assertRaisesRegex(RuntimeError, 'kubernetes-intent-drift|runtime-copy-not-coherent'):
             subject.inspect(self.instance)
         self.assertEqual(self.replaces, [])
         self.assertEqual(self.posts, [])
+
+    def test_runtime_drift_after_inspect_blocks_before_renewal_or_owner_effects(self):
+        subject.inspect(self.instance)
+        self.objects['ConfigMap/' + subject.NS + '/ext-secrets-1-inventory-runtime']['data']['runtime-reference.json'] = '{}'
+        with self.assertRaisesRegex(RuntimeError, 'resource-version-or-public-intent-changed'):
+            subject.maintain(self.instance)
+        self.assertEqual(self.renewals, [])
+        self.assertEqual(self.posts, [])
+
+    def test_foreign_native_runtime_target_is_never_read_or_updated(self):
+        with patch.object(subject, 'kjson') as native:
+            with self.assertRaisesRegex(RuntimeError, 'outside-exact-existing-isolated-scope'):
+                subject.update_public_object(self.instance, {'reference': 'Deployment/production/preserved'})
+            native.assert_not_called()
 
     def test_lost_public_update_response_reconciles_exact_object_without_second_replace(self):
         plan = subject.inspect(self.instance)
@@ -356,6 +429,223 @@ class MaintenanceTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'all-nine-isolated-health-checks-required'):
                 subject.maintain(self.instance)
         self.assertFalse((self.evidence / 'completion.json').exists())
+
+    def test_mutated_cached_plan_cannot_expand_deadline_only_authority(self):
+        subject.inspect(self.instance)
+        path = self.evidence / 'maintenance-plan.json'
+        original = subject.read(path)
+        changes = [lambda plan: plan['operations'][0]['profile'].update(issuer='https://foreign'),
+            lambda plan: plan['operations'][0].update(operationId='foreign-id'),
+            lambda plan: plan['operations'][1].update(expectedRevision='original-instance:999'),
+            lambda plan: plan['operations'][0]['profile'].update(version='foreign-version'),
+            lambda plan: plan['publicRuntime']['runtime']['timing'].update(L=999),
+            lambda plan: plan['objects'][0].update(reference='ConfigMap/production/foreign'),
+            lambda plan: plan['objects'][2]['intended']['spec']['template']['spec'].update(hostNetwork=True),
+            lambda plan: plan.update(deadline=(NOW + timedelta(hours=25)).isoformat()),
+            lambda plan: plan.update(preparedAt=(NOW + timedelta(seconds=1)).isoformat()),
+            lambda plan: plan.update(runId='b' * 32),
+            lambda plan: plan.update(dependencyAvailable=True),
+            lambda plan: plan['credentials']['data']['identity'].update(accessor='foreign')]
+        for change in changes:
+            altered = deepcopy(original)
+            change(altered)
+            durable_write(path, altered)
+            retained = path.read_bytes()
+            with self.subTest(change=change), self.assertRaises((RuntimeError, ValueError)):
+                subject.maintain(self.instance)
+            self.assertEqual(path.read_bytes(), retained)
+            self.assertEqual((self.renewals, self.posts, self.replaces), ([], [], []))
+        durable_write(path, original)
+
+    def test_changed_successor_window_invalidates_cached_plan_before_effects(self):
+        subject.inspect(self.instance)
+        self.successors[0]['mapping']['verifyUntil'] = (NOW + timedelta(hours=4)).isoformat()
+        durable_write(self.binding / 'successor-key-plan.json', self.successors)
+        with self.assertRaisesRegex(RuntimeError, 'technical-window-or-mapping-changed|plan-intent-mismatch'):
+            subject.maintain(self.instance)
+        self.assertEqual((self.renewals, self.posts, self.replaces), ([], [], []))
+
+    def test_fresh_inspect_rejects_runtime_constant_policy_and_controller_drift(self):
+        original_objects = deepcopy(self.objects)
+        public = subject.read(self.runtime)
+        altered = deepcopy(public)
+        altered['runtime']['timing']['L'] = 301
+        durable_write(self.runtime, altered)
+        with self.assertRaisesRegex(RuntimeError, 'runtime-drift'):
+            subject.inspect(self.instance)
+        durable_write(self.runtime, public)
+        self.instance.openbao_snapshot.return_value = {'existing-policy-hashes': 'foreign-policy'}
+        with self.assertRaisesRegex(RuntimeError, 'openbao-policy-mount-or-auth-drift'):
+            subject.inspect(self.instance)
+        self.instance.openbao_snapshot.return_value = {'existing-policy-hashes': 'preserved'}
+        self.objects['Deployment/' + subject.NS + '/inventory']['spec']['template']['spec']['hostNetwork'] = True
+        with self.assertRaisesRegex(RuntimeError, 'kubernetes-intent-drift'):
+            subject.inspect(self.instance)
+        self.objects = original_objects
+        self.assertFalse((self.evidence / 'maintenance-plan.json').exists())
+        self.assertEqual((self.renewals, self.posts, self.replaces), ([], [], []))
+
+    def test_cached_inspect_retains_fresh_observations_and_denies_expired_or_revoked_records(self):
+        subject.inspect(self.instance)
+        path = self.evidence / 'maintenance-plan.json'
+        original = path.read_bytes()
+        subject.inspect(self.instance)
+        self.assertTrue(list(self.evidence.glob('read-only-observation-*.json')))
+        self.assertEqual(path.read_bytes(), original)
+        self.state['profile']['revoked'] = True
+        with self.assertRaisesRegex(RuntimeError, 'revocation-or-revision-drift'):
+            subject.inspect(self.instance)
+        self.state = deepcopy(self.original_state)
+        Clock.current = NOW + timedelta(hours=3)
+        with self.assertRaisesRegex(RuntimeError, 'expired-or-not-current'):
+            subject.inspect(self.instance)
+        self.assertEqual((self.renewals, self.posts, self.replaces), ([], [], []))
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_rollout_expiry_stops_before_next_effect_and_cannot_complete(self):
+        subject.inspect(self.instance)
+        def kube(*args, **kwargs):
+            result = self.kube(*args, **kwargs)
+            if args[0] == 'rollout':
+                Clock.current = NOW + timedelta(hours=25)
+            return result
+        with patch.object(subject, 'kube', kube), self.assertRaisesRegex(RuntimeError, 'window-expired-before-next-effect'):
+            subject.maintain(self.instance)
+        self.assertEqual(len(self.replaces), 3)
+        self.assertFalse((self.evidence / 'completion.json').exists())
+
+    def test_health_work_cannot_finish_after_owner_deadline(self):
+        def health(*args):
+            Clock.current = NOW + timedelta(hours=25)
+            return {path: {'status': 200} for path in ('/alive', '/health', '/ready')}
+        with patch.object(subject, 'http_health', health), self.assertRaisesRegex(RuntimeError, 'deadline-changed-before-completion'):
+            subject.maintain(self.instance)
+        self.assertFalse((self.evidence / 'completion.json').exists())
+        self.assertFalse((self.evidence / 'verified-next-baseline').exists())
+
+    def test_two_cycles_reuse_verified_baseline_and_retain_all_twenty_eight_receipts(self):
+        subject.maintain(self.instance)
+        first_evidence = self.evidence
+        first_baseline = first_evidence / 'verified-next-baseline'
+        first_receipts = deepcopy(self.state['audit'])
+        first_files = {path: path.read_bytes() for path in first_evidence.rglob('*') if path.is_file()}
+        Clock.current = NOW + timedelta(hours=6)
+        self.evidence = first_evidence.parent / 'second-maintenance'
+        self.evidence.mkdir()
+        self.instance.evidence, self.instance.baseline = self.evidence, first_baseline
+        subject.maintain(self.instance)
+        self.assertEqual(len(self.state['audit']), 28)
+        self.assertEqual(self.state['audit'][:19], first_receipts)
+        self.assertEqual(self.state['audit'][:10], self.original_state['audit'])
+        provenance = subject.read(self.evidence / 'verified-next-baseline/original-owner-receipts.json')
+        self.assertEqual(len(provenance), 28)
+        self.assertEqual([item['receipt'] for item in provenance], self.state['audit'])
+        self.assertTrue(all(item['sourceSha256'] == subject.sha(Path(item['source']).read_bytes()) for item in provenance))
+        self.assertTrue(all(path.read_bytes() == content for path, content in first_files.items()))
+
+    def test_coordinator_can_emit_next_baseline_from_verified_public_facts_without_installed_calls(self):
+        subject.maintain(self.instance)
+        plan = subject.read(self.evidence / 'maintenance-plan.json')
+        output = self.evidence.parent / 'coordinator-verified-baseline'
+        facts = {'state': deepcopy(self.state), 'credentials': {role: subject.read(self.evidence / ('credential-' + role + '.after.json')) for role in ('data', 'metadata')},
+            'key_metadata': deepcopy(self.metadata), 'public_runtime': subject.read(self.runtime), 'kubernetes': self.snapshot(),
+            'openbao': {'existing-policy-hashes': 'preserved'}, 'objects': [deepcopy(self.objects[item['reference']]) for item in plan['objects']],
+            'health': subject.read(self.evidence / 'health.after.json'), 'output': output}
+        originals = {path: path.read_bytes() for path in self.evidence.rglob('*') if path.is_file()}
+        with patch.object(subject, 'administration_request') as admin, patch.object(subject, 'application_request') as provider, patch.object(subject, 'kube') as kube, patch.object(subject, 'kjson') as kjson:
+            subject.emit_verified_baseline(self.instance, plan, **facts)
+            for native in (admin, provider, kube, kjson):
+                native.assert_not_called()
+        self.assertEqual(subject.validate_baseline(output), self.state)
+        self.assertTrue(all(path.read_bytes() == content for path, content in originals.items()))
+
+    def fractional_cap(self, sufficient):
+        cap = NOW + timedelta(hours=4, microseconds=250000)
+        self.successors[0]['mapping']['verifyUntil'] = cap.isoformat()
+        durable_write(self.binding / 'successor-key-plan.json', self.successors)
+        item = self.successors[0]
+        self.metadata[item['original']['secretReference']]['custom_metadata']['ext-secrets-1.versionMappings'] = json.dumps({item['opaqueVersion']: item['mapping']})
+        durable_write(self.baseline / 'key-metadata.before.json', self.metadata)
+        lease = self.leases['data']
+        issued = cap - timedelta(seconds=604800)
+        lease.update(creation_time=int(issued.timestamp()), issue_time=issued.isoformat())
+        if sufficient:
+            lease['expire_time'] = cap.isoformat()
+        originals = subject.read(self.baseline / 'credentials.before.json')
+        originals['data']['lease'] = deepcopy(lease)
+        durable_write(self.baseline / 'credentials.before.json', originals)
+        return cap
+
+    def test_sufficient_lease_at_fractional_cap_needs_no_renewal_arithmetic(self):
+        cap = self.fractional_cap(sufficient=True)
+        plan = subject.inspect(self.instance)
+        subject.maintain_lease(self.instance, plan, 'data')
+        journal = subject.read(self.evidence / 'renewal-data.json')
+        self.assertEqual(journal['phase'], 'AlreadySufficient')
+        self.assertEqual(journal['incrementSeconds'], 0)
+        self.assertEqual(subject.instant(plan['deadline']), cap)
+        self.assertEqual(self.renewals, [])
+
+    def test_native_renewal_can_clamp_bounded_increment_to_fractional_original_cap(self):
+        cap = self.fractional_cap(sufficient=False)
+        plan = subject.inspect(self.instance)
+        subject.maintain_lease(self.instance, plan, 'data')
+        journal = subject.read(self.evidence / 'renewal-data.json')
+        self.assertEqual(journal['phase'], 'Renewed')
+        self.assertLessEqual(journal['incrementSeconds'], 86400)
+        self.assertEqual(subject.instant(journal['after']['expire_time']), cap)
+        self.assertEqual(self.renewals, ['data'])
+
+    def test_hash_only_credential_exposure_is_rejected_without_exposing_hash_in_report(self):
+        value = b'synthetic-private-token-data'
+        self.instance.private_values = [value]
+        digest = hashlib.sha256(value).digest()
+        for encoded in (digest, digest.hex().encode(), digest.hex().upper().encode(), base64.b64encode(digest), base64.urlsafe_b64encode(digest).rstrip(b'=')):
+            leak = self.evidence / 'synthetic-hash-only.bin'
+            leak.write_bytes(encoded)
+            with self.subTest(encoded_format=len(encoded)), self.assertRaisesRegex(RuntimeError, '^credential-exposure-check-failed$'):
+                subject.exposure_check(self.instance)
+            report_path = self.evidence / 'credential-exposure-check.json'
+            report = subject.read(report_path)
+            self.assertFalse(report['passed'])
+            self.assertEqual(report['literalAndBase64Matches'], 0)
+            self.assertEqual(report['prohibitedCredentialHashMatches'], 1)
+            self.assertTrue(report['credentialHashesRecorded'])
+            self.assertNotIn(encoded, report_path.read_bytes())
+            self.assertNotIn(value, report_path.read_bytes())
+            leak.unlink()
+
+    def test_effective_forbidden_missing_read_or_excess_write_under_original_policy_denies(self):
+        relative = self.successors[0]['original']['secretReference']
+        cases = [('data', 'secret/data/*', ['read']), ('data', subject.MOUNT + '/data/' + relative, ['list']),
+                 ('metadata', subject.MOUNT + '/metadata/' + relative, ['read', 'update'])]
+        for role, path, capabilities in cases:
+            self.capability_overrides = {(role, path): capabilities}
+            with self.subTest(role=role, capabilities=capabilities), self.assertRaisesRegex(RuntimeError, 'capability'):
+                subject.maintain(self.instance)
+            self.assertEqual((self.renewals, self.posts, self.replaces), ([], [], []))
+            self.assertEqual(self.leases[role]['policies'], [subject.DATA_POLICY if role == 'data' else subject.METADATA_POLICY])
+
+    def test_acknowledged_renewal_with_unverified_post_lookup_stays_unknown_and_never_repeats(self):
+        plan = subject.inspect(self.instance)
+        before = deepcopy(self.leases['data'])
+        cap = subject.instant(before['issue_time']) + timedelta(seconds=604800)
+        cases = [{'expire_time': before['expire_time']}, {'expire_time': (NOW + timedelta(hours=23)).isoformat()},
+                 {'accessor': 'foreign-accessor'}, {'policies': ['foreign-policy']}, {'expire_time': (cap + timedelta(seconds=1)).isoformat()}]
+        for changes in cases:
+            self.leases['data'] = deepcopy(before)
+            self.post_renewal_changes = {'data': changes}
+            renewal = self.evidence / 'renewal-data.json'
+            if renewal.exists():
+                renewal.unlink()
+            self.renewals.clear()
+            with self.subTest(changes=changes), self.assertRaises(RuntimeError):
+                subject.maintain(self.instance)
+            self.assertEqual(subject.read(renewal)['phase'], 'OutcomeUnknown')
+            with self.assertRaisesRegex(RuntimeError, 'observation-only-owner-reconciliation-required'):
+                subject.maintain_lease(self.instance, plan, 'data')
+            self.assertEqual(self.renewals, ['data'])
+            self.assertEqual((self.posts, self.replaces), ([], []))
 
 
 if __name__ == '__main__':

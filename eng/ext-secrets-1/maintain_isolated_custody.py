@@ -7,10 +7,10 @@ is called. Unknown native outcomes are observed, never replayed.
 """
 import argparse
 import base64
+import hashlib
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import json
-import math
 import os
 from pathlib import Path
 import sys
@@ -56,6 +56,15 @@ def fail(reason):
 
 
 def preserved_originals(baseline):
+    verification = baseline / 'baseline-verification.json'
+    if verification.exists():
+        manifest = read(verification)
+        if manifest.get('phase') != 'VerifiedNextMaintenanceBaseline':
+            fail('maintenance-baseline-not-verified')
+        pins = dict(manifest['sourceFingerprints'])
+        pins.update({str(baseline / name): expected for name, expected in manifest['files'].items()})
+        if any(sha(Path(name).read_bytes()) != expected for name, expected in pins.items()):
+            fail('verified-maintenance-baseline-provenance-changed')
     expanded = baseline / 'original-public-evidence-recursive-fingerprints.json'
     fingerprints = read(expanded if expanded.exists() else baseline / 'original-public-evidence-fingerprints.json')
     if not fingerprints or any(sha(Path(name).read_bytes()) != expected for name, expected in fingerprints.items()):
@@ -63,6 +72,182 @@ def preserved_originals(baseline):
     if sha(REGISTER.read_bytes()) != read(baseline / 'agents-register-before.json')['sha256']:
         fail('agents-register-changed')
     return fingerprints
+
+
+def runtime_targets():
+    custody_runtime = APP + '-runtime-' + read(BINDING / 'run.json')['runId'][:12]
+    return [('ConfigMap', 'ext-secrets-1-inventory-runtime'), ('ConfigMap', custody_runtime),
+            ('Deployment', 'inventory'), ('Deployment', APP)]
+
+
+def object_identity(obj):
+    """Use the same public specification material as install_isolated_registry.snapshot."""
+    material = {key: value for key, value in obj.items() if key not in ('metadata', 'status', 'kind', 'apiVersion')}
+    material['metadata'] = {key: obj['metadata'][key] for key in ('labels', 'annotations') if key in obj['metadata']}
+    return {'uid': obj['metadata']['uid'], 'specSha256': sha(canonical(material))}
+
+
+def baseline_runtime(baseline):
+    original = read(BINDING / 'runtime-reference.json')
+    profile = read(baseline / 'authority-state.before.json')['profile']
+    expected = runtime_after(original, profile)
+    path = baseline / 'runtime-reference.json'
+    if path.exists() and read(path) != expected:
+        fail('baseline-runtime-outside-verified-deadline-change')
+    return expected
+
+
+def successor_plan(baseline):
+    plan = read(BINDING / 'successor-key-plan.json')
+    metadata = read(baseline / 'key-metadata.before.json')
+    references = [item['original']['secretReference'] for item in plan]
+    if len(plan) != 4 or len(set(references)) != 4 or set(references) != set(metadata):
+        fail('exact-four-original-successor-metadata-windows-required')
+    for item in plan:
+        native = metadata[item['original']['secretReference']]
+        mappings = json.loads(native['custom_metadata']['ext-secrets-1.versionMappings'])
+        if (item.get('phase') != 'MetadataVerified' or item.get('secretVersion') != '2'
+            or native.get('current_version') != 2 or mappings.get(item['opaqueVersion']) != item['mapping']
+            or item['mapping'].get('secretVersion') != '2'):
+            fail('original-successor-technical-window-or-mapping-changed')
+    return plan
+
+
+def retained_receipts(baseline, state):
+    sources = read(baseline / 'original-owner-receipts.json')
+    if len(sources) != len(state['audit']) or len(sources) < 10:
+        fail('all-original-and-later-verified-receipts-required')
+    by_id = {source['operationId']: source for source in sources}
+    if len(by_id) != len(sources):
+        fail('duplicate-retained-receipt-provenance')
+    ordered = []
+    for receipt in state['audit']:
+        source = by_id.get(receipt['operationId'])
+        if source is None:
+            fail('retained-owner-receipt-provenance-missing')
+        path = Path(source['source'])
+        journal = read(path)
+        if (journal.get('phase') != 'Committed' or journal['operation']['operationId'] != receipt['operationId']
+            or journal['receipt'] != receipt or source.get('receipt', receipt) != receipt
+            or source.get('sourceSha256', sha(path.read_bytes())) != sha(path.read_bytes())):
+            fail('original-owner-receipt-not-retained')
+        ordered.append(dict(source, receipt=receipt, sourceSha256=sha(path.read_bytes())))
+    return ordered
+
+
+def validate_baseline(baseline):
+    preserved_originals(baseline)
+    state = read(baseline / 'authority-state.before.json')
+    original = read(BINDING / 'owner-administered-state.json')
+    if not (baseline / 'baseline-verification.json').exists() and state != original:
+        fail('unverified-maintenance-baseline-state')
+    if state['audit'][:10] != original['audit'][:10]:
+        fail('ten-original-receipts-changed-or-removed')
+    # Every baseline preserves the original record identities and non-deadline fields.
+    for field, identities in (('callers', ('callerId',)), ('hosts', ('inventoryAuthorityReference',)),
+                              ('keyStatuses', ('tenantId', 'purpose', 'version'))):
+        normalize = lambda items: sorted(({key: value for key, value in item.items() if key != 'validUntil'} for item in items),
+                                         key=lambda item: tuple(item[key] for key in identities))
+        if normalize(state[field]) != normalize(original[field]):
+            fail('baseline-record-identity-or-nondeadline-fields-changed')
+    if ({key: value for key, value in state['profile'].items() if key != 'validUntil'}
+        != {key: value for key, value in original['profile'].items() if key != 'validUntil'}):
+        fail('baseline-profile-identity-changed')
+    sources = retained_receipts(baseline, state)
+    expected = deepcopy(original)
+    if (len(state['audit']) - 10) % 9:
+        fail('baseline-requires-complete-verified-maintenance-cycles')
+    for source, receipt in zip(sources[10:], state['audit'][10:]):
+        operation = read(source['source'])['operation']
+        if operation.get('expectedRevision') != expected['revision'] or not receipt_matches(receipt, operation):
+            fail('baseline-maintenance-receipt-revision-discontinuity')
+        field, collection, keys = {'PublishProfile': ('profile', None, ()),
+            'SetCaller': ('caller', 'callers', ('callerId',)), 'SetInventoryHost': ('host', 'hosts', ('inventoryAuthorityReference',)),
+            'SetKeyStatus': ('keyStatus', 'keyStatuses', ('tenantId', 'purpose', 'version'))}[operation['kind']]
+        record = operation[field]
+        candidates = [expected['profile']] if collection is None else [item for item in expected[collection] if all(item[key] == record[key] for key in keys)]
+        if len(candidates) != 1 or {key: value for key, value in record.items() if key != 'validUntil'} != {key: value for key, value in candidates[0].items() if key != 'validUntil'}:
+            fail('baseline-receipt-operation-outside-deadline-only-scope')
+        expected = expected_records({'beforeState': expected, 'operations': [operation]}, 1)
+        expected.update(generation=expected['generation'] + 1, revision=receipt['revision'], audit=expected['audit'] + [receipt])
+    if expected != state:
+        fail('baseline-state-not-derived-from-retained-receipts')
+    baseline_runtime(baseline)
+    return state
+
+
+def operations_for(state, run_id, deadline):
+    desired = deepcopy(state)
+    desired['profile']['validUntil'] = wire_time(deadline)
+    records = [('profile', 'PublishProfile', desired['profile'])]
+    for collection, field, kind in (('hosts', 'host', 'SetInventoryHost'), ('callers', 'caller', 'SetCaller'), ('keyStatuses', 'keyStatus', 'SetKeyStatus')):
+        for item in desired[collection]:
+            item['validUntil'] = wire_time(deadline)
+            records.append((field, kind, item))
+    operations = []
+    for index, (field, kind, value) in enumerate(records):
+        operation = {'operationId': uuid.uuid5(uuid.UUID(run_id), str(index)).hex,
+                     'expectedRevision': state['instanceId'] + ':' + str(state['generation'] + index), 'kind': kind,
+                     'profile': None, 'caller': None, 'host': None, 'keyStatus': None}
+        operation[field] = deepcopy(value)
+        operations.append(operation)
+    if len(operations) != 9:
+        fail('exact-nine-deadline-only-operations-required')
+    return operations
+
+
+def intended_object(before, public, run_id):
+    intended = deepcopy(before)
+    intended.pop('status', None)
+    intended['metadata'].pop('managedFields', None)
+    if before['kind'] == 'ConfigMap':
+        intended['data']['runtime-reference.json'] = json.dumps(public, sort_keys=True)
+    else:
+        intended['spec']['template']['metadata'].setdefault('annotations', {})['hexalith.io/custody-maintenance'] = run_id
+    return intended
+
+
+def validate_plan(instance, plan):
+    """Re-derive authorized intent; a persisted plan grants no extra authority."""
+    state = validate_baseline(instance.baseline)
+    successors = successor_plan(instance.baseline)
+    prepared = instant(plan['preparedAt'])
+    deadline = min(prepared + timedelta(seconds=HORIZON_SECONDS), *(instant(item['mapping']['verifyUntil']) for item in successors))
+    if (plan.get('schema') != 'EXT-SECRETS-1.custody-maintenance.v1'
+        or plan.get('baseline') != str(instance.baseline) or plan.get('binding') != str(BINDING)
+        or uuid.UUID(plan['runId']).hex != plan['runId'] or prepared > datetime.now(timezone.utc)
+        or plan.get('deadline') != wire_time(deadline) or deadline <= instant(state['profile']['validUntil'])
+        or plan.get('beforeState') != state or plan.get('operations') != operations_for(state, plan['runId'], deadline)
+        or any(plan.get(key) != value for key, value in FLAGS.items())):
+        fail('persisted-maintenance-plan-intent-mismatch')
+    before_public = baseline_runtime(instance.baseline)
+    expected_public = runtime_after(before_public, plan['operations'][0]['profile'])
+    if (plan.get('beforePublicRuntime') != before_public or plan.get('publicRuntime') != expected_public
+        or plan.get('keyMetadata') != read(instance.baseline / 'key-metadata.before.json')
+        or plan.get('beforeKubernetes') != read(instance.baseline / 'preserved-kubernetes-before.json')
+        or plan.get('beforeOpenbao') != read(instance.baseline / 'preserved-openbao-before.json')):
+        fail('persisted-maintenance-plan-preservation-or-runtime-intent-mismatch')
+    expected_refs = [kind + '/' + NS + '/' + name for kind, name in runtime_targets()]
+    if [item['reference'] for item in plan.get('objects', [])] != expected_refs:
+        fail('persisted-maintenance-plan-fixed-object-scope-mismatch')
+    for item, (kind, name) in zip(plan['objects'], runtime_targets()):
+        before = item['before']
+        if (before.get('kind') != kind or before['metadata'].get('name') != name or before['metadata'].get('namespace') != NS
+            or item['uid'] != before['metadata']['uid'] or object_identity(before) != plan['beforeKubernetes'][item['reference']]
+            or item['intended'] != intended_object(before, expected_public, plan['runId'])):
+            fail('persisted-maintenance-plan-object-intent-mismatch')
+        if kind == 'ConfigMap' and json.loads(before['data']['runtime-reference.json']) != before_public:
+            fail('persisted-maintenance-plan-original-runtime-copy-mismatch')
+    if set(plan.get('credentials', {})) != {'data', 'metadata'}:
+        fail('persisted-maintenance-plan-credential-scope-mismatch')
+    for role, entry in plan['credentials'].items():
+        identity = credential_identity(role, instance.baseline)
+        prior = read(instance.baseline / 'credentials.before.json')[role]['lease']
+        cap = validate_lease(role, identity, entry['before'], prepared)
+        if (entry['identity'] != identity or entry['absoluteDeadline'] != cap.isoformat() or cap < deadline
+            or any(entry['before'].get(key) != prior.get(key) for key in LEASE_FIELDS if key != 'ttl')):
+            fail('persisted-maintenance-plan-original-credential-facts-mismatch')
+    return plan
 
 
 def credential_identity(role, baseline):
@@ -217,28 +402,19 @@ def runtime_after(public, profile):
 
 def inspect(instance):
     """Read installed facts and persist one deterministic plan; no installed effects."""
-    preserved_originals(instance.baseline)
+    original = validate_baseline(instance.baseline)
     path = instance.evidence / 'maintenance-plan.json'
     if path.exists():
         plan = read(path)
-        if plan.get('baseline') != str(instance.baseline) or plan.get('binding') != str(BINDING):
-            fail('original-maintenance-plan-source-changed')
+        validate_plan(instance, plan)
+        reconcile_current(instance, plan)
         return plan
     now = datetime.now(timezone.utc)
-    original = read(instance.baseline / 'authority-state.before.json')
     status, state = administration_request(instance, 'GET', '/admin/state')
     if status != 200:
         fail('authority-state-unavailable')
-    successors = read(BINDING / 'successor-key-plan.json')
+    successors = successor_plan(instance.baseline)
     validate_scope(state, original, successors, now)
-    receipts = read(instance.baseline / 'original-owner-receipts.json')
-    if len(receipts) != 10 or len(state['audit']) != 10:
-        fail('ten-original-owner-receipts-required')
-    for source in receipts:
-        journal = read(source['source'])
-        if (journal.get('phase') != 'Committed' or journal['operation']['operationId'] != source['operationId']
-            or journal['receipt'] not in state['audit']):
-            fail('original-owner-receipt-not-retained')
     deadline = min(now + timedelta(seconds=HORIZON_SECONDS), *(instant(item['mapping']['verifyUntil']) for item in successors))
     if deadline <= instant(state['profile']['validUntil']):
         fail('owner-maintenance-would-not-extend-existing-window')
@@ -253,57 +429,46 @@ def inspect(instance):
     if metadata != read(instance.baseline / 'key-metadata.before.json'):
         fail('original-and-successor-key-metadata-changed')
     run_id = uuid.uuid4().hex
-    operations = []
-    desired = deepcopy(state)
-    desired['profile']['validUntil'] = wire_time(deadline)
-    records = [('profile', 'PublishProfile', desired['profile'])]
-    for collection, field, kind in (('hosts', 'host', 'SetInventoryHost'), ('callers', 'caller', 'SetCaller'), ('keyStatuses', 'keyStatus', 'SetKeyStatus')):
-        for item in desired[collection]:
-            item['validUntil'] = wire_time(deadline)
-            records.append((field, kind, item))
-    for index, (field, kind, value) in enumerate(records):
-        operation = {'operationId': uuid.uuid5(uuid.UUID(run_id), str(index)).hex,
-                     'expectedRevision': state['instanceId'] + ':' + str(state['generation'] + index), 'kind': kind,
-                     'profile': None, 'caller': None, 'host': None, 'keyStatus': None}
-        operation[field] = deepcopy(value)
-        operations.append(operation)
+    operations = operations_for(state, run_id, deadline)
     before_public = read(RUNTIME)
+    if before_public != baseline_runtime(instance.baseline):
+        fail('current-runtime-drift-from-original-binding-or-verified-baseline')
     if before_public['runtime']['profileValidUntil'] != state['profile']['validUntil']:
         fail('public-runtime-original-profile-deadline-mismatch')
-    public = runtime_after(before_public, desired['profile'])
+    public = runtime_after(before_public, operations[0]['profile'])
     if public['runtime']['hmacCredentialReference'] != credentials['data']['identity']['credentialReference']:
         fail('public-runtime-original-data-credential-reference-mismatch')
-    custody_runtime = APP + '-runtime-' + read(BINDING / 'run.json')['runId'][:12]
     objects = []
     before_snapshot = snapshot()
+    if before_snapshot != read(instance.baseline / 'preserved-kubernetes-before.json'):
+        fail('current-kubernetes-intent-drift-from-verified-baseline')
+    before_openbao = instance.openbao_snapshot()
+    if before_openbao != read(instance.baseline / 'preserved-openbao-before.json'):
+        fail('current-openbao-policy-mount-or-auth-drift-from-verified-baseline')
     # Exact existing public copies plus only the two consumers that load subPath files.
-    for kind, name in [('ConfigMap', 'ext-secrets-1-inventory-runtime'), ('ConfigMap', custody_runtime),
-                       ('Deployment', 'inventory'), ('Deployment', APP)]:
+    for kind, name in runtime_targets():
         obj = kjson('get', kind, name, '-n', NS)
         reference = kind + '/' + NS + '/' + name
         if obj['metadata']['uid'] != read(instance.baseline / 'preserved-kubernetes-before.json')[reference]['uid']:
             fail('original-isolated-runtime-object-uid-changed')
-        intended = deepcopy(obj)
-        intended.pop('status', None)
-        intended['metadata'].pop('managedFields', None)
+        intended = intended_object(obj, public, run_id)
         if kind == 'ConfigMap':
             if json.loads(obj['data']['runtime-reference.json']) != before_public:
                 fail('dependent-public-runtime-copy-not-coherent')
-            intended['data']['runtime-reference.json'] = json.dumps(public, sort_keys=True)
         else:
             host = next(item for item in state['hosts'] if item['inventoryAuthorityReference'] == (INVENTORY if name == 'inventory' else APP))
             if host['workloadReference'] != NS + '/Deployment/' + name + '@uid:' + obj['metadata']['uid']:
                 fail('original-host-workload-uid-changed')
             runtime_volume = [item for item in obj['spec']['template']['spec']['volumes'] if item['name'] == 'runtime']
-            if len(runtime_volume) != 1 or runtime_volume[0].get('configMap', {}).get('name') != ('ext-secrets-1-inventory-runtime' if name == 'inventory' else custody_runtime):
+            if len(runtime_volume) != 1 or runtime_volume[0].get('configMap', {}).get('name') != runtime_targets()[0 if name == 'inventory' else 1][1]:
                 fail('original-consumer-runtime-volume-changed')
-            intended['spec']['template']['metadata'].setdefault('annotations', {})['hexalith.io/custody-maintenance'] = run_id
         objects.append({'reference': reference, 'uid': obj['metadata']['uid'], 'before': obj, 'intended': intended})
     plan = {'schema': 'EXT-SECRETS-1.custody-maintenance.v1', 'runId': run_id, 'preparedAt': now.isoformat(),
             'baseline': str(instance.baseline), 'binding': str(BINDING), 'deadline': wire_time(deadline),
             'beforeState': state, 'operations': operations, 'credentials': credentials, 'keyMetadata': metadata,
             'beforePublicRuntime': before_public, 'publicRuntime': public, 'objects': objects,
-            'beforeKubernetes': before_snapshot, 'beforeOpenbao': instance.openbao_snapshot(), **FLAGS}
+            'beforeKubernetes': before_snapshot, 'beforeOpenbao': before_openbao, **FLAGS}
+    validate_plan(instance, plan)
     durable_write(path, plan, create_only=True)
     instance.write('inspection.json', {'observedAt': timestamp(), 'revision': state['revision'], 'originalReceiptCount': 10,
                                      'ownerDeadline': plan['deadline'], 'nullInputCount': 42, **FLAGS})
@@ -332,7 +497,9 @@ def expected_records(plan, count):
             matches = [index for index, old in enumerate(expected[collection]) if all(old[name] == record[name] for name in identity)]
             if len(matches) != 1:
                 fail('maintenance-operation-outside-original-record-scope')
-            expected[collection][matches[0]] = deepcopy(record)
+            # AuthorityRepository.Apply removes the old record, then appends.
+            expected[collection].pop(matches[0])
+            expected[collection].append(deepcopy(record))
     return expected
 
 
@@ -360,16 +527,21 @@ def validate_progress(instance, plan, state):
 
 
 def maintain_owner_records(instance, plan):
+    validate_plan(instance, plan)
     _, state = administration_request(instance, 'GET', '/admin/state')
     count = validate_progress(instance, plan, state)
+    validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
     for index, operation in enumerate(plan['operations']):
+        if datetime.now(timezone.utc) >= instant(plan['deadline']):
+            fail('owner-maintenance-window-expired-before-next-operation')
+        validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
         path = instance.evidence / ('owner-operation-' + str(index) + '.json')
         if index < count:
             journal = read(path)
             if journal.get('phase') != 'Committed':
                 # Exact original POST is the provider's durable idempotency check.
                 status, receipt = administration_request(instance, 'POST', '/admin/operations', operation)
-                if status != 200 or receipt != state['audit'][10 + index] or not receipt_matches(receipt, operation):
+                if status != 200 or receipt != state['audit'][len(plan['beforeState']['audit']) + index] or not receipt_matches(receipt, operation):
                     fail('original-owner-operation-reconciliation-mismatch')
                 journal.update(phase='Committed', receipt=receipt, reconciledAt=timestamp())
                 durable_write(path, journal)
@@ -397,13 +569,24 @@ def maintain_owner_records(instance, plan):
 
 
 def maintain_lease(instance, plan, role):
-    identity, before = instance.credential(role)
+    validate_plan(instance, plan)
+    path = instance.evidence / ('renewal-' + role + '.json')
+    prior = read(path) if path.exists() else None
+    try:
+        identity, before = instance.credential(role)
+    except Exception:
+        if prior and prior.get('phase') in ('Started', 'OutcomeUnknown'):
+            prior['observationValid'] = False
+            if role in instance.tokens:
+                prior['currentObservation'] = instance.lookup(role)
+            durable_write(path, prior)
+            fail(role + '-renewal-outcome-unknown-observation-only-owner-reconciliation-required')
+        raise
     if identity != plan['credentials'][role]['identity']:
         fail(role + '-original-credential-identity-changed')
     now = datetime.now(timezone.utc)
     cap = validate_lease(role, identity, before, now)
     deadline = instant(plan['deadline'])
-    path = instance.evidence / ('renewal-' + role + '.json')
     if path.exists():
         journal = read(path)
         if journal.get('identity') != identity or journal.get('requiredDeadline') != plan['deadline']:
@@ -419,10 +602,12 @@ def maintain_lease(instance, plan, role):
         fail(role + '-unknown-renewal-journal-phase')
     if deadline <= now or cap < deadline:
         fail(role + '-seven-day-cap-requires-separate-successor-secret-cutover-and-revocation')
-    increment = min(HORIZON_SECONDS, math.floor((cap - now).total_seconds()))
-    if increment <= 0 or now + timedelta(seconds=increment) < deadline:
-        fail(role + '-bounded-renewal-cannot-cover-owner-window')
-    journal = {'phase': 'AlreadySufficient' if instant(before['expire_time']) >= deadline else 'Started',
+    sufficient = instant(before['expire_time']) >= deadline
+    # The original explicit maximum is provider-enforced, including fractions.
+    # A bounded request can be clamped by that native maximum; post-lookup must
+    # still cover the exact deadline and stay within the original absolute cap.
+    increment = 0 if sufficient else HORIZON_SECONDS
+    journal = {'phase': 'AlreadySufficient' if sufficient else 'Started',
                'identity': identity, 'before': before, 'requiredDeadline': plan['deadline'],
                'incrementSeconds': increment, 'absoluteDeadline': cap.isoformat(), 'startedAt': timestamp(), **FLAGS}
     durable_write(path, journal, create_only=True)
@@ -445,6 +630,11 @@ def maintain_lease(instance, plan, role):
 
 def update_public_object(instance, item):
     kind, namespace, name = item['reference'].split('/')
+    custody_runtime = APP + '-runtime-' + read(BINDING / 'run.json')['runId'][:12]
+    allowed = {'ConfigMap/' + NS + '/' + name for name in ('ext-secrets-1-inventory-runtime', custody_runtime)}
+    allowed.update('Deployment/' + NS + '/' + name for name in ('inventory', APP))
+    if item['reference'] not in allowed:
+        fail('runtime-update-outside-exact-existing-isolated-scope')
     current = kjson('get', kind, name, '-n', namespace)
     if current['metadata']['uid'] != item['uid']:
         fail('original-runtime-object-uid-changed-no-update')
@@ -492,33 +682,209 @@ def update_runtime_file(instance, plan):
     durable_write(path, journal)
 
 
+def reconcile_runtime_prerequisites(instance, plan):
+    """Observe every runtime outcome before any new lease or owner effect."""
+    for item in plan['objects']:
+        kind, namespace, name = item['reference'].split('/')
+        current = kjson('get', kind, name, '-n', namespace)
+        if current['metadata']['uid'] != item['uid']:
+            fail('original-runtime-object-uid-changed-no-update')
+        path = instance.evidence / ('runtime-update-' + kind.lower() + '-' + name + '.json')
+        if path.exists():
+            journal = read(path)
+            if (journal.get('reference') != item['reference'] or journal.get('uid') != item['uid']
+                or journal.get('intended') != public_object(item['intended'])
+                or public_object(current) != public_object(item['intended'])):
+                fail('runtime-update-outcome-unknown-no-repeat')
+        elif (public_object(current) != public_object(item['before'])
+              or current['metadata']['resourceVersion'] != item['before']['metadata']['resourceVersion']):
+            fail('original-runtime-object-resource-version-or-public-intent-changed')
+    file_path = instance.evidence / 'runtime-file-update.json'
+    if file_path.exists():
+        journal = read(file_path)
+        if journal.get('intended') != plan['publicRuntime'] or read(RUNTIME) != plan['publicRuntime']:
+            fail('public-runtime-file-outcome-unknown-no-repeat')
+    elif read(RUNTIME) != plan['beforePublicRuntime']:
+        fail('public-runtime-file-original-content-changed')
+    after = snapshot()
+    allowed = {item['reference'] for item in plan['objects']}
+    if (set(after) != set(plan['beforeKubernetes'])
+        or any(after.get(key) != value for key, value in plan['beforeKubernetes'].items() if key not in allowed)):
+        fail('out-of-scope-kubernetes-preservation-change')
+
+
+def reconcile_current(instance, plan):
+    """Retain fresh public observations, including on a cached inspection."""
+    validate_plan(instance, plan)
+    _, state = administration_request(instance, 'GET', '/admin/state')
+    observation = {'observedAt': timestamp(), 'state': state, 'readOnly': True, **FLAGS}
+    path = instance.evidence / ('read-only-observation-' + uuid.uuid4().hex + '.json')
+    durable_write(path, observation, create_only=True)
+    validate_progress(instance, plan, state)
+    now = datetime.now(timezone.utc)
+    if now >= instant(plan['deadline']):
+        fail('original-maintenance-plan-window-expired-owner-reconciliation-required')
+    validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), now)
+    credentials = {}
+    for role in ('data', 'metadata'):
+        try:
+            identity, lease = instance.credential(role)
+        except Exception:
+            observation['credentialValidationFailed'] = role
+            if role in instance.tokens:
+                observation.setdefault('credentials', {})[role] = {'lease': instance.lookup(role)}
+            durable_write(path, observation)
+            renewal_path = instance.evidence / ('renewal-' + role + '.json')
+            if renewal_path.exists() and read(renewal_path).get('phase') in ('Started', 'OutcomeUnknown'):
+                fail(role + '-renewal-outcome-unknown-observation-only-owner-reconciliation-required')
+            raise
+        credentials[role] = {'identity': identity, 'lease': lease}
+    observation.update(credentials=credentials, keyMetadata=instance.metadata(), openbao=instance.openbao_snapshot())
+    durable_write(path, observation)
+    if observation['keyMetadata'] != plan['keyMetadata'] or observation['openbao'] != plan['beforeOpenbao']:
+        fail('original-maintenance-prerequisite-key-metadata-or-policies-changed')
+    for role, facts in credentials.items():
+        renewal_path = instance.evidence / ('renewal-' + role + '.json')
+        if renewal_path.exists():
+            renewal = read(renewal_path)
+            if renewal.get('phase') in ('Started', 'OutcomeUnknown'):
+                fail(role + '-renewal-outcome-unknown-observation-only-owner-reconciliation-required')
+            expected = renewal.get('after', renewal['before'])
+        else:
+            expected = plan['credentials'][role]['before']
+        if any(facts['lease'].get(key) != expected.get(key) for key in LEASE_FIELDS if key != 'ttl'):
+            fail(role + '-current-lease-drift-from-retained-renewal-outcome')
+    reconcile_runtime_prerequisites(instance, plan)
+    return observation
+
+
+def require_owner_window(instance, plan):
+    _, state = administration_request(instance, 'GET', '/admin/state')
+    validate_progress(instance, plan, state)
+    if datetime.now(timezone.utc) >= instant(plan['deadline']):
+        fail('owner-maintenance-window-expired-before-next-effect')
+    validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
+
+
 def exposure_check(instance):
     # Credentials and their hashes are never persisted; test literal/base64 only in memory.
     paths = [path for path in instance.evidence.rglob('*') if path.is_file()] + [RUNTIME, Path(__file__)]
-    matches = sum(any(value in path.read_bytes() or base64.b64encode(value) in path.read_bytes()
-                      for value in instance.private_values if len(value) >= 16) for path in paths)
-    instance.write('credential-exposure-check.json', {'passed': matches == 0, 'literalAndBase64Matches': matches,
-                   'credentialValuesRecorded': False, 'credentialHashesRecorded': False, 'scannedFileCount': len(paths)})
-    if matches:
+    literals, hashes = [], []
+    for value in instance.private_values:
+        if len(value) < 16:
+            continue
+        digest = hashlib.sha256(value).digest()
+        literals.extend((value, base64.b64encode(value)))
+        hashes.extend((digest, digest.hex().encode(), digest.hex().upper().encode(), base64.b64encode(digest),
+                       base64.b64encode(digest).rstrip(b'='), base64.urlsafe_b64encode(digest), base64.urlsafe_b64encode(digest).rstrip(b'=')))
+    matches = hash_matches = 0
+    for path in paths:
+        content = path.read_bytes()
+        matches += any(value in content for value in literals)
+        hash_matches += any(value in content for value in hashes)
+    instance.write('credential-exposure-check.json', {'passed': matches == 0 and hash_matches == 0, 'literalAndBase64Matches': matches,
+                   'prohibitedCredentialHashMatches': hash_matches, 'credentialValuesRecorded': bool(matches),
+                   'credentialHashesRecorded': bool(hash_matches), 'scannedFileCount': len(paths)})
+    if matches or hash_matches:
         fail('credential-exposure-check-failed')
 
 
+def emit_verified_baseline(instance, plan, *, state, credentials, key_metadata, public_runtime,
+                           kubernetes, openbao, objects, health, output):
+    """Retain already verified public facts in a fresh directory; no installed calls.
+
+    Coordinators can call this independently after read-only verification of an
+    already completed run. Existing source plans, journals and evidence are read-only.
+    """
+    validate_plan(instance, plan)
+    if validate_progress(instance, plan, state) != len(plan['operations']):
+        fail('cannot-emit-baseline-for-incomplete-owner-maintenance')
+    validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
+    if datetime.now(timezone.utc) >= instant(plan['deadline']):
+        fail('cannot-emit-baseline-after-owner-deadline')
+    if (key_metadata != plan['keyMetadata'] or public_runtime != plan['publicRuntime'] or openbao != plan['beforeOpenbao']
+        or set(kubernetes) != set(plan['beforeKubernetes']) or set(credentials) != {'data', 'metadata'}):
+        fail('verified-next-baseline-facts-mismatch')
+    if len(objects) != 4 or [item['kind'] + '/' + NS + '/' + item['metadata']['name'] for item in objects] != [item['reference'] for item in plan['objects']]:
+        fail('verified-next-baseline-object-scope-mismatch')
+    allowed = {item['reference'] for item in plan['objects']}
+    if any(kubernetes.get(key) != value for key, value in plan['beforeKubernetes'].items() if key not in allowed):
+        fail('verified-next-baseline-preservation-mismatch')
+    for obj, item in zip(objects, plan['objects']):
+        if (obj['metadata']['uid'] != item['uid'] or public_object(obj) != public_object(item['intended'])
+            or object_identity(obj) != kubernetes[item['reference']]):
+            fail('verified-next-baseline-object-intent-mismatch')
+    for role, facts in credentials.items():
+        identity = credential_identity(role, instance.baseline)
+        validate_lease(role, identity, facts['lease'], datetime.now(timezone.utc))
+        if facts['identity'] != identity or instant(facts['lease']['expire_time']) < instant(plan['deadline']):
+            fail('verified-next-baseline-credential-facts-mismatch')
+    if any(health[label][path]['status'] != 200 for label in ('authority', 'inventory', 'custody') for path in ('/alive', '/health', '/ready')):
+        fail('verified-next-baseline-requires-nine-passing-health-checks')
+    output = Path(output)
+    if output.exists():
+        if (output / 'baseline-verification.json').exists() and read(output / 'baseline-verification.json').get('runId') == plan['runId']:
+            retained = validate_baseline(output)
+            if retained != state:
+                fail('retained-next-maintenance-baseline-state-changed')
+            return output
+        fail('next-maintenance-baseline-output-must-be-fresh')
+    receipts = retained_receipts(instance.baseline, plan['beforeState'])
+    for index, receipt in enumerate(state['audit'][len(plan['beforeState']['audit']):]):
+        path = instance.evidence / ('owner-operation-' + str(index) + '.json')
+        journal = read(path)
+        if journal.get('phase') != 'Committed' or journal.get('receipt') != receipt:
+            fail('next-maintenance-baseline-requires-exact-committed-receipts')
+        receipts.append({'operationId': receipt['operationId'], 'source': str(path), 'sourceSha256': sha(path.read_bytes()),
+                         'receipt': receipt, 'receiptRetained': True})
+    current_credentials = {role: {'credentialReference': facts['identity']['credentialReference'],
+        'originalRecordedSecretIdentity': facts['identity']['secretIdentity'], 'lease': facts['lease'],
+        'sourceJournal': str(BINDING / (role + '-credential-issuance.json')),
+        'sourceResourceJournal': str(BINDING / 'resource-journal.json')} for role, facts in credentials.items()}
+    files = {'authority-state.before.json': state, 'credentials.before.json': current_credentials,
+             'key-metadata.before.json': key_metadata, 'runtime-reference.json': public_runtime, 'runtime-objects.json': objects,
+             'preserved-kubernetes-before.json': kubernetes, 'preserved-openbao-before.json': openbao,
+             'agents-register-before.json': read(instance.baseline / 'agents-register-before.json'),
+             'original-public-evidence-recursive-fingerprints.json': preserved_originals(instance.baseline),
+             'original-owner-receipts.json': receipts, 'health.before.json': health}
+    sources = {str(path): sha(path.read_bytes()) for path in instance.baseline.glob('*.json')}
+    plan_path = instance.evidence / 'maintenance-plan.json'
+    if read(plan_path) != plan:
+        fail('original-plan-file-changed-before-baseline-emission')
+    sources[str(plan_path)] = sha(plan_path.read_bytes())
+    sources.update({source['source']: source['sourceSha256'] for source in receipts})
+    output.mkdir(mode=0o700)
+    for name, value in files.items():
+        durable_write(output / name, value, create_only=True)
+    durable_write(output / 'baseline-verification.json', {'schema': 'EXT-SECRETS-1.verified-maintenance-baseline.v1',
+        'phase': 'VerifiedNextMaintenanceBaseline', 'observedAt': timestamp(), 'runId': plan['runId'],
+        'parentBaseline': str(instance.baseline), 'receiptCount': len(receipts), 'originalReceiptCount': 10,
+        'sourceFingerprints': sources, 'files': {name: sha((output / name).read_bytes()) for name in files}, **FLAGS}, create_only=True)
+    return output
+
+
 def verify(instance, plan):
+    validate_plan(instance, plan)
     preserved_originals(instance.baseline)
     _, state = administration_request(instance, 'GET', '/admin/state')
     if validate_progress(instance, plan, state) != len(plan['operations']):
         fail('owner-maintenance-incomplete')
+    validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
     if instance.metadata() != plan['keyMetadata']:
         fail('key-technical-metadata-changed')
+    credentials = {}
     for role in ('data', 'metadata'):
         identity, lease = instance.credential(role)
         validate_lease(role, identity, lease, datetime.now(timezone.utc))
         if instant(lease['expire_time']) < instant(plan['deadline']):
             fail(role + '-credential-does-not-cover-maintained-owner-window')
         instance.write('credential-' + role + '.after.json', {'identity': identity, 'lease': lease})
+        credentials[role] = {'identity': identity, 'lease': lease}
+    objects = []
     for item in plan['objects']:
         kind, namespace, name = item['reference'].split('/')
         obj = kjson('get', kind, name, '-n', namespace)
+        objects.append(obj)
         if obj['metadata']['uid'] != item['uid'] or public_object(obj) != public_object(item['intended']):
             fail('final-runtime-public-intent-mismatch')
         if kind == 'ConfigMap' and json.loads(obj['data']['runtime-reference.json']) != plan['publicRuntime']:
@@ -543,6 +909,15 @@ def verify(instance, plan):
         'openbaoMountAuthAndPoliciesUnchanged': True, 'originalJournalsUnchanged': True, 'agentsRegisterUnchanged': True,
         'nullInputCount': 42, 'healthCheckCount': 9, **FLAGS})
     exposure_check(instance)
+    # Health/rollout work can consume the remaining window. Re-read and recheck.
+    _, final_state = administration_request(instance, 'GET', '/admin/state')
+    if final_state != state or datetime.now(timezone.utc) >= instant(plan['deadline']):
+        fail('owner-state-or-current-maintenance-deadline-changed-before-completion')
+    validate_scope(final_state, final_state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
+    emit_verified_baseline(instance, plan, state=final_state, credentials=credentials, key_metadata=plan['keyMetadata'],
+        public_runtime=read(RUNTIME), kubernetes=after, openbao=plan['beforeOpenbao'], objects=objects,
+        health=health, output=instance.evidence / 'verified-next-baseline')
+    exposure_check(instance)
     instance.write('completion.json', {'phase': 'MaintainedMetadataBoundDependencyUnavailable', 'observedAt': timestamp(),
         'ownerDeadline': plan['deadline'], 'revision': state['revision'], 'originalReceiptCount': 10,
         'profileVersion': state['profile']['version'], 'nullInputCount': 42, **FLAGS})
@@ -550,22 +925,18 @@ def verify(instance, plan):
 
 def maintain(instance):
     plan = inspect(instance)
-    if datetime.now(timezone.utc) >= instant(plan['deadline']):
-        fail('original-maintenance-plan-window-expired-owner-reconciliation-required')
-    _, state = administration_request(instance, 'GET', '/admin/state')
-    validate_progress(instance, plan, state)
-    # Reconcile every original prerequisite before any effect, also on recovery.
+    reconcile_current(instance, plan)
     for role in ('data', 'metadata'):
-        instance.credential(role)
-    if instance.metadata() != plan['keyMetadata'] or instance.openbao_snapshot() != plan['beforeOpenbao']:
-        fail('original-maintenance-prerequisite-key-metadata-or-policies-changed')
-    for role in ('data', 'metadata'):
+        require_owner_window(instance, plan)
         maintain_lease(instance, plan, role)
     maintain_owner_records(instance, plan)
     for item in plan['objects'][:2]:
+        require_owner_window(instance, plan)
         update_public_object(instance, item)
+    require_owner_window(instance, plan)
     update_runtime_file(instance, plan)
     for item in plan['objects'][2:]:
+        require_owner_window(instance, plan)
         update_public_object(instance, item)
         name = item['reference'].rsplit('/', 1)[1]
         kube('rollout', 'status', 'deployment/' + name, '-n', NS, '--timeout=150s', timeout=155)

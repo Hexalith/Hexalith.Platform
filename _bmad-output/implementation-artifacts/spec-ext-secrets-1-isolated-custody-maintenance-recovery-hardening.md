@@ -2,7 +2,7 @@
 title: EXT-SECRETS-1 isolated custody maintenance and recovery hardening
 type: feature
 created: 2026-10-28
-status: in-progress
+status: done
 route: dispatch
 baseline_commit: 9658932b0f04d9fc9daf7c30cc0d9afc2146ed7c
 review_loop_iteration: 0
@@ -49,11 +49,11 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `maintain_isolated_custody.py` — add inspect/maintain commands with original evidence reconciliation, deterministic persisted plan, new per-operation journals, exact revision/receipt checks and bounded 24-hour owner horizon. Preserve profile version while extending owner-managed validity; update every dependent public runtime copy and restart only isolated consumers with native UID/resourceVersion conditions. Key technical metadata stays exact.
-- [ ] Same command — maintain exact existing two leases using original resource-journal identities and issuance accessors, policy/capability checks, seven-day absolute cap and before/after observations. Journal before renewal; unknown renewal cannot repeat. If replacement is actually needed, leave an explicit owner/action blocker rather than unsafe implicit issuance; coordinator may implement the authorized separate replacement path if required.
-- [ ] Authority/preload/binding helpers — implement 16 MiB bound, original-identity completion reconciliation with confirmed absence, and unconditional denial of metadata writes pending a real provider fencing mechanism.
-- [ ] Focused Python tests — cover every matrix row, lost responses, expiry/cap, receipt continuity, exact record scope and coherent dependent references.
-- [ ] README and new public evidence — document implementation and run focused offline suites; coordinator performs bounded installed maintenance, health/metadata, preservation, original-journal and credential exposure checks. Report resulting deadlines and blockers.
+- [x] `maintain_isolated_custody.py` — add inspect/maintain commands with original evidence reconciliation, deterministic persisted plan, new per-operation journals, exact revision/receipt checks and bounded 24-hour owner horizon. Preserve profile version while extending owner-managed validity; update every dependent public runtime copy and restart only isolated consumers with native UID/resourceVersion conditions. Key technical metadata stays exact.
+- [x] Same command — maintain exact existing two leases using original resource-journal identities and issuance accessors, policy/capability checks, seven-day absolute cap and before/after observations. Journal before renewal; unknown renewal cannot repeat. If replacement is actually needed, leave an explicit owner/action blocker rather than unsafe implicit issuance; coordinator may implement the authorized separate replacement path if required.
+- [x] Authority/preload/binding helpers — implement 16 MiB bound, original-identity completion reconciliation with confirmed absence, and unconditional denial of metadata writes pending a real provider fencing mechanism.
+- [x] Focused Python tests — cover every matrix row, lost responses, expiry/cap, receipt continuity, exact record scope and coherent dependent references.
+- [x] README and new public evidence — document implementation and run focused offline suites; coordinator performs bounded installed maintenance, health/metadata, preservation, original-journal and credential exposure checks. Report resulting deadlines and blockers.
 
 **Acceptance Criteria:**
 - Given verified originals, when maintenance completes, then only existing isolated records/references and exact leases change, ten original receipts remain, keys/policies and 42 nulls stay unchanged.
@@ -68,6 +68,41 @@ Invocation explicitly authorizes source changes, focused offline tests and scope
 
 ## Review Triage Log
 
+| Finding | Verdict | Route | Evidence / decision |
+| --- | --- | --- | --- |
+| B01 | medium | patch | Persisted plans check directory strings only; changed operations can alter issuer. Derive and verify exact permitted intent before every reuse. |
+| B02 | medium | patch | A fresh run rejects the completed 19-receipt state. Remove fixed audit offsets and retain verified prior maintenance as a usable next baseline. |
+| B03 | medium | patch | Current runtime timing drift can be adopted at fresh inspection. Compare every settled field with original binding evidence. |
+| B04 | medium | patch | Fresh inspection snapshots provider state without checking original preservation baseline. Reject policy/mount/auth drift before effects. |
+| B05 | medium | patch | Cached inspection performs no installed observations. Reconcile current prerequisites while preserving the original plan. |
+| B06 | medium | patch | Progress checks compare records but omit current windows on cached-plan recovery. Recheck actual current records before new effects. |
+| B07 | medium | patch | Final verification lacks a current owner-deadline check. Reject expiry during rollout/finalization. |
+| B08 | medium | patch | Flooring fractional remaining lifetime can reject a viable native capped renewal. Handle sufficient leases first and validate provider-capped readback. |
+| B09 | medium | patch | Preload completion ignores a present conflicting image/name/identity journal. Require agreement among retained originals. |
+| B10 | medium | patch | Exposure report asserts no hashes while scanning only literal/base64 forms. Compare prohibited hash representations in memory without recording them. |
+| E01 | medium | patch | Same cached-inspection omission as B05; profile revocation can still produce successful inspect. |
+| E02 | medium | patch | Same window omission as B06; cached plans can revive expired owner records. |
+| E03 | medium | patch | Sufficient leases are checked after unused fractional-increment calculation. Move sufficiency before renewal-only arithmetic. |
+| E04 | medium | patch | Base Installer stores created references outside resources; legacy interrupted preloads can be retried if both identity/pull files are absent. Check all original reference stores. |
+| E05 | medium | patch | Same provider preservation omission as B04; broadened original policy can become the accepted baseline. |
+| V01 | medium | patch | Verified mutation gap: capability rejection can be removed while all tests pass. Add forbidden/missing/write-capability fixtures with zero effects. |
+| V02 | medium | patch | Verified mutation gap: renewal post-lookup validation can be removed while all tests pass. Add acknowledged-but-invalid lookup fixtures and no-replay assertions. |
+| R01 | medium | resolved | Repository remove-and-append order differed from client in-place replacement. Corrected model and independent service fixture; original :12 receipt reconciliation retained. |
+
 ## Verification
 
 Run focused maintenance, preload, authority installer, custody binding and credential cleanup unittests. Independently inspect the full diff and retained installed metadata/health and preservation evidence. Never rerun completed installer or installed contract cases.
+
+Installed maintenance evidence: [new operation journals](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/operations/), [read-only baseline](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/reconciliation.json). Original ten receipts plus nine new operations are retained at revision `e19e68c9537246148141ec9d3841cfe4:19`. Profile, two hosts/two callers and four statuses expire at `2026-10-28T23:51:51.830725Z`. Same-identity data/metadata leases expire at `2026-10-28T23:54:17.544944674Z` / `2026-10-28T23:54:22.570603711Z`; replacement was unnecessary. Both final-image preload completions reconciled from copied original evidence and confirmed absence, with no creation/pull/deletion. Focused offline verification passes 75 tests; administration-response limit is 16 MiB and unfenced metadata publication is disabled.
+
+The first maintenance pass stopped after two acknowledged owner operations because the client expected in-place array replacement; the actual repository removes and appends records. The source model and independent service fixture were corrected. Read-only state reconciliation proved both committed operations and renewals; continuation used the same unchanged plan, skipped those effects and completed only the remaining operations. The original stop/blocker evidence is retained. No uncertain effect was repeated.
+
+Concurrent owner version-control work advanced HEAD to `b742b1b7a496ac72d6961ca6db5213d3df42d234` and recorded early source changes with unrelated submodule work. This session staged/committed nothing and preserves the original full baseline and all unrelated work.
+
+Review hardening preserves the frozen intent and installed outcomes. Internal corrections will revalidate deterministic plans/current windows, retain verified maintenance history, reject original runtime/policy drift, reconcile all preload identity sources, and exercise negative capability/renewal paths. Review fixes are source-only; never rerun installed effects for them.
+
+Final review resolution: all 17 independently reported findings were fixed in source and covered by executed passing tests; no code finding was deferred. The final focused run passed 90 tests (30 maintenance, 9 preload, 27 binding, 17 authority administration, 7 cleanup). Tests cover two cycles retaining 28 receipts, mutated plans, exact native collection ordering, original runtime/policy/controller drift, expiry during recovery/rollout, fractional native caps, negative effective permissions, uncertain renewal readback, legacy preload stores/journal conflicts and credential hash exposure. [Resolution and executed tests](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/review-resolution.json).
+
+Final read-only [verification](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/final-verification.json) confirms revision :19, all nine health checks, unchanged original keys/metadata/policies, all 194 original public evidence files, all 42 nulls, and zero literal/base64/hash credential exposure. No installed maintenance was rerun for review fixes.
+
+The new next-baseline helper was exercised read-only against current public facts and correctly withheld export on a later unrelated Secret resourceVersion change: `kubesphere-system/kubesphere-sa-token`, original UID retained. Public managed fields show a kube-apiserver last-used label update at `2026-10-28T00:00:02Z`, after the initial successful 39-check completion verification. No value was read or mutation performed for this diagnosis. [Exact owner/action blocker](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/next-maintenance-baseline-blocker.json) requires cluster credential-owner reconciliation and an accepted public preservation baseline before the next cycle; no baseline was fabricated or issued. The completed isolated maintenance remains verified. Future metadata publication also remains disabled pending a verified provider fence; seven-day credential maximums and original four technical key windows are unchanged.

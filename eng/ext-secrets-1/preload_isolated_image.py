@@ -43,6 +43,17 @@ def reconcile_completion(installer, image, name, suffix):
     journal_path = evidence / ('preload-journal-' + suffix + '.json')
     old_resources = getattr(installer, 'resources', [])
     original_started = any(item.get('name') == name or item.get('reference', '').endswith('/' + name) for item in old_resources)
+    recorded_created = getattr(installer, 'created', [])
+    if not isinstance(recorded_created, list) or any(not isinstance(item, str) for item in recorded_created):
+        raise RuntimeError('preload-original-resource-references-malformed')
+    references = list(recorded_created)
+    references_path = evidence / 'created-resource-references.json'
+    if references_path.exists():
+        retained_references = json.loads(references_path.read_text())
+        if not isinstance(retained_references, list) or any(not isinstance(item, str) for item in retained_references):
+            raise RuntimeError('preload-original-resource-references-malformed')
+        references.extend(retained_references)
+    original_started = original_started or any(reference.endswith('/' + name) for reference in references)
     if not any(path.exists() for path in (identities_path, pull_path, journal_path)) and not original_started:
         return False
     if not identities_path.exists() or not pull_path.exists():
@@ -50,6 +61,12 @@ def reconcile_completion(installer, image, name, suffix):
     identities = json.loads(identities_path.read_text())
     secret = require_creation_identity(identities.get('secret'))
     pod = require_creation_identity(identities.get('pod'))
+    if journal_path.exists():
+        journal = json.loads(journal_path.read_text())
+        if (journal.get('image') != image or journal.get('name') != name or journal.get('phase') != 'PullStarted'
+            or journal.get('secretIdentity') != secret or journal.get('podIdentity') != pod
+            or any(journal.get(key) not in (None, 'Started', 'Acknowledged') for key in ('podCleanupPhase', 'secretCleanupPhase'))):
+            raise RuntimeError('preload-original-journal-conflicts-with-retained-identities-or-intent')
     retained = json.loads(pull_path.read_text())
     if (retained.get('image') != image or not isinstance(retained.get('node'), str) or not retained['node']
         or not exact_native_image(retained.get('nativeImageId'), image)

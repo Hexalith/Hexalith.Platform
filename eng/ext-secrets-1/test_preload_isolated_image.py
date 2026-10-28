@@ -91,6 +91,33 @@ class PreloadOwnershipTests(unittest.TestCase):
         auth.assert_not_called()
         self.instance.create.assert_not_called()
 
+    def test_legacy_created_reference_stores_block_creation_without_identity_or_pull_evidence(self):
+        reference = 'Secret/' + image.NS + '/ext-secrets-1-preload-' + SUFFIX
+        for store in ('memory', 'file'):
+            with self.subTest(store=store):
+                self.instance.created = [reference] if store == 'memory' else []
+                if store == 'file':
+                    durable_write(self.evidence / 'created-resource-references.json', [reference])
+                with patch.object(image, 'distribution_auth') as auth, patch.object(image, 'kube') as native:
+                    with self.assertRaisesRegex(RuntimeError, 'original-create-identities-and-pull-evidence-required'):
+                        image.preload(self.instance, IMAGE)
+                    auth.assert_not_called()
+                    native.assert_not_called()
+                    self.instance.create.assert_not_called()
+
+    def test_conflicting_original_preload_journal_denies_even_with_evidence_and_absence(self):
+        identities, _ = self.retained()
+        original = {'image': IMAGE, 'name': 'ext-secrets-1-preload-' + SUFFIX, 'phase': 'PullStarted',
+                    'secretIdentity': identities['secret'], 'podIdentity': identities['pod']}
+        for changes in ({'image': IMAGE + 'foreign'}, {'name': 'foreign'}, {'phase': 'SecretCreationStarted'},
+                        {'secretIdentity': dict(identities['secret'], resourceVersion='999')}, {'podIdentity': {'uid': 'foreign', 'resourceVersion': '21'}}):
+            durable_write(self.evidence / ('preload-journal-' + SUFFIX + '.json'), dict(original, **changes))
+            with self.subTest(changes=changes), patch.object(image, 'kube') as native:
+                with self.assertRaisesRegex(RuntimeError, 'original-journal-conflicts'):
+                    image.preload(self.instance, IMAGE)
+                native.assert_not_called()
+                self.instance.create.assert_not_called()
+
     def test_replacement_or_still_present_original_blocks_without_cleanup_replay(self):
         self.retained()
         for output, reason in [(b'foreign-uid 99', 'replaced'), (b'original-secret-uid 17', 'cleanup-not-confirmed')]:
