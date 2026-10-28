@@ -354,6 +354,50 @@ The completed maintenance is retained in [custody-maintenance-20261027T234210095
 
 The later read-only next-baseline export stopped on an unrelated Secret resourceVersion change: `kubesphere-system/kubesphere-sa-token`, UID unchanged. Public managed fields record only a kube-apiserver `kubernetes.io/legacy-token-last-used` label update at `2026-10-28T00:00:02Z` after the successful completion verification. No Secret value was read or changed for this diagnosis. The cluster credential owner must reconcile that metadata refresh and establish an accepted public preservation baseline before the next cycle; no replacement baseline was issued and that Secret was not edited. The installed isolated deadlines and receipts remain verified.
 
+### Bounded next-baseline reconciliation input
+
+`emit_verified_baseline(..., public_metadata_acceptance=<absolute-owner-record-path>)` is a coordinator-only, offline export API. Its default remains strict. `inspect` and `maintain` have no acceptance option and retain their existing drift checks. No completed maintenance is replayed to reconcile this blocker.
+
+The optional input accepts only `Secret/kubesphere-system/kubesphere-sa-token`, UID `a97fa037-798b-46b6-9232-76e600480142`, resourceVersion `36774577` to `37223806`, with the exact kube-apiserver label refresh at `2026-10-28T00:00:02Z`. It requires this exact JSON schema; all paths are absolute and each `sha256` is the lowercase SHA256 of the named public file. The placeholders below describe owner input and are not evidence or an authorized acceptance record.
+
+```json
+{
+  "schema": "EXT-SECRETS-1.public-metadata-acceptance.v1",
+  "ownerIdentity": "<responsible cluster credential / Kubernetes administration owner>",
+  "historicalEvidence": {
+    "sourceDescription": "<origin and coverage of actual historical write-scope evidence>",
+    "files": [{"path": "<public historical evidence file>", "sha256": "<sha256>"}]
+  },
+  "retainedBlocker": {"path": "<original baseline>/next-maintenance-baseline-blocker.json", "sha256": "<sha256>"},
+  "currentPublicMetadata": {"path": "<new evidence>/current-public-metadata.json", "sha256": "<sha256>"},
+  "transition": {
+    "reference": "Secret/kubesphere-system/kubesphere-sa-token",
+    "originalIdentity": {"uid": "a97fa037-798b-46b6-9232-76e600480142", "resourceVersion": "36774577"},
+    "observedIdentity": {"uid": "a97fa037-798b-46b6-9232-76e600480142", "resourceVersion": "37223806"},
+    "label": {"name": "kubernetes.io/legacy-token-last-used", "value": "2026-10-28"},
+    "managedField": {
+      "manager": "kube-apiserver", "operation": "Update", "apiVersion": "v1",
+      "fieldsType": "FieldsV1", "time": "2026-10-28T00:00:02Z",
+      "fieldsV1": {"f:metadata": {"f:labels": {"f:kubernetes.io/legacy-token-last-used": {}}}}
+    }
+  },
+  "attestation": {
+    "ownerAccepted": true,
+    "historicalEvidenceEstablishesOnlyLabelRefresh": true,
+    "noOtherSecretFieldChanges": true,
+    "noInterveningWrites": true
+  }
+}
+```
+
+The owner must supply actual historical scope evidence establishing that this was the only write and only the named label changed, with no other Secret field changes or intervening writes. That owner acceptance is the trust boundary: this code verifies schema, exact scope and file integrity; it cannot verify the owner's identity, the evidence's authenticity or the attestation's truth. Hashes establish integrity, never truth or authenticity. Current managed fields plus original/current UID/resourceVersion cannot establish historical scope or credential-value equality. Designating another copy of current metadata as historical evidence does not meet the owner requirement. All supplied evidence must be public and contain no credential values.
+
+`currentPublicMetadata` contains the metadata object only, matching the retained blocker's `publicMetadata` exactly; only `creationTimestamp` may be present when absent from that blocker. The manager, time, label and managed-field scope must remain exact. Wrong identities, a later refresh, another resource, any other metadata change or independent preservation drift denies export before output creation. There is no wildcard or ignore-label rule.
+
+An accepted export retains all 19 receipts, original credential identities, key windows, policies, runtime constants and 42 null inputs. `accepted-public-metadata-difference.json` and the verification manifest retain the complete owner record, accepted difference, trust limitation and source fingerprints. The original maintenance plan, all nine owner-operation journals and the retained public renewal/runtime/completion journals are pinned, including the legacy `operations/` layout. Provenance validation and output reuse recheck accepted evidence; reuse also requires the same current Kubernetes preservation facts. Later baselines retain the full evidence fingerprint chain.
+
+The real reconciliation remains blocked: historical scope evidence has not been found, so no real acceptance or replacement baseline is authorized by this schema. The cluster credential / Kubernetes administration owner must provide the record and historical evidence above. Fresh public authority, health, runtime and Secret identities can be observed without credential reads; authenticated lease, key metadata and provider-policy observations remain **last verified** from the completed maintenance. Its owner deadline is `2026-10-28T23:51:51.830725Z`; retained data/metadata credential expiries are `2026-10-28T23:54:17.544944674Z` and `2026-10-28T23:54:22.570603711Z`, and retained successor technical expiries remain on 2026-11-03 at 18:29 UTC. Reconciliation grants no validity extension or availability claim.
+
 Focused offline verification:
 
 ```bash
