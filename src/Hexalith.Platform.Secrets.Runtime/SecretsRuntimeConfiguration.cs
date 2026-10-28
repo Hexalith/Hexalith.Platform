@@ -89,12 +89,15 @@ public sealed record SecretsRuntimeConfiguration
 
     /// <summary>Loads a reference file. An unreadable file returns null and copies only known fields.</summary>
     public static SecretsRuntimeConfiguration? Load(string path)
+        =>Load(path,static value=>BoundedRegularFile.UseUtf8Async(value,1024*1024,Parse));
+    internal static SecretsRuntimeConfiguration? Load(string path,Func<string,Task<SecretsRuntimeConfiguration?>> acquire)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         try
         {
-            return BoundedRegularFile.UseUtf8Async(Path.GetFullPath(path),1024*1024,Parse).GetAwaiter().GetResult();
+            return acquire(Path.GetFullPath(path)).GetAwaiter().GetResult();
         }
+        catch (OperationCanceledException) { return null; } // This synchronous overload has no caller token; acquisition owns the finite deadline.
         catch (UnauthorizedAccessException) { return null; }
         catch (IOException) { return null; }
     }

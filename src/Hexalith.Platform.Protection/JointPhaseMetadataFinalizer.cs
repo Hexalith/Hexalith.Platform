@@ -34,12 +34,13 @@ public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,
             observations.Add(new JsonObject { ["caseId"]=caseId,["evidenceSha256"]=Convert.ToHexStringLower(SHA256.HashData(bytes)) });
         }
         JsonObject result;
-        if(await ProtectedArchiveStore.ExistsAsync(index,token).ConfigureAwait(false))
+        if(await ImmutableFileArchive.ReadRetainedCandidateAsync(index,1024*1024,token).ConfigureAwait(false) is { } retainedIndex)
         {
-            result=SecretsProof.Parse(System.Text.Encoding.UTF8.GetString(await Read(index,token).ConfigureAwait(false)))!;
+            CustodyBindingContract.RejectDuplicateProperties(retainedIndex);result=SecretsProof.Parse(System.Text.Encoding.UTF8.GetString(retainedIndex))!;
             if(result?["payload"] is not JsonObject old || old["requestSha256"]?.GetValue<string>()!=QualificationProtocolSchema.Digest(request)
                 || old["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest || !JsonNode.DeepEquals(old["observations"],observations)
                 || !signer.VerifyData(QualificationProofVerifier.CanonicalBytes(old),Convert.FromBase64String(result["signature"]!.GetValue<string>()),HashAlgorithmName.SHA256,DSASignatureFormat.Rfc3279DerSequence)) return null;
+            await ImmutableFileArchive.PublishAsync(index,retainedIndex,token).ConfigureAwait(false);
         }
         else
         {

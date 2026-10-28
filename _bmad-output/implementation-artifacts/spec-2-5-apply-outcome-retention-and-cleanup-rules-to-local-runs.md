@@ -669,3 +669,27 @@ Scope: 14 spec code-map runtime files in `references/Hexalith.Builds` (3052386..
 - `low` `termination` always `Unavailable()`, `hold-deadline` always "unavailable", `withdrawn` still accepted on read, `unused-manifest-for-exact-run` sentinel (evidence is rejected without a manifest), null `state.Workspace` skipping the ownership check (legacy state), metadata-copy destination symlink (not shown reachable), lock-order/size/style/newline nits — honest or cosmetic, not worth the added code.
 
 Patches applied on Builds branch `review/2-5-patches` (commit 4f8f4c0, scratch worktree, unpushed): outcome mapping now mirrors `TestResultWriter`; `ValidateInvalidOptionSetsReturnUsageAsync` added. `PlatformManifestCommandTests` 79/79 and `LocalRunLifecycleTests` 55/55 pass (one load flake on first run). The decision-needed item remains open, so status stays `review`.
+
+### Review Findings — chunk 1 production code (2026-10-28)
+
+Scope: Builds `3052386..e129a29` (Tooling + Module.Cli production files) plus Platform contract/provisioning/lifecycle test. Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor. Builds tests (chunk 2) not yet reviewed.
+
+- [x] [Review][Patch] `TryCanonicalizeRetainedProperties` splits `AdditionalProperties` without `RemoveEmptyEntries`, so a trailing `;` yields an empty entry and a spurious HXW006 [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/SourceMappingReconciliationTask.cs:350] — low
+- [x] [Review][Defer] `down` for a well-formed run ID with no state may create `diagnostics/<id>` plus lock files before discovering nothing to clean [CompositionEngine.DownOwnedCoreAsync] — deferred: unverified, medium if true; check by running `down` on an unknown run ID and listing the diagnostics directory
+- [x] [Review][Defer] `list` derives `FailureRunIds` from exit code while `TestResultWriter` uses `FailureRetained`, so the two can disagree for an unretained failed run [CompositionRunListing.cs] — deferred: unverified, low-to-medium; check by comparing outputs for a CI failed run
+- [x] [Review][Defer] Live lifecycle proof (`PlatformLocalRunLifecycleTests`) never asserts that `diagnostics[].reference` files exist with matching `contentIdentity` (AC2), has no cancellation scenario, and is skipped without `HEXALITH_PLATFORM_LIFECYCLE_LIVE=1` — deferred: evidence under `evidence/2-5/` is the acceptance path; Builds suites cover the in-process behavior
+- [x] [Review][Defer] `CompositionDurableFlush.Flush` (fsync failure path) and the missing parent-directory fsync after `File.Move` have no test — deferred: Linux-only failure path; add a `/dev/null`-handle test
+- [x] [Review][Defer] Unverified edge cases: macOS argv with empty argument shifting the environment cursor; Windows `OpenProcess` denial on protected same-user processes forcing `verified=false`; Windows `OpenWithoutBlocking` reporting absence as IOException; `owners/` receipts never deleted after verified release; `Directory.Move` onto an empty destination in `BuildPreparationService` — deferred: each needs a platform-specific repro; unverified, medium if true
+- [x] [Review][Defer] `suite.py` / `startup-verify.sh` lifecycle hooks have no test that runs them outside the skipped live test — deferred: low
+
+#### Rejected
+- `false` Validator `GetProperty`/`Deserialize` can throw outside `catch (JsonException)`: `IsSelectedTestRun(root)` runs earlier in the same method and rejects artifacts missing those members.
+- `false` Completed artifact with leftovers now passes: `CleanupVerified` is consumed by G4P0 and readiness validators, which is the intended gate.
+- `low` Validate `--environment`/`--manifest` CLI combinations untested: already covered by `ValidateInvalidOptionSetsReturnUsageAsync` on Builds branch `review/2-5-patches`.
+- `false` Absent receipt reported as unverified makes unrelated cleanup fail: only unreadable peer claim files trigger `onUnverified`, and refusing to prove ownership there is deliberate.
+- `low` Duplicate `PropertySuffix` throws in `permitted.Add`; unrooted `DefiningProjectDirectory`; `ReportStartupTimeoutAsync` and `RefusePreparedRunAsync` I/O exceptions; `gate.Failed` branch ordering; unlocked-cleanup fallthrough — no reachable trigger shown, fix adds guards.
+- `low` Contract amended in place to v1: owner approval recorded 2026-10-25; sole owner, no re-binding ceremony needed.
+- `low` Misleading retention `reason` text and changing `recordedAt`; `owner=` unescaped; sentinel manifest; `hold-deadline` unavailable; style nits — cosmetic or already rejected in earlier reviews.
+- `low` New `prepare-build`, `validate --environment`, HXE149 outside the spec's Code Map: the scope growth is already recorded in earlier review sections.
+
+Patch applied on Builds branch `review/2-5-patches` (commit 992850b, scratch worktree, unpushed): `RemoveEmptyEntries` added and `Version=1.0.0;` theory case; `RetainedProjectVersionMetadataMatchesCatalogAsync` 4/4 pass. Chunk 2 (Builds tests) not reviewed, so status stays `review`.

@@ -34,9 +34,9 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
         _=await originals.BeginAsync("joint-phase-command",requestId,request,token).ConfigureAwait(false);
         if(await originals.LookupResultAsync("joint-phase-command",requestId,token).ConfigureAwait(false) is { } retained) return retained;
         string originalPath=Path.Combine(evidenceDirectory,requestId,"owner-original.json");
-        if(await ProtectedArchiveStore.ExistsAsync(originalPath,token).ConfigureAwait(false))
+        if(await ImmutableFileArchive.ReadRetainedCandidateAsync(originalPath,1024*1024,token).ConfigureAwait(false) is { } retainedIndex)
         {
-            var recovered=JsonNode.Parse(await BoundedRegularFile.ReadAsync(originalPath,1024*1024,token).ConfigureAwait(false))!.AsObject();var old=recovered["payload"]!.AsObject();
+            CustodyBindingContract.RejectDuplicateProperties(retainedIndex);var recovered=JsonNode.Parse(retainedIndex)!.AsObject();var old=recovered["payload"]!.AsObject();
             if(old["requestSha256"]?.GetValue<string>()!=QualificationProtocolSchema.Digest(request) || old["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest
                 || old["observations"] is not JsonArray items || !items.Select(value=>value!["caseId"]!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal)
                 || !ownerSigner.VerifyData(QualificationProofVerifier.CanonicalBytes(old),Convert.FromBase64String(recovered["signature"]!.GetValue<string>()),HashAlgorithmName.SHA256,DSASignatureFormat.Rfc3279DerSequence)) return null;
@@ -46,6 +46,7 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
                 byte[] actual=await BoundedRegularFile.ReadAsync(Path.Combine(evidenceDirectory,requestId,file),1024*1024,token).ConfigureAwait(false);
                 if(Convert.ToHexStringLower(SHA256.HashData(actual))!=item["evidenceSha256"]!.GetValue<string>()) return null;
             }
+            await ImmutableFileArchive.PublishAsync(originalPath,retainedIndex,token).ConfigureAwait(false);
             await originals.RetainAsync("joint-phase-command",requestId,recovered,token).ConfigureAwait(false);return recovered;
         }
         var observations=new JsonArray();
