@@ -1435,3 +1435,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
   summary: Diagnose the pre-existing isolated provisioning cleanup test failure while preserving uncertain-issuance reconciliation and original credentials.
   evidence: Broad current Python466/467 and authenticated-before replay both fail test_review_provisioning.ReviewProvisioningTests.test_failed_secret_creation_revokes_only_new_token_and_policy with the same final native-call mismatch. Provisioning source/tests are unchanged by source23. Retained exact failure is /tmp/story54-round23-m5osbjqz/preexisting-provisioning-before.log; do not relabel the aggregate green or weaken safe cleanup.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs (2026-10-28)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Live lifecycle proof (`PlatformLocalRunLifecycleTests.cs:113`) does not assert failure retention, cleanup status or referenced reports after explicit `down`; read the written result first to learn the expected post-down values (medium, unverified).

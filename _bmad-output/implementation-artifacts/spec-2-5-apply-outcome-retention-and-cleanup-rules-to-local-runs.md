@@ -693,3 +693,24 @@ Scope: Builds `3052386..e129a29` (Tooling + Module.Cli production files) plus Pl
 - `low` New `prepare-build`, `validate --environment`, HXE149 outside the spec's Code Map: the scope growth is already recorded in earlier review sections.
 
 Patch applied on Builds branch `review/2-5-patches` (commit 992850b, scratch worktree, unpushed): `RemoveEmptyEntries` added and `Version=1.0.0;` theory case; `RetainedProjectVersionMetadataMatchesCatalogAsync` 4/4 pass. Chunk 2 (Builds tests) not reviewed, so status stays `review`.
+
+### Review Findings — chunk 2 tests and platform side (2026-10-28)
+
+Reviewed the Builds tests (`test/` without `test/fixtures`), `docs/contracts/test-environment-v1.md`, `suite.py`, `startup-verify.sh` and `PlatformLocalRunLifecycleTests.cs`: 6,273 diff lines, 40 files. All four layers completed. Result: **0 decision-needed, 0 patch, 1 defer, 11 rejected** (the one patch was refuted when applied).
+
+- [x] [Review][Patch→Rejected] The "no durable state write once the stopping budget is exhausted" assertion was removed (VG) — refuted on application: restoring `File.Exists(PathFor(plan.RunId)).ShouldBeFalse` fails the `timeout` and `observed` scenarios, because those paths legitimately write run state (terminal metadata has its own finite allowance). The removal was deliberate; no change made.
+- [x] [Review][Defer] The live proof does not assert that failure retention and diagnostics survive explicit `down` [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRunLifecycleTests.cs:113] — deferred: after `DownAsync` it asserts only `terminal.recordedAt`/`outcome`/`cause`, not `retention.disposition`, the cleanup status or that referenced reports still exist. The expected post-down values (`failure-retained` vs a released state) must be read from the written result before they can be pinned. The medium severity is unverified. The live lane is gated by `HEXALITH_PLATFORM_LIFECYCLE_LIVE`, and the ordinary tests cover retention directly.
+
+**Rejected**
+- `low` Live test: `current!.FullName` NRE, hard-coded `bin/Debug/net10.0`, unvalidated `HEXALITH_DAPR_HOME`, `CancellationToken.None`, finally-assertions masking the original failure, unseeded peer-key cleanup — gated developer lane that fails loudly; fixes add guards.
+- `low` `suite.py` lifecycle branch: unset report-path `KeyError`, typo'd profile takes the success path, fixed 120 s sleep — fixture-only, the declaring test controls the profile names.
+- `low` Missing `OperatingSystem.IsWindows` / symlink-privilege guards on `mkfifo` and `CreateSymbolicLink` tests — Windows native runtime is unqualified by owner decision Q3 and all CI runs on ubuntu.
+- `low` Fixed `Task.Delay` sleeps and load-sensitive bounds — known suite-wide pattern recorded in the run notes.
+- `low` `TamperedCleanupProofIsRefusedAsync` omits some tamper shapes; `readiness.Replace` is not asserted to match; admission/hold unavailability not asserted by name — extra coverage depth; the validators are exercised by the existing rows.
+- `low` Native-discovery test leaks a child if the second `Start()` throws; `HasExited` asserted without a wait; claim-store hold-mode child may lack the `claims` directory — unlikely, not seen failing.
+- `low` `CompositionSdkProcess`: empty env value wins the `??` chain, `DOTNET_ROOT` from a symlinked `dotnet`, two-part `global.json` version — the host resolves its own root; not shown reachable.
+- `low` Live proof has no cancellation scenario; no package-mode live proof — the ordinary lane covers both and the spec's Platform task does not name them.
+- `low` Contract v1 amended in place with a self-attested 2026-10-25 approval, "now" wording, missing exit-code table — process-only; sole owner approval is recorded.
+- `low` `startup-verify.sh` argument guard and undocumented exit code 42 — fixture script.
+
+Chunk 2 review complete: no patches remain. Chunk 1 (Builds production source) was reviewed earlier; status moves to `done`.
