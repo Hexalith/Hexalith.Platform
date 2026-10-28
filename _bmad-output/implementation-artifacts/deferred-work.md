@@ -1380,3 +1380,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-custody-current-inventory-binding.md`
   summary: B09 — Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB.
   evidence: Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB. Current state is small and verified; align client bounds before retained audit reaches that cap.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs (2026-10-28)
+
+- Live lifecycle test and `suite.py` `lifecycle-*` profiles run only with `HEXALITH_PLATFORM_LIFECYCLE_LIVE=1`; add a Python unit test for the profile branches or a scheduled live job.
+- AC2 live proof does not resolve `diagnostics[].reference`/`contentIdentity` or scan for credentials; confirm Builds `TestResultWriterTests` cover it.
+- Unverified (medium if true): late `WriteStateAsync` resurrecting state after concurrent `down`; fabricated identities in `RecordTestOutcomeAsync` without owner state; `down` of an unknown run id leaving diagnostics dir + `cleanup.lock`; `onOutcome` failure skipping archival; removed archive-failure downgrade of a passing result; unscreened `justification`/leftover ids in `test-result.json`.

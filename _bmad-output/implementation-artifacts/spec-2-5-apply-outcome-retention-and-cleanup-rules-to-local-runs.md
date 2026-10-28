@@ -651,3 +651,21 @@ The final reviewed run passed **1/1 with all four scenarios in 384.682 seconds**
 All ten independent review findings and the follow-up observation correction are resolved without product lifecycle changes or new deferrals. Original logs are explicitly retained by Git; new helper executions are source-hash bound. Runtime, retained and relocated audits pass, including five negative controls for missing archives, lost failure history, changed peer baseline, missing cleanup attempts and mismatched prior source fingerprints. The first 423.363-second attempt and its host observations remain separately accessible. See [final verification](evidence/2-5/live-requalification-20261028/verification.json) and [review triage](evidence/2-5/live-requalification-20261028/review-triage.json).
 
 Qualification remains **source-live-qualified**, sprint status **review**. Package/native boundaries, frozen intent and earlier decisions remain unchanged. No staging, commit or push was performed.
+
+### Review Findings — scoped code review (2026-10-28)
+
+Scope: 14 spec code-map runtime files in `references/Hexalith.Builds` (3052386..HEAD) plus `PlatformLocalRunLifecycleTests.cs` and `suite.py`; Builds tests, docs and evidence excluded.
+
+- [ ] [Review][Decision] `prepare-build` command, `BuildPreparation` result property and `validate --environment` (with `--manifest` made optional) are outside the story's code map — keep here, or move to the story that owns them? (likely swept in by a concurrent session) [ModuleCommandApplication.cs]
+- [x] [Review][Patch] Terminal-outcome check maps every non-success exit to `cancelled`, but `TestResultWriter` publishes `failed` for non-cancelled failures; mirror the writer's mapping (Success→passed, Cancelled→cancelled, else failed) so automatic cleanup does not report spurious HXT008 [ModuleCommandExecutionService.cs:1360]
+- [x] [Review][Patch] No tests for `validate` argument guards (bare `validate`, `--environment` + `--manifest`, `--environment` + `--adoption`, blank `--environment`); add a theory asserting exit `UsageOrManifest` / HXC001 [PlatformManifestCommandTests.cs]
+- [x] [Review][Defer] Live lifecycle test and `suite.py` `lifecycle-*` profiles only run under `HEXALITH_PLATFORM_LIFECYCLE_LIVE=1`; no always-on check of the profile branches — deferred: needs real Docker/Dapr; add a Python unit test for the profile branches or a scheduled live job
+- [x] [Review][Defer] AC2 live proof does not resolve each `diagnostics[].reference`/`contentIdentity` or scan retained files for credentials — deferred: unverified whether Builds unit tests cover it; settle by reading `TestResultWriterTests`
+- [x] [Review][Defer] Unverified edge claims (medium if true): late `WriteStateAsync` can resurrect state after concurrent `down`; `RecordTestOutcomeAsync` mints fresh identities when no owner state/bindings exist; `down` of an unknown run id leaves a diagnostics dir + `cleanup.lock`; `onOutcome` callback failure skips archival; removed archive-failure downgrade of a passing result; free-text `justification`/leftover ids written to `test-result.json` unscreened — deferred: each needs a targeted repro against `CompositionEngine`/`TestResultWriter`
+
+#### Rejected
+- `false` Corrupt `selected-test.json` crashes `list`: `CompositionDocumentStore.ReadIfExistsAsync` rewraps `JsonException` as `IOException`, which the listing catches.
+- `false` Fractional timing makes valid owners unverifiable: `EffectiveSeconds` is `int`, and the evidence validator uses the same exact equality.
+- `low` `termination` always `Unavailable()`, `hold-deadline` always "unavailable", `withdrawn` still accepted on read, `unused-manifest-for-exact-run` sentinel (evidence is rejected without a manifest), null `state.Workspace` skipping the ownership check (legacy state), metadata-copy destination symlink (not shown reachable), lock-order/size/style/newline nits — honest or cosmetic, not worth the added code.
+
+Patches applied on Builds branch `review/2-5-patches` (commit 4f8f4c0, scratch worktree, unpushed): outcome mapping now mirrors `TestResultWriter`; `ValidateInvalidOptionSetsReturnUsageAsync` added. `PlatformManifestCommandTests` 79/79 and `LocalRunLifecycleTests` 55/55 pass (one load flake on first run). The decision-needed item remains open, so status stays `review`.
