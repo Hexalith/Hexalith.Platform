@@ -2,7 +2,7 @@
 title: 'EXT-SECRETS-1 authority administrator channel hardening (R23B-6)'
 type: 'bugfix'
 created: '2026-10-28'
-status: 'in-progress'
+status: 'done'
 route: 'oneshot'
 review_loop_iteration: 0
 context: []
@@ -44,3 +44,8 @@ Preserve all sealed source23 evidence, existing baseline failures and unrelated 
 - Review patch verification supersedes the earlier 88-case result: complete Authority suite **93/93**, including all 67 original cases and 26 new cases. Final logs: `authority-tests-5.log`, `build-authority-2.log`, `build-tests-9.log`. Review-edit compilation attempts 7/8 remain retained as failed diagnostics; final builds have zero warnings/errors.
 - Dedicated, admission-owned LongRunning tasks isolate filesystem stalls from shared HTTP/deadline workers. A separate child process forced and asserted a maximum of two shared pool workers: all three open/read/disposal stall cases passed, with live authenticated fixture queries and recovery. `constrained-pool-tests-1.log` retains the runner option deprecation notice and nonzero selection (3/3).
 - Review patches add normalized-empty mount refusal (whitespace/BOM-only), a single elapsed timeout interval with stated scheduling tolerance, synchronously completed saturation refusal, unique original operation IDs, server request-completion barriers, post-completion audit absence, captured trace logs and synthetic late faults following both timeout and request cancellation. Sentinels remain in memory only; boolean assertions never print them.
+
+- Final review follow-up confirmed R1–R5 and then R6 after the observation barrier adjustment. All six findings are resolved; none deferred. The late-fault test now waits for the actual fault-observation continuation, rather than a stream/open callback.
+- Final accepted verification after that last adjustment: Authority **93/93**, constrained two-shared-worker process **3/3**; `authority-tests-6.log`, `constrained-pool-tests-2.log`, `build-authority-3.log`, `build-tests-10.log`. Complete review/build/preservation summary with source, dependency-binary and original-log hashes: `docs/implementation/ext-secrets-1-authority-admin-channel-hardening-2026-10-28.json`.
+- External concurrency exception: after verification, another session staged this scope with story 2.5. This task attempted to unstage only its seven paths, but an active `.git/index.lock` prevented any change. The external session created `4e35f561b022caede7093f0c3f4301e3dcbd1e11` (`fix: story 2.5`) including the R23B-6 files. Its committed source matches the final tested bytes. No staging, commit or push command was run by this task. The external history and unrelated edits were preserved; final spec/evidence updates remain local.
+- This spec is done for R23B-6 only. Broad story 5.4 and accepted dependency records retain their status and blockers; the historical deferred finding remains preserved with its contemporaneous evidence. No installation, qualification, consumer activation or maintenance occurred. All 204 original handoff evidence files are unchanged. Prior statements that HEAD/index were unchanged describe checks before the external session's Git actions; the final report explicitly records the exception.

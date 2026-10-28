@@ -1,0 +1,196 @@
+{
+  "schema": "platform.story-5.4.operational-acceptance-inputs.v1",
+  "status": "BlockedNotSubmitted",
+  "purpose": "Preparation dossier only; not a dependency record, reduced contract, replacement acceptance packet or executable qualifier.",
+  "completeReplacementPacket": false,
+  "acceptedReplacementCommit": null,
+  "proposedSharedImmutablePlatformTarget": null,
+  "observedSourceCommit": "4e35f561b022caede7093f0c3f4301e3dcbd1e11",
+  "sourceObservationIsTargetAcceptance": false,
+  "explicitPlatformIntegrationDate": null,
+  "explicitProtectionIntegrationDate": null,
+  "exactReplacementVerificationCommands": {
+    "EXT-SECRETS-1": null,
+    "EXT-HOST-1": null,
+    "EXT-PROTECTION-1": null
+  },
+  "installedArtifacts": {
+    "custodyConfiguration": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "hostProfile": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "protectionProfile": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "providerProfile": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "authorityEnrollment": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "publicTrust": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "executorAnchor": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "observerAnchor": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "enrollmentAnchor": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "installedImageInventory": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "physicalQualificationPlan": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "jointConfiguration": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    },
+    "launchInventory": {
+      "path": null,
+      "sha256": null,
+      "enrollmentReference": null
+    }
+  },
+  "independentCurrentInstallationProofReference": null,
+  "records": {
+    "EXT-SECRETS-1": {
+      "acceptedRecord": {
+        "Owner": "Project owner (user declaration 2026-10-07), acting as Platform Maintainer",
+        "Repository": "`Hexalith.Platform`",
+        "RequiredArtifact": "Versioned secret custody for Provider credentials, per-tenant KEKs and DigestKeys, tenant migration-epoch/directory-effect capability signing keys with exact revocation state, the reserved-system security-observation digest key, per-export envelope keys, manifest-signing keys/public trust anchors, trusted-envelope HMAC keys, and decision-authority verification anchors/trust profile. Decision-approval signing keys remain outside Agents and platform-host custody under the independently governed issuer named by that profile; the profile binds issuer, stable actor/authority-role sources for Product, Governance, Security, Architecture, and named maintainers, key-use purpose, freshness/expiry/revocation, and forbids the Release Operator recorder or platform key custodian from requesting or minting approval evidence. The trusted-envelope profile fixes issuer/audience, numeric maximum tag lifetime, clock skew, rotation overlap, command retry/recovery horizon, and `ReplayRecordRetention` no shorter than the greater of tag lifetime plus skew plus overlap and that recovery horizon, consumed by the Agents-owned reserved-`system` `TrustedEnvelopeReplay(Issuer, DeliveryNonce)` aggregate whose record binds the authenticated target tenant; it also fixes active/revoked key state, emergency revocation, retained digest-key versions, decision-manifest verification, wrap/unwrap/pin/unpin/destroy operations with irreversible receipts, safe rotation/invalidation signals, and a principal-bound `DeliverExportKey(DeliveryId, ExportId, CommitAcknowledgementRevision, RequesterActorId, Purpose, Audience, ExclusiveExpiry, LifecycleVersion, StoreTarget, ContractVersion)` operation whose key bytes are delivered directly to that authenticated principal. Delivery is idempotent by the complete identity and exposes authenticated exact outcome lookup as `Delivered(ObservedAt)`, `NotDelivered(Reason)`, or `Unknown/Unavailable`; the custodian rejects cross-tenant, changed-identity, expired, or revoked authority before release. Only opaque references, versions, public anchors, policy bounds, and configured/not-configured state cross Agents boundaries.",
+        "TargetVersionOrCommit": "`abbec4093715c1db854433119b32d4e16df20d08`",
+        "TargetIntegrationDate": "`2026-10-08`",
+        "CompatibilityContractAndVerificationCommand": "Contract: platform-hosted versioned resolution and custody; AES-256-GCM export-key wrapping; RFC 7515/7518 ES256 manifest signing and offline public-anchor verification; HMAC-SHA-256 trusted-envelope issuance/constant-time verification over AD-30 canonical bytes; target-tenant migration epoch/directory-effect capability issuance and legacy-epoch revocation accepted by the EventStore append guard; system-keyed HMAC of untrusted security-observation fields; independently issued signed decision-governance/authority manifests binding exact contract/version, effective predecessor or root policy, nonempty required approvers, affected evaluations, stable actor/role evidence, freshness, and revocation, with tests proving neither recorder nor custodian can sign/request approval; immutable `LogicalCommandId`, issuer-wide unique per-delivery `DeliveryNonce`, byte-identical replay routed only to domain idempotency, changed-field or cross-tenant nonce reuse rejected in the reserved-system replay namespace, bounded expiry/skew/overlap with retained replay records across the complete bound, emergency-revocation redispatch under a new key and nonce, rotation-triggered safety-verdict invalidation, denied access, destruction receipts, and principal-bound export-key delivery with deterministic identity, idempotent direct release, exact outcome lookup, exclusive-expiry/current-authority rejection before release, immutable Delivered outcome after release, and lost-ack recovery; tests cross expiry and actor revocation immediately before/after release, lookup outage, duplicate retry, cross-tenant substitution, changed purpose/audience/version, and stale/disconnected/restored migration writers while proving secret values do not enter events, projections, responses, logs, traces, or evidence. The live test also proves the non-public replay registrar credential can conditionally append only the exact replay stream/event and is unavailable to public, Workflow, and target-handler paths. Command: `test \"$(git -C ../platform rev-parse HEAD)\" = \"abbec4093715c1db854433119b32d4e16df20d08\" && test -z \"$(git -C ../platform status --porcelain)\" && env EXT_SECRETS_1_RUNTIME_CONFIGURATION=/home/administrator/hexalith-secrets-evidence/ext-secrets-1/acceptance-abbec40-20261018/detached-packet/runtime-reference.json EXT_SECRETS_1_ACCEPTANCE_PACKET=/home/administrator/hexalith-secrets-evidence/ext-secrets-1/acceptance-abbec40-20261018/detached-packet/replacement-acceptance-packet.json pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live -EventStoreSourceRoot ../eventstore -ArtifactsDirectory /tmp/ext-secrets-1-live-20261018-abbec40-artifacts -EvidenceDirectory /tmp/ext-secrets-1-live-20261018-abbec40-evidence`",
+        "RuntimeQualificationBinding": "`{\"configurationSha256\":\"ca019f1325d973919a46b046fcb21be39a4b318800cd59e9378904c365228344\",\"enrollmentAnchorSha256\":null,\"executorAnchorSha256\":null,\"observerAnchorSha256\":null,\"planSha256\":\"16dd493ff0414fea13be95f137d372e54088881550665aa3239a5814a9e862ed\"}`",
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "`Committed`",
+        "ConsumingStories": "5.4, 5.5, 5.6, 5.8, 6.1, 6.3, 6.4, 7.3, 8.1, 8.2, 8.3, 8.4; `RQ-1`"
+      },
+      "acceptedCompleteSectionSha256": "379dd16f8fe7947326d10d5d3a9efbec9e7aeaa741dee3442eb23e78f251f7a4",
+      "proposedReplacement": {
+        "Owner": "Project owner (user declaration 2026-10-07), acting as Platform Maintainer",
+        "Repository": "`Hexalith.Platform`",
+        "RequiredArtifact": null,
+        "TargetVersionOrCommit": null,
+        "TargetIntegrationDate": null,
+        "CompatibilityContractAndVerificationCommand": null,
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "Uncommitted",
+        "ConsumingStories": "5.4, 5.5, 5.6, 5.8, 6.1, 6.3, 6.4, 7.3, 8.1, 8.2, 8.3, 8.4; `RQ-1`"
+      },
+      "proposalStatus": "NotSubmittedMissingCompleteActualOwnerDelivery"
+    },
+    "EXT-HOST-1": {
+      "acceptedRecord": {
+        "Owner": "Project owner (user declaration 2026-10-07), acting as Platform Maintainer",
+        "Repository": "`Hexalith.Platform`",
+        "RequiredArtifact": "Platform-owned host composition for the Agents DomainService and UI with EventStore, Conversations, Parties, Tenants, Provider and safety adapters, Dapr Workflow, secrets, health, identity, telemetry, and a replicated durable content-free `security-audit-spool`. The spool accepts a deterministic `SecurityObservationId` before a classified Agents denial returns, retains pending records across EventStore/replay outages, exposes exact-id outcome lookup/acknowledgement, and grants its drain worker an ACL restricted to the computed `SecurityEventLog(RoutingTenantId, UtcDay)` stream and event; if the spool itself is unavailable, ingress constructs no Agents command and platform health blocks tenant-access/audit readiness. The host additionally binds the production `EXT-PROTECTION-1` engine and exposes the FR-34 attestation port used at startup and every readiness evaluation. The port lets Agents seal a canary, prove persisted bytes contain no plaintext, unseal it, destroy its DEK, replay `Erased`, and obtain engine identity/version for comparison with the committed protection target; the host fails closed against both the no-op default and a self-reporting wrapper around it. For Story 6.1 it also composes the target-limited directory-migration Workflow and EventStore namespace ports. Installing a tenant migration epoch revokes the legacy direct-write credential/epoch, and every later interaction/failure create or content append requires the current epoch plus an exact directory permit or committed-effect capability. Every `ConversationAgentState` permit, creation/workflow-start/User-action-intent outbox, lease acquire/commit, and interaction-owned rate/open/Budget/capacity phase-authorization append is likewise conditional on the current directory capability at EventStore. Repair first atomically installs a directory-repair fence that revokes all those new-directory/effect-authorization operations and returns an authenticated checkpoint; only the post-fence finite permit/outbox/lease/phase-authorization cohort may enter the old-epoch bridge, whose exact pending/committed/authorized work drains before successor activation revokes the old epoch, repair fence, and bridge. For Story 8.3 the same port evaluates canonical `GovernanceScopeV1` and its predicate digest from authoritative tenant stream identity, immutable first-event/directory-permit `SourceConversationId`, and permit/action/lease/phase-authorization owner facts\u2014never caller classification. Before either deletion origin builds a candidate, it conditionally installs a persistent ordinal scope admission fence that rejects later matching permit, User-action-intent, lease-acquire/commit, and rate/open/Budget/capacity phase-authorization appends; after the finite same-ordinal owner cycles become Effective it conditionally installs and verifies the separate content write fence that rejects later matching interaction/failure creates or content appends. The admission violation ledger is one append-only request ledger partitioned by fence ordinal: prior violations remain visible, while only the current installed ordinal can attest `ZeroAcceptedViolationsSinceInstall`. A pre-cut violation uses an explicit no-global-cut/candidate/token receipt; a later violation invalidates only exact present artifacts. Both assign one successor ordinal and require separately keyed owner cycles carrying all prior obligations. The content guard is stable by request/predicate and continuously installed: after one or more recuts, a successor-binding authorize/effect/result operation starts from the latest installed binding and appends the new ordinal/global-cut/token only after proving a complete gap-free ordered chain of intervening invalidated/tokenless ordinal receipts and the current zero proof; an overtaken authorization returns terminal obsolete without a guard append. The port also owns the tenant `GovernanceScopeGuard`: every authorized legal-hold request conditionally registers its canonical scope there before fence preparation and remains until an exact fully acknowledged release removes it. Hold registration and `CommitDeletionDestructionStartBarrierEffect` serialize on that owner. The `ProtectionFence` barrier authorization persists the exact observed `GovernanceScopeGuard` revision/compare token. Conditional append at that revision makes the seal operation serialize with admission writes and hold registration/release; an intervening mutation returns authenticated stale and must be mirrored before revision-bound reauthorization. The seal operation verifies both ledgers/current content binding/migration receipts, rejects any overlapping contender that won after authorization unless it consumes the exact effective deletion-allowed hold disposition, commits immutable `DestructionSealed`, and returns one deterministic non-expiring, revocable, single-use `DestroyDekManifest` capability bound to the sorted accepted key-target manifest; it has no `ExpiresAt` or renewal branch, and its capability-key version remains verifiable through outage, migration, restore, and the full retention of the batch identity and terminal outcome, including exact retry/lookup after consumption or revocation. No direct clean read, stale no-hold authorization, or unrelated append is authority. Each fence/guard/barrier exposes authenticated installation, exact-outcome lookup, verification/high-water, and complete append-only evidence; every admission ordinal/violation gap chain, owner cycle, content binding, hold contender/release, barrier/containment compare authorization and stale result, destruction seal, and batch identity/capability-key/guard-issued state plus referenced protection-owner blocked, reserved, re-attested, consumed, or revoked outcome survives migration successors. The protection engine consumes each manifest batch atomically as all targets or none, returns an ordered per-target irreversible receipt vector, and exposes exact batch lookup; each first previously uncovered complete protection target from an authoritative post-seal content violation is ProtectionFence-serialized into one monotonic ordinal and immutable singleton target manifest, while later same-target resources receive coverage links only, then follows `AuthorizeDeletionContainmentBatch`, guard-revision-conditional `CommitDeletionContainmentBatchEffect`, exact lookup, and `RecordDeletionContainmentBatchIssued` or `RecordDeletionContainmentBatchIssuanceStale` before its distinct batch may be consumed; exact duplicates reuse the ordinal/result and concurrent distinct targets receive distinct ordinals. An accepted admission after sealing invokes `BlockDeletionBatchConsumption` to race `ReserveAndConsumeDeletionBatch` at the protection owner, records `DeletionIntegrityCompromised`, blocks new batches, and can never be treated as resource-only content containment or successful completion. Missing, malformed, unknown-version, cross-tenant, or unverifiable scope membership rejects a write and prevents a clean verification result. The artifact replaces module-owned AppHost, Aspire, and ServiceDefaults ownership.",
+        "TargetVersionOrCommit": "`abbec4093715c1db854433119b32d4e16df20d08`",
+        "TargetIntegrationDate": "`2026-10-08`",
+        "CompatibilityContractAndVerificationCommand": "Contract: clean-checkout composition through the platform host without module-owned hosting infrastructure, including the durable security-audit spool, production protection-engine binding, and complete FR-34 attestation. The target-limited migration contract enforces the current epoch on interaction, directory, and effect-authorization writes; provides atomic directory-repair-fence install/checkpoint/lookup; freezes only the post-boundary cohort including protected User-action intents and rate/open/Budget/capacity authorizations; restricts the bridge to manifest-listed pending, committed, or already-authorized work; preserves every deletion fence ordinal/violation gap chain, owner-cycle receipt, continuous content binding, guard compare authorization/stale result, destruction seal, and batch capability/state; and atomically revokes old epoch/repair fence/bridge at successor activation. The deletion contract implements canonical exact-interaction and source-deletion exact-Conversation predicates; ordinal admission-fence authorize/effect/result; explicit pre-cut and post-cut violation containment with one successor ordinal; immutable separately keyed owner cycles and current zero proof; one continuously installed predicate content guard whose successor binding uses the latest installed binding plus a gap-free invalidation chain and returns terminal obsolete when overtaken; tenant-scope-guard revision/compare-token hold registration/release serialized with the destruction seal and authenticated stale reauthorization; an exact effective armed-contention disposition only when required; guard-owned atomic start-barrier authorize/effect/result; deterministic non-expiring, revocable, all-or-none manifest-batch destruction with per-target vectors, exact lookup and revocation race; guard-owned singleton containment-batch authorize/effect/result with ordinal allocation and lost-issuance lookup; migration preservation; post-start integrity blocking; and content containment with distinct batches. Tests race every directory/phase-authorization append and target write around migration-repair, admission-fence, and destruction-barrier boundaries; cover violations before the first cut and after content-fence installation; prove one successor ordinal, carried obligations, immutable Effective, repeated recut gap chains/obsolete binding outcomes, continuous content binding, and current zero; race hold registration/release before/at/after guard-revision-bound barrier authorization/seal while Open precedence stalls both and stale compare results require reauthorization; prove the guard commit\u2014not a prior read\u2014is first irreversible authority; and prove an exact multi-key manifest batch is consumed once, all targets or none, with non-expiring restore, lost-result lookup, revocation, explicit singleton containment issuance/lookup, and prior violations preserved. Human-origin exact-Conversation tests remain blocked pending `OD-HUMAN-EXACT-CONVERSATION-SCOPE-1`; `ClassUtcRange` tests remain blocked pending `OD-GOVERNANCE-CLASS-RANGE-SCOPE-1`. Command: `test \"$(git -C ../platform rev-parse HEAD)\" = \"abbec4093715c1db854433119b32d4e16df20d08\" && test -z \"$(git -C ../platform status --porcelain)\" && bash ../platform/eng/verify-agents-host.sh --mode Full --artifacts-path /tmp/ext-host-1-full`",
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "`Committed`",
+        "ConsumingStories": "5.4, 5.6, 6.1, 8.1, 8.3; `RQ-1`"
+      },
+      "acceptedCompleteSectionSha256": "4a3fbc7fe82e6f9830385e0fe9e29ad16ab626354808fd7bb78d6b4ad12736a1",
+      "proposedReplacement": {
+        "Owner": "Project owner (user declaration 2026-10-07), acting as Platform Maintainer",
+        "Repository": "`Hexalith.Platform`",
+        "RequiredArtifact": null,
+        "TargetVersionOrCommit": null,
+        "TargetIntegrationDate": null,
+        "CompatibilityContractAndVerificationCommand": null,
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "Uncommitted",
+        "ConsumingStories": "5.4, 5.6, 6.1, 8.1, 8.3; `RQ-1`"
+      },
+      "proposalStatus": "NotSubmittedMissingCompleteActualOwnerDelivery"
+    },
+    "EXT-PROTECTION-1": {
+      "acceptedRecord": {
+        "Owner": "EventStore Maintainer",
+        "Repository": "`Hexalith.EventStore`",
+        "RequiredArtifact": "A production payload-protection engine behind the existing EventStore hooks, applied field-level to a `ProtectedContent` envelope so every other event field stays plaintext and a destroyed-key field unprotects as the typed value `Erased` without breaking replay: one data-encryption key per `AgentInteraction`, plus an explicit provider-neutral `TargetProtectionKeyAlias` that lets a target-limited creation-outbox `ProtectedContent` field owned by `ConversationAgentState` select that exact interaction DEK without deriving it from the directory aggregate identity, wrapped by a per-tenant key-encryption key custodied through `EXT-SECRETS-1`. The custodian exposes `WrapDek`, `UnwrapDek`, `PinDek`, `UnpinDek`, per-key `DestroyDek`, and an atomic `DestroyDekManifest(BatchId, ManifestDigest, SortedTenantInteractionAliasTargets, GuardCapability)` operation. The batch identity and signed capability are deterministic and target-bound. The capability is non-expiring and revocable, carries its signing-key version, and that version remains verifiable for the full retention of the batch identity and terminal outcome, including exact retry/lookup after consumption or revocation; there is no expiry or renewal path and restore reuses the same identity. Consumption is single-use and all-or-none, returns an ordered irreversible per-target receipt vector, exact retry/lookup returns that vector, a changed target/digest conflicts, and `BlockDeletionBatchConsumption` races `ReserveAndConsumeDeletionBatch` at the same protection owner so exactly one wins. Each first previously uncovered complete protection target `(TenantId, AgentInteractionId, TargetProtectionKeyAlias)` uses one guard-issued batch for its ProtectionFence-assigned monotonic containment ordinal and immutable singleton target manifest; later violation resources for that same target receive coverage links only, no ProtectionFence event alone is a guard capability, and distinct uncovered targets receive distinct ordinals/batches. Hold pinning rejects both per-key and manifest destruction; sealed envelopes remain sealed on broker/read models, `PayloadUnprotectionOutcome` is unreadable after erasure, and snapshot/replay caches inherit the DEK (AD-22, AD-27). The shipped no-op default is not acceptable for content-bearing workflows (AD-14).",
+        "TargetVersionOrCommit": "`TBD`",
+        "TargetIntegrationDate": "`TBD`",
+        "CompatibilityContractAndVerificationCommand": "Contract: an owner-supplied executable command must prove at minimum (1) seal with plaintext-absence proof, (2) unseal with payload equality, (3) irreversible erase with typed `Erased` replay, (4) hold pin rejecting erase until authorized unpin, and (5) engine identity/version reporting equal to the exact committed target, with per-tenant isolation and restore-cannot-revive behavior. It must seal the directory creation-outbox field through the target alias and exercise a multi-interaction `DestroyDekManifest`: deterministic single-use batch identity, exact sorted target binding, all targets destroyed or none, ordered per-key receipts, byte-identical retry and lost-result lookup, changed-manifest conflict, duplicate-consumption denial with exact prior result, hold-pin rejection, and a protection-owner `BlockDeletionBatchConsumption`-versus-`ReserveAndConsumeDeletionBatch` race with exactly one winner, plus capability non-expiry across delayed dispatch/restore and signing-key verification until terminal batch state. A containment batch is accepted only with the exact guard-issued capability for its ProtectionFence-assigned singleton ordinal/manifest; response loss uses exact issuance and protection lookup, exact duplicates reuse it, concurrent distinct targets remain distinct, and containment ordinals cannot reuse the accepted-set batch. Replay must yield typed `Erased` from both source outbox and target events. Negative fixtures cover cross-tenant alias substitution, changed payload/manifest, partial-provider failure, snapshot/cache replay, backup, restore, and stale or revoked guard capability. Command: `TBD`.",
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "`Uncommitted`",
+        "ConsumingStories": "5.6, 5.8, 6.1\u20136.4, 6.8, 7.1\u20137.4, 7.7, 8.1\u20138.3, 8.8; `RQ-1`"
+      },
+      "acceptedCompleteSectionSha256": "53437cdab453bdd640fece4cede3eabf965c9305d08c32c655e4357bc8f204dd",
+      "proposedReplacement": {
+        "Owner": "EventStore Maintainer",
+        "Repository": "`Hexalith.EventStore`",
+        "RequiredArtifact": null,
+        "TargetVersionOrCommit": null,
+        "TargetIntegrationDate": null,
+        "CompatibilityContractAndVerificationCommand": null,
+        "RequiredEvidenceLevel": "Levels 4 and 5",
+        "AcceptedStatus": "Uncommitted",
+        "ConsumingStories": "5.6, 5.8, 6.1\u20136.4, 6.8, 7.1\u20137.4, 7.7, 8.1\u20138.3, 8.8; `RQ-1`"
+      },
+      "proposalStatus": "NotSubmittedMissingCompleteActualOwnerDelivery"
+    }
+  },
+  "ownerInputsReference": "../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json#/mvpOperationalInputs",
+  "reducedScopeRule": "No independent reduced operation-specific contract has been accepted. Owners must define exact behavior and effect on current Human/approver, host and protection gates, supply all nine fields, immutable targets, owner dates, installed current configuration/trust and supported commands, then obtain explicit register acceptance before any changed-target qualification. A subset cannot advance the old broader records.",
+  "completePacketPreparationRule": "Use existing strict secrets/host prepare_acceptance.py only after actual full installed context and accepted dates/bindings exist. Complete source drivers and protection delivery remain prerequisites. Preserve all originals; use fresh detached outputs.",
+  "ordinaryWorkCanBePreparedNow": [
+    "Preservation historical-proof owner return",
+    "Backup/restore policy and authorized recovery evidence owner return",
+    "Current identity/independent issuer and host replay/spool installation contracts and owner evidence"
+  ],
+  "deferredAdvancedWork": [
+    "Luna/HSM provisioning",
+    "Independent nonrollback lifecycle-authority cluster provisioning",
+    "WORM/archive provisioning",
+    "Dependent history/content/export/destruction qualification until actual accepted dependencies qualify"
+  ],
+  "phaseOrder": [
+    "protection",
+    "secrets without host references",
+    "host with every Agents consumer refusing DependencyNotAvailable",
+    "mutual"
+  ],
+  "qualificationAuthorized": false,
+  "attemptReserved": false,
+  "dependencyAvailable": false,
+  "qualificationEffects": 0,
+  "limitations": [
+    "OpenBao ObservedRevival remains authoritative; operational deletion has no backup non-revival guarantee.",
+    "Current Human and approver evidence retains custody coupling.",
+    "Retained profile observations and hashes do not establish fresh health, authority or authentic owner evidence.",
+    "No backup lifetime, restore policy, dates, trust anchors, replicas/failure model or installation outcome is invented."
+  ]
+}

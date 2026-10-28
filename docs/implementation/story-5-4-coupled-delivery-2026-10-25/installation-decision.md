@@ -1,3 +1,5 @@
+> Current work priority (2026-10-28): the approved MVP amendment defers Luna, independent lifecycle-authority and WORM provisioning. The advanced-resource instructions below are retained historical/full-scope prerequisites, not the next executable action. Follow the [operational handoff](../story-5-4-operational-security-2026-10-28/README.md) and [current owner form](owner-decisions.json). No completed installer, maintenance, qualification or unavailable consumer is enabled. Original document and SHA256SUMS bytes are retained in the handoff; the original SHA256SUMS remains a historical manifest. Use the handoff verification manifest for current overlay files.
+
 # Coupled EXT-SECRETS-1 / EXT-HOST-1 MVP installation decision
 
 Updated 2026-10-25 following the owner's correction: **“AWS is not MVP.”** AWS is excluded from the active MVP plan. The previous AWS recommendation, resource list, account/region work, provisioning commands and schedule are superseded. Their exact prior bytes are retained only as historical evidence in [snapshot-index.json](installation-evidence/superseded-aws-proposal/snapshot-index.json).
