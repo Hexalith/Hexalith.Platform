@@ -2,7 +2,7 @@
 title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -126,6 +126,36 @@ All three layers completed before triage. Each finding was graded individually b
 | Finding | Verdict | Route and verified evidence |
 | --- | --- | --- |
 | R5 | low | Patch: A full run exposed the token-at-delegate-entry timing assertion as scheduler-sensitive. A 500 ms cancellable operation distinguishes the original exhausted allowance from a renewed full allowance; the original timestamp and elapsed assertions remain. Five repeated focused runs passed. |
+
+### Resumed source workflow review — 2026-10-28
+
+All three configured layers completed before triage. Every finding is graded separately below before grouping. The verification-gap findings are accepted as pre-verified. No frozen intent change or new deferral is required.
+
+| Finding | Verdict | Route and evidence |
+| --- | --- | --- |
+| B1 (blind-hunter) | medium | patch: A peer receipt can survive conflicting acquisition and suppress an unreadable orphan claim when this owner has no receipt. The built-assembly probe reproduces verified emptiness; use the queried owner’s verified receipt rather than peer receipts. |
+| B2 (blind-hunter) | medium | patch: The marker opener rejects only its final link. A linked diagnostics/run parent still redirects the marker read and can release failure retention; verify the owned parent chain. |
+| B3 (blind-hunter) | medium | patch: The helper returns false for absence, read failure and cancellation, and provisioning gates consume that answer as verified absence. Keep conservative retention but refuse startup on unverifiable markers and preserve cancellation handling. |
+| B4 (blind-hunter) | medium | patch: Each unreadable claim scans all peer receipts, adding C×P synchronous reads. Removing the unsound peer-receipt exemption removes this introduced traversal; existing receipt-bound ownership remains the exclusion proof. |
+| B5 (blind-hunter) | false | reject: The probe bypasses owner initialization and supplies an invalid runner-held descriptor directly to an internal method. Production non-null snapshots come only from reader-valid descriptors; every real provisioned owner is initialized before observation. Refusing to replace a malformed immutable snapshot is the intended fail-closed behavior, not a supported repair path. |
+| B6 (blind-hunter) | medium | patch: A malformed durable binding snapshot can retain matching run IDs but omit or mistype deadlines. An observed duration then dereferences that shape before final schema validation and can escape exact cleanup as NullReferenceException; refuse it as InvalidDataException. |
+| B7 (blind-hunter) | medium | patch: The process stopping timestamp precedes shutdown, while the five-second immediate recording allowance starts after shutdown. Subtracting the former can erase an otherwise available metadata recovery allowance; record and use the actual metadata start without changing the stopping deadline. |
+| B8 (blind-hunter) | low | reject: A stalled device can block synchronous flush, as it can other filesystem operations. This requires a storage failure outside everyday local-run behavior; hard isolation/cancellable device I/O would require extra machinery rather than a direct correction. The change continues to await a confirmed flush before publication. |
+| B9 (blind-hunter) | low | reject: A Unix power loss can lose a rename without a containing-directory sync. The filed consequence is limited to host power failure, and correcting it requires new platform-specific directory-handle publication semantics beyond the direct file-flush correction. No host-power-failure qualification is claimed. |
+| E1 (edge-case-hunter) | medium | patch: Independently reproduced the same orphan-claim/stale-peer-receipt false emptiness as B1; keep this finding separate before grouping. |
+| E2 (edge-case-hunter) | medium | patch: An existing unreadable or exclusively held cleanup marker is treated as absent by startup gates. This is the same role-conflation defect as B3; retention and provisioning need different conservative decisions. |
+| V1 (verification-gap) | medium | patch: Accepted pre-verified: the ordinary owning test project does not inject EINTR, so reverting the retry loop still passes. Add the retained native approach as a Linux subprocess regression in that project. |
+| V2 (verification-gap) | medium | patch: Accepted pre-verified: ordinary byte readback/cancellation tests cannot detect removal of Flush(true). Inject a flush failure for both publishers and assert refusal plus preservation of prior destination bytes in normal tests. |
+
+#### Parent follow-up audit
+
+| Finding | Verdict | Route and evidence |
+| --- | --- | --- |
+| P1 | medium | Patch: actual libc EIO is swallowed by the installed .NET 10.0.13 PAL return conversion. Both publishers now use a shared checked Linux flush; normal subprocess tests verify real EIO refusal and preservation of prior destination bytes. |
+| P2 | medium | Patch: after successful release deletes the owner receipt, repeated cleanup loses its verified-empty ownership proof and an unchanged corrupt peer claim makes it incomplete. Preserve that proof across repeats and extend the peer-independence regression. |
+| P3 | medium | Patch: a fixed cross-process retry count exhausted while the owner still performed durable updates. Use a process barrier before the final retry and the declared stopping allowance; retain all first-outcome and completion assertions. |
+
+After individual triage, B1/E1 share the stale-peer-receipt ownership defect and B3/E2 share uncertainty erasure at provisioning gates. B2, B4, B6, B7, V1 and V2 remain separate root causes even where their files or fixes overlap. Parent findings P1–P3 are separate corrections. All smallest fixes are private corrections or demonstrated regression coverage.
 
 ## Design Notes
 
@@ -527,24 +557,24 @@ Builds implementation is committed locally as `0902fd6c527750ee3fc6832824f42b5b9
 
 Reviewed the five Builds story commits' implementation sources (`984c4d5`, `0ade5ec`, `b215213`, `7116b16`, `0902fd6`): 33 files, +2,366 / −556. Blind Hunter, Edge Case Hunter, Verification Gap, and Acceptance Auditor all completed. Verification Gap found no gaps. Verdicts were checked against the current sources.
 
-- [ ] [Review][Patch] A post-readiness process that never starts is published as `failed` / `test-failure` with command status `failed`, keeping diagnostic `HXR030` [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:469] — resolved decision: once execution timing is open, use the existing cause rule. Do not change earlier `HXR030` results that happen before a run exists.
+- [x] [Review][Patch] A post-readiness process that never starts is published as `failed` / `test-failure` with command status `failed`, keeping diagnostic `HXR030` [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:469] — resolved decision: once execution timing is open, use the existing cause rule. Do not change earlier `HXR030` results that happen before a run exists.
 
-- [ ] [Review][Patch] Outcome recovery does not wait, so a committed pass is kept as failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1289]
-- [ ] [Review][Patch] A startup-timeout retry can commit `startup-failure` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1820]
-- [ ] [Review][Patch] A claim-lookup failure omits a known workspace leftover [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:852]
-- [ ] [Review][Patch] A non-directory workspace path is omitted from owned observation [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:850]
-- [ ] [Review][Patch] Evidence cleanup validation throws when `selectedTestRun` is the wrong shape [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
-- [ ] [Review][Patch] Evidence cleanup proof trusts `isEmpty` and ignores recorded leftover ids [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
-- [ ] [Review][Patch] Listing drops a valid owner when `selected-test.json` or execution timing fails checks [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:32]
-- [ ] [Review][Patch] A missing cleanup field is shown as `not-requested` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs:61]
-- [ ] [Review][Patch] An interrupted `flock` is reported as an exclusive hold [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:233]
-- [ ] [Review][Patch] A symlink at `cleanup-request.json` suppresses failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1758]
-- [ ] [Review][Patch] Selected metadata copies follow a symlink destination [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
-- [ ] [Review][Patch] A missing `run` binding escapes outcome recording [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:729]
-- [ ] [Review][Patch] `FindOwned` can skip a torn claim without uncertainty [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:171]
-- [ ] [Review][Patch] Terminal result publication does not flush to disk before rename [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs:137]
-- [ ] [Review][Patch] Listing reports `failure-retained` when cleanup is already `complete` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:93]
-- [ ] [Review][Patch] Selected metadata copies are created with the process umask [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+- [x] [Review][Patch] Outcome recovery does not wait, so a committed pass is kept as failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1289]
+- [x] [Review][Patch] A startup-timeout retry can commit `startup-failure` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1820]
+- [x] [Review][Patch] A claim-lookup failure omits a known workspace leftover [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:852]
+- [x] [Review][Patch] A non-directory workspace path is omitted from owned observation [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:850]
+- [x] [Review][Patch] Evidence cleanup validation throws when `selectedTestRun` is the wrong shape [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [x] [Review][Patch] Evidence cleanup proof trusts `isEmpty` and ignores recorded leftover ids [src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs:175]
+- [x] [Review][Patch] Listing drops a valid owner when `selected-test.json` or execution timing fails checks [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:32]
+- [x] [Review][Patch] A missing cleanup field is shown as `not-requested` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs:61]
+- [x] [Review][Patch] An interrupted `flock` is reported as an exclusive hold [src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:233]
+- [x] [Review][Patch] A symlink at `cleanup-request.json` suppresses failure retention [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1758]
+- [x] [Review][Patch] Selected metadata copies follow a symlink destination [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
+- [x] [Review][Patch] A missing `run` binding escapes outcome recording [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:729]
+- [x] [Review][Patch] `FindOwned` can skip a torn claim without uncertainty [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:171]
+- [x] [Review][Patch] Terminal result publication does not flush to disk before rename [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs:137]
+- [x] [Review][Patch] Listing reports `failure-retained` when cleanup is already `complete` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs:93]
+- [x] [Review][Patch] Selected metadata copies are created with the process umask [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1064]
 
 - [x] [Review][Defer] `ClaimedPorts` still opens every claim with `File.OpenRead` [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs:148] — deferred: pre-existing port scan; the story's new claim reads use the nonblocking opener, and this method was not introduced by these commits.
 - [x] [Review][Defer] One bad Windows session SID aborts owned-process discovery [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs:213] — deferred: not actionable now; owner decision Q3 leaves Windows/macOS native qualification out of this story, and the dev lane is Linux/WSL.
@@ -563,3 +593,39 @@ Reviewed the five Builds story commits' implementation sources (`984c4d5`, `0ade
 - `false` — A receipt-bound claim file that is absent is dropped without uncertainty. `FileNotFoundException` is verified absence. Unreadable claim paths already call `onUnverified` (`CompositionResourceClaimStore.cs:197`).
 - `low` — Deleting the receipt temp can hide the original write error. `File.Delete` of a missing temp does not throw, so a successful move is preserved. A double failure is not an everyday path, and catching it adds another branch.
 - `false` — Cancellation during a metadata read ignores the stopping allowance. `ReadExactlyAsync` receives that token, and the cancellation catch returns (`CompositionEngine.cs:1060`).
+
+
+### Source-review fixes — resumed build, 2026-10-28
+
+All 17 accepted implementation-source findings are implemented and verified. Outcome recovery waits within the remainder of the original metadata allowance; timeout retries preserve their cause. Workspace/claim observations and listings retain verified owner information, and metadata publication uses private, link-safe, disk-flushed snapshots. The cross-process cleanup regression now exercises the documented retry contract under concurrent durable owner updates. Frozen intent, original baselines, owner decisions and existing deferrals are preserved.
+
+Current-source verification passes **733/733 Module cases, 191/191 Evidence cases and 1/1 Platform cleanup-helper case** (925 total), with no failures, errors, skips or unrun cases. The Module lane runs sequentially after a parallel fixture interference observation. All three individual Debug builds pass with zero warnings/errors. All seven matrix rows and all 17 accepted findings have executed passing coverage; 178 source files remain unchanged through verification. The native probe injects an interrupted shared lock into the actual Tooling P/Invoke and observes successful retry plus disk flushing of metadata/archive temporary files before rename. Schema byte parity and relocated retained-evidence validation pass.
+
+Exact commands, full XML, native probe sources/observations and superseded failures are retained in [verification](evidence/2-5/source-review-fixes-20261028/verification.json), [finding verification](evidence/2-5/source-review-fixes-20261028/finding-verification.json) and [matrix audit](evidence/2-5/source-review-fixes-20261028/matrix-audit.json). Independent workflow review follows.
+
+The fresh live proof was attempted and refused before provisioning as HXR015: installed Aspire CLI **13.6.1**, while the current catalog requires **Aspire.AppHost.Sdk/13.6.4**. The [live qualification log](evidence/2-5/source-review-fixes-20261028/live-qualification.log) and XML retain that prerequisite refusal. No fresh live, package or Windows/macOS native qualification is claimed. No pin or publication change is included.
+
+
+### Source workflow review corrections — 2026-10-28
+
+- [x] [Review][Patch] Remove stale-peer-receipt ownership proof and repeated peer receipt scans; preserve known peer independence using the queried owner’s verified receipt.
+- [x] [Review][Patch] Verify cleanup-marker parents and distinguish verified absence at provisioning gates from authorization to release failure retention.
+- [x] [Review][Patch] Refuse missing, null or wrong-type deadline binding shapes before outcome updates dereference them.
+- [x] [Review][Patch] Recover within the actual metadata recording allowance, independently of earlier process stopping time.
+- [x] [Review][Patch] Exercise injected EINTR in an ordinary Linux subprocess test in the owning project.
+- [x] [Review][Patch] Exercise storage-flush failure for both publishers in ordinary subprocess tests, preserving prior destination bytes.
+
+- [x] [Review][Patch] Preserve verified-empty claim ownership across repeated cleanup when an unrelated peer claim remains unreadable.
+
+
+### Final source workflow result — 2026-10-28
+
+All 17 original source-review fixes, 10 accepted workflow-review findings and three parent-audit corrections are complete. Final verification passes **758/758 Module cases, 191/191 Evidence cases and 1/1 Platform cleanup-helper case** (950 total), with no failures, errors, skips or unrun cases. All three individual Debug builds have zero warnings/errors. All seven lifecycle matrix rows, the five ordinary Linux native fault cases, the retained success probe, schema byte parity and relocated retained-evidence validation pass; 184 source/configuration files remain unchanged through verification.
+
+The normal Module lane now builds the native metadata harness and verifies actual libc EINTR, EIO and retry cancellation. Both publishers use a shared checked Linux flush before rename, independently of the installed runtime PAL's swallowed-error behavior. Verified empty owner receipts survive release and failed-acquisition rollback, and repeated cleanup leaves malformed peer claims unchanged. The cross-process regression uses an explicit writer-completion barrier instead of a fixed retry count. The Linux test compiler prerequisite is documented in Builds.
+
+The [final verification](evidence/2-5/source-review-fixes-20261028/verification.json), [individual review triage](evidence/2-5/source-review-fixes-20261028/review-triage.json), [workflow finding verification](evidence/2-5/source-review-fixes-20261028/workflow-finding-verification.json), full XML and superseded observations are retained. No new deferral was added; frozen intent, original baselines and prior owner decisions remain unchanged.
+
+Fresh live qualification was retried on the final code and remains refused before provisioning as HXR015: Aspire CLI 13.6.1 versus required Aspire.AppHost.Sdk/13.6.4. The [final refusal](evidence/2-5/source-review-fixes-20261028/live-qualification-final.log) and empty successful cleanup audit are retained. No fresh live, package or Windows/macOS native qualification is claimed. The build spec is done and sprint tracking is review.
+
+Builds implementation is committed locally as `e129a29e6c6e2f8a200581e09b861d75a9f3a7b8`. The Platform completion commit records this gitlink, final verification evidence and review tracking. No push was performed.

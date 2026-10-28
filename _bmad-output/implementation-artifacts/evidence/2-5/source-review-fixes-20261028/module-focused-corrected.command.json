@@ -1,0 +1,20 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-class",
+    "*LocalRunSourceReviewTests",
+    "-class",
+    "*CompositionRunListingTests",
+    "-class",
+    "*LocalRunReviewCorrectionTests",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/module-focused-corrected.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 4.746,
+  "log": "module-focused-corrected.log",
+  "archivedLog": "module-focused-corrected.log.gz",
+  "logSha256": "05200b91bb5df8e9963d2ab77dc812b7d67eb7d4df286585d127d54e06ec3d89"
+}

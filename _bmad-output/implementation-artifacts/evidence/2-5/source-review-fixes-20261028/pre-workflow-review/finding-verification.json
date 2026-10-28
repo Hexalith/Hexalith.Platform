@@ -1,0 +1,165 @@
+{
+  "acceptedFindingsVerified": 17,
+  "findings": [
+    {
+      "id": "R01",
+      "summary": "Post-readiness HXR030 preserves failed/test-failure",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunReviewCorrectionTests.MissingNativeProcessCommitsPrerequisiteClassificationAsync"
+      ]
+    },
+    {
+      "id": "R02",
+      "summary": "Committed outcome recovery waits within the original metadata allowance",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.SessionRecoveryWaitsForCommittedPassAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync"
+      ]
+    },
+    {
+      "id": "R03",
+      "summary": "Startup timeout retry preserves the first cause",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync"
+      ]
+    },
+    {
+      "id": "R04",
+      "summary": "Claim lookup failure preserves the known workspace",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.WorkspaceObservationSurvivesClaimFailureAsync(file: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.WorkspaceObservationSurvivesClaimFailureAsync(file: True)"
+      ]
+    },
+    {
+      "id": "R05",
+      "summary": "Non-directory workspace remains an owned observation",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.WorkspaceObservationSurvivesClaimFailureAsync(file: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.WorkspaceObservationSurvivesClaimFailureAsync(file: True)"
+      ]
+    },
+    {
+      "id": "R06",
+      "summary": "Wrong selected-test shapes refuse atomically",
+      "executedPassingCases": [
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"null\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"array\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"string\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"workspaceIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"claimIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"containerIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"processIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"discoveryFailures\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"unverified\\\")"
+      ]
+    },
+    {
+      "id": "R07",
+      "summary": "Claimed empty cleanup cannot ignore leftover arrays or uncertainty",
+      "executedPassingCases": [
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"null\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"array\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"string\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"workspaceIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"claimIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"containerIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"processIds\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"discoveryFailures\\\")",
+        "Hexalith.Builds.Evidence.Tests.SelectedCleanupAcceptanceTests.TamperedCleanupProofIsRefusedAsync(fault: \\\"unverified\\\")"
+      ]
+    },
+    {
+      "id": "R08",
+      "summary": "Invalid supplemental metadata preserves verified listed owners",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"outcome\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"activation\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"unreadable-outcome\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.UnverifiableObservationNamesOwnerAsync(observation: \\\"unreadable-activation\\\")"
+      ]
+    },
+    {
+      "id": "R09",
+      "summary": "Missing legacy cleanup is unavailable",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.ListingPreservesStableAgeAfterManifestDeletionAsync"
+      ]
+    },
+    {
+      "id": "R10",
+      "summary": "Interrupted flock retries",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.SharedMetadataReadPreservesPublishedBytesAsync"
+      ]
+    },
+    {
+      "id": "R11",
+      "summary": "Linked cleanup requests cannot release failure retention",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync"
+      ]
+    },
+    {
+      "id": "R12",
+      "summary": "Metadata copy refuses symlink destinations",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: True)"
+      ]
+    },
+    {
+      "id": "R13",
+      "summary": "Missing run bindings preserve the committed outcome with or without active tracking",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{}\\\", tracked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{}\\\", tracked: True)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{\\\\\\\"run\\\\\\\":null}\\\", tracked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{\\\\\\\"run\\\\\\\":null}\\\", tracked: True)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{\\\\\\\"run\\\\\\\":[]}\\\", tracked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \\\"{\\\\\\\"run\\\\\\\":[]}\\\", tracked: True)"
+      ]
+    },
+    {
+      "id": "R14",
+      "summary": "Torn unbound claims remain uncertain while known peer claims stay independent",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync"
+      ]
+    },
+    {
+      "id": "R15",
+      "summary": "Metadata and archive publication flush before rename",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.SharedMetadataReadPreservesPublishedBytesAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: True)"
+      ]
+    },
+    {
+      "id": "R16",
+      "summary": "Verified complete cleanup takes priority over stale retained disposition",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"failure-retained\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"released\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"not-retained\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRunListingTests.CliListingClassifiesPersistedRetentionAsync(retention: \\\"unavailable\\\")"
+      ]
+    },
+    {
+      "id": "R17",
+      "summary": "Metadata copy creates private replacement files",
+      "executedPassingCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MetadataCopiesRespectPrivateOwnedDestinationsAsync(linked: True)"
+      ]
+    }
+  ],
+  "nativeProbe": [
+    "fsync-ok-before-rename .metadata-read.json.e8c867ea433f45fdbde08ccb9c22d689.tmp",
+    "injected-EINTR metadata-read.json",
+    "shared-lock-ok metadata-read.json",
+    "fsync-ok-before-rename .archive-bccdddbaadf748dfb42a96af02a24959.tmp"
+  ]
+}

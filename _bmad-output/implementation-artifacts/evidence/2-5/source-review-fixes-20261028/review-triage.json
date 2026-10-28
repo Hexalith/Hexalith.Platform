@@ -1,0 +1,148 @@
+{
+  "layers": {
+    "blind-hunter": [
+      [
+        "B1",
+        "medium",
+        "patch",
+        "A peer receipt can survive conflicting acquisition and suppress an unreadable orphan claim when this owner has no receipt. The built-assembly probe reproduces verified emptiness; use the queried owner\u2019s verified receipt rather than peer receipts."
+      ],
+      [
+        "B2",
+        "medium",
+        "patch",
+        "The marker opener rejects only its final link. A linked diagnostics/run parent still redirects the marker read and can release failure retention; verify the owned parent chain."
+      ],
+      [
+        "B3",
+        "medium",
+        "patch",
+        "The helper returns false for absence, read failure and cancellation, and provisioning gates consume that answer as verified absence. Keep conservative retention but refuse startup on unverifiable markers and preserve cancellation handling."
+      ],
+      [
+        "B4",
+        "medium",
+        "patch",
+        "Each unreadable claim scans all peer receipts, adding C\u00d7P synchronous reads. Removing the unsound peer-receipt exemption removes this introduced traversal; existing receipt-bound ownership remains the exclusion proof."
+      ],
+      [
+        "B5",
+        "false",
+        "reject",
+        "The probe bypasses owner initialization and supplies an invalid runner-held descriptor directly to an internal method. Production non-null snapshots come only from reader-valid descriptors; every real provisioned owner is initialized before observation. Refusing to replace a malformed immutable snapshot is the intended fail-closed behavior, not a supported repair path."
+      ],
+      [
+        "B6",
+        "medium",
+        "patch",
+        "A malformed durable binding snapshot can retain matching run IDs but omit or mistype deadlines. An observed duration then dereferences that shape before final schema validation and can escape exact cleanup as NullReferenceException; refuse it as InvalidDataException."
+      ],
+      [
+        "B7",
+        "medium",
+        "patch",
+        "The process stopping timestamp precedes shutdown, while the five-second immediate recording allowance starts after shutdown. Subtracting the former can erase an otherwise available metadata recovery allowance; record and use the actual metadata start without changing the stopping deadline."
+      ],
+      [
+        "B8",
+        "low",
+        "reject",
+        "A stalled device can block synchronous flush, as it can other filesystem operations. This requires a storage failure outside everyday local-run behavior; hard isolation/cancellable device I/O would require extra machinery rather than a direct correction. The change continues to await a confirmed flush before publication."
+      ],
+      [
+        "B9",
+        "low",
+        "reject",
+        "A Unix power loss can lose a rename without a containing-directory sync. The filed consequence is limited to host power failure, and correcting it requires new platform-specific directory-handle publication semantics beyond the direct file-flush correction. No host-power-failure qualification is claimed."
+      ]
+    ],
+    "edge-case-hunter": [
+      [
+        "E1",
+        "medium",
+        "patch",
+        "Independently reproduced the same orphan-claim/stale-peer-receipt false emptiness as B1; keep this finding separate before grouping."
+      ],
+      [
+        "E2",
+        "medium",
+        "patch",
+        "An existing unreadable or exclusively held cleanup marker is treated as absent by startup gates. This is the same role-conflation defect as B3; retention and provisioning need different conservative decisions."
+      ]
+    ],
+    "verification-gap": [
+      [
+        "V1",
+        "medium",
+        "patch",
+        "Accepted pre-verified: the ordinary owning test project does not inject EINTR, so reverting the retry loop still passes. Add the retained native approach as a Linux subprocess regression in that project."
+      ],
+      [
+        "V2",
+        "medium",
+        "patch",
+        "Accepted pre-verified: ordinary byte readback/cancellation tests cannot detect removal of Flush(true). Inject a flush failure for both publishers and assert refusal plus preservation of prior destination bytes in normal tests."
+      ]
+    ]
+  },
+  "allLayersCompletedBeforeTriage": true,
+  "acceptedIndividualFindings": 10,
+  "rejectedIndividualFindings": 3,
+  "patchGroups": [
+    [
+      "B1",
+      "E1"
+    ],
+    [
+      "B2"
+    ],
+    [
+      "B3",
+      "E2"
+    ],
+    [
+      "B4"
+    ],
+    [
+      "B6"
+    ],
+    [
+      "B7"
+    ],
+    [
+      "V1"
+    ],
+    [
+      "V2"
+    ]
+  ],
+  "newDeferrals": 0,
+  "parentAudit": [
+    {
+      "id": "P1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Actual libc EIO is converted to positive 1 by the installed .NET 10.0.13 PAL while managed flush checks <0. A private checked Linux fsync helper is required for real publication refusal; the ordinary subprocess fixture now verifies actual EIO, not a synthetic PAL result.",
+      "status": "verified"
+    },
+    {
+      "id": "P2",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "ReleaseOwned deletes the queried owner receipt. With an already-corrupt peer claim, a second cleanup loses the proof used by the first and FindOwned marks that peer claim unverified. The current claimsReleased flag covers only the first sweep; preserve verified empty ownership across repeated cleanup and test a repeated down under the unchanged peer fault.",
+      "status": "verified"
+    },
+    {
+      "id": "P3",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The full reviewed Module run passed 757/758; the cross-process case exhausted an arbitrary five retries while the owner still performed durable updates. A process barrier now proves updates have ended before the final retry and uses the suite-declared stopping allowance. The corrected case passes 1/1 in 1.845 seconds.",
+      "status": "verified"
+    }
+  ],
+  "upstreamRuntimeEvidence": [
+    "https://github.com/dotnet/runtime/blob/v10.0.13/src/native/libs/System.Native/pal_io.c#L683",
+    "https://github.com/dotnet/runtime/blob/v10.0.13/src/libraries/System.Private.CoreLib/src/System/IO/Strategies/FileStreamHelpers.Unix.cs#L34"
+  ],
+  "allAcceptedCorrectionsVerified": true
+}

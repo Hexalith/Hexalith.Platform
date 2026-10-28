@@ -1,0 +1,102 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "red": {
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync",
+      "-parallelMode",
+      "none",
+      "-result-xml",
+      "/tmp/story25-repeat-cleanup-red.xml"
+    ],
+    "exitCode": 1,
+    "summary": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, non-parallel]",
+      "id": "06407f2b-7b5d-49cd-aec5-40fe8f1f5110",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "08:44:41",
+      "start-rtf": "2026-10-28T08:44:41.3375517+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "1",
+      "finish-rtf": "2026-10-28T08:44:41.8310797+00:00",
+      "not-run": "0",
+      "passed": "0",
+      "skipped": "0",
+      "time": "0.494",
+      "time-rtf": "00:00:00.4940000",
+      "total": "1"
+    },
+    "log": "/tmp/story25-repeat-cleanup-red.log",
+    "buildLog": "/tmp/story25-repeat-cleanup-red-build.log"
+  },
+  "build": {
+    "argv": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1"
+    ],
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "durationSeconds": 35.49,
+    "log": "/tmp/story25-repeat-cleanup-final-build.log"
+  },
+  "final": {
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync",
+      "-method",
+      "*ConflictNamesOwnerAndRollsBackOnlyTheRejectedAcquisition",
+      "-method",
+      "*EmptyReleasePreservesProofAcrossLaterPeerCorruption",
+      "-method",
+      "*TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync",
+      "-method",
+      "*DirectoryClaimRemainsVisibleUntilVerifiedDeletionAsync",
+      "-method",
+      "*OversizedAcquisitionPreservesReadableReceipt",
+      "-parallelMode",
+      "none",
+      "-result-xml",
+      "/tmp/story25-repeat-cleanup-final.xml"
+    ],
+    "exitCode": 0,
+    "summary": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, non-parallel]",
+      "id": "1e209176-0193-49bb-ab71-03bd5aca8344",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "08:47:51",
+      "start-rtf": "2026-10-28T08:47:51.4806565+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-28T08:47:52.2382298+00:00",
+      "not-run": "0",
+      "passed": "8",
+      "skipped": "0",
+      "time": "0.757",
+      "time-rtf": "00:00:00.7570000",
+      "total": "8"
+    },
+    "log": "/tmp/story25-repeat-cleanup-final.log"
+  },
+  "diffCheckExitCode": 0,
+  "sha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs": "6731e3571b8d670abac0418dd5c08409a72f9a8827d3c9eb3e00023073b2cd3d",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "24ccc0e867ef9bbf9d40661ed6b53c39f62cbb5d665db810e6b211fb025567fc",
+    "test/Hexalith.Builds.Module.Tests/CompositionResourceClaimStoreTests.cs": "63df5e67567b2b28a40d8ad1c1a28bbb459a356b2a5d732410ac5a0d7f5b76f9",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleReviewTests.cs": "03fe9d5289696f5fd093f6cde1e7503437ffafa16fa79db8b40f400da67bef9c"
+  }
+}
