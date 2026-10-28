@@ -1,0 +1,61 @@
+{
+  "recordedAtUtc": "2026-10-28T07:24:31.995110+00:00",
+  "classification": "Apply owner selection to existing installation decision; no runtime source changes",
+  "instruction": "apply recommended",
+  "approach": "MVP-1 verified non-AWS custody reuse behind existing Dapr contract",
+  "actualProviderIdentified": false,
+  "qualifyingInstallationIdentified": false,
+  "installationAuthorization": "User authorized the selected approach within approved scope; actual resources/access and technical gates are still missing",
+  "blockingInputs": [
+    "Custody backend name/version/endpoint and scoped credential references",
+    "Independently administered current-authority service/store resources and access references",
+    "Independent immutable-archive resources/endpoints and access references"
+  ],
+  "discovery": {
+    "kubeconfigReference": "/home/administrator/.kube/hexalith-production",
+    "configuredContextNames": [
+      "jpiquot@local"
+    ],
+    "namedLocalToolsAbsent": [
+      "pkcs11-tool",
+      "lunacm",
+      "yubihsm-shell"
+    ],
+    "localDeviceNodePatternsChecked": [
+      "/dev/tpm*",
+      "/dev/hsm*",
+      "/dev/nitro*"
+    ],
+    "matchingLocalDeviceNodes": [],
+    "azureAccountMetadata": "Cached account contexts exist; no mapping to Hexalith project scope was found. No subscription resources were inventoried.",
+    "limit": "Limited context/tool/device metadata only; does not prove absence of external services or hardware."
+  },
+  "beforeSha256": {
+    "installation-decision.md": "c3b5d8f7808b9165f4fe2d723234b820614d66a288f2ea1343452e07b5bb8629",
+    "owner-decisions.json": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d",
+    "SHA256SUMS": "d11c23d95a07071274aa487876d3e98022503769aab4f4d6c316e256e8700020"
+  },
+  "changedDecisionSha256": {
+    "installation-decision.md": "97dd32210afba05cac27dcafb8debb7dc70899011952964ceaa9bce3d43a194d",
+    "owner-decisions.json": "4a85efe0bfb781b1ce21f7af3622c9ef95be585d4bb6bd5316ebd1163e51166f"
+  },
+  "preservedOriginalUserFiles": {
+    "_bmad-output/planning-artifacts/external-dependency-register.md": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+    "_bmad-output/implementation-artifacts/spec-5-4-prove-trusted-principal-tenant-party-and-approver-readiness.md": "31b4a6ec1219d9f431a3edfbb670295fef17713488a0c01b6396c0172d68464b",
+    "_bmad-output/implementation-artifacts/tests/story-5-4-2026-10-27/verification.json": "3e81b9e6894cd5140e34051a1238a751a78bc2fd057bcbc028b0d19fc1714d64",
+    "_bmad-output/implementation-artifacts/tests/story-5-4-2026-10-27/verification-artifacts.tar.gz": "d4c8f09c84d806c26457e9ac1ecc52e7d819b0550705b1b56bf5018972587e4f"
+  },
+  "parentFrozenIntentUnchanged": true,
+  "historicalManifestEntriesPreserved": 21,
+  "testsRun": false,
+  "testReason": "Decision documentation only; no runtime source change. Retained local evidence and its existing limitations remain applicable only to its recorded source scope.",
+  "deployments": 0,
+  "nativeEffects": 0,
+  "enrollments": 0,
+  "qualificationInvocations": 0,
+  "attemptReservations": 0,
+  "dependencyRecordsChanged": false,
+  "procurementPerformed": false,
+  "sourceCodeChanged": false,
+  "remainingWork": "Actual provider/independent resources, manifest publication, remaining owner integration, normal build gates, complete accepted deliveries, prescribed qualification, then Story 5.4 production bindings and acceptance."
+}

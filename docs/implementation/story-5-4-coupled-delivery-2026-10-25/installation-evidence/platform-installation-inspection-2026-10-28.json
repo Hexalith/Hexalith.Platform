@@ -1,0 +1,181 @@
+{
+  "recordedAtUtc": "2026-10-28T07:30:09.860577+00:00",
+  "userDirection": "check in Hexalith.Platform",
+  "scope": "Read-only source/manifests/public runtime references and retained public installation evidence; no credential values or provider data read",
+  "repositoriesInspected": [
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform",
+    "/home/administrator/projects/hexalith/platform"
+  ],
+  "installedOperationalResourcesFound": true,
+  "retainedHealthObservedAtUtc": "2026-10-28T07:00:48.976188+00:00",
+  "retainedHealth": {
+    "authority": {
+      "/alive": {
+        "body": {
+          "status": "Alive"
+        },
+        "status": 200
+      },
+      "/health": {
+        "body": {
+          "dependencyAvailable": false,
+          "exactKeyStatusCount": 4,
+          "inventoryHostCount": 2,
+          "profilePresent": true,
+          "qualificationPassed": false,
+          "revision": "e19e68c9537246148141ec9d3841cfe4:19",
+          "status": "InstalledAuthority"
+        },
+        "status": 200
+      },
+      "/ready": {
+        "body": {
+          "dependencyAvailable": false,
+          "status": "AuthorityStorageReady"
+        },
+        "status": 200
+      }
+    },
+    "custody": {
+      "/alive": {
+        "body": {
+          "status": "Alive"
+        },
+        "status": 200
+      },
+      "/health": {
+        "body": {
+          "decisionSignerInstalled": false,
+          "dependencyAvailable": false,
+          "lifecycleProviderInstalled": false,
+          "missingHmacInput": null,
+          "qualificationPassed": false,
+          "status": "InstalledCustody"
+        },
+        "status": 200
+      },
+      "/ready": {
+        "body": {
+          "dependencyAvailable": false,
+          "status": "MetadataBound"
+        },
+        "status": 200
+      }
+    },
+    "inventory": {
+      "/alive": {
+        "body": {
+          "status": "Alive"
+        },
+        "status": 200
+      },
+      "/health": {
+        "body": {
+          "dependencyAvailable": false,
+          "exactPermittedReferenceCount": 4,
+          "independentProfilePresent": true,
+          "missingHmacInput": null,
+          "qualificationPassed": false,
+          "status": "InstalledUnbound"
+        },
+        "status": 200
+      },
+      "/ready": {
+        "body": {
+          "status": "Bound"
+        },
+        "status": 200
+      }
+    }
+  },
+  "runtimeReference": {
+    "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
+    "sha256": "efade3ce11a5ebe51def33d83eba5876d0e7e2e176c937811b5626857da953e8",
+    "providerServiceReference": "https://hexalith-keys-active.openbao.svc:8200",
+    "currentInventoryAuthorityReference": "ext-secrets-1-inventory",
+    "profileReference": "ext-secrets-1-hmac-authority",
+    "profileVersion": "owner-ba457c222fcb483ebd114ca34157b7df",
+    "profileValidUntil": "2026-10-28T23:51:51.830725+00:00",
+    "hmacCredentialReference": "ext-secrets-1-isolated/Secret/ext-secrets-1-custody-data-29a4ace57e04#token",
+    "nullFields": [
+      "qualification.daprApiCredentialReference",
+      "qualification.enrollment.appChannelCredentialReference",
+      "qualification.enrollment.appId",
+      "qualification.enrollment.callerAuthenticatorReference",
+      "qualification.enrollment.callerScopeAuthorityReference",
+      "qualification.enrollment.identity",
+      "qualification.enrollment.publicAnchorFile",
+      "qualification.enrollment.version",
+      "qualification.enrollmentCredentialReference",
+      "qualification.executor.appChannelCredentialReference",
+      "qualification.executor.appId",
+      "qualification.executor.callerAuthenticatorReference",
+      "qualification.executor.callerScopeAuthorityReference",
+      "qualification.executor.identity",
+      "qualification.executor.publicAnchorFile",
+      "qualification.executor.version",
+      "qualification.isolatedTargetId",
+      "qualification.observer.appChannelCredentialReference",
+      "qualification.observer.appId",
+      "qualification.observer.callerAuthenticatorReference",
+      "qualification.observer.callerScopeAuthorityReference",
+      "qualification.observer.identity",
+      "qualification.observer.publicAnchorFile",
+      "qualification.observer.version",
+      "runtime.acceptedReplacementCommit",
+      "runtime.actorRoleAuthorityReference",
+      "runtime.allCopyInventoryReference",
+      "runtime.allCopyLifecycleAuthorityReference",
+      "runtime.authenticatedRequesterTransport",
+      "runtime.compromiseGuardMirrorReference",
+      "runtime.compromisePublisherReference",
+      "runtime.compromiseSubscriberCredentialReference",
+      "runtime.compromiseSubscriptionReference",
+      "runtime.independentSignerAccount",
+      "runtime.independentSignerCredentialReference",
+      "runtime.migrationAuthorityReference",
+      "runtime.nonrollbackJournalReference",
+      "runtime.protectionOwnerReference",
+      "runtime.publicAnchorRetentionReference",
+      "runtime.replayExactScope",
+      "runtime.replayRegistrarCredentialReference",
+      "runtime.restoreTarget"
+    ]
+  },
+  "retainedVerification": {
+    "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/verification.final.json",
+    "sha256": "1823dd102f6b9a16722b7256fbc0354ed8775f31917656348854864a3e285adf",
+    "authorityRevision": "e19e68c9537246148141ec9d3841cfe4:19",
+    "authorityReceipts": 19,
+    "focusedTestCount": 45,
+    "testsRerun": false,
+    "baselineIssued": false
+  },
+  "sources": {
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json": "efade3ce11a5ebe51def33d83eba5876d0e7e2e176c937811b5626857da953e8",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/health.current.json": "bb1e0603cd9aebad5ecd6dc650361deabafcd56019d5a9644861613cc6325053",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/verification.final.json": "1823dd102f6b9a16722b7256fbc0354ed8775f31917656348854864a3e285adf",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/blocker.json": "0481d4d9e115e58c811c0ee83e02cefdd21052b6b50a32829563bae1708acb6e",
+    "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/README.md": "e9c5af08cf51ed48dd713a0b2c59ae05c7e157cc43afbb496af1b0787f08d525",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/src/Hexalith.Platform.Secrets.Custody/CustodyHttp.cs": "52e4380c906e1947a21660a6b7982af9b6e1bfa85f1b62bfd66677aa291f4826"
+  },
+  "qualifyingErasureBackendIdentified": false,
+  "independentCurrentAuthorityIdentified": false,
+  "independentImmutableArchiveIdentified": false,
+  "reason": "Existing custody/HMAC authority is operational-secret scope on the application cluster. Installed health explicitly states lifecycleProviderInstalled false; lifecycle/copy/nonrollback/protection/restore references remain null. Existing ObservedRevival evidence remains unchanged.",
+  "blockingResourceAction": "Supply an actual independently administered non-AWS key-erasure backend and its scoped access references, with current-authority and immutable-archive resource/endpoints/access references outside the application restore and administration domains. Point to the exact resource profile if already held elsewhere in Hexalith.Platform.",
+  "separateMaintenanceBlocker": {
+    "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/blocker.json",
+    "reason": "Historical sanitized update/audit evidence for the retained unrelated legacy-token Secret metadata refresh is still required before a next maintenance preservation baseline can issue. This is separate from lifecycle qualification."
+  },
+  "sourceFollowUp": {
+    "manifestIndexWriter": "Absent",
+    "safePublicationPlacement": "After the consumption-owner actor RPC returns; no callback into the same non-reentrant actor from ConsumeAsync",
+    "sizeConstraint": "Complete valid 1000-target manifests can exceed the 32 MiB authority head; reuse independent immutable-original archive and bounded index rather than embedding complete bodies or weakening capacity."
+  },
+  "limitations": "Retained timestamped health and source observations, not a fresh installed contract run or a survey of all external services. No installation/qualification/availability claim.",
+  "installedEffects": 0,
+  "providerWrites": 0,
+  "qualificationInvocations": 0,
+  "attemptReservations": 0
+}

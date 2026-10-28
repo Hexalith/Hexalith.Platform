@@ -1,0 +1,225 @@
+{
+  "schema": "Story5.4.D2ResourceResolution.v1",
+  "recordedAtUtc": "2026-10-28T09:34:19.308881+00:00",
+  "status": "ResourceInvestigationCompleteProvisioningReturnRequired",
+  "owningRepository": "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform",
+  "sourceRevision": "8de90958bc41b7fd01b7ed22b8ab364447a800e4",
+  "preExistingWorkspaceChanges": [
+    " M docs/implementation/story-5-4-coupled-delivery-2026-10-25/SHA256SUMS",
+    " M docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-decision.md",
+    " M docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+    "?? docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/platform-installation-inspection-2026-10-28.json",
+    "?? docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/reuse-adoption-2026-10-28.json"
+  ],
+  "scope": "Read-only examination of referenced public configuration, source and retained installation evidence; no external-account/global resource census or fresh installed contract observation. No credential values or provider data read.",
+  "resourceExistenceConclusion": "No qualifying resources identified in reviewed references; absence outside that scope is not asserted.",
+  "resourceChecks": [
+    {
+      "role": "operational-custody-inventory-hmac",
+      "status": "InstalledOperationalScopeRetainedEvidence",
+      "endpoint": "https://hexalith-keys-active.openbao.svc:8200",
+      "inventoryReference": "ext-secrets-1-inventory",
+      "hmacAuthorityReference": "ext-secrets-1-hmac-authority",
+      "credentialReference": "ext-secrets-1-isolated/Secret/ext-secrets-1-custody-data-29a4ace57e04#token",
+      "lifecycleProviderInstalled": false,
+      "decisionSignerInstalled": false,
+      "observedAtUtc": "2026-10-28T07:00:48.976188+00:00",
+      "retainedProfileValidUntil": "2026-10-28T23:51:51.830725+00:00"
+    },
+    {
+      "role": "irreversible-key-erasure",
+      "status": "NoQualifyingResourceIdentified",
+      "actualResourceId": null,
+      "endpoint": null,
+      "credentialReference": null,
+      "evidence": "Public runtime all-copy lifecycle references are null; proposed lifecycle component is unapplied/uninstalled. Existing executable AWS reference is excluded; OpenBao ObservedRevival remains unqualified."
+    },
+    {
+      "role": "independent-current-authority",
+      "status": "NoQualifyingResourceIdentified",
+      "actualResourceId": null,
+      "endpoint": null,
+      "credentialReference": null,
+      "rejectedSubstitute": "Installed HMAC authority is a same-cluster single replica/local PVC, not an independently enrolled forward-only lifecycle head."
+    },
+    {
+      "role": "independent-immutable-archive",
+      "status": "NoQualifyingResourceIdentified",
+      "actualResourceId": null,
+      "endpoint": null,
+      "credentialReference": null,
+      "rejectedSubstitute": "node1 OpenEBS/local paths and Retain reclaim policy do not establish independent immutable originals; referenced profiles/enrollments are null or unapplied."
+    }
+  ],
+  "sourceHashes": {
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/eng/ext-secrets-1/README.md": "fa13c8b0cd5fec181ff58a7eb04c27b265350872b247b5c0d57899d23ed29b06",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/eng/ext-secrets-1/provisioning/custody-component.proposed.json": "4e2fb612daf0ff8fd317deeeda7d36d29008caffc842dc3180521d8d0a99a046",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/eng/ext-secrets-1/custody-deployment/README.md": "f855949d71b47a448ccf6ff115310818ba4f28c703e03b414a705f21a9ffbc94",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/eng/ext-secrets-1/public-joint-plan.json": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr/NativeDaprAuthorityStore.cs": "dd304b0b1db9c67f1e85882df29b3d9a89e4e0c6955664fe786aeaefabe5d10c",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/infrastructure/Hexalith.Platform.Custody.Dapr/AwsEpochOperations.cs": "e61a80a1207f0f0ceac9a030a8ef9013392fbccc6ca5ed73a667d16149c8abd0",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/custody-lifecycle-foundation-2026-10-25/source-dispositions.json": "8761e56d73261585457de1a46a8b0122d6cef21c4dc182a47318579b3fbf2c73",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/pg2-p1-v1-feasibility-2026-10-12.md": "b879819874934937cea19b406edd66c2657ded9527348ce4a8b626227865dd6e",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/platform-installation-inspection-2026-10-28.json": "4f04d1716812dd6d4b8233ee6a090cde2cf3cb60743174c53ba9d6bc981e7ba7",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json": "efade3ce11a5ebe51def33d83eba5876d0e7e2e176c937811b5626857da953e8",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/verification.final.json": "1823dd102f6b9a16722b7256fbc0354ed8775f31917656348854864a3e285adf",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/health.current.json": "bb1e0603cd9aebad5ecd6dc650361deabafcd56019d5a9644861613cc6325053",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json": "9cf7ee66f0f1a045bd67c0f645faf262140b8ba8c4594193789e00ea17ef3e2b",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/reuse-adoption-2026-10-28.json": "ac3574440a0a8d58948280647c7333a1597dfc214f9fe73455d39cc5fd06eb3c",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/ext-secrets-1-option-a-feasibility-2026-10-18/native-result.json": "6efa381bc70b3de57a24142e5e679f53781c7f89d5ab6740fb7664966f30888e"
+  },
+  "retainedPassingEvidence": {
+    "freshExecution": false,
+    "healthObservedAtUtc": "2026-10-28T07:00:48.976188+00:00",
+    "healthEndpointsWith200": 9,
+    "authorityReceipts": 19,
+    "focusedTestCount": 45,
+    "testsRerun": false
+  },
+  "candidate": {
+    "status": "AssessedConditionalEvaluationOnly",
+    "keyBackend": "Thales Luna Network HSM 7",
+    "currentAuthority": "PostgreSQL 18 primary plus synchronous standby on independent physical hosts; scoped Dapr state.postgresql/v2",
+    "immutableArchive": "Google Cloud Storage Bucket Lock in an independently administered archive project/organization",
+    "selected": false,
+    "qualifying": false,
+    "blockingGuarantee": "Vendor-supported exact partition-scoped all-copy erasure with original outcome/audit lookup, bounded completion and independent survivor/non-revival proof is not established. PostgreSQL/GCS resource existence alone supplies no missing semantic service, nonrollback authority or physical qualification.",
+    "assessmentAndExactOwnerActionReference": "D2-provisioning-request-2026-10-28.md",
+    "customPlatformStarted": false,
+    "requiredCustodianReturns": [
+      "Audit enabled before partition initialization; event coverage, clock, verifiable export/rotation and retention",
+      "Actual lockout/recovery policies and non-destructive primary/deputy credential recovery",
+      "Supported cross-partition survivor migration with all plaintext/holder closure identified",
+      "Acknowledged-revision preservation on promotion and independently surviving enforcement rejecting an older restored head with valid historical identity",
+      "Archive encryption ownership and retained independent decryption/read access",
+      "Current accepted runtime/profile and fresh authorized readiness at continuation; original installer never replayed"
+    ]
+  },
+  "primarySourcesReviewed": [
+    {
+      "title": "Luna partition policies",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_partition/policies/partition_capabilities_and_policies.htm"
+    },
+    {
+      "title": "Luna administrative security effects",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_hsm/operational_security.htm"
+    },
+    {
+      "title": "Luna layered key protection",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/Product_Overview/security.htm"
+    },
+    {
+      "title": "PostgreSQL 18 synchronous replication",
+      "url": "https://www.postgresql.org/docs/18/warm-standby.html#SYNCHRONOUS-REPLICATION"
+    },
+    {
+      "title": "Dapr PostgreSQL v2",
+      "url": "https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-postgresql-v2/"
+    },
+    {
+      "title": "Dapr state store capabilities",
+      "url": "https://docs.dapr.io/reference/components-reference/supported-state-stores/"
+    },
+    {
+      "title": "Cloud Storage Bucket Lock",
+      "url": "https://docs.cloud.google.com/storage/docs/bucket-lock"
+    },
+    {
+      "title": "Cloud Storage generation preconditions",
+      "url": "https://docs.cloud.google.com/storage/docs/request-preconditions"
+    },
+    {
+      "title": "Cloud Storage retention-lock procedure",
+      "url": "https://docs.cloud.google.com/storage/docs/using-bucket-lock"
+    },
+    {
+      "title": "Luna audit setup and log rotation",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_hsm/audit/audit.htm"
+    },
+    {
+      "title": "Luna partition-role lockout and recovery",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_partition/partition_roles/partition_login.htm"
+    },
+    {
+      "title": "Cloud Storage encryption ownership",
+      "url": "https://docs.cloud.google.com/storage/docs/encryption/customer-managed-keys"
+    },
+    {
+      "title": "Luna HSM policy 15 and destructive policy effects",
+      "url": "https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_hsm/policies/hsm_capabilities_and_policies.htm"
+    }
+  ],
+  "ownerDeliveryProgress": {
+    "D2": "Investigated; explicit supported-option provisioning/access request delivered; actual resources/access still absent",
+    "D1": "Approved reuse approach retained; actual backend selection/cost/retention scope remains unaccepted",
+    "D3ThroughD9": "Unchanged and incomplete; not closed by this assessment",
+    "sourceDeliveryReuse": "Reviewed registration-publication and read-only reserved-manifest deliveries and passing evidence retained; missing bounded manifest-index writer, independent services and installed integration remain explicit"
+  },
+  "qualification": {
+    "status": "NotRunIncompleteAcceptedOwnerDeliveries",
+    "authorized": false,
+    "attemptReserved": false,
+    "phaseOrder": [
+      "protection",
+      "secrets",
+      "host-refusing-consumers",
+      "mutual"
+    ],
+    "caseCountsByPartition": {
+      "0": 1,
+      "1": 70,
+      "2": 3,
+      "3": 168
+    },
+    "planSha256": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99",
+    "recoveryAssignments": {
+      "activation": 3,
+      "completion": 3,
+      "compromise-block": 3,
+      "consume": 3,
+      "delivery": 3,
+      "dispatch": 3,
+      "guard-issue": 3,
+      "lifecycle": 3,
+      "replay": 1,
+      "signing": 3
+    },
+    "story54BindingsAndAcceptanceTesting": "Blocked until complete accepted owner deliveries and passing exact-target qualification permit availability; not resumed"
+  },
+  "preserved": {
+    "awsIncluded": false,
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "bindingHistoryFixedDays": 365,
+    "historyExpiryExclusive": true,
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
+    "acceptedIntegrationDate": "2026-10-08",
+    "cohort": "OQ-5.4-1",
+    "openBaoOutcome": "ObservedRevival",
+    "openBaoG1Qualified": false,
+    "openBaoOriginalResultSha256": "6efa381bc70b3de57a24142e5e679f53781c7f89d5ab6740fb7664966f30888e",
+    "dependencyAvailable": false,
+    "qualificationPassed": false,
+    "separateMaintenanceBlockerUnchanged": true
+  },
+  "effects": {
+    "clusterOrProviderWrites": 0,
+    "installationInvocations": 0,
+    "completedInstallerReplays": 0,
+    "providerDataReads": 0,
+    "nativeKeyExperiments": 0,
+    "trustEnrollments": 0,
+    "qualificationInvocations": 0,
+    "attemptReservations": 0,
+    "consumingStory54Tests": 0,
+    "newPurchasesOrLeases": 0
+  },
+  "verificationReference": "installation-evidence/d2-resource-verification-2026-10-28.json"
+}

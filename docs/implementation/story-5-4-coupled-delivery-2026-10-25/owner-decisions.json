@@ -1,7 +1,7 @@
 {
   "purpose": "Owner return form for coupled installation decisions; not a deployment, enrollment or acceptance packet",
-  "status": "NonAwsMvpAwaitingActualBackendAndOwnerReturns",
-  "installationAuthorized": false,
+  "status": "NonAwsMvpReuseSelectedAwaitingActualInstallation",
+  "installationAuthorized": true,
   "qualificationAuthorized": false,
   "attemptReserved": false,
   "dependencyAvailable": false,
@@ -27,7 +27,7 @@
       "MVP-1 reuse an existing independently qualifying non-AWS semantic custody installation",
       "MVP-2 implement and qualify a non-AWS semantic Dapr backend"
     ],
-    "selectedChoice": null,
+    "selectedChoice": "MVP-1 reuse an existing independently qualifying non-AWS semantic custody installation",
     "actualNonAwsProviderAndMaintainer": null,
     "approvedNonAwsResourceAndCostScopeReference": null,
     "approvedRetentionAndExtensionScheduleReference": null,
@@ -42,7 +42,18 @@
     "actualProviderCompletionAndRecoveryBoundsReference": null,
     "scopedReadOnlyAccessOrSignedResourceCensusReference": null,
     "backupExclusionsRetentionAndIndependentAdministrationReference": null,
-    "exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference": null
+    "exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference": null,
+    "resolution": {
+      "status": "UnresolvedNoQualifyingResourcesIdentifiedInReferencedEvidence",
+      "resourceCensusReference": "installation-evidence/d2-resource-resolution-2026-10-28.json",
+      "supportedOptionAssessmentAndProvisioningRequestReference": "D2-provisioning-request-2026-10-28.md",
+      "candidateOnly": "Thales Luna Network HSM 7; independent PostgreSQL 18 current authority; independently administered Google Cloud Storage Bucket Lock archive",
+      "candidateSelected": false,
+      "candidateQualifying": false,
+      "provisioningPerformed": false,
+      "nextOwnerAction": "Open the scoped allocation/evaluation request in D2-provisioning-request-2026-10-28.md with an infrastructure custodian and Thales-authorized integrator. Obtain supported partition-scoped all-copy erasure assurance, independently administered authority/archive allocation, actual identity/endpoint/scope/credential-reference census, costs, retention and exact supported command artifacts before new expenditure or irreversible provisioning. Return accepted actual resources through D1/D2.",
+      "customCustodyPlatformAuthorizedByDefault": false
+    }
   },
   "D3_recovery": {
     "owner": "Project owner with independent recovery/access owners",
@@ -118,5 +129,51 @@
     "existingDaprKubernetesOpenBaoRetainedForOperationalSecretScope": true,
     "qualifyingNonAwsSemanticCustodyBackendSelected": false,
     "physicalErasureAndIndependentRecoveryObligationsWaived": false
+  },
+  "installationAuthorizationScope": "User instruction apply recommended authorizes implementing and installing the reuse path within the existing approved scope. Actual resource identities, access, independence and technical prerequisites remain required. No hardware purchase, new administrator appointment, trust enrollment, destructive experiment or qualification is inferred from this form.",
+  "recommendationAdopted": {
+    "recordedAtUtc": "2026-10-28T07:24:31.995110+00:00",
+    "ownerInstruction": "apply recommended",
+    "selectedApproach": "Reuse a qualifying independently administered non-AWS custodian through a thin adapter behind the existing Dapr custody contract; keep OpenBao for operational secrets.",
+    "fallback": "If no qualifying installation exists, assess one supported hardware-backed option before selecting a custom backend or procuring hardware.",
+    "authorizationIsNotInstallationEvidence": true,
+    "installationPerformed": false,
+    "blockingInput": "Actual custody backend/version/endpoint and scoped credential references, plus independently administered current-authority and immutable-archive resource/access references.",
+    "referenceValuesOnly": true,
+    "existingOperationalInstallationReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
+    "installedScopeVerificationReference": "installation-evidence/platform-installation-inspection-2026-10-28.json",
+    "existingOperationalCustodyInstalled": true,
+    "qualifyingLifecycleProviderInstalled": false
+  },
+  "infrastructureResolutionProgress": {
+    "recordedAtUtc": "2026-10-28T09:34:19.308881+00:00",
+    "status": "ResourceInvestigationCompleteProvisioningReturnRequired",
+    "completed": [
+      "Inspected referenced public runtime/configuration and retained installation evidence without repeating effects",
+      "Separated installed operational custody/inventory/HMAC authority from missing lifecycle and independent resources",
+      "Assessed one vendor-supported non-AWS option against shared-cut, non-revival, independent currentness, immutable originals and survivor guarantees",
+      "Prepared a concrete custody/authority/archive provisioning and scoped-access request"
+    ],
+    "operationalInstallationReused": true,
+    "retainedPassingEvidenceReused": true,
+    "lifecycleAdapterImplemented": false,
+    "lifecycleAdapterInstalled": false,
+    "reasonAdapterNotInstalled": "No actual qualifying resources or supported API/access profile identified; no adapter can safely bind absent HSM, current-authority or archive resources.",
+    "remainingDeliveries": "D1 actual backend/resource/cost scope; all actual D2 resources/access/proofs; D3-D9 owning-service, role/trust, physical, host/protection and accepted replacement deliveries remain required.",
+    "qualificationStatus": "NotRunIncompleteAcceptedOwnerDeliveries",
+    "qualificationPlanReference": "../../../eng/ext-secrets-1/public-joint-plan.json",
+    "qualificationPhaseOrder": [
+      "protection",
+      "secrets",
+      "host-refusing-consumers",
+      "mutual"
+    ],
+    "story54Status": "InProgressBlockedOnAcceptedOwnerDeliveries",
+    "dependencyAvailable": false,
+    "attemptReserved": false,
+    "clusterOrProviderWrites": 0,
+    "installationInvocations": 0,
+    "qualificationInvocations": 0,
+    "destructiveExperiments": 0
   }
 }
