@@ -502,8 +502,35 @@ Measurement quiescence is bounded within original execution and never starts or
 resets the separate stop/remove allowance.
 Missing metrics/provider/readbacks fail; no value is filled with a configured bound.
 The original startup is <=600s, execution <=50400s including startup, cumulative
-stop/remove <=900s, within the outside-approved <=51900s window. PostgreSQL stays
-8000m/16GiB and aggregate demand16250m/31GiB. The source-bound result and retained
+stop/remove <=900s, within the outside-approved <=51900s window. The exact signed
+plan's `limits` selects either the unchanged `independent_calibration.LIMITS`
+or the explicit `independent_calibration.SMALL_LIMITS` candidate:
+
+| Compute budget | Legacy independent | Small independent candidate |
+| --- | --- | --- |
+| PostgreSQL ceiling | 8000m / 16GiB | 2000m / 4GiB |
+| Other application, sidecar, control, Scheduler and host budgets | 8250m / 15GiB | 8250m / 15GiB (unchanged) |
+| Aggregate net reservation and observed ceiling | 16250m / 31GiB | 10250m / 19GiB |
+| PostgreSQL requests | 4000m / 8GiB | 2000m / 4GiB |
+| PostgreSQL `shared_buffers` / `effective_cache_size` | 4GB / 12GB | 1GB / 3GB |
+
+These are configured budgets pending actual measurements, not proven minima or
+performance results. Selection changes only the four compute values in `limits`;
+all other workload, timing, retry, storage, latency/error and security requirements
+remain exact. Mixed or modified selections refuse. Selecting small requires its
+own plan/profile identity and current signed net reservations; legacy authority
+and larger-target measurements cannot be relabelled. The independently rendered
+PostgreSQL object receives both small requests and limits plus the two memory
+settings; TLS/SCRAM, durability, probes, credentials and all other object fields
+remain unchanged. Full campaign configuration and admission retain their defaults.
+
+Persisted preparation and prelaunch comparisons, metrics checks, inspection and
+results use the same selected plan limits. Missing/stale readbacks or excess stop
+the attempt; no cap increases or retries are automatic. Historical readbacks with
+no selection field are compatible only with the legacy plan. Terminal inspection
+uses retained immutable evidence even after operational allocation paths disappear.
+Small measurements cannot supply same-input evidence for the larger target.
+The source-bound result and retained
 segment proofs say qualified/C1/C2/A41=false. Separate backlog occupancy is not an
 expired-backlog drain, C2 replacement/fault, C3 retention/24h reclamation or renewal
 proof. Existing full campaign admission and all its measurements/security checks

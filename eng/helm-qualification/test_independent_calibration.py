@@ -115,6 +115,228 @@ class IndependentCalibrationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             capacity.validate_bound(loaded, now_ms=self.now)
 
+    def select_small(self):
+        self.plan['limits'] = {**deepcopy(calibration.LIMITS), 'postgresCpuMilli': 2000,
+            'postgresMemoryBytes': 4 * capacity.GIB, 'cpuMilli': 10250, 'memoryBytes': 19 * capacity.GIB}
+        self.receipts['compute'].update(cpuMilliAvailable=11250, cpuMilliCompeting=1000, cpuMilliReserved=10250,
+            memoryBytesAvailable=20 * capacity.GIB, memoryBytesCompeting=capacity.GIB, memoryBytesReserved=19 * capacity.GIB)
+        self.seal()
+
+    def test_small_plan_and_exact_net_signed_reservations_are_admitted_without_campaign_credit(self):
+        original = deepcopy(self.plan)
+        self.select_small()
+        self.assertEqual(calibration.SMALL_LIMITS, self.plan['limits'])
+        loaded = calibration.load_plan(self.plan_ref['path'], self.plan_ref['sha256'])
+        self.assertEqual(self.receipts, calibration.reservations(loaded, self.now))
+        calibration.current_authority(loaded, self.plan_ref['sha256'], 'launch', self.now)
+        for key in calibration.LIMITS.keys() - {'postgresCpuMilli', 'postgresMemoryBytes', 'cpuMilli', 'memoryBytes'}:
+            self.assertEqual(original['limits'][key], loaded['limits'][key])
+        self.assertNotEqual(original['profileSha256'], loaded['profileSha256'])
+        with self.assertRaises(ValueError):
+            capacity.validate_bound(loaded, now_ms=self.now)
+
+    def test_mixed_modified_and_noninteger_limits_refuse_even_with_a_fresh_plan_digest(self):
+        original = deepcopy(self.plan)
+        for changes in ({'postgresCpuMilli': 2000}, {'cpuMilli': 10250}, {'postgresMemoryBytes': 4 * capacity.GIB},
+            {'memoryBytes': 19 * capacity.GIB}, {'acceptedRecords': 449999}, {'retries': True},
+            {'postgresCpuMilli': 4000, 'postgresMemoryBytes': 8 * capacity.GIB, 'cpuMilli': 12250, 'memoryBytes': 23 * capacity.GIB}):
+            self.plan = deepcopy(original); self.plan['limits'].update(changes); self.seal()
+            with self.subTest(changes=changes), self.assertRaisesRegex(ValueError, 'identity-or-budget-drift'):
+                calibration.load_plan(self.plan_ref['path'], self.plan_ref['sha256'])
+
+    def test_small_selection_cannot_reuse_legacy_approval_reservations_or_mutate_prepared_plan(self):
+        legacy_receipts = deepcopy(self.receipts)
+        legacy_status = deepcopy(self.status)
+        self.select_small()
+        for name in self.receipts:
+            self.sign(self.plan['reservations'][name]['path'], legacy_receipts[name])
+        with self.assertRaisesRegex(ValueError, 'reservation-binding'):
+            calibration.reservations(self.plan, self.now)
+        self.sign(self.plan['authority']['statusPath'], legacy_status)
+        with self.assertRaisesRegex(ValueError, 'authority-binding'):
+            calibration.current_authority(self.plan, self.plan_ref['sha256'], 'launch', self.now)
+        self.seal()
+        original_sha = self.plan_ref['sha256']
+        self.plan['limits'] = deepcopy(calibration.LIMITS)
+        self.write('plan.json', self.plan)
+        with self.assertRaises(ValueError):
+            calibration.load_plan(self.plan_ref['path'], original_sha)
+
+    def test_small_reservation_still_requires_signed_fresh_and_sufficient_net_capacity(self):
+        self.select_small()
+        original = deepcopy(self.receipts['compute'])
+        path = self.plan['reservations']['compute']['path']
+        for changes in ({'cpuMilliAvailable': 11249}, {'cpuMilliReserved': 10249},
+            {'memoryBytesAvailable': 20 * capacity.GIB - 1}, {'memoryBytesReserved': 19 * capacity.GIB - 1},
+            {'observedUtcMs': self.now - 300001}, {'disposition': 'withdrawn'}):
+            self.sign(path, {**original, **changes})
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                calibration.reservations(self.plan, self.now)
+        lifecycle.atomic(path, original)
+        with self.assertRaisesRegex(ValueError, 'signed-input'):
+            calibration.reservations(self.plan, self.now)
+
+    def postgres_objects(self):
+        # Representative retained-template fields: every field outside the four
+        # selected resource values and two memory settings must compare exactly.
+        container = {'name': 'postgresql', 'image': 'postgres@sha256:' + 'a' * 64,
+            'args': ['-c', 'ssl=on', '-c', 'password_encryption=scram-sha-256', '-c', 'shared_buffers=4GB',
+                '-c', 'effective_cache_size=12GB', '-c', 'fsync=on', '-c', 'synchronous_commit=on', '-c', 'full_page_writes=on'],
+            'resources': {'requests': {'cpu': '4', 'memory': '8Gi', 'ephemeral-storage': '1Gi'}, 'limits': {'cpu': '8', 'memory': '16Gi'}},
+            'securityContext': {'runAsNonRoot': True, 'readOnlyRootFilesystem': True,
+                'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL']}},
+            'env': [{'name': 'POSTGRES_PASSWORD_FILE', 'value': '/run/secrets/postgresql/admin-password'}],
+            'readinessProbe': {'exec': {'command': ['pg_isready']}},
+            'volumeMounts': [{'name': 'tls', 'mountPath': '/tls', 'readOnly': True}]}
+        return [{'apiVersion': 'apps/v1', 'kind': 'StatefulSet', 'metadata': {'name': 'access-telemetry-postgresql'},
+            'spec': {'replicas': 1, 'template': {'spec': {'serviceAccountName': 'access-telemetry-postgresql',
+                'automountServiceAccountToken': False, 'containers': [container]}}}},
+            {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'unchanged'}, 'data': {'scram': 'required'}}]
+
+    def test_small_postgres_specialization_preserves_all_other_objects_fields_and_legacy_resources(self):
+        original = self.postgres_objects()
+        with patch.object(calibration.environment, 'topology', return_value=deepcopy(original)):
+            self.assertEqual(original, calibration.topology(self.plan, {}))
+        self.select_small()
+        with patch.object(calibration.environment, 'topology', return_value=deepcopy(original)):
+            objects = calibration.topology(self.plan, {})
+        pg = objects[0]['spec']['template']['spec']['containers'][0]
+        self.assertEqual({'requests': {'cpu': '2', 'memory': '4Gi', 'ephemeral-storage': '1Gi'}, 'limits': {'cpu': '2', 'memory': '4Gi'}}, pg['resources'])
+        self.assertIn('shared_buffers=1GB', pg['args']); self.assertIn('effective_cache_size=3GB', pg['args'])
+        expected = deepcopy(original)
+        expected_pg = expected[0]['spec']['template']['spec']['containers'][0]
+        expected_pg['resources'] = deepcopy(pg['resources'])
+        expected_pg['args'][5] = 'shared_buffers=1GB'; expected_pg['args'][7] = 'effective_cache_size=3GB'
+        self.assertEqual(expected, objects)
+
+    def test_ambiguous_or_changed_postgres_memory_template_refuses_small_specialization(self):
+        self.select_small()
+        for args in (['-c', 'shared_buffers=4GB'], ['-c', 'shared_buffers=4GB', '-c', 'effective_cache_size=12GB', '-c', 'shared_buffers=8GB'],
+            ['-c', 'shared_buffers=8GB', '-c', 'effective_cache_size=12GB'], ['shared_buffers=4GB', '-c', 'effective_cache_size=12GB']):
+            objects = self.postgres_objects(); objects[0]['spec']['template']['spec']['containers'][0]['args'] = args
+            with self.subTest(args=args), patch.object(calibration.environment, 'topology', return_value=objects):
+                with self.assertRaisesRegex(ValueError, 'postgres-memory-tuning'):
+                    calibration.topology(self.plan, {})
+
+    def test_selected_metrics_caps_enforce_postgres_aggregate_freshness_and_completeness(self):
+        for small in (False, True):
+            with self.subTest(small=small):
+                if small:
+                    self.select_small()
+                q = self.runner(); self.start(q)
+                limits = self.plan['limits']; ns = self.plan['target']['namespace']
+                q.record['resources'] = [{'id': 'Pod/' + ns + '/' + name, 'readiness': 'ready'} for name in ('access-telemetry-postgresql-0', 'app-0')]
+                def pod(name, container, cpu, memory):
+                    return {'metadata': {'name': name, 'namespace': ns}, 'timestamp': lifecycle.utc(self.now),
+                        'containers': [{'name': container, 'usage': {'cpu': str(cpu) + 'm', 'memory': str(memory)}}]}
+                observed = {'items': [pod('access-telemetry-postgresql-0', 'postgresql', limits['postgresCpuMilli'], limits['postgresMemoryBytes']),
+                    pod('app-0', 'app', limits['cpuMilli'] - limits['postgresCpuMilli'], limits['memoryBytes'] - limits['postgresMemoryBytes'])]}
+                cases = [observed]
+                for index, key in ((0, 'cpu'), (0, 'memory'), (1, 'cpu'), (1, 'memory')):
+                    value = deepcopy(observed)
+                    usage = value['items'][index]['containers'][0]['usage']
+                    usage[key] = str(int(usage[key].removesuffix('m')) + 1) + ('m' if key == 'cpu' else '')
+                    cases.append(value)
+                stale = deepcopy(observed); stale['items'][0]['timestamp'] = lifecycle.utc(self.now - 60001); cases.append(stale)
+                missing = deepcopy(observed); missing['items'].pop(); cases.append(missing)
+                for index, value in enumerate(cases):
+                    with patch.object(q, 'kube', return_value=subprocess.CompletedProcess([], 0, json.dumps(value), '')), \
+                         patch.object(q, 'physical', return_value={'recordCount': 0, 'relations': []}), patch.object(lifecycle, 'clock', return_value=self.now):
+                        if index == 0:
+                            q.sample()
+                            self.assertEqual(limits, q.record['nativeReadbacks']['limits'])
+                            self.assertEqual(limits['cpuMilli'], q.record['nativeReadbacks']['peaks']['cpuMilli'])
+                        else:
+                            with self.assertRaises(ValueError):
+                                q.sample()
+                self.assertEqual(1, q.record['nativeReadbacks']['sampleCount'])
+                q.record['nativeReadbacks'].pop('limits')
+                with patch.object(q, 'kube', return_value=subprocess.CompletedProcess([], 0, json.dumps(observed), '')), \
+                     patch.object(q, 'physical', return_value={'recordCount': 0, 'relations': []}), patch.object(lifecycle, 'clock', return_value=self.now):
+                    if small:
+                        with self.assertRaisesRegex(ValueError, 'compute-limits-drift'):
+                            q.sample()
+                    else:
+                        q.sample()
+                        self.assertEqual(calibration.LIMITS, q.record['nativeReadbacks']['limits'])
+                q.close()
+                # Each variant owns a fresh persisted runner, never a live target.
+                import shutil
+                shutil.rmtree(self.state)
+
+    def test_small_prepared_resources_inspection_and_prelaunch_drift_use_original_selection(self):
+        from test_chart import fixture_values, graph
+        pins = json.loads((HERE / 'toolchain.json').read_bytes())
+        for tool in self.plan['tools'].values():
+            tool['path'] = str(Path(tool['path']).resolve())
+        # Tools, topology providers and pinned release archives are process/input
+        # doubles. The independent admission, private files, signatures, source
+        # closure, limits selection, persistence and comparison run unmocked.
+        release_assets = {name: {'path': str(self.root / (name + '-test-only')), 'sha256': pins[name]['sha256']}
+            for name in ('dapr', 'gateway')}
+        self.plan['assets'] = {**release_assets, 'network': self.write('network.json', [])}
+        self.plan['environment'].update(daprImages={}, leaseHolders=['calibration/owner-6775094/' + self.plan['runId']],
+            providerObjects=self.write('providers.json', []), reporterObjects=self.write('reporters.json', []),
+            secrets=[], openbaoSeed=self.write('seed.json', {}))
+        self.plan['source'] = [{'path': str(HERE / name), 'sha256': lifecycle.sha(HERE / name)} for name in (
+            'qualify.py', 'campaign_capacity.py', 'campaign_lifecycle.py', 'campaign_environment.py', 'independent_calibration.py', 'calibration_workload.py')]
+        values = capacity.configure_application(fixture_values(), graph()); values['capacityProfile'] = calibration.PROFILE_ID
+        self.plan['inputs'] = {name: [self.write(name + '.json', {})] for name in calibration.INPUT_GROUPS}
+        self.plan['inputs'].update(source=self.plan['source'], toolchain=[self.write('pins.json', pins)],
+            chart=[{'path': str(p), 'sha256': lifecycle.sha(p)} for p in sorted((HERE / 'chart').rglob('*')) if p.is_file()],
+            values=[self.write('application-values.json', values)], render=[self.write('render.yaml', b'application-render')],
+            applications=[self.write('applications.json', self.plan['environment'])],
+            tool=[self.write('tools.json', {k: self.plan[k] for k in ('tools', 'toolFiles', 'assets')})],
+            backendImages=[self.write('backends.json', {
+                'postgresql': 'docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722',
+                'openbao': 'quay.io/openbao/openbao:2.6.4@sha256:cf2340fc9a22cb9358ca0defd1f39b65673836bd23fe2bb8984a07e11fe13ef4'})])
+        self.seal()
+        reference = capacity.reference
+        def retained(ref):
+            if ref not in release_assets.values():
+                return reference(ref)
+        state = self.root / 'prepared-small'
+        def render(q, args, **kwargs):
+            self.assertIn('template', args)
+            self.assertEqual(self.plan['tools']['helm']['path'], args[0])  # No native tool is executed.
+            return subprocess.CompletedProcess([], 0, 'application-render' if 'reference' in args else 'dapr-render', '')
+        with patch.object(capacity, 'reference', side_effect=retained), \
+             patch.object(calibration.environment, 'topology', side_effect=lambda *args, **kw: self.postgres_objects()), \
+             patch.object(lifecycle, 'monitoring_config'), \
+             patch.object(lifecycle, 'monitor_receipt', return_value={'phase': 'preflight', 'target': None, 'expectedFaults': [], 'series': {'postgres.walBytes': None}}), \
+             patch.object(calibration.environment, 'dapr_values', return_value={}), \
+             patch.object(calibration.environment, 'validate_dapr_render'), \
+             patch.object(calibration.CalibrationQualification, 'validate_descriptor'), \
+             patch.object(calibration.CalibrationQualification, 'run', autospec=True, side_effect=render):
+            legacy, legacy_objects, _ = calibration.admit(self.plan, self.plan_ref['sha256'], 'prepare')
+            self.assertEqual((16250, 31 * capacity.GIB), (legacy['sizing']['cpuMilli'], legacy['sizing']['memoryBytes']))
+            self.assertEqual('16Gi', legacy_objects[0]['spec']['template']['spec']['containers'][0]['resources']['limits']['memory'])
+            self.select_small()
+            profile, objects, _ = calibration.admit(self.plan, self.plan_ref['sha256'], 'prepare')
+            self.assertEqual((10250, 19 * capacity.GIB), (profile['sizing']['cpuMilli'], profile['sizing']['memoryBytes']))
+            record = calibration.prepare(self.plan_ref['path'], self.plan_ref['sha256'], state)
+            self.assertFalse(record['creationAttempted'])
+            self.assertEqual(objects, json.loads((state / 'environment.json').read_bytes())['items'])
+            self.assertEqual(profile['sizing'], record['sizing'])
+            self.assertEqual(self.plan['limits'], calibration.inspect_state(state)['limits'])
+            q = calibration.CalibrationQualification(state)
+            try:
+                q.verify_prepared_inputs(profile, objects)
+                drifted = deepcopy(objects)
+                drifted[0]['spec']['template']['spec']['containers'][0]['resources']['limits']['memory'] = '16Gi'
+                with self.assertRaisesRegex(ValueError, 'prepared-environment-drift'):
+                    q.verify_prepared_inputs(profile, drifted)
+                q.terminal('failed', 'unit-test-terminal')
+            finally:
+                q.close()
+        # Inspection uses immutable local evidence after terminal cleanup; it
+        # cannot depend on still-available operational allocation inputs.
+        self.primary.rmdir(); self.backup.rmdir()
+        Path(self.plan['allocationBasis']['path']).unlink()
+        inspected = calibration.inspect_state(state)
+        self.assertEqual('failed', inspected['terminal']['outcome'])
+        self.assertEqual(self.plan['limits'], inspected['limits'])
+
     def test_missing_inputs_refuse_prepare_before_process_or_state(self):
         target = self.root / 'uncreated'
         with patch.object(Qualification, 'run', side_effect=AssertionError('no process allowed')):
@@ -347,6 +569,7 @@ class IndependentCalibrationTests(unittest.TestCase):
         fixture.setUp(); self.addCleanup(fixture.doCleanups)
         q = fixture.observation_fixture()
         q.__class__ = calibration.CalibrationQualification
+        q.plan['limits'] = deepcopy(calibration.LIMITS)
         q.record['phases'] = q.phases(None)
         # Prepared Kubernetes input has no server-assigned UID; live readbacks do.
         for obj in q.record['admittedResources'].values():

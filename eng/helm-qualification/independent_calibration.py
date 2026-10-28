@@ -26,6 +26,8 @@ LIMITS = {'attempts': 1, 'retries': 0, 'restarts': 0, 'startupSeconds': 600, 'ex
     'stoppingSeconds': 900, 'totalSeconds': 51900, 'postgresCpuMilli': 8000, 'postgresMemoryBytes': 16 * capacity.GIB,
     'cpuMilli': 16250, 'memoryBytes': 31 * capacity.GIB, 'writers': 2, 'recordsPerWriterSecond': 125,
     'overlapMilliseconds': 1800000, 'acceptedRecords': 450000, 'componentOperations': 900000, 'backlogRecords': 150000}
+SMALL_LIMITS = {**LIMITS, 'postgresCpuMilli': 2000, 'postgresMemoryBytes': 4 * capacity.GIB,
+    'cpuMilli': 10250, 'memoryBytes': 19 * capacity.GIB}
 
 
 def require(value, code):
@@ -38,6 +40,37 @@ def identity(plan):
         'assets', 'environment', 'source', 'inputs', 'allocations', 'allocationBasis', 'limits', 'reservations')})
 
 
+def selected_limits(plan):
+    """Select one exact signed candidate; configured ceilings are not measurements."""
+    limits = plan['limits']
+    require(isinstance(limits, dict) and set(limits) == set(LIMITS)
+        and all(type(value) is int for value in limits.values())
+        and limits in (LIMITS, SMALL_LIMITS), 'identity-or-budget-drift')
+    return dict(limits)
+
+
+def topology(plan, profile):
+    """Specialize only independent PostgreSQL compute and its two memory settings."""
+    limits = selected_limits(plan)
+    objects = environment.topology(profile, plan['environment'], plan['runId'], profile_id=PROFILE_ID)
+    postgres = [o for o in objects if o['kind'] == 'StatefulSet' and o['metadata']['name'] == 'access-telemetry-postgresql']
+    require(len(postgres) == 1, 'postgres-required')
+    container = postgres[0]['spec']['template']['spec']['containers'][0]
+    require(container['resources']['limits'] == {'cpu': '8', 'memory': '16Gi'}, 'postgres-caps')
+    if limits == SMALL_LIMITS:
+        args = container['args']
+        require(isinstance(args, list) and all(isinstance(value, str) for value in args), 'postgres-memory-tuning')
+        for name, original, selected in (('shared_buffers', '4GB', '1GB'), ('effective_cache_size', '12GB', '3GB')):
+            positions = [i for i, value in enumerate(args) if value.split('=', 1)[0] == name]
+            require(len(positions) == 1 and positions[0] > 0 and args[positions[0] - 1] == '-c'
+                and args[positions[0]] == name + '=' + original, 'postgres-memory-tuning')
+            args[positions[0]] = name + '=' + selected
+        resources = {'cpu': str(limits['postgresCpuMilli'] // 1000), 'memory': str(limits['postgresMemoryBytes'] // capacity.GIB) + 'Gi'}
+        for section in ('requests', 'limits'):
+            container['resources'].setdefault(section, {}).update(resources)
+    return objects
+
+
 def load_plan(path, expected):
     require(re.fullmatch('[0-9a-f]{64}', expected or ''), 'outside-plan-approval-required')
     value = lifecycle.strict(lifecycle.read_private(path, expected))
@@ -45,7 +78,8 @@ def load_plan(path, expected):
         'assets', 'environment', 'source', 'inputs', 'allocations', 'allocationBasis', 'limits', 'window', 'clock',
         'authority', 'reservations', 'profileSha256'}, 'plan-incomplete')
     require(value['schema'] == SCHEMA and re.fullmatch('[0-9a-f]{32}', value['runId']), 'identity')
-    require(value['limits'] == LIMITS and value['profileSha256'] == identity(value), 'identity-or-budget-drift')
+    selected_limits(value)
+    require(value['profileSha256'] == identity(value), 'identity-or-budget-drift')
     target = value['target']
     require(set(target) == {'hostId', 'clusterName', 'context', 'namespace', 'nodeHa'} and bool(target['hostId'])
         and target['nodeHa'] is False and target['clusterName'] == 'hxcal-' + value['runId']
@@ -89,6 +123,7 @@ def current_authority(plan, plan_sha, action, now):
 
 
 def reservations(plan, now):
+    limits = selected_limits(plan)
     require(set(plan['reservations']) == {'compute', 'primary', 'backup'}, 'reservation-missing')
     records = {}
     for name, config in plan['reservations'].items():
@@ -110,7 +145,7 @@ def reservations(plan, now):
             and all(record[k] == v for k, v in config['binding'].items()), 'reservation-backing-drift')
         if name == 'compute':
             require(record['hostId'] == plan['target']['hostId'] and record['engineId'] == plan['docker']['engineId'], 'compute-target')
-            for kind, demand in (('cpuMilli', 16250), ('memoryBytes', 31 * capacity.GIB)):
+            for kind, demand in (('cpuMilli', limits['cpuMilli']), ('memoryBytes', limits['memoryBytes'])):
                 require(all(type(record[kind + suffix]) is int and record[kind + suffix] >= 0 for suffix in ('Available', 'Competing', 'Reserved'))
                     and record[kind + 'Available'] - record[kind + 'Competing'] >= demand
                     and record[kind + 'Reserved'] >= demand, 'net-compute-insufficient')
@@ -131,6 +166,8 @@ def reservations(plan, now):
 
 
 def admit(plan, plan_sha, action):
+    limits = selected_limits(plan)
+    require(plan['profileSha256'] == identity(plan), 'identity-or-budget-drift')
     now = lifecycle.clock(plan)
     require(now < plan['window']['expiresUtcMs'], 'reservation-expired')
     current_authority(plan, plan_sha, action, now)
@@ -164,13 +201,10 @@ def admit(plan, plan_sha, action):
     require(backend['postgresql'] == 'docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722'
         and backend['openbao'] == 'quay.io/openbao/openbao:2.6.4@sha256:cf2340fc9a22cb9358ca0defd1f39b65673836bd23fe2bb8984a07e11fe13ef4', 'backend-pin-drift')
     profile = {'schema': SCHEMA, 'profileId': PROFILE_ID, 'runId': plan['runId'], 'approvedPlanSha256': plan_sha, 'target': plan['target'], 'inputs': inputs,
-        'sizing': {'allocations': plan['allocations'], 'cpuMilli': 16250, 'memoryBytes': 31 * capacity.GIB}}
-    objects = environment.topology(profile, plan['environment'], plan['runId'], profile_id=PROFILE_ID)
+        'sizing': {'allocations': plan['allocations'], 'cpuMilli': limits['cpuMilli'], 'memoryBytes': limits['memoryBytes']}}
+    objects = topology(plan, profile)
     supplemental = [*capacity.retained_json(plan['environment']['providerObjects']), *capacity.retained_json(plan['environment']['reporterObjects'])]
     environment.supplemental_budget([*supplemental, *lifecycle.documents(capacity.snapshot(plan['assets']['network']['path'], plan['assets']['network']['sha256']).decode())])
-    # Same restricted PG cap as the campaign, independently of data allocation.
-    pg = next(o for o in objects if o['kind'] == 'StatefulSet' and o['metadata']['name'] == 'access-telemetry-postgresql')
-    require(pg['spec']['template']['spec']['containers'][0]['resources']['limits'] == {'cpu': '8', 'memory': '16Gi'}, 'postgres-caps')
     for ref in plan['environment']['secrets'] + [plan['environment']['openbaoSeed']]:
         lifecycle.read_private(ref['path'], ref['sha256'])
     # Use the existing authenticated, complete monitor contract. Calibration has
@@ -353,6 +387,7 @@ class CalibrationQualification(lifecycle.CampaignQualification):
         # The metrics API supplies actual per-container CPU/memory, including
         # sidecars. A missing metrics provider refuses instead of zero filling.
         from decimal import Decimal
+        limits = selected_limits(self.plan)
         def quantity(raw, cpu):
             require(isinstance(raw, str), 'compute-quantity')
             match = re.fullmatch(r'([0-9]+(?:\.[0-9]+)?)(n|u|m|Ki|Mi|Gi|Ti)?', raw)
@@ -381,11 +416,15 @@ class CalibrationQualification(lifecycle.CampaignQualification):
                 cpu += c_cpu; memory += c_memory
                 if pod['metadata']['name'] == 'access-telemetry-postgresql-0' and c['name'] == 'postgresql':
                     pg_found = True
-                    require(c_cpu <= 8000 and c_memory <= 16 * capacity.GIB, 'postgres-compute-bound')
+                    require(c_cpu <= limits['postgresCpuMilli'] and c_memory <= limits['postgresMemoryBytes'], 'postgres-compute-bound')
         require(ready_pods <= measured_pods, 'compute-readback-incomplete')
-        require(pg_found and cpu <= 16250 and memory <= 31 * capacity.GIB, 'aggregate-compute-bound')
+        require(pg_found and cpu <= limits['cpuMilli'] and memory <= limits['memoryBytes'], 'aggregate-compute-bound')
         physical = self.physical()
-        current = self.record.get('nativeReadbacks', {'sampleCount': 0, 'peaks': {}})
+        current = self.record.get('nativeReadbacks', {'sampleCount': 0, 'peaks': {}, 'limits': limits})
+        # Historical readbacks predate selection and necessarily used LIMITS.
+        # They cannot be relabelled as measurements of the new small candidate.
+        require(current.get('limits', LIMITS) == limits, 'compute-limits-drift')
+        current['limits'] = limits
         current['sampleCount'] += 1
         for k, v in {**{k: v for k, v in physical.items() if k != 'relations'}, 'cpuMilli': cpu, 'memoryBytes': memory}.items():
             current['peaks'][k] = max(current['peaks'].get(k, 0), v)
@@ -460,7 +499,7 @@ class CalibrationQualification(lifecycle.CampaignQualification):
             '--dbname=memories_access_telemetry', '--command', 'VACUUM (FULL, ANALYZE) access_telemetry.lifecycle_state;', timeout=min(86400, self.remaining()), heartbeat=self.guard)
         after_rewrite = self.physical()
         result = {'schema': SCHEMA, 'runId': self.record['runId'], 'profileSha256': self.plan['profileSha256'],
-            'inputIdentity': identity(self.plan), 'target': self.record['physicalTarget'], 'backlog': backlog, 'writers': writers,
+            'inputIdentity': identity(self.plan), 'limits': selected_limits(self.plan), 'target': self.record['physicalTarget'], 'backlog': backlog, 'writers': writers,
             'componentOperations': operations, 'componentCounters': {'before': counters_before, 'after': counters_after},
             'physical': {'before': before, 'backlog': backlog_physical, 'beforeRewrite': pre_rewrite, 'afterRewrite': after_rewrite},
             'nativeReadbacks': self.record.get('nativeReadbacks'), 'operationalMonitor': self.record.get('storageObservation'), 'qualified': False, 'C1Credit': False, 'C2Credit': False, 'A41Credit': False}
@@ -480,6 +519,8 @@ def inspect_state(evidence):
     evidence = lifecycle.private(evidence, directory=True)
     record = lifecycle.strict(lifecycle.read_private(evidence / CalibrationQualification.state_name))
     plan = lifecycle.strict(lifecycle.read_private(evidence / CalibrationQualification.plan_name, record['planSha256']))
+    selected_limits(plan)
+    require(plan['profileSha256'] == identity(plan), 'identity-or-budget-drift')
     require(record['schema'] == SCHEMA and plan['schema'] == SCHEMA and record['runId'] == plan['runId'], 'state-binding')
     return {**{k: record[k] for k in ('runId', 'status', 'terminal', 'cleanup', 'target', 'planSha256')},
         'qualified': False, 'limits': plan['limits'], 'measurementStarted': record.get('measurementStarted'),
