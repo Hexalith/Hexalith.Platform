@@ -3,6 +3,8 @@ title: '2.5 Apply outcome, retention and cleanup rules to local runs'
 type: 'feature'
 created: '2026-10-24'
 status: 'done'
+qualification_status: 'source-live-qualified'
+qualification_evidence: 'evidence/2-5/live-requalification-20261028/verification.json'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '654d2299fbba59ea1998c0a2791e5b928131e38f'
@@ -629,3 +631,23 @@ The [final verification](evidence/2-5/source-review-fixes-20261028/verification.
 Fresh live qualification was retried on the final code and remains refused before provisioning as HXR015: Aspire CLI 13.6.1 versus required Aspire.AppHost.Sdk/13.6.4. The [final refusal](evidence/2-5/source-review-fixes-20261028/live-qualification-final.log) and empty successful cleanup audit are retained. No fresh live, package or Windows/macOS native qualification is claimed. The build spec is done and sprint tracking is review.
 
 Builds implementation is committed locally as `e129a29e6c6e2f8a200581e09b861d75a9f3a7b8`. The Platform completion commit records this gitlink, final verification evidence and review tracking. No push was performed.
+
+### Fresh live source qualification — 2026-10-28
+
+**Qualification status: source-live-qualified.** The earlier prerequisite refusal is superseded by a passing current-source live run using the catalog's **Dapr CLI 1.18.2, runtime 1.18.7 and Aspire 13.6.4**. The dedicated installation is `/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7`; `HEXALITH_DAPR_HOME` is configured in the user's login and interactive shell profiles. Each downloaded binary is bound to its upstream release archive checksum and retained binary SHA-256.
+
+The live test passed **1/1 with all four scenarios** in **423.363 seconds**: success cleanup, test-failure retention, execution-timeout retention and partial-startup retention. Each scenario preserved the first terminal outcome/cause/time, completed explicit and repeated cleanup, and left the independent peer's four container identities, three stable process identities and Redis sentinel unchanged. All three retained-failure scenarios initially returned `HXR028` during cleanup with verified-empty resources; the exact retries succeeded, followed by successful idempotent cleanup. All attempts are retained.
+
+The independent post-run host audit verifies that all **five owners** have no remaining tagged containers or processes. Durable run workspaces, active state and resource claims are absent. The runtime/archive audit verifies all immutable result fields and diagnostic hashes, and compares the final retained snapshots byte-for-byte to the original runtime files. Per-scenario snapshots are preserved separately because final cleanup legitimately updates cleanup/retention observations. Retained and relocated evidence audits pass without depending on original runtime paths. Unrelated concurrent ambient container changes are recorded without attribution; isolation proof comes from the independently started peer's stable identities and data.
+
+Both individual Debug builds passed with zero warnings/errors. All **234** selected source/configuration fingerprints are unchanged through the live run, including all **184** files from the prior **950-case** offline verification; those offline cases were not rerun. No product source, pin, publication or existing owner decision changed. Package and Windows/macOS native qualification remain outside this Linux/WSL local source proof. The story remains in sprint **review** pending acceptance.
+
+Exact commands, full XML, original/compressed logs, installation provenance, cleanup attempts, both diagnostic snapshots and audit receipts are retained in [live qualification evidence](evidence/2-5/live-requalification-20261028/README.md) and [verification](evidence/2-5/live-requalification-20261028/verification.json). No push was performed.
+
+### Reviewed live qualification completion — 2026-10-28
+
+The final reviewed run passed **1/1 with all four scenarios in 384.682 seconds**, with all **261** selected source/configuration files unchanged through execution. The fixture now retains the peer's pre-scenario identities and sentinel plus each initial result/report/diagnostic snapshot before explicit down. The audit independently verifies terminal timestamps, bindings and historical failure identities through all cleanup stages, every cleanup attempt, the complete final archive inventory and byte hashes, and all five durable empty ownership receipts. The focused cleanup-helper regression also passes **1/1**. The prior full Module/Evidence suites were not rerun; all 184 prior source fingerprints match.
+
+All ten independent review findings and the follow-up observation correction are resolved without product lifecycle changes or new deferrals. Original logs are explicitly retained by Git; new helper executions are source-hash bound. Runtime, retained and relocated audits pass, including five negative controls for missing archives, lost failure history, changed peer baseline, missing cleanup attempts and mismatched prior source fingerprints. The first 423.363-second attempt and its host observations remain separately accessible. See [final verification](evidence/2-5/live-requalification-20261028/verification.json) and [review triage](evidence/2-5/live-requalification-20261028/review-triage.json).
+
+Qualification remains **source-live-qualified**, sprint status **review**. Package/native boundaries, frozen intent and earlier decisions remain unchanged. No staging, commit or push was performed.

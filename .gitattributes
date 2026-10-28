@@ -29,7 +29,12 @@ _bmad-output/implementation-artifacts/evidence/1-13/pass-4/builds-pass4.patch -t
 _bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/** -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-5/delta-review-fixes-20261025/** -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/** -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/** -text -whitespace
 
 # The shared Dapr source follows this repository's CRLF EditorConfig policy.
 # Check the default whitespace rules while treating its required CR as a line ending.
 DaprSelfHostedMtls*.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep the qualification fixture and existing ignore file's CRLF endings valid.
+tests/Hexalith.Platform.Composition.Tests/PlatformLocalRunLifecycleTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+.gitignore whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

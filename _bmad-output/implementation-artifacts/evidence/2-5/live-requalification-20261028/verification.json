@@ -1,0 +1,173 @@
+{
+  "qualifiedAtUtc": "2026-10-28T10:38:54.605141+00:00",
+  "story": "2.5",
+  "qualificationStatus": "source-live-qualified",
+  "freshLiveQualification": true,
+  "mode": "source",
+  "executionContext": "local",
+  "platform": "Linux/WSL x64",
+  "daprHome": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+  "daprCliVersion": "1.18.2",
+  "daprRuntimeVersion": "1.18.7",
+  "aspireCliVersion": "13.6.4",
+  "liveTestPassed": true,
+  "liveScenariosPassed": 4,
+  "durationSeconds": 384.682,
+  "scenarioResults": [
+    {
+      "scenario": "success",
+      "runId": "b1e7265cae8eb93c1beea185b281fc30",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "78865e4f317b33e5551e386b3431d527",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "c904936c90b016ef773df8d553ca2b23",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "partial-startup",
+      "runId": "04ac10450130e068fbf13ed8784a04c9",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    }
+  ],
+  "cleanupAttempts": {
+    "success": [
+      {
+        "attempt": 1,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "failure": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "timeout": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "partial-startup": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ]
+  },
+  "ownedContainersProcessesWorkspacesClaimsAbsent": true,
+  "independentPeerContainersStableProcessesAndDataPreserved": true,
+  "runtimeArchiveByteParityPassed": true,
+  "immutableResultFieldsPreservedAcrossFinalCleanup": true,
+  "retainedEvidenceAuditPassed": true,
+  "relocatedEvidenceAuditPassed": true,
+  "sourceFilesUnchanged": 261,
+  "priorOfflineVerification": {
+    "executedPassingCases": 950,
+    "sourceHashesMatched": 184,
+    "evidence": "../source-review-fixes-20261028/verification.json",
+    "cleanupHelperRerunPassed": true,
+    "fullSuitesRerun": false
+  },
+  "packageQualification": false,
+  "windowsMacOSNativeQualification": false,
+  "storySprintStatus": "review",
+  "productSourceChanges": false,
+  "pushed": false,
+  "supersededAuditObservations": [
+    {
+      "command": "host-before.command.json",
+      "resolution": "The preexisting protected user systemd process is tracked by PID/start time; no newly uninspectable process exists after teardown."
+    },
+    {
+      "command": "runtime-audit.command.json",
+      "resolution": "Repeated final cleanup changes cleanup/retention observations and cleanup-request attempt identity. Preserve both snapshots, compare all immutable result fields, and verify complete final snapshots byte-for-byte against the runtime."
+    }
+  ],
+  "evidence": {
+    "liveCommand": "live-qualification-final.command.json",
+    "testXml": "platform-live-tests-final.xml",
+    "runtimeAudit": "runtime-audit.json",
+    "retainedAudit": "retained-audit.json",
+    "hostAudit": "host-after.json",
+    "portability": "portability.json",
+    "sourceBefore": "source-before-final.json",
+    "sourceAfter": "source-after-final.json",
+    "reviewTriage": "review-triage.json",
+    "peerBaseline": "live-final/peer-before.json",
+    "claimReceipts": "claim-receipts.json",
+    "priorSourceFingerprints": "prior-source-fingerprints.json"
+  },
+  "frozenIntentPreserved": true,
+  "executedAssemblyBytesUnchangedThroughQualification": true,
+  "liveEvidenceDirectory": "live-final",
+  "testFixtureChanges": "Retain initial peer identities and pre-cleanup result/report/diagnostic snapshots. No product lifecycle behavior changed.",
+  "initialFailureRetentionAndTerminalHistoryVerified": true,
+  "peerBaselineRecordedBeforeScenarios": true,
+  "durableOwnerReceiptsVerifiedEmpty": 5,
+  "archiveCompleteInventoryVerified": true,
+  "reviewFindingsAddressed": 10,
+  "reviewFollowupCorrectionVerified": true,
+  "newDeferrals": 0,
+  "auditNegativeControlsPassed": [
+    "deleted-unreferenced-final-archive-file",
+    "lost-historical-failure-identities",
+    "changed-initial-peer-identity",
+    "missing-first-cleanup-attempt",
+    "mismatched-prior-source-fingerprint"
+  ],
+  "cleanupHelperRerunPassed": true,
+  "fullOfflineSuitesRerun": false,
+  "priorLiveQualificationPreserved": {
+    "liveDirectory": "live",
+    "durationSeconds": 423.363,
+    "verification": "verification-before-review.json",
+    "hostBefore": "host-before-before-review.json",
+    "hostAfter": "host-after-before-review.json"
+  }
+}

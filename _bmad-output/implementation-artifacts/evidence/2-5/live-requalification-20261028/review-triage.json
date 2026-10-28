@@ -1,0 +1,96 @@
+{
+  "reviewLayer": "Blind Hunter",
+  "findingFloor": 10,
+  "findings": [
+    {
+      "id": "B1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Original log files were ignored by *.log. Added an exact evidence-directory Git exception; retain compressed AppHost logs too.",
+      "references": "../.gitignore and live[-final]/apphost-*.log[.gz]"
+    },
+    {
+      "id": "B2",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Extend the final before/after inventory to 261 selected source/configuration files, including AppHost Program.cs, apphost.cs, root and Builds build inputs, Props catalog files and Tooling project. Keep the original 234-file run separately.",
+      "references": "source-before-final.json"
+    },
+    {
+      "id": "B3",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Check the exact final-runtime-archive filename set and every SHA-256 in both retained and runtime modes. A negative control deletes an unreferenced archived file.",
+      "references": "audit.py and final-runtime-archive.json"
+    },
+    {
+      "id": "B4",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "Independently retain and verify all five claims/owners receipts contain []. These are deliberately durable empty ownership proofs, not outstanding resource allocations: CompositionResourceClaimStore.ReleaseOwned writes [] at line 129. Deleting them would contradict the corrected ownership semantics.",
+      "references": "claim-receipts.json and CompositionResourceClaimStore.cs:129"
+    },
+    {
+      "id": "B5",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "New commands snapshot Python scripts by SHA-256 before launching them. Reconstructed historical failed helper assertions are retained with explicit provenance; no retrospective pre-execution hash is claimed.",
+      "references": "run-command.py, script-snapshots/, superseded-scripts/provenance.json"
+    },
+    {
+      "id": "B6",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Retain the original 184-entry fingerprint inventory and recompute every comparison against the final fresh source snapshot, rather than trusting a summary boolean.",
+      "references": "prior-source-fingerprints.json and audit.py"
+    },
+    {
+      "id": "B7",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The qualification fixture now saves initial-diagnostics before explicit down. Final audit compares complete terminal fields, bindings and failure identity history across all three snapshots and validates initial diagnostic references.",
+      "references": "PlatformLocalRunLifecycleTests.cs and live-final/initial-diagnostics/"
+    },
+    {
+      "id": "B8",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The qualification fixture now saves peer-before.json before the first scenario. Compare all four post-scenario observations against this baseline.",
+      "references": "PlatformLocalRunLifecycleTests.cs and live-final/peer-before.json"
+    },
+    {
+      "id": "B9",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Audit every contiguous numbered cleanup attempt, earlier non-successes and final success, then reconcile the complete sequence with verification.json. Retain all attempts.",
+      "references": "audit.py cleanupAttempts"
+    },
+    {
+      "id": "B10",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Preserve terminal/binding/history fields including retention.failureRunIds while explicitly allowing evolving cleanup/retention observations and separately checking every diagnostic hash. ownedResourceIds legitimately includes observed leftovers before cleanup and is an evolving observation.",
+      "references": "audit.py immutable() and TestResultWriter.cs:78-80"
+    }
+  ],
+  "newDeferrals": 0,
+  "frozenIntentChanged": false,
+  "productCodeChanges": false,
+  "qualificationFixtureChanges": true,
+  "validationStatus": "passed: final live 4/4, cleanup helper 1/1, runtime/retained/relocation audits, five negative controls",
+  "followupFindings": [
+    {
+      "id": "F1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "TestResultWriter.cs:78-80 unions observed leftovers into cleanup.ownedResourceIds. Explicitly allow this observation to evolve; terminal, bindings and failureRunIds remain required invariants."
+    },
+    {
+      "id": "F2",
+      "verdict": "false",
+      "route": "rejected",
+      "evidence": "Both first host inventories were copied to host-before-before-review.json and host-after-before-review.json before the second baseline. Their original 10:14/10:21 timestamps and contents are retained."
+    }
+  ],
+  "reviewFollowup": "Remaining substantive corrections were confirmed consistent by the reviewer."
+}

@@ -92,6 +92,8 @@ StyleCopReport.xml
 *.tmp_proj
 *_wpftmp.csproj
 *.log
+# Retain exact Story 2.5 qualification logs alongside their compressed copies.
+!_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/**/*.log
 *.tlog
 *.vspscc
 *.vssscc

@@ -1,0 +1,242 @@
+{
+  "freshLiveSourceQualification": "passed",
+  "liveTest": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "883ab6bb-5e7a-4801-a855-e48a5c389637",
+    "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "run-date": "2026-10-28",
+    "run-time": "10:31:07",
+    "start-rtf": "2026-10-28T10:31:07.4640943+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-28T10:37:31.9340483+00:00",
+    "not-run": "0",
+    "passed": "1",
+    "skipped": "0",
+    "time": "384.489",
+    "time-rtf": "00:06:24.4889999",
+    "total": "1"
+  },
+  "scenarios": [
+    {
+      "scenario": "success",
+      "runId": "b1e7265cae8eb93c1beea185b281fc30",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "78865e4f317b33e5551e386b3431d527",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "c904936c90b016ef773df8d553ca2b23",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "partial-startup",
+      "runId": "04ac10450130e068fbf13ed8784a04c9",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    }
+  ],
+  "sourceFilesUnchanged": 261,
+  "priorOfflineCasesReused": 950,
+  "priorOfflineFullSuitesRerun": false,
+  "cleanupHelperCaseRerun": true,
+  "schemaByteParityVerified": true,
+  "exactOwnerCleanupVerified": true,
+  "independentPeerIsolationVerified": true,
+  "preexistingContainersStillPresent": 5,
+  "ambientContainerChangesAttribution": "unavailable; unrelated concurrent workloads may change independently",
+  "runtimeArchiveBytesReobserved": false,
+  "cleanupAttempts": {
+    "success": [
+      {
+        "attempt": 1,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "failure": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "timeout": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "partial-startup": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ]
+  },
+  "peerBaselineRecordedBeforeScenarios": true,
+  "initialFailureRetentionAndTerminalHistoryVerified": true,
+  "archiveCompleteInventoryVerified": true,
+  "durableOwnerReceiptsVerifiedEmpty": 5,
+  "logsVerified": [
+    {
+      "record": "apphost-build.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "capture-review-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "cleanup-helper-review-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "final-portability.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "final-retained-audit.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "final-runtime-audit.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-after-review-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-after.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-before-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-before-review-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-before.command.json",
+      "exitCode": 1,
+      "logHashesVerified": true
+    },
+    {
+      "record": "live-qualification-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "live-qualification.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "platform-build-review-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "platform-build.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "portability-reviewed.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "portability.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "retained-audit-reviewed.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "retained-audit.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "runtime-audit-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "runtime-audit-reviewed.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "runtime-audit.command.json",
+      "exitCode": 1,
+      "logHashesVerified": true
+    },
+    {
+      "record": "setup-dapr.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    }
+  ],
+  "packageQualification": false,
+  "windowsMacOSNativeQualification": false
+}
