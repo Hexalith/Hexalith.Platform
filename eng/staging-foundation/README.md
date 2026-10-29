@@ -2,6 +2,14 @@
 
 Status: `BLOCKED_NOT_FOR_EXECUTION`. `approvalGranted=false`, no executable dispatcher exists, and nothing here touches the cluster. Story 4.14 stays in-progress. Required gates 4.1, 4.2, 4.3, 4.27 (in-progress) and 4.28 (backlog) lack full dependency acceptance. Story 4.2 has accepted scoped exposure/registry results; its full workflow review remains pending. See the evidence-backed [approval package](APPROVAL-PACKAGE.md) and [gate assessment](gates.assessed.json).
 
+The additive [current unblocking handoff](UNBLOCKING-REPORT.md) and
+[source-bound assessment](unblocking.assessed.json) retain the exact 37-field
+inventory (two observed DNS fields, 35 nulls), four pending owner decision
+groups, definition gaps and phase-separated requirements for later approval.
+The historical package and all six foundation files pinned by Story 4.15 remain
+unchanged. [Offline verification and receipts](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/verification.json)
+establish consistency only; approval and live acceptance remain false.
+
 ## Contents
 
 | File | Purpose |

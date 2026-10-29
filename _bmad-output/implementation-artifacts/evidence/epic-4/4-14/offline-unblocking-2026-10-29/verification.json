@@ -1,0 +1,81 @@
+{
+  "kind": "offline-unblocking-verification",
+  "baselineCommit": "2a18cdd33fcb609a563011e9bfd4153f56445c63",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "approvalGranted": false,
+  "liveAcceptance": false,
+  "newCollectionPerformed": false,
+  "passed": true,
+  "checks": {
+    "handoff": {
+      "testsRun": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    "foundation": {
+      "testsRun": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    "secrets": {
+      "testsRun": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    }
+  },
+  "guardSelfTestEvents": [
+    "subprocess.Popen",
+    "socket.connect",
+    "os.system"
+  ],
+  "unexpectedProcessOrNetworkEvents": false,
+  "renderAndPlanExecution": "real Python entrypoints invoked in process with actual inputs; generated argv never executed",
+  "protectedFiles": 69,
+  "syntheticFixtures": "Existing suites only, outputs temporary; never target manifests.",
+  "artifactSha256": {
+    "eng/staging-foundation/README.md": "0e42334c04fa78625f8847f5ba24f9cb4b69730458ff5aefed463cccd810dad7",
+    "eng/staging-foundation/UNBLOCKING-REPORT.md": "6ba708728fcf2bccc99efc5ae11b6f8b213bb3b87de9a15b02e688cd73936265",
+    "eng/staging-foundation/unblocking.assessed.json": "23ecd6fa79f48d890c71505f8989fadea8dbc5e451dd6221eb7a517fb21019c1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/foundation-tests.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/foundation-tests.stderr.txt": "9667fc9d0c8baa2e9b02557080cf416a604cd7111cc9d3b0dbee264b3f76412e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/handoff-tests.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/handoff-tests.stderr.txt": "14b826168dcb806f9be6094fadd842dc9321467477d99b81ee8f31289416f440",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/secrets-tests.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/secrets-tests.stderr.txt": "81f31e5f4817276773d9b5f04a94300e5e2217d29167bbe3166b1ece760bb0cf",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.json": "62d36b707d40a009cbc8fa0dfc49fee5d2671137ce8e3c1e57d0a31f9af9116d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.stderr.txt": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.json": "3b39fe82d5d386a739b30792a656c92c8ba3753a60ac122cf79ca5674e730e49",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.stderr.txt": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/preserved-files.json": "8ac774279db064f7aef72f87120b9a78b01d6dddda210092f8044e3dfac30502",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/verify.py": "76963669957576c99c1ee607dcc96aa899f9f99428c94d80c0563e4984b50505"
+  },
+  "artifactHashExclusion": "verification.json excludes its own digest to avoid self-reference",
+  "moduleAgnosticArtifacts": [
+    "eng/staging-foundation/README.md",
+    "eng/staging-foundation/UNBLOCKING-REPORT.md",
+    "eng/staging-foundation/unblocking.assessed.json",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/foundation-tests.stdout.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/foundation-tests.stderr.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/handoff-tests.stdout.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/handoff-tests.stderr.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/secrets-tests.stdout.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/secrets-tests.stderr.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.json",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.stdout.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/render.stderr.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.json",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.stdout.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/plan.stderr.txt",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/preserved-files.json",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/verify.py",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/verification.json"
+  ]
+}
