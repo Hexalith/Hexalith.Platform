@@ -309,18 +309,20 @@ no package-mode CI, candidate or tool acceptance credit.
 
 `hexalith-module attach` admits an explicit attachment to a runner-owned local or CI
 environment under `hexalith.platform.candidate-and-attachment-policy.v1`. Hosted,
-developer-started, unknown and cross-job targets, incompatible composition, mode,
+developer-started, unknown, CI-owned and cross-job targets, incompatible composition, mode,
 artifact identity, readiness or isolation, and finished owners (except a ready local
 failure-retained one) are refused with stable `HXR033` to `HXR035` reasons, and a retry naming an unknown, ended or
 expired lineage with `HXR036`; an invalid
 hold is an `HXR032` usage refusal and is never clamped or defaulted. Accepted holds are
 recorded by the runner (omission or the explicit request, acceptance time, effective
-seconds, absolute expiry, actual end) and populate `attachments.holds` in the descriptor
-and result. A retry presenting the issued lineage keeps its first acceptance and expiry;
+seconds, absolute expiry, actual end) and populate `attachments.holds` as a point-in-time
+snapshot: the descriptor carries the holds recorded when it is written, and the result
+carries those recorded when it is written. A retry presenting the issued lineage keeps its first acceptance and expiry;
 unknown, ended and expired lineages are refused. An owner that passed waits for every live
 hold before automatic local cleanup, and ending one attachment affects only that
 attachment. Artifact-identity matching is refused as unverifiable until Epic 3 populates
-expected and loaded identities. Withdrawal ordering, `withdrawn` outcomes and CI job bounds remain later work.
+expected and loaded identities. CI owners do not wait for holds, so attaching to one is refused
+as `HXR035` `owner-ci-holds-unsupported` until CI withdrawal lands. Withdrawal ordering, `withdrawn` outcomes and CI job bounds remain later work.
 
 ## Local lifecycle results and cleanup
 
