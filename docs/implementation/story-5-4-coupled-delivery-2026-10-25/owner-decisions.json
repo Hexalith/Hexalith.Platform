@@ -213,7 +213,7 @@
       "existingRuntimeReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
       "currentAcceptedProfileReference": null,
       "freshAuthorizedReadinessEvidenceReference": null,
-      "nextAction": "The exact expired-HMAC recovery scope is already approved through the unchanged exclusive deadline 2026-10-30T16:53:50Z; do not ask for ownership or scope approval again. Collect the genuine ownerMetadataCredentialRecordReference and expiredRecoveryPreservationDecisionReference through the corrected public schemas linked in metadataTransportCorrection. Missing provider/history facts remain blockers; retained test or observation results are not current accepted profile/readiness. This handoff invokes no recovery, credential, installer or Live operation.",
+      "nextAction": "The exact expired-HMAC recovery scope is already approved through the unchanged exclusive deadline 2026-10-30T16:53:50Z; do not ask for ownership or scope approval again. Collect the genuine ownerMetadataCredentialRecordReference and expiredRecoveryPreservationDecisionReference through the corrected public schemas linked in metadataTransportCorrection. Missing provider/history facts remain blockers; retained test or observation results are not current accepted profile/readiness. This handoff invokes no recovery, credential, installer or Live operation. For current-native-key-metadata-denied, the existing operator is now authenticated and its exact metadata capabilities verified denied: review the four literal read-only policy stanzas and guarded verification/reversal commands linked in currentNativeKeyMetadataAccess. Codex owns collection; the correction is prepared only and supplies no current metadata or historical acceptance.",
       "credentialAndScopeEvidenceReference": null,
       "exactKeyInventoryEvidenceReference": null,
       "rotationAndRevocationEvidenceReference": null,
@@ -1174,6 +1174,111 @@
     "cohortAttemptsReserved": 0,
     "completeReplacementPacket": false,
     "dependencyAvailable": false,
-    "fullDeliveryComplete": false
+    "fullDeliveryComplete": false,
+    "existingOperatorAccessCorrectionReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/access-correction.json",
+      "sha256": "c4c6184ad7b4d28fd323d9ad52a0a70ea85923d05f059116b898b7d543e36123"
+    },
+    "nextMetadataAccessIntervention": "Review and approve the supplied four-read-stanza correction to the existing hexalith-keys-operator policy for the identified operator; Codex then owns scoped metadata collection and exact reversal. This proposal is not applied."
+  },
+  "currentNativeKeyMetadataAccess": {
+    "schema": "platform.story-5.4.current-native-key-metadata-access.v1",
+    "blockerId": "current-native-key-metadata-denied",
+    "status": "ExactAccessCorrectionPreparedForReviewNotApplied",
+    "recordedAtUtc": "2026-10-29T18:09:09.583909+00:00",
+    "owner": "Current user, sole Owner",
+    "evidenceCollectionAssignee": "Codex assistant; autonomous collection, verification and canonical reconciliation",
+    "result": "No permitted metadata-read path found in inspected existing authenticated contexts. Existing operator authenticated through public accessor lookup; effective capabilities deny all four exact metadata paths. No unchanged denied metadata GET was repeated.",
+    "authenticatedPublicObservations": {
+      "configurationAndRoleReads": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/authenticated-access-observations.json",
+        "sha256": "b91c57e07a0ed5ff5e8733b2dbc7dc0186619012a6a9b3a0ec06b42f69886e95"
+      },
+      "principalAndEffectiveCapabilities": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/authenticated-principal-observations.json",
+        "sha256": "d6160587815777e4780692e984bf59abd027fb0f7dd5fbebc57cab085316878f"
+      },
+      "capabilitiesObservedAtUtc": "2026-10-29T18:00:04.647154+00:00",
+      "lookupAccessorHttpStatus": 200,
+      "capabilitiesSelfHttpStatus": 200,
+      "metadataCapabilityOnEachExactPath": [
+        "deny"
+      ],
+      "publicProviderRequestsThisContinuation": 24,
+      "successfulPublicProviderResponses": 23,
+      "newLookupSelfDenialResponses": 1,
+      "keyMetadataRequestsThisContinuation": 0,
+      "keyDataRequestsThisContinuation": 0,
+      "failedMetadataProbesRepeated": 0
+    },
+    "canonicalBlockerContinuationReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/blockers.json",
+      "sha256": "042b3a651764dce1662c481759f45eea755cc17b4118a5c6941254492440d5b1"
+    },
+    "exactAccessCorrectionReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/access-correction.json",
+      "sha256": "c4c6184ad7b4d28fd323d9ad52a0a70ea85923d05f059116b898b7d543e36123"
+    },
+    "fourReadStanzaPatchReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/hexalith-keys-operator.patch",
+      "sha256": "a708ef5112fcb3a676060be73dc8d9ee7e6ff3b4455362a7d5e113fabfb4d06a"
+    },
+    "commandsAndReversalReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/commands.json",
+      "sha256": "7309609559c6b8026fbbd056336e6c78e8fdc080f84a2eaf800354784457eae6"
+    },
+    "localVerificationReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/local-verification.json",
+      "sha256": "77e0d7eae826bb546943b9316d3186b7fa6c8fcb127969bd33faa69dd5c09d90"
+    },
+    "publicEvidenceManifestReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/evidence-manifest.json",
+      "sha256": "93a2581520e45155e161546aba58465abaae032e14b159c1262ad7958b511498"
+    },
+    "publicEvidenceManifestFiles": 47,
+    "retainedOriginalManifestReference": {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+      "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31"
+    },
+    "retainedOriginal128FilesUnchanged": true,
+    "expectedOriginalMetadataCanonicalSha256": "ca0933b5507180bcbe662c3c105e08241038d28ca1db4b51c5a70e0d375f336b",
+    "completeCurrentPublicMetadataReference": null,
+    "version2MappingsAndAllVersionsAndTechnicalWindowsCurrentlyVerified": false,
+    "scopeSha256": "ef4a6896ed192137c4394cf5ef177ace1ce43ddf27a632731cf891f1c80cfbe3",
+    "recoveryExclusiveDeadlineUtc": "2026-10-30T16:53:50Z",
+    "recoveryWindowExtended": false,
+    "singleConcreteIntervention": "Review and approve the supplied four-read-stanza correction to the existing hexalith-keys-operator policy for the identified operator; Codex then owns scoped metadata collection and exact reversal. This proposal is not applied.",
+    "credentialAndPolicyEffects": {
+      "policyWrites": 0,
+      "keyWrites": 0,
+      "credentialIssuance": 0,
+      "credentialRenewals": 0,
+      "credentialValuesRecorded": false,
+      "recoveryApplyInvoked": false
+    },
+    "historicalSecretEvidenceStillUnresolved": true,
+    "separateMemoriesDispositionStillUnresolved": true,
+    "separateAgentsRegisterReconciliationStillUnresolved": true,
+    "newerMetadataTransportCanonicalChangesPreserved": true,
+    "dependencyAvailable": false,
+    "qualificationPassed": false,
+    "originalHandoffCounterScope": "Zero-call counters in the earlier extParties1OwnerEvidenceHandoff describe that dated documentary handoff. This separate continuation records its actual public authenticated reads and does not relabel older provider/key facts current."
+  },
+  "extConvAi1InstallationAuthorization": {
+    "schema": "platform.story-5.4.ext-conv-ai-1-installation-authorization.v1",
+    "recordedAtUtc": "2026-10-29T18:20:00Z",
+    "ownerStatement": "I approve",
+    "ownerRole": "Project owner acting as Platform and Conversations Maintainer",
+    "approvedProposal": "/home/administrator/hexalith-conversations-evidence/ext-conv-ai-1/owner-prerequisites-20261029-180858/remaining-owner-actions.md step 2",
+    "scope": "Install Conversations, Parties and the OQ-5.4-1 contract-conformance receiver (target and rollover) with their EventStore, Dapr, identity and storage dependencies in a new isolated namespace on the existing cluster https://192.168.1.30:6443. Covers deployment, workload enrollment and Party provisioning through the installed services.",
+    "excludes": [
+      "Changing the global installationAuthorized flag or any deferred secrets/host/protection lifecycle work",
+      "Modifying existing namespaces, workloads, OpenBao keys or Keycloak realms other than additive isolated resources",
+      "Self-issuing an independent decision/approval authority or any governance acceptance",
+      "EXT-PROTECTION-1 commitment, register edits, replacement target acceptance or any C1-C4 cohort execution"
+    ],
+    "qualificationAuthorized": false,
+    "attemptReserved": false,
+    "dependencyAvailable": false
   }
 }

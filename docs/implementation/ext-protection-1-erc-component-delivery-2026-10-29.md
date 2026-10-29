@@ -1,5 +1,7 @@
 # EXT-PROTECTION-1 ERC source re-derivation — 2026-10-29
 
+**Review-round-2 correction:** the unpublished loop-1 source candidates are withdrawn. Verified capacity, preflight, holder-proof and exact-recovery findings require another isolated re-derivation; the [authoritative Platform spec](../../_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md) records every individual verdict and preservation constraint. No complete replacement target, installed qualification or acceptance is asserted by the historical sections below. Status remains in-progress.
+
 Disposition: **implementation source prepared for parent audit; status remains in-progress**. The earlier Platform/EventStore source candidates and proposed date are withdrawn. No replacement immutable target, accepted date or profile hash is proposed here. This delivery changes no Agents/register record and authorizes no Live command, OQ-5.4-1 phase or consumer. The approved A1 custody choice and frozen intent remain unchanged.
 
 ## Parent merged-source audit — 2026-10-29
