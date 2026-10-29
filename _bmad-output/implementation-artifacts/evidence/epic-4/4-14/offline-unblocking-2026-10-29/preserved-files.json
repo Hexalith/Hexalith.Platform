@@ -1,0 +1,282 @@
+{
+  "baselineCommit": "2a18cdd33fcb609a563011e9bfd4153f56445c63",
+  "scope": "Existing foundation except README, all staging-secrets files and historical foundation/secrets receipts.",
+  "files": [
+    {
+      "path": "eng/staging-foundation/APPROVAL-PACKAGE.md",
+      "sha256": "4ffff30842efb4f7bd86000e9f0643abc9c2c8563abda130672d9da979ee4eba"
+    },
+    {
+      "path": "eng/staging-foundation/DEPENDENCY-DIRECTION.md",
+      "sha256": "bbde8ac2e5593c7d9a06ee019e2e68e1d3f36c228d35fa9287b606ae02092f8a"
+    },
+    {
+      "path": "eng/staging-foundation/INPUT-EVIDENCE.md",
+      "sha256": "e05d679edefb3c826875b44000a5dea9bd170e9d625cf8dbe6e85f9b4e41881f"
+    },
+    {
+      "path": "eng/staging-foundation/MISSING-INPUTS.md",
+      "sha256": "00db84e7976015c52fbd574236a02c0e6a6f67eee24b9ba7943e3a14c3ca6267"
+    },
+    {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351"
+    },
+    {
+      "path": "eng/staging-foundation/cni_probe.py",
+      "sha256": "5c2378632404c08b616baad036f64bf6be56e08113bee911ba466fe94169cbd7"
+    },
+    {
+      "path": "eng/staging-foundation/gates.assessed.json",
+      "sha256": "1f66168d2ff9ef64254181dfde7690c202e62f7536de170483683fd64df10398"
+    },
+    {
+      "path": "eng/staging-foundation/inputs.example.json",
+      "sha256": "1bcbb1b3ac7d40d3add060bb6081142e720028023c9f7318d330b608589d5b7f"
+    },
+    {
+      "path": "eng/staging-foundation/inputs.resolved.json",
+      "sha256": "a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00"
+    },
+    {
+      "path": "eng/staging-foundation/render.py",
+      "sha256": "b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc"
+    },
+    {
+      "path": "eng/staging-foundation/test_staging_foundation.py",
+      "sha256": "6cb3a8d9518d60893ed5ece58c7c5ce55df49a2c4999f684dceea01e0bb2a799"
+    },
+    {
+      "path": "eng/staging-secrets/APPROVAL-PACKAGE.md",
+      "sha256": "35de693688f777692edd406ebd9e0fbc5e046ce85d043268650b15a1232e97a1"
+    },
+    {
+      "path": "eng/staging-secrets/BOOTSTRAP-TOKEN.md",
+      "sha256": "97fe5c6ed09b1b6d2fc5ecedcd564533c94ab879309b85e863aed73605647db4"
+    },
+    {
+      "path": "eng/staging-secrets/INPUT-EVIDENCE.md",
+      "sha256": "2f85e22f70eb262ca0e2b2a1ec1c204969b7042fd500434945a140542379ee86"
+    },
+    {
+      "path": "eng/staging-secrets/MISSING-INPUTS.md",
+      "sha256": "17c818e2a434f52f10a92514766c885d2f60167915eae583862d3134035f1d2d"
+    },
+    {
+      "path": "eng/staging-secrets/VERIFICATION-RECOVERY.md",
+      "sha256": "d924e0302785ad80feb6345d7f5e6ab6186c9c3e832424b8daece1b78d59d7f9"
+    },
+    {
+      "path": "eng/staging-secrets/definitions.json",
+      "sha256": "52ff4fea588e09e8ec957241e398cd353d485a0b7e9516e03da64c2651758994"
+    },
+    {
+      "path": "eng/staging-secrets/fixtures/complete.synthetic.json",
+      "sha256": "d91e16f1a27d86b895fdc1752012ac535f4a6c2f62dcee0b87b7c69c87ff3845"
+    },
+    {
+      "path": "eng/staging-secrets/fixtures/matching-observations.synthetic.json",
+      "sha256": "e333c01c0347265307ef7dd37283ee13d2039db3813ed5b45569f9550bc66db5"
+    },
+    {
+      "path": "eng/staging-secrets/inputs.resolved.json",
+      "sha256": "056651533c723573a068389d6d1ca7656948f0e0a096e749dda752723a1d767c"
+    },
+    {
+      "path": "eng/staging-secrets/inputs.schema.json",
+      "sha256": "5af685b85519e1c2bd655f22e10872a44598dd067a686c6d896d3ea7578445bc"
+    },
+    {
+      "path": "eng/staging-secrets/prepare.py",
+      "sha256": "11584c401fb062ac6eb7a177b21d5a69b1d2a8171a612daad6679d80fae4f758"
+    },
+    {
+      "path": "eng/staging-secrets/source-evidence.json",
+      "sha256": "62bedb1afdfdd4cbf34673c2ef08109bf81bfbd0cb4d89cbe164677023aa3c7d"
+    },
+    {
+      "path": "eng/staging-secrets/test_prepare.py",
+      "sha256": "f6a0b5ac55b184b9429bbddf07cbb6d5f39861cc67c5efd566cec28ca47b8043"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/apply-plan.initial.json",
+      "sha256": "ec72aa44995a5a9ad9eea35b0e53a36246d1113be073f6a1288be9393f729fcf"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-final.json",
+      "sha256": "09c2dd6642945c17a38c204af36511eb3cd40c8eeeeefeab8472a083ba085c7e"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-final.stderr.txt",
+      "sha256": "7ebac07e3fc0c257dcdbe0a79da790bd4bcd484e27810fa2c0c967f559d1514e"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-final.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-reviewed.json",
+      "sha256": "f2e0ccf5b998835ecec0b2dc77291afba4e0fbbb25b788dbbdad95ea3cd78a0a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-reviewed.stderr.txt",
+      "sha256": "bebad7a2fbc70c1ec65052274d0ec69de808112135a1e791b78b781818fb005f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests-reviewed.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests.json",
+      "sha256": "bb70edee1ae27902cdd776b6cc277518e662353a501a3d473cb39c15b94577ce"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests.stderr.txt",
+      "sha256": "7ebac07e3fc0c257dcdbe0a79da790bd4bcd484e27810fa2c0c967f559d1514e"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/foundation-tests.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/inputs.resolved.initial.json",
+      "sha256": "c531c07bf814bff20d8f77da8026679fee1f31f675d7601521fc56ca12b9aade"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/investigation.json",
+      "sha256": "61b677d73bdb8e9332e424f0bfc7031a2519563da3c6beb3354cc6d6127f1d2f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-client-post-collection.json",
+      "sha256": "0b3af7ca83628aadec268518ee3d32ff5db2764741ef78f529730572d0e1b08f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-collector.json",
+      "sha256": "619b956c13c876ff76c2e165f74baf3d3733d0e70b9eeb90f982cd1fb513af8f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-collector.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-collector.stdout.txt",
+      "sha256": "cf64c9607b4bc745d18f2b4e432f970c66a41f633a6f219a4819c3da85d6b8de"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan-attempt.json",
+      "sha256": "aa74fab594781f5b7ccea974a5e9d55fbf992114dadd66177aa71d07308d56bf"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan-final.json",
+      "sha256": "48cbe092b511ab951c2acc520e7ef87542b75120da36c7217612e381f998a445"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan-final.stderr.txt",
+      "sha256": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan-final.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan.stderr.txt",
+      "sha256": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/plan.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render-attempt.json",
+      "sha256": "bcd6d7d55219922a9c7c15bc5d39255f0ef4403c404fbd744084d80e8975c2dd"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render-final.json",
+      "sha256": "f67d2f2ee01efa00fe1c01ba2924b369db847391e5658be96c5db944806c3870"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render-final.stderr.txt",
+      "sha256": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render-final.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render.stderr.txt",
+      "sha256": "f31c47bf85bc6d923425373018ac84c43cf2656ba4c03e0ab26b5ab681e0204a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/render.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/verification.json",
+      "sha256": "ba1dac7c36dd331de483b7a6a209a4d68235b46dcee89170c204161b984a3b87"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/current-assessment-reviewed.stderr.txt",
+      "sha256": "772a9569f350e274e1a92cb243409cba180e11722676373992adb71ca16c7432"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/current-assessment-reviewed.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/current-assessment.stderr.txt",
+      "sha256": "51aa31ce019b167654a351bd759d885caf2b181444202761fc1d14415535cb7a"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/current-assessment.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/diff-check-reviewed.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/diff-check-reviewed.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/integration-preflight.json",
+      "sha256": "5e8e601fd2c81d5a3e630b909ec772d2d88f82aa91ad41814bb023ef83c55120"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/readiness-synthetic-reviewed.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/readiness-synthetic-reviewed.stdout.txt",
+      "sha256": "2ea227d6f8f6a5a4da54bc7601bc90fc4e24f9ef3d3f2ad13799ab3f2348c47f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/secrets-tests-reviewed.stderr.txt",
+      "sha256": "897975f3407a5bfaae6ef7b5d71dbfbb4a1d5cb800cd9d0d6b368bd71476c355"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/secrets-tests-reviewed.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/secrets-tests.stderr.txt",
+      "sha256": "290d6571c8e09b1ecd839522b58abee9202e0be6ec99bc46aa918df5e78cd30b"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/secrets-tests.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/verification.initial.json",
+      "sha256": "7cbf6e29caa528f19fe418a896eb3be0fde135b3c1f05f50558026e5c9d873cd"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-15/offline-preparation-2026-10-29/verification.json",
+      "sha256": "94e5c5901113d50bdc0093f088deab77a0674567405258ee439db8cb5ca0f09a"
+    }
+  ]
+}

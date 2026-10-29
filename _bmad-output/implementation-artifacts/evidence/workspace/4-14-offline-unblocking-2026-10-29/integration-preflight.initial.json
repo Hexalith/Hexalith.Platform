@@ -1,0 +1,71 @@
+{
+  "kind": "workspace-integration-preflight",
+  "purpose": "Administrative preservation only; no foundation input, dependency or acceptance evidence.",
+  "offlineOnly": true,
+  "operationalApprovalGranted": false,
+  "implementationBaseline": "2a18cdd33fcb609a563011e9bfd4153f56445c63",
+  "latestMainHead": "77085169d4507a0f6076e72db08d26f9eca51f6c",
+  "mainBranch": "main",
+  "mainStatus": "",
+  "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "gitlinksSha256": "bfc562be4e3c27f27df638d66803d93df44f69f712217465019c287a1eb84107",
+  "concurrentMainChanges": [
+    "M\treferences/Hexalith.Builds",
+    "M\treferences/Hexalith.EventStore",
+    "M\treferences/Hexalith.FrontComposer",
+    "M\treferences/Hexalith.Memories"
+  ],
+  "independentStatusPreservation": {
+    "platformSprint": {
+      "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+      "matchesInitialSnapshot": true,
+      "foundationGate": false
+    },
+    "consumerSprint": {
+      "path": "references/Hexalith.Timesheets/_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sha256": "8002bfba2a94ec9442834e53350f6c695ef672cc5faea5d23e6abc3be80a62f8",
+      "matchesInitialSnapshot": true,
+      "foundationGate": false
+    },
+    "consumerStory": {
+      "path": "references/Hexalith.Timesheets/_bmad-output/implementation-artifacts/3-6-implement-eventstore-backed-magic-link-state-loading.md",
+      "sha256": "04c92824c7802b74b298c08708518f90e63b8813606ddf16e1c1131d586dd537",
+      "matchesInitialSnapshot": true,
+      "foundationGate": false
+    },
+    "consumerLaunch": {
+      "path": "references/Hexalith.Timesheets/docs/launch-readiness.md",
+      "sha256": "6dc17be826836dfe6b734eebe4af1feb42f1bc84b46a7f54f09516f7bf32d218",
+      "matchesInitialSnapshot": true,
+      "foundationGate": false
+    },
+    "observedStates": {
+      "platformStory414": "in-progress",
+      "consumerStory36": "in-progress",
+      "consumerLaunch": "FAIL",
+      "foundationGate": false
+    }
+  },
+  "story415Preparation": {
+    "suppliedCommit": "a55cafcf22520ca4d8a8699e11b2290f05d5e4c8",
+    "importedPreparationCommit": "0e6306b090e654473c2397bb49807eb377447519",
+    "preservedCorrectionCommit": "9ab03523530d6cb63c878c8ddb776a0279dddb74",
+    "suppliedToImportedChangedFiles": [
+      "eng/staging-secrets/test_prepare.py"
+    ],
+    "suppliedToImportedDiffSha256": "1e9a8434de55d5846ceb966857ed813ff1789d16b6cd96d5c6a56a4de1d7ca17",
+    "nonTestPreparationDiffEmpty": true,
+    "suppliedToImplementationCutChangedFiles": [
+      "eng/staging-secrets/test_prepare.py"
+    ],
+    "currentNonTestPreparationDiffEmpty": true,
+    "testStringLineage": [
+      "hvs.synthetic",
+      "synthetic-credential-bytes",
+      "hvs.synthetic"
+    ],
+    "preparationBytesChangedByThisWork": false
+  }
+}
