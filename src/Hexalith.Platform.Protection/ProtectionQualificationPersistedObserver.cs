@@ -15,7 +15,7 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
     /// <summary>Reads actual persisted facts and projects the owner-verifier wire fields without performing a native mutation.</summary>
     public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token)
     {
-        var current = await erasureRoot.ReadAsync(recipe.TenantId, token).ConfigureAwait(false);
+        var current = await erasureRoot.ReadAsync(recipe.TenantId, token, true).ConfigureAwait(false);
         if (current is not { } head || head.Head.Pending is { Survivors: not null } || targets.Count is < 1 or > 1000 || targets.Any(target => target.TenantId != recipe.TenantId))
         { throw new InvalidOperationException("DependencyNotAvailable: current complete ERC observation."); }
         var sources = new Dictionary<string, JsonNode>(StringComparer.Ordinal);
@@ -87,7 +87,7 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
             return (JsonNode)new JsonObject { ["target"] = JsonSerializer.SerializeToNode(target), ["state"] = state };
         }).ToArray());
         // A later native/owner mutation invalidates this observation, including after an EventStore restore or concurrent block delivery.
-        var final = await erasureRoot.ReadAsync(recipe.TenantId, token).ConfigureAwait(false);
+        var final = await erasureRoot.ReadAsync(recipe.TenantId, token, true).ConfigureAwait(false);
         if (final is not { } confirmed || confirmed.Version != head.Version || ErasureRootCustody.Hash(confirmed.Head) != ErasureRootCustody.Hash(head.Head))
         { throw new InvalidOperationException("Native observation changed during independent read."); }
         return observed;

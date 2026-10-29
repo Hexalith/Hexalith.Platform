@@ -106,7 +106,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 var current = await ReadAsync(registration.Identity.TenantId, cancellationToken).ConfigureAwait(false);
                 if (current is not { } read || read.Head.Pending is not null
                     || !read.Head.Targets.TryGetValue(TargetId(registration.Identity), out var target) || target.Registration != registration
-                    || target.Holders.Contains(holderId, StringComparer.Ordinal) || target.CompletedHolders.Contains(holderId, StringComparer.Ordinal)) { return null; }
+                    || target.Holders.Contains(holderId, StringComparer.Ordinal) || target.CompletedHolders.Contains(holderId, StringComparer.Ordinal)
+                    || await store.ReadArchiveAsync(registration.Identity.TenantId, Hash(new ErasureRootHolderIdentity(registration, holderId)), cancellationToken).ConfigureAwait(false) is not null) { return null; }
                 var leased = target with { Holders = target.Holders.Append(holderId).ToArray() };
                 read.Head.Targets[TargetId(registration.Identity)] = leased;
                 if (!await SaveAsync(registration.Identity.TenantId, read.Version, read.Head, cancellationToken).ConfigureAwait(false)) { continue; }
@@ -142,10 +143,18 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 var current = await ReadAsync(tenant, cancellationToken).ConfigureAwait(false);
                 if (current is not { } read || read.Head.Pending is not null
                     || !read.Head.Targets.TryGetValue(TargetId(registration.Identity), out var target) || target.Registration != registration) { return false; }
-                if (target.CompletedHolders.Contains(holder.HolderId, StringComparer.Ordinal)) { return true; }
-                if (!target.Holders.Contains(holder.HolderId, StringComparer.Ordinal)) { return false; }
+                if (!target.Holders.Contains(holder.HolderId, StringComparer.Ordinal))
+                { return await HasCompletedHolderAsync(tenant, target, holder.HolderId, cancellationToken).ConfigureAwait(false); }
+                _ = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderIdentity(registration, holder.HolderId), cancellationToken).ConfigureAwait(false);
+                string? pointer = target.CompletedHolderArchive;
+                foreach (string completed in target.CompletedHolders)
+                {
+                    _ = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderIdentity(registration, completed), cancellationToken).ConfigureAwait(false);
+                    pointer = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderArchive(registration, completed, pointer), cancellationToken).ConfigureAwait(false);
+                }
+                pointer = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderArchive(registration, holder.HolderId, pointer), cancellationToken).ConfigureAwait(false);
                 read.Head.Targets[TargetId(registration.Identity)] = target with { Holders = target.Holders.Where(id => id != holder.HolderId).ToArray(),
-                    CompletedHolders = target.CompletedHolders.Append(holder.HolderId).ToArray() };
+                    CompletedHolders = [], CompletedHolderArchive = pointer };
                 if (await SaveAsync(tenant, read.Version, read.Head, cancellationToken).ConfigureAwait(false)) { return true; }
             }
         }
@@ -347,7 +356,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         return unknown;
     }
 
-    internal async Task<(long Version, ErasureRootHead Head)?> ReadAsync(string tenant, CancellationToken token)
+    internal async Task<(long Version, ErasureRootHead Head)?> ReadAsync(string tenant, CancellationToken token, bool history = false)
     {
         if (installation.DurabilityPolicy != ErasureRootDurabilityPolicy.None || !installation.NativeKeys.ContainsKey(tenant)) { return null; }
         var snapshot = await store.ReadHeadAsync(tenant, token).ConfigureAwait(false);
@@ -372,11 +381,59 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         }
         if (head.Pending is { } pending && (pending.Request.Capability.TenantId != tenant || pending.PredecessorEpoch != head.Epoch
             || pending.SuccessorEpoch != head.Epoch + 1 || pending.RequestDigest != Hash(new { request = pending.Request, reservation = pending.ReservationReceiptId }))) { return null; }
+        foreach (var entry in head.Anchors.ToArray())
+        {
+            var anchor = entry.Value;
+            if (anchor.ArchiveHead is not null)
+            {
+                if (anchor.ArchiveRevision != anchor.Revision || anchor.Completed.Count != 0) { return null; }
+                var originals = await ErasureRootArchives.ReadTransitionsAsync(store, tenant, entry.Key, anchor, history, token).ConfigureAwait(false);
+                head.Anchors[entry.Key] = anchor with { Completed = originals };
+            }
+        }
         return (snapshot.Version, head);
     }
 
-    internal Task<bool> SaveAsync(string tenant, long version, ErasureRootHead head, CancellationToken token)
-        => store.CompareExchangeHeadAsync(tenant, version, JsonSerializer.SerializeToUtf8Bytes(head, Json), token);
+    internal async Task<bool> SaveAsync(string tenant, long version, ErasureRootHead head, CancellationToken token)
+    {
+        var anchors = new SortedDictionary<string, ErasureRootAnchor>(StringComparer.Ordinal);
+        foreach (var entry in head.Anchors)
+        {
+            var anchor = entry.Value;
+            string? pointer = anchor.ArchiveHead;
+            long revision = anchor.ArchiveRevision;
+            string? predecessor = null;
+            foreach (var original in anchor.Completed.Values.Where(value => value.TargetRevision > revision).OrderBy(value => value.TargetRevision))
+            {
+                if (original.ScopeId != entry.Key || original.ExpectedRevision != revision || original.TargetRevision != revision + 1
+                    || predecessor is not null && original.PredecessorDigest != predecessor) { throw new InvalidOperationException("Exact legacy archive migration required."); }
+                pointer = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootTransitionArchive(entry.Key, pointer, original), token).ConfigureAwait(false);
+                revision = original.TargetRevision; predecessor = original.TargetDigest;
+            }
+            if (revision != anchor.Revision || predecessor is not null && predecessor != anchor.Digest) { throw new InvalidOperationException("Incomplete current archive binding."); }
+            anchors.Add(entry.Key, anchor with { ArchiveHead = pointer, ArchiveRevision = revision, Completed = new(StringComparer.Ordinal),
+                Admissions = new(anchor.Admissions.Where(value => value.Value.TargetRevision > revision).ToDictionary(value => value.Key, value => value.Value), StringComparer.Ordinal) });
+        }
+        var compact = head with { Anchors = anchors };
+        return await store.CompareExchangeHeadAsync(tenant, version, JsonSerializer.SerializeToUtf8Bytes(compact, Json), token).ConfigureAwait(false);
+    }
+    internal async Task<SortedDictionary<string, AnchoredStateTransition>> ReadHistoryAsync(string tenant, string scope, ErasureRootAnchor anchor, CancellationToken token)
+        => await ErasureRootArchives.ReadTransitionsAsync(store, tenant, scope, anchor, true, token).ConfigureAwait(false);
+    internal async Task<bool> HasCompletedHolderAsync(string tenant, ErasureRootTarget target, string holder, CancellationToken token)
+    {
+        if (target.CompletedHolders.Contains(holder, StringComparer.Ordinal)) { return true; }
+        string? pointer = target.CompletedHolderArchive;
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        while (pointer is not null)
+        {
+            if (!seen.Add(pointer)) { throw new InvalidOperationException("Cyclic holder archive."); }
+            var bytes = await store.ReadArchiveAsync(tenant, pointer, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Committed holder archive unavailable.");
+            var node = JsonSerializer.Deserialize<ErasureRootHolderArchive>(bytes, Json) ?? throw new InvalidOperationException("Invalid holder archive.");
+            if (Hash(node) != pointer || node.Registration != target.Registration) { throw new InvalidOperationException("Holder archive ancestry conflict."); }
+            if (node.HolderId == holder) { return true; } pointer = node.Previous;
+        }
+        return false;
+    }
     internal static string Hash<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
     internal static string TargetId(CustodyKeyObjectIdentity identity) => TargetId(new ProtectionTarget(identity.TenantId, identity.ObjectId, identity.KeyAlias));
     internal static string TargetId(ProtectionTarget target) => Hash(target);

@@ -11,6 +11,13 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
 {
     private readonly ConcurrentDictionary<string, (CustodyKeyRegistration Registration, OwnedErasureRootKey Key, InteractionOccurrenceOwnedKey Use)> _holders = new(StringComparer.Ordinal);
 
+    /// <summary>Validates actual native digest inventory and current source-write permission before source enrollment or root issue.</summary>
+    public async Task<bool> PreflightEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
+    {
+        using var digest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
+        return digest is not null && await authorization.AuthorizeAsync(enrollment.Binding.Identity.Target.TenantId, enrollment.Binding.OperationId,
+            "OccurrenceWrite", ErasureRootCustody.Hash(enrollment.Binding), token).ConfigureAwait(false);
+    }
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveDigestAsync(InteractionOccurrenceIdentity identity, string version, CancellationToken token)
     {

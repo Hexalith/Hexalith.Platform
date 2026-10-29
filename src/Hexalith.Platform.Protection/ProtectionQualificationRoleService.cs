@@ -15,11 +15,12 @@ public sealed class ProtectionQualificationRoleService
     private readonly ProtectionQualificationPersistedObserver? _observer;
     private readonly DaprClient _installationReader;
     private readonly ECDsa _signer;
+    private readonly Func<CancellationToken, Task<bool>>? _preflight;
     private readonly SemaphoreSlim _signing = new(1, 1);
 
     /// <summary>Captures explicit installed dependencies. Observer composition has no action runner and never invokes journal mutations.</summary>
     public ProtectionQualificationRoleService(ProtectionQualificationServiceScope scope, ProtectionQualificationOperationJournal journal,
-        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer)
+        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer, Func<CancellationToken, Task<bool>>? preflight = null)
     {
         ArgumentNullException.ThrowIfNull(scope); ArgumentNullException.ThrowIfNull(journal); ArgumentNullException.ThrowIfNull(installationReader); ArgumentNullException.ThrowIfNull(signer);
         if (scope.Role is not ("executor" or "observer" or "enrollment") || scope.BindingDigest is not { Length: 64 }
@@ -27,7 +28,7 @@ public sealed class ProtectionQualificationRoleService
             || scope.Role == "observer" && (observer is null || actions is not null)) { throw new ArgumentException("Explicit disjoint native role composition required."); }
         ProtectionQualificationActionCatalog.Validate(scope.Recipes);
         if (!scope.Recipes.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Observations.Keys)) { throw new ArgumentException("Complete independent 41-case observation recipes required."); }
-        _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
+        _preflight = preflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
     }
 
     /// <summary>Handles exactly one authenticated request; it never retries an admitted mutation after response loss.</summary>
@@ -39,6 +40,34 @@ public sealed class ProtectionQualificationRoleService
             || request["role"] is { } supplied && supplied.GetValue<string>() != _scope.Role || !ProtectionQualificationRoleProgram.Allowed(_scope.Role, action))
         { throw new InvalidOperationException("Exact enrolled role request required."); }
         string digest = ProtectionQualificationOperationJournal.Digest(request);
+        // Validate all role/installation/request inputs before enrollment or journal metadata is retained.
+        if (action is not ("InspectInstallation" or "LookupOriginalOperation" or "ObservePersistedState" or "LookupAttemptOperations"))
+        {
+            _ = await InspectAsync(token).ConfigureAwait(false);
+            if (_preflight is not null && !await _preflight(token).ConfigureAwait(false)) { throw new InvalidOperationException("Required native role inputs unavailable before enrollment."); }
+            if (_scope.Role == "executor")
+            {
+                string caseId = request["caseId"]?.GetValue<string>() ?? throw new InvalidOperationException("Exact owner case required.");
+                if (!_scope.Recipes.TryGetValue(caseId, out var recipes) || action != "PrepareFixture" && !recipes.ContainsKey(action)
+                    || request["targets"] is not JsonArray targets || targets.Count is < 1 or > 1000
+                    || targets.Any(value => value?["TenantId"]?.GetValue<string>() != _scope.TenantId)
+                    || string.IsNullOrWhiteSpace(request["fixtureId"]?.GetValue<string>())) { throw new InvalidOperationException("Complete exact native request required."); }
+                var completeTargets = targets.Deserialize<ProtectionTarget[]>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Complete target identities required.");
+                _ = DeletionBatchCapabilityIdentity.TargetManifestDigest(completeTargets);
+                if (completeTargets.Select(ErasureRootCustody.TargetId).Distinct(StringComparer.Ordinal).Count() != completeTargets.Length)
+                { throw new InvalidOperationException("Distinct exact target identities required."); }
+                if (action != "PrepareFixture") { _ = Recipe(caseId, action, request); }
+                if (request["canaryBase64"] is { } canary && Convert.FromBase64String(canary.GetValue<string>()).Length == 0) { throw new InvalidOperationException("Exact canary required."); }
+                var state = await _journal.ReadAsync(_scope.TenantId, token).ConfigureAwait(false);
+                if (state.Pending is not null && action is not ("PrepareFixture" or "LookupOriginalDestruction")) { throw new InvalidOperationException("Only exact original preparation recovery may cross pending custody."); }
+            }
+            else if (action == "EnrollSingleAttempt" && string.IsNullOrWhiteSpace(request["attemptId"]?.GetValue<string>()))
+            { throw new InvalidOperationException("Exact attempt required."); }
+            else if (action == "RegisterOriginalOperation" && (request["originalRole"]?.GetValue<string>() != "executor"
+                || string.IsNullOrWhiteSpace(request["originalOperationId"]?.GetValue<string>())
+                || request["originalRequestSha256"]?.GetValue<string>() is not { Length: 64 } originalDigest || originalDigest.Any(value => !char.IsAsciiHexDigit(value))))
+            { throw new InvalidOperationException("Complete exact executor registration required."); }
+        }
         JsonObject result;
         if (action == "InspectInstallation") { result = await InspectAsync(token).ConfigureAwait(false); }
         else if (action == "LookupOriginalOperation") { result = await LookupAsync(request, token).ConfigureAwait(false); }
@@ -137,7 +166,7 @@ public sealed class ProtectionQualificationRoleService
             var previous = head.QualificationOperations.Values.Where(value => value.BindingDigest == _scope.BindingDigest
                 && value.SafeRequest["fixtureId"]?.GetValue<string>() == request["fixtureId"]!.GetValue<string>())
                 .SelectMany(value => value.Calls).ToDictionary(value => value.Key, value => value.Value.Result, StringComparer.Ordinal);
-            var result = await _actions!.ExecuteAsync(_scope.Recipes[caseId][action], request, previous,
+            var result = await _actions!.ExecuteAsync(Recipe(caseId, action, request), request, previous,
                 (call, ct) => _journal.AdmitCallAsync(_scope.TenantId, "executor", id, call, ct),
                 (call, value, ct) => _journal.RetainCallAsync(_scope.TenantId, "executor", id, call,
                     call.Kind == ProtectionQualificationNativeCallKind.UnsealEvent ? new JsonObject { ["status"] = "Readable" } : value, ct), token).ConfigureAwait(false);
@@ -160,7 +189,7 @@ public sealed class ProtectionQualificationRoleService
         {
             string caseId = original.SafeRequest["caseId"]!.GetValue<string>(), action = original.SafeRequest["action"]!.GetValue<string>();
             if (action == "PrepareFixture") { throw new InvalidOperationException("Original preparation outcome unresolved."); }
-            var recipe = _scope.Recipes[caseId][action];
+            var recipe = Recipe(caseId, action, original.SafeRequest);
             foreach (var call in original.Calls.Values.Where(value => value.Result is null).ToArray())
             {
                 var recovered = await _actions.RecoverAsync(call.Call, token).ConfigureAwait(false);
@@ -182,6 +211,8 @@ public sealed class ProtectionQualificationRoleService
         if (original.Result is null) { throw new InvalidOperationException("Exact terminal original unresolved."); }
         var result = (JsonObject)original.Result.DeepClone(); result["originalOperationId"] = id; result["originalRequestSha256"] = digest; return result;
     }
+    private ProtectionQualificationActionRecipe Recipe(string caseId, string action, JsonObject request)
+        => ProtectionQualificationSourceCatalog.WithRequiredReplays(caseId, action, _scope.Recipes[caseId][action], _scope.Observations[caseId].Bind(request));
     private async Task<JsonObject> ObserveAsync(JsonObject request, CancellationToken token)
     {
         _ = await InspectAsync(token).ConfigureAwait(false);

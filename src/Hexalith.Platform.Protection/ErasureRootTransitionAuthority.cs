@@ -67,6 +67,11 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
                 var read = await custody.ReadAsync(TenantId, token).ConfigureAwait(false);
                 if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return false; }
                 if (anchor.Completed.TryGetValue(id, out var completed)) { return ErasureRootCustody.Hash(completed) == id; }
+                if (transition.TargetRevision <= anchor.Revision)
+                {
+                    var history = await custody.ReadHistoryAsync(TenantId, ScopeId, anchor, token).ConfigureAwait(false);
+                    return history.TryGetValue(id, out var historical) && ErasureRootCustody.Hash(historical) == id;
+                }
                 if (operation == "VerifyTransition" || current.Head.Pending is not null) { return false; }
                 if (anchor.Revision != transition.ExpectedRevision || anchor.Digest != transition.PredecessorDigest) { return false; }
                 if (operation == "AdmitTransition")

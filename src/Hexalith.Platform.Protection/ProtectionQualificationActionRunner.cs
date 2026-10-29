@@ -39,6 +39,10 @@ public sealed class ProtectionQualificationActionRunner(ProtectionQualificationN
         {
             var bound = ProtectionQualificationRecipeBinding.Bind(template, request, originals);
             var call = await driver.PrepareCallAsync(bound, token).ConfigureAwait(false);
+            return await RunPrepared(call).ConfigureAwait(false);
+        }
+        async Task<JsonNode?> RunPrepared(ProtectionQualificationNativeCall call)
+        {
             if (!await admit(call, token).ConfigureAwait(false)) { throw new InvalidOperationException("Native call already admitted: exact original lookup required."); }
             JsonNode? result = await driver.ExecuteAsync(call, request, token).ConfigureAwait(false);
             await retain(call, result, token).ConfigureAwait(false);
@@ -48,7 +52,9 @@ public sealed class ProtectionQualificationActionRunner(ProtectionQualificationN
         JsonNode? effect;
         if (recipe.Race is { } race)
         {
-            Task<JsonNode?> primary = Run(recipe.Effect), competing = Run(race);
+            var prepared = await driver.PrepareRaceAsync(ProtectionQualificationRecipeBinding.Bind(recipe.Effect, request, originals),
+                ProtectionQualificationRecipeBinding.Bind(race, request, originals), token).ConfigureAwait(false);
+            Task<JsonNode?> primary = RunPrepared(prepared.Effect), competing = RunPrepared(prepared.Race);
             JsonNode?[] outcomes = await Task.WhenAll(primary, competing).ConfigureAwait(false);
             effect = outcomes[0]; originals.Add(race.Id, outcomes[1]);
         }

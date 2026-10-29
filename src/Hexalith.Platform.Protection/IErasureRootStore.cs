@@ -7,6 +7,10 @@ public interface IErasureRootStore
     Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken);
     /// <summary>Performs one native KV v2 CAS. False means an actual CAS conflict; transport ambiguity throws.</summary>
     Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken);
+    /// <summary>Reads an exact immutable node from the same dedicated snapshot-excluded ERC; absence is never completion.</summary>
+    Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken cancellationToken);
+    /// <summary>Creates exact archive bytes with native CAS zero, or verifies an existing byte-identical original. It cannot overwrite.</summary>
+    Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken);
     /// <summary>Encrypts a newly generated root at the explicitly selected native epoch.</summary>
     Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken);
     /// <summary>Decrypts only under the complete original context; ownership transfers to the caller.</summary>

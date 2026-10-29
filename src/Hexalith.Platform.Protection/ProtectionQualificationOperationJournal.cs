@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json.Nodes;
+using System.Text.Json;
 
 namespace Hexalith.Platform.Protection;
 
@@ -15,8 +16,11 @@ public sealed class ProtectionQualificationOperationJournal(ErasureRootCustody c
         {
             if (!await authorization.AuthorizeAsync(tenant, identity, method, digest, token).ConfigureAwait(false)) { throw new InvalidOperationException("Current private qualification permission unavailable."); }
             var current = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-            if (current is not { } head || head.Head.Pending is not null) { throw new InvalidOperationException("Native journal unavailable during provider transition."); }
+            if (current is not { } head) { throw new InvalidOperationException("Native journal unavailable."); }
+            string boundary = ErasureRootCustody.Hash(head.Head with { QualificationAttempts = new(StringComparer.Ordinal), QualificationOperations = new(StringComparer.Ordinal) });
             if (!change(head.Head)) { return false; }
+            if (head.Head.Pending is not null && boundary != ErasureRootCustody.Hash(head.Head with { QualificationAttempts = new(StringComparer.Ordinal), QualificationOperations = new(StringComparer.Ordinal) }))
+            { throw new InvalidOperationException("Pending manifest permits only independently authorized role metadata."); }
             if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return true; }
         }
         throw new InvalidOperationException("Native qualification admission unresolved.");
@@ -26,6 +30,13 @@ public sealed class ProtectionQualificationOperationJournal(ErasureRootCustody c
     {
         return await UpdateAsync(tenant, operationId, "QualificationNativeCall", ErasureRootCustody.Hash(call), head =>
         {
+            if (head.Pending is { } pending && !(call.Kind == ProtectionQualificationNativeCallKind.LookupProvider
+                && ErasureRootCustody.Hash(call.Payload["request"]!.Deserialize<Hexalith.EventStore.Contracts.Security.DeletionBatchConsumptionRequest>()) == ErasureRootCustody.Hash(pending.Request)
+                && call.Payload["reservationReceiptId"]?.GetValue<string>() == pending.ReservationReceiptId
+                || call.Kind == ProtectionQualificationNativeCallKind.Lookup
+                && call.Payload["tenantId"]?.GetValue<string>() == pending.Request.Capability.TenantId
+                && call.Payload["batchId"]?.GetValue<string>() == pending.Request.Capability.BatchId))
+            { throw new InvalidOperationException("Only exact original pending-manifest reconciliation may be admitted."); }
             if (!head.QualificationOperations.TryGetValue(Id(role, operationId), out var operation)) { throw new InvalidOperationException("Exact independently registered role original required."); }
             if (operation.Calls.TryGetValue(call.Id, out var prior))
             { if (ErasureRootCustody.Hash(prior.Call) != ErasureRootCustody.Hash(call)) { throw new InvalidOperationException("Changed native call original."); } return false; }

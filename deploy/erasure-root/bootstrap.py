@@ -10,6 +10,12 @@ import urllib.request
 import urllib.parse
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    """A credential-bearing request must never follow any redirect."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def enrollment(path):
     value = json.loads(Path(path).read_bytes())
     if set(value) != {'address', 'storeId', 'enrollmentId', 'transitMount', 'headMount', 'nativeKeys', 'genesisAnchors'}:
@@ -54,7 +60,7 @@ def main(argv=None):
             data = None if body is None else json.dumps(body, separators=(',', ':')).encode()
             request = urllib.request.Request(value['address'].rstrip('/') + '/v1/' + path, data=data, method=method,
                                              headers={'X-Vault-Token': credential, 'Content-Type': 'application/json', 'X-Vault-Request': 'true'})
-            with urllib.request.urlopen(request, timeout=30) as response:
+            with urllib.request.build_opener(NoRedirect()).open(request, timeout=30) as response:
                 raw = response.read(32 * 1024 * 1024 + 1)
             if len(raw) > 32 * 1024 * 1024:
                 raise ValueError('Oversized native response')

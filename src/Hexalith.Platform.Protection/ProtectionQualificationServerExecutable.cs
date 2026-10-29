@@ -75,7 +75,30 @@ public static class ProtectionQualificationServerExecutable
                     new QualificationSigningActorRouter(), subscriber, controls, installed.SourceComponents.ToHashSet(StringComparer.Ordinal), permission));
             }
             var observer = role == "observer" ? new ProtectionQualificationPersistedObserver(dapr, custody, engine, installed.ReadComponents.ToHashSet(StringComparer.Ordinal)) : null;
-            var service = new ProtectionQualificationRoleService(scope, journal, runner, observer, dapr, signer);
+            var service = new ProtectionQualificationRoleService(scope, journal, runner, observer, dapr, signer, async cancellation =>
+            {
+                var references = new Dictionary<string, CustodyInteractionDigestReference>(StringComparer.Ordinal);
+                void Visit(System.Text.Json.Nodes.JsonNode? value)
+                {
+                    if (value is System.Text.Json.Nodes.JsonObject obj)
+                    {
+                        if (obj["Digest"] is { } digest)
+                        {
+                            var reference = digest.Deserialize<CustodyInteractionDigestReference>(ErasureRootCustody.Json)
+                                ?? throw new InvalidOperationException("Complete native digest reference required.");
+                            references.TryAdd(ErasureRootCustody.Hash(reference), reference);
+                        }
+                        foreach (var item in obj) { Visit(item.Value); }
+                    }
+                    else if (value is System.Text.Json.Nodes.JsonArray array) { foreach (var item in array) { Visit(item); } }
+                }
+                foreach (var value in scope.NativeArguments.Values) { Visit(value); }
+                if (references.Count == 0) { return false; }
+                var resolver = provider.GetRequiredService<ErasureRootDigestKeyResolver>();
+                foreach (var reference in references.Values)
+                { if (!await resolver.IsAvailableAsync(reference, cancellation).ConfigureAwait(false)) { return false; } }
+                return await permission.AuthorizeAsync(scope.TenantId, scope.BindingDigest, "QualificationEnrollmentPreflight", ErasureRootCustody.Hash(references.Keys.Order(StringComparer.Ordinal).ToArray()), cancellation).ConfigureAwait(false);
+            });
             await ProtectionQualificationRoleApplication.RunAsync(service, installed.CredentialReference, token).ConfigureAwait(false); return 0;
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }

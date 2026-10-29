@@ -31,6 +31,13 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             { throw new InvalidOperationException("Exact native sealed batch required before signing."); }
             payload = (JsonObject)JsonSerializer.SerializeToNode(capability with { IntendedIssuedGuardRevision = current.Revision })!;
         }
+        if (input.Kind == ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch)
+        {
+            var transition = payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+            if (transition.Operation != GovernanceGuardOperation.RegisterHold) { throw new InvalidOperationException("Exact hold continuation required."); }
+            var state = await guard.ReadAsync(transition.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current hold continuation compare unavailable.");
+            payload["transition"] = JsonSerializer.SerializeToNode(transition with { OperationId = transition.OperationId + ":dispatch-won-continuation", ExpectedGuardRevision = state.Revision });
+        }
         if (input.Kind == ProtectionQualificationNativeCallKind.Guard)
         {
             var transition = payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
@@ -66,6 +73,23 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         return input with { Payload = payload };
     }
+    /// <summary>Captures both competing hold/dispatch commands at one actual owner revision before either is durably admitted or dispatched.</summary>
+    public async Task<(ProtectionQualificationNativeCall Effect, ProtectionQualificationNativeCall Race)> PrepareRaceAsync(
+        ProtectionQualificationNativeCall effect, ProtectionQualificationNativeCall race, CancellationToken token)
+    {
+        if (effect.Kind == ProtectionQualificationNativeCallKind.Guard && race.Kind == ProtectionQualificationNativeCallKind.Guard
+            && effect.Payload["transition"]!.Deserialize<GovernanceGuardTransition>() is { Operation: GovernanceGuardOperation.CommitDispatch } dispatch
+            && race.Payload["transition"]!.Deserialize<GovernanceGuardTransition>() is { Operation: GovernanceGuardOperation.RegisterHold } hold)
+        {
+            if (hold.TenantId != dispatch.TenantId || hold.DeletionRequestId != dispatch.DeletionRequestId) { throw new InvalidOperationException("Exact same-owner race required."); }
+            var current = await guard.ReadAsync(dispatch.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Actual race comparison unavailable.");
+            var left = (JsonObject)effect.Payload.DeepClone(); var right = (JsonObject)race.Payload.DeepClone();
+            left["transition"] = JsonSerializer.SerializeToNode(dispatch with { ExpectedGuardRevision = current.Revision });
+            right["transition"] = JsonSerializer.SerializeToNode(hold with { ExpectedGuardRevision = current.Revision });
+            effect = effect with { Payload = left }; race = race with { Payload = right };
+        }
+        return (await PrepareCallAsync(effect, token).ConfigureAwait(false), await PrepareCallAsync(race, token).ConfigureAwait(false));
+    }
     /// <summary>Identifies only a previously admitted native reservation. Fixture preparation may complete that original; it cannot authorize a new manifest.</summary>
     public async Task<ProtectionQualificationNativeCall?> PendingRecoveryAsync(string tenant, string fixtureId, CancellationToken token)
     {
@@ -81,8 +105,21 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         object? result = null;
         switch (step.Kind)
         {
+            case ProtectionQualificationNativeCallKind.WrapFixtureRoot:
+                var wrappedRoot = Read<ProtectionQualificationNativeRoot>();
+                var retainedRoot = await custody.ReadAsync(wrappedRoot.Identity.TenantId, token).ConfigureAwait(false);
+                if (retainedRoot is { } rootHead)
+                {
+                    string rootId = ErasureRootCustody.TargetId(wrappedRoot.Identity);
+                    var registration = rootHead.Head.Targets.GetValueOrDefault(rootId)?.Registration ?? rootHead.Head.Erased.GetValueOrDefault(rootId)?.Registration;
+                    if (registration?.Identity == wrappedRoot.Identity && registration.OperationId == wrappedRoot.OperationId
+                        && registration.ExpectedRevision == wrappedRoot.ExpectedRevision) { result = registration; }
+                }
+                break;
+            case ProtectionQualificationNativeCallKind.RegisterIfDispatched:
             case ProtectionQualificationNativeCallKind.Register:
                 result = (await consumption.ReadRegistrationOriginalAsync(Read<DeletionBatchConsumptionRequest>()).WaitAsync(token).ConfigureAwait(false))?.Outcome; break;
+            case ProtectionQualificationNativeCallKind.ReserveIfDispatched:
             case ProtectionQualificationNativeCallKind.Reserve:
                 var request = Read<DeletionBatchConsumptionRequest>();
                 var reserved = await consumption.ReadReservationOriginalAsync(request).WaitAsync(token).ConfigureAwait(false);
@@ -116,12 +153,21 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             case ProtectionQualificationNativeCallKind.Lifecycle:
                 var lifecycle = step.Payload["request"]!.Deserialize<CustodyKeyLifecycleRequest>()!;
                 result = await custody.LookupAsync(step.Payload["registration"]!.Deserialize<CustodyKeyRegistration>()!, lifecycle, ErasureRootCustody.Hash(lifecycle), token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch:
             case ProtectionQualificationNativeCallKind.Guard:
                 var transition = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
                 var targets = step.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!;
                 string intent = ErasureRootCustody.Hash(new { Transition = transition, TargetMutationDigest = ErasureRootCustody.Hash(targets) });
                 var guardState = await guard.ReadAsync(transition.TenantId, token).ConfigureAwait(false);
-                result = guardState?.Receipts.SingleOrDefault(receipt => receipt.OperationId == transition.OperationId && receipt.IntentDigest == intent); break;
+                result = guardState?.Receipts.SingleOrDefault(receipt => receipt.OperationId == transition.OperationId && receipt.IntentDigest == intent);
+                if (result is null)
+                {
+                    var retainedGuard = await custody.ReadAsync(transition.TenantId, token).ConfigureAwait(false);
+                    if (retainedGuard is { } originalHead && originalHead.Head.GuardAttempts.TryGetValue(intent, out var originalAttempt)
+                        && ErasureRootCustody.Hash(originalAttempt.Transition) == ErasureRootCustody.Hash(transition)
+                        && originalAttempt.TargetMutationDigest == ErasureRootCustody.Hash(targets)) { result = originalAttempt.Receipt; }
+                }
+                break;
             case ProtectionQualificationNativeCallKind.GuardOwnersEffective:
                 var template = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
                 var currentOwners = await guard.ReadAsync(template.TenantId, token).ConfigureAwait(false);
@@ -153,6 +199,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var snapshot = await native.GetStateAsync<SnapshotProtectionResult>(snapshotCell.Component, snapshotCell.Key, ConsistencyMode.Strong, snapshotCell.Metadata, token).ConfigureAwait(false);
                 if (snapshot?.Metadata is { State: PayloadProtectionState.Protected, Scheme: "hexalith-pdenc-v2" }) { result = new { status = "Completed", protectionResult = snapshot }; }
                 break;
+            case ProtectionQualificationNativeCallKind.ReplayCopy:
             case ProtectionQualificationNativeCallKind.ReplayEvent:
                 var replay = Read<ProtectionQualificationNativeCell>(); Check(replay);
                 result = await native.GetStateAsync<JsonElement>(replay.Component, replay.Key + ":replay", ConsistencyMode.Strong, replay.Metadata, token).ConfigureAwait(false); break;
@@ -164,7 +211,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 {
                     var actual = await native.GetStateAsync<JsonElement>(cell.Component, cell.Key, ConsistencyMode.Strong, cell.Metadata, token).ConfigureAwait(false);
                     if (step.Kind == ProtectionQualificationNativeCallKind.Backup || ErasureRootCustody.Hash(backup) == ErasureRootCustody.Hash(actual))
-                    { result = new { status = "Completed", receiptId = ErasureRootCustody.Hash(new { cell, backup }) }; }
+                    { result = new { status = "Completed", receiptId = CopyReceipt(step.Kind, cell, backup) }; }
                 }
                 break;
         }
@@ -180,6 +227,16 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         object? result;
         switch (step.Kind)
         {
+            case ProtectionQualificationNativeCallKind.WrapFixtureRoot:
+                var control = Read<ProtectionQualificationNativeRoot>();
+                var expected = request["targets"]!.Deserialize<ProtectionTarget[]>()!;
+                if (request["caseId"]?.GetValue<string>() != "P13" || control.Identity.TenantId != tenant
+                    || control.Identity.ObjectId != request["fixtureId"]!.GetValue<string>() + "-accepted-control"
+                    || expected.Any(value => ErasureRootCustody.TargetId(value) == ErasureRootCustody.TargetId(control.Identity)))
+                { throw new InvalidOperationException("Distinct source-owned accepted-set control target required."); }
+                result = await custody.WrapAsync(control.Identity, control.OperationId, control.ExpectedRevision, token).ConfigureAwait(false)
+                    ?? throw new InvalidOperationException("Actual accepted-set control root unavailable.");
+                break;
             case ProtectionQualificationNativeCallKind.SealEvent:
                 var sealing = Read<ProtectionQualificationNativeSeal>();
                 try { result = await SealAsync(sealing, request, sealing.ChangePayload ? Convert.ToBase64String("different-synthetic-owner-payload"u8) : null, token).ConfigureAwait(false); }
@@ -197,6 +254,21 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                     result = new { canaryBase64 = clear.RootElement.GetProperty("ProtectedContent").GetProperty("Value").GetProperty("CanaryBase64").GetString() };
                 }
                 finally { CryptographicOperations.ZeroMemory(opened.PayloadBytes!); }
+                break;
+            case ProtectionQualificationNativeCallKind.ReplayCopy:
+                var copyCell = Read<ProtectionQualificationNativeCell>(); Check(copyCell);
+                var copy = await native.GetStateAsync<JsonElement>(copyCell.Component, copyCell.Key, ConsistencyMode.Strong, copyCell.Metadata, token).ConfigureAwait(false);
+                if (copy.TryGetProperty("Binding", out _))
+                { result = await ExecuteAsync(step with { Kind = ProtectionQualificationNativeCallKind.ReplayEvent }, request, token).ConfigureAwait(false); }
+                else
+                {
+                    var copySnapshot = copy.Deserialize<SnapshotProtectionResult>() ?? throw new InvalidOperationException("Actual snapshot copy required.");
+                    var rootHead = await custody.ReadAsync(tenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current copy originals unavailable.");
+                    var snapshotState = JsonSerializer.SerializeToElement(copySnapshot.State);
+                    string reference = snapshotState.TryGetProperty("Entries", out var entries) ? entries[0].GetProperty("KeyReference").GetString()! : copySnapshot.Metadata!.KeyAlias!;
+                    var original = rootHead.Head.SourceOriginals.Values.Single(value => value.Binding.KeyReference == reference);
+                    result = await ReplaySnapshotAsync(new(original.Binding.Identity.Owner, original.SnapshotEntry?.Parent ?? ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity), copyCell), token).ConfigureAwait(false);
+                }
                 break;
             case ProtectionQualificationNativeCallKind.ReplayEvent:
                 var replayCell = Read<ProtectionQualificationNativeCell>(); var replaying = await ReadEventAsync(replayCell, token).ConfigureAwait(false);
@@ -216,8 +288,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                         replaying.Protected.SerializationFormat, replaying.Protected.Metadata, ErasureRootOccurrenceBindings.Occurrence(replaying.Binding.Identity), token).ConfigureAwait(false);
                     try
                     {
-                        var projection = new { target = replaying.Binding.Identity.Target, field = erased, externalOutcome = external.IsReadable ? "Readable" : "Unreadable" };
-                        await native.SaveStateAsync(replayCell.Component, replayCell.Key + ":replay", projection, metadata: replayCell.Metadata, cancellationToken: token).ConfigureAwait(false);
+                        var projection = new { target = replaying.Binding.Identity.Target, field = erased, externalOutcome = external.IsReadable ? "Readable" : "Unreadable", sourceIdentity = ProtectionQualificationNativeCell.LocationId(replayCell), sourceDigest = ErasureRootCustody.Hash(replaying) };
+                        await native.SaveStateAsync(replayCell.Component, replayCell.Key + ":replay", JsonSerializer.SerializeToElement(projection), metadata: replayCell.Metadata, cancellationToken: token).ConfigureAwait(false);
                         result = projection;
                     }
                     finally { if (external.PayloadBytes is { } openedBytes) { CryptographicOperations.ZeroMemory(openedBytes); } }
@@ -235,6 +307,18 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var lifecycleEvidence = await authorization.ReadLifecycleEvidenceAsync(exactFence, token).ConfigureAwait(false);
                 result = new { status = lifecycleEvidence is not null ? "Authorized" : "Denied", requestDigest = ErasureRootCustody.Hash(exactFence), fenceTokenId = exactFence.FenceTokenId,
                     operationId = exactFence.OperationId, receiptId = lifecycleEvidence?.ReceiptId, target = new ProtectionTarget(exactFence.Identity.TenantId, exactFence.Identity.ObjectId, exactFence.Identity.KeyAlias) }; break;
+            case ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch:
+                var holdContinuation = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+                var currentGuard = await guard.ReadAsync(holdContinuation.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Actual race originals unavailable.");
+                var held = currentGuard.Holds.SingleOrDefault(value => value.HoldId == holdContinuation.Hold!.HoldId && value.Active);
+                if (held is not null) { result = new { status = "AlreadyCommitted", holdId = held.HoldId }; }
+                else
+                {
+                    var dispatched = currentGuard.Deletions.Single(value => value.RequestId == holdContinuation.DeletionRequestId).Batches.Any(value => !string.IsNullOrEmpty(value.DispatchReceiptId));
+                    if (!dispatched) { throw new InvalidOperationException("Only actual dispatch-winning race permits a fresh hold continuation."); }
+                    result = await guard.ExecuteAsync(holdContinuation, step.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!, token).ConfigureAwait(false);
+                }
+                break;
             case ProtectionQualificationNativeCallKind.Guard:
                 var transition = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
                 result = await guard.ExecuteAsync(transition, step.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!, token).ConfigureAwait(false); break;
@@ -305,13 +389,13 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var actual = await native.GetStateAsync<JsonElement>(backup.Component, backup.Key, ConsistencyMode.Strong, backup.Metadata, token).ConfigureAwait(false);
                 if (actual.ValueKind == JsonValueKind.Undefined) { throw new InvalidOperationException("Missing native backup source."); }
                 await native.SaveStateAsync(backup.Component, backup.Key + ":backup", actual, metadata: backup.Metadata, cancellationToken: token).ConfigureAwait(false);
-                result = new { receiptId = ErasureRootCustody.Hash(new { backup, actual }) }; break;
+                result = new { receiptId = CopyReceipt(step.Kind, backup, actual) }; break;
             case ProtectionQualificationNativeCallKind.Restore:
                 var restore = Read<ProtectionQualificationNativeCell>(); Check(restore);
                 var saved = await native.GetStateAsync<JsonElement>(restore.Component, restore.Key + ":backup", ConsistencyMode.Strong, restore.Metadata, token).ConfigureAwait(false);
                 if (saved.ValueKind == JsonValueKind.Undefined) { throw new InvalidOperationException("Missing exact original backup."); }
                 await native.SaveStateAsync(restore.Component, restore.Key, saved, metadata: restore.Metadata, cancellationToken: token).ConfigureAwait(false);
-                result = new { receiptId = ErasureRootCustody.Hash(new { restore, saved }) }; break;
+                result = new { receiptId = CopyReceipt(step.Kind, restore, saved) }; break;
             case ProtectionQualificationNativeCallKind.Fault:
                 await faults.ArmAsync(step.Payload["stepId"]!.GetValue<string>(), step.Payload["boundary"]!.GetValue<string>(), request["operationId"]!.GetValue<string>(), token).ConfigureAwait(false);
                 result = new { originalStepId = step.Payload["stepId"]!.GetValue<string>(), armed = true }; break;
@@ -319,7 +403,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 if (step.Payload.ContainsKey("Entries"))
                 { result = await SealMixedSnapshotAsync(Read<ProtectionQualificationNativeSnapshot>(), request, token).ConfigureAwait(false); break; }
                 var snapshot = new ProtectionQualificationNativeSeal(step.Payload["enrollment"]!.Deserialize<ErasureRootOccurrenceEnrollment>()!, step.Payload["source"]!.Deserialize<ProtectionQualificationNativeCell>()!); Check(snapshot.Source);
-                if (!await source.RegisterOriginalAsync(snapshot.Enrollment, token).ConfigureAwait(false)) { throw new InvalidOperationException("Independent snapshot original unavailable."); }
+                if (!await keys.PreflightEnrollmentAsync(snapshot.Enrollment, token).ConfigureAwait(false) || !await source.RegisterOriginalAsync(snapshot.Enrollment, token).ConfigureAwait(false)) { throw new InvalidOperationException("Independent snapshot original unavailable."); }
                 var state = JsonSerializer.SerializeToElement(new { CanaryBase64 = request["canaryBase64"]!.GetValue<string>() });
                 var type = (JsonTypeInfo)new JsonSerializerOptions { TypeInfoResolver = new DefaultJsonTypeInfoResolver() }.GetTypeInfo(typeof(JsonElement));
                 var protectedSnapshot = await engine.ProtectSnapshotAsync(snapshot.Enrollment.Binding.Identity.Owner, state, type,
@@ -427,6 +511,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     {
         Check(input.Source);
         var binding = input.Enrollment.Binding;
+        if (!await keys.PreflightEnrollmentAsync(input.Enrollment, token).ConfigureAwait(false)) { throw new InvalidOperationException("Native digest/current source inputs unavailable."); }
         if (input.Enrollment.Writer is not { } writer || writer.Component != input.Source.Component
             || !await source.RegisterOriginalAsync(input.Enrollment, token).ConfigureAwait(false)) { throw new InvalidOperationException("Independent native source original unavailable."); }
         byte[] canary = Convert.FromBase64String(changedCanary ?? request["canaryBase64"]?.GetValue<string>() ?? await ReadSeedAsync(input.SeedSource, token).ConfigureAwait(false));
@@ -468,6 +553,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             originals.Add(original with { SnapshotEntry = new(input.Parent, described.Path, layout.ContainerDigest, layout.Entries.Count) });
         }
         foreach (var original in originals)
+        { if (!await keys.PreflightEnrollmentAsync(original, token).ConfigureAwait(false)) { throw new InvalidOperationException("Complete mixed-entry native inputs required."); } }
+        foreach (var original in originals)
         { if (!await source.RegisterOriginalAsync(original, token).ConfigureAwait(false)) { throw new InvalidOperationException("Independent mixed snapshot original unavailable."); } }
         var type = new JsonSerializerOptions { TypeInfoResolver = new DefaultJsonTypeInfoResolver() }.GetTypeInfo(typeof(JsonElement));
         var write = await engine.ProtectSnapshotAsync(originals[0].Binding.Identity.Owner, state, type, input.Parent, token).ConfigureAwait(false);
@@ -490,6 +577,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         await engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token).ConfigureAwait(false);
         return write;
     }
+    internal static string CopyReceipt(ProtectionQualificationNativeCallKind kind, ProtectionQualificationNativeCell cell, JsonElement saved)
+        => kind == ProtectionQualificationNativeCallKind.Backup ? ErasureRootCustody.Hash(new { backup = cell, actual = saved })
+            : ErasureRootCustody.Hash(new { restore = cell, saved });
     private async Task<JsonArray> ReplaySnapshotAsync(ProtectionQualificationNativeSnapshotRead input, CancellationToken token)
     {
         Check(input.Source);
@@ -518,7 +608,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         Visit(restored);
         if (projected.Count == 0) { throw new InvalidOperationException("Actual typed per-entry snapshot replay required."); }
-        await native.SaveStateAsync(input.Source.Component, input.Source.Key + ":replay", projected, metadata: input.Source.Metadata, cancellationToken: token).ConfigureAwait(false);
+        foreach (var item in projected.OfType<JsonObject>()) { item["sourceIdentity"] = ProtectionQualificationNativeCell.LocationId(input.Source); item["sourceDigest"] = ErasureRootCustody.Hash(snapshot); }
+        await native.SaveStateAsync(input.Source.Component, input.Source.Key + ":replay", JsonSerializer.SerializeToElement(projected), metadata: input.Source.Metadata, cancellationToken: token).ConfigureAwait(false);
         return projected;
     }
     private async Task<string> ReadSeedAsync(ProtectionQualificationNativeCell? cell, CancellationToken token)

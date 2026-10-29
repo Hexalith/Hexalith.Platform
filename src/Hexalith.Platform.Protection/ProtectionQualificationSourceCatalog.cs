@@ -37,6 +37,8 @@ public static class ProtectionQualificationSourceCatalog
             {
                 string id = entry.Key + "/" + (++ordinal).ToString(System.Globalization.CultureInfo.InvariantCulture);
                 var payload = (JsonObject)arguments[id].DeepClone(); string[] parts = token.Split(':');
+                if (parts[0] == "ContinueHoldAfterDispatch")
+                { payload = (JsonObject)arguments[entry.Key + "/" + (ordinal - 1).ToString(System.Globalization.CultureInfo.InvariantCulture)].DeepClone(); }
                 var kind = parts[0] == "Guard" ? ProtectionQualificationNativeCallKind.Guard : Enum.Parse<ProtectionQualificationNativeCallKind>(parts[0]);
                 if (kind == ProtectionQualificationNativeCallKind.SealEvent)
                 {
@@ -63,6 +65,22 @@ public static class ProtectionQualificationSourceCatalog
         ProtectionQualificationActionCatalog.Validate(result); return result;
     }
 
+    /// <summary>Completes every erased scenario with actual per-copy trusted replay, including cases without an explicit ReplayAll action.</summary>
+    internal static ProtectionQualificationActionRecipe WithRequiredReplays(string caseId, string action, ProtectionQualificationActionRecipe recipe,
+        ProtectionQualificationObservationRecipe observation)
+    {
+        using Stream stream = typeof(ProtectionQualificationSourceCatalog).Assembly.GetManifestResourceStream("ExtProtectionOwnerPlan")!;
+        using var plan = JsonDocument.Parse(stream);
+        var scenario = plan.RootElement.GetProperty("cases").EnumerateArray().Single(value => value.GetProperty("id").GetString() == caseId);
+        if (scenario.GetProperty("steps").EnumerateArray().Last().GetString() != action
+            || !scenario.GetProperty("checks").EnumerateArray().Any(value => value.GetString() == "erased")) { return recipe; }
+        var calls = observation.Sources.Where(value => value.Value.CopyKind is not null).OrderBy(value => value.Key, StringComparer.Ordinal)
+            .Select(value => new ProtectionQualificationNativeCall(caseId + "/" + action + "/replay-copy:" + ErasureRootCustody.Hash(value.Value),
+                ProtectionQualificationNativeCallKind.ReplayCopy, (JsonObject)JsonSerializer.SerializeToNode(value.Value)!)).ToArray();
+        if (calls.Length == 0) { throw new InvalidOperationException("Complete native sealed-copy inventory required for erased replay."); }
+        return recipe with { After = recipe.After.Concat(calls).ToArray() };
+    }
+
     private static Dictionary<string, ProtectionQualificationSourceProgram> Programs()
     {
         using Stream stream = typeof(ProtectionQualificationSourceCatalog).Assembly.GetManifestResourceStream("ExtProtectionOwnerPlan")!;
@@ -84,7 +102,7 @@ public static class ProtectionQualificationSourceCatalog
                 if (needsOwner && !prepared)
                 {
                     // Source-only signing-staleness deliberately owns its initial issuance sequence.
-                    string[] preparation = id switch { "P13" => new[] { "Guard:AppendWrite", "Guard:AppendWrite" }.Concat(Issue).ToArray(), "P14" or "P15" => new[] { "Guard:AppendWrite" }.Concat(Issue).ToArray(), "P39" => Issue[..7], "P20" or "P21" => Issue[..9], "P26" => Issue[..11], _ => Issue };
+                    string[] preparation = id switch { "P13" => new[] { "WrapFixtureRoot", "Guard:AppendWrite", "Guard:AppendWrite" }.Concat(Issue).ToArray(), "P14" or "P15" => new[] { "Guard:AppendWrite" }.Concat(Issue).ToArray(), "P39" => Issue[..7], "P20" or "P21" => Issue[..9], "P26" => Issue[..11], _ => Issue };
                     program = program with { Before = preparation.Concat(program.Before).ToArray() }; prepared = true;
                 }
                 if (action == "RejectManifestDestroy" && id is "P20" or "P26")
@@ -135,7 +153,7 @@ public static class ProtectionQualificationSourceCatalog
             "DelayAndRestoreDispatch" => Plain("Guard:CommitDispatch", "Backup", "Restore"),
             "HoldBeforeDispatch" => Plain("Guard:RegisterHold"),
             "HoldAfterDispatch" => Plain("Guard:RegisterHold"),
-            "RaceHoldDispatch" => new(["Guard:AuthorizeDispatch"], "Guard:CommitDispatch", "Guard:RegisterHold", ["RegisterIfDispatched", "ReserveIfDispatched"]),
+            "RaceHoldDispatch" => new(["Guard:AuthorizeDispatch"], "Guard:CommitDispatch", "Guard:RegisterHold", ["ContinueHoldAfterDispatch", "RegisterIfDispatched", "ReserveIfDispatched"]),
             "BlockAdmissionBeforeReserve" => Plain("Block"),
             "RaceAdmissionReserve" => new([], "Block", "Reserve"),
             "ReserveBeforeAdmissionBlock" => new(["Reserve"], "Block", null, ["Guard:RecordProtectionOutcome", "Reserve", "Lookup", "LookupProvider"]),

@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using System.Text.Json;
 using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.Server.Security;
@@ -38,6 +39,44 @@ public sealed class ProtectionQualificationPreparationTests
         var current = await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken);
         current!.Value.Head.Erased.ShouldBeEmpty(); current.Value.Head.Targets.Count.ShouldBe(2);
     }
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task HoldDispatchRaceRetainsBothRealOutcomesAndCommitsRequiredHoldAfterDispatchWins(bool holdWins)
+    {
+        using var fixture = new ProtectionQualificationPreparationFixture(holdWins); await fixture.InitializeAsync();
+        var recipe = fixture.Recipes("P21")["P21"]["RaceHoldDispatch"];
+        await fixture.RunAsync(recipe, "P21", "RaceHoldDispatch");
+        var firstHold = fixture.Admitted.Values.Single(call => call.Kind == ProtectionQualificationNativeCallKind.Guard
+            && call.Payload["transition"]!["Operation"]!.GetValue<int>() == (int)GovernanceGuardOperation.RegisterHold);
+        var dispatch = fixture.Admitted.Values.Single(call => call.Kind == ProtectionQualificationNativeCallKind.Guard
+            && call.Payload["transition"]!["Operation"]!.GetValue<int>() == (int)GovernanceGuardOperation.CommitDispatch);
+        var nativeHold = fixture.Originals[firstHold.Id]!.Deserialize<GovernanceProtocolReceipt>()!;
+        var nativeDispatch = fixture.Originals[dispatch.Id]!.Deserialize<GovernanceProtocolReceipt>()!;
+        (nativeHold.Status == "Committed").ShouldBe(holdWins); (nativeDispatch.Status == "Committed").ShouldBe(!holdWins);
+        fixture.Guard.State.Holds.Single().Active.ShouldBeTrue();
+        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value;
+        var calls = new List<ProtectionQualificationNativeOriginal>();
+        foreach (var call in fixture.Admitted.Values.Where(call => call.Kind is ProtectionQualificationNativeCallKind.Guard or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch))
+        {
+            var result = fixture.Originals[call.Id]!; calls.Add(new(call, result));
+            if (result["IntentDigest"] is null) { continue; }
+            var transition = call.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+            var receipt = result.Deserialize<GovernanceProtocolReceipt>()!;
+            current.Head.GuardAttempts.Add(receipt.IntentDigest, new(transition, ErasureRootCustody.Hash(call.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!), transition.ExpectedGuardRevision, receipt.GuardHighWater, receipt));
+        }
+        var observed = new JsonObject();
+        ProtectionQualificationNativeProjection.ProjectHolds(observed, current.Head, calls, (JsonObject)JsonSerializer.SerializeToNode(fixture.Guard.State)!);
+        observed["holdOrders"]![0]!["dispatchWon"]!.GetValue<bool>().ShouldBe(!holdWins);
+        if (holdWins) { fixture.Consumption.State.CommittedState.ShouldBeEmpty(); }
+        else
+        {
+            var continuation = fixture.Admitted.Values.Single(call => call.Kind == ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch);
+            continuation.Payload["transition"]!["OperationId"]!.GetValue<string>().ShouldNotBe(firstHold.Payload["transition"]!["OperationId"]!.GetValue<string>());
+            fixture.Originals[continuation.Id]!["Status"]!.GetValue<string>().ShouldBe("Committed");
+        }
+    }
+
     [Fact]
     public async Task ContainmentPreparationCommitsOriginalViolationsAndDistinctSingletonOwners()
     {
@@ -64,7 +103,7 @@ public sealed class ProtectionQualificationPreparationTests
         deletion.Batches.Single().Ordinal.ShouldBe(0); deletion.Batches.Single().CoveredResourceIds.ShouldBe(new[] { "resource-1" });
         deletion.Violations.Single().AcceptanceReceiptId.ShouldNotBeEmpty();
         (await fixture.RunAsync(recipes["DestroyDekManifest"], "P14", "DestroyDekManifest"))!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.Consumed);
-        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head.Erased.Count.ShouldBe(3);
+        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head.Erased.Count.ShouldBe(fixture.Targets.Length);
         fixture.Guard.State.Deletions.Single().Batches.Count.ShouldBe(1);
     }
     [Fact]
@@ -81,9 +120,37 @@ public sealed class ProtectionQualificationPreparationTests
         looked["TargetReceipts"]!.ToJsonString().ShouldBe(original["TargetReceipts"]!.ToJsonString());
         looked["BatchId"]!.GetValue<string>().ShouldNotBe(original["BatchId"]!.GetValue<string>());
         var after = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
-        after.Epoch.ShouldBe(before.Epoch); after.Manifests.Count.ShouldBe(1); after.Erased.Count.ShouldBe(3); after.Targets.ShouldBeEmpty();
+        after.Epoch.ShouldBe(before.Epoch); after.Manifests.Count.ShouldBe(1); after.Erased.Count.ShouldBe(fixture.Targets.Length); after.Targets.ShouldBeEmpty();
         fixture.Guard.State.Deletions.Single(value => value.RequestId == "deletion-a").Batches.Count.ShouldBe(1);
     }
+    [Fact]
+    public async Task TwoExpectedContainmentTargetsUseDistinctRealControlRootAndEmitCompleteVerifierEvidence()
+    {
+        using var fixture = new ProtectionQualificationPreparationFixture(); await fixture.InitializeAsync(containment: true);
+        fixture.Targets.Length.ShouldBe(2); await fixture.SealExpectedSourcesAsync("P13");
+        var recipes = fixture.Recipes("P13")["P13"];
+        await fixture.RunAsync(recipes["IssueContainmentSingletons"], "P13", "IssueContainmentSingletons");
+        fixture.Signed.ShouldAllBe(value => value.Payload.SigningAttemptOrdinal == 1);
+        var guard = fixture.Guard.State.Deletions.Single();
+        var accepted = guard.Batches.Single(value => value.Kind == "AcceptedSet");
+        fixture.Targets.ShouldNotContain(value => value.AgentInteractionId == accepted.Targets.Single().AgentInteractionId);
+        await fixture.RunAsync(recipes["DestroyDekManifest"], "P13", "DestroyDekManifest");
+        await fixture.RunAsync(fixture.AddRequiredReplays("P13", "LookupOriginalDestruction", recipes["LookupOriginalDestruction"]), "P13", "LookupOriginalDestruction");
+        var observed = await fixture.ObserveAsync("P13");
+        observed["targetCoverage"]!.AsArray().Count.ShouldBe(2);
+        observed["targetCoverage"]!.AsArray().ShouldAllBe(value => value!["singletonManifest"]!.GetValue<bool>() && !value["reusesAcceptedSetBatch"]!.GetValue<bool>());
+        observed["replays"]!.AsArray().Count.ShouldBe(4);
+        observed["replays"]!.AsArray().ShouldAllBe(value => value!["field"]!["State"]!.GetValue<string>() == "Erased");
+        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        current.Targets.Count.ShouldBe(1); current.Erased.Count.ShouldBe(2);
+        current.Targets.Values.Single().Registration.Identity.ObjectId.ShouldBe(accepted.Targets.Single().AgentInteractionId);
+        if (Environment.GetEnvironmentVariable("EXT_PROTECTION_P13_VECTOR") is { Length: > 0 } path)
+        {
+            await File.WriteAllTextAsync(path, JsonSerializer.Serialize(new { observation = observed, targets = fixture.Targets, publicKeyPem = fixture.PublicKeyPem,
+                sourceComponentOnly = true, liveExecuted = false, engineCommit = observed["engineSourceRevision"]!.GetValue<string>(), engineBinarySha256 = observed["engineBinarySha256"]!.GetValue<string>() }), TestContext.Current.CancellationToken);
+        }
+    }
+
     [Fact]
     public async Task TwoRealHoldMutationsProduceDistinctNoIssueOriginalsBeforeHealthySuccessorIssue()
     {

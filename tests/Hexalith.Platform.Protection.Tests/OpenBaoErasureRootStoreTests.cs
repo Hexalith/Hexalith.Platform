@@ -11,6 +11,37 @@ public sealed class OpenBaoErasureRootStoreTests
     private static CancellationToken Token => TestContext.Current.CancellationToken;
 
     [Fact]
+    public async Task NativeDeadlineStillBoundsStalledBodyAfterHeadersComplete()
+    {
+        string variable = "ERC_BODY_TEST_" + Guid.NewGuid().ToString("N"); Environment.SetEnvironmentVariable(variable, "component");
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((_, _) => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new StalledErasureRootBody()) });
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromMilliseconds(100) };
+            var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => store.ReadHeadAsync("tenant", Token));
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    [Fact]
+    public async Task MaximumAdmittedHeadReservesNativeReadFramingOverhead()
+    {
+        string variable = "ERC_FRAMING_TEST_" + Guid.NewGuid().ToString("N"); Environment.SetEnvironmentVariable(variable, "component");
+        try
+        {
+            byte[] head = JsonSerializer.SerializeToUtf8Bytes(new { cell = new string('x', OpenBaoErasureRootStore.MaximumHeadBytes - 11) });
+            using var handler = new ErasureRootTransportHandler((request, _) => request.Method == HttpMethod.Post ? ErasureRootTransportHandler.Json("{}")
+                : ErasureRootTransportHandler.Json("{\"data\":{\"metadata\":{\"version\":2,\"created_time\":\"2026-10-29T00:00:00Z\",\"custom_metadata\":{}},\"data\":" + System.Text.Encoding.UTF8.GetString(head) + "}}"));
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
+            (await store.CompareExchangeHeadAsync("tenant", 1, head, Token)).ShouldBeTrue();
+            (await store.ReadHeadAsync("tenant", Token))!.Bytes.ShouldBe(head);
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    [Fact]
     public async Task MissingCredentialRefusesBeforeAnyTransportEffect()
     {
         string reference = "ERC_MISSING_TEST_" + Guid.NewGuid().ToString("N");

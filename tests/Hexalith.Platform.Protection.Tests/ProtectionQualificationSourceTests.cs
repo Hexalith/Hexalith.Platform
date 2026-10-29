@@ -16,6 +16,14 @@ public sealed class ProtectionQualificationSourceTests
 {
     private static CancellationToken Token => TestContext.Current.CancellationToken;
     [Fact]
+    public void OriginalNativeCallKindNumbersRemainStableForRetainedJournals()
+    {
+        string[] original = ["SealEvent", "UnsealEvent", "ReplayEvent", "SealSnapshot", "Lifecycle", "AuthorizeLifecycle", "Guard", "Register", "Reserve", "Block", "Compromise", "Activate", "Sign", "ObsoleteUnissued", "Lookup", "LookupBlock", "LookupActivation", "LookupProvider", "ReplaySnapshot", "RejectSubstitutions", "RejectForeignRoot", "ReconcileBlockedReplacement", "GuardOwnersEffective", "RegisterIfDispatched", "ReserveIfDispatched", "Backup", "Restore", "Fault"];
+        for (int index = 0; index < original.Length; index++)
+        { ((int)Enum.Parse<ProtectionQualificationNativeCallKind>(original[index])).ShouldBe(index); }
+    }
+
+    [Fact]
     public async Task ClosedNegativeRecipesCoverAllFourteenFieldsHeadersSignatureManifestAndDispatchIdentities()
     {
         var fixture = new ErasureRootConsumptionFixture(); var request = (await fixture.SeedAsync()) with { DetachedJws = "eyJhbGciOiJFUzI1NiJ9..AQID" };

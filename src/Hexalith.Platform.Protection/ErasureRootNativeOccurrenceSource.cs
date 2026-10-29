@@ -68,6 +68,8 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         string id = ErasureRootOccurrenceBindings.Id(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity));
         string digest = ErasureRootCustody.Hash(enrollment);
         if (enrollment.Writer is null || identity.Target.TenantId != identity.Owner.TenantId) { return false; }
+        using var nativeDigest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
+        if (nativeDigest is null) { return false; }
         for (int attempt = 0; attempt < 16; attempt++)
         {
             if (!await authorization.AuthorizeAsync(identity.Target.TenantId, id, "RegisterIndependentSourceOriginal", digest, token).ConfigureAwait(false)) { return false; }

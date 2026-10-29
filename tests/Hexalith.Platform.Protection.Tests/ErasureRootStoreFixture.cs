@@ -10,6 +10,7 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     private readonly object _gate = new();
     private readonly Dictionary<string, (long Version, byte[] Bytes)> _heads = new(StringComparer.Ordinal);
     private readonly Dictionary<string, SortedDictionary<int, byte[]>> _epochs = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, byte[]> _archives = new(StringComparer.Ordinal);
     internal int TrimCount { get; private set; }
     internal int RotateCount { get; private set; }
     internal int RotateAttempts { get; private set; }
@@ -65,6 +66,17 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
         }
         Fail("cas-after");
         return true;
+    }
+    public Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken cancellationToken)
+    { lock (_gate) { return Task.FromResult(_archives.GetValueOrDefault(tenantId + ":" + archiveId)?.ToArray()); } }
+    public Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken)
+    {
+        lock (_gate)
+        {
+            string id = tenantId + ":" + archiveId;
+            if (_archives.TryGetValue(id, out var original)) { return Task.FromResult(original.AsSpan().SequenceEqual(bytes)); }
+            _archives.Add(id, bytes.ToArray()); return Task.FromResult(true);
+        }
     }
     public Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken)
     {

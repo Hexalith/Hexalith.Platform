@@ -54,7 +54,13 @@ internal static class ProtectionQualificationNativeProjection
             {
                 foreach (var item in replay is JsonArray items ? items : new JsonArray(replay.DeepClone()))
                 {
-                    var projected = (JsonObject)item!.DeepClone(); projected["kind"] = kind; replays.Add(projected);
+                    var projected = (JsonObject)item!.DeepClone();
+                    if (projected["sourceIdentity"]?.GetValue<string>() != ProtectionQualificationNativeCell.LocationId(cell.Value)
+                        || projected["sourceDigest"]?.GetValue<string>() != ErasureRootCustody.Hash(value))
+                    { throw new InvalidOperationException("Replay must bind the exact native copy and persisted ciphertext."); }
+                    projected["kind"] = kind;
+                    projected["copyId"] = cell.Key + ":" + ErasureRootCustody.TargetId(projected["target"]!.Deserialize<ProtectionTarget>()!);
+                    replays.Add(projected);
                 }
             }
         }
@@ -172,7 +178,7 @@ internal static class ProtectionQualificationNativeProjection
         observed["ownerTransitions"] = transitions;
     }
 
-    private static void ProjectCopies(JsonObject observed, IReadOnlyList<ProtectionQualificationNativeOriginal> calls, IReadOnlyDictionary<string, JsonNode> sources,
+    internal static void ProjectCopies(JsonObject observed, IReadOnlyList<ProtectionQualificationNativeOriginal> calls, IReadOnlyDictionary<string, JsonNode> sources,
         IReadOnlyDictionary<string, ProtectionQualificationNativeCell> cells, bool erased)
     {
         var inventory = new JsonArray(); var states = new JsonArray(); var restoreOriginals = new JsonArray();
@@ -180,7 +186,7 @@ internal static class ProtectionQualificationNativeProjection
         foreach (var record in ((JsonArray)observed["records"]!).OfType<JsonObject>())
         {
             string id = record["copyId"]!.GetValue<string>(), kind = record["kind"]!.GetValue<string>();
-            var replay = ((JsonArray)observed["replays"]!).OfType<JsonObject>().SingleOrDefault(value => value["kind"]!.GetValue<string>() == kind
+            var replay = ((JsonArray)observed["replays"]!).OfType<JsonObject>().SingleOrDefault(value => value["copyId"]?.GetValue<string>() == id
                 && ErasureRootCustody.Hash(value["target"]) == ErasureRootCustody.Hash(record["target"]));
             if (replay is null && erased) { throw new InvalidOperationException("Every native sealed source/cache/copy needs its actual replay original."); }
             string read = replay?["field"]?["State"]?.GetValue<string>() == "Erased" && replay["externalOutcome"]?.GetValue<string>() == "Unreadable" ? "Erased"
@@ -286,9 +292,9 @@ internal static class ProtectionQualificationNativeProjection
         observed["signingRecoveries"] = recoveries; observed["noIssueIntents"] = intents;
     }
 
-    private static void ProjectHolds(JsonObject observed, ErasureRootHead head, IReadOnlyList<ProtectionQualificationNativeOriginal> calls, JsonObject guard)
+    internal static void ProjectHolds(JsonObject observed, ErasureRootHead head, IReadOnlyList<ProtectionQualificationNativeOriginal> calls, JsonObject guard)
     {
-        var intents = calls.Where(call => call.Call.Kind == ProtectionQualificationNativeCallKind.Guard).Select(call =>
+        var intents = calls.Where(call => call.Call.Kind is ProtectionQualificationNativeCallKind.Guard or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch).Select(call =>
         {
             var transition = call.Call.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
             var targets = call.Call.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!;

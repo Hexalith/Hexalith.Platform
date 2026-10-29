@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/tests",
+    "-p",
+    "test_ext_protection_1_source_p13.py",
+    "-v"
+  ],
+  "cwd": "/tmp/bmad-protection-rederive-5cvvn0rc/eventstore",
+  "environment": {
+    "EXT_PROTECTION_P13_COMPONENT_ASSEMBLY": "/tmp/rederive-p13-check/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_P13_COMPONENT_SHA256": "bc4140d4236fc451da11a3b79eb9781d7c8f583c50b5bdf95ddb74e65b81fcf2"
+  }
+}

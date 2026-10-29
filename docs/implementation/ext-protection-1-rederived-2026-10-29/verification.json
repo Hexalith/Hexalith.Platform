@@ -1,0 +1,126 @@
+{
+  "schema": "EXT-PROTECTION-1.rederived-source.v1",
+  "status": "in-progress",
+  "acceptedStatus": "Uncommitted",
+  "immutableTargets": null,
+  "acceptedIntegrationDate": null,
+  "acceptedProfileSha256": null,
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "metrics": {
+    "protection": {
+      "total": 318,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 6,
+      "notRun": 0,
+      "elapsedSeconds": 130.743
+    },
+    "eventstoreUnion": {
+      "total": 413,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "elapsedSeconds": 5.399
+    },
+    "callerRecovery": {
+      "total": 63,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "elapsedSeconds": 6.105
+    },
+    "payloadProtection": {
+      "total": 880,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "elapsedSeconds": 4.333
+    },
+    "offlineVerifier": {
+      "total": 81,
+      "elapsedSeconds": 22.546,
+      "passed": true
+    },
+    "nativeHarness": {
+      "total": 5,
+      "elapsedSeconds": 1.01,
+      "passed": true
+    }
+  },
+  "nativeFive": {
+    "file": "rederive-native-corrected-five-result.json",
+    "sha256": "a5e6819bb389949bb1b80bf80b0dae388d8568ca882d8de9ea74797a6944ec76",
+    "summary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "elapsedSeconds": 781.709
+  },
+  "nativeArchiveAndLegacyPrecheck": {
+    "file": "rederive-native-legacy-archive-result.json",
+    "sha256": "966491de15326a8b18a7edfaf5ab19fc083f4af3f8db9e9d974c75875eb5b194",
+    "case": "NativeTenantAndCompleteContextSubstitutionCannotDecrypt",
+    "summary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 1
+    },
+    "elapsedSeconds": 10.448
+  },
+  "sourceMode": {
+    "mode": "Source",
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "liveExecuted": false,
+  "agentsExecuted": false,
+  "clusterProvisioned": false,
+  "productionOpenBaoAccessed": false,
+  "gitMutationPerformed": false,
+  "registerEdited": false,
+  "fullCopyInventoryQualified": false,
+  "remaining": [
+    "Independently accepted complete copy/retirement evidence; production destruction stays denied until accepted",
+    "Independent installation and execution of the complete 41-case profile/roles/native inputs",
+    "Parent audit/review and exact immutable candidate/profile/date acceptance"
+  ],
+  "countsOverlap": true,
+  "authorityContexts": [
+    {
+      "path": "/tmp/bmad-protection-rederive-5cvvn0rc/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "sha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860"
+    },
+    {
+      "path": "/tmp/bmad-protection-rederive-5cvvn0rc/eventstore/docs/implementation/ext-protection-1-owner-acceptance.md",
+      "sha256": "610561799e6546d67c5bdd07ac5bb881858042cd35de5ed3b3b1bd04a28a4360"
+    },
+    {
+      "path": "/tmp/bmad-protection-rederive-5cvvn0rc/platform/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md",
+      "sha256": "0536906b5d68f76b2e194fbe646c56e6132dd9a1f6bfd3fbbeb525abb2301b50"
+    }
+  ],
+  "nativeRelevantSourceEquivalence": "rederive-native-qualification-source-equivalence.json",
+  "qualificationRuntimeInventory": "rederive-qualification-runtime-inventory.json",
+  "eventstoreSelectionExplanation": {
+    "prior317IncludesReplacementAuthority": 98,
+    "new315OmittedReplacementAndAddedPersistenceAndSnapshot": {
+      "addedPersistence": 13,
+      "addedSnapshot": 83,
+      "netDifference": -2
+    },
+    "finalUnion": 413,
+    "allPrior317Preserved": true
+  }
+}

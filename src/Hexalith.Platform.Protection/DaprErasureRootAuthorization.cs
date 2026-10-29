@@ -40,7 +40,8 @@ public sealed class DaprErasureRootAuthorization(IndependentDaprAuthority author
             var head = native is null ? null : JsonSerializer.Deserialize<ErasureRootHead>(native.Bytes, ErasureRootCustody.Json);
             if (head is null || head.StoreId != installation.StoreId || head.EnrollmentId != installation.EnrollmentId || head.TenantId != tenant
                 || !head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(tenant), out var anchor)) { return false; }
-            var current = anchor.Completed.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
+            var originals = await ErasureRootArchives.ReadTransitionsAsync(store, tenant, DeletionConsumptionActor.GetOwnerScope(tenant), anchor, false, cancellationToken).ConfigureAwait(false);
+            var current = originals.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
             if (current is null) { return false; }
             using var ledger = JsonDocument.Parse(current.TargetBytes);
             var matches = ledger.RootElement.GetProperty("Batches").EnumerateArray().Where(value => value.GetProperty("Current").GetProperty("Capability").GetProperty("BatchId").GetString() == request.Capability.BatchId).ToArray();

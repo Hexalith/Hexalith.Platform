@@ -13,6 +13,7 @@ namespace Hexalith.Platform.Protection;
 public sealed class OpenBaoErasureRootStore : IErasureRootStore
 {
     private const int MaximumResponseBytes = 32 * 1024 * 1024;
+    internal const int MaximumHeadBytes = 30 * 1024 * 1024;
     private readonly HttpClient _http;
     private readonly ErasureRootInstallation _installation;
     private readonly string _credentialEnvironmentVariable;
@@ -73,7 +74,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
     public async Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken)
     {
         Key(tenantId);
-        if (version <= 0 || head.Length is <= 0 or > MaximumResponseBytes) { throw new ArgumentException("Existing bounded head required."); }
+        if (version <= 0 || head.Length is <= 0 or > MaximumHeadBytes) { throw new ArgumentException("Existing bounded head required."); }
         using var document = JsonDocument.Parse(head);
         byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { options = new { cas = version }, data = document.RootElement });
         try
@@ -84,6 +85,39 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
             return true;
         }
         finally { CryptographicOperations.ZeroMemory(body); }
+    }
+
+    /// <inheritdoc />
+    public async Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken cancellationToken)
+    {
+        byte[]? bytes = await SendAsync(HttpMethod.Get, ArchivePath(tenantId, archiveId), null, true, cancellationToken).ConfigureAwait(false);
+        if (bytes is null) { return null; }
+        try
+        {
+            using var document = JsonDocument.Parse(bytes);
+            var data = document.RootElement.GetProperty("data");
+            if (data.GetProperty("metadata").GetProperty("version").GetInt64() != 1) { throw new InvalidOperationException("Immutable ERC archive version required."); }
+            return data.GetProperty("data").GetProperty("bytes").GetBytesFromBase64();
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
+    /// <inheritdoc />
+    public async Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken)
+    {
+        if (bytes.Length is <= 0 or > 12 * 1024 * 1024) { throw new ArgumentException("Bounded immutable archive required."); }
+        byte[]? original = await ReadArchiveAsync(tenantId, archiveId, cancellationToken).ConfigureAwait(false);
+        if (original is not null) { return original.AsSpan().SequenceEqual(bytes); }
+        byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { options = new { cas = 0 }, data = new { bytes = Convert.ToBase64String(bytes) } });
+        byte[]? response = await SendAsync(HttpMethod.Post, ArchivePath(tenantId, archiveId), body, false, cancellationToken, true).ConfigureAwait(false);
+        if (response is not null) { return true; }
+        original = await ReadArchiveAsync(tenantId, archiveId, cancellationToken).ConfigureAwait(false);
+        return original is not null && original.AsSpan().SequenceEqual(bytes);
+    }
+    private string ArchivePath(string tenant, string archiveId)
+    {
+        Key(tenant);
+        if (archiveId is not { Length: 64 } || archiveId.Any(value => !char.IsAsciiHexDigit(value))) { throw new ArgumentException("Exact archive identity required."); }
+        return "v1/" + _installation.HeadMount + "/data/archives/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(tenant))) + "/" + archiveId;
     }
 
     /// <inheritdoc />
@@ -228,6 +262,9 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
 
     private async Task<byte[]?> SendAsync(HttpMethod method, string path, byte[]? body, bool allowMissing, CancellationToken token, bool allowCasConflict = false)
     {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        deadline.CancelAfter(_http.Timeout);
+        token = deadline.Token;
         string? credential = Environment.GetEnvironmentVariable(_credentialEnvironmentVariable);
         if (string.IsNullOrWhiteSpace(credential)) { throw new InvalidOperationException("DependencyNotAvailable: ERC credential reference."); }
         using var request = new HttpRequestMessage(method, path);

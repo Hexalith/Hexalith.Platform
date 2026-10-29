@@ -4,6 +4,8 @@ namespace Hexalith.Platform.Protection.Tests;
 internal sealed class OpenBaoLostTrimAcknowledgement(IErasureRootStore native) : IErasureRootStore
 {
     private bool _lost;
+    public Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken token) => native.ReadArchiveAsync(tenantId, archiveId, token);
+    public Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken token) => native.CreateArchiveAsync(tenantId, archiveId, bytes, token);
     public Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken token) => native.ReadHeadAsync(tenantId, token);
     public Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken token) => native.CompareExchangeHeadAsync(tenantId, version, head, token);
     public Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken token) => native.EncryptAsync(tenantId, epoch, root, context, token);

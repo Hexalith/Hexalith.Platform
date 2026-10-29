@@ -77,6 +77,7 @@ public static class ErasureRootHostComposition
         services.AddSingleton<ErasureRootDigestKeyResolver>(provider => new(provider.GetRequiredService<DaprClient>(), new DaprErasureRootInventory(provider.GetRequiredService<IActorProxyFactory>()),
             new DaprInventoryAuthorityAdapter(inventory, new DaprSecretsInvoker(provider.GetRequiredService<DaprClient>()))));
         services.AddSingleton<ErasureRootOccurrenceKeyProvider>();
+        services.AddHostedService<ErasureRootHolderCompletionWorker>();
         services.AddSingleton<IInteractionOccurrenceKeyProvider>(provider => provider.GetRequiredService<ErasureRootOccurrenceKeyProvider>());
         services.AddSingleton<IAtomicDeletionManifestProvider, ErasureRootManifestProvider>();
         services.AddSingleton<IInteractionOccurrenceAuthority>(provider => new ErasureRootOccurrenceAuthority(provider.GetRequiredService<ErasureRootCustody>(), provider.GetRequiredService<ErasureRootOccurrenceBindings>(),

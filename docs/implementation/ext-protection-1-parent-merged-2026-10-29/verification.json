@@ -1,0 +1,72 @@
+{
+  "schema": "EXT-PROTECTION-1.parent-merged-source.v1",
+  "status": "prepared-for-independent-review",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "sourceCandidates": {
+    "eventstore": "6068b7771372eb0b05ed60bc91002a1c6b4486ba",
+    "platform": "06751feca75a83c892d8cef53b35c7a2c5c58ddb"
+  },
+  "candidatesPublished": false,
+  "mainBranchesMoved": false,
+  "unrelatedChangesIncluded": false,
+  "metrics": {
+    "protection": {
+      "total": 318,
+      "executed": 312,
+      "skippedNativeOnly": 6,
+      "failed": 0,
+      "seconds": 101.656
+    },
+    "eventstoreUnion": {
+      "passed": 415,
+      "skipped": 0,
+      "seconds": 4.683
+    },
+    "payloadProtection": {
+      "passed": 892,
+      "skipped": 0,
+      "seconds": 3.561
+    },
+    "offlineVerifier": {
+      "passed": 90,
+      "seconds": 11.301
+    },
+    "harnessBootstrap": {
+      "passed": 5
+    }
+  },
+  "builds": {
+    "hostAndRoles": 4,
+    "warnings": 0,
+    "errors": 0,
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false
+  },
+  "retainedNative": {
+    "passed": 5,
+    "skipped": 0,
+    "seconds": 781.709,
+    "testAssemblySha256": "9ba661a2a5259a52da491ea323649476e7e27ce8131275e5fd9a0686adb4b75b",
+    "resultSha256": "a5e6819bb389949bb1b80bf80b0dae388d8568ca882d8de9ea74797a6944ec76",
+    "nativeTaskSourcesChecked": 54,
+    "mismatches": [],
+    "scope": "actual custody/store operations; synthetic private eligibility; no full-copy qualification"
+  },
+  "matrixAuditPassed": true,
+  "sourceMode": {
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "agentsExecuted": false,
+  "registerEdited": false,
+  "clusterProvisioned": false,
+  "productionOpenBaoAccessed": false,
+  "fullCopyInventoryQualified": false,
+  "installed41Executed": false,
+  "countsOverlap": true
+}

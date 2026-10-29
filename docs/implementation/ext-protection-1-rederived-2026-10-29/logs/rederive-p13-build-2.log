@@ -1,0 +1,21 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Commons.UniqueIds -> /tmp/rederive-p13-check/Hexalith.Commons.UniqueIds.dll
+  Hexalith.EventStore.Contracts -> /tmp/rederive-p13-check/Hexalith.EventStore.Contracts.dll
+  Hexalith.Platform.Custody -> /tmp/rederive-p13-check/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> /tmp/rederive-p13-check/Hexalith.Platform.Custody.Component.dll
+  Hexalith.EventStore.Client -> /tmp/rederive-p13-check/Hexalith.EventStore.Client.dll
+  Hexalith.Platform.Secrets.Runtime -> /tmp/rederive-p13-check/Hexalith.Platform.Secrets.Runtime.dll
+  Hexalith.EventStore.ServiceDefaults -> /tmp/rederive-p13-check/Hexalith.EventStore.ServiceDefaults.dll
+  Hexalith.EventStore.DomainService -> /tmp/rederive-p13-check/Hexalith.EventStore.DomainService.dll
+  Hexalith.EventStore.Server -> /tmp/rederive-p13-check/Hexalith.EventStore.Server.dll
+  Hexalith.Platform.Protection -> /tmp/rederive-p13-check/Hexalith.Platform.Protection.dll
+/tmp/bmad-protection-rederive-5cvvn0rc/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs(65,9): error CS8620: Argument of type 'Task<ProtectionQualificationPersistedEvent>' cannot be used for parameter 'value' of type 'Task<ProtectionQualificationPersistedEvent?>' in 'ConfiguredCall SubstituteExtensions.Returns<ProtectionQualificationPersistedEvent?>(Task<ProtectionQualificationPersistedEvent?> value, Func<CallInfo, ProtectionQualificationPersistedEvent?> returnThis, params Func<CallInfo, ProtectionQualificationPersistedEvent?>[] returnThese)' due to differences in the nullability of reference types. [/tmp/bmad-protection-rederive-5cvvn0rc/platform/tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj]
+
+Build FAILED.
+
+/tmp/bmad-protection-rederive-5cvvn0rc/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs(65,9): error CS8620: Argument of type 'Task<ProtectionQualificationPersistedEvent>' cannot be used for parameter 'value' of type 'Task<ProtectionQualificationPersistedEvent?>' in 'ConfiguredCall SubstituteExtensions.Returns<ProtectionQualificationPersistedEvent?>(Task<ProtectionQualificationPersistedEvent?> value, Func<CallInfo, ProtectionQualificationPersistedEvent?> returnThis, params Func<CallInfo, ProtectionQualificationPersistedEvent?>[] returnThese)' due to differences in the nullability of reference types. [/tmp/bmad-protection-rederive-5cvvn0rc/platform/tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:02.65

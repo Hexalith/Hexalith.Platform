@@ -100,5 +100,49 @@ public sealed class OpenBaoErasureRootIntegrationTests
         await Should.ThrowAsync<InvalidOperationException>(() => fixture.Native.DecryptAsync("tenant-b", wrapped, Token));
         var changed = wrapped with { Context = Convert.ToBase64String("wrong-complete-context"u8.ToArray()) };
         await Should.ThrowAsync<InvalidOperationException>(() => fixture.Native.DecryptAsync("tenant-a", changed, Token));
+
+        // Actual immutable archive transport runs in this same owned native case, with no synthetic archive provider.
+        var legacyHead = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        string legacyId = ErasureRootCustody.TargetId(root.Identity);
+        legacyHead.Head.Targets[legacyId] = legacyHead.Head.Targets[legacyId] with { CompletedHolders = ["native-legacy-retired"] };
+        (await fixture.Custody.SaveAsync("tenant-a", legacyHead.Version, legacyHead.Head, Token)).ShouldBeTrue();
+        (await fixture.Custody.UnwrapAsync(root, "native-legacy-retired", Token)).ShouldBeNull();
+        using var holder = await fixture.Custody.UnwrapAsync(root, "native-archive-holder", Token); holder.ShouldNotBeNull(); holder.Dispose();
+        (await fixture.Custody.CompleteHolderAsync(root, holder, Token)).ShouldBeTrue();
+        var held = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        var retainedRoot = held.Head.Targets[ErasureRootCustody.TargetId(root.Identity)];
+        retainedRoot.CompletedHolders.ShouldBeEmpty(); retainedRoot.CompletedHolderArchive.ShouldNotBeNull();
+        byte[] holderBytes = (await fixture.Native.ReadArchiveAsync("tenant-a", retainedRoot.CompletedHolderArchive, Token))!;
+        JsonSerializer.Deserialize<ErasureRootHolderArchive>(holderBytes)!.HolderId.ShouldBe(holder.HolderId);
+        (await fixture.Custody.CompleteHolderAsync(root, holder, Token)).ShouldBeTrue();
+        (await fixture.Custody.UnwrapAsync(root, holder.HolderId, Token)).ShouldBeNull();
+        (await fixture.Custody.UnwrapAsync(root, "native-legacy-retired", Token)).ShouldBeNull();
+        (await fixture.Native.ReadArchiveAsync("tenant-b", retainedRoot.CompletedHolderArchive, Token)).ShouldBeNull();
+
+        const string scope = "tenant-a:native-archive-owner";
+        string genesis = Convert.ToHexString(SHA256.HashData("native-genesis"u8));
+        held.Head.Anchors.Add(scope, new(0, genesis, [], []));
+        (await fixture.Custody.SaveAsync("tenant-a", held.Version, held.Head, Token)).ShouldBeTrue();
+        var authority = new ErasureRootTransitionAuthority(fixture.Custody, new ErasureRootAuthorizationFixture(), "tenant-a", scope);
+        byte[] firstBytes = "native-owner-state-one"u8.ToArray();
+        var first = new AnchoredStateTransition(scope, 0, 1, genesis, Convert.ToHexString(SHA256.HashData(firstBytes)), firstBytes);
+        (await authority.AdmitTransitionAsync(first, Token)).ShouldBeTrue(); (await authority.RecordTransitionAsync(first, Token)).ShouldBeTrue();
+        byte[] secondBytes = "native-owner-state-two"u8.ToArray();
+        var second = new AnchoredStateTransition(scope, 1, 2, first.TargetDigest, Convert.ToHexString(SHA256.HashData(secondBytes)), secondBytes);
+        (await authority.AdmitTransitionAsync(second, Token)).ShouldBeTrue(); (await authority.RecordTransitionAsync(second, Token)).ShouldBeTrue();
+        (await authority.VerifyTransitionAsync(first, Token)).ShouldBeTrue();
+        (await authority.ReadCurrentOriginalAsync(scope, Token))!.TargetBytes.ShouldBe(secondBytes);
+        var archived = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value.Head.Anchors[scope];
+        var rawHead = JsonSerializer.Deserialize<ErasureRootHead>((await fixture.Native.ReadHeadAsync("tenant-a", Token))!.Bytes, ErasureRootCustody.Json)!;
+        rawHead.Anchors[scope].Completed.ShouldBeEmpty(); rawHead.Anchors[scope].Admissions.ShouldBeEmpty();
+        byte[] originalArchive = (await fixture.Native.ReadArchiveAsync("tenant-a", archived.ArchiveHead!, Token))!;
+        (await fixture.Native.CreateArchiveAsync("tenant-a", archived.ArchiveHead!, originalArchive, Token)).ShouldBeTrue();
+        (await fixture.Native.CreateArchiveAsync("tenant-a", archived.ArchiveHead!, "changed"u8.ToArray(), Token)).ShouldBeFalse();
+        (await fixture.Native.ReadArchiveAsync("tenant-a", archived.ArchiveHead!, Token))!.ShouldBe(originalArchive);
+        (await fixture.Native.ReadArchiveAsync("tenant-b", archived.ArchiveHead!, Token)).ShouldBeNull();
+        byte[] uncommittedBytes = "uncommitted-native-original"u8.ToArray();
+        var uncommitted = new AnchoredStateTransition(scope, 2, 3, second.TargetDigest, Convert.ToHexString(SHA256.HashData(uncommittedBytes)), uncommittedBytes);
+        _ = await ErasureRootArchives.WriteAsync(fixture.Native, "tenant-a", new ErasureRootTransitionArchive(scope, archived.ArchiveHead, uncommitted), Token);
+        (await authority.VerifyTransitionAsync(uncommitted, Token)).ShouldBeFalse();
     }
 }

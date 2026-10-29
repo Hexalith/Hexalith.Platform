@@ -6,7 +6,7 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>ERC-retained complete occurrence bindings and one-time writer/encryption leases. Caller aliases cannot enroll an occurrence.</summary>
 public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IErasureRootAuthorization authorization,
-    IErasureRootOccurrenceSource source) : IInteractionProtectionBindingProvider, IInteractionProtectionBindingSource
+    IErasureRootOccurrenceSource source, ErasureRootDigestKeyResolver? digestKeys = null) : IInteractionProtectionBindingProvider, IInteractionProtectionBindingSource
 {
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
@@ -33,6 +33,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
             var original = await source.ResolveAsync(owner, child, cancellationToken).ConfigureAwait(false);
             if (original?.SnapshotEntry != new SnapshotEntrySourceBinding(parent, entry.Path, containerDigest, entries.Count)
                 || original.Binding.Identity.Target != entry.Target || entry.Target.TenantId != owner.TenantId) { return null; }
+            if (writing && !await PreflightAsync(original, cancellationToken).ConfigureAwait(false)) { return null; }
             enrolled.Add(original);
         }
         string digest = ErasureRootCustody.Hash(new { owner, parent, containerDigest, entries });
@@ -101,6 +102,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
                 || !CanonicalReference(enrolled.Binding.KeyReference) || !CanonicalReference(enrolled.Binding.OperationId)
                 || enrolled.Binding.ReservationAttemptOrdinal < 1 || enrolled.Binding.LifecycleEpoch == 0
                 || requestedTarget is not null && enrolled.Binding.Identity.Target != requestedTarget) { return null; }
+            if (!await PreflightAsync(enrolled, cancellationToken).ConfigureAwait(false)) { return null; }
             string id = Id(owner, occurrence), digest = ErasureRootCustody.Hash(enrolled);
             if (!await authorization.AuthorizeAsync(owner.TenantId, id, "EnrollOccurrence", digest, cancellationToken).ConfigureAwait(false)) { return null; }
             var registration = await custody.WrapAsync(enrolled.RootIdentity, enrolled.RootOperationId, enrolled.ExpectedLifecycleRevision, cancellationToken).ConfigureAwait(false);
@@ -119,6 +121,14 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); }
         return null;
+    }
+
+    internal async Task<bool> PreflightAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
+    {
+        if (digestKeys is null) { return false; }
+        using var digest = await digestKeys.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
+        return digest is not null && await authorization.AuthorizeAsync(enrollment.Binding.Identity.Target.TenantId,
+            enrollment.Binding.OperationId, "OccurrenceWrite", ErasureRootCustody.Hash(enrollment.Binding), token).ConfigureAwait(false);
     }
 
     private static bool CanonicalReference(string value) => value is { Length: 26 } && value[0] is >= '0' and <= '7'

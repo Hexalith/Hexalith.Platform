@@ -40,6 +40,42 @@ public sealed class ErasureRootEngineTests
     }
 
     [Fact]
+    public async Task MissingNativeDigestRefusesBeforeRootOccurrenceOrRegistryEffects()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll(); fixture.DigestAvailable = false;
+        string before = ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a"));
+        await Should.ThrowAsync<InvalidOperationException>(() => Seal(fixture, original.Binding));
+        ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a")).ShouldBe(before);
+        fixture.RegistryState.CommittedState.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task QuietOwningHostRetiresOnlyDisposedUsesAndAnotherOwnerCanErase()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
+        var write = await Seal(fixture, original.Binding); await Commit(fixture, write);
+        using var worker = new ErasureRootHolderCompletionWorker(fixture.Keys);
+        await worker.StartAsync(Token);
+        try
+        {
+            var use = await fixture.Keys.ResolveRootAsync(original.Binding.Identity, original.Binding.KeyReference, false, Token);
+            use.ShouldNotBeNull(); System.Security.Cryptography.CryptographicOperations.ZeroMemory(use.Bytes);
+            await Task.Delay(600, Token);
+            (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldNotBeEmpty();
+            use.Dispose();
+            for (int attempt = 0; attempt < 20 && (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.Length != 0; attempt++)
+            { await Task.Delay(100, Token); }
+            var root = (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single();
+            root.Holders.ShouldBeEmpty(); root.CompletedHolders.ShouldBeEmpty(); root.CompletedHolderArchive.ShouldNotBeNull();
+            var targets = new[] { original.Binding.Identity.Target };
+            var request = new DeletionBatchConsumptionRequest(new("issuer", "audience", "tenant-a", "deletion", "seal", "accepted", 0, "batch", DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key-1"), "fixture-signature", 1, "dispatch", 2, targets);
+            var secondOwner = new ErasureRootCustody(fixture.Store, new("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" }), fixture.Permissions);
+            (await secondOwner.ConsumeAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
+        }
+        finally { await worker.StopAsync(Token); }
+    }
+
+    [Fact]
     public async Task ChangedPayloadHasTypedConflictAndNoNewNativeRootOrCiphertext()
     {
         using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
@@ -67,6 +103,38 @@ public sealed class ErasureRootEngineTests
         use.Dispose();
         (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
         (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task LegacyCompletedHolderMigrationKeepsEveryRetiredIdentityRestrictive()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
+        var write = await Seal(fixture, original.Binding); await Commit(fixture, write); await fixture.Keys.CompleteDisposedUsesAsync(Token);
+        var current = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        string id = ErasureRootCustody.TargetId(original.RootIdentity); var root = current.Head.Targets[id];
+        current.Head.Targets[id] = root with { CompletedHolders = ["legacy-completed"] };
+        (await fixture.Custody.SaveAsync("tenant-a", current.Version, current.Head, Token)).ShouldBeTrue();
+        (await fixture.Custody.UnwrapAsync(root.Registration, "legacy-completed", Token)).ShouldBeNull();
+        var use = await fixture.Keys.ResolveRootAsync(original.Binding.Identity, original.Binding.KeyReference, false, Token);
+        use.ShouldNotBeNull(); use.Dispose(); (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
+        (await fixture.Store.HeadAsync("tenant-a")).Targets[id].CompletedHolders.ShouldBeEmpty();
+        (await fixture.Custody.UnwrapAsync(root.Registration, "legacy-completed", Token)).ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task SustainedLegitimateReadsArchiveCompletedHolderIdentitiesWithoutHeadGrowth()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
+        var write = await Seal(fixture, original.Binding); await Commit(fixture, write); await fixture.Keys.CompleteDisposedUsesAsync(Token);
+        int initial = (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes.Length;
+        for (int index = 0; index < 120; index++)
+        {
+            var use = await fixture.Keys.ResolveRootAsync(original.Binding.Identity, original.Binding.KeyReference, false, Token);
+            use.ShouldNotBeNull(); use.Dispose(); (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
+            (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes.Length.ShouldBeLessThan(initial + 64);
+        }
+        var root = (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single();
+        root.CompletedHolders.ShouldBeEmpty(); root.Holders.ShouldBeEmpty(); root.CompletedHolderArchive.ShouldNotBeNull();
     }
 
     [Fact]

@@ -1,3 +1,9 @@
+using Dapr.Actors.Runtime;
+using Hexalith.EventStore.Server.Configuration;
+using Hexalith.EventStore.Server.Events;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using NSubstitute;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -18,9 +24,9 @@ public sealed class ErasureRootMixedSnapshotTests
         Safe = 7,
         Entries = new[] { "a", "b" }.Select(id => new { ProtectedContent = new { Target = new ProtectionTarget("tenant-a", "interaction-" + id, "alias-" + id), Value = new { Secret = "secret-" + id } } }).ToArray(),
     });
-    private static (ErasureRootOccurrenceEnrollment[] Originals, PayloadProtectionOccurrenceContext Parent) Enroll(ErasureRootEngineFixture fixture, JsonElement state)
+    private static (ErasureRootOccurrenceEnrollment[] Originals, PayloadProtectionOccurrenceContext Parent) Enroll(ErasureRootEngineFixture fixture, JsonElement state, string snapshotType = "hx-snapshot-v1:directory-state")
     {
-        var parent = new PayloadProtectionOccurrenceContext(77, PayloadProtectionPayloadKind.Snapshot, "hx-snapshot-v1:directory-state");
+        var parent = new PayloadProtectionOccurrenceContext(77, PayloadProtectionPayloadKind.Snapshot, snapshotType);
         var layout = InteractionSnapshotEntries.Describe(JsonSerializer.SerializeToUtf8Bytes(state), "tenant-a", Token);
         var result = new List<ErasureRootOccurrenceEnrollment>();
         for (int i = 0; i < layout.Entries.Count; i++)
@@ -78,6 +84,27 @@ public sealed class ErasureRootMixedSnapshotTests
         (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Registration.Identity.ObjectId.ShouldBe("interaction-b");
         await Should.ThrowAsync<InvalidOperationException>(() => fixture.Engine.ProtectSnapshotAsync(originals[0].Binding.Identity.Owner, state, Type, parent, Token));
         (await fixture.Custody.WrapAsync(root.Registration.Identity, "attempt-reissue", 0, Token)).ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task ConcreteSnapshotManagerLoadsMixedPartialErasureThroughItsTrustedCommandReplayCaller()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State();
+        var (originals, parent) = Enroll(fixture, state, "hx-snapshot-v1:folded-state");
+        var write = await Seal(fixture, state, originals, parent);
+        var targets = new[] { originals[0].Binding.Identity.Target };
+        var request = new DeletionBatchConsumptionRequest(new("issuer", "audience", "tenant-a", "deletion", "seal", "accepted", 0, "erase-a",
+            DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key"), "component-signature", 1, "dispatch", 2, targets);
+        (await fixture.Manifests.ConsumeAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
+        var identity = originals[0].Binding.Identity.Owner;
+        var snapshot = new SnapshotRecord(77, write.ProtectionResult.State, DateTimeOffset.UtcNow, identity.Domain, identity.AggregateId, identity.TenantId, write.ProtectionResult.Metadata) { SnapshotEnvelopeVersion = 1 };
+        var manager = new SnapshotManager(Options.Create(new SnapshotOptions()), Substitute.For<ILogger<SnapshotManager>>(), fixture.Engine);
+        var native = Substitute.For<IActorStateManager>();
+        native.TryGetStateAsync<object>(identity.SnapshotKey, Arg.Any<CancellationToken>()).Returns(new ConditionalValue<object>(true, JsonSerializer.SerializeToElement(snapshot, JsonSerializerOptions.Web)));
+        var loaded = await manager.LoadSnapshotAsync(identity, native, cancellationToken: Token);
+        loaded.ShouldNotBeNull(); var restored = (JsonElement)loaded.State;
+        restored.GetProperty("Entries")[0].GetProperty("ProtectedContent").GetProperty("Value").GetProperty("State").GetString().ShouldBe("Erased");
+        restored.GetProperty("Entries")[1].GetProperty("ProtectedContent").GetProperty("Value").GetProperty("Secret").GetString().ShouldBe("secret-b");
     }
 
     [Fact]
