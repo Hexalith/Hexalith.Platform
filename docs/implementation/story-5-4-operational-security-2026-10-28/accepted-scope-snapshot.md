@@ -2,6 +2,8 @@
 
 These bytes preserve current accepted scope and extensions. They grant no replacement acceptance or execution authority. Source: external-dependency-register.md at the hash in provenance.json.
 
+Relative links inside the verbatim sections resolve against the [original Agents planning-artifact directory](../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md), not this snapshot directory. The preserved `../implementation-artifacts/story-5-4-owner-commitments-2026-10-07.md` links refer to the [Agents owner-commitment record](../../../../agents/_bmad-output/implementation-artifacts/story-5-4-owner-commitments-2026-10-07.md). Section bytes below remain unchanged.
+
 ### EXT-SECRETS-1 — Platform Secret Resolution
 
 | Commitment field | Value |

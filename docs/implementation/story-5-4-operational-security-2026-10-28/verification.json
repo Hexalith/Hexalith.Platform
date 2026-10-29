@@ -1,6 +1,7 @@
 {
   "schema": "platform.story-5.4.operational-handoff-verification.v1",
-  "verifiedAtUtc": "2026-10-28T19:32:39.615855+00:00",
+  "verifiedAtUtc": "2026-10-29T02:03:33.720071+00:00",
+  "verificationCommand": "python3 docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
   "checks": [
     {
       "check": "preservedAcceptedTargetDateHostBranchTimingAndJournals",
@@ -55,7 +56,23 @@
       "passed": true
     },
     {
+      "check": "singleCanonicalBackupOwnerReturn",
+      "passed": true
+    },
+    {
       "check": "retainedBaselineBlockerPinned",
+      "passed": true
+    },
+    {
+      "check": "providerFreshPublicFactsExplicitlyPending",
+      "passed": true
+    },
+    {
+      "check": "retainedDeadlineComparisonAndSeparateRecovery",
+      "passed": true
+    },
+    {
+      "check": "retainedDeadlineSourcePinned",
       "passed": true
     },
     {
@@ -71,15 +88,63 @@
       "passed": true
     },
     {
-      "check": "twoOfflinePreparationsRefusedWithoutEffects",
+      "check": "clean.twoOfflinePreparationsRefusedWithoutEffects",
       "passed": true
     },
     {
-      "check": "exactObservedSourceCommitPreserved",
+      "check": "clean.exactObservedSourceCommitPreserved",
       "passed": true
     },
     {
-      "check": "59And17MissingPrerequisites",
+      "check": "clean.59And17MissingPrerequisites",
+      "passed": true
+    },
+    {
+      "check": "clean.scriptBytes.EXT-SECRETS-1",
+      "passed": true
+    },
+    {
+      "check": "clean.scriptBytes.EXT-HOST-1",
+      "passed": true
+    },
+    {
+      "check": "bound.twoOfflinePreparationsRefusedWithoutEffects",
+      "passed": true
+    },
+    {
+      "check": "bound.exactObservedSourceCommitPreserved",
+      "passed": true
+    },
+    {
+      "check": "bound.59And17MissingPrerequisites",
+      "passed": true
+    },
+    {
+      "check": "bound.scriptBytes.EXT-SECRETS-1",
+      "passed": true
+    },
+    {
+      "check": "bound.scriptBytes.EXT-HOST-1",
+      "passed": true
+    },
+    {
+      "check": "boundInputSnapshot.runtimeConfiguration",
+      "passed": true
+    },
+    {
+      "check": "boundInputSnapshot.hostProfile",
+      "passed": true
+    },
+    {
+      "check": "boundInputSnapshot.register",
+      "passed": true
+    },
+    {
+      "check": "boundInputHashes.EXT-SECRETS-1",
+      "passed": true
+    },
+    {
+      "check": "boundInputHashes.EXT-HOST-1",
       "passed": true
     },
     {
@@ -219,22 +284,84 @@
       "passed": true
     },
     {
-      "check": "jsonSyntax",
+      "check": "initialHostStdoutIsExplicitlyRawEmptyCapture",
       "passed": true
     },
     {
-      "check": "diffWhitespace",
+      "check": "structuredJsonSyntax",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.deadline-assessment-2026-10-29.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.acceptance-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.accepted-scope-snapshot.md",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.preparation-evidence/bound-inputs-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.preparation-evidence/clean-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.preparation-evidence/invocations.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.../../../eng/ext-secrets-1/README.md#bounded-next-baseline-reconciliation-input",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.provenance.json",
+      "passed": true
+    },
+    {
+      "check": "markdownLink.verification.json",
+      "passed": true
+    },
+    {
+      "check": "ownedSpecHasBoundedIntentAndExternalStoryRemainsIncomplete",
+      "passed": true
+    },
+    {
+      "check": "ownedDiffWhitespace",
       "passed": true
     }
   ],
-  "checksPassed": 56,
-  "jsonFilesParsed": 11,
+  "checksPassed": 87,
+  "structuredJsonFilesParsed": 16,
+  "rawStdoutCaptureExcludedFromStructuredJson": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.stdout.json",
   "historicalManifestEntriesChecked": 23,
+  "markdownLinksChecked": 13,
   "preservedEvidenceFilesChecked": 25,
   "currentAndArchivedArtifactHashes": [
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/README.md",
-      "sha256": "87d93925fe157a19ca5954ba3180453bd4f9f3bb4f2b31f591662e6ecfdfe3d0"
+      "sha256": "c54a72c50f858714700d0ecb623d81dcc53a1f3b00693a6a62ff8feeb86e7737"
     },
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/acceptance-inputs.json",
@@ -242,7 +369,11 @@
     },
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/accepted-scope-snapshot.md",
-      "sha256": "3a078d83dab12caa7967fb0e0735f073c532afc00e11625f2cbab27ef9ea47c7"
+      "sha256": "1885f1c1bf99454d6d23475ec88560ad659fdec5c470971165005a5c420f9d3c"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
+      "sha256": "09d7efb3b80b8dba6757b7cc9660de9569b4bcda759dc86831bb522dcfedec45"
     },
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.clean.stderr.log",
@@ -275,6 +406,26 @@
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.stdout.json",
       "sha256": "ebde02b66b7eac5bb24cff9dc8176738439e2d37792eb18e4efaf090c521d17d"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stdout.json",
+      "sha256": "c40f2a8bab6b26dd19b9b69fcf8f21f7dfb1f85c936b94a6e7c1389da2c5c4f6"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stdout.json",
+      "sha256": "f5ae05b1497898f078a59dee0c72c8e043a554e4fdf6d4410cc3d6e21913b482"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-inputs-invocations.json",
+      "sha256": "ab94edf0b9a12fd2c29dff9aa0550ddaae058728430f908715b42296cdfb964b"
     },
     {
       "path": "docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/clean-invocations.json",
@@ -317,8 +468,16 @@
       "sha256": "ca38bc8f7d4d42f30907d362b60c49640c3770cecafe7245c74737c3c95ed581"
     },
     {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/verification.before-review.json",
+      "sha256": "d0d17946377e7bcabbdc40629ba7864b8052876676057be3c9234aa88ed22be2"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
+      "sha256": "6b6f4db20149039e5df2d5d9837866d4f8ecb642b2a7d9b72071172e6e701b0e"
+    },
+    {
       "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
-      "sha256": "3697bf1a46a386bdaff4f1289c7aff4055e998049ef2cca96597bb0e49ef0e53"
+      "sha256": "fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d"
     },
     {
       "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-decision.md",
@@ -327,6 +486,10 @@
     {
       "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-commands.md",
       "sha256": "2af15f9ff7f831c9cd5252ff2b185624bd16f2984767105c828d7eb497213e3f"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-5-4-retained-operational-security-handoff.md",
+      "sha256": "4bf8e8de8c62567a467b474c55fded3dca1818b3f39e6c0bce4b16ebfa31d2d1"
     }
   ],
   "offlinePreparationOnly": true,
@@ -340,6 +503,5 @@
   "qualificationEffects": 0,
   "dependencyAvailable": false,
   "fullStory54Complete": false,
-  "completeReplacementPacket": false,
-  "review": "PendingIndependentReview"
+  "completeReplacementPacket": false
 }
