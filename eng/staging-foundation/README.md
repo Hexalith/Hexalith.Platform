@@ -16,7 +16,7 @@ Status: `BLOCKED_NOT_FOR_EXECUTION`. `approvalGranted=false`, no executable disp
 
 - Shared-infrastructure identity: Namespaces `hexalith-staging` and `hexalith-staging-data` (Pod Security `restricted` enforce/audit/warn), staging StorageClass, PriorityClass `hexalith-staging` (value strictly below the production class).
 - Environment-layer identity: ResourceQuota (denies the production StorageClass by zeroing its PVC count and storage), LimitRange (including PVC min/max), `default-deny-all` (Ingress+Egress), DNS egress, application-to-data TLS-port-only policies, and the data-service TLS contract ConfigMap. Certificates and keys belong to 4.15/4.16.
-- Existing `timesheets-boundary` policy is additive to default-deny; workload Gateway/egress allowances remain the workload layer's job.
+- Workload Gateway/egress allowances remain the workload layer's job. The foundation is module-agnostic; see [DEPENDENCY-DIRECTION.md](DEPENDENCY-DIRECTION.md).
 
 ## Offline use
 

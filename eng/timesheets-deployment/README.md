@@ -3,6 +3,9 @@
 This directory retains a Platform-owned, offline v2 enrollment candidate and
 a reproducible staging plan. **Deployment is unauthorized; activation is
 unauthorized; Timesheets Story 3.6 acceptance and release remain FAIL.**
+This enrollment is a *consumer* of the module-agnostic staging foundation
+([dependency direction](../staging-foundation/DEPENDENCY-DIRECTION.md)); no Platform
+story gates on its acceptance.
 Neither schema validation nor a preparation hash supplies operational evidence.
 
 The [2026-10-17 hosted package preparation](hosted-package-preparation.md) now

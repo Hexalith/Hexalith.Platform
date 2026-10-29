@@ -175,13 +175,6 @@ class RenderTests(unittest.TestCase):
             with self.assertRaises(render.InputError):
                 render.render(data)
 
-    def test_existing_timesheets_policy_stays_compatible(self):
-        text = (PROJECT / "eng/timesheets-deployment/environment-chart/templates/prerequisites.yaml").read_text()
-        self.assertIn('.Release.Namespace "hexalith-staging"', text)
-        self.assertIn("name: timesheets-boundary", text)
-        self.assertIn("policyTypes: [Ingress, Egress]", text)
-        self.assertIn("matchLabels:\n      app.kubernetes.io/name: timesheets", text)
-
 
 class ValidationTableTests(unittest.TestCase):
     CASES = [
@@ -429,6 +422,16 @@ class NoClusterCallTests(unittest.TestCase):
                                              "--dns-pod-label", "k8s-app=kube-dns", "--output", str(tmp / "c")]), 0)
             (tmp / "l").write_text("PROBE_allowed-server=0\nPROBE_denied-server=1\n")
             self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "l")]), 0)
+
+
+
+class ModuleAgnosticTests(unittest.TestCase):
+    """The foundation is consumed by modules and must never name one (docs/DEPENDENCY-DIRECTION.md)."""
+
+    def test_foundation_names_no_consumer_module(self):
+        for name in ("render.py", "cni_probe.py", "apply-plan.json", "inputs.example.json"):
+            text = (HERE / name).read_text().lower()
+            self.assertNotIn("timesheets", text, name)
 
 
 if __name__ == "__main__":
