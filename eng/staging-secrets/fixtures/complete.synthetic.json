@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "evidenceMode": "synthetic-test-only",
+  "environment": {
+    "name": "staging",
+    "context": "synthetic-context",
+    "apiServer": "https://api.synthetic.invalid:16443",
+    "clusterUid": "synthetic-cluster-id",
+    "applicationNamespace": "synthetic-apps",
+    "dataNamespace": "synthetic-data"
+  },
+  "providers": {
+    "openbao": {
+      "name": "synthetic-openbao",
+      "version": "0.0.0-synthetic-only",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibilityEvidenceRef": "synthetic-only/compatibility"
+    },
+    "tenantStore": {
+      "name": "synthetic-tenantStore",
+      "version": "0.0.0-synthetic-only",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibilityEvidenceRef": "synthetic-only/compatibility"
+    },
+    "dapr": {
+      "name": "synthetic-dapr",
+      "version": "0.0.0-synthetic-only",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibilityEvidenceRef": "synthetic-only/compatibility"
+    },
+    "installationTool": {
+      "name": "synthetic-installationTool",
+      "version": "0.0.0-synthetic-only",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibilityEvidenceRef": "synthetic-only/compatibility"
+    },
+    "verificationTool": {
+      "name": "synthetic-verificationTool",
+      "version": "0.0.0-synthetic-only",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibilityEvidenceRef": "synthetic-only/compatibility"
+    }
+  },
+  "ordinaryStore": {
+    "instanceId": "synthetic-ordinary",
+    "backend": "synthetic-test-backend-no-operational-selection",
+    "storage": {
+      "stateId": "synthetic-ordinary-state",
+      "volumeIds": [
+        "synthetic-ordinary-volume"
+      ],
+      "className": "synthetic-storage",
+      "capacity": "8Mi",
+      "encryptionEvidenceRef": "synthetic-only/encryption"
+    },
+    "snapshotDomainId": "synthetic-ordinary-snapshot",
+    "replicas": 1,
+    "resources": {
+      "cpuRequest": "1m",
+      "memoryRequest": "8Mi",
+      "cpuLimit": "2m",
+      "memoryLimit": "16Mi"
+    },
+    "restrictedPodEvidenceRef": "synthetic-only/restricted",
+    "nativeTls": {
+      "endpoint": "https://ordinary.synthetic.invalid:18443",
+      "port": 18443,
+      "serverName": "ordinary.synthetic.invalid",
+      "caBundleRef": "synthetic-only/ca",
+      "namespace": "synthetic-data",
+      "podLabels": {
+        "key": "synthetic-store",
+        "value": "ordinary"
+      }
+    }
+  },
+  "tenantStore": {
+    "instanceId": "synthetic-keys",
+    "backend": "synthetic-test-backend-no-operational-selection",
+    "storage": {
+      "stateId": "synthetic-keys-state",
+      "volumeIds": [
+        "synthetic-keys-volume"
+      ],
+      "className": "synthetic-storage",
+      "capacity": "8Mi",
+      "encryptionEvidenceRef": "synthetic-only/encryption"
+    },
+    "snapshotDomainId": "synthetic-keys-snapshot",
+    "replicas": 1,
+    "resources": {
+      "cpuRequest": "1m",
+      "memoryRequest": "8Mi",
+      "cpuLimit": "2m",
+      "memoryLimit": "16Mi"
+    },
+    "restrictedPodEvidenceRef": "synthetic-only/restricted",
+    "nativeTls": {
+      "endpoint": "https://keys.synthetic.invalid:19443",
+      "port": 19443,
+      "serverName": "keys.synthetic.invalid",
+      "caBundleRef": "synthetic-only/ca",
+      "namespace": "synthetic-data",
+      "podLabels": {
+        "key": "synthetic-store",
+        "value": "keys"
+      }
+    }
+  },
+  "snapshotBoundary": {
+    "ordinaryStateMembers": [
+      "synthetic-ordinary-state"
+    ],
+    "tenantKeyStateMembers": [
+      "synthetic-keys-state"
+    ],
+    "separationEvidenceRef": "synthetic-only/snapshot-separation"
+  },
+  "network": {
+    "dnsNamespace": "synthetic-dns",
+    "dnsPodLabels": {
+      "key": "synthetic-dns",
+      "value": "resolver"
+    },
+    "resolverDatapathEvidenceRef": "synthetic-only/dns-path",
+    "policyEvidenceRef": "synthetic-only/network",
+    "dependencies": [
+      {
+        "purpose": "synthetic-native-tls",
+        "sourceIdentity": "synthetic-apps/selected-pods",
+        "destinationIdentity": "synthetic-data/ordinary-pods",
+        "port": 18443,
+        "protocol": "TCP",
+        "evidenceRef": "synthetic-only/dependency"
+      }
+    ]
+  },
+  "authority": {
+    "environmentLayerPrincipal": "synthetic-env-writer",
+    "sharedInfrastructurePrincipal": "synthetic-shared-writer",
+    "jobPrincipals": [
+      "synthetic-job"
+    ],
+    "rbacEvidenceRef": "synthetic-only/rbac"
+  },
+  "custody": {
+    "administrator": "synthetic-administrator",
+    "deputy": "synthetic-recovery-deputy",
+    "mechanismRef": "synthetic-only/custody",
+    "manualUnsealProcedureRef": "synthetic-only/manual-unseal",
+    "coverage": {
+      "timeZone": "Synthetic/ExplicitTestOnly",
+      "scheduleRef": "synthetic-only/schedule",
+      "maxAcknowledgmentSeconds": 61
+    },
+    "monitoringEvidenceRef": "synthetic-only/custody-alerts"
+  },
+  "backup": {
+    "ordinary": {
+      "custodyClass": "synthetic-ordinary-class",
+      "destinationRef": "synthetic-only/ordinary-destination",
+      "accessPrincipal": "synthetic-ordinary-reader",
+      "decryptionCustodyRef": "synthetic-only/ordinary-decryption"
+    },
+    "tenantKeys": {
+      "custodyClass": "synthetic-key-class",
+      "destinationRef": "synthetic-only/key-destination",
+      "accessPrincipal": "synthetic-key-reader",
+      "decryptionCustodyRef": "synthetic-only/key-decryption"
+    },
+    "retentionPolicyRef": "synthetic-only/retention",
+    "erasureLineageAuthorityRef": "synthetic-only/tombstones",
+    "fenceReissueProcedureRef": "synthetic-only/fence",
+    "restoreQualificationRef": "synthetic-only/restore"
+  },
+  "secretContract": {
+    "path": "synthetic-only/secret-contract",
+    "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "generationOwner": "synthetic-contract-owner",
+    "apps": [
+      {
+        "appId": "synthetic-app-alpha",
+        "serviceAccount": "synthetic-sa-alpha",
+        "componentName": "synthetic-component-alpha",
+        "scopes": [
+          "synthetic-app-alpha"
+        ],
+        "policyRef": "synthetic-only/policy-alpha",
+        "allowedSecretPaths": [
+          "synthetic-only/alpha/dynamic/*"
+        ],
+        "dynamicNamespaceWriterRef": "synthetic-only/writer-alpha",
+        "token": {
+          "bootstrapSecretRef": "synthetic-bootstrap-alpha",
+          "volumeName": "synthetic-token-alpha",
+          "mountPath": "/synthetic-only/alpha/token",
+          "deliveryRevision": 4,
+          "renewal": {
+            "owner": "synthetic-renewer-alpha",
+            "ttlSeconds": 600,
+            "renewBeforeSeconds": 60,
+            "renewabilityEvidenceRef": "synthetic-only/lifecycle-alpha",
+            "monitorRef": "synthetic-only/monitor-alpha"
+          },
+          "restartOwner": "synthetic-restarter-alpha",
+          "restartEvidenceRef": "synthetic-only/restart-alpha",
+          "mountDirectory": "/synthetic-only/alpha",
+          "projectedFileName": "token",
+          "sourceKey": "synthetic-token-key"
+        },
+        "requiredSecrets": [
+          {
+            "secretId": "synthetic-secret-alpha",
+            "generation": 7,
+            "owner": "synthetic-owner-alpha"
+          }
+        ]
+      },
+      {
+        "appId": "synthetic-app-beta",
+        "serviceAccount": "synthetic-sa-beta",
+        "componentName": "synthetic-component-beta",
+        "scopes": [
+          "synthetic-app-beta"
+        ],
+        "policyRef": "synthetic-only/policy-beta",
+        "allowedSecretPaths": [
+          "synthetic-only/beta/dynamic/*"
+        ],
+        "dynamicNamespaceWriterRef": "synthetic-only/writer-beta",
+        "token": {
+          "bootstrapSecretRef": "synthetic-bootstrap-beta",
+          "volumeName": "synthetic-token-beta",
+          "mountPath": "/synthetic-only/beta/token",
+          "deliveryRevision": 4,
+          "renewal": {
+            "owner": "synthetic-renewer-beta",
+            "ttlSeconds": 600,
+            "renewBeforeSeconds": 60,
+            "renewabilityEvidenceRef": "synthetic-only/lifecycle-beta",
+            "monitorRef": "synthetic-only/monitor-beta"
+          },
+          "restartOwner": "synthetic-restarter-beta",
+          "restartEvidenceRef": "synthetic-only/restart-beta",
+          "mountDirectory": "/synthetic-only/beta",
+          "projectedFileName": "token",
+          "sourceKey": "synthetic-token-key"
+        },
+        "requiredSecrets": [
+          {
+            "secretId": "synthetic-secret-beta",
+            "generation": 7,
+            "owner": "synthetic-owner-beta"
+          }
+        ]
+      }
+    ]
+  },
+  "bootstrapToken": {
+    "name": "synthetic-historical-shared-reference",
+    "historicalExpiry": "2027-07-19",
+    "inventoryEvidenceRef": "synthetic-only/inventory",
+    "classificationDecisionRef": "synthetic-only/classification",
+    "cutoverOwner": "synthetic-cutover-owner",
+    "cutoverDeadline": "2027-07-18",
+    "revocationAuthorityRef": "synthetic-only/revocation"
+  },
+  "verificationRecovery": {
+    "foundationAcceptanceRef": "synthetic-only/foundation",
+    "verificationOwner": "synthetic-verifier",
+    "verificationPlanRef": "synthetic-only/verification",
+    "recoveryAuthorityRef": "synthetic-only/recovery-authority",
+    "approvalRecordRef": "synthetic-only/unapproved-record-format"
+  },
+  "_provenance": {}
+}
