@@ -1444,3 +1444,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Artifact-identity compatibility for attach is refused as unverifiable until owners record expected/loaded identities.
   evidence: Owner run state records no artifact identities (Epic 3 populates reserved fields); any --artifact-identity in an attach request is refused.
+
+## Deferred from: code review of spec-2-6-attach-a-run-to-a-compatible-environment (2026-10-29)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Explicit `down`/cleanup while holds are live leaves them `live`; `EndReason: cleanup` is never written (medium, unverified).
+  evidence: Check whether the listing/`IsLive` treats a cleaned owner's holds as live and whether Stories 2.7/2.8 cover it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Attach racing the start of cleanup; cleanup start never takes `attachments.lock` (medium, unverified).
+  evidence: Compare when `CleanupDisposition` becomes `in-progress` with when `WaitForNoLiveHoldsAsync` returns.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Corrupt `attachments.json` makes `TestResultWriter` throw `InvalidDataException` via `ReadContractBinding` (medium, unverified).
+  evidence: Confirm the caller catches it and the first terminal result is still retained.

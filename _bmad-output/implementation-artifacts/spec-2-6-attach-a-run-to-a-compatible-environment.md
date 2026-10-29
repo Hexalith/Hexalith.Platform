@@ -106,3 +106,29 @@ Decision (not user-visible): admission and the end of an attachment are separate
 **Commands:**
 - `dotnet build -nodeReuse:false` on the Builds module test project -- expected: 0 warnings, 0 errors
 - `dotnet exec` of the Module.Tests Debug DLL with the affected class filters -- expected: all pass
+
+### Review Findings
+
+Code review 2026-10-29 (Builds `e129a29..4ebd4d8`; layers: blind-hunter, edge-case-hunter, verification-gap, acceptance-auditor).
+
+- [ ] [Review][Decision] CI owners accept and list holds that are never honored — Admission accepts and persists holds for CI owners and the listing shows their `AttachedRunIds`/`HoldDeadlineUtc`, but `ModuleCommandExecutionService` waits only for local owners (`!ci`), and the docs say "CI owners do not wait for holds". Spec accepts "local or CI" owners and the "Owner finishes" row does not exclude CI. Options: (a) refuse attach to CI owners with a stable HXR035 reason until 2.7/2.8; (b) keep as is and state in the contract that CI holds are advisory; (c) implement the CI wait now. [CompositionAttachAdmission.cs, ModuleCommandExecutionService.cs:1343] (medium; acceptance-auditor+edge-case-hunter)
+- [ ] [Review][Decision] Deferred cleanup lives only in the owner's `test` process — The hold wait runs in-process for up to 14400 s on the command's cancellation token. If the process is killed or the wait is cancelled, no marker records that cleanup is owed: after holds expire the owner lists `not-requested` and only a manual `down` cleans up, and a cancelled wait emits no diagnostic. Spec row says cleanup is "listed as pending cleanup, runs after the last end or deadline". Options: (a) accept and add a cancel-time diagnostic plus doc note; (b) persist a deferred-cleanup marker so listing stays `pending` and `down`/next run finishes it. [ModuleCommandExecutionService.cs:1343, CompositionRunListing.cs] (medium; acceptance-auditor+blind-hunter+edge-case-hunter)
+- [ ] [Review][Patch] Add tests that CI and failed/cancelled owners clean up without waiting for a live hold [AttachAdmissionTests.cs OwnerRun harness] (medium; verification-gap) — `!ci` or the `ExitCode.Success` condition can be dropped with no test failing.
+- [ ] [Review][Patch] Add human-output assertions for `attach` and `list` with a live hold (`attached-run=`, `attached=`, `expires=`, non-`unavailable` `hold-deadline`) [AttachAdmissionTests.cs, CompositionRunListingTests.cs] (low; verification-gap)
+- [ ] [Review][Patch] Narrow the contract claim that results and descriptors "publish the populated holds": the descriptor is written at start (always empty) and the result is a point-in-time read at write [docs/contracts/test-environment-v1.md, README.md] (low; blind-hunter+edge-case-hunter)
+- [x] [Review][Defer] Explicit `down`/cleanup while holds are live leaves them `live` and never writes `EndReason: cleanup` [ModuleCommandExecutionService.cs] — deferred: maybe-false (medium, unverified); check whether the listing/`IsLive` treats a cleaned owner's holds as live and whether 2.7/2.8 withdrawal ordering covers it.
+- [x] [Review][Defer] Attach racing the start of cleanup: the under-lock owner recheck reads `CleanupDisposition`, but cleanup start never takes `attachments.lock` [CompositionAttachAdmission.cs:~140] — deferred: maybe-false (medium, unverified); settle by checking when `CleanupDisposition` becomes `in-progress` relative to `WaitForNoLiveHoldsAsync` returning.
+- [x] [Review][Defer] Corrupt `attachments.json` makes `ReadContractBinding` throw `InvalidDataException` inside result writing [TestResultWriter.cs:~45] — deferred: maybe-false (medium, unverified); check that the caller catches it and still retains the first terminal result.
+
+#### Rejected
+
+- `false`: Listing says `none` for corrupt attachment records — the read failure adds the owner to `unverifiableOwners`, so the whole listing returns the failed/incomplete result.
+- `false`: Empty CI identity strings compare equal — `ExecutionContext()` throws on incomplete CI identity, and the recorded context comes from the same writer.
+- `false`: `workflowAttempt` `1` vs `1.0` raw-text mismatch — the value is runner-written from an integer; unreachable.
+- low: Retry after the owner finished is refused (HXR035) — deliberate fix in 4ebd4d8 (retry runs context and owner-state checks first); recorded in the triage log.
+- low: Retry ignores differing mode/composition/hold — idempotent return of the first acceptance is safe; adding comparisons is extra branching.
+- low: `attach --end` has no same-context check — ids are runner-issued and unguessable on a local tool; adding it needs an owner read.
+- low: `EndAsync` hardcodes `terminal-outcome`; unused `IsConsistent` reasons — owned by 2.7/2.8.
+- low: Human listing `state=recorded` for expired holds; leading-zero hold values; HXR033 reused for lock timeouts; `EndedAtUtc <= ExpiresAtUtc` not enforced; cancellation not mapped to HXR033; non-string `kind` throws `InvalidOperationException`; per-owner attachment count unbounded; missing `LocalRunLifecycleTests` edits — negligible in everyday use, and the fixes add guards or parameters.
+- low: Artifact-identity matching unverifiable — already deferred to Epic 3 (ledger entry exists); `--target` self-declared — by design (see triage log).
+- Reject: Evidence README lacks run counts, and the Platform gitlink bump is outside this diff — process-only.
