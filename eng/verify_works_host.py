@@ -1175,13 +1175,17 @@ def run_verification(args):
         # Qualify against the target's adapter in an isolated output. The retained Works graph keeps its own pin.
         catalog = ET.parse(platform / CATALOG).getroot()
         adapter = next(item.text for item in catalog.findall(".//HexalithAspireHostingDaprVersion") if not item.get("Condition"))
+        # Match the root-declared Identity and Parties inputs in linkedFixtureSources,
+        # regardless of ambient source overrides. Composition retains its selected Platform root.
+        consumer_sources = ["-p:HexalithPartiesRoot=" + str(works / "references/Hexalith.Parties"),
+                            "-p:HexalithPlatformRoot=" + str(works / "references/Hexalith.Platform")]
         if "Debug" in profile["consumerConfigurations"]:
             build("works-consumer-debug", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Debug", works, artifacts / "consumer-debug",
                   ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
-                   "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version])
+                   "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources])
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
-               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, path_map(consumer_output)])
+               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources, path_map(consumer_output)])
         host_runtime = host_output / "bin/release" / (PLATFORM_RUNTIME + ".dll")
         summary["platformRuntimeIdentity"] = require_identical_runtime(
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))

@@ -262,8 +262,7 @@ public static class WorksPreviewModel
                 certificateDirectory,
                 placement,
                 scheduler);
-            if (!builder.Resources.OfType<ParameterResource>().Any(resource => resource.Name == project.Name + "-app-api-token"))
-                _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
+            _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
         }
 
         builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber([], certificateDirectory, "127.0.0.1:" + controlPorts.PlacementHealth, workspace));

@@ -3,6 +3,7 @@ namespace Hexalith.Platform.Works.Tests;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
+using Hexalith.EventStore.Aspire;
 using Hexalith.Platform.Composition;
 using Hexalith.Platform.Works.Runtime;
 using Microsoft.Extensions.DependencyInjection;
@@ -164,6 +165,44 @@ public sealed class WorksPreviewModelTests
             tokens.Add(token).ShouldBeTrue("Each receiver needs its own credential.");
             builder.Resources.OfType<ParameterResource>().ShouldContain(parameter => ReferenceEquals(parameter, token));
         }
+    }
+
+    /// <summary>Generated credentials remain bound to the same receiver and sidecar on repeat registration.</summary>
+    [Fact]
+    public async Task GeneratedAppChannelBindingsReuseTheirCredential()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>())
+        {
+            ParameterResource token = builder.Resources.OfType<ParameterResource>()
+                .Single(parameter => parameter.Name == project.Name + "-app-api-token");
+            IDaprSidecarResource sidecar = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+            int appCallbacks = project.Annotations.OfType<EnvironmentCallbackAnnotation>().Count();
+            int sidecarCallbacks = sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>().Count();
+            _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
+            builder.Resources.OfType<ParameterResource>().Single(parameter => parameter.Name == token.Name).ShouldBeSameAs(token);
+            project.Annotations.OfType<EnvironmentCallbackAnnotation>().Count().ShouldBe(appCallbacks);
+            sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>().Count().ShouldBe(sidecarCallbacks);
+            Dictionary<string, object> environment = new(StringComparer.Ordinal);
+            foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
+                    TestContext.Current.CancellationToken));
+            environment["APP_API_TOKEN"].ShouldBeSameAs(token);
+        }
+    }
+
+    /// <summary>An unrelated parameter with a reserved name cannot bypass receiver credential registration.</summary>
+    /// <param name="receiver">The receiver whose reserved token name is occupied.</param>
+    [Theory]
+    [InlineData("works")]
+    [InlineData("eventstore-operations")]
+    public void UnrelatedAppChannelParameterNameIsRefused(string receiver)
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        _ = builder.AddParameter(receiver + "-app-api-token", () => "unrelated-fixture-secret", secret: true);
+        Should.Throw<DistributedApplicationException>(() => WorksPreviewModel.Compose(builder))
+            .Message.ShouldContain(receiver + "-app-api-token");
     }
 
     /// <summary>An explicit qualified producer directory controls every SDK executable entry point.</summary>

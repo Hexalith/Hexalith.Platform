@@ -289,7 +289,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
 
-    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None, observed_runtime_envs=None):
+    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None, observed_runtime_envs=None, profile='ci'):
         """Drive the real gate sequence through toolchain qualification and optionally final acceptance."""
         works = self.directory()
         for _, _, _, consumer in ROWS.values():
@@ -304,7 +304,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         pins = {'daprCli': '1.18.2', 'daprRuntime': '1.18.7', 'linuxAmd64DaprdSha256': qualified,
                 'catalog': str(platform / verify_works_host.CATALOG), 'catalogSha256': DIGEST}
         args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts,
-                                'prepare_only': False, 'profile': 'ci'})()
+                                'prepare_only': False, 'profile': profile})()
         snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
         producers = {package: {'version': VERSION} for _, package, _, _ in ROWS.values()} | {'Hexalith.EventStore.Client': {'version': VERSION}}
 
@@ -368,6 +368,27 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 else:
                     outcomes.assert_not_called()
         return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
+
+    def test_consumer_source_roots_override_ambient_roots_and_match_the_linked_fixture_binding(self):
+        alternate = self.directory()
+        environment = {'HexalithPartiesRoot': str(alternate / 'Parties'),
+                       'HexalithPlatformRoot': str(alternate / 'Platform')}
+        platform = Path(verify_works_host.__file__).resolve().parents[1]
+        for profile, names in (('full', ['works-consumer-debug', 'works-consumer-release']),
+                               ('ci', ['works-consumer-release'])):
+            with self.subTest(profile=profile), patch.dict(os.environ, environment):
+                ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', profile=profile)
+                builds = [entry for entry in ledger['commands'] if entry['name'] in names]
+                self.assertEqual([entry['name'] for entry in builds], names)
+                for entry in builds:
+                    works = Path(entry['cwd'])
+                    for key, root in (('HexalithPartiesRoot', works / 'references/Hexalith.Parties'),
+                                      ('HexalithPlatformRoot', works / 'references/Hexalith.Platform'),
+                                      ('PlatformWorksRuntimeRoot', platform)):
+                        properties = [value for value in entry['command'] if value.startswith('-p:' + key + '=')]
+                        self.assertEqual(properties, ['-p:' + key + '=' + str(root)])
+                    self.assertNotEqual(works / 'references/Hexalith.Platform', platform)
+                self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
 
     def test_release_dependency_record_names_every_accepted_test_only_source_exception(self):
         ledger, _, _ = self.run_until_live_lanes(b'qualified runtime')

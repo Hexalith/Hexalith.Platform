@@ -68,15 +68,15 @@ def qualify(root, runtime, environ=None):
     """Refuse an unqualified runtime before any live fleet starts; retain actual tool identity."""
     pins = load(root, environ)
     runtime = Path(runtime).resolve(strict=True)
+    digest = hashlib.sha256(runtime.read_bytes()).hexdigest()
+    if digest != pins["linuxAmd64DaprdSha256"]:
+        raise ValueError("Installed daprd differs from Platform's qualified Works proof runtime hash")
     runtime_version = subprocess.check_output([str(runtime), "--version"], text=True).strip()
     cli = subprocess.check_output(["dapr", "--version"], text=True)
     if runtime_version != pins["daprRuntime"] or not re.search(
         r"(?m)^CLI version:\s*" + re.escape(pins["daprCli"]) + r"\s*$", cli
     ):
         raise ValueError("Installed Dapr differs from Platform's qualified Works proof toolchain")
-    digest = hashlib.sha256(runtime.read_bytes()).hexdigest()
-    if digest != pins["linuxAmd64DaprdSha256"]:
-        raise ValueError("Installed daprd differs from Platform's qualified Works proof runtime hash")
     return pins | {"runtime": str(runtime), "runtimeSha256": digest,
         "pinSha256": hashlib.sha256((Path(root) / PIN).read_bytes()).hexdigest()}
 
