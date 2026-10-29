@@ -68,6 +68,23 @@ public sealed class ProtectionQualificationPreparationTests
         fixture.Guard.State.Deletions.Single().Batches.Count.ShouldBe(1);
     }
     [Fact]
+    public async Task LaterDifferentIssuedBatchReturnsExactOriginalDestroyedCoverageWithoutAnotherManifest()
+    {
+        using var fixture = new ProtectionQualificationPreparationFixture(); await fixture.InitializeAsync(containment: true);
+        var recipes = fixture.Recipes("P15")["P15"];
+        var original = await fixture.RunAsync(recipes["DestroyDekManifest"], "P15", "DestroyDekManifest");
+        original!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.Consumed);
+        (await fixture.RunAsync(recipes["LinkSameTargetResource"], "P15", "LinkSameTargetResource"))!["Status"]!.GetValue<string>().ShouldBe("CoverageLinked");
+        var before = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        var looked = await fixture.RunAsync(recipes["LookupAlreadyDestroyed"], "P15", "LookupAlreadyDestroyed");
+        looked!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.AlreadyDestroyedByBatch);
+        looked["TargetReceipts"]!.ToJsonString().ShouldBe(original["TargetReceipts"]!.ToJsonString());
+        looked["BatchId"]!.GetValue<string>().ShouldNotBe(original["BatchId"]!.GetValue<string>());
+        var after = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        after.Epoch.ShouldBe(before.Epoch); after.Manifests.Count.ShouldBe(1); after.Erased.Count.ShouldBe(3); after.Targets.ShouldBeEmpty();
+        fixture.Guard.State.Deletions.Single(value => value.RequestId == "deletion-a").Batches.Count.ShouldBe(1);
+    }
+    [Fact]
     public async Task TwoRealHoldMutationsProduceDistinctNoIssueOriginalsBeforeHealthySuccessorIssue()
     {
         using var fixture = new ProtectionQualificationPreparationFixture(); await fixture.InitializeAsync();

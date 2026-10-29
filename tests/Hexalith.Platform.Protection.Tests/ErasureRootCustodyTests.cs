@@ -168,6 +168,39 @@ public sealed class ErasureRootCustodyTests
         _store.RotateCount.ShouldBe(0);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UnreachableOrMissingCustodyIsUnknownRatherThanNotStarted(bool missingVolume)
+    {
+        var root = await RootAsync();
+        var request = Request([root]);
+        int writes = _store.CasCount;
+        if (missingVolume) { _store.LoseVolume("tenant-a"); }
+        else { _store.Failure = "read"; }
+        (await _custody.LookupAsync(request, "reservation", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        _store.CasCount.ShouldBe(writes);
+        _store.RotateCount.ShouldBe(0);
+        _store.TrimCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task UnknownManifestEligibilityCannotAdmitOrRotateAHead()
+    {
+        var root = await RootAsync();
+        var request = Request([root]);
+        int writes = _store.CasCount;
+        _authorization.ManifestAllowed = false;
+        (await _custody.ConsumeAsync(request, "reservation", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        _store.CasCount.ShouldBe(writes);
+        _store.RotateCount.ShouldBe(0);
+        _store.TrimCount.ShouldBe(0);
+        var current = await _store.HeadAsync("tenant-a");
+        current.Pending.ShouldBeNull();
+        current.Targets.Single().Value.Registration.ShouldBe(root);
+        current.Erased.ShouldBeEmpty();
+    }
+
     [Fact]
     public async Task DelayedExtraRotationIsHarmlessBecauseTheOriginalSuccessorIsExplicit()
     {

@@ -1,6 +1,6 @@
 # EXT-PROTECTION-1 final source/component evidence
 
-This is source/component evidence, not an accepted immutable target or Live/cohort/Agents run. The [delivery note](../ext-protection-1-erc-component-delivery-2026-10-29.md) states the installed-input and full-copy qualification boundary.
+This is source/component evidence, not an accepted immutable target or Live/cohort/Agents run. The [delivery note](../ext-protection-1-erc-component-delivery-2026-10-29.md) states the installed-input and full-copy qualification boundary. No known concrete source branch remains missing after the P15 follow-up, but all 41 installed recipes have not been executed; mapping/component evidence alone does not establish that complete pass path.
 
 `native-five-result.json` retains the actual all-five disposable OpenBao result, including the full 1,000-target manifest and verified container/tmpfs cleanup. `native-runtime-inventory.json` binds the runtime used at that native milestone before final qualification/snapshot-only rebuilding. Private eligibility is explicitly synthetic; historical Raft/storage/memory/operator copies remain unqualified.
 

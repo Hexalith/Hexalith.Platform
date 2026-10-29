@@ -93,10 +93,18 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             : new JsonObject(), StringComparer.Ordinal);
         string? signing = null, reserve = null, lastIssue = null, lastDispatch = null; int attempt = 0, writes = 0, containmentOrdinal = 0; var acceptances = new Dictionary<int, string>();
         var baseBatch = Guard.Batch(targets: (caseId == "P13" ? _targets[..1] : _targets).Select(target => new GovernanceProtectionTarget(target.TenantId, target.AgentInteractionId, target.TargetProtectionKeyAlias)).ToArray());
+        string deletionRequest = "deletion-a";
         var signedBatch = baseBatch;
         foreach (var entry in required.Where(entry => entry.Key.StartsWith(caseId + "/", StringComparison.Ordinal)))
         {
             string token = entry.Value;
+            if (caseId == "P15" && entry.Key == "P15/LookupAlreadyDestroyed/1")
+            {
+                deletionRequest = "deletion-later"; attempt = 0;
+                string seal = GovernanceScopeGuardReducer.DestructionSealId("tenant-a", deletionRequest, Guard.Scope);
+                baseBatch = Guard.Batch(targets: _targets.Select(target => new GovernanceProtectionTarget(target.TenantId, target.AgentInteractionId, target.TargetProtectionKeyAlias)).ToArray());
+                baseBatch = baseBatch with { BatchId = GovernanceScopeGuardReducer.BatchId(deletionRequest, seal, baseBatch) };
+            }
             if (caseId is "P13" or "P14" or "P15" && token == "Guard:RecordViolation")
             {
                 containmentOrdinal++;
@@ -118,6 +126,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 }
                 if (operation is GovernanceGuardOperation.AuthorizeContainment or GovernanceGuardOperation.CommitContainment)
                 { command = command with { ReferenceId = "resource-" + containmentOrdinal, AuthorizationId = "containment-" + containmentOrdinal }; }
+                command = command with { DeletionRequestId = deletionRequest, AuthorizationId = command.AuthorizationId + ":" + deletionRequest };
                 var node = (JsonObject)JsonSerializer.SerializeToNode(command)!;
                 if (operation == GovernanceGuardOperation.RecordViolation)
                 {
@@ -142,8 +151,8 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             else if (token == "Sign")
             {
                 signing = entry.Key; signedBatch = baseBatch; attempt++;
-                args[entry.Key] = (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchCapabilityV1("qualified-issuer", "protection-audience", "tenant-a", "deletion-a",
-                    GovernanceScopeGuardReducer.DestructionSealId("tenant-a", "deletion-a", Guard.Scope), baseBatch.BatchKind, baseBatch.BatchOrdinal, baseBatch.BatchId, baseBatch.ManifestDigest,
+                args[entry.Key] = (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchCapabilityV1("qualified-issuer", "protection-audience", "tenant-a", deletionRequest,
+                    GovernanceScopeGuardReducer.DestructionSealId("tenant-a", deletionRequest, Guard.Scope), baseBatch.BatchKind, baseBatch.BatchOrdinal, baseBatch.BatchId, baseBatch.ManifestDigest,
                     "tenant-a-governance-guard", 1, 1, attempt, "healthy-key-a"))!;
             }
             else if (token == "ObsoleteUnissued") { args[entry.Key] = Original(signing!, "/Payload"); }
