@@ -1440,3 +1440,7 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
   summary: Live lifecycle proof (`PlatformLocalRunLifecycleTests.cs:113`) does not assert failure retention, cleanup status or referenced reports after explicit `down`; read the written result first to learn the expected post-down values (medium, unverified).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Artifact-identity compatibility for attach is refused as unverifiable until owners record expected/loaded identities.
+  evidence: Owner run state records no artifact identities (Epic 3 populates reserved fields); any --artifact-identity in an attach request is refused.
