@@ -124,7 +124,7 @@ class InputMatrixTests(unittest.TestCase):
                 data=fixture();assign(data,path,[]);self.refuse(data,path)
 
     def test_placeholders_and_credential_like_material_refused(self):
-        for value in ('unknown','<owner>','${TOKEN}','{{token}}','TBD','synthetic-credential-bytes','-----BEGIN PRIVATE KEY-----'):
+        for value in ('unknown','<owner>','${TOKEN}','{{token}}','TBD','hvs.synthetic','-----BEGIN PRIVATE KEY-----'):
             with self.subTest(value=value):
                 data=fixture();data['authority']['environmentLayerPrincipal']=value
                 errors=self.refuse(data,'/authority/environmentLayerPrincipal')
