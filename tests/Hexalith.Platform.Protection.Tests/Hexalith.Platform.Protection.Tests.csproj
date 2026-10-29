@@ -13,6 +13,7 @@
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
+  <ItemGroup><Compile Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Testing/Fakes/InMemoryStateManager.cs" Link="EventStoreInMemoryStateManager.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="../Shared/ProtectedArchiveFixture.cs" Link="ProtectedArchiveFixture.cs" />
     <Compile Include="../Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs" Link="SecuritySpoolFixture.cs" />

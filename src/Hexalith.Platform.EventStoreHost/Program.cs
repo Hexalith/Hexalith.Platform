@@ -1,5 +1,6 @@
 using Hexalith.EventStore;
 using Hexalith.Platform.Identity;
+using Hexalith.Platform.Protection;
 using Hexalith.EventStore.Extensions;
 using Hexalith.EventStore.HealthChecks;
 using Hexalith.EventStore.Middleware;
@@ -24,6 +25,7 @@ builder.Services.AddEventStoreServer(builder.Configuration);
 builder.Services.AddEventStoreDomainQueryRouting();
 builder.Services.AddEventStoreSignalR(builder.Configuration);
 builder.Services.AddPlatformIdentity(builder.Configuration);
+builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
 
 WebApplication app = builder.Build();
 

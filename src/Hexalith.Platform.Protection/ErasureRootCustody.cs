@@ -315,7 +315,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         if (snapshot is null || snapshot.Version <= 0) { return null; }
         var head = JsonSerializer.Deserialize<ErasureRootHead>(snapshot.Bytes, Json);
         if (head is null || head.TenantId != tenant || head.StoreId != installation.StoreId || head.EnrollmentId != installation.EnrollmentId || head.Epoch < 1
-            || head.Targets is null || head.Erased is null || head.Manifests is null || head.LifecycleOutcomes is null || head.Anchors is null) { return null; }
+            || head.Targets is null || head.Erased is null || head.Manifests is null || head.LifecycleOutcomes is null || head.Anchors is null
+            || head.Occurrences is null || head.SourceOriginals is null || head.SourceReservations is null || head.SealedOriginals is null) { return null; }
         foreach (var entry in head.Targets)
         {
             var target = entry.Value;

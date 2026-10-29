@@ -12,6 +12,16 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
     public string TenantId { get; } = tenantId;
     /// <summary>Gets the exact independently enrolled owner purpose.</summary>
     public string ScopeId { get; } = scopeId;
+    /// <inheritdoc />
+    public async Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
+    {
+        if (requestedScopeId != ScopeId || !await authorization.AuthorizeAsync(TenantId, ScopeId, "ReadCurrentOwnerOriginal", ErasureRootCustody.Hash(ScopeId), cancellationToken).ConfigureAwait(false)) { return null; }
+        var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+        if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
+        var original = anchor.Completed.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
+        if (original is null || original.ScopeId != ScopeId || Convert.ToHexString(SHA256.HashData(original.TargetBytes)) != anchor.Digest) { return null; }
+        return original with { TargetBytes = original.TargetBytes.ToArray() };
+    }
 
     /// <summary>Verifies fresh independently surviving revision/digest, including only explicitly installed genesis.</summary>
     public async Task<bool> ValidateStateAsync(long revision, string exactStateDigest, CancellationToken cancellationToken = default)
@@ -62,6 +72,8 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
                 if (operation == "AdmitTransition")
                 {
                     if (anchor.Admissions.TryGetValue(id, out var admitted)) { return ErasureRootCustody.Hash(admitted) == id; }
+                    if (anchor.Admissions.Any(value => value.Value.ExpectedRevision == anchor.Revision && value.Value.PredecessorDigest == anchor.Digest
+                        && !anchor.Completed.ContainsKey(value.Key))) { return false; }
                     anchor.Admissions.Add(id, transition);
                 }
                 else
