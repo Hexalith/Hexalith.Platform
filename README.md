@@ -36,22 +36,23 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The local tool manifest prepares `hexalith.builds.module.cli` `4.38.2`, and
-`hexalith-platform.json` prepares the matching floor `[4.38.2, 5.0.0-0)`.
+The local tool manifest prepares `hexalith.builds.module.cli` `4.38.3`, and
+`hexalith-platform.json` prepares the matching floor `[4.38.3, 5.0.0-0)`.
 This is a local preparation candidate. Platform integration qualification,
-recording the exact Builds gitlink, publication of the resulting Platform identity
+verification of the recorded Builds gitlink, publication of the resulting Platform identity
 and consumer adoption remain pending. The historical accepted `4.35.2` evidence
 below does not qualify this candidate for `run`, `debug` or package composition.
 
-[Builds release `v4.38.2`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.38.2)
-identifies exact source `2574bf2f3da5367d8801f0d7661d66155e5d90b0`. Its official
+[Builds release `v4.38.3`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.38.3)
+identifies exact source `d1931b1e803144048d927fff16cb8119afde541e`. Its official
 qualification inventory and signed NuGet archive were verified for Story 6.4.
-The corresponding Platform Builds gitlink patch is prepared separately and remains
-unapplied. This release preserves the current Projects catalog, including
-Conversations `1.3.1` and EventStore `3.128.4`; its embedded runtime catalog selects
+The Platform Builds selection targets that same exact published source.
+Exact-candidate integration/CI qualification remains pending. This release preserves the current Projects catalog, including
+Conversations `1.3.1`, Tenants `5.11.1` and EventStore `3.128.4`; its embedded runtime catalog selects
 Aspire `13.6.4`, Dapr CLI `1.18.2` and Dapr runtime `1.18.7`. The direct file AppHost
-also selects Aspire `13.6.4`; that version agreement alone is not live integration
-acceptance. No runtime prerequisite was installed or deployment performed.
+also selects Aspire `13.6.4` and must use EventStore `3.128.4` and Toolkit
+`13.6.2-beta.959` for this tuple. Both generated and direct launch paths require
+their own integration qualification. Version agreement alone is not acceptance. No runtime prerequisite was installed or deployment performed.
 
 The configured range permits later 4.x versions, including prereleases, and excludes
 5.0 prereleases. Each accepted tool carries its own catalog; matching the range
@@ -83,6 +84,27 @@ publish strict, offline-readable schemas for runner endpoints, composition ident
 reserved candidate proof, attachment holds and the four terminal outcomes. Builds
 ships the schemas and consumer reader; lifecycle and evidence adoption remain
 downstream responsibilities.
+
+
+## Exact tuple CI preflight
+
+The approved tool/catalog selection is Builds `4.38.3` at
+`d1931b1e803144048d927fff16cb8119afde541e`. Local Debug defaults retain source
+references. For owner CI, `HexalithBuildsPublishedToolRoot` binds Tooling and the
+EventStore seed to that signed tool archive, including the host dependency
+manifest and MVC Testing content root. CI rejects foreign project references.
+
+The manual `Platform tuple CI preflight` workflow accepts a full recorded
+candidate SHA, initializes only this standalone owner's direct dependencies,
+verifies the pinned signed archive, retains package graphs, builds Release and
+runs test projects individually. Artifacts include failures. It publishes or
+deploys nothing. Do not initialize this umbrella checkout's nested dependencies.
+
+A passing preflight does not grant candidate acceptance. The authenticated
+candidate-decision request, expected/loaded runtime identities, required live
+services and distinct generated/direct-host qualification remain mandatory under
+[candidate policy v1](docs/contracts/candidate-and-attachment-policy-v1.md).
+Publication and consumer adoption need their own approvals.
 
 ## Parties reference domain
 

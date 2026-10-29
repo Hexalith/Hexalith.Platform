@@ -12,6 +12,7 @@ public sealed class AcceptedLaunchBoundaryTests
     [InlineData("invalid-overflow")][InlineData("invalid-align")][InlineData("invalid-align-offset")][InlineData("invalid-overlap")]
     public void ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(string mutation)
     {
+        ArgumentNullException.ThrowIfNull(mutation);
         string root=Path.Combine(Path.GetTempPath(),"accepted-launch-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         try
         {

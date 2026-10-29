@@ -6,8 +6,15 @@
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj" Aliases="platformseed" />
-    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" />
+    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" Condition="'$(BuildsEventStoreHostAssemblyPath)' == ''" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsEventStoreHostAssemblyPath)' != ''">
+    <Reference Include="Hexalith.Builds.Module.EventStoreHost" HintPath="$(BuildsEventStoreHostAssemblyPath)" Aliases="buildsseed" />
+    <None Include="$([System.IO.Path]::ChangeExtension('$(BuildsEventStoreHostAssemblyPath)', '.deps.json'))" Link="Hexalith.Builds.Module.EventStoreHost.deps.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
+    <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
@@ -16,4 +23,15 @@
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'"><PackageReference Include="Hexalith.EventStore.Contracts" /><PackageReference Include="Hexalith.EventStore.Client" /><PackageReference Include="Hexalith.EventStore.Server" /><PackageReference Include="Hexalith.EventStore.ServiceDefaults" /></ItemGroup>
+  <!-- MVC Testing's generated manifest takes precedence over assembly content-root attributes. -->
+  <Target Name="RegisterPublishedBuildsHostContentRoot" BeforeTargets="_AddContentRootForProjectReferences" Condition="'$(BuildsEventStoreHostAssemblyPath)' != ''">
+    <GetAssemblyIdentity AssemblyFiles="$(BuildsEventStoreHostAssemblyPath)">
+      <Output TaskParameter="Assemblies" ItemName="_PlatformPublishedBuildsHostIdentity" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <_ManifestProjects Include="@(_PlatformPublishedBuildsHostIdentity)">
+        <ContentRoot>$([System.IO.Path]::GetDirectoryName('$(BuildsEventStoreHostAssemblyPath)'))</ContentRoot>
+      </_ManifestProjects>
+    </ItemGroup>
+  </Target>
 </Project>
