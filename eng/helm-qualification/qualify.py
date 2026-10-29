@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import tarfile
@@ -93,13 +94,31 @@ class Qualification:
         self.helm = self.env['HELM_BIN']
 
     def run(self, args, *, data=None, ok=True, timeout=120, sensitive=False,
-            maximum_output_bytes=8 * 1024 * 1024, heartbeat=None, inherit_process_group=False):
+            maximum_output_bytes=8 * 1024 * 1024, heartbeat=None, inherit_process_group=False,
+            stdout_file=None, data_file=None):
         """Drain bounded pipes and always terminate/reap the owned process group."""
         import ctypes
         import selectors
         import time
         args = [str(a) for a in args]
         output = {'stdout': bytearray(), 'stderr': bytearray()}
+        streamed_bytes = 0
+        sink = None
+        def private_file(path, flags):
+            path = Path(path)
+            parent = path.parent.stat()
+            if not (path.is_absolute() and path == path.resolve() and not path.is_symlink()
+                    and stat.S_IMODE(parent.st_mode) == 0o700 and parent.st_uid == os.geteuid()):
+                raise ValueError('private binary command custody required')
+            fd = os.open(path, flags | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+            info = os.fstat(fd)
+            if not (stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o600
+                    and info.st_uid == os.geteuid() and info.st_nlink == 1):
+                os.close(fd)
+                raise ValueError('private binary command file required')
+            return fd
+        if stdout_file is not None or data_file is not None:
+            sensitive = True
         timed_out = overflow = False
         failure = None
         # Linux qualification adopts orphaned descendants so group cleanup can
@@ -110,11 +129,16 @@ class Qualification:
             raise RuntimeError('process-group supervision unavailable')
         process = None
         try:
-            with tempfile.TemporaryFile() as stdin_file, selectors.DefaultSelector() as selector:
+            if stdout_file is not None:
+                sink = os.fdopen(private_file(stdout_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL), 'wb')
+            if data_file is not None and data is not None:
+                raise ValueError('one command input required')
+            with (os.fdopen(private_file(data_file, os.O_RDONLY), 'rb') if data_file is not None
+                    else tempfile.TemporaryFile()) as stdin_file, selectors.DefaultSelector() as selector:
                 if data is not None:
                     stdin_file.write(data.encode() if isinstance(data, str) else data)
                     stdin_file.seek(0)
-                process = subprocess.Popen(args, stdin=stdin_file if data is not None else subprocess.DEVNULL,
+                process = subprocess.Popen(args, stdin=stdin_file if data is not None or data_file is not None else subprocess.DEVNULL,
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env, cwd=ROOT, start_new_session=not inherit_process_group)
                 for name in output:
                     stream = getattr(process, name)
@@ -138,13 +162,16 @@ class Qualification:
                             timed_out = True
                             break
                         for key, _ in selector.select(min(0.05, max(0, end - time.monotonic()))):
-                            remaining = maximum_output_bytes - sum(map(len, output.values()))
+                            remaining = maximum_output_bytes - sum(map(len, output.values())) - streamed_bytes
                             chunk = os.read(key.fileobj.fileno(), min(16384, remaining + 1))
                             if not chunk:
                                 selector.unregister(key.fileobj)
                             elif len(chunk) > remaining:
                                 overflow = True
                                 break
+                            elif key.data == 'stdout' and sink is not None:
+                                sink.write(chunk)
+                                streamed_bytes += len(chunk)
                             else:
                                 output[key.data].extend(chunk)
                         if overflow:
@@ -174,7 +201,18 @@ class Qualification:
                         if child == 0:
                             time.sleep(0.005)
         finally:
-            libc.prctl(36, old_subreaper.value, 0, 0, 0)
+            active_error = sys.exc_info()[0] is not None
+            try:
+                if sink is not None:
+                    try:
+                        sink.flush(); os.fsync(sink.fileno())
+                    finally:
+                        sink.close()
+            except OSError:
+                if not active_error:
+                    raise
+            finally:
+                libc.prctl(36, old_subreaper.value, 0, 0, 0)
         result = subprocess.CompletedProcess(args, process.returncode,
             output['stdout'].decode('utf-8', errors='replace'), output['stderr'].decode('utf-8', errors='replace'))
         index = self.record.get('commandCount', len(self.record['commands']))
@@ -185,7 +223,7 @@ class Qualification:
             stream.write(json.dumps({'outcome': code, 'returncode': result.returncode}) + '\n' if sensitive else result.stdout + result.stderr)
         self.record['commands'].append({'argv': [Path(args[0]).name, '[restricted arguments omitted]'] if sensitive else args,
             'returncode': result.returncode, 'outcome': code, 'timedOut': timed_out, 'outputLimitExceeded': overflow,
-            'timeoutSeconds': timeout, 'capturedBytes': sum(map(len, output.values())), 'processGroupTerminated': True,
+            'timeoutSeconds': timeout, 'capturedBytes': sum(map(len, output.values())) + streamed_bytes, 'processGroupTerminated': True,
             'log': log.name, 'logSha256': sha(log),
             'stdinSha256': None if sensitive or data is None else hashlib.sha256(data.encode() if isinstance(data, str) else data).hexdigest()})
         if failure:

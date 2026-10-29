@@ -34,10 +34,19 @@ def require(value, code):
     lifecycle.require(value, 'independent-calibration-' + code)
 
 
+def s3_adapter():
+    # Legacy admission/execution does not load an unselected optional closure.
+    import calibration_s3_backup
+    return calibration_s3_backup
+
+
 def identity(plan):
     """Exact independent identity; it is deliberately not a finite profile."""
-    return capacity.digest({k: plan[k] for k in ('schema', 'runId', 'target', 'docker', 'paths', 'tools', 'toolFiles',
-        'assets', 'environment', 'source', 'inputs', 'allocations', 'allocationBasis', 'limits', 'reservations')})
+    fields = {k: plan[k] for k in ('schema', 'runId', 'target', 'docker', 'paths', 'tools', 'toolFiles',
+        'assets', 'environment', 'source', 'inputs', 'allocations', 'allocationBasis', 'limits', 'reservations')}
+    if 's3Backup' in plan:
+        fields['s3Backup'] = plan['s3Backup']
+    return capacity.digest(fields)
 
 
 def selected_limits(plan):
@@ -76,7 +85,7 @@ def load_plan(path, expected):
     value = lifecycle.strict(lifecycle.read_private(path, expected))
     require(isinstance(value, dict) and set(value) == {'schema', 'runId', 'target', 'docker', 'paths', 'tools', 'toolFiles',
         'assets', 'environment', 'source', 'inputs', 'allocations', 'allocationBasis', 'limits', 'window', 'clock',
-        'authority', 'reservations', 'profileSha256'}, 'plan-incomplete')
+        'authority', 'reservations', 'profileSha256'} | ({'s3Backup'} if 's3Backup' in value else set()), 'plan-incomplete')
     require(value['schema'] == SCHEMA and re.fullmatch('[0-9a-f]{32}', value['runId']), 'identity')
     selected_limits(value)
     require(value['profileSha256'] == identity(value), 'identity-or-budget-drift')
@@ -103,6 +112,8 @@ def load_plan(path, expected):
     # campaign single-collection sizing or a guessed renewal inventory.
     basis = capacity.retained_json(value['allocationBasis'])
     require(basis == {'schema': SCHEMA, 'purpose': 'independent-calibration-allocation', 'allocations': value['allocations']}, 'allocation-basis-differs')
+    if 's3Backup' in value:
+        s3_adapter().configuration(value)
     return value
 
 
@@ -127,6 +138,8 @@ def reservations(plan, now):
     require(set(plan['reservations']) == {'compute', 'primary', 'backup'}, 'reservation-missing')
     records = {}
     for name, config in plan['reservations'].items():
+        if name == 'backup' and 's3Backup' in plan:
+            continue
         require(set(config) == {'issuer', 'path', 'key', 'binding'}, 'reservation-custody')
         record = lifecycle.signed(config['path'], config['key'])
         common = {'schema', 'issuer', 'runId', 'profileSha256', 'observedUtcMs', 'validUntilUtcMs', 'hostId', 'engineId',
@@ -159,6 +172,9 @@ def reservations(plan, now):
                 and record['reservedBytes'] >= sum(expected.values())
                 and record['availableBytes'] - record['competingBytes'] >= sum(expected.values()), 'net-storage-insufficient')
         records[name] = record
+    if 's3Backup' in plan:
+        records['backup'] = s3_adapter().reservation(plan, now, records['primary'])
+        return records
     primary, backup = records['primary'], records['backup']
     require(all(primary[k] != backup[k] for k in ('poolId', 'failureDomain', 'filesystemId'))
         and primary['hostId'] != backup['hostId'], 'independent-linux-backup-required')
@@ -180,6 +196,8 @@ def admit(plan, plan_sha, action):
         capacity.reference(ref)
     sources = {r['path']: r['sha256'] for r in plan['source']}
     required = {'qualify.py', 'campaign_lifecycle.py', 'campaign_capacity.py', 'campaign_environment.py', 'independent_calibration.py', 'calibration_workload.py'}
+    if 's3Backup' in plan:
+        required.add('calibration_s3_backup.py')
     require({str((HERE / n).resolve()) for n in required} <= set(sources)
         and inputs['source'] == plan['source'], 'source-closure')
     pins = json.loads((HERE / 'toolchain.json').read_bytes())
@@ -240,12 +258,6 @@ class CalibrationQualification(lifecycle.CampaignQualification):
     def admission(self, action):
         return admit(self.plan, self.record['planSha256'], action)
 
-    def launch(self):
-        super().launch()
-        # The original foreground owner supervises startup and measurements
-        # without an unmonitored ready interval between CLI invocations.
-        self.monitor()
-
     def supervise(self, action):
         try:
             getattr(self, action)()
@@ -254,6 +266,24 @@ class CalibrationQualification(lifecycle.CampaignQualification):
             request = self.evidence / 'stop-request.json'
             self.stop(remove=not request.exists() or lifecycle.strict(lifecycle.read_private(request))['action'] == 'remove')
             raise
+
+    def stop(self, *, remove=False):
+        if 's3Backup' not in self.plan:
+            return super().stop(remove=remove)
+        unverified = not s3_adapter().verified(self)
+        def persist_custody():
+            self.record.setdefault('cleanup', {})
+            self.record['cleanup']['backupVerified'] = not unverified
+            self.record['cleanup']['backupDisposition'] = 'immutable-version-retained' if not unverified else 'unverified-primary-and-staging-retained'
+            if unverified:
+                self.record['cleanup']['persistentData'] = 'retained-in-original-primary-and-private-staging-custody'
+                self.record['cleanup']['unverified'] = True
+            self.save()
+        persist_custody()
+        try:
+            super().stop(remove=remove and not unverified)
+        finally:
+            persist_custody()
 
     def phases(self, profile):
         # This independent action never opens the campaign reporter Job.
@@ -498,11 +528,15 @@ class CalibrationQualification(lifecycle.CampaignQualification):
         self.kube('exec', '-n', ns, 'statefulset/access-telemetry-postgresql', '-c', 'postgresql', '--', 'psql', '--no-psqlrc',
             '--dbname=memories_access_telemetry', '--command', 'VACUUM (FULL, ANALYZE) access_telemetry.lifecycle_state;', timeout=min(86400, self.remaining()), heartbeat=self.guard)
         after_rewrite = self.physical()
+        backup = s3_adapter().Backup(self).execute() if 's3Backup' in self.plan else None
         result = {'schema': SCHEMA, 'runId': self.record['runId'], 'profileSha256': self.plan['profileSha256'],
             'inputIdentity': identity(self.plan), 'limits': selected_limits(self.plan), 'target': self.record['physicalTarget'], 'backlog': backlog, 'writers': writers,
             'componentOperations': operations, 'componentCounters': {'before': counters_before, 'after': counters_after},
             'physical': {'before': before, 'backlog': backlog_physical, 'beforeRewrite': pre_rewrite, 'afterRewrite': after_rewrite},
             'nativeReadbacks': self.record.get('nativeReadbacks'), 'operationalMonitor': self.record.get('storageObservation'), 'qualified': False, 'C1Credit': False, 'C2Credit': False, 'A41Credit': False}
+        if backup is not None:
+            require(s3_adapter().verified(self), 's3-backup-unverified')
+            result['s3Backup'] = backup
         lifecycle.atomic(self.evidence / 'calibration-result.json', result, exclusive=True)
         self.terminal('completed', 'calibration-measurements-recorded')
         self.stop(remove=True)
@@ -524,6 +558,7 @@ def inspect_state(evidence):
     require(record['schema'] == SCHEMA and plan['schema'] == SCHEMA and record['runId'] == plan['runId'], 'state-binding')
     return {**{k: record[k] for k in ('runId', 'status', 'terminal', 'cleanup', 'target', 'planSha256')},
         'qualified': False, 'limits': plan['limits'], 'measurementStarted': record.get('measurementStarted'),
+        **({'s3Backup': record.get('s3Backup'), 'backupMode': 's3', 'restoreCredit': False} if 's3Backup' in plan else {}),
         'failure': record.get('failure'), 'failureCapture': record.get('failureCapture'), 'resultPath':
         str(evidence / 'calibration-result.json') if (evidence / 'calibration-result.json').exists() else None}
 

@@ -541,3 +541,122 @@ and scoped credentials, trusted clock/status/monitor sources, adopted source and
 outside approval remain operational prerequisites. No independent calibration or
 infrastructure was executed during implementation. Missing data is retained as null
 in Memories' existing preparation index; no owner packet is fabricated.
+
+### Optional S3 custody for independent calibration
+
+An explicit `s3Backup` member selects the adapter in `calibration_s3_backup.py`.
+The member joins the exact independent profile identity. Omitting it preserves
+the legacy identity, Linux backup admission and execution. Finite campaigns still
+reject independent calibration plans. The same six `--calibration` commands above
+apply; this adds no runner, SDK, CLI dependency, operational attempt or retry.
+
+The closed member has this shape (placeholders require actual outside-approved
+inputs; this example cannot execute):
+
+```json
+{
+  "schema": "hexalith.platform.calibration-s3-backup/v1",
+  "provider": "scaleway",
+  "projectId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+  "bucket": "hexalith-recovery-points",
+  "endpoint": "https://s3.fr-par.scw.cloud",
+  "region": "fr-par",
+  "keyPrefix": "memories/",
+  "key": "memories/calibration/<exact-32-hex-runId>.dump",
+  "failureDomain": "<actual-independent-provider-domain>",
+  "poolId": "<actual-reserved-provider-pool>",
+  "curl": { "path": "<canonical-curl-path>", "sha256": "<actual-sha256>" },
+  "curlVersion": "8.18.0",
+  "ca": { "path": "<canonical-ca-bundle>", "sha256": "<actual-sha256>" },
+  "writer": {
+    "identity": "9a7cff8d-cffc-4554-93fe-01ed8e0d0d04",
+    "credentials": { "path": "<private-writer.env>", "sha256": "<outside-bound-sha256>" }
+  },
+  "validator": {
+    "identity": "406da2fa-5d02-4a49-bcbc-de0218c6460d",
+    "credentials": { "path": "<private-validator.env>", "sha256": "<outside-bound-sha256>" }
+  },
+  "maximumArchiveBytes": 1048576,
+  "requestTimeoutSeconds": 60
+}
+```
+
+The archive bound is an actual allocation decision, at most4GiB for this single
+PUT route. Backup capacity keeps20% free. Private `paths.backup` is staging on
+the primary filesystem, outside the owned primary run directory; it proves no
+independence. Two full archive copies plus2MiB response/header allowance must fit
+the existing `host-workspace` allocation with20% headroom, including existing use.
+Current signed complete allocation observations and real filesystem free space
+are checked before capture. Remote backup headroom includes existing signed
+`backup.usedBytes` plus the maximum pending archive before capture, then the
+actual archive size before PUT. Both checks preserve20% free. No allocation,
+CPU, memory or timeout cap increases.
+
+The existing `reservations.backup` custody still has `issuer`, `path`, `key` and
+`binding`. In S3 mode its HMAC-signed body uses the S3 schema and the exact
+`provider/projectId/bucket/endpoint/region/keyPrefix/key/poolId/failureDomain`, plus
+`issuer/runId/profileSha256/reservationId/owner/observedUtcMs/validFromUtcMs/
+validUntilUtcMs/disposition/revokedUtcMs/availableBytes/competingBytes/reservedBytes/
+allocations`. `owner` is `github:user:6775094`, `disposition` is `active`,
+`revokedUtcMs` is null and `allocations` is exactly the reserved `backup` bytes.
+Its `binding` contains the nine destination/backing fields above and
+`reservationId/owner/validFromUtcMs/validUntilUtcMs`. Observations are<=300s old,
+validity covers the original window and net/reserved provider capacity covers
+the allocation. Provider pool/failure domain must differ from primary custody.
+Compute and Linux primary reservation schemas are unchanged. Missing, stale,
+unsigned, reused or changed records refuse. Collector `backup` pool/identity
+binds this provider allocation, while local staging consumes `host-workspace`.
+
+Include `calibration_s3_backup.py` in the independent S3 source closure. The curl
+binary and CA bytes are plan-bound. Admission checks credential file metadata,
+distinct paths/inodes and private0600 files under0700 directories without reading
+their values. Future authorized execution parses each exact hashed `.env` as data:
+`AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY` or `SCW_ACCESS_KEY/SCW_SECRET_KEY`.
+Optional `AWS_REGION`, `AWS_DEFAULT_REGION`, `SCW_DEFAULT_REGION` must be `fr-par`;
+`SCW_DEFAULT_PROJECT_ID`, if present, must equal the selected project. Plain or
+quoted assignments and optional `export ` are accepted without shell execution;
+unknown/duplicate names, expansion syntax and mixed identities refuse. Existing
+writer.env/validator.env refs can be used directly. Actual access keys and secrets
+must differ, and exact credential bytes are rechecked before each provider call.
+This implementation does not inspect the operator's real credential files.
+
+After verified measurement quiescence, exact namespace/Pod UID/container and the
+pinned PostgreSQL18.6 image bind native `pg_dump --format=custom` of
+`memories_access_telemetry`. Qualification's existing process supervisor streams
+binary stdout into an exclusive private bounded archive; its optional private
+binary stdin streams that same file to native `pg_restore --list`, followed by
+bounded `pg_restore --exit-on-error --file=/dev/null` to decode all archive data.
+Both retain exact Pod/namespace and binary-file custody. No database restore occurs. Binary bytes
+never pass through UTF-8 stdout decoding or archive logs.
+
+All remote requests use authenticated HTTPS/SigV4, explicit payload SHA256,
+CA/hostname checks, no ambient curl config/proxy, redirects or retries, bounded
+body/header files and original remaining execution time. Current action and
+provider reservation authority are rechecked before requests and during bounded
+supervision. The validator reads current bucket versioning, object lock,
+COMPLIANCE>=30-day defaults and AES256 configuration, and refuses existing keys.
+This selected route accepts default retention expressed as `Days` only; a `Years`
+response is rejected even if its duration would exceed30 days.
+Upload intent is fsynced before one create-only `If-None-Match: *` PUT with
+Content-MD5, payload SHA256, explicit AES256 and31-day COMPLIANCE retention.
+The supported encryption route is Scaleway's provider-managed
+[AES-256 SSE-ONE](https://www.scaleway.com/en/docs/object-storage/api-cli/enable-sse-one/).
+Historical setup prose alone proves no current encryption or credentials.
+
+The returned nonempty immutable VersionId is retained before readback. The
+distinct validator downloads that exact version and compares actual binary size
+and SHA256, version/run/profile/project metadata, AES256 and exact-version
+COMPLIANCE retention of at least30 days remaining. ETag is never a content hash;
+latest-object reads never select the backup. The private verification receipt
+binds destination, run, approved plan/profile, native archive and immutable object.
+No delete, overwrite, retention reduction, permission or bucket change is issued.
+
+S3 verification precedes publishing a completed calibration result and removing
+primary storage. Failure or uncertainty captures the failure, stops exact owned
+compute within the original cleanup budget, retains primary/staging and records
+explicit unverified backup disposition. A consumed or uncertain upload never
+replays. Inspection exposes that disposition and the retained immutable receipt.
+Even a verified transfer has `qualified/restoreCredit/C1Credit/C2Credit/
+ProductionCredit/A41Credit=false`. Full restore and qualification proof remain
+separate; actual engine, reservations, runtime, authority and time inputs are
+still required before the unused approved live attempt.
