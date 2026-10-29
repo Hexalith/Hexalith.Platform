@@ -1466,3 +1466,7 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
   summary: Verify the Timesheets boundary policy and workload egress (Gateway, Dapr, OpenBao) under default-deny with a real policy evaluation.
   evidence: Compatibility test only greps template text; workload allowances belong to 4.15, 4.16 and 4.18.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md`
+  summary: Bind separately approved recovery invocation to exact tested executor and helper hashes before any future application.
+  evidence: B6; the pre-existing sealed metadata-correction commands invoke a mutable sibling-worktree executor, while this offline reconciliation hashes sealed tested-source copies. The executor records its own source hash at process start without comparing it to that sealed copy. Preserve historical command bytes; review and pin any future separately scoped invocation. No executor was adopted or invoked by this reconciliation.

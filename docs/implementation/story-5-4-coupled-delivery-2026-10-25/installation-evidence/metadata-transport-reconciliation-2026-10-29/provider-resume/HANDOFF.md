@@ -1,0 +1,14 @@
+# Resumed provider/inventory installation
+
+The existing approved recovery executor now checks complete health before admission and again after consumer rollout, before any authority operation. It requires live/healthy authority, inventory and custody workloads, authority storage readiness, false qualification/availability flags and consumer readiness consistent with the current profile validity. Three regression tests cover missing/unhealthy observations, a failed rollout liveness check and current-profile readiness. All 45 focused executor/preparer tests pass. The original dirty source/spec and both previous evidence bundles are preserved.
+
+Fresh read-only observations retain authority revision 19 and both original native tenant stream hashes, outside-domain denial 403, unchanged provider configuration, and canonical absence of both original accessors. Four key metadata requests still deny 403; their current values remain null. All 950 inventoried objects and the register match before/after and the retained reconciliation snapshot. Both installed strict-schema runtime ConfigMaps equal their pinned original, with unchanged timing, Open disposition and independent decision custody. OpenBao is unsealed 3/3, the public CA matches and protected controllers are ready. Authority readiness is 200; inventory/custody readiness remains 503 under the expired profile, with liveness and health 200.
+
+No application command ran. No credential issuance, renewal, replacement, policy/key/data mutation, contract operation, qualification, baseline acceptance, register edit or push occurred. The existing scope approval remains valid through 2026-10-30T16:53:50Z; no new approval is requested.
+
+Actual missing owner inputs remain:
+
+- Provider administration / authenticated metadata-read owner: return the existing intended isolated metadata Secret reference, exact UID/resourceVersion, accessor, restricted policy and authenticated provenance using owner-metadata-credential.template.json. The executor verifies actual lookup-self/scopes and performs only the four approved metadata reads. No token value is returned.
+- Cluster credential / Kubernetes administration owner plus Agents register and Memories PostgreSQL/TLS owners: return authentic complete historical Secret write coverage and exact authenticated preservation dispositions using preservation-decision.template.json. Recovery approval and current metadata cannot establish that history.
+
+See owner-return-required.json for exact fields/actions and commands.json for the future observation/application commands. The application directory is still uncreated; original scope/journal identity and fixed deadline remain unchanged. remaining-inputs.json preserves the wider lifecycle/protection/private-replay/independent-authority/qualification blockers. EXT-SECRETS-1 remains in-progress, qualificationPassed=false and dependencyAvailable=false.

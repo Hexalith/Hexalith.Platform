@@ -1,0 +1,42 @@
+{
+  "applicationDirectoryExists": false,
+  "applicationJournalDirectory": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-application-9deb3d3afbbf42d39686abc30be4f64b",
+  "apply": [
+    "python3",
+    "-B",
+    "/home/administrator/projects/hexalith/platform-ext-secrets-1-runtime-foundations-20261017/eng/ext-secrets-1/recover_expired_hmac.py",
+    "apply",
+    "--run-directory",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-application-9deb3d3afbbf42d39686abc30be4f64b",
+    "--scope",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+    "--helper-source",
+    "/home/administrator/projects/hexalith/platform",
+    "--metadata-credential-record",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/metadata-credential-reference.json",
+    "--preservation-decision",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/preservation-decision.json"
+  ],
+  "commandsExecuted": false,
+  "metadataOwnerRecordReceived": false,
+  "newScopeApprovalRequired": false,
+  "observationDirectory": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-owner-observations-9deb3d3afbbf42d39686abc30be4f64b",
+  "observe": [
+    "python3",
+    "-B",
+    "/home/administrator/projects/hexalith/platform-ext-secrets-1-runtime-foundations-20261017/eng/ext-secrets-1/recover_expired_hmac.py",
+    "observe",
+    "--run-directory",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-owner-observations-9deb3d3afbbf42d39686abc30be4f64b",
+    "--scope",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+    "--helper-source",
+    "/home/administrator/projects/hexalith/platform",
+    "--metadata-credential-record",
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/metadata-credential-reference.json"
+  ],
+  "ownershipAndScopeApproved": true,
+  "preservationDecisionReceived": false,
+  "priorFinalizedObservationBundleIsNotAnApplicationJournal": true,
+  "scopeOriginalRegistry": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/approved-recovery-originals"
+}

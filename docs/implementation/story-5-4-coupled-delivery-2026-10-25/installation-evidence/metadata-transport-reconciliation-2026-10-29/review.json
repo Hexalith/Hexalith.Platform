@@ -1,0 +1,149 @@
+{
+  "schema": "platform.story-5.4.reconciliation-review.v1",
+  "scope": "Approved offline reconciliation only; full installed delivery remains deferred and incomplete. Concurrent currentNativeKeyMetadataAccess edits are preserved.",
+  "reviewDiff": "/tmp/platform-story54-resume-89565n4o.diff",
+  "originalBaselineDiff": "/tmp/platform-story54-full-cv5v05bm.diff",
+  "originalBaselineCommit": "1b7a00381794bb7ecf40caf643c63c50758a81eb",
+  "resumeObservedCommit": "c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8",
+  "baselineScopeNote": "Original baseline spans 2,623 historical files; review is scoped to the authorized resume, with complete original-baseline diff retained separately.",
+  "layers": {
+    "blind-hunter": "10 findings; all individually triaged",
+    "edge-case-hunter": "1 finding",
+    "verification-gap": "No verification gaps found"
+  },
+  "triage": [
+    {
+      "finding": "B1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Mutable pending-return destinations allowed template substitution. Pin the two input/field/path bindings independently.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B2",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "A resolving preservation pointer was accepted for the metadata requirement. Check the referenced input identity.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B3",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Contradictory reconciliation availability/completion/counters were accepted while the report emitted constants. Check its own invariants.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B4",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Copied provider summaries were not compared with their pinned source. Compare copied status/test/readiness values.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B5",
+      "verdict": "false",
+      "route": "reject",
+      "evidence": "The fixed-host evidence check has no ordinary-checkout portability promise. provenance.json already enumerates exact source bundles/context paths; missing files identify their path. External prerequisites remain explicit.",
+      "resolution": "rejected with evidence"
+    },
+    {
+      "finding": "B6",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The immutable archived external future command invokes mutable worktree code; the executor logs its source hash but does not itself compare it with the sealed tested-source hash. This predates this reconciliation, which adopts or invokes no executor.",
+      "resolution": "recorded in deferred-work.md"
+    },
+    {
+      "finding": "B7",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "An otherwise valid documented artifact check fails when documentation is staged. Keep the historical index observation separate from current artifact verification.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B8",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Working-tree git diff omits untracked runtime files. Check src/eng/infrastructure untracked paths before reporting no runtime changes.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B9",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "Whitespace verification omits the spec and untracked delivered files. Check the complete delivered set without staging.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "B10",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "The broad negative discovery summary lacks exact retained patterns/bounds. Record available trace details and explicitly limit unsupported negative conclusions.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "E1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Clearing pendingReturns bypasses protection of both newly added factual-null fields. Same root cause as B1; independently check both fields and exact required set.",
+      "resolution": "fixed and verified"
+    },
+    {
+      "finding": "C1",
+      "verdict": "low",
+      "route": "patch",
+      "evidence": "Final verification detected a concurrent external HANDOFF.md hash change. The original pre-existing archive still matches the pinned manifest. Resolve only exact pinned public archive copies, disclose current drift, and keep unarchived mismatches refusing.",
+      "resolution": "fixed and verified"
+    }
+  ],
+  "sharedRootCauseGroups": [
+    [
+      "B1",
+      "E1"
+    ],
+    [
+      "B2"
+    ],
+    [
+      "B3"
+    ],
+    [
+      "B4"
+    ],
+    [
+      "B7"
+    ],
+    [
+      "B8"
+    ],
+    [
+      "B9"
+    ],
+    [
+      "B10"
+    ]
+  ],
+  "matrixAudit": "Original authority/replay/spool/protection/cohort/packet matrix is deferred full-delivery acceptance. This run verifies offline reconciliation only and claims no runtime matrix pass.",
+  "applicableDocumentationAcceptance": "Complete; final full offline verification passed",
+  "fullDeliveryComplete": false,
+  "liveOperationsByThisRun": 0,
+  "cohortAttemptsReserved": 0,
+  "findingFloorArithmetic": "kB = 353260 / 1000 = 353.260; N = min(floor(sqrt(353.260) + 1), 10) = 10",
+  "implementationAgentReportedFocusedCases": 52,
+  "targetedChecksScope": "Mutation checks for return/requirement/invariant/summary bindings and isolated Git fixtures; no live or owner executor invocation.",
+  "driftFocusedCasesReportedByImplementationAgent": 11,
+  "finalVerification": {
+    "path": "verification.json",
+    "sha256": "a170fc3bd11d430a1e6becda4a321ea991670fb8cf04e2410024293d6cb4c3d1",
+    "checksPassed": 661,
+    "scope": "Verified isolated authored form for local commit; working canonical form verified separately",
+    "externalSourceDriftDisclosed": 1
+  },
+  "workspaceVerification": {
+    "path": "verification.workspace-2026-10-29.json",
+    "sha256": "27adb309f4049ba595194e7c7296663fa7b19ac3a23a4e70925d585a71b792f9",
+    "checksPassed": 670,
+    "externalSourceDriftDisclosed": 1
+  }
+}
