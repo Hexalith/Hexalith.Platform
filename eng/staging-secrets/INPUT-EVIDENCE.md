@@ -1,0 +1,43 @@
+# Input evidence and limits
+
+**Offline preparation only. No new observation was collected.**
+
+The machine-readable `source-evidence.json` binds each retained source by SHA-256 and exact lines or JSON pointer. The resolved input provenance additionally binds each resolved value; the assessor checks every hash and pointer/line value. The baseline is `c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8`.
+
+| Source/claim | Repository path and location | SHA-256 |
+| --- | --- | --- |
+| story-criteria: 4.15 separate stores, snapshot exclusion, per-app Dapr tokens, restart, named renewal owner and required generations. | `_bmad-output/planning-artifacts/epics.md`, lines 2311–2336 | `64e3e7f4382953b2b9e473de5d583bd5fd4800f3d972421815d4924a1620ef30` |
+| executor-identities: AD-7 isolated per-job environment/layer identities and independent recovery executor. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 127–136 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| environment-isolation: AD-8 environment namespaces, instances, least privilege, restricted pods and complete isolation matrix. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 138–148 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| independent-custody: AD-12 separate tenant-key backup custody, no erased key resurrection and independent manual Administrator/deputy unseal. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 187–196 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| secrets-contract: Environment-current contract digest; per-app startup-cached tokens, outside-Dapr renewal and pod restart, generations and sole dynamic writer. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 235–239 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| release-tiers: Environment layer owns stores, Components, bootstrap exceptions and forward-only changes. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 257–263 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| backup-coverage: Cadence/retention floors, independent access, current lineage/key coverage, monitoring and response coverage requirements. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 315–319 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| recovery-sequence: Separate keys, current tombstones, quarantine, fencing/reissue, restored credential rotation and in-place live key retention. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 337–347 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| owned-work: Secret-contract instance missing work; per-app mount seed and historical shared-token/expiry planning assertion. | `_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`, lines 501–502 | `cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936` |
+| foundation-APPROVAL-PACKAGE.md: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/APPROVAL-PACKAGE.md`, lines 1–179 | `4ffff30842efb4f7bd86000e9f0643abc9c2c8563abda130672d9da979ee4eba` |
+| foundation-inputs.resolved.json: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/inputs.resolved.json`, lines 1–105 | `a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00` |
+| foundation-MISSING-INPUTS.md: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/MISSING-INPUTS.md`, lines 1–57 | `00db84e7976015c52fbd574236a02c0e6a6f67eee24b9ba7943e3a14c3ca6267` |
+| foundation-DEPENDENCY-DIRECTION.md: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/DEPENDENCY-DIRECTION.md`, lines 1–21 | `bbde8ac2e5593c7d9a06ee019e2e68e1d3f36c228d35fa9287b606ae02092f8a` |
+| foundation-render.py: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/render.py`, lines 1–366 | `b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc` |
+| foundation-apply-plan.json: Unchanged prerequisite/source; not live operational authorization. | `eng/staging-foundation/apply-plan.json`, lines 1–272 | `475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351` |
+| native-cluster: Dated target cluster identity only; no later deployment authorization. | `_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json`, JSON pointer `/observations/cluster/identity` | `051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484` |
+| native-dns: Candidate CoreDNS namespace/selector only; actual pod DNS datapath unqualified. | `_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json`, JSON pointer `/observations/workloads/records/105` | `051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484` |
+| native-shared-workload: Existing shared OpenBao workload observation, including image and replicas, is not a staging selection. | `_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json`, JSON pointer `/observations/workloads/records/51` | `051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484` |
+| native-namespace-cut: Both target namespaces absent from this complete successful dated listing; no new collection. | `_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json`, JSON pointer `/observations/namespaces` | `051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484` |
+| retained-shared-component: One retained Vault Component has two app scopes and vaultToken secretKeyRef openbao-runtime-bootstrap/token; proves shared references, no secret bytes or issuer/token authority. | `docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json`, JSON pointer `/observations/9/selectedPublicMetadata/12`; lines 3296–3342 | `9cf7ee66f0f1a045bd67c0f645faf262140b8ba8c4594193789e00ea17ef3e2b` |
+
+The six resolved environment fields are a recorded target and architectural staging dimension, not namespace existence or live acceptance. The three DNS fields are a candidate observed dependency; NodeLocal DNS and effective policy/datapath qualification remain open. The selector-key provenance pointer selects the containing mapping and supports only the recorded key.
+
+The token name and 2027-07-19 date are architectural planning assertions (also in epics lines 2330–2332), not an independent expiry measurement. The retained two-scope Component points to the named bootstrap Secret/key, proving a shared reference only. The later native observation retains metadata names and dated workload existence; neither source establishes effective policies, root status, renewability, compromise, actual token custody or future validity.
+
+No existing OpenBao image/version, replica count, Service listener, backend, StorageClass or current native operator identity is adopted as a staging decision. They remain null pending selection, supported-version evidence and owner approval. Architectural cadence/retention requirements are constraints, not evidence of configured backup operations.
+
+`deploy/dapr/openbao-secret-contract.yaml` is absent at this cut; no bytes exist to hash and no app inventory or generation is inferred. All future members and null aggregate choices have exact owner questions in the closed schema and `MISSING-INPUTS.md`.
+
+Schema/proposal constants encode preparation mechanics or cited requirements only. Synthetic fixtures are explicitly `synthetic-test-only`, with deliberately fictitious identities, endpoints, artifact versions, ports and quantities. They are not defaults and claim no recorded provenance. Their passing result remains `PREPARED_UNAPPROVED` and `liveAcceptance=false`.
+
+Recorded provenance is a consistency check, not evidence authenticity. Sources
+explicitly marked `synthetic-test-only` are refused as recorded evidence even
+when their hashes and values match. Matching references do not prove ownership,
+selector semantics or complete dependency/pod coverage.

@@ -1,0 +1,116 @@
+{
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "prepared": true,
+  "liveAcceptance": false,
+  "approvalGranted": false,
+  "newCollectionPerformed": false,
+  "processOrNetworkEffectsFromAssessor": false,
+  "baselineCommit": "c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/staging-secrets",
+        "-v"
+      ],
+      "exitCode": 0,
+      "stdout": "secrets-tests-reviewed.stdout.txt",
+      "stderr": "secrets-tests-reviewed.stderr.txt",
+      "startedAt": "2026-10-29T18:22:37.485320+00:00",
+      "completedAt": "2026-10-29T18:22:37.699225+00:00"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/staging-secrets/prepare.py",
+        "assess",
+        "--inputs",
+        "eng/staging-secrets/inputs.resolved.json"
+      ],
+      "exitCode": 2,
+      "stdout": "current-assessment-reviewed.stdout.txt",
+      "stderr": "current-assessment-reviewed.stderr.txt",
+      "startedAt": "2026-10-29T18:22:37.699245+00:00",
+      "completedAt": "2026-10-29T18:22:37.739268+00:00"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/staging-secrets/prepare.py",
+        "readiness",
+        "--inputs",
+        "eng/staging-secrets/fixtures/complete.synthetic.json",
+        "--observations",
+        "eng/staging-secrets/fixtures/matching-observations.synthetic.json"
+      ],
+      "exitCode": 0,
+      "stdout": "readiness-synthetic-reviewed.stdout.txt",
+      "stderr": "readiness-synthetic-reviewed.stderr.txt",
+      "startedAt": "2026-10-29T18:22:37.739307+00:00",
+      "completedAt": "2026-10-29T18:22:37.777279+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "diff-check-reviewed.stdout.txt",
+      "stderr": "diff-check-reviewed.stderr.txt",
+      "startedAt": "2026-10-29T18:22:37.777325+00:00",
+      "completedAt": "2026-10-29T18:22:37.785242+00:00"
+    }
+  ],
+  "sourceHashes": {
+    "eng/staging-secrets/APPROVAL-PACKAGE.md": "35de693688f777692edd406ebd9e0fbc5e046ce85d043268650b15a1232e97a1",
+    "eng/staging-secrets/BOOTSTRAP-TOKEN.md": "97fe5c6ed09b1b6d2fc5ecedcd564533c94ab879309b85e863aed73605647db4",
+    "eng/staging-secrets/INPUT-EVIDENCE.md": "2f85e22f70eb262ca0e2b2a1ec1c204969b7042fd500434945a140542379ee86",
+    "eng/staging-secrets/MISSING-INPUTS.md": "17c818e2a434f52f10a92514766c885d2f60167915eae583862d3134035f1d2d",
+    "eng/staging-secrets/VERIFICATION-RECOVERY.md": "d924e0302785ad80feb6345d7f5e6ab6186c9c3e832424b8daece1b78d59d7f9",
+    "eng/staging-secrets/definitions.json": "52ff4fea588e09e8ec957241e398cd353d485a0b7e9516e03da64c2651758994",
+    "eng/staging-secrets/fixtures/complete.synthetic.json": "d91e16f1a27d86b895fdc1752012ac535f4a6c2f62dcee0b87b7c69c87ff3845",
+    "eng/staging-secrets/fixtures/matching-observations.synthetic.json": "e333c01c0347265307ef7dd37283ee13d2039db3813ed5b45569f9550bc66db5",
+    "eng/staging-secrets/inputs.resolved.json": "056651533c723573a068389d6d1ca7656948f0e0a096e749dda752723a1d767c",
+    "eng/staging-secrets/inputs.schema.json": "5af685b85519e1c2bd655f22e10872a44598dd067a686c6d896d3ea7578445bc",
+    "eng/staging-secrets/prepare.py": "11584c401fb062ac6eb7a177b21d5a69b1d2a8171a612daad6679d80fae4f758",
+    "eng/staging-secrets/source-evidence.json": "62bedb1afdfdd4cbf34673c2ef08109bf81bfbd0cb4d89cbe164677023aa3c7d",
+    "eng/staging-secrets/test_prepare.py": "cf5879c8dc08541b34aeda3d447c83bc3849fb2cd036ec1ad5bb0f4c8527b761"
+  },
+  "foundationSuite": {
+    "command": "python3 -B -m unittest discover -s eng/staging-foundation -v",
+    "passed": 34,
+    "observedBy": "parent before implementation; every foundation source byte rechecked unchanged after review",
+    "exitCode": 0
+  },
+  "foundationFilesUnchanged": [
+    "eng/staging-foundation/APPROVAL-PACKAGE.md",
+    "eng/staging-foundation/DEPENDENCY-DIRECTION.md",
+    "eng/staging-foundation/INPUT-EVIDENCE.md",
+    "eng/staging-foundation/MISSING-INPUTS.md",
+    "eng/staging-foundation/README.md",
+    "eng/staging-foundation/apply-plan.json",
+    "eng/staging-foundation/cni_probe.py",
+    "eng/staging-foundation/gates.assessed.json",
+    "eng/staging-foundation/inputs.example.json",
+    "eng/staging-foundation/inputs.resolved.json",
+    "eng/staging-foundation/render.py",
+    "eng/staging-foundation/test_staging_foundation.py"
+  ],
+  "reviews": {
+    "independentLayers": 3,
+    "findings": 18,
+    "disposition": "bounded corrections and explicit metadata-verifier limits; no live acceptance or operation deferred from authorized scope",
+    "triage": "../../../../spec-4-15-offline-staging-secrets.md"
+  },
+  "scopedTestsPassed": 48,
+  "totalOfflineTestsPassed": 82,
+  "finalizedAt": "2026-10-29T18:23:15.197406+00:00"
+}
