@@ -9,6 +9,8 @@ namespace Hexalith.Platform.Protection;
 public sealed record ProtectionQualificationObservationRecipe(string TenantId, Dictionary<string, ProtectionQualificationNativeCell> Sources,
     Dictionary<string, ProtectionQualificationObservationField> Fields)
 {
+    /// <summary>Closed source-owned owner case. Executable role composition always supplies the dictionary case identity and ignores installed field programs.</summary>
+    public string? CaseId { get; init; }
     /// <summary>Exact source-location templates bound to admitted fixture identities, never observation values. Source and template ids must be disjoint.</summary>
     public Dictionary<string, JsonObject> SourceTemplates { get; init; } = new(StringComparer.Ordinal);
     /// <summary>Resolves native cell references for this exact attempt without accepting executor summaries or expected fields.</summary>

@@ -13,12 +13,44 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     IErasureRootAuthorization authorization) : IAtomicDeletionManifestProvider, ICustodyKeyLifecycleProvider
 {
     internal static readonly JsonSerializerOptions Json = new() { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
+    /// <summary>Retains only the exact current native pin-refusal vector under explicit private observation permission. It cannot admit a manifest or bypass an owner's reservation.</summary>
+    public async Task<ErasureRootPinRefusal[]?> CapturePinnedManifestRefusalAsync(DeletionBatchConsumptionRequest request, string operationId, CancellationToken token = default)
+    {
+        request = DeletionConsumptionIdentity.CaptureRequest(request);
+        string tenant = request.Capability.TenantId, digest = Hash(request);
+        for (int attempt = 0; attempt < 16; attempt++)
+        {
+            if (!await authorization.AuthorizeAsync(tenant, operationId, "RecordPinnedManifestRefusal", digest, token).ConfigureAwait(false)) { return null; }
+            var read = await ReadAsync(tenant, token).ConfigureAwait(false);
+            if (read is not { } head || head.Head.Pending is not null) { return null; }
+            if (head.Head.PinRefusals.TryGetValue(operationId, out var retained)) { return retained.RequestDigest == digest ? retained.Refusals : null; }
+            if (head.Head.PinRefusals.Count >= 10000) { return null; }
+            var refusals = new List<ErasureRootPinRefusal>();
+            foreach (var target in request.Targets)
+            {
+                if (!head.Head.Targets.TryGetValue(TargetId(target), out var root) || root.Pins.Length == 0) { return null; }
+                refusals.Add(new(operationId + ":" + TargetId(target), "HoldPinned", "erc-pin-refusal:" + Hash(new { operationId, digest, root.Registration, root.Pins }), target));
+            }
+            head.Head.PinRefusals.Add(operationId, new(digest, refusals.ToArray()));
+            if (await SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return refusals.ToArray(); }
+        }
+        return null;
+    }
+    internal async Task<ErasureRootPermanentLossReceipt?> ReadPermanentLossAsync(string tenant, CancellationToken token)
+    {
+        if (!installation.NativeKeys.ContainsKey(tenant)) { return null; }
+        var original = await authorization.ReadPermanentLossAsync(tenant, installation.StoreId, installation.EnrollmentId, token).ConfigureAwait(false);
+        return original?.TenantId == tenant && original.StoreId == installation.StoreId && original.EnrollmentId == installation.EnrollmentId
+            && !string.IsNullOrWhiteSpace(original.RetiredVolumeIdentity) && !string.IsNullOrWhiteSpace(original.ReceiptId)
+            && original.CopyPolicySha256 is { Length: 64 } ? original : null;
+    }
 
     /// <summary>Creates exactly one native-wrapped random root for the complete target. Exact retry returns its original registration; erased identities can never be issued again.</summary>
     public async Task<CustodyKeyRegistration?> WrapAsync(CustodyKeyObjectIdentity identity, string operationId,
         long expectedLifecycleRevision, CancellationToken cancellationToken = default)
     {
         ValidateIdentity(identity);
+        if (await ReadPermanentLossAsync(identity.TenantId, cancellationToken).ConfigureAwait(false) is not null) { return null; }
         ArgumentException.ThrowIfNullOrWhiteSpace(operationId);
         if (expectedLifecycleRevision < 0 || operationId.Length > 2048) { throw new ArgumentException("Bounded original wrap operation and nonnegative lifecycle revision required."); }
         string digest = Hash(new { identity, operationId, expectedLifecycleRevision });
@@ -62,6 +94,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         CancellationToken cancellationToken = default)
     {
         ValidateIdentity(registration.Identity);
+        if (await ReadPermanentLossAsync(registration.Identity.TenantId, cancellationToken).ConfigureAwait(false) is not null) { return null; }
         ArgumentException.ThrowIfNullOrWhiteSpace(holderId);
         string digest = Hash(new { registration, holderId });
         byte[]? root = null;
@@ -286,7 +319,13 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 if (request.Action == CustodyKeyLifecycleAction.Destroy)
                 {
                     // Per-key destroy cannot introduce another physical operation or bypass the owner-reserved all-or-none manifest.
-                    if (root.Pins.Length > 0) { return unknown with { Status = CustodyKeyLifecycleStatus.BlockedByPin }; }
+                    if (root.Pins.Length > 0)
+                    {
+                        var refused = unknown with { Status = CustodyKeyLifecycleStatus.BlockedByPin, ReceiptId = "erc-lifecycle-refusal:" + Hash(new { request, digest, root.Pins, installation.StoreId }) };
+                        read.Head.LifecycleOutcomes.Add(request.OperationId, refused);
+                        if (await SaveAsync(tenant, read.Version, read.Head, token).ConfigureAwait(false)) { return refused; }
+                        continue;
+                    }
                     return unknown;
                 }
                 if (string.IsNullOrWhiteSpace(request.HoldId) || !await authorization.VerifyLifecycleAsync(request, token).ConfigureAwait(false)) { return unknown; }
@@ -316,7 +355,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         var head = JsonSerializer.Deserialize<ErasureRootHead>(snapshot.Bytes, Json);
         if (head is null || head.TenantId != tenant || head.StoreId != installation.StoreId || head.EnrollmentId != installation.EnrollmentId || head.Epoch < 1
             || head.Targets is null || head.Erased is null || head.Manifests is null || head.LifecycleOutcomes is null || head.Anchors is null
-            || head.Occurrences is null || head.SourceOriginals is null || head.SourceReservations is null || head.SealedOriginals is null) { return null; }
+            || head.Occurrences is null || head.SourceOriginals is null || head.SourceReservations is null || head.SealedOriginals is null
+            || head.RevocationOriginals is null || head.GuardAttempts is null || head.QualificationAttempts is null || head.QualificationOperations is null) { return null; }
         foreach (var entry in head.Targets)
         {
             var target = entry.Value;

@@ -83,6 +83,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
                     current.Head.Anchors[ScopeId] = anchor with { Revision = transition.TargetRevision, Digest = transition.TargetDigest };
                 }
                 if (!await authorization.VerifyTransitionPermissionAsync(transition, operation, token).ConfigureAwait(false)) { return false; }
+                using var boundary = new ErasureRootNativeOperationScope(TenantId, ScopeId, operation);
                 if (await custody.SaveAsync(TenantId, current.Version, current.Head, token).ConfigureAwait(false)) { return true; }
             }
         }

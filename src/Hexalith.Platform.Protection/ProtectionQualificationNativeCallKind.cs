@@ -33,6 +33,26 @@ public enum ProtectionQualificationNativeCallKind
     ObsoleteUnissued,
     /// <summary>Exact original owner lookup.</summary>
     Lookup,
+    /// <summary>Actual production read-only exact admission block lookup.</summary>
+    LookupBlock,
+    /// <summary>Actual production read-only exact activation lookup.</summary>
+    LookupActivation,
+    /// <summary>Actual native original provider lookup without reserving a successor.</summary>
+    LookupProvider,
+    /// <summary>Actual trusted snapshot/cache replay and external refusal.</summary>
+    ReplaySnapshot,
+    /// <summary>Every source-owned canonical/header/identity/manifest negative variant against the actual production owner.</summary>
+    RejectSubstitutions,
+    /// <summary>Actual same-alias foreign-tenant root issue refusal under the current private grant.</summary>
+    RejectForeignRoot,
+    /// <summary>Actual private rejected-unissued or issued-but-undispatched replacement reconciliation.</summary>
+    ReconcileBlockedReplacement,
+    /// <summary>Records each authoritative captured owner Effective before content binding; callers cannot supply the owner census or obligation digest.</summary>
+    GuardOwnersEffective,
+    /// <summary>Actual registration only after the exact native dispatch committed; a proven hold refusal has no owner effect.</summary>
+    RegisterIfDispatched,
+    /// <summary>Actual reservation only after the exact native dispatch committed; a proven hold refusal has no owner effect.</summary>
+    ReserveIfDispatched,
     /// <summary>Read actual scoped native source cells into an isolated backup.</summary>
     Backup,
     /// <summary>Restore only original scoped EventStore/source cells; ERC restore is forbidden.</summary>

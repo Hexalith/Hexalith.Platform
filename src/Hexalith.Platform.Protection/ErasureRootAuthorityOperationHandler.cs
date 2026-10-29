@@ -14,9 +14,10 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
 {
     /// <inheritdoc />
     public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["erc-permission", "erc-occurrence-original", "erc-source-proof", "erc-registrar-proof",
-        "erc-current-protocol-evidence", "erc-read-guard", "erc-execute-guard", "erc-read-no-issue"], StringComparer.Ordinal);
+        "erc-current-protocol-evidence", "erc-read-guard", "erc-execute-guard", "erc-read-no-issue", "erc-register-source-original",
+        "erc-read-permanent-loss", "erc-read-erased-original", "erc-register-revocation-original", "erc-read-rejected-issue"], StringComparer.Ordinal);
     /// <inheritdoc />
-    public bool IsReadOnly(string method) => method is not ("erc-execute-guard" or "erc-source-proof");
+    public bool IsReadOnly(string method) => method is not ("erc-execute-guard" or "erc-source-proof" or "erc-register-source-original" or "erc-register-revocation-original" or "erc-registrar-proof" or "erc-read-no-issue");
     /// <inheritdoc />
     public bool RequiresCurrentResultAdmission(string method) => true;
     /// <inheritdoc />
@@ -31,25 +32,125 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             || caller.Role is not ("erc-owner" or "erc-source" or "erc-registrar" or "erc-observer")) { return null; }
         string tenant = Tenant(payload, method);
         if (caller.ScopeReference != tenant + "|erc") { return null; }
+        if (method == "erc-register-revocation-original")
+        {
+            if (caller.Role is not ("erc-owner" or "erc-registrar")) { return false; }
+            var revocationOriginal = payload.GetProperty("original").Deserialize<ErasureRootRevocationOriginal>(CustodyBindingContract.Json)!;
+            if (revocationOriginal.Envelope.TenantId != tenant || string.IsNullOrWhiteSpace(revocationOriginal.SignedEvidence) || revocationOriginal.SignedEvidence.Length > 16384) { return false; }
+            var verified = await revocations.VerifyAsync(revocationOriginal.Envelope, revocationOriginal.SignedEvidence, token).ConfigureAwait(false);
+            if (verified?.Envelope != revocationOriginal.Envelope || verified.ObservedAt > clock.GetUtcNow() || verified.ValidUntil <= clock.GetUtcNow()) { return false; }
+            string id = ErasureRootCustody.Hash(revocationOriginal.Envelope);
+            for (int attempt = 0; attempt < 16; attempt++)
+            {
+                var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                if (read is not { } head) { return false; }
+                if (head.Head.RevocationOriginals.TryGetValue(id, out var prior)) { return prior == revocationOriginal; }
+                if (recovery || head.Head.RevocationOriginals.Count >= 10000) { return false; }
+                head.Head.RevocationOriginals.Add(id, revocationOriginal);
+                if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return true; }
+            }
+            return false;
+        }
+        if (method == "erc-read-permanent-loss")
+        { return PermanentLoss(current, tenant, payload.GetProperty("storeId").GetString()!, payload.GetProperty("enrollmentId").GetString()!); }
+        if (method == "erc-register-source-original")
+        {
+            if (caller.Role is not ("erc-owner" or "erc-source")) { return false; }
+            var registeredSource = payload.GetProperty("enrollment").Deserialize<ErasureRootOccurrenceEnrollment>(CustodyBindingContract.Json)!;
+            if (PermanentLoss(current, tenant, registeredSource.RootIdentity.StoreTarget, null) is not null) { return false; }
+            if (recovery)
+            {
+                var retained = await source.ResolveAsync(registeredSource.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(registeredSource.Binding.Identity), token).ConfigureAwait(false);
+                return retained is not null && ErasureRootCustody.Hash(retained) == ErasureRootCustody.Hash(registeredSource);
+            }
+            return await source.RegisterOriginalAsync(registeredSource, token).ConfigureAwait(false);
+        }
+        if (method == "erc-read-erased-original")
+        {
+            var supplied = payload.GetProperty("loss").Deserialize<ErasureRootPermanentLossReceipt>(CustodyBindingContract.Json)!;
+            var loss = PermanentLoss(current, tenant, supplied.StoreId, supplied.EnrollmentId);
+            if (loss is null || loss != supplied) { return null; }
+            var owner = payload.GetProperty("owner").Deserialize<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(CustodyBindingContract.Json)!;
+            var occurrence = payload.GetProperty("occurrence").Deserialize<PayloadProtectionOccurrenceContext>(CustodyBindingContract.Json)!;
+            var enrollment = await source.ResolveAsync(owner, occurrence, token).ConfigureAwait(false);
+            return enrollment is not null && enrollment.RootIdentity.StoreTarget == loss.StoreId && enrollment.Binding.KeyReference == payload.GetProperty("keyReference").GetString()
+                && await source.VerifyPersistedSourceAsync(enrollment, payload.GetProperty("sealedPayloadSha256").GetString()!, token).ConfigureAwait(false) ? enrollment : null;
+        }
         if (method == "erc-read-guard") { return await guard.ReadAsync(tenant, token).ConfigureAwait(false); }
+        if (method == "erc-read-rejected-issue")
+        {
+            var proposed = payload.GetProperty("payload").Deserialize<DeletionBatchCapabilityV1>(CustodyBindingContract.Json)!;
+            string signingId = payload.GetProperty("signingRequestId").GetString()!, signature = payload.GetProperty("detachedJwsDigest").GetString()!;
+            var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false); var state = await guard.ReadAsync(tenant, token).ConfigureAwait(false);
+            if (read is not { } head || state is null || state.Receipts.Any(value => value.Status == "Committed" && value.SigningRequestId == signingId)) { return null; }
+            var rejectedOriginal = head.Head.GuardAttempts.Values.SingleOrDefault(value => value.Transition.Operation == GovernanceGuardOperation.ReplaceAttestation
+                && value.Transition.Batch?.Capability == proposed && value.Receipt.SigningRequestId == signingId && value.Receipt.DetachedJwsDigest == signature
+                && value.Receipt.Status is "Blocked" or "Stale");
+            return rejectedOriginal is null ? null : new GovernanceRejectedIssueOriginal(rejectedOriginal.Transition, rejectedOriginal.TargetMutationDigest, rejectedOriginal.Receipt, state.Revision, ErasureRootCustody.Hash(state))
+                { CurrentGuardStateBytes = JsonSerializer.SerializeToUtf8Bytes(state) };
+        }
         if (method == "erc-execute-guard")
         {
             if (caller.Role != "erc-owner") { return null; }
+            var transition = payload.GetProperty("transition").Deserialize<GovernanceGuardTransition>(CustodyBindingContract.Json)!;
+            var targets = payload.GetProperty("targets").Deserialize<GuardedStateMutation[]>(CustodyBindingContract.Json)!;
+            string targetDigest = ErasureRootCustody.Hash(targets);
+            string intent = ErasureRootCustody.Hash(new { Transition = transition, TargetMutationDigest = targetDigest });
+            var retained = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+            if (retained is { } originalHead && originalHead.Head.GuardAttempts.TryGetValue(intent, out var prior)) { return prior.Receipt; }
             if (recovery)
             {
-                var transition = payload.GetProperty("transition").Deserialize<GovernanceGuardTransition>(CustodyBindingContract.Json)!;
-                var targets = payload.GetProperty("targets").Deserialize<GuardedStateMutation[]>(CustodyBindingContract.Json)!;
-                string intent = ErasureRootCustody.Hash(new { Transition = transition, TargetMutationDigest = ErasureRootCustody.Hash(targets) });
                 var fresh = await guard.ReadAsync(tenant, token).ConfigureAwait(false);
                 return fresh?.Receipts.SingleOrDefault(receipt => receipt.OperationId == transition.OperationId && receipt.IntentDigest == intent);
             }
-            return await guard.ExecuteAsync(payload.GetProperty("transition").Deserialize<GovernanceGuardTransition>(CustodyBindingContract.Json)!,
-                payload.GetProperty("targets").Deserialize<GuardedStateMutation[]>(CustodyBindingContract.Json)!, token).ConfigureAwait(false);
+            var before = await guard.ReadAsync(tenant, token).ConfigureAwait(false);
+            if (before is null) { return null; }
+            var actual = await guard.ExecuteAsync(transition, targets, token).ConfigureAwait(false);
+            var after = await guard.ReadAsync(tenant, token).ConfigureAwait(false);
+            if (actual is null || after is null || actual.OperationId != transition.OperationId || actual.IntentDigest != intent
+                || after.Revision < before.Revision || actual.GuardHighWater < before.Revision || actual.GuardHighWater > after.Revision) { return null; }
+            var captured = new ErasureRootGuardAttempt(transition, targetDigest, before.Revision, after.Revision, actual);
+            for (int attempt = 0; attempt < 16; attempt++)
+            {
+                var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                if (read is not { } head) { return null; }
+                if (head.Head.GuardAttempts.TryGetValue(intent, out var existing)) { return existing == captured ? actual : null; }
+                if (head.Head.GuardAttempts.Count >= 10000) { return null; }
+                head.Head.GuardAttempts.Add(intent, captured);
+                if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return actual; }
+            }
+            return null;
         }
         if (method == "erc-read-no-issue")
-        { return await guard.ReadNoIssueAsync(payload.GetProperty("payload").Deserialize<DeletionBatchCapabilityV1>(CustodyBindingContract.Json)!, payload.GetProperty("signingRequestId").GetString()!, payload.GetProperty("detachedJwsDigest").GetString()!, token).ConfigureAwait(false); }
+        {
+            var signedPayload = payload.GetProperty("payload").Deserialize<DeletionBatchCapabilityV1>(CustodyBindingContract.Json)!;
+            string signingId = payload.GetProperty("signingRequestId").GetString()!, signatureDigest = payload.GetProperty("detachedJwsDigest").GetString()!;
+            if (recovery)
+            {
+                var recoveryHead = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                return recoveryHead is { } retained ? retained.Head.SigningRecoveries.Values.Where(value => value.Payload == signedPayload && value.SigningRequestId == signingId && value.DetachedJwsDigest == signatureDigest)
+                    .OrderBy(value => value.ObservedAt).LastOrDefault() : null;
+            }
+            var actual = await guard.ReadNoIssueAsync(signedPayload, signingId, signatureDigest, token).ConfigureAwait(false);
+            if (actual is null || actual.Payload != signedPayload || actual.SigningRequestId != signingId || actual.DetachedJwsDigest != signatureDigest) { return null; }
+            string id = ErasureRootCustody.Hash(actual);
+            for (int attempt = 0; attempt < 16; attempt++)
+            {
+                var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                if (read is not { } head) { return null; }
+                if (head.Head.SigningRecoveries.ContainsKey(id)) { return actual; }
+                if (head.Head.SigningRecoveries.Count >= 10000) { return null; }
+                head.Head.SigningRecoveries.Add(id, actual);
+                if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return actual; }
+            }
+            return null;
+        }
         if (method == "erc-occurrence-original")
-        { return await source.ResolveAsync(payload.GetProperty("owner").Deserialize<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(CustodyBindingContract.Json)!, payload.GetProperty("occurrence").Deserialize<PayloadProtectionOccurrenceContext>(CustodyBindingContract.Json)!, token).ConfigureAwait(false); }
+        {
+            var owner = payload.GetProperty("owner").Deserialize<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(CustodyBindingContract.Json)!;
+            var occurrence = payload.GetProperty("occurrence").Deserialize<PayloadProtectionOccurrenceContext>(CustodyBindingContract.Json)!;
+            return await source.ResolveAsync(owner, occurrence, token).ConfigureAwait(false);
+        }
         if (method == "erc-current-protocol-evidence")
         {
             var transition = payload.GetProperty("transition").Deserialize<AnchoredStateTransition>(CustodyBindingContract.Json)!;
@@ -64,6 +165,8 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
         {
             // The native receiver independently authenticates the current machine grant. Exact role/method grants are explicit installation inputs, never wildcard startup defaults.
             allowed = current.QualificationBindings is { } bindings && bindings.TryGetValue("erc.allow." + operation, out var permittedRole) && permittedRole == caller.Role;
+            if (operation is "WrapDek" or "UnwrapDek" or "ApplyKeyLifecycle" or "DestroyDekManifest")
+            { allowed &= !current.QualificationCases?.Keys.Any(key => key.StartsWith("erc.permanent-loss:", StringComparison.Ordinal)) ?? true; }
             if (operation == "VerifyLifecycle")
             {
                 var request = original.Deserialize<CustodyKeyLifecycleRequest>(CustodyBindingContract.Json)!;
@@ -102,6 +205,7 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
                 _ => false,
             };
             allowed &= capturedDigest == requestDigest;
+
         }
         else if (method == "erc-registrar-proof" && caller.Role is "erc-owner" or "erc-registrar")
         {
@@ -124,21 +228,55 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
                 _ => string.Empty,
             };
             allowed &= capturedDigest == requestDigest;
+            if (allowed && operation is "VerifyActivationEvidence" or "VerifyBlockedReplacementEvidence")
+            {
+                for (int attempt = 0; attempt < 16; attempt++)
+                {
+                    var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                    if (read is not { } head) { allowed = false; break; }
+                    if (operation == "VerifyActivationEvidence")
+                    {
+                        var activation = original.Deserialize<DeletionReattestationActivation>(CustodyBindingContract.Json)!;
+                        if (head.Head.ActivationEvidence.TryGetValue(requestDigest, out var prior)) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
+                        if (recovery || head.Head.ActivationEvidence.Count >= 10000) { allowed = false; break; }
+                        head.Head.ActivationEvidence.Add(requestDigest, activation);
+                    }
+                    else
+                    {
+                        var replacement = original.Deserialize<DeletionBlockedReplacementReconciliation>(CustodyBindingContract.Json)!;
+                        if (head.Head.BlockedReplacementEvidence.TryGetValue(requestDigest, out var prior)) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
+                        if (recovery || head.Head.BlockedReplacementEvidence.Count >= 10000) { allowed = false; break; }
+                        head.Head.BlockedReplacementEvidence.Add(requestDigest, replacement);
+                    }
+                    if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { break; }
+                    if (attempt == 15) { allowed = false; }
+                }
+            }
         }
         return Evidence(tenant, identity, operation, requestDigest, allowed, current);
     }
 
     private async Task<bool> RevocationAsync(DeletionCapabilityRevocationEnvelope envelope, IndependentAuthorityState state, CancellationToken token)
     {
-        foreach (var record in state.Originals.Values)
+        if (state.ValidUntil <= clock.GetUtcNow()) { return false; }
+        var read = await custody.ReadAsync(envelope.TenantId, token).ConfigureAwait(false);
+        if (read is not { } head || !head.Head.RevocationOriginals.TryGetValue(ErasureRootCustody.Hash(envelope), out var original) || original.Envelope != envelope) { return false; }
+        var verified = await revocations.VerifyAsync(envelope, original.SignedEvidence, token).ConfigureAwait(false);
+        return verified?.Envelope == envelope && verified.ObservedAt <= clock.GetUtcNow() && verified.ValidUntil > clock.GetUtcNow();
+    }
+    private ErasureRootPermanentLossReceipt? PermanentLoss(IndependentAuthorityState current, string tenant, string storeId, string? enrollmentId)
+    {
+        foreach (var entry in current.QualificationCases ?? [])
         {
-            var original = record.Request;
-            if (!original.TryGetProperty("envelope", out var captured) || !original.TryGetProperty("signedEvidence", out var signature)
-                || ErasureRootCustody.Hash(captured) != ErasureRootCustody.Hash(envelope)) { continue; }
-            var verified = await revocations.VerifyAsync(envelope, signature.GetString()!, token).ConfigureAwait(false);
-            if (verified?.Envelope == envelope && verified.ObservedAt <= clock.GetUtcNow() && verified.ValidUntil > clock.GetUtcNow()) { return true; }
+            if (!entry.Key.StartsWith("erc.permanent-loss:", StringComparison.Ordinal)) { continue; }
+            var original = entry.Value.Deserialize<ErasureRootPermanentLossReceipt>(CustodyBindingContract.Json);
+            if (original is not null && original.StoreId == storeId && original.TenantId == tenant && (enrollmentId is null || original.EnrollmentId == enrollmentId)
+                && entry.Key == "erc.permanent-loss:" + original.StoreId + ":" + original.EnrollmentId && !string.IsNullOrWhiteSpace(original.ReceiptId)
+                && !string.IsNullOrWhiteSpace(original.RetiredVolumeIdentity) && original.CopyPolicySha256.Equals(acceptedCopyPolicySha256, StringComparison.OrdinalIgnoreCase)
+                && current.QualificationBindings is { } bindings && bindings.TryGetValue("erc.copyPolicySha256", out var policy) && policy.Equals(acceptedCopyPolicySha256, StringComparison.OrdinalIgnoreCase)
+                && bindings.TryGetValue("erc.volume." + storeId, out var volume) && volume == original.RetiredVolumeIdentity) { return original; }
         }
-        return false;
+        return null;
     }
     private async Task<bool> ActivationAsync(DeletionReattestationActivation activation, CancellationToken token)
     {
@@ -157,6 +295,15 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
     {
         if (!await CurrentGuardAsync(request.Capability.TenantId, revision, digest, token).ConfigureAwait(false)
             || !await RevocationAsync(request.RevocationReceipt.Envelope, independent, token).ConfigureAwait(false)) { return false; }
+        if (request.UnissuedProof is { } unissued)
+        {
+            var read = await custody.ReadAsync(request.Capability.TenantId, token).ConfigureAwait(false);
+            if (read is not { } head || unissued.CurrentGuardRevision != revision || unissued.CurrentGuardStateDigest != digest
+                || !head.Head.GuardAttempts.TryGetValue(unissued.Refusal.IntentDigest, out var retained)
+                || ErasureRootCustody.Hash(retained.Transition) != ErasureRootCustody.Hash(unissued.Transition)
+                || ErasureRootCustody.Hash(retained.Receipt) != ErasureRootCustody.Hash(unissued.Refusal)
+                || retained.TargetMutationDigest != unissued.TargetMutationDigest) { return false; }
+        }
         using var owner = await OwnerAsync(request.Capability.TenantId, token).ConfigureAwait(false);
         if (owner is null || owner.RootElement.GetProperty("KeyBlockSetRevision").GetInt64() != request.ExpectedKeyBlockSetRevision
             || !owner.RootElement.GetProperty("Revocations").EnumerateArray().Any(value => ErasureRootCustody.Hash(value.Deserialize<DeletionCapabilityRevocationReceipt>()) == ErasureRootCustody.Hash(request.RevocationReceipt))) { return false; }
@@ -180,18 +327,28 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
         var state = await guard.ReadAsync(parts[1], token).ConfigureAwait(false);
         if (state is null || state.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture) != parts[3]) { return false; }
         if (parts[0] == "admission-block") { return state.Receipts.Any(value => value.ReceiptId == parts[4] && value.ReferenceId == parts[2] && value.Status == "Committed"); }
+        var read = await custody.ReadAsync(parts[1], token).ConfigureAwait(false);
+        if (read is not { } head) { return false; }
         if (parts[0] == "revocation")
-        { return current.Originals.Values.Any(value => value.Request.TryGetProperty("envelope", out var envelope) && envelope.GetProperty("SignatureDigest").GetString() == parts[4]); }
-        return current.Originals.Values.Any(value => ErasureRootCustody.Hash(value.Request) == parts[4]);
+        {
+            var original = head.Head.RevocationOriginals.Values.SingleOrDefault(value => value.Envelope.EventIdentity == parts[2] && value.Envelope.SignatureDigest == parts[4]);
+            return original is not null && await RevocationAsync(original.Envelope, current, token).ConfigureAwait(false);
+        }
+        if (parts[0] == "activation")
+        { return head.Head.ActivationEvidence.TryGetValue(parts[4], out var activation) && activation.Replacement.Capability.BatchId == parts[2]
+            && await ActivationAsync(activation, token).ConfigureAwait(false); }
+        return head.Head.BlockedReplacementEvidence.TryGetValue(parts[4], out var replacement) && replacement.Capability.BatchId == parts[2]
+            && await CurrentBlockedReplacementAsync(replacement, state.Revision, ErasureRootCustody.Hash(state), current, token).ConfigureAwait(false);
     }
     private static ErasureRootPermissionEvidence Evidence(string tenant, string identity, string operation, string digest, bool permitted, IndependentAuthorityState current)
         => new(tenant, identity, operation, digest, "erc-current:" + current.TrustRevision + ":" + digest, permitted);
     private static string Tenant(JsonElement payload, string method)
     {
         if (payload.TryGetProperty("tenantId", out var tenant)) { return tenant.GetString()!; }
-        if (method == "erc-occurrence-original") { return payload.GetProperty("owner").GetProperty("TenantId").GetString()!; }
+        if (method is "erc-occurrence-original" or "erc-read-erased-original") { return payload.GetProperty("owner").GetProperty("TenantId").GetString()!; }
+        if (method == "erc-register-source-original") { return payload.GetProperty("enrollment").GetProperty("Binding").GetProperty("Identity").GetProperty("Target").GetProperty("TenantId").GetString()!; }
         if (method == "erc-execute-guard") { return payload.GetProperty("transition").GetProperty("TenantId").GetString()!; }
-        if (method == "erc-read-no-issue") { return payload.GetProperty("payload").GetProperty("TenantId").GetString()!; }
+        if (method is "erc-read-no-issue" or "erc-read-rejected-issue") { return payload.GetProperty("payload").GetProperty("TenantId").GetString()!; }
         if (method == "erc-current-protocol-evidence") { return Encoding.UTF8.GetString(payload.GetProperty("transition").GetProperty("TargetBytes").GetBytesFromBase64()).Split('\n')[1]; }
         throw new InvalidOperationException("Exact tenant scope required.");
     }

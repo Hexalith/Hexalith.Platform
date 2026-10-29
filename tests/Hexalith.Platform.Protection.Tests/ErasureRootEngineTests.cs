@@ -23,6 +23,35 @@ public sealed class ErasureRootEngineTests
     }
 
     [Fact]
+    public async Task ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
+        var write = await Seal(fixture, original.Binding);
+        var stale = JsonSerializer.Deserialize<InteractionOccurrenceRegistrySnapshot>(JsonSerializer.Serialize(fixture.RegistryState.CommittedState["candidate-interaction-occurrences-v1"]))!;
+        await Commit(fixture, write);
+        var committed = (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!;
+        var before = await fixture.Store.HeadAsync("tenant-a"); var anchor = before.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")];
+        await fixture.RegistryState.SetStateAsync("candidate-interaction-occurrences-v1", stale, Token); await fixture.RegistryState.SaveStateAsync(Token);
+        var recovered = (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!;
+        JsonSerializer.Serialize(recovered).ShouldBe(JsonSerializer.Serialize(committed));
+        var after = await fixture.Store.HeadAsync("tenant-a"); after.Epoch.ShouldBe(before.Epoch); after.Targets.Count.ShouldBe(before.Targets.Count);
+        after.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")].Revision.ShouldBe(anchor.Revision);
+        after.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")].Admissions.Count.ShouldBe(anchor.Admissions.Count);
+    }
+
+    [Fact]
+    public async Task ChangedPayloadHasTypedConflictAndNoNewNativeRootOrCiphertext()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
+        var first = await Seal(fixture, original.Binding); await Commit(fixture, first);
+        var roots = (await fixture.Store.HeadAsync("tenant-a")).Targets.Count;
+        byte[] changed = Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(Payload()).Replace("confidential-canary", "different-canary", StringComparison.Ordinal));
+        await Should.ThrowAsync<PayloadProtectionOccurrenceConflictException>(() => Seal(fixture, original.Binding, changed));
+        (await fixture.Store.HeadAsync("tenant-a")).Targets.Count.ShouldBe(roots);
+        (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!.Sealed!.PayloadBytes.ShouldBe(first.ProtectionResult.PayloadBytes);
+    }
+
+    [Fact]
     public async Task ZeroRootBytesDoNotRetireHolderUntilDerivedKeyConsumerScopeDisposes()
     {
         using var fixture = new ErasureRootEngineFixture();

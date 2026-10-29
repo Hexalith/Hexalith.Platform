@@ -14,10 +14,14 @@ data:
       tls_cert_file = "/bao/tls/tls.crt"
       tls_key_file = "/bao/tls/tls.key"
       tls_min_version = "tls13"
+      max_request_size = 67108864
+      max_request_json_memory = 134217728
+      max_request_json_strings = 1000000
     }
     storage "raft" {
       path = "/bao/data"
       node_id = "erasure-root-0"
+      max_entry_size = 67108864
     }
     telemetry {
       disable_hostname = true

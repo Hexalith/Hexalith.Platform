@@ -125,6 +125,10 @@ public sealed class ProtectionQualificationRoleService
             _ = await InspectAsync(token).ConfigureAwait(false);
             if (!_scope.Recipes.ContainsKey(caseId) || request["targets"] is not JsonArray targets || targets.Count is < 1 or > 1000
                 || targets.Any(value => value!["TenantId"]!.GetValue<string>() != _scope.TenantId)) { throw new InvalidOperationException("Exact isolated native fixture required."); }
+            var pending = await _actions!.PendingRecoveryAsync(_scope.TenantId, request["fixtureId"]!.GetValue<string>(), token).ConfigureAwait(false);
+            if (pending is not null)
+            { await _actions.PrepareAsync(pending, request, (call, ct) => _journal.AdmitCallAsync(_scope.TenantId, "executor", id, call, ct),
+                (call, result, ct) => _journal.RetainCallAsync(_scope.TenantId, "executor", id, call, result, ct), token).ConfigureAwait(false); }
             response = new JsonObject { ["status"] = "Prepared" };
         }
         else

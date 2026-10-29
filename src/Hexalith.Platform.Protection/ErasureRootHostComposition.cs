@@ -55,9 +55,18 @@ public static class ErasureRootHostComposition
         }
         services.AddSingleton(installation);
         services.AddSingleton(inventory);
+        services.AddSingleton<IDeletionCapabilityRevocationAuthenticator>(provider => new ErasureRootRecordingRevocationAuthenticator(
+            new DaprRevocationAuthenticatorAdapter(inventory, new DaprSecretsInvoker(provider.GetRequiredService<DaprClient>()), TimeProvider.System), Authority(provider, installation.RegistrarAuthority)));
         services.AddHttpClient("hexalith-erasure-root", client => { client.BaseAddress = new(installation.Endpoint); client.Timeout = TimeSpan.FromSeconds(30); })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false });
-        services.AddSingleton<IErasureRootStore>(provider => new OpenBaoErasureRootStore(provider.GetRequiredService<IHttpClientFactory>().CreateClient("hexalith-erasure-root"), installation.Native, installation.CredentialReference));
+        bool observer = configuration.GetValue<bool>("EventStore:PayloadProtection:QualificationObserver");
+        if (!observer && installation.QualificationNativeControls is { } controls)
+        { services.AddSingleton(provider => new ProtectionQualificationFaults(provider.GetRequiredService<DaprClient>(), controls.Cell, controls.EnrollmentId, controls.Operations.ToHashSet(StringComparer.Ordinal))); }
+        services.AddSingleton<IErasureRootStore>(provider =>
+        {
+            IErasureRootStore native = new OpenBaoErasureRootStore(provider.GetRequiredService<IHttpClientFactory>().CreateClient("hexalith-erasure-root"), installation.Native, installation.CredentialReference);
+            return !observer && installation.QualificationNativeControls is not null ? new ProtectionQualificationControlledErasureRootStore(native, provider.GetRequiredService<ProtectionQualificationFaults>()) : native;
+        });
         services.AddSingleton<IErasureRootAuthorization>(provider => new DaprErasureRootAuthorization(Authority(provider, installation.PrivateAuthority), provider.GetRequiredService<IErasureRootStore>(), installation.Native));
         services.AddSingleton<ErasureRootCustody>(provider => new(provider.GetRequiredService<IErasureRootStore>(), installation.Native, provider.GetRequiredService<IErasureRootAuthorization>()));
         services.AddSingleton<IErasureRootOccurrenceSource>(provider => new DaprErasureRootOccurrenceSource(Authority(provider, installation.SourceAuthority)));
@@ -73,11 +82,16 @@ public static class ErasureRootHostComposition
         services.AddSingleton<IInteractionOccurrenceAuthority>(provider => new ErasureRootOccurrenceAuthority(provider.GetRequiredService<ErasureRootCustody>(), provider.GetRequiredService<ErasureRootOccurrenceBindings>(),
             provider.GetRequiredService<IErasureRootOccurrenceSource>(), provider.GetRequiredService<IErasureRootAuthorization>(), installation.RegistryEpochs));
         services.AddSingleton<IDeletionConsumptionAuthority>(provider => new PublishedTrustDeletionConsumptionAuthority(installation.CapabilityTrust,
-            new DaprErasureRootGovernanceGuard(Authority(provider, installation.GuardAuthority)), new DaprErasureRootEvidenceJournal(Authority(provider, installation.EvidenceAuthority)),
+            Guard(provider), new DaprErasureRootEvidenceJournal(Authority(provider, installation.EvidenceAuthority)),
             new DaprErasureRootRevocationEvidence(Authority(provider, installation.RegistrarAuthority)), installation.Native.NativeKeys.Keys.Select(tenant => (IDeletionConsumptionOwnerStateAuthority)
                 new ErasureRootDeletionOwnerAuthority(provider.GetRequiredService<ErasureRootCustody>(), provider.GetRequiredService<IErasureRootAuthorization>(), tenant)).ToArray()));
         services.AddSingleton<ICustodyKeyLifecycleProvider>(provider => provider.GetRequiredService<ErasureRootCustody>());
         return services.AddInteractionPayloadProtection();
+        IGovernanceScopeGuard Guard(IServiceProvider provider)
+        {
+            IGovernanceScopeGuard actual = new DaprErasureRootGovernanceGuard(Authority(provider, installation.GuardAuthority));
+            return !observer && installation.QualificationNativeControls is not null ? new ProtectionQualificationControlledGuard(actual, provider.GetRequiredService<ProtectionQualificationFaults>()) : actual;
+        }
     }
 
     private static IndependentDaprAuthority Authority(IServiceProvider provider, IndependentDaprAuthorityBinding binding)

@@ -10,6 +10,14 @@ internal sealed class ErasureRootSourceFixture : IErasureRootOccurrenceSource
     internal Dictionary<string, byte[]> Persisted { get; } = [];
     internal HashSet<string> NeverWritten { get; } = [];
     internal bool Available { get; set; } = true;
+    public async Task<ErasureRootOccurrenceEnrollment?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        string sealedPayloadSha256, string keyReference, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
+    {
+        var original = await ResolveAsync(owner, occurrence, cancellationToken);
+        return original is not null && original.Binding.KeyReference == keyReference && original.RootIdentity.StoreTarget == loss.StoreId
+            && Persisted.TryGetValue(original.Binding.OperationId, out var bytes)
+            && Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)) == sealedPayloadSha256 ? original : null;
+    }
     public Task<ErasureRootOccurrenceEnrollment?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken cancellationToken)
         => Task.FromResult(Available ? Enrollments.GetValueOrDefault(ErasureRootOccurrenceBindings.Id(owner, occurrence)) : null);
     public Task<bool> VerifyReservationAsync(InteractionOccurrenceRequest request, CancellationToken cancellationToken)

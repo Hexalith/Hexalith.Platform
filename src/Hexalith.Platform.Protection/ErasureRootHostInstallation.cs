@@ -1,5 +1,6 @@
 using Hexalith.EventStore.Server.Security;
 using Hexalith.Platform.Secrets.Runtime;
+using System.Text.Json.Serialization;
 
 namespace Hexalith.Platform.Protection;
 
@@ -15,4 +16,9 @@ public sealed record ErasureRootHostInstallation(ErasureRootInstallation Native,
     Dictionary<string, string> RegistryEpochs, IndependentDaprAuthorityBinding PrivateAuthority, IndependentDaprAuthorityBinding SourceAuthority,
     IndependentDaprAuthorityBinding GuardAuthority, IndependentDaprAuthorityBinding RegistrarAuthority, IndependentDaprAuthorityBinding EvidenceAuthority,
     PublishedDeletionCapabilityTrust[] CapabilityTrust, string InventoryConfigurationFile, string InventoryConfigurationSha256,
-    string CopyPolicyFile, string CopyPolicySha256);
+    string CopyPolicyFile, string CopyPolicySha256)
+{
+    /// <summary>Optional isolated qualification controls at the real owner/provider boundaries. Omitted from existing serialized installations.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ErasureRootNativeControlsInstallation? QualificationNativeControls { get; init; }
+}

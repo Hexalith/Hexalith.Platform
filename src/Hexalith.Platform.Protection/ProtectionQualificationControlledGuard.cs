@@ -21,4 +21,7 @@ public sealed class ProtectionQualificationControlledGuard(IGovernanceScopeGuard
     /// <inheritdoc />
     public Task<GovernanceSigningRecovery?> ReadNoIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
         => native.ReadNoIssueAsync(payload, signingRequestId, detachedJwsDigest, cancellationToken);
+    /// <inheritdoc />
+    public Task<GovernanceRejectedIssueOriginal?> ReadRejectedIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
+        => native.ReadRejectedIssueAsync(payload, signingRequestId, detachedJwsDigest, cancellationToken);
 }

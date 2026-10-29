@@ -6,6 +6,12 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Independent current source-writer/intent authority. It provides exact originals, never key bytes or caller-selected targets.</summary>
 public interface IErasureRootOccurrenceSource
 {
+    /// <summary>Retains the independent source owner's complete public enrollment before custody effects; omitted implementations deny.</summary>
+    Task<bool> RegisterOriginalAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken) => Task.FromResult(false);
+    /// <summary>Verifies an exact actually persisted ciphertext original under a positive independently authenticated permanent-loss receipt; missing source proof never means Erased.</summary>
+    Task<ErasureRootOccurrenceEnrollment?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        string sealedPayloadSha256, string keyReference, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
+        => Task.FromResult<ErasureRootOccurrenceEnrollment?>(null);
     /// <summary>Reads a current independently authorized exact occurrence enrollment.</summary>
     Task<ErasureRootOccurrenceEnrollment?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken cancellationToken);
     /// <summary>Authenticates the exact keyed content intent and original reservation against the source writer.</summary>

@@ -18,4 +18,7 @@ public sealed class DaprErasureRootGovernanceGuard(IndependentDaprAuthority guar
     /// <inheritdoc />
     public Task<GovernanceSigningRecovery?> ReadNoIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
         => guard.InvokeAsync<GovernanceSigningRecovery>("erc-read-no-issue", new { payload, signingRequestId, detachedJwsDigest }, cancellationToken);
+    /// <inheritdoc />
+    public Task<GovernanceRejectedIssueOriginal?> ReadRejectedIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
+        => guard.InvokeAsync<GovernanceRejectedIssueOriginal>("erc-read-rejected-issue", new { payload, signingRequestId, detachedJwsDigest }, cancellationToken);
 }

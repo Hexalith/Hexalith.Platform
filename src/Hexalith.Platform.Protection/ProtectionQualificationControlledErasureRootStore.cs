@@ -16,7 +16,14 @@ public sealed class ProtectionQualificationControlledErasureRootStore(IErasureRo
     /// <inheritdoc />
     public Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken) => Call(tenantId, "head-read", () => native.ReadHeadAsync(tenantId, cancellationToken), cancellationToken);
     /// <inheritdoc />
-    public Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken) => Call(tenantId, "head-cas", () => native.CompareExchangeHeadAsync(tenantId, version, head, cancellationToken), cancellationToken);
+    public async Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken)
+    {
+        string? owner = ErasureRootNativeOperationScope.Current;
+        if (owner is not null) { await controls.CheckAsync(owner, "before", cancellationToken).ConfigureAwait(false); }
+        bool result = await Call(tenantId, "head-cas", () => native.CompareExchangeHeadAsync(tenantId, version, head, cancellationToken), cancellationToken).ConfigureAwait(false);
+        if (owner is not null && result) { await controls.CheckAsync(owner, "after", cancellationToken).ConfigureAwait(false); }
+        return result;
+    }
     /// <inheritdoc />
     public Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken) => Call(tenantId, "wrap", () => native.EncryptAsync(tenantId, epoch, root, context, cancellationToken), cancellationToken);
     /// <inheritdoc />

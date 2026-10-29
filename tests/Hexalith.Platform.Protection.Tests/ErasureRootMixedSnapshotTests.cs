@@ -96,6 +96,19 @@ public sealed class ErasureRootMixedSnapshotTests
     }
 
     [Fact]
+    public async Task DuplicateCaseCarrierFieldsAndOverlappingProtectedValuesRefuse()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var write = await Seal(fixture, state, originals, parent);
+        string encoded = JsonSerializer.Serialize(write.ProtectionResult.State);
+        using var duplicate = JsonDocument.Parse(encoded.Insert(1, "\"format\":\"json+pdenc-v2-entries\","));
+        (await fixture.Engine.TryReplaySnapshotAsync(originals[0].Binding.Identity.Owner, duplicate.RootElement, write.ProtectionResult.Metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        byte[] nested = JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Target = originals[0].Binding.Identity.Target,
+            Value = new { ProtectedContent = new { Target = originals[1].Binding.Identity.Target, Value = "nested" } } } });
+        Should.Throw<Exception>(() => InteractionSnapshotEntries.Describe(nested, "tenant-a", Token));
+    }
+
+    [Fact]
     public void NewCompletionFieldsDoNotChangeExistingSingleTargetSerializedOriginals()
     {
         var owner = new Hexalith.EventStore.Contracts.Identity.AggregateIdentity("tenant-a", "directory", "aggregate");

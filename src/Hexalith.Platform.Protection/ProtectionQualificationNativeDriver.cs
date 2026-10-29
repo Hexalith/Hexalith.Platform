@@ -13,10 +13,67 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Owned executable native fixture driver. Every call goes through the shipped engine/owner/custody/signing ports or actual scoped native source storage.</summary>
 public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtectionService engine, ErasureRootCustody custody, ErasureRootOccurrenceKeyProvider keys,
-    ErasureRootNativeOccurrenceSource source, DaprClient native, IGovernanceScopeGuard guard, IDeletionProtectionOwner protection,
+    IErasureRootOccurrenceSource source, DaprClient native, IGovernanceScopeGuard guard, IDeletionProtectionOwner protection,
     IDeletionConsumptionActor consumption, IDeletionCapabilitySigningActor signer, DeletionCapabilityRevocationSubscriber compromise,
     ProtectionQualificationFaults faults, IReadOnlySet<string> fixtureSourceComponents, IErasureRootAuthorization authorization)
 {
+    /// <summary>Captures the actual source-owned compare/census before the durable native-call admission. Execution never refreshes an admitted compare.</summary>
+    public async Task<ProtectionQualificationNativeCall> PrepareCallAsync(ProtectionQualificationNativeCall input, CancellationToken token)
+    {
+        var payload = (JsonObject)input.Payload.DeepClone();
+        if (input.Kind == ProtectionQualificationNativeCallKind.Sign)
+        {
+            var capability = payload.Deserialize<DeletionBatchCapabilityV1>()!;
+            var current = await guard.ReadAsync(capability.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Native signing compare unavailable.");
+            var deletion = current.Deletions.Single(value => value.RequestId == capability.DeletionRequestId);
+            var batch = deletion.Batches.Single(value => value.BatchId == capability.BatchId);
+            if (deletion.SealId != capability.DestructionSealId || batch.ManifestDigest != capability.ManifestDigest || batch.Kind != capability.BatchKind || batch.Ordinal != capability.BatchOrdinal)
+            { throw new InvalidOperationException("Exact native sealed batch required before signing."); }
+            payload = (JsonObject)JsonSerializer.SerializeToNode(capability with { IntendedIssuedGuardRevision = current.Revision })!;
+        }
+        if (input.Kind == ProtectionQualificationNativeCallKind.Guard)
+        {
+            var transition = payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+            if (payload["UseCurrentGuardRevision"]?.GetValue<bool>() is true)
+            { transition = transition with { ExpectedGuardRevision = (await guard.ReadAsync(transition.TenantId, token).ConfigureAwait(false))?.Revision ?? throw new InvalidOperationException("Native guard compare unavailable.") }; }
+            else if (transition.Operation is GovernanceGuardOperation.RecordBatchIssued or GovernanceGuardOperation.ReplaceAttestation or GovernanceGuardOperation.RecordBatchIssuanceStale)
+            { transition = transition with { ExpectedGuardRevision = transition.Batch?.Capability?.IntendedIssuedGuardRevision ?? throw new InvalidOperationException("Exact signed intended compare required.") }; }
+            if (transition.Operation is GovernanceGuardOperation.RecordBatchIssued or GovernanceGuardOperation.ReplaceAttestation)
+            {
+                var batch = transition.Batch ?? throw new InvalidOperationException("Actual signed batch required.");
+                string signingId = DeletionBatchCapabilityCodec.SigningRequestId(batch.Capability!);
+                string signedDigest = DeletionBatchCapabilityIdentity.SignedArtifactDigest(batch.DetachedJws);
+                if (batch.SigningRequestId != signingId || batch.AttestationDigest != signedDigest) { throw new InvalidOperationException("Actual canonical signed artifact required."); }
+                transition = transition with { OperationId = DeletionBatchCapabilityIdentity.IssueOperationId(signingId, signedDigest) };
+            }
+            payload["transition"] = JsonSerializer.SerializeToNode(transition); payload.Remove("UseCurrentGuardRevision");
+        }
+        if (input.Kind == ProtectionQualificationNativeCallKind.GuardOwnersEffective)
+        {
+            var transition = payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+            var state = await guard.ReadAsync(transition.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Native owner census unavailable.");
+            var deletion = state.Deletions.Single(value => value.RequestId == transition.DeletionRequestId);
+            payload["transition"] = JsonSerializer.SerializeToNode(transition with { ExpectedGuardRevision = state.Revision });
+            payload["ownerIds"] = JsonSerializer.SerializeToNode(deletion.RequiredOwnerIds.Order(StringComparer.Ordinal).ToArray());
+            payload["expectedOrdinal"] = deletion.Ordinal; payload["obligationDigest"] = GovernanceScopeGuardReducer.ObligationDigest(deletion.ObligationIds);
+        }
+        if (input.Kind == ProtectionQualificationNativeCallKind.LookupProvider)
+        {
+            var request = payload["request"]!.Deserialize<DeletionBatchConsumptionRequest>()!;
+            var original = await consumption.ReadReservationOriginalAsync(request).WaitAsync(token).ConfigureAwait(false)
+                ?? throw new InvalidOperationException("Actual original reservation required for provider lookup.");
+            payload["reservationReceiptId"] = original.Outcome.ReceiptId ?? throw new InvalidOperationException("Actual reserved receipt required.");
+        }
+        return input with { Payload = payload };
+    }
+    /// <summary>Identifies only a previously admitted native reservation. Fixture preparation may complete that original; it cannot authorize a new manifest.</summary>
+    public async Task<ProtectionQualificationNativeCall?> PendingRecoveryAsync(string tenant, string fixtureId, CancellationToken token)
+    {
+        var current = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+        if (current is not { } read || read.Head.Pending is not { } pending) { return null; }
+        return new(fixtureId + ":prior-reservation-original", ProtectionQualificationNativeCallKind.LookupProvider,
+            new JsonObject { ["request"] = JsonSerializer.SerializeToNode(pending.Request), ["reservationReceiptId"] = pending.ReservationReceiptId });
+    }
     /// <summary>Resolves only actual retained original outcomes. It never repeats a native effect, signs, reserves, restores, unwraps or arms another fault.</summary>
     public async Task<JsonNode?> RecoverAsync(ProtectionQualificationNativeCall step, CancellationToken token)
     {
@@ -43,9 +100,16 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 }
                 break;
             case ProtectionQualificationNativeCallKind.Block:
+            case ProtectionQualificationNativeCallKind.LookupBlock:
                 result = (await consumption.ReadBlockOriginalAsync(Read<DeletionBatchBlockRequest>()).WaitAsync(token).ConfigureAwait(false))?.Outcome; break;
             case ProtectionQualificationNativeCallKind.Activate:
+            case ProtectionQualificationNativeCallKind.LookupActivation:
                 result = (await consumption.ReadActivationOriginalAsync(Read<DeletionReattestationActivation>()).WaitAsync(token).ConfigureAwait(false))?.Outcome; break;
+            case ProtectionQualificationNativeCallKind.ReconcileBlockedReplacement:
+                var reconciliation = Read<DeletionBlockedReplacementReconciliation>();
+                var phase = await protection.ReadBlockedReplacementAsync(reconciliation.Capability, token).ConfigureAwait(false);
+                result = phase?.Original.OperationId == reconciliation.OperationId && phase.Original.SigningRequestId == reconciliation.SigningRequestId
+                    && phase.Original.DetachedJws == reconciliation.DetachedJws ? phase.Outcome : null; break;
             case ProtectionQualificationNativeCallKind.Sign:
             case ProtectionQualificationNativeCallKind.ObsoleteUnissued:
                 result = await signer.LookupAsync(Read<DeletionBatchCapabilityV1>()).WaitAsync(token).ConfigureAwait(false); break;
@@ -58,6 +122,18 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 string intent = ErasureRootCustody.Hash(new { Transition = transition, TargetMutationDigest = ErasureRootCustody.Hash(targets) });
                 var guardState = await guard.ReadAsync(transition.TenantId, token).ConfigureAwait(false);
                 result = guardState?.Receipts.SingleOrDefault(receipt => receipt.OperationId == transition.OperationId && receipt.IntentDigest == intent); break;
+            case ProtectionQualificationNativeCallKind.GuardOwnersEffective:
+                var template = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+                var currentOwners = await guard.ReadAsync(template.TenantId, token).ConfigureAwait(false);
+                if (currentOwners is null) { break; }
+                var originals = step.Payload["ownerIds"]!.Deserialize<string[]>()!.Select((owner, index) =>
+                {
+                    var command = OwnerCycleCommand(step.Payload, owner, index);
+                    string intent = ErasureRootCustody.Hash(new { Transition = command, TargetMutationDigest = ErasureRootCustody.Hash(Array.Empty<GuardedStateMutation>()) });
+                    return currentOwners.Receipts.SingleOrDefault(receipt => receipt.OperationId == command.OperationId && receipt.IntentDigest == intent);
+                }).ToArray();
+                if (originals.All(original => original?.Status == "Committed")) { result = new { status = "Completed", outcomes = originals }; }
+                break;
             case ProtectionQualificationNativeCallKind.Compromise:
                 var envelope = step.Payload["envelope"]!.Deserialize<DeletionCapabilityRevocationEnvelope>()!;
                 var revocation = await consumption.LookupRevocationAsync(envelope).WaitAsync(token).ConfigureAwait(false);
@@ -98,12 +174,18 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     public async Task<JsonNode?> ExecuteAsync(ProtectionQualificationNativeCall step, JsonObject request, CancellationToken token)
     {
         await faults.CheckAsync(step.Id, "before", token).ConfigureAwait(false);
+        string tenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
+        string? effectBefore = request["action"]!.GetValue<string>().StartsWith("Reject", StringComparison.Ordinal) ? await EffectAsync(tenant, token).ConfigureAwait(false) : null;
         T Read<T>() => step.Payload.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Exact typed native input required.");
         object? result;
         switch (step.Kind)
         {
             case ProtectionQualificationNativeCallKind.SealEvent:
-                result = await SealAsync(Read<ProtectionQualificationNativeSeal>(), request, step.Payload["changedCanaryBase64"]?.GetValue<string>(), token).ConfigureAwait(false); break;
+                var sealing = Read<ProtectionQualificationNativeSeal>();
+                try { result = await SealAsync(sealing, request, sealing.ChangePayload ? Convert.ToBase64String("different-synthetic-owner-payload"u8) : null, token).ConfigureAwait(false); }
+                catch (PayloadProtectionOccurrenceConflictException) when (sealing.ChangePayload)
+                { result = new { status = "Conflict" }; }
+                break;
             case ProtectionQualificationNativeCallKind.UnsealEvent:
                 var opening = await ReadEventAsync(Read<ProtectionQualificationNativeCell>(), token).ConfigureAwait(false);
                 var opened = await engine.TryUnprotectEventPayloadAsync(opening.Binding.Identity.Owner, opening.Binding.Identity.PayloadTypeId, opening.Protected.PayloadBytes,
@@ -146,23 +228,78 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var lifecycle = step.Payload["request"]!.Deserialize<CustodyKeyLifecycleRequest>()!;
                 var registration = step.Payload["registration"]!.Deserialize<CustodyKeyRegistration>()!;
                 result = await custody.ExecuteAsync(registration, lifecycle, ErasureRootCustody.Hash(lifecycle), token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.ReplaySnapshot:
+                result = await ReplaySnapshotAsync(Read<ProtectionQualificationNativeSnapshotRead>(), token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.AuthorizeLifecycle:
                 var exactFence = Read<CustodyKeyLifecycleRequest>();
-                bool permitted = await authorization.VerifyLifecycleAsync(exactFence, token).ConfigureAwait(false);
-                result = new { status = permitted ? "Authorized" : "Denied", requestDigest = ErasureRootCustody.Hash(exactFence), fenceTokenId = exactFence.FenceTokenId }; break;
+                var lifecycleEvidence = await authorization.ReadLifecycleEvidenceAsync(exactFence, token).ConfigureAwait(false);
+                result = new { status = lifecycleEvidence is not null ? "Authorized" : "Denied", requestDigest = ErasureRootCustody.Hash(exactFence), fenceTokenId = exactFence.FenceTokenId,
+                    operationId = exactFence.OperationId, receiptId = lifecycleEvidence?.ReceiptId, target = new ProtectionTarget(exactFence.Identity.TenantId, exactFence.Identity.ObjectId, exactFence.Identity.KeyAlias) }; break;
             case ProtectionQualificationNativeCallKind.Guard:
-                result = await guard.ExecuteAsync(step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!,
-                    step.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!, token).ConfigureAwait(false); break;
+                var transition = step.Payload["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+                result = await guard.ExecuteAsync(transition, step.Payload["targets"]!.Deserialize<GuardedStateMutation[]>()!, token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.GuardOwnersEffective:
+                result = await MakeOwnersEffectiveAsync(step.Payload, token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.RegisterIfDispatched:
+            case ProtectionQualificationNativeCallKind.ReserveIfDispatched:
+                var conditional = Read<DeletionBatchConsumptionRequest>();
+                if (await IsHoldPreventedAsync(conditional, token).ConfigureAwait(false)) { result = new { status = "HoldBlocked" }; break; }
+                result = step.Kind == ProtectionQualificationNativeCallKind.RegisterIfDispatched ? await protection.RegisterAsync(conditional, token).ConfigureAwait(false)
+                    : await protection.ReserveAndConsumeAsync(conditional, token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Register: result = await protection.RegisterAsync(Read<DeletionBatchConsumptionRequest>(), token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Reserve: result = await protection.ReserveAndConsumeAsync(Read<DeletionBatchConsumptionRequest>(), token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.RejectSubstitutions:
+                var denied = new JsonArray(); bool accepted = false;
+                foreach (var variant in ProtectionQualificationSubstitutions.Create(request["action"]!.GetValue<string>(), Read<DeletionBatchConsumptionRequest>(), request["otherTenantReference"]!.GetValue<string>()))
+                {
+                    JsonNode? outcome;
+                    try
+                    {
+                        var nativeOutcome = await protection.ReserveAndConsumeAsync(variant.Request, token).ConfigureAwait(false);
+                        accepted |= nativeOutcome.Status is DeletionConsumptionStatus.ConsumptionReserved or DeletionConsumptionStatus.Consumed or DeletionConsumptionStatus.AlreadyDestroyedByBatch;
+                        outcome = Result(nativeOutcome);
+                    }
+                    catch (ArgumentException) { outcome = new JsonObject { ["status"] = "Denied", ["validation"] = "ArgumentRejected" }; }
+                    denied.Add(new JsonObject { ["mutation"] = variant.Mutation, ["outcome"] = outcome });
+                }
+                result = new JsonObject { ["status"] = accepted ? "UnexpectedAccepted" : "Denied", ["outcomes"] = denied }; break;
+            case ProtectionQualificationNativeCallKind.RejectForeignRoot:
+                var root = Read<CustodyKeyRegistration>();
+                string other = request["otherTenantReference"]!.GetValue<string>();
+                if (root.Identity.TenantId != tenant || other == tenant || !request["targets"]!.Deserialize<ProtectionTarget[]>()!.Any(target => ErasureRootCustody.TargetId(target) == ErasureRootCustody.TargetId(root.Identity)))
+                { throw new InvalidOperationException("Exact original same-alias tenant-isolation fixture required."); }
+                var foreign = await custody.WrapAsync(root.Identity with { TenantId = other }, request["operationId"]!.GetValue<string>(), 0, token).ConfigureAwait(false);
+                result = new { status = foreign is null ? "Denied" : "UnexpectedAccepted" }; break;
             case ProtectionQualificationNativeCallKind.Block: result = await consumption.BlockAsync(Read<DeletionBatchBlockRequest>()).WaitAsync(token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Activate: result = await protection.ActivateAsync(Read<DeletionReattestationActivation>(), token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.ReconcileBlockedReplacement:
+                var reconciliation = Read<DeletionBlockedReplacementReconciliation>();
+                if (request["caseId"]!.GetValue<string>() == "P30")
+                {
+                    if (reconciliation.UnissuedProof is not null) { throw new InvalidOperationException("Rejected issue evidence must come from the actual private guard port."); }
+                    var noIssue = await guard.ReadRejectedIssueAsync(reconciliation.Capability, reconciliation.SigningRequestId,
+                        Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(reconciliation.DetachedJws))), token).ConfigureAwait(false)
+                        ?? throw new InvalidOperationException("Exact independently retained rejected-issue original unavailable.");
+                    reconciliation = reconciliation with { UnissuedProof = noIssue, CommittedIssuedGuardRevision = 0, GuardReplacementReceiptId = noIssue.Refusal.ReceiptId };
+                }
+                result = await protection.ReconcileBlockedReplacementAsync(reconciliation, token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Sign: result = await signer.SignAsync(Read<DeletionBatchCapabilityV1>()).WaitAsync(token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.ObsoleteUnissued: result = await signer.ObsoleteUnissuedAsync(Read<DeletionBatchCapabilityV1>()).WaitAsync(token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Compromise:
-                result = await compromise.ReceiveAsync(step.Payload["envelope"]!.Deserialize<DeletionCapabilityRevocationEnvelope>()!, step.Payload["signedEvidence"]!.GetValue<string>(), token).ConfigureAwait(false); break;
+                var envelope = step.Payload["envelope"]!.Deserialize<DeletionCapabilityRevocationEnvelope>()!;
+                if (!await compromise.ReceiveAsync(envelope, step.Payload["signedEvidence"]!.GetValue<string>(), token).ConfigureAwait(false))
+                { throw new InvalidOperationException("Exact original compromise or guard mirror remains unresolved."); }
+                result = new { status = "Completed", receipt = await consumption.LookupRevocationAsync(envelope).WaitAsync(token).ConfigureAwait(false) }; break;
             case ProtectionQualificationNativeCallKind.Lookup:
                 result = await protection.LookupAsync(step.Payload["tenantId"]!.GetValue<string>(), step.Payload["batchId"]!.GetValue<string>(), token).ConfigureAwait(false); break;
+            case ProtectionQualificationNativeCallKind.LookupBlock:
+                result = (await consumption.ReadBlockOriginalAsync(Read<DeletionBatchBlockRequest>()).WaitAsync(token).ConfigureAwait(false))?.Outcome
+                    ?? throw new InvalidOperationException("Exact production block original unavailable."); break;
+            case ProtectionQualificationNativeCallKind.LookupActivation:
+                result = (await consumption.ReadActivationOriginalAsync(Read<DeletionReattestationActivation>()).WaitAsync(token).ConfigureAwait(false))?.Outcome
+                    ?? throw new InvalidOperationException("Exact production activation original unavailable."); break;
+            case ProtectionQualificationNativeCallKind.LookupProvider:
+                result = await custody.LookupAsync(step.Payload["request"]!.Deserialize<DeletionBatchConsumptionRequest>()!, step.Payload["reservationReceiptId"]!.GetValue<string>(), token).ConfigureAwait(false); break;
             case ProtectionQualificationNativeCallKind.Backup:
                 var backup = Read<ProtectionQualificationNativeCell>(); Check(backup);
                 var actual = await native.GetStateAsync<JsonElement>(backup.Component, backup.Key, ConsistencyMode.Strong, backup.Metadata, token).ConfigureAwait(false);
@@ -176,7 +313,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 await native.SaveStateAsync(restore.Component, restore.Key, saved, metadata: restore.Metadata, cancellationToken: token).ConfigureAwait(false);
                 result = new { receiptId = ErasureRootCustody.Hash(new { restore, saved }) }; break;
             case ProtectionQualificationNativeCallKind.Fault:
-                await faults.ArmAsync(step.Payload["stepId"]!.GetValue<string>(), step.Payload["boundary"]!.GetValue<string>(), token).ConfigureAwait(false);
+                await faults.ArmAsync(step.Payload["stepId"]!.GetValue<string>(), step.Payload["boundary"]!.GetValue<string>(), request["operationId"]!.GetValue<string>(), token).ConfigureAwait(false);
                 result = new { originalStepId = step.Payload["stepId"]!.GetValue<string>(), armed = true }; break;
             case ProtectionQualificationNativeCallKind.SealSnapshot:
                 if (step.Payload.ContainsKey("Entries"))
@@ -202,7 +339,24 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         await keys.CompleteDisposedUsesAsync(token).ConfigureAwait(false);
         await faults.CheckAsync(step.Id, "after", token).ConfigureAwait(false);
-        return Result(result);
+        bool negative = request["action"]!.GetValue<string>().StartsWith("Reject", StringComparison.Ordinal);
+        if (!negative && result is DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.Unavailable })
+        { throw new InvalidOperationException("Original native owner result unresolved; read-only original recovery required."); }
+        var captured = Result(result);
+        if (request["action"]!.GetValue<string>() == "RejectStaleRevokedDispatch" && result is DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.ConsumptionBlocked } && captured is JsonObject stale)
+        { stale["status"] = "Denied"; }
+        if (negative && step.Kind == ProtectionQualificationNativeCallKind.Reserve && result is DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.Unavailable or DeletionConsumptionStatus.ConsumptionReserved }
+            && captured is JsonObject refusedManifest)
+        {
+            var proof = await custody.CapturePinnedManifestRefusalAsync(Read<DeletionBatchConsumptionRequest>(), request["operationId"]!.GetValue<string>() + ":" + step.Id, token).ConfigureAwait(false);
+            if (proof is not null) { refusedManifest["status"] = "HoldPinned"; refusedManifest["pinRefusals"] = JsonSerializer.SerializeToNode(proof); }
+            else if (await IsHoldPreventedAsync(Read<DeletionBatchConsumptionRequest>(), token).ConfigureAwait(false)) { refusedManifest["status"] = "HoldBlocked"; }
+        }
+        if (negative && result is DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.ConsumptionReserved } && captured is JsonObject pendingResult && pendingResult["status"]?.GetValue<string>() != "HoldPinned")
+        { pendingResult["status"] = "ProviderUnavailable"; }
+        if (effectBefore is not null && captured is JsonObject audit)
+        { audit["effectBefore"] = effectBefore; audit["effectAfter"] = await EffectAsync(tenant, token).ConfigureAwait(false); }
+        return captured;
     }
     private static JsonNode? Result(object? result)
     {
@@ -211,7 +365,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         {
             string? status = result switch
             {
+                DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.Unavailable } => "ProviderUnavailable",
                 DeletionConsumptionOutcome actual => actual.Status.ToString(),
+                CustodyKeyLifecycleOutcome { Status: CustodyKeyLifecycleStatus.BlockedByPin } => "HoldPinned",
                 CustodyKeyLifecycleOutcome actual => actual.Status.ToString(),
                 DeletionCapabilitySigningOutcome actual => actual.State.ToString(),
                 _ => null,
@@ -220,6 +376,52 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         return node;
     }
+    private async Task<string> EffectAsync(string tenant, CancellationToken token)
+    {
+        var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+        if (read is not { } head) { throw new InvalidOperationException("Independent current native effect boundary unavailable."); }
+        return ErasureRootCustody.Hash(new { head.Head.Epoch, Targets = head.Head.Targets.ToDictionary(entry => entry.Key,
+            entry => new { entry.Value.Registration, entry.Value.Pins }, StringComparer.Ordinal), head.Head.Erased, head.Head.Occurrences });
+    }
+    private async Task<JsonObject> MakeOwnersEffectiveAsync(JsonObject input, CancellationToken token)
+    {
+        var template = input["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+        if (template.Operation != GovernanceGuardOperation.RecordOwnerCycleEffective) { throw new InvalidOperationException("Source-owned owner-cycle operation required."); }
+        var state = await guard.ReadAsync(template.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current native owner census unavailable.");
+        var deletion = state.Deletions.Single(value => value.RequestId == template.DeletionRequestId);
+        var owners = input["ownerIds"]!.Deserialize<string[]>()!;
+        if (deletion.Ordinal != input["expectedOrdinal"]!.GetValue<long>() || GovernanceScopeGuardReducer.ObligationDigest(deletion.ObligationIds) != input["obligationDigest"]!.GetValue<string>())
+        { throw new InvalidOperationException("Admitted native owner ordinal or obligations changed."); }
+        if (owners.Length is < 1 or > 1000 || owners.Distinct(StringComparer.Ordinal).Count() != owners.Length) { throw new InvalidOperationException("Complete finite native owner census required."); }
+        var outcomes = new JsonArray();
+        for (int index = 0; index < owners.Length; index++)
+        {
+            string owner = owners[index];
+            state = await guard.ReadAsync(template.TenantId, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Native owner-cycle compare unavailable.");
+            var current = state.Deletions.Single(value => value.RequestId == template.DeletionRequestId);
+            if (!current.RequiredOwnerIds.Order(StringComparer.Ordinal).SequenceEqual(owners) || current.Ordinal != deletion.Ordinal) { throw new InvalidOperationException("Captured native owner census changed."); }
+            var command = OwnerCycleCommand(input, owner, index);
+            var actual = await guard.ExecuteAsync(command, [], token).ConfigureAwait(false);
+            if (actual?.Status != "Committed") { throw new InvalidOperationException("Actual owner Effective evidence unavailable."); }
+            outcomes.Add(JsonSerializer.SerializeToNode(actual));
+        }
+        return new JsonObject { ["status"] = "Completed", ["outcomes"] = outcomes };
+    }
+    private static GovernanceGuardTransition OwnerCycleCommand(JsonObject input, string owner, int index)
+    {
+        var template = input["transition"]!.Deserialize<GovernanceGuardTransition>()!;
+        var ordinal = new GovernanceOrdinalCommand(input["expectedOrdinal"]!.GetValue<long>(), "", "", owner, input["obligationDigest"]!.GetValue<string>(), "", "", 0, 0, "", [], "");
+        return template with { OperationId = template.OperationId + ":" + ErasureRootCustody.Hash(owner), ExpectedGuardRevision = checked(template.ExpectedGuardRevision + index), Ordinal = ordinal };
+    }
+    private async Task<bool> IsHoldPreventedAsync(DeletionBatchConsumptionRequest request, CancellationToken token)
+    {
+        var current = await guard.ReadAsync(request.Capability.TenantId, token).ConfigureAwait(false);
+        if (current is null) { return false; }
+        var deletion = current.Deletions.SingleOrDefault(value => value.RequestId == request.Capability.DeletionRequestId);
+        var batch = deletion?.Batches.SingleOrDefault(value => value.BatchId == request.Capability.BatchId);
+        return deletion is not null && batch?.Capability == request.Capability && batch.DetachedJws == request.DetachedJws && batch.DispatchReceiptId.Length == 0
+            && current.Holds.Any(hold => hold.Active && ErasureRootCustody.Hash(hold.Scope) == ErasureRootCustody.Hash(deletion.Scope));
+    }
 
     private async Task<PayloadProtectionWriteResult> SealAsync(ProtectionQualificationNativeSeal input, JsonObject request, string? changedCanary, CancellationToken token)
     {
@@ -227,7 +429,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         var binding = input.Enrollment.Binding;
         if (input.Enrollment.Writer is not { } writer || writer.Component != input.Source.Component
             || !await source.RegisterOriginalAsync(input.Enrollment, token).ConfigureAwait(false)) { throw new InvalidOperationException("Independent native source original unavailable."); }
-        byte[] canary = Convert.FromBase64String(changedCanary ?? request["canaryBase64"]!.GetValue<string>());
+        byte[] canary = Convert.FromBase64String(changedCanary ?? request["canaryBase64"]?.GetValue<string>() ?? await ReadSeedAsync(input.SeedSource, token).ConfigureAwait(false));
         byte[] payload = JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Target = binding.Identity.Target, Value = new { CanaryBase64 = Convert.ToBase64String(canary) } } });
         try
         {
@@ -250,8 +452,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         Check(input.Source);
         if (string.IsNullOrWhiteSpace(input.Source.CompletionKey)) { throw new InvalidOperationException("Explicit native composite completion journal required."); }
         var targets = request["targets"]!.Deserialize<ProtectionTarget[]>()!;
+        string canary = request["canaryBase64"]?.GetValue<string>() ?? await ReadSeedAsync(input.SeedSource, token).ConfigureAwait(false);
         var state = JsonSerializer.SerializeToElement(new { Entries = targets.Select(target => new { ProtectedContent = new { Target = target,
-            Value = new { CanaryBase64 = request["canaryBase64"]!.GetValue<string>() } } }).ToArray() });
+            Value = new { CanaryBase64 = canary } } }).ToArray() });
         var layout = InteractionSnapshotEntries.Describe(JsonSerializer.SerializeToUtf8Bytes(state), targets[0].TenantId, token);
         if (input.Entries.Length != layout.Entries.Count || input.Entries.Length is < 2 or > 1000) { throw new InvalidOperationException("Complete mixed-root native source manifest required."); }
         var originals = new List<ErasureRootOccurrenceEnrollment>();
@@ -286,6 +489,48 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         await native.ExecuteStateTransactionAsync(input.Source.Component, operations, input.Source.Metadata, token).ConfigureAwait(false);
         await engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token).ConfigureAwait(false);
         return write;
+    }
+    private async Task<JsonArray> ReplaySnapshotAsync(ProtectionQualificationNativeSnapshotRead input, CancellationToken token)
+    {
+        Check(input.Source);
+        var snapshot = await native.GetStateAsync<SnapshotProtectionResult>(input.Source.Component, input.Source.Key, ConsistencyMode.Strong, input.Source.Metadata, token).ConfigureAwait(false)
+            ?? throw new InvalidOperationException("Exact original sealed snapshot unavailable.");
+        var type = new JsonSerializerOptions { TypeInfoResolver = new DefaultJsonTypeInfoResolver() }.GetTypeInfo(typeof(JsonElement));
+        var trusted = await engine.TryReplaySnapshotAsync(input.Owner, snapshot.State, snapshot.Metadata, type, input.Parent, token).ConfigureAwait(false);
+        var external = await engine.TryUnprotectSnapshotAsync(input.Owner, snapshot.State, snapshot.Metadata, type, input.Parent, token).ConfigureAwait(false);
+        if (!trusted.IsReadable || trusted.State is not JsonElement restored) { throw new InvalidOperationException("Actual trusted snapshot replay unavailable."); }
+        var projected = new JsonArray();
+        void Visit(JsonElement value)
+        {
+            if (value.ValueKind == JsonValueKind.Object)
+            {
+                if (value.TryGetProperty("ProtectedContent", out var content) && content.ValueKind == JsonValueKind.Object
+                    && content.TryGetProperty("Target", out var target) && content.TryGetProperty("Value", out var field))
+                {
+                    JsonNode? erased = field.ValueKind == JsonValueKind.Object && field.EnumerateObject().Count() == 1
+                        && field.TryGetProperty("State", out var state) && state.GetString() == "Erased" ? JsonNode.Parse(field.GetRawText()) : null;
+                    projected.Add(new JsonObject { ["target"] = JsonNode.Parse(target.GetRawText()), ["field"] = erased, ["externalOutcome"] = external.IsReadable ? "Readable" : "Unreadable" });
+                    return;
+                }
+                foreach (var property in value.EnumerateObject()) { Visit(property.Value); }
+            }
+            else if (value.ValueKind == JsonValueKind.Array) { foreach (var child in value.EnumerateArray()) { Visit(child); } }
+        }
+        Visit(restored);
+        if (projected.Count == 0) { throw new InvalidOperationException("Actual typed per-entry snapshot replay required."); }
+        await native.SaveStateAsync(input.Source.Component, input.Source.Key + ":replay", projected, metadata: input.Source.Metadata, cancellationToken: token).ConfigureAwait(false);
+        return projected;
+    }
+    private async Task<string> ReadSeedAsync(ProtectionQualificationNativeCell? cell, CancellationToken token)
+    {
+        if (cell is null) { throw new InvalidOperationException("Explicit sealed native seed required for a content-free backup request."); }
+        var sourceEvent = await ReadEventAsync(cell, token).ConfigureAwait(false);
+        var opened = await engine.TryUnprotectEventPayloadAsync(sourceEvent.Binding.Identity.Owner, sourceEvent.Binding.Identity.PayloadTypeId,
+            sourceEvent.Protected.PayloadBytes, sourceEvent.Protected.SerializationFormat, sourceEvent.Protected.Metadata,
+            ErasureRootOccurrenceBindings.Occurrence(sourceEvent.Binding.Identity), token).ConfigureAwait(false);
+        if (!opened.IsReadable || opened.PayloadBytes is null) { throw new InvalidOperationException("Actual sealed seed unreadable."); }
+        try { using var clear = JsonDocument.Parse(opened.PayloadBytes); return clear.RootElement.GetProperty("ProtectedContent").GetProperty("Value").GetProperty("CanaryBase64").GetString()!; }
+        finally { CryptographicOperations.ZeroMemory(opened.PayloadBytes); }
     }
     private async Task<ProtectionQualificationPersistedEvent> ReadEventAsync(ProtectionQualificationNativeCell cell, CancellationToken token)
     {

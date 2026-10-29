@@ -9,6 +9,17 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     IErasureRootOccurrenceSource source) : IInteractionProtectionBindingProvider, IInteractionProtectionBindingSource
 {
     /// <inheritdoc />
+    public async Task<InteractionProtectionBinding?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        byte[] sealedPayload, string keyReference, CancellationToken cancellationToken = default)
+    {
+        var loss = await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false);
+        if (loss is null) { return null; }
+        var original = await source.ResolveErasedStoredAsync(owner, occurrence, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(sealedPayload)),
+            keyReference, loss, cancellationToken).ConfigureAwait(false);
+        return original is not null && original.RootIdentity.StoreTarget == loss.StoreId && original.Binding.Identity.Owner == owner
+            && Occurrence(original.Binding.Identity) == occurrence && original.Binding.KeyReference == keyReference ? original.Binding : null;
+    }
+    /// <inheritdoc />
     public async Task<IReadOnlyList<InteractionProtectionBinding>?> ResolveSnapshotEntriesAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext parent,
         string containerDigest, IReadOnlyList<SnapshotProtectionEntry> entries, bool writing, CancellationToken cancellationToken = default)
     {
@@ -72,7 +83,13 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
         {
             var retained = await FindAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
             if (retained is not null) { return requestedTarget is null || retained.Enrollment.Binding.Identity.Target == requestedTarget ? retained.Enrollment.Binding : null; }
-            if (!writing) { return null; }
+            if (!writing)
+            {
+                var loss = await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false);
+                var lost = loss is null ? null : await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
+                return lost is not null && lost.RootIdentity.StoreTarget == loss!.StoreId && lost.Binding.Identity.Owner == owner && Occurrence(lost.Binding.Identity) == occurrence
+                    && (requestedTarget is null || lost.Binding.Identity.Target == requestedTarget) ? lost.Binding : null;
+            }
             var enrolled = await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
             if (enrolled is null || enrolled.Binding.Identity.Owner != owner || enrolled.Binding.Identity.Sequence != occurrence.RecordSequence
                 || enrolled.Binding.Identity.Kind != occurrence.PayloadKind || enrolled.Binding.Identity.PayloadTypeId != occurrence.PayloadTypeId
@@ -157,6 +174,15 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding, CancellationToken cancellationToken)
     {
+        var loss = await custody.ReadPermanentLossAsync(binding.Identity.Target.TenantId, cancellationToken).ConfigureAwait(false);
+        if (loss is not null)
+        {
+            var sourceOriginal = await source.ResolveAsync(binding.Identity.Owner, Occurrence(binding.Identity), cancellationToken).ConfigureAwait(false);
+            if (sourceOriginal?.Binding != binding || sourceOriginal.RootIdentity.StoreTarget != loss.StoreId) { return null; }
+            string[] lostTargets = [InteractionProtectionBindingProvider.TargetId(binding.Identity.Target)], lostReceipts = ["erc-permanent-loss:" + loss.ReceiptId + ":" + ErasureRootCustody.Hash(binding.Identity.Target)];
+            return new(InteractionProtectionBindingProvider.ManifestDigest(binding), InteractionProtectionBindingProvider.ReceiptOrderDigest(lostTargets, lostReceipts),
+                lostTargets, lostReceipts, true, false, null, false, null);
+        }
         var original = await FindAsync(binding.Identity.Owner, Occurrence(binding.Identity), cancellationToken).ConfigureAwait(false);
         if (original?.Enrollment.Binding != binding) { return null; }
         var erased = await custody.ReadErasureAsync(binding.Identity.Target, cancellationToken).ConfigureAwait(false);

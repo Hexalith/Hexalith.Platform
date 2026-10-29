@@ -1,4 +1,8 @@
 using System.Text.Json.Nodes;
+using System.Text.Json;
+using Hexalith.EventStore.Contracts.Security;
+using Hexalith.EventStore.Server.Security;
+using Hexalith.Platform.Custody;
 
 namespace Hexalith.Platform.Protection;
 
@@ -27,6 +31,22 @@ public static class ProtectionQualificationRecipeBinding
                 {
                     return JsonValue.Create(string.Concat(pieces.Select(piece => Resolve(piece)?.GetValue<string>()
                         ?? throw new InvalidOperationException("Exact native identity string pieces required."))));
+                }
+                if (reference["$codec"] is JsonObject codec && codec.Count == 2)
+                {
+                    var input = Resolve(codec["input"]) ?? throw new InvalidOperationException("Exact codec input required.");
+                    string digest = codec["name"]?.GetValue<string>() switch
+                    {
+                        "TargetManifestDigest" => DeletionBatchCapabilityIdentity.TargetManifestDigest(input.Deserialize<ProtectionTarget[]>()!),
+                        "PredicateDigest" => GovernanceScopeGuardReducer.PredicateDigest(input.Deserialize<GovernanceScopeV1>()!),
+                        "DestructionSealId" => GovernanceScopeGuardReducer.DestructionSealId(input["tenantId"]!.GetValue<string>(), input["requestId"]!.GetValue<string>(), input["scope"]!.Deserialize<GovernanceScopeV1>()!),
+                        "BatchId" => GovernanceScopeGuardReducer.BatchId(input["requestId"]!.GetValue<string>(), input["sealId"]!.GetValue<string>(), input["batch"]!.Deserialize<GovernanceBatchCommand>()!),
+                        "SigningRequestId" => DeletionBatchCapabilityCodec.SigningRequestId(input.Deserialize<DeletionBatchCapabilityV1>()!),
+                        "SignedArtifactDigest" => DeletionBatchCapabilityIdentity.SignedArtifactDigest(input.GetValue<string>()),
+                        "IssueOperationId" => DeletionBatchCapabilityIdentity.IssueOperationId(input["signingRequestId"]!.GetValue<string>(), input["detachedJwsDigest"]!.GetValue<string>()),
+                        _ => throw new InvalidOperationException("Unknown source-owned native identity codec."),
+                    };
+                    return JsonValue.Create(digest);
                 }
                 if (reference["$original"] is JsonObject original && original.Count == 2)
                 {

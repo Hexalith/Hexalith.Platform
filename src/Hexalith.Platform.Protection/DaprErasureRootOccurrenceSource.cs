@@ -8,6 +8,13 @@ namespace Hexalith.Platform.Protection;
 public sealed class DaprErasureRootOccurrenceSource(IndependentDaprAuthority source) : IErasureRootOccurrenceSource
 {
     /// <inheritdoc />
+    public Task<bool> RegisterOriginalAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken)
+        => source.InvokeAsync<bool>("erc-register-source-original", new { enrollment }, cancellationToken);
+    /// <inheritdoc />
+    public Task<ErasureRootOccurrenceEnrollment?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        string sealedPayloadSha256, string keyReference, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
+        => source.InvokeAsync<ErasureRootOccurrenceEnrollment>("erc-read-erased-original", new { owner, occurrence, sealedPayloadSha256, keyReference, loss }, cancellationToken);
+    /// <inheritdoc />
     public async Task<ErasureRootOccurrenceEnrollment?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken token)
     {
         var value = await source.InvokeAsync<ErasureRootOccurrenceEnrollment>("erc-occurrence-original", new { owner, occurrence }, token).ConfigureAwait(false);

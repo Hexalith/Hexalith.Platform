@@ -16,7 +16,7 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
     public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token)
     {
         var current = await erasureRoot.ReadAsync(recipe.TenantId, token).ConfigureAwait(false);
-        if (current is not { } head || head.Head.Pending is not null || targets.Count is < 1 or > 1000 || targets.Any(target => target.TenantId != recipe.TenantId))
+        if (current is not { } head || head.Head.Pending is { Survivors: not null } || targets.Count is < 1 or > 1000 || targets.Any(target => target.TenantId != recipe.TenantId))
         { throw new InvalidOperationException("DependencyNotAvailable: current complete ERC observation."); }
         var sources = new Dictionary<string, JsonNode>(StringComparer.Ordinal);
         foreach (var reference in recipe.Sources)
@@ -27,18 +27,25 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
             var value = await readOnlyNative.GetStateAsync<JsonElement>(cell.Component, cell.Key, ConsistencyMode.Strong, cell.Metadata, token).ConfigureAwait(false);
             if (value.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null) { throw new InvalidOperationException("Native observation unavailable."); }
             sources.Add(reference.Key, JsonNode.Parse(value.GetRawText())!);
+            var backup = await readOnlyNative.GetStateAsync<JsonElement>(cell.Component, cell.Key + ":backup", ConsistencyMode.Strong, cell.Metadata, token).ConfigureAwait(false);
+            if (backup.ValueKind is not (JsonValueKind.Undefined or JsonValueKind.Null)) { sources.Add(reference.Key + ":backup", JsonNode.Parse(backup.GetRawText())!); }
+            if (cell.CopyKind is not null)
+            {
+                var replay = await readOnlyNative.GetStateAsync<JsonElement>(cell.Component, cell.Key + ":replay", ConsistencyMode.Strong, cell.Metadata, token).ConfigureAwait(false);
+                if (replay.ValueKind is not (JsonValueKind.Undefined or JsonValueKind.Null)) { sources.Add(reference.Key + ":replay", JsonNode.Parse(replay.GetRawText())!); }
+            }
             if (cell.AnchorScope is not null && (!head.Head.Anchors.TryGetValue(cell.AnchorScope, out var anchor)
                 || ErasureRootCustody.Hash(value) != anchor.Digest))
             { throw new InvalidOperationException("Native observation is not independently current."); }
         }
         sources.Add("ERC", JsonSerializer.SerializeToNode(head.Head)!);
-        var observed = new JsonObject();
-        foreach (var field in recipe.Fields) { observed.Add(field.Key, Project(field.Value, sources, null)); }
+        var observed = recipe.CaseId is { } sourceCase ? ProtectionQualificationNativeProjection.Project(sourceCase, head.Head, sources, recipe.Sources, targets) : new JsonObject();
+        if (recipe.CaseId is null) { foreach (var field in recipe.Fields) { observed.Add(field.Key, Project(field.Value, sources, null)); } }
         var snapshotOriginals = new JsonArray(); var seenSnapshots = new HashSet<string>(StringComparer.Ordinal);
         foreach (var source in recipe.Sources)
         {
             var value = sources[source.Key];
-            var carrierNode = value["State"] is JsonObject state ? state : value as JsonObject;
+            var carrierNode = value is JsonObject document && document["State"] is JsonObject state ? state : value as JsonObject;
             if (carrierNode?["Format"]?.GetValue<string>() != "json+pdenc-v2-entries") { continue; }
             var carrier = carrierNode.Deserialize<ProtectedSnapshotEntriesV2>() ?? throw new InvalidOperationException("Native mixed snapshot unavailable.");
             string carrierHash = ErasureRootCustody.Hash(carrier);

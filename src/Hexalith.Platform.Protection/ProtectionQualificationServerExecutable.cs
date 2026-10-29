@@ -24,6 +24,11 @@ public static class ProtectionQualificationServerExecutable
         {
             var installed = JsonSerializer.Deserialize<ProtectionQualificationServerInstallation>(Read(installationFile, installationSha256), ErasureRootCustody.Json)!;
             var scope = JsonSerializer.Deserialize<ProtectionQualificationServiceScope>(Read(installed.ScopeFile, installed.ScopeSha256), ErasureRootCustody.Json)!;
+            if (scope.NativeArguments is null) { return 2; }
+            scope = scope with { Recipes = ProtectionQualificationSourceCatalog.Compile(scope.NativeArguments) };
+            if (!scope.Observations.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Recipes.Keys)) { return 2; }
+            scope = scope with { Observations = scope.Observations.ToDictionary(entry => entry.Key,
+                entry => entry.Value with { CaseId = entry.Key, Fields = new(StringComparer.Ordinal) }, StringComparer.Ordinal) };
             if (scope.Role != role || installed.SourceComponents.Intersect(installed.ReadComponents, StringComparer.Ordinal).Any() && role == "observer"
                 || role == "observer" && installed.SourceComponents.Length != 0) { return 2; }
             byte[] publicBytes = Read(installed.PublicAnchorFile, installed.PublicAnchorSha256);
@@ -39,6 +44,7 @@ public static class ProtectionQualificationServerExecutable
             {
                 ["EventStore:PayloadProtection:Enabled"] = "true", ["EventStore:PayloadProtection:InstallationFile"] = installed.HostInstallationFile,
                 ["EventStore:PayloadProtection:InstallationSha256"] = installed.HostInstallationSha256,
+                ["EventStore:PayloadProtection:QualificationObserver"] = (role == "observer").ToString(System.Globalization.CultureInfo.InvariantCulture),
             }).Build();
             services.AddPlatformErasureRootProtection(configuration);
             var controls = new ProtectionQualificationFaults(dapr, installed.FaultControl, installed.FaultEnrollmentId, installed.FaultOperations.ToHashSet(StringComparer.Ordinal));
@@ -61,10 +67,10 @@ public static class ProtectionQualificationServerExecutable
                 var guard = new ProtectionQualificationControlledGuard(new DaprErasureRootGovernanceGuard(new(transport, host.GuardAuthority, TimeProvider.System)), controls);
                 var consumption = ActorProxy.Create<IDeletionConsumptionActor>(new ActorId(DeletionConsumptionActor.GetActorId(scope.TenantId)), DeletionConsumptionActor.ActorTypeName);
                 var subscriber = new DeletionCapabilityRevocationSubscriber(installed.RevocationSubscription,
-                    new DaprRevocationAuthenticatorAdapter(provider.GetRequiredService<SecretsRuntimeConfiguration>(), transport, TimeProvider.System),
+                    provider.GetRequiredService<IDeletionCapabilityRevocationAuthenticator>(),
                     new DaprDeletionCapabilityCompromiseRegistrar(ActorProxy.DefaultProxyFactory), new EventStoreDeletionCapabilityGuardRevocationMirror(guard, TimeProvider.System), TimeProvider.System);
                 runner = new(new(engine, custody, provider.GetRequiredService<ErasureRootOccurrenceKeyProvider>(),
-                    new(custody, permission, dapr, provider.GetRequiredService<ErasureRootDigestKeyResolver>()), dapr, guard,
+                    provider.GetRequiredService<IErasureRootOccurrenceSource>(), dapr, guard,
                     new DaprDeletionProtectionOwner(scope.TenantId, ActorProxy.DefaultProxyFactory, TimeProvider.System), consumption,
                     new QualificationSigningActorRouter(), subscriber, controls, installed.SourceComponents.ToHashSet(StringComparer.Ordinal), permission));
             }

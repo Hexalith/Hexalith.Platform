@@ -9,8 +9,39 @@ namespace Hexalith.Platform.Protection;
 
 /// <summary>Owned source-original endpoint implementation over the ERC and actual native source-owner proof cells. Local absence never establishes writer completion or enrollment.</summary>
 public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody, IErasureRootAuthorization authorization, DaprClient sourceStore,
-    ErasureRootDigestKeyResolver digests) : IErasureRootOccurrenceSource
+    ErasureRootDigestKeyResolver digests, IReadOnlyDictionary<string, ProtectionQualificationNativeCell>? independentOriginals = null) : IErasureRootOccurrenceSource
 {
+    private async Task<bool> RetainIndependentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
+    {
+        string tenant = enrollment.Binding.Identity.Owner.TenantId;
+        if (independentOriginals is null || !independentOriginals.TryGetValue(tenant, out var location)) { return false; }
+        string id = ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity));
+        for (int attempt = 0; attempt < 16; attempt++)
+        {
+            var (state, tag) = await sourceStore.GetStateAndETagAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
+            if (state is null || state.TenantId != tenant || state.StoreId != enrollment.RootIdentity.StoreTarget || string.IsNullOrWhiteSpace(tag)) { return false; }
+            if (state.Originals.TryGetValue(id, out var prior)) { return ErasureRootCustody.Hash(prior) == ErasureRootCustody.Hash(enrollment); }
+            if (state.Originals.Count >= 10000) { return false; } state.Originals.Add(id, enrollment);
+            if (await sourceStore.TrySaveStateAsync(location.Component, location.Key, state, tag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, location.Metadata, token).ConfigureAwait(false)) { return true; }
+        }
+        return false;
+    }
+    private async Task<ErasureRootOccurrenceEnrollment?> ReadIndependentAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken token)
+    {
+        if (independentOriginals is null || !independentOriginals.TryGetValue(owner.TenantId, out var location)) { return null; }
+        var state = await sourceStore.GetStateAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
+        string id = ErasureRootOccurrenceBindings.Id(owner, occurrence);
+        return state?.TenantId == owner.TenantId && state.Originals.TryGetValue(id, out var original) && original.RootIdentity.StoreTarget == state.StoreId
+            && original.Binding.Identity.Owner == owner && ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity) == occurrence ? original : null;
+    }
+    /// <summary>Reads the actual independently persisted source commit cell after root storage loss; no ERC state, absence or caller metadata establishes persistence.</summary>
+    public async Task<bool> VerifyPersistedSourceAsync(ErasureRootOccurrenceEnrollment enrollment, string sealedPayloadSha256, CancellationToken token)
+    {
+        if (enrollment.Writer is not { } writer || sealedPayloadSha256 is not { Length: 64 }) { return false; }
+        var proof = await sourceStore.GetStateAsync<ErasureRootWriterProof>(writer.Component, writer.Key, ConsistencyMode.Strong, writer.Metadata, token).ConfigureAwait(false);
+        return proof is { Persisted: true, WriterRetired: true } && proof.Binding == enrollment.Binding && proof.SealedPayloadSha256 == sealedPayloadSha256
+            && !string.IsNullOrWhiteSpace(proof.ReceiptId);
+    }
     /// <summary>Reads only a previously retained exact reservation proof; recovery cannot admit a missing source intent.</summary>
     public async Task<bool> LookupReservationAsync(InteractionOccurrenceRequest request, CancellationToken token)
     {
@@ -42,6 +73,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
             if (!await authorization.AuthorizeAsync(identity.Target.TenantId, id, "RegisterIndependentSourceOriginal", digest, token).ConfigureAwait(false)) { return false; }
             var read = await custody.ReadAsync(identity.Target.TenantId, token).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(identity.Target))) { return false; }
+            if (!await RetainIndependentAsync(enrollment, token).ConfigureAwait(false)) { return false; }
             if (current.Head.SourceOriginals.TryGetValue(id, out var prior)) { return ErasureRootCustody.Hash(prior) == digest; }
             current.Head.SourceOriginals.Add(id, enrollment);
             if (await custody.SaveAsync(identity.Target.TenantId, current.Version, current.Head, token).ConfigureAwait(false)) { return true; }
@@ -53,6 +85,8 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
     {
         string id = ErasureRootOccurrenceBindings.Id(owner, occurrence);
         if (!await authorization.AuthorizeAsync(owner.TenantId, id, "ReadIndependentSourceOriginal", ErasureRootCustody.Hash(new { owner, occurrence }), token).ConfigureAwait(false)) { return null; }
+        var sourceOriginal = await ReadIndependentAsync(owner, occurrence, token).ConfigureAwait(false);
+        if (sourceOriginal is not null) { return sourceOriginal; }
         var read = await custody.ReadAsync(owner.TenantId, token).ConfigureAwait(false);
         return read is { } current && current.Head.SourceOriginals.TryGetValue(id, out var original) ? original : null;
     }

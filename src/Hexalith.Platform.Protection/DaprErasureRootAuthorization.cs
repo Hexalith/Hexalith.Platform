@@ -11,12 +11,23 @@ public sealed class DaprErasureRootAuthorization(IndependentDaprAuthority author
     ErasureRootInstallation installation) : IErasureRootAuthorization
 {
     /// <inheritdoc />
+    public async Task<ErasureRootPermanentLossReceipt?> ReadPermanentLossAsync(string tenantId, string storeId, string enrollmentId, CancellationToken cancellationToken)
+    {
+        var original = await authority.InvokeAsync<ErasureRootPermanentLossReceipt>("erc-read-permanent-loss", new { tenantId, storeId, enrollmentId }, cancellationToken).ConfigureAwait(false);
+        return original?.TenantId == tenantId && original.StoreId == storeId && original.EnrollmentId == enrollmentId
+            && !string.IsNullOrWhiteSpace(original.ReceiptId) && !string.IsNullOrWhiteSpace(original.RetiredVolumeIdentity)
+            && original.CopyPolicySha256 is { Length: 64 } ? original : null;
+    }
+    /// <inheritdoc />
     public Task<bool> AuthorizeAsync(string tenantId, string identity, string operation, string requestDigest, CancellationToken cancellationToken)
         => PermitAsync(tenantId, identity, operation, requestDigest, new { tenantId, identity, operation, requestDigest }, cancellationToken);
 
     /// <inheritdoc />
     public Task<bool> VerifyLifecycleAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken)
         => PermitAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
+    /// <inheritdoc />
+    public Task<ErasureRootPermissionEvidence?> ReadLifecycleEvidenceAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken)
+        => ReadPermissionAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
 
     /// <inheritdoc />
     public async Task<bool> VerifyManifestAsync(DeletionBatchConsumptionRequest request, string reservationReceiptId, CancellationToken cancellationToken)
@@ -56,11 +67,13 @@ public sealed class DaprErasureRootAuthorization(IndependentDaprAuthority author
     }
 
     private async Task<bool> PermitAsync(string tenant, string identity, string operation, string digest, object original, CancellationToken token)
+        => await ReadPermissionAsync(tenant, identity, operation, digest, original, token).ConfigureAwait(false) is not null;
+    private async Task<ErasureRootPermissionEvidence?> ReadPermissionAsync(string tenant, string identity, string operation, string digest, object original, CancellationToken token)
     {
         if (!installation.NativeKeys.ContainsKey(tenant) || string.IsNullOrWhiteSpace(identity) || string.IsNullOrWhiteSpace(operation)
-            || digest is not { Length: 64 } || digest.Any(value => !char.IsAsciiHexDigit(value))) { return false; }
+            || digest is not { Length: 64 } || digest.Any(value => !char.IsAsciiHexDigit(value))) { return null; }
         var proof = await authority.InvokeAsync<ErasureRootPermissionEvidence>("erc-permission", new { tenantId = tenant, identity, operation, requestDigest = digest, original }, token).ConfigureAwait(false);
         return proof is { Permitted: true } && proof.TenantId == tenant && proof.Identity == identity && proof.Operation == operation
-            && proof.RequestDigest == digest && !string.IsNullOrWhiteSpace(proof.ReceiptId);
+            && proof.RequestDigest == digest && !string.IsNullOrWhiteSpace(proof.ReceiptId) ? proof : null;
     }
 }
