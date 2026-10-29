@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py", line 166, in <module>
+    main()
+    ~~~~^^
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py", line 154, in main
+    report = json.dumps(verify(), indent=2) + "\n"
+                        ~~~~~~^^
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py", line 59, in verify
+    check("retainedDeadlineComparisonAndSeparateRecovery", all(
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        instant(deadline[name]) < instant(deadline["observedClockUtc"]) for name in (
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "retainedProfileEnrollmentDeadline", "lastVerifiedDataCredentialDeadline", "lastVerifiedMetadataCredentialDeadline")) and
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        deadline["currentInstalledValidityObserved"] is False and deadline["credentialsReadOrRenewed"] is False and
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        deadline["separateOwnerRecoveryRequired"] is True and inputs["currentOperationalProfile"]["separatelyScopedOwnerRecoveryPlanReference"] is None)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py", line 35, in check
+    raise ValueError("handoff verification failed: " + name)
+ValueError: handoff verification failed: retainedDeadlineComparisonAndSeparateRecovery

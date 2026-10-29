@@ -4,6 +4,25 @@ The local owner form now carries the approved operational-security work scope, s
 
 The [authoritative amendment](../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md) and [dependency register](../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md) retain the complete contracts, availability gates and OQ-5.4-1 order. The [current Platform owner form](../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json) records pending inputs under `mvpOperationalInputs`. No null field is an accepted policy, installed artifact, appointed person or delivery. Requested destinations identify future evidence only.
 
+## Approved continuation — 2026-10-29
+
+The owner approved the [operational-priority decision and checkpoints](../story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json): reuse existing operational services, collect evidence progressively through the canonical owner form, and leave full replacement dates pending. Advanced custody provisioning remains deferred. This is work selection, with full delivery and availability still incomplete.
+
+Newer owner evidence records the exact bounded expired-HMAC recovery scope as approved and its executor as implemented/tested. Carry that approval forward without another ownership/scope question. The finalized recovery handoff/blockers referenced in the owner form now control the pending return list; earlier missing-plan wording below describes the prior state. This decision invokes no executor or live operation and extends no window.
+
+| Checkpoint | Accountable owner | Completion evidence / dependency |
+| --- | --- | --- |
+| Preservation | Cluster credential/Kubernetes administration; Memories and Agents register owners for their own records | Authentic complete Secret history through the controlling revision, plus separate exact Memories/register dispositions; existing public return schema |
+| Provider metadata | Existing OpenBao metadata-read authority owner | Complete current public metadata for all four exact keys/mappings/windows, provenance/times and a verified already authenticated read transport; retained 403 responses remain unresolved |
+| Operational recovery | Existing operational custody/inventory/HMAC owner | Existing approved bounded scope; preservation/provider prerequisites and all current inputs pass before effects; actual resulting accepted profile/readiness evidence |
+| Backup and identity | Existing backup/storage and identity owners; independent decision issuer | Actual backup/access/restore facts and installed current identity/approver/decision evidence; can be prepared while recovery prerequisites are pending |
+| Host evidence | Platform host/storage/identity and EventStore replay/recorder owners | Installed restricted bindings, accepted actual durability/failure model and persisted exact-outcome recovery evidence; collection can proceed independently |
+| Formal replacement planning | Platform and EventStore maintainers | Credible complete delivery plan and all applicable full contracts/actual installations; operational checkpoints alone do not authorize a complete packet |
+
+These checkpoints introduce no calendar promises. Collect stable evidence first and obtain short-lived currentness/readiness observations when the relevant validation can use them. Missing history stays unresolved or receives a genuine owner-approved recovery disposition; current hashes cannot recreate it. Existing additional owner-form requirements remain intact.
+
+The dated historical verifier currently refuses because it requires the separately scoped recovery plan to remain null. Its original report/provenance is retained; current application checks are recorded separately with this decision.
+
 ## What is reusable
 
 Keep the installed OpenBao operational key service, inventory and `ext-secrets-1-hmac-authority`. The retained runtime references four successor key versions, two hosts and two callers; it still has 42 null inputs. This change reads retained public files only and makes no fresh health, lease, credential-scope or readiness assertion. Kubernetes/IdP separation inside the same cluster does not establish independent lifecycle or business-decision authority.
@@ -18,7 +37,9 @@ Existing host source already supplies the relevant controls:
 
 No runtime code, installer, dependency status, accepted target/date, retention trigger or verification gate changes. Preserve host `192.168.1.30`, Parties Branch B, L/S/O/H/R `300/30/600/86400/604800`, 365 fixed history days from binding-effective-at with exclusive expiry, Open export policy and every original journal.
 
-## Owner returns and operational order
+## Historical owner returns and operational order — October 28
+
+This table retains the earlier return list. Use the approved continuation above and the finalized recovery blockers in the canonical owner form for current controlling revisions, additional preservation dispositions and the existing recovery approval.
 
 | Owner | Exact required return | Owner-form field |
 | --- | --- | --- |
@@ -53,7 +74,9 @@ A reduced operation-specific proposal would first need genuinely independent beh
 
 After complete delivery and explicit exact-target acceptance, qualification retains `protection → secrets without host references → host with consumers refusing DependencyNotAvailable → mutual`. Preserve the original attempt/recovery identity and every journal. No new target, integration date, attempt or qualification permission is accepted by this handoff.
 
-## Precise next operational action
+## Historical operational action — superseded
+
+The following paragraphs preserve the earlier baseline-export sequence and missing-plan state. They are not current execution instructions. Current continuation uses the finalized recovery blockers, complete controlling-revision preservation evidence and the already approved bounded executor referenced by the owner form. Do not invoke the historical exporter from this section as a continuation of the new decision.
 
 The **cluster credential / Kubernetes administration owner** must return the actual public historical-proof files and owner acceptance record in the exact [bounded reconciliation schema](../../../eng/ext-secrets-1/README.md#bounded-next-baseline-reconciliation-input), then set `historicalMetadataProofAndAcceptanceReference` in the owner form. Current managed fields, another copy of current metadata and newly enabled audit cannot supply historical scope evidence.
 

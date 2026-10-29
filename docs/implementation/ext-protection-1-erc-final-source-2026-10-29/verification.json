@@ -12,13 +12,9 @@
   "nativeRuntimeScope": "Five actual custody/native-store cases with explicit synthetic private eligibility. Qualification/snapshot-only source refinements followed this pinned runtime; custody/native-harness source is unchanged.",
   "observedPlatformHead": "251bc9465459b9c28ce1d1738bfbb0525fb07293",
   "observedEventStoreHead": "71829366dd34406119f80d7a37a30ac48e9ed48c",
-  "completeImmutableTarget": {
-    "proposedOnly": true,
-    "platform": "965b00249b473d602a663f1f48be39424f996337",
-    "eventstore": "5945ba8b3575f76597075e460bb9a973453272ea"
-  },
+  "completeImmutableTarget": null,
   "acceptedProfileSha256": null,
-  "status": "ImplementationDeliveredReviewPending",
+  "status": "IndependentReviewRequiresRederivation",
   "workflowStep": 3,
   "independentReviewCompleted": false,
   "protection": {
@@ -158,5 +154,11 @@
     "newCases": 3,
     "runtimeSourceChanged": false,
     "testAssemblySha256": "5748a149721acb83375778a38e6c7f8ecc066a880c52cc9d7ad1805fc2b8d2fb"
+  },
+  "reviewLayersCompleted": true,
+  "reviewLoopIteration": 1,
+  "withdrawnRuntimeCandidates": {
+    "platform": "965b00249b473d602a663f1f48be39424f996337",
+    "eventstore": "5945ba8b3575f76597075e460bb9a973453272ea"
   }
 }

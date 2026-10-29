@@ -1,6 +1,6 @@
 # EXT-PROTECTION-1 ERC delivery — 2026-10-29
 
-Disposition: **implementation delivered for independent review; installed qualification remains pending**. The [owner packet](../../../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md#source-delivery-proposal--2026-10-29) proposes exact runtime candidates containing all implementation/verifier source; they are unaccepted. The dependency remains `Uncommitted`; this work neither changes the Agents register nor authorizes a consumer, Live command or OQ-5.4-1 phase. The approved A1 custody choice and frozen intent are unchanged.
+Disposition: **independent review found source defects; re-derivation is in progress**. The previous runtime candidates are withdrawn and must not be accepted. Installed qualification remains pending. The [owner packet](../../../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md#source-delivery-proposal--2026-10-29) proposes exact runtime candidates containing all implementation/verifier source; they are unaccepted. The dependency remains `Uncommitted`; this work neither changes the Agents register nor authorizes a consumer, Live command or OQ-5.4-1 phase. The approved A1 custody choice and frozen intent are unchanged.
 
 ## Source delivered
 

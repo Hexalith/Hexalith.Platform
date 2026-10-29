@@ -1,0 +1,350 @@
+{
+  "schema": "platform.story-5.4.operational-priority-verification.v1",
+  "verifiedAtUtc": "2026-10-29T17:36:28.485678+00:00",
+  "checks": [
+    {
+      "check": "recordedUserChoices",
+      "passed": true
+    },
+    {
+      "check": "actualOwnerFormRemainsSoleReturnLocation",
+      "passed": true
+    },
+    {
+      "check": "preservedPrior.prior-spec-5-4-complete-coupled-secrets-host-delivery.md",
+      "passed": true
+    },
+    {
+      "check": "preservedPrior.prior-README.md",
+      "passed": true
+    },
+    {
+      "check": "preservedPrior.prior-owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "ownerSnapshotBoundAtApplication",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.preserved",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D1_backend",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D2_resources",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D3_recovery",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D4_rolesAndTrust",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D5_implementations",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D6_releaseAndPhysicalProfile",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D7_protection",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D8_host",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.D9_dates",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.mvpConstraints",
+      "passed": true
+    },
+    {
+      "check": "canonicalCommitmentsUnchanged.mvpScopeAmendment",
+      "passed": true
+    },
+    {
+      "check": "canonicalExecutionAndAvailabilityGatesUnchanged",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.approvalRecord",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.recordedChatApprovalSource",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.finalizedHandoff",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.verification",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.remainingOwnerBlockers",
+      "passed": true
+    },
+    {
+      "check": "publicReferenceHash.unacceptedPreservationReturnTemplate",
+      "passed": true
+    },
+    {
+      "check": "recoveryApprovalAlreadyRecorded",
+      "passed": true
+    },
+    {
+      "check": "approvalDoesNotBecomeCurrentReadiness",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.preservation",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/maintenancePreservationBaseline/historicalMetadataProofAndAcceptanceReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/maintenancePreservationBaseline/furtherSecretWriteCoverageAndDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/maintenancePreservationBaseline/memoriesPreservationDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/maintenancePreservationBaseline/agentsRegisterPreservationDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.provider-metadata",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/maintenancePreservationBaseline/freshPublicLeaseKeyAndPolicyEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/credentialAndScopeEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/exactKeyInventoryEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.operational-recovery",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/currentAcceptedProfileReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/freshAuthorizedReadinessEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/rotationAndRevocationEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentOperationalProfile/timestampFormatCompatibilityEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.backup-and-identity",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/backupAndRestore",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/currentIdentityAndApprovers",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/independentDecisionAuthority",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.host-evidence",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/authenticatedIngressAndReplay",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/mvpOperationalInputs/durableDenialAndRecovery",
+      "passed": true
+    },
+    {
+      "check": "knownDependencies.full-replacement-planning",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerPointer.#/D9_dates",
+      "passed": true
+    },
+    {
+      "check": "recoveryDependsOnBothGenuinePrerequisites",
+      "passed": true
+    },
+    {
+      "check": "independentCollectionLanes",
+      "passed": true
+    },
+    {
+      "check": "fullScopeNotSatisfiedByOrdinaryCheckpoints",
+      "passed": true
+    },
+    {
+      "check": "originalFrozenRequirementsPreservedUnderApprovedDecision",
+      "passed": true
+    },
+    {
+      "check": "resolvedChoicesRemovedFromOpenQuestions",
+      "passed": true
+    },
+    {
+      "check": "fullSpecStillDraftAndExplicitlyIncomplete",
+      "passed": true
+    },
+    {
+      "check": "noDatesOrActionsInvented",
+      "passed": true
+    },
+    {
+      "check": "localLink.tests/story-5-4-coupled-delivery-2026-10-29-plan/investigation.md",
+      "passed": true
+    },
+    {
+      "check": "localLink.../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+      "passed": true
+    },
+    {
+      "check": "localLink.../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "passed": true
+    },
+    {
+      "check": "localLink.../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.../story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json",
+      "passed": true
+    },
+    {
+      "check": "localLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.deadline-assessment-2026-10-29.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.acceptance-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.accepted-scope-snapshot.md",
+      "passed": true
+    },
+    {
+      "check": "localLink.preparation-evidence/bound-inputs-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.preparation-evidence/clean-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.preparation-evidence/invocations.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.../../../eng/ext-secrets-1/README.md",
+      "passed": true
+    },
+    {
+      "check": "localLink.provenance.json",
+      "passed": true
+    },
+    {
+      "check": "localLink.verification.json",
+      "passed": true
+    },
+    {
+      "check": "historicalExporterClearlySuperseded",
+      "passed": true
+    },
+    {
+      "check": "scopedWhitespace",
+      "passed": true
+    },
+    {
+      "check": "knownHistoricalVerifierRefusalRetained",
+      "passed": true
+    }
+  ],
+  "checksPassed": 76,
+  "checksTotal": 76,
+  "allApplicationChecksPassed": true,
+  "scope": "Approved priority/evidence/date decision application only; no runtime implementation or owner operation.",
+  "specTokensO200kBase": 1597,
+  "canonicalOwnerFormAtApplicationSha256": "6d6bf9359916a11b0bdc19224a17b22089f18d410adba4398a41917af0859495",
+  "canonicalOwnerFormAtVerificationSha256": "feeadd3ab765940cefe77557f0c9dbbf103adfed456e2263e7bf65abbb1b1224",
+  "canonicalOwnerFormChangedConcurrently": true,
+  "canonicalOwnerFormModifiedByThisTask": false,
+  "legacyVerifier": {
+    "argv": [
+      "python3",
+      "-B",
+      "docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py"
+    ],
+    "exitCode": 1,
+    "classification": "Pre-existing dated verifier expects recovery-plan field to remain null; its failure was observed before this application as well. No historical verifier or provenance was rewritten.",
+    "stderr": "legacy-verifier.stderr.txt"
+  },
+  "stagedDiffSha256Before": "1ce251f061a4214763bbaea3362ab571bf0202bba2a3bb0888e2167264cb2b76",
+  "stagedDiffSha256After": "1ce251f061a4214763bbaea3362ab571bf0202bba2a3bb0888e2167264cb2b76",
+  "indexOperationsPerformed": false,
+  "installationInvocations": 0,
+  "maintenanceInvocations": 0,
+  "recoveryInvocations": 0,
+  "qualificationInvocations": 0,
+  "cohortAttemptsReserved": 0,
+  "dependencyAvailable": false,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md": "65bdb51483eae1f35bd691231bcacdc3109ce3859660c5266551acbd94eff6e0",
+    "docs/implementation/story-5-4-operational-security-2026-10-28/README.md": "94e068238ff3dc14557e1679458d8d5116a76653d95864927d68d3c0e9709875",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json": "bfa855853fbca479e7b3f3724a8424fac38480f4295153dd52231d0e206ea207",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stderr.txt": "a3a32c85cca8aba76305a0e440e65fc5cb7c9a410a5891065286718a12904772",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/owner-decisions.validation-observation.json": "feeadd3ab765940cefe77557f0c9dbbf103adfed456e2263e7bf65abbb1b1224",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-README.md": "c54a72c50f858714700d0ecb623d81dcc53a1f3b00693a6a62ff8feeb86e7737",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-owner-decisions.json": "6d6bf9359916a11b0bdc19224a17b22089f18d410adba4398a41917af0859495",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-spec-5-4-complete-coupled-secrets-host-delivery.md": "0e473a4c1e10c1eb26c2602b58f991be5bbd04f72aaa5ece4b333593ed03b494",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/review.json": "3bf36c42c3c240d90c1b38a2897aa92d5b5c0697fa9393cdd01aa47d19f89a84"
+  }
+}

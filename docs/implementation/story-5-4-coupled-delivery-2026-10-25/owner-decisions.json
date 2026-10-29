@@ -188,7 +188,8 @@
       "acceptedRestorePolicyReference": null,
       "restoreProcedureReference": null,
       "authorizedRecoveryTestEvidenceReference": null,
-      "nextAction": "Return actual backup lifetime, existing privileged restore subjects/access references, accepted restoration procedure and authorized recovery evidence. No value, policy acceptance or successful restore is inferred from this scope decision."
+      "nextAction": "Return actual backup lifetime, existing privileged restore subjects/access references, accepted restoration procedure and authorized recovery evidence. No value, policy acceptance or successful restore is inferred from this scope decision.",
+      "everyRecoveryCopyInventoryAndActualDisposalEvidenceReference": null
     },
     "maintenancePreservationBaseline": {
       "status": "PendingHistoricalMetadataReconciliation",
@@ -200,15 +201,18 @@
       "historicalMetadataProofAndAcceptanceReference": null,
       "nextAction": "Cluster credential/Kubernetes administration owner returns sanitized historical write-scope evidence and explicit acceptance. The provider owner separately returns fresh selected public lease, key-metadata and policy observations through already authenticated credential-safe transport, with provenance and observation times and no credential values. Review both with current public preservation facts before the existing coordinator attempts offline export. Additional drift denies. Do not edit the Secret, enable audit as retroactive proof, replay installers/maintenance or renew credentials for reconciliation.",
       "providerPublicFactsOwner": "Existing OpenBao provider owner, using already authenticated credential-safe transport",
-      "freshPublicLeaseKeyAndPolicyEvidenceReference": null
+      "freshPublicLeaseKeyAndPolicyEvidenceReference": null,
+      "furtherSecretWriteCoverageAndDispositionReference": null,
+      "memoriesPreservationDispositionReference": null,
+      "agentsRegisterPreservationDispositionReference": null
     },
     "currentOperationalProfile": {
-      "status": "PendingSeparatelyScopedRecoveryAfterRetainedDeadlinesElapsed",
+      "status": "PendingCurrentEvidenceUnderApprovedRecoveryScope",
       "owner": "Existing Platform operational custody, inventory and HMAC authority maintainer",
       "existingRuntimeReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
       "currentAcceptedProfileReference": null,
       "freshAuthorizedReadinessEvidenceReference": null,
-      "nextAction": "Operational custody/inventory/HMAC maintainer returns a separately scoped expired-profile/credential recovery plan or legitimately current authorized evidence. Historical preservation reconciliation and fresh provider public facts remain prerequisites; no expired maintenance, credential renewal or installer replay is authorized by this handoff.",
+      "nextAction": "The exact expired-HMAC recovery scope is already approved; do not request ownership or scope approval again within its unchanged fixed window. Return the genuine missing current provider metadata/read transport and historical Secret plus separate Memories/register dispositions identified in the finalized recovery blockers. Recovery execution and resulting accepted profile/readiness remain separate Platform work; this owner handoff authorizes no credential, installer or Live operation.",
       "credentialAndScopeEvidenceReference": null,
       "exactKeyInventoryEvidenceReference": null,
       "rotationAndRevocationEvidenceReference": null,
@@ -222,7 +226,27 @@
       "lastVerifiedDeadlinesReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
       "deadlineHandling": "No validity extension is made. If retained profile/enrollment or credential deadlines have passed, scope owner recovery separately from the existing maintenance procedure.",
       "retainedDeadlineAssessmentReference": "../story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
-      "separatelyScopedOwnerRecoveryPlanReference": null
+      "separatelyScopedOwnerRecoveryPlanReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+        "approvalRecordReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+          "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+        },
+        "recordedChatApprovalSourceReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+          "sha256": "111d9476992d1061188d09697413f58c32d389b71b706976b46207de147598f4"
+        }
+      },
+      "preparedExpiredHmacRecoveryScopeReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947"
+      },
+      "currentOriginalTenantEnrollmentEvidenceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-c994258b7ce546528f7441ca148f2019.json",
+        "sha256": "445a07c2653ca2bce2f561caddd9fed3ff395c54fb3aa69e4fcef71bbcf163eb",
+        "jsonPointer": "/facts/enrollment"
+      }
     },
     "currentIdentityAndApprovers": {
       "status": "PendingOwnerDeliveryCustodyCouplingRetained",
@@ -353,5 +377,650 @@
       ]
     }
   },
-  "operationalPreparationReference": "../story-5-4-operational-security-2026-10-28/acceptance-inputs.json"
+  "operationalPreparationReference": "../story-5-4-operational-security-2026-10-28/acceptance-inputs.json",
+  "extParties1OwnerEvidenceHandoff": {
+    "status": "PendingSourceEvidenceUnderSoleOwnerDelegation",
+    "recordedAtUtc": "2026-10-29T17:28:45.161513+00:00",
+    "scope": "Reference reconciliation of existing owner evidence only; no repeated feasibility assessment or operation authorization.",
+    "priorCanonicalForm": {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/owner-decisions.before-ext-parties-1-handoff-2026-10-29.json",
+      "sha256": "fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d"
+    },
+    "appliedDirectionReference": {
+      "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-applied-direction-2026-10-29.md",
+      "sha256": "9f1ed5ea2c13605acffcf19ff3f76e031f58a746103975e9c6af4600606e255e"
+    },
+    "completedFeasibilityVerdictReference": {
+      "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+      "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+    },
+    "preparedRecoveryScopeValidation": {
+      "scopeSha256": "ef4a6896ed192137c4394cf5ef177ace1ce43ddf27a632731cf891f1c80cfbe3",
+      "manifestReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/evidence-manifest.json",
+        "sha256": "833f995c3e98ea0d2f57c0811b94ea94df898519c2116a252e419df826c5c9a6"
+      },
+      "pinnedInputFilesVerified": 38,
+      "originalReceiptsVerified": 19,
+      "classification": "The original prepared artifact remains unchanged. Later exact scope approval is recorded in approval-record.json and its pinned invocation-spec.md; it supplies neither preservation acceptance nor completed recovery. Carry that approval forward without asking again.",
+      "currentness": "Recheck the fixed proposed window, actual UIDs/revisions and all independent prerequisites before any separately authorized effect; no automatic rebase or extension."
+    },
+    "retainedOperationalObservations": {
+      "latestNonProviderReadReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-c994258b7ce546528f7441ca148f2019.json",
+        "sha256": "445a07c2653ca2bce2f561caddd9fed3ff395c54fb3aa69e4fcef71bbcf163eb"
+      },
+      "processStartProvenanceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/execution-source-9c4b7c37282c4b549290081998ca05ae.json",
+        "sha256": "fb2385e416f648e0dfad9f22f1b9bcbcbc11b19c7913ad3b32ab91dfb232f7b3"
+      },
+      "inspectedExecutorSourceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/recover_expired_hmac.py",
+        "sha256": "8d0cabe971331e53ffe9548c908e20f792bde4273d954c70abacfec0a2108adc"
+      },
+      "immutableHelperPinsReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/native-helper-pins.json",
+        "sha256": "49b422c387ab0b8ecddb66159f1bd3a990053389806611cfc9d8a466e22ac69c"
+      },
+      "originalNativeEnrollmentReceiptsReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/native-registry-inventory-20261017T082852516535Z/native-enrollment-receipts.json",
+        "sha256": "c4bf09a87927fb6b54ea94597def63b3142b578e05810d9c74692f2b2a6fbacc"
+      },
+      "enrollmentObservedAt": "2026-10-29T17:23:57.543430+00:00",
+      "enrollmentValidation": "Both exact original tenant streams returned HTTP 200, one TenantCreated event, complete sequence 1 and matching original stream hashes; unrelated administrator-domain read denied 403. Verified against original receipts and the pinned restricted-read helper, not Kubernetes identity.",
+      "scopeLimit": "Authenticated service-observation evidence at the recorded time; no independent Human acceptance, provider mapping, custody qualification or future currentness. Re-observe complete native streams before any recovery effect.",
+      "healthClassification": "Custody/inventory readiness remains 503; authority storage readiness 200 and original 19 receipts do not establish current profile validity.",
+      "earlierPartialProviderReadReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-272273853d4147abb1b870529b07c0a2.json",
+        "sha256": "53783521215ee5fa8e4f018d34d10171f032b2d34adc99bb3d446631602effa3",
+        "jsonPointer": "/facts/provider"
+      },
+      "partialProviderClassification": "Authenticated recorded observations establish both exact original accessors Absent by native canonical invalid-accessor responses and unchanged native mount/auth/policy fingerprints. Capability reads and all four exact key metadata reads returned 403. These facts do not establish current key mappings/windows or a complete fresh public-facts bundle. Never renew or silently reuse absent originals; no credential branch is executed by this handoff.",
+      "earlierProviderProvenanceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/execution-source-83ec7a63cbb54aca8dd2bf7de61705c3.json",
+        "sha256": "50ae1438b9fdff11400dad5ac025133e6b12e6f3704153fcd677e54c4c304542"
+      },
+      "earlierProviderProvenanceLimit": "The earlier process-start source fingerprint is retained; the complete finalized run manifest binds the observation and separate source histories. Its current metadata/capability denial remains explicit. Do not relabel later non-provider reads as refreshed provider evidence."
+    },
+    "existingBackupEvidenceReferences": {
+      "currentConfigurationAndVersionReadReceipt": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/scaleway-read-only.json",
+        "sha256": "060470fd270341efc1694d668a69aa8b837f2053d56404281c2ea4346506b13c"
+      },
+      "exactVersionInventory": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/bucket-version-inventory.json",
+        "sha256": "c793f6b2c439edf9512044cdfa1095f9d69270e953029829cac64b5cab56f328"
+      },
+      "installedLocalSnapshotCommand": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/kubernetes-read-only.json",
+        "sha256": "1e0b79e0cec9093024a1dd1ee07aceb586e1e08e9fdad21492d5cf8ba850b81e"
+      },
+      "failedLocalSnapshotStat": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/local-snapshot-stat.json",
+        "sha256": "55030af96e53821c7fe8140f15bb3ac9d0ebea52dc111f881f39b186f2a3e2f7"
+      },
+      "historicalDestinationSetup": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/recovery-destination-setup.md",
+        "sha256": "5399f7acde40e555975e1a64ce9a1340faa48b705436962c758b330eb40f6161"
+      },
+      "historicalRestoreSummary": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-0/20261001t061620z/summary.md",
+        "sha256": "1b299140bf6fe4a6f840bd40b9c098a0579518f7dfdd3a89950fdc6be88aa134"
+      },
+      "classification": "Existing observation/historical sources only; no accepted lifetime, effective restore access, all-copy census or actual disposal is established. The October 1 restore gate expired October 2; host-directory removal was inferred, not observed. Preserve the feasibility no-go and its 31-day/current-version mismatch.",
+      "verifiedHistoricalSignedRecords": {
+        "verificationRecordedAtUtc": "2026-10-29T17:37:08.292141+00:00",
+        "signatureVerificationsPassed": 8,
+        "records": [
+          {
+            "recoveryId": "20261001t061620z",
+            "allowedSignersReference": {
+              "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/signatures/allowed_signers",
+              "sha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247"
+            },
+            "detachedSignaturesVerified": [
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/policy/recovery-policy.json",
+                  "sha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/policy/recovery-policy.json.sig",
+                  "sha256": "9af7fc306013dead79ccc0de5822f436c798664ae72e13fe9e19434f4e6b53a9"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/policy/recovery-policy.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/policy/recovery-policy.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/openbao/openbao-restore-proof.json",
+                  "sha256": "96ed1df1f03f642c05ba0663f37d0e0c1cbfe0f649348ac790ec0f773cee0a54"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/openbao/openbao-restore-proof.json.sig",
+                  "sha256": "0c85b05fb47f4aec5953d7100aea1fabc739b9e7ecd0f546a0c16e25510103f7"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/openbao/openbao-restore-proof.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/openbao/openbao-restore-proof.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/cleanup/restore-target-cleanup.json",
+                  "sha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/cleanup/restore-target-cleanup.json.sig",
+                  "sha256": "6dc8139455a910fe79170f498af290b8fa7b95a18337fab980bc2e6a673194a1"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/cleanup/restore-target-cleanup.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/cleanup/restore-target-cleanup.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/gate/backup-gate.json",
+                  "sha256": "2b36b709184796c9309bbc97b1344dfa178f04841c832bb44dafd540f89bb3e0"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/gate/backup-gate.json.sig",
+                  "sha256": "dc21bbc2ad572dda9997d2149d628364686eb4d11e84b1b2104f97cf75dbd840"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/gate/backup-gate.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261001t061620z/gate/backup-gate.json",
+                "observedExitCode": 0
+              }
+            ],
+            "signedPayloadHashBindingsVerified": true,
+            "historicalAccountableOperator": "jpiquot@itaneo.com",
+            "historicalRestoreMethod": {
+              "namespace": "recovery-4-0-bao",
+              "replicas": 3,
+              "statefulSet": "bao-restore",
+              "unseal": "temporary copy of Secret openbao/openbao-seal (approved 2026-09-29); deleted with the namespace"
+            },
+            "declaredHistoricalRetention": "30d",
+            "openbaoProofExpiresAt": "2026-10-02T07:21:38Z",
+            "gateExpiresAt": "2026-10-02T06:16:52Z",
+            "scopeLimit": "Signatures verified against the retained owner-declared trust root. Historical named operator and restore procedure only; no EXT-PARTIES-1 lead/deputy appointment or current effective privilege is inferred. The declared 30d policy is not observed all-copy disposal and does not resolve installed 31d/version-lifecycle retention. Gate/proof are expired. Preserve static UNSIGNED text inside the originally signed payloads; detached verification establishes only the signed bytes.",
+            "cleanupLimit": [
+              "host directories of deleted OpenEBS hostpath PVs on node1 are removed by the provisioner; listing them needs node shell access and is not done here"
+            ]
+          },
+          {
+            "recoveryId": "20261014t112353z",
+            "allowedSignersReference": {
+              "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/signatures/allowed_signers",
+              "sha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247"
+            },
+            "detachedSignaturesVerified": [
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json",
+                  "sha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json.sig",
+                  "sha256": "7f5dc8431113f6f5a993ed7cefda5a427673a3334fff2a380d8a1a3eab715f0e"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/openbao/openbao-restore-proof.json",
+                  "sha256": "fc61e1a0ef9f0a29c47f9c003bef73e7467ce08c35fcbef181d8a14acd481545"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/openbao/openbao-restore-proof.json.sig",
+                  "sha256": "5c2c82769da9a29ec29fee51c0cf204a3c98c3cecb6536a14b0f68fe1dd34783"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/openbao/openbao-restore-proof.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/openbao/openbao-restore-proof.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/cleanup/restore-target-cleanup.json",
+                  "sha256": "3ae690daad23e6a0f028ab28ca023ba9a04d4c72f810d9129b117125d08d5b78"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/cleanup/restore-target-cleanup.json.sig",
+                  "sha256": "c346a6a9692227302e4c804012bb1df2a0b1b3121f1c76a65a77c794bd6d280c"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/cleanup/restore-target-cleanup.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/cleanup/restore-target-cleanup.json",
+                "observedExitCode": 0
+              },
+              {
+                "record": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/gate/backup-gate.json",
+                  "sha256": "c23f0d12067a4eff0379af8a811ab8ae693b02304b897b570802fccd90356695"
+                },
+                "signature": {
+                  "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/gate/backup-gate.json.sig",
+                  "sha256": "8f21e993071501b4e3783ee6c965ab3de7967b32bce6566bf2fdcf68f8eedb94"
+                },
+                "verificationArgv": [
+                  "ssh-keygen",
+                  "-Y",
+                  "verify",
+                  "-f",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/signatures/allowed_signers",
+                  "-I",
+                  "jpiquot@itaneo.com",
+                  "-n",
+                  "hexalith-recovery",
+                  "-s",
+                  "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/gate/backup-gate.json.sig"
+                ],
+                "stdinSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/gate/backup-gate.json",
+                "observedExitCode": 0
+              }
+            ],
+            "signedPayloadHashBindingsVerified": true,
+            "historicalAccountableOperator": "jpiquot@itaneo.com",
+            "historicalRestoreMethod": {
+              "namespace": "recovery-4-0-bao",
+              "replicas": 3,
+              "statefulSet": "bao-restore",
+              "unseal": "temporary copy of Secret openbao/openbao-seal (approved 2026-09-29); deleted with the namespace"
+            },
+            "declaredHistoricalRetention": "30d",
+            "openbaoProofExpiresAt": "2026-10-15T14:52:05Z",
+            "gateExpiresAt": "2026-10-15T11:40:42Z",
+            "scopeLimit": "Signatures verified against the retained owner-declared trust root. Historical named operator and restore procedure only; no EXT-PARTIES-1 lead/deputy appointment or current effective privilege is inferred. The declared 30d policy is not observed all-copy disposal and does not resolve installed 31d/version-lifecycle retention. Gate/proof are expired. Preserve static UNSIGNED text inside the originally signed payloads; detached verification establishes only the signed bytes.",
+            "cleanupLimit": [
+              "host directories of deleted OpenEBS hostpath PVs on node1 are removed by the provisioner; listing them needs node shell access and is not done here"
+            ]
+          }
+        ],
+        "currentAcceptedBackupOrRestorePolicyEstablished": false
+      }
+    },
+    "independentAuthorityTimeAndRestoreCutEvidenceReference": null,
+    "intendedWorkloadCapacityEvidenceReference": null,
+    "assessmentAllocationAndImplementerReference": null,
+    "unresolvedOwnerReturns": [
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/historicalMetadataProofAndAcceptanceReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/acceptedPublicPreservationBaselineReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/furtherSecretWriteCoverageAndDispositionReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for cluster credential/Kubernetes administration evidence",
+        "exactSourceRecordsNeeded": "Authenticated owner acceptance under EXT-SECRETS-1.public-metadata-acceptance.v1 plus authentic sanitized historical write/audit records for Secret/kubesphere-system/kubesphere-sa-token UID a97fa037-798b-46b6-9232-76e600480142, RV 36774577 -> 37223806, proving only the specified 2026-10-28 label refresh and no intervening/other-field writes. Separately cover later RV 37223806 -> 37671992 and any subsequent transition; the bounded earlier acceptance cannot cover later drift. Include original/current lineage, source coverage, timestamps, changed-field scope, public fingerprints and authenticated responsible-owner acceptance. Current managedFields or new audit collection cannot reconstruct history. For the approved expired-state executor, return the authentic scope-bound owner-return/preservation-decision.json using EXT-SECRETS-1.expired-recovery-preservation-decision.v1; its complete original-to-current evidence is additional to the historical bounded schema, never inferred from the supplied unaccepted template.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/owner-return-required.json",
+          "sha256": "f4ece685dc66961b37e18cf3912c6c1fa4cf7792de282c470023d46d27ad47c9",
+          "jsonPointer": "/historicalReturn"
+        },
+        "laterDriftRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/unresolvedPreservationDifferences"
+        },
+        "newRecoveryReturnSchemaReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+          "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/memoriesPreservationDispositionReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/agentsRegisterPreservationDispositionReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for separate Memories PostgreSQL/TLS and Agents register dispositions",
+        "exactSourceRecordsNeeded": "Separate authenticated dispositions with original-to-current provenance for Memories StatefulSet/access-telemetry-postgresql, Secret/access-telemetry-postgresql-tls and ConfigMap/postgresql-tls-reload-state, using the exact before/after UIDs and fingerprints in unresolvedPreservationDifferences. Separately reconcile the Agents register baseline mismatch recorded in agents-register-preservation-blocker.json. Neither disposition substitutes for system-Secret history. Preserve the register, Memories resources and all historical baselines.",
+        "memoriesSourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/unresolvedPreservationDifferences"
+        },
+        "registerSourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/owner-acquisition-20261028T131310446398Z/agents-register-preservation-blocker.json",
+          "sha256": "fb50fcad363f6a9d11f49907a10deee88af379a02960d29b09c23172523d24e2"
+        },
+        "newRecoveryReturnSchemaReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+          "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/freshPublicLeaseKeyAndPolicyEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/credentialAndScopeEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/exactKeyInventoryEvidenceReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for existing OpenBao provider and authenticated metadata-read evidence",
+        "exactSourceRecordsNeeded": "Authenticated current complete public metadata of all four exact original version-2 key paths, every original version/mapping/technical window and a verified already authenticated metadata-read owner transport usable for current readback. Follow blockers.json current-native-key-metadata-denied; return observation times, native success statuses, cluster/provider identity and public-file fingerprints, never tokens or key values. Both original accessors are already observed Absent and native mount/auth/policy fingerprints match the retained originals; their capability queries returned 403. Recheck those facts and effective exact scopes before any separately permitted successor use; do not ask for renewal or silently reuse absent credentials. Native original tenant hashes are already verified at the recorded observation and must be reread before effects.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/owner-return-required.json",
+          "sha256": "f4ece685dc66961b37e18cf3912c6c1fa4cf7792de282c470023d46d27ad47c9",
+          "jsonPointer": "/providerOwnerReturn"
+        },
+        "preparedScopeRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/independentRequiredFacts"
+        },
+        "finalizedBlockerReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/blockers.json",
+          "sha256": "c3cc5834898bd1480883439f32101620998b6cfcee3268da89e0ab39cb03c908",
+          "jsonPointer": "/blockers/0"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/currentOperationalProfile/currentAcceptedProfileReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/freshAuthorizedReadinessEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/rotationAndRevocationEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/timestampFormatCompatibilityEvidenceReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for accepted operational custody/inventory/HMAC outcomes after genuine prerequisites",
+        "exactSourceRecordsNeeded": "Actual resulting owner-accepted current profile/credential/enrollment/readiness, rotation/revocation and existing strict UTC-Z compatibility evidence after the already approved separately scoped recovery passes its genuine prerequisites. The exact scope approval is recorded and needs no repeat. No currentness, successful cutover or readiness acceptance follows from source tests or healthy authority storage. This handoff performs none of that separate implementation/execution work.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/activationOrdering"
+        },
+        "approvedScopeReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+          "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/backupAndRestore/backupRetentionSeconds",
+          "#/mvpOperationalInputs/backupAndRestore/everyRecoveryCopyInventoryAndActualDisposalEvidenceReference",
+          "#/mvpOperationalInputs/backupAndRestore/privilegedRestoreSubjectsAndScopedCredentialReferences",
+          "#/mvpOperationalInputs/backupAndRestore/acceptedRestorePolicyReference",
+          "#/mvpOperationalInputs/backupAndRestore/restoreProcedureReference",
+          "#/mvpOperationalInputs/backupAndRestore/authorizedRecoveryTestEvidenceReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for application-host/storage, all recovery copies, seal/escrow and privileged restore evidence",
+        "exactSourceRecordsNeeded": "Owner-accepted actual lifetimes and sanitized per-copy capture/version/retention/hold/disposal records for local dated snapshots, checksums and undated openbao.snap on the Retain node1 PVC; all Scaleway openbao/ current/noncurrent versions, evidence/ contents classified for recoverable keys, replicas, multipart and exceptional copies; source openbao-seal, temporary restore seals, escrow/offline copies and node/etcd/workstation/export bundles. Supply verified deletion/non-revival evidence and failed-cleanup/outage handling, or keep unknown/Pending. Supply a still-valid existing read-only transport reference or owner-produced file inventory because the retained SSH attempt failed. Include current effective IAM/RBAC/MFA subjects and scoped access references, accepted restore procedure and exact still-valid authorized restore proof. Resolve the installed 31-day/version-lifecycle route against each C + L + M <= E + 2592000 requirement; configured TTL, lock expiry or Job success alone is insufficient. Do not change policy, delete copies or perform restore for this handoff.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/independentAuthorityTimeAndRestoreCutEvidenceReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for existing independent administration/time/restore-cut evidence if full custody is reopened",
+        "exactSourceRecordsNeeded": "Actual already operated service/store identity, placement and independent administrators; authenticated time with <=100 ms uncertainty and <=1 second age; nonrollback fence/epoch receipts, lost-authority denial and restore exclusions. Existing evidence must show survival of node/application-host, authority-state and combined OpenBao/ledger restore cuts. If no such existing mechanism is available, return that owner disposition and retain the no-go; same-cluster HMAC storage readiness and off-node immutable objects do not establish it.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/intendedWorkloadCapacityEvidenceReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for intended workload and existing performance measurements if full custody is reopened",
+        "exactSourceRecordsNeeded": "Intended original-unit/key-family/generation counts, write/read arrival rates, lifetime and copy-volume forecasts, and existing reproducible direct-Transit workload measurements: key scale, sustained throughput, p95/p99 latency, destruction/disposal completion, cleanup backlog/drain and failure/recovery headroom on the actual configuration. Include measurement interval, commands, installed versions, raw results and workload assumptions. CPU requests/limits/top and the historical 42-second RPO do not supply these measurements. No new load test is authorized here.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        },
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/assessmentAllocationAndImplementerReference",
+          "#/D3_recovery/primaryHumanSubjectAndIssuer",
+          "#/D3_recovery/differentDeputyHumanSubjectAndIssuer",
+          "#/D3_recovery/appointmentAndTwoPersonChangeAuthorityReference",
+          "#/D3_recovery/independentMfaRecoveryAccessAndEscalationReference"
+        ],
+        "responsibleRole": "Sole Owner (current user), for actual engineering allocation and recovery-role appointments",
+        "exactSourceRecordsNeeded": "Authenticated actual existing engineering allocation and named assessment implementer under the approved two-engineer-day/zero-new-spend ceiling; task-specific accountable recovery-lead appointment and a different qualified Human deputy, with issuer/subject identities, scope, two-person change authority, independent MFA/recovery/escalation and competence/access references. Administrator jpiquot@itaneo.com, optional validator pduong@itaneo.com, Kubernetes/RBAC subjects and the assistant are not appointment evidence. Supply actual appointment records; no invented dates, allocation or target.",
+        "responsibleOwner": "Current user, sole Owner",
+        "evidenceCollectionAssignee": "Codex assistant; source discovery and verification delegated by the sole Owner"
+      }
+    ],
+    "separatePlatformImplementationWork": {
+      "owner": "Platform implementation agent",
+      "sourceRequirementReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+        "jsonPointer": "/implementationStillRequired"
+      },
+      "disposition": "The prepared scope recorded a missing executor. The later finalized handoff supplies a separately implemented executor, immutable final-tested-source and recorded 23 executor/8 preparer test results; application remains uninvoked. This supersedes only the earlier absence statement. Implementation/integration and any prerequisite-gated recovery execution stay separate Platform work, never a missing Human owner-return. This evidence handoff runs no executor or installer.",
+      "laterImplementationEvidenceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+        "sha256": "753f06d735ed9e60bf67172adaabce2e9b5210d8d260f073341aff09fa438461"
+      }
+    },
+    "validationLimits": "Referenced public-file fingerprints, prepared scope inputs, all three manifests, original tenant hashes and process-start/final-tested source bindings were checked locally. Fingerprints establish integrity, not owner identity or attestation truth. Scope approval is supported by the pinned recorded user instruction; no new preservation acceptance or appointment was found. Observations retain their original group timestamps and establish no future currentness or qualification.",
+    "sourceManifestsVerified": {
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/evidence-manifest.json": 10,
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/evidence-manifest.json": 26,
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json": 128
+    },
+    "providerOrClusterCallsByThisHandoff": 0,
+    "runtimeOrPolicyWritesByThisHandoff": 0,
+    "credentialRenewalsByThisHandoff": 0,
+    "qualificationInvocations": 0,
+    "dependencyAvailable": false,
+    "approvedRecoveryReturnReferences": {
+      "approvalRecord": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+        "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+      },
+      "recordedChatApprovalSource": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+        "sha256": "111d9476992d1061188d09697413f58c32d389b71b706976b46207de147598f4"
+      },
+      "specProvenance": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/spec-provenance.json",
+        "sha256": "560e48241b040f9567082219c328eeb5bb3245f4233484152cc306c93ee1c864"
+      },
+      "finalizedHandoff": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/HANDOFF.md",
+        "sha256": "295105a4a2834d1bbc349c6a7dccc3ce31f4ca8cf0390c75429af4252b2dcef2"
+      },
+      "verification": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+        "sha256": "753f06d735ed9e60bf67172adaabce2e9b5210d8d260f073341aff09fa438461"
+      },
+      "remainingOwnerBlockers": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/blockers.json",
+        "sha256": "c3cc5834898bd1480883439f32101620998b6cfcee3268da89e0ab39cb03c908"
+      },
+      "unacceptedPreservationReturnTemplate": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+        "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+      },
+      "manifest": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+        "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31"
+      },
+      "scopeLimit": "Ownership and this exact bounded recovery scope are recorded approved. No historical-write acceptance, independent proof, appointment, current accepted profile or qualification follows from that approval. The preservation template remains unaccepted."
+    },
+    "localValidation": {
+      "publicReferencesAndJsonPointers": "Verified; all required owner-return field pointers remain null except the now-supported separately scoped plan reference, removed from the missing-input list.",
+      "historicalPartiesEvidenceFilesPreserved": 140,
+      "priorCanonicalBytesPreserved": true,
+      "legacyVerifierCommand": "python3 -B docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
+      "legacyVerifierResult": "Failed on pre-existing Agents reference-checkout owner-form fingerprint: expected c2885033c7d8dea94c3bef5e6da2191c0cbd8e1d9d5786e627f7c80836a188fc, actual fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d, identical to this handoff archived pre-edit form. The verifier also encodes the historical prepared-plan-null expectation. No historical verifier/provenance was rewritten.",
+      "legacyMismatchSourceReference": "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json"
+    },
+    "soleOwnerDeclaration": {
+      "owner": "Current user",
+      "ownerCount": 1,
+      "sourceKind": "Direct user message in this conversation",
+      "exactInstruction": "I am the only Owner",
+      "recordedAtUtc": "2026-10-29T17:33:20.621956+00:00",
+      "scope": "The current user is the sole Owner responsible for every owner return in this handoff. Operational role labels identify evidence functions and do not appoint additional Owners.",
+      "historicalAcceptanceInferred": false,
+      "implementerOrRecoveryAppointmentInferred": false,
+      "independentAdministrationOrRestoreSurvivalInferred": false,
+      "deputyRule": "A distinct Human recovery deputy is an appointed operational role and need not be an Owner. No deputy or appointment is inferred from sole ownership.",
+      "existingDocumentaryPolicyReference": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t093206z-sole-owner-documentary-policy/sole-owner-policy.json",
+        "sha256": "d3c654d2e9c9f91a236fde5751f28a29ff02b8580dbb029cfc4fdd2e7b0bcbd7"
+      },
+      "documentaryPolicyScope": "Owner-declared/self-reviewed project documentation needs no invented additional Owner, independent Human reviewer, external authority registry, personal certificate or new signing key. Runtime/source facts, current grants, historical completeness and actual recovery safeguards still need their factual evidence. The existing policy changes no deployed authorization or acceptance rule."
+    },
+    "latestLocalReturnCheck": {
+      "checkedAtUtc": "2026-10-29T17:33:20.621991+00:00",
+      "newTechnicalAcceptanceOrAppointmentRecordsFound": false,
+      "classification": "Existing requirement records and unaccepted templates are preserved. The new direct ownership declaration is recorded separately; it supplies no historical write records, provider permissions, disposal measurement or appointment.",
+      "liveObservationsRepeated": false,
+      "credentialOrPolicyOperations": 0
+    },
+    "delegatedEvidenceCollection": {
+      "sourceKind": "Direct user reply in this conversation",
+      "exactInstruction": "I dont know, I dont want to manage this. Do it yourself.",
+      "recordedAtUtc": "2026-10-29T17:37:08.282707+00:00",
+      "assignedTo": "Codex assistant in this session",
+      "scope": "Discover, verify and reconcile available evidence autonomously. Do not require the sole Owner to find files or manage the collection. This is an evidence-work assignment, not a Human recovery appointment or a factual preservation attestation.",
+      "originalOperationalExclusionsPreserved": true
+    },
+    "autonomousSourceDiscovery": {
+      "recordedAtUtc": "2026-10-29T17:37:08.292160+00:00",
+      "searchedRoots": [
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1",
+        "/home/administrator/hexalith-recovery-evidence",
+        "/home/administrator/hexalith-evidence",
+        "/home/administrator/hexalith-management-evidence",
+        "/home/administrator/hexalith-admin-exposure-evidence",
+        "/home/administrator/evidence",
+        "/home/administrator/projects/hexalith/memories/docs",
+        "/home/administrator/projects/hexalith/memories/_bmad-output",
+        "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts"
+      ],
+      "method": "Bounded filename/metadata discovery, targeted searches for exact recorded Memories transition fingerprints, source-record inspection, public detached-signature verification and GitHub issue/comment reads. Credential stores, key values and snapshot contents were not searched.",
+      "newHistoricalSignedSourcesRecorded": true,
+      "newCompleteHistoricalSecretWriteRecordFound": false,
+      "newCurrentFourKeyMetadataReadEvidenceFound": false,
+      "newAllCopyDisposalOrCurrentRestoreAccessEvidenceFound": false,
+      "newIntendedWorkloadOrIndependentAuthorityEvidenceFound": false,
+      "newTaskSpecificHumanAppointmentFound": false,
+      "githubIssueSearch": {
+        "query": "\"EXT-PARTIES-1\" org:Hexalith",
+        "matchingIssue": "https://github.com/Hexalith/Hexalith.Parties/issues/54",
+        "commentsReturned": 0,
+        "classification": "Historical contract request; no new owner evidence return. No message or comment sent."
+      },
+      "limit": "These bounded sources do not exclude an external or unretained archive. Unaccepted templates and retained current metadata do not become historical write proof.",
+      "clusterProviderOrCredentialOperations": 0
+    },
+    "continuationDisposition": {
+      "status": "RetainApprovedOperationalSecurityFallbackPendingSourceEvidence",
+      "basis": {
+        "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+        "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+      },
+      "instruction": "Keep the completed feasibility stop and its operational-security fallback. Continue evidence gathering as agent work when an actual new source becomes available; do not repeat denied probes, ask the Owner to manage collection, or fabricate missing records.",
+      "fullCustodyReopened": false,
+      "currentnessOrAvailabilityInferred": false,
+      "deputyOrIndependentAdministratorInvented": false,
+      "historicalEvidencePreserved": true,
+      "noLiveCredentialRenewalInstallerReplayBackupPolicyChangeOrProvisioning": true
+    }
+  }
 }
