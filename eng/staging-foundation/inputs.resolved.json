@@ -1,0 +1,105 @@
+{
+  "storage": {
+    "provisioner": null,
+    "parameters": null,
+    "reclaimPolicy": null,
+    "stagingStorageClassName": null,
+    "productionStorageClassName": null,
+    "encryptionAttestation": {
+      "evidenceRef": null,
+      "attestedBy": null
+    }
+  },
+  "custody": {
+    "holders": null
+  },
+  "priority": {
+    "stagingValue": null,
+    "productionValue": null,
+    "productionClassName": null
+  },
+  "deployIdentities": {
+    "sharedInfrastructure": null,
+    "environmentLayer": null,
+    "jobs": null
+  },
+  "network": {
+    "dns": {
+      "namespace": "kube-system",
+      "podLabels": {
+        "k8s-app": "kube-dns"
+      }
+    },
+    "dataServices": null
+  },
+  "limitRange": {
+    "defaultRequestCpu": null,
+    "defaultRequestMemory": null,
+    "defaultLimitCpu": null,
+    "defaultLimitMemory": null,
+    "pvcMinStorage": null,
+    "pvcMaxStorage": null
+  },
+  "quotas": {
+    "application": {
+      "requestsCpu": null,
+      "requestsMemory": null,
+      "limitsCpu": null,
+      "limitsMemory": null,
+      "pods": null,
+      "persistentVolumeClaims": null,
+      "requestsStorage": null
+    },
+    "data": {
+      "requestsCpu": null,
+      "requestsMemory": null,
+      "limitsCpu": null,
+      "limitsMemory": null,
+      "pods": null,
+      "persistentVolumeClaims": null,
+      "requestsStorage": null
+    }
+  },
+  "_provenance": {
+    "network.dns.namespace": {
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+          "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+          "pointer": "/observations/workloads/records/105/namespace"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t085143z-census/inventory.json",
+          "sha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf",
+          "pointer": "/resources/760/namespace"
+        }
+      ],
+      "observedAt": "2026-10-29T17:30:45.207505+00:00",
+      "meaning": "Observed CoreDNS namespace; not proof of the effective pod resolver datapath.",
+      "collectionCompletedAt": "2026-10-29T17:30:48.110013+00:00"
+    },
+    "network.dns.podLabels": {
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+          "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+          "pointer": "/observations/workloads/records/105/selector"
+        }
+      ],
+      "observedAt": "2026-10-29T17:30:45.207505+00:00",
+      "meaning": "Exact current CoreDNS Service pod selector; not a claim that NodeLocal DNS traffic is allowed by the rendered policy.",
+      "collectionCompletedAt": "2026-10-29T17:30:48.110013+00:00"
+    }
+  },
+  "_resolution": {
+    "assessedAt": "2026-10-29T17:33:34.105183+00:00",
+    "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+    "requiredFieldCount": 37,
+    "resolvedFieldCount": 2,
+    "missingFieldCount": 35,
+    "missingInputsDocument": "MISSING-INPUTS.md",
+    "approvalGranted": false,
+    "status": "BLOCKED_NOT_FOR_EXECUTION",
+    "notes": "Values remain in the example schema for direct renderer use. _provenance and _resolution are metadata ignored by the existing renderer. No defaults or fixture values were adopted."
+  }
+}

@@ -1,0 +1,113 @@
+test_concrete_plan (test_staging_foundation.ApplyPlanTests.test_concrete_plan) ... ok
+test_exact_denial_argv (test_staging_foundation.ApplyPlanTests.test_exact_denial_argv) ... ok
+test_static_plan_is_blocked (test_staging_foundation.ApplyPlanTests.test_static_plan_is_blocked) ... ok
+test_wrong_target_refused (test_staging_foundation.ApplyPlanTests.test_wrong_target_refused) ... refused: storage.provisioner: required input is missing
+refused: storage.parameters: required input is missing
+refused: storage.reclaimPolicy: required input is missing
+refused: storage.stagingStorageClassName: required input is missing
+refused: storage.productionStorageClassName: required input is missing
+refused: storage.encryptionAttestation.evidenceRef: required input is missing
+refused: storage.encryptionAttestation.attestedBy: required input is missing
+refused: custody.holders: required input is missing
+refused: priority.stagingValue: required input is missing
+refused: priority.productionValue: required input is missing
+refused: priority.productionClassName: required input is missing
+refused: deployIdentities.sharedInfrastructure: required input is missing
+refused: deployIdentities.environmentLayer: required input is missing
+refused: deployIdentities.jobs: required input is missing
+refused: network.dns.namespace: required input is missing
+refused: network.dns.podLabels: required input is missing
+refused: network.dataServices: required input is missing
+refused: limitRange.defaultRequestCpu: required input is missing
+refused: limitRange.defaultRequestMemory: required input is missing
+refused: limitRange.defaultLimitCpu: required input is missing
+refused: limitRange.defaultLimitMemory: required input is missing
+refused: limitRange.pvcMinStorage: required input is missing
+refused: limitRange.pvcMaxStorage: required input is missing
+refused: quotas.application.requestsCpu: required input is missing
+refused: quotas.application.requestsMemory: required input is missing
+refused: quotas.application.limitsCpu: required input is missing
+refused: quotas.application.limitsMemory: required input is missing
+refused: quotas.application.pods: required input is missing
+refused: quotas.application.persistentVolumeClaims: required input is missing
+refused: quotas.application.requestsStorage: required input is missing
+refused: quotas.data.requestsCpu: required input is missing
+refused: quotas.data.requestsMemory: required input is missing
+refused: quotas.data.limitsCpu: required input is missing
+refused: quotas.data.limitsMemory: required input is missing
+refused: quotas.data.pods: required input is missing
+refused: quotas.data.persistentVolumeClaims: required input is missing
+refused: quotas.data.requestsStorage: required input is missing
+ok
+test_argv_sequence_ends_with_cleanup (test_staging_foundation.CniProbeTests.test_argv_sequence_ends_with_cleanup) ... ok
+test_cleanup_requires_probe_label (test_staging_foundation.CniProbeTests.test_cleanup_requires_probe_label) ... ok
+test_evaluate (test_staging_foundation.CniProbeTests.test_evaluate) ... ok
+test_evaluate_strictness (test_staging_foundation.CniProbeTests.test_evaluate_strictness) ... ok
+test_main_exit_codes (test_staging_foundation.CniProbeTests.test_main_exit_codes) ... ok
+test_manifests_deny_by_default_and_allow_one_path (test_staging_foundation.CniProbeTests.test_manifests_deny_by_default_and_allow_one_path) ... ok
+test_pods_are_restricted_compatible (test_staging_foundation.CniProbeTests.test_pods_are_restricted_compatible) ... ok
+test_real_client_script_markers_feed_evaluate (test_staging_foundation.CniProbeTests.test_real_client_script_markers_feed_evaluate) ... ok
+test_requires_pinned_image (test_staging_foundation.CniProbeTests.test_requires_pinned_image) ... ok
+test_servers_have_readiness_and_writable_tmp (test_staging_foundation.CniProbeTests.test_servers_have_readiness_and_writable_tmp) ... ok
+test_foundation_names_no_consumer_module (test_staging_foundation.ModuleAgnosticTests.test_foundation_names_no_consumer_module) ... ok
+test_main_paths_never_spawn_or_connect (test_staging_foundation.NoClusterCallTests.test_main_paths_never_spawn_or_connect) ... ok
+test_sources_import_no_process_or_network_modules (test_staging_foundation.NoClusterCallTests.test_sources_import_no_process_or_network_modules) ... ok
+test_allow_policies_are_narrow (test_staging_foundation.RenderTests.test_allow_policies_are_narrow) ... ok
+test_cli_refusal_writes_nothing (test_staging_foundation.RenderTests.test_cli_refusal_writes_nothing) ... refused: storage.provisioner: required input is missing
+refused: storage.parameters: required input is missing
+refused: storage.reclaimPolicy: required input is missing
+refused: storage.stagingStorageClassName: required input is missing
+refused: storage.productionStorageClassName: required input is missing
+refused: storage.encryptionAttestation.evidenceRef: required input is missing
+refused: storage.encryptionAttestation.attestedBy: required input is missing
+refused: custody.holders: required input is missing
+refused: priority.stagingValue: required input is missing
+refused: priority.productionValue: required input is missing
+refused: priority.productionClassName: required input is missing
+refused: deployIdentities.sharedInfrastructure: required input is missing
+refused: deployIdentities.environmentLayer: required input is missing
+refused: deployIdentities.jobs: required input is missing
+refused: network.dns.namespace: required input is missing
+refused: network.dns.podLabels: required input is missing
+refused: network.dataServices: required input is missing
+refused: limitRange.defaultRequestCpu: required input is missing
+refused: limitRange.defaultRequestMemory: required input is missing
+refused: limitRange.defaultLimitCpu: required input is missing
+refused: limitRange.defaultLimitMemory: required input is missing
+refused: limitRange.pvcMinStorage: required input is missing
+refused: limitRange.pvcMaxStorage: required input is missing
+refused: quotas.application.requestsCpu: required input is missing
+refused: quotas.application.requestsMemory: required input is missing
+refused: quotas.application.limitsCpu: required input is missing
+refused: quotas.application.limitsMemory: required input is missing
+refused: quotas.application.pods: required input is missing
+refused: quotas.application.persistentVolumeClaims: required input is missing
+refused: quotas.application.requestsStorage: required input is missing
+refused: quotas.data.requestsCpu: required input is missing
+refused: quotas.data.requestsMemory: required input is missing
+refused: quotas.data.limitsCpu: required input is missing
+refused: quotas.data.limitsMemory: required input is missing
+refused: quotas.data.pods: required input is missing
+refused: quotas.data.persistentVolumeClaims: required input is missing
+refused: quotas.data.requestsStorage: required input is missing
+ok
+test_cli_renders_complete_inputs_deterministically (test_staging_foundation.RenderTests.test_cli_renders_complete_inputs_deterministically) ... ok
+test_default_deny_both_directions_in_both_namespaces (test_staging_foundation.RenderTests.test_default_deny_both_directions_in_both_namespaces) ... ok
+test_every_missing_field_is_named_and_nothing_written (test_staging_foundation.RenderTests.test_every_missing_field_is_named_and_nothing_written) ... ok
+test_example_inputs_are_all_null_and_refused (test_staging_foundation.RenderTests.test_example_inputs_are_all_null_and_refused) ... ok
+test_layer_split_by_identity (test_staging_foundation.RenderTests.test_layer_split_by_identity) ... ok
+test_namespaces_enforce_restricted (test_staging_foundation.RenderTests.test_namespaces_enforce_restricted) ... ok
+test_placeholder_values_refused (test_staging_foundation.RenderTests.test_placeholder_values_refused) ... ok
+test_policy_invariants_refused (test_staging_foundation.RenderTests.test_policy_invariants_refused) ... ok
+test_priority_lower_and_storage_class_properties (test_staging_foundation.RenderTests.test_priority_lower_and_storage_class_properties) ... ok
+test_production_priority_class_denied_by_scoped_quota (test_staging_foundation.RenderTests.test_production_priority_class_denied_by_scoped_quota) ... ok
+test_psa_audit_warn_and_tls_contract (test_staging_foundation.RenderTests.test_psa_audit_warn_and_tls_contract) ... ok
+test_quota_limits_and_production_storage_denial (test_staging_foundation.RenderTests.test_quota_limits_and_production_storage_denial) ... ok
+test_all_problems_collected_in_one_pass (test_staging_foundation.ValidationTableTests.test_all_problems_collected_in_one_pass) ... ok
+test_each_case_refused_naming_the_field (test_staging_foundation.ValidationTableTests.test_each_case_refused_naming_the_field) ... ok
+test_unreadable_or_invalid_inputs_exit_2_without_output (test_staging_foundation.ValidationTableTests.test_unreadable_or_invalid_inputs_exit_2_without_output) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 0.019s
+
+OK

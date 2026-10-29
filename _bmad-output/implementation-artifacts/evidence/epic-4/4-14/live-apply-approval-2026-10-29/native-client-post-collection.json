@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "kubectl",
+    "version",
+    "--client",
+    "-o",
+    "json"
+  ],
+  "startedAt": "2026-10-29T17:40:47.454887+00:00",
+  "completedAt": "2026-10-29T17:40:47.683931+00:00",
+  "exitCode": 0,
+  "version": {
+    "clientVersion": {
+      "major": "1",
+      "minor": "36",
+      "gitVersion": "v1.36.1",
+      "gitCommit": "756939600b9a7180fc2df6550a4585b638875e67",
+      "gitTreeState": "clean",
+      "buildDate": "2026-05-12T09:54:35Z",
+      "goVersion": "go1.26.2",
+      "compiler": "gc",
+      "platform": "linux/amd64"
+    },
+    "kustomizeVersion": "v5.8.1"
+  },
+  "executablePath": "/mnt/wsl/docker-desktop/cli-tools/usr/local/bin/kubectl",
+  "executableSha256": "629d3f410e09bf49b64ae7079f7f0bda1191efed311f7d37fdbab0ad5b0ec2b7",
+  "executableMtimeNs": 1790942021000000000,
+  "sourcePath": "eng/timesheets-deployment/observe_native.py",
+  "sourceSha256": "d565bdf441242463ba0fb7d4ddaf656be0484daf7d672bad2ed6e8c6b4e67155",
+  "scope": "Local client measured after the native collection; this does not retrospectively attest the exact client binary or version at the earlier query cut. No new cluster request was made."
+}

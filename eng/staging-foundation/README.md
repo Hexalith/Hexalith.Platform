@@ -1,12 +1,15 @@
 # Staging foundation (Story 4.14) - BLOCKED, offline only
 
-Status: `BLOCKED_NOT_FOR_EXECUTION`. `approvalGranted=false`, no executable dispatcher exists, and nothing here touches the cluster. Story 4.14 stays in-progress; Timesheets 3.6 stays in-progress with launch FAIL. Unmet gates: 4.1, 4.2, 4.3, 4.27 (in-progress) and 4.28 (backlog) have no accepted evidence (see `apply-plan.json`).
+Status: `BLOCKED_NOT_FOR_EXECUTION`. `approvalGranted=false`, no executable dispatcher exists, and nothing here touches the cluster. Story 4.14 stays in-progress. Required gates 4.1, 4.2, 4.3, 4.27 (in-progress) and 4.28 (backlog) lack full dependency acceptance. Story 4.2 has accepted scoped exposure/registry results; its full workflow review remains pending. See the evidence-backed [approval package](APPROVAL-PACKAGE.md) and [gate assessment](gates.assessed.json).
 
 ## Contents
 
 | File | Purpose |
 |---|---|
 | `inputs.example.json` | Required-input schema, all `null`. The renderer refuses it. Provisioner, encryption attestation, custody holders, production StorageClass, deploy-identity names, quotas and DNS selectors are never defaulted. |
+| `inputs.resolved.json` | Same input schema, with two cited DNS observations and 35 null fields; `_provenance` records source paths, JSON pointers and hashes. Still refused. |
+| `MISSING-INPUTS.md` / `INPUT-EVIDENCE.md` | Exact question for every null field, additional live prerequisites and reasons historical observations cannot become defaults. |
+| `APPROVAL-PACKAGE.md` / `gates.assessed.json` | Current approval boundary, per-stage refusal, target, effects, read-only checks, forward recovery and dependency acceptance audit. |
 | `render.py` | `render` writes `shared-infrastructure.yaml` and `environment-layer.yaml`; `plan` prints the concrete apply plan. Refuses (exit 2, no output) on missing/placeholder input or a target other than `jpiquot@local` / `b5860674-1d1e-4a3b-b413-e1bb3b9a4557`. |
 | `cni_probe.py` | Calico enforcement probe: manifests, kubectl argv sequence, and `evaluate`. Passes only if the allowed connection works and the denied peer is blocked; always emits cleanup argv. |
 | `apply-plan.json` | Static blocked package: target, unmet dependencies, effects per stage, job-identity denial checks, forward recovery. |

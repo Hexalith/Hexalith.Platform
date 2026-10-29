@@ -1,0 +1,269 @@
+{
+  "kind": "staging-foundation-blocked-apply-plan",
+  "story": "4-14",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "approvalGranted": false,
+  "executableDispatcherExists": false,
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443",
+    "clusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "applicationNamespace": "hexalith-staging",
+    "dataNamespace": "hexalith-staging-data"
+  },
+  "unmetDependencies": [
+    {
+      "story": "4-1",
+      "status": "in-progress",
+      "needs": "accepted Kubernetes upgrade evidence",
+      "acceptedForLiveApply": false
+    },
+    {
+      "story": "4-2",
+      "status": "in-progress",
+      "needs": "accepted full Story 4.2 workflow review/completion; scoped exposure closure, registry authentication and later GC confirmation already pass",
+      "acceptedForLiveApply": false
+    },
+    {
+      "story": "4-3",
+      "status": "in-progress",
+      "needs": "accepted runner-relocation evidence",
+      "acceptedForLiveApply": false
+    },
+    {
+      "story": "4-27",
+      "status": "in-progress",
+      "needs": "accepted KubeSphere retirement evidence",
+      "acceptedForLiveApply": false
+    },
+    {
+      "story": "4-28",
+      "status": "backlog",
+      "needs": "accepted private Rancher qualification",
+      "acceptedForLiveApply": false
+    }
+  ],
+  "preconditions": [
+    "Every dependency above has accepted evidence and the owner has approved this exact plan; no approval exists.",
+    "Target context and cluster UID are re-read immediately before each stage and must equal the target above.",
+    "The Calico enforcement probe (cni_probe.py) has passed on the live cluster.",
+    "Every required input is real; the renderer refuses placeholders."
+  ],
+  "stageOrder": [
+    "shared-infrastructure",
+    "environment-layer"
+  ],
+  "stageEffects": {
+    "shared-infrastructure": "Creates Namespaces hexalith-staging and hexalith-staging-data (PSA restricted enforce), the staging StorageClass and the staging PriorityClass. Cluster-scoped; no workload, Secret or data is touched.",
+    "environment-layer": "Creates ResourceQuota, LimitRange, default-deny/DNS/data-TLS NetworkPolicies and the data-service TLS contract ConfigMap in both namespaces. No Secret, Pod or PVC is created."
+  },
+  "jobDenialChecks": [
+    [
+      "create",
+      "namespaces",
+      null
+    ],
+    [
+      "create",
+      "storageclasses.storage.k8s.io",
+      null
+    ],
+    [
+      "create",
+      "priorityclasses.scheduling.k8s.io",
+      null
+    ],
+    [
+      "get",
+      "secrets",
+      "{data}"
+    ],
+    [
+      "create",
+      "networkpolicies",
+      "{app}"
+    ],
+    [
+      "create",
+      "networkpolicies",
+      "{data}"
+    ],
+    [
+      "update",
+      "networkpolicies",
+      "{app}"
+    ],
+    [
+      "update",
+      "networkpolicies",
+      "{data}"
+    ],
+    [
+      "patch",
+      "networkpolicies",
+      "{app}"
+    ],
+    [
+      "patch",
+      "networkpolicies",
+      "{data}"
+    ],
+    [
+      "delete",
+      "networkpolicies",
+      "{app}"
+    ],
+    [
+      "delete",
+      "networkpolicies",
+      "{data}"
+    ],
+    [
+      "create",
+      "resourcequotas",
+      "{app}"
+    ],
+    [
+      "create",
+      "resourcequotas",
+      "{data}"
+    ],
+    [
+      "update",
+      "resourcequotas",
+      "{app}"
+    ],
+    [
+      "update",
+      "resourcequotas",
+      "{data}"
+    ],
+    [
+      "patch",
+      "resourcequotas",
+      "{app}"
+    ],
+    [
+      "patch",
+      "resourcequotas",
+      "{data}"
+    ],
+    [
+      "delete",
+      "resourcequotas",
+      "{app}"
+    ],
+    [
+      "delete",
+      "resourcequotas",
+      "{data}"
+    ],
+    [
+      "create",
+      "limitranges",
+      "{app}"
+    ],
+    [
+      "create",
+      "limitranges",
+      "{data}"
+    ],
+    [
+      "update",
+      "limitranges",
+      "{app}"
+    ],
+    [
+      "update",
+      "limitranges",
+      "{data}"
+    ],
+    [
+      "patch",
+      "limitranges",
+      "{app}"
+    ],
+    [
+      "patch",
+      "limitranges",
+      "{data}"
+    ],
+    [
+      "delete",
+      "limitranges",
+      "{app}"
+    ],
+    [
+      "delete",
+      "limitranges",
+      "{data}"
+    ]
+  ],
+  "recovery": {
+    "model": "forward-only",
+    "never": [
+      "helm rollback",
+      "namespace deletion",
+      "PVC or PV deletion",
+      "automatic data or credential rewind"
+    ],
+    "steps": [
+      "Re-run the dry-run argv, then re-apply the same reviewed manifests to converge any partially applied layer.",
+      "StorageClass provisioner, parameters and reclaimPolicy are immutable: change them only by rendering a new StorageClass name; existing PVCs keep their class.",
+      "A policy or quota that blocks an approved workload is corrected by a reviewed forward edit under the environment-layer identity, never by removing default-deny.",
+      "Data recovery needs a separate exact owner-approved source, destination and restore operation."
+    ]
+  },
+  "crossIdentityDenialChecks": {
+    "sharedInfrastructure": [
+      [
+        "create",
+        "networkpolicies",
+        "{app}"
+      ],
+      [
+        "create",
+        "networkpolicies",
+        "{data}"
+      ],
+      [
+        "create",
+        "resourcequotas",
+        "{app}"
+      ],
+      [
+        "create",
+        "resourcequotas",
+        "{data}"
+      ],
+      [
+        "create",
+        "limitranges",
+        "{app}"
+      ],
+      [
+        "create",
+        "limitranges",
+        "{data}"
+      ]
+    ],
+    "environmentLayer": [
+      [
+        "create",
+        "namespaces",
+        null
+      ],
+      [
+        "create",
+        "storageclasses.storage.k8s.io",
+        null
+      ],
+      [
+        "create",
+        "priorityclasses.scheduling.k8s.io",
+        null
+      ]
+    ]
+  },
+  "gateAssessment": "gates.assessed.json"
+}

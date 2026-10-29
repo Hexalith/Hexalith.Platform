@@ -15,34 +15,42 @@
     {
       "story": "4-1",
       "status": "in-progress",
-      "needs": "accepted Kubernetes upgrade evidence"
+      "needs": "accepted Kubernetes upgrade evidence",
+      "acceptedForLiveApply": false
     },
     {
       "story": "4-2",
       "status": "in-progress",
-      "needs": "accepted exposure-closure evidence"
+      "needs": "accepted full Story 4.2 workflow review/completion; scoped exposure closure, registry authentication and later GC confirmation already pass",
+      "acceptedForLiveApply": false
     },
     {
       "story": "4-3",
       "status": "in-progress",
-      "needs": "accepted runner-relocation evidence"
+      "needs": "accepted runner-relocation evidence",
+      "acceptedForLiveApply": false
     },
     {
       "story": "4-27",
       "status": "in-progress",
-      "needs": "accepted KubeSphere retirement evidence"
+      "needs": "accepted KubeSphere retirement evidence",
+      "acceptedForLiveApply": false
     },
     {
       "story": "4-28",
       "status": "backlog",
-      "needs": "accepted private Rancher qualification"
+      "needs": "accepted private Rancher qualification",
+      "acceptedForLiveApply": false
     }
   ],
   "preconditions": [
     "Every dependency above has accepted evidence and the owner has approved this exact plan; no approval exists.",
     "Target context and cluster UID are re-read immediately before each stage and must equal the target above.",
     "The Calico enforcement probe (cni_probe.py) has passed on the live cluster.",
-    "Every required input is real; the renderer refuses placeholders."
+    "Every required input is real; the renderer refuses placeholders.",
+    "Withhold workload deployment authority until both layers and their complete isolation verification have succeeded, including after a partial apply.",
+    "The generated job denial checks are incomplete for arbitrary data-namespace writes and the environment TLS ConfigMap; complete reviewed positive layer permissions and negative job/cross-layer verification before enabling deployment identities.",
+    "Reviewed enforcement must establish staging-only StorageClass use; the named production-class denial quota alone does not prove it."
   ],
   "stageOrder": [
     "shared-infrastructure",
@@ -259,5 +267,6 @@
         null
       ]
     ]
-  }
+  },
+  "gateAssessment": "gates.assessed.json"
 }
