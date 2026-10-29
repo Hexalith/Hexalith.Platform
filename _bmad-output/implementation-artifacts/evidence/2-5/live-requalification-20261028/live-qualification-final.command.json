@@ -1,0 +1,30 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "argv": [
+    "env",
+    "HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+    "HEXALITH_PLATFORM_LIFECYCLE_LIVE=1",
+    "HEXALITH_PLATFORM_LIFECYCLE_EVIDENCE=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/live-final",
+    "dotnet",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "-method",
+    "*LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/platform-live-tests-final.xml"
+  ],
+  "startedAtUtc": "2026-10-28T10:31:07.302915+00:00",
+  "finishedAtUtc": "2026-10-28T10:37:31.965124+00:00",
+  "durationSeconds": 384.682,
+  "exitCode": 0,
+  "log": "live-qualification-final.log",
+  "archivedLog": "live-qualification-final.log.gz",
+  "logSha256": "f4f8df6e886a7131093940626800f101299870d67fad9b0461aec704b3efc5e8",
+  "archiveSha256": "c0d997d515ac99e64fc7aead3e6168adcb1767e5380a7326b9769a3574e71af2",
+  "scriptSnapshots": [
+    {
+      "executedPath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/run-command.py",
+      "sha256": "85efbd774776f7cbe75f85b8179361fe7aeb899eef5d8942a606ec1838752ea5",
+      "snapshot": "script-snapshots/85efbd774776f7cbe75f85b8179361fe7aeb899eef5d8942a606ec1838752ea5-run-command.py"
+    }
+  ]
+}

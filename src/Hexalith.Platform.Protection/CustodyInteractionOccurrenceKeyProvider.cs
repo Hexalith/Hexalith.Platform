@@ -16,6 +16,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
 {
     private readonly HashSet<string> _leases=new(StringComparer.Ordinal),_materialAttempts=new(StringComparer.Ordinal);private readonly object _gate=new();
     private readonly Dictionary<string,byte[]> _ownedRoots=new(StringComparer.Ordinal);
+    private readonly Dictionary<string,InteractionOccurrenceOwnedKey> _ownedUses=new(StringComparer.Ordinal);
     private readonly HashSet<string> _completedUses=new(StringComparer.Ordinal);
     /// <summary>Gets the exact independently enrolled material profile identity.</summary>
     public static string ProfileId(InteractionOccurrenceIdentity identity,bool writing)=>CustodyInteractionProtectionBindingSource.ResourceId(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId))+"|"+(writing?"write":"read");
@@ -58,8 +59,9 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
         {
             if(key.Bytes.Length!=32 || await bindings.FindRetainedAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token).ConfigureAwait(false)!=current.Binding
                 || await custody.LookupAsync(current.Profile.Registration,token).ConfigureAwait(false) is not { Status:CustodyKeyLifecycleStatus.Wrapped }) return null;
-            byte[] transferred=key.TransferOwnership();lock(_gate) _ownedRoots[materialAttempt]=transferred;
-            return new(identity.Target,"interaction-root",identity.RootKeyVersion,transferred);
+            byte[] transferred=key.TransferOwnership();var use=new InteractionOccurrenceOwnedKey(identity.Target,"interaction-root",identity.RootKeyVersion,transferred);
+            lock(_gate) { _ownedRoots[materialAttempt]=transferred;_ownedUses[materialAttempt]=use; }
+            return use;
         }
     }
     /// <summary>Recovers exact native holder completion, including after process restart. Buffer disposal merely permits asking the independently witnessed native boundary; it never supplies completion evidence.</summary>
@@ -72,13 +74,13 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
             string id=MaterialId(profile.KeyUse);
             lock(_gate)
             {
-                if(_completedUses.Contains(id) || _ownedRoots.TryGetValue(id,out var bytes) && bytes.AsSpan().IndexOfAnyExcept((byte)0)>=0) continue;
+                if(_completedUses.Contains(id) || _ownedUses.TryGetValue(id,out var use) && !use.IsDisposed || _ownedRoots.TryGetValue(id,out var bytes) && bytes.AsSpan().IndexOfAnyExcept((byte)0)>=0) continue;
             }
             var result=await custody.CompleteAsync(profile.Registration,"holder-completion:"+id,profile.KeyUse,token).ConfigureAwait(false);
             if(result.Key is { } unexpected) { unexpected.Dispose();continue; }
             if(result.HoldersCompleted)
             {
-                lock(_gate) { _completedUses.Add(id);_ownedRoots.Remove(id); }completed++;
+                lock(_gate) { _completedUses.Add(id);_ownedRoots.Remove(id);_ownedUses.Remove(id); }completed++;
             }
         }
         return completed;

@@ -1,0 +1,64 @@
+{
+  "candidateObservedCommit": "4e35f561b022caede7093f0c3f4301e3dcbd1e11",
+  "cleanCandidateAtPreparation": false,
+  "runs": [
+    {
+      "dependency": "EXT-SECRETS-1",
+      "argv": [
+        "python3",
+        "/home/administrator/projects/hexalith/platform/eng/ext-secrets-1/prepare_acceptance.py",
+        "--root",
+        "/home/administrator/projects/hexalith/platform",
+        "--configuration",
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
+        "--output",
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/operational-security-preparation-20261028T192822243257Z/secrets",
+        "--eventstore-argument",
+        "../eventstore",
+        "--artifacts-argument",
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/operational-security-preparation-20261028T192822243257Z/future-secrets-artifacts",
+        "--evidence-argument",
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/operational-security-preparation-20261028T192822243257Z/future-secrets-evidence",
+        "--register",
+        "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+      ],
+      "exitCode": 2,
+      "preparationOnly": true,
+      "liveOwnerCommandExecuted": false,
+      "scriptSha256": "41725a6c962b252aba7db7aa3b510882de630cbf0314a59ac71aedb43726c7cc"
+    },
+    {
+      "dependency": "EXT-HOST-1",
+      "argv": [
+        "python3",
+        "/home/administrator/projects/hexalith/platform/eng/ext-host-1/prepare_acceptance.py",
+        "--root",
+        "/home/administrator/projects/hexalith/platform",
+        "--profile",
+        "/home/administrator/hexalith-host-evidence/ext-host-1/runtime-composition-abbec40/agents-deployment-profile.json",
+        "--output",
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/operational-security-preparation-20261028T192822243257Z/host",
+        "--register",
+        "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md"
+      ],
+      "exitCode": 2,
+      "preparationOnly": true,
+      "liveOwnerCommandExecuted": false,
+      "scriptSha256": "62e0bc6e6938eb16cc11211df2a93e7d34749fc3a2a8a08dc5e0e33a906d27e5"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "sha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
+      "sha256": "efade3ce11a5ebe51def33d83eba5876d0e7e2e176c937811b5626857da953e8"
+    },
+    {
+      "path": "/home/administrator/hexalith-host-evidence/ext-host-1/runtime-composition-abbec40/agents-deployment-profile.json",
+      "sha256": "f93680dfb9ae76f963005f0058622672c567612532591555e501dd3d13db7083"
+    }
+  ]
+}

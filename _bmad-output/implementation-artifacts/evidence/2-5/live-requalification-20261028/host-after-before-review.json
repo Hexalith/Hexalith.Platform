@@ -1,0 +1,93 @@
+{
+  "observedAtUtc": "2026-10-28T10:21:54.017927+00:00",
+  "containers": [
+    {
+      "id": "410b4d1d0e6b54c76d47dfd4e209181a58d6ab106fcea95e5f81d389243c16d9",
+      "name": "crazy_meninsky",
+      "image": "redis:7.4-alpine",
+      "state": "created"
+    },
+    {
+      "id": "3ac57aeec1ba325c35ff9cbb494762a239f2687d380440e1b1868fb5e0eaa800",
+      "name": "works-sdk415-90575b9d7f294f34bda2572be066775f",
+      "image": "redis:7.4-alpine",
+      "state": "running"
+    },
+    {
+      "id": "fe6c35911851cb5ed7e3d39cb7ab994d6a68c0d2bcc163198d21fe3867cf462a",
+      "name": "fluent-ui-blazor-mcp",
+      "image": "sha256:68fdad5226e3c626da28bb2b61cfce20e242390045b8df9f5ad4c21bfb9ca322",
+      "state": "running"
+    },
+    {
+      "id": "f1e0a30a3a93a1542ee5ad74856e44d483a94f7a8e5ef769f398827815cc1da6",
+      "name": "dapr_placement",
+      "image": "docker.io/daprio/dapr:1.18.7",
+      "state": "running"
+    },
+    {
+      "id": "8623af8b7bbd8ebd3d73221af72615162475f3f8a7190432e09e64e51befc826",
+      "name": "dapr_scheduler",
+      "image": "docker.io/daprio/dapr:1.18.7",
+      "state": "running"
+    },
+    {
+      "id": "8d0788f8322fdb91a51f3960cb9a0ceab4a7b892f27bacf2147e97fc4d471922",
+      "name": "dapr_redis",
+      "image": "docker.io/redis:6",
+      "state": "running"
+    },
+    {
+      "id": "cb7c12622c180c9a16d24a67fc57115f8aeb0d038fed8793d6c9d49e11d1e488",
+      "name": "dapr_zipkin",
+      "image": "docker.io/openzipkin/zipkin",
+      "state": "running"
+    }
+  ],
+  "ownedProcesses": {},
+  "unreadableSameUserProcesses": [
+    {
+      "pid": 393,
+      "startTimeTicks": "5752",
+      "command": "systemd"
+    }
+  ],
+  "qualificationOwners": {
+    "5bfc28751ce456377605a546ec58bab9": {
+      "containerIds": [],
+      "processIds": []
+    },
+    "83505c815d80321847f95fc27f9be923": {
+      "containerIds": [],
+      "processIds": []
+    },
+    "95741970230e1b66376a3ee59026453d": {
+      "containerIds": [],
+      "processIds": []
+    },
+    "b196750ff989f2dd9d0e28db283dae23": {
+      "containerIds": [],
+      "processIds": []
+    },
+    "d915806c4edeb9e72c288d3773f9b267": {
+      "containerIds": [],
+      "processIds": []
+    }
+  },
+  "ownedResourcesAbsent": true,
+  "newUninspectableProcesses": [],
+  "preexistingContainersStillPresent": [
+    "fe6c35911851cb5ed7e3d39cb7ab994d6a68c0d2bcc163198d21fe3867cf462a",
+    "f1e0a30a3a93a1542ee5ad74856e44d483a94f7a8e5ef769f398827815cc1da6",
+    "8623af8b7bbd8ebd3d73221af72615162475f3f8a7190432e09e64e51befc826",
+    "8d0788f8322fdb91a51f3960cb9a0ceab4a7b892f27bacf2147e97fc4d471922",
+    "cb7c12622c180c9a16d24a67fc57115f8aeb0d038fed8793d6c9d49e11d1e488"
+  ],
+  "preexistingContainersNoLongerPresent": [
+    "46ebde40d020ef151fa6037fee9538ea50e2b2bea0a8318cce82d3f37c32ad61",
+    "a85bbf83f6d91264f3141254ae00b3037c2a8231ee4b9e6c4297428c21b4540c",
+    "8ebfa3d3025ae68bcd646cc281c44367ca1491c8fe44ef6d90ff19dab048b505",
+    "c4116f717474d0e52b37796451cbf0f2712e27d38c10584c74b3b0f6067ab3c7"
+  ],
+  "ambientContainerChangesAttribution": "unavailable; unrelated concurrent workloads may change independently"
+}

@@ -34,6 +34,13 @@ def verify(protocol_root, descriptor_path):
             raise ValueError("Protocol message set changed")
         for message in descriptor.get("messageType", []):
             fields = re.findall(r"\b(repeated\s+)?(map\s*<\s*string\s*,\s*string\s*>|\w+)\s+(\w+)\s*=\s*(\d+)\s*;", messages[message["name"]])
+            # These pinned sources contain only generated map-entry nesting.
+            # Refuse additional declarations at every nested level.
+            nested = message.get("nestedType", [])
+            if (len(nested) != sum(kind.startswith("map") for _, kind, _, _ in fields)
+                    or message.get("enumType") or message.get("oneofDecl")
+                    or any(entry.get("nestedType") or entry.get("enumType") or entry.get("oneofDecl") for entry in nested)):
+                raise ValueError("Protocol nested declaration set changed")
             if len(fields) != len(message.get("field", [])):
                 raise ValueError("Protocol field count changed")
             for expected, field in zip(fields, message.get("field", [])):

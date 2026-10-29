@@ -1,0 +1,91 @@
+{
+  "assemblies": {
+    "module": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, non-parallel]",
+      "id": "c4cdbef7-b082-41e8-a405-108441d34096",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "09:05:19",
+      "start-rtf": "2026-10-28T09:05:19.4221989+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-28T09:09:42.0217900+00:00",
+      "not-run": "0",
+      "passed": "758",
+      "skipped": "0",
+      "time": "262.608",
+      "time-rtf": "00:04:22.6080000",
+      "total": "758"
+    },
+    "evidence": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "1cc96ef1-fa2e-4e6e-819a-b52b180b4b31",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "09:09:42",
+      "start-rtf": "2026-10-28T09:09:42.5987600+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-28T09:09:52.3728849+00:00",
+      "not-run": "0",
+      "passed": "191",
+      "skipped": "0",
+      "time": "9.773",
+      "time-rtf": "00:00:09.7730000",
+      "total": "191"
+    },
+    "platform": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "30bb92f9-9d17-41b9-8735-27c20935ce15",
+      "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "09:09:52",
+      "start-rtf": "2026-10-28T09:09:52.8614293+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-28T09:09:53.2526624+00:00",
+      "not-run": "0",
+      "passed": "1",
+      "skipped": "0",
+      "time": "0.393",
+      "time-rtf": "00:00:00.3930000",
+      "total": "1"
+    }
+  },
+  "executedPassingCases": 950,
+  "matrixRowsCovered": 7,
+  "acceptedFindingsVerified": 17,
+  "sourceFilesVerified": 184,
+  "sourceUnchangedDuringVerification": true,
+  "freshLiveQualification": false,
+  "packageQualification": false,
+  "windowsMacOSNativeQualification": false,
+  "nativeProbePassed": true,
+  "priorDeferralsPreserved": true,
+  "workflowReviewFindingsVerified": 10,
+  "parentAuditFindingsVerified": 3,
+  "ordinaryNativeCasesPassed": 5,
+  "qualificationLimits": {
+    "live": {
+      "attempted": true,
+      "diagnostic": "HXR015",
+      "installedAspire": "13.6.1",
+      "requiredAspire": "13.6.4",
+      "provisioningStarted": false,
+      "cleanupAudit": {
+        "claims": [],
+        "runs": [],
+        "cleanupFailures": [],
+        "completed": true
+      }
+    },
+    "package": "Authoritative published artifact qualification remains outside this resumed source delta.",
+    "windowsMacOS": "Existing owner decision Q3 and native qualification deferrals remain."
+  }
+}

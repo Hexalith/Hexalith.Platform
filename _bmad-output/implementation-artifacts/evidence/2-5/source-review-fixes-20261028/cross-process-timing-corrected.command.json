@@ -1,0 +1,16 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*ExplicitStopAcrossProcessesPreservesFirstFailureAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/cross-process-timing-corrected.xml"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 1.845,
+  "log": "cross-process-timing-corrected.log",
+  "archivedLog": "cross-process-timing-corrected.log.gz",
+  "logSha256": "fa74dea3b0c036abd8e211a0313bcd4355d201f9375ddd6137da415896cec383"
+}

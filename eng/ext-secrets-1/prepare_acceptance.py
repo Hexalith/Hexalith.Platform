@@ -10,6 +10,8 @@ from pathlib import Path
 
 import qualify as q
 from cases import plan_digest
+import detached_packet_output as packet_output
+from packet_snapshot import snapshot_for
 
 
 def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence", register=None, coordination_context=None):
@@ -19,6 +21,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     if output.exists():
         raise ValueError("fresh detached output directory required")
     output.mkdir(parents=True)
+    packet_output.report(output / "blocked-inputs.json", {"packetPrepared": False, "completeReplacementPacket": False, "qualificationEffects": 0, "dependencyAvailable": False, "missingInputs": ["DetachedPacketOutputIncomplete"]})
     try:
         configuration_bytes = q.bounded_public_file(configuration, 1024 * 1024)
         config = q.parse_public_configuration(configuration_bytes)
@@ -26,7 +29,7 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         inputs = error.inputs if isinstance(error,q.Unavailable) else ["PublicRuntimeConfiguration"]
         report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "qualificationEffects": 0,
                   "dependencyAvailable": False, "missingInputs": inputs, "packetPrepared": False}
-        (output / "blocked-inputs.json").write_bytes(q.canonical(report))
+        packet_output.report(output / "blocked-inputs.json", report)
         return report
     # Detached bytes are immutable installed input. Relocation cannot rewrite their semantic anchor locators.
     relative_anchors = []
@@ -101,11 +104,13 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     missing.extend(installation_missing)
     if not installation_missing and hashlib.sha256(configuration_bytes).hexdigest() != installed_hashes.get("custodyConfigurationSha256"):
         missing.append("ExactInstalledConfigurationBytes")
+    if not installation_missing and any(anchors.get(name) != installed_hashes.get(name) for name in anchors):
+        missing.append("ExactInstalledQualificationTrustBytes")
     cohort = []
     register_binding = None
     if register is not None:
         try:
-            register_bytes = q.bounded_public_file(register, 1024 * 1024)
+            register_bytes = snapshot_for(coordinated).retained(register) if not installation_missing else q.bounded_public_file(register, 1024 * 1024)
             cohort = q.cohort_prerequisite_inputs(register, head, register_text=register_bytes.decode("utf-8"))
             register_binding = {"path": str(Path(register).resolve()),
                                 "sha256": hashlib.sha256(register_bytes).hexdigest()}
@@ -135,22 +140,28 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
               "qualificationEffects": 0, "dependencyAvailable": False, "missingInputs": sorted(set(missing)),
               "packetPrepared": candidate_ready and not missing, "completeReplacementPacket": candidate_ready and not missing,
               "installedHashes": installed_hashes, "targetCommit": head if candidate_ready and not missing else None}
-    (output / "blocked-inputs.json").write_bytes(q.canonical(report))
+    incomplete = dict(report, packetPrepared=False, completeReplacementPacket=False, targetCommit=None)
+    if report["packetPrepared"]:
+        incomplete["missingInputs"] = ["DetachedPacketOutputIncomplete"]
+    packet_output.report(output / "blocked-inputs.json", incomplete)
     if report["packetPrepared"]:
         from coordinated_packets import records, shared_binding
         from joint_live_phase_runner import full_plan, digest as cohort_digest
         packet["cohortPlanSha256"] = cohort_digest(full_plan())
         from coordinated_packets import protection_binding
         packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
-        packet["jointBinding"] = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
+        packet["jointBinding"] = snapshot_for(coordinated).json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
         packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
-        packet["launchInventory"] = q.read_json(coordinated["installedArtifacts"]["launchInventory"]["path"])
-        packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
-        (output / "joint-qualification-plan.json").write_bytes(q.canonical(full_plan()))
-        packet_path.write_bytes(q.canonical(packet))
-        detached_configuration.write_bytes(configuration_bytes)
-        (output / "exact-command.sh").write_text(command + "\n")
-        (output / "runtime-qualification-binding.json").write_bytes(q.canonical(binding))
+        packet["launchInventory"] = snapshot_for(coordinated).json(coordinated["installedArtifacts"]["launchInventory"]["path"])
+        packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated), snapshot=snapshot_for(coordinated))
+        outputs = {output / "joint-qualification-plan.json": q.canonical(full_plan()),
+                   detached_configuration: configuration_bytes,
+                   output / "exact-command.sh": (command + "\n").encode("utf-8"),
+                   output / "runtime-qualification-binding.json": q.canonical(binding), packet_path: q.canonical(packet)}
+        for path, data in outputs.items():
+            packet_output.artifact(path, data)
+        packet_output.verify(outputs)
+        packet_output.report(output / "blocked-inputs.json", report)
     return report
 
 

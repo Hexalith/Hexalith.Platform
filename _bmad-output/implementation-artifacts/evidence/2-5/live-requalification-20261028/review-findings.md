@@ -1,0 +1,10 @@
+- B1: Original log files were ignored by *.log. Added an exact evidence-directory Git exception; retain compressed AppHost logs too.
+- B2: Extend the final before/after inventory to 261 selected source/configuration files, including AppHost Program.cs, apphost.cs, root and Builds build inputs, Props catalog files and Tooling project. Keep the original 234-file run separately.
+- B3: Check the exact final-runtime-archive filename set and every SHA-256 in both retained and runtime modes. A negative control deletes an unreferenced archived file.
+- B4: Independently retain and verify all five claims/owners receipts contain []. These are deliberately durable empty ownership proofs, not outstanding resource allocations: CompositionResourceClaimStore.ReleaseOwned writes [] at line 129. Deleting them would contradict the corrected ownership semantics.
+- B5: New commands snapshot Python scripts by SHA-256 before launching them. Reconstructed historical failed helper assertions are retained with explicit provenance; no retrospective pre-execution hash is claimed.
+- B6: Retain the original 184-entry fingerprint inventory and recompute every comparison against the final fresh source snapshot, rather than trusting a summary boolean.
+- B7: The qualification fixture now saves initial-diagnostics before explicit down. Final audit compares complete terminal fields, bindings and failure identity history across all three snapshots and validates initial diagnostic references.
+- B8: The qualification fixture now saves peer-before.json before the first scenario. Compare all four post-scenario observations against this baseline.
+- B9: Audit every contiguous numbered cleanup attempt, earlier non-successes and final success, then reconcile the complete sequence with verification.json. Retain all attempts.
+- B10: Preserve terminal/binding/history fields including retention.failureRunIds while explicitly allowing evolving cleanup/retention observations and separately checking every diagnostic hash. ownedResourceIds legitimately includes observed leftovers before cleanup and is an evolving observation.

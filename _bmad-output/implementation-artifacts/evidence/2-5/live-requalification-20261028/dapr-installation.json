@@ -1,0 +1,68 @@
+{
+  "configuredAtUtc": "2026-10-28T10:12:38.380330+00:00",
+  "catalog": "references/Hexalith.Builds/Props/Directory.Packages.props",
+  "catalogSha256": "f9c97805fe540f17277f0d96f16a92b5f595f24c0f059c7a2c864abe8a6c1fb5",
+  "cliVersion": "1.18.2",
+  "runtimeVersion": "1.18.7",
+  "daprHome": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+  "reportedVersions": [
+    "CLI version: 1.18.2 ",
+    "Runtime version: 1.18.7"
+  ],
+  "binaries": [
+    {
+      "repository": "dapr/cli",
+      "version": "1.18.2",
+      "releaseUrl": "https://github.com/dapr/cli/releases/tag/v1.18.2",
+      "downloadUrl": "https://github.com/dapr/cli/releases/download/v1.18.2/dapr_linux_amd64.tar.gz",
+      "archiveSha256": "ccfff008fd16f50096a9192ad56697ac7052e3add6fa0a07789d87b4c4df8c40",
+      "upstreamChecksum": "ccfff008fd16f50096a9192ad56697ac7052e3add6fa0a07789d87b4c4df8c40 *dapr_linux_amd64.tar.gz",
+      "binaryPath": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/tools/dapr",
+      "binarySha256": "43429557ff18a7230737b945699417ec391ad41bd431244c175b79ab3c904ce5"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "1.18.7",
+      "releaseUrl": "https://github.com/dapr/dapr/releases/tag/v1.18.7",
+      "downloadUrl": "https://github.com/dapr/dapr/releases/download/v1.18.7/daprd_linux_amd64.tar.gz",
+      "archiveSha256": "a5ab4fd9d77448d90e6f8b3c1c795234eb683108a8650a35df9ac71c9b14b5e2",
+      "upstreamChecksum": "a5ab4fd9d77448d90e6f8b3c1c795234eb683108a8650a35df9ac71c9b14b5e2 *daprd_linux_amd64.tar.gz",
+      "binaryPath": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+      "binarySha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "1.18.7",
+      "releaseUrl": "https://github.com/dapr/dapr/releases/tag/v1.18.7",
+      "downloadUrl": "https://github.com/dapr/dapr/releases/download/v1.18.7/placement_linux_amd64.tar.gz",
+      "archiveSha256": "a4d6f2089177587b57c495f5b061aba8fd86972d834653c8362852b7d087c4ed",
+      "upstreamChecksum": "a4d6f2089177587b57c495f5b061aba8fd86972d834653c8362852b7d087c4ed *placement_linux_amd64.tar.gz",
+      "binaryPath": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/placement",
+      "binarySha256": "323907a7321bdce7f87652c7665708a7e897a5bcc87c050fbf29e693f4e834b5"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "1.18.7",
+      "releaseUrl": "https://github.com/dapr/dapr/releases/tag/v1.18.7",
+      "downloadUrl": "https://github.com/dapr/dapr/releases/download/v1.18.7/scheduler_linux_amd64.tar.gz",
+      "archiveSha256": "634b438a1a1501a35cfe378f00719cf23176c653f275b606a0ed8f9fd4226d31",
+      "upstreamChecksum": "634b438a1a1501a35cfe378f00719cf23176c653f275b606a0ed8f9fd4226d31 *scheduler_linux_amd64.tar.gz",
+      "binaryPath": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/scheduler",
+      "binarySha256": "7ef9285180a3073e70f711ff030fb0b56f04df18a830aa61aadedbdec2c9ade5"
+    }
+  ],
+  "shellConfiguration": [
+    {
+      "path": "/home/administrator/.profile",
+      "beforeSha256": "70595de4638127cf659092e109989be52eeda55aa1b047df294cc33ee7ed3c26",
+      "afterSha256": "68db7eb7a644801cbe452339f599e57eaaff96e6ce51b094d04b4e64287d3254",
+      "backup": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/shell-backups/.profile.before"
+    },
+    {
+      "path": "/home/administrator/.bashrc",
+      "beforeSha256": "7208c15382a05bab4babe6bc788fbceb2a3151c17b4626cd6b09fdcab0823099",
+      "afterSha256": "0574d86967186a0f34e7350b9d27e42df3648f6be5690642285375b79dcd073e",
+      "backup": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/shell-backups/.bashrc.before"
+    }
+  ]
+}

@@ -57,7 +57,7 @@ class EnrolledPhaseCompletionPool:
             try:
                 value=json.loads(raw); checksum=value.pop('checksum')
                 if hashlib.sha256(canonical(value)).hexdigest()!=checksum:damaged=True;continue
-                if type(value.get('generation')) is not int or value['generation']<1 or value.get('state') not in ('Free','Reserved','Completed'):
+                if type(value.get('generation')) is not int or value['generation']<1 or value['generation']%2!=copy or value.get('state') not in ('Free','Reserved','Completed'):
                     damaged=True;continue
                 values.append(value)
             except (ValueError,KeyError,TypeError,AttributeError):damaged=True
@@ -70,6 +70,8 @@ class EnrolledPhaseCompletionPool:
             # its disappearance cannot erase a Reserved/Completed liability.
             if len(values)!=1 or values[0]!={'generation':1,'state':'Free'}:
                 raise Blocked('PreserveUnknownDamagedCompletionMetadata')
+        if len(values)==2 and abs(values[0]['generation']-values[1]['generation'])!=1:
+            raise Blocked('PreserveUnknownDamagedCompletionMetadata')
         if not values:
             # A genuinely unused slot has no committed request/result frame.
             # Missing both headers cannot reset an already materialized original.

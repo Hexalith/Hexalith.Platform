@@ -1,0 +1,122 @@
+{
+  "freshLiveSourceQualification": "passed",
+  "liveTest": {
+    "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "6660c81e-82f7-43de-a5b0-48add0b6503d",
+    "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "run-date": "2026-10-28",
+    "run-time": "10:14:40",
+    "start-rtf": "2026-10-28T10:14:40.9279040+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-10-28T10:21:44.0674086+00:00",
+    "not-run": "0",
+    "passed": "1",
+    "skipped": "0",
+    "time": "423.157",
+    "time-rtf": "00:07:03.1570000",
+    "total": "1"
+  },
+  "scenarios": [
+    {
+      "scenario": "success",
+      "runId": "d915806c4edeb9e72c288d3773f9b267",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "95741970230e1b66376a3ee59026453d",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "5bfc28751ce456377605a546ec58bab9",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "partial-startup",
+      "runId": "b196750ff989f2dd9d0e28db283dae23",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    }
+  ],
+  "sourceFilesUnchanged": 234,
+  "priorOfflineCasesReused": 950,
+  "priorOfflineCasesRerun": false,
+  "schemaByteParityVerified": true,
+  "exactOwnerCleanupVerified": true,
+  "independentPeerIsolationVerified": true,
+  "preexistingContainersStillPresent": 5,
+  "ambientContainerChangesAttribution": "unavailable; unrelated concurrent workloads may change independently",
+  "runtimeArchiveBytesReobserved": false,
+  "logsVerified": [
+    {
+      "record": "apphost-build.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-after.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-before-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "host-before.command.json",
+      "exitCode": 1,
+      "logHashesVerified": true
+    },
+    {
+      "record": "live-qualification.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "platform-build.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "runtime-audit-final.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    },
+    {
+      "record": "runtime-audit.command.json",
+      "exitCode": 1,
+      "logHashesVerified": true
+    },
+    {
+      "record": "setup-dapr.command.json",
+      "exitCode": 0,
+      "logHashesVerified": true
+    }
+  ],
+  "packageQualification": false,
+  "windowsMacOSNativeQualification": false
+}

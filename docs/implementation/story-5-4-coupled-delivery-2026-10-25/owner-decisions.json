@@ -1,7 +1,7 @@
 {
   "purpose": "Owner return form for coupled installation decisions; not a deployment, enrollment or acceptance packet",
-  "status": "MvpOperationalWorkScopeAdoptedAdvancedCustodyDeferred",
-  "installationAuthorized": true,
+  "status": "MvpOperationalHandoffPreparedPendingOwnerInputs",
+  "installationAuthorized": false,
   "qualificationAuthorized": false,
   "attemptReserved": false,
   "dependencyAvailable": false,
@@ -33,7 +33,7 @@
     "approvedNonAwsResourceAndCostScopeReference": null,
     "approvedRetentionAndExtensionScheduleReference": null,
     "existingQualifyingInstallationBundle": null,
-    "currentMvpScopeDecisionReference": "installation-evidence/mvp-scope-amendment-2026-10-28.json"
+    "currentMvpScopeDecisionReference": "../story-5-4-operational-security-2026-10-28/provenance.json"
   },
   "D2_resources": {
     "owner": "Independent custody, current-authority and archive custodians",
@@ -45,18 +45,7 @@
     "scopedReadOnlyAccessOrSignedResourceCensusReference": null,
     "backupExclusionsRetentionAndIndependentAdministrationReference": null,
     "exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference": null,
-    "resolution": {
-      "status": "AdvancedResourcesUnresolvedDeferredFromMvpWork",
-      "resourceCensusReference": "installation-evidence/d2-resource-resolution-2026-10-28.json",
-      "supportedOptionAssessmentAndProvisioningRequestReference": "D2-provisioning-request-2026-10-28.md",
-      "candidateOnly": "Thales Luna Network HSM 7; independent PostgreSQL 18 current authority; independently administered Google Cloud Storage Bucket Lock archive",
-      "candidateSelected": false,
-      "candidateQualifying": false,
-      "provisioningPerformed": false,
-      "nextOwnerAction": "Apply the approved operational-security work scope. Luna/independent-authority/immutable-archive provisioning is deferred from MVP work. Continue existing operational service/profile/access and accepted replay/spool/host deliveries within their existing authorization. Any executable reduced dependency contract needs a complete owner-accepted replacement packet; any advanced custody reopening needs a later explicit scope/resource decision.",
-      "customCustodyPlatformAuthorizedByDefault": false,
-      "supersededProcurementInstructionBy": "DEC-5.4-MVP-CUSTODY-2026-10-28"
-    }
+    "currentWorkDisposition": "Advanced Luna/independent lifecycle-authority/WORM provisioning deferred; retain full requirements for dependent operations."
   },
   "D3_recovery": {
     "owner": "Project owner with independent recovery/access owners",
@@ -125,8 +114,7 @@
     "ownerConfirmedCoupledPlatformDate": null,
     "laterExplicitReplacementAcceptanceReference": null,
     "completeCanonicalPlatformTarget": null,
-    "completeCanonicalProtectionTargetAndPackage": null,
-    "currentWorkMilestone": "Operational-security planning/development; advanced-custody dates deferred; no replacement date proposed or accepted"
+    "completeCanonicalProtectionTargetAndPackage": null
   },
   "mvpConstraints": {
     "awsIncluded": false,
@@ -137,66 +125,13 @@
     "dependentFeaturesStillRequireCompleteCustodyQualification": true,
     "customCustodyPlatformSelected": false
   },
-  "installationAuthorizationScope": "The later owner instruction apply recommended selects the bounded operational-security work scope recorded in mvpScopeAmendment. Reuse installed operational custody/inventory/HMAC and their passing evidence; existing maintenance/profile/access work retains its original prerequisites and preservation-baseline rules. The prior advanced-custody provisioning continuation is deferred from MVP work. No HSM/authority/archive procurement, new custom custody platform, appointment, trust enrollment, destructive experiment, qualification or runtime gate bypass is authorized by this scope amendment.",
-  "recommendationAdopted": {
-    "recordedAtUtc": "2026-10-28T07:24:31.995110+00:00",
-    "ownerInstruction": "apply recommended",
-    "selectedApproach": "Reuse a qualifying independently administered non-AWS custodian through a thin adapter behind the existing Dapr custody contract; keep OpenBao for operational secrets.",
-    "fallback": "If no qualifying installation exists, assess one supported hardware-backed option before selecting a custom backend or procuring hardware.",
-    "authorizationIsNotInstallationEvidence": true,
-    "installationPerformed": false,
-    "blockingInput": "Actual custody backend/version/endpoint and scoped credential references, plus independently administered current-authority and immutable-archive resource/access references.",
-    "referenceValuesOnly": true,
-    "existingOperationalInstallationReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
-    "installedScopeVerificationReference": "installation-evidence/platform-installation-inspection-2026-10-28.json",
-    "existingOperationalCustodyInstalled": true,
-    "qualifyingLifecycleProviderInstalled": false
-  },
-  "infrastructureResolutionProgress": {
-    "recordedAtUtc": "2026-10-28T09:34:19.308881+00:00",
-    "status": "ResourceInvestigationRetainedAdvancedProcurementDeferredFromMvpWork",
-    "completed": [
-      "Inspected referenced public runtime/configuration and retained installation evidence without repeating effects",
-      "Separated installed operational custody/inventory/HMAC authority from missing lifecycle and independent resources",
-      "Assessed one vendor-supported non-AWS option against shared-cut, non-revival, independent currentness, immutable originals and survivor guarantees",
-      "Prepared a concrete custody/authority/archive provisioning and scoped-access request"
-    ],
-    "operationalInstallationReused": true,
-    "retainedPassingEvidenceReused": true,
-    "lifecycleAdapterImplemented": false,
-    "lifecycleAdapterInstalled": false,
-    "reasonAdapterNotInstalled": "No actual qualifying resources or supported API/access profile identified; no adapter can safely bind absent HSM, current-authority or archive resources.",
-    "remainingDeliveries": "Ordinary identity/authorization/revocation/replay/audit/spool and actual host deliveries remain governed by complete accepted owner contracts. Current Human/approver evidence still requires custody. Advanced D2 resources and dependent history/content/export/destruction remain unresolved/deferred; no full dependency record or parent story is completed.",
-    "qualificationStatus": "NotRunIncompleteAcceptedOwnerDeliveries",
-    "qualificationPlanReference": "../../../eng/ext-secrets-1/public-joint-plan.json",
-    "qualificationPhaseOrder": [
-      "protection",
-      "secrets",
-      "host-refusing-consumers",
-      "mutual"
-    ],
-    "story54Status": "InProgressBlockedOnAcceptedOwnerDeliveries",
-    "dependencyAvailable": false,
-    "attemptReserved": false,
-    "clusterOrProviderWrites": 0,
-    "installationInvocations": 0,
-    "qualificationInvocations": 0,
-    "destructiveExperiments": 0,
-    "currentScopeDecisionReference": "installation-evidence/mvp-scope-amendment-2026-10-28.json"
-  },
+  "installationAuthorizationScope": "This handoff authorizes documentation and offline packet preparation only. Existing operational maintenance retains its separately accepted procedure and all preservation/currentness prerequisites. No generic installation, completed-installer replay, lifecycle provisioning, credential renewal, qualification or consuming execution is authorized by this form.",
   "mvpScopeAmendment": {
     "decisionId": "DEC-5.4-MVP-CUSTODY-2026-10-28",
     "recordedAtUtc": "2026-10-28T10:27:26.985368+00:00",
     "ownerInstruction": "apply recommended",
     "approvalContext": "Latest pragmatic recommendation: defer Luna/independent-authority/WORM provisioning, retain existing operational services and ordinary security controls, explicitly separate work/acceptance milestones and keep affected features gated.",
     "status": "ApprovedAppliedToWorkPriorityAndAcceptanceBoundaries",
-    "supersedesForCurrentMvpWork": [
-      "recommendationAdopted selectedApproach/fallback/blockingInput as an immediate provisioning instruction",
-      "D2 resolution nextOwnerAction from the earlier resource request"
-    ],
-    "historicalRecordsRetainedAtPlatformCommit": "ace1d5d9dd683b2edf30de6c98ae8f729489cfbd",
-    "authoritativeAgentsAmendment": "../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
-    "platformEvidenceReference": "installation-evidence/mvp-scope-amendment-2026-10-28.json",
     "advancedCustodyProvisioningDeferred": true,
     "newCustomCustodyPlatformAuthorized": false,
     "retainedControls": [
@@ -218,8 +153,6 @@
       "Full host/protection qualification, full Story 5.4 acceptance and RQ-1"
     ],
     "backupRestorationLimit": "Operational software-managed key deletion does not establish irrecoverability from older backups. OpenBao ObservedRevival remains authoritative; no backup-resistant erasure guarantee is made by this milestone.",
-    "backupRetentionSeconds": null,
-    "acceptedRestorePolicyReference": null,
     "pendingOperationalInputs": [
       "Owner-returned backup lifetime and restore privileges/procedure",
       "Current accepted operational profile/credential/enrollment and fresh authorized readiness",
@@ -235,7 +168,14 @@
     "runtimeOrProviderWrites": 0,
     "installationInvocations": 0,
     "qualificationInvocations": 0,
-    "operationalDeliveryStatus": "PendingActualOwnerDeliveriesAndAcceptedContract"
+    "operationalDeliveryStatus": "PendingActualOwnerDeliveriesAndAcceptedContract",
+    "authoritativeAgentsAmendment": "../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+    "platformEvidenceReference": "../story-5-4-operational-security-2026-10-28/provenance.json",
+    "supersedesForCurrentMvpWork": [
+      "Earlier D1/D2 advanced-custody provisioning as the immediate MVP continuation; original requirements and evidence are retained."
+    ],
+    "priorLocalOwnerFormReference": "../story-5-4-operational-security-2026-10-28/prior-platform-documents/owner-decisions.json",
+    "canonicalBackupPolicyReturn": "owner-decisions.json#/mvpOperationalInputs/backupAndRestore; this is the sole owner-return location, pending actual policy evidence and acceptance."
   },
   "mvpOperationalInputs": {
     "backupAndRestore": {
@@ -258,15 +198,80 @@
       "maintenanceProcedureReference": "../../../eng/ext-secrets-1/README.md#separate-isolated-custody-maintenance-2026-10-28",
       "acceptedPublicPreservationBaselineReference": null,
       "historicalMetadataProofAndAcceptanceReference": null,
-      "nextAction": "Obtain sanitized historical audit/update proof and explicit owner acceptance for the retained legacy-token metadata drift, then establish the accepted public preservation baseline. Do not edit the Secret, enable new audit as retroactive proof, replay installation/maintenance or renew credentials for reconciliation."
+      "nextAction": "Cluster credential/Kubernetes administration owner returns sanitized historical write-scope evidence and explicit acceptance. The provider owner separately returns fresh selected public lease, key-metadata and policy observations through already authenticated credential-safe transport, with provenance and observation times and no credential values. Review both with current public preservation facts before the existing coordinator attempts offline export. Additional drift denies. Do not edit the Secret, enable audit as retroactive proof, replay installers/maintenance or renew credentials for reconciliation.",
+      "providerPublicFactsOwner": "Existing OpenBao provider owner, using already authenticated credential-safe transport",
+      "freshPublicLeaseKeyAndPolicyEvidenceReference": null
     },
     "currentOperationalProfile": {
-      "status": "PendingFreshOwnerDeliveryBeforeLiveWork",
+      "status": "PendingSeparatelyScopedRecoveryAfterRetainedDeadlinesElapsed",
       "owner": "Existing Platform operational custody, inventory and HMAC authority maintainer",
       "existingRuntimeReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
       "currentAcceptedProfileReference": null,
       "freshAuthorizedReadinessEvidenceReference": null,
-      "nextAction": "After prerequisite preservation reconciliation, supply current accepted profile, credential/scope and authorized readiness evidence through the existing procedure; preserve retained originals and completed installer."
+      "nextAction": "Operational custody/inventory/HMAC maintainer returns a separately scoped expired-profile/credential recovery plan or legitimately current authorized evidence. Historical preservation reconciliation and fresh provider public facts remain prerequisites; no expired maintenance, credential renewal or installer replay is authorized by this handoff.",
+      "credentialAndScopeEvidenceReference": null,
+      "exactKeyInventoryEvidenceReference": null,
+      "rotationAndRevocationEvidenceReference": null,
+      "timestampFormatCompatibilityEvidenceReference": null,
+      "requiredEvidence": [
+        "Current owner-accepted issuer/audience/profile, two hosts/two callers/four exact key versions and technical windows",
+        "Separately scoped data and metadata credential references; current grants/expiry/revocation, no private values",
+        "Fresh authorized readiness observations, rotation and emergency revocation evidence",
+        "Qualification timestamps must satisfy the existing strict UTC-Z parser; retained operational +00:00 timestamps are not directly admissible. Do not rewrite installed input to bypass acceptance."
+      ],
+      "lastVerifiedDeadlinesReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
+      "deadlineHandling": "No validity extension is made. If retained profile/enrollment or credential deadlines have passed, scope owner recovery separately from the existing maintenance procedure.",
+      "retainedDeadlineAssessmentReference": "../story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
+      "separatelyScopedOwnerRecoveryPlanReference": null
+    },
+    "currentIdentityAndApprovers": {
+      "status": "PendingOwnerDeliveryCustodyCouplingRetained",
+      "owner": "Platform identity owner with Tenants, Parties and Conversations maintainers (D4/D8)",
+      "requiredEvidence": [
+        "Installed immutable current tenant/actor/role adapters including global-administrator authority, current grants/revocation and trust",
+        "Branch B identity by tenant/id; unique current Human binding/liveness and accepted approver policy",
+        "Exact installation/profile/version and negative stale/ambiguous/cross-tenant evidence; preserve Human custody dependency",
+        "Branch B Organization classification and active/liveness evidence by immutable tenant/id, with the complete Parties dependency Available before consumption. Organization identity grants no Human actor or approver authority; never reject or replace the approved identity on type alone."
+      ],
+      "currentAuthorityAndBindingEvidenceReference": null,
+      "acceptedIntegrationReference": null
+    },
+    "independentDecisionAuthority": {
+      "status": "PendingIndependentIssuerDelivery",
+      "owner": "Independent business-decision issuer and current-role authority owner (D4/D8)",
+      "requiredEvidence": [
+        "Actual independently governed signer; issuer/audience/purpose, public anchors, current role/freshness/revocation profile",
+        "Evidence that Platform custodian, release recorder and Workflow cannot request or mint approval evidence",
+        "Authority profile names stable current actor/role sources for Product, Governance, Security, Architecture and named maintainers. Signed decision-governance/authority manifests bind the exact contract/version, effective predecessor or root policy, nonempty required approvers, affected evaluations, freshness and revocation."
+      ],
+      "installedIssuerAndPublicTrustEvidenceReference": null,
+      "currentRolesAndRevocationEvidenceReference": null,
+      "custodianMayMintApprovals": false
+    },
+    "authenticatedIngressAndReplay": {
+      "status": "PendingInstalledOwnerDelivery",
+      "owner": "Platform host/identity owner and EventStore private replay owner",
+      "requiredEvidence": [
+        "Installed authenticated ingress binding and current HMAC/profile; replay admission before target command construction",
+        "Restricted separate registrar credential for exact system/TrustedEnvelopeReplay(Issuer,DeliveryNonce), conditional NoStream/TrustedEnvelopeFirstSeen writes and authenticated exact lookup",
+        "Replay retention at least 604800 seconds; changed-field/cross-tenant reuse denial; public/Workflow/handler credential denial",
+        "Immutable LogicalCommandId and issuer-wide DeliveryNonce; byte-identical retry routes only to domain idempotency. Emergency-revocation redispatch uses a new healthy key and a new nonce while retaining logical-command identity, with persisted exact-outcome recovery evidence."
+      ],
+      "installedAdaptersAndAclEvidenceReference": null,
+      "persistedReplayRecoveryEvidenceReference": null
+    },
+    "durableDenialAndRecovery": {
+      "status": "PendingAcceptedDurabilityAndInstallation",
+      "owner": "Platform host/storage owner with EventStore security-recorder owner",
+      "requiredEvidence": [
+        "Actual replica count/placement and explicitly accepted failure model, strong CAS/current authority/epoch, capacity and persistence",
+        "Separate recorder/drain/recovery credentials restricted to computed SecurityEventLog(RoutingTenantId,UtcDay) stream/event",
+        "Persisted exact SecurityObservationId acceptance/outcome/acknowledgement across outage, restart and lost acknowledgement; safe content-free evidence",
+        "Spool unavailable constructs no command and blocks tenant-access/audit readiness; single-node PVC evidence cannot certify replicated durability"
+      ],
+      "acceptedReplicaPlacementAndFailureModelReference": null,
+      "installedWorkerAndAclEvidenceReference": null,
+      "persistedDenialRecoveryEvidenceReference": null
     }
   },
   "currentWorkDisposition": {
@@ -347,5 +352,6 @@
         "Accepted historical target/date records remain exact; no new accepted date or qualification window exists"
       ]
     }
-  }
+  },
+  "operationalPreparationReference": "../story-5-4-operational-security-2026-10-28/acceptance-inputs.json"
 }

@@ -280,6 +280,8 @@ The owner-approved authority is implemented in `src/Hexalith.Platform.Secrets.Au
 
 Owner administration uses separate audience `ext-secrets-1-hmac-authority-admin`, operation `hmac:administer`, the explicitly configured administrator client ID, and `authority-admin-token` from a separately mounted Secret. The owner OAuth client secret is retained only in its intended cluster Secret and never mounted into the authority. `GET /admin/state` returns public state and its current `revision`. `POST /admin/operations` accepts `operationId`, `expectedRevision`, `kind`, and exactly one of `profile`, `caller`, `host`, or `keyStatus`. Kinds are `PublishProfile`, `SetCaller`, `SetInventoryHost`, and `SetKeyStatus`; field names and shapes are defined by `AuthorityRecords.cs`. All record timestamps are UTC, with inclusive `notBefore` and exclusive `validUntil`. Missing constructor fields, unknown or duplicate JSON fields, oversized requests and unsupported scopes deny.
 
+Administrator JWT authentication and permission checks precede private channel-file acquisition. Each authorized request reopens `Authority:AdministratorChannelTokenFile`, following the approved whole-directory projected Secret links and allowing rotation between requests. The Linux reader accepts only regular UTF-8 files of at most 8192 bytes containing a nonempty token (optional UTF-8 BOM and surrounding whitespace are accepted). Acquisition has a two-second budget and four dedicated workers per authority process, with immediate refusal at capacity and no acquisition queue. Timeout or caller cancellation leaves each outstanding worker's slot held until its actual I/O and disposal finish. Unavailable, nonregular, oversized, empty or invalidly encoded mounts, timeout and saturation return 503; a mismatched channel returns 401. No administrative operation runs after refusal. Query authentication and the owner-managed replacement procedure below are unchanged. This is source hardening; it installs or rotates nothing.
+
 Retain the original operation ID, payload and expected revision before sending. A successful response contains the original administrator, payload digest, previous/current revision and recording time. An identical retry returns that exact receipt, including after restart. Reusing an ID with changed content or a different administrator conflicts. A stale expected revision returns a durable `RevisionConflict` receipt without changing current state; prepare a new owner operation after reading current state. Do not silently alter and resubmit an original ID. Profile/caller/host/key status plus the original audit outcome are committed atomically in one checksummed snapshot. Linux file and containing-directory fsync, atomic rename and a permanent process lock fence concurrent writers. Corrupt, missing, oversized or inaccessible storage denies, and an uncertain post-rename flush disables the process until restart and original-operation reconciliation.
 
 The authority uses its own retained `data-ext-secrets-1-hmac-authority-0` PVC and separate Secret names. It shares the already installed IdP infrastructure through a newly scoped `ext-secrets-1-hmac-authority` realm; registry-realm identities receive no authority permission. This is credential, domain-state and administration separation within the existing cluster, not a claim of independent physical infrastructure or a backup-excluded erasure authority. The host is a single Linux replica. The retained local PVC provides restart durability; no off-host restore or rollback-resistance claim is made. Audit/snapshot storage has a 16 MiB bound and fails closed at capacity. Preserve the complete state and audit when arranging separately reviewed capacity/retention work; never discard original receipts to reclaim space.
@@ -353,6 +355,50 @@ Completion verifies all nine `/alive`, `/health` and `/ready` checks, coherent r
 The completed maintenance is retained in [custody-maintenance-20261027T234210095124Z](../../../../../hexalith-secrets-evidence/ext-secrets-1/custody-maintenance-20261027T234210095124Z/). Revision `e19e68c9537246148141ec9d3841cfe4:19` retains the original ten receipts plus nine maintenance receipts. Profile/enrollment expiry is `2026-10-28T23:51:51.830725Z`; unchanged-identity data and metadata credentials expire at `2026-10-28T23:54:17.544944674Z` and `2026-10-28T23:54:22.570603711Z`. Replacement was unnecessary. Independent verification passed 39 checks and preserved all 194 original public evidence files. Both final-image preload completions reconciled without creation, pulling or deletion. Original stopped-attempt evidence remains retained; continuation reconciled acknowledged outcomes and repeated no uncertain effect.
 
 The later read-only next-baseline export stopped on an unrelated Secret resourceVersion change: `kubesphere-system/kubesphere-sa-token`, UID unchanged. Public managed fields record only a kube-apiserver `kubernetes.io/legacy-token-last-used` label update at `2026-10-28T00:00:02Z` after the successful completion verification. No Secret value was read or changed for this diagnosis. The cluster credential owner must reconcile that metadata refresh and establish an accepted public preservation baseline before the next cycle; no replacement baseline was issued and that Secret was not edited. The installed isolated deadlines and receipts remain verified.
+
+### Bounded next-baseline reconciliation input
+
+`emit_verified_baseline(..., public_metadata_acceptance=<absolute-owner-record-path>)` is a coordinator-only, offline export API. Its default remains strict. `inspect` and `maintain` have no acceptance option and retain their existing drift checks. No completed maintenance is replayed to reconcile this blocker.
+
+The optional input accepts only `Secret/kubesphere-system/kubesphere-sa-token`, UID `a97fa037-798b-46b6-9232-76e600480142`, resourceVersion `36774577` to `37223806`, with the exact kube-apiserver label refresh at `2026-10-28T00:00:02Z`. It requires this exact JSON schema; all paths are absolute and each `sha256` is the lowercase SHA256 of the named public file. The placeholders below describe owner input and are not evidence or an authorized acceptance record.
+
+```json
+{
+  "schema": "EXT-SECRETS-1.public-metadata-acceptance.v1",
+  "ownerIdentity": "<responsible cluster credential / Kubernetes administration owner>",
+  "historicalEvidence": {
+    "sourceDescription": "<origin and coverage of actual historical write-scope evidence>",
+    "files": [{"path": "<public historical evidence file>", "sha256": "<sha256>"}]
+  },
+  "retainedBlocker": {"path": "<original baseline>/next-maintenance-baseline-blocker.json", "sha256": "<sha256>"},
+  "currentPublicMetadata": {"path": "<new evidence>/current-public-metadata.json", "sha256": "<sha256>"},
+  "transition": {
+    "reference": "Secret/kubesphere-system/kubesphere-sa-token",
+    "originalIdentity": {"uid": "a97fa037-798b-46b6-9232-76e600480142", "resourceVersion": "36774577"},
+    "observedIdentity": {"uid": "a97fa037-798b-46b6-9232-76e600480142", "resourceVersion": "37223806"},
+    "label": {"name": "kubernetes.io/legacy-token-last-used", "value": "2026-10-28"},
+    "managedField": {
+      "manager": "kube-apiserver", "operation": "Update", "apiVersion": "v1",
+      "fieldsType": "FieldsV1", "time": "2026-10-28T00:00:02Z",
+      "fieldsV1": {"f:metadata": {"f:labels": {"f:kubernetes.io/legacy-token-last-used": {}}}}
+    }
+  },
+  "attestation": {
+    "ownerAccepted": true,
+    "historicalEvidenceEstablishesOnlyLabelRefresh": true,
+    "noOtherSecretFieldChanges": true,
+    "noInterveningWrites": true
+  }
+}
+```
+
+The owner must supply actual historical scope evidence establishing that this was the only write and only the named label changed, with no other Secret field changes or intervening writes. That owner acceptance is the trust boundary: this code verifies schema, exact scope and file integrity; it cannot verify the owner's identity, the evidence's authenticity or the attestation's truth. Hashes establish integrity, never truth or authenticity. Current managed fields plus original/current UID/resourceVersion cannot establish historical scope or credential-value equality. Designating another copy of current metadata as historical evidence does not meet the owner requirement. All supplied evidence must be public and contain no credential values.
+
+`currentPublicMetadata` contains the metadata object only, matching the retained blocker's `publicMetadata` exactly; only `creationTimestamp` may be present when absent from that blocker. The manager, time, label and managed-field scope must remain exact. Wrong identities, a later refresh, another resource, any other metadata change or independent preservation drift denies export before output creation. There is no wildcard or ignore-label rule.
+
+An accepted export retains all 19 receipts, original credential identities, key windows, policies, runtime constants and 42 null inputs. `accepted-public-metadata-difference.json` and the verification manifest retain the complete owner record, accepted difference, trust limitation and source fingerprints. The original maintenance plan, all nine owner-operation journals and the retained public renewal/runtime/completion journals are pinned, including the legacy `operations/` layout. Provenance validation and output reuse recheck accepted evidence; reuse also requires the same current Kubernetes preservation facts. Later baselines retain the full evidence fingerprint chain.
+
+The real reconciliation remains blocked: historical scope evidence has not been found, so no real acceptance or replacement baseline is authorized by this schema. The cluster credential / Kubernetes administration owner must provide the record and historical evidence above. Fresh public authority, health, runtime and Secret identities can be observed without credential reads; authenticated lease, key metadata and provider-policy observations remain **last verified** from the completed maintenance. Its owner deadline is `2026-10-28T23:51:51.830725Z`; retained data/metadata credential expiries are `2026-10-28T23:54:17.544944674Z` and `2026-10-28T23:54:22.570603711Z`, and retained successor technical expiries remain on 2026-11-03 at 18:29 UTC. Reconciliation grants no validity extension or availability claim.
 
 Focused offline verification:
 

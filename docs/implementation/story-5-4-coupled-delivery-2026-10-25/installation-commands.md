@@ -1,9 +1,6 @@
+> Current work priority (2026-10-28): the approved MVP amendment defers Luna, independent lifecycle-authority and WORM provisioning. The advanced-resource instructions below are retained historical/full-scope prerequisites, not the next executable action. Follow the [operational handoff](../story-5-4-operational-security-2026-10-28/README.md) and [current owner form](owner-decisions.json). No completed installer, maintenance, qualification or unavailable consumer is enabled. Original document and SHA256SUMS bytes are retained in the handoff; the original SHA256SUMS remains a historical manifest. Use the handoff verification manifest for current overlay files.
+
 # Non-AWS MVP installation command plan
-
-## MVP work-scope amendment — 2026-10-28
-
-The owner approved the [pragmatic MVP scope](../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md). **Advanced Luna/authority/WORM provisioning and full lifecycle installation are deferred from MVP work.** The conditional commands below remain the historical full-delivery runbook; they are not an MVP execution checklist. Existing operational service/profile/access maintenance uses its own accepted procedure and preservation prerequisites; do not replay a completed installer. No command in this runbook is executed by the amendment. Full dependency availability, independent decision authority, current Human/custody, FR-34 and qualification gates remain enforced; the amendment introduces no reduced live command. See [current owner scope](owner-decisions.json).
-
 
 The owner has excluded AWS from MVP. The prior cloud resource commands and AWS-reference component packaging have been removed from this active runbook; original bytes are retained only in the [superseded snapshot index](installation-evidence/superseded-aws-proposal/snapshot-index.json).
 

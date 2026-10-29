@@ -43,6 +43,23 @@ public static class ImmutableFileArchive
                 },ct).ConfigureAwait(false);
         },token).ConfigureAwait(false);
     }
+    /// <summary>Reads exact retained candidate bytes, including a complete digest-verified Preparing original. This does not commit or authorize it; validate all signed request and case pins before publishing the same bytes.</summary>
+    public static Task<byte[]?> ReadRetainedCandidateAsync(string path,int maximumBytes,CancellationToken token=default)
+    {
+        if(!Path.IsPathFullyQualified(path) || Path.GetFullPath(path)!=path || maximumBytes is <=0 or >CustodyBindingContract.MaximumOriginalBytes)
+            throw new IOException("Exact bounded immutable candidate locator required.");
+        return BoundedDurableFileOperation.RunAsync(ct=>
+        {
+            ct.ThrowIfCancellationRequested();
+            using var store=ProtectedArchiveStore.Find(path,ct);
+            return store is null?ReadOrdinary():Task.FromResult(store.ReadCandidate(path,maximumBytes));
+            async Task<byte[]?> ReadOrdinary()
+            {
+                try { return await BoundedRegularFile.ReadLiteralInOwnedWorkerAsync(path,maximumBytes,ct).ConfigureAwait(false); }
+                catch(FileNotFoundException) { return null; }
+            }
+        },token);
+    }
     /// <summary>Flushes only a descriptor acquired without following any symbolic component.</summary>
     public static void FlushDirectory(string directory)
     { using var held=HeldArchiveDirectory.Acquire(directory);held.Flush();held.VerifyLocator(); }

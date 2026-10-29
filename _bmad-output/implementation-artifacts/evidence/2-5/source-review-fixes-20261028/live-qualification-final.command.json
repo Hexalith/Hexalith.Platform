@@ -1,0 +1,19 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "argv": [
+    "env",
+    "HEXALITH_PLATFORM_LIFECYCLE_LIVE=1",
+    "HEXALITH_PLATFORM_LIFECYCLE_EVIDENCE=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/live-final",
+    "dotnet",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "-method",
+    "*LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/live-tests-final.xml"
+  ],
+  "exitCode": 1,
+  "durationSeconds": 2.311,
+  "log": "live-qualification-final.log",
+  "archivedLog": "live-qualification-final.log.gz",
+  "logSha256": "f327b75a1f1f423a34352e4a4d0e1925da73b9908cfef21565f5b572162ce65d"
+}

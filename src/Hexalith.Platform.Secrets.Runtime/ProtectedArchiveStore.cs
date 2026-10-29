@@ -12,6 +12,10 @@ internal sealed class ProtectedArchiveStore:IDisposable
     private static readonly object Mutation=new();
     private static readonly AsyncLocal<Action<string>?> MetadataFaults=new();
     private static readonly AsyncLocal<Action<string>?> Finds=new();
+    private static readonly AsyncLocal<Action?> Publications=new();
+    private static readonly AsyncLocal<int?> ReadLimits=new();
+    internal static Action? PublicationFault { get=>Publications.Value;set=>Publications.Value=value; }
+    internal static int? MaximumReadBytes { get=>ReadLimits.Value;set=>ReadLimits.Value=value; }
     internal static Action<string>? FindFault { get=>Finds.Value;set=>Finds.Value=value; }
     internal static Action<string>? MetadataFault { get=>MetadataFaults.Value;set=>MetadataFaults.Value=value; }
     private readonly ProtectedArchiveAllocationInstallation _config;
@@ -42,7 +46,7 @@ internal sealed class ProtectedArchiveStore:IDisposable
             _meta1=Open("allocation-metadata-1.bin",config.Metadata1Identity,config.MaximumMetadataBytes+Header);
             string device=_directory.Identity[.._directory.Identity.LastIndexOf(':')]+":";
             if(new[]{config.DataIdentity,config.Metadata0Identity,config.Metadata1Identity}.Any(identity=>!identity.StartsWith(device,StringComparison.Ordinal))) throw new IOException("Protected allocation resources must occupy the actual fenced filesystem device.");
-            byte[] geometry=new byte[Header];RandomAccess.Read(_data.SafeFileHandle,geometry,0);
+            byte[] geometry=new byte[Header];ReadExactly(_data.SafeFileHandle,geometry,0);
             byte[] expectedGeometry=JsonSerializer.SerializeToUtf8Bytes(new { Protocol="ProtectedArchiveGeometryV1",config.DataIdentity,config.ChunkBytes,config.ChunkCount },Json);
             if(!geometry.AsSpan(0,expectedGeometry.Length).SequenceEqual(expectedGeometry) || geometry.AsSpan(expectedGeometry.Length).IndexOfAnyExcept((byte)0)>=0) throw new IOException("Exact independently enrolled allocation geometry required; aliases cannot reinterpret one physical inode.");
             if(new[]{config.DataIdentity,config.Metadata0Identity,config.Metadata1Identity}.Distinct(StringComparer.Ordinal).Count()!=3) throw new IOException("Distinct enrolled protected archive inodes required.");
@@ -62,7 +66,7 @@ internal sealed class ProtectedArchiveStore:IDisposable
         Frame? selected=null;var frames=new Frame[2];
         for(int copy=0;copy<2;copy++)
         {
-            byte[] block=new byte[Header];RandomAccess.Read(_data.SafeFileHandle,block,Offset(index)+copy*Header);int length=BinaryPrimitives.ReadInt32LittleEndian(block);
+            byte[] block=new byte[Header];ReadExactly(_data.SafeFileHandle,block,Offset(index)+copy*Header);int length=BinaryPrimitives.ReadInt32LittleEndian(block);
             if(length==0) throw new IOException("Unknown missing initialized protected archive header; independently enrolled dual initial frames required.");
             if(length<1 || length>Header-40 || !SHA256.HashData(block.AsSpan(40,length)).AsSpan().SequenceEqual(block.AsSpan(8,32))) throw new IOException("Preserve unknown damaged protected archive header.");
             var value=JsonSerializer.Deserialize<Frame>(block.AsSpan(40,length),Json);
@@ -70,6 +74,19 @@ internal sealed class ProtectedArchiveStore:IDisposable
             frames[copy]=value;if(selected is null || value.Generation>selected.Generation) selected=value;
         }
         if(Math.Abs(frames[0].Generation-frames[1].Generation)!=1) throw new IOException("Preserve unknown nonconsecutive protected archive headers.");return selected;
+    }
+    private void ReadExactly(Microsoft.Win32.SafeHandles.SafeFileHandle handle,Span<byte> bytes,long offset)
+    {
+        int used=0;
+        while(used<bytes.Length)
+        {
+            _token.ThrowIfCancellationRequested();BoundedDurableFileOperation.CurrentToken.ThrowIfCancellationRequested();
+            int count=Math.Min(bytes.Length-used,ReadLimits.Value??int.MaxValue);
+            if(count<1) throw new IOException("Positive positional read bound required.");
+            int read=RandomAccess.Read(handle,bytes.Slice(used,count),checked(offset+used));
+            if(read==0) throw new IOException("Preserve unknown truncated protected archive input.");
+            used+=read;
+        }
     }
     private void WriteHeader(int slot,Frame frame,bool flush=true)
     {
@@ -152,26 +169,28 @@ internal sealed class ProtectedArchiveStore:IDisposable
             RandomAccess.Write(_data.SafeFileHandle,bytes.Slice(used,count),Offset(item.Index)+2*Header);used+=count;
         }
         _data.Flush(true);_directory.VerifyLocator();ArchiveAllocationProof.RequirePrivateWritten(_data.SafeFileHandle,_data.Length,_config.DataIdentity,_token);
-        var head=ReadHeader(selected[0].Index)!;WriteHeader(selected[0].Index,head with { Generation=head.Generation+1,State="Published" });
+        Publications.Value?.Invoke();var head=ReadHeader(selected[0].Index)!;WriteHeader(selected[0].Index,head with { Generation=head.Generation+1,State="Published" });
      } }
     /// <summary>Reads only a complete digest-verified committed original, never a damaged/preparing body relabeled as a later result.</summary>
     public byte[]? Read(string path,int maximum)=>ReadLegacy(path,maximum)??ReadFrom(Scan(),path,maximum);
+    // Candidate bytes never establish publication. Only a caller validating the exact signed request/case pins may republish these same bytes.
+    internal byte[]? ReadCandidate(string path,int maximum)=>ReadLegacy(path,maximum)??ReadFrom(Scan(),path,maximum,true);
     private byte[]? ReadLegacy(string path,int maximum)
     {
         RequirePath(path);_token.ThrowIfCancellationRequested();
         try { return BoundedRegularFile.ReadLiteralInOwnedWorkerAsync(path,maximum,_token).ConfigureAwait(false).GetAwaiter().GetResult(); }
         catch(FileNotFoundException) { return null; }
     }
-    private byte[]? ReadFrom(List<(int Index,Frame? Frame)> all,string path,int maximum)
+    private byte[]? ReadFrom(List<(int Index,Frame? Frame)> all,string path,int maximum,bool includePreparing=false)
     {
-        RequirePath(path);var matches=all.Where(v=>v.Frame?.Path==Digest(System.Text.Encoding.UTF8.GetBytes(path)) && v.Frame.State=="Published").ToArray();if(matches.Length==0) return null;if(matches.Length!=1) throw new IOException("Conflicting protected original locators.");
+        RequirePath(path);var matches=all.Where(v=>v.Frame?.Path==Digest(System.Text.Encoding.UTF8.GetBytes(path)) && (v.Frame.State=="Published" || includePreparing && v.Frame.State=="Preparing")).ToArray();if(matches.Length==0) return null;if(matches.Length!=1) throw new IOException("Conflicting protected original locators.");
         var head=matches[0];if(head.Frame!.Length is <1 || head.Frame.Length>maximum || head.Frame.Count<1 || head.Frame.Count>_config.ChunkCount) throw new IOException("Bounded protected original frame required.");
         byte[] raw=new byte[head.Frame.Length];int used=0,next=head.Index;var visited=new HashSet<int>();
         while(next>=0)
         {
             if(next>=all.Count || !visited.Add(next)) throw new IOException("Damaged protected archive chain.");var item=all[next];
             if(item.Frame?.Ticket!=head.Frame.Ticket || item.Frame?.Publication!=head.Frame.Publication || visited.Count>head.Frame.Count) throw new IOException("Protected original ownership changed.");
-            int count=Math.Min(_config.ChunkBytes,raw.Length-used);if(count<=0 || RandomAccess.Read(_data.SafeFileHandle,raw.AsSpan(used,count),Offset(next)+2*Header)!=count) throw new IOException("Damaged protected archive original.");used+=count;next=item.Frame!.Next;
+            int count=Math.Min(_config.ChunkBytes,raw.Length-used);if(count<=0) throw new IOException("Damaged protected archive original.");ReadExactly(_data.SafeFileHandle,raw.AsSpan(used,count),Offset(next)+2*Header);used+=count;next=item.Frame!.Next;
         }
         if(used!=raw.Length || visited.Count!=head.Frame.Count || Digest(raw)!=head.Frame.Sha256) throw new IOException("Preserve unknown damaged protected completion original.");return raw;
     }
@@ -196,17 +215,17 @@ internal sealed class ProtectedArchiveStore:IDisposable
     private (long Generation,byte[]? Bytes,bool InProgress,bool Empty) Metadata(FileStream file)
     {
         if(file.Length!=_config.MaximumMetadataBytes+Header) throw new IOException("Protected metadata extent length changed.");
-        byte[] header=new byte[Header];RandomAccess.Read(file.SafeFileHandle,header,0);
+        byte[] header=new byte[Header];ReadExactly(file.SafeFileHandle,header,0);
         if(header.All(value=>value==0))
         {
             byte[] buffer=new byte[65536];long offset=Header;
             while(offset<file.Length)
-            { _token.ThrowIfCancellationRequested();int count=(int)Math.Min(buffer.Length,file.Length-offset);if(RandomAccess.Read(file.SafeFileHandle,buffer.AsSpan(0,count),offset)!=count || buffer.AsSpan(0,count).IndexOfAnyExcept((byte)0)>=0) throw new IOException("Nonempty protected metadata is not initial genesis.");offset+=count; }
+            { _token.ThrowIfCancellationRequested();int count=(int)Math.Min(buffer.Length,file.Length-offset);ReadExactly(file.SafeFileHandle,buffer.AsSpan(0,count),offset);if(buffer.AsSpan(0,count).IndexOfAnyExcept((byte)0)>=0) throw new IOException("Nonempty protected metadata is not initial genesis.");offset+=count; }
             return (0,null,false,true);
         }
         long generation=BinaryPrimitives.ReadInt64LittleEndian(header);int length=BinaryPrimitives.ReadInt32LittleEndian(header.AsSpan(8)),phase=BinaryPrimitives.ReadInt32LittleEndian(header.AsSpan(12));
         if(generation<1 || length<1 || length>_config.MaximumMetadataBytes || phase is not (1 or 2)) throw new IOException("Preserve unknown damaged protected metadata header.");
-        byte[] raw=new byte[length];bool exact=RandomAccess.Read(file.SafeFileHandle,raw,Header)==length && SHA256.HashData(raw).AsSpan().SequenceEqual(header.AsSpan(16,32));
+        byte[] raw=new byte[length];ReadExactly(file.SafeFileHandle,raw,Header);bool exact=SHA256.HashData(raw).AsSpan().SequenceEqual(header.AsSpan(16,32));
         if(!exact && phase==2) throw new IOException("Preserve unknown damaged committed protected metadata; no legacy fallback.");
         return (generation,exact?raw:null,phase==1,false);
     }

@@ -1,0 +1,63 @@
+{
+  "observedAtUtc": "2026-10-28T15:25:06.290248+00:00",
+  "supplementSha256": "c4ca30d218d72e02f5b7d064ad6b4fe177c8e45a4db8cc7283d8d13103a8cc97",
+  "supplementManifestChecks": {
+    "actualBuildInputs": {
+      "checked": 873,
+      "mismatches": []
+    },
+    "compiledArtifacts": {
+      "checked": 89,
+      "mismatches": []
+    },
+    "logsAndBuildInputs": {
+      "checked": 44,
+      "mismatches": []
+    }
+  },
+  "rootVerification": {
+    "composition": {
+      "total": 141,
+      "passed": 141,
+      "failed": 0,
+      "allPrior137Preserved": true
+    },
+    "packetArchivePython": {
+      "total": 21,
+      "failed": 0
+    },
+    "hostPreparePython": {
+      "total": 3,
+      "failed": 0
+    }
+  },
+  "headAndIndexPreserved": true,
+  "frozenIntentPreserved": true,
+  "fullRuntime": {
+    "passed": 843,
+    "total": 847,
+    "beforeReproducedFailures": 4
+  },
+  "fullProtection": {
+    "passed": 217,
+    "total": 217
+  },
+  "broadPython": {
+    "passed": 466,
+    "total": 467,
+    "beforeReproducedFailures": 1
+  },
+  "review": {
+    "layers": 3,
+    "findings": 13,
+    "carriedRejected": 2,
+    "priorModuleFollowups": 8,
+    "patchesFixed": 3
+  },
+  "source23ContinuationVerified": true,
+  "fullSharedTargetDeliveryComplete": false,
+  "freshFullDependencyGraphBuild": false,
+  "dependencyBinaries": "exact authenticated source22 bytes",
+  "nativeWindowsMacExecution": false,
+  "liveEffects": false
+}

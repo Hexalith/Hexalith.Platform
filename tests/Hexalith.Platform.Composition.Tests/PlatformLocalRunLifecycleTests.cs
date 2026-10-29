@@ -50,12 +50,16 @@ public sealed class PlatformLocalRunLifecycleTests
             owned.Add(peer.RunId);
             CompositionRunResources peerBefore = await new CompositionEngine(options).Scanner.FindAsync(peer.RunId, TestContext.Current.CancellationToken);
             peerBefore.ContainerIds.ShouldNotBeEmpty();
+            peerBefore.Unverified.ShouldBeFalse();
             CompositionRunState peerState = (await new CompositionRunStateStore(options.StateDirectory).TryReadAsync(peer.RunId, TestContext.Current.CancellationToken)).ShouldNotBeNull();
             int appHostPid = peerState.AppHostProcessId.ShouldNotBeNull();
             int[] stablePeerPids = [.. peer.Readiness.Resources.Where(resource => resource.Kind is "project" or "executable").Select(resource => resource.ProcessId).OfType<int>().Append(appHostPid).Distinct()];
             foreach (int processId in stablePeerPids) peerBefore.ProcessIds.ShouldContain(processId);
             string peerContainer = peer.Plan.RedisContainerName;
             await DockerAsync(["exec", peerContainer, "redis-cli", "SET", "story25-peer-key", "unchanged"]);
+            CompositionProcessResult initialPeerValue = await DockerAsync(["exec", peerContainer, "redis-cli", "GET", "story25-peer-key"]);
+            initialPeerValue.Output.Trim().ShouldBe("unchanged");
+            File.WriteAllText(Path.Combine(evidence, "peer-before.json"), JsonSerializer.Serialize(new { peer.RunId, peerBefore.ContainerIds, peerBefore.ProcessIds, stablePeerPids, observedValue = initialPeerValue.Output.Trim() }));
             foreach (string scenario in new[] { "success", "failure", "timeout", "partial-startup" })
             {
                 JsonNode declaration = JsonNode.Parse(File.ReadAllText(original))!;
@@ -82,6 +86,10 @@ public sealed class PlatformLocalRunLifecycleTests
                 string expectedCause = scenario switch { "success" => "tests-completed", "timeout" => "execution-timeout", "partial-startup" => "startup-failure", _ => "test-failure" };
                 terminal.GetProperty("cause").GetString().ShouldBe(expectedCause);
                 DateTimeOffset firstAt = terminal.GetProperty("recordedAt").GetDateTimeOffset();
+                string initialArchive = Path.Combine(evidence, "initial-diagnostics", scenario);
+                Directory.CreateDirectory(initialArchive);
+                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(resultPath)!))
+                    if (Path.GetExtension(file) is ".json" or ".trx") File.Copy(file, Path.Combine(initialArchive, Path.GetFileName(file)), overwrite: true);
                 CompositionRunResources observed = await new CompositionEngine(options).Scanner.FindAsync(runId, TestContext.Current.CancellationToken);
                 File.WriteAllText(Path.Combine(evidence, "resources-" + scenario + ".json"), JsonSerializer.Serialize(observed));
                 observed.Unverified.ShouldBeFalse();

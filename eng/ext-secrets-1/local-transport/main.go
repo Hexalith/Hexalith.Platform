@@ -203,10 +203,12 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 							m["metadata"] = metaSummary(p.Metadata)
 						case *components.InvokeResponse:
 							m["dataBytes"] = len(p.Data)
+							m["dataSha256"] = digest(p.Data)
 							m["contentTypeBytes"] = len(p.ContentType)
 							m["metadata"] = metaSummary(p.Metadata)
 						case *runtimev1.InvokeBindingResponse:
 							m["dataBytes"] = len(p.Data)
+							m["dataSha256"] = digest(p.Data)
 							m["metadata"] = metaSummary(p.Metadata)
 						}
 						m["topLevelUnknownBytes"] = len(message.ProtoReflect().GetUnknown())

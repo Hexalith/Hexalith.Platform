@@ -1,0 +1,163 @@
+{
+  "schema": "platform.story54.source-correction-pass23.handback.v1",
+  "status": "FINAL",
+  "observedAtUtc": "2026-10-28T14:59:26.540126+00:00",
+  "sourceCorrectionPass": 23,
+  "review22SurvivorCorrectionsImplemented": true,
+  "sourceComplete": false,
+  "deliveryComplete": false,
+  "installedQualification": false,
+  "independentReviewComplete": false,
+  "priorAcceptedHandback": {
+    "path": "/tmp/story54-round22-1fctcr2b/handback-final2.json",
+    "sha256": "d287f366349ce22687b6558ba5359e5a575e81edcb000afd3dd2efdacb515f8c"
+  },
+  "loadedSpecAndEveryContext": {
+    "path": "/tmp/story54-round23-m5osbjqz/loaded-context.json",
+    "sha256": "05919c60b60397c2a7813ae056200b6b8f33e43ca921c5c4aaf6f34d7cb2aaf2"
+  },
+  "currentSpecIncludingRootVerificationClarification": {
+    "path": "/tmp/story54-round23-m5osbjqz/loaded-spec-with-verification-clarification.md",
+    "sha256": "b3406d9d43fd2cdb8860cbfca0b0122c16e6d3f9f362aa44c1b0d5db886d917c"
+  },
+  "headObserved": "0f2b6ea8f788b236333772a11e78193b851a2725",
+  "acceptedCompleteImmutableTarget": null,
+  "beforeAfterDelta": {
+    "path": "/tmp/story54-round23-m5osbjqz/actual-source-delta.json",
+    "sha256": "df5fb91dbeae10ac139f09831a54ca46abf616fd1b63babf4615f1fa3b76af9b"
+  },
+  "actualDiff": {
+    "path": "/tmp/story54-round23-m5osbjqz/actual-source-delta.diff",
+    "sha256": "ea7b8f6db7e507421c99e0b510acbf60fbb0809f3cc2a92bdd92bf88cfa5d903"
+  },
+  "ownedPaths": 21,
+  "changed": 11,
+  "added": 10,
+  "sourceSnapshot": {
+    "path": "/tmp/story54-round23-m5osbjqz/source-final.tar.gz",
+    "sha256": "145b0a45eb86e0b32499c5208f8d9aea15dbf065fda04144156b5a3c2671891b"
+  },
+  "sourceHashes": {
+    "path": "/tmp/story54-round23-m5osbjqz/source-final-hashes.json",
+    "sha256": "0d0763f55d9599422ae69c3b039d80d3ae18ce6aa27bd007717bfd448e219007"
+  },
+  "actualCompileInputs": {
+    "path": "/tmp/story54-round23-m5osbjqz/actual-compile-inputs-final.json",
+    "sha256": "cbd2e6e2caed01305406abf91777d2c1dfd610a69b13d8183e70720b01ffab06"
+  },
+  "actualReferenceInputs": {
+    "path": "/tmp/story54-round23-m5osbjqz/actual-reference-inputs-final.json",
+    "sha256": "fcdafa2bace7acdcb63820c3b574f43dc3be19f9f3fc6f2c95cb0e95537aa417"
+  },
+  "actualAnalyzers": {
+    "path": "/tmp/story54-round23-m5osbjqz/actual-analyzers-final.json",
+    "sha256": "4e446e06956fcaf8b47004f7656ad327cba4a4ac0412ec9d9e94416356801a45"
+  },
+  "compiledAndRuntimeArtifacts": {
+    "path": "/tmp/story54-round23-m5osbjqz/compiled-and-runtime-artifact-hashes-final.json",
+    "sha256": "95ae5a28b2c48d396f9d62ca123d5ad699b671d7b0d238088e42365624a3ded1"
+  },
+  "logsAndXml": {
+    "path": "/tmp/story54-round23-m5osbjqz/logs-and-xml-hashes-final.json",
+    "sha256": "579c7847735660f2f28481f84884ff00a8e3b20b0b434e27e49e58254c53b63a"
+  },
+  "buildHelpersAndInputLists": {
+    "path": "/tmp/story54-round23-m5osbjqz/build-helper-and-input-hashes-final.json",
+    "sha256": "72b5ad253d1190cca8b9c49727f76568d1cf76d2898f80d2d1ec33b36095ac83"
+  },
+  "publicDocumentsUsedByPython": {
+    "path": "/tmp/story54-round23-m5osbjqz/python-selected-public-document-hashes.json",
+    "sha256": "b2a9850dcfc7fe15d7df676e21a36b729f75f89df4475a1b97920ae98d16f60e"
+  },
+  "correctionMapping": {
+    "path": "/tmp/story54-round23-m5osbjqz/per-finding-corrections-final.json",
+    "sha256": "9b31a3fa0454c355347a78422f3be14cfbafdf76e9d968b63de70f8249643848"
+  },
+  "verification": {
+    "path": "/tmp/story54-round23-m5osbjqz/verification-summary-final.json",
+    "sha256": "95cb7276893b0d80300f6fc03694e0b9a93c15eb2d60db5fa909ba5da294ecb1"
+  },
+  "runtimeCurrentAggregate": {
+    "path": "/tmp/story54-round23-m5osbjqz/runtime-full2.xml",
+    "sha256": "7c0ebf8823fd48fcf5bf538dea31b14b17cf148333c263fca561e6a42a59e82f",
+    "total": 847,
+    "failed": 4,
+    "errors": 0,
+    "skipped": 0,
+    "failedNames": [
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.VerifiedOriginalPersistsAcrossRestartAndLostPublicationAcknowledgement",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.PublicationAdmissionPreservesCompletionReserveAtSerializedHeadBoundary",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.MissingVerifierOrOriginalAndAllChangedRegistrationFieldsDenyIndexMutation",
+      "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.ScopeRoleRevocationAndExpiredCurrentHeadDenyBeforeOriginalVerificationOrDisclosure"
+    ]
+  },
+  "protectionCurrentAggregate": {
+    "path": "/tmp/story54-round23-m5osbjqz/protection-full2.xml",
+    "sha256": "5fde3593754cdb37a86b25158bff3be5879b1dbbb552f0be6315666594c33890",
+    "total": 217,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "failedNames": []
+  },
+  "compositionCurrentAggregate": {
+    "path": "/tmp/story54-round23-m5osbjqz/composition-full-final.xml",
+    "sha256": "f9790f78c7deeb8bca97fa833900736da2c90b0b9884802a907fdcb859d09174",
+    "total": 137,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "failedNames": []
+  },
+  "allSource22Runtime823Protection211Composition128NamesRemainAndPass": true,
+  "baselineFailuresPreserved": {
+    "runtime": "4 identical CustodyRegistrationPublicationTests failures in current847-case run and authenticated-before7-case run; intervening existing maintenance tests, unmodified",
+    "python": "1 identical review provisioning cleanup failure in current broad467-case run and authenticated before run; unmodified"
+  },
+  "historicalDiagnostics": "Initial generated test entry/default reporter dependency setup failures, Composition visibility/docs-policy/setup and source3 directory/resource-count diagnostics, isolated Python missing-document33 errors plus one transient unchanged HTTP timing failure, fresh-digest first mutant compile failure all remain separate, never counted as green or semantic guards.",
+  "verificationDependencyBoundary": {
+    "externalSourceBodiesUnavailable": 3,
+    "source22AuthenticatedDependencyBinariesReused": true,
+    "mutableSiblingSourceSubstituted": false,
+    "hostedPublishingSource": {
+      "path": "/tmp/story54-round23-m5osbjqz/authenticated-dependencies/PlatformHostedPublishing.cs",
+      "sha256": "ff0d90e0a10c6a1dd92b16129a9ca368c690838b43abd833b374f7694cd5a9d6"
+    },
+    "freshFullDependencyGraphSourceBuild": false,
+    "canonicalAppHostByteCompile": true,
+    "canonicalAppHostExecution": false,
+    "fileBasedAspireSdkGraphReevaluated": false,
+    "cachedPackageArchiveBoundary": "Current cache archive SHA512 may differ from old restore metadata; every staged managed runtime DLL was accepted only by exact source22 reference SHA256. No whole-package byte identity is claimed."
+  },
+  "scope": {
+    "fullJointCases": 234,
+    "partialQualificationDrivers": 185,
+    "externalDependentUnregisteredDrivers": 49,
+    "completeQualificationDrivers": 0,
+    "historyDays": 365,
+    "productGates": "both open"
+  },
+  "missingRealInputs": {
+    "installationBundles": 13,
+    "ownerNulls": 50,
+    "platformIntegrationDate": null,
+    "protectionIntegrationDate": null,
+    "acceptedCompleteImmutableTarget": null,
+    "nativePhysicalTemporalWholeImageRecoveryRestartRestoreHistoryCensusAndCompleteProtectionProtocols": "still explicitly unselected/unqualified"
+  },
+  "effects": {
+    "actualCohortPhaseAttempt": false,
+    "installedEnrollmentOrDeployment": false,
+    "consumerActivation": false,
+    "physicalQualificationOrSpending": false,
+    "acceptedRecordsModified": false,
+    "repositoryStageCommitPushOrFetch": false,
+    "subAgentsOrRecursiveSkill": false
+  },
+  "limitations": [
+    "Portable development implementation and link/cancellation/worker ownership tests ran on Linux; native Windows/macOS execution was unavailable.",
+    "All test authorities, original stores, archive allocations and attempts are disposable fixtures and establish no installation/availability.",
+    "Full current Runtime aggregate remains failed843/847 and broad Python remains failed466/467; exact baseline attribution and all original failed evidence are retained.",
+    "Three independent review layers and root acceptance remain required; no full source/driver/installed/shared-target completion is claimed."
+  ]
+}

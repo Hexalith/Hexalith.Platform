@@ -1,0 +1,24 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "*OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync",
+    "-method",
+    "*ExplicitStopAcrossProcessesPreservesFirstFailureAsync",
+    "-method",
+    "*FailedBookkeepingStillStopsOwnedProcessAsync",
+    "-method",
+    "*SessionlessStartupPreservesCommittedOutcomeAsync",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/regressions-corrected-2.xml",
+    "-parallel",
+    "none"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 7.339,
+  "log": "regressions-corrected-2.log",
+  "archivedLog": "regressions-corrected-2.log.gz",
+  "logSha256": "eda83e419f64461898fb912c5b5d8e6a3b9e53aedc3c207558075bf813d295b3"
+}

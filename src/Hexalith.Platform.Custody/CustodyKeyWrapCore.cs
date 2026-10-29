@@ -30,7 +30,7 @@ internal static class CustodyKeyWrapCore
         }
         finally { CryptographicOperations.ZeroMemory(plaintext); CryptographicOperations.ZeroMemory(aad); }
     }
-    private static byte[] Context(CustodyKeyObjectIdentity i, string kek)
+    internal static byte[] Context(CustodyKeyObjectIdentity i, string kek)
     { CustodyKeyLifecycleActor.ValidateIdentity(i); return PlatformCanonicalBytes.Components(["candidate-custody-key-wrap-v1", i.TenantId, i.ObjectId, i.Purpose.ToString(),
         i.KeyAlias, i.KeyVersion, i.LifecycleVersion, i.StoreTarget, i.ContractVersion, kek]); }
 }

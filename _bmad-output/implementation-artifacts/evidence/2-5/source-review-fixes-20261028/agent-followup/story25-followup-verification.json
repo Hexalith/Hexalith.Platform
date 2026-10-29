@@ -1,0 +1,117 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "revision": "81ab049208678bd6616828824729c0ddac02f7d1",
+  "build": {
+    "argv": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1"
+    ],
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "durationSeconds": 31.17,
+    "log": "/tmp/story25-followup-build-9.log"
+  },
+  "focusedTests": {
+    "argv": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*LocalRunSourceReviewTests.*",
+      "-method",
+      "*TestResultWriterTests.*",
+      "-method",
+      "*NativeMetadataPublicationTests.*",
+      "-method",
+      "*CompositionResourceClaimStoreTests.*",
+      "-method",
+      "*UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync",
+      "-method",
+      "*MissingNativeProcessCommitsPrerequisiteClassificationAsync",
+      "-method",
+      "*TimeoutCallbackFailureRetriesOriginalCauseWithoutRenewingStoppingAsync",
+      "-method",
+      "*OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync",
+      "-method",
+      "*NativeOutcomeControlsLocalCleanupAsync",
+      "-method",
+      "*ConcurrentDownCancelsStartingOwnerAsync",
+      "-method",
+      "*CancelledStartReturnsCancellationAsync",
+      "-method",
+      "*ExclusiveLocksRefuseUntilReleased",
+      "-parallelMode",
+      "none",
+      "-result-xml",
+      "/tmp/story25-followup-focused-final.xml"
+    ],
+    "exitCode": 0,
+    "summary": {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, non-parallel]",
+      "id": "5eb6b473-ac02-4171-afc8-f9ba6492965f",
+      "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-28",
+      "run-time": "08:38:11",
+      "start-rtf": "2026-10-28T08:38:11.9186523+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-28T08:38:38.4549092+00:00",
+      "not-run": "0",
+      "passed": "70",
+      "skipped": "0",
+      "time": "26.538",
+      "time-rtf": "00:00:26.5380000",
+      "total": "70"
+    },
+    "log": "/tmp/story25-followup-focused-final.log"
+  },
+  "retainedSuccessProbe": {
+    "directory": "/tmp/story25-retained-native-final",
+    "buildExitCode": 0,
+    "executionExitCode": 0,
+    "log": "/tmp/story25-retained-native-final/run.log",
+    "observations": "/tmp/story25-retained-native-final/observations.log"
+  },
+  "diffCheckExitCode": 0,
+  "sha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs": "20bc77b4df3cc08b0e9d547409aee36e575971523609e6ca1d8af79eec4f1420",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDurableFlush.cs": "0d49b4a5c76b3f7019361420f5418a896f2a493b45f3d16233a115bf2956701d",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "8f91044fa99f011c7bdec0a2bf68682b568815520450a0bdd4c4a6febc5af3cb",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs": "a1c026d6105da1ab664adea4e747804ded7dc5106b72b1002af51e46b7352360",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "540409053ae0cb13b8dd9c21561a14773b5af55bea0e1d2eb6ba1d5c558c8aff",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs": "4fd01198feee245ee0c63b72623db5621b09a87bffc8acebafe86c809784af17",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "a9310c2932a92f0c58ebd08166383750754eea701fc625153eea22b129c03e36",
+    "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs": "1175f918c7bc204abe88999f29a0f60672f2e5a80d3999399fc4d2890319fa81",
+    "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj": "78bef8f6257dfd5b47b4ab755dcf7b5c0f4bd9854853b2c7cea838f78e2728c4",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "f8bd644e60c6ec2448c8769af018911a2e6ac73685955f03a5945c960126e25b",
+    "test/Hexalith.Builds.Module.Tests/LocalRunReviewCorrectionTests.cs": "058a59474458dc04fab7149a272de6a7450166380cc9f434d9a002f6d7dbfd02",
+    "test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs": "986ed54b98fabffa190af7d33fdc72353502923d851f784c363abd75d463ae85",
+    "test/Hexalith.Builds.Module.Tests/NativeMetadataPublicationTests.cs": "eaeb58b9dd1d636c9766763eb143f30eaa3de41f9e644f04f50237c56d941f99",
+    "test/Hexalith.Builds.Module.Tests/TestResultWriterTests.cs": "5e02c2caf13b94c645921ea6ca2a2f652d5f254dd09345d7cbe0410b0cadcebf",
+    "test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj": "64d81bd89d332e3bce51ec068c0d5672f4c969629ccc6376e60a7f49c6ada817",
+    "test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/Program.cs": "48a5a55ef67378519bdd988bc6aba12548cfdd23b7b2e744660ec327decfbe6b",
+    "test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/native-probe.c": "17711e96a74e9029e283ef9be37a0116e21669dcbb1e94a88d5c493317d2a5a7"
+  },
+  "superseded": {
+    "buildLogs": [
+      "/tmp/story25-followup-build.log",
+      "/tmp/story25-followup-build-2.log",
+      "/tmp/story25-followup-build-3.log",
+      "/tmp/story25-followup-build-4.log",
+      "/tmp/story25-followup-build-5.log",
+      "/tmp/story25-followup-build-6.log",
+      "/tmp/story25-followup-build-7.log",
+      "/tmp/story25-followup-build-8.log"
+    ],
+    "testLogs": [
+      "/tmp/story25-followup-focused.log",
+      "/tmp/story25-followup-focused-2.log"
+    ]
+  }
+}

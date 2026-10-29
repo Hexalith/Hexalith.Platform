@@ -1,0 +1,508 @@
+{
+  "schema": "hexalith.test-result.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "78865e4f317b33e5551e386b3431d527",
+      "attemptId": "4ddfc31e51b35c91211536a26aa6e447",
+      "attemptSequence": 1,
+      "ownerRunId": "78865e4f317b33e5551e386b3431d527",
+      "environmentId": "1d647378a17921bbfdaaccbfda138fac",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "id": "platform",
+        "contentIdentity": "sha256:a9d3f80fb363ee2ffde229938361d8a620296cdd826d16a54eb32c69cd529d67"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "commit": "e129a29e6c6e2f8a200581e09b861d75a9f3a7b8",
+        "instanceId": "1d647378a17921bbfdaaccbfda138fac-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "g4t-78865e4f317b",
+        "dataIsolationId": "g4r-78865e4f317b",
+        "resourceScopeId": "1d647378a17921bbfdaaccbfda138fac",
+        "catalogScopeId": "1d647378a17921bbfdaaccbfda138fac-catalog"
+      },
+      "resources": [
+        {
+          "resourceId": "dapr-placement-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:20693/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:34301/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-scheduler-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:14245/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:35261/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-sentry",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:21004/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:40925/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:33853/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore-dapr-cli",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:11740/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:25854/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:12682/"
+            }
+          ]
+        },
+        {
+          "resourceId": "redis",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:20037/"
+            }
+          ]
+        }
+      ],
+      "readiness": {
+        "state": "populated",
+        "status": "ready",
+        "observedAt": "2026-10-28T10:34:36.8069644Z",
+        "resources": [
+          {
+            "resourceId": "dapr-placement-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068654Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-scheduler-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068762Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-sentry",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068838Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068548Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068961Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "redis",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:34:36.8068267Z",
+            "diagnosticIds": []
+          }
+        ]
+      },
+      "startupTasks": {
+        "state": "populated",
+        "tasks": [
+          {
+            "taskId": "platform/verify-run-owner",
+            "required": true,
+            "status": "passed",
+            "startedAt": "2026-10-28T10:34:36.6658898Z",
+            "finishedAt": "2026-10-28T10:34:36.6673383Z",
+            "diagnosticIds": []
+          }
+        ]
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-28T10:33:32.7280954Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-28T10:43:32.7280954Z",
+        "actualDurationSeconds": 64.4500288,
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "populated",
+        "origin": "test-execution-started",
+        "originAt": "2026-10-28T10:34:37.1890927Z",
+        "effectiveSeconds": 120,
+        "expiresAt": "2026-10-28T10:36:37.1890927Z",
+        "configurationContentIdentity": "sha256:cffae3f44fa3e35cc8899ddd79353110f52fb102fcd92612958c8d29bd345c29",
+        "actualDurationSeconds": 0.0588023
+      }
+    }
+  },
+  "terminal": {
+    "outcome": "failed",
+    "recordedAt": "2026-10-28T10:34:37.2493242Z",
+    "cause": "test-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ]
+  },
+  "termination": {
+    "state": "not-yet-populated"
+  },
+  "retention": {
+    "state": "populated",
+    "disposition": "failure-retained",
+    "failureRunIds": [
+      "78865e4f317b33e5551e386b3431d527"
+    ],
+    "retainedResourceIds": [
+      "container:022a5f02c15c353353328ad9e2f00e1aea33c59aab6e6693c4a4939d811779ae",
+      "container:308c62b72fa41edec85c435d0f959da7ccf5a8a57fdc66af3bc85a036945c69e",
+      "container:3ee9a74992e758267f7b3786f9cbe34bf3b094b18959c5b51bb2933884c406f3",
+      "container:4679ea8fa8e7acee2083d84cbb17d9f10b9aadc0ce868a04c63a61a888c63004",
+      "process:3031426",
+      "process:3033616",
+      "process:3033707",
+      "process:3034082",
+      "process:3034087",
+      "process:3034217",
+      "process:3034218",
+      "process:3035244",
+      "process:3035251",
+      "process:3035973",
+      "process:3035975",
+      "process:3036092",
+      "process:3036094",
+      "process:3036338",
+      "process:3036362",
+      "process:3037091",
+      "process:3037093",
+      "process:3037221",
+      "process:3037223",
+      "process:3037259",
+      "process:3037260",
+      "process:3037262",
+      "process:3037263",
+      "process:3048985",
+      "workspace:78865e4f317b33e5551e386b3431d527",
+      "claim:04f66c98d2e95f60e290f421d343e234effdc43b85ff7738e2257de66b8990f9",
+      "claim:08133f67bcc8b176702356793dfb7a7c8cbb8a08b73a033b870623354e869823",
+      "claim:0f46bb06cc75a1584d05c6e3812a5f0b46d2cd0afca7a6410a349c7571a88884",
+      "claim:17e8be591049f667408f125e419290ca44810898ade3bddc9377e8c8766fc108",
+      "claim:2bee5486fbb0d067f17ada290c44315a5cd0a921c1ee1aeb70e59015bd04f53d",
+      "claim:3654e412a5a8a8426c058644518f72e364554e0d2fc363b3a1e890e55a94c54a",
+      "claim:3f33ece55b9a33939f02e256e80785c4c6575fdaf43b48da29b30c6f56441e7b",
+      "claim:4532b8fa8ad8eb5a74ce2a601b3d5fb906543d4ab6674f9bca2e6a2c4d347fb0",
+      "claim:612e4ec1143648d6888e9ae042cca60076124b391c9bf139b67bc449800048d8",
+      "claim:637be07247e5ae9a671ee627146efd1e455a67a938bed80bcb94408eeed484f6",
+      "claim:64ae01c083e55cc259ec3e84b8b38f1351ff21c426c20a1542dddb9aab26f9d6",
+      "claim:6723fc8c09ab8854fc3b191d1f6d070a4371f48f8dae88115e8c5355f1c7631c",
+      "claim:6d8bbc36904747761773b66ae42b6bd8e74802595f458b8dd36d646fdff174b5",
+      "claim:7035c3d90397e5e63908f7579dc85ca71a4b1be110a58ba70cdcb79d8ab750a2",
+      "claim:741cd5f77dc1580ca191ac3d40ed4332f6a99493cc04994d72292d870fb256fd",
+      "claim:74b9b8d78e2e4105e56df45f526105d82d7d337da59b206175fb1c158b8041e1",
+      "claim:772fea80887bbbe658b65fa57317a6e2f762fd8ed61403019bdd9efb44d45b86",
+      "claim:7788a05a041cb1a7ebeea80e7b8609a2f2db3b12bb90488fab1c56eb367667fa",
+      "claim:7852a3f89a73c2edb0ffe271cd36dda8fb8d4b9ff4d90e1d24e2fb3e9c1580b6",
+      "claim:7d44f1465d53dd22254aaf9c709bd30b9504579d21c7ee6cfbb1fbbbe01a3454",
+      "claim:836345ce76496e7a39786418b1eb383c6c7574e463ec4e805aac7d0c1aa8994c",
+      "claim:84b62a3001e28e1bc190ca26c5720b330432f8a2dda0ef1133a4259b07412e54",
+      "claim:8b562a427d41c0f453cf28f10ed98907c18245e82a91ce55ed1b18a67c9ad64d",
+      "claim:90caedf98e49d49158c78feefecdcf9e2e3cf4ecb44040e5806d71bdf45c00e6",
+      "claim:9497a645afd83dca40d24776625c985be9bea62564ccd5b575eb359d22e9e364",
+      "claim:976377149d1e9c3a7ec961d6e47a1b14137a8b61264eebeb4553739b017c9231",
+      "claim:9a179025851798a5c6f59a107625e1577f47c53815515200a76268400a0aeff8",
+      "claim:9c2020c8d7002f9c6a45ebaa837336079821a4e377eef794ef35a02044a9735e",
+      "claim:a10163be0328067c559c99f136d48b71fc2bd15d09507004ac5dc7d2884f2407",
+      "claim:ad50495930b1351f28ac6c0ceae682acc8a6796c416daad6f9444969de590b40",
+      "claim:b688e4ee748e79474df5ebc171f2dc5e86d53b5b2fccae00bf7d616c56007542",
+      "claim:c19cdabc2909bfaad11ddb323e6158634c802af1d873bb6f7b4477c99d3c7e1c",
+      "claim:c1dbd44e7d24798632dd8c77867baebd1f1630c151e55b43b22d8dfa99f22aa3",
+      "claim:c7039aec1a736b322b194b0240f86ae25b4bf4771d55e04c3961fe32f3f1151f",
+      "claim:c965d3feec36c04f096789b62c165a34413572a7b39bcee4dced65adc0587711",
+      "claim:d4079a5197ef9d8b4a30d71b13938e48134fe567bd21bdf1d38bee70c7c7669c",
+      "claim:d62b44923b198dd5b9b22a49e9f256fb989e21dd915adbbfcc6aebffbe34be3f",
+      "claim:d7062381861c4bc3632cc7ce1d1b41757698799eeb8aaf47edce4b8eb50f62a3",
+      "claim:e848668cdccad174c11496c450a4f06039996f891ce35e37cd78da2850810261",
+      "claim:f0d2ccc36f6974f24e82cd0734592244c2422d6f9f3d78b72f89139a790e139b",
+      "claim:f55d9332fa8b311345a6c1222d27fd22607082011bc7d2477617b389d6b765f5",
+      "claim:f7aefcae83d4c0d5c0bb1107fb387fc463a59d1237d34084e6ce62c41dd7dbf8"
+    ],
+    "reason": "local-failure",
+    "recordedAt": "2026-10-28T10:34:37.4345359Z"
+  },
+  "cleanup": {
+    "state": "populated",
+    "disposition": "not-requested",
+    "observedAt": "2026-10-28T10:34:37.4345359Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis",
+      "container:022a5f02c15c353353328ad9e2f00e1aea33c59aab6e6693c4a4939d811779ae",
+      "container:308c62b72fa41edec85c435d0f959da7ccf5a8a57fdc66af3bc85a036945c69e",
+      "container:3ee9a74992e758267f7b3786f9cbe34bf3b094b18959c5b51bb2933884c406f3",
+      "container:4679ea8fa8e7acee2083d84cbb17d9f10b9aadc0ce868a04c63a61a888c63004",
+      "process:3031426",
+      "process:3033616",
+      "process:3033707",
+      "process:3034082",
+      "process:3034087",
+      "process:3034217",
+      "process:3034218",
+      "process:3035244",
+      "process:3035251",
+      "process:3035973",
+      "process:3035975",
+      "process:3036092",
+      "process:3036094",
+      "process:3036338",
+      "process:3036362",
+      "process:3037091",
+      "process:3037093",
+      "process:3037221",
+      "process:3037223",
+      "process:3037259",
+      "process:3037260",
+      "process:3037262",
+      "process:3037263",
+      "process:3048985",
+      "workspace:78865e4f317b33e5551e386b3431d527",
+      "claim:04f66c98d2e95f60e290f421d343e234effdc43b85ff7738e2257de66b8990f9",
+      "claim:08133f67bcc8b176702356793dfb7a7c8cbb8a08b73a033b870623354e869823",
+      "claim:0f46bb06cc75a1584d05c6e3812a5f0b46d2cd0afca7a6410a349c7571a88884",
+      "claim:17e8be591049f667408f125e419290ca44810898ade3bddc9377e8c8766fc108",
+      "claim:2bee5486fbb0d067f17ada290c44315a5cd0a921c1ee1aeb70e59015bd04f53d",
+      "claim:3654e412a5a8a8426c058644518f72e364554e0d2fc363b3a1e890e55a94c54a",
+      "claim:3f33ece55b9a33939f02e256e80785c4c6575fdaf43b48da29b30c6f56441e7b",
+      "claim:4532b8fa8ad8eb5a74ce2a601b3d5fb906543d4ab6674f9bca2e6a2c4d347fb0",
+      "claim:612e4ec1143648d6888e9ae042cca60076124b391c9bf139b67bc449800048d8",
+      "claim:637be07247e5ae9a671ee627146efd1e455a67a938bed80bcb94408eeed484f6",
+      "claim:64ae01c083e55cc259ec3e84b8b38f1351ff21c426c20a1542dddb9aab26f9d6",
+      "claim:6723fc8c09ab8854fc3b191d1f6d070a4371f48f8dae88115e8c5355f1c7631c",
+      "claim:6d8bbc36904747761773b66ae42b6bd8e74802595f458b8dd36d646fdff174b5",
+      "claim:7035c3d90397e5e63908f7579dc85ca71a4b1be110a58ba70cdcb79d8ab750a2",
+      "claim:741cd5f77dc1580ca191ac3d40ed4332f6a99493cc04994d72292d870fb256fd",
+      "claim:74b9b8d78e2e4105e56df45f526105d82d7d337da59b206175fb1c158b8041e1",
+      "claim:772fea80887bbbe658b65fa57317a6e2f762fd8ed61403019bdd9efb44d45b86",
+      "claim:7788a05a041cb1a7ebeea80e7b8609a2f2db3b12bb90488fab1c56eb367667fa",
+      "claim:7852a3f89a73c2edb0ffe271cd36dda8fb8d4b9ff4d90e1d24e2fb3e9c1580b6",
+      "claim:7d44f1465d53dd22254aaf9c709bd30b9504579d21c7ee6cfbb1fbbbe01a3454",
+      "claim:836345ce76496e7a39786418b1eb383c6c7574e463ec4e805aac7d0c1aa8994c",
+      "claim:84b62a3001e28e1bc190ca26c5720b330432f8a2dda0ef1133a4259b07412e54",
+      "claim:8b562a427d41c0f453cf28f10ed98907c18245e82a91ce55ed1b18a67c9ad64d",
+      "claim:90caedf98e49d49158c78feefecdcf9e2e3cf4ecb44040e5806d71bdf45c00e6",
+      "claim:9497a645afd83dca40d24776625c985be9bea62564ccd5b575eb359d22e9e364",
+      "claim:976377149d1e9c3a7ec961d6e47a1b14137a8b61264eebeb4553739b017c9231",
+      "claim:9a179025851798a5c6f59a107625e1577f47c53815515200a76268400a0aeff8",
+      "claim:9c2020c8d7002f9c6a45ebaa837336079821a4e377eef794ef35a02044a9735e",
+      "claim:a10163be0328067c559c99f136d48b71fc2bd15d09507004ac5dc7d2884f2407",
+      "claim:ad50495930b1351f28ac6c0ceae682acc8a6796c416daad6f9444969de590b40",
+      "claim:b688e4ee748e79474df5ebc171f2dc5e86d53b5b2fccae00bf7d616c56007542",
+      "claim:c19cdabc2909bfaad11ddb323e6158634c802af1d873bb6f7b4477c99d3c7e1c",
+      "claim:c1dbd44e7d24798632dd8c77867baebd1f1630c151e55b43b22d8dfa99f22aa3",
+      "claim:c7039aec1a736b322b194b0240f86ae25b4bf4771d55e04c3961fe32f3f1151f",
+      "claim:c965d3feec36c04f096789b62c165a34413572a7b39bcee4dced65adc0587711",
+      "claim:d4079a5197ef9d8b4a30d71b13938e48134fe567bd21bdf1d38bee70c7c7669c",
+      "claim:d62b44923b198dd5b9b22a49e9f256fb989e21dd915adbbfcc6aebffbe34be3f",
+      "claim:d7062381861c4bc3632cc7ce1d1b41757698799eeb8aaf47edce4b8eb50f62a3",
+      "claim:e848668cdccad174c11496c450a4f06039996f891ce35e37cd78da2850810261",
+      "claim:f0d2ccc36f6974f24e82cd0734592244c2422d6f9f3d78b72f89139a790e139b",
+      "claim:f55d9332fa8b311345a6c1222d27fd22607082011bc7d2477617b389d6b765f5",
+      "claim:f7aefcae83d4c0d5c0bb1107fb387fc463a59d1237d34084e6ce62c41dd7dbf8"
+    ],
+    "leftoverResourceIds": [
+      "container:022a5f02c15c353353328ad9e2f00e1aea33c59aab6e6693c4a4939d811779ae",
+      "container:308c62b72fa41edec85c435d0f959da7ccf5a8a57fdc66af3bc85a036945c69e",
+      "container:3ee9a74992e758267f7b3786f9cbe34bf3b094b18959c5b51bb2933884c406f3",
+      "container:4679ea8fa8e7acee2083d84cbb17d9f10b9aadc0ce868a04c63a61a888c63004",
+      "process:3031426",
+      "process:3033616",
+      "process:3033707",
+      "process:3034082",
+      "process:3034087",
+      "process:3034217",
+      "process:3034218",
+      "process:3035244",
+      "process:3035251",
+      "process:3035973",
+      "process:3035975",
+      "process:3036092",
+      "process:3036094",
+      "process:3036338",
+      "process:3036362",
+      "process:3037091",
+      "process:3037093",
+      "process:3037221",
+      "process:3037223",
+      "process:3037259",
+      "process:3037260",
+      "process:3037262",
+      "process:3037263",
+      "process:3048985",
+      "workspace:78865e4f317b33e5551e386b3431d527",
+      "claim:04f66c98d2e95f60e290f421d343e234effdc43b85ff7738e2257de66b8990f9",
+      "claim:08133f67bcc8b176702356793dfb7a7c8cbb8a08b73a033b870623354e869823",
+      "claim:0f46bb06cc75a1584d05c6e3812a5f0b46d2cd0afca7a6410a349c7571a88884",
+      "claim:17e8be591049f667408f125e419290ca44810898ade3bddc9377e8c8766fc108",
+      "claim:2bee5486fbb0d067f17ada290c44315a5cd0a921c1ee1aeb70e59015bd04f53d",
+      "claim:3654e412a5a8a8426c058644518f72e364554e0d2fc363b3a1e890e55a94c54a",
+      "claim:3f33ece55b9a33939f02e256e80785c4c6575fdaf43b48da29b30c6f56441e7b",
+      "claim:4532b8fa8ad8eb5a74ce2a601b3d5fb906543d4ab6674f9bca2e6a2c4d347fb0",
+      "claim:612e4ec1143648d6888e9ae042cca60076124b391c9bf139b67bc449800048d8",
+      "claim:637be07247e5ae9a671ee627146efd1e455a67a938bed80bcb94408eeed484f6",
+      "claim:64ae01c083e55cc259ec3e84b8b38f1351ff21c426c20a1542dddb9aab26f9d6",
+      "claim:6723fc8c09ab8854fc3b191d1f6d070a4371f48f8dae88115e8c5355f1c7631c",
+      "claim:6d8bbc36904747761773b66ae42b6bd8e74802595f458b8dd36d646fdff174b5",
+      "claim:7035c3d90397e5e63908f7579dc85ca71a4b1be110a58ba70cdcb79d8ab750a2",
+      "claim:741cd5f77dc1580ca191ac3d40ed4332f6a99493cc04994d72292d870fb256fd",
+      "claim:74b9b8d78e2e4105e56df45f526105d82d7d337da59b206175fb1c158b8041e1",
+      "claim:772fea80887bbbe658b65fa57317a6e2f762fd8ed61403019bdd9efb44d45b86",
+      "claim:7788a05a041cb1a7ebeea80e7b8609a2f2db3b12bb90488fab1c56eb367667fa",
+      "claim:7852a3f89a73c2edb0ffe271cd36dda8fb8d4b9ff4d90e1d24e2fb3e9c1580b6",
+      "claim:7d44f1465d53dd22254aaf9c709bd30b9504579d21c7ee6cfbb1fbbbe01a3454",
+      "claim:836345ce76496e7a39786418b1eb383c6c7574e463ec4e805aac7d0c1aa8994c",
+      "claim:84b62a3001e28e1bc190ca26c5720b330432f8a2dda0ef1133a4259b07412e54",
+      "claim:8b562a427d41c0f453cf28f10ed98907c18245e82a91ce55ed1b18a67c9ad64d",
+      "claim:90caedf98e49d49158c78feefecdcf9e2e3cf4ecb44040e5806d71bdf45c00e6",
+      "claim:9497a645afd83dca40d24776625c985be9bea62564ccd5b575eb359d22e9e364",
+      "claim:976377149d1e9c3a7ec961d6e47a1b14137a8b61264eebeb4553739b017c9231",
+      "claim:9a179025851798a5c6f59a107625e1577f47c53815515200a76268400a0aeff8",
+      "claim:9c2020c8d7002f9c6a45ebaa837336079821a4e377eef794ef35a02044a9735e",
+      "claim:a10163be0328067c559c99f136d48b71fc2bd15d09507004ac5dc7d2884f2407",
+      "claim:ad50495930b1351f28ac6c0ceae682acc8a6796c416daad6f9444969de590b40",
+      "claim:b688e4ee748e79474df5ebc171f2dc5e86d53b5b2fccae00bf7d616c56007542",
+      "claim:c19cdabc2909bfaad11ddb323e6158634c802af1d873bb6f7b4477c99d3c7e1c",
+      "claim:c1dbd44e7d24798632dd8c77867baebd1f1630c151e55b43b22d8dfa99f22aa3",
+      "claim:c7039aec1a736b322b194b0240f86ae25b4bf4771d55e04c3961fe32f3f1151f",
+      "claim:c965d3feec36c04f096789b62c165a34413572a7b39bcee4dced65adc0587711",
+      "claim:d4079a5197ef9d8b4a30d71b13938e48134fe567bd21bdf1d38bee70c7c7669c",
+      "claim:d62b44923b198dd5b9b22a49e9f256fb989e21dd915adbbfcc6aebffbe34be3f",
+      "claim:d7062381861c4bc3632cc7ce1d1b41757698799eeb8aaf47edce4b8eb50f62a3",
+      "claim:e848668cdccad174c11496c450a4f06039996f891ce35e37cd78da2850810261",
+      "claim:f0d2ccc36f6974f24e82cd0734592244c2422d6f9f3d78b72f89139a790e139b",
+      "claim:f55d9332fa8b311345a6c1222d27fd22607082011bc7d2477617b389d6b765f5",
+      "claim:f7aefcae83d4c0d5c0bb1107fb387fc463a59d1237d34084e6ce62c41dd7dbf8"
+    ],
+    "failures": [],
+    "diagnosticIds": [
+      "lifecycle"
+    ]
+  },
+  "diagnostics": [
+    {
+      "id": "lifecycle",
+      "classification": "internal",
+      "redacted": true,
+      "reference": "lifecycle-9ed5588c8999bc0fc6a6e17e6f5b9ba8602d8a14f4bdeb844d77802d49c0e822.json",
+      "contentIdentity": "sha256:9ed5588c8999bc0fc6a6e17e6f5b9ba8602d8a14f4bdeb844d77802d49c0e822"
+    },
+    {
+      "id": "native-report",
+      "classification": "internal",
+      "redacted": true,
+      "reference": "native-c8acca9789f75e32adc5a25e44646832a7e151d91be4db49522c76c5e80284d7.trx",
+      "contentIdentity": "sha256:c8acca9789f75e32adc5a25e44646832a7e151d91be4db49522c76c5e80284d7"
+    }
+  ]
+}

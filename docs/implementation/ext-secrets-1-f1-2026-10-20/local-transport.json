@@ -14,6 +14,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 45508608,
+        "dataSha256": "701726f37c3338f395473fcc6cad680885da96900eb86f8440b2309f7a7288f2",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "data-45508608",
@@ -21,7 +22,7 @@
         "operation": "fixture-send",
         "protobufBytes": 45508654,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508644374088570
+        "timeUnixNano": 1793276204998357156
       }
     },
     {
@@ -31,6 +32,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 48933548,
+        "dataSha256": "5cf5709d943e09daac0a602ec98130bdb71051b64bf9ab54c1e9c9e75a3e25b4",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "data-48933548",
@@ -38,7 +40,7 @@
         "operation": "fixture-send",
         "protobufBytes": 48933594,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508645366018427
+        "timeUnixNano": 1793276205498149755
       }
     },
     {
@@ -48,6 +50,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 67108863,
+        "dataSha256": "db1c8b00542f319ab452fcf272ff7b9013a1751e1e05c73bf64c4521f2baee63",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "data-67108863",
@@ -55,7 +58,7 @@
         "operation": "fixture-send",
         "protobufBytes": 67108909,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508646352291664
+        "timeUnixNano": 1793276206212159715
       }
     },
     {
@@ -65,6 +68,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 67108864,
+        "dataSha256": "3b6a07d0d404fab4e23b6d34bc6696a6a312dd92821332385e5af7c01c421351",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "data-67108864",
@@ -72,7 +76,7 @@
         "operation": "fixture-send",
         "protobufBytes": 67108910,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508647158926034
+        "timeUnixNano": 1793276207038622514
       }
     },
     {
@@ -82,6 +86,7 @@
       "result": {
         "code": "Internal",
         "dataBytes": 67108865,
+        "dataSha256": "91990977345985aaf03af1358f4f989d7eaf985b58529efb72f613c588f6599a",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "data-67108865",
@@ -89,7 +94,7 @@
         "operation": "fixture-send",
         "protobufBytes": 67108911,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508647698170177
+        "timeUnixNano": 1793276207611159817
       }
     },
     {
@@ -99,6 +104,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "protobuf-api-134217727",
@@ -106,7 +112,7 @@
         "operation": "fixture-send",
         "protobufBytes": 134217727,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508648253169166
+        "timeUnixNano": 1793276208162890277
       }
     },
     {
@@ -116,6 +122,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "protobuf-api-134217728",
@@ -123,7 +130,7 @@
         "operation": "fixture-send",
         "protobufBytes": 134217728,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508648707662118
+        "timeUnixNano": 1793276208821272775
       }
     },
     {
@@ -133,6 +140,7 @@
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "protobuf-api-134217729",
@@ -140,7 +148,7 @@
         "operation": "fixture-send",
         "protobufBytes": 134217729,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508648879368993
+        "timeUnixNano": 1793276209039149447
       }
     },
     {
@@ -155,7 +163,7 @@
         "incarnation": "header-api-65535",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508648979904145
+        "timeUnixNano": 1793276209146856092
       }
     },
     {
@@ -170,7 +178,7 @@
         "incarnation": "header-api-65536",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508649022992267
+        "timeUnixNano": 1793276209191695914
       }
     },
     {
@@ -185,7 +193,7 @@
         "incarnation": "header-api-65537",
         "kind": "rawProbeResult",
         "result": "RST_STREAM:FRAME_SIZE_ERROR",
-        "timeUnixNano": 1792508649057509363
+        "timeUnixNano": 1793276209248047473
       }
     },
     {
@@ -200,16 +208,35 @@
         "incarnation": "compression-api",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508649098618442
+        "timeUnixNano": 1793276209294164457
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-013-nested-request-api.jsonl",
+      "name": "nested-request-api",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "nested-request-api",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 49,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1793276209371802827
       }
     },
     {
       "hop": "component",
-      "log": "probe-013-protobuf-component-134217727.jsonl",
+      "log": "probe-014-protobuf-component-134217727.jsonl",
       "name": "protobuf-component-134217727",
       "result": {
-        "code": "InvalidArgument",
+        "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "protobuf-component-134217727",
@@ -217,16 +244,17 @@
         "operation": "fixture-send",
         "protobufBytes": 134217727,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508649637726265
+        "timeUnixNano": 1793276210023047916
       }
     },
     {
       "hop": "component",
-      "log": "probe-014-protobuf-component-134217728.jsonl",
+      "log": "probe-015-protobuf-component-134217728.jsonl",
       "name": "protobuf-component-134217728",
       "result": {
-        "code": "InvalidArgument",
+        "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "protobuf-component-134217728",
@@ -234,16 +262,17 @@
         "operation": "fixture-send",
         "protobufBytes": 134217728,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650216048566
+        "timeUnixNano": 1793276210511790318
       }
     },
     {
       "hop": "component",
-      "log": "probe-015-protobuf-component-134217729.jsonl",
+      "log": "probe-016-protobuf-component-134217729.jsonl",
       "name": "protobuf-component-134217729",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "protobuf-component-134217729",
@@ -251,12 +280,12 @@
         "operation": "fixture-send",
         "protobufBytes": 134217729,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650375427328
+        "timeUnixNano": 1793276210654748613
       }
     },
     {
       "hop": "component",
-      "log": "probe-016-header-component-65535.jsonl",
+      "log": "probe-017-header-component-65535.jsonl",
       "name": "header-component-65535",
       "result": {
         "compressed": false,
@@ -266,12 +295,12 @@
         "incarnation": "header-component-65535",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508650423532505
+        "timeUnixNano": 1793276210717807867
       }
     },
     {
       "hop": "component",
-      "log": "probe-017-header-component-65536.jsonl",
+      "log": "probe-018-header-component-65536.jsonl",
       "name": "header-component-65536",
       "result": {
         "compressed": false,
@@ -281,12 +310,12 @@
         "incarnation": "header-component-65536",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508650457293127
+        "timeUnixNano": 1793276210760454694
       }
     },
     {
       "hop": "component",
-      "log": "probe-018-header-component-65537.jsonl",
+      "log": "probe-019-header-component-65537.jsonl",
       "name": "header-component-65537",
       "result": {
         "compressed": false,
@@ -296,12 +325,12 @@
         "incarnation": "header-component-65537",
         "kind": "rawProbeResult",
         "result": "RST_STREAM:FRAME_SIZE_ERROR",
-        "timeUnixNano": 1792508650492350868
+        "timeUnixNano": 1793276210790334794
       }
     },
     {
       "hop": "component",
-      "log": "probe-019-compression-component.jsonl",
+      "log": "probe-020-compression-component.jsonl",
       "name": "compression-component",
       "result": {
         "compressed": true,
@@ -311,16 +340,35 @@
         "incarnation": "compression-component",
         "kind": "rawProbeResult",
         "result": "Trailers",
-        "timeUnixNano": 1792508650510461186
+        "timeUnixNano": 1793276210816552308
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-021-nested-request-component.jsonl",
+      "name": "nested-request-component",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "nested-request-component",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 22,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1793276210845774163
       }
     },
     {
       "hop": "api",
-      "log": "probe-020-metadata-baseline.jsonl",
+      "log": "probe-022-metadata-baseline.jsonl",
       "name": "metadata-baseline",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "metadata-baseline",
@@ -328,16 +376,17 @@
         "operation": "fixture-send",
         "protobufBytes": 41,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508650558022626
+        "timeUnixNano": 1793276210892338521
       }
     },
     {
       "hop": "component",
-      "log": "probe-021-entries-component-63.jsonl",
+      "log": "probe-023-entries-component-63.jsonl",
       "name": "entries-component-63",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "entries-component-63",
@@ -345,16 +394,17 @@
         "operation": "fixture-send",
         "protobufBytes": 644,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650619616673
+        "timeUnixNano": 1793276210959813898
       }
     },
     {
       "hop": "component",
-      "log": "probe-022-entries-component-64.jsonl",
+      "log": "probe-024-entries-component-64.jsonl",
       "name": "entries-component-64",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "entries-component-64",
@@ -362,16 +412,17 @@
         "operation": "fixture-send",
         "protobufBytes": 654,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650646649089
+        "timeUnixNano": 1793276211002491270
       }
     },
     {
       "hop": "component",
-      "log": "probe-023-entries-component-65.jsonl",
+      "log": "probe-025-entries-component-65.jsonl",
       "name": "entries-component-65",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "entries-component-65",
@@ -379,16 +430,17 @@
         "operation": "fixture-send",
         "protobufBytes": 664,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650669691741
+        "timeUnixNano": 1793276211038006884
       }
     },
     {
       "hop": "component",
-      "log": "probe-024-key-component-256.jsonl",
+      "log": "probe-026-key-component-256.jsonl",
       "name": "key-component-256",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "key-component-256",
@@ -396,16 +448,17 @@
         "operation": "fixture-send",
         "protobufBytes": 279,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650698154930
+        "timeUnixNano": 1793276211087930285
       }
     },
     {
       "hop": "component",
-      "log": "probe-025-key-component-257.jsonl",
+      "log": "probe-027-key-component-257.jsonl",
       "name": "key-component-257",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "key-component-257",
@@ -413,16 +466,17 @@
         "operation": "fixture-send",
         "protobufBytes": 280,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650719238332
+        "timeUnixNano": 1793276211123379992
       }
     },
     {
       "hop": "component",
-      "log": "probe-026-value-component-4096.jsonl",
+      "log": "probe-028-value-component-4096.jsonl",
       "name": "value-component-4096",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "value-component-4096",
@@ -430,16 +484,17 @@
         "operation": "fixture-send",
         "protobufBytes": 4119,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650751618883
+        "timeUnixNano": 1793276211172777717
       }
     },
     {
       "hop": "component",
-      "log": "probe-027-value-component-4097.jsonl",
+      "log": "probe-029-value-component-4097.jsonl",
       "name": "value-component-4097",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "value-component-4097",
@@ -447,16 +502,17 @@
         "operation": "fixture-send",
         "protobufBytes": 4120,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650787495635
+        "timeUnixNano": 1793276211208436543
       }
     },
     {
       "hop": "component",
-      "log": "probe-028-aggregate-component-65535.jsonl",
+      "log": "probe-030-aggregate-component-65535.jsonl",
       "name": "aggregate-component-65535",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "aggregate-component-65535",
@@ -464,16 +520,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65685,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650824606910
+        "timeUnixNano": 1793276211260739143
       }
     },
     {
       "hop": "component",
-      "log": "probe-029-aggregate-component-65536.jsonl",
+      "log": "probe-031-aggregate-component-65536.jsonl",
       "name": "aggregate-component-65536",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "aggregate-component-65536",
@@ -481,16 +538,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65686,
         "responseWireBytes": 94,
-        "timeUnixNano": 1792508650852504606
+        "timeUnixNano": 1793276211304755625
       }
     },
     {
       "hop": "component",
-      "log": "probe-030-aggregate-component-65537.jsonl",
+      "log": "probe-032-aggregate-component-65537.jsonl",
       "name": "aggregate-component-65537",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "aggregate-component-65537",
@@ -498,16 +556,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65687,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508650880036931
+        "timeUnixNano": 1793276211340777387
       }
     },
     {
       "hop": "api",
-      "log": "probe-031-entries-api-63.jsonl",
+      "log": "probe-033-entries-api-63.jsonl",
       "name": "entries-api-63",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "entries-api-63",
@@ -515,16 +574,17 @@
         "operation": "fixture-send",
         "protobufBytes": 631,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508650926511034
+        "timeUnixNano": 1793276211396790623
       }
     },
     {
       "hop": "api",
-      "log": "probe-032-entries-api-64.jsonl",
+      "log": "probe-034-entries-api-64.jsonl",
       "name": "entries-api-64",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "entries-api-64",
@@ -532,16 +592,17 @@
         "operation": "fixture-send",
         "protobufBytes": 641,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508650979553220
+        "timeUnixNano": 1793276211474163663
       }
     },
     {
       "hop": "api",
-      "log": "probe-033-entries-api-65.jsonl",
+      "log": "probe-035-entries-api-65.jsonl",
       "name": "entries-api-65",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "entries-api-65",
@@ -549,16 +610,17 @@
         "operation": "fixture-send",
         "protobufBytes": 651,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651008874079
+        "timeUnixNano": 1793276211539739481
       }
     },
     {
       "hop": "api",
-      "log": "probe-034-key-api-256.jsonl",
+      "log": "probe-036-key-api-256.jsonl",
       "name": "key-api-256",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "key-api-256",
@@ -566,16 +628,17 @@
         "operation": "fixture-send",
         "protobufBytes": 306,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508651048191649
+        "timeUnixNano": 1793276211592359813
       }
     },
     {
       "hop": "api",
-      "log": "probe-035-key-api-257.jsonl",
+      "log": "probe-037-key-api-257.jsonl",
       "name": "key-api-257",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "key-api-257",
@@ -583,16 +646,17 @@
         "operation": "fixture-send",
         "protobufBytes": 307,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651083663624
+        "timeUnixNano": 1793276211660990598
       }
     },
     {
       "hop": "api",
-      "log": "probe-036-value-api-4096.jsonl",
+      "log": "probe-038-value-api-4096.jsonl",
       "name": "value-api-4096",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "value-api-4096",
@@ -600,16 +664,17 @@
         "operation": "fixture-send",
         "protobufBytes": 4146,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508651125983630
+        "timeUnixNano": 1793276211715089028
       }
     },
     {
       "hop": "api",
-      "log": "probe-037-value-api-4097.jsonl",
+      "log": "probe-039-value-api-4097.jsonl",
       "name": "value-api-4097",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "value-api-4097",
@@ -617,16 +682,17 @@
         "operation": "fixture-send",
         "protobufBytes": 4147,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651158918829
+        "timeUnixNano": 1793276211779339229
       }
     },
     {
       "hop": "api",
-      "log": "probe-038-aggregate-api-65535.jsonl",
+      "log": "probe-040-aggregate-api-65535.jsonl",
       "name": "aggregate-api-65535",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "aggregate-api-65535",
@@ -634,16 +700,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65565,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508651205511512
+        "timeUnixNano": 1793276211834077806
       }
     },
     {
       "hop": "api",
-      "log": "probe-039-aggregate-api-65536.jsonl",
+      "log": "probe-041-aggregate-api-65536.jsonl",
       "name": "aggregate-api-65536",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "aggregate-api-65536",
@@ -651,16 +718,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65566,
         "responseWireBytes": 76,
-        "timeUnixNano": 1792508651248299547
+        "timeUnixNano": 1793276211910293478
       }
     },
     {
       "hop": "api",
-      "log": "probe-040-aggregate-api-65537.jsonl",
+      "log": "probe-042-aggregate-api-65537.jsonl",
       "name": "aggregate-api-65537",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "aggregate-api-65537",
@@ -668,16 +736,17 @@
         "operation": "fixture-send",
         "protobufBytes": 65567,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651281587462
+        "timeUnixNano": 1793276211979092478
       }
     },
     {
       "hop": "component",
-      "log": "probe-041-response-component-1048575.jsonl",
+      "log": "probe-043-response-component-1048575.jsonl",
       "name": "response-component-1048575",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048575",
@@ -685,16 +754,17 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 1048575,
-        "timeUnixNano": 1792508651312153543
+        "timeUnixNano": 1793276212022677828
       }
     },
     {
       "hop": "component",
-      "log": "probe-042-response-component-1048576.jsonl",
+      "log": "probe-044-response-component-1048576.jsonl",
       "name": "response-component-1048576",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048576",
@@ -702,16 +772,17 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651339852124
+        "timeUnixNano": 1793276212060015055
       }
     },
     {
       "hop": "component",
-      "log": "probe-043-response-component-1048577.jsonl",
+      "log": "probe-045-response-component-1048577.jsonl",
       "name": "response-component-1048577",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048577",
@@ -719,16 +790,17 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651366786032
+        "timeUnixNano": 1793276212105891870
       }
     },
     {
       "hop": "component",
-      "log": "probe-044-response-unknown-component.jsonl",
+      "log": "probe-046-response-unknown-component.jsonl",
       "name": "response-unknown-component",
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-unknown-component",
@@ -736,16 +808,35 @@
         "operation": "fixture-response",
         "protobufBytes": 44,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651394371712
+        "timeUnixNano": 1793276212149875301
       }
     },
     {
       "hop": "component",
-      "log": "probe-045-response-compression-component.jsonl",
+      "log": "probe-047-response-nested-unknown-component.jsonl",
+      "name": "response-nested-unknown-component",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-nested-unknown-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 51,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1793276212193442391
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-048-response-compression-component.jsonl",
       "name": "response-compression-component",
       "result": {
         "code": "InvalidArgument",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-compression-component",
@@ -753,16 +844,17 @@
         "operation": "fixture-response",
         "protobufBytes": 48,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651413927156
+        "timeUnixNano": 1793276212235946621
       }
     },
     {
       "hop": "api",
-      "log": "probe-046-response-api-1048575.jsonl",
+      "log": "probe-049-response-api-1048575.jsonl",
       "name": "response-api-1048575",
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048575",
@@ -770,16 +862,17 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 1048557,
-        "timeUnixNano": 1792508651462352309
+        "timeUnixNano": 1793276212302694015
       }
     },
     {
       "hop": "api",
-      "log": "probe-047-response-api-1048576.jsonl",
+      "log": "probe-050-response-api-1048576.jsonl",
       "name": "response-api-1048576",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048576",
@@ -787,16 +880,17 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651530100148
+        "timeUnixNano": 1793276212364107547
       }
     },
     {
       "hop": "api",
-      "log": "probe-048-response-api-1048577.jsonl",
+      "log": "probe-051-response-api-1048577.jsonl",
       "name": "response-api-1048577",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048577",
@@ -804,16 +898,17 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651568275859
+        "timeUnixNano": 1793276212410869799
       }
     },
     {
       "hop": "api",
-      "log": "probe-049-response-unknown-api.jsonl",
+      "log": "probe-052-response-unknown-api.jsonl",
       "name": "response-unknown-api",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-unknown-api",
@@ -821,16 +916,35 @@
         "operation": "fixture-response",
         "protobufBytes": 71,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651597574296
+        "timeUnixNano": 1793276212452475402
       }
     },
     {
       "hop": "api",
-      "log": "probe-050-response-compression-api.jsonl",
+      "log": "probe-053-response-nested-unknown-api.jsonl",
+      "name": "response-nested-unknown-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-nested-unknown-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 78,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1793276212496521304
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-054-response-compression-api.jsonl",
       "name": "response-compression-api",
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-compression-api",
@@ -838,14 +952,15 @@
         "operation": "fixture-response",
         "protobufBytes": 75,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651625780265
+        "timeUnixNano": 1793276212539919582
       }
     }
   ],
   "build": {
+    "archiveSha256": "321eabbc9124a516ec00fd8350db3e5950ceb2da66c35a223b55a32fddb7ab4e",
     "binaries": {
       "daprd-stable": "241b88af7f853b388f01084d0b83591bf25590f944ee5a566146d8ce1c02577c",
-      "f1fixture": "17253dbca1caf71c7a8b92946388bccf7cee190ee800dc9e81ef707b88ac3d94"
+      "f1fixture": "d12de8c763b9ea6665a61119bf08bddd290d93774d2199187ba557e4b3c717a3"
     },
     "daprCommit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
     "dependencyOrigins": {
@@ -863,17 +978,19 @@
     "dotnetSourceDependencies": {
       "Builds": {
         "commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
-        "root": "/home/administrator/projects/hexalith/agents/references/Hexalith.Builds"
+        "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-inputs/Hexalith.Builds"
       },
       "EventStore": {
         "commit": "c9f47dd5ba72918445dfd24a674a5b2c310589bd",
-        "root": "/home/administrator/projects/hexalith/agents/references/Hexalith.EventStore"
+        "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-inputs/Hexalith.EventStore"
       }
     },
     "fixtureSources": {
       "go.mod": "6fd10479b28773139bca18fcacc399b655358c395b9b3e16f187f0e311768e62",
       "go.sum": "5eb77f3c7a9f2edcca320e1c2fccc51d365b22b12fbc0b3b9d8e0f572a153e29",
-      "main.go": "6d59e423dd87cfaad04cf270d874299acf7fdf669c11a3ed45b5c98836cec8c5"
+      "main.go": "b72a2707d9129816594b660555051126f48c2ca7d6ddd1bdbc333679c8ed343a",
+      "wire.go": "c61216a81c7e53bf43ab581c4fea072fc6bc4531b67b0a586a39ee0c988d5bf1",
+      "wire_test.go": "f77dd472579a127b042b7fb680823eeb42aa625f5679f5600d2ff1552e5bf01b"
     },
     "generatedSources": {
       "pkg/proto/common/v1/common.pb.go": "0b9403c81f4b1e06caecd261ccc734265b607d73e81d885d3622cbc11a8c273d",
@@ -939,23 +1056,245 @@
       "pkg/proto/sentry/v1/sentryconnect/sentry.connect.go": "7bd1c4dcc57bdb576b5cbbc22e9734db3331e6c86023ca2d0d47c2d75c7d4404",
       "pkg/proto/workflows/v1/mcp.pb.go": "1b74e6b057f5a48c981357c2956efb28ac0b9d4da18d383fdb314aa2e79b5540"
     },
+    "goBuildEnvironmentSha256": "07324004e956083dd53fd3694ab2e3ad7479442dded3104eebf46c49aee6cfb3",
     "goToolchainArchiveSha256": "0221cfe82f9c88c717677cb5c1f59f598d177cd7eac18c11f90ae29432d356f9",
+    "patchedSourceSha256": "41d6010a43956eda01ae0d5c4bc94daa95e61e8523f5031c417e81cd1879be4a",
     "retainedProtocols": {
       "dapr/proto/components/v1/bindings.proto": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
       "dapr/proto/components/v1/common.proto": "b1f7bfbd62f76fd6b91d52969a5dea66f2615c3ed847fe9ed49f7229b1a9555d"
     },
-    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a",
+    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f",
     "runtimeChangedFiles": [
       "pkg/api/grpc/server.go"
     ],
     "runtimeFileCount": 4185,
     "runtimeTreeManifestSha256": "fcf27b64f72d99ab377dbf8bd9cb0a874d22b48d25a4315460a26f09214580e1",
     "sdkDriver": {
-      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Client.dll": "cc7b8e629416c52be2569d7610c5c830b19ba690d4f54300ffdee901dec99115",
-      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.deps.json": "539fd841521c65842eb2203f7634eb49c26697eddf3708c63ebf3f6f29de0f8b",
-      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll": "90e0dc45d9d4ff78e327cdd20bf726622cfb3060e90303e640a3d6069a62d591"
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/.msCoverageSourceRootsMapping_Hexalith.Platform.Secrets.Runtime.Tests": "0a6341049d632cf98829c1e8b0289e56a4b276ea0ece155099a8c772a50e44f4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Castle.Core.dll": "9c5762ae27f2afe0913e8ffa494f705ffe9680699aa4fb79c2613344c918ee28",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Actors.dll": "98d77fb28b39fe6832e06cb2bd66d58024b9587411b04965da385909f32a9dfa",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Client.dll": "cc7b8e629416c52be2569d7610c5c830b19ba690d4f54300ffdee901dec99115",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Common.dll": "9c10b91825371c10e469e91627080414bde4e8fa5acd894a2dbe398af03e1893",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Protos.dll": "659938b9475b4951bd49086a66d8ad24f89ac6c1c33d6888adfefb8420edf03c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/DiffEngine.dll": "0c6b99a47c609a4263b80feaed95a357e30be3ad5a1cda79355663e407682aa7",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles.dll": "d5b63e68b8966567f73df025b449e1a2e3b2306c8cec364fd240310c757b3adc",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.7z": "5bc3a0638e7c9286a5b28dd5f32cd096bf5dd9c56e2c45afbd5e27d5353ce4ba",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.bz2": "d3dda84eb03b9738d118eb2be78e246106900493c0ae07819ad60815134a8058",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.gz": "721818a5358287b923b584f2fc40e756d867dab67632f26912638ac0b65f4c80",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.tar": "3e0dbcf2dd77ba10ca350b3068dddeb4e8fda6e7849493437f838589111aaa2e",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.xz": "42552ae5ec08bdd8101b2057524a81cd8355474226603ac9829be426170ae731",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/archive/empty.zip": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/document/empty.docx": "4c85ea10c89ecbfcae49669465d8578762087e9cc8cb28e5979c34c857645a75",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/document/empty.odt": "51f5a469bc8368fe9fe042b42daa19748ed5c3386bfa2bed89ecb6eaeb7db65d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/document/empty.pdf": "a3476660c7148bfe44df124b8a556d4be0b0fa8bdaa2aa20ceca367a2d2757d2",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/document/empty.rtf": "ea2c6a47452bfa1fff60bf4605a5917fd59c5387a8d09c4cc3950105412f3294",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.avif": "12e3e3266f2885e89dee163366532fa9eda90fb3a4fb7c736308fdba11a6f52b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.bmp": "436228099d535011a36681e14967e5489e3f6038b232fee5f6cda97ed8a6e1f0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.dds": "67b53de44308b57b05ad0accb9af2aabf31c0a832f8ecfac813351ac16da7332",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.dib": "436228099d535011a36681e14967e5489e3f6038b232fee5f6cda97ed8a6e1f0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.emf": "a397f4ff5195a7d004ccbabad60aacd0402dcb8f6a3bdc6540ca370b17844555",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.exif": "a8e344a77b38b16871b80d24dc19ba87e42f6c774ac0b29b63a93095705081cd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.gif": "0029eb3d509a5c7867e768e2843bd6a79cd0bed2a035e702a2c7ee00d0979a43",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.heic": "a091827557f04de65153072446bdeff8896721487fc98f0bcc14b8d079fefad8",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.heif": "2320949852a2ca44aabedf8ff91678db17874c792e16eb1ed28d4197959fa3dd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.ico": "784d06eb26e5a5f5853ee73c4499f582ddfe8296cf0959fc63933733e631d43f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.j2c": "223f5c6b1ec965c5351e0097dc1578f3e5bab94a27149979ee5bfc65857fdceb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jfif": "a8e344a77b38b16871b80d24dc19ba87e42f6c774ac0b29b63a93095705081cd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jp2": "b20cd0b40378175c942e8df73e0d24dbd109e89b0de496ef8c784e5e19337287",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jpc": "223f5c6b1ec965c5351e0097dc1578f3e5bab94a27149979ee5bfc65857fdceb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jpe": "a8e344a77b38b16871b80d24dc19ba87e42f6c774ac0b29b63a93095705081cd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jpg": "a8e344a77b38b16871b80d24dc19ba87e42f6c774ac0b29b63a93095705081cd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.jxr": "a3c258fc17e42ab82e8b79e59692ac3a442a840ae264938be2c8d82d3532cb58",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.pbm": "a293aabff7eae7f96579e5e6bec8665d16b608f2a66a4d7053f7d6b432224291",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.pcx": "81510445deefa73363def32574465c74aabd6f4754d7bc8c4367ab1d0037cda1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.pgm": "c562b0556e17c4350801ae74c04e04e921db5117692e0a6f5d42fb9798b5edcd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.png": "4f8c6d416f09671777934e57bc67fb52ccc97145dc6f1869e628d9ffd7d8f6e7",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.ppm": "3ff6c5463ace13c0f26a735ac1af2bb96ab8a9ba1cb4398359cf2466f63a4d1b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.rle": "436228099d535011a36681e14967e5489e3f6038b232fee5f6cda97ed8a6e1f0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.tga": "451dd43c57c1a8559e879771fbb20f48dfb3155f393c43b79100cce43174161a",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.tif": "4b59d7f8f3ee217f331950ffa87d3e475c31036f4a3d9488c8201d126d265a75",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.wdp": "a3c258fc17e42ab82e8b79e59692ac3a442a840ae264938be2c8d82d3532cb58",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.webp": "1155bdc21ee5c00af3bd1ca7d2bfd635b0f4407cb0f10f05dde3c9a2b45663c4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/image/empty.wmp": "a3c258fc17e42ab82e8b79e59692ac3a442a840ae264938be2c8d82d3532cb58",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/sheet/empty.ods": "5aa266f2ce25df2034ccf35051e7d41c66dd71bce37530bb6c08d252c81c8ef9",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/sheet/empty.xlsx": "13714a504a613b4b3c8714e7293ac18714bd0d4a5668c21cbf3aab4f9e222681",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/slide/empty.odp": "4e3a1ab970ba0b670c5f99edc83d021628e5773c79aa66a67503753b32451dc5",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/EmptyFiles/slide/empty.pptx": "7bb69a9c435ce36090a1562237eb7251230f4e367d7788dc2e8a9959ab14475a",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Commons.UniqueIds.dll": "73db021277a5c3cc2af66a0ac117d108ec2b9f1708199984880772a575018b8e",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.EventStore.Contracts.dll": "991f76fb290d2206a82df5c2706288af96edddde90e456a1c03906b429033d99",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.EventStore.Contracts.pdb": "4ea7e94f14b2750cac942b0a066ac93c6b80948c65ceb64f56c1594a3229994c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.EventStore.Contracts.xml": "71bf478b92f9274b682fbe6d746df1a13b8ade4204c691a6f74e026379a59e12",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.dll": "aab4ed3366e41fc194ec5581f76e1eeee70aa707a3ef3595b3212a274fc26f71",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.pdb": "5c3792a2d3ffd6b42b97c17e06183b2c7b910dca6cb15312214c279ae33b7c82",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Custody.xml": "af2860b636a52e45e4270529d940fb5054a462cd6230f07b10594f91dc76b704",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment": "979ff15e22a7750bb7744a44da4a1bd7f17128a0cf838023c4ef2f88a3ef32eb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.deps.json": "470c70f62268b23068590652600829c9a7e943cb1fee1a126b8dcff9d914f06d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.dll": "30a8b6a11331b6d16fc1d26c427bbda1de5f24dea6fffc835007a6fac0cc2a17",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.pdb": "f166a2ede2410f07c7d0d02c984a5c818eca4d52ab233b00653eccbe3146e079",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.runtimeconfig.json": "2854c873c21edc9fa7c2056f9d4744054aeb11f009d271702daa7794b74e895f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Enrollment.staticwebassets.endpoints.json": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor": "8a219eac85790261a02e19cb665e30c1cc7b80ad4fd92797ab748f260fd3b8fe",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.deps.json": "096eda5af234a50bea951512760dc2309b85b71635c0342c5cd18cbad0b967d4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.dll": "a412137ed22644cb980f3c78e89602cf0b7f00ffd9c1da957ea86c8b57ea8143",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.pdb": "903e54f0703f1b1c1937fccabc93b26f4967d1474845ff3e1aff570a167a5dd4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.runtimeconfig.json": "2854c873c21edc9fa7c2056f9d4744054aeb11f009d271702daa7794b74e895f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Executor.staticwebassets.endpoints.json": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer": "65d2e59fa428d0d9a932adcef0c9e065346553cf1b3279751200a05f46b3f26d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.deps.json": "18e02b0beb618f37d50def69da5ec5ff530d17b0b4bd01175c5b677885f77c22",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.dll": "e0988a97fa4a6955250e0e23567478ab20e77ec8c4ea183a770a17c0f7334f54",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.pdb": "17d5b4804dcecaf31e96058294425de11b721b9b4e4666eca8f781972dd06eea",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.runtimeconfig.json": "2854c873c21edc9fa7c2056f9d4744054aeb11f009d271702daa7794b74e895f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Qualification.Observer.staticwebassets.endpoints.json": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests": "617a436808799e1c07d1cd0859ec082325f15f065e4f8403f5b6d3d27f1e8909",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.deps.json": "9809efc66be426b8dafcd67c26fa74a91576b4f65417417ca17894d8b82c09c3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll": "5f808c90f9e6a45eea2ebc05d68ae66a71e697fe1edf25c68e74f8f813829e28",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.pdb": "f696c4502d41aece72c6aed3a03a16526ce3c50d4c710506a46ee0cf5e3ac44c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.runtimeconfig.json": "4761a312947a31a30aec259d9ee6f10407d89806d812cd102f3b3aec250dc8b4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.dll": "fdbf3dc9df621bdd697f334c2eddf99a31fabd61c4a39e4e2f30258c7c02087f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.pdb": "9f9e38343b3592eff384195d64ecc176f6534c34843a88b8edff30f4d457dd45",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.xml": "d373dbdaec048456c2f0e902eee59203a1739e516676df95db3742f0926556fc",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.ApplicationInsights.dll": "bf9a4b88c7f94267e1cc7ed0700c575d3eb3266ff25bcb76e4f40f1b0fba022d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.Bcl.AsyncInterfaces.dll": "5705d245072d3eb78400547b32147dbb6e2c8b02ba8bda76729798f5efdeaecb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.TestPlatform.CommunicationUtilities.dll": "c3eff269a9e76dc37e5a70f4f0c9abe4fdf84b5abe7ed8ad357a13cfade7c717",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.TestPlatform.CoreUtilities.dll": "43001bf63cbc4219cbe6749ceb2d7b2a67ef2459ae7f6cfdb84012fb00c89bb2",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.TestPlatform.CrossPlatEngine.dll": "ff3311bdad71d33a6de17beccc9403fbc4601b005902d331fb102299c25f74c7",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.TestPlatform.PlatformAbstractions.dll": "63991819522643c682204f141cdd179bb01b70598198c50393656fe01d3324c1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.TestPlatform.Utilities.dll": "b17f9126a9469a2a975e5afc10a12261c031d2c6910f9304fe46cff5160c09e6",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.Testing.Extensions.MSBuild.dll": "828e7dc4e0206da2a9a58df26651acc2f28b7169509c5c26dcff3c991513fe09",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.Testing.Extensions.Telemetry.dll": "c4f35fc45c100733d6f00f9aba87fe6c96481d3c43c416d32a4722fddd6e79e1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.Testing.Extensions.TrxReport.Abstractions.dll": "f57bc3dcd63c0dcd08db8d5e729836d156351a2d18041a5b7978a424e5b37142",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.Testing.Platform.dll": "a3319a6bb4bdfb1df2e531765c5a48c2b48de1fe7cf4dcd932c9b82f114107da",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.VisualStudio.CodeCoverage.Shim.dll": "4f73128a17e78916f0e2ddb324c5da7b0b373d0cfb2814e17f3a7858e91b68bb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.VisualStudio.TestPlatform.Common.dll": "556cf93a977af4b858bb4b0d9eeb9177d8f084ff79be531b02ded8d317a7df81",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll": "707971b2b682b863a33346c30f32b702a79365ad3442758d18a90a979c8f16df",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/NSubstitute.dll": "a67480457f480fa835ffe8c042b07420e5c78bd3049730d5b10ab834a5832bae",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Shouldly.dll": "498dad657f324ab068e800d5711ae36feb4af4ba9a572eb941197e2fb677549d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/System.CodeDom.dll": "bfb75074ac26c7632bbe9ffc1063ceca9a56aae86ac4913481d6bba88c4c4a34",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/System.Management.dll": "4dc4d6846a3142087bf258e5923abf303c0a4c19e4bb212b066ad7ab8e6de859",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "9b8d77f33e0122c842d6c554281deec01a48cb009d81487b57ab00bad41b53a5",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll": "f721c8cb2237aea24c0c9f4496a92d149a421cf493cb0954275c8c37a49366d1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "5af617afc056f463ab20513621bf3402cb7721b69eba5563c0300aff1d920aef",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.Testing.Extensions.MSBuild.resources.dll": "89eb97d173b9a1e449567ba443502542df77743f158c8fee41f6f2bdc3629638",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.Testing.Extensions.Telemetry.resources.dll": "31b09f9bc213163bfa28978ac925e08bf75d0ae3c332c4b9941c21a5edb1bec3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.Testing.Platform.resources.dll": "ee849dcddda6b96cbb84f0cb0d00f2faefb9b9f3ae48dd1156b51ae98f604380",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "f8e73a92fd297faf3d383350d8a40cf5199dd594e3f6727b6ade5e51e9012463",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "3301572c63ff1219c834be4030c337ccb89f7247d1578eb0b9c3d99691b88d02",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "e51df5416ce9cc4430ce9e8467ecda1133f4825f1d071e531a69bb46ecb78f7e",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.TestPlatform.CoreUtilities.resources.dll": "1a0b10879dcb410f5671d68af33d40fa57d93d8ba1674a0869549499cdac4e62",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "4293af9e00aee1956511461afa7e2bda0df8de9384faae08faaa1a6485682147",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.Testing.Extensions.MSBuild.resources.dll": "fcd8e6dda5bd53595685f1b4393a5e377b3a8ec5614f4db7ae3fd8f3970b01ad",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.Testing.Extensions.Telemetry.resources.dll": "305f8f8953f1a382113f974c188790bab193509aff87b515dfcd1d8064b093a8",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.Testing.Platform.resources.dll": "54dc9bd2a5fe2cb080613014f938c0bf5f6a6a01ab3d009a513878bb7e863eca",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "4ddb65907d7d1c30b66e477d66810e2e4e202f86898043107e33a4aae9e6b783",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "4bb237aa85201f309008531eb434736d11c7d6034ca5385741a1338f01a8146e",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "5bc99d027776d19d400437a5dc8777fa03977bbd2eb323a83f89573a99a490cc",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.TestPlatform.CoreUtilities.resources.dll": "f6a3f1643f7871a2cd296c3b2b2698042173d2713108151adeb2bbc4da38dc24",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "d91c5338cea14f9d167cd3e30cdf9fb27146a41cfd6bce9afa01e686e55d99a7",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.Testing.Extensions.MSBuild.resources.dll": "8a0534058fc1262117ddbcf3d38e0a4597770f966ce40113556359c0a428c379",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.Testing.Extensions.Telemetry.resources.dll": "be2c60c3513efed1807fde9e2d89c07a80f5efc52b2c8273498250323ec063a3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.Testing.Platform.resources.dll": "2fc212a30af72cccb225128537955c28678b726c2209b81c43bc95f8fd036c34",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "d6cddf9576d1eeb4a8ae2fbdb63ec4d9010aec4dc1ab472d9f912d86e3b86abb",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "99a679649d25e57e739029c1853a01f780f5d39973a83b0a559251362579ec94",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "393fa328585623934f6aa9d0f51df65fa7cb2f66df6243a33768783286a0a998",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll": "540e8f8f72642555e324e297fd9223cf3362cdd3ebf681c4ed80ddb0058356a9",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "23faa9424c1beca572dc46908f05547f03496dd150891cee4194a7ec1338fd0d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.Testing.Extensions.MSBuild.resources.dll": "03501f48b593ae0cfd4db74fd200049c0d43295b2697d00032aed88feb635292",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.Testing.Extensions.Telemetry.resources.dll": "624a77a903f4456f742d2ae9be2f24443de123715f46bb71345aa26e2109e08a",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.Testing.Platform.resources.dll": "2574ae39d02056c9a56ca80a6f0b20619ae66f9bdea2dc1d9c78acec036d01ed",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "a73deb0da7ac4cae639cadad7198128d7bd5a756bd9106f2f6c7428618096d95",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "26ea3c34c8092c62a606f959c1f41dab285be1fecef70eda50abeba2e1f2d6b6",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "2f79717d0eda586078bb59b96854eb57e68353d3d8ce8e816030407b52157a0d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.TestPlatform.CoreUtilities.resources.dll": "180a1b31a4acaa90d641d2c8a41df42f95d56b1f8ec19aea89b369f8ccbba405",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "0eca6d8d30e1806a489bb43569153c4d8fa9af0cc27bbde2e7db82566407144e",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.Testing.Extensions.MSBuild.resources.dll": "2f41fe8e1163b94573c80b732be76f263bdb66099fa0c0f8e94ead03a550eb49",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.Testing.Extensions.Telemetry.resources.dll": "0ce2b9749100e058295b59f6cc12cb4b3c89da536ccbec88c3f3b3d43b1532e2",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.Testing.Platform.resources.dll": "821cb47f17a40d440f52a3c6cb258db90385cf420c5224484ced81b92f79b795",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "78bdb761561c1a6c132bebdac005309058ac08fd6c6fcde6a6b53f58fb002a8c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "88c9e84ccb18308f5a5f51aec632bbd62383e67b2c24a91cbededcfeb71f3f67",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "97c2dacbaa58a4ba07129ecd70580c87332ad61dbba21edd931b5efad0d77c48",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll": "2342df11c612dd3404e8c3754fac524af8348e1d42669f6c06041576d6b01fdf",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "ad9b1e2c9c5605dacc1ff502970b255f69f63f66fbdd0769b3a1ba2db879856f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.Testing.Extensions.MSBuild.resources.dll": "cb70d4bfd21a2919440f67e86e712872dff435d870ca123b3f9684c0f63be856",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.Testing.Extensions.Telemetry.resources.dll": "2f1909e5e06cd214dc617d75330ca67e2a3c7245fdd8f3b446cc51b049d35f7f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.Testing.Platform.resources.dll": "dcece76d6c872cd65e597f7eefddebca4de8688e996263fed2d69d735452f0f0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "f284dd4a3d53c9603f592d1e66ed1fc807d34c1093384819fbfec9795c9dc547",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "ccd969748999dfae1789076240db09b173d62edae0946b35eeafd04520397940",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "84a6d865a9ee1dc2ede74e431a63c0a5ffa48c775758b8535bac6485f88b8adf",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll": "3112441cc8819d6da68395a08be1d5d23a99ee1a2358c466acf0128e3201c7de",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "f274928801ce53cc7f8a1642331534c0643e0242b7b19931d13cbc69200b3d93",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.Testing.Extensions.MSBuild.resources.dll": "c028ce9285c9e4e65cd13f8eec21cc5b8fa144dba0f9514e3b6fc09c9476b185",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.Testing.Extensions.Telemetry.resources.dll": "8be28bc62fa915a6f884520b105f9749ec1eaaaae13097291820a35b2e21f769",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.Testing.Platform.resources.dll": "b825a9994bb95d7b1a37ea76f71adb33cca9a63c6e7a158021abdad944c889ed",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "8e07a537be939f31d23fc48f1ff4f7dafbc7bf10fdd7e3c18977c6d5c5c2379b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "f90f0d340f88b7ff104cbb17afe6563a78330042d372af7477a3b5d08ba0862c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "454b9fdc68ce206226cc6a249f85835c0b569c7267f073fe7cafa311676e3dfd",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll": "ede98c9705d436ce2f20f81248a4892cbd876f86af7fd198adcc9c9e46dca8b8",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "3d22c1eba7fe8647fa7f4714fdf2fb09f4d161aa2e46e4f70670bb184dac388f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.Testing.Extensions.MSBuild.resources.dll": "1b356a67f1a6d3522658c0e19253c26336cb09f9b5f8b7fc174d0bae6d5a906f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.Testing.Extensions.Telemetry.resources.dll": "5f526e320e2ed6cea9e7436b3710da6fbcbed038a8b2f6567db47f2bfe965d25",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.Testing.Platform.resources.dll": "9c565afdafa7f30bfb19ceb59375da9c9a9bf083362a65a961055029c2811b2d",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "be72d68ed0d8ccdc3e0ad2b4f93cc047a8fdfa246e6e27afc02a47ac91c48ce5",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "a2a1eebf3059fc967a925be03d22b02c88317a29dea83e87b9499895e11b9dc4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "9da5e48d831b60d1f73f499e8a902ebee73f143300700afaa78f1d40cd51b6b5",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll": "4c8937d92b5150d38e8b2843138617aebd8b1493caed9590e2597e7eb0570b79",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "3db2d47f9b887cb90761bbec4add64cb38a3536de838d915f66edca283588901",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.Testing.Extensions.MSBuild.resources.dll": "0fc5ebb3313d8151cae638e302e3feab7913f28c51aedcafcb0cb9a32d3fffc0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.Testing.Extensions.Telemetry.resources.dll": "52d86a70478e014a9df2b9a87742881f15569f2cf422b755280239ae3cf698cc",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.Testing.Platform.resources.dll": "cf2cc21f90f599f74db14ff684479378fee4b0ace77dbc2ecd03022586235366",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "6ad7af987a3db1840f37e3710f140a0aa1cb1f33800d68de5f6d78b8d6ef09f1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "9e92139627450b08a169c1ce686e4c89806e8a4525cf4982ed53ab4292eb6f74",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "4ec91b15ae14ce1f7b4f5542eb525352b8140fc2c3e1dc02f10807cace3c9584",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll": "698b37413d4ea46520a5696a4feb0ee4016a2998ebc0940e840878022ba5114b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "563bbf9459665bf1517dbd09820b9f2003e6e627f35ef3ca4ef868c4a7c30df7",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.Testing.Extensions.MSBuild.resources.dll": "f9327680fe76b9a1ce3464890416d0d62114454b0ab16bcd17b9fdf2a76e70c5",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.Testing.Extensions.Telemetry.resources.dll": "f355955e1651665f500e6f1112e3cfba9dce61e86cb646b78ecdcefac9d3b652",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.Testing.Platform.resources.dll": "8cc183c808a547514a93a9938999aca13d7f126a9ba6469ff5f98d294be956e0",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "72185fe710c46bfcc8d9dd7edf322c9dde8d0f9b2cbfc6121e41b67ad2db3f31",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "cf22985b20dcdfd99223d4d4a84a9c69f9c56b2e9c17dbd4791be1cf2237e21b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/runtimes/win/lib/net6.0/System.Management.dll": "a7bcdf99ab1ddff27a018123ef8d960c03feab75fa005ab0d7bcf94e2cdc5605",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/testhost.dll": "629918ab2027e9e21169cbcc485b9689c2a14821850670fa99a625bd66dd407f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "974901ce8494396a1389af513258a0e13efc8d6ee5d348bdccfed5e2f5241bf6",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll": "9bd32ed6e33b902a2e56319b316c2ce0da70fde2de572179193fdfa5b9915999",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "715226924491a3c1f10bf3e7b57d5a3c2bd981d4ea826f77a4aa4861850d497a",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.Testing.Extensions.MSBuild.resources.dll": "b6ee86b4703400b80c6865cda1582333465184126e0ed66780cae92f642b452c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.Testing.Extensions.Telemetry.resources.dll": "60863acb3fc748fd994454f69a0323454850e4b0f252bfba898ea4d5a7245131",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.Testing.Platform.resources.dll": "575a0f0d5db2eb2ebcf405457cdc41e44852febcb8f862c814d15c54962b3dfc",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "9341fa970e883e0534f06bb3541b606d8259f96515c2103213099384e461b4fa",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "5efaabd36729efdc3a3b28518486bfb13578a26d703bd90e9ee5de2029afa78a",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.abstractions.dll": "3166dc70323fb30ccf1cedb0fe86f2ad122c46d254542342d90386efc4c9285c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.runner.visualstudio.testadapter.dll": "ab3e8b088bd82e55963eedf765f87f6a3bffbe8ccd866d3e15a5f40be5c473a4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.assert.dll": "ba29b691b762dbb1cd5597e8eea036a8e40b51848626b8d63131f935d41ec1f4",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.common.dll": "9cf3cd23eefabd397c0eb86e705a8e620f459715e2b3e0428db07ff68e53bf39",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.core.dll": "ac165a05487a95a1d5c163bb08e81ae15b4f51c7d7fbb23f1c5fd55254b7e056",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.mtp-v2.dll": "734d5b7650cd8e575d675cfdeca99519c51ebf7720552f14981fe83c3afad58b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.runner.common.dll": "4070293988b67cb44ac29647abb68188b528e1b29ab846f0223cdaff9c12a789",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.runner.inproc.console.dll": "19daaa378a3c0eea354434ca6dc3a38a91cc9b88507ae18b6c1e7ae7bc38a480",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/xunit.v3.runner.utility.netcore.dll": "035e0f4dd52dc218d815f80ec758bf2d1ffa525c3c84a5107936ec189f928a85",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "bccdbb6566d014ee25dcaabbcd524f6b8600e6bf3bcc9c9fa86c63a14de39de8",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll": "359930772dc5951c87bdcc46932f6b40ba4ce2ed1d8487372c1dac44af00cca3",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "057ffb7f74606298329f76406383d303ceea41aa5ba37dc2184f1d50069a2c5f",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.Testing.Extensions.MSBuild.resources.dll": "86180329b340727d69b7969f0a6117750c369a3239fd611696f41cc0ea25a1f9",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.Testing.Extensions.Telemetry.resources.dll": "b81555fd20abcec4b5a66fe11115080eb89cd11a8a0b9858cf9b4bc0503c0479",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.Testing.Platform.resources.dll": "a6323cb66a3b0bf33d3cd3a8ef567126b49b7c777b7352230e52236d5fae4c99",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "a82de6bac48901f9bf0d21378cc394a7e072fbf948aa1947a664e806e75c42a1",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "4cc89da156817282d044f31dd743713e6526c9b770999ff3678b77c6daea9f63",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll": "c6be11befd8e43e3c53ec50358e9dabd59c98a047b58d59b330f81acd85aab9c",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll": "f0095585da9fb47b90d08ee103713a87bbdccb4c5057f76c45a6710d75a38913",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll": "3969511b92dac03f1ffbc17bdfeb7afc08f3d7282a78ff15ab2b6b153376d742",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.Testing.Extensions.MSBuild.resources.dll": "e4fbe648379c0788eab6a3e1e1655ee108683ed8511923d3050cfa0a3bcd276b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.Testing.Extensions.Telemetry.resources.dll": "68f0fac1b1f5a7815be0e27e8093f008643f2c46dabdea9eca8be3485075c406",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.Testing.Platform.resources.dll": "ac2d2abbad624cd80ae79f7505c64e914850bcd68cc361b699d485327f0c68f8",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll": "eda8531440a79dfebc863f8bd523c54e6dbccc6029cff963c9678ea7498d64ad",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/dotnet-artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll": "535464ebb941b0bf2221cbd90e4b075481d4949b5cb1ecfd8451bb9bf7275bd2"
     },
-    "sealedManifestSha256": "94973ec72f3b248da274ce5f694fe8483f599f13ab714db3ca863b5dd5638ee6",
+    "sealedManifestSha256": "1fc8ab78eadbf65cbb45f6b5c7e090f7faa41122a34dfd69c4df44f65d87096d",
     "sourceArchiveSha256": "321eabbc9124a516ec00fd8350db3e5950ceb2da66c35a223b55a32fddb7ab4e"
   },
   "candidateSourceHead": "642b5bdbdf33ec1588eeef3b9a7e9f1a02aebc40",
@@ -967,24 +1306,24 @@
   },
   "configurationSha256": {
     "configuration.yaml": "ace52a322c89c5109b060c052289f2399c7edccd3de39df83266d1c030b473e4",
-    "isolation.json": "9ee65c86f7e4b23bf23252042be08d4053e10e1ae1bc000272dbf9905cfa2acb",
+    "isolation.json": "d2f2221afa2cc34b19347bdee1c258998c8f0c145ca9a910896e42122d4e1aa0",
     "resources/binding.yaml": "e92f5d2220e2de7d0816afa018127f7433ba8ef676b215c6bc199fcd35d8de49",
     "resources/resiliency.yaml": "8a0c871952c2db9702a7d8d526d264da1f5a3a3855805f995b0d1297929c4efa"
   },
   "evidence": {
-    "auditSha256": "b45aa4ee522e514c6704de1bc5065b80014cce9af50a245650c95f4898d15fe8",
-    "independentManifestSha256": "5c732800251ee32563f63465555d3a75d9ad5cac4ba9fdd2a8334ebb586f9b80",
-    "independentRoot": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/independent",
-    "manifestSha256": "b25f6587d761921c9bc6d0a89ac1e3c659921e728b54a147de1304873aa07d98",
-    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-execution-d"
+    "auditSha256": "86f128961dadb7c28f24383328c4030fdfa1e7bbc9d850e9d2bfbb07905b79e7",
+    "independentManifestSha256": "4f4aff49c2971218c4648a91a0cc9d0485214fcb823aa4395954d80a6182847b",
+    "independentRoot": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/independent",
+    "manifestSha256": "2694f678b30cc0e6eb8e8e306a5ff5196ce03c4bc5c499b7fc83fd04630d9500",
+    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-execution-a"
   },
   "faults": {
     "durableAdmissionImplemented": false,
     "oldIncarnationSanitized": false,
     "sdkObservations": [
       {
-        "CancellationUnixMilliseconds": 1792508652032,
-        "ChannelIncarnation": "sdk-2365361-cancellation",
+        "CancellationUnixMilliseconds": 1793276212849,
+        "ChannelIncarnation": "sdk-3241014-cancellation",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 82,
@@ -998,13 +1337,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "cancellation",
         "Operation": "fixture-send",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": null,
+        "ResponseDataSha256": null,
         "Result": "Unknown:DaprException",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2365361-status-cancellation",
+        "ChannelIncarnation": "sdk-3241014-status-cancellation",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 82,
@@ -1018,13 +1359,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "status-cancellation",
         "Operation": "fixture-status",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": 256,
+        "ResponseDataSha256": "F88895F072BF1BBD43F31988BA88B6B25E46CB2B3B7AFC62C662E6A87CF97F8D",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
       {
-        "CancellationUnixMilliseconds": 1792508652612,
-        "ChannelIncarnation": "sdk-2365361-late-duplicate",
+        "CancellationUnixMilliseconds": 1793276213413,
+        "ChannelIncarnation": "sdk-3241014-late-duplicate",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 84,
@@ -1038,13 +1381,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "late-duplicate",
         "Operation": "fixture-send",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": null,
+        "ResponseDataSha256": null,
         "Result": "Unknown:DaprException",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2365361-status-late-duplicate",
+        "ChannelIncarnation": "sdk-3241014-status-late-duplicate",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 84,
@@ -1058,13 +1403,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "status-late-duplicate",
         "Operation": "fixture-status",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": 258,
+        "ResponseDataSha256": "4A070CCC787DEF35B72A9CF91E1B33E28CFC3D2B036F6924B94DAB588E1D5398",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2365361-lost-result",
+        "ChannelIncarnation": "sdk-3241014-lost-result",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 81,
@@ -1078,13 +1425,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "lost-result",
         "Operation": "fixture-send",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": null,
+        "ResponseDataSha256": null,
         "Result": "Unknown:DaprException",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2365361-status-lost-result",
+        "ChannelIncarnation": "sdk-3241014-status-lost-result",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 81,
@@ -1098,13 +1447,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "status-lost-result",
         "Operation": "fixture-status",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": 255,
+        "ResponseDataSha256": "6C2365F7541C98BF9E6DBCC1934F9662F8902F3FB5339C1A1ED81AED1BD66C78",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2365361-reconnect",
+        "ChannelIncarnation": "sdk-3241014-reconnect",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 79,
@@ -1118,13 +1469,15 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "reconnect",
         "Operation": "fixture-send",
-        "ProcessId": 2365361,
+        "ProcessId": 3241014,
+        "ResponseDataBytes": 47,
+        "ResponseDataSha256": "51A4D18520A5C1A16C365BA9888A8A61E24EC06208A5AB99FF93BEBB4438649B",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
       {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2369328-status-reconnect",
+        "ChannelIncarnation": "sdk-3243499-status-reconnect",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 79,
@@ -1138,7 +1491,9 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "status-reconnect",
         "Operation": "fixture-status",
-        "ProcessId": 2369328,
+        "ProcessId": 3243499,
+        "ResponseDataBytes": 253,
+        "ResponseDataSha256": "567FC6386A3CD0D7B493104C50EE927C5622205AEB44398301617880147390CB",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       }
@@ -1153,7 +1508,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508652021109003
+        "syntheticCase": "cancellation",
+        "timeUnixNano": 1793276212840229561
       },
       {
         "attempts": 1,
@@ -1164,7 +1520,8 @@
         "kind": "sink",
         "path": "/status",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508652565546263
+        "syntheticCase": "status-cancellation",
+        "timeUnixNano": 1793276213380145354
       },
       {
         "attempts": 1,
@@ -1175,7 +1532,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508652601534635
+        "syntheticCase": "late-duplicate",
+        "timeUnixNano": 1793276213412621784
       },
       {
         "attempts": 2,
@@ -1186,7 +1544,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508652804091034
+        "syntheticCase": "late-duplicate",
+        "timeUnixNano": 1793276213615140525
       },
       {
         "attempts": 2,
@@ -1197,7 +1556,8 @@
         "kind": "sink",
         "path": "/status",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508653129919518
+        "syntheticCase": "status-late-duplicate",
+        "timeUnixNano": 1793276213928810292
       },
       {
         "attempts": 1,
@@ -1208,7 +1568,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508653163391702
+        "syntheticCase": "lost-result",
+        "timeUnixNano": 1793276213961223083
       },
       {
         "attempts": 1,
@@ -1219,7 +1580,8 @@
         "kind": "sink",
         "path": "/status",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508653188133005
+        "syntheticCase": "status-lost-result",
+        "timeUnixNano": 1793276213981477930
       },
       {
         "attempts": 1,
@@ -1230,7 +1592,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508653215217990
+        "syntheticCase": "reconnect",
+        "timeUnixNano": 1793276214011154872
       },
       {
         "attempts": 1,
@@ -1241,23 +1604,24 @@
         "kind": "sink",
         "path": "/status",
         "producerIncarnation": "component-2",
-        "timeUnixNano": 1792508661548225978
+        "syntheticCase": "status-reconnect",
+        "timeUnixNano": 1793276222191344969
       }
     ],
     "socketIncarnations": [
       {
         "device": 2096,
         "incarnation": "component-1",
-        "inode": 11685577,
+        "inode": 2754709,
         "mode": "0o600",
-        "pid": 2357311
+        "pid": 3228846
       },
       {
         "device": 2096,
         "incarnation": "component-2",
-        "inode": 11686971,
+        "inode": 2755033,
         "mode": "0o600",
-        "pid": 2368556
+        "pid": 3243292
       }
     ],
     "uncertaintyClosed": false
@@ -1289,7 +1653,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651301317535,
+          "timeUnixNano": 1793276212010725567,
           "unknownBytes": 0,
           "wireBytes": 1048575
         }
@@ -1297,9 +1661,10 @@
       "independentFullFrames": [
         {
           "compressed": false,
-          "connection": 20,
+          "connection": 21,
           "contentTypeBytes": 16,
           "dataBytes": 1048526,
+          "dataSha256": "6674b772800315dd2498584da8caead00ff91d982c8a0ac28bb0e02dda0c59b1",
           "direction": "response",
           "hop": "component",
           "incarnation": "synthetic-1",
@@ -1310,10 +1675,14 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
+          "nestedUnknownBytes": 0,
           "protobufBytes": 1048570,
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
           "sha256": "cda5cb8fb1a1add215c30f29c80d2d9aef17563f8a972255b643ac259be79c15",
           "stream": 1,
-          "timeUnixNano": 1792508651308341897,
+          "timeUnixNano": 1793276212019226016,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 1048575
         }
@@ -1322,6 +1691,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048575",
@@ -1329,7 +1699,7 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 1048575,
-        "timeUnixNano": 1792508651312153543
+        "timeUnixNano": 1793276212022677828
       }
     },
     {
@@ -1344,7 +1714,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651336288061,
+          "timeUnixNano": 1793276212055102969,
           "unknownBytes": 0,
           "wireBytes": 1048576
         }
@@ -1354,6 +1724,7 @@
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048576",
@@ -1361,7 +1732,7 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651339852124
+        "timeUnixNano": 1793276212060015055
       }
     },
     {
@@ -1376,7 +1747,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651362796709,
+          "timeUnixNano": 1793276212099138069,
           "unknownBytes": 0,
           "wireBytes": 1048577
         }
@@ -1386,6 +1757,7 @@
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-component-1048577",
@@ -1393,7 +1765,7 @@
         "operation": "fixture-response",
         "protobufBytes": 50,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651366786032
+        "timeUnixNano": 1793276212105891870
       }
     },
     {
@@ -1408,7 +1780,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651390528152,
+          "timeUnixNano": 1793276212144836766,
           "unknownBytes": 3,
           "wireBytes": 48
         }
@@ -1418,6 +1790,7 @@
       "result": {
         "code": "ResourceExhausted",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-unknown-component",
@@ -1425,7 +1798,40 @@
         "operation": "fixture-response",
         "protobufBytes": 44,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651394371712
+        "timeUnixNano": 1793276212149875301
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 43,
+            "entries": 2,
+            "maximumKeyUtf8Bytes": 23,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1793276212188076753,
+          "unknownBytes": 0,
+          "wireBytes": 78
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-nested-unknown-component",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-nested-unknown-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 51,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1793276212193442391
       }
     },
     {
@@ -1435,6 +1841,7 @@
       "result": {
         "code": "InvalidArgument",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "component",
         "incarnation": "response-compression-component",
@@ -1442,7 +1849,7 @@
         "operation": "fixture-response",
         "protobufBytes": 48,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651413927156
+        "timeUnixNano": 1793276212235946621
       }
     },
     {
@@ -1457,7 +1864,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651440663235,
+          "timeUnixNano": 1793276212281733483,
           "unknownBytes": 0,
           "wireBytes": 1048575
         }
@@ -1468,6 +1875,7 @@
           "connection": 2,
           "contentTypeBytes": 16,
           "dataBytes": 1048526,
+          "dataSha256": "6674b772800315dd2498584da8caead00ff91d982c8a0ac28bb0e02dda0c59b1",
           "direction": "response",
           "hop": "component",
           "incarnation": "synthetic-1",
@@ -1478,10 +1886,14 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
+          "nestedUnknownBytes": 0,
           "protobufBytes": 1048570,
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
           "sha256": "cda5cb8fb1a1add215c30f29c80d2d9aef17563f8a972255b643ac259be79c15",
-          "stream": 65,
-          "timeUnixNano": 1792508651448254428,
+          "stream": 69,
+          "timeUnixNano": 1793276212288920161,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 1048575
         }
@@ -1490,6 +1902,7 @@
       "result": {
         "code": "OK",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048575",
@@ -1497,7 +1910,7 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 1048557,
-        "timeUnixNano": 1792508651462352309
+        "timeUnixNano": 1793276212302694015
       }
     },
     {
@@ -1512,7 +1925,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651523877959,
+          "timeUnixNano": 1793276212357401948,
           "unknownBytes": 0,
           "wireBytes": 1048576
         }
@@ -1522,6 +1935,7 @@
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048576",
@@ -1529,7 +1943,7 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651530100148
+        "timeUnixNano": 1793276212364107547
       }
     },
     {
@@ -1544,7 +1958,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651562587732,
+          "timeUnixNano": 1793276212403007580,
           "unknownBytes": 0,
           "wireBytes": 1048577
         }
@@ -1554,6 +1968,7 @@
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-api-1048577",
@@ -1561,7 +1976,7 @@
         "operation": "fixture-response",
         "protobufBytes": 77,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651568275859
+        "timeUnixNano": 1793276212410869799
       }
     },
     {
@@ -1576,7 +1991,7 @@
             "maximumKeyUtf8Bytes": 7,
             "maximumValueUtf8Bytes": 9
           },
-          "timeUnixNano": 1792508651591960959,
+          "timeUnixNano": 1793276212445950208,
           "unknownBytes": 3,
           "wireBytes": 48
         }
@@ -1586,6 +2001,7 @@
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-unknown-api",
@@ -1593,7 +2009,40 @@
         "operation": "fixture-response",
         "protobufBytes": 71,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651597574296
+        "timeUnixNano": 1793276212452475402
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 43,
+            "entries": 2,
+            "maximumKeyUtf8Bytes": 23,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1793276212489593906,
+          "unknownBytes": 0,
+          "wireBytes": 78
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-nested-unknown-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-nested-unknown-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 78,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1793276212496521304
       }
     },
     {
@@ -1603,6 +2052,7 @@
       "result": {
         "code": "Internal",
         "dataBytes": 0,
+        "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "headerPaddingBytes": 0,
         "hop": "api",
         "incarnation": "response-compression-api",
@@ -1610,7 +2060,7 @@
         "operation": "fixture-response",
         "protobufBytes": 75,
         "responseWireBytes": 5,
-        "timeUnixNano": 1792508651625780265
+        "timeUnixNano": 1793276212539919582
       }
     }
   ],
@@ -1626,7 +2076,7 @@
       65537
     ],
     "decodedListEntryOverheadBytes": 32,
-    "independentDifferentImplementationReport": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/independent/source-and-header/independent-runtime-header-boundaries.json",
+    "independentDifferentImplementationReport": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f/independent/source-and-header/independent-runtime-header-boundaries.json",
     "rejectedBeforeComponent": [
       65537
     ]
@@ -1635,26 +2085,26 @@
   "isolation": {
     "appExcludedMountProven": false,
     "environment": {
-      "DAPR_COMPONENTS_SOCKETS_FOLDER": "/tmp/f1-local-i15mueb6/discovery",
+      "DAPR_COMPONENTS_SOCKETS_FOLDER": "/tmp/f1-local-3q7nblvs/discovery",
       "GOMAXPROCS": "4"
     },
     "loopbackPorts": {
-      "api": 56337,
-      "apiObserver": 42121,
-      "http": 56353,
-      "internalGrpc": 53769,
-      "metricsUnused": 49131
+      "api": 50637,
+      "apiObserver": 46827,
+      "http": 35967,
+      "internalGrpc": 33601,
+      "metricsUnused": 42861
     },
     "paths": {
-      "/tmp/f1-local-i15mueb6": "0o700",
-      "/tmp/f1-local-i15mueb6/discovery": "0o700",
-      "/tmp/f1-local-i15mueb6/discovery/f1fixture.sock": "0o600",
-      "/tmp/f1-local-i15mueb6/implementation.sock": "0o600",
-      "/tmp/f1-local-i15mueb6/sink.sock": "0o600"
+      "/tmp/f1-local-3q7nblvs": "0o700",
+      "/tmp/f1-local-3q7nblvs/discovery": "0o700",
+      "/tmp/f1-local-3q7nblvs/discovery/f1fixture.sock": "0o600",
+      "/tmp/f1-local-3q7nblvs/implementation.sock": "0o600",
+      "/tmp/f1-local-3q7nblvs/sink.sock": "0o600"
     },
     "productionIsolationQualified": false,
     "sameUidIsolation": false,
-    "socketRoot": "/tmp/f1-local-i15mueb6",
+    "socketRoot": "/tmp/f1-local-3q7nblvs",
     "uid": 1000
   },
   "kind": "ExecutedSyntheticLocalF1TransportPacket",
@@ -1663,15 +2113,19 @@
     "Same-UID processes can access0600 sockets inside0700 directories; no app-excluded mount or production process identity isolation proved",
     "Sink original digest/count map is process memory, not durable admission, lineage, queue sealing or recovery after sink loss",
     "No secure erasure, host/kernel/provider sanitation, independent completion verifier, all-copy/shared-cut/hold/survivor/restore proof or measured capacity",
-    "Owned module/compiler scratch relocated to /dev/shm during shared disk exhaustion; persistent source archives, final binaries, lockfiles and evidence retained",
-    "Production invoker remains on existing4MiB/refusal behavior; wrap/unwrap remain closed"
+    "Production invoker remains on existing4MiB/refusal behavior; wrap/unwrap remain closed",
+    "Historical F1 source gate at the frozen owner revisions; current unrelated qualification code requires newer owner APIs and is outside this packet"
   ],
   "nextQualificationTemplate": "next-qualification.template.json",
   "retainedAttempts": {
-    "a": "Actual witnesses plus expected negativeSDK wrapper classification failure; cleaned up",
-    "b": "Completed measurements but direct UDS driver wrong-stageUnavailable; nonqualifying and retained",
-    "c": "Development run overlaps fixture relink; excluded from final evidence claim",
-    "d": "Final sealed binary process identities and complete audit pass"
+    "build-a-b": "Pinned dependency revision checks refused moved or unfinished dependency checkouts before download",
+    "build-c": "Pinned toolchain acquired; effective GOENV normalization exposed builder defect",
+    "build-d": "Go builds succeeded; detached EventStore dependency layout was absent",
+    "build-e": "Go builds succeeded; newer unrelated Platform source requires APIs outside the frozen owner pin",
+    "build-f-execution-a": "Fresh historical F1 source with reviewed overlay, sealed complete artifacts, 54 probes and SDK response; stronger audit passes",
+    "historical": "2026-10-20 build and executions A-D remain retained; replaced publication also hashed under previous-publication",
+    "python-a-b-c": "A exposed a stale cleanup-test mock; B and C pass the complete discovered suite after exact synthetic cleanup assertion",
+    "verifier-a-b-c": "All fresh detached verifiers passed 238/238; C binds final reviewed tool/test sources"
   },
   "retry": {
     "configuredRetries": 0,
@@ -1681,7 +2135,7 @@
     "sdk": "Empty ServiceConfig; MaxRetryAttempts=1; one observed SDK call per original",
     "sink": "Synthetic HTTP POST with no application retry loop; late-duplicate fault is deliberate injection"
   },
-  "sourceState": "Scoped working tree; unrelated external commit642b5bd landed during implementation; no commit or push by this implementation",
+  "sourceState": "Detached retained F1 Platform revision with reviewed transport tooling and SDK helper overlay; exact source snapshot retained; later unrelated Platform work preserved",
   "specBaselineCommit": "e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058",
   "status": "MeasuredLocalTransportOnly",
   "sufficiency": {
@@ -1702,10 +2156,13 @@
     "transitionDataUpperBoundBytes": 48933548
   },
   "verification": {
-    "authority": "Detached verifier reports are authoritative; no physical or Live qualification",
-    "f1Artifacts": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-final-artifacts-b",
-    "f1Directory": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-final-verification-b",
-    "pythonSuiteLog": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/final-python-suite.log",
+    "authority": "Detached source contract and complete Python suite only; no Live or physical qualification",
+    "f1Artifacts": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-verifier-artifacts-c",
+    "f1AssemblySha256": "f28ac93ef7071a8d5cc04379519a8c41c150487bf2ab3d470bde603b656c1fcb",
+    "f1Directory": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-verification-c",
+    "f1ReportSha256": "56edede798ce98435f7efc92c93c1dd992602d0d42a146fbd74e80b0bb7d0719",
+    "pythonSuiteLog": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-python-c.log",
+    "pythonSuiteSha256": "b576fb5b6d6cca99a42b8ead0631b1d42ce2298dfe32b9865be9b94a410bea87",
     "requiredRuntimeTests": 238
   },
   "witnesses": {
@@ -1726,12 +2183,16 @@
             "maximumKeyUtf8Bytes": 0,
             "maximumValueUtf8Bytes": 0
           },
+          "nestedUnknownBytes": 0,
           "operation": "destroy-manifest",
           "protobufBytes": 24692931,
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
           "sha256": "50ab9b289ab78f2a6e2b70c77d6153e46d50a15a6f115de685afe377419caccb",
           "stream": 1,
           "syntheticCase": "manifest",
-          "timeUnixNano": 1792508632165276926,
+          "timeUnixNano": 1793276185694448084,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 24692936
         },
@@ -1750,18 +2211,23 @@
             "maximumKeyUtf8Bytes": 25,
             "maximumValueUtf8Bytes": 133
           },
+          "nestedUnknownBytes": 0,
           "operation": "destroy-manifest",
           "protobufBytes": 24693271,
-          "sha256": "7e430f973ba5e57c5b450ba9bc9c76455b5abc940b1c0d139ff0aa32a53bc31d",
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
+          "sha256": "f4a3ed253e10bb55bed1ec7b91edf1c8ae771955d76171e5c460c5b8daaae073",
           "stream": 5,
-          "timeUnixNano": 1792508632306987420,
+          "syntheticCase": "manifest",
+          "timeUnixNano": 1793276185829194584,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 24693276
         }
       },
       "sdk": {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2357419-manifest",
+        "ChannelIncarnation": "sdk-3229282-manifest",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 24692881,
@@ -1775,7 +2241,9 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "manifest",
         "Operation": "destroy-manifest",
-        "ProcessId": 2357419,
+        "ProcessId": 3229282,
+        "ResponseDataBytes": 47,
+        "ResponseDataSha256": "51A4D18520A5C1A16C365BA9888A8A61E24EC06208A5AB99FF93BEBB4438649B",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
@@ -1788,7 +2256,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508632410025319
+        "syntheticCase": "manifest",
+        "timeUnixNano": 1793276185985038697
       }
     },
     "transition": {
@@ -1808,12 +2277,16 @@
             "maximumKeyUtf8Bytes": 0,
             "maximumValueUtf8Bytes": 0
           },
+          "nestedUnknownBytes": 0,
           "operation": "admit-transition",
           "protobufBytes": 44740962,
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
           "sha256": "b37d39dfdc6e5f9fb0cce40b89cb9ee814f1e8d97124271067eff5dbd9ddbc38",
           "stream": 1,
           "syntheticCase": "transition",
-          "timeUnixNano": 1792508632806589593,
+          "timeUnixNano": 1793276186559264443,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 44740967
         },
@@ -1832,18 +2305,23 @@
             "maximumKeyUtf8Bytes": 25,
             "maximumValueUtf8Bytes": 133
           },
+          "nestedUnknownBytes": 0,
           "operation": "admit-transition",
           "protobufBytes": 44741304,
-          "sha256": "1bfc5d281c12985612e660d9db486e4c4e45fe4f230efab9bbb7b56f8d5b04c9",
+          "rawUnknownBytes": 0,
+          "rawWireValid": true,
+          "sha256": "3b424379c363c9c8cbeaa79169ae18ccd45689a36161799eaba6975cb4656573",
           "stream": 7,
-          "timeUnixNano": 1792508632998480606,
+          "syntheticCase": "transition",
+          "timeUnixNano": 1793276186805444234,
+          "topLevelUnknownBytes": 0,
           "unknownBytes": 0,
           "wireBytes": 44741309
         }
       },
       "sdk": {
         "CancellationUnixMilliseconds": null,
-        "ChannelIncarnation": "sdk-2357419-transition",
+        "ChannelIncarnation": "sdk-3229282-transition",
         "CompletionPermission": false,
         "ConfiguredRetries": 0,
         "DataBytes": 44740912,
@@ -1857,7 +2335,9 @@
         "MaxSendMessageBytes": 134217728,
         "Name": "transition",
         "Operation": "admit-transition",
-        "ProcessId": 2357419,
+        "ProcessId": 3229282,
+        "ResponseDataBytes": 47,
+        "ResponseDataSha256": "51A4D18520A5C1A16C365BA9888A8A61E24EC06208A5AB99FF93BEBB4438649B",
         "Result": "ReceivedSyntheticUnverified",
         "SdkCalls": 1
       },
@@ -1870,7 +2350,8 @@
         "kind": "sink",
         "path": "/send",
         "producerIncarnation": "component-1",
-        "timeUnixNano": 1792508633154277590
+        "syntheticCase": "transition",
+        "timeUnixNano": 1793276186946789933
       }
     }
   }

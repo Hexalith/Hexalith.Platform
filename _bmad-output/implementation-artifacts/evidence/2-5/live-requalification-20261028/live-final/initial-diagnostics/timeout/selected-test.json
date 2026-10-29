@@ -1,0 +1,583 @@
+{
+  "runId": "c904936c90b016ef773df8d553ca2b23",
+  "ownerId": "c904936c90b016ef773df8d553ca2b23",
+  "selection": {
+    "moduleId": "platform",
+    "name": "lifecycle-timeout",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "EB2C2A43AC7EA6710D8F08D755A2B78674F2B3AEA70907E5A368E8C009CC9114",
+    "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+    "executionTimeoutSeconds": 2,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-28T10:34:42.6988083+00:00",
+    "executionDeadlineUtc": "2026-10-28T10:34:44.6988083+00:00",
+    "credentialExpiryUtc": "2026-10-28T10:34:45+00:00",
+    "mode": "source"
+  },
+  "sourceMappingHash": "e3f91f6801632db402b490a7a8802913068310b96b0f53292bbd67e9c8fd5ecc",
+  "declaredPlatformCommit": "ab539bd7542070ca5cd8c420411ac6d8e47fd915",
+  "checkoutPlatformCommit": "ab539bd7542070ca5cd8c420411ac6d8e47fd915",
+  "observedCandidateHash": null,
+  "observedBackendIdentity": null,
+  "qualificationCredit": false,
+  "resources": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:13246"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:38385"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.052396+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:10107"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:39755"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.0524061+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:29798"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:43515"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.0524139+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:35089"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.0523788+00:00",
+      "processId": 3078637
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:16247"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:18753"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:13785"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.0524239+00:00",
+      "processId": 3078612
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:14608"
+        }
+      ],
+      "observedAt": "2026-10-28T10:36:01.0523511+00:00",
+      "processId": null
+    }
+  ],
+  "terminalStatus": "failed",
+  "terminalOutcome": {
+    "exitCode": "ProductOrTest",
+    "phase": "Test",
+    "category": "ProductOrTest",
+    "ruleId": "HXT007"
+  },
+  "terminalAtUtc": "2026-10-28T10:36:03.4369574+00:00",
+  "resourceDisposition": "retained",
+  "remainingResources": {
+    "containerIds": [
+      "480cc138d0c224bab938fa67b4f9e532530cc3a2c976aa16eb0f146e1822580c",
+      "88ee5a3397d3f9bdfd63c1b45acb666c888002550c6145bd756fd6e1fc8b4faa",
+      "93539317f67bceb0712f997e74de696e430c8b1fa155bb40d7c28311f914ae02",
+      "a7b159df2d0e5e9caec5468701565fe54dfe42f192e782d8b8e6297d1d0c1e76"
+    ],
+    "processIds": [
+      3071887,
+      3074892,
+      3075047,
+      3075433,
+      3075444,
+      3075540,
+      3075541,
+      3076477,
+      3076503,
+      3077308,
+      3077318,
+      3077398,
+      3077399,
+      3077656,
+      3077699,
+      3078482,
+      3078483,
+      3078605,
+      3078611,
+      3078612,
+      3078614,
+      3078637,
+      3078643,
+      3100857
+    ],
+    "unverified": false,
+    "isEmpty": false,
+    "workspaceIds": [
+      "workspace:c904936c90b016ef773df8d553ca2b23"
+    ],
+    "claimIds": [
+      "claim:1a619a414f4efadc7a02014f2abc642887e8aeb85c86d92ebb2bbff15e3f1d85",
+      "claim:1ab77eb725af032bce73dc426d9f8f210d5e205f26db19f111b22ad2beb06411",
+      "claim:1d0524083fd5395be15ef7cc6e41181339baf426ead266d6b3c11f04cd7a73d6",
+      "claim:28d0c9bb88910f6cc9e093ac28bab73c2b117d4d580bb1edc7b29591e1c2116b",
+      "claim:2fbd962704e26ca52223e9ac2d6e3968b432260ba0d7b295efd5954e8a49ed1f",
+      "claim:3333b7f504160ca52271bc457f9b974a5e9c7035115429123263ceb84202e8e2",
+      "claim:4bd10f0290686bf30782d4e9489b16e50daeb369cb9fc1282198ace4fe5ba084",
+      "claim:4f96d55d657852b1b51d29719fbf2067da797ccba2ad540400bab3d5b30ed324",
+      "claim:5966b3e5ef8196eba601bd4e1dcf59a3d01b300791f0e8279123c86579653c45",
+      "claim:5a231ae97781e67a8ecaf12886d6f140ef19e62be8499e4b089383de34cb8478",
+      "claim:5ab07a3a42583da3b135602f8152b60e39a45118f4925f18e55f23ebeb522938",
+      "claim:5fcc3879e0f70c2e5ea8c2213553eec34b6d83b90ceeaf8c6a39e78487c3ace4",
+      "claim:5fd2036287facd9925903d56c87815b7721c3f484d3b1643276cdbac324a1b99",
+      "claim:6dd89c5451aa99a69b657854aae7e403b8db3ae9946c22a9db39859ffeb8c269",
+      "claim:750d4711ffcdc645f5b8d799ed3c3ce0400de037e0d09aac15bda0f7c304945e",
+      "claim:7bfa22a1a750998619dbb63a0c8cf580687eeeb6f1ee8d314770ee869d177a4b",
+      "claim:7c5e525e76ea722a993e97db882746ead585fd084a38b4c2500f0d7786bd7fc7",
+      "claim:7cd4af3512c24723dfcfe0478bf1e0eac0c969d8c0dc95b4ac877e34367a20c0",
+      "claim:893416abde67412b81921615d1edb314095e702539d4cf2317745fe068e46b10",
+      "claim:89c48af2029b292f93a96dec2a4d1a266a63252c2f40f35d6cf6bfec287dc8e0",
+      "claim:8b66af3a5cde4b6b6dd0b80e9ffc94720fd6ddd8e1eb1c62a166d4a676c1140e",
+      "claim:972c9c1f5b4ef6337ca7a500137b21091c72f8b600f79a9569ba515224b65f8d",
+      "claim:9c8d4575e5f03688bea1f38bc4102c4d6b0d417a9623d1007c84a75e635e0830",
+      "claim:a193e950df14ffda1961624ed9cf539a4305a705941886784684e28b7a474fd0",
+      "claim:a9c135d8a201c1e548dfc36e32a4c31838470b1d33746b61a94de3dc8329d345",
+      "claim:ac1aa5dc307625c684352d77bd8cd8d10d47ce0ea981c819e1bf3a0c85cdeb5b",
+      "claim:b50c29acfae5fb2ad11940f254fe642331ef626c80cb41b7a113ebbafe0b0118",
+      "claim:b5571f843d940da7c01d05151ec373a93de5b34602481f34934350ade88e59d0",
+      "claim:c41b209f5542890c13e10a4ab14509f5221cf76001214c78ca60a8fb96c2a604",
+      "claim:c61ee36fae16af90fb078603e12be4387976c7b41d9fa20acf14fdae560f734f",
+      "claim:c79f383a4dd9b9fcf37a80d1cf1e5a81a8f47bd23c735faf19a514e2e8503dc4",
+      "claim:d2fa7b337be9d372f8df969f44eb9ecca879c4e244800260ca291e4c47a294af",
+      "claim:db8de3363e2fa9a286bb5c72308553f03f2a3ceb2acf2c9af356e0a37832cb86",
+      "claim:dfa52f78d4baf9d5b5af476e3f3079b8737c382741dada0795819e386c626929",
+      "claim:e4d50e63490b735971497d32343565f3cffe797f1aff48f1b5ae78758646712a",
+      "claim:ea6b33baba42c9488745f5a6ad6da5299097e58bc08dc8cd42a2dd1d9232652d",
+      "claim:eb522b3bedefcfc8590e5d0843c3e2d2b12ca7ebaa347b956bb3000fb1595f2a",
+      "claim:eb7ce8677d9d745662981b523f5bd1b88b840683c6b8dc1fc135e24ac3c925d6",
+      "claim:f0f614300fb805d11b6fd74be6294630034a5d9d70ede2694deb2021196eadf7",
+      "claim:f1c34dc66bd42d7ae07a88d680680dceb7ff5668ab522169ec42d1039874d3e7",
+      "claim:f22e437ae2f53221ddf433249cd906e96fd0a718d3c9c88616933eb6b442ad4d",
+      "claim:fd5f342af92bec833e39ef13e8dd90cf4dcfae41b6dd9da252cae1891add0835"
+    ],
+    "discoveryFailures": [],
+    "resourceIds": [
+      "container:480cc138d0c224bab938fa67b4f9e532530cc3a2c976aa16eb0f146e1822580c",
+      "container:88ee5a3397d3f9bdfd63c1b45acb666c888002550c6145bd756fd6e1fc8b4faa",
+      "container:93539317f67bceb0712f997e74de696e430c8b1fa155bb40d7c28311f914ae02",
+      "container:a7b159df2d0e5e9caec5468701565fe54dfe42f192e782d8b8e6297d1d0c1e76",
+      "process:3071887",
+      "process:3074892",
+      "process:3075047",
+      "process:3075433",
+      "process:3075444",
+      "process:3075540",
+      "process:3075541",
+      "process:3076477",
+      "process:3076503",
+      "process:3077308",
+      "process:3077318",
+      "process:3077398",
+      "process:3077399",
+      "process:3077656",
+      "process:3077699",
+      "process:3078482",
+      "process:3078483",
+      "process:3078605",
+      "process:3078611",
+      "process:3078612",
+      "process:3078614",
+      "process:3078637",
+      "process:3078643",
+      "process:3100857",
+      "workspace:c904936c90b016ef773df8d553ca2b23",
+      "claim:1a619a414f4efadc7a02014f2abc642887e8aeb85c86d92ebb2bbff15e3f1d85",
+      "claim:1ab77eb725af032bce73dc426d9f8f210d5e205f26db19f111b22ad2beb06411",
+      "claim:1d0524083fd5395be15ef7cc6e41181339baf426ead266d6b3c11f04cd7a73d6",
+      "claim:28d0c9bb88910f6cc9e093ac28bab73c2b117d4d580bb1edc7b29591e1c2116b",
+      "claim:2fbd962704e26ca52223e9ac2d6e3968b432260ba0d7b295efd5954e8a49ed1f",
+      "claim:3333b7f504160ca52271bc457f9b974a5e9c7035115429123263ceb84202e8e2",
+      "claim:4bd10f0290686bf30782d4e9489b16e50daeb369cb9fc1282198ace4fe5ba084",
+      "claim:4f96d55d657852b1b51d29719fbf2067da797ccba2ad540400bab3d5b30ed324",
+      "claim:5966b3e5ef8196eba601bd4e1dcf59a3d01b300791f0e8279123c86579653c45",
+      "claim:5a231ae97781e67a8ecaf12886d6f140ef19e62be8499e4b089383de34cb8478",
+      "claim:5ab07a3a42583da3b135602f8152b60e39a45118f4925f18e55f23ebeb522938",
+      "claim:5fcc3879e0f70c2e5ea8c2213553eec34b6d83b90ceeaf8c6a39e78487c3ace4",
+      "claim:5fd2036287facd9925903d56c87815b7721c3f484d3b1643276cdbac324a1b99",
+      "claim:6dd89c5451aa99a69b657854aae7e403b8db3ae9946c22a9db39859ffeb8c269",
+      "claim:750d4711ffcdc645f5b8d799ed3c3ce0400de037e0d09aac15bda0f7c304945e",
+      "claim:7bfa22a1a750998619dbb63a0c8cf580687eeeb6f1ee8d314770ee869d177a4b",
+      "claim:7c5e525e76ea722a993e97db882746ead585fd084a38b4c2500f0d7786bd7fc7",
+      "claim:7cd4af3512c24723dfcfe0478bf1e0eac0c969d8c0dc95b4ac877e34367a20c0",
+      "claim:893416abde67412b81921615d1edb314095e702539d4cf2317745fe068e46b10",
+      "claim:89c48af2029b292f93a96dec2a4d1a266a63252c2f40f35d6cf6bfec287dc8e0",
+      "claim:8b66af3a5cde4b6b6dd0b80e9ffc94720fd6ddd8e1eb1c62a166d4a676c1140e",
+      "claim:972c9c1f5b4ef6337ca7a500137b21091c72f8b600f79a9569ba515224b65f8d",
+      "claim:9c8d4575e5f03688bea1f38bc4102c4d6b0d417a9623d1007c84a75e635e0830",
+      "claim:a193e950df14ffda1961624ed9cf539a4305a705941886784684e28b7a474fd0",
+      "claim:a9c135d8a201c1e548dfc36e32a4c31838470b1d33746b61a94de3dc8329d345",
+      "claim:ac1aa5dc307625c684352d77bd8cd8d10d47ce0ea981c819e1bf3a0c85cdeb5b",
+      "claim:b50c29acfae5fb2ad11940f254fe642331ef626c80cb41b7a113ebbafe0b0118",
+      "claim:b5571f843d940da7c01d05151ec373a93de5b34602481f34934350ade88e59d0",
+      "claim:c41b209f5542890c13e10a4ab14509f5221cf76001214c78ca60a8fb96c2a604",
+      "claim:c61ee36fae16af90fb078603e12be4387976c7b41d9fa20acf14fdae560f734f",
+      "claim:c79f383a4dd9b9fcf37a80d1cf1e5a81a8f47bd23c735faf19a514e2e8503dc4",
+      "claim:d2fa7b337be9d372f8df969f44eb9ecca879c4e244800260ca291e4c47a294af",
+      "claim:db8de3363e2fa9a286bb5c72308553f03f2a3ceb2acf2c9af356e0a37832cb86",
+      "claim:dfa52f78d4baf9d5b5af476e3f3079b8737c382741dada0795819e386c626929",
+      "claim:e4d50e63490b735971497d32343565f3cffe797f1aff48f1b5ae78758646712a",
+      "claim:ea6b33baba42c9488745f5a6ad6da5299097e58bc08dc8cd42a2dd1d9232652d",
+      "claim:eb522b3bedefcfc8590e5d0843c3e2d2b12ca7ebaa347b956bb3000fb1595f2a",
+      "claim:eb7ce8677d9d745662981b523f5bd1b88b840683c6b8dc1fc135e24ac3c925d6",
+      "claim:f0f614300fb805d11b6fd74be6294630034a5d9d70ede2694deb2021196eadf7",
+      "claim:f1c34dc66bd42d7ae07a88d680680dceb7ff5668ab522169ec42d1039874d3e7",
+      "claim:f22e437ae2f53221ddf433249cd906e96fd0a718d3c9c88616933eb6b442ad4d",
+      "claim:fd5f342af92bec833e39ef13e8dd90cf4dcfae41b6dd9da252cae1891add0835"
+    ]
+  },
+  "observationHash": null,
+  "environmentBindings": {
+    "run": {
+      "runId": "c904936c90b016ef773df8d553ca2b23",
+      "attemptId": "8f6bc48705219fd023e5a29ac09861d6",
+      "attemptSequence": 1,
+      "ownerRunId": "c904936c90b016ef773df8d553ca2b23",
+      "environmentId": "e7a9626210855375ee3f81ec38ad7b5f",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "id": "platform",
+        "contentIdentity": "sha256:4da620318a022ed91442dcd18f42f3fd44218c29d6ff1bfc40380c6e9ab0aec3"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "commit": "e129a29e6c6e2f8a200581e09b861d75a9f3a7b8",
+        "instanceId": "e7a9626210855375ee3f81ec38ad7b5f-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "g4t-c904936c90b0",
+        "dataIsolationId": "g4r-c904936c90b0",
+        "resourceScopeId": "e7a9626210855375ee3f81ec38ad7b5f",
+        "catalogScopeId": "e7a9626210855375ee3f81ec38ad7b5f-catalog"
+      },
+      "resources": [
+        {
+          "resourceId": "dapr-placement-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:13246/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:38385/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-scheduler-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:10107/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:39755/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-sentry",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:29798/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:43515/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:35089/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore-dapr-cli",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:16247/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:18753/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:13785/"
+            }
+          ]
+        },
+        {
+          "resourceId": "redis",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:14608/"
+            }
+          ]
+        }
+      ],
+      "readiness": {
+        "state": "populated",
+        "status": "ready",
+        "observedAt": "2026-10-28T10:36:01.0525007Z",
+        "resources": [
+          {
+            "resourceId": "dapr-placement-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0523960Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-scheduler-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0524061Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-sentry",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0524139Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0523788Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0524239Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "redis",
+            "status": "ready",
+            "observedAt": "2026-10-28T10:36:01.0523511Z",
+            "diagnosticIds": []
+          }
+        ]
+      },
+      "startupTasks": {
+        "state": "populated",
+        "tasks": [
+          {
+            "taskId": "platform/verify-run-owner",
+            "required": true,
+            "status": "passed",
+            "startedAt": "2026-10-28T10:36:00.8182755Z",
+            "finishedAt": "2026-10-28T10:36:00.8191630Z",
+            "diagnosticIds": []
+          }
+        ]
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-28T10:34:42.6988083Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-28T10:44:42.6988083Z",
+        "actualDurationSeconds": 78.6265701,
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "populated",
+        "origin": "test-execution-started",
+        "originAt": "2026-10-28T10:36:01.3360696Z",
+        "effectiveSeconds": 2,
+        "expiresAt": "2026-10-28T10:36:03.3360696Z",
+        "configurationContentIdentity": "sha256:a34eae47f6faf1e0debc3c1c19c35eb73ee9dbbc71e6ad38fe747f3c42e748a7"
+      }
+    }
+  },
+  "terminalCause": "execution-timeout",
+  "failureRetained": true,
+  "cleanupDisposition": "not-requested",
+  "cleanupAttemptId": null,
+  "diagnosticRuleIds": [
+    "HXT007"
+  ],
+  "laterDiagnosticRuleIds": [
+    "HXI010"
+  ],
+  "executionTiming": {
+    "startedAtUtc": "2026-10-28T10:36:01.3360696+00:00",
+    "deadlineUtc": "2026-10-28T10:36:03.3360696+00:00",
+    "effectiveSeconds": 2,
+    "configurationContentIdentity": "sha256:a34eae47f6faf1e0debc3c1c19c35eb73ee9dbbc71e6ad38fe747f3c42e748a7",
+    "actualDurationSeconds": 2.0024299,
+    "credentialExpiryUtc": "2026-10-28T10:36:04+00:00"
+  },
+  "selections": [
+    {
+      "moduleId": "platform",
+      "name": "lifecycle-timeout",
+      "executor": "python3",
+      "entry": "eng/test-environment-provisioning/suite.py",
+      "manifestHash": "EB2C2A43AC7EA6710D8F08D755A2B78674F2B3AEA70907E5A368E8C009CC9114",
+      "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+      "executionTimeoutSeconds": 2,
+      "stopTimeoutSeconds": 90,
+      "requestedAtUtc": "2026-10-28T10:34:42.6988083+00:00",
+      "executionDeadlineUtc": "2026-10-28T10:34:44.6988083+00:00",
+      "credentialExpiryUtc": "2026-10-28T10:34:45+00:00",
+      "mode": "source"
+    }
+  ],
+  "reportHash": null,
+  "testCounts": null
+}

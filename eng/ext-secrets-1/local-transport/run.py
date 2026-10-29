@@ -216,7 +216,7 @@ spec:
               "environment": {"DAPR_COMPONENTS_SOCKETS_FOLDER": str(discovery), "GOMAXPROCS": "4"},
               "loopbackPorts": {"api": api, "apiObserver": api_proxy, "http": http, "internalGrpc": internal, "metricsUnused": metrics}})
         sdk("sdk-witnesses", ["manifest", "transition", "data-45508608", "data-48933548", "data-67108863", "data-67108864", "data-67108865",
-                              "api-protobuf-134217727", "api-protobuf-134217728", "api-protobuf-134217729"])
+                              "api-protobuf-134217727", "api-protobuf-134217728", "api-protobuf-134217729", "response-1048575"])
         for n in (45_508_608, 48_933_548, 67_108_863, 67_108_864, 67_108_865):
             probe(f"data-{n}", data=n)
         for hop in ("api", "component"):
