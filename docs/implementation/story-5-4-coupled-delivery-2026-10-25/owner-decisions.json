@@ -1152,7 +1152,7 @@
         "sha256": "def0e07ad365d1f169610642f54ff000ae4f91712c257720599accd98db530ce"
       },
       "handoff": {
-        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+        "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/HANDOFF.md",
         "sha256": "dccde6629842f66eeac1fb5eecb093a06a3889ae5074b937058be5179c8605b9"
       },
       "verification": {
@@ -1180,7 +1180,13 @@
       "completeProviderMetadataVerified": false,
       "authorityReadyHttpStatus": 200,
       "inventoryAndCustodyReadyHttpStatus": 503,
-      "limits": "950-object/register before-after equality and original tenant hash matches establish only the recorded preservation interval. They do not supply complete historical Secret coverage, independent acceptance or current provider values. Older remaining-inputs wording that requests scope approval is superseded by the already pinned approval; no renewed request is needed."
+      "limits": "950-object/register before-after equality and original tenant hash matches establish only the recorded preservation interval. They do not supply complete historical Secret coverage, independent acceptance or current provider values. Older remaining-inputs wording that requests scope approval is superseded by the already pinned approval; no renewed request is needed.",
+      "historicalHandoffOriginalLocation": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+      "historicalHandoffSourceDriftReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-application-20261029-approved/external-source-reconciliation.json",
+        "sha256": "6fbf822339d80f42093be9acb87d3875c91bf653437677bb8bb114b93377c78f"
+      },
+      "manifestCurrentSourceLimit": "The older 141-file source manifest describes its recorded snapshot. Its current mutable HANDOFF.md member has since changed; the retained original archive supplies that exact member. No new live observation is inferred."
     },
     "approvalAlreadyRecorded": true,
     "recoveryExclusiveDeadlineUtc": "2026-10-30T16:53:50Z",
@@ -1221,7 +1227,7 @@
     "result": "Approved temporary four-path metadata reads succeeded with HTTP 200; complete native metadata exactly matches every pinned original object. All original version-2 opaque mappings, retained versions 1 and 2 and technical windows were verified. Temporary grant is reversed; complete provider configuration matches its pinned original.",
     "canonicalBlockerContinuationReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-application-20261029-approved/blockers.json",
-      "sha256": "302b5311137fd6b5f82d79806e50f691b42625ee885be2ac73b3793008020f79"
+      "sha256": "25c3eba521e647e65d478b66da405d813d40bc5482955439befb1cbb011dbf53"
     },
     "exactAccessCorrectionReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-correction-20261029/access-correction.json",
@@ -1233,7 +1239,7 @@
     },
     "commandsAndReversalReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-application-20261029-approved/commands.json",
-      "sha256": "875ca0925e7b8d49b2d6efa2936dfa087492141bb3f5905e0fc67db72ecbad92"
+      "sha256": "8dd70aabf61ce28f8fa410db97662e112550343b63db7ae89c7e2d92f18da742"
     },
     "localVerificationReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-application-20261029-approved/metadata-read/verification.json",
@@ -1241,9 +1247,9 @@
     },
     "publicEvidenceManifestReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/metadata-access-application-20261029-approved/evidence-manifest.json",
-      "sha256": "b7207a9a2d8efe89c6e56551feee379520fbbe45552160eccd5a2312b137ed43"
+      "sha256": "fb8074c4223b36e8a811492a880356fa8d2422d496d1e3936fe9c30c8820d49a"
     },
-    "publicEvidenceManifestFiles": 33,
+    "publicEvidenceManifestFiles": 36,
     "retainedOriginalManifestReference": {
       "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
       "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31"
