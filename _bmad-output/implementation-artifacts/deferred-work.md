@@ -1456,3 +1456,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Corrupt `attachments.json` makes `TestResultWriter` throw `InvalidDataException` via `ReadContractBinding` (medium, unverified).
   evidence: Confirm the caller catches it and the first terminal result is still retained.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Make data-service TLS NetworkPolicies per-service (pod labels and own tlsPort) and allow data-namespace peer traffic for replication.
+  evidence: Current rules select all pods and union ports; per-service labels and topology are unknown inputs. Unverified for replication (medium if true).
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Add an admission policy (VAP/Kyverno) restricting staging PVCs to the staging StorageClass; quota only denies the production class.
+  evidence: ResourceQuota cannot allow-list; an unencrypted other class remains claimable. Admission mechanism is not chosen.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Verify the Timesheets boundary policy and workload egress (Gateway, Dapr, OpenBao) under default-deny with a real policy evaluation.
+  evidence: Compatibility test only greps template text; workload allowances belong to 4.15, 4.16 and 4.18.
