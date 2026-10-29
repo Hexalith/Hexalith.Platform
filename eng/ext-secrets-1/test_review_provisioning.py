@@ -64,9 +64,11 @@ class ReviewProvisioningTests(unittest.TestCase):
             calls.append(args)
             return SimpleNamespace(stdout=json.dumps({'auth': {'client_token': 'offline-new-token', 'accessor': 'public-accessor', 'lease_duration': 86400}}).encode() if args[0] == 'write' else b'[]')
         installer = SimpleNamespace(evidence=self.directory, bao=bao, secret=Mock(side_effect=RuntimeError('secret-create-failed')))
-        with patch.object(inventory, 'kube', return_value=SimpleNamespace(stdout=b'')), patch.object(inventory, 'application_request') as revoke:
+        removed = []
+        with patch.object(inventory, 'kube', return_value=SimpleNamespace(stdout=b'')), patch.object(inventory, 'application_request') as revoke, patch.object(inventory, 'delete_matching_credential_secret', side_effect=lambda name, token: removed.append((name, bytes(token)))):
             with self.assertRaises(RuntimeError): inventory.create_metadata_credential(installer)
         revoke.assert_called_once()
+        self.assertEqual([('ext-secrets-1-inventory-metadata-token', b'offline-new-token')], removed)
         self.assertEqual(('policy', 'delete', 'ext-secrets-1-inventory-metadata-read'), calls[-1])
         state = (self.directory / 'metadata-credential-provisioning.json').read_text()
         self.assertNotIn('offline-new-token', state)

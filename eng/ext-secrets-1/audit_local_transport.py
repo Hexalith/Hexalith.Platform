@@ -8,6 +8,8 @@ import sys
 import importlib.util
 import tarfile
 import shutil
+import re
+import unittest
 
 _protocol_spec = importlib.util.spec_from_file_location("f1_local_protocol", Path(__file__).resolve().parent / "local-transport/protocol.py")
 _protocol_module = importlib.util.module_from_spec(_protocol_spec)
@@ -89,7 +91,7 @@ def check_frame(frame, data_bytes, data_hash, protobuf_bytes=None, protobuf_hash
             and metadata["aggregateUtf8Bytes"] <= 65536, "Complete measured metadata exceeds profile")
 
 
-def check_fault_history(faults, sink):
+def check_fault_history(faults, sink, wire):
     expected_names = {name for fault in ("cancellation", "late-duplicate", "lost-result", "reconnect") for name in (fault, "status-" + fault)}
     require(len(faults) == 8 and {row["Name"] for row in faults} == expected_names, "Exact fault/recovery schedule required")
     for fault, expected in (("cancellation", 1), ("late-duplicate", 2), ("lost-result", 1), ("reconnect", 1)):
@@ -101,6 +103,14 @@ def check_fault_history(faults, sink):
         require(all(row["dataSha256"] == attempts[0]["dataSha256"] for row in attempts + lookups), "Recovery identity/payload replaced")
         send = next(row for row in faults if row["Name"] == fault)
         lookup = next(row for row in faults if row["Name"] == "status-" + fault)
+        for row, operation in ((send, "fixture-send"), (lookup, "fixture-status")):
+            require(row.get("Operation") == operation and type(row.get("DataBytes")) is int
+                    and row["DataBytes"] == attempts[0]["dataBytes"]
+                    and row.get("DataSha256", "").lower() == attempts[0]["dataSha256"], "SDK fault original payload/operation must match sink")
+            for hop in ("api", "component"):
+                frames = [r for r in wire[hop] if r.get("kind") == "grpcFrame" and r.get("direction") == "request" and r.get("syntheticCase") == row["Name"]]
+                require(len(frames) == 1 and frames[0].get("operation") == operation, "Each SDK fault/status requires its own request at both hops")
+                check_frame(frames[0], row["DataBytes"], row["DataSha256"].lower())
         require(lookup["SdkCalls"] == 1 and lookup["Result"] == "ReceivedSyntheticUnverified", "Successful one-call SDK status lookup required")
         require(lookup.get("LookupAttempts") == expected and lookup.get("LookupIdentity") == identity
                 and lookup.get("LookupOriginalDataSha256") == attempts[0]["dataSha256"]
@@ -237,6 +247,28 @@ def check_send_delivery(admissions, arrivals, data_bytes, data_hash):
             "Accepted send payload bytes/digest differ at component or sink")
 
 
+def check_runtime_arguments(commands, evidence, build):
+    evidence, build = Path(evidence), Path(build)
+    isolation = read(evidence / "isolation.json")
+    sockets = Path(isolation["socketRoot"])
+    ports = isolation["loopbackPorts"]
+    fixture, daprd = str(build / "bin/f1fixture"), str(build / "bin/daprd-stable")
+    expected = {
+        "descriptors": [fixture,"--mode","descriptors","--target",str(evidence / "imported-descriptors.json")],
+        "sink": [fixture,"--mode","sink","--listen",str(sockets / "sink.sock"),"--log",str(evidence / "sink.jsonl"),"--incarnation","sink-1"],
+        "component-observer": [fixture,"--mode","proxy","--listen",str(sockets / "discovery/f1fixture.sock"),"--target",str(sockets / "implementation.sock"),"--hop","component","--log",str(evidence / "component-wire.jsonl")],
+        "api-observer": [fixture,"--mode","proxy","--listen",f"127.0.0.1:{ports['apiObserver']}","--target",f"127.0.0.1:{ports['api']}","--hop","api","--log",str(evidence / "api-wire.jsonl")],
+        "daprd": [daprd,"--app-id","f1synthetic","--mode","standalone","--dapr-grpc-port",str(ports["api"]),
+                  "--dapr-http-port",str(ports["http"]),"--dapr-internal-grpc-port",str(ports["internalGrpc"]),"--metrics-port",str(ports["metricsUnused"]),
+                  "--resources-path",str(evidence / "resources"),"--config",str(evidence / "configuration.yaml"),"--max-body-size","128Mi","--read-buffer-size","64Ki",
+                  "--dapr-listen-addresses","127.0.0.1","--enable-metrics=false","--log-level","warn"],
+    }
+    for name in ("component-1", "component-2"):
+        expected[name] = [fixture,"--mode","component","--listen",str(sockets / "implementation.sock"),"--target",str(sockets / "sink.sock"),"--log",str(evidence / "component.jsonl"),"--incarnation",name]
+    actual = {row["name"]: row["argv"] for row in commands}
+    require(all(actual.get(name) == argv for name, argv in expected.items()), "Exact loaded runtime/component/observer configuration arguments required")
+
+
 def check_probe_observations(probe, observations, component, sink, wire):
     result, name, hop = probe["result"], probe["name"], probe["hop"]
     require(result == observations[-1], "Probe summary differs from original observation")
@@ -286,11 +318,22 @@ def check_probe_observations(probe, observations, component, sink, wire):
             expected = "Internal"
             require(not admissions and not arrivals and any(r.get("direction") == "request" and r.get("accepted") is False and r.get("nestedUnknownBytes", 0) > 0 for r in validations), "Nested request must fail in raw component codec before lossy decode")
     elif name.startswith("data-"):
-        if int(name[5:]) > 67108864:
+        n = int(name[5:])
+        require(result.get("dataBytes") == n, "Named data boundary differs from actual probe")
+        for measured_hop in ("api", "component"):
+            measured = [r for r in selected(wire[measured_hop], "grpcFrame") if r.get("direction") == "request"]
+            require(len(measured) == 1, "Data boundary requires each independent complete request frame")
+            check_frame(measured[0], n, result["dataSha256"])
+        if n > 67108864:
             expected = "Internal"; require(len(admissions) == 1, "Over-bound data must reach data guard"); refused("data")
         else: delivered()
     elif name.startswith("protobuf-"):
         n = int(name.rsplit("-", 1)[1])
+        require(result.get("protobufBytes") == n, "Named protobuf boundary differs from actual probe")
+        if n <= 134217728:
+            require(len(frames) == 1 and frames[0].get("protobufBytes") == n and frames[0].get("wireBytes") == n + 5
+                    and frames[0].get("compressed") is False
+                    and frames[0].get("rawUnknownBytes", 0) > 0, "Complete independent exact protobuf boundary frame required")
         if n > 134217728:
             expected = "ResourceExhausted"
             require(not admissions and not arrivals and any(r.get("bytes") == n and r.get("direction") == "request" for r in selected(wire[hop], "declaredOverCap")), "Over-limit protobuf must fail at selected receive boundary")
@@ -339,7 +382,7 @@ def check_go_environment(record, build):
                 "GOPRIVATE": "", "GONOPROXY": "none", "GONOSUMDB": "none", "GOVCS": "*:off",
                 "GOPROXY": "https://proxy.golang.org", "GOSUMDB": "sum.golang.org https://proxy.golang.org/sumdb/sum.golang.org"}
     require(set(record) == {"required", "effective"} and record["required"] == expected
-            and all(record["effective"].get(k) == v for k, v in expected.items()), "Isolated effective Go build settings required")
+            and all(record["effective"].get(k) == ("" if k == "GOENV" else v) for k, v in expected.items()), "Isolated effective Go build settings required")
     for key, directory in (("GOCACHE", "go-cache"), ("GOMODCACHE", "go-modules")):
         require(Path(record["effective"][key]).resolve() == (Path(build) / directory).resolve(), "Owned Go cache binding required")
 
@@ -404,8 +447,13 @@ def check_detached_verification(verification, packet, build):
     require(sha(root / "verification.json") == verification["f1ReportSha256"], "Changed detached verifier report")
     check_hashed_files(root, report["sha256"])
     require(set(report["sha256"]) == {"commands.json", "custody-binding-f1.json", "f1-packet-check.json", "owner-capture-source.json", "runtime-build.log", "runtime-tests.log", "runtime-tests.xml", "source-sha256.json"}, "Complete detached report inventory required")
+    from verify_f1 import audit as audit_source_contract
+    try:
+        counts, _ = audit_source_contract(root / "runtime-tests.xml", root / "custody-binding-f1.json")
+    except Exception as error:
+        raise ValueError("Retained Runtime test results must pass the complete behavioral audit") from error
+    require(counts == report.get("counts") and counts["total"] >= 238 and counts["f1Passed"] >= 101, "All retained Runtime tests and original F1 coverage must execute and pass")
     require(report.get("kind") == "SyntheticF1SourceContractOnly" and report.get("candidateBaseCommit") == packet["candidateSourceHead"]
-            and report.get("counts") == {"behavioralMethodsCovered": 29, "f1Passed": 101, "passed":238, "total":238}
             and report.get("dependencyAvailable") is False and report.get("runtimeQualificationCompleted") is False and report.get("qualificationEffects") == 0
             and report.get("sourceInputs") == packet["build"]["dotnetSourceDependencies"], "Passing pinned detached source contract/false authority required")
     checks = read(root / "f1-packet-check.json")
@@ -424,10 +472,35 @@ def check_detached_verification(verification, packet, build):
     require(sha(assembly) == verification["f1AssemblySha256"], "Detached verifier executable identity changed")
     sources = read(root / "source-sha256.json")
     repo = Path(__file__).resolve().parents[2]
-    for name in ("eng/ext-secrets-1/audit_local_transport.py", "eng/ext-secrets-1/local-transport/main.go", "eng/ext-secrets-1/local-transport/wire.go", "eng/ext-secrets-1/local-transport/build.py", "eng/ext-secrets-1/local-transport/run.py", "eng/ext-secrets-1/local-transport/seal_build.py"):
+    gate_sources = {str(p.relative_to(repo)) for p in (repo / "eng/ext-secrets-1/local-transport").rglob("*") if p.is_file() and "__pycache__" not in p.parts}
+    gate_sources |= {str(p.relative_to(repo)) for p in (repo / "eng/ext-secrets-1").glob("*.py")}
+    gate_sources |= {"eng/ext-secrets-1/audit_local_transport.py", "eng/ext-secrets-1/test_audit_local_transport.py", "eng/ext-secrets-1/verify_f1.py", "eng/ext-secrets-1/check_f1_packets.py",
+                     "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs", "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs"}
+    for name in gate_sources:
         require(sources.get(name) == sha(repo / name), "Detached source snapshot differs from current reviewed gate: " + name)
     python_log = Path(verification["pythonSuiteLog"])
-    require(sha(python_log) == verification["pythonSuiteSha256"] and "\nOK\n" in python_log.read_text() and "FAILED" not in python_log.read_text(), "Passing retained Python verification/hash required")
+    require(sha(python_log) == verification["pythonSuiteSha256"], "Retained Python verification hash required")
+    check_python_suite(python_log.read_text(), repo)
+
+
+def python_test_inventory(repo):
+    suite = unittest.TestLoader().discover(str(Path(repo) / "eng/ext-secrets-1"), pattern="test_*.py")
+    def flatten(group):
+        for item in group:
+            if isinstance(item, unittest.TestSuite):
+                yield from flatten(item)
+            else:
+                yield str(item)
+    return list(flatten(suite))
+
+
+def check_python_suite(log, repo):
+    expected = python_test_inventory(repo)
+    summaries = re.findall(r"^Ran (\d+) tests? in [\d.]+s$", log, re.M)
+    require(log.startswith("command: python3 -m unittest discover -s eng/ext-secrets-1 -p test_*.py -v\n")
+            and log.rstrip().endswith("exitCode: 0") and summaries == [str(len(expected))]
+            and all(log.count(test + "\n") + log.count(test + " ...") == 1 for test in expected)
+            and "\nOK\n" in log and "FAILED" not in log, "Complete discovered Python suite, command, passing inventory/count and successful exit required")
 
 
 TEMPLATE_INPUTS = {
@@ -534,6 +607,15 @@ def audit(evidence, build):
     check_sdk_closure(execution["assembly"], sealed["sdkDriver"])
     for name, digest in sealed["fixtureSources"].items():
         require(sha(build / "source/fixture" / name) == digest, "Changed built fixture source/lockfile")
+    reviewed = Path(__file__).resolve().parent / "local-transport"
+    fixture = build / "source/fixture"
+    file_inventory = lambda root: {str(p.relative_to(root)) for p in root.rglob("*") if p.is_file() and "__pycache__" not in p.parts}
+    require(file_inventory(fixture) == file_inventory(reviewed), "Exact fixture file inventory required; extra assembler/linker inputs are refused")
+    reviewed_go = {str(p.relative_to(reviewed)) for p in reviewed.rglob("*.go")}
+    require(set(sealed["fixtureSources"]) == reviewed_go | {"go.mod", "go.sum"}
+            and {str(p.relative_to(fixture)) for p in fixture.rglob("*.go")} == reviewed_go
+            and all(sha(reviewed / name) == sealed["fixtureSources"][name] for name in reviewed_go | {"go.sum"}), "Exact reviewed fixture source closure required")
+    require((fixture / "go.mod").read_text() == (reviewed / "go.mod").read_text().rstrip() + "\n\nreplace github.com/dapr/dapr => ../dapr-" + source["daprCommit"] + "\n", "Only the exact pinned runtime module replacement is allowed")
     for name, digest in sealed["retainedProtocols"].items():
         require(sha(Path(__file__).resolve().parents[2] / "docs/implementation/ext-secrets-1-f1-2026-10-20/protocol" / name) == digest,
                 "Retained protocol bytes differ from pinned imported source")
@@ -552,7 +634,7 @@ def audit(evidence, build):
     component = rows(evidence / "component.jsonl")
     sink = rows(evidence / "sink.jsonl")
     sdk = read(evidence / "sdk-witnesses.json")
-    require(len(sdk) == 10 and {row["Name"] for row in sdk} == {"manifest", "transition"} | {f"data-{n}" for n in (45508608,48933548,67108863,67108864,67108865)} | {f"api-protobuf-{n}" for n in (134217727,134217728,134217729)}, "Exact SDK invocation inventory required")
+    require(len(sdk) == 11 and {row["Name"] for row in sdk} == {"manifest", "transition", "response-1048575"} | {f"data-{n}" for n in (45508608,48933548,67108863,67108864,67108865)} | {f"api-protobuf-{n}" for n in (134217727,134217728,134217729)}, "Exact SDK invocation inventory required")
     require(all(row.get("MaxSendMessageBytes") == 134217728 and row.get("MaxReceiveMessageBytes") == 1048575
                 and row.get("ConfiguredRetries") == 0 and row.get("CompletionPermission") is False for row in sdk), "Effective SDK profile must stay bounded and synthetic")
     measured = {}
@@ -577,6 +659,7 @@ def audit(evidence, build):
     probes = read(evidence / "probes.json")
     check_probe_matrix(probes)
     check_process_inventory(read(evidence / "commands.json"), read(evidence / "cleanup.json"), probes, execution, build)
+    check_runtime_arguments(read(evidence / "commands.json"), evidence, build)
     for probe in probes:
         require(Path(probe["log"]).name == probe["log"], "Probe log must be in retained evidence inventory")
         check_probe_observations(probe, rows(evidence / probe["log"]), component, sink, wire)
@@ -607,7 +690,20 @@ def audit(evidence, build):
                     and all(134217728 < r["bytes"] < 134217728 + 66560 for r in boundaries)
                     and not any(r.get("kind") == "componentAdmission" and start <= r["timeUnixNano"] < end for r in component), "SDK at/below API ceiling must reach its own component receive-size refusal")
     faults = read(evidence / "sdk-faults.json") + read(evidence / "sdk-reconnect-lookup.json")
-    check_fault_history(faults, sink)
+    check_fault_history(faults, sink, wire)
+    response = next(row for row in sdk if row["Name"] == "response-1048575")
+    require(response["SdkCalls"] == 1 and response["Result"] == "ReceivedSyntheticUnverified"
+            and response.get("ResponseDataBytes", 0) > 1000000, "Actual SDK must receive the near-cap response")
+    requests = [r for r in wire["component"] if r.get("kind") == "grpcFrame" and r.get("direction") == "request" and r.get("syntheticCase") == response["Name"]]
+    api_requests = [r for r in wire["api"] if r.get("kind") == "grpcFrame" and r.get("direction") == "request" and r.get("syntheticCase") == response["Name"]]
+    for hop, incoming in (("component", requests), ("api", api_requests)):
+        require(len(incoming) == 1, "SDK response case requires its own request")
+        frames = [r for r in wire[hop] if r.get("kind") == "grpcFrame" and r.get("direction") == "response"
+                  and r.get("connection") == incoming[0]["connection"] and r.get("stream") == incoming[0]["stream"]]
+        require(len(frames) == 1 and frames[0]["dataBytes"] == response["ResponseDataBytes"]
+                and frames[0]["dataSha256"] == response["ResponseDataSha256"].lower()
+                and frames[0]["compressed"] is False and frames[0]["rawWireValid"] is True
+                and (hop != "component" or frames[0]["wireBytes"] == 1048575), "SDK received bytes must match independently measured full response")
     isolation = read(evidence / "isolation.json")
     require(isolation.get("sameUidIsolation") is False and isolation.get("appExcludedMountProven") is False and isolation.get("productionIsolationQualified") is False, "Local socket ACLs do not establish app/process isolation")
     return {"kind": "ExecutedSyntheticLocalF1Audit", "measuredWitnesses": measured, "boundaryProbes": len(probes),

@@ -2,7 +2,7 @@
 title: 'Execute the local F1 whole-request transport gate'
 type: 'feature'
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058
@@ -49,12 +49,12 @@ Temporary local processes and synthetic material are authorized. No nested submo
 
 ## Tasks & Acceptance
 
-- [ ] `eng/ext-secrets-1/local-transport/` — reproducible pinned fixture component/sink, dependency lockfiles and build/run tooling; no production provider.
-- [ ] Existing Runtime tests or test-only harness — reuse exact request witnesses and actual SDK, independent wire instrumentation, meaningful boundary/fault coverage with value-free observations.
-- [ ] `eng/ext-secrets-1/` — local gate orchestration and fail-closed evidence audit with adversarial tests; exact source/patch/protocol/generated/binary/configuration hashes, effective retry settings and socket/process isolation recorded.
-- [ ] New local transport report/machine packet in existing F1 docs directory — retain measured every-hop sizes/digests/metadata/decoded headers/full responses and faults, field-derived universal sufficiency argument distinguished from finite witnesses; all authority/completion flags false.
-- [ ] Existing README and F2/F3 prerequisites — precise remaining actual semantic component/backend/termination prerequisites and next concrete qualification packet.
-- [ ] Run warning-free pinned Dapr/fixture/.NET builds, F1 verifier and complete Python suite with fresh detached artifacts; independently inspect full scoped diff and exact retained evidence. Mark limitations honestly; fix failures without weakening requirements.
+- [x] `eng/ext-secrets-1/local-transport/` — reproducible pinned fixture component/sink, dependency lockfiles and build/run tooling; no production provider.
+- [x] Existing Runtime tests or test-only harness — reuse exact request witnesses and actual SDK, independent wire instrumentation, meaningful boundary/fault coverage with value-free observations.
+- [x] `eng/ext-secrets-1/` — local gate orchestration and fail-closed evidence audit with adversarial tests; exact source/patch/protocol/generated/binary/configuration hashes, effective retry settings and socket/process isolation recorded.
+- [x] New local transport report/machine packet in existing F1 docs directory — retain measured every-hop sizes/digests/metadata/decoded headers/full responses and faults, field-derived universal sufficiency argument distinguished from finite witnesses; all authority/completion flags false.
+- [x] Existing README and F2/F3 prerequisites — precise remaining actual semantic component/backend/termination prerequisites and next concrete qualification packet.
+- [x] Run warning-free pinned Dapr/fixture/.NET builds, F1 verifier and complete Python suite with fresh detached artifacts; independently inspect full scoped diff and exact retained evidence. Mark limitations honestly; fix failures without weakening requirements.
 
 Acceptance: Given synthetic transport fixtures, when the gate completes, then the local transport path and sufficient bounds are evidenced, no semantic/provider/physical authority is inferred, and next qualification inputs are concrete and explicit.
 
@@ -90,6 +90,26 @@ No unresolved intent gaps or irreversible operations. User authorization covers 
 | R1 | medium / patch | Root reproduced acceptance of empty configuration hashes, advertised header limit=1 and derived manifest bound=1 in temporary packets with rebound template hash. Pin complete published configuration, header/metadata/sufficiency declarations. |
 | R2 | medium / patch | Root independently reproduced omission of all but one termination prerequisite; same root cause as B10. |
 
+
+| BH1 | medium / patch | Published execution D predates the stronger 54-probe audit and report hashes. Publish a fresh bound execution and replace the stale reproduction references. |
+| BH2 | medium / patch | Named data boundaries are not compared with independent frame sizes. Require the named size at both request hops, admission and sink. |
+| BH3 | medium / patch | At/below protobuf probes can pass without complete exact-size frames. Require the independent selected-hop protobuf size and raw unknown validation. |
+| BH4 | medium / patch | Process images are checked, but runtime arguments can select unrelated configuration and limits. Bind exact named process arguments to retained resources and measured endpoints. |
+| BH5 | medium / patch | Fixture sealing overlooks extra files and trailing replacement directives. Require the exact fixture source inventory and sole pinned runtime replacement in seal and audit. |
+| BH6 | medium / patch | Fault SDK payload measurements are disconnected from sink recovery. Bind original/status operations, SDK bytes, both request hops, identity and original digest. |
+| BH7 | medium / patch | Retained runner XML is hashed without parsing it. Re-run the existing behavioral/evidence audit on retained XML and reconcile counts, preserving at least the original 238 tests. |
+| BH8 | medium / patch | A focused Python OK log satisfies complete-suite claims. Require the complete current discovered test inventory and passing summary. |
+| BH9 | medium / patch | Freshness omits protocol checks, regressions and SDK source. Bind every gate/tool/driver input in the detached source snapshot. |
+| BH10 | medium / patch | Descriptor comparison omits nested message declarations. Recursively compare nested inventories including map entries and reject added types. |
+| EH1 | low / reject | carried: same response-size control claim as E3. The fixed authorized schedule supplies only representable near-cap targets; generic CLI input guards add no coverage for this gate. |
+| VG1 | medium / patch | Preverified: the actual SDK never receives a near-cap response. Add a successful SDK response case and require the independent complete component/API response frames. |
+| G1 | medium / patch | Fresh pinned Go reports GOENV=off as an empty effective path, making the original builder fail. Check that exact normalized value while retaining the required process environment and regression. |
+
 ## Verification
 
 Use fresh external artifacts/evidence for every verifier attempt. Run `python3 eng/ext-secrets-1/verify_f1.py --builds-root /home/administrator/projects/hexalith/agents/references/Hexalith.Builds --eventstore-root /home/administrator/projects/hexalith/agents/references/Hexalith.EventStore --artifacts <fresh> --output <fresh>` and `python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_*.py' -v`. Retain exact local transport commands, logs, source identities and results. No fixtures count as physical evidence.
+
+
+Executed 2026-10-29 after review patches: fresh build F and execution A at `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261029-build-f` and `f1-local-20261029-execution-a`. The packet auditor passes all 54 boundary probes, four original fault histories and the actual SDK near-cap response. Independent raw HPACK probes reproduce 65,535/65,536 acceptance and 65,537 reset. Go fixture regressions pass. Warning-free .NET verification C passes all 238 Runtime tests (101 F1 cases, 29 behavioral methods). The complete Python rerun passes 472 tests; its first retained attempt exposed a stale cleanup-test mock, corrected by asserting the exact synthetic credential passed to the existing cleanup seam.
+
+The exact frozen dependency revisions have clean detached checkouts under `f1-local-20261029-inputs`. Their original supplied checkouts had moved. The detached Platform source at `642b5bdbdf33ec1588eeef3b9a7e9f1a02aebc40` matches the retained F1 .NET source snapshot except the reviewed SDK helper; later unrelated qualification code cannot compile against the frozen owner API and was preserved. All attempts, source snapshots, commands, hashes, complete artifacts, cleanup and independent reports remain retained. The new packet authenticates verification C and Python log C; previous executed publication and historical proposed packets are retained. No authority flags opened and no acceptance registers changed. No findings deferred.

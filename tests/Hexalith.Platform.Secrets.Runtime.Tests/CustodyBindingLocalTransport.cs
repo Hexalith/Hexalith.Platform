@@ -44,6 +44,12 @@ internal static class CustodyBindingLocalTransport
                 data = CustodyBindingContract.Encode(request);
                 operation = request.Envelope.Operation;
             }
+            else if (name == "response-1048575")
+            {
+                data = [];
+                operation = "fixture-response";
+                metadata["response-wire-bytes"] = "1048575";
+            }
             else if (name.StartsWith("data-", StringComparison.Ordinal) || name.StartsWith("api-protobuf-", StringComparison.Ordinal))
             {
                 operation = "fixture-send";
@@ -90,6 +96,8 @@ internal static class CustodyBindingLocalTransport
             string? lookupIdentity = null;
             string? lookupOriginalDataSha256 = null;
             string? lookupOriginalProducer = null;
+            int? responseDataBytes = null;
+            string? responseDataSha256 = null;
             try
             {
                 var binding = new BindingRequest("synthetic-configured-role", operation) { Data = data };
@@ -107,6 +115,8 @@ internal static class CustodyBindingLocalTransport
                     if (!admitted) { throw new InvalidOperationException("Cancellation fault requires an independently observed sink admission."); }
                 }
                 BindingResponse received = await send;
+                responseDataBytes = received.Data.Length;
+                responseDataSha256 = CustodyBindingContract.Hash(received.Data.Span);
                 if (operation == "fixture-status")
                 {
                     using var status = JsonDocument.Parse(received.Data);
@@ -132,6 +142,7 @@ internal static class CustodyBindingLocalTransport
                 ProcessId = Environment.ProcessId, ChannelIncarnation = "sdk-" + Environment.ProcessId + "-" + name,
                 LookupAttempts = lookupAttempts, LookupIdentity = lookupIdentity, LookupOriginalDataSha256 = lookupOriginalDataSha256,
                 LookupOriginalProducerIncarnation = lookupOriginalProducer,
+                ResponseDataBytes = responseDataBytes, ResponseDataSha256 = responseDataSha256,
                 CancellationUnixMilliseconds = cancellationUnixMilliseconds, CompletionPermission = false });
             // Allow a deliberately late fixture delivery to remain observable
             // before the next independent original. This is no closure proof.

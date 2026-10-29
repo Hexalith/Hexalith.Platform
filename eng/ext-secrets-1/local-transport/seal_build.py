@@ -28,6 +28,24 @@ def sdk_dependency_closure(assembly):
     return files
 
 
+def fixture_closure(fixture, local=None):
+    fixture = Path(fixture)
+    local = Path(local) if local else Path(__file__).resolve().parent
+    inventory = lambda root: {str(p.relative_to(root)) for p in root.rglob("*") if p.is_file() and "__pycache__" not in p.parts}
+    if inventory(fixture) != inventory(local):
+        raise ValueError("Exact reviewed fixture file inventory required")
+    names = {str(p.relative_to(local)) for p in local.rglob("*.go")}
+    if {str(p.relative_to(fixture)) for p in fixture.rglob("*.go")} != names:
+        raise ValueError("Exact reviewed fixture Go source inventory required")
+    for name in names | {"go.sum"}:
+        if sha(fixture / name) != sha(local / name):
+            raise ValueError("Built fixture source changed: " + name)
+    expected_mod = (local / "go.mod").read_text().rstrip() + "\n\nreplace github.com/dapr/dapr => ../dapr-" + PIN + "\n"
+    if (fixture / "go.mod").read_text() != expected_mod:
+        raise ValueError("Only the pinned runtime module replacement is allowed")
+    return {name: sha(fixture / name) for name in sorted(names | {"go.mod", "go.sum"})}
+
+
 def seal(build, assembly):
     build, assembly = Path(build).resolve(), Path(assembly).resolve()
     archive_path = build / "source/dapr.tar.gz"
@@ -53,13 +71,7 @@ def seal(build, assembly):
         raise ValueError("Unexpected/missing pinned runtime source file")
     fixture = build / "source/fixture"
     local = Path(__file__).resolve().parent
-    source_names = sorted(p.name for p in local.glob("*.go")) + ["go.sum"]
-    for name in source_names:
-        if sha(fixture / name) != sha(local / name):
-            raise ValueError("Built fixture source changed: " + name)
-    fixture_mod = (fixture / "go.mod").read_text().split("\nreplace ")[0].strip()
-    if fixture_mod != (local / "go.mod").read_text().strip():
-        raise ValueError("Built fixture dependency lock changed")
+    fixture_sources = fixture_closure(fixture, local)
     go = build / "tools" / f"golang.org/toolchain@{GO_VERSION}/bin/go"
     environment = isolated_go_environment(build)
     for name in ("daprd-stable", "f1fixture"):
@@ -76,7 +88,7 @@ def seal(build, assembly):
     manifest = {"daprCommit": PIN, "runtimeFileCount": len(tree), "runtimeChangedFiles": changed,
                 "archiveSha256": sha(archive_path), "goToolchainArchiveSha256": sha(toolzip),
                 "patchedSourceSha256": tree["pkg/api/grpc/server.go"], "dependencyOrigins": origins,
-                "fixtureSources": {name: sha(fixture / name) for name in source_names + ["go.mod"]},
+                "fixtureSources": fixture_sources,
                 "generatedSources": {name: digest for name, digest in tree.items() if name.startswith("pkg/proto/")},
                 "retainedProtocols": {name: digest for name, digest in tree.items() if name in ("dapr/proto/components/v1/bindings.proto", "dapr/proto/components/v1/common.proto")},
                 "binaries": {name: sha(build / "bin" / name) for name in ("daprd-stable", "f1fixture")},
