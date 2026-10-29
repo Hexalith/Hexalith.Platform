@@ -2,7 +2,9 @@
 title: 'EXT-PROTECTION-1 production engine, erasure-root custody and owner verifier'
 type: 'feature'
 created: '2026-10-19'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
+eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
 review_loop_iteration: 0
 context:
@@ -58,7 +60,7 @@ context:
 - [ ] `../eventstore/src/Hexalith.EventStore.Server/{Security,Configuration}/` -- complete the authority methods over the injected anchor/guard/trust/registrar; add the production composition overload -- G2/G4.
 - [ ] `src/Hexalith.Platform.EventStoreHost/` -- production protection binding behind explicit configuration; fail closed when incomplete.
 - [ ] `src/Hexalith.Platform.Protection.Qualification.{Executor,Observer,Enrollment}/` + `../eventstore/tools/` -- role programs and the Live pass path for all 41 cases; command pins both commits -- G5/G6.
-- [ ] `deploy/erasure-root/` -- ERC manifests, policies and bootstrap script, prepared but not applied.
+- [x] `deploy/erasure-root/` -- ERC manifests, policies and bootstrap script, prepared but not applied.
 - [ ] Tests: component tests for each port; narrow integration against a disposable OpenBao 2.6.2 (non-revival with leaked old ciphertext, 1000-target all-or-none, pin race, lost response, cross-tenant context); offline verifier tests.
 - [ ] `../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md` -- clause map, evidence, proposed record (targets, date, command), exact missing runtime inputs -- G7.
 
@@ -68,3 +70,15 @@ context:
 - Given the delivery, then Agents files, the register and cluster state are unchanged and no Live/cohort run occurred.
 
 ## Implementation Notes
+
+### 2026-10-29 component implementation and acceptance audit
+
+Implemented native transit/KV-CAS transport, tenant-head custody, random-root wrapping, holders, pins, original-manifest recovery, epoch trim, erasure index, lifecycle/owner transition adapters, explicit EventStore provider composition and dual-target verifier pins. Prepared deployment files use Velero exclusion labels and require the independently qualified `erasure-root-no-backup` storage class; no cluster resources were applied.
+
+The remaining unchecked tasks are not complete. Concrete private authorization, occurrence/writer binding, production host composition and the three real qualification role programs are still source work. The owner command therefore lacks the required real 41-case pass path. The full-copy guarantee in the referenced custody decision's acceptance criterion 6 is unproven for historical Raft/storage/memory/operator copies; the implemented live-native trim does not establish it. Required native OpenBao 2.6.2 integration could not run because the exact image/binary is absent locally. No complete target is proposed.
+
+Verification: 29 final focused .NET tests passed; 128 broader component tests passed before the final negative-input guard; 67 offline verifier tests passed. Debug/project-reference builds reported zero warnings/errors. Counts are not additive. Source mode retained 41 cases and `liveExecuted:false`. Native, Live, cohort and Agents execution did not occur. This implementation did not edit Agents/register files; unrelated concurrent changes in the Agents checkout were preserved.
+
+Matrix audit: manifest, loss/recovery and isolation have passing component coverage, but native evidence is missing. End-to-end seal/replay and complete v23 ERC-backed block/activation races lack the new production composition and real qualification roles. Acceptance criteria 1 and 2 are not established. The workflow remains at step 3; it has not advanced to independent review or completion.
+
+See the [delivery note](../../docs/implementation/ext-protection-1-erc-component-delivery-2026-10-29.md) and [verification record](../../docs/implementation/ext-protection-1-erc-components-2026-10-29/verification.json) for evidence and remaining inputs. The frozen approved intent above is unchanged.

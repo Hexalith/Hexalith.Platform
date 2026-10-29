@@ -1,0 +1,70 @@
+{
+  "status": "IncompleteComponentDelivery",
+  "liveExecuted": false,
+  "agentsExecuted": false,
+  "clusterChanged": false,
+  "registerChanged": false,
+  "build": {
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false,
+    "warnings": 0,
+    "errors": 0
+  },
+  "componentTests": {
+    "broadPassed": 128,
+    "finalFocusedPassed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "broadRunPrecedesFinalNegativeWrapRevisionGuard": true,
+    "note": "Final focused run includes every new ERC test after the negative wrap-revision input guard. The broad run includes 100 existing component regressions; counts are not additive."
+  },
+  "offlineVerifierTests": {
+    "passed": 67,
+    "failed": 0
+  },
+  "source": {
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "preparedInputs": {
+    "preparedYamlDocuments": 6,
+    "bootstrapPublicValidation": "PASS",
+    "missingGenesisRefusal": "PASS",
+    "applied": false,
+    "effects": 0,
+    "veleroExclusionLabelsValidated": true,
+    "requiredStorageClass": "erasure-root-no-backup"
+  },
+  "nativeIntegration": "BlockedMissingLocalExactImageOrBinary",
+  "physicalCopyPolicyQualified": false,
+  "unimplemented": [
+    "ConcretePrivateErasureRootAuthorization",
+    "CompleteOccurrenceAndWriterBridge",
+    "ProductionHostConfiguration",
+    "IndependentProtectionRoleProgramsAndAll41NativeFixtures",
+    "NativeAllCopyQualification",
+    "CompleteImmutableTargets"
+  ],
+  "commands": {
+    "build": "dotnet build tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj --configuration Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithCommonsFromSource=true -nodeReuse:false -m:1 --no-restore",
+    "finalFocusedTests": "dotnet tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll -class Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests -class Hexalith.Platform.Protection.Tests.ErasureRootTransitionAuthorityTests -class Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests -class Hexalith.Platform.Protection.Tests.ErasureRootCompositionTests -noColor",
+    "offlineVerifier": "python3 -m unittest tools.tests.test_ext_protection_1 tools.tests.test_ext_protection_1_cross_language",
+    "sourceMode": "python3 tools/verify-ext-protection-1.py --mode Source"
+  },
+  "parentAcceptanceAudit": {
+    "status": "Incomplete",
+    "independentReviewCompleted": false,
+    "workflowStep": 3,
+    "missingMatrixCoverage": [
+      "EndToEndSealReplayWithProductionPorts",
+      "CompleteV23ErcBackedBlockAndActivationRaces",
+      "NativeManifestRestoreNonRevival"
+    ],
+    "agentsChangesByThisImplementation": false,
+    "unrelatedConcurrentAgentsChangesPreserved": true,
+    "committed": false,
+    "pushed": false
+  }
+}

@@ -1,0 +1,21 @@
+# Prepared A1 erasure-root custody
+
+These files are prepared only. They have not been applied. They do not qualify the all-copy contract or authorize a Live run.
+
+The dedicated namespace, single OpenBao 2.6.2 instance, persistent volume and native key hierarchy are separate from `hexalith-keys` and ordinary HMAC custody. `DurabilityPolicy.None` means there is no backup/restore recovery path. Volume loss permanently loses every protected payload. No automatic initialization, unseal, root-token retention, auto-unseal installation or key export is supplied.
+
+The namespace, pod, StatefulSet and PVC exclude Velero backups. The distinct `hexalith-erasure-root` selector prevents reusing the ordinary OpenBao workload identity. Before any future application, the actual daily snapshot job, Story 4.0 off-node jobs, storage snapshot policies, node/volume backups, support bundles and recovery/operator paths must independently exclude this namespace and volume. These manifests cannot control an out-of-repository backup job or an administrator's root access. No scheduling exclusion is claimed installed.
+
+`namespace.yaml`, `statefulset.yaml` and `network-policy.yaml` require an independently installed `erasure-root-tls` TLS Secret and an independently qualified `erasure-root-no-backup` storage class whose snapshots/backups are excluded. The prepared claim requires that exact class and cannot fall back to the cluster default; no class is installed by these files. Clients need both the namespace and pod label `hexalith.com/erc-client: "true"`. The supplied policy assumes the exact mount names `erc-transit` and `erc-heads`; narrow tenant-specific policies and native credentials must be installed separately. Runtime credentials cannot create/delete keys, export/backup/restore keys, list/read head metadata or invoke a Raft snapshot. Trusted operator/root credentials can bypass those ACLs and therefore remain part of the required copy inventory.
+
+`bootstrap.py` defaults to public-input validation with zero effects. Its independently reviewed JSON enrollment must contain exactly `address`, `storeId`, `enrollmentId`, `transitMount`, `headMount`, `nativeKeys` and `genesisAnchors`. `nativeKeys` maps each canonical tenant to its distinct native key name. `genesisAnchors` maps each tenant to its independently selected owner-scope/genesis-SHA256 pairs. Empty or guessed genesis is refused. Example validation, after a real public enrollment exists:
+
+```sh
+python3 deploy/erasure-root/bootstrap.py --enrollment /absolute/independently-reviewed-enrollment.json
+```
+
+The separate `--apply` switch is reserved for a later expressly authorized provisioning task. It uses `env:ERC_BOOTSTRAP_TOKEN` by default, creates no credential, never initializes/unseals OpenBao, uses CAS=0 to refuse replacing an existing tenant head, and never retries an ambiguous mutation. A partial/unknown bootstrap requires exact native reconciliation, preserving the original enrollment. A bootstrap result is always unqualified.
+
+The all-copy acceptance blocker remains. Native transit trim removes old versions from the live native inventory and refuses old ciphertext; this does not establish destruction of historical Raft entries, database pages, memory, swap, core dumps or operator copies. Snapshot exclusion alone is insufficient for the register's complete all-copy requirement. These preparation files do not bypass that blocker.
+
+Rotate creates new versions only. Each retained original manifest selects its successor explicitly, and every wrap/rewrap specifies that head-selected version. Concurrent/delayed rotations may create unused newer versions; trim destroys only versions below the selected successor and leaves all newer versions intact. Component tests cover this recovery schedule and subsequent root issue. This still requires native verification before a production claim.

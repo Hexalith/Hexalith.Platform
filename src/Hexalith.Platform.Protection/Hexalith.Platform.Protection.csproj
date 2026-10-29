@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" />
     <ProjectReference Include="../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" />
     <ProjectReference Include="../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj" />
   </ItemGroup>

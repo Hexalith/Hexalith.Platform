@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "docker",
+    "image",
+    "inspect",
+    "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+    "--format",
+    "{{.Id}}"
+  ],
+  "exitCode": 1,
+  "stdout": "\n",
+  "stderr": "Error response from daemon: No such image: quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641\n",
+  "nativeExecuted": false
+}
