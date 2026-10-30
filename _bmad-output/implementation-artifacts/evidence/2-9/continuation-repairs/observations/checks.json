@@ -1,0 +1,59 @@
+[
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0,
+    "seconds": 27.17
+  },
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Tests/bin/Debug/net10.0/Hexalith.Parties.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1,
+    "seconds": 77.305
+  },
+  {
+    "project": "Hexalith.EventStore.IntegrationTests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.IntegrationTests/Hexalith.EventStore.IntegrationTests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "exitCode": 0,
+    "seconds": 31.724
+  },
+  {
+    "project": "Hexalith.EventStore.IntegrationTests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.IntegrationTests/bin/Debug/net10.0/Hexalith.EventStore.IntegrationTests.dll",
+      "-class",
+      "*ProjectionDeliveryWriterProtocolCutoverPolicyTests",
+      "-class",
+      "*ProjectionDeliveryWriterProtocolTestLeaseTests"
+    ],
+    "exitCode": 0,
+    "seconds": 1.718
+  }
+]

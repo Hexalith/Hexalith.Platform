@@ -65,7 +65,8 @@ public sealed class OpenBaoErasureRootIntegrationTests
         var looked = await fixture.Custody.LookupAsync(request, "thousand-native-reservation", Token);
         JsonSerializer.Serialize(looked).ShouldBe(JsonSerializer.Serialize(original));
         var head = JsonSerializer.Deserialize<ErasureRootHead>((await fixture.Native.ReadHeadAsync("tenant-a", Token))!.Bytes, ErasureRootCustody.Json)!;
-        head.Targets.ShouldBeEmpty(); head.Erased.Count.ShouldBe(1000); head.Pending.ShouldBeNull();
+        head.Targets.ShouldBeEmpty(); head.Erased.ShouldBeEmpty(); head.Pending.ShouldBeNull();
+        (await new ErasureRootOccurrenceIndex(fixture.Native, fixture.Installation, "tenant-a").ReadAllAsync<ErasureRootErasure>(head.CustodyHistoryIndexRoot, "Erased:", Token)).Count.ShouldBe(1000);
     }
 
     [Fact(Skip = "Requires the owned disposable OpenBao native harness.", SkipUnless = nameof(Enabled))]
@@ -82,7 +83,7 @@ public sealed class OpenBaoErasureRootIntegrationTests
         var head = JsonSerializer.Deserialize<ErasureRootHead>((await fixture.Native.ReadHeadAsync("tenant-a", Token))!.Bytes, ErasureRootCustody.Json)!;
         if (pinResult.Status == CustodyKeyLifecycleStatus.Pinned)
         { consumed.State.ShouldBe(DeletionManifestProviderState.Unknown); head.Epoch.ShouldBe(1); head.Targets.Count.ShouldBe(2); head.Erased.ShouldBeEmpty(); }
-        else { consumed.State.ShouldBe(DeletionManifestProviderState.Consumed); head.Epoch.ShouldBe(2); head.Targets.ShouldBeEmpty(); head.Erased.Count.ShouldBe(2); }
+        else { consumed.State.ShouldBe(DeletionManifestProviderState.Consumed); head.Epoch.ShouldBe(2); head.Targets.ShouldBeEmpty(); (await new ErasureRootOccurrenceIndex(fixture.Native, fixture.Installation, "tenant-a").ReadAllAsync<ErasureRootErasure>(head.CustodyHistoryIndexRoot, "Erased:", Token)).Count.ShouldBe(2); }
     }
 
     [Fact(Skip = "Requires the owned disposable OpenBao native harness.", SkipUnless = nameof(Enabled))]
@@ -126,17 +127,17 @@ public sealed class OpenBaoErasureRootIntegrationTests
         (await fixture.Custody.SaveAsync("tenant-a", historyHead.Version, historyHead.Head, Token)).ShouldBeTrue();
         int callsBefore = fixture.Transport.PublicStages.Count;
         var bounded = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
-        (fixture.Transport.PublicStages.Count - callsBefore).ShouldBe(1);
+        (fixture.Transport.PublicStages.Count - callsBefore).ShouldBeLessThan(16);
         bounded.Head.GuardAttempts.ShouldBeEmpty(); bounded.Head.GuardAdmissions.ShouldBeEmpty(); bounded.Head.ConditionalHoldOriginals.ShouldBeEmpty();
         callsBefore = fixture.Transport.PublicStages.Count;
         (await fixture.Custody.ReadGuardAttemptAsync("tenant-a", bounded.Head, lastIntent, Token))!.Receipt.ReceiptId.ShouldBe("native-guard-refusal-127");
-        (fixture.Transport.PublicStages.Count - callsBefore).ShouldBe(1);
+        (fixture.Transport.PublicStages.Count - callsBefore).ShouldBeLessThan(16);
         using (var historyHolder = await fixture.Custody.UnwrapAsync(root, "native-bounded-holder", Token))
         {
             historyHolder.ShouldNotBeNull(); historyHolder.Dispose();
             callsBefore = fixture.Transport.PublicStages.Count;
             (await fixture.Custody.CompleteHolderAsync(root, historyHolder, Token)).ShouldBeTrue();
-            (fixture.Transport.PublicStages.Count - callsBefore).ShouldBeLessThan(12);
+            (fixture.Transport.PublicStages.Count - callsBefore).ShouldBeLessThan(32);
         }
         // Actual immutable archive transport runs in this same owned native case, with no synthetic archive provider.
         var legacyHead = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
@@ -148,13 +149,13 @@ public sealed class OpenBaoErasureRootIntegrationTests
         (await fixture.Custody.CompleteHolderAsync(root, holder, Token)).ShouldBeTrue();
         var held = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
         var retainedRoot = held.Head.Targets[ErasureRootCustody.TargetId(root.Identity)];
-        retainedRoot.CompletedHolders.ShouldBeEmpty(); retainedRoot.CompletedHolderArchive.ShouldNotBeNull();
-        byte[] holderBytes = (await fixture.Native.ReadArchiveAsync("tenant-a", retainedRoot.CompletedHolderArchive, Token))!;
-        JsonSerializer.Deserialize<ErasureRootHolderArchive>(holderBytes)!.HolderId.ShouldBe(holder.HolderId);
+        retainedRoot.CompletedHolders.ShouldBeEmpty(); retainedRoot.CompletedHolderIndexRoot.ShouldNotBeNull();
+        var holderOriginal = await new ErasureRootOccurrenceIndex(fixture.Native, fixture.Installation, "tenant-a").ReadAsync<ErasureRootHolderIdentity>(retainedRoot.CompletedHolderIndexRoot, holder.HolderId, Token);
+        holderOriginal!.HolderId.ShouldBe(holder.HolderId); holderOriginal.Registration.ShouldBe(root);
         (await fixture.Custody.CompleteHolderAsync(root, holder, Token)).ShouldBeTrue();
         (await fixture.Custody.UnwrapAsync(root, holder.HolderId, Token)).ShouldBeNull();
         (await fixture.Custody.UnwrapAsync(root, "native-legacy-retired", Token)).ShouldBeNull();
-        (await fixture.Native.ReadArchiveAsync("tenant-b", retainedRoot.CompletedHolderArchive, Token)).ShouldBeNull();
+        (await fixture.Native.ReadArchiveAsync("tenant-b", retainedRoot.CompletedHolderIndexRoot!, Token)).ShouldBeNull();
 
         const string scope = "tenant-a:native-archive-owner";
         string genesis = Convert.ToHexString(SHA256.HashData("native-genesis"u8));
@@ -169,9 +170,9 @@ public sealed class OpenBaoErasureRootIntegrationTests
         (await authority.AdmitTransitionAsync(second, Token)).ShouldBeTrue(); (await authority.RecordTransitionAsync(second, Token)).ShouldBeTrue();
         (await authority.VerifyTransitionAsync(first, Token)).ShouldBeTrue();
         (await authority.ReadCurrentOriginalAsync(scope, Token))!.TargetBytes.ShouldBe(secondBytes);
-        var archived = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value.Head.Anchors[scope];
+        var archived = (await fixture.Custody.ReadAsync("tenant-a", Token, false, new HashSet<string>([scope], StringComparer.Ordinal)))!.Value.Head.Anchors[scope];
         var rawHead = JsonSerializer.Deserialize<ErasureRootHead>((await fixture.Native.ReadHeadAsync("tenant-a", Token))!.Bytes, ErasureRootCustody.Json)!;
-        rawHead.Anchors[scope].Completed.ShouldBeEmpty(); rawHead.Anchors[scope].Admissions.ShouldBeEmpty();
+        rawHead.Anchors.ShouldBeEmpty(); rawHead.AnchorIndexRoot.ShouldNotBeNull();
         byte[] originalArchive = (await fixture.Native.ReadArchiveAsync("tenant-a", archived.ArchiveHead!, Token))!;
         (await fixture.Native.CreateArchiveAsync("tenant-a", archived.ArchiveHead!, originalArchive, Token)).ShouldBeTrue();
         (await fixture.Native.CreateArchiveAsync("tenant-a", archived.ArchiveHead!, "changed"u8.ToArray(), Token)).ShouldBeFalse();

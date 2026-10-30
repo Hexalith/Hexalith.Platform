@@ -64,7 +64,7 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
         }
         await fixture.RunAsync(recipes[caseId]["DestroyDekManifest"], caseId, "DestroyDekManifest");
         string binding = new('a', 64); var producer = ProtectionQualificationProducerIdentity.Capture(fixture.Engine.Engine, fixture.Consumption.Custody.Installation, "component-executor", binding);
-        var selected = (await fixture.Consumption.Custody.ReadAsync("tenant-a", token))!.Value; var expected = new JsonArray();
+        var selected = (await fixture.Consumption.Custody.ReadAsync("tenant-a", token, true))!.Value; var expected = new JsonArray();
         selected.Head.QualificationAttempts[binding] = "component-attempt";
         foreach (var entry in selected.Head.QualificationOperations.ToArray())
         {
@@ -105,7 +105,7 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
                     var unrelated = original with { Capability = original.Capability with { BatchId = ErasureRootCustody.Hash("unrelated-batch-" + index), DeletionRequestId = "unrelated-request-" + index } };
                     (await fixture.Consumption.Actor.RegisterAsync(unrelated)).Status.ShouldBe(DeletionConsumptionStatus.AlreadyDestroyedByBatch);
                 }
-                var history = (await fixture.Consumption.Custody.ReadAsync("tenant-a", token))!.Value;
+                var history = (await fixture.Consumption.Custody.ReadAsync("tenant-a", token, true))!.Value;
                 for (int index = 0; index < 128; index++)
                 {
                     var transition = new GovernanceGuardTransition("tenant-a", "unrelated-guard-" + index, GovernanceGuardOperation.RegisterHold, index, "epoch", "unrelated-request", null, null, null, null, null, null, new string('x', 2048), "");

@@ -9,9 +9,13 @@ using Hexalith.Platform.Custody;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>A1 ERC implementation component. A single native tenant-head CAS serializes roots, holds, durable holders and original manifests; terminal receipts also require independently qualified copy/restore authorization. This unregistered component does not qualify native storage sanitization.</summary>
-public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInstallation installation,
+public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureRootInstallation installation,
     IErasureRootAuthorization authorization) : IAtomicDeletionManifestProvider, ICustodyKeyLifecycleProvider
 {
+    private readonly ErasureRootQuiescence _quiescence = new();
+    internal void BeginQuiescence() => _quiescence.Close();
+    internal Task WaitForQuiescenceAsync(CancellationToken token) => _quiescence.WaitAsync(token);
+
     /// <summary>Health of this owning process's disposed native verifier holders.</summary>
     public ErasureRootCompletionDiagnostics CompletionDiagnostics { get; } = new();
     private readonly System.Runtime.CompilerServices.ConditionalWeakTable<OwnedErasureRootKey, CustodyKeyRegistration> _issuedHolders = new();
@@ -35,6 +39,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         return count;
     }
     internal ErasureRootInstallation Installation => installation;
+    internal IErasureRootStore Store => store;
     internal static readonly JsonSerializerOptions Json = new() { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
     /// <summary>Retains only the exact current native pin-refusal vector under explicit private observation permission. It cannot admit a manifest or bypass an owner's reservation.</summary>
     public async Task<ErasureRootPinRefusal[]?> CapturePinnedManifestRefusalAsync(DeletionBatchConsumptionRequest request, string operationId, CancellationToken token = default)
@@ -46,8 +51,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             if (!await authorization.AuthorizeAsync(tenant, operationId, "RecordPinnedManifestRefusal", digest, token).ConfigureAwait(false)) { return null; }
             var read = await ReadAsync(tenant, token).ConfigureAwait(false);
             if (read is not { } head || head.Head.Pending is not null) { return null; }
-            if (head.Head.PinRefusals.TryGetValue(operationId, out var retained)) { return retained.RequestDigest == digest ? retained.Refusals : null; }
-            if (head.Head.PinRefusals.Count >= 10000) { return null; }
+            if (await ReadRetainedAsync(head.Head, "PinRefusals", head.Head.PinRefusals, operationId, token).ConfigureAwait(false) is { } retained) { return retained.RequestDigest == digest ? retained.Refusals : null; }
             var refusals = new List<ErasureRootPinRefusal>();
             foreach (var target in request.Targets)
             {
@@ -80,7 +84,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             if (!await authorization.AuthorizeAsync(identity.TenantId, operationId, "WrapDek", digest, token).ConfigureAwait(false)) { return false; }
             var read = await ReadAsync(identity.TenantId, token).ConfigureAwait(false);
             return read is { } current && await ValidateOccurrenceWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
-                && current.Head.Pending is null && !current.Head.Erased.ContainsKey(TargetId(identity))
+                && await ValidateLifetimeWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
+                && current.Head.Pending is null && await ReadErasedAsync(current.Head, TargetId(identity), token).ConfigureAwait(false) is null
                 && (!current.Head.Targets.TryGetValue(TargetId(identity), out var existing) || existing.Registration.Identity == identity
                     && existing.Registration.OperationId == operationId && existing.Registration.ExpectedRevision == expectedLifecycleRevision);
         }
@@ -102,9 +107,9 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             {
                 if (!await authorization.AuthorizeAsync(identity.TenantId, operationId, "WrapDek", digest, cancellationToken).ConfigureAwait(false)) { return null; }
                 var current = await ReadAsync(identity.TenantId, cancellationToken).ConfigureAwait(false);
-                if (current is not { } read || read.Head.Pending is not null || !await ValidateOccurrenceWriteSetAsync(identity.TenantId, read.Head, cancellationToken).ConfigureAwait(false)) { return null; }
+                if (current is not { } read || read.Head.Pending is not null || !await ValidateLifetimeWriteSetAsync(identity.TenantId, read.Head, cancellationToken).ConfigureAwait(false) || !await ValidateOccurrenceWriteSetAsync(identity.TenantId, read.Head, cancellationToken).ConfigureAwait(false)) { return null; }
                 string id = TargetId(identity);
-                if (read.Head.Erased.ContainsKey(id)) { return null; }
+                if (await ReadErasedAsync(read.Head, id, cancellationToken).ConfigureAwait(false) is not null) { return null; }
                 if (read.Head.Targets.TryGetValue(id, out var prior))
                 {
                     return prior.Registration.Identity == identity && prior.Registration.OperationId == operationId
@@ -135,6 +140,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     public async Task<OwnedErasureRootKey?> UnwrapAsync(CustodyKeyRegistration registration, string holderId,
         CancellationToken cancellationToken = default)
     {
+        using var acquisition = _quiescence.Enter();
+        if (acquisition is null) { return null; }
         ValidateIdentity(registration.Identity);
         if (await ReadPermanentLossAsync(registration.Identity.TenantId, cancellationToken).ConfigureAwait(false) is not null) { return null; }
         ArgumentException.ThrowIfNullOrWhiteSpace(holderId);
@@ -192,7 +199,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                     // Combined with this process's actual disposed issued instance and exact immutable identity,
                     // the independently current erasure index reconciles a lost completion acknowledgement.
                     var identity = new ErasureRootHolderIdentity(registration, holder.HolderId);
-                    var marker = read.Head.Erased.TryGetValue(TargetId(registration.Identity), out var erased) && erased.Registration == registration
+                    var marker = await ReadErasedAsync(read.Head, TargetId(registration.Identity), cancellationToken).ConfigureAwait(false) is { } erased && erased.Registration == registration
                         ? await ErasureRootArchives.ReadBytesAsync(store, tenant, Hash(identity), cancellationToken).ConfigureAwait(false) : null;
                     return marker is not null && marker.AsSpan().SequenceEqual(JsonSerializer.SerializeToUtf8Bytes(identity));
                 }
@@ -200,15 +207,28 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 if (!target.Holders.Contains(holder.HolderId, StringComparer.Ordinal))
                 { return await HasCompletedHolderAsync(tenant, target, holder.HolderId, cancellationToken).ConfigureAwait(false); }
                 _ = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderIdentity(registration, holder.HolderId), cancellationToken).ConfigureAwait(false);
-                string? pointer = target.CompletedHolderArchive;
+                string? pointer = target.CompletedHolderIndexRoot;
+                var holderIndex = new ErasureRootOccurrenceIndex(store, installation, tenant);
                 foreach (string completed in target.CompletedHolders)
                 {
-                    _ = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderIdentity(registration, completed), cancellationToken).ConfigureAwait(false);
-                    pointer = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderArchive(registration, completed, pointer), cancellationToken).ConfigureAwait(false);
+                    var identity = new ErasureRootHolderIdentity(registration, completed);
+                    _ = await ErasureRootArchives.WriteAsync(store, tenant, identity, cancellationToken).ConfigureAwait(false);
+                    pointer = await holderIndex.WriteAsync(pointer, completed, identity, cancellationToken).ConfigureAwait(false);
                 }
-                pointer = await ErasureRootArchives.WriteAsync(store, tenant, new ErasureRootHolderArchive(registration, holder.HolderId, pointer), cancellationToken).ConfigureAwait(false);
+                string? legacy = target.CompletedHolderArchive; var seen = new HashSet<string>(StringComparer.Ordinal);
+                while (legacy is not null)
+                {
+                    if (!seen.Add(legacy)) { throw new InvalidOperationException("Cyclic completed holder migration."); }
+                    byte[] bytes = await ErasureRootArchives.ReadBytesAsync(store, tenant, legacy, cancellationToken).ConfigureAwait(false)
+                        ?? throw new InvalidOperationException("Complete legacy holder ancestry required.");
+                    var original = JsonSerializer.Deserialize<ErasureRootHolderArchive>(bytes, Json)!;
+                    if (Hash(original) != legacy || original.Registration != registration) { throw new InvalidOperationException("Exact legacy holder identity required."); }
+                    pointer = await holderIndex.WriteAsync(pointer, original.HolderId, new ErasureRootHolderIdentity(registration, original.HolderId), cancellationToken).ConfigureAwait(false);
+                    legacy = original.Previous;
+                }
+                pointer = await holderIndex.WriteAsync(pointer, holder.HolderId, new ErasureRootHolderIdentity(registration, holder.HolderId), cancellationToken).ConfigureAwait(false);
                 read.Head.Targets[TargetId(registration.Identity)] = target with { Holders = target.Holders.Where(id => id != holder.HolderId).ToArray(),
-                    CompletedHolders = [], CompletedHolderArchive = pointer };
+                    CompletedHolders = [], CompletedHolderArchive = null, CompletedHolderIndexRoot = pointer };
                 if (await SaveAsync(tenant, read.Version, read.Head, cancellationToken).ConfigureAwait(false)) { return true; }
             }
         }
@@ -224,7 +244,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         {
             if (!await authorization.AuthorizeAsync(target.TenantId, TargetId(target), "ReadErasure", Hash(target), cancellationToken).ConfigureAwait(false)) { return null; }
             var current = await ReadAsync(target.TenantId, cancellationToken).ConfigureAwait(false);
-            return current is { } read && read.Head.Pending is null && read.Head.Erased.TryGetValue(TargetId(target), out var erased)
+            return current is { } read && read.Head.Pending is null && await ReadErasedAsync(read.Head, TargetId(target), cancellationToken).ConfigureAwait(false) is { } erased
                 && erased.Receipt.Target == target ? erased.Receipt : null;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -253,8 +273,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             {
                 var current = await ReadAsync(tenant, token).ConfigureAwait(false);
                 if (current is not { } read) { return unknown; }
-                if (read.Head.ManifestArchives.TryGetValue(request.Capability.BatchId, out var archivedManifest))
-                { read.Head.Manifests[request.Capability.BatchId] = await ReadManifestAsync(tenant, request.Capability.BatchId, archivedManifest, read.Head.Epoch, token).ConfigureAwait(false); }
+                _ = await ReadManifestOriginalAsync(tenant, read.Head, request.Capability.BatchId, token).ConfigureAwait(false);
                 if (read.Head.Manifests.TryGetValue(request.Capability.BatchId, out var completed))
                 {
                     return completed.RequestDigest == digest && completed.ReservationReceiptId == reservation
@@ -274,7 +293,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 foreach (var target in request.Targets)
                 {
                     string id = TargetId(target);
-                    if (read.Head.Erased.ContainsKey(id) || !read.Head.Targets.TryGetValue(id, out var root)
+                    if (await ReadErasedAsync(read.Head, id, token).ConfigureAwait(false) is not null || !read.Head.Targets.TryGetValue(id, out var root)
                         || root.Registration.Identity.TenantId != tenant || root.Pins.Length != 0 || root.Holders.Length != 0) { return unknown; }
                     selected.Add(id);
                 }
@@ -298,6 +317,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     {
         var pending = head.Pending!;
         string tenant = head.TenantId;
+        if (!await ValidateLifetimeWriteSetAsync(tenant, head, token).ConfigureAwait(false)) { return null; }
         if (!ManifestCapacity(head, pending)) { return null; }
         int actual = await store.ReadEpochAsync(tenant, token).ConfigureAwait(false);
         if (actual < pending.PredecessorEpoch) { return null; }
@@ -349,8 +369,9 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         if (!await SaveAsync(tenant, version, terminal, token).ConfigureAwait(false)) { return null; }
         // The terminal receipt is returned only from a fresh native read after the irreversible native version inventory check.
         var observed = await ReadAsync(tenant, token).ConfigureAwait(false);
-        if (observed is not { } final || final.Head.Pending is not null || !final.Head.ManifestArchives.TryGetValue(pending.Request.Capability.BatchId, out var pointer)) { return null; }
-        var original = await ReadManifestAsync(tenant, pending.Request.Capability.BatchId, pointer, final.Head.Epoch, token).ConfigureAwait(false);
+        if (observed is not { } final || final.Head.Pending is not null) { return null; }
+        var original = await ReadManifestOriginalAsync(tenant, final.Head, pending.Request.Capability.BatchId, token).ConfigureAwait(false);
+        if (original is null) { return null; }
         return Hash(original) == Hash(completedOriginal)
             ? new(tenant, pending.Request.Capability.BatchId, pending.ReservationReceiptId, DeletionManifestProviderState.Consumed, original.Receipts) : null;
     }
@@ -375,10 +396,10 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
                 if (!await authorization.AuthorizeAsync(tenant, request.OperationId, effect ? "ApplyKeyLifecycle" : "LookupKeyLifecycle", digest, token).ConfigureAwait(false)) { return unknown; }
                 var current = await ReadAsync(tenant, token).ConfigureAwait(false);
                 if (current is not { } read) { return unknown; }
-                if (read.Head.LifecycleOutcomes.TryGetValue(request.OperationId, out var prior))
+                if (await ReadLifecycleAsync(read.Head, request.OperationId, token).ConfigureAwait(false) is { } prior)
                 { return prior.Identity == request.Identity && prior.RequestDigest == digest ? prior : unknown with { Status = CustodyKeyLifecycleStatus.Conflict }; }
                 if (request.Action == CustodyKeyLifecycleAction.Destroy && read.Head.Pending is null
-                    && read.Head.Erased.TryGetValue(TargetId(request.Identity), out var covered)
+                    && await ReadErasedAsync(read.Head, TargetId(request.Identity), token).ConfigureAwait(false) is { } covered
                     && covered.Registration == registration && covered.ReservationReceiptId == request.ProtectionReservationReceiptId
                     && await authorization.VerifyLifecycleAsync(request, token).ConfigureAwait(false))
                 {
@@ -428,6 +449,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             || head.Targets is null || head.Erased is null || head.Manifests is null || head.LifecycleOutcomes is null || head.Anchors is null
             || head.Occurrences is null || head.SourceOriginals is null || head.SourceReservations is null || head.SealedOriginals is null
             || head.RevocationOriginals is null || head.GuardAttempts is null || head.QualificationAttempts is null || head.QualificationOperations is null) { return null; }
+        await ValidateLegacyLifetimeAsync(head, token).ConfigureAwait(false);
         foreach (var entry in head.Targets)
         {
             var target = entry.Value;
@@ -443,6 +465,12 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         }
         if (head.Pending is { } pending && (pending.Request.Capability.TenantId != tenant || pending.PredecessorEpoch != head.Epoch
             || pending.SuccessorEpoch != head.Epoch + 1 || pending.RequestDigest != Hash(new { request = pending.Request, reservation = pending.ReservationReceiptId }))) { return null; }
+        if (history) { await HydrateLifetimeAsync(head, token).ConfigureAwait(false); }
+        var selectedScopes = scopes ?? new HashSet<string>(StringComparer.Ordinal)
+        { DeletionConsumptionActor.GetOwnerScope(tenant), ErasureRootOccurrenceAuthority.Scope(tenant),
+            CustodyKeyLifecycleActor.GetActorId(tenant) + "|custody-key-lifecycle-candidate-v1" };
+        foreach (string scope in selectedScopes)
+        { _ = await ReadRetainedAsync(head, "Anchors", head.Anchors, scope, token).ConfigureAwait(false); }
         if (history)
         {
             await ReadIndexAsync(tenant, head.GuardAdmissionArchives, head.GuardAdmissions, token).ConfigureAwait(false);
@@ -503,7 +531,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
 
     internal async Task<bool> SaveAsync(string tenant, long version, ErasureRootHead head, CancellationToken token)
     {
-        if (!await ValidateOccurrenceWriteSetAsync(tenant, head, token).ConfigureAwait(false))
+        if (!await ValidateLifetimeWriteSetAsync(tenant, head, token).ConfigureAwait(false)
+            || !await ValidateOccurrenceWriteSetAsync(tenant, head, token).ConfigureAwait(false))
         { throw new InvalidOperationException("Explicit current same-ERC occurrence retention/migration authorization required."); }
         var anchors = new SortedDictionary<string, ErasureRootAnchor>(StringComparer.Ordinal);
         foreach (var entry in head.Anchors)
@@ -581,6 +610,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         var compact = head with { OccurrenceIndexRoot = occurrenceRoot, SourceOriginals = new(StringComparer.Ordinal), Occurrences = new(StringComparer.Ordinal), SourceReservations = new(StringComparer.Ordinal), SealedOriginals = new(StringComparer.Ordinal), Anchors = anchors, Manifests = new(StringComparer.Ordinal), ManifestArchives = manifests, Pending = pending,
             ConditionalHoldOriginalArchives = conditionalHolds, ConditionalHoldOriginals = new(StringComparer.Ordinal),
             GuardSigningIntents = signingIntents, GuardAdmissionArchives = guardAdmissions, GuardAttemptArchives = guardAttempts, GuardAdmissions = new(StringComparer.Ordinal), GuardAttempts = new(StringComparer.Ordinal) };
+        compact = await CompactLifetimeAsync(compact, token).ConfigureAwait(false);
         // Every metadata CAS crossing Pending must retain its preparation/terminal reservation. Use the
         // actual compact archive pointers here: hydrated originals would undercount newly archived indexes.
         if (!FitsHead(compact) || compact.Pending is { } reserved && !ManifestCapacity(compact, reserved))
@@ -626,6 +656,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     internal async Task<bool> HasCompletedHolderAsync(string tenant, ErasureRootTarget target, string holder, CancellationToken token)
     {
         if (target.CompletedHolders.Contains(holder, StringComparer.Ordinal)) { return true; }
+        var indexed = await new ErasureRootOccurrenceIndex(store, installation, tenant).ReadAsync<ErasureRootHolderIdentity>(target.CompletedHolderIndexRoot, holder, token).ConfigureAwait(false);
+        if (indexed is not null) { return indexed.Registration == target.Registration && indexed.HolderId == holder; }
         string? pointer = target.CompletedHolderArchive;
         var seen = new HashSet<string>(StringComparer.Ordinal);
         while (pointer is not null)
@@ -648,21 +680,22 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         {
             var before = head.Targets[entry.Key]; var after = entry.Value;
             if (after.Registration != before.Registration || after.Wrapped.Context != before.Wrapped.Context || !after.Pins.SequenceEqual(before.Pins)
-                || !after.Holders.SequenceEqual(before.Holders) || !after.CompletedHolders.SequenceEqual(before.CompletedHolders) || after.CompletedHolderArchive != before.CompletedHolderArchive
+                || !after.Holders.SequenceEqual(before.Holders) || !after.CompletedHolders.SequenceEqual(before.CompletedHolders) || after.CompletedHolderArchive != before.CompletedHolderArchive || after.CompletedHolderIndexRoot != before.CompletedHolderIndexRoot
                 || after.Wrapped.Ciphertext.Length > 256 || !after.Wrapped.Ciphertext.StartsWith("vault:v" + original.SuccessorEpoch.ToString(CultureInfo.InvariantCulture) + ":", StringComparison.Ordinal)) { return false; }
         }
         return true;
     }
     internal Task<ErasureRootGuardAttempt?> ReadGuardAttemptAsync(string tenant, ErasureRootHead head, string intent, CancellationToken token)
-        => ReadIndexedAsync(tenant, head.GuardAttemptArchives, head.GuardAttempts, intent, token);
+        => ReadIndexedAsync(tenant, head, "GuardAttemptArchives", head.GuardAttemptArchives, head.GuardAttempts, intent, token);
     internal Task<ErasureRootGuardAdmission?> ReadGuardAdmissionAsync(string tenant, ErasureRootHead head, string intent, CancellationToken token)
-        => ReadIndexedAsync(tenant, head.GuardAdmissionArchives, head.GuardAdmissions, intent, token);
+        => ReadIndexedAsync(tenant, head, "GuardAdmissionArchives", head.GuardAdmissionArchives, head.GuardAdmissions, intent, token);
     internal Task<System.Text.Json.Nodes.JsonObject?> ReadConditionalHoldOriginalAsync(string tenant, ErasureRootHead head, string id, CancellationToken token)
-        => ReadIndexedAsync(tenant, head.ConditionalHoldOriginalArchives, head.ConditionalHoldOriginals, id, token);
-    private async Task<T?> ReadIndexedAsync<T>(string tenant, SortedDictionary<string, string> pointers, SortedDictionary<string, T> originals, string id, CancellationToken token) where T : class
+        => ReadIndexedAsync(tenant, head, "ConditionalHoldOriginalArchives", head.ConditionalHoldOriginalArchives, head.ConditionalHoldOriginals, id, token);
+    private async Task<T?> ReadIndexedAsync<T>(string tenant, ErasureRootHead head, string collection, SortedDictionary<string, string> pointers, SortedDictionary<string, T> originals, string id, CancellationToken token) where T : class
     {
         if (originals.TryGetValue(id, out var legacy)) { return legacy; }
-        if (!pointers.TryGetValue(id, out var pointer)) { return null; }
+        var pointer = await ReadRetainedAsync(head, collection, pointers, id, token).ConfigureAwait(false);
+        if (pointer is null) { return null; }
         byte[] bytes = await ErasureRootArchives.ReadBytesAsync(store, tenant, pointer, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Committed ERC original unavailable.");
         var original = JsonSerializer.Deserialize<T>(bytes, Json) ?? throw new InvalidOperationException("Invalid committed ERC original.");
         if (Hash(original) != pointer) { throw new InvalidOperationException("Committed ERC original identity conflict."); }
@@ -694,7 +727,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     internal async Task<ErasureRootManifest?> ReadManifestOriginalAsync(string tenant, ErasureRootHead head, string batch, CancellationToken token)
     {
         if (head.Manifests.TryGetValue(batch, out var original)) { return original; }
-        if (!head.ManifestArchives.TryGetValue(batch, out var pointer)) { return null; }
+        var pointer = await ReadRetainedAsync(head, "ManifestArchives", head.ManifestArchives, batch, token).ConfigureAwait(false);
+        if (pointer is null) { return null; }
         var retained = await ReadManifestAsync(tenant, batch, pointer, head.Epoch, token).ConfigureAwait(false);
         head.Manifests.Add(batch, retained); return retained;
     }
@@ -736,7 +770,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             if (prior is not null) { return prior; }
             if (recovery) { return null; }
             var policy = await store.ReadPolicyAsync(tenant, token).ConfigureAwait(false);
-            string state = Hash(new { current.Head.Epoch, current.Head.Pending, current.Head.Targets, current.Head.Erased, current.Head.OccurrenceIndexRoot,
+            string state = Hash(new { current.Head.Epoch, current.Head.Pending, current.Head.Targets, current.Head.CustodyHistoryIndexRoot, current.Head.Erased, current.Head.OccurrenceIndexRoot,
                 current.Head.Occurrences, current.Head.SourceOriginals, current.Head.SourceReservations, current.Head.SealedOriginals, current.Head.ManifestArchives, current.Head.Manifests });
             var confirmed = await store.ReadHeadAsync(tenant, token).ConfigureAwait(false);
             if (confirmed?.Version != current.Version || Hash(policy) != Hash(await store.ReadPolicyAsync(tenant, token).ConfigureAwait(false))) { continue; }
@@ -762,6 +796,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
     private static bool FitsHead(ErasureRootHead head) => JsonSerializer.SerializeToUtf8Bytes(head, Json).Length <= OpenBaoErasureRootStore.MaximumHeadBytes;
     private static bool ManifestCapacity(ErasureRootHead head, ErasureRootManifest original)
     {
+        if (head.QualificationAttempts.Any(pair => pair.Key.Length is < 1 or > 2048 || pair.Value.Length is < 1 or > 200 || pair.Value.Any(char.IsControl))) { return false; }
         // Reserve worst supported native ciphertext framing and terminal indexes before rotation. Archives are bounded separately.
         var erased = new SortedDictionary<string, ErasureRootErasure>(head.Erased, StringComparer.Ordinal);
         foreach (var receipt in original.Receipts)
@@ -775,16 +810,10 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         foreach (var entry in head.Targets.Where(value => !excluded.Contains(value.Key)))
         { survivors.Add(entry.Key, entry.Value with { Wrapped = entry.Value.Wrapped with { Ciphertext = new string('X', 256) } }); }
         if (JsonSerializer.SerializeToUtf8Bytes(PreparedSurvivors(original, survivors), Json).Length > ErasureRootArchives.MaximumOriginalBytes) { return false; }
-        var manifests = new SortedDictionary<string, string>(head.ManifestArchives, StringComparer.Ordinal);
-        foreach (var entry in head.Manifests) { manifests[entry.Key] = new string('0', 64); }
-        manifests[original.Request.Capability.BatchId] = new string('0', 64);
-        var anchors = new SortedDictionary<string, ErasureRootAnchor>(StringComparer.Ordinal);
-        foreach (var entry in head.Anchors)
-        { anchors.Add(entry.Key, entry.Value with { Completed = new(StringComparer.Ordinal), Admissions = new(StringComparer.Ordinal) }); }
-        var compact = head with { Anchors = anchors, Manifests = new(StringComparer.Ordinal), ManifestArchives = manifests,
+        var compact = CompactCapacity(head) with { LifetimeIndexRoot = new string('0', 64), CustodyHistoryIndexRoot = new string('0', 64), Manifests = new(StringComparer.Ordinal),
             GuardAdmissions = new(StringComparer.Ordinal), GuardAttempts = new(StringComparer.Ordinal), ConditionalHoldOriginals = new(StringComparer.Ordinal) };
         return FitsHead(compact with { Pending = original with { Survivors = null, SurvivorArchive = new string('0', 64) } })
-            && FitsHead(compact with { Pending = null, Targets = survivors, Erased = erased, Epoch = original.SuccessorEpoch });
+            && FitsHead(compact with { Pending = null, Targets = survivors, Erased = new(StringComparer.Ordinal), Epoch = original.SuccessorEpoch });
     }
     internal static string Hash<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
     internal static string TargetId(CustodyKeyObjectIdentity identity) => TargetId(new ProtectionTarget(identity.TenantId, identity.ObjectId, identity.KeyAlias));

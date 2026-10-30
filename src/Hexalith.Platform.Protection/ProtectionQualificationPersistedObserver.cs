@@ -25,6 +25,14 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         if (current is not { } head || head.Head.Pending is { Survivors: not null } || targets.Count is < 1 or > 1000 || targets.Any(target => target.TenantId != recipe.TenantId))
         { throw new InvalidOperationException("DependencyNotAvailable: current complete ERC observation."); }
         if (before.Version != head.Version) { throw new InvalidOperationException("Native observation changed before original selection."); }
+        await erasureRoot.LoadQualificationAsync(head.Head, expectedProducer?.BindingDigest ?? "component", token).ConfigureAwait(false);
+        if (expectedOperationIds is not null)
+        {
+            foreach (string operation in expectedOperationIds) { await erasureRoot.LoadQualificationAsync(head.Head, null, token, operation).ConfigureAwait(false); }
+            foreach (string binding in head.Head.QualificationOperations.Values.Where(operation => operation.Producer is not null).Select(operation => operation.Producer!.BindingDigest).Distinct(StringComparer.Ordinal).ToArray())
+            { await erasureRoot.LoadQualificationAsync(head.Head, binding, token).ConfigureAwait(false); }
+        }
+        foreach (var target in targets) { _ = await erasureRoot.ReadErasedAsync(head.Head, ErasureRootCustody.TargetId(target), token).ConfigureAwait(false); }
         await ErasureRootObservationSelection.SelectAsync(erasureRoot, head.Head, expectedOperationIds, recipe.CaseId, targets, token).ConfigureAwait(false);
         ValidateCopyLocations(recipe.Sources, componentBackings);
         var effectOriginals = new JsonArray();
@@ -60,7 +68,8 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
                 || ErasureRootCustody.Hash(value) != anchor.Digest))
             { throw new InvalidOperationException("Native observation is not independently current."); }
         }
-        foreach (var value in sources.Values) { await HydrateReferencesAsync(erasureRoot, head.Head, value, token).ConfigureAwait(false); }
+        var sourceReferences = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var value in sources.Values) { await HydrateReferencesAsync(erasureRoot, head.Head, value, token, sourceReferences).ConfigureAwait(false); }
         sources.Add("ERC", JsonSerializer.SerializeToNode(head.Head)!);
         var observed = recipe.CaseId is { } sourceCase ? ProtectionQualificationNativeProjection.Project(sourceCase, head.Head, sources, recipe.Sources, targets) : new JsonObject();
         if (effectOriginals.Count != 0) { observed["rejectedEffectOriginals"] = effectOriginals; }
@@ -254,18 +263,19 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
             { throw new InvalidOperationException("Distinct independently enrolled physical copy locations required."); }
         }
     }
-    internal static async Task HydrateReferencesAsync(ErasureRootCustody custody, ErasureRootHead head, JsonNode? node, CancellationToken token)
+    internal static async Task HydrateReferencesAsync(ErasureRootCustody custody, ErasureRootHead head, JsonNode? node, CancellationToken token, HashSet<string>? seen = null)
     {
+        seen ??= new(StringComparer.Ordinal);
         if (node is JsonObject obj)
         {
             foreach (var item in obj)
             {
-                if (item.Key is "KeyReference" or "KeyAlias" && item.Value is JsonValue value && value.TryGetValue<string>(out string? reference) && reference is not null)
+                if (item.Key is "KeyReference" or "KeyAlias" && item.Value is JsonValue value && value.TryGetValue<string>(out string? reference) && reference is not null && seen.Add(reference))
                 { _ = await custody.ReadSourceReferenceAsync(head, reference, token).ConfigureAwait(false); }
-                await HydrateReferencesAsync(custody, head, item.Value, token).ConfigureAwait(false);
+                await HydrateReferencesAsync(custody, head, item.Value, token, seen).ConfigureAwait(false);
             }
         }
-        else if (node is JsonArray array) { foreach (var item in array) { await HydrateReferencesAsync(custody, head, item, token).ConfigureAwait(false); } }
+        else if (node is JsonArray array) { foreach (var item in array) { await HydrateReferencesAsync(custody, head, item, token, seen).ConfigureAwait(false); } }
     }
     private static JsonNode? Project(ProtectionQualificationObservationField field, IReadOnlyDictionary<string, JsonNode> sources, JsonNode? item)
     {

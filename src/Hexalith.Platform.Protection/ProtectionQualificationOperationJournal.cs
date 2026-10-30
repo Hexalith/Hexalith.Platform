@@ -7,12 +7,21 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Actual same-native-head role admission and exact-original journal. Missing native enrollment or current permission grants no operation.</summary>
 public sealed class ProtectionQualificationOperationJournal(ErasureRootCustody custody, IErasureRootAuthorization authorization)
 {
+    internal string? BindingDigest { get; set; }
     internal static string Digest(JsonNode value) => Convert.ToHexStringLower(SHA256.HashData(ProtectionQualificationCanonical.Bytes(value)));
     internal async Task<ErasureRootHead> ReadAsync(string tenant, CancellationToken token)
-        => (await custody.ReadAsync(tenant, token).ConfigureAwait(false))?.Head ?? throw new InvalidOperationException("Current native role journal unavailable.");
+    {
+        var head = (await custody.ReadAsync(tenant, token).ConfigureAwait(false))?.Head ?? throw new InvalidOperationException("Current native role journal unavailable.");
+        await custody.LoadQualificationAsync(head, BindingDigest, token).ConfigureAwait(false);
+        return head;
+    }
     internal async Task<ErasureRootHead> ReadMetadataAsync(string tenant, CancellationToken token)
-        => (await custody.ReadAsync(tenant, token, false, new HashSet<string>(StringComparer.Ordinal)).ConfigureAwait(false))?.Head
+    {
+        var head = (await custody.ReadAsync(tenant, token, false, new HashSet<string>(StringComparer.Ordinal)).ConfigureAwait(false))?.Head
             ?? throw new InvalidOperationException("Current native role metadata unavailable.");
+        await custody.LoadQualificationAsync(head, BindingDigest, token).ConfigureAwait(false);
+        return head;
+    }
     internal async Task<bool> UpdateAsync(string tenant, string identity, string method, string digest, Func<ErasureRootHead, bool> change, CancellationToken token)
     {
         for (int attempt = 0; attempt < 16; attempt++)
@@ -20,6 +29,7 @@ public sealed class ProtectionQualificationOperationJournal(ErasureRootCustody c
             if (!await authorization.AuthorizeAsync(tenant, identity, method, digest, token).ConfigureAwait(false)) { throw new InvalidOperationException("Current private qualification permission unavailable."); }
             var current = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
             if (current is not { } head) { throw new InvalidOperationException("Native journal unavailable."); }
+            await custody.LoadQualificationAsync(head.Head, BindingDigest, token, identity).ConfigureAwait(false);
             string boundary = ErasureRootCustody.Hash(head.Head with { QualificationAttempts = new(StringComparer.Ordinal), QualificationOperations = new(StringComparer.Ordinal) });
             if (!change(head.Head)) { return false; }
             if (head.Head.Pending is not null && boundary != ErasureRootCustody.Hash(head.Head with { QualificationAttempts = new(StringComparer.Ordinal), QualificationOperations = new(StringComparer.Ordinal) }))

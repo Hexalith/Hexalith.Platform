@@ -15,20 +15,42 @@ internal sealed class ErasureRootOccurrenceIndex(IErasureRootStore store, Erasur
     private int _cachedBytes;
     internal async Task<T?> ReadAsync<T>(string? root, string identity, CancellationToken token) where T : class
     {
-        string key = ErasureRootCustody.Hash(identity); int depth = 0;
+        string key = ErasureRootCustody.Hash(identity); int depth = 0; string expectedPrefix = "";
         while (root is not null)
         {
             var node = await NodeAsync(root, token).ConfigureAwait(false);
-            if (node.Prefix.Length < depth || !key.StartsWith(node.Prefix, StringComparison.Ordinal)) { return null; }
+            if (node.Prefix.Length < depth || !node.Prefix.StartsWith(expectedPrefix, StringComparison.Ordinal)) { throw new InvalidOperationException("Misplaced retained index node."); }
+            if (!key.StartsWith(node.Prefix, StringComparison.Ordinal)) { return null; }
             if (node.Identity is not null)
             {
                 if (node.Identity != identity || node.Prefix != key) { throw new InvalidOperationException("Occurrence index collision."); }
                 return node.Original!.Value.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Invalid occurrence original.");
             }
-            depth = node.Prefix.Length + 1;
+            depth = node.Prefix.Length + 1; expectedPrefix = key[..depth];
             if (!node.Children.TryGetValue(key[node.Prefix.Length].ToString(), out root)) { return null; }
         }
         return null;
+    }
+    internal async Task<SortedDictionary<string, T>> ReadAllAsync<T>(string? root, string prefix, CancellationToken token) where T : class
+    {
+        var result = new SortedDictionary<string, T>(StringComparer.Ordinal);
+        var pending = new Stack<(string Pointer, string Prefix)>();
+        if (root is not null) { pending.Push((root, "")); }
+        var visited = new HashSet<string>(StringComparer.Ordinal);
+        while (pending.Count > 0)
+        {
+            var entry = pending.Pop();
+            if (!visited.Add(entry.Pointer)) { throw new InvalidOperationException("Cyclic retained index."); }
+            var node = await NodeAsync(entry.Pointer, token).ConfigureAwait(false);
+            if (!node.Prefix.StartsWith(entry.Prefix, StringComparison.Ordinal)) { throw new InvalidOperationException("Invalid retained index depth."); }
+            if (node.Identity is { } identity)
+            {
+                if (identity.StartsWith(prefix, StringComparison.Ordinal))
+                { result.Add(identity[prefix.Length..], node.Original!.Value.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Invalid retained original.")); }
+            }
+            else { foreach (var child in node.Children) { pending.Push((child.Value, node.Prefix + child.Key)); } }
+        }
+        return result;
     }
     internal Task<string> WriteAsync<T>(string? root, string identity, T value, CancellationToken token)
         => InsertAsync(root, ErasureRootCustody.Hash(identity), identity, JsonSerializer.SerializeToElement(value), 0, token);
@@ -37,7 +59,7 @@ internal sealed class ErasureRootOccurrenceIndex(IErasureRootStore store, Erasur
         var leaf = new ErasureRootOccurrenceIndexNode(tenant, installation.StoreId, installation.EnrollmentId, key, new(StringComparer.Ordinal), identity, value);
         if (root is null) { return await SaveAsync(leaf, token).ConfigureAwait(false); }
         var node = await NodeAsync(root, token).ConfigureAwait(false);
-        if (node.Prefix.Length < depth) { throw new InvalidOperationException("Invalid occurrence index depth."); }
+        if (node.Prefix.Length < depth || !node.Prefix.StartsWith(key[..depth], StringComparison.Ordinal)) { throw new InvalidOperationException("Invalid occurrence index depth."); }
         int common = depth;
         while (common < node.Prefix.Length && key[common] == node.Prefix[common]) { common++; }
         if (common < node.Prefix.Length)

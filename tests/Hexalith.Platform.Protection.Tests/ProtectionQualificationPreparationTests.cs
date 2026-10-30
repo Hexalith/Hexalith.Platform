@@ -22,7 +22,7 @@ public sealed class ProtectionQualificationPreparationTests
         deletion.Batches.Single().ProtectionOutcome.ShouldBe("Consumed");
         fixture.Signed.Single().Payload.IntendedIssuedGuardRevision.ShouldBeGreaterThan(1);
         fixture.Admitted.Values.Where(call => call.Kind == ProtectionQualificationNativeCallKind.Guard).ShouldAllBe(call => !call.Payload.ContainsKey("UseCurrentGuardRevision"));
-        var actual = await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken);
+        var actual = await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true);
         actual!.Value.Head.Erased.Count.ShouldBe(2);
         fixture.Guard.Backend.CommittedTransactions.ShouldBeGreaterThan(10);
     }
@@ -36,7 +36,7 @@ public sealed class ProtectionQualificationPreparationTests
         result!["status"]!.GetValue<string>().ShouldBe("HoldBlocked");
         fixture.Guard.State.Deletions.Single().Batches.Single().DispatchReceiptId.ShouldBeEmpty();
         fixture.Consumption.State.CommittedState.ShouldBeEmpty();
-        var current = await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken);
+        var current = await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true);
         current!.Value.Head.Erased.ShouldBeEmpty(); current.Value.Head.Targets.Count.ShouldBe(2);
     }
     [Theory]
@@ -55,7 +55,7 @@ public sealed class ProtectionQualificationPreparationTests
         var nativeDispatch = fixture.Originals[dispatch.Id]!.Deserialize<GovernanceProtocolReceipt>()!;
         (nativeHold.Status == "Committed").ShouldBe(holdWins); (nativeDispatch.Status == "Committed").ShouldBe(!holdWins);
         fixture.Guard.State.Holds.Single().Active.ShouldBeTrue();
-        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value;
+        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value;
         var calls = new List<ProtectionQualificationNativeOriginal>();
         foreach (var call in fixture.Admitted.Values.Where(call => call.Kind is ProtectionQualificationNativeCallKind.Guard or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch))
         {
@@ -91,7 +91,7 @@ public sealed class ProtectionQualificationPreparationTests
         deletion.Batches.Select(value => value.BatchId).Distinct().Count().ShouldBe(3);
         deletion.Batches.SelectMany(value => value.Targets).Select(value => value.AgentInteractionId).Distinct().Count().ShouldBe(3);
         deletion.OwnerCycles.Count.ShouldBe(2); deletion.ContentBindings.Count.ShouldBe(1);
-        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head.Erased.ShouldBeEmpty();
+        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head.Erased.ShouldBeEmpty();
     }
     [Fact]
     public async Task SameTargetResourceLinksActualOriginalCoverageWithoutAllocatingAnotherBatch()
@@ -103,7 +103,7 @@ public sealed class ProtectionQualificationPreparationTests
         deletion.Batches.Single().Ordinal.ShouldBe(0); deletion.Batches.Single().CoveredResourceIds.ShouldBe(new[] { "resource-1" });
         deletion.Violations.Single().AcceptanceReceiptId.ShouldNotBeEmpty();
         (await fixture.RunAsync(recipes["DestroyDekManifest"], "P14", "DestroyDekManifest"))!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.Consumed);
-        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head.Erased.Count.ShouldBe(fixture.Targets.Length);
+        (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head.Erased.Count.ShouldBe(fixture.Targets.Length);
         fixture.Guard.State.Deletions.Single().Batches.Count.ShouldBe(1);
     }
     [Fact]
@@ -114,12 +114,12 @@ public sealed class ProtectionQualificationPreparationTests
         var original = await fixture.RunAsync(recipes["DestroyDekManifest"], "P15", "DestroyDekManifest");
         original!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.Consumed);
         (await fixture.RunAsync(recipes["LinkSameTargetResource"], "P15", "LinkSameTargetResource"))!["Status"]!.GetValue<string>().ShouldBe("CoverageLinked");
-        var before = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        var before = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head;
         var looked = await fixture.RunAsync(recipes["LookupAlreadyDestroyed"], "P15", "LookupAlreadyDestroyed");
         looked!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.AlreadyDestroyedByBatch);
         looked["TargetReceipts"]!.ToJsonString().ShouldBe(original["TargetReceipts"]!.ToJsonString());
         looked["BatchId"]!.GetValue<string>().ShouldNotBe(original["BatchId"]!.GetValue<string>());
-        var after = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        var after = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head;
         after.Epoch.ShouldBe(before.Epoch); after.ManifestArchives.Count.ShouldBe(1); after.Erased.Count.ShouldBe(fixture.Targets.Length); after.Targets.ShouldBeEmpty();
         fixture.Guard.State.Deletions.Single(value => value.RequestId == "deletion-a").Batches.Count.ShouldBe(1);
     }
@@ -141,7 +141,7 @@ public sealed class ProtectionQualificationPreparationTests
         observed["targetCoverage"]!.AsArray().ShouldAllBe(value => value!["singletonManifest"]!.GetValue<bool>() && !value["reusesAcceptedSetBatch"]!.GetValue<bool>());
         observed["replays"]!.AsArray().Count.ShouldBe(4);
         observed["replays"]!.AsArray().ShouldAllBe(value => value!["field"]!["State"]!.GetValue<string>() == "Erased");
-        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
+        var current = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head;
         current.Targets.Count.ShouldBe(1); current.Erased.Count.ShouldBe(2);
         current.Targets.Values.Single().Registration.Identity.ObjectId.ShouldBe(accepted.Targets.Single().AgentInteractionId);
         if (Environment.GetEnvironmentVariable("EXT_PROTECTION_P13_VECTOR") is { Length: > 0 } path)

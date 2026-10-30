@@ -132,8 +132,8 @@ public sealed class ProtectionQualificationLoop3SealingTests
         var originalProducerProof = (await journal.ReadAsync("tenant-a", token)).QualificationProducerOriginals.Values.Single();
         foreach (var substitutedCall in new[] { originalProducerProof.Call! with { OperationId = "undispatched-changed-input" }, originalProducerProof.Call! with { RequestSha256 = changedDigest } })
         {
-            await journal.UpdateAsync("tenant-a", "corrupt-proof", "QualificationExecution", changedDigest, current => { current.QualificationProducerOriginals[originalProducerProof.SourceIdentity] = originalProducerProof with { Call = substitutedCall }; return true; }, token);
-            await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(new("tenant-a", new() { ["output"] = input.Source with { CopyKind = snapshot ? "snapshot" : "source-outbox" } }, new()) { CaseId = "P01" }, [output.Binding.Identity.Target], token, completedOperation.Producer, new HashSet<string> { "source-write" }));
+            await Should.ThrowAsync<InvalidOperationException>(() => journal.UpdateAsync("tenant-a", "corrupt-proof", "QualificationExecution", changedDigest, current => { current.QualificationProducerOriginals[originalProducerProof.SourceIdentity] = originalProducerProof with { Call = substitutedCall }; return true; }, token));
+            (await observer.ObserveAsync(new("tenant-a", new() { ["output"] = input.Source with { CopyKind = snapshot ? "snapshot" : "source-outbox" } }, new()) { CaseId = "P01" }, [output.Binding.Identity.Target], token, completedOperation.Producer, new HashSet<string> { "source-write" }))["copyOriginals"]!.AsArray().Count.ShouldBe(1);
         }
         await journal.UpdateAsync("tenant-a", "restore-proof", "QualificationExecution", completedOperation.RequestSha256, current => { current.QualificationProducerOriginals[originalProducerProof.SourceIdentity] = originalProducerProof; return true; }, token);
         if (Environment.GetEnvironmentVariable("EXT_PROTECTION_LOOP3_SEAL_VECTORS") is { Length: > 0 } directory)

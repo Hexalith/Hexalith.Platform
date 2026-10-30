@@ -9,10 +9,15 @@ namespace Hexalith.Platform.Protection;
 public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody, ErasureRootOccurrenceBindings bindings,
     IInteractionOccurrenceRegistry registry, ErasureRootDigestKeyResolver digests, IErasureRootAuthorization authorization) : IInteractionOccurrenceKeyProvider
 {
+    private readonly ErasureRootQuiescence _quiescence = new();
+    internal void BeginQuiescence() => _quiescence.Close();
+    internal Task WaitForQuiescenceAsync(CancellationToken token) => _quiescence.WaitAsync(token);
+
     /// <summary>Health of this process's disposed occurrence consumers; live buffers remain restrictive.</summary>
     public ErasureRootCompletionDiagnostics CompletionDiagnostics { get; } = new();
     private readonly ConcurrentDictionary<string, (CustodyKeyRegistration Registration, OwnedErasureRootKey Key, InteractionOccurrenceOwnedKey Use)> _holders = new(StringComparer.Ordinal);
 
+    internal bool HasPendingUses => !_holders.IsEmpty;
     /// <summary>Validates actual native digest inventory and current source-write permission before source enrollment or root issue.</summary>
     public async Task<bool> PreflightEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
@@ -40,6 +45,8 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveRootAsync(InteractionOccurrenceIdentity identity, string keyReference, bool writing, CancellationToken token)
     {
+        using var acquisition = _quiescence.Enter();
+        if (acquisition is null) { return null; }
         await CompleteDisposedUsesAsync(token).ConfigureAwait(false);
         var original = await bindings.FindAsync(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity), token).ConfigureAwait(false);
         if (original?.Enrollment.Binding.Identity != identity || original.Enrollment.Binding.KeyReference != keyReference
@@ -66,7 +73,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
         {
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } original)
-                || original.Enrollment.Binding != binding || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(binding.Identity.Target))) { return null; }
+                || original.Enrollment.Binding != binding || await custody.ReadErasedAsync(current.Head, ErasureRootCustody.TargetId(binding.Identity.Target), token).ConfigureAwait(false) is not null) { return null; }
             long ordinal = checked(original.ReadOrdinal + 1);
             string holder = "erc-read:" + ErasureRootCustody.Hash(new { binding, ordinal });
             if (!await authorization.AuthorizeAsync(tenant, holder, "AdmitOccurrenceRead", ErasureRootCustody.Hash(new { binding, ordinal }), token).ConfigureAwait(false)) { return null; }

@@ -35,6 +35,13 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     }
     internal async Task<ErasureRootHead> HeadAsync(string tenant)
         => JsonSerializer.Deserialize<ErasureRootHead>((await ReadHeadAsync(tenant, default))!.Bytes, ErasureRootCustody.Json)!;
+    internal async Task<ErasureRootHead> RetainedHeadAsync(string tenant)
+    {
+        var head = await HeadAsync(tenant);
+        var installation = new ErasureRootInstallation(head.StoreId, head.EnrollmentId, "transit", "heads", new Dictionary<string, string> { [tenant] = "epoch" });
+        await new ErasureRootCustody(this, installation, new ErasureRootAuthorizationFixture()).HydrateLifetimeAsync(head, TestContext.Current.CancellationToken);
+        return head;
+    }
     internal void ReplaceHead(string tenant, ErasureRootHead head)
     {
         lock (_gate)

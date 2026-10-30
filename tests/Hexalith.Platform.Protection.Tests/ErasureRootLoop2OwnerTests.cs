@@ -82,12 +82,12 @@ public sealed class ErasureRootLoop2OwnerTests
         if (Environment.GetEnvironmentVariable("EXT_PROTECTION_P34_VECTOR") is { Length: > 0 } path)
         { await File.WriteAllTextAsync(path, JsonSerializer.Serialize(new { observation = observed, targets = fixture.Targets, publicKeyPem = fixture.PublicKeyPem,
             sourceComponentOnly = true, liveExecuted = false, engineCommit = observed["engineSourceRevision"]!.GetValue<string>(), engineBinarySha256 = observed["engineBinarySha256"]!.GetValue<string>() }), Token); }
-        var captured = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token))!.Value;
+        var captured = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token, true))!.Value;
         var audits = captured.Head.QualificationOperations.Values.SelectMany(operation => operation.Calls.Values).Where(call => call.Result?["effectBefore"] is not null).ToArray(); audits.ShouldNotBeEmpty();
         foreach (var audited in audits) { audited.Result!["effectBefore"] = new string('F', 64); audited.Result["effectAfter"] = new string('F', 64); }
         (await fixture.Consumption.Custody.SaveAsync("tenant-a", captured.Version, captured.Head, Token)).ShouldBeTrue();
         await Should.ThrowAsync<InvalidOperationException>(() => fixture.ObserveAsync("P34"));
-        var missing = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token))!.Value;
+        var missing = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token, true))!.Value;
         (await fixture.Consumption.Custody.SaveAsync("tenant-a", missing.Version, missing.Head with { QualificationEvidenceIndexRoot = null }, Token)).ShouldBeTrue();
         await Should.ThrowAsync<InvalidOperationException>(() => fixture.ObserveAsync("P34"));
     }
@@ -129,7 +129,7 @@ public sealed class ErasureRootLoop2OwnerTests
         var handler = new ErasureRootAuthorityOperationHandler(fixture.Consumption.Custody, source, fixture.Guard.Owner, Substitute.For<IDeletionCapabilityRevocationAuthenticator>(), policy, TimeProvider.System);
         using var receiver = new ReceivingAuthorityFixture("erc-owner", handlers: [handler]);
         receiver.State = receiver.State with { Callers = [receiver.State.Callers[0] with { ScopeReference = "tenant-a|erc", Methods = [.. handler.Methods] }],
-            QualificationBindings = new() { ["erc.allow.DestroyDekManifest"] = "erc-owner", ["erc.allow.LookupDestroyDekManifest"] = "erc-owner", ["erc.allow.VerifyReservedManifestAndCopyPolicy"] = "erc-owner" } };
+            QualificationBindings = new() { ["erc.allow.RetainLifetimeIndex"] = "erc-owner", ["erc.allow.MigrateLifetimeIndex"] = "erc-owner", ["erc.allow.DestroyDekManifest"] = "erc-owner", ["erc.allow.LookupDestroyDekManifest"] = "erc-owner", ["erc.allow.VerifyReservedManifestAndCopyPolicy"] = "erc-owner" } };
         var installation = new ErasureRootInstallation("erc-v23", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" });
         var productionAuthorization = new DaprErasureRootAuthorization(receiver.Authority, fixture.Consumption.Store, installation);
         var custody = new ErasureRootCustody(fixture.Consumption.Store, installation, productionAuthorization);

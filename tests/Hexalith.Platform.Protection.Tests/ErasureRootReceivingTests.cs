@@ -30,10 +30,10 @@ public sealed class ErasureRootReceivingTests
         (await evidence.VerifyRevocationEvidenceAsync(envelope, TestContext.Current.CancellationToken)).ShouldBeFalse();
         var recording = new ErasureRootRecordingRevocationAuthenticator(authenticator, receiver.Authority);
         (await recording.VerifyAsync(envelope, "wrong-evidence", TestContext.Current.CancellationToken)).ShouldBeNull();
-        (await fixture.Store.HeadAsync("tenant-a")).RevocationOriginals.ShouldBeEmpty();
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).RevocationOriginals.ShouldBeEmpty();
         (await recording.VerifyAsync(envelope, "exact-signed-evidence", TestContext.Current.CancellationToken)).ShouldBe(authorization);
         (await evidence.VerifyRevocationEvidenceAsync(envelope, TestContext.Current.CancellationToken)).ShouldBeTrue();
-        (await fixture.Store.HeadAsync("tenant-a")).RevocationOriginals.Values.Single().Envelope.ShouldBe(envelope);
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).RevocationOriginals.Values.Single().Envelope.ShouldBe(envelope);
         authenticator.VerifyAsync(envelope, "exact-signed-evidence", Arg.Any<CancellationToken>()).Returns((DeletionCapabilityRevocationAuthorization?)null);
         (await evidence.VerifyRevocationEvidenceAsync(envelope, TestContext.Current.CancellationToken)).ShouldBeFalse();
     }

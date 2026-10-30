@@ -58,6 +58,30 @@ public sealed class ErasureRootMixedSnapshotTests
     }
 
     [Theory]
+    [InlineData("version")]
+    [InlineData("content-hint")]
+    [InlineData("missing-flags")]
+    [InlineData("empty-flags")]
+    [InlineData("unknown-layout")]
+    [InlineData("extra-flag")]
+    public async Task UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(string field)
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var write = await Seal(fixture, state, originals, parent); var metadata = write.ProtectionResult.Metadata!;
+        metadata = field switch
+        {
+            "version" => metadata with { MetadataVersion = 2 }, "content-hint" => metadata with { ContentHint = null },
+            "missing-flags" => metadata with { CompatibilityFlags = null }, "empty-flags" => metadata with { CompatibilityFlags = new Dictionary<string, string>() },
+            "unknown-layout" => metadata with { CompatibilityFlags = new Dictionary<string, string> { ["snapshot-layout"] = "entries-v3" } },
+            _ => metadata with { CompatibilityFlags = new Dictionary<string, string> { ["snapshot-layout"] = "entries-v2", ["extra"] = "unsupported" } },
+        };
+        int before = fixture.Store.ArchiveReads, cas = fixture.Store.CasCount;
+        (await fixture.Engine.TryUnprotectSnapshotAsync(originals[0].Binding.Identity.Owner, write.ProtectionResult.State, metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        (await fixture.Engine.TryReplaySnapshotAsync(originals[0].Binding.Identity.Owner, write.ProtectionResult.State, metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        fixture.Store.ArchiveReads.ShouldBe(before); fixture.Store.CasCount.ShouldBe(cas);
+    }
+
+    [Theory]
     [InlineData("reference")]
     [InlineData("store")]
     [InlineData("lifecycle")]

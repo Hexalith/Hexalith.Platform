@@ -67,7 +67,7 @@ public sealed class ErasureRootLoop5RecoveryTests
         var scope = new ProtectionQualificationServiceScope("executor", "recovery-executor", "tenant-a", binding, new("installation", "proof", new()), recipes, recipes.Keys.ToDictionary(id => id, id => new ProtectionQualificationObservationRecipe("tenant-a", new(), new())));
         var journal = new ProtectionQualificationOperationJournal(fixture.Custody, fixture.Permissions); var role = new ProtectionQualificationRoleService(scope, journal, new(driver), null, native, signer);
         var request = new JsonObject { ["operationId"] = "original", ["action"] = "LookupOriginalDestruction", ["caseId"] = "P06", ["fixtureId"] = "fixture", ["bindingDigest"] = binding, ["targets"] = JsonSerializer.SerializeToNode(manifest.Targets) };
-        var state = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+        var state = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
         state.Head.QualificationOperations.Add("executor:original", new("executor", binding, "attempt", ProtectionQualificationOperationJournal.Digest(request), (JsonObject)request.DeepClone()));
         (await fixture.Custody.SaveAsync("tenant-a", state.Version, state.Head, token)).ShouldBeTrue();
         // Admit/execute actual calls through the same journal callbacks as the runner. The secondary
@@ -90,7 +90,7 @@ public sealed class ErasureRootLoop5RecoveryTests
         await Should.ThrowAsync<InvalidOperationException>(async () =>
         { var result = await driver.ExecuteAsync(call, request, token); await journal.RetainCallAsync("tenant-a", "executor", "original", call, result, token); });
         fixture.Permissions.DeniedOperations.Clear();
-        var admitted = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head.QualificationOperations["executor:original"];
+        var admitted = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value.Head.QualificationOperations["executor:original"];
         admitted.Result.ShouldBeNull(); admitted.Calls[call.Id].Result.ShouldBeNull(); var exact = admitted.Calls[call.Id].Call;
         var expected = await driver.RecoverAsync(exact, token);
         bool hasAtomicOriginal = !beforeNativeRetention || kind is ProtectionQualificationNativeCallKind.Fault or ProtectionQualificationNativeCallKind.LookupProvider;
@@ -104,7 +104,7 @@ public sealed class ErasureRootLoop5RecoveryTests
         if (hasAtomicOriginal)
         {
             var recovered = (await role.HandleAsync(lookup, token))["statement"]!["response"]!;
-            var retainedCall = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head.QualificationOperations["executor:original"].Calls[call.Id].Result;
+            var retainedCall = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value.Head.QualificationOperations["executor:original"].Calls[call.Id].Result;
             JsonNode.DeepEquals(retainedCall, expected).ShouldBeTrue(); recovered.ShouldNotBeNull();
             await role.HandleAsync(lookup, token);
         }

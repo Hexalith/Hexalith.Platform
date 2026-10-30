@@ -110,6 +110,16 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                 'transitMount': 'erc-transit', 'headMount': 'erc-heads', 'nativeKeys': {'tenant-a': 'epoch-a', 'tenant-b': 'epoch-b'},
                 'genesisAnchors': {tenant: {scope: 'A' * 64 for scope in required_scopes(tenant)} for tenant in ('tenant-a', 'tenant-b')}}
 
+    def test_store_and_enrollment_identities_are_canonical_bounded_strings_before_any_request(self):
+        for field in ('storeId', 'enrollmentId'):
+            for invalid in (1, [], {}, True, '', ' ', 'a b', 'a\n', 'x' * 257):
+                value = self.valid(); value[field] = invalid
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / 'enrollment.json'; path.write_text(json.dumps(value))
+                    with patch.object(bootstrap.urllib.request, 'build_opener') as native:
+                        self.assertEqual(bootstrap.main(['--enrollment', str(path), '--apply']), 1)
+                        native.assert_not_called()
+
     def test_full_tenant_and_scope_grammar_and_duplicate_json_refuse_before_transport(self):
         import copy
         mutations = [lambda v: v['nativeKeys'].update({'Tenant-A': v['nativeKeys'].pop('tenant-a')}),

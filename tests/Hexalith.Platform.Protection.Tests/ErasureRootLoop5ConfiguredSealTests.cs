@@ -146,7 +146,7 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
                     var observationRecipe = new ProtectionQualificationObservationRecipe("tenant-a", locations, new()) { CaseId = "P01" };
                     var observed = await observer.ObserveAsync(observationRecipe, targets, token, expectedOperationIds: new HashSet<string> { "seal", "copy-Backup", "copy-Restore" }, componentBackings: new Dictionary<string, string> { ["source"] = "component-physical-backing" });
                     observed["records"]!.AsArray().Count.ShouldBe(4); observed["copyLocations"]!.AsArray().Count.ShouldBe(4);
-                    var completedSource = (await custody.ReadAsync("tenant-a", token))!.Value.Head.QualificationOperations["executor:seal"];
+                    var completedSource = (await custody.ReadAsync("tenant-a", token, true))!.Value.Head.QualificationOperations["executor:seal"];
                     observed["operationProducerOriginals"] = new JsonArray(new JsonObject { ["OperationId"] = "seal", ["RequestSha256"] = completedSource.RequestSha256, ["Role"] = completedSource.Role,
                         ["BindingDigest"] = completedSource.BindingDigest, ["AttemptId"] = completedSource.AttemptId, ["Producer"] = JsonSerializer.SerializeToNode(completedSource.Producer) });
                     if (Environment.GetEnvironmentVariable("EXT_PROTECTION_COPY_VECTOR") is { Length: > 0 } vectorPath)
@@ -155,7 +155,7 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
                     await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(observationRecipe with { Sources = aliases }, targets, token, expectedOperationIds: new HashSet<string> { "seal", "copy-Backup", "copy-Restore" }));
                     var relabeled = locations.ToDictionary(item => item.Key, item => item.Value); relabeled["cache"] = relabeled["cache"] with { CopyKind = "backup" };
                     await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(observationRecipe with { Sources = relabeled }, targets, token, expectedOperationIds: new HashSet<string> { "seal", "copy-Backup", "copy-Restore" }));
-                    string backupCallHash = ErasureRootCustody.Hash((await custody.ReadAsync("tenant-a", token))!.Value.Head.QualificationOperations["executor:copy-Backup"].Calls.Values.Single().Call);
+                    string backupCallHash = ErasureRootCustody.Hash((await custody.ReadAsync("tenant-a", token, true))!.Value.Head.QualificationOperations["executor:copy-Backup"].Calls.Values.Single().Call);
                     string marker = cells.Keys.Single(key => key.Contains(":native-original:", StringComparison.Ordinal) && cells[key].GetProperty("CallDigest").GetString() == backupCallHash);
                     var brokenMarker = JsonNode.Parse(cells[marker].GetRawText())!; brokenMarker["SourceDigest"] = new string('F', 64); cells[marker] = JsonSerializer.SerializeToElement(brokenMarker);
                     await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(observationRecipe, targets, token, expectedOperationIds: new HashSet<string> { "seal", "copy-Backup", "copy-Restore" }));

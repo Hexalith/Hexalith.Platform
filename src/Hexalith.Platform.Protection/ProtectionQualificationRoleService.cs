@@ -30,6 +30,7 @@ public sealed class ProtectionQualificationRoleService
         ProtectionQualificationActionCatalog.Validate(scope.Recipes);
         if (!scope.Recipes.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Observations.Keys)) { throw new ArgumentException("Complete independent 41-case observation recipes required."); }
         if (actions is not null) { actions.Producer = actions.Producer with { RoleIdentity = scope.Identity, BindingDigest = scope.BindingDigest }; }
+        _journal = journal; _journal.BindingDigest = scope.BindingDigest;
         _observerPermission = observerPermission; _preflight = preflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
     }
 

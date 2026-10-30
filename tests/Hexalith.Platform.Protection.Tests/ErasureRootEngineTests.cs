@@ -30,11 +30,11 @@ public sealed class ErasureRootEngineTests
         var stale = JsonSerializer.Deserialize<InteractionOccurrenceRegistrySnapshot>(JsonSerializer.Serialize(fixture.RegistryState.CommittedState["candidate-interaction-occurrences-v1"]))!;
         await Commit(fixture, write);
         var committed = (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!;
-        var before = await fixture.Store.HeadAsync("tenant-a"); var anchor = before.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")];
+        var before = await fixture.Store.RetainedHeadAsync("tenant-a"); var anchor = before.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")];
         await fixture.RegistryState.SetStateAsync("candidate-interaction-occurrences-v1", stale, Token); await fixture.RegistryState.SaveStateAsync(Token);
         var recovered = (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!;
         JsonSerializer.Serialize(recovered).ShouldBe(JsonSerializer.Serialize(committed));
-        var after = await fixture.Store.HeadAsync("tenant-a"); after.Epoch.ShouldBe(before.Epoch); after.Targets.Count.ShouldBe(before.Targets.Count);
+        var after = await fixture.Store.RetainedHeadAsync("tenant-a"); after.Epoch.ShouldBe(before.Epoch); after.Targets.Count.ShouldBe(before.Targets.Count);
         after.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")].Revision.ShouldBe(anchor.Revision);
         after.Anchors[ErasureRootOccurrenceAuthority.Scope("tenant-a")].Admissions.Count.ShouldBe(anchor.Admissions.Count);
     }
@@ -43,9 +43,9 @@ public sealed class ErasureRootEngineTests
     public async Task MissingNativeDigestRefusesBeforeRootOccurrenceOrRegistryEffects()
     {
         using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll(); fixture.DigestAvailable = false;
-        string before = ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a"));
+        string before = ErasureRootCustody.Hash(await fixture.Store.RetainedHeadAsync("tenant-a"));
         await Should.ThrowAsync<InvalidOperationException>(() => Seal(fixture, original.Binding));
-        ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a")).ShouldBe(before);
+        ErasureRootCustody.Hash(await fixture.Store.RetainedHeadAsync("tenant-a")).ShouldBe(before);
         fixture.RegistryState.CommittedState.ShouldBeEmpty();
     }
 
@@ -61,12 +61,12 @@ public sealed class ErasureRootEngineTests
             var use = await fixture.Keys.ResolveRootAsync(original.Binding.Identity, original.Binding.KeyReference, false, Token);
             use.ShouldNotBeNull(); System.Security.Cryptography.CryptographicOperations.ZeroMemory(use.Bytes);
             await Task.Delay(600, Token);
-            (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldNotBeEmpty();
+            (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldNotBeEmpty();
             use.Dispose();
-            for (int attempt = 0; attempt < 20 && (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.Length != 0; attempt++)
+            for (int attempt = 0; attempt < 20 && (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single().Holders.Length != 0; attempt++)
             { await Task.Delay(100, Token); }
-            var root = (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single();
-            root.Holders.ShouldBeEmpty(); root.CompletedHolders.ShouldBeEmpty(); root.CompletedHolderArchive.ShouldNotBeNull();
+            var root = (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single();
+            root.Holders.ShouldBeEmpty(); root.CompletedHolders.ShouldBeEmpty(); root.CompletedHolderIndexRoot.ShouldNotBeNull();
             var targets = new[] { original.Binding.Identity.Target };
             var request = new DeletionBatchConsumptionRequest(new("issuer", "audience", "tenant-a", "deletion", "seal", "accepted", 0, "batch", DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key-1"), "fixture-signature", 1, "dispatch", 2, targets);
             var secondOwner = new ErasureRootCustody(fixture.Store, new("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" }), fixture.Permissions);
@@ -80,10 +80,10 @@ public sealed class ErasureRootEngineTests
     {
         using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll();
         var first = await Seal(fixture, original.Binding); await Commit(fixture, first);
-        var roots = (await fixture.Store.HeadAsync("tenant-a")).Targets.Count;
+        var roots = (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Count;
         byte[] changed = Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(Payload()).Replace("confidential-canary", "different-canary", StringComparison.Ordinal));
         await Should.ThrowAsync<PayloadProtectionOccurrenceConflictException>(() => Seal(fixture, original.Binding, changed));
-        (await fixture.Store.HeadAsync("tenant-a")).Targets.Count.ShouldBe(roots);
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Count.ShouldBe(roots);
         (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!.Sealed!.PayloadBytes.ShouldBe(first.ProtectionResult.PayloadBytes);
     }
 
@@ -99,10 +99,10 @@ public sealed class ErasureRootEngineTests
         use.ShouldNotBeNull();
         System.Security.Cryptography.CryptographicOperations.ZeroMemory(use.Bytes);
         (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(0);
-        (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldNotBeEmpty();
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldNotBeEmpty();
         use.Dispose();
         (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
-        (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldBeEmpty();
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single().Holders.ShouldBeEmpty();
     }
 
     [Fact]
@@ -117,7 +117,7 @@ public sealed class ErasureRootEngineTests
         (await fixture.Custody.UnwrapAsync(root.Registration, "legacy-completed", Token)).ShouldBeNull();
         var use = await fixture.Keys.ResolveRootAsync(original.Binding.Identity, original.Binding.KeyReference, false, Token);
         use.ShouldNotBeNull(); use.Dispose(); (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
-        (await fixture.Store.HeadAsync("tenant-a")).Targets[id].CompletedHolders.ShouldBeEmpty();
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets[id].CompletedHolders.ShouldBeEmpty();
         (await fixture.Custody.UnwrapAsync(root.Registration, "legacy-completed", Token)).ShouldBeNull();
     }
 
@@ -133,8 +133,8 @@ public sealed class ErasureRootEngineTests
             use.ShouldNotBeNull(); use.Dispose(); (await fixture.Keys.CompleteDisposedUsesAsync(Token)).ShouldBe(1);
             (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes.Length.ShouldBeLessThan(initial + 64);
         }
-        var root = (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single();
-        root.CompletedHolders.ShouldBeEmpty(); root.Holders.ShouldBeEmpty(); root.CompletedHolderArchive.ShouldNotBeNull();
+        var root = (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single();
+        root.CompletedHolders.ShouldBeEmpty(); root.Holders.ShouldBeEmpty(); root.CompletedHolderIndexRoot.ShouldNotBeNull();
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public sealed class ErasureRootEngineTests
         var original = fixture.Enroll();
         var write = await Seal(fixture, original.Binding);
         var record = (await fixture.Registry.LookupAsync(original.Binding.Identity, Token)).Record!;
-        var registration = (await fixture.Store.HeadAsync("tenant-a")).Targets.Values.Single().Registration;
+        var registration = (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Values.Single().Registration;
         using var root = await fixture.Custody.UnwrapAsync(registration, "native-sealed-verifier-fixture", Token);
         root.ShouldNotBeNull();
         byte[] rootCopy = root.Bytes.ToArray();
@@ -168,7 +168,7 @@ public sealed class ErasureRootEngineTests
         await Commit(fixture, sourceWrite);
         var targetWrite = await Seal(fixture, target.Binding);
         await Commit(fixture, targetWrite);
-        (await fixture.Store.HeadAsync("tenant-a")).Targets.Count.ShouldBe(1);
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.Count.ShouldBe(1);
         foreach (var pair in new[] { (source.Binding, sourceWrite), (target.Binding, targetWrite) })
         {
             var (binding, write) = pair;
@@ -222,6 +222,6 @@ public sealed class ErasureRootEngineTests
         await Should.ThrowAsync<InvalidOperationException>(() => Seal(fixture, enrolled.Binding, changed));
         fixture.Source.Available = false;
         await Should.ThrowAsync<InvalidOperationException>(() => Seal(fixture, enrolled.Binding));
-        (await fixture.Store.HeadAsync("tenant-a")).Targets.ShouldBeEmpty();
+        (await fixture.Store.RetainedHeadAsync("tenant-a")).Targets.ShouldBeEmpty();
     }
 }

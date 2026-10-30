@@ -17,6 +17,7 @@ internal static class ErasureRootArchives
     {
         byte[]? bytes = await store.ReadArchiveAsync(tenant, id, token).ConfigureAwait(false);
         if (bytes is null) { return null; }
+        if (bytes.Length is <= 0 or > MaximumOriginalBytes) { throw new InvalidOperationException("Bounded ERC archive required."); }
         if (Convert.ToHexString(SHA256.HashData(bytes)) == id) { return bytes; }
         using var document = JsonDocument.Parse(bytes);
         if (document.RootElement.TryGetProperty("Format", out var format) && format.GetString() == "erc-transition-v3")
@@ -41,25 +42,28 @@ internal static class ErasureRootArchives
             || frame.Format is not ("erc-chunks-v1" or "erc-shared-v2")
             || frame.Format == "erc-chunks-v1" && (frame.Length <= ChunkBytes || frame.Chunks.Length != (frame.Length + ChunkBytes - 1) / ChunkBytes)
             || frame.Chunks.Length is < 1 or > 3073) { throw new InvalidOperationException("Invalid ERC archive frame."); }
+        if (frame.Chunks.Any(pointer => pointer is not { Length: 64 } || pointer.Any(value => !char.IsAsciiHexDigit(value))))
+        { throw new InvalidOperationException("Exact archive chunk pointers required."); }
         byte[] original = new byte[frame.Length];
         var retained = new Dictionary<string, byte[]>(StringComparer.Ordinal);
-        string[] distinct = frame.Chunks.Distinct(StringComparer.Ordinal).ToArray();
-        for (int batch = 0; batch < distinct.Length; batch += 8)
-        {
-            string[] ids = distinct.Skip(batch).Take(8).ToArray();
-            byte[]?[] values = await Task.WhenAll(ids.Select(pointer => store.ReadArchiveAsync(tenant, pointer, token))).ConfigureAwait(false);
-            for (int index = 0; index < ids.Length; index++)
-            {
-                byte[] value = values[index] ?? throw new InvalidOperationException("Missing ERC archive chunk.");
-                if (Convert.ToHexString(SHA256.HashData(value)) != ids[index]) { throw new InvalidOperationException("ERC archive chunk identity conflict."); }
-                retained.Add(ids[index], value);
-            }
-        }
-        int offset = 0;
+        int offset = 0, retainedBytes = 0;
+        // One bounded acquisition at a time: malformed/hash-valid bytes never accumulate in a
+        // batch or the cache before their format and cumulative memory bounds are checked.
         foreach (string chunkId in frame.Chunks)
         {
-            byte[] chunk = retained[chunkId];
-            if (chunk.Length <= 0 || chunk.Length > frame.Length - offset
+            if (!retained.TryGetValue(chunkId, out var chunk))
+            {
+                chunk = await store.ReadArchiveAsync(tenant, chunkId, token).ConfigureAwait(false)
+                    ?? throw new InvalidOperationException("Missing ERC archive chunk.");
+                int maximum = frame.Format == "erc-chunks-v1" ? ChunkBytes : 128 * 1024;
+                if (chunk.Length <= 0 || chunk.Length > maximum || chunk.Length > frame.Length - offset
+                    || chunk.Length > frame.Length - retainedBytes
+                    || Convert.ToHexString(SHA256.HashData(chunk)) != chunkId)
+                { throw new InvalidOperationException("Bounded authenticated ERC archive chunk required."); }
+                retainedBytes += chunk.Length;
+                retained.Add(chunkId, chunk);
+            }
+            if (chunk.Length > frame.Length - offset
                 || frame.Format == "erc-chunks-v1" && chunk.Length != Math.Min(ChunkBytes, frame.Length - offset)
                 || frame.Format == "erc-shared-v2" && (chunk.Length > 128 * 1024 || offset + chunk.Length < frame.Length && chunk.Length < 16 * 1024))
             { throw new InvalidOperationException("ERC archive chunk framing conflict."); }

@@ -49,7 +49,7 @@ public sealed class ErasureRootLoop2CustodyTests
             var request = Request(roots[index], "batch-" + index);
             var result = await _custody.ConsumeAsync(request, "reservation-" + index, Token);
             result.State.ShouldBe(DeletionManifestProviderState.Consumed); results.Add((request, result));
-            var head = await _store.HeadAsync("tenant"); head.Pending.ShouldBeNull(); head.Manifests.ShouldBeEmpty(); head.ManifestArchives.Count.ShouldBe(index + 1);
+            var head = await _store.RetainedHeadAsync("tenant"); head.Pending.ShouldBeNull(); head.Manifests.ShouldBeEmpty(); head.ManifestArchives.Count.ShouldBe(index + 1);
             (await _store.ReadHeadAsync("tenant", Token))!.Bytes.Length.ShouldBeLessThan(initialBytes * 2);
             foreach (var pointer in head.ManifestArchives.Values)
             {
@@ -60,19 +60,19 @@ public sealed class ErasureRootLoop2CustodyTests
         }
         for (int index = 0; index < results.Count; index++)
         { ErasureRootCustody.Hash(await _custody.LookupAsync(results[index].Request, "reservation-" + index, Token)).ShouldBe(ErasureRootCustody.Hash(results[index].Result)); }
-        _store.TrimCount.ShouldBe(20); (await _store.HeadAsync("tenant")).Targets.Count.ShouldBe(40);
+        _store.TrimCount.ShouldBe(20); (await _store.RetainedHeadAsync("tenant")).Targets.Count.ShouldBe(40);
     }
     [Fact]
     public async Task CapacityRefusalPrecedesPendingAdmissionRotationAndTrim()
     {
-        var root = (await Root("near-limit"))!; var head = await _store.HeadAsync("tenant");
+        var root = (await Root("near-limit"))!; var head = await _store.RetainedHeadAsync("tenant");
         int current = JsonSerializer.SerializeToUtf8Bytes(head).Length;
         head.QualificationAttempts.Add("padding", new string('x', OpenBaoErasureRootStore.MaximumHeadBytes - current - 64));
         _store.ReplaceHead("tenant", head);
         var before = (await _store.ReadHeadAsync("tenant", Token))!.Bytes;
         (await _custody.ConsumeAsync(Request(root, "too-full"), "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Unknown);
         _store.RotateAttempts.ShouldBe(0); _store.TrimCount.ShouldBe(0);
-        (await _store.ReadHeadAsync("tenant", Token))!.Bytes.ShouldBe(before); (await _store.HeadAsync("tenant")).Pending.ShouldBeNull();
+        (await _store.ReadHeadAsync("tenant", Token))!.Bytes.ShouldBe(before); (await _store.RetainedHeadAsync("tenant")).Pending.ShouldBeNull();
     }
     [Fact]
     public async Task PreparedArchiveSubstitutionCannotAuthorizeTrimAndUnreferencedCompletionCannotAuthorizeLookup()
@@ -84,12 +84,12 @@ public sealed class ErasureRootLoop2CustodyTests
         (await _custody.LookupAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.NotStarted);
         _store.Failure = "trim-before";
         (await _custody.ConsumeAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Unknown);
-        var head = await _store.HeadAsync("tenant"); var pending = head.Pending!; pending.SurvivorArchive.ShouldNotBeNull();
+        var head = await _store.RetainedHeadAsync("tenant"); var pending = head.Pending!; pending.SurvivorArchive.ShouldNotBeNull();
         var prepared = JsonSerializer.Deserialize<ErasureRootPreparedSurvivors>((await ErasureRootArchives.ReadBytesAsync(_store, "tenant", pending.SurvivorArchive!, Token))!)!;
         string wrong = await ErasureRootArchives.WriteAsync(_store, "tenant", prepared with { ReservationReceiptId = "substituted" }, Token);
         _store.ReplaceHead("tenant", head with { Pending = pending with { SurvivorArchive = wrong } });
         (await _custody.LookupAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Unknown);
-        _store.TrimCount.ShouldBe(0); (await _store.HeadAsync("tenant")).Erased.ShouldBeEmpty();
+        _store.TrimCount.ShouldBe(0); (await _store.RetainedHeadAsync("tenant")).Erased.ShouldBeEmpty();
     }
 
     [Theory]
@@ -127,7 +127,7 @@ public sealed class ErasureRootLoop2CustodyTests
         _store.BeforeTrim = async () => { boundaryChecks++; await RefuseCapacityStealingMetadata(); };
         (await _custody.LookupAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
         boundaryChecks.ShouldBe(1); _store.TrimCount.ShouldBe(1);
-        var final = await _store.HeadAsync("tenant"); final.Pending.ShouldBeNull(); final.Targets.Count.ShouldBe(79);
+        var final = await _store.RetainedHeadAsync("tenant"); final.Pending.ShouldBeNull(); final.Targets.Count.ShouldBe(79);
         final.QualificationAttempts.ShouldContainKeyAndValue("safe", "retained"); final.QualificationAttempts.ShouldNotContainKey("padding");
     }
 }

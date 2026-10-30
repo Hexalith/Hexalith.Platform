@@ -392,8 +392,10 @@ proof refuses before service startup. Candidate checkouts must be clean and exac
 No live issuer enrollment or release-publication authority is supplied here.
 
 The executing consumer also obtains a fresh nonce-bound OIDC proof from the
-approved `domain-ci.yml` at that same enrolled Builds revision. Only its consumer
-job receives the required token permission. Copying a signed issuance and CI
+approved Builds consumer workflow at that same enrolled Builds revision. That
+opt-in workflow and its Builds-owned enrollment arrive with live issuer
+enrollment; `domain-ci.yml` carries no candidate wiring and keeps `contents: read`
+so existing callers are unaffected. Copying a signed issuance and CI
 environment variables cannot authenticate a local invocation; the fresh proof
 binds the current run, attempt and candidate and is not retained in snapshots.
 

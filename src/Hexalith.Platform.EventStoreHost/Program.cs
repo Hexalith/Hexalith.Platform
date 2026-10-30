@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddDaprClient();
+builder.Services.AddDaprClient(options => ErasureRootDaprTransport.Configure(options));
 builder.Services.AddHealthChecks()
     .AddEventStoreDaprHealthChecks()
     .AddEventStoreAppChannelTokenHealthCheck();

@@ -8,4 +8,7 @@ internal sealed record ErasureRootTarget(CustodyKeyRegistration Registration, Er
 {
     /// <summary>Current completed-holder ancestry pointer. Active holders remain inside the CAS head.</summary>
     public string? CompletedHolderArchive { get; init; }
+    /// <summary>Exact bounded-depth completed-holder index; the legacy ancestry is migrated atomically with this pointer.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? CompletedHolderIndexRoot { get; init; }
 }

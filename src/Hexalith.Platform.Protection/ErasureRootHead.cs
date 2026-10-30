@@ -12,6 +12,18 @@ internal sealed record ErasureRootHead(string TenantId, string StoreId, string E
     SortedDictionary<string, ErasureRootAnchor> Anchors,
     ErasureRootManifest? Pending = null)
 {
+    /// <summary>Fixed-size root for exact same-ERC lifetime collections. Only tenant CAS reachability grants authority.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? LifetimeIndexRoot { get; init; }
+    /// <summary>Exact current owner anchors, independently indexed from unrelated historical guard originals.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? AnchorIndexRoot { get; init; }
+    /// <summary>Exact erasure/manifest/lifecycle history, separated from permitted guard and owner bookkeeping for effect evidence.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? CustodyHistoryIndexRoot { get; init; }
+    /// <summary>Separate exact qualification metadata root, outside custody effect fingerprints.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? QualificationIndexRoot { get; init; }
     /// <summary>Committed immutable completed-manifest originals. Prewritten archives without these pointers have no authority.</summary>
     public SortedDictionary<string, string> ManifestArchives { get; init; } = new(StringComparer.Ordinal);
     /// <summary>Independent qualification call/effect bookkeeping, excluded from the prohibited custody-effect fingerprint.</summary>

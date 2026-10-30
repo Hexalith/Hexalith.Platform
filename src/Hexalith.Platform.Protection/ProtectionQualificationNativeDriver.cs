@@ -28,6 +28,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     {
         string preflightTenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
         var priorHead = await custody.ReadAsync(preflightTenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current recipe enrollment required.");
+        await custody.LoadQualificationAsync(priorHead.Head, request["bindingDigest"]?.GetValue<string>() ?? Producer.BindingDigest, token).ConfigureAwait(false);
         var earlier = priorHead.Head.QualificationOperations.Values.Where(value => value.SafeRequest["fixtureId"]?.GetValue<string>() == request["fixtureId"]?.GetValue<string>())
             .SelectMany(value => value.Calls.Where(call => call.Value.Result is not null)).ToDictionary(call => call.Key, call => call.Value.Result, StringComparer.Ordinal);
         ProtectionQualificationInputSchema.Validate(recipe, request, earlier);
@@ -196,7 +197,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                     || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } occurrence) || occurrence.EncryptionRequestDigest is null
                     || await custody.ReadSealedAsync(current.Head, id, token).ConfigureAwait(false) is null || !current.Head.Targets.ContainsKey(ErasureRootCustody.TargetId(original.Binding.Identity.Target))
                     || enrollment.Writer is not { } writer
-                    || !current.Head.QualificationSeedOriginals.TryGetValue(ProtectionQualificationNativeCell.LocationId(seed), out var seedOriginal)
+                    || await custody.ReadRetainedAsync(current.Head, "QualificationSeedOriginals", current.Head.QualificationSeedOriginals, ProtectionQualificationNativeCell.LocationId(seed), token).ConfigureAwait(false) is not { } seedOriginal
                     || seedOriginal.Binding != original.Binding || seedOriginal.SealedPayloadSha256 != Convert.ToHexString(SHA256.HashData(original.Protected.PayloadBytes)))
                 { throw new InvalidOperationException("Exact persisted readable sealed seed required before admission."); }
                 Check(new(writer.Component, writer.Key, writer.Metadata));
@@ -360,7 +361,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 if (retainedRoot is { } rootHead)
                 {
                     string rootId = ErasureRootCustody.TargetId(wrappedRoot.Identity);
-                    var registration = rootHead.Head.Targets.GetValueOrDefault(rootId)?.Registration ?? rootHead.Head.Erased.GetValueOrDefault(rootId)?.Registration;
+                    var registration = rootHead.Head.Targets.GetValueOrDefault(rootId)?.Registration ?? (await custody.ReadErasedAsync(rootHead.Head, rootId, token).ConfigureAwait(false))?.Registration;
                     if (registration?.Identity == wrappedRoot.Identity && registration.OperationId == wrappedRoot.OperationId
                         && registration.ExpectedRevision == wrappedRoot.ExpectedRevision) { result = registration; }
                 }
@@ -963,6 +964,14 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             else if (value.ValueKind == JsonValueKind.Array) { foreach (var child in value.EnumerateArray()) { Visit(child); } }
         }
         Visit(restored);
+        if (projected.Count == 0 && restored.ValueKind == JsonValueKind.Object && restored.EnumerateObject().Count() == 1
+            && restored.TryGetProperty("State", out var state) && state.GetString() == "Erased")
+        {
+            var binding = await source.ResolveAsync(input.Owner, input.Parent, token).ConfigureAwait(false)
+                ?? throw new InvalidOperationException("Exact opaque snapshot source original required.");
+            projected.Add(new JsonObject { ["target"] = JsonSerializer.SerializeToNode(binding.Binding.Identity.Target),
+                ["field"] = JsonNode.Parse(restored.GetRawText()), ["externalOutcome"] = external.IsReadable ? "Readable" : "Unreadable" });
+        }
         if (projected.Count == 0) { throw new InvalidOperationException("Actual typed per-entry snapshot replay required."); }
         foreach (var item in projected.OfType<JsonObject>()) { item["sourceIdentity"] = ProtectionQualificationNativeCell.LocationId(input.Source); item["sourceDigest"] = ErasureRootCustody.Hash(snapshot); }
         return projected;
@@ -972,7 +981,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         if (call.OperationId is null || call.RequestSha256 is null) { return null; }
         Check(cell); string tenant = bindings[0].Identity.Target.TenantId;
         var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-        if (read is not { } current || !current.Head.QualificationOperations.TryGetValue(ProtectionQualificationOperationJournal.Id("executor", call.OperationId), out var operation)
+        if (read is not { } current || await custody.ReadRetainedAsync(current.Head, "QualificationOperations", current.Head.QualificationOperations, ProtectionQualificationOperationJournal.Id("executor", call.OperationId), token).ConfigureAwait(false) is not { } operation
             || operation.RequestSha256 != call.RequestSha256 || operation.Producer is not { } originalProducer
             || !operation.Calls.TryGetValue(call.Id, out var admitted) || ErasureRootCustody.Hash(admitted.Call) != ErasureRootCustody.Hash(call)
             || !current.Head.Anchors.TryGetValue(ErasureRootOccurrenceAuthority.Scope(tenant), out var anchor)) { return null; }
@@ -1046,7 +1055,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             { throw new InvalidOperationException("Authenticated actual producer retention unavailable."); }
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null) { throw new InvalidOperationException("Actual producer retention unavailable."); }
-            if (current.Head.QualificationProducerOriginals.TryGetValue(id, out var prior))
+            if (await custody.ReadRetainedAsync(current.Head, "QualificationProducerOriginals", current.Head.QualificationProducerOriginals, id, token).ConfigureAwait(false) is { } prior)
             { if (ErasureRootCustody.Hash(prior) != ErasureRootCustody.Hash(proof)) { throw new InvalidOperationException("Changed actual producer original."); } return; }
             current.Head.QualificationProducerOriginals.Add(id, proof);
             if (await custody.SaveAsync(tenant, current.Version, current.Head, token).ConfigureAwait(false)) { return; }
@@ -1087,7 +1096,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             if (!await authorization.AuthorizeAsync(tenant, binding.OperationId, "RetainQualificationSeedOriginal", ErasureRootCustody.Hash(proof), token).ConfigureAwait(false)) { throw new InvalidOperationException("Canonical seed producer permission unavailable."); }
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null) { throw new InvalidOperationException("Canonical seed original unavailable."); }
-            if (current.Head.QualificationSeedOriginals.TryGetValue(id, out var prior))
+            if (await custody.ReadRetainedAsync(current.Head, "QualificationSeedOriginals", current.Head.QualificationSeedOriginals, id, token).ConfigureAwait(false) is { } prior)
             { if (prior != proof) { throw new InvalidOperationException("Changed canonical seed original."); } return; }
             current.Head.QualificationSeedOriginals.Add(id, proof);
             if (await custody.SaveAsync(tenant, current.Version, current.Head, token).ConfigureAwait(false)) { return; }

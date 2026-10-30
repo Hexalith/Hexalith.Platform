@@ -145,7 +145,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
     }
     internal JsonObject Request(string caseId, string action) => new()
     {
-        ["caseId"] = caseId, ["fixtureId"] = caseId + "-fixture", ["action"] = action, ["operationId"] = caseId + ":operation", ["targets"] = JsonSerializer.SerializeToNode(_targets),
+        ["bindingDigest"] = new string('a', 64), ["caseId"] = caseId, ["fixtureId"] = caseId + "-fixture", ["action"] = action, ["operationId"] = caseId + ":operation", ["targets"] = JsonSerializer.SerializeToNode(_targets),
     };
     internal Dictionary<string, Dictionary<string, ProtectionQualificationActionRecipe>> Recipes(string caseId)
     {
@@ -268,7 +268,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 if (caseId is "P13" or "P14" or "P15" && call.Kind == ProtectionQualificationNativeCallKind.Guard)
                 { result.ShouldNotBeNull(call.Id); result["Status"]!.GetValue<string>().ShouldBeOneOf(["Committed", "Accepted", "CoverageLinked"], call.Id); }
                 Originals.Add(call.Id, result?.DeepClone());
-                await new ProtectionQualificationOperationJournal(Consumption.Custody, Consumption.Permissions).UpdateAsync("tenant-a", call.Id,
+                await new ProtectionQualificationOperationJournal(Consumption.Custody, Consumption.Permissions) { BindingDigest = new string('a', 64) }.UpdateAsync("tenant-a", call.Id,
                     "QualificationNativeResult", ErasureRootCustody.Hash(new { call, result }), head =>
                     {
                         string key = caseId + ":" + action;
@@ -300,7 +300,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 var head = (await Consumption.Custody.ReadAsync("tenant-a", token))!.Value; head.Head.SourceOriginals.Add(id, enrolled);
                 var cell = new ProtectionQualificationNativeCell("source", key, new()); string location = ProtectionQualificationNativeCell.LocationId(cell);
                 head.Head.QualificationProducerOriginals.Add(location, new(location, [enrolled.Binding], Convert.ToHexString(SHA256.HashData(write.ProtectionResult.PayloadBytes)),
-                    ErasureRootCustody.Hash(write.CompletionContext), write.CompletionContext!, ProtectionQualificationProducerIdentity.Capture(Engine.Engine, Consumption.Custody.Installation)));
+                    ErasureRootCustody.Hash(write.CompletionContext), write.CompletionContext!, ProtectionQualificationProducerIdentity.Capture(Engine.Engine, Consumption.Custody.Installation, bindingDigest: new string('a', 64))));
                 NativeState[enrolled.Writer!.Key] = JsonSerializer.SerializeToElement(new ErasureRootWriterProof(enrolled.Binding, Convert.ToHexString(SHA256.HashData(write.ProtectionResult.PayloadBytes)), true, true, "actual-writer:" + key));
                 (await Consumption.Custody.SaveAsync("tenant-a", head.Version, head.Head, token)).ShouldBeTrue();
                 NativeState.Add(key, JsonSerializer.SerializeToElement(new ProtectionQualificationPersistedEvent(enrolled.Binding, write.ProtectionResult)));
@@ -312,7 +312,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
     {
         var sources = new Dictionary<string, ProtectionQualificationNativeCell>(CopyCells, StringComparer.Ordinal) { ["guard"] = new("source", "guard", new()) };
         return new ProtectionQualificationPersistedObserver(_native, Consumption.Custody, Engine.Engine, new HashSet<string> { "source" })
-            .ObserveAsync(new("tenant-a", sources, new()) { CaseId = caseId }, _targets, TestContext.Current.CancellationToken);
+            .ObserveAsync(new("tenant-a", sources, new()) { CaseId = caseId }, _targets, TestContext.Current.CancellationToken, ProtectionQualificationProducerIdentity.Capture(Engine.Engine, Consumption.Custody.Installation, bindingDigest: new string('a', 64)));
     }
     internal ProtectionQualificationActionRecipe AddRequiredReplays(string caseId, string action, ProtectionQualificationActionRecipe recipe)
         => ProtectionQualificationSourceCatalog.WithRequiredReplays(caseId, action, recipe, new("tenant-a", CopyCells, new()) { CaseId = caseId });

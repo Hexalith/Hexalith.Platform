@@ -44,8 +44,11 @@ public sealed class DaprErasureRootAuthorization(ErasureRootTenantAuthority auth
             string tenant = request.Capability.TenantId;
             var native = await store.ReadHeadAsync(tenant, cancellationToken).ConfigureAwait(false);
             var head = native is null ? null : JsonSerializer.Deserialize<ErasureRootHead>(native.Bytes, ErasureRootCustody.Json);
-            if (head is null || head.StoreId != installation.StoreId || head.EnrollmentId != installation.EnrollmentId || head.TenantId != tenant
-                || !head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(tenant), out var anchor)) { return false; }
+            if (head is null || head.StoreId != installation.StoreId || head.EnrollmentId != installation.EnrollmentId || head.TenantId != tenant) { return false; }
+            string ownerScope = DeletionConsumptionActor.GetOwnerScope(tenant);
+            var anchor = head.Anchors.GetValueOrDefault(ownerScope)
+                ?? await new ErasureRootOccurrenceIndex(store, installation, tenant).ReadAsync<ErasureRootAnchor>(head.AnchorIndexRoot, "Anchors:" + ownerScope, cancellationToken).ConfigureAwait(false);
+            if (anchor is null) { return false; }
             var originals = await ErasureRootArchives.ReadTransitionsAsync(store, tenant, DeletionConsumptionActor.GetOwnerScope(tenant), anchor, false, cancellationToken).ConfigureAwait(false);
             var current = originals.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
             if (current is null) { return false; }

@@ -8,6 +8,19 @@ namespace Hexalith.Platform.Protection.Tests;
 /// <summary>Actual event replay caller keeps unprotected records readable independently of retired or unavailable custody.</summary>
 public sealed class ErasureRootLoop3PlainReplayTests
 {
+    [Fact]
+    public async Task PermanentLossCannotBypassExactProtectedEventTypeValidation()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var original = fixture.Enroll(); var token = TestContext.Current.CancellationToken;
+        byte[] payload = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Target = original.Binding.Identity.Target, Value = "type-binding-canary" } });
+        var write = await fixture.Engine.ProtectEventPayloadAsync(original.Binding.Identity.Owner, Substitute.For<Hexalith.EventStore.Contracts.Events.IEventPayload>(), original.Binding.Identity.PayloadTypeId, payload, "json", ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity), token);
+        await fixture.Engine.AcquirePayloadProtectionCompletionLeaseAsync(write.CompletionContext!, token); fixture.Source.Persisted.Add(original.Binding.OperationId, write.ProtectionResult.PayloadBytes);
+        await fixture.Engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token);
+        fixture.Permissions.PermanentLoss = new("erc-test", "enrollment", "tenant-a", "retired-volume", "retirement", new string('A', 64));
+        fixture.Store.ReadObserved = () => throw new IOException("Former ERC unavailable");
+        await Should.ThrowAsync<ArgumentException>(() => fixture.Engine.TryReplayEventPayloadAsync(original.Binding.Identity.Owner, "Mismatched.Event", write.ProtectionResult.PayloadBytes, write.ProtectionResult.SerializationFormat, write.ProtectionResult.Metadata, ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity), token));
+        (await fixture.Engine.TryReplayEventPayloadAsync(original.Binding.Identity.Owner, original.Binding.Identity.PayloadTypeId, write.ProtectionResult.PayloadBytes, write.ProtectionResult.SerializationFormat, write.ProtectionResult.Metadata, ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity), token)).HasErasedContent.ShouldBeTrue();
+    }
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

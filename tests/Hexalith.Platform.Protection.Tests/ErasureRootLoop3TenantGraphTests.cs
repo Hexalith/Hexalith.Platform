@@ -100,7 +100,7 @@ public sealed class ErasureRootLoop3TenantGraphTests
             // Exercise the registered private actor through Dapr's configured DI activator, with exact tenant authority routing.
             provider.GetRequiredService<IOptions<ActorRuntimeOptions>>().Value.Actors
                 .Single(entry => entry.Type.ActorTypeName == CustodyKeyLifecycleActor.ActorTypeName).Type.ImplementationType.ShouldBe(typeof(CustodyKeyLifecycleActor));
-            string[] lifecyclePermissions = ["WrapDek", "RegisterWrappedKey", "VerifyWrappedRegistration", "ValidateOwnerState", "ReadCurrentOwnerOriginal", "AdmitTransition", "RecordTransition", "RecoverTransition", "VerifyTransition", "ApplyKeyLifecycle", "LookupKeyLifecycle", "VerifyLifecycle", "VerifyLifecycleOutcome"];
+            string[] lifecyclePermissions = ["RetainLifetimeIndex", "MigrateLifetimeIndex", "WrapDek", "RegisterWrappedKey", "VerifyWrappedRegistration", "ValidateOwnerState", "ReadCurrentOwnerOriginal", "AdmitTransition", "RecordTransition", "RecoverTransition", "VerifyTransition", "ApplyKeyLifecycle", "LookupKeyLifecycle", "VerifyLifecycle", "VerifyLifecycleOutcome"];
             first.State = first.State with { QualificationBindings = lifecyclePermissions.ToDictionary(value => "erc.allow." + value, _ => "erc-owner") };
             second.State = second.State with { QualificationBindings = lifecyclePermissions.ToDictionary(value => "erc.allow." + value, _ => "erc-owner") };
             foreach (string tenant in installation.NativeKeys.Keys)

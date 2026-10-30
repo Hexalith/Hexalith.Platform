@@ -44,7 +44,7 @@ public sealed class ProtectionQualificationLoop2InputTests
             await fixture.Engine.CompletePayloadProtectionAsync(sealedSeed.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token);
             await fixture.Keys.CompleteDisposedUsesAsync(token);
             state["seed"] = JsonSerializer.SerializeToElement(new ProtectionQualificationPersistedEvent(original.Binding, sealedSeed.ProtectionResult));
-            var head = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+            var head = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
             string id = ErasureRootOccurrenceBindings.Id(original.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity));
             head.Head.SourceOriginals[id] = original;
             var seedRecord = (await fixture.Registry.LookupAsync(original.Binding.Identity, token)).Record!;
@@ -131,7 +131,7 @@ public sealed class ProtectionQualificationLoop2InputTests
             await Assert.ThrowsAnyAsync<Exception>(() => service.HandleAsync(request, token));
             (await fixture.Store.ReadHeadAsync("tenant-a", token))!.Bytes.ShouldBe(before);
             state.ContainsKey("output").ShouldBeFalse();
-            (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head.QualificationOperations["executor:seal-operation"].Calls.ShouldBeEmpty();
+            (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value.Head.QualificationOperations["executor:seal-operation"].Calls.ShouldBeEmpty();
         }
     }
 }

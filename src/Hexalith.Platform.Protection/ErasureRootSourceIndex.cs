@@ -8,20 +8,23 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Bounded (64 radix levels) exact immutable independent source retention, with no lifetime-sized index or reconstruction chain.</summary>
 internal sealed class ErasureRootSourceIndex(DaprClient native, ProtectionQualificationNativeCell location, string tenant, string store, string enrollment)
 {
+    internal const int TransportChunkBytes = 1024 * 1024;
+    internal const string TransportChunkFormat = "erc-source-chunks-v3-1m";
     internal async Task<T?> ReadAsync<T>(string? root, string identity, CancellationToken token) where T : class
     {
-        string key = ErasureRootCustody.Hash(identity); string? pointer = root; int depth = 0;
+        string key = ErasureRootCustody.Hash(identity); string? pointer = root; int depth = 0; string expectedPrefix = "";
         while (pointer is not null)
         {
             var node = await ReadNodeAsync(pointer, token).ConfigureAwait(false);
-            if (node.Prefix.Length < depth || !key.StartsWith(node.Prefix, StringComparison.Ordinal)) { return null; }
+            if (node.Prefix.Length < depth || !node.Prefix.StartsWith(expectedPrefix, StringComparison.Ordinal)) { throw new InvalidOperationException("Misplaced independent source node."); }
+            if (!key.StartsWith(node.Prefix, StringComparison.Ordinal)) { return null; }
             if (node.Identity is not null)
             {
                 if (node.Prefix != key || node.Identity != identity || node.Original is null && node.OriginalChunks is null) { return null; }
                 return (await ReadOriginalAsync(node, token).ConfigureAwait(false)).Deserialize<T>(ErasureRootCustody.Json);
             }
             if (node.Prefix.Length >= 64 || !node.Children.TryGetValue(key[node.Prefix.Length].ToString(), out pointer)) { return null; }
-            depth = node.Prefix.Length + 1;
+            depth = node.Prefix.Length + 1; expectedPrefix = key[..depth];
         }
         return null;
     }
@@ -32,7 +35,7 @@ internal sealed class ErasureRootSourceIndex(DaprClient native, ProtectionQualif
         var leaf = new ErasureRootSourceIndexNode(tenant, store, enrollment, key, new(StringComparer.Ordinal), identity, value);
         if (pointer is null) { return await WriteNodeAsync(leaf, token).ConfigureAwait(false); }
         var node = await ReadNodeAsync(pointer, token).ConfigureAwait(false);
-        if (node.Prefix.Length < depth) { throw new InvalidOperationException("Invalid source index depth."); }
+        if (node.Prefix.Length < depth || !node.Prefix.StartsWith(key[..depth], StringComparison.Ordinal)) { throw new InvalidOperationException("Invalid source index depth."); }
         int common = depth;
         while (common < Math.Min(key.Length, node.Prefix.Length) && key[common] == node.Prefix[common]) { common++; }
         if (common < node.Prefix.Length)
@@ -61,7 +64,11 @@ internal sealed class ErasureRootSourceIndex(DaprClient native, ProtectionQualif
         if (node is null || ErasureRootCustody.Hash(node) != pointer || node.TenantId != tenant || node.StoreId != store || node.EnrollmentId != enrollment
             || node.Prefix.Length > 64 || node.Prefix.Any(value => !char.IsAsciiHexDigit(value)) || node.Children.Count > 16
             || node.Children.Keys.Any(value => value.Length != 1 || !char.IsAsciiHexDigit(value[0]))
-            || node.Identity is null && (node.Original is not null || node.OriginalChunks is not null) || node.Identity is not null && (node.Prefix.Length != 64 || node.Children.Count != 0))
+            || node.Identity is null && (node.Original is not null || node.OriginalChunks is not null || node.OriginalLength != 0 || node.OriginalSha256 is not null
+                || node.OriginalChunkFormat is not null || node.Prefix.Length >= 64 || node.Children.Count < 2)
+            || node.Identity is not null && (node.Prefix.Length != 64 || node.Children.Count != 0 || ErasureRootCustody.Hash(node.Identity) != node.Prefix
+                || node.Original is null && node.OriginalChunks is null || node.Original is not null && node.OriginalChunks is not null
+                || node.Original is not null && (node.OriginalLength != 0 || node.OriginalSha256 is not null || node.OriginalChunkFormat is not null)))
         { throw new InvalidOperationException("Exact authenticated source index required."); }
         return node;
     }
@@ -69,18 +76,18 @@ internal sealed class ErasureRootSourceIndex(DaprClient native, ProtectionQualif
     {
         byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(node);
         if (bytes.Length > 3 * RecoverableAnchoredState.MaximumPendingBytes) { throw new InvalidOperationException("Upstream source envelope exceeded."); }
-        if (node.Original is { } original && bytes.Length > 4 * 1024 * 1024)
+        if (node.Original is { } original && bytes.Length > TransportChunkBytes)
         {
             byte[] payload = JsonSerializer.SerializeToUtf8Bytes(original);
             var chunks = new List<string>();
-            for (int offset = 0; offset < payload.Length; offset += 4 * 1024 * 1024)
+            for (int offset = 0; offset < payload.Length; offset += TransportChunkBytes)
             {
-                byte[] chunk = payload.AsSpan(offset, Math.Min(4 * 1024 * 1024, payload.Length - offset)).ToArray();
+                byte[] chunk = payload.AsSpan(offset, Math.Min(TransportChunkBytes, payload.Length - offset)).ToArray();
                 string chunkId = Convert.ToHexString(SHA256.HashData(chunk));
                 await native.SaveStateAsync(location.Component, ChunkKey(chunkId), chunk, new StateOptions { Consistency = ConsistencyMode.Strong }, location.Metadata, token).ConfigureAwait(false);
                 chunks.Add(chunkId);
             }
-            node = node with { Original = null, OriginalChunks = chunks.ToArray(), OriginalLength = payload.Length, OriginalSha256 = Convert.ToHexString(SHA256.HashData(payload)) };
+            node = node with { Original = null, OriginalChunks = chunks.ToArray(), OriginalLength = payload.Length, OriginalSha256 = Convert.ToHexString(SHA256.HashData(payload)), OriginalChunkFormat = TransportChunkFormat };
         }
         string digest = ErasureRootCustody.Hash(node);
         // Identical content-addressed writes are safe; an orphan is never returned without the CAS root.
@@ -91,15 +98,17 @@ internal sealed class ErasureRootSourceIndex(DaprClient native, ProtectionQualif
     private async Task<JsonElement> ReadOriginalAsync(ErasureRootSourceIndexNode node, CancellationToken token)
     {
         if (node.Original is { } value) { return value; }
-        if (node.OriginalChunks is not { Length: > 0 and <= 24 } chunks || node.OriginalLength is <= 0 or > 3 * RecoverableAnchoredState.MaximumPendingBytes
-            || chunks.Length != (node.OriginalLength + 4 * 1024 * 1024 - 1) / (4 * 1024 * 1024))
+        int chunkBytes = node.OriginalChunkFormat switch { null => 4 * 1024 * 1024, TransportChunkFormat => TransportChunkBytes,
+            _ => throw new InvalidOperationException("Unsupported independent original framing.") };
+        if (node.OriginalChunks is not { Length: > 0 and <= 96 } chunks || node.OriginalLength is <= 0 or > 3 * RecoverableAnchoredState.MaximumPendingBytes
+            || chunks.Length != (node.OriginalLength + chunkBytes - 1) / chunkBytes)
         { throw new InvalidOperationException("Invalid independent original frame."); }
         byte[] bytes = new byte[node.OriginalLength]; int offset = 0;
         foreach (string pointer in chunks)
         {
             byte[] chunk = await native.GetStateAsync<byte[]>(location.Component, ChunkKey(pointer), ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false)
                 ?? throw new InvalidOperationException("Missing independent original chunk.");
-            if (chunk.Length != Math.Min(4 * 1024 * 1024, bytes.Length - offset) || Convert.ToHexString(SHA256.HashData(chunk)) != pointer)
+            if (chunk.Length != Math.Min(chunkBytes, bytes.Length - offset) || Convert.ToHexString(SHA256.HashData(chunk)) != pointer)
             { throw new InvalidOperationException("Independent original chunk conflict."); }
             chunk.CopyTo(bytes, offset); offset += chunk.Length;
         }

@@ -1499,3 +1499,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Correct the independent protection delivery note's loop-6 coordinates and historical status labels.
   evidence: Blind review B10 verified that docs/implementation/ext-protection-1-erc-component-delivery-2026-10-29.md points to loop-6 isolated worktrees below without providing coordinates and retains adjacent superseded Current status labels. This is a pre-existing independent handoff, outside Story 5.1.
+
+## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: `CandidatePolicyValidator.ValidateArtifacts` does not check non-candidate expected artifacts against Builds catalog pins (AD-4 "other modules remain pinned to the Builds catalog").
+  evidence: references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidatePolicyValidator.cs:237 checks candidate-module items for Release, revision and repository, and checks expected/loaded set equality, but never checks dependency items against the catalog. Story 3.9 owns the loaded-artifact producers; the unconditional `tool-qualification-authentication-unavailable` refusal prevents acceptance meanwhile.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: A candidate artifact loaded by only one consumer kind (for example only tests, never the composed host) still passes artifact validation (medium, unverified).
+  evidence: v1 expected items carry no consumer binding, and `SameArtifact` ignores `consumerKind`. To settle it, Story 3.9 must define which consumers must load which candidate-module artifacts.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: Candidate CI trust root. The approved workflow must supply `HEXALITH_CANDIDATE_GATE_CONFIG` and the read-only token to selection and validation independently of consumer scripts (high).
+  evidence: Decision 2026-10-30 adopts Builds-owned per-repository enrollment read at the approved workflow's own `job.workflow_sha`. It is deferred to live issuer enrollment because the candidate CI wiring was removed from `domain-ci.yml` (it broke `@main` callers). The new opt-in consumer workflow must also replace the hard-coded `/domain-ci.yml@` consumer proof reference in `CandidateGateClient.AuthenticateAsync`.

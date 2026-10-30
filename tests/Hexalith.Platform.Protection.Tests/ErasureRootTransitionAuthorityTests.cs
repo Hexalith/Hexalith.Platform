@@ -39,7 +39,7 @@ public sealed class ErasureRootTransitionAuthorityTests
         (await _authority.RecoverTransitionAsync(transition, Token)).ShouldBeTrue();
         (await _authority.ValidateStateAsync(0, _genesis, Token)).ShouldBeFalse();
         (await _authority.ValidateStateAsync(1, transition.TargetDigest, Token)).ShouldBeTrue();
-        var retained = (await _store.HeadAsync("tenant")).Anchors["owner-scope"];
+        var retained = (await _store.RetainedHeadAsync("tenant")).Anchors["owner-scope"];
         retained.Completed.ShouldBeEmpty(); retained.Admissions.ShouldBeEmpty(); retained.ArchiveHead.ShouldNotBeNull();
     }
 
@@ -88,7 +88,7 @@ public sealed class ErasureRootTransitionAuthorityTests
     {
         var first = Transition(); byte[] secondBytes = "legacy-second"u8.ToArray();
         var second = new AnchoredStateTransition("owner-scope", 1, 2, first.TargetDigest, Convert.ToHexString(SHA256.HashData(secondBytes)), secondBytes);
-        var legacy = await _store.HeadAsync("tenant");
+        var legacy = await _store.RetainedHeadAsync("tenant");
         var originals = new SortedDictionary<string, AnchoredStateTransition>(StringComparer.Ordinal) { [ErasureRootCustody.Hash(second)] = second };
         if (complete) { originals.Add(ErasureRootCustody.Hash(first), first); }
         legacy.Anchors["owner-scope"] = new(2, second.TargetDigest, new(originals, StringComparer.Ordinal), originals);
@@ -98,14 +98,14 @@ public sealed class ErasureRootTransitionAuthorityTests
         (await _authority.AdmitTransitionAsync(third, Token)).ShouldBe(complete);
         if (complete)
         {
-            (await _store.HeadAsync("tenant")).Anchors["owner-scope"].Completed.ShouldBeEmpty();
+            (await _store.RetainedHeadAsync("tenant")).Anchors["owner-scope"].Completed.ShouldBeEmpty();
             (await _authority.VerifyTransitionAsync(first, Token)).ShouldBeTrue();
             (await _authority.RecordTransitionAsync(third, Token)).ShouldBeTrue();
             (await _authority.ReadCurrentOriginalAsync("owner-scope", Token))!.TargetBytes.ShouldBe(thirdBytes);
         }
         else
         {
-            var retained = (await _store.HeadAsync("tenant")).Anchors["owner-scope"];
+            var retained = (await _store.RetainedHeadAsync("tenant")).Anchors["owner-scope"];
             retained.ArchiveHead.ShouldBeNull(); retained.Revision.ShouldBe(2);
         }
     }
@@ -119,7 +119,7 @@ public sealed class ErasureRootTransitionAuthorityTests
         (await _authority.AdmitTransitionAsync(transition, Token)).ShouldBeTrue();
         _permissions.TransitionAllowed = false;
         (await _authority.RecoverTransitionAsync(transition, Token)).ShouldBeFalse();
-        (await _store.HeadAsync("tenant")).Anchors["owner-scope"].Revision.ShouldBe(0);
+        (await _store.RetainedHeadAsync("tenant")).Anchors["owner-scope"].Revision.ShouldBe(0);
         _permissions.TransitionAllowed = true;
         (await _authority.RecoverTransitionAsync(transition, Token)).ShouldBeTrue();
     }
@@ -133,6 +133,6 @@ public sealed class ErasureRootTransitionAuthorityTests
         (await _authority.RecordTransitionAsync(transition, Token)).ShouldBeFalse();
         (await _authority.RecordTransitionAsync(Transition() with { ScopeId = "foreign" }, Token)).ShouldBeFalse();
         (await _authority.RecordTransitionAsync(Transition() with { TargetRevision = 2 }, Token)).ShouldBeFalse();
-        (await _store.HeadAsync("tenant")).Anchors["owner-scope"].Revision.ShouldBe(0);
+        (await _store.RetainedHeadAsync("tenant")).Anchors["owner-scope"].Revision.ShouldBe(0);
     }
 }

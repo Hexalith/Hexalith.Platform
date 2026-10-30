@@ -12,7 +12,7 @@
     <PackageReference Include="Shouldly" />
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
-  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="../../deploy/erasure-root/custody-policy.hcl" LogicalName="ErcShippedCustodyPolicy" /></ItemGroup>
+  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="../../deploy/erasure-root/custody-policy.hcl" LogicalName="ErcShippedCustodyPolicy" /><EmbeddedResource Include="../../deploy/erasure-root/bootstrap.py" LogicalName="ErcShippedBootstrapScript" /></ItemGroup>
   <ItemGroup><Compile Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Testing/Fakes/InMemoryStateManager.cs" Link="EventStoreInMemoryStateManager.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="$(HexalithEventStoreRoot)/tests/Hexalith.EventStore.Server.Tests/Security/GuardedTransactionFixture.cs" Link="EventStoreGuardedTransactionFixture.cs" />

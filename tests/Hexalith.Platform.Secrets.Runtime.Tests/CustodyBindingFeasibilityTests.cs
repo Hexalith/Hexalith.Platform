@@ -7,6 +7,9 @@ using Hexalith.Platform.Secrets.Runtime;
 
 using Shouldly;
 
+// This test intentionally executes the embedded, hash-pinned owner fixture in this assembly.
+// The production Server also exports this name. Keep the fixture and every unrelated diagnostic enforced.
+#pragma warning disable CS0436 // Intentional local pinned owner fixture at the callers below.
 namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class CustodyBindingFeasibilityTests
@@ -162,3 +165,5 @@ public sealed class CustodyBindingFeasibilityTests
         return (bytes, entryBytes);
     }
 }
+
+#pragma warning restore CS0436

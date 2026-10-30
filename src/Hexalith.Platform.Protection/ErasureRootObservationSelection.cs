@@ -30,11 +30,27 @@ internal static class ErasureRootObservationSelection
             _ = await custody.ReadGuardAttemptAsync(head.TenantId, head, intent, token).ConfigureAwait(false);
             _ = await custody.ReadGuardAdmissionAsync(head.TenantId, head, intent, token).ConfigureAwait(false);
         }
-        // No-issue originals are selected by the exact signing request in these source-owned calls.
-        foreach (var call in calls.Where(call => call.Call.Kind == ProtectionQualificationNativeCallKind.Sign))
+        // Select historical signing/hold originals through exact scalar identities already
+        // bound into the current source-owned calls. No lifetime map enumeration is needed.
+        foreach (var call in calls)
         {
-            foreach (var intent in head.GuardSigningIntents.Where(entry => Contains(call.Call.Payload, entry.Key)).Select(entry => entry.Value))
-            { _ = await custody.ReadGuardAttemptAsync(head.TenantId, head, intent, token).ConfigureAwait(false); }
+            if (call.Call.OperationId is { } operation && call.Call.Kind == ProtectionQualificationNativeCallKind.Reserve && call.Result is JsonObject result && result["pinRefusals"] is JsonArray)
+            { _ = await custody.ReadRetainedAsync(head, "PinRefusals", head.PinRefusals, operation + ":" + call.Call.Id, token).ConfigureAwait(false); }
+            var signingIds = Scalars(call.Call.Payload).ToList();
+            if (call.Call.Kind == ProtectionQualificationNativeCallKind.Sign)
+            { signingIds.Add(Hexalith.Platform.Custody.DeletionBatchCapabilityCodec.SigningRequestId(call.Call.Payload.Deserialize<DeletionBatchCapabilityV1>()!)); }
+            foreach (string scalar in signingIds.Distinct(StringComparer.Ordinal))
+            {
+                if (await custody.ReadSigningIntentAsync(head, scalar, token).ConfigureAwait(false) is { } intent)
+                { _ = await custody.ReadGuardAttemptAsync(head.TenantId, head, intent, token).ConfigureAwait(false); }
+            }
+        }
+        foreach (var call in calls.Where(value => value.Result is JsonObject result && result["NoIssueProof"] is JsonObject))
+        {
+            var proof = call.Result!["NoIssueProof"]!.Deserialize<Hexalith.Platform.Custody.DeletionCapabilityNoIssueProof>()!;
+            var recovery = await custody.RetainedIndex(head).ReadAsync<GovernanceSigningRecovery>(head.LifetimeIndexRoot,
+                "signing-recovery-reference:" + ErasureRootCustody.Hash(new { proof.Payload, proof.SigningRequestId, proof.DetachedJwsDigest }), token).ConfigureAwait(false);
+            if (recovery is not null) { head.SigningRecoveries.TryAdd(ErasureRootCustody.Hash(recovery), recovery); }
         }
         string scope = DeletionConsumptionActor.GetOwnerScope(head.TenantId);
         if (!head.Anchors.TryGetValue(scope, out var owner)) { return; }
@@ -51,9 +67,10 @@ internal static class ErasureRootObservationSelection
             _ = await custody.ReadManifestOriginalAsync(head.TenantId, head, batchId, token).ConfigureAwait(false);
         }
         foreach (var call in calls) { if (call.Result is { } result) { using var document = JsonDocument.Parse(result.ToJsonString()); Collect(document.RootElement); } }
+        var historyStore = new ProtectionQualificationObservationArchiveStore(custody.Store);
         foreach (long revision in revisions.Where(value => value > 0 && value <= owner.Revision).Order())
         {
-            var original = await custody.ReadHistoricalAsync(head.TenantId, scope, owner, revision, token).ConfigureAwait(false)
+            var original = await ErasureRootArchives.ReadTransitionAtAsync(historyStore, head.TenantId, scope, owner, revision, token).ConfigureAwait(false)
                 ?? throw new InvalidOperationException("Exact operation owner original unavailable.");
             owner.Completed[ErasureRootCustody.Hash(original)] = original;
         }
@@ -70,6 +87,18 @@ internal static class ErasureRootObservationSelection
             }
             else if (value.ValueKind == JsonValueKind.Array) { foreach (var item in value.EnumerateArray()) { Collect(item); } }
         }
+    }
+    private static IEnumerable<string> Scalars(JsonNode? node)
+    {
+        if (node is JsonObject obj)
+        {
+            foreach (var pair in obj)
+            {
+                if (pair.Key is "SigningRequestId" or "signingRequestId" && pair.Value is JsonValue scalar && scalar.TryGetValue<string>(out var identity)) { yield return identity; }
+                else if (pair.Value is JsonObject or JsonArray) { foreach (string value in Scalars(pair.Value)) { yield return value; } }
+            }
+        }
+        else if (node is JsonArray array) { foreach (var child in array) { foreach (string value in Scalars(child)) { yield return value; } } }
     }
     private static bool Contains(JsonNode? node, string value)
     {

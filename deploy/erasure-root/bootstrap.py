@@ -30,7 +30,10 @@ def enrollment(path):
     address = urllib.parse.urlsplit(value['address'])
     if address.scheme != 'https' or not address.hostname or address.username or address.password or address.path not in ('', '/') or address.query or address.fragment:
         raise ValueError('Dedicated HTTPS ERC address required')
-    if not value['storeId'] or not value['enrollmentId'] or not value['nativeKeys'] or set(value['nativeKeys']) != set(value['genesisAnchors']):
+    if any(not isinstance(value[field], str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,255}', value[field])
+           for field in ('storeId', 'enrollmentId')):
+        raise ValueError('Canonical bounded store and enrollment identities required')
+    if not isinstance(value['nativeKeys'], dict) or not isinstance(value['genesisAnchors'], dict) or not value['nativeKeys'] or set(value['nativeKeys']) != set(value['genesisAnchors']):
         raise ValueError('Complete independently selected tenant enrollment required')
     if value['transitMount'] != 'erc-transit' or value['headMount'] != 'erc-heads':
         raise ValueError('Shipped custody policy requires erc-transit and erc-heads')

@@ -16,6 +16,24 @@ public sealed class OpenBaoNativeTransportDiagnostics
             if (root is null) { throw new InvalidOperationException("ERC_NATIVE_STAGE:RootWrap"); }
             var original = await fixture.Native.ReadHeadAsync("tenant-a", TestContext.Current.CancellationToken)
                 ?? throw new InvalidOperationException("ERC_NATIVE_STAGE:HeadRead");
+            var token = TestContext.Current.CancellationToken;
+            await fixture.AssertForbiddenPolicyOperationsAsync(token);
+            var head = System.Text.Json.JsonSerializer.Deserialize<ErasureRootHead>(original.Bytes, ErasureRootCustody.Json)!;
+            var wrapped = head.Targets[ErasureRootCustody.TargetId(root.Identity)].Wrapped;
+            byte[] clear = await fixture.Native.DecryptAsync("tenant-a", wrapped, token);
+            try { if (clear.Length != 32) { throw new InvalidOperationException("Exact native decrypt output required."); } }
+            finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(clear); }
+            await Shouldly.Should.ThrowAsync<InvalidOperationException>(() => fixture.Native.DecryptAsync("tenant-a", wrapped with { Context = Convert.ToBase64String("wrong-complete-context"u8.ToArray()) }, token));
+            if (await fixture.Native.ReadArchiveAsync("tenant-a", new string('F', 64), token) is not null)
+            { throw new InvalidOperationException("Exact native absence response required."); }
+            using (var invalidToken = new HttpRequestMessage(HttpMethod.Get, "v1/" + fixture.Installation.TransitMount + "/keys/epoch-a"))
+            {
+                invalidToken.Headers.Add("X-Vault-Token", "invalid-owned-token");
+                using var denied = await fixture.Http.SendAsync(invalidToken, token);
+                if (denied.StatusCode != System.Net.HttpStatusCode.Forbidden) { throw new InvalidOperationException("Per-request native token substitution was not denied."); }
+            }
+            if (await fixture.Native.ReadHeadAsync("tenant-a", token) is null)
+            { throw new InvalidOperationException("Valid credential must remain usable after a genuine native denial."); }
             byte[] capacity = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(new { padding = new string('x', 2 * 1024 * 1024) });
             if (!await fixture.Native.CompareExchangeHeadAsync("tenant-a", original.Version, capacity, TestContext.Current.CancellationToken))
             { throw new InvalidOperationException("ERC_NATIVE_STAGE:HeadCapacity"); }

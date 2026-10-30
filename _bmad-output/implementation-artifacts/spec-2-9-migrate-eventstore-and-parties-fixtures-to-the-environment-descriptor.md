@@ -8,6 +8,8 @@ route: 'dispatch'
 review_loop_iteration: 0
 context:
   - '{project-root}/docs/contracts/test-environment-v1.md'
+  - '{project-root}/references/Hexalith.AI.Tools/hexalith-state-instructions.md'
+  - '{project-root}/_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md'
 ---
 
 <frozen-after-approval reason="human-owned intent — do not modify unless human renegotiates">
@@ -84,9 +86,18 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
   EventStore route-catalog readiness, preventing its authorized writer-protocol cutover. Synthetic
   tenant records are also not provided by the current owner runner; Story 3.5 owns that producer.
   The possible selected-token `parties`/contract `party` mismatch is an unexecuted source inference.
-- EventStore testing checks pass (189 + 51, no skips), the new Parties project builds, and declaration
-  tests pass (7). Broader isolated/owner checks retain unresolved compatibility/package/fitness and
-  current constructor drift; focused passing subsets do not qualify the full lane.
+- Continuation verification now passes the complete EventStore Testing (190) and Testing.Integration
+  (52) projects without skips. Complete Parties Aspire (9), Contracts (226), Client (345) and CI (472)
+  projects pass; the full main Parties project runs 2,811 tests with zero failures and four existing
+  optional skips (2,807 passed). The private EventStore integration project builds and its focused
+  cutover/restore classes pass 16/16; this does not qualify that project's entire live lane.
+  Declaration tests pass 7/7. Exact phase paths, source hashes, patches, commands, counts and all prior
+  failures are retained in [continuation-repairs](evidence/2-9/continuation-repairs/README.md).
+- The continuation fixes exact tuple client lookup for multiple endpoints on one resource and ties
+  streamed response reads to fixture cancellation and finite request bounds. Isolated protocol seams
+  preserve HTTP authentication. Source selection observations now distinguish committed gitlinks from
+  mapped HEAD/dirty state; diagnostic hashes cannot satisfy strict immutable-consumption receipts.
+  Historical approvals, published pins, CI/Release counterparts and schema semantics remain unchanged.
 - Another actor committed shared-workspace changes during implementation. This implementation
   agent did not stage or commit. Exact revisions, task-owned paths, concurrent deltas, patches,
   commands, failures and exact cleanup are recorded in [evidence/2-9/README.md](evidence/2-9/README.md).
@@ -94,8 +105,19 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 - Parent audit verified all four matrix rows with 41 verbose, passing tests and retained their named
   results. Corrected the Contracts.UI fallback to add an entry only when the selected catalog lacks
   it; published Builds 4.38.3 and current-source catalogs each resolve one 4.7.1 entry, and the Parties
-  suite rebuild passes. The new correction remains a working-tree change after the externally created
-  commits. Live and broad isolated acceptance remain unsatisfied, so review has not started.
+  suite rebuild passes. The continuation checkpoint above supersedes its isolated/private-owner
+  compilation failures; the original failed observations remain retained. Real declared-suite
+  acceptance is still pending, so review has not started.
+- User continuation (2026-10-30): "finish the missing work before proceeding" explicitly directs
+  completing the remaining live and isolated/private-owner acceptance, including the necessary
+  runner-owned local prerequisites. Resolve the catalog activation, synthetic tenant setup and
+  actual credential/domain bindings through existing owner contracts and the runner's separate
+  private channel. Fixtures must still neither provision environments nor mint credentials. Repair
+  stale constructor/DI, package and repository-path test assumptions instead of filtering failures.
+  The current Story 3.3 document records explicit reference-owner operation policies; consume these
+  policies when prerequisite catalog changes require them, preserve that independent document's
+  edits, and do not claim its wider schema/metadata acceptance merely by qualifying this suite.
+  Keep the attached-execution split and the prohibition on hosted changes/publication unchanged.
 
 ## Spec Change Log
 

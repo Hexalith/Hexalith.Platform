@@ -32,15 +32,17 @@ ERC_CONFIG = base.CONFIG.replace('  tls_disable = true\n', '  tls_disable = true
 
 
 class ErcProbe(base.Probe):
-    def __init__(self, assembly, assembly_sha256, runner=base.run_command, diagnostic=False, case=None, runtime_manifest=None, runtime_manifest_sha256=None):
+    def __init__(self, assembly, assembly_sha256, runner=base.run_command, diagnostic=False, case=None, runtime_manifest=None, runtime_manifest_sha256=None, bootstrap=False):
         super().__init__(base.IMAGE, runner=runner)
         self.assembly, self.assembly_sha256 = Path(assembly), assembly_sha256
         self.runtime_manifest = Path(runtime_manifest) if runtime_manifest else None
         self.runtime_manifest_sha256 = runtime_manifest_sha256
+        self.bootstrap = bootstrap
         self.diagnostic = diagnostic
         if case is not None and case not in CASES:
             raise ValueError('Closed native case required')
         self.case = case
+        self.result['shippedBootstrapExecuted'] = bootstrap
         self.result.update(schema='EXT-PROTECTION-1.erc-native-integration.v1',
                            scope='Owned disposable native ERC; actual production custody/store with synthetic private eligibility only',
                            productionQualified=False, fullCopyInventoryQualified=False,
@@ -115,7 +117,9 @@ class ErcProbe(base.Probe):
         environment = dict(os.environ, ERC_NATIVE_DISPOSABLE_CONTAINER=self.container_id,
                            ERC_NATIVE_DISPOSABLE_NONCE=self.run_id, ERC_NATIVE_DISPOSABLE_TOKEN=self.token)
         command = ['dotnet', str(self.assembly), '-class', 'Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests', '-noColor']
-        if self.diagnostic:
+        if self.bootstrap:
+            command[3] = 'Hexalith.Platform.Protection.Tests.OpenBaoBootstrapIntegrationTests'
+        elif self.diagnostic:
             command[3] = 'Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportDiagnostics'
         elif self.case:
             command += ['-method', '*.' + self.case]
@@ -172,17 +176,17 @@ class ErcProbe(base.Probe):
         self.result['nativeGrowthGeometry'] = measured
 
         self.result['nativeTestSummary'] = dict(zip(('total', 'errors', 'failed', 'skipped', 'notRun'), counts)) if counts else None
-        if completed.returncode != 0 or counts != [1 if self.diagnostic or self.case else 5, 0, 0, 0, 0]:
+        if completed.returncode != 0 or counts != [1 if self.diagnostic or self.case or self.bootstrap else 5, 0, 0, 0, 0]:
             raise base.Blocked('NativeComponentCasesDidNotAllPass')
-        if not self.diagnostic and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(measured) != 2 or any(value['nativeHeadBytes'] <= 8 * 1024 * 1024 for value in measured)):
+        if not self.diagnostic and not self.bootstrap and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(measured) != 2 or any(value['nativeHeadBytes'] <= 8 * 1024 * 1024 for value in measured)):
             raise base.Blocked('NativeHeadAndScalableHistoryGeometryMissing')
-        if not self.diagnostic and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(occurrence_measured) != 1
+        if not self.diagnostic and not self.bootstrap and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(occurrence_measured) != 1
                 or occurrence_measured[0]['nativeOccurrences'] != 256 or occurrence_measured[0]['nativeOwners'] != 256
                 or occurrence_measured[0]['lookupReadBound'] != 16):
             raise base.Blocked('NativeAuthoritativeOccurrenceGeometryMissing')
-        if len(self.result.get('runtimePolicies', [])) != (1 if self.diagnostic or self.case else 5):
+        if len(self.result.get('runtimePolicies', [])) != (1 if self.diagnostic or self.case or self.bootstrap else 5):
             raise base.Blocked('ExclusiveRestrictedRuntimePolicyEvidenceMissing')
-        self.mark('native-component-cases', count=1 if self.diagnostic or self.case else 5, actualCustodyStore=True, privateEligibility='ExplicitSyntheticTestFixture')
+        self.mark('native-component-cases', count=1 if self.diagnostic or self.case or self.bootstrap else 5, actualCustodyStore=True, privateEligibility='ExplicitSyntheticTestFixture')
 
     def run(self):
         try:
@@ -200,7 +204,7 @@ class ErcProbe(base.Probe):
         passed = self.result['failure'] is None and self.result['cleanup'].get('complete') is True \
             and self.result['observations'].get('native-component-cases', {}).get('verified') is True
         self.result['phase'] = 'Completed'
-        self.result['outcome'] = ('NativeBootstrapPassed' if self.diagnostic else 'NativeCasePassed' if self.case else 'NativeCasesPassed') if passed else 'BlockedUnknown'
+        self.result['outcome'] = ('ShippedBootstrapRuntimeGenesisPassed' if self.bootstrap else 'NativeBootstrapPassed' if self.diagnostic else 'NativeCasePassed' if self.case else 'NativeCasesPassed') if passed else 'BlockedUnknown'
         return self.result, 0 if passed else 1
 
 
@@ -212,6 +216,7 @@ def main(argv=None):
     parser.add_argument('--runtime-manifest')
     parser.add_argument('--runtime-manifest-sha256')
     parser.add_argument('--diagnostic', action='store_true')
+    parser.add_argument('--bootstrap', action='store_true')
     parser.add_argument('--case', choices=CASES)
     arguments = parser.parse_args(argv)
     output = Path(arguments.output)
@@ -219,7 +224,7 @@ def main(argv=None):
         raise SystemExit('A new absolute evidence file in an existing local directory is required')
     if arguments.diagnostic and arguments.case:
         parser.error('Select a capacity diagnostic or one native case')
-    result, code = ErcProbe(arguments.test_assembly, arguments.test_assembly_sha256, diagnostic=arguments.diagnostic, case=arguments.case, runtime_manifest=arguments.runtime_manifest, runtime_manifest_sha256=arguments.runtime_manifest_sha256).run()
+    result, code = ErcProbe(arguments.test_assembly, arguments.test_assembly_sha256, diagnostic=arguments.diagnostic, case=arguments.case, runtime_manifest=arguments.runtime_manifest, runtime_manifest_sha256=arguments.runtime_manifest_sha256, bootstrap=arguments.bootstrap).run()
     descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
     with os.fdopen(descriptor, 'w') as stream:
         json.dump(result, stream, sort_keys=True, separators=(',', ':'))

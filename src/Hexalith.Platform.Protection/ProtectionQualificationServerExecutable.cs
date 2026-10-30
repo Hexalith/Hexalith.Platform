@@ -43,7 +43,7 @@ public static class ProtectionQualificationServerExecutable
             if (!HasPrivateSigner(signer, anchor)) { return 2; }
             signerValidated?.Invoke();
             ProtectionQualificationInputSchema.ValidateInstallation(scope, (role == "observer" ? installed.ReadComponents : installed.SourceComponents).ToHashSet(StringComparer.Ordinal), installed.FaultOperations.ToHashSet(StringComparer.Ordinal));
-            using var dapr = new DaprClientBuilder().Build();
+            using var dapr = ErasureRootDaprTransport.Configure(new DaprClientBuilder()).Build();
             var services = new ServiceCollection(); services.AddLogging();
             // Only bounded content-free owning-worker events reach this private server's console.
             services.AddSingleton<Microsoft.Extensions.Logging.ILogger<ErasureRootHolderCompletionWorker>>(_ => ErasureRootCompletionLogger.Create<ErasureRootHolderCompletionWorker>()); services.AddSingleton(dapr); services.AddSingleton(ActorProxy.DefaultProxyFactory);
@@ -111,7 +111,7 @@ public static class ProtectionQualificationServerExecutable
                 foreach (string required in new[] { "RetainQualificationSeedOriginal", "RetainQualificationProducerOriginal", "RetainReserveRefusalOriginal",
                     "WrapDek", "EnrollOccurrence", "OccurrenceWrite", "OccurrenceRead", "RegisterIndependentSourceOriginal", "ReadIndependentSourceOriginal", "VerifyCommittedSourceEnrollment", "ReadOccurrenceBinding", "ReadInstalledRegistryEpoch",
                     "Reserve", "RetainSealed", "CompleteWriter", "AcquireEncryptionLease", "AcquireCompletionLease", "UnwrapDek", "CompleteRootHolder", "AdmitIndependentSourceReservation", "VerifyNativeEngineSealedOriginal", "ConfirmNativePersistedWriter",
-                    "RetainOccurrenceIndex", "MigrateOccurrenceIndex", "VerifySnapshotEntryManifest", "AcquireSnapshotCompletionLeases", "RetainNativeCallOriginal", "ReadNativeCallOriginal", "CaptureEffectBoundary" })
+                    "RetainOccurrenceIndex", "MigrateOccurrenceIndex", "RetainLifetimeIndex", "MigrateLifetimeIndex", "VerifySnapshotEntryManifest", "AcquireSnapshotCompletionLeases", "RetainNativeCallOriginal", "ReadNativeCallOriginal", "CaptureEffectBoundary" })
                 {
                     if (!await permission.AuthorizeAsync(scope.TenantId, scope.BindingDigest, required, ErasureRootCustody.Hash(scope.NativeArguments), cancellation).ConfigureAwait(false)) { return false; }
                 }

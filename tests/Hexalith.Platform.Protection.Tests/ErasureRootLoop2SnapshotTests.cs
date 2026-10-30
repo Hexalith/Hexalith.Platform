@@ -45,7 +45,7 @@ public sealed class ErasureRootLoop2SnapshotTests
         }
         var replay = await fixture.Engine.TryReplaySnapshotAsync(enrollment.Binding.Identity.Owner, write.ProtectionResult.State, write.ProtectionResult.Metadata, type, parent, token);
         replay.IsReadable.ShouldBeTrue(); var restored = (JsonElement)replay.State!;
-        restored.GetProperty("Safe").GetInt32().ShouldBe(9);
+        restored.TryGetProperty("Safe", out _).ShouldBeFalse();
         restored.GetProperty("ProtectedContent").GetProperty("Value").GetProperty("State").GetString().ShouldBe("Erased");
         JsonSerializer.SerializeToUtf8Bytes(write.ProtectionResult.State).ShouldBe(ciphertext);
         (await fixture.Engine.TryUnprotectSnapshotAsync(enrollment.Binding.Identity.Owner, write.ProtectionResult.State, write.ProtectionResult.Metadata, type, parent, token)).IsUnreadable.ShouldBeTrue();

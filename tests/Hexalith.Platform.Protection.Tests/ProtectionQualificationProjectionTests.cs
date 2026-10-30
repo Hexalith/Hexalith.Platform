@@ -22,7 +22,7 @@ public sealed class ProtectionQualificationProjectionTests
         await fixture.Engine.AcquirePayloadProtectionCompletionLeaseAsync(write.CompletionContext!, token);
         fixture.Source.Persisted[original.Binding.OperationId] = write.ProtectionResult.PayloadBytes;
         await fixture.Engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token);
-        var current = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+        var current = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
         current.Head.SourceOriginals.Add(ErasureRootOccurrenceBindings.Id(original.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity)), original);
         string location = ProtectionQualificationNativeCell.LocationId(new("read-only", "source", new()));
         current.Head.QualificationProducerOriginals.Add(location, new(location, [original.Binding], Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(write.ProtectionResult.PayloadBytes)),
@@ -54,13 +54,13 @@ public sealed class ProtectionQualificationProjectionTests
         }
         persistedValue = JsonSerializer.SerializeToElement(new ProtectionQualificationPersistedEvent(original.Binding, write.ProtectionResult));
         await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(recipe, [original.Binding.Identity.Target], token, selectedProducer with { EngineBinarySha256 = new string('f', 64) }));
-        var historical = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+        var historical = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
         historical.Head.QualificationOperations.Add("executor:prior-case", new("executor", new string('b', 64), "prior-attempt", new string('c', 64), new System.Text.Json.Nodes.JsonObject { ["caseId"] = "P01" })
             { Producer = selectedProducer with { EngineBinarySha256 = new string('e', 64), BindingDigest = new string('b', 64) } });
         (await fixture.Custody.SaveAsync("tenant-a", historical.Version, historical.Head, token)).ShouldBeTrue();
         (await observer.ObserveAsync(recipe, [original.Binding.Identity.Target], token, selectedProducer))["engineBinarySha256"]!.GetValue<string>().ShouldBe(selectedProducer.EngineBinarySha256);
 
-        current = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value; current = (current.Version, current.Head with { OccurrenceIndexRoot = null }); current.Head.SourceOriginals.Clear();
+        current = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value; current = (current.Version, current.Head with { OccurrenceIndexRoot = null }); current.Head.SourceOriginals.Clear();
         (await fixture.Custody.SaveAsync("tenant-a", current.Version, current.Head, token)).ShouldBeTrue();
         await Should.ThrowAsync<InvalidOperationException>(() => observer.ObserveAsync(recipe, [original.Binding.Identity.Target], token));
     }

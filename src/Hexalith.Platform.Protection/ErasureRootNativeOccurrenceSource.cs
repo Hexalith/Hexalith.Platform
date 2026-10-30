@@ -11,6 +11,10 @@ namespace Hexalith.Platform.Protection;
 public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody, IErasureRootAuthorization authorization, DaprClient sourceStore,
     ErasureRootDigestKeyResolver digests, IReadOnlyDictionary<string, ProtectionQualificationNativeCell>? independentOriginals = null) : IErasureRootOccurrenceSource
 {
+    private readonly ErasureRootQuiescence _quiescence = new();
+    internal void BeginQuiescence() { _quiescence.Close(); custody.BeginQuiescence(); }
+    internal Task WaitForQuiescenceAsync(CancellationToken token) => _quiescence.WaitAsync(token);
+
     /// <summary>Content-free health of this receiver's disposed verifier backlog.</summary>
     public ErasureRootCompletionDiagnostics CompletionDiagnostics => custody.CompletionDiagnostics;
     /// <summary>Completes only this receiver's custody queue using host lifetime cancellation, never the canceled verification request.</summary>
@@ -104,7 +108,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         string digest = ErasureRootCustody.Hash(new { original.Request, result });
         if (!await authorization.AuthorizeAsync(original.Request.Identity.Target.TenantId, id, "LookupNativeEngineSealedOriginal", digest, token).ConfigureAwait(false)) { return false; }
         var read = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
-        return read is { } head && head.Head.Pending is null && !head.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))
+        return read is { } head && head.Head.Pending is null && await custody.ReadErasedAsync(head.Head, ErasureRootCustody.TargetId(original.Request.Identity.Target), token).ConfigureAwait(false) is null
             && (await custody.ReadSealedAsync(head.Head, id, token).ConfigureAwait(false) is { } retained) && retained == digest;
     }
     /// <summary>Registers only a separately authorized source-owner original before root issue. Exact retry cannot replace its target or source receipt location.</summary>
@@ -122,7 +126,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         {
             if (!await authorization.AuthorizeAsync(identity.Target.TenantId, id, "RegisterIndependentSourceOriginal", digest, token).ConfigureAwait(false)) { return false; }
             var read = await custody.ReadAsync(identity.Target.TenantId, token).ConfigureAwait(false);
-            if (read is not { } current || current.Head.Pending is not null || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(identity.Target))) { return false; }
+            if (read is not { } current || current.Head.Pending is not null || await custody.ReadErasedAsync(current.Head, ErasureRootCustody.TargetId(identity.Target), token).ConfigureAwait(false) is not null) { return false; }
             if (!await RetainIndependentAsync(enrollment, token).ConfigureAwait(false)) { return false; }
             if ((await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false) is { } prior)) { return ErasureRootCustody.Hash(prior) == digest; }
             current.Head.SourceOriginals.Add(id, enrollment);
@@ -173,11 +177,13 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
     /// <inheritdoc />
     public async Task<bool> VerifySealedAsync(InteractionOccurrenceRecord original, InteractionOccurrenceSealedResult result, CancellationToken token)
     {
+        using var verification = _quiescence.Enter();
+        if (verification is null) { return false; }
         string id = ErasureRootOccurrenceBindings.Id(original.Request.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(original.Request.Identity));
         var read = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
         if (read is not { } current || current.Head.Pending is not null || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } occurrence)
             || occurrence.EncryptionRequestDigest != ErasureRootCustody.Hash(original.Request) || result.KeyReference != original.KeyReference
-            || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))
+            || await custody.ReadErasedAsync(current.Head, ErasureRootCustody.TargetId(original.Request.Identity.Target), token).ConfigureAwait(false) is not null
             || result.SerializationFormat != "json+pdenc-v2" || result.ProtectedPathCount <= 0 || result.PayloadBytes.Length > 16777216) { return false; }
         using var json = JsonDocument.Parse(result.PayloadBytes);
         bool sealedShape = original.Request.Identity.Kind == PayloadProtectionPayloadKind.Snapshot
@@ -186,11 +192,11 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
                 && value.ValueKind == JsonValueKind.Object && value.TryGetProperty("$pdenc", out var marker) && marker.ValueKind == JsonValueKind.String;
         if (!sealedShape || !await authorization.AuthorizeAsync(original.Request.Identity.Target.TenantId, original.KeyReference,
             "VerifyNativeEngineSealedOriginal", ErasureRootCustody.Hash(new { original, result }), token).ConfigureAwait(false)) { return false; }
-        string verification = ErasureRootCustody.Hash(new { original.Request, result });
-        if ((await custody.ReadSealedAsync(current.Head, id, token).ConfigureAwait(false) is { } retained)) { return retained == verification; }
+        string verificationDigest = ErasureRootCustody.Hash(new { original.Request, result });
+        if ((await custody.ReadSealedAsync(current.Head, id, token).ConfigureAwait(false) is { } retained)) { return retained == verificationDigest; }
         using var digest = await digests.ResolveAsync(occurrence.Enrollment, original.Request.DigestKeyVersion, token).ConfigureAwait(false);
         if (digest is null) { return false; }
-        var root = await custody.UnwrapAsync(occurrence.Registration, "erc-sealed-verifier:" + verification + ":" + current.Version.ToString(System.Globalization.CultureInfo.InvariantCulture), token).ConfigureAwait(false);
+        var root = await custody.UnwrapAsync(occurrence.Registration, "erc-sealed-verifier:" + verificationDigest + ":" + current.Version.ToString(System.Globalization.CultureInfo.InvariantCulture), token).ConfigureAwait(false);
         if (root is null) { return false; }
         try
         {
@@ -199,9 +205,9 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
             for (int attempt = 0; attempt < 16; attempt++)
             {
                 var latest = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
-                if (latest is not { } fresh || fresh.Head.Pending is not null || fresh.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))) { return false; }
-                if ((await custody.ReadSealedAsync(fresh.Head, id, token).ConfigureAwait(false) is { } freshRetained)) { return freshRetained == verification; }
-                fresh.Head.SealedOriginals.Add(id, verification);
+                if (latest is not { } fresh || fresh.Head.Pending is not null || await custody.ReadErasedAsync(fresh.Head, ErasureRootCustody.TargetId(original.Request.Identity.Target), token).ConfigureAwait(false) is not null) { return false; }
+                if ((await custody.ReadSealedAsync(fresh.Head, id, token).ConfigureAwait(false) is { } freshRetained)) { return freshRetained == verificationDigest; }
+                fresh.Head.SealedOriginals.Add(id, verificationDigest);
                 if (await custody.SaveAsync(original.Request.Identity.Target.TenantId, fresh.Version, fresh.Head, token).ConfigureAwait(false)) { return true; }
             }
             return false;

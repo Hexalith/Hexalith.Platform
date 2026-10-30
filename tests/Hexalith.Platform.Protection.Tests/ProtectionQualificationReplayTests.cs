@@ -22,7 +22,7 @@ public sealed class ProtectionQualificationReplayTests
         await fixture.Engine.AcquirePayloadProtectionCompletionLeaseAsync(write.CompletionContext!, token);
         fixture.Source.Persisted.Add(binding.OperationId, write.ProtectionResult.PayloadBytes);
         await fixture.Engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token);
-        var read = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+        var read = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
         read.Head.SourceOriginals.Add(ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity)), enrollment); (await fixture.Custody.SaveAsync("tenant-a", read.Version, read.Head, token)).ShouldBeTrue();
         var persisted = new ProtectionQualificationPersistedEvent(binding, write.ProtectionResult);
         var state = new Dictionary<string, JsonElement> { ["copy-a"] = JsonSerializer.SerializeToElement(persisted), ["copy-b"] = JsonSerializer.SerializeToElement(persisted) };
@@ -66,7 +66,7 @@ public sealed class ProtectionQualificationReplayTests
         native.ReceivedCalls().Count(call => call.GetMethodInfo().Name == nameof(DaprClient.ExecuteStateTransactionAsync)).ShouldBe(nativeWrites);
         var sources = new Dictionary<string, JsonNode> { ["a"] = JsonSerializer.SerializeToNode(persisted)!, ["b"] = JsonSerializer.SerializeToNode(persisted)!,
             ["a:replay"] = JsonNode.Parse(state["copy-a:replay"].GetRawText())!, ["b:replay"] = JsonNode.Parse(state["copy-b:replay"].GetRawText())! };
-        var head = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head;
+        var head = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value.Head;
         _ = await fixture.Custody.ReadSourceAsync(head, ErasureRootOccurrenceBindings.Id(binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(binding.Identity)), token);
         var projected = ProtectionQualificationNativeProjection.Project("P01", head, sources, cells, targets);
         ProtectionQualificationNativeProjection.ProjectCopies(projected, [], sources, cells, true);

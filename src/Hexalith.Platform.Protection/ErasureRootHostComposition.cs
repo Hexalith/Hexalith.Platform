@@ -30,10 +30,10 @@ public static class ErasureRootHostComposition
         SecretsRuntimeConfiguration inventory;
         try
         {
-            byte[] bytes = ReadPinned(configuration["EventStore:PayloadProtection:InstallationFile"]!, configuration["EventStore:PayloadProtection:InstallationSha256"]!);
+            byte[] bytes = ReadPinned(configuration["EventStore:PayloadProtection:InstallationFile"]!, configuration["EventStore:PayloadProtection:InstallationSha256"]!, 8 * 1024 * 1024);
             installation = JsonSerializer.Deserialize<ErasureRootHostInstallation>(bytes, ErasureRootCustody.Json) ?? throw new InvalidOperationException();
-            _ = ReadPinned(installation.CopyPolicyFile, installation.CopyPolicySha256);
-            byte[] inventoryBytes = ReadPinned(installation.InventoryConfigurationFile, installation.InventoryConfigurationSha256);
+            _ = ReadPinned(installation.CopyPolicyFile, installation.CopyPolicySha256, 1024 * 1024);
+            byte[] inventoryBytes = ReadPinned(installation.InventoryConfigurationFile, installation.InventoryConfigurationSha256, 1024 * 1024);
             acceptedInventoryAcquired?.Invoke();
             if (inventoryBytes.Length > 1024 * 1024) { throw new InvalidOperationException(); }
             inventory = SecretsRuntimeConfiguration.Parse(new UTF8Encoding(false, true).GetString(inventoryBytes)) ?? throw new InvalidOperationException();
@@ -71,6 +71,7 @@ public static class ErasureRootHostComposition
         {
             throw new InvalidOperationException("DependencyNotAvailable:EXT-PROTECTION-1:CompletePinnedErasureRootInstallationRequired");
         }
+        services.AddDaprClient(builder => ErasureRootDaprTransport.Configure(builder));
         services.AddSingleton(installation);
         services.AddSingleton(inventory);
         services.AddSingleton<IDeletionCapabilityRevocationAuthenticator>(provider => new ErasureRootRecordingRevocationAuthenticator(
@@ -153,11 +154,19 @@ public static class ErasureRootHostComposition
             { throw new ArgumentException("Exact P-256 capability anchor required."); }
         }
     }
-    private static byte[] ReadPinned(string path, string digest)
+    internal static byte[] ReadPinned(string path, string digest, int maximumBytes, Action? opened = null)
     {
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path)
             || new FileInfo(path).LinkTarget is not null) { throw new InvalidOperationException(); }
-        byte[] bytes = File.ReadAllBytes(path);
+        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 8192, FileOptions.SequentialScan);
+        if (stream.Length is <= 0 || stream.Length > maximumBytes) { throw new InvalidOperationException("Bounded pinned input required."); }
+        int length = checked((int)stream.Length);
+        byte[] bytes = new byte[length];
+        opened?.Invoke();
+        stream.ReadExactly(bytes);
+        // Reading exactly the accepted initial length plus one byte also detects a growing input,
+        // without a second open or a memory stream that can grow beyond the configured bound.
+        if (stream.ReadByte() != -1) { throw new InvalidOperationException("Pinned input changed length."); }
         return Convert.ToHexString(SHA256.HashData(bytes)).Equals(digest, StringComparison.OrdinalIgnoreCase) ? bytes : throw new InvalidOperationException();
     }
 }

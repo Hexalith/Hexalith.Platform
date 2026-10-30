@@ -73,7 +73,7 @@ public sealed class ProtectionQualificationRoleServiceTests
         if (lostTrimAck) { fixture.Store.Failure = "trim-after"; }
         await executor.HandleAsync(original, token);
         fixture.Store.TrimCount.ShouldBe(blockedReserve ? 0 : 1);
-        var state = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+        var state = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
         string key = ProtectionQualificationOperationJournal.Id("executor", "destroy");
         var admitted = state.Head.QualificationOperations[key];
         if (lostTrimAck || blockedReserve) { admitted.Calls["original-native-reserve"] = admitted.Calls["original-native-reserve"] with { Result = null }; }
@@ -100,7 +100,7 @@ public sealed class ProtectionQualificationRoleServiceTests
         fixture.Store.TrimCount.ShouldBe(blockedReserve ? 0 : 1);
         if (!lostTrimAck && !blockedReserve)
         {
-            var historical = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+            var historical = (await fixture.Custody.ReadAsync("tenant-a", token, true))!.Value;
             var selected = historical.Head.QualificationOperations[key].Producer!;
             historical.Head.QualificationOperations.Add("executor:historical-same-case", new("executor", new string('b', 64), "historical-attempt", new string('c', 64),
                 new JsonObject { ["caseId"] = "P06", ["fixtureId"] = "historical-fixture", ["action"] = "DestroyWithLostAcknowledgement" }, new JsonObject { ["status"] = "Completed" })

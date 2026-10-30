@@ -16,7 +16,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
     public async Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
     {
         if (requestedScopeId != ScopeId || !await authorization.AuthorizeAsync(TenantId, ScopeId, "ReadCurrentOwnerOriginal", ErasureRootCustody.Hash(ScopeId), cancellationToken).ConfigureAwait(false)) { return null; }
-        var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+        var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
         if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
         var original = anchor.Completed.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
         if (original is null || original.ScopeId != ScopeId || Convert.ToHexString(SHA256.HashData(original.TargetBytes)) != anchor.Digest) { return null; }
@@ -27,7 +27,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
     public async Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
     {
         if (requestedScopeId != ScopeId) { return null; }
-        var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+        var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
         if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
         var original = anchor.Admissions.Values.SingleOrDefault(value => value.ExpectedRevision == anchor.Revision && value.PredecessorDigest == anchor.Digest);
         return original is not null && await authorization.VerifyTransitionPermissionAsync(original, "RecoverTransition", cancellationToken).ConfigureAwait(false)
@@ -40,7 +40,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
         {
             if (revision < 0 || !Digest(exactStateDigest)
                 || !await authorization.AuthorizeAsync(TenantId, ScopeId, "ValidateOwnerState", ErasureRootCustody.Hash(new { revision, exactStateDigest }), cancellationToken).ConfigureAwait(false)) { return false; }
-            var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+            var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
             return read is { } current && current.Head.Anchors.TryGetValue(ScopeId, out var anchor)
                 && anchor.Revision == revision && anchor.Digest == exactStateDigest;
         }
@@ -74,7 +74,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
             for (int attempt = 0; attempt < 16; attempt++)
             {
                 if (!await authorization.VerifyTransitionPermissionAsync(transition, operation, token).ConfigureAwait(false)) { return false; }
-                var read = await custody.ReadAsync(TenantId, token).ConfigureAwait(false);
+                var read = await custody.ReadAsync(TenantId, token, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
                 if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return false; }
                 if (anchor.Completed.TryGetValue(id, out var completed)) { return ErasureRootCustody.Hash(completed) == id; }
                 if (transition.TargetRevision <= anchor.Revision)

@@ -82,8 +82,8 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             {
                 var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
                 if (read is not { } head) { return false; }
-                if (head.Head.RevocationOriginals.TryGetValue(id, out var prior)) { return prior == revocationOriginal; }
-                if (recovery || head.Head.RevocationOriginals.Count >= 10000) { return false; }
+                if (await custody.ReadRetainedAsync(head.Head, "RevocationOriginals", head.Head.RevocationOriginals, id, token).ConfigureAwait(false) is { } prior) { return prior == revocationOriginal; }
+                if (recovery) { return false; }
                 head.Head.RevocationOriginals.Add(id, revocationOriginal);
                 if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return true; }
             }
@@ -128,7 +128,7 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             string signingId = payload.GetProperty("signingRequestId").GetString()!, signature = payload.GetProperty("detachedJwsDigest").GetString()!;
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false); var state = await guard.ReadAsync(tenant, token).ConfigureAwait(false);
             if (read is not { } head || state is null || state.Receipts.Any(value => value.Status == "Committed" && value.SigningRequestId == signingId)) { return null; }
-            if (head.Head.GuardSigningIntents.TryGetValue(signingId, out var signingIntent))
+            if (await custody.ReadSigningIntentAsync(head.Head, signingId, token).ConfigureAwait(false) is { } signingIntent)
             {
                 _ = await custody.ReadGuardAttemptAsync(tenant, head.Head, signingIntent, token).ConfigureAwait(false);
                 _ = await custody.ReadGuardAdmissionAsync(tenant, head.Head, signingIntent, token).ConfigureAwait(false);
@@ -200,8 +200,11 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             if (recovery)
             {
                 var recoveryHead = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-                return recoveryHead is { } retained ? retained.Head.SigningRecoveries.Values.Where(value => value.Payload == signedPayload && value.SigningRequestId == signingId && value.DetachedJwsDigest == signatureDigest)
-                    .OrderBy(value => value.ObservedAt).LastOrDefault() : null;
+                if (recoveryHead is not { } retained) { return null; }
+                var legacyRecovery = retained.Head.SigningRecoveries.Values.Where(value => value.Payload == signedPayload && value.SigningRequestId == signingId && value.DetachedJwsDigest == signatureDigest)
+                    .OrderBy(value => value.ObservedAt).LastOrDefault();
+                return legacyRecovery ?? await new ErasureRootOccurrenceIndex(custody.Store, custody.Installation, tenant).ReadAsync<GovernanceSigningRecovery>(retained.Head.LifetimeIndexRoot,
+                    "signing-recovery-reference:" + ErasureRootCustody.Hash(new { Payload = signedPayload, SigningRequestId = signingId, DetachedJwsDigest = signatureDigest }), token).ConfigureAwait(false);
             }
             var actual = await guard.ReadNoIssueAsync(signedPayload, signingId, signatureDigest, token).ConfigureAwait(false);
             if (actual is null || actual.Payload != signedPayload || actual.SigningRequestId != signingId || actual.DetachedJwsDigest != signatureDigest) { return null; }
@@ -210,8 +213,7 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             {
                 var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
                 if (read is not { } head) { return null; }
-                if (head.Head.SigningRecoveries.ContainsKey(id)) { return actual; }
-                if (head.Head.SigningRecoveries.Count >= 10000) { return null; }
+                if (await custody.ReadRetainedAsync(head.Head, "SigningRecoveries", head.Head.SigningRecoveries, id, token).ConfigureAwait(false) is not null) { return actual; }
                 head.Head.SigningRecoveries.Add(id, actual);
                 if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { return actual; }
             }
@@ -309,15 +311,15 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
                     if (operation == "VerifyActivationEvidence")
                     {
                         var activation = original.Deserialize<DeletionReattestationActivation>(CustodyBindingContract.Json)!;
-                        if (head.Head.ActivationEvidence.TryGetValue(requestDigest, out var prior)) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
-                        if (recovery || head.Head.ActivationEvidence.Count >= 10000) { allowed = false; break; }
+                        if (await custody.ReadRetainedAsync(head.Head, "ActivationEvidence", head.Head.ActivationEvidence, requestDigest, token).ConfigureAwait(false) is { } prior) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
+                        if (recovery) { allowed = false; break; }
                         head.Head.ActivationEvidence.Add(requestDigest, activation);
                     }
                     else
                     {
                         var replacement = original.Deserialize<DeletionBlockedReplacementReconciliation>(CustodyBindingContract.Json)!;
-                        if (head.Head.BlockedReplacementEvidence.TryGetValue(requestDigest, out var prior)) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
-                        if (recovery || head.Head.BlockedReplacementEvidence.Count >= 10000) { allowed = false; break; }
+                        if (await custody.ReadRetainedAsync(head.Head, "BlockedReplacementEvidence", head.Head.BlockedReplacementEvidence, requestDigest, token).ConfigureAwait(false) is { } prior) { allowed = ErasureRootCustody.Hash(prior) == requestDigest; break; }
+                        if (recovery) { allowed = false; break; }
                         head.Head.BlockedReplacementEvidence.Add(requestDigest, replacement);
                     }
                     if (await custody.SaveAsync(tenant, head.Version, head.Head, token).ConfigureAwait(false)) { break; }
@@ -332,7 +334,7 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
     {
         if (state.ValidUntil <= clock.GetUtcNow()) { return false; }
         var read = await custody.ReadAsync(envelope.TenantId, token).ConfigureAwait(false);
-        if (read is not { } head || !head.Head.RevocationOriginals.TryGetValue(ErasureRootCustody.Hash(envelope), out var original) || original.Envelope != envelope) { return false; }
+        if (read is not { } head || await custody.ReadRetainedAsync(head.Head, "RevocationOriginals", head.Head.RevocationOriginals, ErasureRootCustody.Hash(envelope), token).ConfigureAwait(false) is not { } original || original.Envelope != envelope) { return false; }
         var verified = await revocations.VerifyAsync(envelope, original.SignedEvidence, token).ConfigureAwait(false);
         return verified?.Envelope == envelope && verified.ObservedAt <= clock.GetUtcNow() && verified.ValidUntil > clock.GetUtcNow();
     }
@@ -421,13 +423,15 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
         if (read is not { } head) { return false; }
         if (parts[0] == "revocation")
         {
-            var original = head.Head.RevocationOriginals.Values.SingleOrDefault(value => value.Envelope.EventIdentity == parts[2] && value.Envelope.SignatureDigest == parts[4]);
+            var original = head.Head.RevocationOriginals.Values.SingleOrDefault(value => value.Envelope.EventIdentity == parts[2] && value.Envelope.SignatureDigest == parts[4])
+                ?? await new ErasureRootOccurrenceIndex(custody.Store, custody.Installation, parts[1]).ReadAsync<ErasureRootRevocationOriginal>(head.Head.LifetimeIndexRoot,
+                    "revocation-reference:" + ErasureRootCustody.Hash(new { EventIdentity = parts[2], SignatureDigest = parts[4] }), token).ConfigureAwait(false);
             return original is not null && await RevocationAsync(original.Envelope, current, token).ConfigureAwait(false);
         }
         if (parts[0] == "activation")
-        { return head.Head.ActivationEvidence.TryGetValue(parts[4], out var activation) && activation.Replacement.Capability.BatchId == parts[2]
+        { return await custody.ReadRetainedAsync(head.Head, "ActivationEvidence", head.Head.ActivationEvidence, parts[4], token).ConfigureAwait(false) is { } activation && activation.Replacement.Capability.BatchId == parts[2]
             && await ActivationAsync(activation, token).ConfigureAwait(false); }
-        return head.Head.BlockedReplacementEvidence.TryGetValue(parts[4], out var replacement) && replacement.Capability.BatchId == parts[2]
+        return await custody.ReadRetainedAsync(head.Head, "BlockedReplacementEvidence", head.Head.BlockedReplacementEvidence, parts[4], token).ConfigureAwait(false) is { } replacement && replacement.Capability.BatchId == parts[2]
             && await CurrentBlockedReplacementAsync(replacement, state.Revision, ErasureRootCustody.Hash(state), current, token).ConfigureAwait(false);
     }
     private static ErasureRootPermissionEvidence Evidence(string tenant, string identity, string operation, string digest, bool permitted, IndependentAuthorityState current)
