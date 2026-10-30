@@ -31,6 +31,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
             if (!fromSource) version = PlatformServerBindings.Version(options, module, server.Module.Source);
             result.Add(new(contract, adapter, server.AppId, Reference(contract), Reference(adapter), version));
         }
+        if (result.Count == 0) throw new InvalidDataException("The selected closure has no compiled catalog owners.");
         return result;
     }
 }

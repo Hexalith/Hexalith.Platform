@@ -9,7 +9,7 @@ using Shouldly;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
-    public void FileEntryResolvesDefaultMappingAndComposesSixServers()
+    public void FileEntryResolvesDefaultMappingAndComposesSevenServers()
     {
         string[] variables = ["HEXALITH_SOURCE_MAPPING_PATH", "HEXALITH_SOURCE_MAPPING_HASH"];
         string?[] original = variables.Select(Environment.GetEnvironmentVariable).ToArray();
@@ -27,7 +27,7 @@ public sealed partial class PlatformAppModelTests
             PlatformAppModel.ComposeEntry(builder);
             builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any())
                 .Select(resource => resource.Name).Order(StringComparer.Ordinal)
-                .ShouldBe(new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry" }.Order(StringComparer.Ordinal));
+                .ShouldBe(new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry" }.Order(StringComparer.Ordinal));
             using ServiceProvider provider = builder.Services.BuildServiceProvider();
             provider.GetRequiredService<PlatformCompositionWorkspace>().Dispose();
         }
