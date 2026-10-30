@@ -22,7 +22,6 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     internal int RotateAttempts { get; private set; }
     internal int CasCount { get; private set; }
     internal string? Failure { get; set; }
-    internal byte[]? DecryptSubstitution { get; set; }
     internal TaskCompletionSource? RotationEntered { get; set; }
     internal TaskCompletionSource? RotationContinue { get; set; }
 
@@ -115,8 +114,6 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     }
     public Task<byte[]> DecryptAsync(string tenantId, ErasureRootCiphertext value, CancellationToken cancellationToken)
     {
-        if (DecryptSubstitution is { } substitution) { return Task.FromResult(substitution.ToArray()); }
-        Fail("decrypt");
         string[] parts = value.Ciphertext.Split(':');
         int epoch = int.Parse(parts[1][1..], System.Globalization.CultureInfo.InvariantCulture);
         byte[] key = Derived(tenantId, epoch, value.Context);

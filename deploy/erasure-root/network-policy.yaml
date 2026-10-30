@@ -10,15 +10,11 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: hexalith
+              hexalith.com/erc-client: "true"
+          podSelector:
+            matchLabels:
+              hexalith.com/erc-client: "true"
       ports:
         - port: 8200
-          protocol: TCP
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: hexalith-erasure-root
-      ports:
-        - port: 8201
           protocol: TCP
   egress: []

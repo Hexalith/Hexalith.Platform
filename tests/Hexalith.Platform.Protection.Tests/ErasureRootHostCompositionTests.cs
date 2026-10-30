@@ -38,7 +38,7 @@ public sealed class ErasureRootHostCompositionTests
             var copy = Write("copy.json", "{}"u8.ToArray());
             string credential = Path.Combine(directory, "private-bearer"); File.WriteAllText(credential, "component-private-bearer");
             var authority = new IndependentDaprAuthorityBinding("private-authority", "file:" + credential, key.ExportSubjectPublicKeyInfoPem(), "component", "tenant-a", "1");
-            var host = new ErasureRootHostInstallation(new ErasureRootInstallation("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" }) { TrustedCaCertificatePem = ErasureRootPinnedCa.Pem },
+            var host = new ErasureRootHostInstallation(new("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" }),
                 "https://erc.invalid/", "env:EXT_PROTECTION_LOOP4_COMPONENT_NATIVE", new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
                 [new("tenant-a", "DeletionBatchCapabilitySigningKey", "key-1", "issuer", "audience", "anchor", "1", key.ExportSubjectPublicKeyInfo(), 1, false)], inventory.Path, inventory.Hash, copy.Path, copy.Hash);
             var pinned = Write("host.json", JsonSerializer.SerializeToUtf8Bytes(host));

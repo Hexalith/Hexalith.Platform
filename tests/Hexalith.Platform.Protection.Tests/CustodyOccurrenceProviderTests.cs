@@ -58,17 +58,6 @@ public sealed class CustodyOccurrenceProviderTests
         (await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken)).ShouldBeNull();fixture.MaterialReleases.ShouldBe(1);
     }
     [Fact]
-    public async Task ZeroedLiveRootStaysIncompleteUntilDispose()
-    {
-        using var fixture=new Fixture();var provider=fixture.Provider();
-        (await provider.AcquireEncryptionLeaseAsync(fixture.Occurrence,TestContext.Current.CancellationToken)).ShouldBeTrue();
-        var root=await provider.ResolveRootAsync(fixture.Identity,"reference",true,TestContext.Current.CancellationToken);root.ShouldNotBeNull();
-        CryptographicOperations.ZeroMemory(root.Bytes);fixture.IndependentCompletion=true;
-        (await provider.CompleteDisposedUsesAsync(TestContext.Current.CancellationToken)).ShouldBe(0);fixture.CompletionCalls.ShouldBe(0);
-        root.Dispose();
-        (await provider.CompleteDisposedUsesAsync(TestContext.Current.CancellationToken)).ShouldBe(1);fixture.CompletionCalls.ShouldBe(1);
-    }
-    [Fact]
     public async Task DigestUsesOnlyExactCurrentTenantPurposeVersionAndClearsOwnedCandidateOnDispose()
     {
         using var fixture=new Fixture();var provider=fixture.Provider();

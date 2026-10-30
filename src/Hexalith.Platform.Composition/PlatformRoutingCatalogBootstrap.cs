@@ -117,8 +117,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
     internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
         PlatformDaprBindings dapr, string rendered)
     {
-        // A gateway-only infrastructure graph has no enrolled business operations.
-        if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return null;
+        if (!servers.Any(server => server.ResourceId == "eventstore")) return null;
         var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
             || server.ResourceId is "tenants-api" or "memories").ToArray();

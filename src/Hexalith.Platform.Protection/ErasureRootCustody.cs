@@ -51,13 +51,7 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     }
     internal ErasureRootInstallation Installation => installation;
     internal IErasureRootStore Store => store;
-    internal static readonly JsonSerializerOptions Json = CreateJson();
-    private static JsonSerializerOptions CreateJson()
-    {
-        var options = new JsonSerializerOptions { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
-        options.Converters.Add(new OrdinalStringSortedDictionaryConverterFactory());
-        return options;
-    }
+    internal static readonly JsonSerializerOptions Json = new() { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
     /// <summary>Retains only the exact current native pin-refusal vector under explicit private observation permission. It cannot admit a manifest or bypass an owner's reservation.</summary>
     public async Task<ErasureRootPinRefusal[]?> CapturePinnedManifestRefusalAsync(DeletionBatchConsumptionRequest request, string operationId, CancellationToken token = default)
     {
@@ -179,49 +173,22 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
                 var leased = target with { Holders = target.Holders.Append(holderId).ToArray() };
                 read.Head.Targets[TargetId(registration.Identity)] = leased;
                 if (!await SaveAsync(registration.Identity.TenantId, read.Version, read.Head, cancellationToken).ConfigureAwait(false)) { continue; }
-                bool rollback = true;
-                try
-                {
-                    root = await store.DecryptAsync(registration.Identity.TenantId, target.Wrapped, cancellationToken).ConfigureAwait(false);
-                    if (root.Length != 32 || !await authorization.AuthorizeAsync(registration.Identity.TenantId, holderId, "UnwrapDek", digest, cancellationToken).ConfigureAwait(false)) { return null; }
-                    var confirmed = await ReadAsync(registration.Identity.TenantId, cancellationToken).ConfigureAwait(false);
-                    if (confirmed is not { } fresh || fresh.Head.Pending is not null
-                        || !fresh.Head.Targets.TryGetValue(TargetId(registration.Identity), out var retained)
-                        || retained.Registration != registration || !retained.Holders.Contains(holderId, StringComparer.Ordinal)) { return null; }
-                    var result = new OwnedErasureRootKey(root, holderId);
-                    _issuedHolders.Add(result, registration);
-                    root = null;
-                    rollback = false;
-                    return result;
-                }
-                finally
-                {
-                    if (rollback && !cancellationToken.IsCancellationRequested)
-                    {
-                        if (root is not null) { CryptographicOperations.ZeroMemory(root); root = null; }
-                        await RollbackUnissuedHolderAsync(registration, holderId, cancellationToken).ConfigureAwait(false);
-                    }
-                }
+                root = await store.DecryptAsync(registration.Identity.TenantId, target.Wrapped, cancellationToken).ConfigureAwait(false);
+                if (root.Length != 32 || !await authorization.AuthorizeAsync(registration.Identity.TenantId, holderId, "UnwrapDek", digest, cancellationToken).ConfigureAwait(false)) { return null; }
+                var confirmed = await ReadAsync(registration.Identity.TenantId, cancellationToken).ConfigureAwait(false);
+                if (confirmed is not { } fresh || fresh.Head.Pending is not null
+                    || !fresh.Head.Targets.TryGetValue(TargetId(registration.Identity), out var retained)
+                    || retained.Registration != registration || !retained.Holders.Contains(holderId, StringComparer.Ordinal)) { return null; }
+                var result = new OwnedErasureRootKey(root, holderId);
+                _issuedHolders.Add(result, registration);
+                root = null;
+                return result;
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); }
         finally { if (root is not null) { CryptographicOperations.ZeroMemory(root); } }
         return null;
-    }
-
-    private async Task RollbackUnissuedHolderAsync(CustodyKeyRegistration registration, string holderId, CancellationToken token)
-    {
-        string id = TargetId(registration.Identity);
-        for (int attempt = 0; attempt < 16; attempt++)
-        {
-            var current = await ReadAsync(registration.Identity.TenantId, token).ConfigureAwait(false);
-            if (current is not { } read || read.Head.Pending is not null) { return; }
-            if (!read.Head.Targets.TryGetValue(id, out var target) || target.Registration != registration) { return; }
-            if (target.CompletedHolders.Contains(holderId, StringComparer.Ordinal) || !target.Holders.Contains(holderId, StringComparer.Ordinal)) { return; }
-            read.Head.Targets[id] = target with { Holders = target.Holders.Where(value => value != holderId).ToArray() };
-            if (await SaveAsync(registration.Identity.TenantId, read.Version, read.Head, token).ConfigureAwait(false)) { return; }
-        }
     }
 
     /// <summary>Completes only an independently authorized original holder after its owned bytes have been cleared. Unknown/crashed holders remain restrictive.</summary>
@@ -546,7 +513,7 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
                 var original = JsonSerializer.Deserialize<AnchoredStateTransition>(bytes, Json) ?? throw new InvalidOperationException("Invalid admitted original.");
                 if (Hash(original) != admission.Key || admission.Key != admission.Value || original.ScopeId != entry.Key
                     || original.ExpectedRevision != anchor.Revision || original.PredecessorDigest != anchor.Digest) { return null; }
-                if (!anchor.Admissions.TryAdd(admission.Key, original)) { return null; }
+                anchor.Admissions.Add(admission.Key, original);
             }
             if (anchor.ArchiveHead is not null)
             {
@@ -788,21 +755,14 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
             || !policy.Derived || policy.Exportable || policy.AllowPlaintextBackup || policy.DeletionAllowed)
         { throw new InvalidOperationException("Native custody key is not an installed derived non-exportable root."); }
         byte[] probe = RandomNumberGenerator.GetBytes(32);
-        byte[]? decrypted = null;
         string context = Convert.ToBase64String(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("erc-custody-readiness:" + tenant + ":" + epoch.ToString(CultureInfo.InvariantCulture))));
         try
         {
             string ciphertext = await store.EncryptAsync(tenant, epoch, probe, context, token).ConfigureAwait(false);
             if (!ciphertext.StartsWith("vault:v" + epoch.ToString(CultureInfo.InvariantCulture) + ":", StringComparison.Ordinal))
             { throw new InvalidOperationException("Native custody encrypt did not bind the head epoch."); }
-            decrypted = await store.DecryptAsync(tenant, new ErasureRootCiphertext(ciphertext, context), token).ConfigureAwait(false);
-            if (!decrypted.AsSpan().SequenceEqual(probe)) { throw new InvalidOperationException("Native custody decrypt did not return the readiness probe."); }
         }
-        finally
-        {
-            CryptographicOperations.ZeroMemory(probe);
-            if (decrypted is not null) { CryptographicOperations.ZeroMemory(decrypted); }
-        }
+        finally { CryptographicOperations.ZeroMemory(probe); }
     }
     internal Task<ErasureRootNativePolicy> ReadNativePolicyAsync(string tenant, CancellationToken token) => store.ReadPolicyAsync(tenant, token);
     internal async Task<System.Text.Json.Nodes.JsonNode?> ReadNativeCallResultAsync(string tenant, ProtectionQualificationNativeCall call, CancellationToken token)

@@ -61,7 +61,7 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
             var inventory = Write("inventory.json", "{\"runtime\":{\"currentInventoryAuthorityReference\":\"inventory-authority\"}}"u8.ToArray()); var policy = Write("copy.json", "{}"u8.ToArray());
             string privateBearer = Path.Combine(directory, "private-bearer"); File.WriteAllText(privateBearer, "synthetic-private-bearer");
             var authority = new Hexalith.Platform.Secrets.Runtime.IndependentDaprAuthorityBinding("private", "file:" + privateBearer, signer.ExportSubjectPublicKeyInfoPem(), "component", "tenant-a", "1");
-            var installation = new ErasureRootHostInstallation(fixture.Custody.Installation with { TrustedCaCertificatePem = ErasureRootPinnedCa.Pem }, "https://native.invalid/", "env:" + nativeVariable, new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
+            var installation = new ErasureRootHostInstallation(fixture.Custody.Installation, "https://native.invalid/", "env:" + nativeVariable, new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
                 [new("tenant-a", "DeletionBatchCapabilitySigningKey", "version", "issuer", "audience", "anchor", "1", signer.ExportSubjectPublicKeyInfo(), 1, false)], inventory.Path, inventory.Hash, policy.Path, policy.Hash);
             var file = Write("host.json", JsonSerializer.SerializeToUtf8Bytes(installation));
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { ["EventStore:PayloadProtection:Enabled"] = "true", ["EventStore:PayloadProtection:InstallationFile"] = file.Path, ["EventStore:PayloadProtection:InstallationSha256"] = file.Hash }).Build();

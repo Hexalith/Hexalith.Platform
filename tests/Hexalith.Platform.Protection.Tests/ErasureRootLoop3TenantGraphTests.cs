@@ -29,7 +29,7 @@ public sealed class ErasureRootLoop3TenantGraphTests
         var token = TestContext.Current.CancellationToken;
         using var fixture = new ErasureRootEngineFixture(); using var native = Substitute.For<DaprClient>();
         string directory = Path.Combine(Path.GetTempPath(), "erc-two-tenant-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(directory);
-        var installation = fixture.Custody.Installation with { NativeKeys = new Dictionary<string, string> { ["tenant-a"] = "epoch-a", ["tenant-b"] = "epoch-b" }, TrustedCaCertificatePem = ErasureRootPinnedCa.Pem };
+        var installation = fixture.Custody.Installation with { NativeKeys = new Dictionary<string, string> { ["tenant-a"] = "epoch-a", ["tenant-b"] = "epoch-b" } };
         fixture.Store.Enroll(installation, "tenant-b");
         var custody = new ErasureRootCustody(fixture.Store, installation, fixture.Permissions);
         var guard = Substitute.For<IGovernanceScopeGuard>();

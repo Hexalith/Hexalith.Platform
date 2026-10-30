@@ -46,7 +46,7 @@ public sealed partial class PlatformAppModelTests
                 else PlatformAppModel.Compose(builder, Options(active: "tenants"));
 
                 var servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-                servers.Length.ShouldBe(7);
+                servers.Length.ShouldBe(6);
                 builder.Resources.ShouldNotContain(resource => resource.Name.Contains("keycloak", StringComparison.OrdinalIgnoreCase));
                 var sentry = builder.Resources.Single(resource => resource.Name == "dapr-sentry");
                 string credentials = sentry.Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials").Source!;

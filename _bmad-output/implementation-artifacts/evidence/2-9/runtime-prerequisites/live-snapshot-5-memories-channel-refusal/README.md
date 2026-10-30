@@ -1,5 +1,0 @@
-# Frozen source run: Memories application-channel refusal
-
-Run `d9898c094370680adb64dc3c6ca644db` committed all six catalog participants, completed/persisted real bootstrap/tenant/membership commands and observed the tenant through the actual native Tenants REST query. Actual partial progress then reports memories-submit-refused, HTTP401, complete=false. The Memory Server installs its application-channel-token middleware globally before JWT; it refuses every non-probe request without the actual channel credential, so the direct JWT-only provisioning request never reaches JWT validation. No issuer/signature/policy defect is inferred. The native suite did not execute.
-
-Exact-owned down proved empty verified resources. Twelve actual configuration credentials were scanned in memory against forty-one retained files with zero value hits or supplemental JWT/private-key patterns. In-process operator/workload tokens are not claimed as exact-value scan coverage. No plan, environment, credentials, kubeconfig or request payloads are archived. Owner transport/public-ingress reconciliation remains pending and no security guard has been disabled.

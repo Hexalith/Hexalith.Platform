@@ -6,25 +6,17 @@ status: 'in-progress'
 baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
 eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
-review_loop_iteration: 10
+review_loop_iteration: 9
 context:
   - '{project-root}/../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
   - '{project-root}/../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md'
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'
 ---
 
-> Current status — human authorized one correction cycle at counter 10. Two bad-spec gaps and the review-10 direct patches are mandatory. Loop 9 corrections stay. No rollback. No accepted target, profile, date, or installed/physical qualification.
+> Current status — human authorized one correction cycle at counter 9. Six bad-spec gaps and the review-9 direct patches are mandatory. Loop 8 corrections stay. No rollback. No accepted target, profile, date, or installed/physical qualification.
 
-
-### Current implementation dispatch — authorized loop 10
-
-This directive and the final **Re-derivation loop 10** entry supersede the review 10 halt and every older dispatch below. The human answered yes to one further correction cycle. Counter `review_loop_iteration` stays 10. Do not increment it. Do not halt for lack of authorization.
-
-Implement in Platform `/home/administrator/projects/hexalith/platform` and EventStore `/home/administrator/projects/hexalith/eventstore`. Do not reset or discard working-tree files. Preserve loop-9 behavior, unrelated concurrent hunks, and both original baselines. No Git mutation or remote operation. Build Debug with project references and `-nodeReuse:false`, using the same `HexalithEventStoreRoot`, physical `HexalithCommonsRoot`, and `HexalithTenantsBasePath` as loop 9. Run test DLLs directly. Leave status `in-progress`. Do not invent an immutable target, profile, date, or availability record.
 
 ### Current implementation dispatch — authorized loop 9
-
-Review 10, recorded at the end of this spec, supersedes this dispatch. The counter-9 cycle was implemented and then halted. Do not start another correction from this section.
 
 This directive and the final **Re-derivation loop 9** entry supersede the review 9 halt and every older dispatch below. The human answered yes to one further correction cycle. Counter `review_loop_iteration` stays 9. Do not increment it. Do not halt for lack of authorization.
 
@@ -1002,26 +994,4 @@ Required corrections:
 16. R9-VG-2 — in `CustodyOccurrenceProviderTests`, zero the live root without `Dispose` and assert completion stays 0. After `Dispose`, completion is allowed.
 17. Run the tests that cover these files. Debug project-reference builds of the touched test projects must report zero warnings and errors. Run the DLLs directly. Record a handback at `docs/implementation/ext-protection-1-loop9/`. Leave status `in-progress`. Do not run Live, OQ, Agents, cluster apply, or production OpenBao. Do not claim a new native five-case pass unless that suite is actually run.
 
-Authoritative execution is this entry and the loop-9 dispatch at the top. The human later answered yes to one correction cycle; that authorization is the Re-derivation loop 10 entry below.
-
-
-### Re-derivation loop 10 — 2026-10-30, explicitly authorized after escalation
-
-Authorization: review 10 incremented 9→10 and halted. The human answered yes to one additional correction cycle. Resume this one cycle with counter 10, original baselines, and frozen intent unchanged. Two bad_spec entries (R10-BH-1/R10-EC-7 and R10-BH-2) and the direct patches R10-BH-3, R10-BH-5, R10-BH-7, R10-BH-8, R10-BH-13, R10-BH-17, R10-EC-3, and R10-VG-1 through R10-VG-6 are mandatory. Do not change rejected rows or the unopened maybe-false rows. Do not change `PrivateOwnerOperationDeadline`.
-
-KEEP: preserve every loop-9 correction, including the production CA pin, per-tenant policies, namespace ingress, holder rollback, ordinal dictionaries, `disable_mlock`, readiness decrypt, and the earlier loop-8 checks.
-
-Required corrections:
-
-1. R10-BH-1 — `bootstrap.py --apply` must resume a partial run. When a mount, key, policy, or CAS-0 head already matches the enrollment, continue. When an existing object does not match, refuse before changing it. The failure result must name the step that stopped, not only `ERC_BOOTSTRAP_INPUT_OR_NATIVE_FAILURE`. Default `--apply` off stays zero native calls.
-2. R10-BH-2 — the bootstrap client must verify the ERC with the same pinned CA the production store uses. It must not send `X-Vault-Token` until that CA validates the certificate. A different CA refuses before the token is written. A matching local CA still applies.
-3. R10-BH-3 — rendered per-tenant key config must list minimum encryption and decryption versions `1` through `64`, covering the bootstrap epoch and later trims. An empty parameter list is not allowed. Version `1` alone is not allowed, because it would deny the successor trim.
-4. R10-BH-5 — set the TLS secret volume `defaultMode` to `0400`, and set the container memory swap limit equal to the memory limit.
-5. R10-BH-7 — the readiness command must fail unless health JSON reports version `2.6.2`, `initialized` true, and `sealed` false.
-6. R10-BH-8 — keep listener `max_request_size` at 67108864 and `max_request_json_memory` at 134217728. Their sum fits under the 1Gi pod limit and still accepts a head near the 30MiB cap.
-7. R10-BH-13 and R10-EC-3 — registry recovery must return null when the recovered snapshot deserializes to null, including `ArgumentNullException`, and still return null for `JsonException`.
-8. R10-BH-17 — zero the `DecryptAsync` request body in `finally`.
-9. R10-VG-1 through R10-VG-6 — add the filed tests: newer current-original registry restore, non-JSON registry target bytes, sealed skeleton detachment and oversize rejection, published-trust `ReadCurrentOriginalAsync` vectors, real-authority unissued accept and mismatch, and a null `RejectedUnissuedReplacement` after the healthy issue.
-10. Run the bootstrap tests and the touched .NET DLL classes. Record `docs/implementation/ext-protection-1-loop10/`. Leave status `in-progress`. Do not run Live, cluster apply, or production OpenBao.
-
-Authoritative execution is this entry and the loop-10 dispatch at the top.
+Authoritative execution is this entry and the loop-9 dispatch at the top.

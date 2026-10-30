@@ -16,12 +16,6 @@ internal sealed class PlatformPackageFixture : IDisposable
         Directory.CreateDirectory(declarations);
         Directory.CreateDirectory(catalog);
         File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
-        foreach (string file in new[] { "Directory.Build.props", "Directory.Packages.props" })
-            File.Copy(Path.Combine(platformRoot, file), Path.Combine(Root, file));
-        string reader = Path.Combine(Root, "src", "Hexalith.Platform.CatalogBuilder");
-        Directory.CreateDirectory(reader);
-        foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs" })
-            File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.CatalogBuilder", file), Path.Combine(reader, file));
         Versions = new Dictionary<string, string> { ["eventstore"] = "3.120.0", ["tenants"] = "5.8.0", ["memories"] = "2.27.1" };
         File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion><HexalithTenantsVersion>5.8.0</HexalithTenantsVersion><HexalithMemoriesVersion>2.27.1</HexalithMemoriesVersion></PropertyGroup></Project>");
         Dictionary<string, string> commits = [];
@@ -44,19 +38,15 @@ internal sealed class PlatformPackageFixture : IDisposable
             };
         }
         File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
-        // The graph uses synthetic release/image identities, while its catalog is built from
-        // explicitly mapped actual owner source. This fixture confers no package acceptance.
-        SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(platformRoot, "references"), "Hexalith.*")
-            .Select(path => new SourceMappingEntry(Path.GetFileName(path), "source", path)).ToArray();
+        SourceMappingEntry[] entries = Versions.Keys.Select(owner => new SourceMappingEntry(PlatformServerBindings.Repository(owner), "package", null)).ToArray();
         Options = new PlatformCompositionOptions
         {
             PlatformRoot = Root,
-            Mapping = new SourceMapping(WorkspaceMode.Package, Root, "Hexalith.Platform", Versions.Keys.Select(owner => new SourceMappingEntry(PlatformServerBindings.Repository(owner), "package", null)).ToArray(), false),
+            Mapping = new SourceMapping(WorkspaceMode.Package, Root, "Hexalith.Platform", entries, false),
             ComponentsDirectory = Path.Combine(platformRoot, "DaprComponents", "reference"),
             EventStoreSeedProject = Path.Combine(platformRoot, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
             ReleaseCommits = commits, ReleaseSnapshotHashes = hashes,
         };
-        SourceCatalogOptions = Options with { Mapping = new SourceMapping(WorkspaceMode.Package, Root, "Hexalith.Platform", entries, true) };
     }
 
     /// <summary>Gets the temporary Platform root.</summary>
@@ -67,9 +57,6 @@ internal sealed class PlatformPackageFixture : IDisposable
 
     /// <summary>Gets the options bound to this fixture's bytes and provenance.</summary>
     public PlatformCompositionOptions Options { get; }
-
-    /// <summary>Gets graph-only package image bindings with a real source-built catalog; confers no package acceptance.</summary>
-    public PlatformCompositionOptions SourceCatalogOptions { get; }
 
     /// <inheritdoc />
     public void Dispose() => Directory.Delete(Root, true);

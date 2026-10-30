@@ -18,17 +18,16 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
             string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
             string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
             string? version = null;
-            bool fromSource = selected.Origin == "source";
             string Reference(string assembly)
             {
-                if (!fromSource && options.Mapping.Mode != WorkspaceMode.Source) return assembly;
+                if (options.Mapping.Mode != WorkspaceMode.Source) return assembly;
                 if (selected.Origin != "source" || selected.Path is null) throw new InvalidDataException($"{module}: mapped Contracts source is unavailable.");
                 string project = Path.GetFullPath(Path.Combine(selected.Path, "src", assembly, assembly + ".csproj"));
                 if (!(options.Mapping with { Entries = [selected] }).ContainsProject(project))
                     throw new InvalidDataException($"{module}: Contracts project {assembly} is absent or outside its mapped owner.");
                 return project;
             }
-            if (!fromSource) version = PlatformServerBindings.Version(options, module, server.Module.Source);
+            if (options.Mapping.Mode == WorkspaceMode.Package) version = PlatformServerBindings.Version(options, module, server.Module.Source);
             result.Add(new(contract, adapter, server.AppId, Reference(contract), Reference(adapter), version));
         }
         if (result.Count == 0) throw new InvalidDataException("The selected closure has no compiled catalog owners.");
