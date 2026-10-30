@@ -18,6 +18,35 @@ from unittest.mock import patch
 import qualify
 
 
+def source_package_roots(platform):
+    """Resolve only the source layouts selected by the owners' build props."""
+    def select(owner, candidates, marker, required):
+        for root in candidates:
+            if (root / marker).exists():
+                for relative in required:
+                    path = root / relative
+                    if not path.is_file():
+                        raise FileNotFoundError(f'{owner} source input is missing: {path}')
+                return root
+        paths = ', '.join(str(root / marker) for root in candidates)
+        raise FileNotFoundError(f'{owner} source is missing; checked: {paths}')
+
+    # Platform prefers existing siblings before its standalone references/ tree.
+    builds = select('Hexalith.Builds',
+                    [platform.parent / 'Hexalith.Builds', platform / 'references/Hexalith.Builds'],
+                    'Props/Directory.Packages.props', ['Props/Directory.Packages.props'])
+    eventstore = select('Hexalith.EventStore',
+                        [platform.parent / 'Hexalith.EventStore', platform / 'references/Hexalith.EventStore'],
+                        'src/Hexalith.EventStore.Contracts', ['Directory.Packages.props'])
+    # EventStore's own Commons selector prefers its nested source, then siblings.
+    commons_project = 'src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj'
+    commons = select('Hexalith.Commons',
+                     [eventstore / 'references/Hexalith.Commons', eventstore.parent / 'Hexalith.Commons',
+                      eventstore.parent / 'references/Hexalith.Commons'],
+                     'src/libraries/Hexalith.Commons.UniqueIds', ['Directory.Packages.props', commons_project])
+    return {'Builds': builds, 'EventStore': eventstore, 'Commons': commons}
+
+
 class QualifierFailureTests(unittest.TestCase):
     @contextmanager
     def qualification(self):
@@ -353,22 +382,24 @@ class QualifierFailureTests(unittest.TestCase):
             thread.join(timeout=2)
 
     def test_source_package_boundary_keeps_catalog_pins_and_exposes_conflicts(self):
+        sources = source_package_roots(qualify.ROOT)
         boundary = qualify.HERE / 'source-packages.props'
-        properties = ['-p:UseHexalithProjectReferences=true', '-p:UseNuGetDeps=false',
-                      '-p:HexalithBuildsRoot=' + str(qualify.ROOT / 'references/Hexalith.Builds'),
-                      '-p:HexalithEventStoreRoot=' + str(qualify.ROOT / 'references/Hexalith.EventStore'),
+        properties = ['-p:Configuration=Debug', '-p:UseHexalithProjectReferences=true', '-p:UseNuGetDeps=false',
+                      '-p:HexalithBuildsRoot=' + str(sources['Builds']),
+                      '-p:HexalithEventStoreRoot=' + str(sources['EventStore']),
+                      '-p:HexalithCommonsRoot=' + str(sources['Commons']),
                       '-p:DirectoryPackagesPropsPath=' + str(boundary)]
         def evaluate(project):
             result = subprocess.run(['dotnet', 'msbuild', str(project), *properties, '-getItem:PackageVersion'],
                                     capture_output=True, text=True, check=True, timeout=30)
             return json.loads(result.stdout)['Items']['PackageVersion']
-        catalog = ET.parse(qualify.ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props')
+        catalog = ET.parse(sources['Builds'] / 'Props/Directory.Packages.props')
         names = ['System.Security.Cryptography.Pkcs', 'System.Security.Cryptography.Xml']
         pins = {name: next(e.attrib['Version'] for e in catalog.iter('PackageVersion') if e.attrib.get('Include') == name) for name in names}
         items = evaluate(qualify.ROOT / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj')
         for name in names:
             self.assertEqual([i['Version'] for i in items if i['Identity'] == name], [pins[name]])
-        commons = evaluate(qualify.ROOT / 'references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj')
+        commons = evaluate(sources['Commons'] / 'src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj')
         self.assertTrue(any(i['Identity'] == 'ByteAether.Ulid' for i in commons), 'owner-specific package additions must survive')
         with tempfile.TemporaryDirectory(prefix='h45-package-conflict-') as directory:
             project = Path(directory) / 'conflict.proj'
@@ -377,6 +408,67 @@ class QualifierFailureTests(unittest.TestCase):
                                + '<Import Project="' + str(boundary) + '" /></Project>')
             versions = {i['Version'] for i in evaluate(project) if i['Identity'] == names[0]}
             self.assertEqual(versions, {'0.0.0', pins[names[0]]})
+
+    def source_layout(self, platform, nested=False):
+        dependencies = platform / 'references' if nested else platform.parent
+        sources = {name: dependencies / ('Hexalith.' + name) for name in ('Builds', 'EventStore', 'Commons')}
+        files = {'Builds': ['Props/Directory.Packages.props'], 'EventStore': ['Directory.Packages.props'],
+                 'Commons': ['Directory.Packages.props',
+                             'src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj']}
+        (sources['EventStore'] / 'src/Hexalith.EventStore.Contracts').mkdir(parents=True)
+        for owner, paths in files.items():
+            for relative in paths:
+                path = sources[owner] / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('<Project />')
+        return sources
+
+    def test_source_package_roots_support_sibling_and_standalone_nested_layouts(self):
+        for nested in (False, True):
+            with self.subTest(nested=nested), tempfile.TemporaryDirectory(prefix='h45-source-layout-') as directory:
+                platform = Path(directory) / 'Hexalith.Platform'
+                sources = self.source_layout(platform, nested)
+                self.assertEqual(source_package_roots(platform), sources)
+
+    def test_source_package_roots_follow_owner_precedence(self):
+        with tempfile.TemporaryDirectory(prefix='h45-source-precedence-') as directory:
+            platform = Path(directory) / 'Hexalith.Platform'
+            siblings = self.source_layout(platform)
+            self.source_layout(platform, nested=True)
+            self.assertEqual(source_package_roots(platform), siblings)
+            nested_commons = siblings['EventStore'] / 'references/Hexalith.Commons'
+            project = nested_commons / 'src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj'
+            project.parent.mkdir(parents=True)
+            project.write_text('<Project />')
+            (nested_commons / 'Directory.Packages.props').write_text('<Project />')
+            self.assertEqual(source_package_roots(platform), {**siblings, 'Commons': nested_commons})
+            (nested_commons / 'Directory.Packages.props').unlink()
+            with self.assertRaisesRegex(FileNotFoundError, 'Hexalith.Commons source input is missing: ' +
+                                        str(nested_commons / 'Directory.Packages.props')):
+                source_package_roots(platform)
+        with tempfile.TemporaryDirectory(prefix='h45-source-workspace-') as directory:
+            platform = Path(directory) / 'Hexalith.Platform'
+            sources = self.source_layout(platform)
+            workspace_commons = platform.parent / 'references/Hexalith.Commons'
+            workspace_commons.parent.mkdir()
+            sources['Commons'].rename(workspace_commons)
+            self.assertEqual(source_package_roots(platform), {**sources, 'Commons': workspace_commons})
+
+    def test_source_package_roots_identify_missing_dependencies_and_owner_inputs(self):
+        missing = [('Builds', 'Props/Directory.Packages.props'), ('EventStore', 'src/Hexalith.EventStore.Contracts'),
+                   ('EventStore', 'Directory.Packages.props'), ('Commons', 'Directory.Packages.props'),
+                   ('Commons', 'src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj')]
+        for nested in (False, True):
+            for owner, relative in missing:
+                with self.subTest(nested=nested, owner=owner, input=relative), tempfile.TemporaryDirectory(prefix='h45-source-missing-') as directory:
+                    platform = Path(directory) / 'Hexalith.Platform'
+                    sources = self.source_layout(platform, nested)
+                    path = sources[owner] / relative
+                    path.rmdir() if path.is_dir() else path.unlink()
+                    with self.assertRaises(FileNotFoundError) as failure:
+                        source_package_roots(platform)
+                    self.assertIn('Hexalith.' + owner, str(failure.exception))
+                    self.assertIn(str(path), str(failure.exception))
 
     def test_command_logs_are_visible_to_version_control(self):
         log = qualify.DEFAULT_EVIDENCE / 'qualification-command.log'
