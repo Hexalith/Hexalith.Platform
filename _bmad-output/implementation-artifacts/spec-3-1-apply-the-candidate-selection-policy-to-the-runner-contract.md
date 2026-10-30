@@ -2,7 +2,7 @@
 title: '3.1 Apply the candidate-selection policy to the runner contract'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
