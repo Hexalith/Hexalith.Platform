@@ -1,0 +1,209 @@
+{
+  "schema": "Story5.4.MvpCustodyScopeAmendment.v1",
+  "decisionId": "DEC-5.4-MVP-CUSTODY-2026-10-28",
+  "recordedAtUtc": "2026-10-28T10:27:26.985368+00:00",
+  "status": "ApprovedAppliedToWorkPriorityAndAcceptanceBoundaries",
+  "ownerInstruction": "apply recommended",
+  "rootSourceRevision": "ca53daf6152f674de563576dcea0bce6e35fb53b",
+  "platformPreAmendmentRevision": "ace1d5d9dd683b2edf30de6c98ae8f729489cfbd",
+  "authoritativeAgentsAmendment": "../../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+  "scope": "Documentation and owner instructions only; a bounded identity/operational-security planning/development milestone, not an executable partial contract or runtime enablement",
+  "advancedStackProvisioningDeferred": true,
+  "operationalServicesAndPassingEvidenceReused": true,
+  "actualD2ResourcesStillUnresolved": true,
+  "existingFullDependencyRecordsChanged": false,
+  "runtimeGateChanges": false,
+  "sensitiveContentEnabled": false,
+  "currentHumanCustodyChecksBypassed": false,
+  "retentionPeriodsChanged": false,
+  "backupRetentionSeconds": null,
+  "acceptedRestorePolicyReference": null,
+  "openBaoOutcome": "ObservedRevival",
+  "openBaoOriginalResultSha256": "6efa381bc70b3de57a24142e5e679f53781c7f89d5ab6740fb7664966f30888e",
+  "preserved": {
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "cohort": "OQ-5.4-1",
+    "existingJournals": "Preserve unchanged",
+    "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
+    "acceptedIntegrationDate": "2026-10-08"
+  },
+  "mvpScope": {
+    "decisionId": "DEC-5.4-MVP-CUSTODY-2026-10-28",
+    "recordedAtUtc": "2026-10-28T10:27:26.985368+00:00",
+    "ownerInstruction": "apply recommended",
+    "approvalContext": "Latest pragmatic recommendation: defer Luna/independent-authority/WORM provisioning, retain existing operational services and ordinary security controls, explicitly separate work/acceptance milestones and keep affected features gated.",
+    "status": "ApprovedAppliedToWorkPriorityAndAcceptanceBoundaries",
+    "supersedesForCurrentMvpWork": [
+      "recommendationAdopted selectedApproach/fallback/blockingInput as an immediate provisioning instruction",
+      "D2 resolution nextOwnerAction from the earlier resource request"
+    ],
+    "historicalRecordsRetainedAtPlatformCommit": "ace1d5d9dd683b2edf30de6c98ae8f729489cfbd",
+    "authoritativeAgentsAmendment": "../../../../../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+    "platformEvidenceReference": "mvp-scope-amendment-2026-10-28.json",
+    "advancedCustodyProvisioningDeferred": true,
+    "newCustomCustodyPlatformAuthorized": false,
+    "retainedControls": [
+      "Tenant isolation",
+      "Fresh tenant/actor/role authorization",
+      "Current revocation",
+      "Branch B identity by tenant/id",
+      "Canonical HMAC and accepted timing",
+      "Replay admission before target-command construction",
+      "Durable content-free denial spool and restricted recovery",
+      "Existing retention, holds and exclusive expiry"
+    ],
+    "stillBlocked": [
+      "Consuming public Agents APIs while any complete required dependency is unavailable",
+      "Current Human binding and approver evidence without policy/current binding/custody",
+      "Retained human attribution without qualified history/custody/restore",
+      "Sensitive-content capture/context/generation/proposals/posting while FR-34 protection is unavailable",
+      "Custody-dependent export/key delivery/unwrapping and destruction/Erased/all-copy claims",
+      "Full host/protection qualification, full Story 5.4 acceptance and RQ-1"
+    ],
+    "backupRestorationLimit": "Operational software-managed key deletion does not establish irrecoverability from older backups. OpenBao ObservedRevival remains authoritative; no backup-resistant erasure guarantee is made by this milestone.",
+    "backupRetentionSeconds": null,
+    "acceptedRestorePolicyReference": null,
+    "pendingOperationalInputs": [
+      "Owner-returned backup lifetime and restore privileges/procedure",
+      "Current accepted operational profile/credential/enrollment and fresh authorized readiness",
+      "Separate maintenance preservation-baseline reconciliation",
+      "Actual accepted identity/authority/replay/spool/host artifacts and independent decision authority"
+    ],
+    "reducedExecutableContractInstalled": false,
+    "dependencyAvailabilityChanged": false,
+    "parentStoryStatus": "in-progress",
+    "qualificationAuthorized": false,
+    "attemptReserved": false,
+    "reopeningCondition": "Later explicit scope/resource decision and supported erasure/migration/currentness construction; complete accepted actual owner deliveries and unchanged G1-G7/OQ order before any applicable qualification.",
+    "runtimeOrProviderWrites": 0,
+    "installationInvocations": 0,
+    "qualificationInvocations": 0,
+    "operationalDeliveryStatus": "PendingActualOwnerDeliveriesAndAcceptedContract"
+  },
+  "qualification": {
+    "authorized": false,
+    "executed": false,
+    "attemptReserved": false,
+    "planReference": "../../../../eng/ext-secrets-1/public-joint-plan.json",
+    "planSha256": "cbd4fa28443b121c0139cf4c67a939e05ef611666028100e4d63ecafebf22a99",
+    "phaseOrder": [
+      "protection",
+      "secrets",
+      "host-refusing-consumers",
+      "mutual"
+    ]
+  },
+  "effects": {
+    "runtimeOrProviderWrites": 0,
+    "installationInvocations": 0,
+    "maintenanceInvocations": 0,
+    "nativeExperiments": 0,
+    "trustEnrollments": 0,
+    "qualificationInvocations": 0,
+    "attemptReservations": 0,
+    "purchases": 0
+  },
+  "sourceGateHashes": {
+    "/home/administrator/projects/hexalith/agents/eng/verify-story-5.4.ps1": "07dab240e22f64cd3e74066d32a0f6c74f8077377a186777c0bfc0c005a3e1ea",
+    "/home/administrator/projects/hexalith/agents/references/Hexalith.Parties/src/Hexalith.Parties/Queries/PartyIdentityQueryService.cs": "d4196790d202d78b342d71b990cacc3f6282180f2d6e7e13b252beb1d2b06b85",
+    "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Api/AgentDependencyAvailabilityFilter.cs": "5bf72839ed89fe08fe4c8a77b8fccb3865adccc06ae7a54608843d62e9e4816f",
+    "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Application/AgentInteractions/AutomaticInteractionIntakeOrchestrator.cs": "be25fefb91b2a186acf6b3781f548775d7e2d21b8571857eab013c89e5a51950",
+    "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Ports/CommittedAgentDependencyAvailability.cs": "40dfd8e14d99a005b292aece90ab95f50283b2072705e8db32e39213aad13b3c",
+    "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Ports/ProjectedApproverPolicyResolver.cs": "2c52915a00fe0687d5f28266291953e11b977f72b5e555aa67f7b21e16739c52",
+    "/home/administrator/projects/hexalith/agents/src/Hexalith.Agents.Server/Ports/UnavailableAgentTrustedCommandAdmission.cs": "5a9659f3ab2f3ed41ed720de77108a61694e953b576f49ebff4c62f997cd95c3"
+  },
+  "priorPacketPreservation": "All earlier installation-evidence files remain byte-identical; active owner instructions and runbook/decision/request scope notices change under the explicit owner amendment. The prior complete packet is retained at platformPreAmendmentRevision.",
+  "verificationReference": "../../../../../../_bmad-output/implementation-artifacts/tests/mvp-custody-scope-2026-10-28/verification.json",
+  "referenceBase": "Containing JSON file directory; nested mvpScope references are normalized from the owner-form copy",
+  "ownerDecisionReference": "../owner-decisions.json",
+  "currentWorkDisposition": {
+    "D3_recovery": {
+      "retainedOrdinaryWork": [
+        "Existing operational credential/access recovery and backup/restore accountability; no appointment is inferred"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced custody appliance and independent lifecycle-authority/archive recovery setup"
+      ],
+      "inseparableBlockedWork": [
+        "Current Human/history or destructive recovery remains blocked wherever complete custody contracts require these roles"
+      ]
+    },
+    "D4_rolesAndTrust": {
+      "retainedOrdinaryWork": [
+        "Actual issuer/current-role authority, public trust/revocation and restricted transport for ordinary ingress; independent decision issuer remains required and uninstalled"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced lifecycle executor/closure observer/enrollment resources specific to the deferred stack"
+      ],
+      "inseparableBlockedWork": [
+        "Required trust/enrollment for an unavailable Human/host/protection seam cannot be waived or self-issued"
+      ]
+    },
+    "D5_implementations": {
+      "retainedOrdinaryWork": [
+        "Actual ordinary custody/inventory/HMAC host composition, replay registrar, durable denial spool and recovery services with accepted persisted outcomes"
+      ],
+      "deferredAdvancedWork": [
+        "Selected non-AWS lifecycle component and associated cut/control/original-archive implementation"
+      ],
+      "inseparableBlockedWork": [
+        "The full host/secret record cannot pass without its complete accepted implementation; a reduced contract needs separate complete owner acceptance"
+      ]
+    },
+    "D6_releaseAndPhysicalProfile": {
+      "retainedOrdinaryWork": [
+        "Exact installed ordinary service/image/profile/ACL evidence, actual audit-spool durability/replicas and credential isolation"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced key-holder/producer/transport all-copy physical closure and erasure measurements"
+      ],
+      "inseparableBlockedWork": [
+        "No retained-copy, single-node or source fixture result upgrades physical or full host qualification"
+      ]
+    },
+    "D7_protection": {
+      "retainedOrdinaryWork": [
+        "FR-34 and protection identity/availability checks remain enforced"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced physical non-revival/survivor recovery infrastructure and G1-G7 closure work"
+      ],
+      "inseparableBlockedWork": [
+        "Sensitive-content execution, typed irreversible Erased outcomes and full protection availability remain blocked until complete applicable accepted delivery"
+      ]
+    },
+    "D8_host": {
+      "retainedOrdinaryWork": [
+        "Actual ordinary ingress/replay/spool/worker adapters, current actor/role authority, independent decision issuer and Branch B contract work"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced lifecycle/protection-specific host installation within the full coupled stack"
+      ],
+      "inseparableBlockedWork": [
+        "All public APIs still require the complete four records; current Human/approver evidence still requires custody; all14 full host slots are not satisfied by this decision"
+      ]
+    },
+    "D9_dates": {
+      "retainedOrdinaryWork": [
+        "Any future executable ordinary scope needs actual owner-confirmed dates and a complete exact-target replacement packet"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced-custody provisioning/completion and qualification date proposals"
+      ],
+      "inseparableBlockedWork": [
+        "Accepted historical target/date records remain exact; no new accepted date or qualification window exists"
+      ]
+    }
+  },
+  "operationalOwnerInputsReference": "../owner-decisions.json#/mvpOperationalInputs",
+  "retainedMaintenanceBlockerReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/blocker.json",
+  "retainedMaintenanceBlockerSha256": "0481d4d9e115e58c811c0ee83e02cefdd21052b6b50a32829563bae1708acb6e"
+}
