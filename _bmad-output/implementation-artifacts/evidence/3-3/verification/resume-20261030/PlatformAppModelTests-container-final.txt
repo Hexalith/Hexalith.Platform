@@ -1,0 +1,317 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(signedRun: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/fa4489089643407b977ea302ea80047d/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationReviewTests.cs(37,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(Boolean signedRun)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationReviewTests.cs(60,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(Boolean signedRun)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(signedRun: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-default-issuer-6084e5400fe147fd91c0adfd08710583/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationReviewTests.cs(34,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(Boolean signedRun)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationReviewTests.cs(60,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DefaultIssuerLivesInsideTheRenderedWorkspaceAndFollowsItsOwnershipAsync(Boolean signedRun)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MemoriesSidecarsReceiveConversationAndSecretComponentsOnly [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/7abf0bdb1f69403e9a71e95649ab1241/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MemoriesSidecarsReceiveConversationAndSecretComponentsOnly()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary [FAIL]
+      System.IO.InvalidDataException : The selected closure has no compiled catalog owners.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(33,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 servers)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(20,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(504,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: "tenants", selectedSuiteFallback: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-owner-lookup-88a34b734bc34419b9ff7e36a82c658e/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(282,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(String module, Boolean selectedSuiteFallback)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: "memories", selectedSuiteFallback: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-owner-lookup-f32c5fba6429436eb0c0db4ad010d307/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(282,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(String module, Boolean selectedSuiteFallback)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: "memories", selectedSuiteFallback: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-owner-lookup-76dc6cc655b54e8da6b2d61c9ae19039/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(282,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(String module, Boolean selectedSuiteFallback)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: "hash") [FAIL]
+      Shouldly.ShouldAssertException : PlatformAppModel.Prepare(options).Count
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(289,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(String value)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: "commit") [FAIL]
+      Shouldly.ShouldAssertException : PlatformAppModel.Prepare(options).Count
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(289,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(String value)
+           at InvokeStub_PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: "catalog-version") [FAIL]
+      Shouldly.ShouldAssertException : PlatformAppModel.Prepare(options).Count
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(289,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(String value)
+           at InvokeStub_PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfiguredCertificateParentDisposalDeletesOnlyOwnedChildAsync [FAIL]
+      System.IO.InvalidDataException : The selected closure has no compiled catalog owners.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(33,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 servers)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(20,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(449,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfiguredCertificateParentDisposalDeletesOnlyOwnedChildAsync()
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(470,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfiguredCertificateParentDisposalDeletesOnlyOwnedChildAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/tmp/platform-synthetic-package-ca370a3aa9f14a46bf36d8e8fd83e99e/src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+           at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy)
+           at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+           at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+           at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(25,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(115,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/2e66b45ea575422a96cd642e30ca20cc/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(167,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/retention-selected-graph-151319fba8fd4887a3ef50b64c00455c/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs(231,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileEntryResolvesDefaultMappingAndComposesSixServers [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(65,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(40,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeEntry(IDistributedApplicationBuilder builder)
+        tests/Hexalith.Platform.Composition.Tests/PlatformFourthReviewTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileEntryResolvesDefaultMappingAndComposesSixServers()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(persistedRun: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/dcd1ad51cb40489aba9a4d7b6c98ac0d/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs(83,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(Boolean persistedRun)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(persistedRun: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/default-build-arguments-1cb55a4de27649f4b5bb61c418bf478e/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(Boolean persistedRun)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.EventStore' at '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore' is unavailable: Checkout HEAD '0964cadcabb7adb93b9517f5c6f754778ea525fd' does not match the root's staged gitlink '079d39c3c71dcc1182d876abdf158935eed33617'.; Tool version 1.0.0-20261030165035 is outside Platform range [4.38.3, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(271,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(31,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProjectArgumentsIsolateAllFourOwnerBuildsAcrossRunsAsync [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/retention-build-isolation-da4dee7b1a3c48a4803278621e548da4/0/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProjectArgumentsIsolateAllFourOwnerBuildsAcrossRunsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: "pubsub.yaml", active: "eventstore", content: "", reason: "expected one YAML mapping document") [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-invalid-template-70331674763f4e268979407fa8e849bc/pubsub.yaml"
+          but was actually
+      "The selected closure has no compiled catalog owners."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(468,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(String template, String active, String content, String reason)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: "pubsub.yaml", active: "eventstore", content: "apiVersion: dapr.io/v1alpha1\nkind: Component\nspec:"···, reason: "metadata must be a mapping") [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-invalid-template-4b9691acd71d4ae783636a55abbf6f5b/pubsub.yaml"
+          but was actually
+      "The selected closure has no compiled catalog owners."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(468,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(String template, String active, String content, String reason)
+           at InvokeStub_PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: "secretstore.yaml", active: "memories", content: "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetad"···, reason: "spec.metadata must contain a secretsFile entry") [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-invalid-template-027ac9724b414fcd95901367873fcf9b/secretstore.yaml"
+          but was actually
+      "Mapped routing catalog owner build failed; see /tmp/hexalith-platform/36d752dd02d945348fa09080dc421d..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(468,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(String template, String active, String content, String reason)
+           at InvokeStub_PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: "secretstore.yaml", active: "memories", content: "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetad"···, reason: "spec.metadata must contain a secretsFile entry") [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-invalid-template-7204e8ca87c640b3979dd928ca7c7a6d/secretstore.yaml"
+          but was actually
+      "Mapped routing catalog owner build failed; see /tmp/hexalith-platform/d096507ad2ad4bbd8df15e5fbf77d3..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(468,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(String template, String active, String content, String reason)
+           at InvokeStub_PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync [SKIP]
+      Set HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1 for the bounded Docker listener-conflict proof.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreOnlyUsesItsComponentsAndRegistersConfigStore [FAIL]
+      System.IO.InvalidDataException : The selected closure has no compiled catalog owners.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(33,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 servers)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(20,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreOnlyUsesItsComponentsAndRegistersConfigStore()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations [FAIL]
+      Shouldly.ShouldAssertException : grants.Select(grant => grant.GetProperty("appId").GetString())
+          should be
+      ["tenants-api", "timesheets"]
+          but was (case sensitive comparison)
+      ["memories", "tenants", "tenants-api", "timesheets"]
+          difference
+      [*"memories"*, *"tenants"*, *"tenants-api"*, *"timesheets"*]
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(183,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileCompositionOwnsPrivateSecretsAndDeletesItsWorkspaceOnHostDisposalAsync [FAIL]
+      System.IO.InvalidDataException : The selected closure has no compiled catalog owners.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(33,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 servers)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(20,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(665,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileCompositionOwnsPrivateSecretsAndDeletesItsWorkspaceOnHostDisposalAsync()
+        --- End of stack trace from previous location ---

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "dotnet",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/artifacts/final-source-tests/Hexalith.Platform.Composition.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests"
+  ],
+  "actualTestDllSha256": "bd371d8eb5d84276be3bade54b4ad1dd5a3ae620d14029266261edecee5a7add",
+  "reason": "Reuse exact final source-built binaries in immutable private checkout to preserve concurrent shared Git work; actual mapped owners remain source-selected for this source test"
+}

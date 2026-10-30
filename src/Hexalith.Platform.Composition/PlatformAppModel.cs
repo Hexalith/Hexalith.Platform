@@ -341,7 +341,7 @@ public static class PlatformAppModel
                         else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
-                        if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects["tenants"].GetEndpoint("http"));
+                        if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects.TryGetValue("tenants", out var tenantProject) ? tenantProject.GetEndpoint("http") : containers["tenants"].GetEndpoint("http"));
                     }
                     if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? project)) Attach(project);
                     else Attach(containers[server.ResourceId]);
@@ -369,9 +369,15 @@ public static class PlatformAppModel
                         if (catalog?.Participates(server) == true && catalog.Participates(target)) sourceProject.WaitForStart(targetProject);
                         else sourceProject.WaitFor(targetProject);
                     }
+                    else if (catalog?.Participates(server) == true && catalog.Participates(target)) sourceProject.WaitForStart(containers[target.ResourceId]);
                     else sourceProject.WaitFor(containers[target.ResourceId]);
                 }
-                else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
+                else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject))
+                {
+                    if (catalog?.Participates(server) == true && catalog.Participates(target)) containers[server.ResourceId].WaitForStart(targetProject);
+                    else containers[server.ResourceId].WaitFor(targetProject);
+                }
+                else if (catalog?.Participates(server) == true && catalog.Participates(target)) containers[server.ResourceId].WaitForStart(containers[target.ResourceId]);
                 else containers[server.ResourceId].WaitFor(containers[target.ResourceId]);
             }
             string? selectedModule = options.ActiveModule ?? options.RunPlan?.SelectedTest?.ModuleId;

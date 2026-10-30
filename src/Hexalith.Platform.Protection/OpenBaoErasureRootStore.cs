@@ -262,16 +262,20 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     public async Task<byte[]> DecryptAsync(string tenantId, ErasureRootCiphertext value, CancellationToken cancellationToken)
     {
         byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { ciphertext = value.Ciphertext, context = value.Context });
-        byte[] response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "decrypt"), body, false, cancellationToken).ConfigureAwait(false))!;
         try
         {
-            using var document = JsonDocument.Parse(response);
-            byte[] root = document.RootElement.GetProperty("data").GetProperty("plaintext").GetBytesFromBase64();
-            if (root.Length == 32) { return root; }
-            CryptographicOperations.ZeroMemory(root);
-            throw new InvalidOperationException("Native root length mismatch.");
+            byte[] response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "decrypt"), body, false, cancellationToken).ConfigureAwait(false))!;
+            try
+            {
+                using var document = JsonDocument.Parse(response);
+                byte[] root = document.RootElement.GetProperty("data").GetProperty("plaintext").GetBytesFromBase64();
+                if (root.Length == 32) { return root; }
+                CryptographicOperations.ZeroMemory(root);
+                throw new InvalidOperationException("Native root length mismatch.");
+            }
+            finally { CryptographicOperations.ZeroMemory(response); }
         }
-        finally { CryptographicOperations.ZeroMemory(response); }
+        finally { CryptographicOperations.ZeroMemory(body); }
     }
 
     /// <inheritdoc />

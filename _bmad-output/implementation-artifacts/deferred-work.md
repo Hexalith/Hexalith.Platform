@@ -1600,3 +1600,14 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Qualify the evidence-freshness evaluation boundary for stable McpCli publication in Story 5.11.
   evidence: Unverified, medium if true (fourth-pass corrections build review F4). The policy requires all applicable staging validation before stable publication, but its freshness timestamp is the production attempt's precondition 4 admission. Story 5.11 forbids stable publication on stale evidence; no local publication/evaluator workflow exists to show whether that path can accept stale evidence. Establish the publication evaluation boundary and qualify refusal at the exclusive expiry without relying on a later production admission or an earlier reserved pass.
+
+## Deferred from: code review of spec-5-2-decide-the-image-and-dependency-vulnerability-policy (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-2-decide-the-image-and-dependency-vulnerability-policy.md`
+  summary: Carry vulnerability-evidence and exception-lifecycle consumption into Story 5.11's planning ACs and the Epic 5 context (low).
+  target_story: 5.11
+  evidence: The Platform adoption record and canonical Builds policy v1 assign promotion acceptance of scan evidence and current exception state to Story 5.11. epics.md Story 5.11 (L2879-2905) names only staging evidence, and epic-5-context.md L29 says only that findings block promotion, so 5.11's evaluator could omit vulnerability evidence.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-2-decide-the-image-and-dependency-vulnerability-policy.md`
+  summary: Decide vulnerability coverage for images that run in production but are not in the release inventory, such as injected sidecars and shared infrastructure (unverified, medium if true).
+  target_story: 5.5
+  evidence: Policy v1 scans "every included" release image and reconciles against the release inventory. Settle by confirming whether production pods for a release run images outside the release record (e.g. Dapr sidecar injection from the cluster installation) and whether Epic 6's shared-infrastructure procedure scans them.

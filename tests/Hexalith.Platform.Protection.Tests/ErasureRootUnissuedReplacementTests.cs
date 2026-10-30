@@ -57,6 +57,7 @@ public sealed class ErasureRootUnissuedReplacementTests
         var healthy = guard.Attest(issued with { AttestationOrdinal = 2, CapabilityKeyVersion = "healthy-key-v3", BlockSetRevision = replacementBlock.KeyBlockSetRevision });
         guard.ChangeEvidence = null;
         var healthyIssue = await guard.Apply(guard.Command(GovernanceGuardOperation.ReplaceAttestation, batch: healthy)); healthyIssue.Status.ShouldBe("Committed");
+        guard.State.Deletions.Single().Batches.Single().RejectedUnissuedReplacement.ShouldBeNull();
         (await guard.Apply(guard.Command(GovernanceGuardOperation.AuthorizeDispatch, batch: healthy, authorization: "healthy-dispatch"))).Status.ShouldBe("Committed");
         var healthyDispatch = await guard.Apply(guard.Command(GovernanceGuardOperation.CommitDispatch, batch: healthy, authorization: "healthy-dispatch")); healthyDispatch.Status.ShouldBe("Committed");
         var replacement = new DeletionBatchConsumptionRequest(healthy.Capability!, healthy.DetachedJws, healthyIssue.GuardHighWater, healthyDispatch.ReceiptId, healthyDispatch.GuardHighWater, targets);
