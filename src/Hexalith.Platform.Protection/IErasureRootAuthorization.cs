@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Current private caller, fence, original reservation, holder completion and transition permission. Native credentials alone never grant these permissions.</summary>
 public interface IErasureRootAuthorization
 {
+    /// <summary>Reads an independently installed current observer permission original; absent evidence never establishes read-only credentials.</summary>
+    Task<ProtectionQualificationObserverPermission?> ReadObserverPermissionAsync(string tenantId, string workloadIdentity, CancellationToken cancellationToken)
+        => Task.FromResult<ProtectionQualificationObserverPermission?>(null);
     /// <summary>Reads a positive independently authenticated permanent A1 volume-retirement original. Null includes outage/unknown; it can never establish erasure or allow root reissue.</summary>
     Task<ErasureRootPermanentLossReceipt?> ReadPermanentLossAsync(string tenantId, string storeId, string enrollmentId, CancellationToken cancellationToken)
         => Task.FromResult<ErasureRootPermanentLossReceipt?>(null);

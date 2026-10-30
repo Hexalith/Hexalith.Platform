@@ -1,0 +1,243 @@
+{
+  "schema": "EXT-PROTECTION-1.loop3-handback.v1",
+  "status": "in-progress-parent-audit-review-pending",
+  "originalBaselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "candidateTargets": {
+    "platform": null,
+    "eventstore": null
+  },
+  "acceptedIntegrationDate": null,
+  "acceptedProfile": null,
+  "frozenIntent": {
+    "scope": "Complete frozen-after-approval block including tags, normalized text, no surrounding newline",
+    "sha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+    "identicalToKeep": true,
+    "historicalInteriorOnlyHashIsDifferentScope": true
+  },
+  "functionalFileCount": 232,
+  "loop3ChangedFunctionalFileCount": 56,
+  "newLoop3FunctionalFileCount": 16,
+  "countsOverlapDoNotAdd": true,
+  "checks": {
+    "protectionFinal": {
+      "total": 384,
+      "passed": 378,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 6,
+      "not-run": 0,
+      "time": "99.560",
+      "runtime": "qualification-final-v3",
+      "xml": "final/protection-final-v3-verified.xml",
+      "log": "final/protection-final-v3-verified.log",
+      "nativeOnlySkipsDoNotCountAsNativeExecution": true
+    },
+    "eventStorePriorUnion": {
+      "total": 444,
+      "passed": 444,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "time": "5.878",
+      "xml": "final/eventstore-final.xml",
+      "unchangedSinceThisRun": true
+    },
+    "contractsAnchors": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "time": "0.225",
+      "xml": "final/contracts-anchor-final.xml",
+      "unchangedSinceThisRun": true
+    },
+    "standalonePayload": {
+      "total": 897,
+      "passed": 897,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "time": "3.191",
+      "xml": "final/payload-final-v2.xml",
+      "unchangedSinceThisRun": true,
+      "priorWallClockDeadlineFailureRetained": true
+    },
+    "projectLocalAotTrimAnalyzers": {
+      "passed": true,
+      "enableAotAnalyzer": true,
+      "enableTrimAnalyzer": true,
+      "warnings": 0,
+      "errors": 0,
+      "log": "final/payload-standalone-aot-scoped-build.log",
+      "overbroadGlobalAnalyzerFailureRetained": true
+    },
+    "offlineVerifier": {
+      "total": 109,
+      "passed": 109,
+      "failed": 0,
+      "seconds": 16.166,
+      "log": "final/offline-verifier-final-v3.log",
+      "sourceAssembly": "qualification-final-v3"
+    },
+    "harnessBootstrap": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "seconds": 0.515,
+      "log": "final/harness-bootstrap-final.log",
+      "includesRuntimeManifestTamperBeforeContainerCreation": true
+    },
+    "hostAndThreeRoles": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "commands": "final/final-v3-host-build-commands.json"
+    },
+    "exactRecoveryReachedStateBefore": {
+      "total": 6,
+      "passed": 0,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "time": "0.787",
+      "expectedRegressionFailures": true,
+      "xml": "attempts/recovery-new-call-before.xml"
+    },
+    "exactRecoveryReachedStateAfter": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "time": "0.813",
+      "xml": "final/recovery-new-call-after.xml",
+      "sourceWritesPerCase": 1,
+      "changedInputAdmittedButUndispatchedStaysUnknown": true,
+      "missingFrameStaysUnknown": true,
+      "originalResponseLossStillRecoversAdmittedOriginalProducer": true
+    },
+    "nativeFinal": {
+      "summary": {
+        "errors": 0,
+        "failed": 0,
+        "notRun": 0,
+        "skipped": 0,
+        "total": 5
+      },
+      "seconds": 842.242,
+      "fullTargetCount": 1000,
+      "chunkedStateBytes": 9437184,
+      "exclusiveRestrictedRuntimeTokens": true,
+      "rootBootstrapOnly": true,
+      "runtimePolicies": [
+        {
+          "headMount": "heads-33ba793e94b344e5832cf7e83a51a4cb",
+          "renderedPolicySha256": "00514482983ac192804f607dfc899075d8d903b26d8bea01cf884f400ee53a95",
+          "rootUsedOnlyForBootstrap": true,
+          "runtimePolicyName": "erc-runtime-33ba793e94b344e5832cf7e83a51a4cb",
+          "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+          "transitMount": "transit-33ba793e94b344e5832cf7e83a51a4cb"
+        },
+        {
+          "headMount": "heads-9f3c6389cf654eb6963948afc80ccb2d",
+          "renderedPolicySha256": "2aac5bef3c680be42de3c82ab7e016f887015f5cf0b2803deb126f61cb3e60bd",
+          "rootUsedOnlyForBootstrap": true,
+          "runtimePolicyName": "erc-runtime-9f3c6389cf654eb6963948afc80ccb2d",
+          "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+          "transitMount": "transit-9f3c6389cf654eb6963948afc80ccb2d"
+        },
+        {
+          "headMount": "heads-c82c48ae167e465da0805662b70057bb",
+          "renderedPolicySha256": "303ba72b9995ab6762f54d7d3e80def73690272b33fd194e8b5b3c7fcfabfd93",
+          "rootUsedOnlyForBootstrap": true,
+          "runtimePolicyName": "erc-runtime-c82c48ae167e465da0805662b70057bb",
+          "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+          "transitMount": "transit-c82c48ae167e465da0805662b70057bb"
+        },
+        {
+          "headMount": "heads-dc17a274b25e42b98b60e48b1d7d0101",
+          "renderedPolicySha256": "b0671d6c25c707b5de232e5771b9d0a667c4223db691af855e62b6178e27bfc7",
+          "rootUsedOnlyForBootstrap": true,
+          "runtimePolicyName": "erc-runtime-dc17a274b25e42b98b60e48b1d7d0101",
+          "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+          "transitMount": "transit-dc17a274b25e42b98b60e48b1d7d0101"
+        },
+        {
+          "headMount": "heads-eb5854f762ac43f2892a273a826d4cdf",
+          "renderedPolicySha256": "f9db3b984cf637f583fedb99bd9b20801b345abe1a75e2779be4d52ef4cf87cd",
+          "rootUsedOnlyForBootstrap": true,
+          "runtimePolicyName": "erc-runtime-eb5854f762ac43f2892a273a826d4cdf",
+          "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+          "transitMount": "transit-eb5854f762ac43f2892a273a826d4cdf"
+        }
+      ],
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "result": "native/native-all-five-final.json",
+      "command": "native/native-all-five-command.json",
+      "runtime": "native-final",
+      "syntheticPrivateEligibilityOnly": true,
+      "physicalCopyQualificationProven": false
+    },
+    "sourceMode": {
+      "cases": 41,
+      "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+      "liveExecuted": false,
+      "log": "final/source-mode-final.log"
+    }
+  },
+  "executionFrame": {
+    "persistedAtomicallyWith": "source, writer and completion before engine completion",
+    "contains": "original producer and exact native Call including role OperationId and complete wire RequestSha256; synthetic plaintext omitted",
+    "recoveryRequires": "exact admitted role/call plus source frame and registry/writer/completion originals",
+    "preFrameRecovery": "Unknown, never manufacture from current process",
+    "observerAndLiveVerifierRequireCurrentExactOperationBinding": true
+  },
+  "nativeFinalVersusQualificationFinal": {
+    "wholeBinaryEqualityClaimed": false,
+    "criticalNativeCustodySourceHashesUnchanged": true,
+    "completeComparison": "native/native-to-final-source-comparison.json"
+  },
+  "preservedAttempts": "attempts/",
+  "remaining": [
+    "Parent full scoped merge/audit/independent review and immutable candidate capture; no new candidates are invented.",
+    "Owner accepted integration date/profile and exact clean target/engine/role/trust/installation hashes.",
+    "Independently installed complete 41-case qualification, never run by this task.",
+    "Physical-copy/storage/Raft/WAL/replica/memory/swap/core/operator/restore/nonrollback/permanent-retirement qualification remains unestablished; independent copy-policy gate must deny production destruction until accepted.",
+    "Exact mounted per-tenant private credentials/current grants, native HTTPS/store/key/head/genesis, source/writer/digest authorities and role/case fixtures described in README.",
+    "Current independently issued observer permission original with explicit expiry and exact allowed read-only permission-owner RPC; the role never self-approves or creates it.",
+    "Exact seed/producer/reserve-refusal retention permissions, plus explicit independently authorized legacy signing-index migration where needed; pre-frame qualification seals stay Unknown."
+  ],
+  "prohibitedActions": {
+    "liveExecuted": false,
+    "oqOrAgentsExecuted": false,
+    "agentsRegisterEdited": false,
+    "clusterProvisioned": false,
+    "productionOpenBaoTouched": false,
+    "gitMutations": false,
+    "remoteOperations": false,
+    "committedAvailableDeclared": false
+  },
+  "unrunOwnerCommand": [
+    "python3",
+    "../eventstore/tools/verify-ext-protection-1.py",
+    "--mode",
+    "Live",
+    "--profile",
+    "/home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json",
+    "--evidence-root",
+    "/home/administrator/hexalith-protection-evidence/ext-protection-1/attempts"
+  ]
+}

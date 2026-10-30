@@ -14,13 +14,13 @@ namespace Hexalith.Platform.Protection;
 public static class ProtectionQualificationRoleApplication
 {
     /// <summary>Runs an already composed native role. Missing signer, installed scope, private credentials or native enrollment cannot create a server.</summary>
-    public static async Task RunAsync(ProtectionQualificationRoleService service, string credentialReference, CancellationToken token = default)
+    public static async Task RunAsync(ProtectionQualificationRoleService service, string credentialReference, CancellationToken token = default, IReadOnlyList<IHostedService>? workers = null)
     {
-        await using var app = Build(service, credentialReference);
+        await using var app = Build(service, credentialReference, workers);
         await app.RunAsync(token).ConfigureAwait(false);
     }
     /// <summary>Builds the actual role route. Credential resolution remains current for every request; redirects, alternate roles and unbounded frames are unavailable.</summary>
-    public static WebApplication Build(ProtectionQualificationRoleService service, string credentialReference)
+    public static WebApplication Build(ProtectionQualificationRoleService service, string credentialReference, IReadOnlyList<IHostedService>? workers = null)
     {
         ArgumentNullException.ThrowIfNull(service);
         if (!System.Text.RegularExpressions.Regex.IsMatch(credentialReference, "^env:[A-Z][A-Z0-9_]*$")
@@ -28,6 +28,7 @@ public static class ProtectionQualificationRoleApplication
         { throw new InvalidOperationException("Explicit private role credential required."); }
         var builder = WebApplication.CreateSlimBuilder(); builder.Logging.ClearProviders();
         builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 16 * 1024 * 1024);
+        foreach (var worker in workers ?? []) { Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(builder.Services, worker); }
         var app = builder.Build();
         app.MapPost("/platform-protection/v1/role", async (HttpContext context, CancellationToken token) =>
         {

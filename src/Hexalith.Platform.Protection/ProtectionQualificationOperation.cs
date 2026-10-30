@@ -9,6 +9,9 @@ namespace Hexalith.Platform.Protection;
 public sealed record ProtectionQualificationOperation(string Role, string BindingDigest, string AttemptId, string RequestSha256,
     JsonObject SafeRequest, JsonObject? Result = null)
 {
+    /// <summary>Actual loaded executor binary and independently installed role/installation, retained with its authenticated operation admission.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public ProtectionQualificationProducerIdentity? Producer { get; init; }
     /// <summary>Actual admitted native calls and immutable native results. Unresolved entries can only be looked up.</summary>
     public SortedDictionary<string, ProtectionQualificationNativeOriginal> Calls { get; init; } = new(StringComparer.Ordinal);
     /// <summary>Whether the enrollment role retained this executor identity before dispatch. Read-only round trips have separate audit entries.</summary>

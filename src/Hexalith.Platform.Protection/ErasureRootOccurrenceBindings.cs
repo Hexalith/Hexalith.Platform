@@ -9,6 +9,15 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     IErasureRootOccurrenceSource source, ErasureRootDigestKeyResolver? digestKeys = null) : IInteractionProtectionBindingProvider, IInteractionProtectionBindingSource
 {
     /// <inheritdoc />
+    public async Task<bool> IsCustodyPermanentlyLostAsync(AggregateIdentity owner, CancellationToken cancellationToken = default)
+        => await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false) is not null;
+    /// <inheritdoc />
+    public async Task<byte[]?> ReadErasedSnapshotSkeletonAsync(InteractionProtectionBinding binding, byte[] sealedPayload, CancellationToken cancellationToken = default)
+    {
+        var loss = await custody.ReadPermanentLossAsync(binding.Identity.Target.TenantId, cancellationToken).ConfigureAwait(false);
+        return loss is null ? null : await source.ReadErasedSnapshotSkeletonAsync(binding, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(sealedPayload)), loss, cancellationToken).ConfigureAwait(false);
+    }
+    /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
         byte[] sealedPayload, string keyReference, CancellationToken cancellationToken = default)
     {
@@ -31,9 +40,10 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
         {
             var child = InteractionSnapshotEntries.EntryOccurrence(parent, entry.Path);
             var original = await source.ResolveAsync(owner, child, cancellationToken).ConfigureAwait(false);
-            if (original?.SnapshotEntry != new SnapshotEntrySourceBinding(parent, entry.Path, containerDigest, entries.Count)
+            if (original is null || !ValidEnrollment(original, owner, child, entry.Target) || original.SnapshotEntry != new SnapshotEntrySourceBinding(parent, entry.Path, containerDigest, entries.Count)
                 || original.Binding.Identity.Target != entry.Target || entry.Target.TenantId != owner.TenantId) { return null; }
-            if (writing && !await PreflightAsync(original, cancellationToken).ConfigureAwait(false)) { return null; }
+            if (writing && (!await PreflightAsync(original, cancellationToken).ConfigureAwait(false)
+                || !await authorization.AuthorizeAsync(owner.TenantId, Id(owner, child), "EnrollOccurrence", ErasureRootCustody.Hash(original), cancellationToken).ConfigureAwait(false))) { return null; }
             enrolled.Add(original);
         }
         string digest = ErasureRootCustody.Hash(new { owner, parent, containerDigest, entries });
@@ -41,7 +51,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
         var result = new List<InteractionProtectionBinding>();
         for (int index = 0; index < entries.Count; index++)
         {
-            var resolved = await ResolveAsync(owner, InteractionSnapshotEntries.EntryOccurrence(parent, entries[index].Path), entries[index].Target, writing, cancellationToken).ConfigureAwait(false);
+            var resolved = await ResolveCoreAsync(owner, InteractionSnapshotEntries.EntryOccurrence(parent, entries[index].Path), entries[index].Target, writing, enrolled[index], cancellationToken).ConfigureAwait(false);
             if (resolved is null || resolved != enrolled[index].Binding) { return null; } result.Add(resolved);
         }
         return result;
@@ -79,29 +89,31 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
         ProtectionTarget? requestedTarget, bool writing, CancellationToken cancellationToken = default)
+        => await ResolveCoreAsync(owner, occurrence, requestedTarget, writing, null, cancellationToken).ConfigureAwait(false);
+
+    private async Task<InteractionProtectionBinding?> ResolveCoreAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        ProtectionTarget? requestedTarget, bool writing, ErasureRootOccurrenceEnrollment? validated, CancellationToken cancellationToken)
     {
         try
         {
+            // Independently authenticated permanent loss must not depend on the former ERC endpoint being reachable.
+            if (!writing && await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false) is { } loss)
+            {
+                var lost = await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
+                return lost is not null && ValidEnrollment(lost, owner, occurrence, requestedTarget) && lost.RootIdentity.StoreTarget == loss.StoreId ? lost.Binding : null;
+            }
             var retained = await FindAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
             if (retained is not null) { return requestedTarget is null || retained.Enrollment.Binding.Identity.Target == requestedTarget ? retained.Enrollment.Binding : null; }
             if (!writing)
             {
-                var loss = await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false);
-                var lost = loss is null ? null : await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
-                return lost is not null && lost.RootIdentity.StoreTarget == loss!.StoreId && lost.Binding.Identity.Owner == owner && Occurrence(lost.Binding.Identity) == occurrence
+                var fallbackLoss = await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false);
+                var lost = fallbackLoss is null ? null : await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
+                return lost is not null && lost.RootIdentity.StoreTarget == fallbackLoss!.StoreId && lost.Binding.Identity.Owner == owner && Occurrence(lost.Binding.Identity) == occurrence
                     && (requestedTarget is null || lost.Binding.Identity.Target == requestedTarget) ? lost.Binding : null;
             }
             var enrolled = await source.ResolveAsync(owner, occurrence, cancellationToken).ConfigureAwait(false);
-            if (enrolled is null || enrolled.Binding.Identity.Owner != owner || enrolled.Binding.Identity.Sequence != occurrence.RecordSequence
-                || enrolled.Binding.Identity.Kind != occurrence.PayloadKind || enrolled.Binding.Identity.PayloadTypeId != occurrence.PayloadTypeId
-                || enrolled.Binding.Identity.Target.TenantId != owner.TenantId || enrolled.RootIdentity.TenantId != owner.TenantId
-                || enrolled.RootIdentity.ObjectId != enrolled.Binding.Identity.Target.AgentInteractionId
-                || enrolled.RootIdentity.KeyAlias != enrolled.Binding.Identity.Target.TargetProtectionKeyAlias
-                || enrolled.RootIdentity.KeyVersion != enrolled.Binding.Identity.RootKeyVersion
-                || enrolled.Digest.InventoryKey.TenantId != owner.TenantId || enrolled.Digest.InventoryKey.Version != enrolled.Binding.DigestKeyVersion
-                || !CanonicalReference(enrolled.Binding.KeyReference) || !CanonicalReference(enrolled.Binding.OperationId)
-                || enrolled.Binding.ReservationAttemptOrdinal < 1 || enrolled.Binding.LifecycleEpoch == 0
-                || requestedTarget is not null && enrolled.Binding.Identity.Target != requestedTarget) { return null; }
+            if (enrolled is null || !ValidEnrollment(enrolled, owner, occurrence, requestedTarget)
+                || validated is not null && ErasureRootCustody.Hash(validated) != ErasureRootCustody.Hash(enrolled)) { return null; }
             if (!await PreflightAsync(enrolled, cancellationToken).ConfigureAwait(false)) { return null; }
             string id = Id(owner, occurrence), digest = ErasureRootCustody.Hash(enrolled);
             if (!await authorization.AuthorizeAsync(owner.TenantId, id, "EnrollOccurrence", digest, cancellationToken).ConfigureAwait(false)) { return null; }
@@ -125,12 +137,32 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
 
     internal async Task<bool> PreflightAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
-        if (digestKeys is null) { return false; }
+        if (digestKeys is null || !ValidEnrollment(enrollment, enrollment.Binding.Identity.Owner, Occurrence(enrollment.Binding.Identity), enrollment.Binding.Identity.Target)) { return false; }
+        if (!await custody.PreflightWrapAsync(enrollment.RootIdentity, enrollment.RootOperationId, enrollment.ExpectedLifecycleRevision, token).ConfigureAwait(false)) { return false; }
         using var digest = await digestKeys.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
         return digest is not null && await authorization.AuthorizeAsync(enrollment.Binding.Identity.Target.TenantId,
             enrollment.Binding.OperationId, "OccurrenceWrite", ErasureRootCustody.Hash(enrollment.Binding), token).ConfigureAwait(false);
     }
 
+    internal static bool ValidEnrollment(ErasureRootOccurrenceEnrollment enrolled, AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, ProtectionTarget? requestedTarget)
+    {
+        try
+        {
+            Hexalith.Platform.Custody.CustodyKeyLifecycleActor.ValidateIdentity(enrolled.RootIdentity);
+            var binding = enrolled.Binding; var identity = binding.Identity;
+            return identity.Owner == owner && identity.Sequence == occurrence.RecordSequence && identity.Kind == occurrence.PayloadKind
+                && identity.PayloadTypeId == occurrence.PayloadTypeId && identity.Target.TenantId == owner.TenantId
+                && enrolled.RootIdentity.TenantId == owner.TenantId && enrolled.RootIdentity.ObjectId == identity.Target.AgentInteractionId
+                && enrolled.RootIdentity.KeyAlias == identity.Target.TargetProtectionKeyAlias && enrolled.RootIdentity.KeyVersion == identity.RootKeyVersion
+                && enrolled.RootIdentity.Purpose == Hexalith.Platform.Custody.PlatformKeyPurpose.InteractionRootDek
+                && enrolled.Digest.InventoryKey.TenantId == owner.TenantId && enrolled.Digest.InventoryKey.Version == binding.DigestKeyVersion
+                && CanonicalReference(binding.KeyReference) && CanonicalReference(binding.OperationId)
+                && binding.ReservationAttemptOrdinal >= 1 && binding.LifecycleEpoch > 0 && enrolled.ExpectedLifecycleRevision >= 0
+                && enrolled.RootOperationId is { Length: > 0 and <= 2048 } && !string.IsNullOrWhiteSpace(enrolled.RegistryEpoch)
+                && (requestedTarget is null || identity.Target == requestedTarget);
+        }
+        catch (Exception) { return false; }
+    }
     private static bool CanonicalReference(string value) => value is { Length: 26 } && value[0] is >= '0' and <= '7'
         && value.All(character => "0123456789ABCDEFGHJKMNPQRSTVWXYZ".Contains(character, StringComparison.Ordinal));
 

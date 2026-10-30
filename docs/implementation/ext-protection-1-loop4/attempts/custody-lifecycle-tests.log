@@ -1,0 +1,333 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Custody.Tests
+  Discovered:  Hexalith.Platform.Custody.Tests
+  Starting:    Hexalith.Platform.Custody.Tests
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.UnknownOriginalEffectRequiresLookupAndCannotRepeat [FAIL]
+      Shouldly.ShouldAssertException : (await f.Actor.ApplyAsync(pin)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(78,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.UnknownOriginalEffectRequiresLookupAndCannotRepeat()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(lookup: False, invocation: False) [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(264,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(Boolean lookup, Boolean invocation)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(lookup: False, invocation: True) [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(264,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(Boolean lookup, Boolean invocation)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(lookup: True, invocation: False) [FAIL]
+      Shouldly.ShouldAssertException : if (lookup) { f.LoseResponse = true; (await f.Actor.ApplyAsync(request)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(238,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(Boolean lookup, Boolean invocation)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(lookup: True, invocation: True) [FAIL]
+      Shouldly.ShouldAssertException : if (lookup) { f.LoseResponse = true; (await f.Actor.ApplyAsync(request)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(238,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(Boolean lookup, Boolean invocation)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePinPreservesSeparateConfirmedOriginalHold [FAIL]
+      Shouldly.ShouldAssertException : await f.Actor.ApplyAsync(original); originalOutcome.Status
+          should be
+      CustodyKeyLifecycleStatus.Pinned
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(217,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePinPreservesSeparateConfirmedOriginalHold()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.MissingOrWithdrawnPrivateCredentialReleasesNoTerminalOutcome [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(103,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.MissingOrWithdrawnPrivateCredentialReleasesNoTerminalOutcome()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(stage: "journal") [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(302,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(String stage)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(stage: "final") [FAIL]
+      Shouldly.ShouldAssertException : await actor.LookupAsync(request); original.Status
+          should be
+      CustodyKeyLifecycleStatus.Pinned
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(325,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(String stage)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(stage: "stage-save") [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(302,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(String stage)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(stage: "terminal-save") [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(302,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(String stage)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.MissingRestoreOrProtectionReservationCannotClaimDestruction [FAIL]
+      Shouldly.ShouldAssertException : (await f.Actor.ApplyAsync(request)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(92,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.MissingRestoreOrProtectionReservationCannotClaimDestruction()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(vector: "pin") [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(200,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(String vector)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(vector: "unpin") [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(200,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(String vector)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(vector: "destroy") [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(200,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(String vector)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ChangedOriginalWrapOrOperationConflictsWithoutEffect [FAIL]
+      Shouldly.ShouldAssertException : (await f.Actor.RegisterWrappedAsync(registration with { Identity = registration.Identity with { LifecycleVersion = "changed-policy" } })).Status
+          should be
+      CustodyKeyLifecycleStatus.Conflict
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(110,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ChangedOriginalWrapOrOperationConflictsWithoutEffect()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LaterMutationRecoversPreJournalOriginalWithoutItsCaller [FAIL]
+      Shouldly.ShouldAssertException : (await restarted.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "later-pin"))).Status
+          should be
+      CustodyKeyLifecycleStatus.Pinned
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(27,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LaterMutationRecoversPreJournalOriginalWithoutItsCaller()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePhysicalPinAndUnpinRetainTheCorrectRestrictiveHold(negativePin: True) [FAIL]
+      Shouldly.ShouldAssertException : (await f.Actor.ApplyAsync(pin)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(168,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePhysicalPinAndUnpinRetainTheCorrectRestrictiveHold(Boolean negativePin)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePhysicalPinAndUnpinRetainTheCorrectRestrictiveHold(negativePin: False) [FAIL]
+      Shouldly.ShouldAssertException : (await f.Actor.ApplyAsync(pin)).Status
+          should be
+      CustodyKeyLifecycleStatus.Unknown
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(168,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.NegativePhysicalPinAndUnpinRetainTheCorrectRestrictiveHold(Boolean negativePin)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.PinUnpinDestroyRetainsExactIrreversibleOriginalOutcome [FAIL]
+      Shouldly.ShouldAssertException : new CustodyKeyLifecycleFixture(); (await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration())).Status
+          should be
+      CustodyKeyLifecycleStatus.Wrapped
+          but was
+      CustodyKeyLifecycleStatus.Unavailable
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(58,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.PinUnpinDestroyRetainsExactIrreversibleOriginalOutcome()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(failSave: 1, committed: False) [FAIL]
+      Shouldly.ShouldAssertException : Task `CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request)`
+          should throw
+      System.Net.Http.HttpRequestException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(149,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(Int32 failSave, Boolean committed)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(failSave: 1, committed: True) [FAIL]
+      Shouldly.ShouldAssertException : Task `CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request)`
+          should throw
+      System.Net.Http.HttpRequestException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(149,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(Int32 failSave, Boolean committed)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(failSave: 2, committed: False) [FAIL]
+      Shouldly.ShouldAssertException : Task `CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request)`
+          should throw
+      System.Net.Http.HttpRequestException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(149,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(Int32 failSave, Boolean committed)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(failSave: 2, committed: True) [FAIL]
+      Shouldly.ShouldAssertException : Task `CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request)`
+          should throw
+      System.Net.Http.HttpRequestException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(149,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.ReservationSaveFailureNeverUsesStagedStateForEffect(Int32 failSave, Boolean committed)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LifecycleCollectionBoundPreservesOriginalTerminalOutcome(operationBound: False) [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(121,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LifecycleCollectionBoundPreservesOriginalTerminalOutcome(Boolean operationBound)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LifecycleCollectionBoundPreservesOriginalTerminalOutcome(operationBound: True) [FAIL]
+      System.InvalidCastException : Unable to cast object of type 'Hexalith.EventStore.Contracts.Security.AnchoredStateTransition' to type 'Hexalith.Platform.Custody.CustodyKeyLifecycleLedger'.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleFixture.cs(57,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleFixture.get_Persisted()
+        tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs(121,0): at Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests.LifecycleCollectionBoundPreservesOriginalTerminalOutcome(Boolean operationBound)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Custody.Tests (ID = '4101bd8a031d00370dcc056c0a67cdd72e9e1a2ec7109cd8e58f0e46c5da3409')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Custody.Tests  Total: 42, Errors: 0, Failed: 26, Skipped: 0, Not Run: 0, Time: 19.397s

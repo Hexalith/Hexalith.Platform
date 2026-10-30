@@ -9,11 +9,15 @@ namespace Hexalith.Platform.Protection;
 public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody, ErasureRootOccurrenceBindings bindings,
     IInteractionOccurrenceRegistry registry, ErasureRootDigestKeyResolver digests, IErasureRootAuthorization authorization) : IInteractionOccurrenceKeyProvider
 {
+    /// <summary>Health of this process's disposed occurrence consumers; live buffers remain restrictive.</summary>
+    public ErasureRootCompletionDiagnostics CompletionDiagnostics { get; } = new();
     private readonly ConcurrentDictionary<string, (CustodyKeyRegistration Registration, OwnedErasureRootKey Key, InteractionOccurrenceOwnedKey Use)> _holders = new(StringComparer.Ordinal);
 
     /// <summary>Validates actual native digest inventory and current source-write permission before source enrollment or root issue.</summary>
     public async Task<bool> PreflightEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
+        if (!ErasureRootOccurrenceBindings.ValidEnrollment(enrollment, enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), enrollment.Binding.Identity.Target)) { return false; }
+        if (!await custody.PreflightWrapAsync(enrollment.RootIdentity, enrollment.RootOperationId, enrollment.ExpectedLifecycleRevision, token).ConfigureAwait(false)) { return false; }
         using var digest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
         return digest is not null && await authorization.AuthorizeAsync(enrollment.Binding.Identity.Target.TenantId, enrollment.Binding.OperationId,
             "OccurrenceWrite", ErasureRootCustody.Hash(enrollment.Binding), token).ConfigureAwait(false);
@@ -96,8 +100,11 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
         foreach (var holder in _holders)
         {
             if (!holder.Value.Use.IsDisposed || holder.Value.Key.Bytes.AsSpan().IndexOfAnyExcept((byte)0) >= 0) { continue; }
+            holder.Value.Key.Dispose();
+            CompletionDiagnostics.Track(holder.Value.Key);
             if (await custody.CompleteHolderAsync(holder.Value.Registration, holder.Value.Key, token).ConfigureAwait(false)
-                && _holders.TryRemove(holder.Key, out _)) { completed++; }
+                && _holders.TryRemove(holder.Key, out _)) { CompletionDiagnostics.Complete(holder.Value.Key); completed++; }
+            else { CompletionDiagnostics.Refused(); }
         }
         return completed;
     }

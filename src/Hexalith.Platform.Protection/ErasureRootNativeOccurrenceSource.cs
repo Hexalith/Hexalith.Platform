@@ -11,6 +11,41 @@ namespace Hexalith.Platform.Protection;
 public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody, IErasureRootAuthorization authorization, DaprClient sourceStore,
     ErasureRootDigestKeyResolver digests, IReadOnlyDictionary<string, ProtectionQualificationNativeCell>? independentOriginals = null) : IErasureRootOccurrenceSource
 {
+    /// <summary>Content-free health of this receiver's disposed verifier backlog.</summary>
+    public ErasureRootCompletionDiagnostics CompletionDiagnostics => custody.CompletionDiagnostics;
+    /// <summary>Completes only this receiver's custody queue using host lifetime cancellation, never the canceled verification request.</summary>
+    public Task<int> CompleteDisposedVerifierHoldersAsync(CancellationToken cancellationToken = default)
+        => custody.CompleteDisposedHoldersAsync(cancellationToken);
+    /// <inheritdoc />
+    public async Task<byte[]?> ReadErasedSnapshotSkeletonAsync(InteractionProtectionBinding binding, string sealedPayloadSha256, ErasureRootPermanentLossReceipt loss, CancellationToken token)
+    {
+        if (binding.Identity.Target.TenantId != loss.TenantId || independentOriginals is null || !independentOriginals.TryGetValue(loss.TenantId, out var location)) { return null; }
+        var original = await ReadIndependentAsync(binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(binding.Identity), token).ConfigureAwait(false);
+        if (original?.Binding != binding || original.RootIdentity.StoreTarget != loss.StoreId || !await VerifyPersistedSourceAsync(original, sealedPayloadSha256, token).ConfigureAwait(false)) { return null; }
+        var state = await sourceStore.GetStateAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
+        if (!ValidIndependent(state, loss.TenantId, loss.StoreId)) { return null; }
+        state!.SnapshotOriginals.TryGetValue(binding.KeyReference, out var snapshot);
+        snapshot ??= await Index(location, loss.TenantId).ReadAsync<InteractionOccurrenceSealedResult>(state.SnapshotIndexRoot, binding.KeyReference, token).ConfigureAwait(false);
+        return snapshot?.SnapshotReplaySkeleton is { } skeleton && snapshot.KeyReference == binding.KeyReference
+            && Convert.ToHexString(SHA256.HashData(snapshot.PayloadBytes)) == sealedPayloadSha256 ? skeleton.ToArray() : null;
+    }
+    private async Task<bool> RetainSnapshotAsync(ErasureRootOccurrenceEnrollment enrollment, InteractionOccurrenceSealedResult original, CancellationToken token)
+    {
+        if (original.SnapshotReplaySkeleton is null) { return true; }
+        string tenant = enrollment.Binding.Identity.Target.TenantId;
+        if (independentOriginals is null || !independentOriginals.TryGetValue(tenant, out var location)) { return false; }
+        for (int attempt = 0; attempt < 16; attempt++)
+        {
+            var (state, tag) = await sourceStore.GetStateAndETagAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
+            if (!ValidIndependent(state, tenant, enrollment.RootIdentity.StoreTarget) || string.IsNullOrWhiteSpace(tag)) { return false; }
+            if (state!.SnapshotOriginals.TryGetValue(original.KeyReference, out var prior)) { return ErasureRootCustody.Hash(prior) == ErasureRootCustody.Hash(original); }
+            string root = await Index(location, tenant).RetainAsync(state.SnapshotIndexRoot, original.KeyReference, original, token).ConfigureAwait(false);
+            if (root == state.SnapshotIndexRoot) { return true; }
+            state = state with { EnrollmentId = custody.Installation.EnrollmentId, SnapshotIndexRoot = root };
+            if (await sourceStore.TrySaveStateAsync(location.Component, location.Key, state, tag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, location.Metadata, token).ConfigureAwait(false)) { return true; }
+        }
+        return false;
+    }
     private async Task<bool> RetainIndependentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
         string tenant = enrollment.Binding.Identity.Owner.TenantId;
@@ -19,9 +54,11 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         for (int attempt = 0; attempt < 16; attempt++)
         {
             var (state, tag) = await sourceStore.GetStateAndETagAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
-            if (state is null || state.TenantId != tenant || state.StoreId != enrollment.RootIdentity.StoreTarget || string.IsNullOrWhiteSpace(tag)) { return false; }
-            if (state.Originals.TryGetValue(id, out var prior)) { return ErasureRootCustody.Hash(prior) == ErasureRootCustody.Hash(enrollment); }
-            if (state.Originals.Count >= 10000) { return false; } state.Originals.Add(id, enrollment);
+            if (!ValidIndependent(state, tenant, enrollment.RootIdentity.StoreTarget) || string.IsNullOrWhiteSpace(tag)) { return false; }
+            if (state!.Originals.TryGetValue(id, out var prior)) { return ErasureRootCustody.Hash(prior) == ErasureRootCustody.Hash(enrollment); }
+            string root = await Index(location, tenant).RetainAsync(state.OriginalIndexRoot, id, enrollment, token).ConfigureAwait(false);
+            if (root == state.OriginalIndexRoot) { return true; }
+            state = state with { EnrollmentId = custody.Installation.EnrollmentId, OriginalIndexRoot = root };
             if (await sourceStore.TrySaveStateAsync(location.Component, location.Key, state, tag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, location.Metadata, token).ConfigureAwait(false)) { return true; }
         }
         return false;
@@ -31,9 +68,18 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         if (independentOriginals is null || !independentOriginals.TryGetValue(owner.TenantId, out var location)) { return null; }
         var state = await sourceStore.GetStateAsync<ErasureRootSourceOriginals>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
         string id = ErasureRootOccurrenceBindings.Id(owner, occurrence);
-        return state?.TenantId == owner.TenantId && state.Originals.TryGetValue(id, out var original) && original.RootIdentity.StoreTarget == state.StoreId
-            && original.Binding.Identity.Owner == owner && ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity) == occurrence ? original : null;
+        if (!ValidIndependent(state, owner.TenantId, custody.Installation.StoreId)) { return null; }
+        state!.Originals.TryGetValue(id, out var original);
+        original ??= await Index(location, owner.TenantId).ReadAsync<ErasureRootOccurrenceEnrollment>(state.OriginalIndexRoot, id, token).ConfigureAwait(false);
+        return original is not null && ErasureRootOccurrenceBindings.ValidEnrollment(original, owner, occurrence, original.Binding.Identity.Target)
+            && original.RootIdentity.StoreTarget == state.StoreId ? original : null;
     }
+    private ErasureRootSourceIndex Index(ProtectionQualificationNativeCell location, string tenant)
+        => new(sourceStore, location, tenant, custody.Installation.StoreId, custody.Installation.EnrollmentId);
+    private bool ValidIndependent(ErasureRootSourceOriginals? state, string tenant, string store)
+        => state is not null && state.TenantId == tenant && state.StoreId == store && store == custody.Installation.StoreId
+            && (state.EnrollmentId is null && state.OriginalIndexRoot is null && state.SnapshotIndexRoot is null
+                || state.EnrollmentId == custody.Installation.EnrollmentId);
     /// <summary>Reads the actual independently persisted source commit cell after root storage loss; no ERC state, absence or caller metadata establishes persistence.</summary>
     public async Task<bool> VerifyPersistedSourceAsync(ErasureRootOccurrenceEnrollment enrollment, string sealedPayloadSha256, CancellationToken token)
     {
@@ -67,7 +113,8 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         var identity = enrollment.Binding.Identity;
         string id = ErasureRootOccurrenceBindings.Id(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity));
         string digest = ErasureRootCustody.Hash(enrollment);
-        if (enrollment.Writer is null || identity.Target.TenantId != identity.Owner.TenantId) { return false; }
+        if (enrollment.Writer is null || !ErasureRootOccurrenceBindings.ValidEnrollment(enrollment, identity.Owner,
+            ErasureRootOccurrenceBindings.Occurrence(identity), identity.Target)) { return false; }
         using var nativeDigest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
         if (nativeDigest is null) { return false; }
         for (int attempt = 0; attempt < 16; attempt++)
@@ -136,6 +183,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         try
         {
             if (!await InteractionOccurrenceSealedVerifier.VerifyAsync(original.Request, result, root.Bytes, digest.Bytes, token).ConfigureAwait(false)) { return false; }
+            if (!await RetainSnapshotAsync(occurrence.Enrollment, result, token).ConfigureAwait(false)) { return false; }
             for (int attempt = 0; attempt < 16; attempt++)
             {
                 var latest = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
@@ -146,7 +194,17 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
             }
             return false;
         }
-        finally { root.Dispose(); await custody.CompleteHolderAsync(occurrence.Registration, root, token).ConfigureAwait(false); }
+        finally
+        {
+            root.Dispose();
+            custody.RetainDisposedHolder(occurrence.Registration, root);
+            // Completion belongs to the host, including when this request was canceled or authorization is unavailable.
+            if (!token.IsCancellationRequested)
+            {
+                try { await custody.CompleteDisposedHoldersAsync(token).ConfigureAwait(false); }
+                catch (Exception) { /* The exact disposed instance remains queued for the production lifetime worker. */ }
+            }
+        }
     }
     /// <inheritdoc />
     public async Task<bool> VerifyWriterAsync(InteractionOccurrenceRecord original, string proofId, bool persisted, CancellationToken token)

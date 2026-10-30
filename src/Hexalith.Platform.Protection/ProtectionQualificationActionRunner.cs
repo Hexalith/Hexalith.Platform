@@ -5,6 +5,10 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Source-owned native action sequencing and race dispatch; results come exclusively from actual driver calls, with durable admission before each effect.</summary>
 public sealed class ProtectionQualificationActionRunner(ProtectionQualificationNativeDriver driver)
 {
+    internal ProtectionQualificationProducerIdentity Producer { get => driver.Producer; set => driver.Producer = value; }
+    /// <summary>Validates the complete source-owned recipe before durable operation/call admission.</summary>
+    public Task ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        => driver.ValidateInputsAsync(recipe, request, token);
     /// <summary>Reads only the exact prior admitted reservation identity; there is no fresh reservation path.</summary>
     public Task<ProtectionQualificationNativeCall?> PendingRecoveryAsync(string tenant, string fixtureId, CancellationToken token)
         => driver.PendingRecoveryAsync(tenant, fixtureId, token);
@@ -43,6 +47,7 @@ public sealed class ProtectionQualificationActionRunner(ProtectionQualificationN
         }
         async Task<JsonNode?> RunPrepared(ProtectionQualificationNativeCall call)
         {
+            call = call with { OperationId = request["operationId"]?.GetValue<string>() ?? ProtectionQualificationOperationJournal.Digest(request), RequestSha256 = ProtectionQualificationOperationJournal.Digest(request) };
             if (!await admit(call, token).ConfigureAwait(false)) { throw new InvalidOperationException("Native call already admitted: exact original lookup required."); }
             JsonNode? result = await driver.ExecuteAsync(call, request, token).ConfigureAwait(false);
             await retain(call, result, token).ConfigureAwait(false);

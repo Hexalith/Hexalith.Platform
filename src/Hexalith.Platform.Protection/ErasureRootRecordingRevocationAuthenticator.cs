@@ -5,7 +5,7 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Authenticates the actual source, then independently retains its exact evidence before the subscriber can register a compromise. A lost publication returns unknown and never permits registration.</summary>
-public sealed class ErasureRootRecordingRevocationAuthenticator(IDeletionCapabilityRevocationAuthenticator actual, IndependentDaprAuthority registrar)
+public sealed class ErasureRootRecordingRevocationAuthenticator(IDeletionCapabilityRevocationAuthenticator actual, ErasureRootTenantAuthority registrar)
     : IDeletionCapabilityRevocationAuthenticator
 {
     /// <inheritdoc />

@@ -1,0 +1,45 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.PayloadProtection.Tests
+  Discovered:  Hexalith.EventStore.PayloadProtection.Tests
+  Starting:    Hexalith.EventStore.PayloadProtection.Tests
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(mode: "outage") [FAIL]
+      System.IO.IOException : proof authority unavailable
+      Stack Trace:
+        src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs(151,0): at Hexalith.EventStore.PayloadProtection.InteractionPayloadProtectionService.TryReplayEventPayloadAsync(AggregateIdentity identity, String eventTypeName, Byte[] payloadBytes, String serializationFormat, EventStorePayloadProtectionMetadata metadata, PayloadProtectionOccurrenceContext occurrenceContext, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs(57,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(String mode)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(mode: "cancel-outage") [FAIL]
+      Shouldly.ShouldAssertException : Task `Replay`
+          should throw
+      System.OperationCanceledException
+          but threw
+      System.IO.IOException
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs(52,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(mode: "foreign-cancel") [FAIL]
+      System.OperationCanceledException : The operation was canceled.
+      Stack Trace:
+        src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs(151,0): at Hexalith.EventStore.PayloadProtection.InteractionPayloadProtectionService.TryReplayEventPayloadAsync(AggregateIdentity identity, String eventTypeName, Byte[] payloadBytes, String serializationFormat, EventStorePayloadProtectionMetadata metadata, PayloadProtectionOccurrenceContext occurrenceContext, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs(57,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(String mode)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.PayloadProtection.Tests (ID = 'c5d2b2930996d68ad612bbd52fdd4ef7aa2f22aa468c9914230407938cd51b95')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.PayloadProtection.Tests  Total: 4, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 0.251s

@@ -3,6 +3,8 @@ import hashlib
 import importlib.util
 from pathlib import Path
 import subprocess
+import tempfile
+import json
 import unittest
 
 SPEC = importlib.util.spec_from_file_location('erc_probe_test', Path(__file__).with_name('probe_erc_native.py'))
@@ -47,6 +49,30 @@ class NativeHarnessControls(unittest.TestCase):
         self.assertNotIn('ext_protection_1.py', source)
         self.assertNotIn("'snapshot'", source)
 
+    def test_frozen_runtime_tamper_or_manifest_hash_mismatch_refuses_before_docker(self):
+        for tamper in ('file', 'manifest-hash'):
+            with self.subTest(tamper=tamper), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                assembly = root / 'Hexalith.Platform.Protection.Tests.dll'
+                assembly.write_bytes(b'pinned-offline-test-runtime')
+                assembly_hash = hashlib.sha256(assembly.read_bytes()).hexdigest()
+                manifest = root / 'runtime-manifest.json'
+                manifest.write_text(json.dumps({'files': [{'path': assembly.name, 'sha256': assembly_hash}]}))
+                manifest_hash = hashlib.sha256(manifest.read_bytes()).hexdigest()
+                if tamper == 'file':
+                    assembly.write_bytes(b'changed-runtime')
+                else:
+                    manifest_hash = '0' * 64
+                calls = []
+                def runner(arguments, data=None):
+                    calls.append(arguments)
+                    raise AssertionError('Unexpected native command')
+                result, code = probe.ErcProbe(assembly, assembly_hash, runner=runner, runtime_manifest=manifest, runtime_manifest_sha256=manifest_hash).run()
+                self.assertEqual(code, 1)
+                self.assertFalse(calls)
+                self.assertFalse(result['cleanup'].get('complete') is False)
+                self.assertEqual(result['outcome'], 'BlockedUnknown')
+
     def test_shared_container_creation_is_offline_tmpfs_and_create_only(self):
         arguments = probe.base.create_args(probe.base.IMAGE, 'a' * 32, 'owned-native-test')
         self.assertIn('--pull=never', arguments)
@@ -56,6 +82,10 @@ class NativeHarnessControls(unittest.TestCase):
         self.assertNotIn('--mount', arguments)
         self.assertEqual(3, arguments.count('--tmpfs'))
         self.assertIn('max_entry_size = 67108864', probe.ERC_CONFIG)
+        self.assertIn('max_transaction_size = 67108864', probe.ERC_CONFIG)
+        prepared = (probe.ROOT / 'deploy/erasure-root/statefulset.yaml').read_text()
+        for limit in ('max_entry_size = 67108864', 'max_transaction_size = 67108864', 'max_request_size = 67108864'):
+            self.assertIn(limit, prepared)
         self.assertIn('max_request_size = 67108864', probe.ERC_CONFIG)
         self.assertIn('max_request_json_strings = 1000000', probe.ERC_CONFIG)
         self.assertIn('max_request_json_memory = 134217728', probe.ERC_CONFIG)

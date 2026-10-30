@@ -36,15 +36,24 @@ public sealed class ErasureRootHostCompositionTests
             { string path = System.IO.Path.Combine(directory, name); File.WriteAllBytes(path, bytes); return (path, Convert.ToHexString(SHA256.HashData(bytes))); }
             var inventory = Write("inventory.json", "{\"runtime\":{\"currentInventoryAuthorityReference\":\"inventory-authority\"}}"u8.ToArray());
             var copy = Write("copy.json", "{}"u8.ToArray());
-            var authority = new IndependentDaprAuthorityBinding("private-authority", "env:COMPONENT_AUTHORITY", key.ExportSubjectPublicKeyInfoPem(), "component", "tenant-a", "1");
+            string credential = Path.Combine(directory, "private-bearer"); File.WriteAllText(credential, "component-private-bearer");
+            var authority = new IndependentDaprAuthorityBinding("private-authority", "file:" + credential, key.ExportSubjectPublicKeyInfoPem(), "component", "tenant-a", "1");
             var host = new ErasureRootHostInstallation(new("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" }),
-                "https://erc.invalid/", "env:COMPONENT_NATIVE", new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
+                "https://erc.invalid/", "env:EXT_PROTECTION_LOOP4_COMPONENT_NATIVE", new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
                 [new("tenant-a", "DeletionBatchCapabilitySigningKey", "key-1", "issuer", "audience", "anchor", "1", key.ExportSubjectPublicKeyInfo(), 1, false)], inventory.Path, inventory.Hash, copy.Path, copy.Hash);
             var pinned = Write("host.json", JsonSerializer.SerializeToUtf8Bytes(host));
             var services = new ServiceCollection(); services.AddLogging(); services.AddSingleton<IEventPayloadProtectionService, NoOpEventPayloadProtectionService>();
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             { ["EventStore:PayloadProtection:Enabled"] = "true", ["EventStore:PayloadProtection:InstallationFile"] = pinned.Path, ["EventStore:PayloadProtection:InstallationSha256"] = pinned.Hash }).Build();
-            services.AddPlatformErasureRootProtection(configuration);
+            var absentServices = new ServiceCollection(); var absentHost = host with { CredentialReference = "env:LOOP4_MISSING_NATIVE_" + Guid.NewGuid().ToString("N").ToUpperInvariant() };
+            var absentPin = Write("absent.json", JsonSerializer.SerializeToUtf8Bytes(absentHost));
+            var absentConfiguration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+            { ["EventStore:PayloadProtection:Enabled"] = "true", ["EventStore:PayloadProtection:InstallationFile"] = absentPin.Path, ["EventStore:PayloadProtection:InstallationSha256"] = absentPin.Hash }).Build();
+            Should.Throw<InvalidOperationException>(() => absentServices.AddPlatformErasureRootProtection(absentConfiguration)); absentServices.ShouldBeEmpty();
+            Environment.SetEnvironmentVariable("EXT_PROTECTION_LOOP4_COMPONENT_NATIVE", "synthetic-component-native");
+            ErasureRootHostComposition.AddPlatformErasureRootProtection(services, configuration, () => File.WriteAllText(inventory.Path, "{\"runtime\":{\"currentInventoryAuthorityReference\":\"substituted-authority\"}}"));
+            services.Single(entry => entry.ServiceType == typeof(SecretsRuntimeConfiguration)).ImplementationInstance.ShouldBeOfType<SecretsRuntimeConfiguration>()
+                .CurrentInventoryAuthorityReference.ShouldBe("inventory-authority");
             // Substitute only independently enrolled infrastructure boundaries; configured activation and persistence stay concrete.
             services.Replace(ServiceDescriptor.Singleton<IInteractionOccurrenceRegistry>(fixture.Registry));
             services.Replace(ServiceDescriptor.Singleton<IInteractionOccurrenceKeyProvider>(fixture.Keys));

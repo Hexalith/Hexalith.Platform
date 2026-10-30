@@ -28,13 +28,15 @@ CASES = ('TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot',
          'LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt',
          'NativeTenantAndCompleteContextSubstitutionCannotDecrypt')
 ERC_CONFIG = base.CONFIG.replace('  tls_disable = true\n', '  tls_disable = true\n  max_request_size = 67108864\n  max_request_json_memory = 134217728\n  max_request_json_strings = 1000000\n').replace(
-    '  node_id = "disposable-negative-control"\n', '  node_id = "disposable-negative-control"\n  max_entry_size = 67108864\n')
+    '  node_id = "disposable-negative-control"\n', '  node_id = "disposable-negative-control"\n  max_entry_size = 67108864\n  max_transaction_size = 67108864\n')
 
 
 class ErcProbe(base.Probe):
-    def __init__(self, assembly, assembly_sha256, runner=base.run_command, diagnostic=False, case=None):
+    def __init__(self, assembly, assembly_sha256, runner=base.run_command, diagnostic=False, case=None, runtime_manifest=None, runtime_manifest_sha256=None):
         super().__init__(base.IMAGE, runner=runner)
         self.assembly, self.assembly_sha256 = Path(assembly), assembly_sha256
+        self.runtime_manifest = Path(runtime_manifest) if runtime_manifest else None
+        self.runtime_manifest_sha256 = runtime_manifest_sha256
         self.diagnostic = diagnostic
         if case is not None and case not in CASES:
             raise ValueError('Closed native case required')
@@ -49,7 +51,23 @@ class ErcProbe(base.Probe):
 
     def execute(self):
         expected = ROOT / 'tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll'
-        if self.assembly.resolve() != expected.resolve() or self.assembly.is_symlink() or not self.assembly.is_file() \
+        frozen_runtime = False
+        if self.runtime_manifest is not None:
+            if not self.runtime_manifest.is_absolute() or self.runtime_manifest.is_symlink() or not self.runtime_manifest.is_file() or hashlib.sha256(self.runtime_manifest.read_bytes()).hexdigest() != self.runtime_manifest_sha256:
+                raise base.Blocked('PinnedFrozenRuntimeManifestRequired')
+            manifest = json.loads(self.runtime_manifest.read_bytes())
+            root = self.runtime_manifest.parent
+            if self.assembly.parent.resolve() != root.resolve() or set(manifest) != {'files'} or not manifest['files']:
+                raise base.Blocked('PinnedFrozenRuntimeManifestRequired')
+            for entry in manifest['files']:
+                path = root / entry['path']
+                if path.is_symlink() or not path.is_file() or '..' in Path(entry['path']).parts or path.is_absolute() and not path.is_relative_to(root) or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
+                    raise base.Blocked('FrozenRuntimeChanged')
+            if self.assembly.name not in {entry['path'] for entry in manifest['files']}:
+                raise base.Blocked('FrozenAssemblyMissing')
+            self.result['frozenRuntimeManifestSha256'] = self.runtime_manifest_sha256
+            frozen_runtime = True
+        if not frozen_runtime and self.assembly.resolve() != expected.resolve() or self.assembly.is_symlink() or not self.assembly.is_file() \
                 or not re.fullmatch('[0-9a-f]{64}', self.assembly_sha256) \
                 or hashlib.sha256(self.assembly.read_bytes()).hexdigest() != self.assembly_sha256:
             raise base.Blocked('PinnedOwnedDebugNativeAssemblyRequired')
@@ -67,9 +85,10 @@ class ErcProbe(base.Probe):
         arguments = base.create_args(self.image, self.run_id, self.name)
         arguments = [value.replace(base.CONFIG, ERC_CONFIG) for value in arguments]
         self.result['serverConfigurationSha256'] = hashlib.sha256(ERC_CONFIG.encode()).hexdigest()
-        self.result['nativeBounds'] = {'raftMaxEntryBytes': 67108864, 'listenerMaxRequestBytes': 67108864,
+        self.result['nativeBounds'] = {'raftMaxEntryBytes': 67108864, 'raftMaxTransactionBytes': 67108864, 'listenerMaxRequestBytes': 67108864,
                                        'listenerMaxJsonMemoryBytes': 134217728, 'listenerMaxJsonStrings': 1000000,
-                                       'clientMaxHeadBytes': 33554432, 'dataTmpfsBytes': 1610612736, 'containerMemoryBytes': 2147483648}
+                                       'clientMaxHeadBytes': 31457280, 'clientMaxResponseBytes': 33554432,
+                                       'legacyArchiveChunkBytes': 4194304, 'sharedArchiveMinChunkBytes': 16384, 'sharedArchiveMaxChunkBytes': 131072, 'sharedArchiveMaxChunks': 3073, 'archiveOriginalMaxBytes': 50331648, 'dataTmpfsBytes': 1610612736, 'containerMemoryBytes': 2147483648}
         # Bounded disposable space accommodates the real 1000-target growing-head native case.
         arguments = [value.replace('size=128m', 'size=1536m') if value.startswith('/openbao/file:') else value for value in arguments]
         self.container_id = self.command('container-create', arguments).stdout.decode('ascii').strip()
@@ -106,6 +125,15 @@ class ErcProbe(base.Probe):
             with tempfile.TemporaryDirectory(prefix='erc-native-diagnostic-') as diagnostic_directory:
                 environment['ERC_NATIVE_DIAGNOSTIC_DIRECTORY'] = diagnostic_directory
                 completed = subprocess.run(command, env=environment, capture_output=True, timeout=3600, check=False)
+                runtime_policies = []
+                for policy_path in sorted(Path(diagnostic_directory).glob('policy-*.json')):
+                    if policy_path.is_symlink() or policy_path.stat().st_size > 2048:
+                        raise base.Blocked('RuntimePolicyEvidenceInvalid')
+                    policy = json.loads(policy_path.read_bytes())
+                    if set(policy) != {'shippedPolicySha256', 'renderedPolicySha256', 'transitMount', 'headMount', 'runtimePolicyName', 'rootUsedOnlyForBootstrap'} or not all(re.fullmatch('[0-9a-f]{64}', policy[key]) for key in ('shippedPolicySha256', 'renderedPolicySha256')) or policy['rootUsedOnlyForBootstrap'] is not True or not all(re.fullmatch('[A-Za-z0-9_-]{1,128}', policy[key]) for key in ('transitMount', 'headMount', 'runtimePolicyName')):
+                        raise base.Blocked('RuntimePolicyEvidenceInvalid')
+                    runtime_policies.append(policy)
+                self.result['runtimePolicies'] = runtime_policies
                 metadata = Path(diagnostic_directory) / 'native-stage.json'
                 if metadata.is_file() and not metadata.is_symlink() and metadata.stat().st_size <= 4096:
                     safe = json.loads(metadata.read_bytes())
@@ -127,9 +155,24 @@ class ErcProbe(base.Probe):
         self.result['safeFailureStages'] = sorted(set(re.findall(r'ERC_NATIVE_STAGE:[A-Za-z0-9,:-]+', text)))[:10]
         self.result['safeFailureLocations'] = sorted(set(re.findall(r'(?:OpenBaoDisposableNativeHandler|OpenBaoNativeCustodyFixture|OpenBaoNativeTransportDiagnostics|OpenBaoErasureRootIntegrationTests)\.cs(?:\([0-9]+,0\)|:line\s+[0-9]+)', text)))[:20]
         self.result['safeFailureTypes'] = sorted(set(re.findall(r'\b[A-Za-z][A-Za-z0-9_.]*Exception\b', text)))[:10]
+        measured = []
+        for line in text.splitlines():
+            try:
+                value = json.loads(line)
+            except (ValueError, TypeError):
+                continue
+            fields = {'nativeHistoryGeometry', 'transitions', 'archiveWriteBytes', 'archiveWrites', 'supportedBytes', 'nativeHeadBytes', 'restrictedRuntimePolicy'}
+            if isinstance(value, dict) and set(value) == fields and value['restrictedRuntimePolicy'] is True and all(type(value[key]) is int and 0 < value[key] < 2 ** 53 for key in fields - {'restrictedRuntimePolicy'}):
+                measured.append(value)
+        self.result['nativeGrowthGeometry'] = measured
+
         self.result['nativeTestSummary'] = dict(zip(('total', 'errors', 'failed', 'skipped', 'notRun'), counts)) if counts else None
         if completed.returncode != 0 or counts != [1 if self.diagnostic or self.case else 5, 0, 0, 0, 0]:
             raise base.Blocked('NativeComponentCasesDidNotAllPass')
+        if not self.diagnostic and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(measured) != 2 or any(value['nativeHeadBytes'] <= 8 * 1024 * 1024 for value in measured)):
+            raise base.Blocked('NativeHeadAndScalableHistoryGeometryMissing')
+        if len(self.result.get('runtimePolicies', [])) != (1 if self.diagnostic or self.case else 5):
+            raise base.Blocked('ExclusiveRestrictedRuntimePolicyEvidenceMissing')
         self.mark('native-component-cases', count=1 if self.diagnostic or self.case else 5, actualCustodyStore=True, privateEligibility='ExplicitSyntheticTestFixture')
 
     def run(self):
@@ -157,6 +200,8 @@ def main(argv=None):
     parser.add_argument('--test-assembly', required=True)
     parser.add_argument('--test-assembly-sha256', required=True)
     parser.add_argument('--output', required=True)
+    parser.add_argument('--runtime-manifest')
+    parser.add_argument('--runtime-manifest-sha256')
     parser.add_argument('--diagnostic', action='store_true')
     parser.add_argument('--case', choices=CASES)
     arguments = parser.parse_args(argv)
@@ -165,7 +210,7 @@ def main(argv=None):
         raise SystemExit('A new absolute evidence file in an existing local directory is required')
     if arguments.diagnostic and arguments.case:
         parser.error('Select a capacity diagnostic or one native case')
-    result, code = ErcProbe(arguments.test_assembly, arguments.test_assembly_sha256, diagnostic=arguments.diagnostic, case=arguments.case).run()
+    result, code = ErcProbe(arguments.test_assembly, arguments.test_assembly_sha256, diagnostic=arguments.diagnostic, case=arguments.case, runtime_manifest=arguments.runtime_manifest, runtime_manifest_sha256=arguments.runtime_manifest_sha256).run()
     descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
     with os.fdopen(descriptor, 'w') as stream:
         json.dump(result, stream, sort_keys=True, separators=(',', ':'))

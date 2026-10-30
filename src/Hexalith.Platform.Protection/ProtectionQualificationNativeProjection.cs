@@ -92,8 +92,9 @@ internal static class ProtectionQualificationNativeProjection
             ?? (checks.Contains("hold-order") ? null : throw new InvalidOperationException("Current retained native owner required."));
         if (committed is null) { return observed; }
         var ledger = JsonNode.Parse(committed.TargetBytes) as JsonObject ?? throw new InvalidOperationException("Actual owner ledger required.");
-        var batches = ((JsonArray)ledger["Batches"]!).OfType<JsonObject>().Where(batch => ((JsonArray)batch["Current"]!["Targets"]!).Any(target =>
-            targetIds.Contains(ErasureRootCustody.TargetId(target!.Deserialize<ProtectionTarget>()!)))).ToArray();
+        var selectedBatchIds = ErasureRootObservationBatches.FromCalls(fixtureCalls);
+        var batches = ((JsonArray)ledger["Batches"]!).OfType<JsonObject>().Where(batch => selectedBatchIds.Contains(batch["Current"]!["Capability"]!["BatchId"]!.GetValue<string>())
+            && ((JsonArray)batch["Current"]!["Targets"]!).Any(target => targetIds.Contains(ErasureRootCustody.TargetId(target!.Deserialize<ProtectionTarget>()!)))).ToArray();
         if (batches.Length == 0) { return observed; }
         var primary = batches.Where(batch => batch["Outcome"]!["Status"]!.GetValue<int>() != (int)DeletionConsumptionStatus.AlreadyDestroyedByBatch).ToArray();
         var ids = primary.Select(batch => batch["Current"]!["Capability"]!["BatchId"]!.GetValue<string>()).ToHashSet(StringComparer.Ordinal);
@@ -316,6 +317,15 @@ internal static class ProtectionQualificationNativeProjection
         if (orders.Count == 0) { throw new InvalidOperationException("Actual current hold originals unavailable."); }
         observed["holdOrders"] = orders; observed["guardAttempts"] = JsonSerializer.SerializeToNode(originals);
         observed["guardReceipts"] = guard["Receipts"]!.DeepClone();
+        var contexts = new JsonArray();
+        foreach (var hold in holds)
+        {
+            var deletion = ((JsonArray)guard["Deletions"]!).OfType<JsonObject>().Single(value => value["RequestId"]!.GetValue<string>() == hold.Transition.DeletionRequestId);
+            var original = ((JsonArray)guard["Holds"]!).OfType<JsonObject>().Single(value => value["HoldId"]!.GetValue<string>() == hold.Transition.Hold!.HoldId);
+            contexts.Add(new JsonObject { ["HoldOperationId"] = hold.Transition.OperationId, ["DeletionRequestId"] = deletion["RequestId"]!.DeepClone(),
+                ["Scope"] = deletion["Scope"]!.DeepClone(), ["Hold"] = original.DeepClone(), ["SealId"] = deletion["SealId"]!.DeepClone() });
+        }
+        observed["holdContexts"] = contexts;
     }
 
     private static void ProjectActivation(JsonObject observed, JsonObject ledger, JsonObject batch, JsonObject guard)

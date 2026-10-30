@@ -17,7 +17,14 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def enrollment(path):
-    value = json.loads(Path(path).read_bytes())
+    def unique(pairs):
+        result = {}
+        for key, item in pairs:
+            if key in result:
+                raise ValueError('Duplicate enrollment identity')
+            result[key] = item
+        return result
+    value = json.loads(Path(path).read_bytes(), object_pairs_hook=unique)
     if set(value) != {'address', 'storeId', 'enrollmentId', 'transitMount', 'headMount', 'nativeKeys', 'genesisAnchors'}:
         raise ValueError('Exact public enrollment schema required')
     address = urllib.parse.urlsplit(value['address'])
@@ -25,16 +32,23 @@ def enrollment(path):
         raise ValueError('Dedicated HTTPS ERC address required')
     if not value['storeId'] or not value['enrollmentId'] or not value['nativeKeys'] or set(value['nativeKeys']) != set(value['genesisAnchors']):
         raise ValueError('Complete independently selected tenant enrollment required')
+    if value['transitMount'] != 'erc-transit' or value['headMount'] != 'erc-heads':
+        raise ValueError('Shipped custody policy requires erc-transit and erc-heads')
     segments = [value['transitMount'], value['headMount'], *value['nativeKeys'].values()]
     if any(not isinstance(segment, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,128}', segment) for segment in segments):
         raise ValueError('Exact native mount/key segments required')
     if len(set(value['nativeKeys'].values())) != len(value['nativeKeys']):
         raise ValueError('Distinct native tenant keys required')
     for tenant, scopes in value['genesisAnchors'].items():
-        if not tenant or not isinstance(scopes, dict) or not scopes:
+        if not isinstance(tenant, str) or len(tenant) > 64 or not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?', tenant) or not isinstance(scopes, dict) or not scopes:
             raise ValueError('Independent genesis scope/digest enrollment required')
         for scope, digest in scopes.items():
-            if not scope or not isinstance(digest, str) or not re.fullmatch(r'[0-9A-F]{64}', digest):
+            parts = scope.split('|') if isinstance(scope, str) else []
+            actor = parts[0].split(':') if parts else []
+            if len(parts) != 2 or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,255}', parts[1]) or len(actor) != 3 or actor[0] != tenant \
+                    or len(actor[1]) > 64 or not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?', actor[1]) \
+                    or len(actor[2]) > 256 or not re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?', actor[2]) \
+                    or not isinstance(digest, str) or not re.fullmatch(r'[0-9A-F]{64}', digest):
                 raise ValueError('Exact independent scope and genesis digest required')
     return value
 

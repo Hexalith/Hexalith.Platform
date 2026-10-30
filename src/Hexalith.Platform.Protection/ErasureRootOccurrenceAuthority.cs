@@ -14,6 +14,12 @@ public sealed class ErasureRootOccurrenceAuthority(ErasureRootCustody custody, E
         var tenants = registryEpochs.Keys.Where(tenant => Scope(tenant) == scopeId).ToArray();
         return tenants.Length == 1 ? Journal(tenants[0]).ReadCurrentOriginalAsync(scopeId, cancellationToken) : Task.FromResult<AnchoredStateTransition?>(null);
     }
+    /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string scopeId, CancellationToken cancellationToken = default)
+    {
+        var tenants = registryEpochs.Keys.Where(tenant => Scope(tenant) == scopeId).ToArray();
+        return tenants.Length == 1 ? Journal(tenants[0]).ReadAdmittedOriginalAsync(scopeId, cancellationToken) : Task.FromResult<AnchoredStateTransition?>(null);
+    }
     /// <summary>Gets the exact scope used by the shipped registry actor's recoverable state journal.</summary>
     public static string Scope(string tenant) => InteractionOccurrenceRegistryActor.GetActorId(tenant) + "|candidate-interaction-occurrences-v1";
     private ErasureRootTransitionAuthority Journal(string tenant) => new(custody, authorization, tenant, Scope(tenant));

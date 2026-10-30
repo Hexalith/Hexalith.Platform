@@ -14,14 +14,18 @@ namespace Hexalith.Platform.Protection.Tests;
 public sealed class ProtectionQualificationRoleServiceTests
 {
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(true, false)]
-    [InlineData(true, true)]
-    public async Task LostAggregateOrNativeResultRecoversOnlyExactOriginalWithoutAnotherDestruction(bool lostTrimAck, bool recoverViaPrepare)
+    [InlineData(false, false, false)]
+    [InlineData(true, false, false)]
+    [InlineData(true, true, false)]
+    [InlineData(false, false, true)]
+    public async Task LostAggregateOrNativeResultRecoversOnlyExactOriginalWithoutAnotherDestruction(bool lostTrimAck, bool recoverViaPrepare, bool blockedReserve)
     {
         var token = TestContext.Current.CancellationToken;
         var fixture = new ErasureRootConsumptionFixture(); var manifest = await fixture.SeedAsync();
         (await fixture.Actor.RegisterAsync(manifest)).Status.ShouldBe(DeletionConsumptionStatus.Unconsumed);
+        object staleOwner = fixture.CaptureOwner();
+        if (blockedReserve)
+        { (await fixture.Actor.BlockAsync(new("tenant-a", manifest.Capability.BatchId, "genuine-owner-block", "current-admission-integrity"))).Status.ShouldBe(DeletionConsumptionStatus.ConsumptionBlocked); }
         using var engine = new ErasureRootEngineFixture(); using var native = Substitute.For<DaprClient>(); using var signer = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         native.GetStateAsync<JsonElement>("installation", "proof", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(JsonSerializer.SerializeToElement(new { agentsRuntimeEnabled = false, storeIdentity = "erc-v23", deploymentIdentity = "isolated-component" }));
@@ -58,13 +62,27 @@ public sealed class ProtectionQualificationRoleServiceTests
         await Assert.ThrowsAnyAsync<Exception>(() => executor.HandleAsync(malformed, token));
         ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a")).ShouldBe(beforeMalformed);
         var original = Request("destroy", "DestroyWithLostAcknowledgement"); await Register(original);
+        if (blockedReserve)
+        {
+            fixture.Permissions.DeniedOperations.Add("RetainReserveRefusalOriginal");
+            string beforeMissingPermission = ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a"));
+            await Should.ThrowAsync<InvalidOperationException>(() => executor.HandleAsync(original, token));
+            ErasureRootCustody.Hash(await fixture.Store.HeadAsync("tenant-a")).ShouldBe(beforeMissingPermission);
+            fixture.Permissions.DeniedOperations.Clear();
+        }
         if (lostTrimAck) { fixture.Store.Failure = "trim-after"; }
         await executor.HandleAsync(original, token);
-        fixture.Store.TrimCount.ShouldBe(1);
+        fixture.Store.TrimCount.ShouldBe(blockedReserve ? 0 : 1);
         var state = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
         string key = ProtectionQualificationOperationJournal.Id("executor", "destroy");
         var admitted = state.Head.QualificationOperations[key];
-        if (lostTrimAck) { admitted.Calls["original-native-reserve"] = admitted.Calls["original-native-reserve"] with { Result = null }; }
+        if (lostTrimAck || blockedReserve) { admitted.Calls["original-native-reserve"] = admitted.Calls["original-native-reserve"] with { Result = null }; }
+        if (blockedReserve)
+        {
+            (await fixture.Actor.ReadReservationOriginalAsync(manifest)).ShouldBeNull();
+            await fixture.RestoreOwnerAsync(staleOwner);
+            (await driver.RecoverAsync(admitted.Calls["original-native-reserve"].Call with { Id = "admitted-but-undispatched" }, token)).ShouldBeNull();
+        }
         state.Head.QualificationOperations[key] = admitted with { Result = null };
         (await fixture.Custody.SaveAsync("tenant-a", state.Version, state.Head, token)).ShouldBeTrue();
         if (lostTrimAck)
@@ -78,10 +96,31 @@ public sealed class ProtectionQualificationRoleServiceTests
         var lookup = new JsonObject { ["operationId"] = "lookup", ["action"] = "LookupOriginalOperation", ["bindingDigest"] = binding,
             ["originalOperationId"] = "destroy", ["originalRequestSha256"] = ProtectionQualificationOperationJournal.Digest(original) };
         var result = await executor.HandleAsync(lookup, token);
-        result["statement"]!["response"]!["Status"]!.GetValue<int>().ShouldBe((int)DeletionConsumptionStatus.Consumed);
-        fixture.Store.TrimCount.ShouldBe(1);
+        result["statement"]!["response"]!["Status"]!.GetValue<int>().ShouldBe((int)(blockedReserve ? DeletionConsumptionStatus.ConsumptionBlocked : DeletionConsumptionStatus.Consumed));
+        fixture.Store.TrimCount.ShouldBe(blockedReserve ? 0 : 1);
+        if (!lostTrimAck && !blockedReserve)
+        {
+            var historical = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
+            var selected = historical.Head.QualificationOperations[key].Producer!;
+            historical.Head.QualificationOperations.Add("executor:historical-same-case", new("executor", new string('b', 64), "historical-attempt", new string('c', 64),
+                new JsonObject { ["caseId"] = "P06", ["fixtureId"] = "historical-fixture", ["action"] = "DestroyWithLostAcknowledgement" }, new JsonObject { ["status"] = "Completed" })
+                { Producer = selected with { BindingDigest = new string('b', 64), EngineBinarySha256 = new string('f', 64) } });
+            (await fixture.Custody.SaveAsync("tenant-a", historical.Version, historical.Head, token)).ShouldBeTrue();
+            native.GetStateAsync<JsonElement>("installation", "proof", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+                .Returns(JsonSerializer.SerializeToElement(new { agentsRuntimeEnabled = false, storeIdentity = "erc-v23", deploymentIdentity = "component-observer", credentialScope = "ReadPersistedStateOnly" }));
+            var observerScope = scope with { Role = "observer", Identity = "component-observer", Observations = scope.Observations.ToDictionary(entry => entry.Key, entry => entry.Value with { CaseId = null }) };
+            var observedService = new ProtectionQualificationRoleService(observerScope, journal, null,
+                new ProtectionQualificationPersistedObserver(native, fixture.Custody, engine.Engine, new HashSet<string>()), native, signer,
+                observerPermission: _ => Task.FromResult<ProtectionQualificationObserverPermission?>(new("tenant-a", "erc-v23", "enrollment", "component", "component-observer", binding,
+                    "native", "dapr", "role", "ReadPersistedStateOnly", [], [], [], [], DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1), "independently-verified-component-permission")));
+            var observe = new JsonObject { ["operationId"] = "observe", ["action"] = "ObservePersistedState", ["bindingDigest"] = binding, ["caseId"] = "P06", ["fixtureId"] = "fixture", ["targets"] = JsonSerializer.SerializeToNode(manifest.Targets),
+                ["expectedOperations"] = new JsonArray(new JsonObject { ["operationId"] = "destroy", ["requestSha256"] = ProtectionQualificationOperationJournal.Digest(original), ["action"] = "DestroyWithLostAcknowledgement" }) };
+            (await observedService.HandleAsync(observe, token))["statement"]!["response"]!["engineBinarySha256"]!.GetValue<string>().ShouldBe(selected.EngineBinarySha256);
+            observe["expectedOperations"]![0]!["operationId"] = "historical-same-case";
+            await Should.ThrowAsync<InvalidOperationException>(() => observedService.HandleAsync(observe, token));
+        }
         lookup["originalRequestSha256"] = new string('b', 64);
         await Should.ThrowAsync<InvalidOperationException>(() => executor.HandleAsync(lookup, token));
-        fixture.Store.TrimCount.ShouldBe(1);
+        fixture.Store.TrimCount.ShouldBe(blockedReserve ? 0 : 1);
     }
 }

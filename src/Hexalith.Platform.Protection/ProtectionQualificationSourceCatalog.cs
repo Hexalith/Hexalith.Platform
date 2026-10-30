@@ -51,6 +51,13 @@ public static class ProtectionQualificationSourceCatalog
                     if (payload["transition"] is not JsonObject transition || transition["Operation"]?.GetValue<int>() != (int)expected)
                     { throw new InvalidOperationException("Source-owned guard operation cannot be substituted: " + id); }
                     if (payload.ContainsKey("UseCurrentGuardRevision")) { throw new InvalidOperationException("The source owns native comparison selection."); }
+                    if (name[1] == "ActivateReattestedDeletionBatch" && expected == GovernanceGuardOperation.RecordProtectionOutcome && transition["Batch"] is JsonObject batch)
+                    {
+                        string activation = entry.Key + "/1";
+                        JsonObject Original(string pointer) => new() { ["$original"] = new JsonObject { ["id"] = activation, ["pointer"] = pointer } };
+                        batch["ProtectionOutcome"] = "Activated"; batch["ProtectionReceiptId"] = Original("/ReceiptId");
+                        batch["BlockSetRevision"] = Original("/KeyBlockSetRevision"); batch["TargetReceiptIds"] = new JsonArray();
+                    }
                     payload["UseCurrentGuardRevision"] = expected is not (GovernanceGuardOperation.RecordBatchIssued or GovernanceGuardOperation.ReplaceAttestation)
                         && !(name[1] == "DelayAndRestoreDispatch" && expected == GovernanceGuardOperation.CommitDispatch)
                         && !(name[1] == "RaceHoldDispatch" && expected is GovernanceGuardOperation.CommitDispatch or GovernanceGuardOperation.RegisterHold);
@@ -166,7 +173,8 @@ public static class ProtectionQualificationSourceCatalog
             "CompromiseReplacementBeforeActivation" => Replacement(["Compromise", "Sign", "Guard:ReplaceAttestation", "Guard:AuthorizeDispatch", "Guard:CommitDispatch"], []),
             "CompromiseReplacementAfterActivation" => Plain("Compromise", "Compromise", "Sign", "Guard:ReplaceAttestation", "Guard:AuthorizeDispatch", "Guard:CommitDispatch", "Activate"),
             "RejectActivation" when id is "P30" or "P31" => new([], "ReconcileBlockedReplacement", null, ["Guard:RecordProtectionOutcome"]),
-            "ActivateReattestedDeletionBatch" or "RejectActivation" or "RejectReattestation" => Plain("Activate"),
+            "ActivateReattestedDeletionBatch" => new([], "Activate", null, ["Guard:RecordProtectionOutcome"]),
+            "RejectActivation" or "RejectReattestation" => Plain("Activate"),
             "RaceReplacementActivation" => new(["Compromise", "Sign", "Guard:ReplaceAttestation", "Guard:AuthorizeDispatch", "Guard:CommitDispatch"], "Activate", "Compromise"),
             "LoseBlockDeliveryAndMirror" => Plain("Block", "Fault"),
             "MakeBlockOutcomeUnknown" => Plain("Block", "Fault"),

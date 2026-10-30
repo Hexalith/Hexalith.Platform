@@ -236,7 +236,7 @@ public sealed class ErasureRootCustodyTests
         _store.RotateCount.ShouldBe(1);
         var final = await _store.HeadAsync("tenant-a");
         final.Pending.ShouldBeNull();
-        final.Manifests.Single().Key.ShouldBe(request.Capability.BatchId);
+        final.ManifestArchives.Single().Key.ShouldBe(request.Capability.BatchId);
     }
 
     [Fact]

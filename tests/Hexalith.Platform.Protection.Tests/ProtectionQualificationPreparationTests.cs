@@ -120,7 +120,7 @@ public sealed class ProtectionQualificationPreparationTests
         looked["TargetReceipts"]!.ToJsonString().ShouldBe(original["TargetReceipts"]!.ToJsonString());
         looked["BatchId"]!.GetValue<string>().ShouldNotBe(original["BatchId"]!.GetValue<string>());
         var after = (await fixture.Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken))!.Value.Head;
-        after.Epoch.ShouldBe(before.Epoch); after.Manifests.Count.ShouldBe(1); after.Erased.Count.ShouldBe(fixture.Targets.Length); after.Targets.ShouldBeEmpty();
+        after.Epoch.ShouldBe(before.Epoch); after.ManifestArchives.Count.ShouldBe(1); after.Erased.Count.ShouldBe(fixture.Targets.Length); after.Targets.ShouldBeEmpty();
         fixture.Guard.State.Deletions.Single(value => value.RequestId == "deletion-a").Batches.Count.ShouldBe(1);
     }
     [Fact]

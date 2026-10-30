@@ -29,6 +29,12 @@ internal static class ProtectionQualificationCanonical
         if (scalar.TryGetValue<bool>(out bool flag)) { text.Append(flag ? "true" : "false"); return; }
         if (scalar.TryGetValue<long>(out long number)) { text.Append(number.ToString(CultureInfo.InvariantCulture)); return; }
         if (scalar.TryGetValue<ulong>(out ulong unsigned)) { text.Append(unsigned.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<int>(out int integer)) { text.Append(integer.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<uint>(out uint positive)) { text.Append(positive.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<short>(out short small)) { text.Append(small.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<ushort>(out ushort smallPositive)) { text.Append(smallPositive.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<byte>(out byte octet)) { text.Append(octet.ToString(CultureInfo.InvariantCulture)); return; }
+        if (scalar.TryGetValue<sbyte>(out sbyte signedOctet)) { text.Append(signedOctet.ToString(CultureInfo.InvariantCulture)); return; }
         throw new InvalidOperationException("Exact integer JSON required by role protocol.");
     }
     private static int Compare(string left, string right)

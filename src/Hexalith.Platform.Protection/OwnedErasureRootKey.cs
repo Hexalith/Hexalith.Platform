@@ -11,8 +11,15 @@ public sealed class OwnedErasureRootKey(byte[] Bytes, string HolderId) : IDispos
     public byte[] Bytes { get; } = Bytes;
     /// <summary>Gets the exact original holder identity required by completion.</summary>
     public string HolderId { get; } = HolderId;
+    private int _disposed;
+    /// <summary>Gets whether the actual issued instance completed disposal; zero bytes alone do not establish quiescence.</summary>
+    public bool IsDisposed => Volatile.Read(ref _disposed) != 0;
     /// <inheritdoc />
-    public void Dispose() => CryptographicOperations.ZeroMemory(Bytes);
+    public void Dispose()
+    {
+        CryptographicOperations.ZeroMemory(Bytes);
+        Volatile.Write(ref _disposed, 1);
+    }
     /// <inheritdoc />
     public override string ToString() => nameof(OwnedErasureRootKey);
 }

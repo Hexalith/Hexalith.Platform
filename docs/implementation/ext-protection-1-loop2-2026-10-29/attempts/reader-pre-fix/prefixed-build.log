@@ -1,0 +1,16 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Commons.UniqueIds -> /tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.Commons.UniqueIds.dll
+  Successfully created package '/tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.Commons.UniqueIds.1.0.0.nupkg'.
+  Successfully created package '/tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.Commons.UniqueIds.1.0.0.snupkg'.
+  Hexalith.EventStore.Contracts -> /tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.EventStore.Contracts.dll
+  Hexalith.EventStore.PayloadProtection -> /tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.EventStore.PayloadProtection.dll
+/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs(49,13): error CA1062: In externally visible method 'Task InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(string mode)', validate parameter 'mode' is non-null before using it. If appropriate, throw an 'ArgumentNullException' when the argument is 'null'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1062) [/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj]
+
+Build FAILED.
+
+/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs(49,13): error CA1062: In externally visible method 'Task InteractionEventReplayAuthorityFailureTests.LossProofFailureIsTypedAndCallerCancellationKeepsItsToken(string mode)', validate parameter 'mode' is non-null before using it. If appropriate, throw an 'ArgumentNullException' when the argument is 'null'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1062) [/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:03.52

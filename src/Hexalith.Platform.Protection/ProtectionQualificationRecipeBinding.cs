@@ -43,6 +43,7 @@ public static class ProtectionQualificationRecipeBinding
                         "BatchId" => GovernanceScopeGuardReducer.BatchId(input["requestId"]!.GetValue<string>(), input["sealId"]!.GetValue<string>(), input["batch"]!.Deserialize<GovernanceBatchCommand>()!),
                         "SigningRequestId" => DeletionBatchCapabilityCodec.SigningRequestId(input.Deserialize<DeletionBatchCapabilityV1>()!),
                         "SignedArtifactDigest" => DeletionBatchCapabilityIdentity.SignedArtifactDigest(input.GetValue<string>()),
+                        "CompromiseBlockReceiptId" => DeletionConsumptionIdentity.RevocationBlockReceiptId(input["receiptId"]!.GetValue<string>(), input["batchId"]!.GetValue<string>()),
                         "IssueOperationId" => DeletionBatchCapabilityIdentity.IssueOperationId(input["signingRequestId"]!.GetValue<string>(), input["detachedJwsDigest"]!.GetValue<string>()),
                         _ => throw new InvalidOperationException("Unknown source-owned native identity codec."),
                     };

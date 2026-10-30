@@ -19,7 +19,7 @@ internal sealed class ErasureRootConsumptionFixture
     internal ErasureRootCustody Custody { get; }
     internal DeletionConsumptionActor Actor { get; }
     private readonly SemaphoreSlim _turn = new(1, 1);
-    internal ErasureRootConsumptionFixture()
+    internal ErasureRootConsumptionFixture(IAtomicDeletionManifestProvider? provider = null)
     {
         var installed = new ErasureRootInstallation("erc-v23", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" });
         var genesis = new { TenantId = "tenant-a", Revision = 0L, KeyBlockSetRevision = 0L, Batches = Array.Empty<object>(), Revocations = Array.Empty<object>(), Operations = Array.Empty<object>() };
@@ -28,6 +28,7 @@ internal sealed class ErasureRootConsumptionFixture
         var owner = new ErasureRootDeletionOwnerAuthority(Custody, Permissions, "tenant-a");
         Authority.AuthorizeOperationAsync("tenant-a", Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => owner.AuthorizeOperationAsync(call.ArgAt<string>(1), call.ArgAt<string>(2), call.Arg<CancellationToken>()));
         Authority.ValidateStateAsync("tenant-a", Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => owner.ValidateStateAsync(call.Arg<long>(), call.ArgAt<string>(2), call.Arg<CancellationToken>()));
+        Authority.ReadAdmittedOriginalAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => owner.ReadAdmittedOriginalAsync(call.Arg<string>(), call.Arg<CancellationToken>()));
         Authority.ReadCurrentOriginalAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => owner.ReadCurrentOriginalAsync(call.Arg<string>(), call.Arg<CancellationToken>()));
         Authority.AdmitTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(call => owner.AdmitTransitionAsync(call.Arg<AnchoredStateTransition>(), call.Arg<CancellationToken>()));
         Authority.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(call => owner.RecordTransitionAsync(call.Arg<AnchoredStateTransition>(), call.Arg<CancellationToken>()));
@@ -37,7 +38,7 @@ internal sealed class ErasureRootConsumptionFixture
         Authority.VerifyAdmissionBlockAsync(Arg.Any<DeletionBatchBlockRequest>(), Arg.Any<CancellationToken>()).Returns(true);
         Authority.VerifyRevocationAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(), Arg.Any<CancellationToken>()).Returns(true);
         Authority.VerifyActivationAsync(Arg.Any<DeletionReattestationActivation>(), Arg.Any<CancellationToken>()).Returns(true);
-        Actor = new(ActorHost.CreateForTest<DeletionConsumptionActor>(new ActorTestOptions { ActorId = new(DeletionConsumptionActor.GetActorId("tenant-a")) }), Authority, Custody);
+        Actor = new(ActorHost.CreateForTest<DeletionConsumptionActor>(new ActorTestOptions { ActorId = new(DeletionConsumptionActor.GetActorId("tenant-a")) }), Authority, provider ?? Custody);
         typeof(Actor).GetProperty("StateManager", BindingFlags.Instance | BindingFlags.Public)!.SetValue(Actor, State);
     }
     internal async Task<T> Invoke<T>(Func<Task<T>> operation)

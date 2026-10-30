@@ -151,10 +151,29 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
         if (state.TenantId != tenant || authority is null) { return null; }
         try
         {
+            // Pending reconciliation has its own exact admitted/committed proof. A stale primary
+            // digest must not preempt that established path or require a new current-original port.
             return await RecoverableAnchoredState.ReconcileAsync(PendingScope, state, await ReadPendingAsync(budget).ConfigureAwait(false), Capture,
                 value => budget.ReadAsync(() => authority.ValidateStateAsync(tenant, value.Revision, Digest(value))), new DeadlineAnchoredStateAuthority(authority, budget), nextValue => PersistTargetAsync(budget, nextValue), recoverAdmittedOriginal).ConfigureAwait(false);
         }
-        catch (InvalidOperationException) { return null; }
+        catch (InvalidOperationException)
+        {
+            try
+            {
+                var original = await budget.ReadAsync(() => authority.ReadCurrentOriginalAsync(PendingScope)).ConfigureAwait(false);
+                if (original is null || original.ScopeId != PendingScope || original.TargetRevision <= state.Revision
+                    || original.TargetBytes is not { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }
+                    || !await budget.ReadAsync(() => authority.VerifyTransitionAsync(original)).ConfigureAwait(false)) { return null; }
+                var retained = Capture(JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(original.TargetBytes)!);
+                if (retained.TenantId != tenant || retained.Revision != original.TargetRevision || Digest(retained) != original.TargetDigest
+                    || !await budget.ReadAsync(() => authority.ValidateStateAsync(tenant, retained.Revision, Digest(retained))).ConfigureAwait(false)) { return null; }
+                var recovered = await PersistTargetAsync(budget, retained).ConfigureAwait(false);
+                return Digest(recovered) == original.TargetDigest && await budget.ReadAsync(() => authority.VerifyTransitionAsync(original)).ConfigureAwait(false)
+                    && await budget.ReadAsync(() => authority.ValidateStateAsync(tenant, recovered.Revision, Digest(recovered))).ConfigureAwait(false) ? recovered : null;
+            }
+            catch (TimeoutException) { throw; }
+            catch (Exception) { budget.Check(); return null; }
+        }
     }
     private async Task<bool> SaveAsync(PrivateOwnerOperationDeadline budget, CustodyKeyLifecycleLedger previous, CustodyKeyLifecycleLedger prospective)
     {

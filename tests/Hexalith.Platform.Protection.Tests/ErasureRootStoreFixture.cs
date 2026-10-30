@@ -11,6 +11,12 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     private readonly Dictionary<string, (long Version, byte[] Bytes)> _heads = new(StringComparer.Ordinal);
     private readonly Dictionary<string, SortedDictionary<int, byte[]>> _epochs = new(StringComparer.Ordinal);
     private readonly Dictionary<string, byte[]> _archives = new(StringComparer.Ordinal);
+    internal long ArchiveCreatedBytes { get; private set; }
+    internal int ArchiveWrites { get; private set; }
+    internal int ArchiveReads { get; private set; }
+    internal long ArchiveReadBytes { get; private set; }
+    internal Action? ReadObserved { get; set; }
+    internal Func<Task>? BeforeTrim { get; set; }
     internal int TrimCount { get; private set; }
     internal int RotateCount { get; private set; }
     internal int RotateAttempts { get; private set; }
@@ -50,6 +56,7 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     public Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        ReadObserved?.Invoke(); cancellationToken.ThrowIfCancellationRequested();
         Fail("read");
         lock (_gate) { return Task.FromResult(_heads.TryGetValue(tenantId, out var head) ? new ErasureRootHeadSnapshot(head.Version, head.Bytes.ToArray()) : null); }
     }
@@ -68,14 +75,14 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
         return true;
     }
     public Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken cancellationToken)
-    { lock (_gate) { return Task.FromResult(_archives.GetValueOrDefault(tenantId + ":" + archiveId)?.ToArray()); } }
+    { lock (_gate) { ArchiveReads++; byte[]? value = _archives.GetValueOrDefault(tenantId + ":" + archiveId); ArchiveReadBytes += value?.Length ?? 0; return Task.FromResult(value?.ToArray()); } }
     public Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken)
     {
         lock (_gate)
         {
             string id = tenantId + ":" + archiveId;
             if (_archives.TryGetValue(id, out var original)) { return Task.FromResult(original.AsSpan().SequenceEqual(bytes)); }
-            _archives.Add(id, bytes.ToArray()); return Task.FromResult(true);
+            _archives.Add(id, bytes.ToArray()); ArchiveWrites++; ArchiveCreatedBytes += bytes.Length; return Task.FromResult(true);
         }
     }
     public Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken)
@@ -138,8 +145,9 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
         }
         return result;
     }
-    public Task TrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
+    public async Task TrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
     {
+        if (BeforeTrim is { } beforeTrim) { await beforeTrim(); }
         Fail("trim-before");
         lock (_gate)
         {
@@ -149,7 +157,6 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
             if (removed.Length > 0) { TrimCount++; }
         }
         Fail("trim-after");
-        return Task.CompletedTask;
     }
     public Task<bool> VerifyTrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
     { lock (_gate) { return Task.FromResult(_epochs[tenantId].Keys.Min() == epoch && _epochs[tenantId].Keys.Max() >= epoch); } }

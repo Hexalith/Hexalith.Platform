@@ -22,6 +22,7 @@ data:
       path = "/bao/data"
       node_id = "erasure-root-0"
       max_entry_size = 67108864
+      max_transaction_size = 67108864
     }
     telemetry {
       disable_hostname = true
@@ -105,8 +106,18 @@ spec:
               mountPath: /bao/tls
               readOnly: true
           readinessProbe:
-            tcpSocket:
-              port: api
+            exec:
+              command:
+                - bao
+                - read
+                - -address=https://127.0.0.1:8200
+                - -ca-cert=/bao/tls/ca.crt
+                - -tls-server-name=erasure-root.erasure-root.svc
+                - -format=json
+                - sys/health
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
       volumes:
         - name: config
           configMap:

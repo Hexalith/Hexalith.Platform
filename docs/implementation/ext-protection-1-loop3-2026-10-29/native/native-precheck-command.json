@@ -1,0 +1,16 @@
+[
+  "python3",
+  "eng/ext-protection-1/probe_erc_native.py",
+  "--test-assembly",
+  "/tmp/ext-protection-loop3-native-runtime-precheck/Hexalith.Platform.Protection.Tests.dll",
+  "--test-assembly-sha256",
+  "e6c72198c4ab4771ade38eff15dc28f26cf60e6fbc698f8a96dc6cf107406627",
+  "--runtime-manifest",
+  "/tmp/ext-protection-loop3-native-runtime-precheck/runtime-manifest.json",
+  "--runtime-manifest-sha256",
+  "25919f653081bb7fce3b492384a98363b5b9f8f17020bd31e72c59d22dc9598f",
+  "--case",
+  "NativeTenantAndCompleteContextSubstitutionCannotDecrypt",
+  "--output",
+  "/tmp/ext-protection-loop3-evidence/native-precheck.json"
+]

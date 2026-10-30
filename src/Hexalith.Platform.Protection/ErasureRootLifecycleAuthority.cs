@@ -69,6 +69,10 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
         return Task.FromResult(false);
     }
     /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string scopeId, CancellationToken cancellationToken = default) => transitions.ReadCurrentOriginalAsync(scopeId, cancellationToken);
+    /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string scopeId, CancellationToken cancellationToken = default) => transitions.ReadAdmittedOriginalAsync(scopeId, cancellationToken);
+    /// <inheritdoc />
     public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => transitions.AdmitTransitionAsync(transition, cancellationToken);
     /// <inheritdoc />
     public Task<bool> RecoverTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => transitions.RecoverTransitionAsync(transition, cancellationToken);

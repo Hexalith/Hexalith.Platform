@@ -4,6 +4,7 @@ using System.Text.Json.Nodes;
 using Dapr.Client;
 using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.PayloadProtection;
+using Hexalith.EventStore.Server.Security;
 using Hexalith.Platform.Custody;
 
 namespace Hexalith.Platform.Protection;
@@ -13,11 +14,18 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
     InteractionPayloadProtectionService loadedEngine, IReadOnlySet<string> enrolledReadComponents)
 {
     /// <summary>Reads actual persisted facts and projects the owner-verifier wire fields without performing a native mutation.</summary>
-    public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token)
+    public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token, ProtectionQualificationProducerIdentity? expectedProducer = null, IReadOnlySet<string>? expectedOperationIds = null)
     {
-        var current = await erasureRoot.ReadAsync(recipe.TenantId, token, true).ConfigureAwait(false);
+        _ = loadedEngine;
+        var before = await erasureRoot.ReadObservationVersionAsync(recipe.TenantId, token).ConfigureAwait(false)
+            ?? throw new InvalidOperationException("Current ERC observation unavailable.");
+        var scopes = recipe.Sources.Values.Where(cell => cell.AnchorScope is not null).Select(cell => cell.AnchorScope!).ToHashSet(StringComparer.Ordinal);
+        scopes.Add(DeletionConsumptionActor.GetOwnerScope(recipe.TenantId)); scopes.Add(ErasureRootOccurrenceAuthority.Scope(recipe.TenantId));
+        var current = await erasureRoot.ReadAsync(recipe.TenantId, token, false, scopes).ConfigureAwait(false);
         if (current is not { } head || head.Head.Pending is { Survivors: not null } || targets.Count is < 1 or > 1000 || targets.Any(target => target.TenantId != recipe.TenantId))
         { throw new InvalidOperationException("DependencyNotAvailable: current complete ERC observation."); }
+        if (before.Version != head.Version) { throw new InvalidOperationException("Native observation changed before original selection."); }
+        await ErasureRootObservationSelection.SelectAsync(erasureRoot, head.Head, expectedOperationIds, recipe.CaseId, targets, token).ConfigureAwait(false);
         var sources = new Dictionary<string, JsonNode>(StringComparer.Ordinal);
         foreach (var reference in recipe.Sources)
         {
@@ -41,6 +49,83 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         sources.Add("ERC", JsonSerializer.SerializeToNode(head.Head)!);
         var observed = recipe.CaseId is { } sourceCase ? ProtectionQualificationNativeProjection.Project(sourceCase, head.Head, sources, recipe.Sources, targets) : new JsonObject();
         if (recipe.CaseId is null) { foreach (var field in recipe.Fields) { observed.Add(field.Key, Project(field.Value, sources, null)); } }
+        var copyOriginals = new JsonArray();
+        var producers = new Dictionary<string, ProtectionQualificationProducerIdentity>(StringComparer.Ordinal);
+        InteractionOccurrenceRegistrySnapshot Registry()
+        {
+            if (!head.Head.Anchors.TryGetValue(ErasureRootOccurrenceAuthority.Scope(recipe.TenantId), out var anchor))
+            { throw new InvalidOperationException("Independent current occurrence registry required."); }
+            var currentRegistry = anchor.Completed.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
+            return currentRegistry is null ? throw new InvalidOperationException("Current registry original unavailable.")
+                : JsonSerializer.Deserialize<InteractionOccurrenceRegistrySnapshot>(currentRegistry.TargetBytes) ?? throw new InvalidOperationException("Invalid registry original.");
+        }
+        ProtectionQualificationProducerOriginal Producer(byte[] bytes, IReadOnlyList<InteractionProtectionBinding> bindings)
+        {
+            string digest = Convert.ToHexString(SHA256.HashData(bytes));
+            var matches = head.Head.QualificationProducerOriginals.Values.Where(value => value.SealedPayloadSha256 == digest
+                && ErasureRootCustody.Hash(value.Bindings) == ErasureRootCustody.Hash(bindings)).ToArray();
+            if (matches.Length != 1 || matches[0].Producer.StoreId != head.Head.StoreId || matches[0].Producer.EnrollmentId != head.Head.EnrollmentId
+                || matches[0].CompletionDigest != ErasureRootCustody.Hash(matches[0].Completion))
+            { throw new InvalidOperationException("Authenticated exact executor/source producer original required."); }
+            if (matches[0].Call is not null || expectedOperationIds is not null)
+            {
+                var call = matches[0].Call;
+                if (call?.OperationId is not { } operationId || call.RequestSha256 is not { } requestDigest
+                    || expectedOperationIds is not null && !expectedOperationIds.Contains(operationId)
+                    || !head.Head.QualificationOperations.TryGetValue(ProtectionQualificationOperationJournal.Id("executor", operationId), out var operation)
+                    || operation.RequestSha256 != requestDigest || operation.Producer is null
+                    || ErasureRootCustody.Hash(operation.Producer) != ErasureRootCustody.Hash(matches[0].Producer)
+                    || !operation.Calls.TryGetValue(call.Id, out var admitted) || ErasureRootCustody.Hash(admitted.Call) != ErasureRootCustody.Hash(call)
+                    || expectedOperationIds is not null && (operation.Result is null || admitted.Result is null))
+                { throw new InvalidOperationException("Exact executed source role/request/native-call original required."); }
+            }
+            producers.TryAdd(ErasureRootCustody.Hash(matches[0].Producer), matches[0].Producer);
+            return matches[0];
+        }
+        foreach (var source in recipe.Sources.Where(entry => entry.Value.CopyKind is not null))
+        {
+            var value = sources[source.Key];
+            var node = value is JsonObject document && document["State"] is JsonObject state ? state : value as JsonObject;
+            if (node?["Format"]?.GetValue<string>() == "json+pdenc-v2-entries")
+            {
+                var carrier = node.Deserialize<ProtectedSnapshotEntriesV2>()!;
+                var bindings = carrier.Entries.Select(entry => head.Head.SourceOriginals.Values.Single(original => original.Binding.KeyReference == entry.KeyReference
+                    && original.Binding.Identity.Target == entry.Target && original.SnapshotEntry?.Path == entry.Path).Binding).ToArray();
+                _ = Producer(JsonSerializer.SerializeToUtf8Bytes(carrier), bindings);
+                continue;
+            }
+            InteractionProtectionBinding binding; byte[] payload;
+            if (source.Value.CopyKind is "source-outbox" or "target-event")
+            {
+                var persisted = value.Deserialize<ProtectionQualificationPersistedEvent>()!;
+                binding = persisted.Binding; payload = persisted.Protected.PayloadBytes;
+            }
+            else
+            {
+                var snapshot = value.Deserialize<SnapshotProtectionResult>()!;
+                binding = head.Head.SourceOriginals.Values.Single(original => original.Binding.KeyReference == snapshot.Metadata!.KeyAlias).Binding;
+                payload = JsonSerializer.SerializeToUtf8Bytes(snapshot.State);
+            }
+            var enrollment = head.Head.SourceOriginals.Values.SingleOrDefault(original => original.Binding == binding);
+            var registry = Registry().Records.SingleOrDefault(record => record.Request.Identity == binding.Identity && record.KeyReference == binding.KeyReference);
+            if (enrollment?.Writer is not { } writer || !enrolledReadComponents.Contains(writer.Component) || registry?.Sealed is not { } sealedOriginal
+                || !sealedOriginal.PayloadBytes.AsSpan().SequenceEqual(payload) || sealedOriginal.SerializationFormat != "json+pdenc-v2"
+                || registry.WriterState != InteractionOccurrenceWriterState.Active || registry.WriterProofId != binding.OperationId)
+            { throw new InvalidOperationException("Exact persisted ciphertext and complete source/registry writer original required."); }
+            var proof = await readOnlyNative.GetStateAsync<ErasureRootWriterProof>(writer.Component, writer.Key, ConsistencyMode.Strong, writer.Metadata, token).ConfigureAwait(false);
+            if (proof is not { Persisted: true, WriterRetired: true } || proof.Binding != binding || string.IsNullOrWhiteSpace(proof.ReceiptId)
+                || proof.SealedPayloadSha256 != Convert.ToHexString(SHA256.HashData(payload)))
+            { throw new InvalidOperationException("Exact native retired writer proof required."); }
+            var producer = Producer(payload, new[] { binding });
+            var completion = producer.Completion;
+            if (completion.DekVersion != 1 || completion.SnapshotEntries is not null || completion.SnapshotContainerDigest is not null || completion.SnapshotEntryManifest is not null
+                || completion.Identity != binding.Identity.Owner || completion.OperationId != binding.OperationId || completion.KeyReference != binding.KeyReference
+                || completion.Occurrence != ErasureRootOccurrenceBindings.Occurrence(binding.Identity) || completion.LifecycleEpoch != binding.LifecycleEpoch)
+            { throw new InvalidOperationException("Exact original producer completion required."); }
+            copyOriginals.Add(new JsonObject { ["CopyId"] = source.Key + ":" + ErasureRootCustody.TargetId(binding.Identity.Target), ["SourceEnrollment"] = JsonSerializer.SerializeToNode(enrollment),
+                ["RegistryOriginal"] = JsonSerializer.SerializeToNode(registry), ["WriterProof"] = JsonSerializer.SerializeToNode(proof), ["ProducerOriginal"] = JsonSerializer.SerializeToNode(producer) });
+        }
+        if (copyOriginals.Count != 0) { observed["copyOriginals"] = copyOriginals; }
         var snapshotOriginals = new JsonArray(); var seenSnapshots = new HashSet<string>(StringComparer.Ordinal);
         foreach (var source in recipe.Sources)
         {
@@ -72,12 +157,21 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
                 entries.Add(new JsonObject { ["Path"] = entry.Path, ["SourceEnrollment"] = JsonSerializer.SerializeToNode(original),
                     ["RegistryOriginal"] = JsonSerializer.SerializeToNode(retained), ["WriterProof"] = JsonSerializer.SerializeToNode(proof) });
             }
-            snapshotOriginals.Add(new JsonObject { ["CarrierSha256"] = carrierHash, ["Completion"] = JsonSerializer.SerializeToNode(completion), ["Entries"] = entries });
+            var producer = Producer(JsonSerializer.SerializeToUtf8Bytes(carrier), carrier.Entries.Select(entry => head.Head.SourceOriginals.Values.Single(original => original.Binding.KeyReference == entry.KeyReference
+                && original.Binding.Identity.Target == entry.Target && original.SnapshotEntry?.Path == entry.Path).Binding).ToArray());
+            snapshotOriginals.Add(new JsonObject { ["CarrierSha256"] = carrierHash, ["Completion"] = JsonSerializer.SerializeToNode(completion), ["Entries"] = entries,
+                ["ProducerOriginal"] = JsonSerializer.SerializeToNode(producer) });
         }
         if (snapshotOriginals.Count != 0) { observed["snapshotOriginals"] = snapshotOriginals; }
-        var identity = loadedEngine.GetIdentity();
-        observed["engineSourceRevision"] = identity.SourceRevision;
-        observed["engineBinarySha256"] = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(typeof(InteractionPayloadProtectionService).Assembly.Location)));
+        if (producers.Count == 0 && expectedProducer is not null)
+        { producers.Add(ErasureRootCustody.Hash(expectedProducer), expectedProducer); }
+        if (producers.Count != 1) { throw new InvalidOperationException("One exact selected executor producer identity required."); }
+        var identity = producers.Values.Single();
+        if (expectedProducer is not null && ErasureRootCustody.Hash(identity) != ErasureRootCustody.Hash(expectedProducer))
+        { throw new InvalidOperationException("Source producer must match the exact current authenticated operation originals."); }
+        observed["engineSourceRevision"] = identity.EngineSourceRevision;
+        observed["engineBinarySha256"] = identity.EngineBinarySha256;
+        observed["producerIdentity"] = JsonSerializer.SerializeToNode(identity);
         observed["agentsRuntimeEnabled"] = AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name?.StartsWith("Hexalith.Agents", StringComparison.Ordinal) == true);
         observed["roots"] = new JsonArray(targets.Select(target =>
         {
@@ -87,8 +181,8 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
             return (JsonNode)new JsonObject { ["target"] = JsonSerializer.SerializeToNode(target), ["state"] = state };
         }).ToArray());
         // A later native/owner mutation invalidates this observation, including after an EventStore restore or concurrent block delivery.
-        var final = await erasureRoot.ReadAsync(recipe.TenantId, token, true).ConfigureAwait(false);
-        if (final is not { } confirmed || confirmed.Version != head.Version || ErasureRootCustody.Hash(confirmed.Head) != ErasureRootCustody.Hash(head.Head))
+        var final = await erasureRoot.ReadObservationVersionAsync(recipe.TenantId, token).ConfigureAwait(false);
+        if (final is null || final.Version != before.Version || !final.Bytes.AsSpan().SequenceEqual(before.Bytes))
         { throw new InvalidOperationException("Native observation changed during independent read."); }
         return observed;
     }

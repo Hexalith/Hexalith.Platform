@@ -31,6 +31,8 @@ public sealed class ProtectionQualificationReplayTests
         native.GetStateAsync<ProtectionQualificationPersistedEvent>("source", Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(persisted);
         native.SaveStateAsync("source", Arg.Any<string>(), Arg.Any<JsonElement>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(call => { state[call.ArgAt<string>(1)] = call.ArgAt<JsonElement>(2); return Task.CompletedTask; });
+        native.ExecuteStateTransactionAsync("source", Arg.Any<IReadOnlyList<StateTransactionRequest>>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call => { foreach (var operation in call.ArgAt<IReadOnlyList<StateTransactionRequest>>(1)) { state[operation.Key] = JsonDocument.Parse(operation.Value).RootElement.Clone(); } return Task.CompletedTask; });
         var controls = new ProtectionQualificationFaults(native, new("controls", "controls", new()), "component", new HashSet<string>());
         var driver = new ProtectionQualificationNativeDriver(fixture.Engine, fixture.Custody, fixture.Keys, fixture.Source, native, null!, null!, null!, null!, null!, controls, new HashSet<string> { "source" }, fixture.Permissions);
         var targets = new[] { binding.Identity.Target };
@@ -55,6 +57,13 @@ public sealed class ProtectionQualificationReplayTests
             scenarios++;
         }
         scenarios.ShouldBeGreaterThan(10);
+        var exactCall = await driver.PrepareCallAsync(new("exact-replay", ProtectionQualificationNativeCallKind.ReplayEvent, (JsonObject)JsonSerializer.SerializeToNode(cells["a"])!) { OperationId = "replay-operation", RequestSha256 = new string('a', 64) }, token);
+        var exactResult = await driver.ExecuteAsync(exactCall, new JsonObject { ["action"] = "Replay", ["targets"] = JsonSerializer.SerializeToNode(targets) }, token);
+        int nativeWrites = native.ReceivedCalls().Count(call => call.GetMethodInfo().Name == nameof(DaprClient.ExecuteStateTransactionAsync));
+        JsonNode.DeepEquals(exactResult, await driver.RecoverAsync(exactCall, token)).ShouldBeTrue();
+        (await driver.RecoverAsync(exactCall with { Id = "admitted-but-undispatched", OperationId = "another-operation" }, token)).ShouldBeNull();
+        (await driver.RecoverAsync(exactCall with { RequestSha256 = new string('b', 64) }, token)).ShouldBeNull();
+        native.ReceivedCalls().Count(call => call.GetMethodInfo().Name == nameof(DaprClient.ExecuteStateTransactionAsync)).ShouldBe(nativeWrites);
         var sources = new Dictionary<string, JsonNode> { ["a"] = JsonSerializer.SerializeToNode(persisted)!, ["b"] = JsonSerializer.SerializeToNode(persisted)!,
             ["a:replay"] = JsonNode.Parse(state["copy-a:replay"].GetRawText())!, ["b:replay"] = JsonNode.Parse(state["copy-b:replay"].GetRawText())! };
         var head = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head;

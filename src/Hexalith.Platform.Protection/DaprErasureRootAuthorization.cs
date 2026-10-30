@@ -7,9 +7,12 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Concrete exact-private authorization adapter over the existing nonce-bound ES256 independent authority transport and surviving ERC reservation originals.</summary>
-public sealed class DaprErasureRootAuthorization(IndependentDaprAuthority authority, IErasureRootStore store,
+public sealed class DaprErasureRootAuthorization(ErasureRootTenantAuthority authority, IErasureRootStore store,
     ErasureRootInstallation installation) : IErasureRootAuthorization
 {
+    /// <inheritdoc />
+    public Task<ProtectionQualificationObserverPermission?> ReadObserverPermissionAsync(string tenantId, string workloadIdentity, CancellationToken cancellationToken)
+        => authority.InvokeAsync<ProtectionQualificationObserverPermission>("erc-read-observer-permissions", new { tenantId, workloadIdentity }, cancellationToken);
     /// <inheritdoc />
     public async Task<ErasureRootPermanentLossReceipt?> ReadPermanentLossAsync(string tenantId, string storeId, string enrollmentId, CancellationToken cancellationToken)
     {

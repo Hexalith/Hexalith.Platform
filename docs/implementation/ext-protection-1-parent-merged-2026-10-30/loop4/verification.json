@@ -1,0 +1,348 @@
+{
+  "schema": "EXT-PROTECTION-1.parent-loop4-source.v1",
+  "status": "prepared-for-independent-review",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "sourceCandidates": {
+    "eventstore": "8e6be5f55175e6ba979df43f40c8713a42f5f50d",
+    "platform": "6666ec6ee681730af9b904978c1e21b67614ecce"
+  },
+  "sourceCandidateFiles": {
+    "eventstore": 59,
+    "platform": 193
+  },
+  "sourceCandidateRef": "refs/ext-protection-1/source-20261030-loop4-review-ready",
+  "candidatesPublishedByThisWorkflow": false,
+  "sharedBranchesMovedByThisWorkflow": false,
+  "unrelatedDirtyChangesIncluded": false,
+  "combinedSource": {
+    "directory": "/tmp/ext-protection-loop4-parent-merged",
+    "commands": 16,
+    "allExitedZero": true,
+    "metrics": {
+      "protection": [
+        {
+          "total": "404",
+          "passed": "398",
+          "failed": "0",
+          "skipped": "6",
+          "time": "127.035"
+        }
+      ],
+      "custody-lifecycle": [
+        {
+          "total": "42",
+          "passed": "42",
+          "failed": "0",
+          "skipped": "0",
+          "time": "0.719"
+        }
+      ],
+      "eventstore": [
+        {
+          "total": "444",
+          "passed": "444",
+          "failed": "0",
+          "skipped": "0",
+          "time": "5.436"
+        }
+      ],
+      "payload": [
+        {
+          "total": "897",
+          "passed": "897",
+          "failed": "0",
+          "skipped": "0",
+          "time": "4.234"
+        }
+      ],
+      "offline-verifier": [
+        [
+          "109",
+          "13.503"
+        ]
+      ],
+      "harness": [
+        [
+          "11",
+          "1.031"
+        ]
+      ]
+    },
+    "sourceMode": {
+      "mode": "Source",
+      "cases": 41,
+      "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+      "liveExecuted": false
+    },
+    "matchingInventoryFiles": 252
+  },
+  "retainedContractsAnchors": {
+    "passed": 14,
+    "proof": "../../ext-protection-1-loop4/attempts/contracts-final-tests-v3.xml"
+  },
+  "native": {
+    "outcome": "NativeCasesPassed",
+    "nativeTestSummary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "nativeSuiteElapsedSeconds": 1149.427,
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "testAssemblySha256": "2d7627c479b71b3a462a1435478ec89c77d364027918208b7e2272bbc3c85f37",
+    "frozenRuntimeManifestSha256": "d769058d59eb00083b23e4fb1c33b39b34cb3a1380f8328ea6585a95dec2c6b6",
+    "harnessSourceSha256": "a4a49e414bf070ff84e5bd9633e14d7fb1c3cc5a596a68e403d2e453ec3e00a1",
+    "runtimePolicies": [
+      {
+        "headMount": "heads-0eaf7b0e0fa84fad9e473d0f326bb5b3",
+        "renderedPolicySha256": "ff4bb4b6b40d381a4af8696a8b69c84b4489b7c032ad64a97a6bd847dd1372e4",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-0eaf7b0e0fa84fad9e473d0f326bb5b3",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-0eaf7b0e0fa84fad9e473d0f326bb5b3"
+      },
+      {
+        "headMount": "heads-21be07f27c7d4e3a8292914eaa703ce1",
+        "renderedPolicySha256": "ad863ec609221101994e00858c30f35f4c4be9c62ce45e35359cd75f525e0326",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-21be07f27c7d4e3a8292914eaa703ce1",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-21be07f27c7d4e3a8292914eaa703ce1"
+      },
+      {
+        "headMount": "heads-4d1b788f90aa4004bd19f234d463e7b0",
+        "renderedPolicySha256": "1cac76c1ff8f13dac1f2dfe67385576bae5fecf452ccdeb373c1777c87ea75ed",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-4d1b788f90aa4004bd19f234d463e7b0",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-4d1b788f90aa4004bd19f234d463e7b0"
+      },
+      {
+        "headMount": "heads-cd1ee011962d419ba3055b18aeb31967",
+        "renderedPolicySha256": "3aad098b7165eee63d21052dc651e51aa648856ae21859b4b8e24d87d0859bb5",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-cd1ee011962d419ba3055b18aeb31967",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-cd1ee011962d419ba3055b18aeb31967"
+      },
+      {
+        "headMount": "heads-cfb90997bf2244cfa15a4e9cf0953b73",
+        "renderedPolicySha256": "b438c35a00aba57beee42575919296310cfdc78b3a1cb54eef50fa000fadfc9e",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-cfb90997bf2244cfa15a4e9cf0953b73",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-cfb90997bf2244cfa15a4e9cf0953b73"
+      }
+    ],
+    "nativeGrowthGeometry": [
+      {
+        "archiveWriteBytes": 1493764,
+        "archiveWrites": 40,
+        "nativeHeadBytes": 9484916,
+        "nativeHistoryGeometry": 131072,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 7372800,
+        "transitions": 8
+      },
+      {
+        "archiveWriteBytes": 8730609,
+        "archiveWrites": 117,
+        "nativeHeadBytes": 9484916,
+        "nativeHistoryGeometry": 5242880,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 22708224,
+        "transitions": 8
+      }
+    ],
+    "nativeBounds": {
+      "archiveOriginalMaxBytes": 50331648,
+      "clientMaxHeadBytes": 31457280,
+      "clientMaxResponseBytes": 33554432,
+      "containerMemoryBytes": 2147483648,
+      "dataTmpfsBytes": 1610612736,
+      "legacyArchiveChunkBytes": 4194304,
+      "listenerMaxJsonMemoryBytes": 134217728,
+      "listenerMaxJsonStrings": 1000000,
+      "listenerMaxRequestBytes": 67108864,
+      "raftMaxEntryBytes": 67108864,
+      "raftMaxTransactionBytes": 67108864,
+      "sharedArchiveMaxChunkBytes": 131072,
+      "sharedArchiveMaxChunks": 3073,
+      "sharedArchiveMinChunkBytes": 16384
+    }
+  },
+  "nativeScope": "Actual custody/store/transition/archive/holder primitives, synthetic private eligibility, shipped restricted runtime ACL; no full physical-copy or complete installed-role qualification.",
+  "matrixAuditPassed": true,
+  "matrixCoverage": {
+    "Seal/replay": {
+      "SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased"
+      ],
+      "CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue"
+      ]
+    },
+    "Manifest erase": {
+      "ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector"
+      ],
+      "RewrapFailureDoesNotDestroyAnyOfOneThousandTargets": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.RewrapFailureDoesNotDestroyAnyOfOneThousandTargets"
+      ],
+      "PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects"
+      ],
+      "UnknownManifestEligibilityCannotAdmitOrRotateAHead": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.UnknownManifestEligibilityCannotAdmitOrRotateAHead"
+      ]
+    },
+    "Loss/restore": {
+      "ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim"
+      ],
+      "ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore"
+      ],
+      "PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext"
+      ],
+      "SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite": [
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-pascal\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-lowercase\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-seed\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-producer-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"seed-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"producer-retention-loss\\\")"
+      ]
+    },
+    "v23 race": {
+      "AdmissionAndReservationRaceHasOneOwnerWinner": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: False)"
+      ],
+      "CompromiseAndReservationRaceNeverCancelsAnOriginalReservation": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: False)"
+      ],
+      "ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve": [
+        "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionActorTests.ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve"
+      ]
+    }
+  },
+  "additionalExecutedCases": {
+    "IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4SnapshotLossTests.IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss(mixed: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4SnapshotLossTests.IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss(mixed: True)"
+    ],
+    "LostCompletionAcknowledgementFollowedBySecondOwnerEraseClearsExactDisposedQueue": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.LostCompletionAcknowledgementFollowedBySecondOwnerEraseClearsExactDisposedQueue"
+    ],
+    "NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython": [
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: \\\"P05\\\")",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: \\\"P29\\\")"
+    ],
+    "RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets": [
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P20\\\", holdWins: True)",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P21\\\", holdWins: True)",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P21\\\", holdWins: False)"
+    ],
+    "CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(initialBytes: 131072)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(initialBytes: 5242880)"
+    ],
+    "OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery(verifier: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery(verifier: True)"
+    ],
+    "CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects"
+    ]
+  },
+  "artifactHashesChecked": 173,
+  "csharp": {
+    "csharpFiles": 221,
+    "newViolations": [],
+    "preexistingExceptions": [
+      {
+        "repository": "eventstore",
+        "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "current": [
+          "SnapshotManager",
+          "Log"
+        ],
+        "baseline": [
+          "SnapshotManager",
+          "Log"
+        ]
+      }
+    ]
+  },
+  "nativeAndSourceMirrors": {
+    "native": {
+      "source": "/tmp/ext-protection-loop4-runtime-final-v4",
+      "mirror": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-native-final-830ff255d326452e8b40ffc32d5547bc",
+      "files": 258,
+      "manifest": "d769058d59eb00083b23e4fb1c33b39b34cb3a1380f8328ea6585a95dec2c6b6",
+      "allVerified": true,
+      "sourceUnchanged": true,
+      "excludedGeneratedFiles": [],
+      "verifiedUnchangedAfterNativeCompletion": true,
+      "status": "final passing native V4 source/runtime preserved"
+    },
+    "source": {
+      "source": "/tmp/ext-protection-loop4-source-final-v4",
+      "mirror": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-source-final-3f1acbb174654f7dadb6bfe9bcbc6a2f",
+      "files": 5929,
+      "manifest": "74963d56588bd8205400e26a3d7b0916a06b7a7711a83ae961c3efc662618882",
+      "allVerified": true,
+      "sourceUnchanged": true,
+      "excludedGeneratedFiles": [
+        "platform/eng/ext-secrets-1/__pycache__/probe_raft_non_revival.cpython-314.pyc"
+      ],
+      "verifiedUnchangedAfterNativeCompletion": true,
+      "status": "final passing native V4 source/runtime preserved"
+    }
+  },
+  "allRequiredBuilds": {
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false,
+    "warnings": 0,
+    "errors": 0
+  },
+  "frozenBlockSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "registerSha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+  "sourceMode": {
+    "mode": "Source",
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "countsOverlap": true,
+  "wholeNativeAndParentBinaryEqualityClaimed": false,
+  "fullCopyInventoryQualified": false,
+  "installed41Executed": false,
+  "agentsExecuted": false,
+  "registerEdited": false,
+  "clusterOrProductionOperationExecuted": false,
+  "supersededInitialCandidates": {
+    "eventstore": "75847015fc4a1b53d5a69892561c07f436be3f30",
+    "platform": "64ad438229eda027e4205232becc541770d8f6a0"
+  },
+  "supersessionReason": "CRLF actor whitespace attribute only; executed runtime/source bytes unchanged",
+  "functionalInventoryFilesMatchedBeforeAttributeCorrection": 252,
+  "postInventoryMetadataCorrection": {
+    "path": ".gitattributes",
+    "sha256": "b2e7691c58ec0208c29b0639787d0fc1c9ea51a84f67ceb989dfae65d2c1ead1",
+    "runtimeChanged": false
+  }
+}

@@ -57,6 +57,29 @@ public sealed class ErasureRootMixedSnapshotTests
         return write;
     }
 
+    [Theory]
+    [InlineData("reference")]
+    [InlineData("store")]
+    [InlineData("lifecycle")]
+    [InlineData("purpose")]
+    public async Task MalformedLaterEnrollmentRefusesBeforeAnyFirstEntryRootOrRegistryEffect(string corruption)
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var second = originals[1];
+        var malformed = corruption switch
+        {
+            "store" => second with { RootIdentity = second.RootIdentity with { StoreTarget = "foreign-store" } },
+            "lifecycle" => second with { ExpectedLifecycleRevision = -1 },
+            "purpose" => second with { RootIdentity = second.RootIdentity with { Purpose = Hexalith.Platform.Custody.PlatformKeyPurpose.DigestKey } },
+            _ => second with { Binding = second.Binding with { KeyReference = "not-a-canonical-reference" } },
+        };
+        fixture.Source.Enrollments[ErasureRootOccurrenceBindings.Id(second.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(second.Binding.Identity))] = malformed;
+        byte[] before = (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes;
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.Engine.ProtectSnapshotAsync(originals[0].Binding.Identity.Owner, state, Type, parent, Token));
+        (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes.ShouldBe(before);
+        fixture.RegistryState.CommittedState.ShouldBeEmpty(); (await fixture.Store.HeadAsync("tenant-a")).Targets.ShouldBeEmpty();
+    }
+
     [Fact]
     public async Task DirectorySnapshotAndCacheKeepEachEntryUnderItsOwnRootAndReplayPartialErasure()
     {

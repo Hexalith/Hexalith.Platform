@@ -11,6 +11,8 @@ internal sealed class OpenBaoDisposableNativeHandler : HttpMessageHandler
 {
     internal const string Image = "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641";
     private readonly string _container;
+    internal long ArchiveWriteBytes { get; private set; }
+    internal int ArchiveWriteCount { get; private set; }
     internal List<string> PublicStages { get; } = [];
     private OpenBaoDisposableNativeHandler(string container) => _container = container;
     internal static async Task<OpenBaoDisposableNativeHandler> OpenAsync(CancellationToken token)
@@ -33,11 +35,11 @@ internal sealed class OpenBaoDisposableNativeHandler : HttpMessageHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         string path = request.RequestUri!.AbsolutePath;
-        if (!path.StartsWith("/v1/", StringComparison.Ordinal) || !Regex.IsMatch(path, "^/v1/[A-Za-z0-9_/-]+$") || request.Method != HttpMethod.Get && request.Method != HttpMethod.Post)
+        if (!path.StartsWith("/v1/", StringComparison.Ordinal) || !Regex.IsMatch(path, "^/v1/[A-Za-z0-9_/-]+$") || request.Method != HttpMethod.Get && request.Method != HttpMethod.Post && request.Method != HttpMethod.Delete)
         { throw new InvalidOperationException("Closed disposable native request required."); }
         string credential = request.Headers.GetValues("X-Vault-Token").Single();
         string payload = request.Content is null ? string.Empty : await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        const string wrapper = "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; if [ \"$1\" = GET ]; then if [ \"$2\" = sys/health ]; then exec bao status -format=json; else exec bao read -format=json \"$2\"; fi; else exec bao write -format=json \"$2\" -; fi";
+        const string wrapper = "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; if [ \"$1\" = GET ]; then if [ \"$2\" = sys/health ]; then exec bao status -format=json; else exec bao read -format=json \"$2\"; fi; elif [ \"$1\" = DELETE ]; then exec bao delete -format=json \"$2\"; else exec bao write -format=json \"$2\" -; fi";
         var result = await RunAsync(["exec", "-i", _container, "sh", "-ec", wrapper, "sh", request.Method.Method, path[4..]], credential + "\n" + payload, cancellationToken).ConfigureAwait(false);
         int status = result.Code == 0 ? 200 : Regex.Match(result.Error, @"Code:\s*([1-5][0-9]{2})") is { Success: true } match ? int.Parse(match.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture)
             : result.Error.Contains("No value found", StringComparison.Ordinal) ? 404 : 503;
@@ -62,6 +64,8 @@ internal sealed class OpenBaoDisposableNativeHandler : HttpMessageHandler
             else if (error.Contains("permission", StringComparison.Ordinal)) { category = "head-permission"; }
             lock (PublicStages) { PublicStages.Add(request.Method.Method + ":head-bytes-" + Encoding.UTF8.GetByteCount(payload).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + status.ToString(System.Globalization.CultureInfo.InvariantCulture)); }
         }
+        if (result.Code == 0 && request.Method == HttpMethod.Post && path.Contains("/data/archives/", StringComparison.Ordinal))
+        { ArchiveWriteBytes += Encoding.UTF8.GetByteCount(payload); ArchiveWriteCount++; }
         lock (PublicStages) { PublicStages.Add(request.Method.Method + ":" + category + ":" + status.ToString(System.Globalization.CultureInfo.InvariantCulture)); }
         return new((HttpStatusCode)status) { Content = new StringContent(body, Encoding.UTF8, "application/json") };
     }

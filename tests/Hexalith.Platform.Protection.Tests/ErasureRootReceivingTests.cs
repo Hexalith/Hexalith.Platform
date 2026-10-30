@@ -48,6 +48,11 @@ public sealed class ErasureRootReceivingTests
         native.TrySaveStateAsync("source-originals", "source-index", Arg.Any<ErasureRootSourceOriginals>(), Arg.Any<string>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(call => { if (call.ArgAt<string>(3) != sourceRevision.ToString(System.Globalization.CultureInfo.InvariantCulture)) { return false; } independent = call.ArgAt<ErasureRootSourceOriginals>(2); sourceRevision++; return true; });
         native.GetStateAsync<ErasureRootSourceOriginals>("source-originals", "source-index", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(_ => independent);
+        var nodes = new Dictionary<string, ErasureRootSourceIndexNode>();
+        native.SaveStateAsync("source-originals", Arg.Any<string>(), Arg.Any<ErasureRootSourceIndexNode>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call => { nodes[call.ArgAt<string>(1)] = call.ArgAt<ErasureRootSourceIndexNode>(2); return Task.CompletedTask; });
+        native.GetStateAsync<ErasureRootSourceIndexNode>("source-originals", Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call => nodes.GetValueOrDefault(call.ArgAt<string>(1))!);
         var source = new ErasureRootNativeOccurrenceSource(fixture.Custody, fixture.Permissions, native, fixture.Digests,
             new Dictionary<string, ProtectionQualificationNativeCell> { ["tenant-a"] = new("source-originals", "source-index", new()) });
         string policy = new('A', 64);

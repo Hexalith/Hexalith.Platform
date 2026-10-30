@@ -11,6 +11,7 @@ using Hexalith.Platform.Secrets.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 
 namespace Hexalith.Platform.Protection;
 
@@ -39,7 +40,9 @@ public static class ProtectionQualificationServerExecutable
             using var anchor = ECDsa.Create(); anchor.ImportFromPem(System.Text.Encoding.UTF8.GetString(publicBytes));
             if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(anchor.ExportSubjectPublicKeyInfo())) { return 2; }
             using var dapr = new DaprClientBuilder().Build();
-            var services = new ServiceCollection(); services.AddLogging(); services.AddSingleton(dapr); services.AddSingleton(ActorProxy.DefaultProxyFactory);
+            var services = new ServiceCollection(); services.AddLogging();
+            // Only bounded content-free owning-worker events reach this private server's console.
+            services.AddSingleton<Microsoft.Extensions.Logging.ILogger<ErasureRootHolderCompletionWorker>>(_ => ErasureRootCompletionLogger.Create<ErasureRootHolderCompletionWorker>()); services.AddSingleton(dapr); services.AddSingleton(ActorProxy.DefaultProxyFactory);
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["EventStore:PayloadProtection:Enabled"] = "true", ["EventStore:PayloadProtection:InstallationFile"] = installed.HostInstallationFile,
@@ -64,7 +67,7 @@ public static class ProtectionQualificationServerExecutable
             if (role == "executor")
             {
                 var host = provider.GetRequiredService<ErasureRootHostInstallation>(); var transport = new DaprSecretsInvoker(dapr);
-                var guard = new ProtectionQualificationControlledGuard(new DaprErasureRootGovernanceGuard(new(transport, host.GuardAuthority, TimeProvider.System)), controls);
+                var guard = new ProtectionQualificationControlledGuard(new DaprErasureRootGovernanceGuard(ErasureRootHostComposition.Authority(provider, host, value => value.GuardAuthority)), controls);
                 var consumption = ActorProxy.Create<IDeletionConsumptionActor>(new ActorId(DeletionConsumptionActor.GetActorId(scope.TenantId)), DeletionConsumptionActor.ActorTypeName);
                 var subscriber = new DeletionCapabilityRevocationSubscriber(installed.RevocationSubscription,
                     provider.GetRequiredService<IDeletionCapabilityRevocationAuthenticator>(),
@@ -97,13 +100,30 @@ public static class ProtectionQualificationServerExecutable
                 var resolver = provider.GetRequiredService<ErasureRootDigestKeyResolver>();
                 foreach (var reference in references.Values)
                 { if (!await resolver.IsAvailableAsync(reference, cancellation).ConfigureAwait(false)) { return false; } }
+                foreach (string required in new[] { "RetainQualificationSeedOriginal", "RetainQualificationProducerOriginal", "RetainReserveRefusalOriginal" })
+                {
+                    if (!await permission.AuthorizeAsync(scope.TenantId, scope.BindingDigest, required, ErasureRootCustody.Hash(scope.NativeArguments), cancellation).ConfigureAwait(false)) { return false; }
+                }
                 return await permission.AuthorizeAsync(scope.TenantId, scope.BindingDigest, "QualificationEnrollmentPreflight", ErasureRootCustody.Hash(references.Keys.Order(StringComparer.Ordinal).ToArray()), cancellation).ConfigureAwait(false);
+            }, async cancellation =>
+            {
+                if (role != "observer") { return null; }
+                var host = provider.GetRequiredService<ErasureRootHostInstallation>();
+                string Resolve(string? reference) => reference is not null && reference.StartsWith("env:", StringComparison.Ordinal) ? Environment.GetEnvironmentVariable(reference[4..]) ?? "" : "";
+                string workload = Resolve(installed.WorkloadIdentityReference);
+                var proof = await permission.ReadObserverPermissionAsync(scope.TenantId, workload, cancellation).ConfigureAwait(false);
+                return proof is not null && ProtectionQualificationObserverPermissions.Matches(proof, scope, host, workload, Resolve(host.CredentialReference),
+                    ProtectionQualificationObserverPermissions.DaprCredential(dapr, ErasureRootHostComposition.TenantBindings(host)[scope.TenantId].PrivateAuthority.AppId), Resolve(installed.CredentialReference), installed.ReadComponents.ToHashSet(StringComparer.Ordinal), TimeProvider.System.GetUtcNow()) ? proof : null;
             });
-            await ProtectionQualificationRoleApplication.RunAsync(service, installed.CredentialReference, token).ConfigureAwait(false); return 0;
+            await using var application = BuildApplication(provider, service, installed.CredentialReference);
+            await application.RunAsync(token).ConfigureAwait(false); return 0;
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
         catch (Exception) { return 2; }
     }
+    /// <summary>Attaches the actual owning provider's completion workers to the role HTTP server lifetime. Observer providers register no mutation workers.</summary>
+    public static Microsoft.AspNetCore.Builder.WebApplication BuildApplication(IServiceProvider owner, ProtectionQualificationRoleService service, string credentialReference)
+        => ProtectionQualificationRoleApplication.Build(service, credentialReference, owner.GetServices<IHostedService>().ToArray());
     private static byte[] Read(string path, string digest)
     {
         if (!Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path) || new FileInfo(path).LinkTarget is not null || new FileInfo(path).Length > 16 * 1024 * 1024)

@@ -48,3 +48,15 @@ Hexalith.Platform.slnx whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-
 src/Hexalith.Platform.EventStoreHost/Program.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/implementation/ext-protection-1-parent-merged-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-two protection source/component/native evidence bytes.
+docs/implementation/ext-protection-1-loop2-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-3 source/native/runtime/test evidence bytes.
+docs/implementation/ext-protection-1-loop3-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-4 forensic source/component/native evidence bytes.
+docs/implementation/ext-protection-1-loop4/** -text -whitespace
+
+# Recognize the existing CRLF lifecycle actor without changing executed source bytes.
+src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

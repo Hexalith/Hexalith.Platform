@@ -16,6 +16,14 @@ public sealed class ProtectionQualificationSourceTests
 {
     private static CancellationToken Token => TestContext.Current.CancellationToken;
     [Fact]
+    public void CanonicalizerAcceptsRawTypedIntegersAndRefusesFractionalOrInvalidScalars()
+    {
+        var raw = new JsonObject { ["State"] = 1, ["ActiveCredentialCount"] = 1, ["Small"] = JsonValue.Create((short)-2), ["Unsigned"] = JsonValue.Create((uint)3), ["Byte"] = JsonValue.Create((byte)4) };
+        System.Text.Encoding.UTF8.GetString(ProtectionQualificationCanonical.Bytes(raw)).ShouldBe("{\"ActiveCredentialCount\":1,\"Byte\":4,\"Small\":-2,\"State\":1,\"Unsigned\":3}");
+        foreach (JsonValue value in new[] { JsonValue.Create(1.25)!, JsonValue.Create(double.NaN)!, JsonValue.Create(1.5m)! })
+        { Should.Throw<InvalidOperationException>(() => ProtectionQualificationCanonical.Bytes(new JsonObject { ["invalid"] = value })); }
+    }
+    [Fact]
     public void OriginalNativeCallKindNumbersRemainStableForRetainedJournals()
     {
         string[] original = ["SealEvent", "UnsealEvent", "ReplayEvent", "SealSnapshot", "Lifecycle", "AuthorizeLifecycle", "Guard", "Register", "Reserve", "Block", "Compromise", "Activate", "Sign", "ObsoleteUnissued", "Lookup", "LookupBlock", "LookupActivation", "LookupProvider", "ReplaySnapshot", "RejectSubstitutions", "RejectForeignRoot", "ReconcileBlockedReplacement", "GuardOwnersEffective", "RegisterIfDispatched", "ReserveIfDispatched", "Backup", "Restore", "Fault"];
@@ -147,7 +155,11 @@ public sealed class ProtectionQualificationSourceTests
         var observer = new ProtectionQualificationPersistedObserver(native, fixture.Custody, fixture.Engine, new HashSet<string> { "read-only" });
         var recipe = new ProtectionQualificationObservationRecipe("tenant-a", new() { ["guard"] = new("read-only", "guard", new Dictionary<string, string>()) },
             new() { ["guardRevision"] = new("guard", "/Revision"), ["receiptCount"] = new("guard", "/Receipts", "Count") });
-        var actual = await observer.ObserveAsync(recipe, [original.Binding.Identity.Target], Token);
+        var producerHead = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        producerHead.Head.QualificationOperations.Add("executor:actual-component", new("executor", "component", "attempt", new string('A', 64), new System.Text.Json.Nodes.JsonObject())
+            { Producer = ProtectionQualificationProducerIdentity.Capture(fixture.Engine, fixture.Custody.Installation) });
+        (await fixture.Custody.SaveAsync("tenant-a", producerHead.Version, producerHead.Head, Token)).ShouldBeTrue();
+        var actual = await observer.ObserveAsync(recipe, [original.Binding.Identity.Target], Token, ProtectionQualificationProducerIdentity.Capture(fixture.Engine, fixture.Custody.Installation));
         actual["guardRevision"]!.GetValue<int>().ShouldBe(19); actual["receiptCount"]!.GetValue<int>().ShouldBe(1);
         actual["roots"]![0]!["state"]!.GetValue<string>().ShouldBe("Active");
         native.ReceivedCalls().ShouldAllBe(call => call.GetMethodInfo().Name == "GetStateAsync");

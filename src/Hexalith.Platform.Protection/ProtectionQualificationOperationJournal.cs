@@ -10,6 +10,9 @@ public sealed class ProtectionQualificationOperationJournal(ErasureRootCustody c
     internal static string Digest(JsonNode value) => Convert.ToHexStringLower(SHA256.HashData(ProtectionQualificationCanonical.Bytes(value)));
     internal async Task<ErasureRootHead> ReadAsync(string tenant, CancellationToken token)
         => (await custody.ReadAsync(tenant, token).ConfigureAwait(false))?.Head ?? throw new InvalidOperationException("Current native role journal unavailable.");
+    internal async Task<ErasureRootHead> ReadMetadataAsync(string tenant, CancellationToken token)
+        => (await custody.ReadAsync(tenant, token, false, new HashSet<string>(StringComparer.Ordinal)).ConfigureAwait(false))?.Head
+            ?? throw new InvalidOperationException("Current native role metadata unavailable.");
     internal async Task<bool> UpdateAsync(string tenant, string identity, string method, string digest, Func<ErasureRootHead, bool> change, CancellationToken token)
     {
         for (int attempt = 0; attempt < 16; attempt++)

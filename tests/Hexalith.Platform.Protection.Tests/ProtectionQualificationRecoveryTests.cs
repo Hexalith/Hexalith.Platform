@@ -20,15 +20,21 @@ public sealed class ProtectionQualificationRecoveryTests
             .Returns(call => state.GetValueOrDefault(call.ArgAt<string>(1)));
         native.SaveStateAsync("source", Arg.Any<string>(), Arg.Any<JsonElement>(), Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(call => { state[call.ArgAt<string>(1)] = call.ArgAt<JsonElement>(2); return Task.CompletedTask; });
+        native.ExecuteStateTransactionAsync("source", Arg.Any<IReadOnlyList<StateTransactionRequest>>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call => { foreach (var operation in call.ArgAt<IReadOnlyList<StateTransactionRequest>>(1)) { state[operation.Key] = JsonDocument.Parse(operation.Value).RootElement.Clone(); } return Task.CompletedTask; });
         var faults = new ProtectionQualificationFaults(native, new("controls", "controls", new()), "component", new HashSet<string>());
         var driver = new ProtectionQualificationNativeDriver(null!, null!, engine.Keys, null!, native, null!, null!, null!, null!, null!, faults, new HashSet<string> { "source" }, null!);
         var request = new JsonObject { ["action"] = "CreateBackup", ["targets"] = new JsonArray(new JsonObject { ["TenantId"] = "tenant-a" }) };
         foreach (var kind in new[] { ProtectionQualificationNativeCallKind.Backup, ProtectionQualificationNativeCallKind.Restore })
         {
             var call = new ProtectionQualificationNativeCall("copy:" + kind, kind, (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeCell("source", "cell", new()))!);
+            call = (await driver.PrepareCallAsync(call, token)) with { OperationId = "copy-operation:" + kind, RequestSha256 = ProtectionQualificationOperationJournal.Digest(request) };
             var executed = await driver.ExecuteAsync(call, request, token); native.ClearReceivedCalls();
             var recovered = await driver.RecoverAsync(call, token);
             recovered!["receiptId"]!.GetValue<string>().ShouldBe(executed!["receiptId"]!.GetValue<string>());
+            var unsubmitted = (await driver.PrepareCallAsync(call with { Id = "new-admitted-undispatched", OperationId = "new-operation" }, token));
+            (await driver.RecoverAsync(unsubmitted, token)).ShouldBeNull();
+            (await driver.RecoverAsync(call with { RequestSha256 = new string('A', 64) }, token)).ShouldBeNull();
             native.ReceivedCalls().ShouldAllBe(value => value.GetMethodInfo().Name == "GetStateAsync");
         }
     }

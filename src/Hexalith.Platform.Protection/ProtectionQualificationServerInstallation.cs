@@ -13,4 +13,8 @@ namespace Hexalith.Platform.Protection;
 public sealed record ProtectionQualificationServerInstallation(string HostInstallationFile, string HostInstallationSha256, string ScopeFile, string ScopeSha256,
     string SignerFile, string PublicAnchorFile, string PublicAnchorSha256, string CredentialReference,
     string[] SourceComponents, string[] ReadComponents, ProtectionQualificationNativeCell FaultControl, string FaultEnrollmentId,
-    string[] FaultOperations, DeletionCapabilityRevocationSubscription RevocationSubscription);
+    string[] FaultOperations, DeletionCapabilityRevocationSubscription RevocationSubscription)
+{
+    /// <summary>Environment reference to the independently installed exact workload instance identity. Mandatory for observer permission attestation.</summary>
+    public string? WorkloadIdentityReference { get; init; }
+}

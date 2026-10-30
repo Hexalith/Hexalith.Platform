@@ -1,0 +1,99 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects [FAIL]
+      Assert.Throws() Failure: Exception type was not an exact match
+      Expected: typeof(System.InvalidOperationException)
+      Actual:   typeof(System.ArgumentException)
+      ---- System.ArgumentException : Key lifecycle tenant mismatch.
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(118,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(122,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(126,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(128,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(128,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(128,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs(243,0): at Hexalith.Platform.Custody.CustodyKeyLifecycleActor.Check(CustodyKeyObjectIdentity i)
+        src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs(54,0): at Hexalith.Platform.Custody.CustodyKeyLifecycleActor.ApplyAsync(CustodyKeyLifecycleRequest request)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: "P05") [FAIL]
+      Shouldly.ShouldAssertException : await process.WaitForExitAsync(TestContext.Current.CancellationToken); process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Traceback (most recent call last):
+        File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/platform/eng/ext-protection-1/verify_loop4_vector.py", line 47, in <module>
+          assert type(observed['providerResults'][0]['State']) is int and observed['providerResults'][0]['State'] == 2
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      AssertionError
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs(98,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.VerifyPythonAsync(Object packet)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs(86,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(String caseId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs(88,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(String caseId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs(88,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(String caseId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: "P29") [FAIL]
+      System.InvalidOperationException : Native field unavailable.
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs(218,0): at Hexalith.Platform.Protection.ProtectionQualificationPersistedObserver.Pointer(JsonNode node, String pointer)
+        src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs(56,0): at Hexalith.Platform.Protection.ProtectionQualificationRecipeBinding.<>c__DisplayClass0_0.<Bind>g__Resolve|0(JsonNode value)
+        src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs(59,0): at Hexalith.Platform.Protection.ProtectionQualificationRecipeBinding.<>c__DisplayClass0_0.<Bind>g__Resolve|0(JsonNode value)
+        src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs(59,0): at Hexalith.Platform.Protection.ProtectionQualificationRecipeBinding.<>c__DisplayClass0_0.<Bind>g__Resolve|0(JsonNode value)
+        src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs(59,0): at Hexalith.Platform.Protection.ProtectionQualificationRecipeBinding.<>c__DisplayClass0_0.<Bind>g__Resolve|0(JsonNode value)
+        src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs(63,0): at Hexalith.Platform.Protection.ProtectionQualificationRecipeBinding.Bind(ProtectionQualificationNativeCall template, JsonObject request, IReadOnlyDictionary`2 originals)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(44,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.<>c__DisplayClass9_0.<<ExecuteAsync>g__Run|0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(68,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs(57,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(String caseId)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.IndependentRetentionCrossesLegacyTenThousandWithoutGrowingItsMapAndRemainsReadableAfterErcLoss [FAIL]
+      Shouldly.ShouldAssertException : (await source.ResolveAsync(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), token)
+          should be
+      ErasureRootOccurrenceEnrollment { Binding = InteractionProtectionBinding, RootIdentity = CustodyKeyObjectIdentity { TenantId = tenant-a, ObjectId = interaction-a, Purpose = InteractionRootDek, KeyAlias = alias-a, KeyVersion = root-v1, LifecycleVersion = lifecycle, StoreTarget = erc-test, ContractVersion = custody-1 }, RootOperationId = original-interaction-root, ExpectedLifecycleRevision = 0, Digest = CustodyInteractionDigestReference { ComponentName = digest, Key = tenant-key, NativeVersion = 7, Field = value, InventoryKey = PlatformKeyVersion { TenantId = tenant-a, Purpose = DigestKey, KeyAlias = intent, Version = digest-v1, ProviderTarget = openbao, AuthorityReference = independent, PublicAnchorId = , PublicAnchorVersion =  } }, RegistryEpoch = registry-1, Writer = ErasureRootWriterReference { Component = proof, Key = writer, Metadata = System.Collections.Generic.Dictionary`2[System.String,System.String] }, SnapshotEntry =  }
+          but was
+      ErasureRootOccurrenceEnrollment { Binding = InteractionProtectionBinding, RootIdentity = CustodyKeyObjectIdentity { TenantId = tenant-a, ObjectId = interaction-a, Purpose = InteractionRootDek, KeyAlias = alias-a, KeyVersion = root-v1, LifecycleVersion = lifecycle, StoreTarget = erc-test, ContractVersion = custody-1 }, RootOperationId = original-interaction-root, ExpectedLifecycleRevision = 0, Digest = CustodyInteractionDigestReference { ComponentName = digest, Key = tenant-key, NativeVersion = 7, Field = value, InventoryKey = PlatformKeyVersion { TenantId = tenant-a, Purpose = DigestKey, KeyAlias = intent, Version = digest-v1, ProviderTarget = openbao, AuthorityReference = independent, PublicAnchorId = , PublicAnchorVersion =  } }, RegistryEpoch = registry-1, Writer = ErasureRootWriterReference { Component = proof, Key = writer, Metadata = System.Collections.Generic.Dictionary`2[System.String,System.String] }, SnapshotEntry =  }
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4StorageTests.cs(88,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.IndependentRetentionCrossesLegacyTenThousandWithoutGrowingItsMapAndRemainsReadableAfterErcLoss()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+{"geometry":131072,"transitions":20,"cumulative":12710883,"stored":3272130,"writes":103,"supported":9371648}
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(initialBytes: 5242880) [FAIL]
+      Shouldly.ShouldAssertException : store.ArchiveReads - calls
+          should be less than
+      140
+          but was
+      329
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4StorageTests.cs(57,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(Int32 initialBytes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '55b63b98ebb7e1c4b8a05a161f72b3300da3f972d8a14957e6654e9273ccd0f0')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 45, Errors: 0, Failed: 5, Skipped: 0, Not Run: 0, Time: 11.617s

@@ -23,6 +23,16 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
         return original with { TargetBytes = original.TargetBytes.ToArray() };
     }
 
+    /// <inheritdoc />
+    public async Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
+    {
+        if (requestedScopeId != ScopeId) { return null; }
+        var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+        if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
+        var original = anchor.Admissions.Values.SingleOrDefault(value => value.ExpectedRevision == anchor.Revision && value.PredecessorDigest == anchor.Digest);
+        return original is not null && await authorization.VerifyTransitionPermissionAsync(original, "RecoverTransition", cancellationToken).ConfigureAwait(false)
+            ? original with { TargetBytes = original.TargetBytes.ToArray() } : null;
+    }
     /// <summary>Verifies fresh independently surviving revision/digest, including only explicitly installed genesis.</summary>
     public async Task<bool> ValidateStateAsync(long revision, string exactStateDigest, CancellationToken cancellationToken = default)
     {
@@ -57,7 +67,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
         {
             if (supplied is null || supplied.ScopeId != ScopeId || supplied.ExpectedRevision < 0 || supplied.ExpectedRevision == long.MaxValue
                 || supplied.TargetRevision != supplied.ExpectedRevision + 1 || !Digest(supplied.PredecessorDigest) || !Digest(supplied.TargetDigest)
-                || supplied.TargetBytes is not { Length: > 0 and <= 8388608 }
+                || supplied.TargetBytes is not { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }
                 || Convert.ToHexString(SHA256.HashData(supplied.TargetBytes)) != supplied.TargetDigest) { return false; }
             var transition = supplied with { TargetBytes = supplied.TargetBytes.ToArray() };
             string id = ErasureRootCustody.Hash(transition);
@@ -69,8 +79,8 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
                 if (anchor.Completed.TryGetValue(id, out var completed)) { return ErasureRootCustody.Hash(completed) == id; }
                 if (transition.TargetRevision <= anchor.Revision)
                 {
-                    var history = await custody.ReadHistoryAsync(TenantId, ScopeId, anchor, token).ConfigureAwait(false);
-                    return history.TryGetValue(id, out var historical) && ErasureRootCustody.Hash(historical) == id;
+                    var historical = await custody.ReadHistoricalAsync(TenantId, ScopeId, anchor, transition.TargetRevision, token).ConfigureAwait(false);
+                    return historical is not null && ErasureRootCustody.Hash(historical) == id;
                 }
                 if (operation == "VerifyTransition" || current.Head.Pending is not null) { return false; }
                 if (anchor.Revision != transition.ExpectedRevision || anchor.Digest != transition.PredecessorDigest) { return false; }

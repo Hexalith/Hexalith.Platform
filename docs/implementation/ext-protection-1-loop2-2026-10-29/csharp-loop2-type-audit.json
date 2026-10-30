@@ -1,0 +1,546 @@
+[
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Contracts/Security/IAnchoredStateTransitionAuthority.cs",
+    "sha256": "95179addc0d5d903878c2d0d5c59893b0fd2a5e823fe3b91501d4a027fd1b28f",
+    "types": [
+      "IAnchoredStateTransitionAuthority"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Contracts/Security/IGovernanceScopeGuard.cs",
+    "sha256": "ab33460bb8d13da40a70d7c9b24971f31e836b01d9c726ddb26fb5035955f60b",
+    "types": [
+      "IGovernanceScopeGuard"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Contracts/Security/InteractionOccurrenceSealedResult.cs",
+    "sha256": "cf82b23b24b205e7c8498914cb2340b573917a40e4b702d3e00e51389fb1a840",
+    "types": [
+      "InteractionOccurrenceSealedResult"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs",
+    "sha256": "4f02c82ecb0b68b6acf7a6cdf02c8d6bec7e955fb8d8108c584f1c74020d3c6e",
+    "types": [
+      "RecoverableAnchoredState"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.PayloadProtection/IInteractionProtectionBindingProvider.cs",
+    "sha256": "7c15423fd76551385a7b67c254851c27206630291e8520bf45901300f4c1190e",
+    "types": [
+      "IInteractionProtectionBindingProvider"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceProtector.cs",
+    "sha256": "31d381a54ca0249bdaef8892bca43137b85dc8ed9bb4dd40d0ba36282f5397f8",
+    "types": [
+      "InteractionOccurrenceProtector"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceSealedVerifier.cs",
+    "sha256": "e7123cff6393ec2e8298a75fb0aa8b68385246960ecb8d7ed6dac5c205264520",
+    "types": [
+      "InteractionOccurrenceSealedVerifier"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs",
+    "sha256": "bfc4159c55aabe7e38e8ea799dbfd6b76b08ad723ef5bdb1593dab873a64ba03",
+    "types": [
+      "InteractionPayloadProtectionService"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntriesProtector.cs",
+    "sha256": "57e7c7eb6d002d4d839b638f16ad425a5032495870ce00d48730539f0d358b5c",
+    "types": [
+      "InteractionSnapshotEntriesProtector"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/DeadlineDeletionConsumptionAuthority.cs",
+    "sha256": "850a108280ff91edaf6a79de5ce743bf7a858555b183acc8da289cf4147e5713",
+    "types": [
+      "DeadlineDeletionConsumptionAuthority"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs",
+    "sha256": "675d560b025495d4fa2c7a33372e39bca3209df2d855de48c8c2f1b9db00ba50",
+    "types": [
+      "DeletionConsumptionActor"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs",
+    "sha256": "0599741ef8e115ce644375dcda436c23fc731b196d142bc0f522706afb66fd93",
+    "types": [
+      "DeletionConsumptionIdentity"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardOwner.cs",
+    "sha256": "709af95459987f8990e18af96fa8ab5a7869174a09ed921fda95b56e81f362b2",
+    "types": [
+      "GovernanceScopeGuardOwner"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+    "sha256": "96c04a2eec076dad635e6c6efc677b84a4b68d96d9fc223812881aae223f0cc3",
+    "types": [
+      "GovernanceScopeGuardReducer"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+    "sha256": "eeaa71d38220e03c203e576e72bd547affead022fef001dfbe865517a5689f9d",
+    "types": [
+      "InteractionOccurrenceRegistryActor"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+    "sha256": "bc4c432a74b90b25a343fdc6cfbce4376d40d4beec5eed36034da2476aa27c86",
+    "types": [
+      "PublishedTrustDeletionConsumptionAuthority"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs",
+    "sha256": "c73dd6295c5e6e66087adfdbff0d1281058a8ec0cf21e8eaccaeabe9d061e7ae",
+    "types": [
+      "InteractionSnapshotProtectionTests"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "tests/Hexalith.EventStore.Server.Tests/Security/DeletionConsumptionOriginalTests.cs",
+    "sha256": "ca5b4c929ee71517241ab97361fb1192c6e6bb4ad49dc8312901d466a4aa1aa1",
+    "types": [
+      "DeletionConsumptionOriginalTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/DaprErasureRootGovernanceGuard.cs",
+    "sha256": "eec0e249c61317ce05334d5065ad2c14a6ce2093faddfa7fc8836c7d68efeb46",
+    "types": [
+      "DaprErasureRootGovernanceGuard"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/DaprErasureRootOccurrenceSource.cs",
+    "sha256": "b49e02fa4b5551e529f95a51f04fb5f43c0754eb10c1cb54b800f184c3719087",
+    "types": [
+      "DaprErasureRootOccurrenceSource"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+    "sha256": "752ca8a7274d70acb229982f9ae0563fdf8c4736e7300f6f04b9d10b360beb7a",
+    "types": [
+      "ErasureRootAnchor"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+    "sha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+    "types": [
+      "ErasureRootArchives"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+    "sha256": "ae38bc8985b91503d0d6e7af73901ab721c274d15d123ecf6777d3b661ed3d61",
+    "types": [
+      "ErasureRootAuthorityApplication"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+    "sha256": "473e6556a3e73a98a174bba027fb8438cea4f04bdfc707d962172e1ac7ce2e5b",
+    "types": [
+      "ErasureRootAuthorityOperationHandler"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+    "sha256": "6a7d185ed3b5f5393ce5b5c54ae12fa77052723ba09368aa5dcd6b149fef8ccc",
+    "types": [
+      "ErasureRootChunkedArchive"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+    "sha256": "1ced3e2034362458fc88eb6f0f415710c88d1a4773cd90a20dffdf2c7f775c4a",
+    "types": [
+      "ErasureRootCustody"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+    "sha256": "966d795d20624ae3727cce7106f70ba490e38046dc95717efb76f3eab5e02acf",
+    "types": [
+      "ErasureRootDeletionOwnerAuthority"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+    "sha256": "453fd559e524ec014fa8e7b541aba54acf543ac0ca5661b36a52d1dad116b21a",
+    "types": [
+      "ErasureRootGuardAdmission"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+    "sha256": "f97eca9fcad99382b2fbe7c3bf5b4ba54692ac14b64e66f05d186e586e2ba5f6",
+    "types": [
+      "ErasureRootHead"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+    "sha256": "6a9a80f7db935e47c8281b66b6c7c1f2f277c1a0aea2256a4c287a197057587d",
+    "types": [
+      "ErasureRootHolderCompletionWorker"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+    "sha256": "39009425eb8f55bb99b0e67065dc0f3f751fdc6e5a26d3e62b7fb53e2c0c513b",
+    "types": [
+      "ErasureRootManifest"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+    "sha256": "48705b74bacfa597dc444fc59ead599b48b6379015c66112416e76a8958f61e2",
+    "types": [
+      "ErasureRootNativeOccurrenceSource"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+    "sha256": "e4e0e95d0b22ce3ede3c61cf582a939361839b40a15f628695ae27f64be730b0",
+    "types": [
+      "ErasureRootOccurrenceAuthority"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+    "sha256": "e3492e142a2fd80619d6adf6f6888e9d606104d13ad2251a382c3cefaa2d38f9",
+    "types": [
+      "ErasureRootOccurrenceBindings"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+    "sha256": "6603d9573c34218f5297b756592ce7a1babc674dc8bfabc46f0da1ca9a84bc00",
+    "types": [
+      "ErasureRootOccurrenceKeyProvider"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+    "sha256": "b93f303c927570fa9da897951ca4d9e84a06e51172d9d23a71115b27b19d0df9",
+    "types": [
+      "ErasureRootPreparedSurvivors"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+    "sha256": "7a2922ba6eb8ab2663d6e8be9864bb63527b2f5679e982fa1e74f067ce8cb008",
+    "types": [
+      "ErasureRootSourceOriginals"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+    "sha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+    "types": [
+      "ErasureRootTransitionAuthority"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+    "sha256": "de8db2b621327db01e96c2f6b2b0def2a0c32cc71ee94051d05de0f34f8cb185",
+    "types": [
+      "ErasureRootVerifierHolderCompletionWorker"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/IErasureRootOccurrenceSource.cs",
+    "sha256": "0dba365de9a04ff6efc3fdf7f06b1f8ee2ec65dc86885ba7ec6d9881b6447c97",
+    "types": [
+      "IErasureRootOccurrenceSource"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/OwnedErasureRootKey.cs",
+    "sha256": "ff257acb0491ac361017bbeb43055e97ec75ae9730e4a578f443bf483a445bd6",
+    "types": [
+      "OwnedErasureRootKey"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs",
+    "sha256": "8ce62e50f61745a0983426d9b5c40ebf83f7755bf850bf9da244588d298349db",
+    "types": [
+      "ProtectionQualificationActionRunner"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledGuard.cs",
+    "sha256": "9004cbe5551977f7d2f10308df8e281c153a6c1abeb7862b913d63dd339af08e",
+    "types": [
+      "ProtectionQualificationControlledGuard"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCopyOriginal.cs",
+    "sha256": "bd8103e6926db5d8c3c9942a57535cb166f8e23b8b448116d1436c7fb20f0513",
+    "types": [
+      "ProtectionQualificationCopyOriginal"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCall.cs",
+    "sha256": "944623db48047e779e73cd51a3df46842a507e45babcb73764889e0feb583ee3",
+    "types": [
+      "ProtectionQualificationNativeCall"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+    "sha256": "857a75d7524cea001c8c201a8542012d263b5f35ebfe98281f87bc5b7f1b713a",
+    "types": [
+      "ProtectionQualificationNativeDriver"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs",
+    "sha256": "19b9183b286bb233fe387c5e13bfe735e82813246824144ba318e628c066d5ca",
+    "types": [
+      "ProtectionQualificationRecipeBinding"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+    "sha256": "d0fe352d89670681fa601822059b0d69e746af3668e4b7c4449479e823514457",
+    "types": [
+      "ProtectionQualificationRoleService"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSeedOriginal.cs",
+    "sha256": "9c0869db6fa2866724e116ca5ca14f3bb082e3c60c8f40b4bb846675e27c8f25",
+    "types": [
+      "ProtectionQualificationSeedOriginal"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionFixture.cs",
+    "sha256": "ecf05e010fa724d68844633965692dcc2e6537e861b3eb2755311ffce259e612",
+    "types": [
+      "ErasureRootConsumptionFixture"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+    "sha256": "7a7aade45de04d5c635a20e25848f354c41faff66c04da82138e41cacd87a2ac",
+    "types": [
+      "ErasureRootCustodyTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs",
+    "sha256": "9584710f26aff744d051295f81834b4be2d81cb2f7cdba7492286330d7ecd6b7",
+    "types": [
+      "ErasureRootLoop2CustodyTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs",
+    "sha256": "dc5cf517e153661ada9342c9e9f698f2a574b1c9717da2ed0a39544cf40d2a3d",
+    "types": [
+      "ErasureRootLoop2OwnerTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2RegistryGrowthTests.cs",
+    "sha256": "5a113fda7018bffe3493619566ce7d525b16c6bb461613b769fb869cb89509d5",
+    "types": [
+      "ErasureRootLoop2RegistryGrowthTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotObservationTests.cs",
+    "sha256": "a5f2e2c6dc6239ead1052e6846603e5c099da44b86c548347965cc2a03c71e33",
+    "types": [
+      "ErasureRootLoop2SnapshotObservationTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotTests.cs",
+    "sha256": "92362c87b9287a24be88d517052476a31e523cf1a1a5e276ce35befd69f1c315",
+    "types": [
+      "ErasureRootLoop2SnapshotTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2TransitionTests.cs",
+    "sha256": "84e736465aa5daadf2e093415c94f2bd1d16546bdcef2b4be254625ee499cf24",
+    "types": [
+      "ErasureRootLoop2TransitionTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2VerifierHolderTests.cs",
+    "sha256": "8ad5d4652137c52d8b1f7b425a0827e5c255bda575de8d8872128e20784293aa",
+    "types": [
+      "ErasureRootLoop2VerifierHolderTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootMixedSnapshotTests.cs",
+    "sha256": "6cd6db918e2dc215026b60450bede0e2329aadbcbe2ba04bdcdb98786da88289",
+    "types": [
+      "ErasureRootMixedSnapshotTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootSourceFixture.cs",
+    "sha256": "7017271a8ad16cb41a0e92d06637c34e5fe6af0a4e5193a1e5266c48f32ecc96",
+    "types": [
+      "ErasureRootSourceFixture"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+    "sha256": "7e5de50c33de391bfe75d0fdf4afa0894a46d2013eec61508dc604d99f86a1b5",
+    "types": [
+      "ErasureRootStoreFixture"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+    "sha256": "c73b512902c8709388890132da01352807ed731b4751928f5db44ef099226889",
+    "types": [
+      "OpenBaoErasureRootIntegrationTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs",
+    "sha256": "cf547ba5d48953ffde164bdc9f2848f400638f752b27da21bf5154ea8a8465c9",
+    "types": [
+      "ProtectionQualificationLoop2InputTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+    "sha256": "7d39ead4f7681cd0111320ff1dc5dcf1a9d10c0a05c0c68c89dbce29d359202d",
+    "types": [
+      "ProtectionQualificationPreparationFixture"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs",
+    "sha256": "16bcbc38119a9bfc6c6460e66160c277bf5dc0f1341939b32296cc2f2f3f79b7",
+    "types": [
+      "ProtectionQualificationPreparationTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRecoveryTests.cs",
+    "sha256": "954634c6784b25ff80585e8cc5a6a56e6b5b30d8f5511b96a91566628ef8ef34",
+    "types": [
+      "ProtectionQualificationRecoveryTests"
+    ]
+  },
+  {
+    "repository": "platform",
+    "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationReplayTests.cs",
+    "sha256": "cb62c86bb2188652dd40b1790df63c28a2bf113e9359bc05e0714f40ad36306f",
+    "types": [
+      "ProtectionQualificationReplayTests"
+    ]
+  },
+  {
+    "repository": "eventstore",
+    "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs",
+    "sha256": "702a7645c3f8ae0e7ce9a95f9f68d18d3e8810775d112feb56b6c07e7f3b3acf",
+    "types": [
+      "InteractionEventReplayAuthorityFailureTests"
+    ]
+  }
+]

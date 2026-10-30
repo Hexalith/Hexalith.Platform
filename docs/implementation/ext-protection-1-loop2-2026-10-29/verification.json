@@ -1,0 +1,126 @@
+{
+  "schema": "EXT-PROTECTION-1.loop2-source-handback.v1",
+  "status": "in-progress",
+  "installedQualificationExecuted": false,
+  "completeInstalled41CaseRunExecuted": false,
+  "fullCopyInventoryQualified": false,
+  "productionQualified": false,
+  "liveExecuted": false,
+  "agentsExecuted": false,
+  "clusterOrProductionOperationsExecuted": false,
+  "gitMutationsExecutedByImplementation": false,
+  "acceptedTargetCommit": null,
+  "acceptedIntegrationDate": null,
+  "acceptedProfileSha256": null,
+  "frozenIntentSha256": "c6caa911712db5f46a2115fb0c211cde3efc3bfa30415ce110d82cb1957967b5",
+  "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+  "originalBaselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "nativeFreeze": {
+    "sourceRoot": "/tmp/bmad-protection-loop2-_qctor_8",
+    "frozenRoot": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-capacity-snapshot-final-aa4f549218104ac5af0f0886aaac78ad",
+    "sourceFiles": 5496,
+    "runtimeFiles": 257,
+    "runtimeBytes": 37975964,
+    "createdUtc": "2026-10-29T20:46:15Z",
+    "sourceSha256": "67eea2952625c2455ebb2cbd205b54688106264c10bf0be486558e79609d5d77",
+    "runtimeSha256": "5ddba44d04368c48bf3c0e1040fea97bcead6dc8fa74212ebf0294b585d18d9e"
+  },
+  "readerFreeze": {
+    "sourceRoot": "/tmp/bmad-protection-loop2-_qctor_8",
+    "frozenRoot": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-reader-final-d191bb30bd914441900cb7881a42d932",
+    "sourceFiles": 5497,
+    "runtimeFiles": 269,
+    "runtimeBytes": 38183966,
+    "createdUtc": "2026-10-29T20:54:20Z",
+    "sourceSha256": "fb5bf62c9712e812965dbb082bca84776c9ea40c48b7894ecc7863bd0dbed7fc",
+    "runtimeSha256": "4645d70bd71516a098d3632e39737e2dc775761a55d191c6682210c411cd8618"
+  },
+  "runtimeEquivalenceClaimed": false,
+  "nativeRelevantSourceChangedAfterNativeFreeze": false,
+  "readerOnlyDelta": "reader-only-delta.json",
+  "countsOverlap": true,
+  "results": {
+    "protection": {
+      "total": "353",
+      "passed": "347",
+      "failed": "0",
+      "skipped": "6",
+      "errors": "0",
+      "time": "134.804"
+    },
+    "eventstore": {
+      "total": "444",
+      "passed": "444",
+      "failed": "0",
+      "skipped": "0",
+      "errors": "0",
+      "time": "5.711"
+    },
+    "contracts": {
+      "total": "14",
+      "passed": "14",
+      "failed": "0",
+      "skipped": "0",
+      "errors": "0",
+      "time": "0.182"
+    },
+    "payload": {
+      "total": "897",
+      "passed": "897",
+      "failed": "0",
+      "skipped": "0",
+      "errors": "0",
+      "time": "4.755"
+    },
+    "offlineVerifier": 95,
+    "harness": 7,
+    "native": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "nativeSeconds": 751.951,
+    "nativeCleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "buildCommands": 9,
+    "warnings": 0,
+    "errors": 0
+  },
+  "nativeBounds": {
+    "archiveChunkBytes": 4194304,
+    "archiveOriginalMaxBytes": 50331648,
+    "clientMaxHeadBytes": 31457280,
+    "clientMaxResponseBytes": 33554432,
+    "containerMemoryBytes": 2147483648,
+    "dataTmpfsBytes": 1610612736,
+    "listenerMaxJsonMemoryBytes": 134217728,
+    "listenerMaxJsonStrings": 1000000,
+    "listenerMaxRequestBytes": 67108864,
+    "raftMaxEntryBytes": 67108864
+  },
+  "nativeScope": "Actual custody/store/head/archive with explicitly synthetic private eligibility; unchanged five cases including 1000 targets and 9 MiB chunked-current-state admission/discovery/completion. Reader correction is separately component-tested.",
+  "priorAttemptsRetained": [
+    "daemon-interrupted",
+    "audit-interrupted",
+    "capacity and seed pre-fix failures",
+    "single-root cancellation pre-fix failure",
+    "reader pre-fix failures and initial CA1062 build failure",
+    "four external-output fixture-root failures"
+  ],
+  "remainingInputs": [
+    "Independently accepted all-copy/no-backup/nonrollback/restore/permanent-retirement evidence",
+    "Dedicated ERC HTTPS/TLS/credentials/store/enrollment/tenant keys/KV heads/genesis and archive ACLs",
+    "Current private callers/fence/reservation/holder/transition/source/writer/never-written/DigestKey/governance/capability/compromise authority references",
+    "Three independent role binaries/manifests/identities/P-256 anchors/env credentials/native components/control and observation cells plus complete source-owned argument values",
+    "Accepted clean complete immutable Platform/EventStore targets, engine/profile/trust pins, integration date and owner acceptance",
+    "Independent parent audit/review followed by separately authorized installed 41-case qualification"
+  ]
+}

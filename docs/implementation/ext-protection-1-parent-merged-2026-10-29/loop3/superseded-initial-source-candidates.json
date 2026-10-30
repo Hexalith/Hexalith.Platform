@@ -1,0 +1,952 @@
+{
+  "eventstore": {
+    "commit": "3fe83716fdb940fbb9996c0cf0c966d4b015f735",
+    "tree": "4c41458ef8421edefcbe66d0d0e5ff5c93cbed49",
+    "parent": "6e0280bf489171326e2ce1ba3dde361712b7c977",
+    "ref": "refs/ext-protection-1/source-20261029-loop3",
+    "sourceFiles": [
+      {
+        "path": "docs/implementation/ext-protection-1-verifier-protocol.md",
+        "blob": "65b35a6684072bd48727e9605da5385e5157f9a5"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/DeletionBatchCapabilityIdentity.cs",
+        "blob": "b7073df5935c9440bc85943b277905ab63bcfedd"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/DeletionBlockedReplacementReconciliation.cs",
+        "blob": "94f76c31f3a2cff00d30e22a315e38d29b3695fc"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/GovernanceBatchState.cs",
+        "blob": "dcd2717d9959e88dab7b245bb66e45cabaf6ef92"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/GovernanceRejectedIssueOriginal.cs",
+        "blob": "4231ba0dd7446cb22639662cfbd683194a787bab"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IAnchoredStateTransitionAuthority.cs",
+        "blob": "28a4cd425f439c9a17f4f2a60ad50af6cc59ccd2"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IEventPayloadProtectionService.cs",
+        "blob": "ebccad7b63efd6adeed9cdee32331021cbf73945"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IGovernanceScopeGuard.cs",
+        "blob": "3d131e03d72c87f470c8d57e5ff3d5bb40c126d2"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/PayloadProtectionCompletionContext.cs",
+        "blob": "0cb6aad5691764adde75b7f94504086795108380"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/PayloadProtectionResult.cs",
+        "blob": "9ac221ffaf56eaf4ffc12585a076c2d61ff0c6c2"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntriesV2.cs",
+        "blob": "7f9a7e9d76e1206579604d4a370183eb1e9a7c7a"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntryV2.cs",
+        "blob": "510eea7a3b4538206d998db0c72b53b296d6b9d3"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/SnapshotEntrySourceBinding.cs",
+        "blob": "0729b6618669dba9bf81ffeeeaf42d92241fff81"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/SnapshotProtectionEntry.cs",
+        "blob": "b3e4e724c0591972dfc2b2cd5d39e6668c12c6bd"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/IInteractionProtectionBindingProvider.cs",
+        "blob": "5e9efe217e1f9c63489d877bf971fd837417226b"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceOwnedKey.cs",
+        "blob": "240358a6234556c07d83b1a94af7b5936e4a67e5"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceProtector.cs",
+        "blob": "aef56aa41aa6070894ef0a86f06dbdbd3d04bd42"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceSealedVerifier.cs",
+        "blob": "7b766919c65b120d269115152a11d891a1fc794e"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs",
+        "blob": "bb745accf1e4a119425c0b7c1c4bfd5248122afe"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntries.cs",
+        "blob": "9ef4551a00f6fdb68ca625d266cc0d2e74026a9e"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntriesProtector.cs",
+        "blob": "3f9a5b2aad457fd41510fe99f8557a6a17318242"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotJsonContext.cs",
+        "blob": "04f66499f86f5d7089bb04bd3a6f67cd2f2d8fa1"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/PayloadProtectionOccurrenceConflictException.cs",
+        "blob": "54e058b3c7e2eaca1e5ef06d433f008d3b44e804"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryFragment.cs",
+        "blob": "dd6dea3af5c6137ee7e63e4e81c8f02c73b90c3a"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryLayout.cs",
+        "blob": "8a156630342b4e3209619f677ff57ede98be1e5b"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryOccurrenceIdentity.cs",
+        "blob": "928c6fcc72e027b436b9bd6889727e4f75bdc961"
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionEntriesDescription.cs",
+        "blob": "e6dbc28165141d98433a41c0217940a139f63f43"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Configuration/InteractionPayloadProtectionServiceCollectionExtensions.cs",
+        "blob": "e8eb59040dcc20310175ffb48c1efd2608415f62"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "blob": "5fb30c2595ba8fdfcd2a1c9fee3fed2c036b9644"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs",
+        "blob": "5acd7fbf28eed27fa381a0898fbef65122e9b135"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs",
+        "blob": "f02b1d48e1732d2f3d2c0274ded73f89ec58e799"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardOwner.cs",
+        "blob": "fdc05d64e1f86050f70c7eed21448a71c593b01b"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+        "blob": "15e2d4bdc41f0a144bbe80a21aa583d9c71bd796"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/IAsyncPublishedTrustRevocationEvidence.cs",
+        "blob": "4645a84d4eaff06e1f7e0164ad361e3a6ae2025c"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+        "blob": "525f35a631b81229e491e116c5c5309cf64095c1"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+        "blob": "67a157c8ed29010772cae993fc4ca56f5612a215"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs",
+        "blob": "b8488f27761d870fbe5add647cc047c80b6c0134"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/GovernanceGuardFixture.cs",
+        "blob": "468394ca0bd8c5105da5ebaaa24843ef38081675"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/GuardedTransactionFixture.cs",
+        "blob": "e9890972901a8e5770ce5d5742b693db632555ae"
+      },
+      {
+        "path": "tools/ext_protection_1.py",
+        "blob": "53bd1fff51198e10e468c1573f8fdf9f6ea141a2"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1.py",
+        "blob": "40d2c5eec67a2e8004f87ad85b9e8ecaa2878f91"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_cross_language.py",
+        "blob": "da17b36b1b321f13d9455de78dffacf22a225a50"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_hold_attempts.py",
+        "blob": "396fccd54e269fb2867af8276d1d6ef2d5899d67"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_mixed_snapshot.py",
+        "blob": "d665721bc297c015d25a4e4f3164421db2877d12"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_rejected_replacement.py",
+        "blob": "ef8c8f46cc6799ec715ed02542288631bb34e5ed"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs",
+        "blob": "afd8f6e2e6366750f12a25ef9f513de3a5118475"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_p13.py",
+        "blob": "33f99b5d4742183ebaa07c7f2e41eec78cf6c562"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotProtectionTests.cs",
+        "blob": "2f09f71c481b26935da7b23607d9280a3f15a926"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/CancellingMixedSnapshotConverter.cs",
+        "blob": "d80686da716a97be649887a6292d713892e97fc0"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionMixedSnapshotPersistenceFixture.cs",
+        "blob": "0267c57cf1b5be52c2506e7a86108ef23ae3a9d4"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_event_evidence.py",
+        "blob": "ef8a1762a7e7a4fe876b269b55cf79ac80d316d2"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/InteractionOccurrenceSealedResult.cs",
+        "blob": "bbe7009ca826eefcc86abb1741e8447cd3e3718c"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs",
+        "blob": "caa4c4a850ebe26fb41b67bcb3e178503cd7c3b3"
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeadlineDeletionConsumptionAuthority.cs",
+        "blob": "f0dc3349ecd159c9e5e3e6a6c29360f906ade9ea"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs",
+        "blob": "cd018702f2cb37046ead3a9baa693859cb406612"
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/DeletionConsumptionOriginalTests.cs",
+        "blob": "c206dd23233a3cfd5da38cc7a1acddddf41a0baf"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_p34.py",
+        "blob": "e1301e6aacdf5254669d1cf51d928fd19ba24279"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_snapshot.py",
+        "blob": "c937049e384dab581f3a69c117f619159bbc5710"
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_producer_originals.py",
+        "blob": "e1eb230cf073aacc500aa0cb695298c29e6197da"
+      }
+    ],
+    "published": false
+  },
+  "platform": {
+    "commit": "c57fa687329e5be123ac2881f6e45b03335e0d7d",
+    "tree": "e4e21ab1f02eeee08f42c9d654d52d5c2b1bafe8",
+    "parent": "551add839db7f3292a8677920b440a21c5bc63d8",
+    "ref": "refs/ext-protection-1/source-20261029-loop3",
+    "sourceFiles": [
+      {
+        "path": "Hexalith.Platform.slnx",
+        "blob": "17f9fd2a396280cbb4de9bf39413e4dcf8269d21"
+      },
+      {
+        "path": "deploy/erasure-root/README.md",
+        "blob": "e967e50844ccd7fe4f7b1c6fd614c6e946bde978"
+      },
+      {
+        "path": "deploy/erasure-root/bootstrap.py",
+        "blob": "59eed3e25752426ef463dc888488f0a6de6b645c"
+      },
+      {
+        "path": "deploy/erasure-root/custody-policy.hcl",
+        "blob": "49d37ee6d9ca5aaa24687e4dfceaed9924540801"
+      },
+      {
+        "path": "deploy/erasure-root/namespace.yaml",
+        "blob": "e397c925a77a4cf6f4d12f6e08537ef1ccb01188"
+      },
+      {
+        "path": "deploy/erasure-root/network-policy.yaml",
+        "blob": "795b3d70df4983b7b19e20e931673eed677534e9"
+      },
+      {
+        "path": "deploy/erasure-root/statefulset.yaml",
+        "blob": "68663df49a0fbc231538f6b12b2f7d5a405a0349"
+      },
+      {
+        "path": "eng/ext-protection-1/probe_erc_native.py",
+        "blob": "3be501e9d633774fb79030635a2c45656c6bcd14"
+      },
+      {
+        "path": "eng/ext-protection-1/test_probe_erc_native.py",
+        "blob": "015693c1c170ec842ec2287a4d8b7e735a8fb7c9"
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/CustodyKeyWrapCore.cs",
+        "blob": "3c88dfb9cc3734f4cafbe11c65031fb1dc644472"
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs",
+        "blob": "36b935d29bff66ba474cd0fc03b9b5546f33447d"
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "blob": "c7dfc8e94a6ad11fead352ea4c934c8df61d6756"
+      },
+      {
+        "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "blob": "bf155245ba4080cf293ee720c36a44d6fd49908e"
+      },
+      {
+        "path": "src/Hexalith.Platform.EventStoreHost/Program.cs",
+        "blob": "a772a702f96e75576e6f798cd8dce7c650058887"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Program.cs",
+        "blob": "bc19e6d6f0d9ebdd38047251914e4485965df340"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Program.cs",
+        "blob": "f6642a7311928852bcea108e8f4d824afa84d890"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Program.cs",
+        "blob": "0775651b848fa9141e46f9e912ec27ceff501614"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+        "blob": "d5a5c2293000f87155470d1c6b77b5bfa30f23e5"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootAuthorization.cs",
+        "blob": "bf8beeeaaaecc54885e5c3e68da2cef2d7511474"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootEvidenceJournal.cs",
+        "blob": "9cbea288acc7794435023619f7605671df132f98"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootGovernanceGuard.cs",
+        "blob": "590e5d1d443650dfd23303fccb589696e4d4add8"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootInventory.cs",
+        "blob": "fe257243522df2031b521c85a128bf9df7d8f60a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootOccurrenceSource.cs",
+        "blob": "96235d4acc57b7ab79de07e0c37b967a7fa0a159"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootRevocationEvidence.cs",
+        "blob": "aff36568a7f334ba64fe49cc3b185ced025436be"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+        "blob": "7f7283296deed5dc6e7a9c73a2eae3abd2bda450"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+        "blob": "b6d8577d39a82a9aeb7a177cde9a3637c0466d4e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+        "blob": "351252373ebe3a172c98f5a838c05d60f2068d11"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCiphertext.cs",
+        "blob": "1c2fae329fef0257aae9ef445b2a8eee9b358870"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+        "blob": "be9a7d5dc37b42bcd9c75187f17aebc86c1c2b41"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+        "blob": "3c4afdaf4f8269f1491f116d16139e38a7f509db"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDigestKeyResolver.cs",
+        "blob": "1746df7f22944ba940c4e4a2157b8f183f6d4633"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDurabilityPolicy.cs",
+        "blob": "7f61f455d8592236231f8e8a7807de0d31af809a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootErasure.cs",
+        "blob": "c831f4647c8ed387ebacfb353c7bf80155c27780"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAttempt.cs",
+        "blob": "62d4357e853d0ccec291a8490a25220b7c640e57"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+        "blob": "2f387f8d8d47806a41a1c691ea4a08d5de1dd08e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHeadSnapshot.cs",
+        "blob": "b4a2e5d79b7fdf047f1ff424813391844e067e16"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+        "blob": "b12f8b09bb7da5b46cb3f77275aae1180309be7b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHostInstallation.cs",
+        "blob": "4366fae3d1f7a93161fcf6b07b9e673eca33ca82"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+        "blob": "d611a598c71926239bfc9c12758e1b10e031db0a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+        "blob": "fd28e3a4e9e42fd2409295f6c23e95ca317957b1"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+        "blob": "d84565c2b17c2c6e8799a87328b7f839f12b9fbf"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootManifestProvider.cs",
+        "blob": "1dbf0454bf7598080ccf7cd06d3e1fccba13cfd4"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeControlsInstallation.cs",
+        "blob": "0a06605dd0c3249cd79ed7d83363b5de64eccb29"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+        "blob": "d6887ae492c71e351eaf2033f95f6274cfee8023"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOperationScope.cs",
+        "blob": "516af6716b0b62ef792d712b7db88750550181bd"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrence.cs",
+        "blob": "fc0cdcc9e64a36d39b45e4209fc79baaf9985cc8"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+        "blob": "1d5bebd9221cb74c07784b672bb61298ba2e6b3a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+        "blob": "de5e84a6a661b5e774ccad2dafb2f65d1abaf41b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceEnrollment.cs",
+        "blob": "7b095f2a97e6dbeba52a5faf6a401aa6e50dbae2"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+        "blob": "9b15a0137c0c55811b6dcfb8358f0493af6b80bc"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPermanentLossReceipt.cs",
+        "blob": "c2ce8c2e5e076c308c1f4db273f2975d5dcfa36c"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPermissionEvidence.cs",
+        "blob": "d7e8f35bb7ef4ba48abf09f00ea28b848447b69d"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusal.cs",
+        "blob": "51f77cb0d29744f7d66a73e79d5cf4b0301d7f24"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusalOriginal.cs",
+        "blob": "8029a3a3827c9f25bd8942ba0529450d82134185"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootRecordingRevocationAuthenticator.cs",
+        "blob": "fdfcc2569ae983c390c38c1b02b0aa3b7c259729"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootRevocationOriginal.cs",
+        "blob": "47e4ab850a15106473e5f4f4102110e4a61761f9"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+        "blob": "f1fedc633447855b67a98029767b7e09b6b5e7d4"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTarget.cs",
+        "blob": "296a78cf4add7f3cee6add73715a3440f5eb29ec"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+        "blob": "359a62deb08882f16bb60108ac128539d8d0ef5b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootWriterProof.cs",
+        "blob": "9877bade83a1e7061f786cf1ae9a72d77393b222"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootWriterReference.cs",
+        "blob": "c2a228dc894ea2d5cd1bad2d3349b22b3d58e612"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+        "blob": "ffabaa4c0383289aa0051313594a1dec30924dfb"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootAuthorization.cs",
+        "blob": "397a44ac5b422f5ed6608de7edd54441007b6047"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootOccurrenceSource.cs",
+        "blob": "24a6e2752158a658ffe5f7113cebc5897bdd2b1d"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootStore.cs",
+        "blob": "e48969330afea2c5107bda2df1bb70ed42debc08"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+        "blob": "c4d77a65edd475c1b48bad5c7c66d9856f4f8c1a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/OwnedErasureRootKey.cs",
+        "blob": "2ac6c7db144c07fe18005da613782c9746cb26ca"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionCatalog.cs",
+        "blob": "3eb9c5e2edb00e348645a37e813de7d3d3e6bbc1"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRecipe.cs",
+        "blob": "8f85d2434929f538b136e6fe419f5ef1d3ddb8a5"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs",
+        "blob": "8fecde9fc69d92b64e70c4d6683e38c2da64bb99"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCanonical.cs",
+        "blob": "1f03e4b18197febcf6fcfcfc414a7008128bb3d4"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledErasureRootStore.cs",
+        "blob": "c406ef74c5598343ce5688d54ddf1d80e49a1393"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledGuard.cs",
+        "blob": "34c31476cce342dd08c3d501ae4c26c659aff415"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationEventPayload.cs",
+        "blob": "0f51630eb826643053957b6dcb922ac669610bd1"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaultState.cs",
+        "blob": "6a9bfd31b350e8a39fe24d39aa137c2c3e5ec22e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaults.cs",
+        "blob": "ba958b947de304412c57dc15aa85d21daf872cee"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCall.cs",
+        "blob": "b6be87cc578c6d7477d404092837117b90d41cd4"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCallKind.cs",
+        "blob": "63ea57f688556490a958c3c2844cdec507c05481"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCell.cs",
+        "blob": "13a2af59a122347e1a2e1c781bb4787c81f9c568"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+        "blob": "ca56b82361bb7f53d572fb399171159e62d0aafd"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeOriginal.cs",
+        "blob": "6e2cceb15972a1c7998c03bbecde3f645cbbbecd"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeProjection.cs",
+        "blob": "5c3c5c132e083780aba495f83c5991575df2a4b0"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSeal.cs",
+        "blob": "fb9ff28e6d57b47ad174aac308eda402f878ea39"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshot.cs",
+        "blob": "ab0a0cc05436a694579b99d59b73a1f9ebf49750"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshotRead.cs",
+        "blob": "4479cb561777f548682c5a0250d2e30097a740e7"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationField.cs",
+        "blob": "be449b2a7132daa33209027dcc0d0478a6f94865"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationRecipe.cs",
+        "blob": "a9023510623d42601ba0e6deac206d4f3d842bea"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperation.cs",
+        "blob": "4c0c6cf630c49528bb00d4c4680f92090f875557"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperationJournal.cs",
+        "blob": "eba0964023207048d2f270f0c89befaa757db465"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedEvent.cs",
+        "blob": "a72e32c0d494624da71e291563d87e9ed0d4444f"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+        "blob": "755803b4d95b80fe81964c7a4e2e969ac075345d"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs",
+        "blob": "e7148c8ebcb1c3d8286aee9bcd41a0f04c5ac1bb"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleApplication.cs",
+        "blob": "74715a124a259974082beba99fb5f027d6276b6e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleInstallation.cs",
+        "blob": "66cb6a0c9283935034be73a236022f5130994424"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs",
+        "blob": "711b58e08181f210f366c1f2b5fcfa93a4209f25"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+        "blob": "6f0c35e6cf7c702c1abc696bf32709866900a2dc"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs",
+        "blob": "f0ea6516badd8ada163f691a7310a269daf48cf4"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerInstallation.cs",
+        "blob": "ae079ba2af69a09183c52eec9d717d08ecb0011c"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServiceScope.cs",
+        "blob": "37dd814f1efb20321bddcc04076e4a43e85e034a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceCatalog.cs",
+        "blob": "1b598596141a8292d1a00fbf5c79055bce4ce4be"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceProgram.cs",
+        "blob": "96ab7683ae79dde811f3c04be5af2b6622bf0f2d"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitution.cs",
+        "blob": "71040a1d7c301c434ab583a42afe3595a287ac6e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitutions.cs",
+        "blob": "b6e139a31d67ef97d63cb89936218cca7cfcf89f"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+        "blob": "9200d8107d0a60ae3b1c3becdeaec18ad036097c"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCompositionTests.cs",
+        "blob": "4c7aa0559719846b65c96dd14fa025be6256d809"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionFixture.cs",
+        "blob": "7be484d40f7fc9af6180f9efdcea1e953a8a6e42"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionTests.cs",
+        "blob": "4670627e2978d8578a385b07c60ed09133d42061"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+        "blob": "a15554685ac5296d1bac0d4fe0b766350db21793"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineFixture.cs",
+        "blob": "53873fcdab69d68370f8122f870c303395187e85"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineTests.cs",
+        "blob": "7f579bdb052e963cb7e583699a15d856b0240b83"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs",
+        "blob": "627d91e2ce7dc5e8aa5d8288949fe70044595d24"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootMixedSnapshotTests.cs",
+        "blob": "dfb3b633187a3a1fa372fffca178462397b16fc9"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+        "blob": "f6bb4cfbc979d036f61478167e5acdeb1e5f7dff"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootRegistryFixture.cs",
+        "blob": "5f89376e42f26aad2d62e56e5dce4ea40f2e62c2"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootSourceFixture.cs",
+        "blob": "3168e897c0f41589f2a34f41c3eca7f013eae739"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+        "blob": "fbde8e3c617c029441c9a2fad6b2edd9831a4a07"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransitionAuthorityTests.cs",
+        "blob": "6778dd2de492b6baa4b4cfa9623a685848dd5baa"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransportHandler.cs",
+        "blob": "5df7416f4fd8d66641b80a290899203a3afa3c35"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+        "blob": "3e24f34b8e6e84643b00f9cd37dae4bc5c9a5322"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "blob": "c2fae620cecbb529aff9489e991dc02a4590adc2"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "blob": "9be2b3b98a7bb0fc427cf0f7614456a4c3eda6da"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+        "blob": "37bd63489ad15628ef0abf8b0b7d6cb771e17a9d"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+        "blob": "8cc0dcffecb957281c9abf40bfcf6e92f2c34fe0"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostTrimAcknowledgement.cs",
+        "blob": "03ac9e50796d859835e1e98395d301710a87618b"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+        "blob": "ee4fce8f783193bf23d6df89e52718069c297b43"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "blob": "041ca75833fb9e6fe875296f86df4d018ce07399"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+        "blob": "59f6674af82b5c0adf9e437fab09ec43cacaa14a"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs",
+        "blob": "a547c5e2ef699b817e665f05dce6060dee7c567a"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationProjectionTests.cs",
+        "blob": "461383c063d4605c56fd4ed7cb4f726b461a630b"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationSourceTests.cs",
+        "blob": "ee4d1c78cfbb80d05314075f02c702bd108213f5"
+      },
+      {
+        "path": ".gitattributes",
+        "blob": "da7c154ef9fa9adc24212a8a0866723be1ccf98b"
+      },
+      {
+        "path": "eng/ext-protection-1/test_bootstrap.py",
+        "blob": "d0599de10f91e9f41b50a7615dba1c265fc827b3"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+        "blob": "f3d589b1d773c15e86ad793e5567a758925d68c7"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderArchive.cs",
+        "blob": "640034cb533f2054566178957f2d7b1e93749907"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+        "blob": "b4ea9f8e3943667c15a84b85705bd27dede15d8b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderIdentity.cs",
+        "blob": "bf809e841485796c5c2d6f27b5f91fe29e245fa9"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionArchive.cs",
+        "blob": "072abb5cd64a3710e56e312fc04cbc306ccc4906"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeRoot.cs",
+        "blob": "ba27514a17f581348d8df375ec1e1ba2caaa4b50"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRecoveryTests.cs",
+        "blob": "c1685a0a512231175041284460001655e3277477"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationReplayTests.cs",
+        "blob": "96b68cd863d9591bcb0011b5bb72576cc06d0ff5"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRoleServiceTests.cs",
+        "blob": "65ac2c8f847bb13718186382b668d28d0bdc269f"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/StalledErasureRootBody.cs",
+        "blob": "d49934e4e95ef9ae0426a617d8513f0a911fbf9b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+        "blob": "dc6a211c33fe48429770e2b0f7b4410c7bdfe2b7"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+        "blob": "cf5482448cbb534a5bca70ff524998fa6b5bebec"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+        "blob": "7f080822ca381d03531156c4aaf473b820ab0e46"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+        "blob": "0e35ee237e60bd0e1660e12727d061fbca443af1"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCopyOriginal.cs",
+        "blob": "f14b06c3a8ab2387834a98e726859e4eaa192ed6"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSeedOriginal.cs",
+        "blob": "d85a84534cfc5cc13cca07c4d1d6c87c837172e9"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs",
+        "blob": "53e93cb15e608ccd79996395e88fbd9efd1bdd16"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs",
+        "blob": "bc47bb3380306d584545ccdfea3317c9c6eaaa8c"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2RegistryGrowthTests.cs",
+        "blob": "7bf40a460c36d6d029b206ab3be5b2c604162167"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotObservationTests.cs",
+        "blob": "a8814a2f01f38e84fd56fffdc93994372bd03e8c"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotTests.cs",
+        "blob": "081c802b5640c6cf363844241bb69c5fa55a04bd"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2TransitionTests.cs",
+        "blob": "f98d52c171dc3d940a0559435d7ccc477f8f9fee"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2VerifierHolderTests.cs",
+        "blob": "970f73905b5d9378e9ace8c307cd8a912181a15a"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs",
+        "blob": "61342b93cd14b8210c198f1b8263ea6e2124a295"
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityCredential.cs",
+        "blob": "e4d196102278a2624b98118cc9f6f80db275484f"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthority.cs",
+        "blob": "07eaf26a009ab854bf1d77a5373510a9532f3592"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthorityBindings.cs",
+        "blob": "0399757bb5ef62155532ec219c134da936ace03a"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermission.cs",
+        "blob": "3ee93ff212a2331a984b1551565ee6d42609c01b"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermissions.cs",
+        "blob": "ac80b8ce7f19015a49f8980542cd9c2b8a73dccc"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerIdentity.cs",
+        "blob": "2daafb224bf914537d06bb0d2d6750cec56b05e6"
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerOriginal.cs",
+        "blob": "004601b7862396ac77600e27b7fb1dc19aedc8ae"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAsyncEvidenceDispatchTests.cs",
+        "blob": "e4f9a78ac8b824aede9d15b5cc01a06329ee69b2"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3PlainReplayTests.cs",
+        "blob": "d53b39140652bb19571d2b92ea30e4653919a2bd"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3ReceivingTests.cs",
+        "blob": "14e61010a421358745f5aa40e5016f592d9a8e2d"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs",
+        "blob": "3cbefd31ea2a93639497148fadc4f18bb3576632"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootObserverPermissionTests.cs",
+        "blob": "86c7f625bdffdc3dc55a68251618f9490936ea58"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReplacementEvidenceFixture.cs",
+        "blob": "7d6f5435ac6b6d80afea870765a9919bf75dc4f6"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationHttpBoundaryTests.cs",
+        "blob": "5d5690ec6218a4c5105d7f334cf1e53da3258d2c"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs",
+        "blob": "58705e5c11f6a24bbc89c17feefaf5daa17b5724"
+      }
+    ],
+    "published": false
+  }
+}

@@ -16,11 +16,12 @@ public sealed class ProtectionQualificationRoleService
     private readonly DaprClient _installationReader;
     private readonly ECDsa _signer;
     private readonly Func<CancellationToken, Task<bool>>? _preflight;
+    private readonly Func<CancellationToken, Task<ProtectionQualificationObserverPermission?>>? _observerPermission;
     private readonly SemaphoreSlim _signing = new(1, 1);
 
     /// <summary>Captures explicit installed dependencies. Observer composition has no action runner and never invokes journal mutations.</summary>
     public ProtectionQualificationRoleService(ProtectionQualificationServiceScope scope, ProtectionQualificationOperationJournal journal,
-        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer, Func<CancellationToken, Task<bool>>? preflight = null)
+        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer, Func<CancellationToken, Task<bool>>? preflight = null, Func<CancellationToken, Task<ProtectionQualificationObserverPermission?>>? observerPermission = null)
     {
         ArgumentNullException.ThrowIfNull(scope); ArgumentNullException.ThrowIfNull(journal); ArgumentNullException.ThrowIfNull(installationReader); ArgumentNullException.ThrowIfNull(signer);
         if (scope.Role is not ("executor" or "observer" or "enrollment") || scope.BindingDigest is not { Length: 64 }
@@ -28,7 +29,8 @@ public sealed class ProtectionQualificationRoleService
             || scope.Role == "observer" && (observer is null || actions is not null)) { throw new ArgumentException("Explicit disjoint native role composition required."); }
         ProtectionQualificationActionCatalog.Validate(scope.Recipes);
         if (!scope.Recipes.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Observations.Keys)) { throw new ArgumentException("Complete independent 41-case observation recipes required."); }
-        _preflight = preflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
+        if (actions is not null) { actions.Producer = actions.Producer with { RoleIdentity = scope.Identity, BindingDigest = scope.BindingDigest }; }
+        _observerPermission = observerPermission; _preflight = preflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
     }
 
     /// <summary>Handles exactly one authenticated request; it never retries an admitted mutation after response loss.</summary>
@@ -56,7 +58,7 @@ public sealed class ProtectionQualificationRoleService
                 _ = DeletionBatchCapabilityIdentity.TargetManifestDigest(completeTargets);
                 if (completeTargets.Select(ErasureRootCustody.TargetId).Distinct(StringComparer.Ordinal).Count() != completeTargets.Length)
                 { throw new InvalidOperationException("Distinct exact target identities required."); }
-                if (action != "PrepareFixture") { _ = Recipe(caseId, action, request); }
+                if (action != "PrepareFixture") { await _actions!.ValidateInputsAsync(Recipe(caseId, action, request), request, token).ConfigureAwait(false); }
                 if (request["canaryBase64"] is { } canary && Convert.FromBase64String(canary.GetValue<string>()).Length == 0) { throw new InvalidOperationException("Exact canary required."); }
                 var state = await _journal.ReadAsync(_scope.TenantId, token).ConfigureAwait(false);
                 if (state.Pending is not null && action is not ("PrepareFixture" or "LookupOriginalDestruction")) { throw new InvalidOperationException("Only exact original preparation recovery may cross pending custody."); }
@@ -85,13 +87,20 @@ public sealed class ProtectionQualificationRoleService
         var location = _scope.InstallationProof;
         var proof = await _installationReader.GetStateAsync<JsonElement>(location.Component, location.Key, ConsistencyMode.Strong, location.Metadata, token).ConfigureAwait(false);
         var native = JsonNode.Parse(proof.GetRawText()) as JsonObject ?? throw new InvalidOperationException("Independent native installation census unavailable.");
-        var head = await _journal.ReadAsync(_scope.TenantId, token).ConfigureAwait(false);
+        ProtectionQualificationObserverPermission? permission = null;
+        if (_scope.Role == "observer")
+        {
+            permission = _observerPermission is null ? null : await _observerPermission(token).ConfigureAwait(false);
+            if (permission is null || native["credentialScope"]?.GetValue<string>() != permission.CredentialScope)
+            { throw new InvalidOperationException("DependencyNotAvailable: independently authenticated current read-only observer permissions required."); }
+        }
+        var head = await _journal.ReadMetadataAsync(_scope.TenantId, token).ConfigureAwait(false);
         if (native["agentsRuntimeEnabled"]?.GetValue<bool>() is not false || native["storeIdentity"]?.GetValue<string>() != head.StoreId
             || string.IsNullOrWhiteSpace(native["deploymentIdentity"]?.GetValue<string>())
             || AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name?.StartsWith("Hexalith.Agents", StringComparison.Ordinal) == true))
         { throw new InvalidOperationException("Current independent technical installation proof required."); }
         native["supportedOperations"] = new JsonArray(ProtectionQualificationActionCatalog.Actions.Keys.Order(StringComparer.Ordinal).Select(name => (JsonNode)JsonValue.Create(name)!).ToArray());
-        if (_scope.Role == "observer") { native["credentialScope"] = "ReadPersistedStateOnly"; }
+        if (permission is not null) { native["observerPermissionEvidence"] = JsonSerializer.SerializeToNode(permission); }
         return native;
     }
     private async Task<JsonObject> EnrollAsync(JsonObject request, CancellationToken token)
@@ -146,7 +155,7 @@ public sealed class ProtectionQualificationRoleService
             if (!head.QualificationOperations.TryGetValue(key, out var original) || original.RequestSha256 != digest || original.Result is not null || original.Calls.Count != 0)
             { throw new InvalidOperationException("Exact fresh independently registered original required; admitted operations use lookup only."); }
             var safe = (JsonObject)request.DeepClone(); safe.Remove("canaryBase64");
-            head.QualificationOperations[key] = original with { SafeRequest = safe }; return true;
+            head.QualificationOperations[key] = original with { SafeRequest = safe, Producer = _actions!.Producer }; return true;
         }, token).ConfigureAwait(false);
         JsonObject response;
         if (action == "PrepareFixture")
@@ -217,18 +226,31 @@ public sealed class ProtectionQualificationRoleService
     {
         _ = await InspectAsync(token).ConfigureAwait(false);
         var targets = request["targets"]!.Deserialize<ProtectionTarget[]>()!;
-        var result = await _observer!.ObserveAsync(_scope.Observations[request["caseId"]!.GetValue<string>()].Bind(request), targets, token).ConfigureAwait(false);
-        var head = await _journal.ReadAsync(_scope.TenantId, token).ConfigureAwait(false);
+        var head = await _journal.ReadMetadataAsync(_scope.TenantId, token).ConfigureAwait(false);
         var operations = new JsonArray();
+        var producers = new Dictionary<string, ProtectionQualificationProducerIdentity>(StringComparer.Ordinal);
+        var producerOriginals = new JsonArray();
+        if (!head.QualificationAttempts.TryGetValue(_scope.BindingDigest, out var currentAttempt)) { throw new InvalidOperationException("Exact current enrolled attempt required."); }
         foreach (var expected in (JsonArray)request["expectedOperations"]!)
         {
             string id = expected!["operationId"]!.GetValue<string>();
             if (!head.QualificationOperations.TryGetValue(ProtectionQualificationOperationJournal.Id("executor", id), out var actual) || actual.Result is null
-                || actual.BindingDigest != _scope.BindingDigest || actual.SafeRequest["fixtureId"]?.GetValue<string>() != request["fixtureId"]!.GetValue<string>())
+                || actual.Producer is null || actual.AttemptId != currentAttempt || actual.Producer.RoleIdentity == _scope.Identity || actual.Producer.BindingDigest != _scope.BindingDigest
+                || actual.Role != "executor" || actual.BindingDigest != _scope.BindingDigest
+                || actual.RequestSha256 != expected!["requestSha256"]?.GetValue<string>() || actual.SafeRequest["action"]?.GetValue<string>() != expected!["action"]?.GetValue<string>()
+                || actual.SafeRequest["caseId"]?.GetValue<string>() != request["caseId"]?.GetValue<string>()
+                || !JsonNode.DeepEquals(actual.SafeRequest["targets"], request["targets"])
+                || actual.SafeRequest["fixtureId"]?.GetValue<string>() != request["fixtureId"]!.GetValue<string>())
             { throw new InvalidOperationException("Independent persisted original outcome unavailable."); }
+            producers.TryAdd(ErasureRootCustody.Hash(actual.Producer), actual.Producer);
+            producerOriginals.Add(new JsonObject { ["OperationId"] = id, ["RequestSha256"] = actual.RequestSha256, ["Role"] = actual.Role,
+                ["BindingDigest"] = actual.BindingDigest, ["AttemptId"] = actual.AttemptId, ["Producer"] = JsonSerializer.SerializeToNode(actual.Producer) });
             operations.Add(new JsonObject { ["operationId"] = id, ["requestSha256"] = actual.RequestSha256, ["action"] = actual.SafeRequest["action"]!.GetValue<string>() });
         }
+        if (producers.Count != 1) { throw new InvalidOperationException("One exact current expected-operation producer required."); }
+        var result = await _observer!.ObserveAsync(_scope.Observations[request["caseId"]!.GetValue<string>()].Bind(request), targets, token, producers.Values.Single(), ((JsonArray)request["expectedOperations"]!).Select(value => value!["operationId"]!.GetValue<string>()).ToHashSet(StringComparer.Ordinal)).ConfigureAwait(false);
         result["operationOutcomes"] = operations;
+        result["operationProducerOriginals"] = producerOriginals;
         return result;
     }
 }
