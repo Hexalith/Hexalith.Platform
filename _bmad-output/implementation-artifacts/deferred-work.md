@@ -1561,3 +1561,7 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
   summary: A setup timeout after candidate issuance may discard the issued RunId (medium, unverified).
   evidence: `CompositionEngine.ReportSetupTimeoutAsync` always passes a null run ID, and `ModuleCommandExecutionService` (around line 1260) sets `ownedRunId = expired.RunId`. To settle it, check whether `startupToken` can be cancelled while a session exists and `session.Plan.ExecutionTiming` is null (for example, batch entry two after the per-entry reset). If it can, the issued owner never gets a terminal result.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Release or cancel OwnerRun's native barrier during failure-path fixture disposal.
+  evidence: Existing blockNative scenarios and the added ordering tests can fail before native-release; DisposeAsync ends the attachment and waits 20 seconds while the native child remains blocked until its execution timeout. This fixture behavior predates the fifth-pass change.
