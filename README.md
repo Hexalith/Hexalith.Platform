@@ -95,6 +95,15 @@ ships the schemas and consumer reader; lifecycle and evidence adoption remain
 downstream responsibilities.
 
 
+## Staging policies
+
+Platform adopts the Builds-owned
+[image and dependency vulnerability policy v1](docs/contracts/image-and-dependency-vulnerability-policy-v1.md)
+for exact module and composed images. It fixes Trivy, blocking High/Critical
+findings and recorded Administrator exceptions lasting at most 30 days.
+Stories 5.5 and 5.11 own implementation and promotion acceptance; publication of
+the policy does not establish current workflow enforcement.
+
 ## Exact tuple CI preflight
 
 The approved tool/catalog selection is Builds `4.38.3` at
