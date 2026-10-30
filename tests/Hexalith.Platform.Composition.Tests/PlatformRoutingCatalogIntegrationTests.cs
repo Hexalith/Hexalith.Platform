@@ -17,7 +17,7 @@ public class PlatformRoutingCatalogIntegrationTests
         var options = await PlatformRoutingCatalogTests.OptionsAsync(includeParties: true);
         string root = options.PlatformRoot;
         string environment = "catalog-live-" + Guid.NewGuid().ToString("N");
-        string evidence = Path.Combine(root, "evidence", "3-3", "verification", environment);
+        string evidence = Path.Combine(root, "_bmad-output", "implementation-artifacts", "evidence", "3-3", "verification", environment);
         CompositionWorkspace.CreatePrivateDirectory(evidence);
         await SourceMappingMaterializer.WriteAsync(options.Mapping, evidence, TestContext.Current.CancellationToken);
         var launch = new Dictionary<string, string>(SourceMappingMaterializer.Environment(options.Mapping, evidence))
@@ -27,6 +27,7 @@ public class PlatformRoutingCatalogIntegrationTests
             ["Platform__EnvironmentId"] = environment,
             ["Platform__ActiveModule"] = "parties",
             ["Platform__DeclarationPath"] = options.DeclarationPaths.Single(),
+            ["Platform__UsePrebuiltProjects"] = "true",
         };
         string apphost = Path.Combine(root, "apphost.cs");
         bool started = false;

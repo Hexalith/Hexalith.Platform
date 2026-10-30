@@ -949,6 +949,22 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.subTest(lines=lines), self.assertRaises(ValueError):
                 require_host_package_pins(host(*lines), VERSION)
 
+    def test_file_host_canonical_mapping_keeps_the_catalog_selection(self):
+        root = self.directory()
+        host = root / 'apphost.cs'
+        host.write_text('#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n')
+        project = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+        project.parent.mkdir(parents=True)
+        references = ''.join(f'<PackageReference Include="{package}"/><ProjectReference Include="$(HexalithEventStoreRoot)/src/{package}/{package}.csproj"/>'
+                             for package in ['Hexalith.EventStore.Aspire', 'Hexalith.EventStore.ServiceDefaults'])
+        project.write_text('<Project><ItemGroup>' + references + '</ItemGroup></Project>')
+        result = require_host_package_pins(host, VERSION)
+        self.assertEqual(result['version'], VERSION)
+        self.assertEqual(result['mappedProject'], str(project))
+        project.write_text(project.read_text().replace('<PackageReference ', '<PackageReference VersionOverride="0.0.0" '))
+        with self.assertRaisesRegex(ValueError, 'overrides'):
+            require_host_package_pins(host, VERSION)
+
     def test_contract_requires_every_row(self):
         self.assertEqual(set(ROWS), {f'R{index}' for index in range(1, 12)})
 

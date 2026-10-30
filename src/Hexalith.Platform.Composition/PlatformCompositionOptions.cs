@@ -25,6 +25,8 @@ public sealed record PlatformCompositionOptions
     public bool? DomainModule { get; init; }
     /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>
     public bool TimesheetsEnabled { get; init; }
+    /// <summary>Gets whether a Development/source verification launch uses already built owner outputs.</summary>
+    public bool UsePrebuiltProjects { get; init; }
     /// <summary>Gets project paths relative to their mapped repository, indexed by module/server.</summary>
     public IReadOnlyDictionary<string, string> Projects { get; init; } = PlatformServerBindings.ReferenceProjects;
     /// <summary>Gets released image repositories, indexed by module/server.</summary>

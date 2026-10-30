@@ -95,8 +95,9 @@ catalog = json.loads((output / "catalog.json").read_text())
 assert catalog["schemaVersion"] == 3 and any(declaration["domain"] == "party" for declaration in catalog["declarations"])
 shutil.copy(output / "catalog.json", evidence / "package-catalog.json")
 receipt = {"workspace": str(workspace), "feed": str(feed), "packageCache": str(cache), "runtimeEnvironment": "Development", "buildConfiguration": "Release",
-           "qualification": "local matching package consumption; uncommitted producer work does not establish candidate or hosted acceptance",
+           "qualification": "local matching package consumption; this does not establish candidate or hosted acceptance",
            "packages": produced, "rootDigest": hashlib.sha256((output / "catalog.json").read_bytes()).hexdigest(), "operations": len(catalog["operations"]),
-           "sourceRevisions": {owner: subprocess.check_output(["git", "-C", str(root / "references" / ("Hexalith." + owner)), "rev-parse", "HEAD"], text=True).strip() for owner in versions}}
+           "sourceRevisions": {owner: subprocess.check_output(["git", "-C", str(root / "references" / ("Hexalith." + owner)), "rev-parse", "HEAD"], text=True).strip() for owner in versions},
+           "sourceStatus": {owner: subprocess.check_output(["git", "-C", str(root / "references" / ("Hexalith." + owner)), "status", "--porcelain"], text=True).splitlines() for owner in versions}}
 (evidence / "package-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
 print("Matching package reader consumed " + str(len(catalog["operations"])) + " operations.", flush=True)

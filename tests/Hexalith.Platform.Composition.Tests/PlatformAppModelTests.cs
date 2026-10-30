@@ -67,10 +67,10 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
     [Theory]
-    [InlineData(null, 6)]
+    [InlineData(null, 7)]
     [InlineData("eventstore", 1)]
-    [InlineData("memories", 4)]
-    [InlineData("tenants", 6)]
+    [InlineData("memories", 5)]
+    [InlineData("tenants", 7)]
     public void SelectsOnlyTheDeclaredDependencyClosure(string? active, int expected)
     {
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(Options(active: active));
@@ -159,12 +159,12 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
     [Fact]
-    public void GraphHasSixDeclaredServersAndNoOptionalOrLegacyHosts()
+    public void GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts()
     {
         IDistributedApplicationBuilder builder = Builder();
         PlatformAppModel.Compose(builder, Options());
         IResource[] servers = builder.Resources.Where(r => r.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-        servers.Length.ShouldBe(6);
+        servers.Length.ShouldBe(7);
         servers.Count(r => r.Name == "eventstore").ShouldBe(1);
         servers.ShouldAllBe(r => r.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.ReadinessEndpoint == "/ready");
         foreach (IResource server in servers) server.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
@@ -228,7 +228,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
         foreach (IDistributedApplicationEventingSubscriber subscriber in subscribers)
             await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
         await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
-        model.Resources.OfType<ExecutableResource>().Count(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBe(6);
+        model.Resources.OfType<ExecutableResource>().Count(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBe(7);
         List<object> subscriptionEvidence = [];
         foreach (PlatformServerBinding server in servers)
         {
@@ -538,7 +538,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             IDistributedApplicationBuilder builder = Builder();
             PlatformAppModel.Compose(builder, options);
             PlatformServerAnnotation[] servers = builder.Resources.SelectMany(r => r.Annotations.OfType<PlatformServerAnnotation>()).ToArray();
-            servers.Length.ShouldBe(7);
+            servers.Length.ShouldBe(8);
             servers.ShouldNotContain(s => PlatformDeclarationSet.Id(s.Binding.Module.Declaration) == "unrelated");
             PlatformServerBinding party = servers.Single(s => s.Binding.ResourceId == "parties-api-host").Binding;
             using ServiceProvider provider = builder.Services.BuildServiceProvider();
@@ -580,10 +580,11 @@ public sealed partial class PlatformAppModelTests : IDisposable
                 File.AppendAllText(log, server.ResourceId + Environment.NewLine + build.Output + build.ErrorOutput);
                 build.ExitCode.ShouldBe(0, server.ResourceId + ": " + build.Output + build.ErrorOutput);
             }
-            launchEnvironment = new Dictionary<string, string>
+            launchEnvironment = new Dictionary<string, string>(SourceMappingMaterializer.Environment(mapping, workspace))
             {
                 ["HEXALITH_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
                 ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
+                ["Platform__UsePrebuiltProjects"] = "true",
             };
         }
         bool ownsHost = false;
@@ -592,7 +593,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--isolated", "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
             ownsHost = start.ExitCode == 0;
             start.ExitCode.ShouldBe(0, start.Output + start.ErrorOutput);
-            foreach (string server in new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry" })
+            foreach (string server in new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry" })
             {
                 CompositionProcessResult ready = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["wait", server, "--apphost", apphost, "--non-interactive", "--timeout", "120"], Root, null), TimeSpan.FromMinutes(3), TestContext.Current.CancellationToken);
                 string diagnostic = ready.Output + ready.ErrorOutput;

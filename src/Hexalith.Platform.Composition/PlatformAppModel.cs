@@ -65,7 +65,7 @@ public static class PlatformAppModel
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"] });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
     }
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
@@ -112,6 +112,8 @@ public static class PlatformAppModel
         if (options.TimesheetsEnabled && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         PlatformTimesheetsBinding.ValidateMode(options);
+        if (options.UsePrebuiltProjects && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source))
+            throw new InvalidDataException("Prebuilt owner launches require the explicit Development/source verification lane.");
         if (options.RetentionProfile is not null && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source || options.RunPlan is null))
             throw new InvalidDataException("The PostgreSQL retention experiment requires a runner-owned Development source run.");
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
@@ -246,6 +248,7 @@ public static class PlatformAppModel
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
+                    if (options.UsePrebuiltProjects) project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
                     else if (options.RunPlan?.SelectedTest is not null)
@@ -395,7 +398,7 @@ public static class PlatformAppModel
                 PlatformServerBinding binding = servers.Single(server => server.ResourceId == "eventstore");
                 string runId = "platform-" + Path.GetFileName(rendered);
                 // DCP startup can wait on dependent resources; this operation must start before that wait.
-                builder.Services.Insert(0, ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(services => new PlatformGatewayStartup(services, runId, binding.Environment["Authentication__JwtBearer__SigningKey"])));
+                builder.Services.Insert(0, ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(services => new PlatformGatewayStartup(services, runId, binding.Environment["Authentication__JwtBearer__SigningKey"], rendered)));
             }
         }
         catch (Exception failure)

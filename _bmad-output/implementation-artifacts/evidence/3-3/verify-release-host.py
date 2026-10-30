@@ -43,6 +43,9 @@ with socket.socket() as reservation:
 with socket.socket() as reservation:
     reservation.bind(("127.0.0.1", 0))
     absent_sidecar_port = reservation.getsockname()[1]
+with socket.socket() as reservation:
+    reservation.bind(("127.0.0.1", 0))
+    absent_grpc_port = reservation.getsockname()[1]
 hosts = sorted({"eventstore", "tenants-api", "memories", *(route["appId"] for route in catalog["routes"])})
 component = catalog_directory / "authority-component.json"
 component.write_text(json.dumps({"apiVersion": "dapr.io/v1alpha1", "kind": "Component", "metadata": {"name": "routing-package-probe"},
@@ -52,6 +55,7 @@ acl.write_text(json.dumps({"apiVersion": "dapr.io/v1alpha1", "kind": "Configurat
     "spec": {"accessControl": {"defaultAction": "deny", "trustDomain": "public", "policies": []}}}))
 signing = secrets.token_urlsafe(48)
 environment.update({"ASPNETCORE_URLS": f"http://127.0.0.1:{port}", "DAPR_HTTP_ENDPOINT": f"http://127.0.0.1:{absent_sidecar_port}",
+    "DAPR_GRPC_ENDPOINT": f"http://127.0.0.1:{absent_grpc_port}", "DAPR_HTTP_PORT": str(absent_sidecar_port), "DAPR_GRPC_PORT": str(absent_grpc_port),
     "APP_API_TOKEN": secrets.token_urlsafe(32), "DAPR_API_TOKEN": secrets.token_urlsafe(32),
     "Authentication__JwtBearer__Issuer": "catalog-package-probe", "Authentication__JwtBearer__Audience": "catalog-package-probe",
     "Authentication__JwtBearer__SigningKey": signing, "EventStore__IdempotencyAdmission__Enabled": "true",

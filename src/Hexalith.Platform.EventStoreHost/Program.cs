@@ -7,6 +7,7 @@ using Hexalith.EventStore.Middleware;
 using Hexalith.EventStore.OpenApi;
 using Hexalith.EventStore.Server.Configuration;
 using Hexalith.EventStore.ServiceDefaults;
+using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Hexalith.EventStore.SignalRHub;
 using Dapr;
 using Microsoft.Extensions.Options;
@@ -41,8 +42,10 @@ WebApplication app = builder.Build();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseExceptionHandler();
 app.MapDefaultEndpoints();
+app.UseRouting();
 app.UseAuthentication();
 app.UseRateLimiter();
+app.UseEventStoreHttpHostSecurity();
 app.UseAuthorization();
 #if HEXALITH_PLATFORM_SOURCE_CATALOG
 if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
@@ -53,7 +56,8 @@ app.UseCloudEvents();
 
 // OpenAPI/Swagger UI (gated by configuration, H13)
 if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
-    _ = app.MapOpenApi();
+    _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
+    _ = app.UseEventStoreHumanSurface("/swagger");
     _ = app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
         options.RoutePrefix = "swagger";
@@ -72,8 +76,8 @@ app.MapControllers().Add(endpoint =>
 });
 app.MapErrorReferences();
 app.MapApiVersionFallback();
-if (!declarativeSubscriptions) app.MapSubscribeHandler();
-app.MapActorsHandlers();
+if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
+app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
 app.MapApplicationRuntimeProofEndpoints();
 
 // SignalR hub for real-time projection change notifications (conditional)

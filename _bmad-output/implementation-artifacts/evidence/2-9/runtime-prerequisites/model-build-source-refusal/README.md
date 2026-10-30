@@ -1,0 +1,3 @@
+Actual command topology refusal, run8916634300819013616ea3f486b01702
+
+The real platform-source test command reached model compilation and failed HXR020: the model build loaded old package EventStore.Contracts into source Tenants.Contracts and could not resolve RouteOperationContract. Captured assets/dgspec prove the package selection. Root cause: model construction replaced the sealed early source hook with the pinned catalog hook, and launched with no source mapping environment. No containers or service processes started. Exact runner down completed with remainingResources.isEmpty=true; its cleanup result is retained. This is a real failed attempt and does not qualify native acceptance.
