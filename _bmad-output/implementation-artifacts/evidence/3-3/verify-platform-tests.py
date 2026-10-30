@@ -8,7 +8,7 @@ import subprocess
 root = Path(__file__).resolve().parents[4]
 evidence = Path(__file__).resolve().parent / "verification"
 records = [json.loads(line) for line in (evidence / "source-commands.jsonl").read_text().splitlines()]
-build = next(record for record in reversed(records) if record["name"] == "Platform.Composition-final-build")
+build = next(record for record in reversed(records) if record["name"] in ("Platform.Composition-final-build", "Platform.Composition-build"))
 mapping = Path(build["mappingWorkspace"]) / "source-mapping"
 environment = dict(os.environ)
 for key, file in {"CustomBeforeDirectoryBuildProps": "SourceMapping.targets", "CustomAfterMicrosoftCommonProps": "SourceMapping.props",
@@ -31,11 +31,14 @@ def run(name, argv):
         raise SystemExit(result.returncode)
 
 
-run("Platform.Composition-final-build", build["argv"])
+if os.environ.get("STORY33_SKIP_BUILD") != "1":
+    run("Platform.Composition-final-build", build["argv"])
 artifacts = Path(build["argv"][build["argv"].index("--artifacts-path") + 1])
 assembly = artifacts / "bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll"
 for name in (["PlatformRoutingCatalogTests", "WriterProtocolStartupTests"] if os.environ.get("STORY33_UNIT_ONLY") == "1" else ["PlatformRoutingCatalogIntegrationTests"] if os.environ.get("STORY33_LIVE_ONLY") == "1" else ["PlatformRoutingCatalogTests", "WriterProtocolStartupTests", "PlatformRoutingCatalogIntegrationTests"]):
     run("Platform-final-" + name, ["dotnet", str(assembly), "-class", "Hexalith.Platform.Composition.Tests." + name])
 run("Platform-final-PackageAdmission", ["dotnet", str(assembly), "-method", "*PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources"])
-if os.environ.get("STORY33_UNIT_ONLY") != "1":
+if os.environ.get("STORY33_AUDIT_TOPOLOGY") == "1":
+    run("Platform-final-AclPreservation", ["dotnet", str(assembly), "-method", "*CatalogAuthorityScopingPreservesEveryExistingDeclaredInvocationRule"])
+if os.environ.get("STORY33_UNIT_ONLY") != "1" and os.environ.get("STORY33_SKIP_REFERENCE") != "1":
     run("Platform-final-ReferenceReadiness", ["dotnet", str(assembly), "-method", "*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"])

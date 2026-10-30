@@ -33,5 +33,6 @@
     }
   },
   "actualBuildRefusal": "run-plan-host-build.txt: authoritative catalog selects 3.128.4; inconsistent build selection 3.128.5-story33.0 is refused",
-  "qualification": "No package-mode activation/readiness, candidate acceptance or hosted acceptance claimed. No image publishing or release-provenance override was performed."
+  "qualification": "No package-mode activation/readiness, candidate acceptance or hosted acceptance claimed. No image publishing or release-provenance override was performed.",
+  "localPackageSnapshotQualification": "The recorded 15-package hashes qualify the earlier source revisions in package-receipt.json. Subsequent no-HTTP gateway/topology/ACL audit fixes were verified from source and were not repacked."
 }
