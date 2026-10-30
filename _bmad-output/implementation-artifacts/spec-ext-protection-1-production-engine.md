@@ -2,18 +2,18 @@
 title: 'EXT-PROTECTION-1 production engine, erasure-root custody and owner verifier'
 type: 'feature'
 created: '2026-10-19'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
 eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
-review_loop_iteration: 6
+review_loop_iteration: 7
 context:
   - '{project-root}/../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
   - '{project-root}/../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md'
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'
 ---
 
-> Current status — the human explicitly authorized one further correction cycle after review round 6. Implementation resumes in the loop-6 isolated worktrees below. All prior source candidate pairs and their date proposals remain withdrawn. No accepted target/profile/date or installed/physical qualification is established.
+> Current status — human escalation after review round7. Six substantive findings require another correction cycle beyond the BMAD review-loop limit (counter7). Loop-6 candidates and the unaccepted2026-11-02 integration proposal are withdrawn; source/evidence/local refs are preserved. No accepted target/profile/date or installed/physical qualification is established.
 
 
 ### Current implementation dispatch — authorized loop 6
@@ -75,7 +75,7 @@ Follow the final Re-derivation loop 6 entry for all twelve surviving findings. B
 - [ ] Tests: component tests for each port; narrow integration against a disposable OpenBao 2.6.2 (non-revival with leaked old ciphertext, 1000-target all-or-none, pin race, lost response, cross-tenant context); offline verifier tests.
 - [ ] `../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md` -- clause map, evidence, proposed record (targets, date, command), exact missing runtime inputs -- G7.
 
-Review round 6 reopens integrated acceptance of these seven tasks; existing source and verification artifacts are preserved. No code was reverted or re-derived at the loop limit.
+Review round7 reopens integrated acceptance of these tasks. Existing implementation and passing local evidence remain preserved; six substantive findings require another authorized correction cycle beyond the workflow limit. No code has been reverted.
 
 **Acceptance Criteria:**
 - Given installed inputs, when the proposed command runs from the Agents root, then every case has a real pass path; given any absent input, it refuses with `DependencyNotAvailable` and zero effects.
@@ -266,6 +266,43 @@ All three independent layers returned before triage. Each of the fourteen submis
 - R6-P-1 (patch): Narrowly disambiguate the demonstrated intentional pinned local fixture at the two referencing test files without changing its pinned bytes or suppressing unrelated diagnostics; no new production public surface is needed.
 
 All defects are outside frozen intent; no intent amendment is needed to describe the failures. No sixth re-derivation, lower patch, rollback, remote action or installed owner run was performed. The current loop-5 candidate pair and unaccepted integration-date proposal are withdrawn. Source, exact original reviews, all passing and failed evidence, local refs and the original reviewed diff remain preserved. See [the escalation dossier](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop5/review6/escalation.md).
+
+### Review round 7 — individual verdicts
+
+All three same-capability context-free layers completed before triage. Every one of the thirteen findings has an individual verdict before grouping. No exact unchanged location/claim matched a preceding row; none is carried. Blind/edge claims were checked through callers and guards; the verification gap is trusted as filed without investigation. Parent offline/native-vector/transport probes are retained. Twelve distinct entries remain after grouping only R7-BH-8/R7-EC-1: six bad_spec, five patch and one pre-existing defer. No false/maybe-false verdict or rejected finding remains. The six bad_spec entries make lower patch/defer processing moot. Counter6→7 exceeds the workflow limit; HALT and human escalation occur before any rollback or seventh re-derivation.
+
+| ID | Verdict | Route | Location and evidence |
+| --- | --- | --- | --- |
+| R7-BH-1 | high | patch | ../eventstore/tools/ext_protection_1.py:1779 — The parent reran actual compiled P34 evidence, then removed all rejectedEffectOriginals; both evaluations pass. P34 has active/blocked checks and a RejectManifestDestroy step, so the current conditional skips the entire independent native effect proof when omitted. The missing test mutation is unreachable. Require the existing proof from rejection intent and add the direct missing-field regression; no new state or public surface. |
+| R7-BH-2 | high | patch | ../eventstore/tools/ext_protection_1.py:188 — Parent profile probe accepts three different env references containing one identical bearer. validate_profile compares reference names, while the new role HTTP applications authenticate bearer values; the executor credential can authenticate to the other role endpoints. Compare actual private credential identities without retaining/logging secrets; this is direct validation of demonstrated aliasing. |
+| R7-BH-3 | high | bad_spec | ../eventstore/tools/ext_protection_1.py:172 — Parent profile probe accepts executable-only inventories. The new framework-dependent apphosts load separate DLL/deps/runtimeconfig and ProtectionQualificationRoleProgram loads its role JSON, none required by the inventory check. This change exposes an unpinned executable dependency closure, allowing altered client code/config under unchanged accepted pins. A coherent actual-runtime closure contract and verification are needed, not a single filename guard. |
+| R7-BH-4 | high | bad_spec | ../eventstore/tools/ext_protection_1.py:1770 — The erased branch checks target/kind and outcome labels only. bind_producer_originals authenticates records and copy locations but never correlates replays; it ends before _evaluate. Parent signed owner/provider fixture also accepts foreign replay source/copy values (its focused fixture has no source-step coverage). The actual native projector checks sourceDigest but emits records without that digest; independent verification needs coherent original/record/replay correlation across the producer and consumer. |
+| R7-BH-5 | high | bad_spec | ../eventstore/tools/ext_protection_1.py:1811 — Parent probe accepts exactResults=[null,null] alongside genuine signed owner/provider originals. Equality and count do not establish which activation/block/reserve operation and lookup were recovered. The new native projector supplies several terminal record forms, so correcting this requires exact typed operation/result/lookup correlation; a null guard alone leaves identical invented objects accepted. |
+| R7-BH-6 | high | bad_spec | ../eventstore/tools/ext_protection_1.py:1840 — Parent probe accepts one invented reservationReceiptId under reserved-recovery with genuine signed owner/provider originals. The new projector itself emits one receipt per ReservationOutcome rather than explicit original/recovery pairs. P25/P28 need actual recovery identity and native owner/provider correlation, requiring a coherent producer/verifier correction rather than a length-only check. |
+| R7-BH-7 | medium | defer | ../eventstore/tools/ext_protection_1.py:890 — subprocess.run(capture_output=True) accumulates both pipes before the stdout limit and does not bound stderr, so a malfunctioning installed process can exhaust verifier memory. The original baseline has this exact invocation and limit unchanged, and arbitrary external role executables were already supported; the new client bounds its normal input/HTTP output. This is a pre-existing generic subprocess boundary, with no changed caller increasing its output contract. Lower defer processing is moot because bad_spec entries require escalation. |
+| R7-BH-8 | medium | patch | src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:152; ProtectionQualificationRoleProgram.cs:18 — ServerExecutable.Read still checks FileInfo.Length then File.ReadAllBytes; its signer performs the analogous async second-open read. RoleProgram reads client installation and public anchors without an acquisition bound. HostComposition.ReadPinned is bounded, but these distinct call sites do not use it. Direct bounded accepted-buffer acquisition can repair the reached oversized/growing-file paths without a new public contract. |
+| R7-BH-9 | high | bad_spec | src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:26 — The public store accepts a default HttpClient with the required base address/timeout and adds X-Vault-Token to requests. Parent .NET10 two-origin probe confirms the default redirect handler forwards that custom bearer to the second origin (synthetic token only). Production DI disables redirects, but that does not enforce the public construction invariant. Arbitrary HttpClient handlers cannot be safely reconfigured through HttpClient; the supported construction/transport contract needs a coherent correction. |
+| R7-BH-10 | medium | patch | src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:31 — Runtime constructor validates mounts, tenants and key uniqueness but never StoreId/EnrollmentId. Host composition invokes this same constructor and can accept incomplete pins, appearing ready until ReadHead/authority identity matching refuses during use. Shipped bootstrap prevents malformed native genesis, so no durable mutation under malformed identities is claimed. Direct canonical bounded string validation addresses this demonstrated late-failure readiness defect. |
+| R7-EC-1 | medium | patch | src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:154-156 — The submitted guard snippet resembles the proposed bounded replacement, not the actual implementation: the current private Read uses FileInfo.Length followed by File.ReadAllBytes. A file growth/replacement can allocate past16MiB before digest rejection. This specific harmful outcome is real; it shares the ServerExecutable acquisition defect with R7-BH-8. |
+| R7-EC-2 | high | bad_spec | src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:85-118 — HandleAsync preflight/Inspect validates census identity, digest/fault/grant inputs, but does not establish the remote signing actor/provider/trust readiness. EnrollAsync then commits the single attempt; Seal steps persist source/custody effects. QualificationSigningActorRouter first reaches the actual actor later, whose SignAsyncCore returns Unavailable for absent provider/trust. Runtime uncertainty after admission remains restrictive, but a required input absent from the start is not covered by the zero-effects preflight. Actual independent read-only signer readiness needs cross-owner design; speculative signing is not a trivial fix. |
+| R7-VG-1 | medium | patch | ../eventstore/tools/ext_protection_1.py:2040 — Pre-verified regression gap; verification skipped as required. Profile schema tests and Source mode do not execute the added paired Platform exact_checkout preflight. Removing it leaves them green with a wrong/dirty/unreachable Platform tree. Filed patch disposition accepted: extract the existing private paired preflight and exercise it using temporary local Git fixtures, proving refusal before role invocation without installed effects. |
+
+### Review round 7 — routing and escalation
+
+- R7-BH-8, R7-EC-1 — patch: Unbounded separate-open role-file acquisition.
+- R7-BH-1 — patch: ../eventstore/tools/ext_protection_1.py:1779.
+- R7-BH-2 — patch: ../eventstore/tools/ext_protection_1.py:188.
+- R7-BH-3 — bad_spec: ../eventstore/tools/ext_protection_1.py:172.
+- R7-BH-4 — bad_spec: ../eventstore/tools/ext_protection_1.py:1770.
+- R7-BH-5 — bad_spec: ../eventstore/tools/ext_protection_1.py:1811.
+- R7-BH-6 — bad_spec: ../eventstore/tools/ext_protection_1.py:1840.
+- R7-BH-7 — defer: ../eventstore/tools/ext_protection_1.py:890.
+- R7-BH-9 — bad_spec: src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:26.
+- R7-BH-10 — patch: src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:31.
+- R7-EC-2 — bad_spec: src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:85-118.
+- R7-VG-1 — patch: ../eventstore/tools/ext_protection_1.py:2040.
+
+All confirmed defects are outside frozen intent. Source/evidence/local refs are preserved. No lower patch, deferred-work ledger append, rollback, seventh re-derivation, remote action or installed owner run occurred. The loop-6 candidate pair and unaccepted integration-date proposal are withdrawn. See [the escalation dossier](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/review7/escalation.md).
 
 ## Spec Change Log
 
@@ -656,3 +693,42 @@ Required corrections and verification:
 12. All prohibitions remain: no Live/OQ/Agents consumer, register edit, cluster/provisioning/production data access, shared-root source edit, Git mutation/remote operation, workflow recursion or subagents from implementation. Physical-copy qualification and the complete independently installed41 remain external/unestablished; production destruction is independently gated. The existing unrun owner command and accepted-input requirements remain exact. Preserve both original baselines and the complete frozen approved block byte-for-byte.
 
 Current execution locations are the authoritative dispatch at the top of this spec. First reconstruct KEEP everywhere except the latest spec and owner context already installed. All older path/checkpoint instructions are historical. Parent workflow owns further review and any subsequent escalation.
+
+
+### Loop-6 isolated local implementation evidence — 2026-10-30
+
+The [loop-6 handback](../../docs/implementation/ext-protection-1-loop6/README.md) records all twelve authorized corrections, exact source/runtime overlays and retained failures. Final local checks pass Protection510 total/502 executed/eight explicit owned-integration skips, EventStore444, payload898, contracts14, lifecycle42/revocation26, full Secrets build/185 affected tests, offline116 without skips, harness13 and Source41/liveExecuted:false; required Debug/project-reference/-nodeReuse:false host/three-role/analyzer builds are clean. Fresh native-final-02 passes all five unchanged cases in 2998.951s with complete1000 targets, actual9MiB state, >8MiB head, history/index geometry, shipped restricted policies and verified container absence/tmpfs unmount. Separate actual Dapr four-phase exact9/32MiB/legacy/snapshot-loss coverage, shipped Python bootstrap and native transport success/denial/error prechecks pass with owned cleanup. The original3600s native-final-01 failure remains BlockedUnknown, never relabelled. Status stays in-progress for parent audit/review; original baselines/frozen intent/register are unchanged. No immutable candidate/date/profile/availability is proposed. Installed41/full physical-copy qualification remain external and destruction independently gated. No Live/OQ/Agents, cluster/provisioning, production data or Git mutation/remote operation occurred.
+
+
+### Parent loop-6 acceptance and executed matrix audit — 2026-10-30
+
+## Parent loop-6 source review candidates — 2026-10-30
+
+The complete local review candidates are Platform `a7aa986eb97cdf28311756fdb0b1f3171a1c572b` and EventStore `6a4ed39ca45e646a3a6e4e16f32a9f2b93970042`, retained in each repository as `refs/ext-protection-1/source-20261030-loop6-review`. They are unaccepted and unpublished by this workflow. All earlier pairs remain withdrawn and historical. Temporary indexes and local commit objects preserved the shared branches, existing staging and concurrent changes. All 288 scoped source blobs match their recorded candidate inputs after Git normalization. Two host inputs use the already verified isolated task sources; concurrent shared catalog-only changes remain untouched and are excluded from these candidates. Acceptance documents accompany the source candidates separately.
+
+| Proposed field | Value |
+| --- | --- |
+| EventStore TargetVersionOrCommit | `6a4ed39ca45e646a3a6e4e16f32a9f2b93970042` |
+| ProtectionPlatformTargetCommit | `a7aa986eb97cdf28311756fdb0b1f3171a1c572b` |
+| Proposed integration date | `2026-11-02`, unaccepted |
+| Accepted profile/date/availability | Unset; no Committed/Available record |
+
+The combined shared-checkout run passes all20 checks: Protection510 total/502 executed/eight explicit owned-integration skips, lifecycle/revocation68/68, full Secrets.Runtime.Tests build plus185 affected tests, EventStore450/450, payload898/898, contracts17/17, offline116 without skips and harness13. Counts overlap. Source mode retains41 cases and liveExecuted:false. Required Debug/project-reference/-nodeReuse:false host/three-role/standalone analyzer builds have zero warnings/errors. The original task host build passes. A later supplemental shared host build fails3 CS0234 after concurrent catalog-only host edits reference types present only in the separate Platform references checkout; its failed output is retained. The immutable candidates use the exact verified task host sources for those two paths, preserving the concurrent shared files. The initial unchanged30ms payload drain test failed under parallel load, passed alone, and the complete898 rerun passed with serial classes; its failed output and both reruns remain intact, with no source/assertion change for that failure.
+
+Fresh native-final-02 on frozen graph07 passes5/5 with zero failures/errors/skips in2998.951s. It retains the unchanged complete1000 targets, actual9MiB state, 9,439,430-byte head, both history geometries and256 native owners/occurrences (7,013,381 archive bytes,5021 creates,2216-byte head, lookup below16 reads). All five shipped-policy-derived restricted policies and bootstrap-only root use are independently hash-checked. Container absence and tmpfs unmount are verified; the parent independently rechecked owned container absence. Native-final-01 exhausted the unchanged3600s bound and remains BlockedUnknown with cleanup, never a pass.
+
+Actual Dapr graph05 passes all four phases, including exact9/32MiB source retention, a supported opaque snapshot with independently retained original and authenticated dead-ERC typed-Erased replay, and legacy4MiB chunks refusing at4MiB then reading exactly with verified8MiB sidecar/SDK allowances. Shipped Python --apply followed by six exact runtime owner genesis checks and two lifecycle actors passes on07. A separate real native transport precheck covers success, wrong-context400, absence404, eight ACL403 denials and invalid-token403 followed by valid success. These owned executions account for all eight ordinary-suite integration skips.
+
+The parent verified287 functional inventory hashes in the isolated source, all80 loop-6 deltas,211 packet artifact hashes, and the257-file runtime plus5505/5506-file source originals and persistent mirrors for final graphs05/07. All production sources are byte-identical between qualification04 and native07; four test-only differences and exact graph pins are explicit. Whole binaries are not equated. The candidate overlay adds only parent evidence attributes. Preserved concurrent catalog host changes are explicitly excluded from the candidate; their current shared-checkout build failure remains separate. The256-file C# scan finds no new multiple-type violation. All four frozen matrix rows and the38 additional executed cases executed and passed. Source and exact command/hash evidence remain separate from installed and physical qualification.
+
+Read results lost before their separate original-retention CAS remain Unknown when no exact atomic original survives. Existing unsafe whole-object plaintext skeleton metadata requires independent sanitization; legacy source chunks require the documented response allowances. Physical-copy qualification and the complete independently installed41-case run remain external and unestablished. Production destruction remains independently gated.
+
+Still required: reviewed targets and accepted profile/date; actual A1 HTTPS/storage/genesis/native/no-backup/all-copy/restore/retirement evidence; independent per-tenant authorities and complete usable trust; exact private phase/final grants including lifetime migration/retention; disjoint mounted credentials and executor/observer/enrollment identities/signers; source/control/fault cells; current signed read-only observer permission with independent physical component/backing proof; and legacy transport allowances where needed. No Live/OQ/Agents consumer, register edit, cluster/provisioning/production operation or Git remote operation occurred.
+
+From the Agents repository root, this existing executable owner command remains unrun. Its accepted profile must pin both proposed commits above:
+
+```bash
+python3 ../eventstore/tools/verify-ext-protection-1.py --mode Live --profile /home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json --evidence-root /home/administrator/hexalith-protection-evidence/ext-protection-1/attempts
+```
+
+The [parent record](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/verification.json), [candidate blobs](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/source-candidates.json) and [executed matrix](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/matrix-audit.json) record local source acceptance. All seven source tasks have concrete artifacts and passing checks. Frozen intent, original baselines and register remain unchanged. Independent three-layer review is next.

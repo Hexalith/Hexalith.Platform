@@ -2,7 +2,8 @@
 title: '3.3 Generate the run-scoped routing catalog'
 type: 'feature'
 created: '2026-10-30'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: '1316523edfab050e03539a4e6425605245070de9'
 route: 'dispatch'
 review_loop_iteration: 0
 context:

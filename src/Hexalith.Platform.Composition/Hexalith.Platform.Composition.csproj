@@ -1,5 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+    <HexalithTenantPreparationRoot Condition="'$(HexalithTenantsRoot)' != ''">$(HexalithTenantsRoot)</HexalithTenantPreparationRoot>
+    <HexalithTenantPreparationRoot Condition="'$(HexalithTenantPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Tenants</HexalithTenantPreparationRoot>
+    <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesRoot)' != ''">$(HexalithMemoriesRoot)</HexalithMemoriesPreparationRoot>
+    <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Memories</HexalithMemoriesPreparationRoot>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithTenantPreparationRoot)/src/Hexalith.Tenants.Contracts/Hexalith.Tenants.Contracts.csproj" />
+    <ProjectReference Include="$(HexalithMemoriesPreparationRoot)/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" />
     <PackageReference Include="Aspire.Hosting.Kubernetes" />

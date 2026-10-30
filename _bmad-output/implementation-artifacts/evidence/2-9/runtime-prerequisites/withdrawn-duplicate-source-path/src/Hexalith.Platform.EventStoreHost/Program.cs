@@ -1,0 +1,108 @@
+using Hexalith.EventStore;
+using Hexalith.Platform.Identity;
+using Hexalith.Platform.Protection;
+using Hexalith.EventStore.Extensions;
+using Hexalith.EventStore.HealthChecks;
+using Hexalith.EventStore.Middleware;
+using Hexalith.EventStore.OpenApi;
+using Hexalith.EventStore.Server.Configuration;
+using Hexalith.EventStore.ServiceDefaults;
+using Hexalith.EventStore.SignalRHub;
+using Dapr;
+using Microsoft.Extensions.Options;
+
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
+builder.Services.AddDaprClient(options => ErasureRootDaprTransport.Configure(options));
+builder.Services.AddHealthChecks()
+    .AddEventStoreDaprHealthChecks()
+    .AddEventStoreAppChannelTokenHealthCheck();
+builder.Services.AddEventStore();
+builder.Services.AddEventStoreServer(builder.Configuration);
+builder.Services.AddEventStoreDomainQueryRouting();
+builder.Services.AddEventStoreSignalR(builder.Configuration);
+builder.Services.AddPlatformIdentity(builder.Configuration);
+builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
+
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+else
+{
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+DevelopmentCatalogComposition.Register(builder);
+#else
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"]))
+    throw new InvalidOperationException("Development catalog bootstrap requires the authoritative published owner adapters; the source-only private composition is unavailable in this package host.");
+#endif
+}
+
+WebApplication app = builder.Build();
+
+// Middleware order per architecture: CorrelationIdMiddleware FIRST (before everything)
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseExceptionHandler();
+app.MapDefaultEndpoints();
+app.UseAuthentication();
+app.UseRateLimiter();
+app.UseAuthorization();
+if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+else
+{
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app, DevelopmentCatalogComposition.Operation);
+#endif
+}
+app.UseCloudEvents();
+
+// OpenAPI/Swagger UI (gated by configuration, H13)
+if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
+    _ = app.MapOpenApi();
+    _ = app.UseSwaggerUI(options => {
+        options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
+        options.RoutePrefix = "swagger";
+    });
+}
+
+bool declarativeSubscriptions = app.Configuration.GetValue<bool>("Dapr:DeclarativeSubscriptions");
+app.MapControllers().Add(endpoint =>
+{
+    for (int index = endpoint.Metadata.Count - 1; index >= 0; index--)
+    {
+        if (endpoint.Metadata[index] is not ITopicMetadata { Name: "*.*.projection-changed" } topic) continue;
+        if (declarativeSubscriptions) endpoint.Metadata.RemoveAt(index);
+        else endpoint.Metadata[index] = new TopicAttribute(app.Services.GetRequiredService<IOptions<ProjectionChangeNotifierOptions>>().Value.PubSubName, topic.Name);
+    }
+});
+app.MapErrorReferences();
+app.MapApiVersionFallback();
+if (!declarativeSubscriptions) app.MapSubscribeHandler();
+app.MapActorsHandlers();
+app.MapApplicationRuntimeProofEndpoints();
+
+// SignalR hub for real-time projection change notifications (conditional)
+SignalROptions? signalROptions = app.Configuration
+    .GetSection("EventStore:SignalR")
+    .Get<SignalROptions>();
+
+if (signalROptions?.Enabled == true) {
+    _ = app.MapHub<ProjectionChangedHub>(ProjectionChangedHub.HubPath);
+    _ = app.MapSignalRRuntimeProofEndpoints();
+}
+
+// Configure global request body size limit (1MB)
+app.Lifetime.ApplicationStarted.Register(() => {
+    KestrelServerOptions? kestrelOptions = app.Services.GetService<Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions>();
+    _ = kestrelOptions?.Limits.MaxRequestBodySize = 1_048_576;
+});
+
+app.Run();
+
+/// <summary>
+/// Entry point class, made partial for WebApplicationFactory test access.
+/// </summary>
+public partial class Program;

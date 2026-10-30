@@ -15,6 +15,7 @@ public static class PlatformServerBindings
         ["tenants/domain"] = "src/Hexalith.Tenants/Hexalith.Tenants.csproj",
         ["tenants/api"] = "src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
         ["memories/server"] = "src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+        ["memories/domain"] = "src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
         ["memories/clock"] = "src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
         ["memories/telemetry"] = "src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
     };
@@ -24,6 +25,7 @@ public static class PlatformServerBindings
         ["tenants/domain"] = "registry.hexalith.com/tenants",
         ["tenants/api"] = "registry.hexalith.com/tenants-api",
         ["memories/server"] = "registry.hexalith.com/memories",
+        ["memories/domain"] = "registry.hexalith.com/memories-domain-service",
         ["memories/clock"] = "registry.hexalith.com/memories-access-telemetry-clock",
         ["memories/telemetry"] = "registry.hexalith.com/memories-access-telemetry",
     };
@@ -63,11 +65,19 @@ public static class PlatformServerBindings
                 if (source?.Origin != "source" || source.Path is null || relative is null)
                     throw Failure(module, identity, "project", "mapped source project is unavailable");
                 project = Path.GetFullPath(Path.Combine(source.Path, relative));
+                bool privatePlatformGateway = identity == "eventstore/gateway" && options.RunPlan?.SelectedTest?.ModuleId == "parties";
+                if (privatePlatformGateway)
+                {
+                    string platform = options.Mapping.PlatformIdentity?.PlatformPath
+                        ?? throw Failure(module, identity, "project", "the tool-selected Platform source identity is unavailable");
+                    project = Path.Combine(platform, "src", "Hexalith.Platform.EventStoreHost", "Hexalith.Platform.EventStoreHost.csproj");
+                    if (!options.Mapping.ContainsProject(project)) throw Failure(module, identity, project, "the private source gateway is outside the tool-selected Platform root");
+                }
                 if (identity == "timesheets/host" && project != Path.GetFullPath(Path.Combine(source.Path, PlatformTimesheetsBinding.Project)))
                     throw Failure(module, identity, project, "only the actual mapped Timesheets host project is supported");
                 // ContainsProject uses Builds' RepositoryPathResolver. Limit this validation view to
                 // the selected owner so a link into another mapped repository cannot pass containment.
-                if (!(options.Mapping with { Entries = [source] }).ContainsProject(project))
+                if (!privatePlatformGateway && !(options.Mapping with { Entries = [source], PlatformIdentity = null }).ContainsProject(project))
                     throw Failure(module, identity, project, "mapped project is missing or physically outside its owner root");
             }
             else if (identity == "eventstore/gateway")

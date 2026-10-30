@@ -1,0 +1,16 @@
+[
+  {
+    "location": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:154-156",
+    "trigger_condition": "A role installation file grows after the FileInfo length check.",
+    "guard_snippet": "return ErasureRootHostComposition.ReadPinned(path, digest, 16 * 1024 * 1024);",
+    "potential_consequence": "The unbounded second read can exhaust memory before hash validation rejects the changed file."
+  },
+  {
+    "location": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:85-118",
+    "trigger_condition": "Any absent input refuses with DependencyNotAvailable and zero effects.",
+    "guard_snippet": "Preflight checks DigestKeys, fault controls, and grants; signing provider/trust are first checked during SignAsync.",
+    "potential_consequence": "Missing capability-signing inputs leave enrolled attempts, wrapped roots, and persisted source ciphertext behind.",
+    "kind": "claim",
+    "confidence": "medium"
+  }
+]

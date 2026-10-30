@@ -9,6 +9,14 @@ public sealed record PlatformCompositionOptions
     public required string PlatformRoot { get; init; }
     /// <summary>Gets the single command-selected mapping.</summary>
     public required SourceMapping Mapping { get; init; }
+    /// <summary>Gets an explicit local environment identity; runner plans always own their descriptor identity.</summary>
+    public string? EnvironmentId { get; init; }
+    /// <summary>Gets the positive generated routing-catalog generation.</summary>
+    public long CatalogGeneration { get; init; } = 1;
+    /// <summary>Gets optional canonical committed routing history, independently verified by EventStore before generation.</summary>
+    public string? CommittedRoutingCatalogPath { get; init; }
+    /// <summary>Gets the independently retained root digest of the supplied committed predecessor.</summary>
+    public string? CommittedRoutingCatalogRootDigest { get; init; }
     /// <summary>Gets additional owner declarations, validated with the reference owners.</summary>
     public IReadOnlyList<string> DeclarationPaths { get; init; } = [];
     /// <summary>Gets the active v2 module, or null for the reference composition.</summary>

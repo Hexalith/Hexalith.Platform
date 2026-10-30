@@ -27,6 +27,14 @@ builder.Services.AddEventStoreSignalR(builder.Configuration);
 builder.Services.AddPlatformIdentity(builder.Configuration);
 builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
 
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+#else
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"]))
+    throw new InvalidOperationException("Development catalog bootstrap requires the authoritative published owner SDK and adapters before package qualification.");
+#endif
+
 WebApplication app = builder.Build();
 
 // Middleware order per architecture: CorrelationIdMiddleware FIRST (before everything)
@@ -36,6 +44,11 @@ app.MapDefaultEndpoints();
 app.UseAuthentication();
 app.UseRateLimiter();
 app.UseAuthorization();
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+#endif
 app.UseCloudEvents();
 
 // OpenAPI/Swagger UI (gated by configuration, H13)

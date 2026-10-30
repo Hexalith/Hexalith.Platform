@@ -65,7 +65,7 @@ public static class PlatformAppModel
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"] });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"] });
     }
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
@@ -82,7 +82,7 @@ public static class PlatformAppModel
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/clock", "memories/telemetry" })
+        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
         {
             configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
             configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
@@ -137,6 +137,7 @@ public static class PlatformAppModel
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, options.PlatformRoot, rendered, checkouts);
         CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(rendered)!);
         CompositionWorkspace.CreatePrivateDirectory(rendered);
+        PlatformRoutingCatalogBootstrap? catalog = null;
         try
         {
             CompositionRunPorts localPorts = AllocateOwnedSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan);
@@ -154,6 +155,12 @@ public static class PlatformAppModel
             if (options.RetentionProfile is { } retentionDiscovery) discovery = retentionDiscovery.ConfigureDiscovery(discovery);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
+            catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+            if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
+                builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
+                    servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess));
+#endif
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
@@ -254,6 +261,7 @@ public static class PlatformAppModel
                     }
                     else project.WithHttpEndpoint(name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
                     ConfigureEnvironment(project, server, options, clockKey);
+                    catalog?.Configure(project, server);
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
@@ -268,6 +276,8 @@ public static class PlatformAppModel
                         .WithHttpHealthCheck(server.ReadinessEndpoint)
                         .WithAnnotation(new PlatformServerAnnotation(server));
                     ConfigureEnvironment(container, server, options, clockKey);
+                    catalog?.Configure(container, server);
+                    if (catalog?.Participates(server) == true) container.WithBindMount(rendered, rendered);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         container.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
                     if (options.RunPlan is not null) container.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={options.RunPlan.RunId}");
@@ -320,6 +330,7 @@ public static class PlatformAppModel
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
                         if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore") resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
+                        if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects["tenants"].GetEndpoint("http"));
                     }
                     if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? project)) Attach(project);
                     else Attach(containers[server.ResourceId]);
@@ -339,7 +350,11 @@ public static class PlatformAppModel
             {
                 if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? sourceProject))
                 {
-                    if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) sourceProject.WaitFor(targetProject);
+                    if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject))
+                    {
+                        if (catalog?.Participates(server) == true && catalog.Participates(target)) sourceProject.WaitForStart(targetProject);
+                        else sourceProject.WaitFor(targetProject);
+                    }
                     else sourceProject.WaitFor(containers[target.ResourceId]);
                 }
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);

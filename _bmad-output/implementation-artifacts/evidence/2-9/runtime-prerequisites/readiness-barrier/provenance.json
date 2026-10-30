@@ -1,0 +1,37 @@
+{
+  "claim": "Focused test only; actual committed method and helper source; actual AppHost/Tooling assemblies; unrelated host project excluded from this focused compilation, not stubbed",
+  "method": "HealthyResourcesWaitForOwnerPreparationBeforePublishingAsync",
+  "method_sha256": "a06e98d426ddd0b7b396c4ef3a3274233b5f29531561a6bd6e8decd435718ff9",
+  "test_source_sha256": "46a28711621e248f68850f42e90df740f1f1a8caf1eea91f812e1934f9a6274f",
+  "harness_sha256": "92cb5df6d650eb8be9a7f88e0204f94213e392b6c9b1a8abd4389c7398ba4b36",
+  "helper_sha256": "6f8d26fae78c038ade7a7f8b32566ba748d01c5c24d0eaa60845d756f46395f9",
+  "runtime_assemblies": [
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll",
+      "copy": "/tmp/story-2-9-readiness-focused/runtime/Hexalith.Builds.Module.AppHost.dll",
+      "sha256": "362837663976362c4637a7c1d9a3e4a88ab9f1c46389aa8287fb6e737830932f"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll",
+      "copy": "/tmp/story-2-9-readiness-focused/runtime/Hexalith.Builds.Tooling.dll",
+      "sha256": "f61a5e321297cd0175cd56bf1a7524a2dc9f1cf3aa96e0b3d1fd6ebf48e4f0c1"
+    }
+  ],
+  "package_versions": "Exact current Builds central catalog (no repository package changes)",
+  "negative_control": {
+    "total": 1,
+    "failed": 1,
+    "cause": "Old three-argument call publishes readiness before owner preparation"
+  },
+  "project_sha256": "c132471c1d2906452d376c64a853ea90f3859afa7b0aae0e1adb0cf596446591",
+  "green": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "log": "story-2-9-readiness-frozen-final2-tests.log.gz"
+  },
+  "resolved_harness_dependency_failure": "Private two-DLL copy omitted CommunityToolkit.Aspire.Hosting.Dapr; restore used evaluated exact existing central selection13.6.2-beta.959 with Aspire.Hosting13.6.4 retained.",
+  "FocusedReadinessTest.cs_sha256": "92cb5df6d650eb8be9a7f88e0204f94213e392b6c9b1a8abd4389c7398ba4b36",
+  "FocusedReadiness.csproj_sha256": "5a599b2ca8b859e1ec5391d1c9ebce855d04aec7b373b941d54eec2e294a8306"
+}

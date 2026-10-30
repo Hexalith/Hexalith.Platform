@@ -1,0 +1,67 @@
+{
+  "nativeSourceManifestSha256": "08f76beffed6793171d15384f2c7a5bbbc2b54896adcf74a349c6e2677168b06",
+  "qualificationSourceManifestSha256": "0be4388532c0c680326800c92da5f85b9059a090212f3d5cc80fdade4bea4560",
+  "wholeBinariesEqual": false,
+  "differences": [
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotFixture.cs",
+      "native": "a5c8f934544920fd9219ab2bb3ebb3190396ab14ab9aec344b27486f716220f2",
+      "qualification": "7196c15c53db2c2124b10fb70af522ef2b1126c731f111322448e87ede039ebb"
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs",
+      "native": "c73dd6295c5e6e66087adfdbff0d1281058a8ec0cf21e8eaccaeabe9d061e7ae",
+      "qualification": "b91dd9b84bfbfac7f113411f283ce84292cb2955c93a80a60efa6a9e7942835b"
+    },
+    {
+      "repository": "platform",
+      "path": "eng/ext-protection-1/probe_dapr_source.py",
+      "native": "037e84919192ae4b46a5e16bc77804e07c3ce8c4df04ec146eb3d2805bf3356b",
+      "qualification": "4d9464a6ab81aabe759ef4d305974af5adde5873f385c26d8c39a3da3a6ca495"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ErasureRootDaprTransport.cs",
+      "native": "9af2a6b427cdd6ba631d674235d303d3854c420e569d54cf8ac994251f27c918",
+      "qualification": "d3e5b26e3fee391fbcc435ec3f0068ced3503a8a972e6420d24639523457a522"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ErasureRootObservationSelection.cs",
+      "native": "0f1540d2d82718b8f896c6a52cc3906f47f19fc5ce92816dc58e2e9cf67b17fb",
+      "qualification": "2688510e4d5055d330f7ca1fe0ad9f90e228b2f2e6cdbce976ab9cb494d17697"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationArchiveStore.cs",
+      "native": null,
+      "qualification": "e32a8c0abf580a044bd0dcf55c16e96da6e4a5cdc1e997397a3109f12404dc2c"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+      "native": "7929ef48d058d507f8fdd5ca383a60c4c9f5cdcefee2e17f1f7bd86f7e6d349b",
+      "qualification": "9c10ebe33adef2f631510adafe7024746548da0add6050caf0853e85e1513771"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6BoundariesTests.cs",
+      "native": "7d757ca676df73270bd935bbc8d42b3cb11a1718f91a2e476ef426bcddb528ed",
+      "qualification": "5167d16429c5fd0da4ec1eeb200e2bc461181ef079ae373897ec59c81eb967d9"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6DaprIntegrationTests.cs",
+      "native": "baab71bf18a88e1bb09dae1995e6d5bcabac984fd4ebeed2cc93a2ff05085f6a",
+      "qualification": "e220f440d3c9586a115a5a92ea39d58584d5ceb323d7ed628964c8c3c179470a"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6ShutdownTests.cs",
+      "native": "8b556700dc00f9a1021a435f760172302324879661265d64116afa64a48add0e",
+      "qualification": "801a1c1812ba8972865eeaab7b5ccf581c8ab125e8713f060287c1b9eda7f23c"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "attempts": [
+    {
+      "counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exitCode": 1,
+      "measurements": [],
+      "phase": "large",
+      "safeFailureLines": [
+        "ErasureRootLoop6DaprIntegrationTests.cs(48,0)"
+      ],
+      "safeFailureTypes": [
+        "Dapr.DaprException",
+        "Grpc.Core.RpcException",
+        "InnerException"
+      ],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-391e0e00f0c344c391296f9d97f55f21",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "32843",
+        "--dapr-grpc-port",
+        "35243",
+        "--dapr-internal-grpc-port",
+        "34491",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-v2t54qhv/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    }
+  ],
+  "cleanup": true,
+  "component": {
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+      "name": "erc-source-test"
+    },
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "127.0.0.1:51084"
+        },
+        {
+          "name": "enableTLS",
+          "value": "false"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    }
+  },
+  "containerId": "bf36fee73a49a7998e892dcf9bf3c205e2ebf0242b4d2a1e0f5fefe1c37e4d24",
+  "daprVersion": "1.18.7",
+  "daprdSha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488",
+  "failureType": "AssertionError",
+  "harnessSourceSha256": "037e84919192ae4b46a5e16bc77804e07c3ce8c4df04ec146eb3d2805bf3356b",
+  "liveExecuted": false,
+  "name": "erc-loop6-redis-391e0e00f0c344c391296f9d97f55f21",
+  "nonce": "391e0e00f0c344c391296f9d97f55f21",
+  "outcome": "BlockedUnknown",
+  "productionQualified": false,
+  "redisImageId": "sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541",
+  "scope": "Owned Dapr source framing only",
+  "testAssemblySha256": "0899d33559d629a373a583db125693a1d9fa6d10621c7af68dc6a29569ce8846"
+}

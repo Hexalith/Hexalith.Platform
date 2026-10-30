@@ -1,0 +1,42 @@
+[
+  {
+    "claim": "BH5",
+    "mutation": "exactResults=[null,null]",
+    "accepted": true
+  },
+  {
+    "claim": "BH6",
+    "mutation": "reservationRecoveries=[invented receipt]",
+    "accepted": true
+  },
+  {
+    "claim": "BH4",
+    "mutation": "Foreign replay source/copy identifiers",
+    "accepted": true,
+    "limitation": "Focused signed owner/provider fixture has no source-step coverage; source projection and parser were separately traced."
+  },
+  {
+    "claim": "BH2",
+    "mutation": "All three different credential env refs contain one identical bearer",
+    "accepted": true
+  },
+  {
+    "claim": "BH3",
+    "mutation": "Each role installation manifest lists only its executable",
+    "accepted": true
+  },
+  {
+    "claim": "BH1",
+    "mutation": "Remove all rejectedEffectOriginals from actual compiled P34 evidence",
+    "baselineAccepted": true,
+    "mutationAccepted": true,
+    "actualReplays": 0
+  },
+  {
+    "claim": "BH9",
+    "probe": "Default .NET10 HttpClient with the same X-Vault-Token request header used by OpenBaoErasureRootStore, two owned local listener origins, synthetic credential only",
+    "DefaultHandlerCrossOriginRedirect": true,
+    "CustomNativeBearerForwarded": true,
+    "scope": "Transport behavior plus source inspection of accepted public store constructor; production DI already disables redirects."
+  }
+]

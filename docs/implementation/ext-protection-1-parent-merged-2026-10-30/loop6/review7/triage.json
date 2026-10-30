@@ -1,0 +1,93 @@
+[
+  {
+    "id": "R7-BH-1",
+    "verdict": "high",
+    "route": "patch",
+    "location": "../eventstore/tools/ext_protection_1.py:1779",
+    "evidence": "The parent reran actual compiled P34 evidence, then removed all rejectedEffectOriginals; both evaluations pass. P34 has active/blocked checks and a RejectManifestDestroy step, so the current conditional skips the entire independent native effect proof when omitted. The missing test mutation is unreachable. Require the existing proof from rejection intent and add the direct missing-field regression; no new state or public surface."
+  },
+  {
+    "id": "R7-BH-2",
+    "verdict": "high",
+    "route": "patch",
+    "location": "../eventstore/tools/ext_protection_1.py:188",
+    "evidence": "Parent profile probe accepts three different env references containing one identical bearer. validate_profile compares reference names, while the new role HTTP applications authenticate bearer values; the executor credential can authenticate to the other role endpoints. Compare actual private credential identities without retaining/logging secrets; this is direct validation of demonstrated aliasing."
+  },
+  {
+    "id": "R7-BH-3",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "../eventstore/tools/ext_protection_1.py:172",
+    "evidence": "Parent profile probe accepts executable-only inventories. The new framework-dependent apphosts load separate DLL/deps/runtimeconfig and ProtectionQualificationRoleProgram loads its role JSON, none required by the inventory check. This change exposes an unpinned executable dependency closure, allowing altered client code/config under unchanged accepted pins. A coherent actual-runtime closure contract and verification are needed, not a single filename guard."
+  },
+  {
+    "id": "R7-BH-4",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "../eventstore/tools/ext_protection_1.py:1770",
+    "evidence": "The erased branch checks target/kind and outcome labels only. bind_producer_originals authenticates records and copy locations but never correlates replays; it ends before _evaluate. Parent signed owner/provider fixture also accepts foreign replay source/copy values (its focused fixture has no source-step coverage). The actual native projector checks sourceDigest but emits records without that digest; independent verification needs coherent original/record/replay correlation across the producer and consumer."
+  },
+  {
+    "id": "R7-BH-5",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "../eventstore/tools/ext_protection_1.py:1811",
+    "evidence": "Parent probe accepts exactResults=[null,null] alongside genuine signed owner/provider originals. Equality and count do not establish which activation/block/reserve operation and lookup were recovered. The new native projector supplies several terminal record forms, so correcting this requires exact typed operation/result/lookup correlation; a null guard alone leaves identical invented objects accepted."
+  },
+  {
+    "id": "R7-BH-6",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "../eventstore/tools/ext_protection_1.py:1840",
+    "evidence": "Parent probe accepts one invented reservationReceiptId under reserved-recovery with genuine signed owner/provider originals. The new projector itself emits one receipt per ReservationOutcome rather than explicit original/recovery pairs. P25/P28 need actual recovery identity and native owner/provider correlation, requiring a coherent producer/verifier correction rather than a length-only check."
+  },
+  {
+    "id": "R7-BH-7",
+    "verdict": "medium",
+    "route": "defer",
+    "location": "../eventstore/tools/ext_protection_1.py:890",
+    "evidence": "subprocess.run(capture_output=True) accumulates both pipes before the stdout limit and does not bound stderr, so a malfunctioning installed process can exhaust verifier memory. The original baseline has this exact invocation and limit unchanged, and arbitrary external role executables were already supported; the new client bounds its normal input/HTTP output. This is a pre-existing generic subprocess boundary, with no changed caller increasing its output contract. Lower defer processing is moot because bad_spec entries require escalation."
+  },
+  {
+    "id": "R7-BH-8",
+    "verdict": "medium",
+    "route": "patch",
+    "location": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:152; ProtectionQualificationRoleProgram.cs:18",
+    "evidence": "ServerExecutable.Read still checks FileInfo.Length then File.ReadAllBytes; its signer performs the analogous async second-open read. RoleProgram reads client installation and public anchors without an acquisition bound. HostComposition.ReadPinned is bounded, but these distinct call sites do not use it. Direct bounded accepted-buffer acquisition can repair the reached oversized/growing-file paths without a new public contract."
+  },
+  {
+    "id": "R7-BH-9",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:26",
+    "evidence": "The public store accepts a default HttpClient with the required base address/timeout and adds X-Vault-Token to requests. Parent .NET10 two-origin probe confirms the default redirect handler forwards that custom bearer to the second origin (synthetic token only). Production DI disables redirects, but that does not enforce the public construction invariant. Arbitrary HttpClient handlers cannot be safely reconfigured through HttpClient; the supported construction/transport contract needs a coherent correction."
+  },
+  {
+    "id": "R7-BH-10",
+    "verdict": "medium",
+    "route": "patch",
+    "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:31",
+    "evidence": "Runtime constructor validates mounts, tenants and key uniqueness but never StoreId/EnrollmentId. Host composition invokes this same constructor and can accept incomplete pins, appearing ready until ReadHead/authority identity matching refuses during use. Shipped bootstrap prevents malformed native genesis, so no durable mutation under malformed identities is claimed. Direct canonical bounded string validation addresses this demonstrated late-failure readiness defect."
+  },
+  {
+    "id": "R7-EC-1",
+    "verdict": "medium",
+    "route": "patch",
+    "location": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:154-156",
+    "evidence": "The submitted guard snippet resembles the proposed bounded replacement, not the actual implementation: the current private Read uses FileInfo.Length followed by File.ReadAllBytes. A file growth/replacement can allocate past16MiB before digest rejection. This specific harmful outcome is real; it shares the ServerExecutable acquisition defect with R7-BH-8."
+  },
+  {
+    "id": "R7-EC-2",
+    "verdict": "high",
+    "route": "bad_spec",
+    "location": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:85-118",
+    "evidence": "HandleAsync preflight/Inspect validates census identity, digest/fault/grant inputs, but does not establish the remote signing actor/provider/trust readiness. EnrollAsync then commits the single attempt; Seal steps persist source/custody effects. QualificationSigningActorRouter first reaches the actual actor later, whose SignAsyncCore returns Unavailable for absent provider/trust. Runtime uncertainty after admission remains restrictive, but a required input absent from the start is not covered by the zero-effects preflight. Actual independent read-only signer readiness needs cross-owner design; speculative signing is not a trivial fix."
+  },
+  {
+    "id": "R7-VG-1",
+    "verdict": "medium",
+    "route": "patch",
+    "location": "../eventstore/tools/ext_protection_1.py:2040",
+    "evidence": "Pre-verified regression gap; verification skipped as required. Profile schema tests and Source mode do not execute the added paired Platform exact_checkout preflight. Removing it leaves them green with a wrong/dirty/unreachable Platform tree. Filed patch disposition accepted: extract the existing private paired preflight and exercise it using temporary local Git fixtures, proving refusal before role invocation without installed effects."
+  }
+]

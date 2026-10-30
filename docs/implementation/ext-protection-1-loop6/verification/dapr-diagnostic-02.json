@@ -1,0 +1,76 @@
+{
+  "attempts": [
+    {
+      "counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exitCode": 1,
+      "measurements": [],
+      "phase": "large",
+      "safeFailureLines": [
+        "ErasureRootLoop6DaprIntegrationTests.cs(87,0)"
+      ],
+      "safeFailureTypes": [
+        "Shouldly.ShouldAssertException"
+      ],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-87194ee374f642359a4c2553dd6813cc",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "55385",
+        "--dapr-grpc-port",
+        "56907",
+        "--dapr-internal-grpc-port",
+        "33815",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-afeywoyo/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    }
+  ],
+  "cleanup": true,
+  "component": {
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+      "name": "erc-source-test"
+    },
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "127.0.0.1:62901"
+        },
+        {
+          "name": "enableTLS",
+          "value": "false"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    }
+  },
+  "containerId": "c044e2203d3c6c1fc6615fc4f5ba885a2a3dfbb23958a8a4d39d4dc21a4a8675",
+  "daprVersion": "1.18.7",
+  "daprdSha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488",
+  "failureType": "AssertionError",
+  "harnessSourceSha256": "15b4888d381a7d9a3649565be5bd159a3a4beabc2635f7097c8163f2d4c81fbe",
+  "liveExecuted": false,
+  "name": "erc-loop6-redis-87194ee374f642359a4c2553dd6813cc",
+  "nonce": "87194ee374f642359a4c2553dd6813cc",
+  "outcome": "BlockedUnknown",
+  "productionQualified": false,
+  "redisImageId": "sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541",
+  "scope": "Owned Dapr source framing only",
+  "testAssemblySha256": "3010549d31425c0b971c7e399576e1317bd7e652e20e1db8af28c7301ba883b5"
+}

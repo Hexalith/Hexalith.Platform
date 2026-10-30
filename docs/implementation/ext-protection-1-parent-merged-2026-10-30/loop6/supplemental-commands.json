@@ -1,0 +1,25 @@
+[
+  {
+    "name": "host-concurrent-final-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 1,
+    "seconds": 15.519,
+    "log": "/tmp/ext-protection-loop6-parent-final/host-concurrent-final-build.log",
+    "sha256": "2a15f14aa7ba7b8f5be47f73b00f7f82e11da7e6916f07a616ee0474f849a1f7",
+    "scope": "Supplement after concurrent catalog host changes; no protection source change"
+  }
+]

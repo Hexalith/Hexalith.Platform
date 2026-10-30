@@ -1,0 +1,34 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Tenants.Contracts.Tests
+  Discovered:  Hexalith.Tenants.Contracts.Tests
+  Starting:    Hexalith.Tenants.Contracts.Tests
+    Hexalith.Tenants.Contracts.Tests.TenantCatalogTests.EveryRouteHasDigestCoveredSerializedShapesAndExplicitPolicy [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.McpCli.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+           at System.ModuleHandle.ResolveType(QCallModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+           at System.ModuleHandle.ResolveTypeHandle(Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+           at System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+           at System.Reflection.CustomAttribute.FilterCustomAttributeRecord(MetadataToken caCtorToken, MetadataImport& scope, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, ListBuilder`1& derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctorWithParameters, Boolean& isVarArg)
+           at System.Reflection.CustomAttribute.AddCustomAttributes(ListBuilder`1& attributes, RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, ListBuilder`1 derivedAttributes)
+           at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, Int32 pcaCount, RuntimeType attributeFilterType)
+           at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimeType type, RuntimeType caType, Boolean inherit)
+           at System.Text.Json.Reflection.ReflectionExtensions.GetUniqueCustomAttribute[TAttribute](MemberInfo memberInfo, Boolean inherit)
+           at System.Text.Json.Serialization.Metadata.DefaultJsonTypeInfoResolver.GetConverterForType(Type typeToConvert, JsonSerializerOptions options, Boolean resolveJsonConverterAttribute)
+           at System.Text.Json.Serialization.Metadata.DefaultJsonTypeInfoResolver.GetTypeInfo(Type type, JsonSerializerOptions options)
+           at System.Text.Json.JsonSerializerOptions.GetTypeInfoNoCaching(Type type)
+           at System.Text.Json.JsonSerializerOptions.CachingContext.CreateCacheEntry(Type type, CachingContext context)
+        --- End of stack trace from previous location ---
+           at System.Text.Json.JsonSerializerOptions.GetTypeInfoInternal(Type type, Boolean ensureConfigured, Nullable`1 ensureNotNull, Boolean resolveIfMutable, Boolean fallBackToNearestAncestorType)
+           at System.Text.Json.Schema.JsonSchemaExporter.GetJsonSchemaAsNode(JsonSerializerOptions options, Type type, JsonSchemaExporterOptions exporterOptions)
+        references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteOperationSchema.cs(17,0): at Hexalith.EventStore.Contracts.Routing.RouteOperationSchema.Create(RouteContractDeclaration route, Type request, Type result, String ingress, String eligibility, JsonSerializerOptions serializer, JsonSchemaExporterOptions schemaOptions)
+        references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Routing/TenantCatalogDeclarations.cs(54,0): at Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations.Operation(RouteContractDeclaration route)
+           at System.Linq.Enumerable.IListSelectIterator`2.Fill(IList`1 source, Span`1 results, Func`2 func)
+           at System.Linq.Enumerable.IListSelectIterator`2.ToArray()
+        references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Routing/TenantCatalogDeclarations.cs(14,0): at Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations.get_Operations()
+        references/Hexalith.Tenants/tests/Hexalith.Tenants.Contracts.Tests/TenantCatalogTests.cs(13,0): at Hexalith.Tenants.Contracts.Tests.TenantCatalogTests.EveryRouteHasDigestCoveredSerializedShapesAndExplicitPolicy()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Tenants.Contracts.Tests (ID = 'd08bd9f07b991fa26a4e9cf843d75247f13a070331b9e109468e630c8366e072')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Tenants.Contracts.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.109s
