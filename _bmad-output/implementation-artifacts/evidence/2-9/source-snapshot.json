@@ -1,0 +1,244 @@
+{
+  "specBaseline": "d5f16fb64f766eea4cf9dbc1a324ba3d46a1266a",
+  "platformHeadObservedByFirstRun": "490fd0b54d7e25da4ccaf7534408b0dca9e6b627",
+  "eventStoreBaseline": "6e0280bf489171326e2ce1ba3dde361712b7c977",
+  "partiesBaseline": "784215a8fe91b4d5ae00eb65ab61d3b9507ca0c2",
+  "buildsBaseline": "0b17f8022cdc23b8b242b000f5b2aa15580184ac",
+  "modifiedFiles": [
+    {
+      "path": "references/Hexalith.EventStore/docs/reference/nuget-packages.md",
+      "state": "present",
+      "sha256": "d013ba53e1a0ff0244e0012396d589d5d74641a2245851dd452c08db53fd26ef"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs",
+      "state": "present",
+      "sha256": "5dfd38b3a5eb8a439c516a5b3baf4892a8894f17bddcf7e16e4275c3ea721c1d"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprDomainServiceTestFixtureBase.cs",
+      "state": "present",
+      "sha256": "cf99f9e52e6a73b4d57a5e5983b7891228e9113d3a8141518e5ffe135ee373cf"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprFactAttribute.cs",
+      "state": "present",
+      "sha256": "69b0443a85bfc7c21f60cf5e889f69c48d735535bd25353d5ee5f549c38a99bb"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprPerformanceFactAttribute.cs",
+      "state": "present",
+      "sha256": "83f05f52e1d5e23384288d63980eed15ae14dbed52012fe3a8257cf446c9f441"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprPerformanceTestPrerequisites.cs",
+      "state": "present",
+      "sha256": "6d27415c7cf616c00517f00ed0a26f76b0803a17e4b8ca25e2f1db688182af04"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprTestExecutionGate.cs",
+      "state": "present",
+      "sha256": "8e052a9f26f38e30248b96ecc654ca73558eedf398449785a9dd6a1c92d67dd8"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprTestPrerequisites.cs",
+      "state": "deleted"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/DaprTestSerializationAttribute.cs",
+      "state": "present",
+      "sha256": "03751ee0e02fbaab0866d5da0a4d3a84f6c8fdd7fb195e5ab54f1ce7a560430a"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj",
+      "state": "present",
+      "sha256": "4281c01e0c6f0149f7201437a9b5d9fdcff0d000779c41139bab38c8b06bc4db"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/TestEnvironmentEndpoint.cs",
+      "state": "present",
+      "sha256": "7c93c407fd1105a82f93a03d6a0aa9564add9a1de4244ec21340af6d88fdb78f"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj",
+      "state": "present",
+      "sha256": "01a7d40cdb64b2ae9e999124d6b8c72a13e9473283e504d142d1ae311d946443"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/Schemas/hexalith.test-environment.v1.json",
+      "state": "present",
+      "sha256": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptor.cs",
+      "state": "present",
+      "sha256": "f9b50df3c2ad6cee6a7350407f1db7660d5a17cb6df8eddcdef12f19f71c29be"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorException.cs",
+      "state": "present",
+      "sha256": "f3ba3d2333f1ec1d9c2172b1e42397167861b8b2acbf050ed454b4c40e7cfbad"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorFile.cs",
+      "state": "present",
+      "sha256": "72b7cb4c44b00717139b466a01efe621f01712e648bd80597304d1680f5b3a4f"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs",
+      "state": "present",
+      "sha256": "7781c1096f2ea660a400d9224f7426b9951322c2fdffec3e0892bf865b091d66"
+    },
+    {
+      "path": "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentRequestHandler.cs",
+      "state": "present",
+      "sha256": "0f8782fee1c6ca111ac0ebb4679b4b2a4da8741cd8e10139f82948ac9f6499da"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/AspireTopologyFixtureArgumentsTests.cs",
+      "state": "deleted"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DaprDomainServiceTestFixtureProcessEndpointTests.cs",
+      "state": "deleted"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DaprTestPrerequisiteDiagnosticsTests.cs",
+      "state": "present",
+      "sha256": "627a32d910dc1ed4d994bcb4817a4ca3a4980602f7c8a92092be75c8bd7f8863"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorDomainFixture.cs",
+      "state": "present",
+      "sha256": "3be09a631f2eaeb907db227713a5b7d48e38cdd62bd4773cb562482126a8620f"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorFixtureTests.cs",
+      "state": "present",
+      "sha256": "f49711ea440868fc561c7ee7862c94c4f1a8bc69367f1e5ae0c93deaadb08cc4"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorHandoffCollection.cs",
+      "state": "present",
+      "sha256": "85feae202edb82b3ead3756cc99f9b96433c7f03b68996bcba276b32049da2e5"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorHandoffScope.cs",
+      "state": "present",
+      "sha256": "2b71d0081416468db464c2f044bb4267bfad88d72a6ed1723d897c9aa1ecffef"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorTopologyFixture.cs",
+      "state": "present",
+      "sha256": "624b9d1f7769943a310e87873818ad67c7a48295641e46b90727e6e08f2d16a3"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/Fixtures/ready-owner.json",
+      "state": "present",
+      "sha256": "0b2b7c503ae40383b442e3206d586d4b34bfffefd47f07d5dd2ec79a65ab7787"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.csproj",
+      "state": "present",
+      "sha256": "203b623f80ee98d9d7237c8c4f2682445da2966e848dc6cfa0f6e406d75e3836"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/DescriptorTestFile.cs",
+      "state": "present",
+      "sha256": "a8c277607066964ffb7f3e99ffe9eccad8e203d808ac0d9a8e691fae6686a0a7"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/Fixtures/ready-owner.json",
+      "state": "present",
+      "sha256": "0b2b7c503ae40383b442e3206d586d4b34bfffefd47f07d5dd2ec79a65ab7787"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.csproj",
+      "state": "present",
+      "sha256": "aa8e682a1030b0a6074812003fd41c2dffed24fdcc148a98cfe729722a834ab5"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs",
+      "state": "present",
+      "sha256": "2bcc9d9ca8e6123abd5eb4a5878513bd834ce09ef73a6b185821b397fd851294"
+    },
+    {
+      "path": "references/Hexalith.Parties/Directory.Packages.props",
+      "state": "present",
+      "sha256": "5ad615ed106f2b798a9e69770a39238db6e0c8200adb4d427b10cb401e8b2e7b"
+    },
+    {
+      "path": "references/Hexalith.Parties/Hexalith.Parties.slnx",
+      "state": "present",
+      "sha256": "dcfd7fd0c792a88ee6f0b692a279254205dc5d9d41de06a1bb6f117a22a3ee19"
+    },
+    {
+      "path": "references/Hexalith.Parties/README.md",
+      "state": "present",
+      "sha256": "bbacbb7b0638f67663dbe75bd967434d62b5feb2690e089461db29195357ac71"
+    },
+    {
+      "path": "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+      "state": "present",
+      "sha256": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504"
+    },
+    {
+      "path": "references/Hexalith.Parties/scripts/render-platform-declaration.py",
+      "state": "present",
+      "sha256": "b7ad5e80e9a1e249182ca96b5dadfc718ae4175ca5e86f802124ab9bde601a40"
+    },
+    {
+      "path": "references/Hexalith.Parties/scripts/test.ps1",
+      "state": "present",
+      "sha256": "782710a773918765d290e197db0c8f29273537b184ce3ce01c0c998260be5a2b"
+    },
+    {
+      "path": "references/Hexalith.Parties/scripts/test_platform_declaration.py",
+      "state": "present",
+      "sha256": "2604f771a151f29d67d3ba22bcc730c74952bb4d028335263bfb6aa69481f5d1"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+      "state": "present",
+      "sha256": "9db268f351b999d01b76b7a73d587b6e1facc2336edbe6f0cc8ba49823c1eaaf"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+      "state": "present",
+      "sha256": "9c49c48c81969c78fe17794ef3523070724b8e3f752306f0b0b475ebc27dab6c"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs",
+      "state": "present",
+      "sha256": "4e7ebe716c590293d75925bbd0dc77eea36064a0314cabeefc219468dd22a197"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Tests/Gateway/EventStoreGatewayRoutingTests.cs",
+      "state": "present",
+      "sha256": "cfdc929ee4af7e99b9f4917420366e583f14c3dd5f89f77518bca2c5c57b6219"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Tests/Gateway/PartyPagingCatalog.cs",
+      "state": "present",
+      "sha256": "a5accad38654557a6d015f6a10c67b943c4e980aedfb396733ef5eb17016d1e5"
+    }
+  ],
+  "currentCanonicalHeads": {
+    "Hexalith.EventStore": "28ccd32c95ab521755d12deee5d7ad16927e7c92",
+    "Hexalith.Parties": "1d84af20837f388c1605085c54109bd4b537a998"
+  },
+  "externallyCreatedCommitNote": "These commits were created by another actor in the shared workspace. This implementation agent did not stage or commit.",
+  "firstRunToolVersionReported": "1.0.0-20261030070621",
+  "firstRunToolSha256": null,
+  "firstRunToolNote": "Another actor rebuilt the shared tool before its binary hash was captured. The retained first-run diagnostic records its version, but no content-identity claim is made.",
+  "canonicalPreparationToolVersionReported": "1.0.0-20261030075355",
+  "currentToolSha256": "dcd2799e7d52b63e82294b735abb252072281092e5963ac408c200c75181dfc3",
+  "currentPlatformHead": "a8e6276b512186b1e9e35160b8c150a50a17f789",
+  "currentBuildsHead": "1884a88ab80d3d0ae80c09a5ed9dfe23867d9fb9",
+  "workingTreeChangesAfterCanonicalCommits": {
+    "Hexalith.EventStore": [],
+    "Hexalith.Parties": [
+      "Directory.Packages.props"
+    ]
+  }
+}

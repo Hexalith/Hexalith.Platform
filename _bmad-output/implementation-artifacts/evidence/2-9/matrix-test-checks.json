@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/bin/Debug/net10.0/Hexalith.EventStore.Testing.Tests.dll",
+      "-class",
+      "*TestEnvironmentDescriptorReaderTests",
+      "-verbose"
+    ],
+    "exitCode": 0,
+    "stdoutArchive": "matrix-reader.log.gz"
+  },
+  {
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Debug/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll",
+      "-class",
+      "*DescriptorFixtureTests",
+      "-verbose"
+    ],
+    "exitCode": 0,
+    "stdoutArchive": "matrix-fixtures.log.gz"
+  }
+]

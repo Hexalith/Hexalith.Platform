@@ -1,0 +1,380 @@
+[
+  {
+    "project": "tests/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 6.553
+  },
+  {
+    "project": "tests/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Aspire.Tests/bin/Debug/net10.0/Hexalith.Parties.Aspire.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1,
+    "seconds": 0.367
+  },
+  {
+    "project": "tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 13.686
+  },
+  {
+    "project": "tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Contracts.Tests/bin/Debug/net10.0/Hexalith.Parties.Contracts.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1,
+    "seconds": 7.561
+  },
+  {
+    "project": "tests/Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 3.025
+  },
+  {
+    "project": "tests/Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Authentication.Tests/bin/Debug/net10.0/Hexalith.Parties.Authentication.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.282
+  },
+  {
+    "project": "tests/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 7.924
+  },
+  {
+    "project": "tests/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Client.Tests/bin/Debug/net10.0/Hexalith.Parties.Client.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1,
+    "seconds": 1.977
+  },
+  {
+    "project": "tests/Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 21.161
+  },
+  {
+    "project": "tests/Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Server.Tests/bin/Debug/net10.0/Hexalith.Parties.Server.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.815
+  },
+  {
+    "project": "tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 7.607
+  },
+  {
+    "project": "tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Projections.Tests/bin/Debug/net10.0/Hexalith.Parties.Projections.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 1.334
+  },
+  {
+    "project": "tests/Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 3.815
+  },
+  {
+    "project": "tests/Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Security.Tests/bin/Debug/net10.0/Hexalith.Parties.Security.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.805
+  },
+  {
+    "project": "tests/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 8.978
+  },
+  {
+    "project": "tests/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.AdminPortal.Tests/bin/Debug/net10.0/Hexalith.Parties.AdminPortal.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 14.26
+  },
+  {
+    "project": "tests/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 6.578
+  },
+  {
+    "project": "tests/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.ConsumerPortal.Tests/bin/Debug/net10.0/Hexalith.Parties.ConsumerPortal.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 1.86
+  },
+  {
+    "project": "tests/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 11.292
+  },
+  {
+    "project": "tests/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.UI.Tests/bin/Debug/net10.0/Hexalith.Parties.UI.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 3.968
+  },
+  {
+    "project": "tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 5.199
+  },
+  {
+    "project": "tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Picker.Tests/bin/Debug/net10.0/Hexalith.Parties.Picker.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.99
+  },
+  {
+    "project": "tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 3.466
+  },
+  {
+    "project": "tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Mcp.Tests/bin/Debug/net10.0/Hexalith.Parties.Mcp.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.51
+  },
+  {
+    "project": "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 1,
+    "seconds": 19.845
+  },
+  {
+    "project": "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 9.086
+  },
+  {
+    "project": "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Sample.Tests/bin/Debug/net10.0/Hexalith.Parties.Sample.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 0.652
+  },
+  {
+    "project": "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 1.352
+  },
+  {
+    "project": "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Ci.Tests/bin/Debug/net10.0/Hexalith.Parties.Ci.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1,
+    "seconds": 45.368
+  }
+]

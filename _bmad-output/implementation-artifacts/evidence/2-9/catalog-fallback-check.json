@@ -1,0 +1,59 @@
+{
+  "checks": [
+    {
+      "catalog": "published-4.38.3",
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/story-2-9-catalog-check-s8ug13g8/probe.proj",
+        "-nologo",
+        "-getItem:PackageVersion",
+        "-p:Hexalith1BuildPackageProps=/tmp/story-2-9-catalog-check-s8ug13g8/builds-4.38.3.props"
+      ],
+      "exitCode": 0,
+      "resolved": [
+        {
+          "id": "Hexalith.FrontComposer.Contracts.UI",
+          "version": "4.7.1"
+        }
+      ]
+    },
+    {
+      "catalog": "current-source",
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/story-2-9-catalog-check-s8ug13g8/probe.proj",
+        "-nologo",
+        "-getItem:PackageVersion",
+        "-p:Hexalith1BuildPackageProps=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/Props/Directory.Packages.props"
+      ],
+      "exitCode": 0,
+      "resolved": [
+        {
+          "id": "Hexalith.FrontComposer.Contracts.UI",
+          "version": "4.7.1"
+        }
+      ]
+    }
+  ],
+  "result": "one family-pinned Contracts.UI entry with either catalog",
+  "platformBuild": {
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0,
+    "seconds": 2.973,
+    "stdoutArchive": "catalog-fallback-platform-build.log.gz",
+    "preparedEnvironment": "canonical-source-build-preparation.json"
+  },
+  "probeContents": "<Project><Import Project=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/Directory.Packages.props\" /></Project>\n",
+  "publishedCatalogRef": "v4.38.3:Props/Directory.Packages.props",
+  "publishedCatalogCommit": "d1931b1e803144048d927fff16cb8119afde541e"
+}

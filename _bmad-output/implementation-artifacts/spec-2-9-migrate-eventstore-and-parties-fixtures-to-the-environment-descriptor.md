@@ -57,11 +57,11 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 
 **Execution:**
 
-- [ ] `T/TestEnvironmentDescriptorReader.cs`, `T/TestEnvironmentDescriptor.cs`, `T/Hexalith.EventStore.Testing.csproj` — add validated shared consumption and schema embedding.
-- [ ] The mapped I fixture/attribute/project files and `E/tests/Hexalith.EventStore.Testing*.Tests/*.cs` — replace exported startup; preserve private owner tests; test every matrix row.
+- [x] `T/TestEnvironmentDescriptorReader.cs`, `T/TestEnvironmentDescriptor.cs`, `T/Hexalith.EventStore.Testing.csproj` — add validated shared consumption and schema embedding.
+- [x] The mapped I fixture/attribute/project files and `E/tests/Hexalith.EventStore.Testing*.Tests/*.cs` — replace exported startup; preserve private owner tests; test every matrix row.
 - [ ] `P/tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj`, `PlatformEnvironmentFixture.cs`, `PartyEnvironmentTests.cs` — implement real dependency observations, flow and persisted-state assertions.
 - [ ] Parties renderer/manifest/declaration test files, `P/Hexalith.Parties.slnx`, `P/scripts/test.ps1` — enroll explicit source/package suites while preserving isolated tests.
-- [ ] `E/docs/reference/nuget-packages.md`, `P/README.md`, `_bmad-output/implementation-artifacts/evidence/2-9/README.md` — document migration, exact revisions, validation and limits.
+- [x] `E/docs/reference/nuget-packages.md`, `P/README.md`, `_bmad-output/implementation-artifacts/evidence/2-9/README.md` — document migration, exact revisions, validation and limits.
 
 **Acceptance Criteria:**
 
@@ -71,6 +71,31 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 - Given EventStore own-repository tests, when using their private fixture, then bootstrap remains available without being exported.
 
 ## Implementation Notes
+
+- Implemented the shared strict descriptor reader/model with the embedded authoritative schema,
+  metadata-only refusal categories, exact resource/module/endpoint selection, matching private
+  runner identity, bounded origin-confined HTTP clients and disposal cancellation/failure reporting.
+- Exported Aspire/Dapr fixtures now consume descriptors exclusively. Removed their startup and
+  local prerequisite-skip paths; retained optional performance opt-in and private owner bootstrap.
+- Added the descriptor-only Parties Platform project, source/package declarations, renderer tests,
+  inventory enrollment and migration documentation. The suite uses declared Tenants/Memories REST
+  interfaces and EventStore create/query flows with independent persisted-envelope assertions.
+- Current acceptance remains incomplete: the declared source run failed before fixture launch on
+  EventStore route-catalog readiness, preventing its authorized writer-protocol cutover. Synthetic
+  tenant records are also not provided by the current owner runner; Story 3.5 owns that producer.
+  The possible selected-token `parties`/contract `party` mismatch is an unexecuted source inference.
+- EventStore testing checks pass (189 + 51, no skips), the new Parties project builds, and declaration
+  tests pass (7). Broader isolated/owner checks retain unresolved compatibility/package/fitness and
+  current constructor drift; focused passing subsets do not qualify the full lane.
+- Another actor committed shared-workspace changes during implementation. This implementation
+  agent did not stage or commit. Exact revisions, task-owned paths, concurrent deltas, patches,
+  commands, failures and exact cleanup are recorded in [evidence/2-9/README.md](evidence/2-9/README.md).
+  Status and unverified acceptance remain in progress; attachment/package qualification is unchanged.
+- Parent audit verified all four matrix rows with 41 verbose, passing tests and retained their named
+  results. Corrected the Contracts.UI fallback to add an entry only when the selected catalog lacks
+  it; published Builds 4.38.3 and current-source catalogs each resolve one 4.7.1 entry, and the Parties
+  suite rebuild passes. The new correction remains a working-tree change after the externally created
+  commits. Live and broad isolated acceptance remain unsatisfied, so review has not started.
 
 ## Spec Change Log
 
