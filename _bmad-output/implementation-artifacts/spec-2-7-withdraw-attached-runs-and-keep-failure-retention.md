@@ -2,7 +2,7 @@
 title: '2.7 Withdraw attached runs and keep failure retention'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'f60f2c7596b1fa3010c91d1d546c71600da24715'
 builds_baseline_commit: '2980efdf51f305dc5c39bb854261c252d13465f5'
 route: 'dispatch'
@@ -189,3 +189,30 @@ Platform completion commit message passed the repository-pinned commitlint CLI 2
 All twelve Review/Patch items above are implemented. The resumed seven-class run passed 291/291 cases, including the previously omitted cleanup/recovery regressions. Coordinator parsing confirmed every matrix coverage group ran and passed, and all twelve recorded source hashes match the current sources. The normal project build is blocked by three unrelated EventStoreHost routing API errors; the focused Debug build passed with zero warnings/errors using current Tooling/CLI outputs and existing AppHost references. See [current verification](../../references/Hexalith.Builds/evidence/2-7/verification.json).
 
 Original baseline identifiers are preserved. Full historical baseline diffs were captured in temporary files; they include substantial independently committed work from other stories. This resumed review examines the Story 2.7 patch from Builds 5e24c8b2d2fa766274a29219bfcfbd74a4c77a28 plus its verification evidence. Concurrent workspace activity committed the implementation as Builds c7b16ec02ddff114d5ccc7863d20d5d4dc29f7bf; this workflow did not perform that commit or any remote operation.
+
+### Resumed review triage
+
+The edge-case layer returned no findings. Each other finding is classified independently below before grouping. RB = resumed blind review; RV = resumed verification-gap review.
+
+| Finding | Verdict | Route | Verified evidence |
+| --- | --- | --- | --- |
+| RB01: stop allowance expires after the one-time check | medium | patch | Cancellation withdrawal succeeds, but the later publication read and cleanup-lock acquisition consume the original token. DownCore returns IncompleteDown on cancelled lock acquisition before reaching the engine stop. Move the command-level stop after publication verification and make it independent of the token snapshot. |
+| RB02: new stop precedes publication prerequisite | medium | patch | The command stop at the cancellation block precedes the matchingPublication guard. An internal committed outcome with a missing publication therefore loses the AppHost before cleanup is deferred. The same relocation restores the existing publication prerequisite. |
+| RB03: environment-only in-progress metadata removed | medium | patch | The prior state write was deleted along with the unconditional withdrawal pass. A provisioning stall after session stop now leaves the environment-only state with its prior disposition. Restore the write as best-effort bookkeeping, without attachment withdrawal for nonattachable owners. |
+| RB04: retained disposition still labels a passed owner failure-retained | medium | patch | Retention still unconditionally maps ResourceDisposition retained before checking FailureRetained false; FinishedOwnerReason consumes that label. Deleting that shortcut aligns listing/admission with the corrected owner cleanup and verified attached-failure causes. |
+| RB05: HXT008 says cleanup continued beside HXR037 no cleanup | low | patch | Strict local marker/state failures append RecordingFailure with the continued message, then return WithdrawalRefusal. Make the shared bookkeeping wording neutral about whether cleanup ran. |
+| RB06: exhausted-budget test cannot see AppHost survival | medium | patch | OwnerRun creates an unstarted Process and overrides down. The test cannot detect deletion of the command stop. Add a running inert AppHost and an independent observer. |
+| RB07: locality test only obstructs marker write | medium | patch | The new theory obstructs cleanup-request.json only; the separately changed RecordTestOutcome failure branch is not pinned for local/CI/context-less owners. Add an obstruction mode for that write and assert strict refusal versus continued cleanup. |
+| RB08: hashes omit unchanged executed test sources | false | reject | The manifest pins the full base commit, hashes the edited test source and executed assembly; all four named omitted class sources are unchanged from that base. Their source snapshot is recoverable from the recorded commit; no mismatch was demonstrated. |
+| RB09: cancellation test still races native completion | medium | patch | The native-start marker precedes only a one-second sleep. A delayed coordinator can cancel after native success, changing the legitimate first outcome. Use a native barrier so this specific test cannot finish before cancellation. The intentional 4.5-second delay outlasting the four-second stop budget remains valid. |
+| RV01: exhausted-budget cancellation lacks live-process verification | medium | patch | Accepted as pre-verified: its unstarted fixture process and down override cannot observe the stop call; the other live tests enter engine cleanup directly. Add live-process and publication-order coverage to the command path. |
+
+Grouped corrections: command stopping placement and live coverage (RB01/RB02/RB06/RV01), environment-only bookkeeping (RB03), retention projection (RB04), neutral bookkeeping diagnostic (RB05), locality state-write coverage (RB07), deterministic native barrier (RB09). All are small internal corrections with no new public surface.
+
+### Final resumed review resolution
+
+All resumed patch findings are resolved and independently checked in the final diff. Command-level session stopping now follows successful withdrawal and verified terminal publication, and does not depend on a single budget-expiry check. Environment-only cleanup progress remains best-effort; listing and admission require a recorded owner or attached failure for failure retention. No new work was deferred by this resumed review.
+
+Final coordinator verification passed all 299 cases across seven classes with no errors, failures, skips or unrun cases. XML parsing confirmed all 33 matrix/regression groups ran and passed. The focused Debug build passed with zero warnings/errors; the normal project build remains blocked by seven unrelated EventStoreHost API diagnostics preserved in [final build evidence](../../references/Hexalith.Builds/evidence/2-7/final-build-blocked.log). Current story sources and executed artifacts stayed stable during verification; unrelated concurrent source edits are identified separately in the [verification manifest](../../references/Hexalith.Builds/evidence/2-7/verification.json).
+
+Builds final implementation/evidence commit: e10d259b9e563624f781f390fbdcb879173d871f. Conventional commit validation passed in both repositories; [Platform evidence](evidence/2-7/final-review-commitlint.json) records the exact validated message. The spec is done and sprint tracking is review, as required by the build workflow. All commits from this workflow are local; no remote operation was performed.
