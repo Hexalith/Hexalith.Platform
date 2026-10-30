@@ -1,0 +1,64 @@
+{
+  "functionalInventoryFilesMatched": 267,
+  "nativeRelevantSourceFilesMatched": 117,
+  "nativeQualificationSourceDelta": [
+    "platform/src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs",
+    "platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5BoundaryTests.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5ConfiguredSealTests.cs"
+  ],
+  "nativeRuntimePoliciesReproduced": 5,
+  "nativeSummary": {
+    "errors": 0,
+    "failed": 0,
+    "notRun": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  "nativeSeconds": 2534.671,
+  "cleanup": {
+    "complete": true,
+    "containerAbsent": true,
+    "containerTmpfsUnmounted": true
+  },
+  "frozenAndRegisterUnchanged": true,
+  "csharp": {
+    "csharpFiles": 238,
+    "newViolations": [],
+    "preexistingExceptions": [
+      {
+        "repository": "platform",
+        "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+        "current": [
+          "DaprSigningTrustAdapter",
+          "DaprRevocationAuthenticatorAdapter",
+          "DaprSigningProviderAdapter",
+          "DaprReplayRegistrarAdapter",
+          "DaprCompromiseRegistrarAdapter",
+          "CapabilityIdentity"
+        ],
+        "baseline": [
+          "DaprSigningTrustAdapter",
+          "DaprRevocationAuthenticatorAdapter",
+          "DaprSigningProviderAdapter",
+          "DaprReplayRegistrarAdapter",
+          "DaprCompromiseRegistrarAdapter",
+          "CapabilityIdentity"
+        ]
+      },
+      {
+        "repository": "eventstore",
+        "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "current": [
+          "SnapshotManager",
+          "Log"
+        ],
+        "baseline": [
+          "SnapshotManager",
+          "Log"
+        ]
+      }
+    ]
+  },
+  "allVerified": true
+}

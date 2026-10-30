@@ -1,0 +1,169 @@
+{
+  "nativePins": {
+    "runtime": "/tmp/ext-protection-loop5-native-runtime-v3",
+    "runtimeFiles": 257,
+    "manifestSha256": "082b57268e242f8abda508a6fc3fe99c49cff7dfd019642fb21fd8bdb5c3ff1a",
+    "assemblySha256": "bb24bedd91a54baf33458bb63a79b47d7671917e1537454bc0723dd4de039746",
+    "source": "/tmp/ext-protection-loop5-native-source-v3",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "99e703d1e98ec896c5cdffb4270c0be0ae47e3dbe3efaa212820c544885c452d"
+  },
+  "qualificationPins": {
+    "runtime": "/tmp/ext-protection-loop5-qualification-runtime-v5",
+    "runtimeFiles": 257,
+    "manifestSha256": "9625d75bd908144aaeac668540114b12ce77f6587ba9a8e6e35c926d1ab8d3f7",
+    "assemblySha256": "ae779e19aab4324c6752012261f2bca05a0c4279bffaec088371a0d54c4f00da",
+    "source": "/tmp/ext-protection-loop5-qualification-source-v5",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "0a1fb962e0b72af4bf2effac1dd0e8d20787e43bc228b95b5300d72d2e6d5b74"
+  },
+  "sourceDelta": [
+    {
+      "path": "platform/src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs",
+      "nativeSha256": "ab349fb812c5879c66ff4c972ac1a9ff06676a4e32d0e5d32926f7959df3ff01",
+      "qualificationSha256": "f18f2dbba28017b9d462fb1ff4d6b48ea99274d711d27915d3424f542ef3ea41"
+    },
+    {
+      "path": "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+      "nativeSha256": "d27e9947da0e1ed5c209b437c02bf4e9bc351c592f5019032ef1f93158f67b8b",
+      "qualificationSha256": "ef6c654aa4c90ca3f26c8f1ec268b22eaa76fd09bc96be63ae8cd928805280e0"
+    },
+    {
+      "path": "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5BoundaryTests.cs",
+      "nativeSha256": "4e51617e94c710ebcd0773d9b4336fcb7f55de1260ed1a365c302210191b78ae",
+      "qualificationSha256": "57da0350c629029826011c2420963c9c2e9bedeeb511a8c3cd4bfb752ac9011a"
+    },
+    {
+      "path": "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5RecoveryTests.cs",
+      "nativeSha256": "90bdfb9037fc962642677994d0d1c7f5c6e4e279eab94852ec877e8ce61e97ef",
+      "qualificationSha256": "a89c2e72a8317e57927472a70b1dcbe300f6455877571c52f01a4e59ab10bef7"
+    }
+  ],
+  "runtimeDelta": [
+    {
+      "path": "Hexalith.EventStore.Server.dll",
+      "nativeSha256": "af6496929414dd48dd9a4339dfbf197df61a035e4d84c889601b4f11bab17836",
+      "qualificationSha256": "01d2368af51807ba19a0b7feb079f8b4033edf3343ecd7d94d6bcf2b457b6556"
+    },
+    {
+      "path": "Hexalith.EventStore.Server.pdb",
+      "nativeSha256": "f2cc79b7d38e3b3860ecb6b35bc6be5a53ff79c179faec4ed8ce5c5c292f4731",
+      "qualificationSha256": "6fb00af45f84ede804b19ed16924d9b1b6867e29c4b303c5362047b4b1b05761"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.Tests.dll",
+      "nativeSha256": "bb24bedd91a54baf33458bb63a79b47d7671917e1537454bc0723dd4de039746",
+      "qualificationSha256": "ae779e19aab4324c6752012261f2bca05a0c4279bffaec088371a0d54c4f00da"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.Tests.pdb",
+      "nativeSha256": "397eb51c070d8ba86771f40fa8712670a5cccea1c777dfc73fd71265330a68ae",
+      "qualificationSha256": "4ad6be1bca2be9385583029dae735e5f4652e39525a4d0659b0ab97f75ce0bdb"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.dll",
+      "nativeSha256": "cd9e3af24c6bed22134a79bce2b44c8244e5598e59bc8c1961b7ff7e65779103",
+      "qualificationSha256": "e52cc2efdf211583dee1192f845475005b83be57c8d0a4586d91fb1ef4f84ae5"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.pdb",
+      "nativeSha256": "8eb47344736c5378e237daa9e9a4ffc57e38555b3434054db29d0c280888e523",
+      "qualificationSha256": "0b949e05f648c1fde67f692a958c1ae11841d7f7e767335891e634f56041ae3b"
+    }
+  ],
+  "unchangedSourceFiles": 5937,
+  "nativeRelevantSourceFiles": [
+    "platform/deploy/erasure-root/README.md",
+    "platform/deploy/erasure-root/bootstrap.py",
+    "platform/deploy/erasure-root/custody-policy.hcl",
+    "platform/deploy/erasure-root/namespace.yaml",
+    "platform/deploy/erasure-root/network-policy.yaml",
+    "platform/deploy/erasure-root/statefulset.yaml",
+    "platform/eng/ext-protection-1/probe_erc_native.py",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootCiphertext.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootCompletionDiagnostics.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootCompletionLogger.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootCompletionReporter.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootDigestKeyResolver.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootDurabilityPolicy.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootEffectBoundaryEvidence.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootErasure.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootGuardAttempt.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHeadSnapshot.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHolderArchive.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHolderCompletionHealth.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHolderIdentity.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootHostInstallation.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootIndexedTransitionArchive.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootManifestProvider.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootNativeControlsInstallation.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootNativeOperationScope.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootNativePolicy.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootObservationBatches.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootObservationSelection.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrence.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceEnrollment.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndex.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndexNode.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceReference.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootPermanentLossReceipt.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootPermissionEvidence.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootPinRefusal.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootPinRefusalOriginal.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootQualificationCallScope.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootRecordingRevocationAuthenticator.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootRevocationOriginal.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootSourceIndex.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootSourceIndexNode.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTarget.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTenantAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTenantAuthorityBindings.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTenantIdentity.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTenantLifecycleAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTransitionArchive.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootTransitionPayloadArchive.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootWriterProof.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootWriterReference.cs",
+    "platform/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostHeadAcknowledgement.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostRotationAcknowledgement.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostTrimAcknowledgement.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs"
+  ],
+  "nativeRelevantSourceFilesByteIdentical": true,
+  "wholeRuntimeEqualityClaimed": false,
+  "repeatUnchangedNativeGeometry": false,
+  "explanation": [
+    "The sole production-source delta is ProtectionQualificationInputSchema: additional pre-effect validation of known required lifecycle and owner identifiers. Its callers are qualification NativeDriver.ValidateInputsAsync and ServerExecutable.ValidateInstallation. The native five invoke production custody/store/transition APIs directly and do not execute these role/schema methods.",
+    "The remaining deltas strengthen two qualification test classes and add an opt-in lifecycle evidence reader to the synthetic authorization fixture. Every native fixture construction leaves that reader null. The prior default-interface reader and new default both return null; no native case configures or invokes it. Existing Authorize/VerifyLifecycle/Manifest/Transition methods are unchanged.",
+    "Protection and test DLL/PDB bytes differ and are retained as separate exact graphs. Recompiled method metadata tokens can change outside the edited type; no complete Protection DLL equivalence is claimed. All native-relevant source files listed here, runtime dependencies other than the explicitly listed deltas, and the complete native tests/harness remain pinned.",
+    "EventStore.Server DLL/PDB was rebuilt without source changes. The separately retained metadata/IL comparison checks all 2,516 complete/nested type and assembly records, signatures, method IL/locals/EH, fields/constants/properties/interfaces/type-generics, attributes, assembly references and resources; no differences. PE layout/MVID/debug/PDB remain distinct."
+  ],
+  "serverComparison": "server-runtime-v3-v4-comparison-complete-types.json"
+}

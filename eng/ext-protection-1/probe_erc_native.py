@@ -155,7 +155,7 @@ class ErcProbe(base.Probe):
         self.result['safeFailureStages'] = sorted(set(re.findall(r'ERC_NATIVE_STAGE:[A-Za-z0-9,:-]+', text)))[:10]
         self.result['safeFailureLocations'] = sorted(set(re.findall(r'(?:OpenBaoDisposableNativeHandler|OpenBaoNativeCustodyFixture|OpenBaoNativeTransportDiagnostics|OpenBaoErasureRootIntegrationTests)\.cs(?:\([0-9]+,0\)|:line\s+[0-9]+)', text)))[:20]
         self.result['safeFailureTypes'] = sorted(set(re.findall(r'\b[A-Za-z][A-Za-z0-9_.]*Exception\b', text)))[:10]
-        measured = []
+        measured = []; occurrence_measured = []
         for line in text.splitlines():
             try:
                 value = json.loads(line)
@@ -164,6 +164,11 @@ class ErcProbe(base.Probe):
             fields = {'nativeHistoryGeometry', 'transitions', 'archiveWriteBytes', 'archiveWrites', 'supportedBytes', 'nativeHeadBytes', 'restrictedRuntimePolicy'}
             if isinstance(value, dict) and set(value) == fields and value['restrictedRuntimePolicy'] is True and all(type(value[key]) is int and 0 < value[key] < 2 ** 53 for key in fields - {'restrictedRuntimePolicy'}):
                 measured.append(value)
+            occurrence_fields = {'nativeOccurrences', 'nativeOwners', 'archiveWriteBytes', 'archiveWrites', 'nativeHeadBytes', 'lookupReadBound', 'restrictedRuntimePolicy'}
+            if isinstance(value, dict) and set(value) == occurrence_fields and value['restrictedRuntimePolicy'] is True \
+                    and all(type(value[key]) is int and 0 < value[key] < 2 ** 53 for key in occurrence_fields - {'restrictedRuntimePolicy'}):
+                occurrence_measured.append(value)
+        self.result['nativeOccurrenceGeometry'] = occurrence_measured
         self.result['nativeGrowthGeometry'] = measured
 
         self.result['nativeTestSummary'] = dict(zip(('total', 'errors', 'failed', 'skipped', 'notRun'), counts)) if counts else None
@@ -171,6 +176,10 @@ class ErcProbe(base.Probe):
             raise base.Blocked('NativeComponentCasesDidNotAllPass')
         if not self.diagnostic and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(measured) != 2 or any(value['nativeHeadBytes'] <= 8 * 1024 * 1024 for value in measured)):
             raise base.Blocked('NativeHeadAndScalableHistoryGeometryMissing')
+        if not self.diagnostic and self.case in (None, 'NativeTenantAndCompleteContextSubstitutionCannotDecrypt') and (len(occurrence_measured) != 1
+                or occurrence_measured[0]['nativeOccurrences'] != 256 or occurrence_measured[0]['nativeOwners'] != 256
+                or occurrence_measured[0]['lookupReadBound'] != 16):
+            raise base.Blocked('NativeAuthoritativeOccurrenceGeometryMissing')
         if len(self.result.get('runtimePolicies', [])) != (1 if self.diagnostic or self.case else 5):
             raise base.Blocked('ExclusiveRestrictedRuntimePolicyEvidenceMissing')
         self.mark('native-component-cases', count=1 if self.diagnostic or self.case else 5, actualCustodyStore=True, privateEligibility='ExplicitSyntheticTestFixture')

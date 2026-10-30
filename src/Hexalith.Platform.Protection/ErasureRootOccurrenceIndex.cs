@@ -1,10 +1,18 @@
 using System.Text.Json;
+using System.Security.Cryptography;
 
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Exact bounded-depth persistent occurrence state. Updates share untouched branches and never grow a tenant pointer map.</summary>
 internal sealed class ErasureRootOccurrenceIndex(IErasureRootStore store, ErasureRootInstallation installation, string tenant)
 {
+    // A custody update revisits freshly written immutable branches for each write-set member.
+    // This cache belongs to that index instance, never the tenant head or a process singleton.
+    // It retains only verified/read or successfully created nodes and has both count and byte bounds.
+    private const int MaximumCachedNodes = 1024;
+    private const int MaximumCachedBytes = 4 * 1024 * 1024;
+    private readonly Dictionary<string, ErasureRootOccurrenceIndexNode> _nodes = new(StringComparer.Ordinal);
+    private int _cachedBytes;
     internal async Task<T?> ReadAsync<T>(string? root, string identity, CancellationToken token) where T : class
     {
         string key = ErasureRootCustody.Hash(identity); int depth = 0;
@@ -51,7 +59,9 @@ internal sealed class ErasureRootOccurrenceIndex(IErasureRootStore store, Erasur
     }
     private async Task<ErasureRootOccurrenceIndexNode> NodeAsync(string pointer, CancellationToken token)
     {
+        token.ThrowIfCancellationRequested();
         if (pointer.Length != 64 || pointer.Any(value => !char.IsAsciiHexDigit(value))) { throw new InvalidOperationException("Exact occurrence pointer required."); }
+        if (_nodes.TryGetValue(pointer, out var retained)) { return retained; }
         byte[] bytes = await ErasureRootArchives.ReadBytesAsync(store, tenant, pointer, token).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Committed occurrence node unavailable.");
         var node = JsonSerializer.Deserialize<ErasureRootOccurrenceIndexNode>(bytes, ErasureRootCustody.Json);
@@ -61,8 +71,33 @@ internal sealed class ErasureRootOccurrenceIndex(IErasureRootStore store, Erasur
             || node.Identity is null && (node.Original is not null || node.Prefix.Length >= 64 || node.Children.Count < 2)
             || node.Identity is not null && (node.Prefix.Length != 64 || node.Children.Count != 0 || node.Original is null || ErasureRootCustody.Hash(node.Identity) != node.Prefix))
         { throw new InvalidOperationException("Authenticated occurrence node required."); }
+        Remember(pointer, node, bytes.Length);
         return node;
     }
-    private Task<string> SaveAsync(ErasureRootOccurrenceIndexNode node, CancellationToken token)
-        => ErasureRootArchives.WriteAsync(store, tenant, node, token);
+    private async Task<string> SaveAsync(ErasureRootOccurrenceIndexNode node, CancellationToken token)
+    {
+        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(node, ErasureRootCustody.Json);
+        string pointer;
+        if (bytes.Length < 64 * 1024)
+        {
+            // Small index nodes always have the existing raw archive representation. The store's
+            // create-only/verify-existing contract avoids redundant generic framing probes.
+            pointer = Convert.ToHexString(SHA256.HashData(bytes));
+            if (!await store.CreateArchiveAsync(tenant, pointer, bytes, token).ConfigureAwait(false))
+            {
+                var existing = await ErasureRootArchives.ReadBytesAsync(store, tenant, pointer, token).ConfigureAwait(false);
+                if (existing is null || !existing.AsSpan().SequenceEqual(bytes)) { throw new InvalidOperationException("ERC immutable occurrence node conflict."); }
+            }
+        }
+        else { pointer = await ErasureRootArchives.WriteAsync(store, tenant, node, token).ConfigureAwait(false); }
+        Remember(pointer, node, bytes.Length);
+        return pointer;
+    }
+    private void Remember(string pointer, ErasureRootOccurrenceIndexNode node, int bytes)
+    {
+        if (bytes > MaximumCachedBytes || _nodes.ContainsKey(pointer)) { return; }
+        if (_nodes.Count >= MaximumCachedNodes || _cachedBytes + bytes > MaximumCachedBytes)
+        { _nodes.Clear(); _cachedBytes = 0; }
+        _nodes.Add(pointer, node); _cachedBytes += bytes;
+    }
 }

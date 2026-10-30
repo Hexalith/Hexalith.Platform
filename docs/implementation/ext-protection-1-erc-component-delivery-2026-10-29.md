@@ -1,3 +1,32 @@
+> Current status — complete loop-5 source candidates and local verification are prepared for independent review. All earlier candidates remain withdrawn. Installed/physical qualification and owner acceptance remain pending.
+
+## Parent loop-5 source review candidates — 2026-10-30
+
+The complete local review candidates are Platform `b1e5bbefa129ca205e6618e01451ff77710ae6fc` and EventStore `6a26fa86be77eb9745b3b839dab871acead8651a`, retained in each repository as `refs/ext-protection-1/source-20261030-loop5-review`. All earlier pairs remain withdrawn/historical. These candidates are unaccepted and unpublished by this workflow. Concurrent commits on both main branches were preserved; temporary indexes/local commit objects did not move either branch. All 267 scoped source blobs match the candidates after Git normalization. Acceptance documents accompany the source candidates separately.
+
+| Proposed field | Value |
+| --- | --- |
+| EventStore TargetVersionOrCommit | `6a26fa86be77eb9745b3b839dab871acead8651a` |
+| ProtectionPlatformTargetCommit | `b1e5bbefa129ca205e6618e01451ff77710ae6fc` |
+| Proposed integration date | `2026-11-02`, unaccepted |
+| Accepted profile/date/availability | Unset; no Committed/Available record |
+
+The combined shared-checkout run passes all 18 checks: Protection 471 total/465 executed/six explicit native-only skips, lifecycle plus revocation 68/68, existing Secrets adapter/failure 58/58, EventStore 444/444, payload 897/897, offline verifier 116/116 and harness/bootstrap 12/12. Required Debug/project-reference/host/three-role/standalone analyzer builds have zero warnings/errors. Retained contracts anchors pass 14/14. Counts overlap. Source mode keeps 41 cases and liveExecuted:false. The additional adapter checks compile the exact existing classes/helpers with a temporary MSBuild selection, preserving SDK runner sources; the broader project's pre-existing duplicate local owner type and intermediate harness/package-lock failures are retained in attempts, without source edits or warning suppression.
+
+Fresh frozen native-v7 passes 5/5, zero failures/errors/skips, in 2,534.671s. It includes all 1,000 targets, actual 9 MiB state, a 9,485,043-byte head, both history geometries and the 256-owner/occurrence authoritative index (7,013,381 archive bytes, 5,021 creates, 47,829-byte head and lookup below 16 native reads). All five shipped-policy-derived restricted tokens/denials and bootstrap-only root use are retained. Cleanup and container absence are verified. Earlier interrupted/timed-out attempts stay BlockedUnknown, never passes.
+
+The parent read the original-baseline functional changes and every loop-5 delta, matched 266 implementation inventory files plus one explicit evidence-attribute-only update, verified all 267 candidate blobs, 249 packet artifacts, the 255-file delivery mirror and four final source/runtime mirrors. All 117 native-relevant source files match native-v7 and qualification-v8; their four qualification-only source/test differences are explicit. Complete binaries are not equated. The 238-file C# declaration scan has no new multiple-type violations; existing adapter and SnapshotManager types remain unchanged. All four frozen matrix rows and 67 new loop-5 cases/orderings ran and passed.
+
+Read results lost before their separate original-retention CAS remain Unknown when no atomic original exists. Physical-copy qualification and the complete independently installed 41-case run remain external; production destruction stays independently gated. Exact missing installed inputs, role grants/signers/credentials, physical backing proof, A1 genesis/no-backup/copy/restore/retirement evidence and accepted profile/engine pins remain in the implementation packet. No Live/OQ/Agents consumer, register edit, cluster/provisioning/production operation or Git remote operation occurred.
+
+From the Agents repository root, the existing executable owner command remains unrun and requires the accepted profile to pin both proposed targets above:
+
+```bash
+python3 ../eventstore/tools/verify-ext-protection-1.py --mode Live --profile /home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json --evidence-root /home/administrator/hexalith-protection-evidence/ext-protection-1/attempts
+```
+
+[Parent verification](ext-protection-1-parent-merged-2026-10-30/loop5/verification.json) records exact commands, blobs, matrices and limits.
+
 > Current status — review round 5 requires corrections. Loop-4 review candidates Platform `6666ec6ee681730af9b904978c1e21b67614ecce` and EventStore `8e6be5f55175e6ba979df43f40c8713a42f5f50d` are withdrawn. Earlier passes/proposals are historical; no new accepted target/profile/date or installed/physical qualification is established.
 
 > Current status — complete loop-4 source candidates and verification are ready for independent review; all earlier review candidates remain withdrawn. No accepted target/profile/date or installed/physical qualification is established.
@@ -124,3 +153,11 @@ python3 ../eventstore/tools/verify-ext-protection-1.py --mode Live --profile /ho
 The unchanged plan hash is `c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c`; Source mode retains 41 cases and `liveExecuted:false`. Parent audit/review and exact candidate establishment follow this handback. No shared source, Agents/register, cluster/production or Git remote operation was performed by this implementation.
 
 The final staged check added the existing CRLF actor whitespace rule to `.gitattributes`, preserving the exact executed source bytes. The initial loop-4 candidate objects remain historical; the complete review pair above supersedes them. No runtime code changed and the existing verification remains applicable.
+
+## Loop-5 isolated implementation handback — 2026-10-30
+
+The [loop-5 packet](ext-protection-1-loop5/README.md) supersedes the local source checkpoint above. It records the same-ERC bounded authoritative occurrence index; exact production seal/source/permission preflight; actual copy-purpose/backing proof; startup private signer, trust and mandatory genesis validation; independently retained no-effect boundaries; complete recipe inputs and P33 orderings; and exact call recovery with the explicit pre-retention Unknown limit. Status remains in-progress for parent merge/audit/review and source candidate capture.
+
+Final qualification v8 passes Protection 471 total / 465 executed / six explicit native-only skips, lifecycle 42, EventStore 444, contracts 14, payload 897, offline 116 and harness 12. Source retains 41 cases with liveExecuted:false. All 18 final command selections and required Debug/project-reference/-nodeReuse:false builds pass with zero build warnings/errors. Fresh final native v7 passes all five in 2,534.671 seconds with full 1,000 targets, actual 9 MiB state, a 9,485,043-byte head, both history rows and the 256-owner native occurrence index under shipped restricted policy. Container absence and tmpfs unmount are verified. The native and later qualification source/runtime graphs remain separately pinned and mirrored; no distinct complete binaries are equated. All failed/interrupted attempts remain retained.
+
+The packet states exact measured geometry, commands, hashes, clause map and missing installed inputs. Native private eligibility remains explicitly synthetic. Physical-copy qualification, accepted target/profile/date/availability and the complete independently installed 41-case run remain external and unestablished; production destruction remains independently gated. No new immutable candidate is invented.

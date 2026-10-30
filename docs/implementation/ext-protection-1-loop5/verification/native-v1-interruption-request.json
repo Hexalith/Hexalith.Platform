@@ -1,0 +1,33 @@
+{
+  "reason": "Obsolete v1 precheck interrupted after final v2 source/runtime freeze; no pass claimed",
+  "pid": 664724,
+  "argv": "python3 eng/ext-protection-1/probe_erc_native.py --test-assembly /tmp/ext-protection-loop5-native-runtime-v1/Hexalith.Platform.Protection.Tests.dll --test-assembly-sha256 1ebbf65c393945eba97a29abb392e746669d8ed4a8e294e65613522c6aa9555f --runtime-manifest /tmp/ext-protection-loop5-native-runtime-v1/runtime-manifest.json --runtime-manifest-sha256 83d7743ce50726480e5b2007dc4d2fe6eb8b036538575e5797969e171c2a6c39 --case NativeTenantAndCompleteContextSubstitutionCannotDecrypt --output /tmp/ext-protection-loop5-evidence/native-index-precheck-v1.json ",
+  "containerId": "ba1b916a99f4b13eea371341406a2a6915fe007ef12c9188cbc40126b6fd57ed",
+  "containerName": "ext-protection-1-raft-probe-26a0093100438ef77678944e01093583",
+  "labels": {
+    "build-date": "2026-08-18T15:43:05Z",
+    "description": "OpenBao is a tool for securely accessing secrets. A secret is anything that you want to tightly control access to, such as API keys, passwords, certificates, and more. OpenBao provides a unified interface to any secret, while providing tight access control and recording a detailed audit log",
+    "desktop.docker.io/wsl-distro": "Ubuntu-26.04",
+    "hexalith.ext-protection-1.raft-probe": "26a0093100438ef77678944e01093583",
+    "maintainer": "OpenBao <openbao@lists.openssf.org>",
+    "name": "OpenBao",
+    "org.opencontainers.image.authors": "OpenBao <openbao@lists.openssf.org>",
+    "org.opencontainers.image.description": "OpenBao is a tool for securely accessing secrets",
+    "org.opencontainers.image.documentation": "https://github.com/openbao/openbao/blob/main/README.md",
+    "org.opencontainers.image.licenses": "MPL-2.0",
+    "org.opencontainers.image.revision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+    "org.opencontainers.image.source": "https://github.com/openbao/openbao",
+    "org.opencontainers.image.title": "OpenBao",
+    "org.opencontainers.image.url": "https://openbao.org",
+    "org.opencontainers.image.vendor": "OpenBao",
+    "org.opencontainers.image.version": "v2.6.2",
+    "release": "1787067785",
+    "summary": "OpenBao is a tool for securely accessing secrets",
+    "url": "https://openbao.org",
+    "vcs-ref": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+    "vcs-type": "git",
+    "vendor": "OpenBao",
+    "version": "v2.6.2"
+  },
+  "requestedUtc": "2026-10-30T02:42:53.001204+00:00"
+}

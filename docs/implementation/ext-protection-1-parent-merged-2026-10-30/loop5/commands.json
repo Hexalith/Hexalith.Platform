@@ -1,0 +1,376 @@
+[
+  {
+    "name": "protection-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 17.847,
+    "path": "protection-build.log",
+    "sha256": "87a6351674c9a56cccc5273e2c1ca1f0f74a7f484f10bae508ee8bbe92127862"
+  },
+  {
+    "name": "protection-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+      "-noColor",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/protection.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 122.191,
+    "path": "protection-tests.log",
+    "sha256": "cdacb48f5b07a5705b4eab391e4cd76f7a33d5787f64ac03839c2003d2b4ed61"
+  },
+  {
+    "name": "custody-lifecycle-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 13.051,
+    "path": "custody-lifecycle-build.log",
+    "sha256": "1f7a57df4cf6927da0be4d802f696ea4ece83e4b301646e27b0f363e540428f6"
+  },
+  {
+    "name": "custody-lifecycle-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Custody.Tests/bin/Debug/net10.0/Hexalith.Platform.Custody.Tests.dll",
+      "-noColor",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/custody-lifecycle.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.932,
+    "path": "custody-lifecycle-tests.log",
+    "sha256": "17b5fbcdbee7f08b145d73c59f1f38dd5e6b081742e65088b3dc35c0f321a711"
+  },
+  {
+    "name": "secrets-adapters-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:CustomBeforeMicrosoftCommonTargets=/tmp/ext-protection-loop5-adapter-selection/selection.targets"
+    ],
+    "exitCode": 0,
+    "seconds": 21.481,
+    "path": "secrets-adapters-build.log",
+    "sha256": "272bff8a704f2d5c03ae53c5fc2cb0c86b51dff652a90b3867521d8152bfdcc3"
+  },
+  {
+    "name": "secrets-adapters-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/bin/Debug/net10.0/Hexalith.Platform.Secrets.Runtime.Tests.dll",
+      "-noColor",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.SecretsRuntimeAdapterTests",
+      "-class",
+      "Hexalith.Platform.Secrets.Runtime.Tests.SecretsAuthorityFailureTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/secrets-adapters.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.895,
+    "path": "secrets-adapters-tests.log",
+    "sha256": "b8463d457ac9b737dfe2ba5876b84cb7b0ac1a740bfe9679214e06dc8cdfe836"
+  },
+  {
+    "name": "eventstore-build",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 22.367,
+    "path": "eventstore-build.log",
+    "sha256": "9eba483255648897d4b2b578f89e0cbf8110d97c6423906d36eefd67e01db837"
+  },
+  {
+    "name": "eventstore-tests",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionActorTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionOriginalTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.GovernanceScopeGuardTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustDeletionConsumptionAuthorityTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.InteractionPayloadProtectionServiceTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Events.SnapshotManagerTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/eventstore.xml",
+      "-noColor"
+    ],
+    "exitCode": 0,
+    "seconds": 5.685,
+    "path": "eventstore-tests.log",
+    "sha256": "b4660beecce56e612ed4dccfa6d8cd25b3d680c2b96e18c68ad28dd66e461e53"
+  },
+  {
+    "name": "payload-build",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 3.466,
+    "path": "payload-build.log",
+    "sha256": "3594a205594e6db49904c576881742fc101b9b94ed08fea1fd503095b0b35bae"
+  },
+  {
+    "name": "payload-tests",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.EventStore.PayloadProtection.Tests/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.Tests.dll",
+      "-noColor",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/payload.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 4.799,
+    "path": "payload-tests.log",
+    "sha256": "321db1cfc2cd9bef31cf58142920db32c89cc735954e0bcdc78b16d7f6ed3403"
+  },
+  {
+    "name": "payload-aot-build",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.EventStore.PayloadProtection/Hexalith.EventStore.PayloadProtection.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 1.229,
+    "path": "payload-aot-build.log",
+    "sha256": "2429a683049c43c8b41dd217c9b92cbb3dd5f44d0766421720f7a780405e1bb9"
+  },
+  {
+    "name": "Hexalith.Platform.EventStoreHost-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 5.045,
+    "path": "Hexalith.Platform.EventStoreHost-build.log",
+    "sha256": "6a9d366df0c69b856b0f4ed56cc15fe1647b9cbeaea6eaf323a2ca6ed9b8db61"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Executor-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 2.333,
+    "path": "Hexalith.Platform.Protection.Qualification.Executor-build.log",
+    "sha256": "5d3a681da67d29e13d3a5f34e01d10dfe4391b7ac8fb66f0e227aa250b825922"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Observer-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 2.308,
+    "path": "Hexalith.Platform.Protection.Qualification.Observer-build.log",
+    "sha256": "e71c303c9cac8a2511c89397db87178b40c091b1e95f90ff7848ef62f0a1107e"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Enrollment-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 2.267,
+    "path": "Hexalith.Platform.Protection.Qualification.Enrollment-build.log",
+    "sha256": "86298fc331550e8b51bda8de609b9d50602a6f62ca68537f9e23237f5985ab19"
+  },
+  {
+    "name": "harness",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/ext-protection-1",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "exitCode": 0,
+    "seconds": 1.65,
+    "path": "harness.log",
+    "sha256": "26d6828ab7c4b0ac9fe46d50b7ee6d9446e03ba35f7069856283904920a63550"
+  },
+  {
+    "name": "source",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "python3",
+      "tools/verify-ext-protection-1.py",
+      "--mode",
+      "Source"
+    ],
+    "exitCode": 0,
+    "seconds": 0.039,
+    "path": "source.log",
+    "sha256": "b331043bc1b4ef5a172a6a5a89501e59ac85ec72adc1efe6608d8f249e07549a"
+  },
+  {
+    "name": "offline-verifier",
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-p",
+      "test_ext_protection_1*.py",
+      "-v"
+    ],
+    "exitCode": 0,
+    "seconds": 19.784,
+    "path": "offline-verifier.log",
+    "sha256": "dc0f53c90322d0d4f02210b8db44db4629cbdcb33a240a661e25b02a814acbd6"
+  }
+]

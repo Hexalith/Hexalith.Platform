@@ -21,7 +21,7 @@ class HostBuildsResolutionTests(unittest.TestCase):
         self.platform = self.workspace / "Hexalith.Platform"
         self.project = self.platform / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
         self.project.parent.mkdir(parents=True)
-        for name in ("Directory.Build.props", "Directory.Packages.props"):
+        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets"):
             shutil.copyfile(ROOT / name, self.platform / name)
         shutil.copyfile(ROOT / self.project.relative_to(self.platform), self.project)
         self.test_project = self.platform / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
@@ -42,7 +42,7 @@ class HostBuildsResolutionTests(unittest.TestCase):
     def evaluate(self, *properties, project=None):
         return subprocess.run(
             ["dotnet", "msbuild", str(project or self.project), "-nologo", "-p:Configuration=Release",
-             "-getProperty:HexalithBuildsResolvedRoot,ProbeCatalog,CompatibilityMarker", "-getItem:ProjectReference", *properties],
+             "-getProperty:HexalithBuildsResolvedRoot,ProbeCatalog,CompatibilityMarker", "-getItem:ProjectReference,Reference,AssemblyAttribute,None", *properties],
             text=True, capture_output=True, timeout=30)
 
     def mapped_root_import(self, selected):
@@ -59,7 +59,7 @@ class HostBuildsResolutionTests(unittest.TestCase):
         self.assertEqual(pathlib.Path(evaluated["Properties"]["HexalithBuildsResolvedRoot"]).resolve(), selected.resolve())
         self.assertEqual(evaluated["Properties"]["ProbeCatalog"], identity)
         self.assertEqual(
-            [pathlib.Path(item["FullPath"]).resolve() for item in evaluated["Items"]["ProjectReference"]],
+            [pathlib.Path(item["FullPath"]).resolve() for item in evaluated["Items"]["ProjectReference"] if item["Identity"].endswith("Hexalith.Builds.Tooling.csproj")],
             [(selected / TOOLING).resolve()])
 
     def test_workspace_sibling_is_used_without_nested_initialization(self):
@@ -151,11 +151,31 @@ class HostBuildsResolutionTests(unittest.TestCase):
                     self.assertIn("MSB4019", result.stdout + result.stderr)
                     self.assertIn(str(missing), result.stdout + result.stderr)
 
+    def test_published_tool_root_removes_foreign_builds_projects_and_keeps_host_metadata(self):
+        self.builds(self.workspace / "Hexalith.Builds", "published")
+        published = self.workspace / "published tool"
+        result = self.evaluate(f"-p:HexalithBuildsPublishedToolRoot={published}", project=self.test_project)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        items = json.loads(result.stdout)["Items"]
+        self.assertFalse(any("Hexalith.Builds.Module.EventStoreHost.csproj" in x["Identity"] for x in items["ProjectReference"]))
+        host = next(x for x in items["Reference"] if x.get("Aliases") == "buildsseed")
+        self.assertEqual(pathlib.Path(host["HintPath"]), published / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")
+        self.assertTrue(any(x.get("CopyToOutputDirectory") == "PreserveNewest" and x.get("Link", "").endswith(".deps.json") for x in items["None"]))
+        result = self.evaluate(f"-p:HexalithBuildsPublishedToolRoot={published}")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertFalse(any("Hexalith.Builds.Tooling.csproj" in x["Identity"] for x in json.loads(result.stdout)["Items"]["ProjectReference"]))
+
+    def test_ci_rejects_foreign_source_fallback_before_build(self):
+        self.builds(self.workspace / "Hexalith.Builds", "ci")
+        result = self.evaluate("-p:CI=true", "-target:ValidatePlatformCiReferences")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Platform CI refuses foreign project references", result.stdout + result.stderr)
+
     def test_runner_assembly_override_does_not_add_a_source_reference(self):
         self.builds(self.workspace / "Hexalith.Builds", "workspace")
         result = self.evaluate(f"-p:BuildsToolingAssemblyPath={self.workspace / 'runner/Hexalith.Builds.Tooling.dll'}")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout)["Items"]["ProjectReference"], [])
+        self.assertFalse(any(item["Identity"].endswith("Hexalith.Builds.Tooling.csproj") for item in json.loads(result.stdout)["Items"]["ProjectReference"]))
 
 
 if __name__ == "__main__":

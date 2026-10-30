@@ -90,7 +90,7 @@ public sealed class AgentsAdmissionCurrentBoundaryTests
             });
             Authenticator=new(Keys,Profiles,Spool.Clock);Verifier=new(Authenticator,Registrar,Profiles,Spool.Clock);
         }
-        internal async Task<TrustedEnvelope> Issue()=>(await Authenticator.IssueAsync(Identity,TimeSpan.FromMinutes(1),TestContext.Current.CancellationToken)).Envelope!;
+        internal async Task<TrustedEnvelope> Issue()=>(await Authenticator.IssueAsync(Identity,TimeSpan.FromMinutes(1),TestContext.Current.CancellationToken).ConfigureAwait(false)).Envelope!;
     }
     private sealed class Registrar:ITrustedEnvelopeReplayRegistrar
     {

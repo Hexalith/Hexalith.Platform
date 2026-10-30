@@ -36,6 +36,9 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
     [InlineData("event", "RegisterIndependentSourceOriginal")]
     [InlineData("single", "RetainOccurrenceIndex")]
     [InlineData("mixed", "MigrateOccurrenceIndex")]
+    [InlineData("event", "AliasedWriterSource")]
+    [InlineData("single", "AliasedCompletionSource")]
+    [InlineData("mixed", "AliasedEntryWriters")]
     public async Task MissingInputsRefuseBeforeActualSourceAndJournalEffectsWhileAllThreeConfiguredSealPathsWork(string mode, string? missing)
     {
         var token = TestContext.Current.CancellationToken; using var fixture = new ErasureRootEngineFixture(); using var independent = new ErasureRootIndependentSourceFixture();
@@ -82,12 +85,15 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
                 => value with { Binding = value.Binding with { Identity = value.Binding.Identity with { Kind = PayloadProtectionPayloadKind.Snapshot,
                     PayloadTypeId = mode == "mixed" ? InteractionSnapshotEntries.EntryOccurrence(parent, path).PayloadTypeId : parent.PayloadTypeId } } };
             var sourceCell = new ProtectionQualificationNativeCell("source", "sealed", new()) { CompletionKey = "completion" };
+            if (missing == "AliasedWriterSource") { first = first with { Writer = first.Writer! with { Key = sourceCell.Key } }; }
+            if (missing == "AliasedCompletionSource") { sourceCell = sourceCell with { CompletionKey = sourceCell.Key }; }
             JsonObject payload; ProtectionTarget[] targets;
             if (mode == "mixed")
             {
                 first = Snapshot(first, "/Entries/0/ProtectedContent/Value");
                 var other = first with { Binding = first.Binding with { Identity = first.Binding.Identity with { Target = new("tenant-a", "interaction-b", "alias-b"), PayloadTypeId = InteractionSnapshotEntries.EntryOccurrence(parent, "/Entries/1/ProtectedContent/Value").PayloadTypeId },
                     KeyReference = "01ARZ3NDEKTSV4RRFFQ69G5FAW", OperationId = "01ARZ3NDEKTSV4RRFFQ69G5FAW" }, RootIdentity = first.RootIdentity with { ObjectId = "interaction-b", KeyAlias = "alias-b" }, RootOperationId = "root-b", Writer = new("source", "writer-b", new()) };
+                if (missing == "AliasedEntryWriters") { other = other with { Writer = first.Writer }; }
                 payload = (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeSnapshot([first, other], parent, sourceCell))!; targets = [target, other.Binding.Identity.Target];
             }
             else { if (mode == "single") { first = Snapshot(first, ""); } payload = (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeSeal(first, sourceCell))!; targets = [target]; }

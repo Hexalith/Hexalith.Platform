@@ -60,3 +60,8 @@ docs/implementation/ext-protection-1-loop4/** -text -whitespace
 
 # Recognize the existing CRLF lifecycle actor without changing executed source bytes.
 src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve exact loop-5 forensic and parent verification evidence bytes.
+docs/implementation/ext-protection-1-loop5/** -text -whitespace
+docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop5/** -text -whitespace
+Directory.Build.props whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,24 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop5GrowthTests.OneUpdateReusesVerifiedImmutableNodesButFreshReadersStillValidateTheCommittedTree [FAIL]
+      Shouldly.ShouldAssertException : cached.Store.ArchiveReads
+          should be less than
+      575
+          but was
+      1704
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5GrowthTests.cs(96,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop5GrowthTests.OneUpdateReusesVerifiedImmutableNodesButFreshReadersStillValidateTheCommittedTree()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+{"observerUnrelatedSameTargetBatches":40,"unrelatedGuardOriginals":128,"baselineReads":15,"baselineBytes":21976,"finalReads":23,"finalBytes":198915}
+{"occurrences":2048,"owners":2048,"oldHeadBytes":41820782,"headBytes":2118,"archiveBytes":130711374,"archiveWrites":56288,"archiveReads":249282,"perLookupBound":20,"typedErased":true}
+  Finished:    Hexalith.Platform.Protection.Tests (ID = 'db80ef61e8003b73ee35b1f3c9175a0b5cdd33eed6732aa5e841a8c19689754f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 54, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 7.417s
