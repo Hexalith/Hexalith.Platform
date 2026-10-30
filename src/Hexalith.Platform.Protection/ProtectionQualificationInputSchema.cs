@@ -13,7 +13,7 @@ internal static class ProtectionQualificationInputSchema
     internal static void Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlySet<string> prior)
         => Validate(recipe, request, prior.ToDictionary(id => id, _ => (JsonNode?)null, StringComparer.Ordinal));
     internal static void Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary<string, JsonNode?> prior,
-        IReadOnlyDictionary<string, ProtectionQualificationNativeCallKind>? inheritedPromises = null)
+        IReadOnlyDictionary<string, ProtectionQualificationNativeCallKind>? inheritedPromises = null, bool validateAvailableSemantics = true)
     {
         var available = new HashSet<string>(prior.Keys, StringComparer.Ordinal);
         var promises = inheritedPromises is null ? new Dictionary<string, ProtectionQualificationNativeCallKind>(StringComparer.Ordinal)
@@ -59,7 +59,8 @@ internal static class ProtectionQualificationInputSchema
         });
         foreach (var call in recipe.Before.Concat([recipe.Effect]).Concat(recipe.Race is { } race ? [race] : []).Concat(recipe.After))
         {
-            References(call.Payload, available, request, promises);
+            var dependencies = recipe.Race?.Id == call.Id ? available.Where(id => id != recipe.Effect.Id).ToHashSet(StringComparer.Ordinal) : available;
+            References(call.Payload, dependencies, request, promises);
             var payload = (JsonObject)ResolveRequest(call.Payload, request)!;
             switch (call.Kind)
             {
@@ -109,7 +110,7 @@ internal static class ProtectionQualificationInputSchema
                     break;
                 default: throw new InvalidOperationException("Unsupported native opcode.");
             }
-            ValidateRequiredIdentifiers(call.Kind, (JsonObject)ResolveAvailable(payload, prior, request)!);
+            ValidateRequiredIdentifiers(call.Kind, (JsonObject)ResolveAvailable(payload, prior, request)!, validateAvailableSemantics);
             available.Add(call.Id); promises.Add(call.Id, call.Kind);
         }
     }
@@ -130,7 +131,7 @@ internal static class ProtectionQualificationInputSchema
         }
         return node is JsonArray array ? new JsonArray(array.Select(value => ResolveAvailable(value, prior, request)).ToArray()) : node?.DeepClone();
     }
-    private static void ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+    private static void ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload, bool validateAvailableSemantics)
     {
         if (IsReference(payload)) { return; }
         void Text(JsonObject value, params string[] fields)
@@ -171,12 +172,57 @@ internal static class ProtectionQualificationInputSchema
                 if (!GovernanceScopeGuardReducer.IsClosedCommand(command with { ExpectedGuardRevision = 1 })) { throw new InvalidOperationException("Closed native guard protocol input required."); }
             }
         }
+        else if (kind is ProtectionQualificationNativeCallKind.Lifecycle or ProtectionQualificationNativeCallKind.AuthorizeLifecycle or ProtectionQualificationNativeCallKind.RejectForeignRoot or ProtectionQualificationNativeCallKind.WrapFixtureRoot)
+        {
+            var input = kind == ProtectionQualificationNativeCallKind.Lifecycle ? Required(payload, "request").AsObject() : payload;
+            Text(input, "OperationId");
+            if (input["Identity"] is JsonObject identity && !IsReference(identity))
+            {
+                Text(identity, "TenantId", "ObjectId", "KeyAlias", "KeyVersion", "LifecycleVersion", "StoreTarget", "ContractVersion");
+                if (!ContainsReference(identity)) { CustodyKeyLifecycleActor.ValidateIdentity(identity.Deserialize<CustodyKeyObjectIdentity>()!); }
+            }
+            if (kind is ProtectionQualificationNativeCallKind.Lifecycle or ProtectionQualificationNativeCallKind.AuthorizeLifecycle)
+            {
+                Text(input, "FenceTokenId", "DecisionVersion");
+                if (input["Action"] is JsonValue action && action.GetValue<int>() != (int)CustodyKeyLifecycleAction.Destroy) { Text(input, "HoldId"); }
+                if (input["FenceRevision"] is JsonValue fence && fence.GetValue<long>() <= 0 || input["ExpectedRevision"] is JsonValue revision && revision.GetValue<long>() < 0)
+                { throw new InvalidOperationException("Complete lifecycle compare input required."); }
+            }
+            if (kind == ProtectionQualificationNativeCallKind.Lifecycle)
+            {
+                var registration = Required(payload, "registration").AsObject();
+                if (!IsReference(registration)) { Text(registration, "OperationId", "KekVersion", "OpaqueWrappedKeyReference", "WrapReceiptId"); }
+            }
+        }
+        else if (kind is ProtectionQualificationNativeCallKind.Block or ProtectionQualificationNativeCallKind.LookupBlock)
+        { Text(payload, "TenantId", "BatchId", "OperationId", "AdmissionEvidenceId"); }
+        else if (kind is ProtectionQualificationNativeCallKind.Activate or ProtectionQualificationNativeCallKind.LookupActivation)
+        { Text(payload, "OperationId", "CompromiseBlockReceiptId", "GuardReplacementReceiptId"); }
+        else if (kind == ProtectionQualificationNativeCallKind.ReconcileBlockedReplacement)
+        { Text(payload, "OperationId", "CompromiseBlockReceiptId", "GuardReplacementReceiptId", "SigningRequestId"); }
         else if (kind is ProtectionQualificationNativeCallKind.UnsealEvent or ProtectionQualificationNativeCallKind.ReplayEvent or ProtectionQualificationNativeCallKind.ReplayCopy or ProtectionQualificationNativeCallKind.Backup or ProtectionQualificationNativeCallKind.Restore)
         { Text(payload, "Component", "Key"); }
         else if (kind is ProtectionQualificationNativeCallKind.Lookup) { Text(payload, "tenantId", "batchId"); }
         else if (kind is ProtectionQualificationNativeCallKind.Fault) { Text(payload, "stepId", "boundary"); }
         else if (kind is ProtectionQualificationNativeCallKind.Sign or ProtectionQualificationNativeCallKind.ObsoleteUnissued)
         { Text(payload, "Issuer", "Audience", "TenantId", "DeletionRequestId", "DestructionSealId", "BatchKind", "BatchId", "ManifestDigest", "GuardStreamId", "CapabilityKeyVersion"); }
+        JsonObject? ownerRequest = kind switch
+        {
+            ProtectionQualificationNativeCallKind.Register or ProtectionQualificationNativeCallKind.RegisterIfDispatched or ProtectionQualificationNativeCallKind.Reserve
+                or ProtectionQualificationNativeCallKind.ReserveIfDispatched or ProtectionQualificationNativeCallKind.RejectSubstitutions => payload,
+            ProtectionQualificationNativeCallKind.LookupProvider => Required(payload, "request").AsObject(),
+            ProtectionQualificationNativeCallKind.Activate or ProtectionQualificationNativeCallKind.LookupActivation => Required(payload, "Replacement").AsObject(),
+            _ => null,
+        };
+        if (ownerRequest is not null && !IsReference(ownerRequest))
+        {
+            Text(ownerRequest, "DispatchReceiptId");
+            if (ownerRequest["DetachedJws"] is JsonValue signed && (string.IsNullOrWhiteSpace(signed.GetValue<string>()) || signed.GetValue<string>().Length > 16384))
+            { throw new InvalidOperationException("Complete original signed owner artifact required."); }
+            if (ownerRequest["Capability"] is JsonObject capability && !IsReference(capability))
+            { Text(capability, "Issuer", "Audience", "TenantId", "DeletionRequestId", "DestructionSealId", "BatchKind", "BatchId", "ManifestDigest", "GuardStreamId", "CapabilityKeyVersion"); }
+            if (validateAvailableSemantics && !ContainsReference(ownerRequest)) { _ = DeletionConsumptionIdentity.CaptureRequest(ownerRequest.Deserialize<DeletionBatchConsumptionRequest>()!); }
+        }
     }
     private static bool ValidUnicode(string value)
     { try { _ = new System.Text.UTF8Encoding(false, true).GetByteCount(value); return true; } catch (System.Text.EncoderFallbackException) { return false; } }
@@ -184,7 +230,7 @@ internal static class ProtectionQualificationInputSchema
         => node is JsonObject obj ? IsReference(obj) || obj.Any(item => ContainsReference(item.Value)) : node is JsonArray array && array.Any(ContainsReference);
     internal static JsonObject InstallationRequest(string tenant)
         => new() { ["operationId"] = "preflight-only", ["fixtureId"] = "preflight-only", ["caseId"] = "P01", ["action"] = "Preflight", ["bindingDigest"] = new string('a', 64),
-            ["otherTenantReference"] = "preflight-other", ["targets"] = System.Text.Json.JsonSerializer.SerializeToNode(new[] { new ProtectionTarget(tenant, "preflight-interaction-1", "qualification"), new ProtectionTarget(tenant, "preflight-interaction-2", "qualification") }) };
+            ["otherTenantReference"] = "preflight-other", ["targets"] = System.Text.Json.JsonSerializer.SerializeToNode(Enumerable.Range(0, 1000).Select(index => new ProtectionTarget(tenant, "preflight-interaction-" + index.ToString("D4", System.Globalization.CultureInfo.InvariantCulture), "qualification")).ToArray()) };
     internal static void ValidateInstallation(ProtectionQualificationServiceScope scope, IReadOnlySet<string>? allowedComponents = null, IReadOnlySet<string>? allowedFaultOperations = null)
     {
         var prior = new Dictionary<string, JsonNode?>(StringComparer.Ordinal); var promises = new Dictionary<string, ProtectionQualificationNativeCallKind>(StringComparer.Ordinal);
@@ -194,7 +240,7 @@ internal static class ProtectionQualificationInputSchema
             request["caseId"] = ownerCase.Key;
             foreach (var action in ownerCase.Value)
             {
-                request["action"] = action.Key; Validate(action.Value, request, prior, promises);
+                request["action"] = action.Key; Validate(action.Value, request, prior, promises, validateAvailableSemantics: false);
                 foreach (var call in action.Value.Before.Concat([action.Value.Effect]).Concat(action.Value.Race is { } race ? [race] : []).Concat(action.Value.After))
                 {
                     var payload = ResolveRequest(call.Payload, request);
@@ -299,7 +345,8 @@ internal static class ProtectionQualificationInputSchema
         Type? type = kind switch
         {
             ProtectionQualificationNativeCallKind.Sign or ProtectionQualificationNativeCallKind.ObsoleteUnissued => typeof(DeletionCapabilitySigningOutcome),
-            ProtectionQualificationNativeCallKind.Guard or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch => typeof(GovernanceProtocolReceipt),
+            ProtectionQualificationNativeCallKind.Guard => typeof(GovernanceProtocolReceipt),
+            ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch when parts.Length == 0 => typeof(JsonObject),
             ProtectionQualificationNativeCallKind.Register or ProtectionQualificationNativeCallKind.RegisterIfDispatched or ProtectionQualificationNativeCallKind.Reserve
                 or ProtectionQualificationNativeCallKind.ReserveIfDispatched or ProtectionQualificationNativeCallKind.Lookup or ProtectionQualificationNativeCallKind.Block
                 or ProtectionQualificationNativeCallKind.Activate or ProtectionQualificationNativeCallKind.LookupBlock or ProtectionQualificationNativeCallKind.LookupActivation => typeof(DeletionConsumptionOutcome),
@@ -315,6 +362,8 @@ internal static class ProtectionQualificationInputSchema
         {
             string part = encoded.Replace("~1", "/", StringComparison.Ordinal).Replace("~0", "~", StringComparison.Ordinal);
             type = Nullable.GetUnderlyingType(type) ?? type;
+            if (type == typeof(string) || type == typeof(byte[]) || type.IsPrimitive || type.IsEnum || type == typeof(decimal) || type == typeof(DateTime) || type == typeof(DateTimeOffset))
+            { throw new InvalidOperationException("Serialized scalar native result has no child members."); }
             if (type.IsArray || type.IsGenericType && typeof(System.Collections.IEnumerable).IsAssignableFrom(type))
             {
                 if (!int.TryParse(part, out int index) || index < 0 || index >= 1000) { throw new InvalidOperationException("Bounded native result index required."); }

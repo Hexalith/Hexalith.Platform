@@ -1,0 +1,675 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop5BoundaryTests.LaterMissingOwnerArtifactOrCapabilityRefusesCompiledPreparationWithoutAnyStateOrAttempt(missing: "cell") [FAIL]
+      Shouldly.ShouldAssertException : fixture.Admitted
+          should be empty but had
+      17
+          items and was
+      [["P05/DestroyDekManifest/1" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/1, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-1",
+          "Operation": 6,
+          "ExpectedGuardRevision": 1,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": {
+            "TenantId": "tenant-a",
+            "Kind": "SourceDeletionExactConversation",
+            "AgentInteractionId": "",
+            "SourceConversationId": "conversation-a"
+          },
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": null,
+          "AuthorizationId": "admission:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/2" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/2, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-2",
+          "Operation": 7,
+          "ExpectedGuardRevision": 2,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": {
+            "TenantId": "tenant-a",
+            "Kind": "SourceDeletionExactConversation",
+            "AgentInteractionId": "",
+            "SourceConversationId": "conversation-a"
+          },
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": null,
+          "AuthorizationId": "admission:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/3" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/3, Kind = GuardOwnersEffective, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-3",
+          "Operation": 9,
+          "ExpectedGuardRevision": 3,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": {
+            "Ordinal": 1,
+            "GlobalCutId": "cut-a",
+            "TokenId": "token-a",
+            "OwnerId": "",
+            "ObligationDigest": "E1EC68DC4EC213763F1D91F2B37BC81AA00FC3717F9A6176A1B52279222AA6BD",
+            "ViolationId": "",
+            "ViolationKind": "Content",
+            "AcceptedAtOrdinal": 0,
+            "AcceptedAtGuardHighWater": 2,
+            "ResourceId": "resource-b",
+            "InvalidatedArtifactIds": [],
+            "NoCutReceiptId": ""
+          },
+          "Hold": null,
+          "Batch": null,
+          "AuthorizationId": "dispatch-0:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": [],
+        "ownerIds": [
+          "directory",
+          "interaction"
+        ],
+        "expectedOrdinal": 1,
+        "obligationDigest": "E1EC68DC4EC213763F1D91F2B37BC81AA00FC3717F9A6176A1B52279222AA6BD"
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/4" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/4, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-4",
+          "Operation": 10,
+          "ExpectedGuardRevision": 5,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": {
+            "Ordinal": 1,
+            "GlobalCutId": "cut-a",
+            "TokenId": "token-a",
+            "OwnerId": "",
+            "ObligationDigest": "E1EC68DC4EC213763F1D91F2B37BC81AA00FC3717F9A6176A1B52279222AA6BD",
+            "ViolationId": "",
+            "ViolationKind": "Content",
+            "AcceptedAtOrdinal": 0,
+            "AcceptedAtGuardHighWater": 2,
+            "ResourceId": "resource-b",
+            "InvalidatedArtifactIds": [],
+            "NoCutReceiptId": ""
+          },
+          "Hold": null,
+          "Batch": null,
+          "AuthorizationId": "content:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/5" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/5, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-5",
+          "Operation": 11,
+          "ExpectedGuardRevision": 6,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": {
+            "Ordinal": 1,
+            "GlobalCutId": "cut-a",
+            "TokenId": "token-a",
+            "OwnerId": "",
+            "ObligationDigest": "E1EC68DC4EC213763F1D91F2B37BC81AA00FC3717F9A6176A1B52279222AA6BD",
+            "ViolationId": "",
+            "ViolationKind": "Content",
+            "AcceptedAtOrdinal": 0,
+            "AcceptedAtGuardHighWater": 2,
+            "ResourceId": "resource-b",
+            "InvalidatedArtifactIds": [],
+            "NoCutReceiptId": ""
+          },
+          "Hold": null,
+          "Batch": null,
+          "AuthorizationId": "content:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/6" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/6, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-6",
+          "Operation": 14,
+          "ExpectedGuardRevision": 7,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "D06010848E185C1A9220E7F0FB3C47F982DA23DE2989B24A5702B6BC7489807A",
+            "ProtectionOutcome": "",
+            "ProtectionReceiptId": "",
+            "TargetReceiptIds": [],
+            "BlockSetRevision": 0,
+            "Capability": null,
+            "DetachedJws": "",
+            "SigningRequestId": ""
+          },
+          "AuthorizationId": "seal:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/7" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/7, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-7",
+          "Operation": 15,
+          "ExpectedGuardRevision": 8,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "D06010848E185C1A9220E7F0FB3C47F982DA23DE2989B24A5702B6BC7489807A",
+            "ProtectionOutcome": "",
+            "ProtectionReceiptId": "",
+            "TargetReceiptIds": [],
+            "BlockSetRevision": 0,
+            "Capability": null,
+            "DetachedJws": "",
+            "SigningRequestId": ""
+          },
+          "AuthorizationId": "seal:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/8" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/8, Kind = Sign, Payload = {
+        "Issuer": "qualified-issuer",
+        "Audience": "protection-audience",
+        "TenantId": "tenant-a",
+        "DeletionRequestId": "deletion-a",
+        "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+        "BatchKind": "AcceptedSet",
+        "BatchOrdinal": 0,
+        "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+        "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+        "GuardStreamId": "tenant-a-governance-guard",
+        "IntendedIssuedGuardRevision": 9,
+        "AttestationOrdinal": 1,
+        "SigningAttemptOrdinal": 1,
+        "CapabilityKeyVersion": "healthy-key-a"
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/9" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/9, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "issue-C2A78B224F0A9F0B4AEA2E1D43C7042FFCD11FD9B26A18592F52D896C754FF40",
+          "Operation": 18,
+          "ExpectedGuardRevision": 9,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "7866BA948028CB16FE2977A70B488A3E06E921B402C046516C22CBC2E26FA3EE",
+            "ProtectionOutcome": "",
+            "ProtectionReceiptId": "",
+            "TargetReceiptIds": [],
+            "BlockSetRevision": 0,
+            "Capability": {
+              "Issuer": "qualified-issuer",
+              "Audience": "protection-audience",
+              "TenantId": "tenant-a",
+              "DeletionRequestId": "deletion-a",
+              "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+              "BatchKind": "AcceptedSet",
+              "BatchOrdinal": 0,
+              "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+              "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+              "GuardStreamId": "tenant-a-governance-guard",
+              "IntendedIssuedGuardRevision": 9,
+              "AttestationOrdinal": 1,
+              "SigningAttemptOrdinal": 1,
+              "CapabilityKeyVersion": "healthy-key-a"
+            },
+            "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+            "SigningRequestId": "10A18CD4B5B456B958631A755A1C341E3FA39EE5A287FF83D9780976B8EF941C"
+          },
+          "AuthorizationId": "dispatch-0:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/10" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/10, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-9",
+          "Operation": 20,
+          "ExpectedGuardRevision": 10,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "7866BA948028CB16FE2977A70B488A3E06E921B402C046516C22CBC2E26FA3EE",
+            "ProtectionOutcome": "",
+            "ProtectionReceiptId": "",
+            "TargetReceiptIds": [],
+            "BlockSetRevision": 0,
+            "Capability": {
+              "Issuer": "qualified-issuer",
+              "Audience": "protection-audience",
+              "TenantId": "tenant-a",
+              "DeletionRequestId": "deletion-a",
+              "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+              "BatchKind": "AcceptedSet",
+              "BatchOrdinal": 0,
+              "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+              "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+              "GuardStreamId": "tenant-a-governance-guard",
+              "IntendedIssuedGuardRevision": 9,
+              "AttestationOrdinal": 1,
+              "SigningAttemptOrdinal": 1,
+              "CapabilityKeyVersion": "healthy-key-a"
+            },
+            "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+            "SigningRequestId": "10A18CD4B5B456B958631A755A1C341E3FA39EE5A287FF83D9780976B8EF941C"
+          },
+          "AuthorizationId": "dispatch-0:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/11" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/11, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-10",
+          "Operation": 21,
+          "ExpectedGuardRevision": 11,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "7866BA948028CB16FE2977A70B488A3E06E921B402C046516C22CBC2E26FA3EE",
+            "ProtectionOutcome": "",
+            "ProtectionReceiptId": "",
+            "TargetReceiptIds": [],
+            "BlockSetRevision": 0,
+            "Capability": {
+              "Issuer": "qualified-issuer",
+              "Audience": "protection-audience",
+              "TenantId": "tenant-a",
+              "DeletionRequestId": "deletion-a",
+              "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+              "BatchKind": "AcceptedSet",
+              "BatchOrdinal": 0,
+              "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+              "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+              "GuardStreamId": "tenant-a-governance-guard",
+              "IntendedIssuedGuardRevision": 9,
+              "AttestationOrdinal": 1,
+              "SigningAttemptOrdinal": 1,
+              "CapabilityKeyVersion": "healthy-key-a"
+            },
+            "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+            "SigningRequestId": "10A18CD4B5B456B958631A755A1C341E3FA39EE5A287FF83D9780976B8EF941C"
+          },
+          "AuthorizationId": "dispatch-0:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/12" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/12, Kind = Register, Payload = {
+        "Capability": {
+          "Issuer": "qualified-issuer",
+          "Audience": "protection-audience",
+          "TenantId": "tenant-a",
+          "DeletionRequestId": "deletion-a",
+          "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+          "BatchKind": "AcceptedSet",
+          "BatchOrdinal": 0,
+          "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+          "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+          "GuardStreamId": "tenant-a-governance-guard",
+          "IntendedIssuedGuardRevision": 9,
+          "AttestationOrdinal": 1,
+          "SigningAttemptOrdinal": 1,
+          "CapabilityKeyVersion": "healthy-key-a"
+        },
+        "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+        "CommittedIssuedGuardRevision": 10,
+        "DispatchReceiptId": "0C72BDE2CB0B0B01A98A8436088BBC31A149C53DC6FEF6095B3A2364EFA38E6C",
+        "DispatchGuardRevision": 12,
+        "Targets": [
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-a",
+            "TargetProtectionKeyAlias": "alias-a"
+          },
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-b",
+            "TargetProtectionKeyAlias": "alias-b"
+          }
+        ]
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/13" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/13, Kind = Reserve, Payload = {
+        "Capability": {
+          "Issuer": "qualified-issuer",
+          "Audience": "protection-audience",
+          "TenantId": "tenant-a",
+          "DeletionRequestId": "deletion-a",
+          "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+          "BatchKind": "AcceptedSet",
+          "BatchOrdinal": 0,
+          "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+          "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+          "GuardStreamId": "tenant-a-governance-guard",
+          "IntendedIssuedGuardRevision": 9,
+          "AttestationOrdinal": 1,
+          "SigningAttemptOrdinal": 1,
+          "CapabilityKeyVersion": "healthy-key-a"
+        },
+        "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+        "CommittedIssuedGuardRevision": 10,
+        "DispatchReceiptId": "0C72BDE2CB0B0B01A98A8436088BBC31A149C53DC6FEF6095B3A2364EFA38E6C",
+        "DispatchGuardRevision": 12,
+        "Targets": [
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-a",
+            "TargetProtectionKeyAlias": "alias-a"
+          },
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-b",
+            "TargetProtectionKeyAlias": "alias-b"
+          }
+        ]
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/14" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/14, Kind = Guard, Payload = {
+        "transition": {
+          "TenantId": "tenant-a",
+          "OperationId": "operation-11",
+          "Operation": 24,
+          "ExpectedGuardRevision": 12,
+          "EpochId": "epoch-a",
+          "DeletionRequestId": "deletion-a",
+          "Scope": null,
+          "Write": null,
+          "Repair": null,
+          "Ordinal": null,
+          "Hold": null,
+          "Batch": {
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "Targets": [
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-a",
+                "TargetProtectionKeyAlias": "alias-a"
+              },
+              {
+                "TenantId": "tenant-a",
+                "AgentInteractionId": "interaction-b",
+                "TargetProtectionKeyAlias": "alias-b"
+              }
+            ],
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "AttestationOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a",
+            "AttestationDigest": "7866BA948028CB16FE2977A70B488A3E06E921B402C046516C22CBC2E26FA3EE",
+            "ProtectionOutcome": "Consumed",
+            "ProtectionReceiptId": "FED66BB02147618889B7CB8417D254C0D6BE0D8173F274990616A8E6462382D1",
+            "TargetReceiptIds": [
+              "erc-erased:6AEC5E78439E2B161F45BDFF142F27F0C49B891D1F11CE9DA4B0BA34F3F6BA2F",
+              "erc-erased:442F6D661F27F8B47487295D9C1CD32C97560B07089EEDAEAAAA6D272857C381"
+            ],
+            "BlockSetRevision": 0,
+            "Capability": {
+              "Issuer": "qualified-issuer",
+              "Audience": "protection-audience",
+              "TenantId": "tenant-a",
+              "DeletionRequestId": "deletion-a",
+              "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+              "BatchKind": "AcceptedSet",
+              "BatchOrdinal": 0,
+              "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+              "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+              "GuardStreamId": "tenant-a-governance-guard",
+              "IntendedIssuedGuardRevision": 9,
+              "AttestationOrdinal": 1,
+              "SigningAttemptOrdinal": 1,
+              "CapabilityKeyVersion": "healthy-key-a"
+            },
+            "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+            "SigningRequestId": "10A18CD4B5B456B958631A755A1C341E3FA39EE5A287FF83D9780976B8EF941C"
+          },
+          "AuthorizationId": "dispatch-0:deletion-a",
+          "ReferenceId": "",
+          "BridgeOriginal": null,
+          "RevocationReceipt": null
+        },
+        "targets": []
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/15" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/15, Kind = Reserve, Payload = {
+        "Capability": {
+          "Issuer": "qualified-issuer",
+          "Audience": "protection-audience",
+          "TenantId": "tenant-a",
+          "DeletionRequestId": "deletion-a",
+          "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+          "BatchKind": "AcceptedSet",
+          "BatchOrdinal": 0,
+          "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+          "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+          "GuardStreamId": "tenant-a-governance-guard",
+          "IntendedIssuedGuardRevision": 9,
+          "AttestationOrdinal": 1,
+          "SigningAttemptOrdinal": 1,
+          "CapabilityKeyVersion": "healthy-key-a"
+        },
+        "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+        "CommittedIssuedGuardRevision": 10,
+        "DispatchReceiptId": "0C72BDE2CB0B0B01A98A8436088BBC31A149C53DC6FEF6095B3A2364EFA38E6C",
+        "DispatchGuardRevision": 12,
+        "Targets": [
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-a",
+            "TargetProtectionKeyAlias": "alias-a"
+          },
+          {
+            "TenantId": "tenant-a",
+            "AgentInteractionId": "interaction-b",
+            "TargetProtectionKeyAlias": "alias-b"
+          }
+        ]
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/16" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/16, Kind = Lookup, Payload = {
+        "tenantId": "tenant-a",
+        "batchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38"
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }], ["P05/DestroyDekManifest/17" => ProtectionQualificationNativeCall { Id = P05/DestroyDekManifest/17, Kind = LookupProvider, Payload = {
+        "request": {
+          "Capability": {
+            "Issuer": "qualified-issuer",
+            "Audience": "protection-audience",
+            "TenantId": "tenant-a",
+            "DeletionRequestId": "deletion-a",
+            "DestructionSealId": "E4BBC51FC60939C17A4F411E3E13DBD93C8B97B2161651FD2E75CA874E027944",
+            "BatchKind": "AcceptedSet",
+            "BatchOrdinal": 0,
+            "BatchId": "7B92E365BA92B5EF3C8B34519BA46D53C6D62D9EC60D7BC47798781F626D4D38",
+            "ManifestDigest": "185B90BD96B12162E5B8D99BEF2580EA335C00403839650857BDB0DB69DA5C1C",
+            "GuardStreamId": "tenant-a-governance-guard",
+            "IntendedIssuedGuardRevision": 9,
+            "AttestationOrdinal": 1,
+            "SigningAttemptOrdinal": 1,
+            "CapabilityKeyVersion": "healthy-key-a"
+          },
+          "DetachedJws": "eyJhbGciOiJFUzI1NiIsImFuY2hvclZlcnNpb24iOiIxIiwia2V5VmVyc2lvbiI6ImhlYWx0aHkta2V5LWEiLCJraWQiOiJ0ZXN0LWFuY2hvciIsInR5cCI6IkRlbGV0aW9uQmF0Y2hDYXBhYmlsaXR5VjEifQ..cMmcQR3qxVi5nyzyo0j_Lx1hBImG1XmAGUa48DuZ18s9YMGsngM-z2esGN91Z6o_er7e3LfSUEx-AiiiZQZGkw",
+          "CommittedIssuedGuardRevision": 10,
+          "DispatchReceiptId": "0C72BDE2CB0B0B01A98A8436088BBC31A149C53DC6FEF6095B3A2364EFA38E6C",
+          "DispatchGuardRevision": 12,
+          "Targets": [
+            {
+              "TenantId": "tenant-a",
+              "AgentInteractionId": "interaction-a",
+              "TargetProtectionKeyAlias": "alias-a"
+            },
+            {
+              "TenantId": "tenant-a",
+              "AgentInteractionId": "interaction-b",
+              "TargetProtectionKeyAlias": "alias-b"
+            }
+          ]
+        },
+        "reservationReceiptId": "FED66BB02147618889B7CB8417D254C0D6BE0D8173F274990616A8E6462382D1"
+      }, OperationId = P05:operation, RequestSha256 = 3fec15abb0cc8e209985e93995403379caf853715d3bcee5b43b9ace1af635dc, SourceDigest = , HoldBlockedOriginal =  }]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5BoundaryTests.cs(249,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop5BoundaryTests.LaterMissingOwnerArtifactOrCapabilityRefusesCompiledPreparationWithoutAnyStateOrAttempt(String missing)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = 'db80ef61e8003b73ee35b1f3c9175a0b5cdd33eed6732aa5e841a8c19689754f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 3, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.698s

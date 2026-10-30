@@ -1,0 +1,155 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.ConditionalHoldRefusalRecoversExactAdmittedOriginalWithoutOwnerStateThenAllowsHealthyDispatch [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs(152,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.ConditionalHoldRefusalRecoversExactAdmittedOriginalWithoutOwnerStateThenAllowsHealthyDispatch()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.SameTargetResourceLinksActualOriginalCoverageWithoutAllocatingAnotherBatch [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(101,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.SameTargetResourceLinksActualOriginalCoverageWithoutAllocatingAnotherBatch()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.SourcePreparationEnumeratesOwnersBindsContentAndConsumesActualIssuedDispatchedManifest [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(17,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.SourcePreparationEnumeratesOwnersBindsContentAndConsumesActualIssuedDispatchedManifest()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldWinningBeforeDispatchRetainsRootsWithoutInventingRegistrationOrReservation [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(34,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldWinningBeforeDispatchRetainsRootsWithoutInventingRegistrationOrReservation()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldDispatchRaceRetainsBothRealOutcomesAndCommitsRequiredHoldAfterDispatchWins(holdWins: True) [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(49,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldDispatchRaceRetainsBothRealOutcomesAndCommitsRequiredHoldAfterDispatchWins(Boolean holdWins)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldDispatchRaceRetainsBothRealOutcomesAndCommitsRequiredHoldAfterDispatchWins(holdWins: False) [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(49,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.HoldDispatchRaceRetainsBothRealOutcomesAndCommitsRequiredHoldAfterDispatchWins(Boolean holdWins)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.TwoRealHoldMutationsProduceDistinctNoIssueOriginalsBeforeHealthySuccessorIssue [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(159,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.TwoRealHoldMutationsProduceDistinctNoIssueOriginalsBeforeHealthySuccessorIssue()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.ContainmentPreparationCommitsOriginalViolationsAndDistinctSingletonOwners [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(85,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.ContainmentPreparationCommitsOriginalViolationsAndDistinctSingletonOwners()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP33RacesBothActualOwnerOrderingsAndEmitsExactVerifierObservation(activationWins: True) [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs(101,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP33RacesBothActualOwnerOrderingsAndEmitsExactVerifierObservation(Boolean activationWins)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.TwoExpectedContainmentTargetsUseDistinctRealControlRootAndEmitCompleteVerifierEvidence [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(132,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.TwoExpectedContainmentTargetsUseDistinctRealControlRootAndEmitCompleteVerifierEvidence()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop5ConfiguredSealTests.MissingInputsRefuseBeforeActualSourceAndJournalEffectsWhileAllThreeConfiguredSealPathsWork(mode: "single", missing: null) [FAIL]
+      System.InvalidOperationException : Exact executed source role/request/native-call original required.
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs(96,0): at Hexalith.Platform.Protection.ProtectionQualificationPersistedObserver.<>c__DisplayClass5_0.<ObserveAsync>g__Producer|3(Byte[] bytes, IReadOnlyList`1 bindings)
+        src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs(174,0): at Hexalith.Platform.Protection.ProtectionQualificationPersistedObserver.ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList`1 targets, CancellationToken token, ProtectionQualificationProducerIdentity expectedProducer, IReadOnlySet`1 expectedOperationIds, IReadOnlyDictionary`2 componentBackings)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5ConfiguredSealTests.cs(131,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop5ConfiguredSealTests.MissingInputsRefuseBeforeActualSourceAndJournalEffectsWhileAllThreeConfiguredSealPathsWork(String mode, String missing)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5ConfiguredSealTests.cs(144,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop5ConfiguredSealTests.MissingInputsRefuseBeforeActualSourceAndJournalEffectsWhileAllThreeConfiguredSealPathsWork(String mode, String missing)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.LaterDifferentIssuedBatchReturnsExactOriginalDestroyedCoverageWithoutAnotherManifest [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(114,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.LaterDifferentIssuedBatchReturnsExactOriginalDestroyedCoverageWithoutAnotherManifest()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP33RacesBothActualOwnerOrderingsAndEmitsExactVerifierObservation(activationWins: False) [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs(101,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP33RacesBothActualOwnerOrderingsAndEmitsExactVerifierObservation(Boolean activationWins)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.ActualSignedReservationAndAuthenticatedCopyPolicyDenialPrecedeNativeRotationAndTrim [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs(123,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.ActualSignedReservationAndAuthenticatedCopyPolicyDenialPrecedeNativeRotationAndTrim()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP34ActivatesBeforeReplacementCompromiseAndEmitsActualVerifierObservation [FAIL]
+      System.InvalidOperationException : Required native identifier unavailable: OwnerId
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(142,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.<ValidateRequiredIdentifiers>g__Text|3_0(JsonObject value, String[] fields)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(163,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.ValidateRequiredIdentifiers(ProtectionQualificationNativeCallKind kind, JsonObject payload)
+        src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs(112,0): at Hexalith.Platform.Protection.ProtectionQualificationInputSchema.Validate(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 prior, IReadOnlyDictionary`2 inheritedPromises)
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(33,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(41,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs(73,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2OwnerTests.CompiledP34ActivatesBeforeReplacementCompromiseAndEmitsActualVerifierObservation()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Protection.Tests (ID = 'db80ef61e8003b73ee35b1f3c9175a0b5cdd33eed6732aa5e841a8c19689754f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 65, Errors: 0, Failed: 15, Skipped: 0, Not Run: 0, Time: 1.205s

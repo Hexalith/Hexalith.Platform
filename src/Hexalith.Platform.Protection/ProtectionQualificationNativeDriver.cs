@@ -43,8 +43,79 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             try { if (bytes.Length == 0) { throw new InvalidOperationException("Exact nonempty canary required."); } }
             finally { CryptographicOperations.ZeroMemory(bytes); }
         }
+        var producedCells = new HashSet<string>(StringComparer.Ordinal); var beforeEffectCells = new HashSet<string>(StringComparer.Ordinal);
+        bool earlierOwnerWrite = false, beforeEffectOwnerWrite = false;
+        bool FutureOriginal(JsonNode? node)
+        {
+            if (node is JsonObject obj)
+            {
+                if (obj["$original"] is JsonObject original) { return !earlier.ContainsKey(original["id"]!.GetValue<string>()); }
+                return obj.Any(item => FutureOriginal(item.Value));
+            }
+            return node is JsonArray array && array.Any(FutureOriginal);
+        }
+        ProtectionQualificationNativeCell? KnownCell(JsonNode? node)
+        {
+            if (node is not JsonObject obj || FutureOriginal(obj)) { return null; }
+            var cellCall = ProtectionQualificationRecipeBinding.Bind(new("preflight-cell", ProtectionQualificationNativeCallKind.Backup, obj), request, earlier);
+            return cellCall.Payload.Deserialize<ProtectionQualificationNativeCell>(ErasureRootCustody.Json)!;
+        }
+        void Produced(ProtectionQualificationNativeCell? cell, HashSet<string>? transaction = null)
+        {
+            if (cell is null) { return; } Check(cell); string location = ProtectionQualificationNativeCell.LocationId(cell);
+            if (transaction is not null && !transaction.Add(location)) { throw new InvalidOperationException("Distinct atomic source/producer/completion/writer cells required before effects."); }
+            producedCells.Add(location);
+        }
         foreach (var template in recipe.Before.Concat([recipe.Effect]).Concat(recipe.Race is { } race ? [race] : []).Concat(recipe.After))
         {
+            if (template.Id == recipe.Effect.Id) { beforeEffectCells = new(producedCells, StringComparer.Ordinal); beforeEffectOwnerWrite = earlierOwnerWrite; }
+            bool isCompetingRace = recipe.Race?.Id == template.Id;
+            var availableCells = isCompetingRace ? beforeEffectCells : producedCells;
+            JsonNode? readCell = template.Kind switch
+            {
+                ProtectionQualificationNativeCallKind.UnsealEvent or ProtectionQualificationNativeCallKind.ReplayEvent or ProtectionQualificationNativeCallKind.ReplayCopy
+                    or ProtectionQualificationNativeCallKind.Backup or ProtectionQualificationNativeCallKind.Restore => template.Payload,
+                ProtectionQualificationNativeCallKind.ReplaySnapshot => template.Payload["Source"],
+                _ => null,
+            };
+            if (KnownCell(readCell) is { } requiredCell)
+            {
+                Check(requiredCell);
+                var actualCell = template.Kind == ProtectionQualificationNativeCallKind.Restore ? requiredCell with { Key = requiredCell.Key + ":backup" } : requiredCell;
+                // Owner state produced by an earlier owner transition is covered by the exact independently
+                // granted preflight phase above. No future body or result digest is invented here.
+                bool futureOwnerState = (isCompetingRace ? beforeEffectOwnerWrite : earlierOwnerWrite) && actualCell.AnchorScope is not null && priorHead.Head.Anchors.ContainsKey(actualCell.AnchorScope);
+                if (!availableCells.Contains(ProtectionQualificationNativeCell.LocationId(actualCell)) && !futureOwnerState)
+                {
+                    var available = await native.GetStateAsync<JsonElement>(actualCell.Component, actualCell.Key, ConsistencyMode.Strong, actualCell.Metadata, token).ConfigureAwait(false);
+                    if (available.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined) { throw new InvalidOperationException("Exact existing native input cell required before effects."); }
+                }
+            }
+            if (template.Kind is ProtectionQualificationNativeCallKind.SealEvent or ProtectionQualificationNativeCallKind.SealSnapshot)
+            {
+                var writes = new HashSet<string>(StringComparer.Ordinal);
+                var output = KnownCell(template.Payload["Source"] ?? template.Payload["source"]); Produced(output, writes);
+                if (output is not null)
+                {
+                    Produced(output with { Key = output.Key + ":producer" }, writes); Produced(output with { Key = output.CompletionKey ?? output.Key + ":completion" }, writes);
+                    if (template.Kind == ProtectionQualificationNativeCallKind.SealSnapshot) { Produced(output with { Key = output.Key + ":cache" }, writes); }
+                }
+                if (template.Payload["Enrollment"] is JsonObject || template.Payload["enrollment"] is JsonObject)
+                { var original = (template.Payload["Enrollment"] ?? template.Payload["enrollment"])!; Produced(KnownCell(original["Writer"]), writes); }
+                if (template.Payload["Entries"] is JsonArray outputEntries) { foreach (var entry in outputEntries) { Produced(KnownCell(entry?["Writer"]), writes); } }
+            }
+            else if (KnownCell(readCell) is { } copying && template.Kind is ProtectionQualificationNativeCallKind.Backup or ProtectionQualificationNativeCallKind.Restore
+                or ProtectionQualificationNativeCallKind.ReplayCopy or ProtectionQualificationNativeCallKind.ReplayEvent or ProtectionQualificationNativeCallKind.ReplaySnapshot)
+            {
+                string key = template.Kind == ProtectionQualificationNativeCallKind.Backup ? copying.Key + ":backup"
+                    : template.Kind == ProtectionQualificationNativeCallKind.Restore ? copying.AnchorScope is null ? copying.Key + ":restored" : copying.Key : copying.Key + ":replay";
+                Produced(copying with { Key = key });
+            }
+            earlierOwnerWrite |= template.Kind is ProtectionQualificationNativeCallKind.Guard or ProtectionQualificationNativeCallKind.GuardOwnersEffective
+                or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch or ProtectionQualificationNativeCallKind.Register or ProtectionQualificationNativeCallKind.RegisterIfDispatched
+                or ProtectionQualificationNativeCallKind.Reserve or ProtectionQualificationNativeCallKind.ReserveIfDispatched or ProtectionQualificationNativeCallKind.Block or ProtectionQualificationNativeCallKind.Compromise
+                or ProtectionQualificationNativeCallKind.Activate or ProtectionQualificationNativeCallKind.Lifecycle;
+
             void CheckInstalledCells(JsonNode? node)
             {
                 if (node is JsonObject obj)

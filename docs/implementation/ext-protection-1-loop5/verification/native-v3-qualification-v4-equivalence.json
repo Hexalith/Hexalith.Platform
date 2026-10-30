@@ -1,0 +1,69 @@
+{
+  "nativePins": {
+    "runtime": "/tmp/ext-protection-loop5-native-runtime-v3",
+    "runtimeFiles": 257,
+    "manifestSha256": "082b57268e242f8abda508a6fc3fe99c49cff7dfd019642fb21fd8bdb5c3ff1a",
+    "assemblySha256": "bb24bedd91a54baf33458bb63a79b47d7671917e1537454bc0723dd4de039746",
+    "source": "/tmp/ext-protection-loop5-native-source-v3",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "99e703d1e98ec896c5cdffb4270c0be0ae47e3dbe3efaa212820c544885c452d"
+  },
+  "qualificationPins": {
+    "runtime": "/tmp/ext-protection-loop5-qualification-runtime-v4",
+    "runtimeFiles": 257,
+    "manifestSha256": "ea145000f047e1af88e9eddbbf0ed9a6335e598a7c393cd205071b1a04c3047a",
+    "assemblySha256": "43875ed2a5b9dbc632d9b305e3d41f7e2effe7abdbf9e62b5a04781f13000222",
+    "source": "/tmp/ext-protection-loop5-qualification-source-v4",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "ca6d357172d8aa51bc3dee302e0a241ed398f39108f78e40e44878acc966e542"
+  },
+  "sourceDelta": [
+    {
+      "path": "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+      "nativeSha256": "d27e9947da0e1ed5c209b437c02bf4e9bc351c592f5019032ef1f93158f67b8b",
+      "qualificationSha256": "ef6c654aa4c90ca3f26c8f1ec268b22eaa76fd09bc96be63ae8cd928805280e0"
+    },
+    {
+      "path": "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5RecoveryTests.cs",
+      "nativeSha256": "90bdfb9037fc962642677994d0d1c7f5c6e4e279eab94852ec877e8ce61e97ef",
+      "qualificationSha256": "a89c2e72a8317e57927472a70b1dcbe300f6455877571c52f01a4e59ab10bef7"
+    }
+  ],
+  "runtimeDelta": [
+    {
+      "path": "Hexalith.EventStore.Server.dll",
+      "nativeSha256": "af6496929414dd48dd9a4339dfbf197df61a035e4d84c889601b4f11bab17836",
+      "qualificationSha256": "01d2368af51807ba19a0b7feb079f8b4033edf3343ecd7d94d6bcf2b457b6556"
+    },
+    {
+      "path": "Hexalith.EventStore.Server.pdb",
+      "nativeSha256": "f2cc79b7d38e3b3860ecb6b35bc6be5a53ff79c179faec4ed8ce5c5c292f4731",
+      "qualificationSha256": "6fb00af45f84ede804b19ed16924d9b1b6867e29c4b303c5362047b4b1b05761"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.Tests.dll",
+      "nativeSha256": "bb24bedd91a54baf33458bb63a79b47d7671917e1537454bc0723dd4de039746",
+      "qualificationSha256": "43875ed2a5b9dbc632d9b305e3d41f7e2effe7abdbf9e62b5a04781f13000222"
+    },
+    {
+      "path": "Hexalith.Platform.Protection.Tests.pdb",
+      "nativeSha256": "397eb51c070d8ba86771f40fa8712670a5cccea1c777dfc73fd71265330a68ae",
+      "qualificationSha256": "864e924b31159f058764940e70964c364db5918c72ad0750163689ed136015e5"
+    }
+  ],
+  "unchangedSourceFiles": 5939,
+  "productionRuntimeFilesByteIdentical": false,
+  "productionRuntimeException": "Hexalith.EventStore.Server.dll/pdb were rebuilt. The separate comparison finds all defined-type method IL/locals/exception regions/signatures, field/constant/property/interface/generic metadata, custom attributes, assembly references and managed resources identical; PE layout, MVID and PDB/debug data are deliberately distinct. Whole DLLs are not equated.",
+  "serverComparison": {
+    "first": "/tmp/ext-protection-loop5-native-runtime-v3/Hexalith.EventStore.Server.dll",
+    "second": "/tmp/ext-protection-loop5-qualification-runtime-v4/Hexalith.EventStore.Server.dll",
+    "typeAndAssemblyRecords": 2516,
+    "differences": [],
+    "firstSemanticSha256": "cfc1075675114550aa065d5a50ef8f498cd71ec54394d5b9a7bf519fca16d2ec",
+    "secondSemanticSha256": "cfc1075675114550aa065d5a50ef8f498cd71ec54394d5b9a7bf519fca16d2ec",
+    "excludes": "PE layout, MVID, debug directory and PDB; hashes defined types, signatures, methods/locals/exception regions, fields/constants, properties, interfaces/generics, custom attributes, assembly references and managed resources"
+  },
+  "nativeTestSourceFilesByteIdentical": true,
+  "sharedFixtureReason": "ErasureRootAuthorizationFixture gains an opt-in lifecycle evidence reader used only by the recovery theory. All native fixture constructors leave it null; prior default-interface ReadLifecycleEvidenceAsync and the new implementation both return null in that default state. Native OpenBao tests never configure or read this port. Existing authorization, store, rotation, trim and holder methods are byte unchanged.",
+  "repeatUnchangedNativeGeometry": false
+}

@@ -81,4 +81,37 @@ public sealed class ErasureRootLoop5GrowthTests
         Console.WriteLine(JsonSerializer.Serialize(new { occurrences = 2048, owners = 2048, oldHeadBytes = oldBytes, headBytes, archiveBytes = fixture.Store.ArchiveCreatedBytes,
             archiveWrites = fixture.Store.ArchiveWrites, archiveReads = fixture.Store.ArchiveReads, perLookupBound = 20, typedErased = replay.HasErasedContent }));
     }
+    [Fact]
+    public async Task OneUpdateReusesVerifiedImmutableNodesButFreshReadersStillValidateTheCommittedTree()
+    {
+        var token = TestContext.Current.CancellationToken; using var cached = new ErasureRootEngineFixture(); using var uncached = new ErasureRootEngineFixture();
+        var index = new ErasureRootOccurrenceIndex(cached.Store, cached.Custody.Installation, "tenant-a"); string? sharedRoot = null, separateRoot = null;
+        for (int item = 0; item < 256; item++)
+        {
+            var value = new ErasureRootOccurrenceReference("value-" + item, false);
+            sharedRoot = await index.WriteAsync(sharedRoot, "cache:" + item, value, token);
+            separateRoot = await new ErasureRootOccurrenceIndex(uncached.Store, uncached.Custody.Installation, "tenant-a").WriteAsync(separateRoot, "cache:" + item, value, token);
+        }
+        sharedRoot.ShouldBe(separateRoot); cached.Store.ArchiveCreatedBytes.ShouldBe(uncached.Store.ArchiveCreatedBytes); cached.Store.ArchiveWrites.ShouldBe(uncached.Store.ArchiveWrites);
+        cached.Store.ArchiveReads.ShouldBeLessThan(uncached.Store.ArchiveReads / 4);
+        var uncommitted = (await cached.Custody.ReadAsync("tenant-a", token))!.Value;
+        (await cached.Custody.ReadSourceAsync(uncommitted.Head, "cache:0", token)).ShouldBeNull();
+        (await cached.Custody.SaveAsync("tenant-a", uncommitted.Version, uncommitted.Head with { OccurrenceIndexRoot = sharedRoot }, token)).ShouldBeTrue();
+        var committed = (await cached.Custody.ReadAsync("tenant-a", token))!.Value; committed.Head.OccurrenceIndexRoot.ShouldBe(sharedRoot);
+        int reads = cached.Store.ArchiveReads;
+        foreach (int item in new[] { 0, 127, 255 })
+        {
+            var fresh = new ErasureRootOccurrenceIndex(cached.Store, cached.Custody.Installation, "tenant-a");
+            (await fresh.ReadAsync<ErasureRootOccurrenceReference>(committed.Head.OccurrenceIndexRoot, "cache:" + item, token))!.OccurrenceId.ShouldBe("value-" + item);
+        }
+        cached.Store.ArchiveReads.ShouldBeGreaterThan(reads);
+        var head = (await cached.Custody.ReadAsync("tenant-a", token))!.Value;
+        (await cached.Custody.ReadSourceAsync(head.Head, "cache:0", token)).ShouldBeNull();
+        await Should.ThrowAsync<InvalidOperationException>(() => new ErasureRootOccurrenceIndex(cached.Store, cached.Custody.Installation, "tenant-b").ReadAsync<ErasureRootOccurrenceReference>(sharedRoot, "cache:0", token));
+        using var canceled = new CancellationTokenSource(); canceled.Cancel();
+        await Should.ThrowAsync<OperationCanceledException>(() => index.ReadAsync<ErasureRootOccurrenceReference>(sharedRoot, "cache:0", canceled.Token));
+        Console.WriteLine(JsonSerializer.Serialize(new { immutableBatchEntries = 256, cachedArchiveReads = reads, freshInstanceArchiveReads = uncached.Store.ArchiveReads,
+            identicalArchiveBytes = cached.Store.ArchiveCreatedBytes, identicalCommittedTree = sharedRoot == separateRoot }));
+    }
+
 }

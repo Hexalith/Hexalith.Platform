@@ -1,0 +1,100 @@
+[
+  {
+    "name": "protection-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 17.847,
+    "path": "protection-build.log",
+    "sha256": "87a6351674c9a56cccc5273e2c1ca1f0f74a7f484f10bae508ee8bbe92127862"
+  },
+  {
+    "name": "protection-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+      "-noColor",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/protection.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 122.191,
+    "path": "protection-tests.log",
+    "sha256": "cdacb48f5b07a5705b4eab391e4cd76f7a33d5787f64ac03839c2003d2b4ed61"
+  },
+  {
+    "name": "custody-lifecycle-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 13.051,
+    "path": "custody-lifecycle-build.log",
+    "sha256": "1f7a57df4cf6927da0be4d802f696ea4ece83e4b301646e27b0f363e540428f6"
+  },
+  {
+    "name": "custody-lifecycle-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Custody.Tests/bin/Debug/net10.0/Hexalith.Platform.Custody.Tests.dll",
+      "-noColor",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop5-parent-final/custody-lifecycle.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.932,
+    "path": "custody-lifecycle-tests.log",
+    "sha256": "17b5fbcdbee7f08b145d73c59f1f38dd5e6b081742e65088b3dc35c0f321a711"
+  },
+  {
+    "name": "secrets-adapters-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:CustomBeforeMicrosoftCommonTargets=/tmp/ext-protection-loop5-adapter-selection/selection.targets"
+    ],
+    "exitCode": 1,
+    "seconds": 4.994,
+    "path": "secrets-adapters-build.log",
+    "sha256": "92ae9959b418e7bf8168846d518263afb48967d9bb79eef741f7be92a4138600"
+  }
+]

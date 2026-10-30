@@ -9,6 +9,9 @@ internal sealed class ErasureRootAuthorizationFixture : IErasureRootAuthorizatio
     internal Func<string, string, string, CancellationToken, Task<ErasureRootEffectBoundaryEvidence?>>? EffectBoundaryReader { get; set; }
     public Task<ErasureRootEffectBoundaryEvidence?> ReadEffectBoundaryAsync(string tenantId, string callDigest, string boundary, CancellationToken cancellationToken)
         => EffectBoundaryReader?.Invoke(tenantId, callDigest, boundary, cancellationToken) ?? Task.FromResult<ErasureRootEffectBoundaryEvidence?>(null);
+    internal Func<CustodyKeyLifecycleRequest, ErasureRootPermissionEvidence?>? LifecycleEvidenceReader { get; set; }
+    public Task<ErasureRootPermissionEvidence?> ReadLifecycleEvidenceAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken)
+        => Task.FromResult(Allowed ? LifecycleEvidenceReader?.Invoke(request) : null);
     internal HashSet<string> DeniedOperations { get; } = new(StringComparer.Ordinal);
     internal bool Allowed { get; set; } = true;
     internal bool TransitionAllowed { get; set; } = true;

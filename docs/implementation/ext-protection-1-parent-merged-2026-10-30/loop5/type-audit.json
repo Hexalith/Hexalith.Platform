@@ -1,0 +1,38 @@
+{
+  "csharpFiles": 238,
+  "newViolations": [],
+  "preexistingExceptions": [
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+      "current": [
+        "DaprSigningTrustAdapter",
+        "DaprRevocationAuthenticatorAdapter",
+        "DaprSigningProviderAdapter",
+        "DaprReplayRegistrarAdapter",
+        "DaprCompromiseRegistrarAdapter",
+        "CapabilityIdentity"
+      ],
+      "baseline": [
+        "DaprSigningTrustAdapter",
+        "DaprRevocationAuthenticatorAdapter",
+        "DaprSigningProviderAdapter",
+        "DaprReplayRegistrarAdapter",
+        "DaprCompromiseRegistrarAdapter",
+        "CapabilityIdentity"
+      ]
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+      "current": [
+        "SnapshotManager",
+        "Log"
+      ],
+      "baseline": [
+        "SnapshotManager",
+        "Log"
+      ]
+    }
+  ]
+}

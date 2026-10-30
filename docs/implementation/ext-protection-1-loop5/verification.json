@@ -1,0 +1,917 @@
+{
+  "schema": "EXT-PROTECTION-1.loop5-local-implementation.v1",
+  "status": "in-progress",
+  "nativeStatus": "NativeCasesPassed",
+  "localQualification": "Passed",
+  "counts": {
+    "protection": {
+      "total": 471,
+      "passed": 465,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 6,
+      "not-run": 0,
+      "seconds": 132.349
+    },
+    "lifecycle": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 0.688
+    },
+    "eventstore": {
+      "total": 444,
+      "passed": 444,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 5.23
+    },
+    "contracts": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 0.181
+    },
+    "payload": {
+      "total": 897,
+      "passed": 897,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 3.522
+    }
+  },
+  "offlineTests": 116,
+  "harnessBootstrapTests": 12,
+  "sourceCases": 41,
+  "liveExecuted": false,
+  "agentsExecuted": false,
+  "productionQualified": false,
+  "fullCopyInventoryQualified": false,
+  "acceptedTarget": null,
+  "acceptedProfile": null,
+  "acceptedIntegrationDate": null,
+  "functionalSourceFiles": 267,
+  "loop5DeltaFiles": 64,
+  "platformBaseline": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+  "eventstoreBaseline": "a62241679854fa9c359c0f552114a42ca0f6a638",
+  "frozenIntentSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "restoration": "verification/restoration.json",
+  "commands": [
+    {
+      "name": "custody-lifecycle-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.113,
+      "path": "final-v7/custody-lifecycle-build.log",
+      "sha256": "adf564e8750217936b4203b6794777948264e4810a683c3d7ad22aa835a7ae36"
+    },
+    {
+      "name": "custody-lifecycle-tests",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.Platform.Custody.Tests/bin/Debug/net10.0/Hexalith.Platform.Custody.Tests.dll",
+        "-noColor",
+        "-class",
+        "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+        "-result-xml",
+        "/tmp/ext-protection-loop5-evidence/final-v7/custody-lifecycle.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 0.879,
+      "path": "final-v7/custody-lifecycle-tests.log",
+      "sha256": "5e8e1c16451da9e1fafb7268bf951111c939349bae8e8d648a1c37894b56e9f3"
+    },
+    {
+      "name": "protection-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.278,
+      "path": "final-v8/protection-final-build.log",
+      "sha256": "9a6b3d65c41dcdfe4ea197a0ca750e6712af5952d823b9ed905d650323b6e483"
+    },
+    {
+      "name": "protection-final-tests",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+        "-noColor",
+        "-result-xml",
+        "/tmp/ext-protection-loop5-evidence/final-v8/protection-final.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 132.678,
+      "path": "final-v8/protection-final-tests.log",
+      "sha256": "4ebe9b803bbbae7eb8c2617eb140ace55c24e269e78cd1f64d1ea784a751110b"
+    },
+    {
+      "name": "eventstore-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 15.986,
+      "path": "final-v7/eventstore-final-build.log",
+      "sha256": "aed08bea9ba93400bad2c38a91463fc73c9c7fbc78ef5bd657d8ece92725afbf"
+    },
+    {
+      "name": "eventstore-final-tests",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionActorTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionOriginalTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.GovernanceScopeGuardTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.PublishedTrustDeletionConsumptionAuthorityTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.InteractionPayloadProtectionServiceTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests",
+        "-class",
+        "Hexalith.EventStore.Server.Tests.Events.SnapshotManagerTests",
+        "-result-xml",
+        "/tmp/ext-protection-loop5-evidence/final-v7/eventstore-final.xml",
+        "-noColor"
+      ],
+      "exitCode": 0,
+      "seconds": 5.694,
+      "path": "final-v7/eventstore-final-tests.log",
+      "sha256": "48651bd562a2cfbc675ce355ee94a6b676b1f3f150f0a573c8981027567bc2e2"
+    },
+    {
+      "name": "contracts-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.377,
+      "path": "final-v7/contracts-final-build.log",
+      "sha256": "fcd0fc3934bf8b61001b014961bf5c5461445a2815102be53b721e6a48be909d"
+    },
+    {
+      "name": "contracts-final-tests",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Contracts.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.Tests.dll",
+        "-noColor",
+        "-class",
+        "Hexalith.EventStore.Contracts.Tests.Security.RecoverableAnchoredStateTests",
+        "-result-xml",
+        "/tmp/ext-protection-loop5-evidence/final-v7/contracts-final.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 0.391,
+      "path": "final-v7/contracts-final-tests.log",
+      "sha256": "f7d34c3b0baa1cdfcdc7e22a10a9e17c807ed9353612fb77133e988b232e7c08"
+    },
+    {
+      "name": "payload-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.919,
+      "path": "final-v7/payload-final-build.log",
+      "sha256": "d1f0c7b25a7a0f33c583278794b6a02e35b105a2fa457c405c080cdc74a7eebe"
+    },
+    {
+      "name": "payload-final-tests",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.EventStore.PayloadProtection.Tests/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.Tests.dll",
+        "-noColor",
+        "-result-xml",
+        "/tmp/ext-protection-loop5-evidence/final-v7/payload-final.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 3.72,
+      "path": "final-v7/payload-final-tests.log",
+      "sha256": "5cd2a45e106354dfb9a1e39fa956acc3ec9e48cf67f24ac72875a074a085ba37"
+    },
+    {
+      "name": "payload-aot-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.EventStore.PayloadProtection/Hexalith.EventStore.PayloadProtection.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 1.076,
+      "path": "final-v7/payload-aot-final-build.log",
+      "sha256": "ecccdff98cb0edad5b48e7f6512d394386619fc05ae6476b8b4d15ddd705da5d"
+    },
+    {
+      "name": "Hexalith.Platform.EventStoreHost-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 3.032,
+      "path": "final-v8/Hexalith.Platform.EventStoreHost-final-build.log",
+      "sha256": "5ece96c59f40dcbf1d275d2f15d1847cde0177682d46e1eee9fc3de0fba5d660"
+    },
+    {
+      "name": "Hexalith.Platform.Protection.Qualification.Executor-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.337,
+      "path": "final-v8/Hexalith.Platform.Protection.Qualification.Executor-final-build.log",
+      "sha256": "a8504ac463297dfe4a00fdbe9f35413f4593526a7253139ec16c4ad271b207b9"
+    },
+    {
+      "name": "Hexalith.Platform.Protection.Qualification.Observer-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.361,
+      "path": "final-v8/Hexalith.Platform.Protection.Qualification.Observer-final-build.log",
+      "sha256": "10f81b411c153c5ff225f2de8f55bdc6518192347c9e0f035b2541dc885bd514"
+    },
+    {
+      "name": "Hexalith.Platform.Protection.Qualification.Enrollment-final-build",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "seconds": 2.265,
+      "path": "final-v8/Hexalith.Platform.Protection.Qualification.Enrollment-final-build.log",
+      "sha256": "abf3ea727da504060c612eda4ec0c07b230c7ca9a54535e7db06c30351c6fe0e"
+    },
+    {
+      "name": "harness-final",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-protection-1",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 1.113,
+      "path": "final-v8/harness-final.log",
+      "sha256": "0116ac5d6969e2cf00e4332b600f5bd202d51d9f1acde6c10ff01d5f3c654c93"
+    },
+    {
+      "name": "source-final",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "python3",
+        "tools/verify-ext-protection-1.py",
+        "--mode",
+        "Source"
+      ],
+      "exitCode": 0,
+      "seconds": 0.041,
+      "path": "final-v8/source-final.log",
+      "sha256": "b331043bc1b4ef5a172a6a5a89501e59ac85ec72adc1efe6608d8f249e07549a"
+    },
+    {
+      "name": "offline-verifier-final",
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_ext_protection_1*.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 17.692,
+      "path": "final-v8/offline-verifier-final.log",
+      "sha256": "58bd2a121f40e2b7d711233333b1eb3c56714e9b55e8ef91f8dd919efd5aefb9"
+    }
+  ],
+  "nativePins": {
+    "runtime": "/tmp/ext-protection-loop5-native-runtime-v7",
+    "runtimeFiles": 257,
+    "manifestSha256": "d02279cd78537159faf8bf5539d049fc970ce6537f2f794bc6a3e1ebb32926f6",
+    "assemblySha256": "2a9406e6633c27ade310dbf8b2b7104cec5db54572e558436b5bef400f129bfb",
+    "source": "/tmp/ext-protection-loop5-native-source-v7",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "e55836f5fee408ee202ca6c3953101bb6624e4440e71da6b9713d652f0aec04c"
+  },
+  "qualificationPins": {
+    "runtime": "/tmp/ext-protection-loop5-qualification-runtime-v8",
+    "runtimeFiles": 257,
+    "manifestSha256": "9c2b1719778187b914ce36874795dc117e4c26349174ba73846b82d55052e482",
+    "assemblySha256": "5670d521f3d382896e7a0b814961a0c16c288e558340a738457dd9221b43aee3",
+    "source": "/tmp/ext-protection-loop5-qualification-source-v8",
+    "sourceFiles": 5941,
+    "sourceManifestSha256": "82a56b38838c87b01d78770e009e3d029d609562649be3085210e114ae450d1c"
+  },
+  "nativeQualificationEquivalence": "verification/native-v7-qualification-v8-equivalence.json",
+  "nativeResult": "verification/native-full-five-v7.json",
+  "nativeExpectedCases": 5,
+  "nativeExpectedTargets": 1000,
+  "nativeExpectedOccurrenceOwners": 256,
+  "nativeObservedResult": {
+    "agentsExecuted": false,
+    "cases": [
+      "TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot",
+      "ThousandTargetManifestReturnsCompleteOrderedOriginalVector",
+      "PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest",
+      "LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt",
+      "NativeTenantAndCompleteContextSubstitutionCannotDecrypt"
+    ],
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "image",
+          "inspect",
+          "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641"
+        ],
+        "exitCode": 0,
+        "stage": "image-inspect",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "create",
+          "--pull=never",
+          "--name",
+          "ext-protection-1-raft-probe-69169b528cc9111fa4d6f96f7df60ede",
+          "--label",
+          "hexalith.ext-protection-1.raft-probe=69169b528cc9111fa4d6f96f7df60ede",
+          "--network=none",
+          "--read-only",
+          "--log-driver=none",
+          "--cap-drop=ALL",
+          "--security-opt=no-new-privileges",
+          "--user=65532:65532",
+          "--memory=2g",
+          "--memory-swap=2g",
+          "--pids-limit=128",
+          "--env",
+          "BAO_ADDR=http://127.0.0.1:8200",
+          "--env",
+          "GOMAXPROCS=2",
+          "--env",
+          "GOMEMLIMIT=128MiB",
+          "--tmpfs",
+          "/openbao/file:rw,noexec,nosuid,nodev,size=1536m,mode=0700,uid=65532,gid=65532",
+          "--tmpfs",
+          "/openbao/logs:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+          "--tmpfs",
+          "/tmp:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+          "--entrypoint=/bin/sh",
+          "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+          "-ec",
+          "umask 077; mkdir -p /openbao/file/raft; printf %s 'ui = false\napi_addr = \"http://127.0.0.1:8200\"\ncluster_addr = \"https://127.0.0.1:8201\"\nlistener \"tcp\" {\n  address = \"127.0.0.1:8200\"\n  cluster_address = \"127.0.0.1:8201\"\n  tls_disable = true\n  max_request_size = 67108864\n  max_request_json_memory = 134217728\n  max_request_json_strings = 1000000\n}\nstorage \"raft\" {\n  path = \"/openbao/file/raft\"\n  node_id = \"disposable-negative-control\"\n  max_entry_size = 67108864\n  max_transaction_size = 67108864\n}\n' > /tmp/probe.hcl; exec bao server -config=/tmp/probe.hcl"
+        ],
+        "exitCode": 0,
+        "stage": "container-create",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7"
+        ],
+        "exitCode": 0,
+        "stage": "container-inspect",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "start",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7"
+        ],
+        "exitCode": 0,
+        "stage": "container-start",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "version"
+        ],
+        "exitCode": 0,
+        "stage": "native-version",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "read",
+          "-format=json",
+          "sys/seal-status"
+        ],
+        "exitCode": 0,
+        "stage": "startup-raft",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "operator",
+          "init",
+          "-format=json",
+          "-key-shares=1",
+          "-key-threshold=1"
+        ],
+        "exitCode": 0,
+        "stage": "initialize",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "read",
+          "-format=json",
+          "sys/seal-status"
+        ],
+        "exitCode": 0,
+        "stage": "unsealed",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "write",
+          "-format=json",
+          "sys/unseal",
+          "-"
+        ],
+        "exitCode": 0,
+        "stage": "unsealed-unseal",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "read",
+          "-format=json",
+          "sys/seal-status"
+        ],
+        "exitCode": 0,
+        "stage": "unsealed",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "exec",
+          "-i",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7",
+          "sh",
+          "-ec",
+          "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+          "sh",
+          "read",
+          "-format=json",
+          "sys/leader"
+        ],
+        "exitCode": 0,
+        "stage": "raft-leader",
+        "stdin": "private-omitted"
+      },
+      {
+        "argv": [
+          "dotnet",
+          "/tmp/ext-protection-loop5-native-runtime-v7/Hexalith.Platform.Protection.Tests.dll",
+          "-class",
+          "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests",
+          "-noColor"
+        ],
+        "credentials": "private-environment-omitted",
+        "stage": "native-component-suite",
+        "timeoutSeconds": 3600
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7"
+        ],
+        "exitCode": 0,
+        "stage": "cleanup-inspect",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "rm",
+          "--force",
+          "--volumes",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7"
+        ],
+        "exitCode": 0,
+        "stage": "cleanup-remove",
+        "stdin": "none"
+      },
+      {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "5d32f7746513ccc325175a36296d91de862e0af15c1a1c63daea9e268cc575d7"
+        ],
+        "exitCode": 1,
+        "stage": "cleanup-verify",
+        "stdin": "none"
+      }
+    ],
+    "containerName": "ext-protection-1-raft-probe-69169b528cc9111fa4d6f96f7df60ede",
+    "expectedNativeVersion": "2.6.2",
+    "failure": null,
+    "frozenRuntimeManifestSha256": "d02279cd78537159faf8bf5539d049fc970ce6537f2f794bc6a3e1ebb32926f6",
+    "fullCopyInventoryQualified": false,
+    "g1Qualified": false,
+    "harnessSourceSha256": "29a962bbb45edb426e89cff97be53988fb2a2d70744f3cc943849ec85149008b",
+    "hostMemoryErasureProven": false,
+    "image": "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+    "independentErasureAuthorityTested": false,
+    "isolationSourceSha256": "1c668b8fa41dd609dc59ece1aeb02aa87b5902900309a7704d1a42dad25f6fbf",
+    "liveExecuted": false,
+    "nativeBounds": {
+      "archiveOriginalMaxBytes": 50331648,
+      "clientMaxHeadBytes": 31457280,
+      "clientMaxResponseBytes": 33554432,
+      "containerMemoryBytes": 2147483648,
+      "dataTmpfsBytes": 1610612736,
+      "legacyArchiveChunkBytes": 4194304,
+      "listenerMaxJsonMemoryBytes": 134217728,
+      "listenerMaxJsonStrings": 1000000,
+      "listenerMaxRequestBytes": 67108864,
+      "raftMaxEntryBytes": 67108864,
+      "raftMaxTransactionBytes": 67108864,
+      "sharedArchiveMaxChunkBytes": 131072,
+      "sharedArchiveMaxChunks": 3073,
+      "sharedArchiveMinChunkBytes": 16384
+    },
+    "nativeGrowthGeometry": [
+      {
+        "archiveWriteBytes": 1485075,
+        "archiveWrites": 39,
+        "nativeHeadBytes": 9485043,
+        "nativeHistoryGeometry": 131072,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 7372800,
+        "transitions": 8
+      },
+      {
+        "archiveWriteBytes": 8494371,
+        "archiveWrites": 115,
+        "nativeHeadBytes": 9485043,
+        "nativeHistoryGeometry": 5242880,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 22708224,
+        "transitions": 8
+      }
+    ],
+    "nativeOccurrenceGeometry": [
+      {
+        "archiveWriteBytes": 7013381,
+        "archiveWrites": 5021,
+        "lookupReadBound": 16,
+        "nativeHeadBytes": 47829,
+        "nativeOccurrences": 256,
+        "nativeOwners": 256,
+        "restrictedRuntimePolicy": true
+      }
+    ],
+    "nativeSuiteElapsedSeconds": 2534.671,
+    "nativeTestSummary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "observations": {
+      "container-isolation": {
+        "logging": "none",
+        "network": "none",
+        "persistentVolumes": false,
+        "publishedPorts": false,
+        "storage": "tmpfs",
+        "verified": true
+      },
+      "image-identity": {
+        "localImageId": "sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+        "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+        "verified": true
+      },
+      "native-component-cases": {
+        "actualCustodyStore": true,
+        "count": 5,
+        "privateEligibility": "ExplicitSyntheticTestFixture",
+        "verified": true
+      },
+      "native-version": {
+        "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+        "verified": true,
+        "version": "2.6.2"
+      },
+      "raft-leader": {
+        "leader": true,
+        "verified": true
+      },
+      "startup-raft": {
+        "initialized": false,
+        "sealed": true,
+        "storageType": "raft",
+        "verified": true
+      },
+      "unsealed": {
+        "initialized": true,
+        "sealed": false,
+        "storageType": "raft",
+        "verified": true
+      }
+    },
+    "outcome": "NativeCasesPassed",
+    "ownedContainerStateBeforeCleanup": {
+      "exitCode": 0,
+      "oomKilled": false,
+      "running": true
+    },
+    "ownershipLabel": {
+      "hexalith.ext-protection-1.raft-probe": "69169b528cc9111fa4d6f96f7df60ede"
+    },
+    "phase": "Completed",
+    "probeSourceSha256": "1c668b8fa41dd609dc59ece1aeb02aa87b5902900309a7704d1a42dad25f6fbf",
+    "productionEngineTested": false,
+    "productionQualified": false,
+    "runId": "69169b528cc9111fa4d6f96f7df60ede",
+    "runtimePolicies": [
+      {
+        "headMount": "heads-067e69dca87c4f12b55d1ce5f3dcc8da",
+        "renderedPolicySha256": "504edeeb5a68d4bb0e5b5cece6516746bd93f90fa75feeec4949b5894b07f4c9",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-067e69dca87c4f12b55d1ce5f3dcc8da",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-067e69dca87c4f12b55d1ce5f3dcc8da"
+      },
+      {
+        "headMount": "heads-920652f415da4187a88b8f199bca5894",
+        "renderedPolicySha256": "f64394f17d82f77e67bd58ee20eecefb97c73e12e0e17f6ac1a9297303bf534f",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-920652f415da4187a88b8f199bca5894",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-920652f415da4187a88b8f199bca5894"
+      },
+      {
+        "headMount": "heads-bc4e687de51045398290fd71cf092bad",
+        "renderedPolicySha256": "862ecc8a2ccb665acc764d9f7a79254afc921e58f4faa4dec2278707c33ec07a",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-bc4e687de51045398290fd71cf092bad",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-bc4e687de51045398290fd71cf092bad"
+      },
+      {
+        "headMount": "heads-c28c931452c44470847ef214b4b48d5f",
+        "renderedPolicySha256": "a0a2a1833160db70d7a530a7ab2de2caf4195f54053d3c3dfa9492d671ead438",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-c28c931452c44470847ef214b4b48d5f",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-c28c931452c44470847ef214b4b48d5f"
+      },
+      {
+        "headMount": "heads-e2adc93316164fc1b766a0d34515dfca",
+        "renderedPolicySha256": "e33075105ed34004b7cbcea8ecbe4843dc6c30f41fb49afa1d58ebdccc4af41d",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-e2adc93316164fc1b766a0d34515dfca",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-e2adc93316164fc1b766a0d34515dfca"
+      }
+    ],
+    "safeFailureLocations": [],
+    "safeFailureStages": [],
+    "safeFailureTypes": [],
+    "schema": "EXT-PROTECTION-1.erc-native-integration.v1",
+    "scope": "Owned disposable native ERC; actual production custody/store with synthetic private eligibility only",
+    "secretMaterialIncludedInEvidence": false,
+    "serverConfigurationSha256": "cdedf8dba5eeed9ab7f09b6775a6f6bdb9592a53a8f33bb709774730dbc8af67",
+    "testAssemblySha256": "2a9406e6633c27ade310dbf8b2b7104cec5db54572e558436b5bef400f129bfb",
+    "transactionProofExecuted": false
+  },
+  "recoveryLimit": "Exact native originals recover journal loss. A read result lost before separate native-original retention remains Unknown if no atomic independent original exists; current values and redispatch never substitute for it.",
+  "externalInputs": "Physical A1/all-copy acceptance and full independently installed41 remain external/unestablished; parent merge/audit/review/source-candidate capture follows."
+}

@@ -41,6 +41,8 @@ public sealed class ErasureRootLoop5RecoveryTests
         var faults = new ProtectionQualificationFaults(native, new("controls", "cell", new()), "controls-enrollment", new HashSet<string> { "later" });
         var proxies = Substitute.For<IActorProxyFactory>(); proxies.CreateActorProxy<IDeletionConsumptionActor>(Arg.Any<Dapr.Actors.ActorId>(), Arg.Any<string>(), Arg.Any<ActorProxyOptions>()).Returns(fixture.Actor);
         var owner = new DaprDeletionProtectionOwner("tenant-a", proxies, TimeProvider.System); var guard = new GovernanceGuardFixture();
+        bool lifecycleCurrent = true;
+        fixture.Permissions.LifecycleEvidenceReader = input => lifecycleCurrent ? new(input.Identity.TenantId, input.OperationId, input.Action.ToString(), ErasureRootCustody.Hash(input), "independent-original-lifecycle", true) : null;
         JsonObject payload;
         switch (kind)
         {
@@ -94,6 +96,9 @@ public sealed class ErasureRootLoop5RecoveryTests
         bool hasAtomicOriginal = !beforeNativeRetention || kind is ProtectionQualificationNativeCallKind.Fault or ProtectionQualificationNativeCallKind.LookupProvider;
         (expected is not null).ShouldBe(hasAtomicOriginal);
         if (kind == ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch && expected is not null) { expected["status"]!.GetValue<string>().ShouldBe("AlreadyCommitted"); }
+        lifecycleCurrent = false;
+        if (kind == ProtectionQualificationNativeCallKind.AuthorizeLifecycle && expected is not null)
+        { expected["status"]!.GetValue<string>().ShouldBe("Authorized"); expected["receiptId"]!.GetValue<string>().ShouldBe("independent-original-lifecycle"); }
         await fixture.RestoreOwnerAsync(oldOwner); int rotates = fixture.Store.RotateCount, trims = fixture.Store.TrimCount, guards = guard.Backend.CommittedTransactions, controls = controlWrites;
         var lookup = new JsonObject { ["operationId"] = "lookup", ["action"] = "LookupOriginalOperation", ["bindingDigest"] = binding, ["originalOperationId"] = "original", ["originalRequestSha256"] = ProtectionQualificationOperationJournal.Digest(request) };
         if (hasAtomicOriginal)
@@ -108,5 +113,20 @@ public sealed class ErasureRootLoop5RecoveryTests
         (await driver.RecoverAsync(exact with { Id = "undispatched" }, token)).ShouldBeNull();
         fixture.Store.RotateCount.ShouldBe(rotates); fixture.Store.TrimCount.ShouldBe(trims); guard.Backend.CommittedTransactions.ShouldBe(guards); controlWrites.ShouldBe(controls);
         if (kind == ProtectionQualificationNativeCallKind.LookupProvider) { trims.ShouldBe(1); (await fixture.Store.HeadAsync("tenant-a")).Pending.ShouldBeNull(); }
+        // A lost read remains restrictive, while a separately admitted next call can still progress.
+        // Fault consumption is a real once-only control operation, never part of recovery lookup.
+        if (kind == ProtectionQualificationNativeCallKind.Fault) { await Should.ThrowAsync<IOException>(() => faults.CheckAsync("later", "after", token)); }
+        var nextRequest = (JsonObject)request.DeepClone(); nextRequest["operationId"] = "subsequent"; nextRequest["fixtureId"] = "subsequent-fixture";
+        string nextDigest = ProtectionQualificationOperationJournal.Digest(nextRequest);
+        await journal.UpdateAsync("tenant-a", "subsequent", "QualificationExecution", nextDigest, head =>
+        { head.QualificationOperations.Add("executor:subsequent", new("executor", binding, "attempt", nextDigest, (JsonObject)nextRequest.DeepClone())); return true; }, token);
+        var next = exact with { Id = "subsequent-call", OperationId = "subsequent", RequestSha256 = nextDigest };
+        (await journal.AdmitCallAsync("tenant-a", "executor", "subsequent", next, token)).ShouldBeTrue();
+        var nextResult = await driver.ExecuteAsync(next, nextRequest, token); nextResult.ShouldNotBeNull();
+        await journal.RetainCallAsync("tenant-a", "executor", "subsequent", next, nextResult, token);
+        JsonNode.DeepEquals(await driver.RecoverAsync(next, token), nextResult).ShouldBeTrue();
+        if (kind == ProtectionQualificationNativeCallKind.AuthorizeLifecycle) { nextResult["status"]!.GetValue<string>().ShouldBe("Denied"); }
+        fixture.Store.RotateCount.ShouldBe(rotates); fixture.Store.TrimCount.ShouldBe(trims); guard.Backend.CommittedTransactions.ShouldBe(guards);
+
     }
 }

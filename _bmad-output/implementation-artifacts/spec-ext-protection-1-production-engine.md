@@ -56,13 +56,13 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `src/Hexalith.Platform.Protection/` (new library, references EventStore Server + Custody) -- ERC client (transit + KV v2 CAS tenant head), target registry, wrap/unwrap/pin/unpin, epoch-advance manifest destroy with exact lookup, nonrollback anchor, root-reissue index; implement the EventStore ports and `ICustodyKeyLifecycleProvider/Authority` -- G1–G3.
-- [ ] `../eventstore/src/Hexalith.EventStore.Server/{Security,Configuration}/` -- complete the authority methods over the injected anchor/guard/trust/registrar; add the production composition overload -- G2/G4.
-- [ ] `src/Hexalith.Platform.EventStoreHost/` -- production protection binding behind explicit configuration; fail closed when incomplete.
-- [ ] `src/Hexalith.Platform.Protection.Qualification.{Executor,Observer,Enrollment}/` + `../eventstore/tools/` -- role programs and the Live pass path for all 41 cases; command pins both commits -- G5/G6.
-- [ ] `deploy/erasure-root/` -- ERC manifests, policies and bootstrap script, prepared but not applied.
-- [ ] Tests: component tests for each port; narrow integration against a disposable OpenBao 2.6.2 (non-revival with leaked old ciphertext, 1000-target all-or-none, pin race, lost response, cross-tenant context); offline verifier tests.
-- [ ] `../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md` -- clause map, evidence, proposed record (targets, date, command), exact missing runtime inputs -- G7.
+- [x] `src/Hexalith.Platform.Protection/` (new library, references EventStore Server + Custody) -- ERC client (transit + KV v2 CAS tenant head), target registry, wrap/unwrap/pin/unpin, epoch-advance manifest destroy with exact lookup, nonrollback anchor, root-reissue index; implement the EventStore ports and `ICustodyKeyLifecycleProvider/Authority` -- G1–G3.
+- [x] `../eventstore/src/Hexalith.EventStore.Server/{Security,Configuration}/` -- complete the authority methods over the injected anchor/guard/trust/registrar; add the production composition overload -- G2/G4.
+- [x] `src/Hexalith.Platform.EventStoreHost/` -- production protection binding behind explicit configuration; fail closed when incomplete.
+- [x] `src/Hexalith.Platform.Protection.Qualification.{Executor,Observer,Enrollment}/` + `../eventstore/tools/` -- role programs and the Live pass path for all 41 cases; command pins both commits -- G5/G6.
+- [x] `deploy/erasure-root/` -- ERC manifests, policies and bootstrap script, prepared but not applied.
+- [x] Tests: component tests for each port; narrow integration against a disposable OpenBao 2.6.2 (non-revival with leaked old ciphertext, 1000-target all-or-none, pin race, lost response, cross-tenant context); offline verifier tests.
+- [x] `../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md` -- clause map, evidence, proposed record (targets, date, command), exact missing runtime inputs -- G7.
 
 **Acceptance Criteria:**
 - Given installed inputs, when the proposed command runs from the Agents root, then every case has a real pass path; given any absent input, it refuses with `DependencyNotAvailable` and zero effects.
@@ -540,3 +540,40 @@ Required corrections and verification:
 #### Current loop-5 execution locations — authoritative
 
 Implement only in Platform `/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/platform` and EventStore `/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore`. Both locked worktrees have task code reverted against original baselines. First reconstruct exact passing source from KEEP Platform `/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/preserved/platform` and EventStore `/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/preserved/eventstore`, then correct every surviving loop-5 outcome above. Shared roots remain parent/concurrent-owned and must not be edited. This current location/reconstruction instruction supersedes every older loop/checkpoint/daemon note. References and sibling Agents links are infrastructure/read-only context; never copy/stage/initialize them. No build/review workflow invocation, subagents or Git mutations. Build with `-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop5-290f9f5f3d/eventstore -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons -p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src` and process HexalithCommonsRoot at that same physical Commons path. All builds Debug/project references/-nodeReuse:false; run test DLLs directly. Final runtime/source evidence stays outside worktrees. Parent merges/audits/reviews and captures candidates.
+
+
+### Loop-5 local implementation evidence — 2026-10-30
+
+The isolated correction map, bounded authoritative-index geometry, exact recovery limits, source/runtime graphs and local verification are recorded in the [loop-5 handback](../../docs/implementation/ext-protection-1-loop5/README.md). Final qualification verification passes Protection 471 total/465 executed/six native-only skips, lifecycle 42, EventStore 444, contracts 14, payload 897, offline 116 and harness 12; Source retains 41/liveExecuted:false and required Debug/project-reference/-nodeReuse:false host/three-role/analyzer builds are clean. The fresh final native-v7 all-five execution passes five/zero failures/errors/skips in 2,534.671 seconds with full 1,000 targets, actual 9 MiB state, >8MiB native head, two history rows, native 256-owner/occurrence index, all shipped restricted-policy checks and verified owned-container absence/tmpfs unmount. Its exact graph is retained separately from later qualification-only changes. Status stays in-progress for parent merge/audit/review. The frozen block/baselines/register remain unchanged. Accepted target/profile/date/availability, full physical-copy qualification and the complete independently installed 41 remain external/unestablished; production destruction remains independently gated. No Live/OQ/Agents, cluster/provisioning or production OpenBao run occurred.
+
+The timed-out native-v3 run is retained as BlockedUnknown with verified container/tmpfs cleanup. The verified correction bounds temporary immutable-node reuse and removes duplicate generic probes for small raw index nodes while preserving all stored identities, create-only semantics, framing/capacity/permission guards, fresh-reader checks and the unchanged native workload. The fresh final graph is native-v7; no old pass is relabelled. Final qualification-v8 is retained separately: only two qualification production files and two component tests differ, with all 117 native-relevant files byte-identical, exact runtime/source manifests and separate Server metadata/IL comparison. No whole-binary equality is claimed.
+
+
+### Parent loop-5 acceptance and executed matrix audit — 2026-10-30
+
+## Parent loop-5 source review candidates — 2026-10-30
+
+The complete local review candidates are Platform `b1e5bbefa129ca205e6618e01451ff77710ae6fc` and EventStore `6a26fa86be77eb9745b3b839dab871acead8651a`, retained in each repository as `refs/ext-protection-1/source-20261030-loop5-review`. All earlier pairs remain withdrawn/historical. These candidates are unaccepted and unpublished by this workflow. Concurrent commits on both main branches were preserved; temporary indexes/local commit objects did not move either branch. All 267 scoped source blobs match the candidates after Git normalization. Acceptance documents accompany the source candidates separately.
+
+| Proposed field | Value |
+| --- | --- |
+| EventStore TargetVersionOrCommit | `6a26fa86be77eb9745b3b839dab871acead8651a` |
+| ProtectionPlatformTargetCommit | `b1e5bbefa129ca205e6618e01451ff77710ae6fc` |
+| Proposed integration date | `2026-11-02`, unaccepted |
+| Accepted profile/date/availability | Unset; no Committed/Available record |
+
+The combined shared-checkout run passes all 18 checks: Protection 471 total/465 executed/six explicit native-only skips, lifecycle plus revocation 68/68, existing Secrets adapter/failure 58/58, EventStore 444/444, payload 897/897, offline verifier 116/116 and harness/bootstrap 12/12. Required Debug/project-reference/host/three-role/standalone analyzer builds have zero warnings/errors. Retained contracts anchors pass 14/14. Counts overlap. Source mode keeps 41 cases and liveExecuted:false. The additional adapter checks compile the exact existing classes/helpers with a temporary MSBuild selection, preserving SDK runner sources; the broader project's pre-existing duplicate local owner type and intermediate harness/package-lock failures are retained in attempts, without source edits or warning suppression.
+
+Fresh frozen native-v7 passes 5/5, zero failures/errors/skips, in 2,534.671s. It includes all 1,000 targets, actual 9 MiB state, a 9,485,043-byte head, both history geometries and the 256-owner/occurrence authoritative index (7,013,381 archive bytes, 5,021 creates, 47,829-byte head and lookup below 16 native reads). All five shipped-policy-derived restricted tokens/denials and bootstrap-only root use are retained. Cleanup and container absence are verified. Earlier interrupted/timed-out attempts stay BlockedUnknown, never passes.
+
+The parent read the original-baseline functional changes and every loop-5 delta, matched 266 implementation inventory files plus one explicit evidence-attribute-only update, verified all 267 candidate blobs, 249 packet artifacts, the 255-file delivery mirror and four final source/runtime mirrors. All 117 native-relevant source files match native-v7 and qualification-v8; their four qualification-only source/test differences are explicit. Complete binaries are not equated. The 238-file C# declaration scan has no new multiple-type violations; existing adapter and SnapshotManager types remain unchanged. All four frozen matrix rows and 67 new loop-5 cases/orderings ran and passed.
+
+Read results lost before their separate original-retention CAS remain Unknown when no atomic original exists. Physical-copy qualification and the complete independently installed 41-case run remain external; production destruction stays independently gated. Exact missing installed inputs, role grants/signers/credentials, physical backing proof, A1 genesis/no-backup/copy/restore/retirement evidence and accepted profile/engine pins remain in the implementation packet. No Live/OQ/Agents consumer, register edit, cluster/provisioning/production operation or Git remote operation occurred.
+
+From the Agents repository root, the existing executable owner command remains unrun and requires the accepted profile to pin both proposed targets above:
+
+```bash
+python3 ../eventstore/tools/verify-ext-protection-1.py --mode Live --profile /home/administrator/hexalith-protection-evidence/ext-protection-1/accepted-profile.json --evidence-root /home/administrator/hexalith-protection-evidence/ext-protection-1/attempts
+```
+
+The [parent record](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop5/verification.json), [candidate blobs](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop5/source-candidates.json) and [executed matrix](../../docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop5/matrix-audit.json) establish source implementation acceptance under the approved given-installed-input condition. All seven source tasks have concrete artifacts and passing local checks. Frozen intent, original baselines and the register remain unchanged. Independent three-layer review is next.

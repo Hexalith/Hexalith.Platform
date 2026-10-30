@@ -187,12 +187,29 @@ public sealed class ErasureRootLoop5BoundaryTests
     [InlineData("codec")]
     [InlineData("prior-pointer")]
     [InlineData("prior-type")]
+    [InlineData("lifecycle-id")]
+    [InlineData("owner-id")]
+    [InlineData("lookup-id")]
+    [InlineData("copy-id")]
+    [InlineData("fault-id")]
+    [InlineData("sign-id")]
     public void MissingUnionInputsAndInvalidAvailableReferencesRefuseWholeRecipe(string mutation)
     {
         var request = ProtectionQualificationInputSchema.InstallationRequest("tenant-a");
         var first = new ProtectionQualificationNativeCall("first", ProtectionQualificationNativeCallKind.Lookup, new() { ["tenantId"] = "tenant-a", ["batchId"] = "batch" });
         var second = first with { Id = "last" }; var prior = new Dictionary<string, JsonNode?> { ["prior"] = new JsonObject { ["count"] = 4 } };
-        if (mutation is "hold" or "hold-id" or "batch")
+        if (mutation == "lifecycle-id")
+        {
+            var identity = new CustodyKeyObjectIdentity("tenant-a", "object", PlatformKeyPurpose.InteractionRootDek, "alias", "version", "lifecycle", "store", "custody");
+            second = new("last", ProtectionQualificationNativeCallKind.AuthorizeLifecycle, (JsonObject)JsonSerializer.SerializeToNode(new CustodyKeyLifecycleRequest(identity, "", CustodyKeyLifecycleAction.Pin, 1, "hold", "fence", 1, "decision"))!);
+        }
+        else if (mutation == "owner-id") { second = new("last", ProtectionQualificationNativeCallKind.Block, (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchBlockRequest("tenant-a", "batch", "", "evidence"))!); }
+        else if (mutation == "lookup-id") { second = second with { Payload = new() { ["tenantId"] = "tenant-a", ["batchId"] = "" } }; }
+        else if (mutation == "copy-id") { second = new("last", ProtectionQualificationNativeCallKind.Backup, (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeCell("source", "", new()))!); }
+        else if (mutation == "fault-id") { second = new("last", ProtectionQualificationNativeCallKind.Fault, new() { ["stepId"] = "", ["boundary"] = "after" }); }
+        else if (mutation == "sign-id")
+        { second = new("last", ProtectionQualificationNativeCallKind.Sign, (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchCapabilityV1("issuer", "audience", "tenant-a", "request", "seal", "AcceptedSet", 0, "", new string('A', 64), "guard", 1, 1, 1, "key"))!); }
+        else if (mutation is "hold" or "hold-id" or "batch")
         {
             var operation = mutation.StartsWith("hold", StringComparison.Ordinal) ? GovernanceGuardOperation.RegisterHold : GovernanceGuardOperation.RecordBatchIssued;
             var transition = new JsonObject { ["TenantId"] = "tenant-a", ["OperationId"] = "op", ["Operation"] = (int)operation, ["ExpectedGuardRevision"] = 1L, ["EpochId"] = "epoch", ["DeletionRequestId"] = "request", ["AuthorizationId"] = "authorization", ["ReferenceId"] = "reference" };
@@ -204,6 +221,69 @@ public sealed class ErasureRootLoop5BoundaryTests
         else
         { second = second with { Payload = new() { ["tenantId"] = "tenant-a", ["batchId"] = new JsonObject { ["$original"] = new JsonObject { ["id"] = "prior", ["pointer"] = mutation == "prior-pointer" ? "/missing" : "/count" } } } }; }
         Should.Throw<InvalidOperationException>(() => ProtectionQualificationInputSchema.Validate(new([first], second, null, []), request, prior));
+    }
+
+    [Theory]
+    [InlineData("signature")]
+    [InlineData("capability")]
+    [InlineData("cell")]
+    public async Task LaterMissingOwnerArtifactOrCapabilityRefusesCompiledPreparationWithoutAnyStateOrAttempt(string missing)
+    {
+        using var fixture = new ProtectionQualificationPreparationFixture(); await fixture.InitializeAsync();
+        var recipe = fixture.Recipes("P05")["P05"]["DestroyDekManifest"];
+        var payload = (JsonObject)recipe.Effect.Payload.DeepClone();
+        if (missing == "capability")
+        {
+            var capability = (JsonObject)recipe.Before.First(call => call.Kind == ProtectionQualificationNativeCallKind.Sign).Payload.DeepClone(); capability["Issuer"] = ""; payload["Capability"] = capability;
+        }
+        else if (missing == "signature") { payload["DetachedJws"] = ""; }
+        else { recipe = recipe with { After = [.. recipe.After, new("missing-existing-source", ProtectionQualificationNativeCallKind.Backup, (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeCell("source", "absent-existing-source", new()))!)] }; }
+        recipe = recipe with { Effect = recipe.Effect with { Payload = payload } };
+        string nativeBefore = ErasureRootCustody.Hash(await fixture.Consumption.Store.HeadAsync("tenant-a"));
+        string guardBefore = ErasureRootCustody.Hash(fixture.Guard.State), sourceBefore = ErasureRootCustody.Hash(fixture.NativeState), ownerBefore = ErasureRootCustody.Hash(fixture.Consumption.State.CommittedState);
+        string registryBefore = ErasureRootCustody.Hash(fixture.Engine.RegistryState.CommittedState);
+        int SourceOrControlWrites() => NSubstitute.SubstituteExtensions.ReceivedCalls(fixture.Native).Count(call => call.GetMethodInfo().Name is "TrySaveStateAsync" or "SaveStateAsync" or "ExecuteStateTransactionAsync");
+        int nativeWrites = SourceOrControlWrites();
+        int cas = fixture.Consumption.Store.CasCount, archives = fixture.Consumption.Store.ArchiveWrites, guardWrites = fixture.Guard.Backend.CommittedTransactions;
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.RunAsync(recipe, "P05", "DestroyDekManifest"));
+        fixture.Admitted.ShouldBeEmpty(); fixture.Originals.ShouldBeEmpty(); fixture.Signed.ShouldBeEmpty();
+        ErasureRootCustody.Hash(await fixture.Consumption.Store.HeadAsync("tenant-a")).ShouldBe(nativeBefore);
+        ErasureRootCustody.Hash(fixture.Guard.State).ShouldBe(guardBefore); ErasureRootCustody.Hash(fixture.NativeState).ShouldBe(sourceBefore); ErasureRootCustody.Hash(fixture.Consumption.State.CommittedState).ShouldBe(ownerBefore);
+        fixture.Consumption.Store.CasCount.ShouldBe(cas); fixture.Consumption.Store.ArchiveWrites.ShouldBe(archives); fixture.Guard.Backend.CommittedTransactions.ShouldBe(guardWrites);
+        ErasureRootCustody.Hash(fixture.Engine.RegistryState.CommittedState).ShouldBe(registryBefore); SourceOrControlWrites().ShouldBe(nativeWrites);
+        fixture.Consumption.Store.RotateCount.ShouldBe(0); fixture.Consumption.Store.TrimCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public void FutureRaceOperandsAndSerializedScalarMembersCannotBecomeLaterInputs()
+    {
+        var request = ProtectionQualificationInputSchema.InstallationRequest("tenant-a");
+        var effect = new ProtectionQualificationNativeCall("effect", ProtectionQualificationNativeCallKind.Lookup, new() { ["tenantId"] = "tenant-a", ["batchId"] = "batch" });
+        var race = effect with { Id = "race", Payload = new() { ["tenantId"] = "tenant-a", ["batchId"] = new JsonObject { ["$original"] = new JsonObject { ["id"] = "effect", ["pointer"] = "/BatchId" } } } };
+        Should.Throw<InvalidOperationException>(() => ProtectionQualificationInputSchema.Validate(new([], effect, race, []), request, new Dictionary<string, JsonNode?>()));
+        var capability = new DeletionBatchCapabilityV1("issuer", "audience", "tenant-a", "request", "seal", "AcceptedSet", 0, "batch", new string('A', 64), "guard", 1, 1, 1, "key");
+        var sign = new ProtectionQualificationNativeCall("sign", ProtectionQualificationNativeCallKind.Sign, (JsonObject)JsonSerializer.SerializeToNode(capability)!);
+        using var fixture = new ErasureRootEngineFixture();
+        var enrollment = fixture.Enroll() with { SnapshotEntry = new(new(1, PayloadProtectionPayloadKind.Snapshot, "snapshot"), "/entry", new string('A', 64), 1) };
+        var seal = (JsonObject)JsonSerializer.SerializeToNode(new ProtectionQualificationNativeSeal(enrollment, new("source", "snapshot", new())))!;
+        seal["Enrollment"]!["SnapshotEntry"]!["EntryCount"] = new JsonObject { ["$original"] = new JsonObject { ["id"] = "sign", ["pointer"] = "/DetachedJws/Length" } };
+        var snapshot = new ProtectionQualificationNativeCall("invalid-scalar", ProtectionQualificationNativeCallKind.SealSnapshot, seal);
+        Should.Throw<InvalidOperationException>(() => ProtectionQualificationInputSchema.Validate(new([sign], snapshot, null, []), request, new Dictionary<string, JsonNode?>()));
+    }
+    [Fact]
+    public void InstallationMetadataChecksFullRequestBoundWithoutAuthenticatingPlaceholderTargets()
+    {
+        var metadata = ProtectionQualificationInputSchema.InstallationRequest("tenant-a"); metadata["targets"]!.AsArray().Count.ShouldBe(1000);
+        var lookup = new ProtectionQualificationNativeCall("last-target", ProtectionQualificationNativeCallKind.Lookup, new() { ["tenantId"] = new JsonObject { ["$request"] = "/targets/999/TenantId" }, ["batchId"] = "batch" });
+        ProtectionQualificationInputSchema.Validate(new([], lookup, null, []), metadata, new Dictionary<string, JsonNode?>());
+        var targets = new[] { new ProtectionTarget("tenant-a", "actual-interaction", "alias") };
+        var body = new DeletionBatchConsumptionRequest(new("issuer", "audience", "tenant-a", "request", "seal", "AcceptedSet", 0, "batch", DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key"), "component-artifact", 1, "dispatch", 2, targets);
+        var payload = (JsonObject)JsonSerializer.SerializeToNode(body)!; payload["Targets"] = new JsonObject { ["$request"] = "/targets" };
+        var call = new ProtectionQualificationNativeCall("owner", ProtectionQualificationNativeCallKind.Register, payload);
+        ProtectionQualificationInputSchema.Validate(new([], call, null, []), metadata, new Dictionary<string, JsonNode?>(), validateAvailableSemantics: false);
+        var actual = (JsonObject)metadata.DeepClone(); actual["targets"] = JsonSerializer.SerializeToNode(targets);
+        ProtectionQualificationInputSchema.Validate(new([], call, null, []), actual, new Dictionary<string, JsonNode?>());
+        Should.Throw<ArgumentException>(() => ProtectionQualificationInputSchema.Validate(new([], call, null, []), metadata, new Dictionary<string, JsonNode?>()));
     }
 
 }
