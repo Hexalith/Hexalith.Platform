@@ -52,7 +52,7 @@ public sealed partial class PlatformAppModelTests
             await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
 
             IResource[] servers = model.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-            servers.Length.ShouldBe(6);
+            servers.Length.ShouldBe(7);
             foreach (IResource server in servers)
             {
                 DaprSidecarOptions options = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;

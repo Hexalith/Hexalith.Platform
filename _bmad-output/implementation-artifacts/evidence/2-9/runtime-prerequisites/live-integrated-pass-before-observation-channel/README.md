@@ -1,0 +1,5 @@
+# Integrated runtime pass before persistence retention correction
+
+Run f2d89be38b26b64780352787b67c8714 used the integrated source snapshot frozen at root b4118eda9740781ca8e1f4f745d4cff7f046ecfa (earlier2030542 was a merge-input revision). The real suite executed1/passed1 in7.089s with nonadmin native preparation, real Tenants read and Memories Active; automatic cleanup was verifiedempty. Injected xUnit output was intentionally removed by the existing NativeTestReportRedactor before retention. Thus actual persistence assertions passed but this pass did not retain their observations. No reporter bug, output-retention bypass, event-count inference or final completion is claimed here; the next supported functional-observations run closes that evidence gap.
+
+Thirteen actualconfiguration/native-bearer values across48retained files produced zero exactmatches and zero JWT/private-key patterns. In-process preparation operator/workload values are outside external exact-value coverage. No private endpoint credential file, plan/environment or raw DCP/configuration is archived.

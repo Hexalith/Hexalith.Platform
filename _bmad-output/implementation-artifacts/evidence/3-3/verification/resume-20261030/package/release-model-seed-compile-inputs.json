@@ -1,0 +1,84 @@
+{
+  "qualification": "Evaluate the exact immutable private catalog and Release projects used by ordinary package activation; no source-catalog symbol override",
+  "authorityCommit": "82ad5ba3fbfbf399da9bd3e6964e73a25ddceb0b",
+  "explicitPrivateSymbol": "HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION",
+  "projects": {
+    "model": {
+      "project": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+      "evaluationCommand": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-p:Configuration=Release",
+        "-p:BuildsToolingAssemblyPath=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cli-output/Hexalith.Builds.Tooling.dll",
+        "-p:CustomBeforeDirectoryBuildProps=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:ImportDirectoryPackagesProps=false",
+        "-p:CentralPackageVersionsFileImported=true",
+        "-p:DirectoryPackagesPropsPath=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/Props/Directory.Packages.props",
+        "-getProperty:DefineConstants,UseHexalithProjectReferences,UseNuGetDeps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion",
+        "-getItem:PackageReference,ProjectReference"
+      ],
+      "evaluationExitCode": 0,
+      "properties": {
+        "DefineConstants": "TRACE;HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION;RELEASE",
+        "UseHexalithProjectReferences": "false",
+        "UseNuGetDeps": "",
+        "HexalithEventStoreVersion": "3.128.5-story33.1",
+        "HexalithTenantsVersion": "5.11.2-story33.1",
+        "HexalithMemoriesVersion": "3.0.11-story33.1"
+      },
+      "packageReferences": [
+        "Aspire.Hosting",
+        "Aspire.Hosting.Kubernetes",
+        "YamlDotNet",
+        "CommunityToolkit.Aspire.Hosting.Dapr",
+        "Aspire.Hosting.Keycloak",
+        "Aspire.Hosting.Redis",
+        "Hexalith.EventStore.Aspire",
+        "Hexalith.EventStore.ServiceDefaults",
+        "JsonSchema.Net",
+        "NuGet.Versioning",
+        "StackExchange.Redis"
+      ],
+      "projectReferences": [
+        "../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+        "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+      ]
+    },
+    "seed": {
+      "project": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj",
+      "evaluationCommand": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj",
+        "-p:Configuration=Release",
+        "-p:BuildsToolingAssemblyPath=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cli-output/Hexalith.Builds.Tooling.dll",
+        "-p:CustomBeforeDirectoryBuildProps=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:ImportDirectoryPackagesProps=false",
+        "-p:CentralPackageVersionsFileImported=true",
+        "-p:DirectoryPackagesPropsPath=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds/Props/Directory.Packages.props",
+        "-getProperty:DefineConstants,UseHexalithProjectReferences,UseNuGetDeps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion",
+        "-getItem:PackageReference,ProjectReference"
+      ],
+      "evaluationExitCode": 0,
+      "properties": {
+        "DefineConstants": "TRACE;RELEASE",
+        "UseHexalithProjectReferences": "",
+        "UseNuGetDeps": "",
+        "HexalithEventStoreVersion": "3.128.5-story33.1",
+        "HexalithTenantsVersion": "5.11.2-story33.1",
+        "HexalithMemoriesVersion": "3.0.11-story33.1"
+      },
+      "packageReferences": [
+        "SonarAnalyzer.CSharp",
+        "Microsoft.VisualStudio.Threading.Analyzers",
+        "Roslynator.Analyzers",
+        "Roslynator.Formatting.Analyzers",
+        "StyleCop.Analyzers",
+        "Hexalith.EventStore.Gateway"
+      ],
+      "projectReferences": []
+    }
+  }
+}

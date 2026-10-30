@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "90",
+    "dotnet",
+    "publish",
+    "/tmp/mcpcli-417-builds-seed-offline/Hexalith.Builds.Module.EventStoreHost.csproj",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "-m:1",
+    "-t:PublishContainer",
+    "-p:BuildsCatalogFromMappedSource=false",
+    "-p:NuGetAudit=false",
+    "-p:UseAppHost=false",
+    "-p:ContainerRepository=mcpcli-417-builds-eventstore",
+    "-p:ContainerRegistry=",
+    "-p:ContainerImageTag=operator-setup",
+    "-p:ContainerArchiveOutputPath=/tmp/mcpcli-417-builds-seed-offline.tar.gz",
+    "-p:ContainerBaseImage=mcr.microsoft.com/dotnet/aspnet:10.0",
+    "--output",
+    "/tmp/mcpcli-417-builds-seed-offline/publish"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-builds-seed-cache"
+  },
+  "network": "isolated namespace; local package sources"
+}

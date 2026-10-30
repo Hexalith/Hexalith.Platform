@@ -1,0 +1,61 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "eng/mcpcli-operator-setup",
+        "-p",
+        "test_*.py"
+      ],
+      "environment": {
+        "HELM_BIN": "/home/administrator/.local/state/hexalith/memories/access-telemetry/full-campaign-offline-20261025-buc4thfg/tools/helm"
+      },
+      "exitCode": 0,
+      "testsPassed": 13
+    },
+    {
+      "argv": [
+        "dotnet",
+        "run",
+        "--project",
+        "eng/mcpcli-operator-setup/graph-export/GraphExport.csproj",
+        "--configuration",
+        "Debug",
+        "--no-restore",
+        "--no-build",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:UseNuGetDeps=false",
+        "-p:RunAnalyzers=false",
+        "--",
+        "/home/administrator/projects/hexalith/platform",
+        "/tmp/mcpcli-417-canonical-final-20261030.json"
+      ],
+      "environment": {
+        "DirectoryPackagesPropsPath": "/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props"
+      },
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "eng/mcpcli-operator-setup/prepare.py",
+        "--profile",
+        "eng/mcpcli-operator-setup/profile.template.json",
+        "--canonical-graph",
+        "/tmp/mcpcli-417-canonical-final-20261030.json",
+        "--helm",
+        "/home/administrator/.local/state/hexalith/memories/access-telemetry/full-campaign-offline-20261025-buc4thfg/tools/helm",
+        "--output",
+        "/tmp/mcpcli-417-unfilled-refused"
+      ],
+      "exitCode": 1,
+      "expectedRefusal": "source-revision-required; no output directory"
+    }
+  ]
+}

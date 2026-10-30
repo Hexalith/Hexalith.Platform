@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "30",
+    "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+    "member",
+    "Program",
+    "--library",
+    "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.38.3/tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+    "--all",
+    "-v:d",
+    "-n",
+    "80"
+  ],
+  "network": "isolated namespace; cached local tool/binary only"
+}

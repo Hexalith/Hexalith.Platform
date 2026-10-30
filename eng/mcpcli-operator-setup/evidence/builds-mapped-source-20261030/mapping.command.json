@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "120",
+    "dotnet",
+    "msbuild",
+    "/tmp/mcpcli-417-builds-mapped-source/Hexalith.Builds.Module.EventStoreHost.csproj",
+    "-getProperty:BuildsCatalogFromMappedSource,DefineConstants",
+    "-getItem:ProjectReference",
+    "-p:Configuration=Debug",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:NuGetAudit=false",
+    "-p:UseArtifactsOutput=true",
+    "-p:ArtifactsPath=/tmp/mcpcli-417-builds-mapped-output",
+    "-p:GeneratePackageOnBuild=false"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-builds-mapped-cache"
+  },
+  "network": "isolated namespace, explicit local-only package sources"
+}

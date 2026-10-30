@@ -47,7 +47,9 @@ internal sealed class PlatformPackageFixture : IDisposable
         // The graph uses synthetic release/image identities, while its catalog is built from
         // explicitly mapped actual owner source. This fixture confers no package acceptance.
         SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(platformRoot, "references"), "Hexalith.*")
-            .Select(path => new SourceMappingEntry(Path.GetFileName(path), "source", path)).ToArray();
+            .Select(path => Path.GetFileName(path) is "Hexalith.EventStore" or "Hexalith.Tenants" or "Hexalith.Memories" or "Hexalith.Builds"
+                ? new SourceMappingEntry(Path.GetFileName(path), "source", path)
+                : new SourceMappingEntry(Path.GetFileName(path), "package", null)).ToArray();
         Options = new PlatformCompositionOptions
         {
             PlatformRoot = Root,

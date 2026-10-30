@@ -1,8 +1,47 @@
-# Story 2.9 implementation evidence — incomplete acceptance
+# Story 2.9 implementation evidence
 
-The descriptor consumer, exported fixture migration and Parties suite are implemented. Story 2.9
-remains **in progress**: the real Parties flow and persisted-state acceptance have not run successfully.
-No attachment, expiry-enforcement, package, candidate or tool qualification is granted.
+The descriptor consumer, exported fixture migration and real declared source suite now pass.
+Final integrated run `23013726fd912b1143fae3f1302661c3` retained actual persistence observations and
+completed verified empty cleanup. Final current isolated/private-owner checks are recorded below when
+complete. No attachment, expiry-termination, installed/published package, CI, immutable-consumption or
+broader tool qualification is granted.
+
+## Final integrated source acceptance
+
+[Final runtime evidence](runtime-prerequisites/live-integrated-source-acceptance/README.md) retains the
+ready owner descriptor/result, inspected MTP TRX, functional persistence observations, actual preparation,
+source/artifact identities, credential-scan scope and exact cleanup. One real case executed/passed in
+7.628s with zero failures/errors/not-executed. Real Tenants served the native tenant and the real Memories
+workflow reached Active. Two persisted Party events at sequences 1/2 matched metadata sequence 2, the
+synthetic stream/command, envelope subjects/correlation/causation/format/timestamps and Current projection.
+The separate inspected functional artifact has SHA256
+`64916a4ce50c9b532f6a5f21a7b45dc1fafde6545256d2c0284792886f077edc`.
+
+The final snapshot root is `b4118eda9740781ca8e1f4f745d4cff7f046ecfa`, distinct from original spec baseline
+`d5f16fb64f766eea4cf9dbc1a324ba3d46a1266a`, initial isolated snapshot `c31e4f7…` and earlier merge input
+`2030542…`. The supported private CLI/AppHost/SDK/model/native closure was rebuilt from the integrated
+physical source roots. All eighteen selected heads and 104,609 captured source bytes were checked, with
+forty explicit task inputs and the final test-only observation-writer delta separately hashed. These are
+honest source selections/changes, with no immutable or published claim. Other actors' commits, staged
+work and independent registry/package/container changes are preserved.
+
+Final integrated affected checks passed: EventStore Testing 232, Testing.Integration 54, runner 77
+(including pinned-model/runtime-closure, preparation/diagnostic and private-channel cases), and actual
+composition 2. All had zero failures/skips/not-run. Verbose named classes cover 35 descriptor-reader,
+42 endpoint-credential and 10 fixture cases. The private credential channel supplies only the existing
+actual DAPR_API_TOKEN for the exact supplied invocation URI; APP_API_TOKEN remains on the sidecar/app
+channel. The file is excluded from every archive and deleted with the workspace. Intentional TRX Output
+redaction stays enabled; real persistence details use the existing inspected functional-observations
+channel after assertions. Thirteen actual configuration/native-bearer values across 49 retained files had
+zero exact matches or supplemental JWT/private-key patterns. Preparation operator/workload values are
+outside the external exact-value scan; runner report inspection also covers actual native/Dapr handoff.
+
+All failed runs and two intermediate runtime passes are retained separately under
+[runtime-prerequisites](runtime-prerequisites/). The following initial checkpoint is historical; its
+incomplete-acceptance and failing-test statements are superseded by the later continuation and final
+source records rather than erased.
+
+## Initial implementation checkpoint — historical
 
 ## Source identity and scope
 

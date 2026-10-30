@@ -1,0 +1,12 @@
+[
+  "docker",
+  "run",
+  "--detach",
+  "--name",
+  "story33-private-registry",
+  "--label",
+  "hexalith.platform.story=3-3",
+  "--publish",
+  "127.0.0.1:15033:5000",
+  "registry:2"
+]

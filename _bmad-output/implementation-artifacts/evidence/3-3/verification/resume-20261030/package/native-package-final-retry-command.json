@@ -1,0 +1,27 @@
+{
+  "command": [
+    "dotnet",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cli-output/Hexalith.Builds.Module.Cli.dll",
+    "test",
+    "--manifest",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/eng/story33-package/parties.json",
+    "--profile",
+    "platform-package",
+    "--mode",
+    "package",
+    "--output",
+    "json",
+    "--evidence",
+    "artifacts/native-package-portable-evidence.json"
+  ],
+  "startedUtc": "2026-10-30T17:26:42.233546+00:00",
+  "environment": {
+    "HEXALITH_G4_APPHOST": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/host-output/Hexalith.Builds.Module.AppHost.dll",
+    "NUGET_PACKAGES": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cache"
+  },
+  "workingDirectory": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
+  "authority": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/resume-20261030/package/private-authority.json",
+  "authorityPlatformCommit": "82ad5ba3fbfbf399da9bd3e6964e73a25ddceb0b",
+  "exitCode": 4,
+  "completedUtc": "2026-10-30T17:28:12.895080+00:00"
+}

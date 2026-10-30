@@ -1025,3 +1025,39 @@ Required corrections:
 10. Run the bootstrap tests and the touched .NET DLL classes. Record `docs/implementation/ext-protection-1-loop10/`. Leave status `in-progress`. Do not run Live, cluster apply, or production OpenBao.
 
 Authoritative execution is this entry and the loop-10 dispatch at the top.
+
+
+## Review 11 — 2026-10-30
+
+Reviewers returned before this triage. Repeated trim, volume-loss, mlock, revocation-check, and namespace claims keep their review 10 verdicts. Verification-gap rows are trusted as filed. No bad_spec entry was confirmed. Counter stays 10. The three filed test gaps are the patch set.
+
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| R11-BH-1 | maybe-false | defer | Unissued outcome split was not re-opened. If the stored outcome cannot satisfy `UnissuedReplacementProof`, the harm is high. |
+| R11-BH-2 | maybe-false | defer | Whether the unissued branch skips refusal status and `VerifyCurrentBlockedReplacementAsync` was not re-opened. If true, the harm is high. |
+| R11-BH-3 | maybe-false | defer | Registry restore that persists and then returns null was not re-opened. If the new snapshot stays stored, the harm is high. |
+| R11-BH-4 | low | reject | A 16MiB payload plus a 16MiB skeleton against a 32MiB pending cap is a boundary the sealed path already rejects above 16MiB per field. |
+| R11-BH-5 | maybe-false | defer | Forwarded owner reads may not check `ScopeId`. If a foreign scope is returned, the harm is medium. |
+| R11-BH-6 | maybe-false | defer | Journal `TenantId` was not re-opened. If a permitted proof ignores tenant, the harm is high. |
+| R11-BH-7 | maybe-false | defer | Erased source reads without the resolve identity checks were not opened. If true, the harm is high. |
+| R11-BH-8 | maybe-false | defer | A shared `erc-write` holder id was not traced past `TryAdd`. If the loser leaves a native holder, the harm is high. |
+| R11-BH-9 | low | patch | `TrimAsync` and `ReadKeyAsync` response buffers are not zeroed. A `finally` zero is a direct correction. |
+| R11-BH-10 | low | reject | Policy versions 1 through 64 are the prepared trim bound. Epoch 65 is outside everyday custody traffic, and an empty allow-list was the rejected alternative. |
+| R11-BH-11 | low | reject | Carried R10-BH-17. `NoCheck` matches a private pin with no CRL. |
+| R11-BH-12 | false | reject | Ingress from the `hexalith` namespace and `disable_mlock = true` are the authorized loop 9 and loop 10 settings. |
+| R11-EC-1 | maybe-false | defer | Null qualification bindings were not opened. If denial throws, the harm is medium. |
+| R11-EC-2 | false | reject | Carried. Sealed JSON parse already returns false on `JsonException`. |
+| R11-EC-3 | maybe-false | defer | Head-config readback without `data` was not opened. If apply overwrites it, the harm is medium. |
+| R11-EC-4 | low | reject | An existing transit key that has been trimmed will not match the bootstrap body and stops. That is the resume refusal, not a silent continue. |
+| R11-EC-5 | low | reject | Empty skeleton rejection is already the sealed guard. Everyday seals have a skeleton or none, not a zero-length array that must be stored. |
+| R11-EC-6 | maybe-false | defer | Unissued proof with a nonzero issued revision was not re-opened. If that proof is accepted, the harm is high. |
+| R11-EC-7 | maybe-false | defer | Two stores sharing one async CA handoff were not opened. If one store adopts the other CA, the harm is high. |
+| R11-EC-8 | false | reject | Carried R10-EC-9. Volume loss stays unavailable until the signed retirement receipt. |
+| R11-EC-9 | false | reject | The endpoint-binding request before the bearer is the authorized loop 8 handoff. A missing credential still must not send the bearer. |
+| R11-EC-10 | false | reject | Carried trim split. `VerifyTrimAsync` must pass before success. |
+| R11-EC-11 | false | reject | The README already says external snapshot jobs are not claimed installed. |
+| R11-VG-1 | medium | patch | Pre-verified. The new registry restore test deletes the primary first. An older stored snapshot is not covered. |
+| R11-VG-2 | medium | patch | Pre-verified. The unissued accept test never makes the journal reject the proof. |
+| R11-VG-3 | medium | patch | Pre-verified. Owner reads have no foreign-tenant scope case. |
+
+Confirmed patches are R11-VG-1, R11-VG-2, R11-VG-3, and R11-BH-9. Maybe-false medium and high rows are deferred. No bad_spec loopback is started.

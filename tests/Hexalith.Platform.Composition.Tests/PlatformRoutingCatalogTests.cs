@@ -74,7 +74,8 @@ public class PlatformRoutingCatalogTests
     {
         get
         {
-            DirectoryInfo? directory = new(AppContext.BaseDirectory);
+            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
+            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
             while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
             return directory!.FullName;
         }

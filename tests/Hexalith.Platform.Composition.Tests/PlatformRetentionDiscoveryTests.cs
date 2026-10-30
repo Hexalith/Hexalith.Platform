@@ -53,7 +53,7 @@ public sealed partial class PlatformAppModelTests
             builder.Environment.EnvironmentName = "Development";
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
             IResource[] services = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-            services.Length.ShouldBe(4);
+            services.Length.ShouldBe(5);
             string registry = Path.Combine(Path.GetDirectoryName(plan.DaprConfigPath)!, "name-resolution.db").Replace('\\', '/');
             foreach (IResource service in services)
             {

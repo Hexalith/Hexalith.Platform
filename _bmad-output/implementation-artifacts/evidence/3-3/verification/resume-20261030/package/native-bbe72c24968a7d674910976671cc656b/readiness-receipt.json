@@ -1,0 +1,27 @@
+{
+  "qualification": "Final ordinary admitted Release/package readiness; no hosted/full native-suite acceptance",
+  "runId": "bbe72c24968a7d674910976671cc656b",
+  "environmentId": "882df98b4c59e9942f82433bfc29540c",
+  "authorityPlatformCommit": "82ad5ba3fbfbf399da9bd3e6964e73a25ddceb0b",
+  "catalogCommit": "9d3d720cfaa936b1009c25f0ae2ebaf87d0aa7d0",
+  "mappingHash": "2db54542e2e5ffef58efdd9c8ccbb7f58c9c0b166d528b07d19806dd0fe29be7",
+  "runtimeOwnerOrigins": {
+    "Hexalith.EventStore": "package",
+    "Hexalith.Memories": "package",
+    "Hexalith.Parties": "package",
+    "Hexalith.Tenants": "package"
+  },
+  "healthyResourceCount": 22,
+  "committedHostCount": 6,
+  "catalogOperationCount": 69,
+  "publicOperationCount": 44,
+  "rootDigest": "d37f1374ca52911215f3a4a0bf4e94e6e487fb28b7ea530c59ea393bfc077966",
+  "descriptorSha256": "90f6f649528383e45b566a753c4a3f30d06de4fc993923f24dcddc323542c27e",
+  "startupDurationSeconds": 84.0679733,
+  "deadlineSeconds": 600,
+  "limits": [
+    "Final ready descriptor and all six committed readbacks were retained before owned processes disappeared; no final live HTTP response was claimed.",
+    "Earlier dd8da429 package run supplies signed HTTP/schema comparison using the same immutable owner packages/images and identical catalog root.",
+    "Source-only native owner preparation is not compiled in this ordinary Release package model; consumer suite remains story 2.9."
+  ]
+}

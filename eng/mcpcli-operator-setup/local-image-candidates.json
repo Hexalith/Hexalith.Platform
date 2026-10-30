@@ -1,0 +1,95 @@
+{
+  "status": "local-candidates-only",
+  "pullableAtSelectedCluster": false,
+  "images": [
+    {
+      "Repository": "memories-access-telemetry",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "<none>",
+      "ID": "1d4577de6876"
+    },
+    {
+      "Repository": "localhost:15033/memories-access-telemetry",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "sha256:1d4577de6876608d5a74fc25b4ea21cde5e52b3b79965bda25923768f6cf2656",
+      "ID": "1d4577de6876"
+    },
+    {
+      "Repository": "memories-access-telemetry-clock",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "<none>",
+      "ID": "63b868e3d43f"
+    },
+    {
+      "Repository": "localhost:15033/memories-access-telemetry-clock",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "sha256:63b868e3d43f8aa8e0c49c435ce1e89b10824a6d644a36229dffce41a8e8dfcd",
+      "ID": "63b868e3d43f"
+    },
+    {
+      "Repository": "memories-domain-service",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "<none>",
+      "ID": "51b90b494afc"
+    },
+    {
+      "Repository": "localhost:15033/memories-domain-service",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "sha256:51b90b494afc7efaf6b1f01f11566cfe1b4a0d79384b25d0a831ef97b59bace6",
+      "ID": "51b90b494afc"
+    },
+    {
+      "Repository": "memories",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "<none>",
+      "ID": "c08a9c44dd6d"
+    },
+    {
+      "Repository": "localhost:15033/memories",
+      "Tag": "3.0.11-story33.1",
+      "Digest": "sha256:c08a9c44dd6d5d7e5b76a9754633726398788a47d4760f435993844951084c63",
+      "ID": "c08a9c44dd6d"
+    },
+    {
+      "Repository": "parties",
+      "Tag": "2.0.1-story33.1",
+      "Digest": "<none>",
+      "ID": "22b3765b3890"
+    },
+    {
+      "Repository": "localhost:15033/parties",
+      "Tag": "2.0.1-story33.1",
+      "Digest": "sha256:22b3765b389049f58e05cd125a524c4a78b1d50dca0047e81ba361ce035ad23f",
+      "ID": "22b3765b3890"
+    },
+    {
+      "Repository": "tenants-api",
+      "Tag": "5.11.2-story33.1",
+      "Digest": "<none>",
+      "ID": "d32a996d6bf0"
+    },
+    {
+      "Repository": "localhost:15033/tenants-api",
+      "Tag": "5.11.2-story33.1",
+      "Digest": "sha256:d32a996d6bf013ef61f4b6a2d800ebfc793b2e7f20c5992bfb58cc8663ca2142",
+      "ID": "d32a996d6bf0"
+    },
+    {
+      "Repository": "tenants",
+      "Tag": "5.11.2-story33.1",
+      "Digest": "<none>",
+      "ID": "4b9454b965a9"
+    },
+    {
+      "Repository": "localhost:15033/tenants",
+      "Tag": "5.11.2-story33.1",
+      "Digest": "sha256:4b9454b965a971ccbb854c8d230861b40293f83abdaa287dc460132e16f5c562",
+      "ID": "4b9454b965a9"
+    }
+  ],
+  "blockers": [
+    "localhost:15033 images are not cluster-pullable addresses",
+    "native-package-final-output.json records failed clock readiness",
+    "owner artifact/source binding and selected-target registry proof remain required"
+  ]
+}

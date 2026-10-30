@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "120",
+    "dotnet",
+    "publish",
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "--no-restore",
+    "--configuration",
+    "Debug",
+    "-m:1",
+    "-t:PublishContainer",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:UseNuGetDeps=false",
+    "-p:RunAnalyzers=false",
+    "-p:ContainerRepository=mcpcli-417-eventstore",
+    "-p:ContainerRegistry=",
+    "-p:ContainerImageTag=operator-setup",
+    "-p:ContainerArchiveOutputPath=/tmp/mcpcli-417-eventstore-offline.tar.gz",
+    "-p:ContainerBaseImage=mcr.microsoft.com/dotnet/aspnet:10.0",
+    "--output",
+    "/tmp/mcpcli-417-eventstore-publish"
+  ],
+  "environment": {
+    "DirectoryPackagesPropsPath": "/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props"
+  },
+  "network": "isolated network namespace; no remote access"
+}

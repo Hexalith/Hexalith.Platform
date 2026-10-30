@@ -337,10 +337,14 @@ seconds, absolute expiry, actual end) and populate `attachments.holds` as a poin
 snapshot: the descriptor carries the holds recorded when it is written, and the result
 carries those recorded when it is written. A retry presenting the issued lineage keeps its first acceptance and expiry;
 unknown, ended and expired lineages are refused. An owner that passed waits for every live
-hold before automatic local cleanup, and ending one attachment affects only that
-attachment. Artifact-identity matching is refused as unverifiable until Epic 3 populates
+hold before automatic local cleanup, unless a local attached run records `failed`; that
+failure retains the environment until explicit `down`. Ending one attachment affects only
+that attachment and records its first outcome (`passed`, `failed` or `cancelled`). Expiry,
+owner cancellation and explicit `down` end active holds as `withdrawn` with reason
+`expired`, `owner-cancelled` or `developer-stop`, recorded and reported before any teardown.
+Artifact-identity matching is refused as unverifiable until Epic 3 populates
 expected and loaded identities. CI owners do not wait for holds, so attaching to one is refused
-as `HXR035` `owner-ci-holds-unsupported` until CI withdrawal lands. Withdrawal ordering, `withdrawn` outcomes and CI job bounds remain later work.
+as `HXR035` `owner-ci-holds-unsupported` until CI withdrawal lands. CI job bounds remain later work.
 
 ## Local lifecycle results and cleanup
 

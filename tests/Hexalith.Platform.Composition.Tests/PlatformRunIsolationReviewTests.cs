@@ -73,7 +73,7 @@ public sealed partial class PlatformAppModelTests
             await using ServiceProvider services = builder.Services.BuildServiceProvider();
             _ = services.GetRequiredService<PlatformCompositionWorkspace>();
             IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-            servers.Length.ShouldBe(6);
+            servers.Length.ShouldBe(7);
             foreach (IResource server in servers)
             {
                 DaprSidecarOptions options = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;

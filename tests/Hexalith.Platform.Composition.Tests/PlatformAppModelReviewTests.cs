@@ -48,7 +48,7 @@ public sealed partial class PlatformAppModelTests
                 components.ShouldContain("secretstore");
                 components.ShouldContain("access-telemetry-secrets");
             }
-            else if (server.Name.StartsWith("memories-", StringComparison.Ordinal))
+            else if (server.Name is "memories-access-telemetry-clock" or "memories-access-telemetry")
             {
                 components.ShouldNotContain("llm");
                 components.ShouldNotContain("secretstore");
@@ -72,7 +72,7 @@ public sealed partial class PlatformAppModelTests
         string[] stateScopes = Scopes("statestore.yaml");
         stateScopes.ShouldBe(["eventstore", "memories", "memories-domain-service", "tenants", "tenants-api"]);
         stateScopes.ShouldNotContain("memories-access-telemetry");
-        Scopes("pubsub.yaml").ShouldBe(["eventstore", "memories", "memories-domain-service", "tenants"]);
+        Scopes("pubsub.yaml").ShouldBe(["eventstore", "memories", "tenants"]);
         Scopes("telemetry-state.yaml").ShouldBe(["memories-access-telemetry"]);
     }
 

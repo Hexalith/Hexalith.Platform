@@ -1612,14 +1612,51 @@
   target_story: 5.5
   evidence: Policy v1 scans "every included" release image and reconciles against the release inventory. Settle by confirming whether production pods for a release run images outside the release record (e.g. Dapr sidecar injection from the cluster installation) and whether Epic 6's shared-infrastructure procedure scans them.
 
-## Deferred from: fifth-pass corrections build review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
-  summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
-  evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.
+## Deferred from: EXT-PROTECTION-1 review 11 (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Unissued replacement evidence may not match the outcome the guard stores.
+  evidence: Unverified, high if true. Settle by reading `UnissuedReplacementProof` against the `UnissuedReplacementBlocked` reducer branch and one successful unissued commit.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: The unissued authority branch may accept a refusal that is not Blocked or Stale.
+  evidence: Unverified, high if true. Settle by reading the unissued return in `VerifyBlockedReplacementAsync` for refusal status and `VerifyCurrentBlockedReplacementAsync`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Registry restore may persist a snapshot and then return null.
+  evidence: Unverified, high if true. Settle by reading `InteractionOccurrenceRegistryActor.ReadAsync` after `PersistTargetAsync` when post-write validation fails.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Published-trust original reads may ignore the returned scope id.
+  evidence: Unverified, medium if true. Settle by reading `ReadAdmittedOriginalAsync` and `ReadCurrentOriginalAsync` for a `ScopeId` comparison.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: The evidence journal may accept a permitted proof for another tenant.
+  evidence: Unverified, high if true. Settle by reading `DaprErasureRootEvidenceJournal.VerifyTransitionAsync` for `proof.TenantId`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Erased source reads may skip the identity checks used by resolve.
+  evidence: Unverified, high if true. Settle by comparing `ResolveAsync` with `ResolveErasedStoredAsync` and `ReadErasedSnapshotSkeletonAsync`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Overlapping unwraps may share one write holder id and leave the loser held.
+  evidence: Unverified, high if true. Settle by reading `ErasureRootOccurrenceKeyProvider.ResolveRootAsync` when `TryAdd` fails.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Null qualification bindings may throw instead of refusing a lifecycle or manifest check.
+  evidence: Unverified, medium if true. Settle by reading the three `QualificationBindings` branches in `ErasureRootAuthorityOperationHandler`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Head-config resume may post over an unreadable existing config.
+  evidence: Unverified, medium if true. Settle by reading the bootstrap head-config branch when the existing response has no data.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: An unissued proof with a nonzero issued revision may be accepted.
+  evidence: Unverified, high if true. Settle by reading the unissued branch for `CommittedIssuedGuardRevision`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md`
+  summary: Two OpenBao stores on one async flow may adopt each other's CA pin.
+  evidence: Unverified, high if true. Settle by reading `ValidatePinnedCa` for an `AsyncLocal` handoff.
 
 ## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30, follow-up resolution)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
   summary: The required full Builds Module.Tests Debug build fails with seven EventStoreHost API errors (medium). Story 3.1 is accepted on focused verification, by owner decision.
   evidence: Builds `b8d1952` ("materialize source-mapped platform catalogs for module hosts") added `UseRouting`/`UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel` and `EventStoreActorCallbackEndpointMetadata` calls to `src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs`. The pinned `HexalithEventStoreVersion` 3.128.4, unchanged on `origin/main`, does not provide them. Resolve this in the host/pin work: consume an EventStore release that ships those APIs, or adjust the host. Stories 2.7 and 3.1 both verified with `-p:BuildProjectReferences=false` in the meantime.
+
+## Deferred from: fifth-pass corrections build review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
+  evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.

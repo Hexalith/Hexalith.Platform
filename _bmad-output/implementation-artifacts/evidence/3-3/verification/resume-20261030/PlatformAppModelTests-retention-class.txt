@@ -1,0 +1,23 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(persistedRun: False) [FAIL]
+      Shouldly.ShouldAssertException : projects.Length
+          should be
+      4
+          but was
+      5
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs(86,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(Boolean persistedRun)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '60430d37795fb7df0bdbabc8324349aace035eca39d10c86743f6860422e9bd7')
+Cancelling due to test failure...
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 56, Errors: 0, Failed: 1, Skipped: 1, Not Run: 0, Time: 266.874s

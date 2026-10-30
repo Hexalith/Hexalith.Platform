@@ -61,7 +61,7 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 
 - [x] `T/TestEnvironmentDescriptorReader.cs`, `T/TestEnvironmentDescriptor.cs`, `T/Hexalith.EventStore.Testing.csproj` — add validated shared consumption and schema embedding.
 - [x] The mapped I fixture/attribute/project files and `E/tests/Hexalith.EventStore.Testing*.Tests/*.cs` — replace exported startup; preserve private owner tests; test every matrix row.
-- [ ] `P/tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj`, `PlatformEnvironmentFixture.cs`, `PartyEnvironmentTests.cs` — implement real dependency observations, flow and persisted-state assertions.
+- [x] `P/tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj`, `PlatformEnvironmentFixture.cs`, `PartyEnvironmentTests.cs` — implement real dependency observations, flow and persisted-state assertions.
 - [ ] Parties renderer/manifest/declaration test files, `P/Hexalith.Parties.slnx`, `P/scripts/test.ps1` — enroll explicit source/package suites while preserving isolated tests.
 - [x] `E/docs/reference/nuget-packages.md`, `P/README.md`, `_bmad-output/implementation-artifacts/evidence/2-9/README.md` — document migration, exact revisions, validation and limits.
 
@@ -74,50 +74,65 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 
 ## Implementation Notes
 
-- Implemented the shared strict descriptor reader/model with the embedded authoritative schema,
-  metadata-only refusal categories, exact resource/module/endpoint selection, matching private
-  runner identity, bounded origin-confined HTTP clients and disposal cancellation/failure reporting.
-- Exported Aspire/Dapr fixtures now consume descriptors exclusively. Removed their startup and
-  local prerequisite-skip paths; retained optional performance opt-in and private owner bootstrap.
-- Added the descriptor-only Parties Platform project, source/package declarations, renderer tests,
-  inventory enrollment and migration documentation. The suite uses declared Tenants/Memories REST
-  interfaces and EventStore create/query flows with independent persisted-envelope assertions.
-- Current acceptance remains incomplete: the declared source run failed before fixture launch on
-  EventStore route-catalog readiness, preventing its authorized writer-protocol cutover. Synthetic
-  tenant records are also not provided by the current owner runner; Story 3.5 owns that producer.
-  The possible selected-token `parties`/contract `party` mismatch is an unexecuted source inference.
-- Continuation verification now passes the complete EventStore Testing (190) and Testing.Integration
-  (52) projects without skips. Complete Parties Aspire (9), Contracts (226), Client (345) and CI (472)
-  projects pass; the full main Parties project runs 2,811 tests with zero failures and four existing
-  optional skips (2,807 passed). The private EventStore integration project builds and its focused
-  cutover/restore classes pass 16/16; this does not qualify that project's entire live lane.
-  Declaration tests pass 7/7. Exact phase paths, source hashes, patches, commands, counts and all prior
-  failures are retained in [continuation-repairs](evidence/2-9/continuation-repairs/README.md).
-- The continuation fixes exact tuple client lookup for multiple endpoints on one resource and ties
-  streamed response reads to fixture cancellation and finite request bounds. Isolated protocol seams
-  preserve HTTP authentication. Source selection observations now distinguish committed gitlinks from
-  mapped HEAD/dirty state; diagnostic hashes cannot satisfy strict immutable-consumption receipts.
-  Historical approvals, published pins, CI/Release counterparts and schema semantics remain unchanged.
-- Another actor committed shared-workspace changes during implementation. This implementation
-  agent did not stage or commit. Exact revisions, task-owned paths, concurrent deltas, patches,
-  commands, failures and exact cleanup are recorded in [evidence/2-9/README.md](evidence/2-9/README.md).
-  Status and unverified acceptance remain in progress; attachment/package qualification is unchanged.
-- Parent audit verified all four matrix rows with 41 verbose, passing tests and retained their named
-  results. Corrected the Contracts.UI fallback to add an entry only when the selected catalog lacks
-  it; published Builds 4.38.3 and current-source catalogs each resolve one 4.7.1 entry, and the Parties
-  suite rebuild passes. The continuation checkpoint above supersedes its isolated/private-owner
-  compilation failures; the original failed observations remain retained. Real declared-suite
-  acceptance is still pending, so review has not started.
-- User continuation (2026-10-30): "finish the missing work before proceeding" explicitly directs
-  completing the remaining live and isolated/private-owner acceptance, including the necessary
-  runner-owned local prerequisites. Resolve the catalog activation, synthetic tenant setup and
-  actual credential/domain bindings through existing owner contracts and the runner's separate
-  private channel. Fixtures must still neither provision environments nor mint credentials. Repair
-  stale constructor/DI, package and repository-path test assumptions instead of filtering failures.
-  The current Story 3.3 document records explicit reference-owner operation policies; consume these
-  policies when prerequisite catalog changes require them, preserve that independent document's
-  edits, and do not claim its wider schema/metadata acceptance merely by qualifying this suite.
-  Keep the attached-execution split and the prohibition on hosted changes/publication unchanged.
+- Implemented strict shared descriptor consumption with the embedded authoritative v1 schema,
+  metadata-only refusals, exact resource/module/endpoint selection, matching private identities,
+  bounded origin-confined clients and fixture-owned cancellation/disposal. Multiple endpoints on
+  one resource and streaming bodies remain covered. Exported fixtures start no infrastructure;
+  private EventStore bootstrap and the separate frozen Parties topology lane remain available.
+- The final integrated source run `23013726fd912b1143fae3f1302661c3` passed the actual declared
+  `platform-source` suite through `hexalith-module test`: one MTP case executed/passed, zero
+  failures/errors/skips/not-executed. The runner retained the ready owner descriptor, result,
+  inspected report, timings/startup observations and real persisted-state observations. These record
+  two stored events at sequences 1/2, metadata sequence 2, exact synthetic identity and command,
+  PartyCreated/PartyDisplayNameDerived envelope metadata/timestamps and a Current projection.
+  Real Tenants and Memories served the run tenant. Exact automatic cleanup left no resources,
+  workspaces or claims and reported no uncertainty or failures.
+- Necessary run-owned preparation now uses the completed Story 3.3 owner producer and existing
+  owner contracts: real service-bound BootstrapGlobalAdmin, separate operator tenant/membership
+  commands, non-admin native scope derived from actual public catalog operations and real Memories
+  provisioning to Active. Hosted bootstrap remains disabled. Native subject has TenantReader
+  membership and consumes the actual `party` and Tenants query domains without administrator
+  authority. No general Story 3.3/3.5 or production qualification is inferred.
+- Memories' declared public API is consumed through its actually allocated, identity-probed Dapr
+  invocation URI and public `/api/v1/` prefix. A separate strict private file binds the existing
+  DAPR_API_TOKEN to run/isolation/resource/module/endpoint/exact URI. It is published only after real
+  preparation, excluded from all evidence and deleted with the workspace; APP_API_TOKEN remains
+  between sidecar and app. Clients refuse prefix escapes, Dapr target/Basic-auth overrides and
+  conflicting or missing credentials. The Memory workload client uses its own sidecar; its receiver
+  adds only the demonstrated EventStore canonical metadata POST grant, preserving deny-default,
+  workload/channel/catalog policies and all existing pins/optional features.
+- Native TRX captured output is intentionally removed by the existing report redactor. Persistence
+  observations use the existing inspected `functional-observations.json` channel instead: explicit
+  report/descriptor-owned path, bounded private CreateNew write after assertions, exact run/status,
+  qualificationCredit=false and credential inspection before retention. No payloads or credentials
+  are retained. All earlier failures and the intermediate passes remain recorded separately.
+- Final integrated affected checks pass: EventStore Testing 232, Testing.Integration 54, runner 77
+  and actual composition regressions 2; no failures/skips/not-run. Named reader/credential/fixture
+  results cover 35/42/10 cases, including every frozen matrix row, exact tuple selection, malformed
+  private channels, no-send path/routing refusals and streamed/disposal cleanup.
+- The isolated/private-owner continuation checkpoint passed all earlier declared projects, main
+  Parties 2,811 total (2,807 passed; four existing optional skips), private cutover/restore 16 and
+  declaration tests 7. Its source/package/Release and repository-path repairs preserve strict
+  committed-gitlink/actual-HEAD/clean immutable-consumption gates: diagnostic hashes and source
+  overrides grant no immutable receipt or historical approval. A final current isolated/private
+  rerun is recorded separately under the runtime evidence.
+- Shared revisions advanced through other actors' commits. The original spec baseline remains
+  `d5f16fb64f766eea4cf9dbc1a324ba3d46a1266a`; the final integrated qualification snapshot is
+  `b4118eda9740781ca8e1f4f745d4cff7f046ecfa`, distinct from earlier merge input `2030542…` and
+  initial isolated snapshot `c31e4f7…`. Forty task source inputs, all selected owners, exact binary
+  hashes and owned merge hunks are recorded. Independent registry/package/container changes and
+  foreign staged work are preserved; this agent made no commit, push or publication.
+- [Runtime evidence](evidence/2-9/runtime-prerequisites/) preserves source selection/repair records,
+  named commands/results, all failed attempts, actual owner receipts and exact cleanup. The final
+  scan checked thirteen actual configuration/native-bearer values against forty-nine retained files,
+  with zero exact matches or supplemental JWT/private-key patterns. In-process preparation
+  operator/workload values are outside that external exact scan coverage; the runner separately
+  inspects actual handed-off native/Dapr values. Source-only acceptance grants no attached execution,
+  expiry-termination, installed/published package, CI, immutable consumption or broader tool credit.
+- User continuation (2026-10-30): "finish the missing work before proceeding" explicitly authorized
+  the necessary runner-owned local catalog, tenant and credential/domain prerequisites. Fixtures
+  still neither provision environments nor mint credentials. The attached-execution follow-up,
+  authoritative publication requirement and prohibition on hosted changes remain unchanged.
 
 ## Spec Change Log
 

@@ -31,7 +31,7 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public async Task FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
     {
-        PlatformCompositionOptions options = PackageOptions() with
+        PlatformCompositionOptions options = PackageGraphOptions() with
         {
             ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
         };
@@ -40,11 +40,11 @@ public sealed partial class PlatformAppModelTests
         {
             PlatformAppModel.Compose(builder, options);
             IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-            servers.Length.ShouldBe(6);
+            servers.Length.ShouldBe(7);
             ProjectResource gateway = servers.OfType<ProjectResource>().Single();
             gateway.Name.ShouldBe("eventstore");
             gateway.GetProjectMetadata().ProjectPath.ShouldBe(options.EventStoreSeedProject);
-            servers.OfType<ContainerResource>().Count().ShouldBe(5);
+            servers.OfType<ContainerResource>().Count().ShouldBe(6);
             foreach (IResource server in servers)
             {
                 var sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
@@ -55,7 +55,8 @@ public sealed partial class PlatformAppModelTests
                 Dictionary<string, object> environment = [];
                 foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
                     await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, environment, TestContext.Current.CancellationToken));
-                if (server.Name != "eventstore") environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
+                if (server.Name == "memories") environment["EventStore__CommandGateway__BaseAddress"].ShouldBe("http://127.0.0.1:" + sidecar.DaprHttpPort);
+                else if (server.Name != "eventstore") environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
                 if (server.Name == "tenants-api") environment["EventStore__GatewayReadiness__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
             }
         }
@@ -175,12 +176,19 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public void GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations()
+    public void GatewayAllowsOnlyTheExactDeclaredApplicationOperations()
     {
         var files = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options())).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/tmp/local-secrets.json", null);
         using JsonDocument policy = JsonDocument.Parse(files["accesscontrol.eventstore.yaml"]);
         var grants = policy.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies").EnumerateArray().ToArray();
-        grants.Select(grant => grant.GetProperty("appId").GetString()).ShouldBe(["tenants-api", "timesheets"]);
+        grants.Select(grant => grant.GetProperty("appId").GetString()).ShouldBe(["memories", "tenants", "tenants-api", "timesheets"]);
+        foreach (string caller in new[] { "memories", "tenants" })
+        {
+            var bound = grants.Single(grant => grant.GetProperty("appId").GetString() == caller).GetProperty("operations").EnumerateArray().ToArray();
+            bound.Select(operation => operation.GetProperty("name").GetString()).Order(StringComparer.Ordinal)
+                .ShouldBe((caller == "tenants" ? new[] { "/api/v1/commands/bound/workload", "/api/v1/streams/read/workload" } : new[] { "/api/v1/commands/bound/workload" }).Order(StringComparer.Ordinal));
+            bound.ShouldAllBe(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).SequenceEqual(new[] { "POST" }));
+        }
         var operations = grants.Single(grant => grant.GetProperty("appId").GetString() == "tenants-api").GetProperty("operations").EnumerateArray().ToArray();
         operations.Select(operation => operation.GetProperty("name").GetString()).ShouldBe(["/api/v1/commands", "/api/v1/queries"]);
         operations.ShouldAllBe(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).SequenceEqual(new[] { "POST" }));

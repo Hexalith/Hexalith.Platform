@@ -1,0 +1,59 @@
+{
+  "schema": "hexalith.mcpcli.operator-preparation/v1",
+  "sourceRevision": "",
+  "sourceHashes": {},
+  "canonicalGraphSha256": "",
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443",
+    "namespace": "",
+    "release": "",
+    "localPort": 18170
+  },
+  "expiresAt": "",
+  "tenant": "",
+  "operatorSubject": "",
+  "operatorRole": "TenantContributor",
+  "operatorPermissions": [
+    "command:submit",
+    "query:read"
+  ],
+  "operatorDomains": [
+    "tenants",
+    "party"
+  ],
+  "values": {
+    "mode": "normal",
+    "replicas": 1,
+    "images": {},
+    "bindings": {},
+    "endpoints": {},
+    "imagePullSecret": "",
+    "environment": {
+      "trustDomain": "",
+      "controlPlaneTrustDomain": "",
+      "sentryEndpoint": "",
+      "components": {},
+      "componentConfigMap": ""
+    },
+    "gateway": {
+      "name": "",
+      "namespace": "",
+      "sectionName": ""
+    },
+    "hostnames": {}
+  },
+  "environmentManifests": [],
+  "privateSecretFiles": {},
+  "registryAuthFile": "",
+  "privateSeedFile": "",
+  "prerequisites": {
+    "daprMtls": "",
+    "restrictedInjector": "",
+    "privateGateway": "",
+    "privateSecretCreation": "",
+    "taskDataServices": "",
+    "routingCatalog": "",
+    "writerActivation": ""
+  }
+}

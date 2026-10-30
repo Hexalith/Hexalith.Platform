@@ -329,9 +329,22 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     {
         if (epoch <= 1) { throw new ArgumentException("Successor epoch required."); }
         byte[] config = JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = epoch, min_encryption_version = epoch });
-        _ = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/config", config, false, cancellationToken).ConfigureAwait(false);
-        byte[] trim = JsonSerializer.SerializeToUtf8Bytes(new { min_available_version = epoch });
-        _ = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/trim", trim, false, cancellationToken).ConfigureAwait(false);
+        byte[]? configured = null;
+        byte[]? trim = null;
+        byte[]? trimmed = null;
+        try
+        {
+            configured = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/config", config, false, cancellationToken).ConfigureAwait(false);
+            trim = JsonSerializer.SerializeToUtf8Bytes(new { min_available_version = epoch });
+            trimmed = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/trim", trim, false, cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(config);
+            if (configured is not null) { CryptographicOperations.ZeroMemory(configured); }
+            if (trim is not null) { CryptographicOperations.ZeroMemory(trim); }
+            if (trimmed is not null) { CryptographicOperations.ZeroMemory(trimmed); }
+        }
     }
 
     /// <inheritdoc />
@@ -348,24 +361,45 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
 
     private async Task<JsonDocument> ReadKeyAsync(string tenantId, CancellationToken token)
     {
-        byte[] health = (await SendAsync(HttpMethod.Get, "v1/sys/health", null, false, token).ConfigureAwait(false))!;
-        using (var status = JsonDocument.Parse(health))
+        byte[]? health = null;
+        byte[]? response = null;
+        try
         {
-            if (status.RootElement.GetProperty("version").GetString() != "2.6.2"
-                || !status.RootElement.GetProperty("initialized").GetBoolean() || status.RootElement.GetProperty("sealed").GetBoolean())
-            { throw new InvalidOperationException("Exact unsealed OpenBao 2.6.2 ERC required."); }
+            health = await SendAsync(HttpMethod.Get, "v1/sys/health", null, false, token).ConfigureAwait(false);
+            using (var status = JsonDocument.Parse(health!))
+            {
+                if (status.RootElement.GetProperty("version").GetString() != "2.6.2"
+                    || !status.RootElement.GetProperty("initialized").GetBoolean() || status.RootElement.GetProperty("sealed").GetBoolean())
+                { throw new InvalidOperationException("Exact unsealed OpenBao 2.6.2 ERC required."); }
+            }
+            response = await SendAsync(HttpMethod.Get, KeyPath(tenantId), null, false, token).ConfigureAwait(false);
+            byte[] retained = response!.ToArray();
+            JsonDocument? document = JsonDocument.Parse(retained);
+            try
+            {
+                var data = document.RootElement.GetProperty("data");
+                if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
+                    || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
+                    || data.GetProperty("deletion_allowed").GetBoolean())
+                { throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment."); }
+                var published = document;
+                document = null;
+                return published;
+            }
+            finally
+            {
+                if (document is not null)
+                {
+                    document.Dispose();
+                    CryptographicOperations.ZeroMemory(retained);
+                }
+            }
         }
-        byte[] response = (await SendAsync(HttpMethod.Get, KeyPath(tenantId), null, false, token).ConfigureAwait(false))!;
-        var document = JsonDocument.Parse(response);
-        var data = document.RootElement.GetProperty("data");
-        if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
-            || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
-            || data.GetProperty("deletion_allowed").GetBoolean())
+        finally
         {
-            document.Dispose();
-            throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment.");
+            if (health is not null) { CryptographicOperations.ZeroMemory(health); }
+            if (response is not null) { CryptographicOperations.ZeroMemory(response); }
         }
-        return document;
     }
 
     private string Key(string tenant)

@@ -1,0 +1,34 @@
+{
+  "status": "offline-build-succeeded-container-base-unavailable",
+  "sourceAndCompile": "Builds-owned source seed restores and compiles/publishes Release from pinned Gateway 3.128.4 without Platform.Custody.",
+  "compiledAssembly": {
+    "path": "/tmp/mcpcli-417-builds-seed-offline/publish/Hexalith.Builds.Module.EventStoreHost.dll",
+    "sha256": "7c29d48b7d734bad51707a93bc9cc0d7ccad69c9fa96698bb8a8c6daf16532e7",
+    "markers": {
+      "AddEventStoreServer": true,
+      "AddEventStoreRunScopedCatalogGateway": false,
+      "UseFiniteDevelopmentRouteCatalogReceiver": false,
+      "RequireEventStoreChannel": false,
+      "CatalogPath": true,
+      "Run-scoped route catalogs require the mapped EventStore source build.": true
+    }
+  },
+  "cachedAssembly": {
+    "path": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.38.3/tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+    "sha256": "23ec6db9c4891105a589c531189f3bfcfad2e24400b72505bb3880dc0f4685c8",
+    "markers": {
+      "AddEventStoreServer": true,
+      "AddEventStoreRunScopedCatalogGateway": false,
+      "UseFiniteDevelopmentRouteCatalogReceiver": false,
+      "RequireEventStoreChannel": false,
+      "CatalogPath": false,
+      "Run-scoped route catalogs require the mapped EventStore source build.": false
+    }
+  },
+  "inspectionExitCode": 0,
+  "archiveExists": false,
+  "archiveBlocker": "CreateNewImage needs mcr.microsoft.com:443 for mcr.microsoft.com/dotnet/aspnet:10.0 manifest; unavailable in the isolated network namespace. No archive was produced.",
+  "catalogLimits": "Current source wraps run-scoped catalog/channel calls in HEXALITH_EVENTSTORE_MAPPED_SOURCE; the Release/package branch explicitly refuses a configured CatalogPath. The cached 4.38.3 PE lacks those direct markers and CatalogPath. This local metadata assessment is not executed catalog/readiness proof; an owning compatible host/artifact decision is still required.",
+  "priorLimitationCorrection": "Platform.Custody compile errors apply to Platform.EventStoreHost, not every sanctioned Gateway host. The Builds-owned seed bypasses that compile blocker.",
+  "noExternalActions": "No remote registry/cluster access, reference edits, image publication, Secret retrieval, service start or domain write."
+}

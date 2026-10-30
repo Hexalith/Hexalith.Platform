@@ -1,0 +1,149 @@
+{
+  "schema": "mcpcli-local-base-image-inventory/v1",
+  "status": "local-cache-observation-only",
+  "commands": [
+    [
+      "docker",
+      "image",
+      "ls",
+      "--digests",
+      "--format",
+      "{{json .}}"
+    ],
+    [
+      "docker",
+      "image",
+      "inspect",
+      "<selected local image ID>"
+    ]
+  ],
+  "images": [
+    {
+      "repository": "mcr.microsoft.com/dotnet/sdk",
+      "tag": "<none>",
+      "id": "sha256:3a48280a9a7c6276c3eeaba1efa6a08820f18c84fb9e6274c187719ecfaf9fbc",
+      "repoDigests": [
+        "mcr.microsoft.com/dotnet/sdk@sha256:3a48280a9a7c6276c3eeaba1efa6a08820f18c84fb9e6274c187719ecfaf9fbc"
+      ],
+      "os": "linux",
+      "architecture": "amd64",
+      "rootfsLayers": [
+        "sha256:32ab39660fd51c6dc3aae486b42d42bbe8fe4c1db78eaf57bb9c21198de48a16",
+        "sha256:42c74cbc219f6ecbfdc40832e0f974b993deacf71cb80c81e5920edbdfa64ca2",
+        "sha256:4014493bfd8c51555f149f8475fbbc26a94efa36b2b4266746ccdf23a7be819d",
+        "sha256:1c41cda582c2e63018d90f1b922d1f613ccc80d48a1b8915581d67e7f417975b",
+        "sha256:b77b1d83b00adf1740c2b436ae85b076fed806003ae7c9fd03915b1a56e422a4",
+        "sha256:53edabc8547a5fc8f1df165d1b888d29d070b5d55ad8f5e7884f4e812353b783",
+        "sha256:84d5e00848fe83bb0228a268b808257530bcdce7f87a488f0fd4fa033bc853e3",
+        "sha256:5d53a1a1ceb1dcf8ce78eb502cd56cac96ad756ed307d291fc30b51753bc51c0",
+        "sha256:aaa0165877a41f7cc7354e9d2176657d471516b3e885b58106383e41c6aaefe4",
+        "sha256:42da7ec9936ef009a1e45cfb8d034edbe2bffa55e4d8b26d9b913a9f8d36339f",
+        "sha256:ba2abc40f37b15e1370e34cf30677f310c637570ee694d47eff57c9128123b86"
+      ],
+      "baseLabel": null,
+      "baseDigestLabel": null
+    },
+    {
+      "repository": "localhost:15033/memories",
+      "tag": "3.0.11-story33.1",
+      "id": "sha256:c08a9c44dd6d5d7e5b76a9754633726398788a47d4760f435993844951084c63",
+      "repoDigests": [
+        "memories@sha256:c08a9c44dd6d5d7e5b76a9754633726398788a47d4760f435993844951084c63",
+        "localhost:15033/memories@sha256:c08a9c44dd6d5d7e5b76a9754633726398788a47d4760f435993844951084c63"
+      ],
+      "os": "linux",
+      "architecture": "amd64",
+      "rootfsLayers": [
+        "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+        "sha256:fa09e76fa81be98b74d710f954aa4a7cf274e5b969857dd2f12b0a8253c053bb",
+        "sha256:7be251a39e9c7e7dac1b4ad1d9801fab59e0890cda8cfa055d168e00cfb22186",
+        "sha256:2c16277b36ff173925e5ffc125edeecb5912a6356f069a7ae02d5abcd771cfcb",
+        "sha256:361fe91f35cc8f036a9638f929b4842a38f1a3f5e1c4d4d6479becbca19fbad1",
+        "sha256:eaa51743b39d235e5d05870b93b60e442a567d79c05df1bf7abca7047ea12355",
+        "sha256:01912379fe922a3c70d7a9e5ccfbb2148689533502e8d86787010fa8c22c4a8a"
+      ],
+      "baseLabel": "mcr.microsoft.com/dotnet/aspnet:10.0",
+      "baseDigestLabel": "sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3"
+    },
+    {
+      "repository": "localhost:15033/parties",
+      "tag": "2.0.1-story33.1",
+      "id": "sha256:22b3765b389049f58e05cd125a524c4a78b1d50dca0047e81ba361ce035ad23f",
+      "repoDigests": [
+        "parties@sha256:22b3765b389049f58e05cd125a524c4a78b1d50dca0047e81ba361ce035ad23f",
+        "localhost:15033/parties@sha256:22b3765b389049f58e05cd125a524c4a78b1d50dca0047e81ba361ce035ad23f"
+      ],
+      "os": "linux",
+      "architecture": "amd64",
+      "rootfsLayers": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:eb1da3340149e40e0cc5643f4ef1b1ea5c11e6dd6f21a5005744a18f356f302f",
+        "sha256:0445543c747fc66a72c142736a371e67d4eceabdced1f75c85940d1946036c6e",
+        "sha256:319688affe66bb796b3bbc64c087596cdb3f326211d6cece84d681848fb95ff7",
+        "sha256:58767e8208c1acdbf4a55132fbde2e04f31a51331ccc539f9f02172e80ff0246",
+        "sha256:d69d26c6444d6de4a2ddf19e19bf0ab85c665500b5e2a1d18c8bd34806c689de",
+        "sha256:7494df203cf9902a51787a8df0a15aed6d39f0f10242637feabf2f9de576b883"
+      ],
+      "baseLabel": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "baseDigestLabel": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c"
+    },
+    {
+      "repository": "localhost:15033/tenants",
+      "tag": "5.11.2-story33.1",
+      "id": "sha256:4b9454b965a971ccbb854c8d230861b40293f83abdaa287dc460132e16f5c562",
+      "repoDigests": [
+        "tenants@sha256:4b9454b965a971ccbb854c8d230861b40293f83abdaa287dc460132e16f5c562",
+        "localhost:15033/tenants@sha256:4b9454b965a971ccbb854c8d230861b40293f83abdaa287dc460132e16f5c562"
+      ],
+      "os": "linux",
+      "architecture": "amd64",
+      "rootfsLayers": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:eb1da3340149e40e0cc5643f4ef1b1ea5c11e6dd6f21a5005744a18f356f302f",
+        "sha256:0445543c747fc66a72c142736a371e67d4eceabdced1f75c85940d1946036c6e",
+        "sha256:319688affe66bb796b3bbc64c087596cdb3f326211d6cece84d681848fb95ff7",
+        "sha256:58767e8208c1acdbf4a55132fbde2e04f31a51331ccc539f9f02172e80ff0246",
+        "sha256:d69d26c6444d6de4a2ddf19e19bf0ab85c665500b5e2a1d18c8bd34806c689de",
+        "sha256:bc665b19f46d48d82ddc428b5191078c2191204bea74ecba739d562bc095b537"
+      ],
+      "baseLabel": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "baseDigestLabel": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c"
+    }
+  ],
+  "existingArchives": [
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/memories-access-telemetry.tar.gz",
+      "bytes": 101108736
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/memories-access-telemetry-clock.tar.gz",
+      "bytes": 100900864
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/memories.tar.gz",
+      "bytes": 143876096
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/tenants-api.tar.gz",
+      "bytes": 58841088
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/parties.tar.gz",
+      "bytes": 61727744
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/memories-domain-service.tar.gz",
+      "bytes": 103580160
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/images/tenants.tar.gz",
+      "bytes": 63666176
+    }
+  ],
+  "findings": [
+    "A local Microsoft .NET SDK image is available; no explicitly named mcr.microsoft.com/dotnet/aspnet base image is in the Docker inventory.",
+    "Existing module images/archives may contain shared runtime layers, but they are application artifacts and are not an independently qualified ASP.NET base manifest.",
+    "The SDK container publisher attempted a registry manifest fetch in the previous bounded offline run. Local Docker layers alone did not satisfy that path; no image/archive was published or newly loaded."
+  ],
+  "limits": "No container was started, no complete image config/environment was retained, no remote request/Secret retrieval occurred, and no runtime/base compatibility is asserted from repository names alone."
+}

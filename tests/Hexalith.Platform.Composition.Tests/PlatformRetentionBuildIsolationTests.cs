@@ -10,7 +10,7 @@ using Shouldly;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
-    public async Task RetentionProjectArgumentsIsolateAllFourOwnerBuildsAcrossRunsAsync()
+    public async Task RetentionProjectArgumentsIsolateAllFiveOwnerBuildsAcrossRunsAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "retention-build-isolation-" + Guid.NewGuid().ToString("N"));
         HashSet<string> paths = new(StringComparer.Ordinal);
@@ -23,14 +23,14 @@ public sealed partial class PlatformAppModelTests
                 builder.Environment.EnvironmentName = "Development";
                 PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
                 ProjectResource[] projects = builder.Resources.OfType<ProjectResource>().OrderBy(resource => resource.Name, StringComparer.Ordinal).ToArray();
-                projects.Select(resource => resource.Name).ShouldBe(["eventstore", "memories", "memories-access-telemetry", "memories-access-telemetry-clock"]);
+                projects.Select(resource => resource.Name).ShouldBe(["eventstore", "memories", "memories-access-telemetry", "memories-access-telemetry-clock", "memories-domain-service"]);
                 foreach (ProjectResource project in projects)
                 {
                     PlatformServerBinding binding = project.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
                     string owner = Path.Combine(Root, "references", project.Name == "eventstore" ? "Hexalith.EventStore" : "Hexalith.Memories");
                     string expected = Path.Combine(owner, "artifacts", "retention", plan.RunId, "build", project.Name);
                     string[] arguments = await BuildIsolationArgumentsAsync(project);
-                    arguments.ShouldBe(["run", "--project", binding.ProjectPath!, "--configuration", "Debug", "--no-launch-profile", "--artifacts-path", expected]);
+                    arguments.ShouldBe(["run", "--project", binding.ProjectPath!, "--configuration", "Debug", "--no-launch-profile", "-p:GeneratePackageOnBuild=false", "--artifacts-path", expected]);
                     project.Annotations.OfType<ExecutableAnnotation>().Last().Command.ShouldBe("dotnet");
                     Path.IsPathFullyQualified(expected).ShouldBeTrue();
                     Path.GetRelativePath(owner, expected).ShouldBe(Path.Combine("artifacts", "retention", plan.RunId, "build", project.Name));
@@ -39,7 +39,7 @@ public sealed partial class PlatformAppModelTests
                 }
             }
 
-            paths.Count.ShouldBe(8);
+            paths.Count.ShouldBe(10);
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
     }
@@ -83,11 +83,11 @@ public sealed partial class PlatformAppModelTests
             else PlatformAppModel.Compose(builder, Options(active: "memories"));
 
             ProjectResource[] projects = builder.Resources.OfType<ProjectResource>().ToArray();
-            projects.Length.ShouldBe(4);
+            projects.Length.ShouldBe(5);
             foreach (ProjectResource project in projects)
             {
                 PlatformServerBinding binding = project.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
-                (await BuildIsolationArgumentsAsync(project)).ShouldBe(["run", "--project", binding.ProjectPath!, "--configuration", "Debug", "--no-launch-profile"]);
+                (await BuildIsolationArgumentsAsync(project)).ShouldBe(["run", "--project", binding.ProjectPath!, "--configuration", "Debug", "--no-launch-profile", "-p:GeneratePackageOnBuild=false"]);
             }
         }
         finally

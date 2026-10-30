@@ -1,0 +1,447 @@
+{
+  "schema": "hexalith.g4-readiness-progress.v1",
+  "runId": "b4d852525f0a28161e6bd1f20cd2cf25",
+  "resources": [
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:19021"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6086575+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:44025"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6086856+00:00",
+      "processId": 3796853
+    },
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:14363"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:34965"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087012+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:29414"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:36605"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087098+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:16364"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:40795"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087198+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:20765"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:21220"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:13056"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087327+00:00",
+      "processId": 3796845
+    },
+    {
+      "name": "memories",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:38235"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087437+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:40293"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.608748+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T17:15:18.6087568+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:18505"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:21561"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:11034"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087714+00:00",
+      "processId": 3806073
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:17892"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:26555"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:28118"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087829+00:00",
+      "processId": 3806072
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:25212"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:27459"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:25295"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6087926+00:00",
+      "processId": 3796961
+    },
+    {
+      "name": "memories-domain-service",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:33049"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088016+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-domain-service-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:29914"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:29924"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:17340"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.608813+00:00",
+      "processId": 3797108
+    },
+    {
+      "name": "memories-graph",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:41591"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088213+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-vectors",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:25278"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088274+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:34659"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088433+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:13721"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:18431"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:11298"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088586+00:00",
+      "processId": 3800714
+    },
+    {
+      "name": "tenants",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "tenants",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:43327"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088688+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "tenants",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:41489"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088807+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "tenants",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:28661"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:10537"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:29024"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6088907+00:00",
+      "processId": 3797078
+    },
+    {
+      "name": "tenants-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "tenants",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:29927"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:28698"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:26103"
+        }
+      ],
+      "observedAt": "2026-10-30T17:15:18.6089024+00:00",
+      "processId": 3796962
+    }
+  ]
+}

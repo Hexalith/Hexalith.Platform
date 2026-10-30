@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "120",
+    "dotnet",
+    "restore",
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "--source",
+    "/home/administrator/.nuget/packages",
+    "--source",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cache",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:Configuration=Release",
+    "-p:NuGetAudit=false",
+    "-p:RunAnalyzers=false",
+    "-p:UseArtifactsOutput=true",
+    "-p:ArtifactsPath=/tmp/mcpcli-417-package-output"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-package-cache"
+  },
+  "network": "isolated network namespace; local package sources only"
+}

@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "90",
+    "dotnet",
+    "restore",
+    "/tmp/mcpcli-417-builds-seed-offline/Hexalith.Builds.Module.EventStoreHost.csproj",
+    "--configfile",
+    "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/evidence/offline-nuget.config",
+    "-p:NuGetAudit=false",
+    "-p:Configuration=Release",
+    "-p:BuildsCatalogFromMappedSource=false"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-builds-seed-cache"
+  },
+  "network": "isolated namespace; local package sources"
+}

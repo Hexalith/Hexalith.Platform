@@ -1,0 +1,121 @@
+{
+  "observedAtUtc": "2026-10-30T17:53:18.649747+00:00",
+  "frozenBlockSha256": "ffb9327ae823c1464f10f265d090a93f336f9bcb5c1124ae2328d0767a8070d3",
+  "scenarioCoverage": [
+    {
+      "scenario": "Repeat generation / separate owned runs / missing source",
+      "receipts": [
+        "PlatformRoutingCatalogTests.txt",
+        "PlatformRoutingCatalogTests-isolated-final.txt"
+      ],
+      "testsPassed": 2
+    },
+    {
+      "scenario": "Schema and eligibility tampering / retained history / v1-v2 golden bytes",
+      "receipts": [
+        "EventStore-RouteCatalogV3Tests.txt"
+      ],
+      "testsPassed": 15
+    },
+    {
+      "scenario": "Actual owner declarations and operation schemas",
+      "receipts": [
+        "Tenants-TenantCatalogTests.txt",
+        "Parties-PartiesCatalogTests.txt",
+        "Memories-MemoriesCatalogTests.txt"
+      ],
+      "testsPassed": 3
+    },
+    {
+      "scenario": "Actual finite receiver endpoints, verb/security changes, invalidation",
+      "receipts": [
+        "EventStoreFinite-tests.txt"
+      ],
+      "testsPassed": 12
+    },
+    {
+      "scenario": "Actual Tenants API human/workload boundary",
+      "receipts": [
+        "TenantsApiSecurity-tests-retry.txt"
+      ],
+      "testsPassed": 2
+    },
+    {
+      "scenario": "Eligibility and ingress before effects / topology / immutable restart / ACL preservation",
+      "receipts": [
+        "../audit-fixes-receipt.json"
+      ],
+      "earlierUnchangedAuditedChecks": {
+        "surface": 18,
+        "registeredIngress": 4,
+        "bootstrap": 4,
+        "topology": 3,
+        "writer": 3,
+        "acl": 1,
+        "packageAdmission": 1
+      }
+    },
+    {
+      "scenario": "Actual source catalog activation and signed HTTP metadata",
+      "receipts": [
+        "PlatformRoutingCatalogIntegrationTests-repaired.txt",
+        "../catalog-live-a6cefbd9d97e4c898589630c5d0edb4a/metadata-http.json"
+      ],
+      "testsPassed": 1,
+      "hostsReady": 8,
+      "participantsCommitted": 6
+    },
+    {
+      "scenario": "Existing reference readiness lane",
+      "receipts": [
+        "ReferenceReadiness-timeout-retry.txt"
+      ],
+      "testsPassed": 1,
+      "elapsedSeconds": 114.478
+    },
+    {
+      "scenario": "Genuine native source descriptor",
+      "receipts": [
+        "native-6f1e6db8095797772cedbe0380577a5d/source-readiness-receipt.json"
+      ],
+      "runId": "6f1e6db8095797772cedbe0380577a5d",
+      "healthyResources": 22,
+      "participantsCommitted": 6
+    },
+    {
+      "scenario": "Genuine admitted matching Release/package readiness",
+      "receipts": [
+        "package/native-bbe72c24968a7d674910976671cc656b/readiness-receipt.json",
+        "package/native-dd8da429233af5aa3d6217b447cc03db/binding-verification.json"
+      ],
+      "runId": "bbe72c24968a7d674910976671cc656b",
+      "healthyResources": 22,
+      "participantsCommitted": 6,
+      "ownerPackages": 23,
+      "runtimeImages": 7,
+      "publicHttpSchemasVerified": 44,
+      "totalCatalogOperations": 69
+    },
+    {
+      "scenario": "Strict private loopback registry transport",
+      "receipts": [
+        "PlatformLoopbackRegistryProbeTests-container-final.txt"
+      ],
+      "testsPassed": 15
+    },
+    {
+      "scenario": "Existing affected AppModel partial class",
+      "receipts": [
+        "PlatformAppModelTests-final-class.txt"
+      ],
+      "status": "running",
+      "explicitTestRoot": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform"
+    }
+  ],
+  "qualificationLimits": [
+    "Source/native and private package snapshots have separate immutable source and binary identities; current shared user story 2.9 handoff changes are excluded from story 3.3 qualification.",
+    "Full native consumer suites remain non-passing; story 2.9 migration boundary, no new consumer credential grant by story 3.3.",
+    "No hosted, candidate, public owner release or musl curl canary acceptance.",
+    "Final package HTTP refresh was unavailable after its processes disappeared; earlier matching owner artifacts and identical catalog root supply the authenticated schema comparison."
+  ]
+}

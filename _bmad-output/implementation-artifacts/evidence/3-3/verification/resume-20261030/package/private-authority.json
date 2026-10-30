@@ -25,7 +25,7 @@
     }
   },
   "buildsCommit": "9d3d720cfaa936b1009c25f0ae2ebaf87d0aa7d0",
-  "platformCommit": "9ad613635229a9e49e8e8e28701706e4bdb6766a",
+  "platformCommit": "82ad5ba3fbfbf399da9bd3e6964e73a25ddceb0b",
   "privateRegistry": "localhost:15033",
   "registryQualification": "owned loopback-only local artifact storage; no hosted publication",
   "qualificationTransport": "explicit private build constant; strict canonical loopback and Development/package only",
@@ -58,5 +58,6 @@
         "sourceSha256": "c359bb2902a8b17bc827d9ead77673de8c8d5c80627a0f65e43082a832eba657"
       }
     ]
-  }
+  },
+  "sourcePreparationBoundary": "Private preparation source intentionally predates concurrent story 2.9 credential handoff; ordinary Release package build does not define HEXALITH_PLATFORM_SOURCE_CATALOG."
 }

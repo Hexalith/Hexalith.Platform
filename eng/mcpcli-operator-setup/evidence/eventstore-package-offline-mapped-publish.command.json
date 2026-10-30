@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "120",
+    "dotnet",
+    "publish",
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "-m:1",
+    "-t:PublishContainer",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:NuGetAudit=false",
+    "-p:RunAnalyzers=false",
+    "-p:UseArtifactsOutput=true",
+    "-p:ArtifactsPath=/tmp/mcpcli-417-package-output-mapped",
+    "-p:ContainerRepository=mcpcli-417-eventstore",
+    "-p:ContainerRegistry=",
+    "-p:ContainerImageTag=operator-setup",
+    "-p:ContainerArchiveOutputPath=/tmp/mcpcli-417-eventstore-package-mapped-offline.tar.gz",
+    "-p:ContainerBaseImage=mcr.microsoft.com/dotnet/aspnet:10.0",
+    "--output",
+    "/tmp/mcpcli-417-eventstore-package-mapped-publish"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-package-cache-mapped"
+  }
+}

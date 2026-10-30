@@ -1,0 +1,19 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-v",
+    "-s",
+    "eng/mcpcli-operator-setup",
+    "-p",
+    "test_*.py"
+  ],
+  "environment": {
+    "HELM_BIN": "/home/administrator/.local/state/hexalith/memories/access-telemetry/full-campaign-offline-20261025-buc4thfg/tools/helm"
+  },
+  "exitCode": 0,
+  "testMethodsPassed": 24
+}

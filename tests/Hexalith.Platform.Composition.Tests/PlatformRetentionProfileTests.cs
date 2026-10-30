@@ -285,7 +285,7 @@ public sealed partial class PlatformAppModelTests
                 await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
             await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
             ExecutableResource[] selectedSidecars = model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ToArray();
-            selectedSidecars.Length.ShouldBe(4);
+            selectedSidecars.Length.ShouldBe(5);
             foreach (ExecutableResource sidecar in selectedSidecars)
             {
                 IResource application = model.Resources.Single(resource => resource.Name + "-dapr-cli" == sidecar.Name);

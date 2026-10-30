@@ -1,0 +1,22 @@
+{
+  "container": "story33-private-registry",
+  "purpose": "Owned loopback-only qualification registry; final ordinary package runs stopped with supported down",
+  "commands": [
+    {
+      "command": [
+        "docker",
+        "stop",
+        "story33-private-registry"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "story33-private-registry"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

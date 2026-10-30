@@ -1,0 +1,15 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync [FAIL]
+      System.IO.InvalidDataException : Owner routing catalog generation refused; see /tmp/hexalith-platform/df32d725ebf9473db8487b3a26eedc1a/catalog-reader/generation.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(63,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(122,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(122,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'f33e8e073e73e20e1dc00df1fa1badaa98e3b6e1e3de69a0e12756c73fe4b746')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 24.528s

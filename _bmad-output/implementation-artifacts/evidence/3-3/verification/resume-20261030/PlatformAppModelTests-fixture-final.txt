@@ -1,0 +1,19 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync [FAIL]
+      System.IO.InvalidDataException : Owner routing catalog generation refused; see /tmp/platform-package-plan-643b8e9c98ef49929ca3f4763375bc6c/platform-components/catalog-reader/generation.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(63,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(122,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(426,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'f33e8e073e73e20e1dc00df1fa1badaa98e3b6e1e3de69a0e12756c73fe4b746')
+Cancelling due to test failure...
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 11, Errors: 0, Failed: 1, Skipped: 1, Not Run: 0, Time: 34.916s

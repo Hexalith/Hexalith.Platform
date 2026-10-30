@@ -168,7 +168,7 @@ public sealed partial class PlatformAppModelTests
                     host.Children[new YamlScalarNode("value")].ToString().ShouldBe("127.0.0.1:" + (Path.GetFileName(path) == "telemetry-state.yaml" ? vectorPort : redisPort), path);
                     redisComponents++;
                 }
-                redisComponents.ShouldBe(5);
+                redisComponents.ShouldBe(6); // Existing five Redis components plus this run's catalog authority.
             }
             foreach (string registry in registries) File.ReadAllText(registry).ShouldBe("run-" + registries.IndexOf(registry));
             File.ReadAllText(Path.Combine(writable[0], "issuer.key")).ShouldBe("run-0");

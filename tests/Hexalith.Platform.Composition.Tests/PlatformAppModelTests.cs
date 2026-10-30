@@ -29,7 +29,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
             string? declared = typeof(PlatformAppModelTests).Assembly.GetCustomAttributes<System.Reflection.AssemblyMetadataAttribute>()
                 .SingleOrDefault(metadata => metadata.Key == "PlatformTestRepositoryRoot")?.Value;
             if (declared is not null) return Path.GetFullPath(declared);
-            DirectoryInfo? directory = new(AppContext.BaseDirectory);
+            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
+            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
             while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
             return directory!.FullName;
         }
@@ -143,6 +144,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
             foreach (KeyValuePair<string, string> input in binding.Environment)
                 if (input.Key is "ConnectionStrings__redis" or "ConnectionStrings__falkordb") environment[input.Key].ShouldBeOfType<ReferenceExpression>();
                 else if (input.Key == "AccessTelemetryLifecycle__AttestationVerificationKey") environment[input.Key].ShouldBeOfType<string>().ShouldNotBeNullOrWhiteSpace();
+                else if (input.Key is "Authentication__DaprInternal__Audience" or "EventStore__CommandGateway__Audience") environment[input.Key].ShouldBe("eventstore");
+                else if (input.Key == "Authentication__Workload__Audience") environment[input.Key].ShouldBe(binding.AppId);
                 else environment[input.Key].ShouldBe(input.Value);
             if (server.Name == "tenants-api") { environment["DAPR_API_TOKEN"].ShouldBe("api-scoped-token"); environment.ShouldNotContainKey("APP_API_TOKEN"); }
             if (server.Name == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-scoped-token");
@@ -163,7 +166,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             }
         }
         DaprSidecarOptions[] sidecars = servers.Select(server => server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options).ToArray();
-        sidecars.SelectMany(sidecar => new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort }).Distinct().Count().ShouldBe(24);
+        sidecars.SelectMany(sidecar => new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort }).Distinct().Count().ShouldBe(servers.Length * 4);
         builder.Resources.ShouldNotContain(resource => resource.Name.Contains("admin") || resource.Name.Contains("mcp") || resource.Name == "eventstore-2");
     }
 
@@ -542,7 +545,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             File.WriteAllText(project, "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
             PlatformCompositionOptions original = Options();
             Dictionary<string, string> projects = new(PlatformServerBindings.ReferenceProjects) { ["parties/api"] = "server.csproj" };
-            SourceMapping mapping = original.Mapping with { Entries = [.. original.Mapping.Entries, new SourceMappingEntry("Hexalith.Parties", "source", directory)] };
+            SourceMapping mapping = original.Mapping with { Entries = [.. original.Mapping.Entries, new SourceMappingEntry("Hexalith.Parties", "source", directory), new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
             PlatformCompositionOptions options = original with { Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [domain, unrelated], Projects = projects, Configuration = new Dictionary<string, string> { ["parties/api/Sample:Setting"] = "bound" } };
             IDistributedApplicationBuilder builder = Builder();
             PlatformAppModel.Compose(builder, options);
