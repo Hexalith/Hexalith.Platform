@@ -2,7 +2,7 @@
 title: '2.7 Withdraw attached runs and keep failure retention'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-progress'
+status: 'done'
 baseline_commit: 'f60f2c7596b1fa3010c91d1d546c71600da24715'
 builds_baseline_commit: '2980efdf51f305dc5c39bb854261c252d13465f5'
 route: 'dispatch'
@@ -70,11 +70,11 @@ All paths are under `references/Hexalith.Builds` (B), with R = `B/src/libraries/
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `R/CompositionAttachment.cs`, `R/CompositionAttachmentStore.cs` -- outcome model, withdraw, failure-aware wait -- AC1, AC3
-- [ ] `R/CompositionAttachAdmission.cs`, `Module.Cli/ModuleCommandApplication.cs`, `ToolDiagnosticFormatter.cs` -- `--outcome`, expiry rule, retained admission -- AC1, AC4
-- [ ] `R/ModuleCommandExecutionService.cs`, `R/CompositionEngine.cs` -- withdraw before cleanup, attached-failure retention, `HXI011`/`HXR037` -- AC2–AC4
-- [ ] `R/CompositionRunListing.cs` -- failed attached runs, retention, passive withdrawn -- AC3
-- [ ] Tests for every matrix row; README; `evidence/2-7/` notes; Platform gitlink bump; deferred-work entry for stopping attached work at expiry (2.9)
+- [x] `R/CompositionAttachment.cs`, `R/CompositionAttachmentStore.cs` -- outcome model, withdraw, failure-aware wait -- AC1, AC3
+- [x] `R/CompositionAttachAdmission.cs`, `Module.Cli/ModuleCommandApplication.cs`, `ToolDiagnosticFormatter.cs` -- `--outcome`, expiry rule, retained admission -- AC1, AC4
+- [x] `R/ModuleCommandExecutionService.cs`, `R/CompositionEngine.cs` -- withdraw before cleanup, attached-failure retention, `HXI011`/`HXR037` -- AC2–AC4
+- [x] `R/CompositionRunListing.cs` -- failed attached runs, retention, passive withdrawn -- AC3
+- [x] Tests for every matrix row; README; `evidence/2-7/` notes; Platform gitlink bump; deferred-work entry for stopping attached work at expiry (2.9)
 
 **Acceptance Criteria:**
 - Given an attached run that reaches its hold limit, when the limit expires, then it is recorded as `withdrawn`: neither a pass nor a failure.
@@ -84,12 +84,63 @@ All paths are under `references/Hexalith.Builds` (B), with R = `B/src/libraries/
 
 ## Implementation Notes
 
+Builds HEAD is `0b17f8022cdc23b8b242b000f5b2aa15580184ac`; implementation was recorded externally as `a13d7972395f989955cf00f1047f1ba50b1a6b73`, followed by local verification, cleanup-admission correction, and independent-review fixes. The Platform gitlink targets the final Builds HEAD. No remote operations were performed by this workflow.
+
+The attachment model, CLI, listing, owner cancellation and every session/exact-down entry point implement the frozen matrix. The v1 contract hold projection and owner first-outcome semantics remain unchanged. Attached-work termination at expiry is recorded in the deferred-work ledger for Story 2.9.
+
+Diff inspection caught an attached-failure exception bypassing pending/in-progress/incomplete cleanup refusal. The correction restores cleanup-state precedence. Five regression cases retain both the three expected failures before correction and all passes afterward in the [Builds evidence](../../references/Hexalith.Builds/evidence/2-7/README.md).
+
+The original baselines are preserved. Their full diffs also contain pre-existing protection work and external catalog/merge changes recorded while this workflow ran; acceptance inspection is scoped to Story 2.7 source, tests, documentation, tracking and the Builds gitlink.
+
 ## Spec Change Log
 
 ## Review Triage Log
+
+Each reviewer finding is classified independently before grouping. B = blind review, E = edge-case review, V = verification-gap review.
+
+| Finding | Verdict | Route | Verified evidence |
+| --- | --- | --- | --- |
+| B01: legacy expired attachment rejected | high | patch | The Builds baseline `EndAsync` wrote `expired` with no outcome. The new consistency switch rejects it before normalization, so valid existing owners cannot be listed or cleaned. |
+| B02: owner result contradicts attached-failure retention | medium | patch | `RecordTestOutcomeAsync` updates resource disposition to retained, but `TestResultWriter` derives retention and failed ids only from the owner's immutable failure flag. The existing owner result therefore misreports the retained environment; its current retention fields can represent the attached ids without schema/reader changes. |
+| B03: expiry during wait loses HXI011 | medium | patch | `ObserveAsync` records expiry during the wait, but the boolean return discards those transitions and `WithdrawAsync` later skips ended records. The cleanup report consequently omits these withdrawn run ids. |
+| B04: report is unavailable before teardown | medium | patch | Both cleanup callers only accumulate diagnostics in memory; command output is written after cleanup. A durable diagnostic report must exist before resource stopping, including interrupted cleanup. |
+| B05: expiry report can disagree with locked outcome | medium | patch | The owner builds an expired list from an unlocked read, then reports that list after a separate locked update. A pre-expiry end waiting on the lock can commit a terminal outcome between those operations. Reports must use the transitions committed under the lock. |
+| B06: attachment inspection failure leaves not-requested cleanup | medium | patch | The initial attachment-read and wait-error catches disable cleanup and return HXT008 without persisting pending disposition, unlike the cancellation-withdrawal catch. The tracked result can contradict the returned pending-cleanup diagnostic. |
+| B07: temporal validation accepts forged terminal records | medium | defer | The baseline consistency validator also allowed ended times inconsistent with expiry. Normal writers still enforce exclusive expiry in `EndTime`/`ObservedAt`; stricter validation of externally edited metadata is pre-existing hardening. |
+| B08: admission/withdrawal lock order is untested | medium | patch | Current tests cover parallel admissions and static cleanup states, but neither ordering of admission against environment withdrawal. Add focused deterministic lock-order coverage. |
+| B09: session AppHost refusal/stop ordering untested | medium | patch | New owner tests override cleanup, and the new down test only checks a workspace. Neither would detect moving a live session AppHost stop back ahead of durable withdrawal. |
+| B10: attached-failure explicit release untested | medium | patch | The new retention tests stop before explicit down. They do not assert failed outcome preservation, peer withdrawal, resource release and removal of active tracking together. |
+| E01: legacy expired attachment rejected | high | patch | The baseline expired/null record is valid and now rejected by the new consistency switch; same verified defect as B01. |
+| E02: wait expiry has no HXI011 | medium | patch | The wait commits expiry and returns only a failure boolean; later withdrawal skips it. Same lost reporting transition as B03. |
+| E03: report reaches output after resource stop | medium | patch | The diagnostic object is created before cleanup, but neither emitted nor durably retained there. Same reporting-order defect as B04. |
+| E04: passive expiry listing does not persist after retained owner exits | false | reject | The frozen intent explicitly requires passive listing without writes and persistence on the next owner/down/end pass. An idle failure-retained environment has no background expiry writer in this story. |
+| V01: live session AppHost survival on refusal untested | medium | patch | Accepted as a pre-verified regression gap: cited tests use workspace-only down, overridden cleanup or unstarted processes. Add a running fake AppHost and retry assertions. |
+| V02: released attached-failure retention listing untested | medium | patch | Accepted as a pre-verified regression gap: current release coverage has owner failure only. Extend an attached-failure case through explicit down and listing. |
+| V03: legacy expired attachment rejected | high | patch | Checked baseline EndAsync and current verification order; expired/null cannot reach normalization and blocks down. Same verified defect as B01. |
+
+Grouped patch work: legacy expiry compatibility (B01/E01/V03); existing owner-result retention (B02); accurate, durable withdrawal reports (B03/B04/B05/E02/E03); pending cleanup metadata (B06); admission race coverage (B08); live session and retained-release coverage (B09/B10/V01/V02). All fixes stay within existing interfaces and the frozen behavior. B07 is deferred independently.
+
+**Resolution:** All grouped patches are implemented and verified. Legacy expiry normalizes before validation. The existing owner result derives local attached failure retention/release from verified attachment records. Observation and withdrawal atomically retain cumulative `attachment-withdrawals.json` diagnostics under the attachment lock before cleanup; report failure prevents teardown and admission updates remain independent. Attachment inspection/report failures record pending cleanup. Named XML results cover both lock orderings, both live session cleanup entry points and explicit release. The final coordinator build has 0 warnings/errors and all 203 focused tests pass; source hashes match the committed Builds files.
 
 ## Verification
 
 **Commands:**
 - `dotnet build -nodeReuse:false` on `B/test/Hexalith.Builds.Module.Tests` -- expected: 0 warnings, 0 errors
 - `dotnet exec` of the Module.Tests Debug DLL with `-class` filters for the attach, listing and lifecycle classes -- expected: all pass
+
+**Results:** Debug build passed with 0 warnings and 0 errors. All 203 focused cases passed with 0 failed, skipped or not run. [verification.json](../../references/Hexalith.Builds/evidence/2-7/verification.json) records the exact commands; [tests.xml](../../references/Hexalith.Builds/evidence/2-7/tests.xml) records each named result. XML was parsed during the acceptance audit and all 203 results were `Pass`.
+
+| Matrix row | Executed passing coverage (`Async` suffix retained) |
+| --- | --- |
+| Attached end | `AttachedFirstOutcomeIsImmutableAsync` (3 cases), `EndRequiresSupportedOutcomeAsync` (4 cases) |
+| Expiry | `WaitReturnsOnlyAfterEveryHoldEndsOrExpiresAsync`, `ExpiredHoldEndsAtItsExpiryAsync`, `ListingShowsAttachedFailurePassiveWithdrawalAndUnknownLegacyOutcomeAsync`, `WithdrawalRecordsExpiryAndLiveHoldsInOnePassAsync` (2 cases) |
+| Owner cancelled | `CancelledWaitWithdrawsBeforeCleanupAndPreservesFirstOutcomeAsync`, `UnrecordableCancellationWithdrawalDefersCleanupAsync` |
+| down | `DownRequiresDurableWithdrawalAndReportsBeforeTeardownAsync`, `WithdrawalRecordsExpiryAndLiveHoldsInOnePassAsync` |
+| Attached fails, owner passes | `AttachedFailureRetainsPassedOwnerWithoutWaitingForPeerAsync` (before/during wait) |
+| Retained, then cancelled | `AttachedFailureThenOwnerCancellationKeepsRetentionAsync` |
+
+`AttachedFailureCannotOverrideCleanupRefusalAsync` adds five passing cleanup-precedence cases. The focused run also includes existing admission, exact-owner cleanup, outcome persistence, retry and result-writer regressions. These deterministic tests do not claim live topology or candidate acceptance qualification.
+
+Post-review coverage also passed: `LegacyExpiredAndTerminalAttachmentsUpgradeBeforeCleanupAsync`, `BlockedWithdrawalReportDoesNotChangeAdmissionSemanticsAsync`, `OwnerWaitExpiryIsDurablyReportedBeforeCleanupAsync`, `InitialAttachmentReadFailureRecordsPendingCleanupAsync`, `ExpiryObservationReportsOnlyCommittedWithdrawalsAsync`, `UnrecordableWaitExpiryReportDefersCleanupUntilDownAsync`, four cases of `AdmissionAndWithdrawalRespectBothLockOrderingsAsync`, four cases of `SessionCleanupKeepsLiveAppHostUntilWithdrawalAndReportSucceedAsync`, and two cases of `AttachedFailuresPopulateExistingRetentionAndReleaseAsync`. Existing attached-failure cases now proceed through explicit down, released retention projection/result, immutable failed outcome, withdrawn peer and removal of active listing/tracking.
+
+Platform completion commit message passed the repository-pinned commitlint CLI 21.2.1; [validation evidence](evidence/2-7/platform-commitlint-final.json) preserves the exact message, command and successful result.

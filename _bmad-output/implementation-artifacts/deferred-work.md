@@ -1479,3 +1479,7 @@
   summary: Stop attached-run owned work and end its environment access at expiry in Story 2.9.
   target_story: 2.9
   evidence: Approved 2026-10-30 decision limits Story 2.7 withdrawal to durable outcome recording. The runner currently owns no attached-run processes/tasks, so it does not terminate them. Environment teardown on cancellation or explicit down ends access; expiry records `withdrawn` without stopping independently owned attached work. Fixture migration must establish work/access ownership and preserve stopping failures without extending the hold.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Harden pre-existing attachment timestamp consistency checks for externally edited metadata.
+  evidence: Review B07: the baseline IsConsistent validator accepted terminal end times at/after expiry and expired end times differing from ExpiresAtUtc. Current EndAsync and ObservedAt writers enforce the correct exclusive boundary; stricter validation of forged/foreign records must preserve valid legacy records and immutable v1 reader semantics.
