@@ -2,7 +2,7 @@
 title: 'EXT-PROTECTION-1 production engine, erasure-root custody and owner verifier'
 type: 'feature'
 created: '2026-10-19'
-status: 'in-review'
+status: 'in-progress'
 baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
 eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
@@ -13,8 +13,16 @@ context:
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'
 ---
 
-> Current status — review 9 halted after the authorized counter-8 correction. Counter is now 9, past the limit of 5. Loop 8 corrections remain in the working trees. No rollback. No accepted target, profile, date, or installed/physical qualification.
+> Current status — human authorized one correction cycle at counter 9. Six bad-spec gaps and the review-9 direct patches are mandatory. Loop 8 corrections stay. No rollback. No accepted target, profile, date, or installed/physical qualification.
 
+
+### Current implementation dispatch — authorized loop 9
+
+This directive and the final **Re-derivation loop 9** entry supersede the review 9 halt and every older dispatch below. The human answered yes to one further correction cycle. Counter `review_loop_iteration` stays 9. Do not increment it. Do not halt for lack of authorization.
+
+Implement in Platform `/home/administrator/projects/hexalith/platform` and EventStore `/home/administrator/projects/hexalith/eventstore`. Do not reset, clean, or discard working-tree files. Correct the loop-9 defects in scoped task files. Preserve loop-8 behavior, unrelated concurrent hunks, and both original baseline commits. No Git mutation or remote operation.
+
+Build Debug with project references and `-nodeReuse:false`, using `HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore`, physical `HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons`, and `HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src`. Set process `HexalithCommonsRoot` to that same path. Run test DLLs directly with xUnit `-class` or `-method`. Leave status `in-progress`. Do not invent an immutable target, profile, date, or availability record.
 
 ### Current implementation dispatch — authorized loop 8
 
@@ -955,4 +963,35 @@ All three reviewers returned before triage. Twenty-nine submissions receive a ve
 | R9-G16 | R9-VG-1 | patch |
 | R9-G17 | R9-VG-2 | patch |
 
-Rejected: R9-BH-4, R9-BH-7, R9-BH-9, R9-BH-12, R9-EC-12, R9-EC-13, R9-EC-14. R9-EC-13 is low and the fix would replace the deadline contract. The six bad-spec groups make the patch and maybe-false defer rows moot. No frozen intent change is inferred. No rollback, patch, or tenth correction cycle is started. Loop 7 candidates stay withdrawn. Loop 8 corrections and their passing focused tests remain in place.
+Rejected: R9-BH-4, R9-BH-7, R9-BH-9, R9-BH-12, R9-EC-12, R9-EC-13, R9-EC-14. R9-EC-13 is low and the fix would replace the deadline contract. The six bad-spec groups make the patch and maybe-false defer rows moot. No frozen intent change is inferred. No rollback was performed at this halt. Loop 7 candidates stay withdrawn. Loop 8 corrections and their passing focused tests remain in place. The human later answered yes to one correction cycle; that authorization is the Re-derivation loop 9 entry below.
+
+
+### Re-derivation loop 9 — 2026-10-30, explicitly authorized after escalation
+
+Authorization: review 9 incremented 8→9 and halted. The human answered yes to one additional correction cycle. Resume this one cycle with counter 9, original baselines, and frozen intent unchanged. Six bad_spec entries (R9-BH-2, R9-BH-3, R9-BH-5, R9-BH-6, R9-BH-8, R9-BH-13) and the direct patches R9-BH-1, R9-BH-10, R9-EC-1, R9-EC-2, R9-EC-3, R9-EC-4, R9-EC-5, R9-EC-8, R9-EC-10, R9-VG-1, and R9-VG-2 are mandatory. Do not change the rejected claims or the unopened maybe-false rows (R9-BH-11, R9-EC-6, R9-EC-7, R9-EC-9, R9-EC-11). Do not replace `PrivateOwnerOperationDeadline`'s cancellation contract.
+
+KEEP: preserve every loop-8 correction and every prior change-log constraint. That includes encrypt-before-register readiness, required installed owner genesis, accepted role-configuration digest, endpoint proof before the bearer, complete frozen-runtime file sets, the seven-field `SafeRequest` producer schema, forwarded `ReadAdmittedOriginalAsync`, the 8192-character Authorization limit, the payload-protection `npm ci` step, declared-submodule platform resolution, and the owned HTTPS role client test. Preserve unrelated concurrent hunks and historical evidence.
+
+Known-bad states to avoid: a private ERC certificate that the production store cannot verify; bootstrap creating a transit key that omits `deletion_allowed: false` or skipping policy installation and head readback; one policy token covering every tenant; any labeled namespace reaching port 8200; a holder id committed before decrypt that can never be completed; culture-sensitive head dictionaries; mlock failure in the prepared container; an encrypt-only readiness probe; wrapped `long.MaxValue` attestation successors; `int.Parse` and null-ciphertext throws; uncleared rewrap buffers; `JsonException` escaping registry recovery; `SingleOrDefault` and `Dictionary.Add` throws; and tests that stay green when the unissued-proof branch or the live-key completion skip is removed.
+
+Required corrections:
+
+1. R9-BH-2 — pin the prepared `erasure-root-tls` CA on the production `OpenBaoErasureRootStore` client. Default machine trust is not that CA. The readiness probe already passes `-ca-cert=/bao/tls/ca.crt`. Add an explicit installation setting and validation callback, and refuse to construct the client when the pin is missing. A matching private CA must succeed against a local certificate. A different CA must fail before a token is sent.
+2. R9-BH-3 — `bootstrap.py --apply` must create each transit key with `deletion_allowed: false`, install the prepared custody policy, and read back each CAS-0 head before reporting bootstrap. A missing policy or a head that does not match the written bytes refuses. Default `--apply` off stays zero native calls.
+3. R9-BH-5 — render one policy per installed tenant and scope, limited to that tenant's head path and transit key. The shared `tenants/*` policy must not be the credential that production hosts use. Keep deny rules for export, backup, and restore.
+4. R9-BH-6 — restrict ingress to an explicit client namespace list, not only a label any namespace can set. Do not publish cluster port 8201 to those clients. Add the namespace Pod Security labels that match the non-root, dropped-capability container.
+5. R9-BH-8 — after `UnwrapAsync` commits a holder id, a failed decrypt, second authorization, or confirmation read must not leave a holder that `CompleteHolderAsync` can never see. Roll the holder back only when the decrypt output was zeroed in this process and no caller received it. A decrypt that returned bytes to a caller stays restrictive. Cover the post-CAS authorization failure and the successful unwrap.
+6. R9-BH-13 — deserialized ERC head dictionaries must keep `StringComparer.Ordinal` for every `SortedDictionary` on the head. A culture that reorders non-ASCII keys must not change the canonical hash. Cover one non-ASCII key under a culture that would reorder `Comparer<string>.Default`.
+7. R9-BH-1 — set `disable_mlock = true` in `erasure-root.hcl` and mount a writable emptyDir for the container scratch path.
+8. R9-BH-10 — `ProveNativeCustodyReadyAsync` must decrypt the throwaway ciphertext and compare it to the probe, then zero both buffers. A prefix-only response refuses.
+9. R9-EC-1 — `UnissuedReplacementProof` must refuse `long.MaxValue` instead of wrapping the successor add.
+10. R9-EC-2 — `VerifyTrimAsync` must use `int.TryParse` and return false for a non-integer key version name.
+11. R9-EC-3 and R9-EC-4 — zero `RewrapAsync` request and response buffers in `finally`, and refuse a null batch ciphertext before `StartsWith`.
+12. R9-EC-5 — registry recovery must catch `JsonException` and return null, alongside the existing `InvalidOperationException` catch.
+13. R9-EC-8 — `erc-read-rejected-issue` must return null when more than one guard attempt matches. `SingleOrDefault` must not throw out of the handler.
+14. R9-EC-10 — a duplicate admission archive key must make `ReadAsync` return null. `Dictionary.Add` must not throw.
+15. R9-VG-1 — add a published-trust test that calls `VerifyBlockedReplacementAsync` with a matching `UnissuedProof` and with a mismatched guard. The matching case returns true. The mismatched case returns false.
+16. R9-VG-2 — in `CustodyOccurrenceProviderTests`, zero the live root without `Dispose` and assert completion stays 0. After `Dispose`, completion is allowed.
+17. Run the tests that cover these files. Debug project-reference builds of the touched test projects must report zero warnings and errors. Run the DLLs directly. Record a handback at `docs/implementation/ext-protection-1-loop9/`. Leave status `in-progress`. Do not run Live, OQ, Agents, cluster apply, or production OpenBao. Do not claim a new native five-case pass unless that suite is actually run.
+
+Authoritative execution is this entry and the loop-9 dispatch at the top.

@@ -1,0 +1,29 @@
+Getting logs...
+[tenants-api] Waiting for resource 'redis' to enter the 'Running' state.
+[tenants-api] Waiting for resource 'dapr-sentry' to enter the 'Running' state.
+[tenants-api] Waiting for resource 'dapr-placement-mtls' to enter the 'Running' state.
+[tenants-api] Waiting for resource 'dapr-scheduler-mtls' to enter the 'Running' state.
+[tenants-api] Waiting for resource 'eventstore' to enter the 'Running' state.
+[tenants-api] Waiting for resource 'redis' to become healthy.
+[tenants-api] Waiting for resource ready to execute for 'redis'.
+[tenants-api] Finished waiting for resource 'redis'.
+[tenants-api] Waiting for resource 'dapr-sentry' to become healthy.
+[tenants-api] Waiting for resource ready to execute for 'dapr-sentry'.
+[tenants-api] Finished waiting for resource 'dapr-sentry'.
+[tenants-api] Waiting for resource 'dapr-scheduler-mtls' to become healthy.
+[tenants-api] Waiting for resource ready to execute for 'dapr-scheduler-mtls'.
+[tenants-api] Finished waiting for resource 'dapr-scheduler-mtls'.
+[tenants-api] Waiting for resource 'dapr-placement-mtls' to become healthy.
+[tenants-api] Waiting for resource ready to execute for 'dapr-placement-mtls'.
+[tenants-api] Finished waiting for resource 'dapr-placement-mtls'.
+[tenants-api] Finished waiting for resource 'eventstore' to start.
+[tenants-api] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+"/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj", "--configuration", "Debug", 
+"--no-launch-profile"]
+[tenants-api] /home/administrator/.dotnet/sdk/10.0.403/NuGet.Build.Tasks.Pack.targets(226,5): error : The process cannot access the file 
+'/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/bin/Debug/Hexalith.Commons.UniqueIds.1.0.0.
+nupkg' because it is being used by another process. 
+[/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj]
+[tenants-api] 
+[tenants-api] 
+[tenants-api] The build failed. Fix the build errors and run again.
