@@ -72,7 +72,7 @@ for resource in model["resources"]:
 
 def save(name, value):
     safe = value if isinstance(value, str) else json.dumps(value, indent=2)
-    safe = re.sub(r'([?&]t=)[^\s"&]+', r'\1[redacted]', safe)
+    safe = re.sub(r'([?&]t=)[^\s"\\&]+', r'\1[redacted]', safe)
     for secret in sorted(secrets, key=len, reverse=True):
         safe = safe.replace(secret, "[redacted]")
     (evidence / name).write_text(safe + "\n")

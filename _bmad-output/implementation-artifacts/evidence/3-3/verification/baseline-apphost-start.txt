@@ -1,0 +1,95 @@
+Command: aspire start --non-interactive --isolated --apphost /home/administrator/projects/hexalith/platform/apphost.cs --format Json
+﻿[2026-10-30 10:21:11.455] [INFO] [Cli] Aspire CLI version: 13.6.4+c89352703f78ae46de90fbf751ed8b52b77b89bf
+[2026-10-30 10:21:11.455] [INFO] [Cli] Aspire CLI build ID: 13.600.426.52311
+[2026-10-30 10:21:11.455] [INFO] [Cli] Aspire CLI path: /home/administrator/.aspire/bin/aspire
+[2026-10-30 10:21:11.455] [INFO] [Cli] Aspire CLI channel: stable
+[2026-10-30 10:21:11.455] [INFO] [Cli] Working directory: /home/administrator/projects/hexalith/platform
+[2026-10-30 10:21:11.455] [INFO] [Cli] Log file: /home/administrator/.aspire/logs/cli_20261030T102111_eb0d66dc.log
+[2026-10-30 10:21:11.455] [INFO] [Cli] CLI process ID: 1734280
+[2026-10-30 10:21:11.467] [DBUG] [Host] Hosting starting
+[2026-10-30 10:21:11.474] [DBUG] [Host] Hosting started
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature aspireSkillsRemoteFetchEnabled = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature defaultWatchEnabled = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature experimentalPolyglot:go = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature experimentalPolyglot:java = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature experimentalPolyglot:python = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature experimentalPolyglot:rust = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature nugetSignatureVerificationEnabled = True (default: True)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature polyglotIntegrationFilterEnabled = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature showAllTemplates = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature showDeprecatedPackages = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature stagingChannelEnabled = False (default: False)
+[2026-10-30 10:21:11.474] [DBUG] [Features] Feature updateNotificationsEnabled = True (default: True)
+[2026-10-30 10:21:11.484] [INFO] [Cli] Command: aspire start --non-interactive --isolated --apphost /home/administrator/projects/hexalith/platform/apphost.cs --format Json
+[2026-10-30 10:21:11.484] [DBUG] [Cli] Parsing arguments: start --non-interactive --isolated --apphost /home/administrator/projects/hexalith/platform/apphost.cs --format Json
+[2026-10-30 10:21:11.484] [DBUG] [Cli] Executing command: aspire start
+[2026-10-30 10:21:11.484] [DBUG] [AuxiliaryBackchannelMonitor] Current command is not MCP start command. Auxiliary backchannel monitoring disabled.
+[2026-10-30 10:21:11.485] [DBUG] [ProjectLocator] Finding project file in /home/administrator/projects/hexalith/platform
+[2026-10-30 10:21:11.485] [DBUG] [AppHostProjectFactory] TryGetProject called for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-30 10:21:11.485] [DBUG] [AppHostProjectFactory] Language detected: csharp for file: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-30 10:21:11.485] [DBUG] [ProjectLocator] Using C# (.NET) apphost /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-30 10:21:11.485] [DBUG] [AppHostLauncher] Starting AppHost in background: /home/administrator/projects/hexalith/platform/apphost.cs
+[2026-10-30 10:21:11.486] [DBUG] [AppHostLauncher] Spawning child CLI: /home/administrator/.aspire/bin/aspire (isDotnetHost=False) with args: run --non-interactive --apphost /home/administrator/projects/hexalith/platform/apphost.cs --log-file /home/administrator/.aspire/logs/cli_20261030T102111486_detach-child_5ad943711d9f4819907836a98135bbb4.log --isolated
+[2026-10-30 10:21:11.486] [DBUG] [AppHostLauncher] Working directory: /home/administrator/projects/hexalith/platform
+[2026-10-30 10:21:11.486] [INFO] [Stderr] Starting Aspire AppHost in the background...
+[2026-10-30 10:21:11.487] [DBUG] [ProcessExecutionFactory] Running /home/administrator/.aspire/bin/aspire in /home/administrator/projects/hexalith/platform with args: run --non-interactive --apphost /home/administrator/projects/hexalith/platform/apphost.cs --log-file /home/administrator/.aspire/logs/cli_20261030T102111486_detach-child_5ad943711d9f4819907836a98135bbb4.log --isolated
+[2026-10-30 10:21:11.487] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire env: ASPIRE_CLI_RUN_DETACHED=true
+[2026-10-30 10:21:11.487] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire env: ASPIRE_LAUNCHER_PID=1734280
+[2026-10-30 10:21:11.487] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire env: ASPIRE_LAUNCHER_STARTED=96725530
+[2026-10-30 10:21:11.487] [DBUG] [LayoutDiscovery] TryDiscoverRelativeLayout: CLI at /home/administrator/.aspire/bin, checking for layout...
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] TryInferLayout: Checking layout at /home/administrator/.aspire/bin
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/managed/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dashboard/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dcp/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   managed/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   dashboard/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   dcp/: MISSING
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] TryInferLayout: Layout rejected - missing required directories
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] TryDiscoverRelativeLayout: Checking parent directory /home/administrator/.aspire...
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] TryInferLayout: Checking layout at /home/administrator/.aspire
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/managed/: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dashboard/: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dcp/: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/managed/aspire-managed: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dashboard/Aspire.Dashboard: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery]   bundle/dcp/dcp: exists
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] TryInferLayout: New bundle/ layout is valid
+[2026-10-30 10:21:11.488] [DBUG] [LayoutDiscovery] Discovered layout relative to CLI: /home/administrator/.aspire
+[2026-10-30 10:21:11.488] [DBUG] [BundleService] Bundle already extracted and up to date (version: 13.6.4+c89352703f78ae46de90fbf751ed8b52b77b89bf|192251176|639283899010000000).
+[2026-10-30 10:21:11.492] [DBUG] [ProcessExecutionFactory] Launching detached child process through DCP fork-process: /home/administrator/.aspire/versions/13.6.4_c89352703f78ae46de90fbf751ed8b52b77b89bf-50e27436b27d8034/dcp/dcp
+[2026-10-30 10:21:11.714] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire(1734307) started in /home/administrator/projects/hexalith/platform
+[2026-10-30 10:21:11.714] [DBUG] [AppHostLauncher] Child CLI process started with PID: 1734307
+[2026-10-30 10:21:11.714] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire(1734307) waiting for exit
+[2026-10-30 10:21:11.714] [DBUG] [AuxiliaryBackchannelMonitor] Socket created: /home/administrator/.aspire/cli/bch/T8VQMwawRSE6slAuqBT.907583
+[2026-10-30 10:21:11.714] [INFO] [AuxiliaryBackchannelMonitor] Connecting to auxiliary socket: /home/administrator/.aspire/cli/bch/T8VQMwawRSE6slAuqBT.907583
+[2026-10-30 10:21:11.717] [DBUG] [AuxiliaryBackchannelMonitor] Connected to auxiliary backchannel at /home/administrator/.aspire/cli/bch/T8VQMwawRSE6slAuqBT.907583
+[2026-10-30 10:21:11.740] [DBUG] [AuxiliaryBackchannelMonitor] AppHost capabilities: aux.v1, aux.v2, aux.v3, terminals.v1, resource-snapshot-versions.v1
+[2026-10-30 10:21:11.740] [INFO] [AuxiliaryBackchannelMonitor] Successfully connected to AppHost at /home/administrator/.aspire/cli/bch/T8VQMwawRSE6slAuqBT.907583. AppHost Path: /home/administrator/projects/hexalith/tenants/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj, AppHost PID: 907583, CLI PID: 871402, In Scope: False, Supports V2: True
+[2026-10-30 10:22:19.532] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire(1734307) exited with code: 6
+[2026-10-30 10:22:19.532] [DBUG] [ProcessExecutionFactory] /home/administrator/.aspire/bin/aspire(1734307) output drained
+[2026-10-30 10:22:19.532] [WARN] [AppHostLauncher] Child CLI process exited with code 6
+[2026-10-30 10:22:19.533] [INFO] [Stderr] ❌ Failed to start the AppHost.
+[2026-10-30 10:22:19.533] [INFO] [Stderr] ℹ️ Recent AppHost startup output:
+[2026-10-30 10:22:19.535] [INFO] [AppHostLauncher] Begin detached AppHost startup log excerpt from child process 1734307.
+[2026-10-30 10:22:19.535] [WARN] [DetachedAppHost/NativeCertificateToolRunner] Failed to trust the certificate in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family of browsers. This likely indicates that the database already contains an entry for the certificate under a different name. Please remove it and try again.
+[2026-10-30 10:22:19.535] [WARN] [DetachedAppHost/NativeCertificateToolRunner] The certificate is only partially trusted - some clients will not accept it.
+[2026-10-30 10:22:19.535] [WARN] [DetachedAppHost/NativeCertificateToolRunner] The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+[2026-10-30 10:22:19.535] [WARN] [DetachedAppHost/NativeCertificateToolRunner] The certificate is not trusted in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family of browsers.
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Determining projects to restore...
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 343 ms).
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Restored /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 358 ms).
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 372 ms).
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   4 of 7 projects are up-to-date for restore.
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build] /home/administrator/.nuget/packages/aspire.hosting.apphost/13.6.4/build/Aspire.Hosting.AppHost.targets(157,5): warning ASPIRE010: apphost.cs is configured with AspireUseCliBundle=false. Some Aspire features require the Aspire CLI bundle. Set AspireUseCliBundle=true to enable those features, or suppress ASPIRE010 to continue without the bundle. See https://aka.ms/aspire/diagnostics/aspire010 for more information.
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Platform version catalog validated: Hexalith.EventStore.Aspire/3.128.4, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Hexalith.Builds.Tooling -> /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build]   Hexalith.Platform.Works.Runtime -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build] /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs(28,53): error CS0117: 'DeletionBatchCapabilityIdentity' does not contain a definition for 'IssueOperationId'
+[2026-10-30 10:22:19.535] [INFO] [DetachedAppHost/Build] /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs(163,71): error CS1061: 'ICustodyKeyLifecycleAuthority' does not contain a definition for 'ReadCurrentOriginalAsync' and no accessible extension method 'ReadCurrentOriginalAsync' accepting a first argument of type 'ICustodyKeyLifecycleAuthority' could be found (are you missing a using directive or an assembly reference?)
+[2026-10-30 10:22:19.535] [INFO] [AppHostLauncher] End detached AppHost startup log excerpt. Child log: /home/administrator/.aspire/logs/cli_20261030T102111486_detach-child_5ad943711d9f4819907836a98135bbb4.log
+[2026-10-30 10:22:19.535] [INFO] [Stderr] ❌ AppHost failed to build.
+[2026-10-30 10:22:19.535] [INFO] [Stderr] 📄 See logs at /home/administrator/.aspire/logs/cli_20261030T102111_eb0d66dc.log
+[2026-10-30 10:22:19.535] [INFO] [Stderr] 🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261030T102111486_detach-child_5ad943711d9f4819907836a98135bbb4.log
+[2026-10-30 10:22:19.535] [INFO] [Cli] Exit code: 2
+[2026-10-30 10:22:19.535] [DBUG] [Host] Hosting stopping
+[2026-10-30 10:22:19.535] [DBUG] [Host] Hosting stopped

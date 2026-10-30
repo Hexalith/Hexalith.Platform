@@ -120,5 +120,15 @@
     "Tenants": {},
     "Parties": {},
     "Memories": {}
+  },
+  "finalSourceRevisions": {
+    "EventStore": "a5b55e8c34892c30fb4feccefd5498dfe0363585",
+    "Tenants": "b5e384fb20e2108df611cbdc35ea74f7399883f3",
+    "Parties": "e065dde2b5510979339c7f4290f9eee16bf3b5c7",
+    "Memories": "466e3b9dacec3f7c16edb3b5f242a6727c55583f"
+  },
+  "finalProducerContentVerification": {
+    "actorMarkerSha256": "433623bcea8e4aab6d61c22d34ffd9b99f13891f4fdff4476130437c8c25359f",
+    "note": "The recorded EventStore dirty marker is now committed with identical content. Other later owner edits affect the executable Tenants/Parties hosts or evidence, outside the listed producer projects; catalog/adapter producer content is unchanged."
   }
 }

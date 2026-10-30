@@ -1,0 +1,3 @@
+Source model import repair verification
+
+All25 PlatformModelCatalogTests passed with zero failures/skips. This includes pinned early/per-project/central-package assertions in source/Debug and package/Release, unchanged malformed/imported closure refusals, and the new actual source-only API case asserting project restoration. Native surface/redaction passed11/11. The initial23/25 result is retained: its two source pin probes correctly rejected a package sentinel also mapped as source. The conditional fixture now uses unmapped Local.CatalogProbe in both configurations, preserving every pin assertion and guard. No source or package qualification is inferred beyond these executed checks; the full declared source suite is the next gate.

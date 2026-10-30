@@ -27,8 +27,8 @@ def run(name, args, timeout=300):
     with (evidence / "commands.jsonl").open("a") as output:
         output.write(json.dumps({"name": name, "cwd": str(root), "argv": args, "mapping": str(mapping), "environmentId": evidence.name}) + "\n")
     result = subprocess.run(args, cwd=root, env=environment, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=timeout)
-    safe = re.sub(r'([?&]t=)[^\s"&]+', r'\1[redacted]', result.stdout)
-    if name.startswith("describe-") and result.returncode == 0:
+    safe = re.sub(r'([?&]t=)[^\s"\\&]+', r'\1[redacted]', result.stdout)
+    if name.startswith("describe-") and result.returncode == 0 and safe.lstrip().startswith("{"):
         model = json.loads(safe)
         for resource in model["resources"]:
             for key, value in resource.get("environment", {}).items():
@@ -60,6 +60,6 @@ print("evidence", evidence, flush=True)
 for attempt in range(12):
     description = run("describe-" + str(attempt), ["aspire", "describe", "--include-hidden", "--format", "Json", *apphost], 30)
     run("logs-" + str(attempt), ["aspire", "logs", "--include-hidden", "--tail", "1000", "--format", "Json", *apphost], 30)
-    if description.returncode:
+    if description.returncode or not description.stdout.lstrip().startswith("{"):
         break
     time.sleep(10)

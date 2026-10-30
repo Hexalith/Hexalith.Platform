@@ -351,6 +351,9 @@ public static class PlatformAppModel
             foreach (JsonElement dependency in server.Module.Declaration.GetProperty("identity").GetProperty("dependencies").EnumerateArray())
             foreach (PlatformServerBinding target in servers.Where(s => PlatformDeclarationSet.Id(s.Module.Declaration) == dependency.GetString()))
             {
+                // Catalog participants must start together. Workers that wait for the committed
+                // gateway cannot be startup prerequisites of a participant in that same cohort.
+                if (catalog?.Participates(server) == true && !catalog.Participates(target)) continue;
                 if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? sourceProject))
                 {
                     if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject))

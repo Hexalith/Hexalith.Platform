@@ -384,11 +384,14 @@ GitHub gate issuance for a declared package-mode suite. The independently enroll
 Builds reusable `candidate-policy.yml` workflow selects the committed PR merge
 result for the exact repository/module/PR/head/base and current open/reopen/retarget
 epoch, or the exact committed revision independently selected by a release workflow
-dispatch. Host-owned workflow coordinates, protected-environment approval settings,
+dispatch on `refs/heads/main`. Other release-dispatch refs are refused. Host-owned workflow coordinates, protected-environment approval settings,
 GitHub OIDC signatures and fresh authenticated GitHub API observations establish
 its authority. Saved request or observation JSON is insufficient. Unavailable
 approval, authentication, immutable source, request state or committed merge-parent
 proof refuses before service startup. Candidate checkouts must be clean and exact.
+Each job attempt permits one candidate invocation; the producing identity stays
+reserved by its diagnostics after active state cleanup. A repeated invocation
+refuses without changing the original owner, workspace or result.
 No live issuer enrollment or release-publication authority is supplied here.
 
 The executing consumer also obtains a fresh nonce-bound OIDC proof from the
