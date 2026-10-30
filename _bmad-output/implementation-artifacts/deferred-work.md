@@ -1611,9 +1611,3 @@
   summary: Decide vulnerability coverage for images that run in production but are not in the release inventory, such as injected sidecars and shared infrastructure (unverified, medium if true).
   target_story: 5.5
   evidence: Policy v1 scans "every included" release image and reconciles against the release inventory. Settle by confirming whether production pods for a release run images outside the release record (e.g. Dapr sidecar injection from the cluster installation) and whether Epic 6's shared-infrastructure procedure scans them.
-
-## Deferred from: fifth-pass corrections build review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
-
-- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
-  summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
-  evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.

@@ -14,8 +14,7 @@ Platform owns the staging executor and promotion evaluator. Modules own their
 critical flows and required checks. Administrator and EventStore qualify the
 reset and recovery behavior with Platform. One identity may approve in each role
 it holds, provided the review record names every role in which it approves;
-this applies to removal/remap approvals, including Platform approval given by the
-Platform Maintainer, and to Tenants review.
+this applies to removal/remap, Tenants review and Maintainer approvals.
 Publication records the approved Platform decisions; it does not record Builds
 adoption, module-owner approvals, reset qualification, runtime enforcement or
 release authorization.
@@ -27,8 +26,6 @@ The [Story 5.1 specification](../../_bmad-output/implementation-artifacts/spec-5
 records the confirmed choices. The separate [candidate evidence and attachment
 policy v1](candidate-and-attachment-policy-v1.md) governs FR-4 candidate evidence
 and attachment holds; it does not decide staging freshness or reset semantics.
-This policy's references to the PRD, epics, architecture and Story 5.1
-specification resolve at the same Platform revision that fixes version 1.
 
 ## Evidence and identity boundaries
 
@@ -49,9 +46,7 @@ insufficient: the immutable Helm package and image content identities promoted
 MUST be those qualified. Evidence MUST record declared and actually executed
 suite, runtime profile and configuration digests, the module declaration and
 flow-to-check mapping digests, the non-empty required check set and its individual completion
-results. Evidence MUST also bind the applicable preparation branch and the
-branch-determining content of any Administrator approval selecting it, as defined
-in decision 2. Expected and observed identities MUST agree. The applicable production
+results. Expected and observed identities MUST agree. The applicable production
 working baseline MUST name the release and working attempt it represents;
 absence of a baseline MUST be explicit rather than filled with an invented one.
 
@@ -62,9 +57,7 @@ time of that check; an earlier evaluation or queued request reserves nothing.
 At that check, the evaluator MUST compare these bindings with the requested
 release, current checked inputs and current production baseline.
 Missing, unknown or mismatched bindings refuse admission, even when an outcome
-says passed. A superseded decision is a promotion decision closed under
-decision 5 because a later candidate's staging attempt started without an
-Administrator reservation; it is no longer adoptable and MUST be refused,
+says passed. A superseded decision is no longer adoptable and MUST be refused,
 even if its earlier evidence otherwise passes. Staging and production profile
 digests MUST agree, and effective infrastructure inputs MUST remain within their
 qualified sets. Evidence-validated
@@ -78,10 +71,8 @@ prerequisites. No evidence grants publication or promotion authority by itself.
 The maximum age is **86,400 seconds (24 hours) from staging attempt start**.
 The executor MUST record the absolute UTC start when the serialized attempt
 acquires its staging lock and epoch, before preparation, deployment or candidate
-writes. Queue time is not attempt start. The executor MUST also record the
-attempt's absolute UTC completion time when it reaches its terminal outcome.
-Completion, a check retry, job resumption or report publication MUST NOT restart
-the age clock.
+writes. Queue time is not attempt start. Completion, a check retry, job resumption
+or report publication MUST NOT restart the age clock.
 
 The executor MUST record the immutable deadline as
 `expiresAt = attemptStartedAt + 86400 seconds`.
@@ -100,17 +91,11 @@ point and does not abort a running restoration.
 ### 2. Attempt triggers: intake and checked-input changes
 
 Staging MUST automatically queue an attempt when a retained candidate passes
-intake validation and opens a new pending decision under decision 3, or when an
-input checked by the staging gate changes for a pending candidate. Re-intake of a
-release whose decision is still pending opens no decision and queues no attempt by
-itself; checked-input changes still queue attempts under that decision. Checked
-inputs include required suites, critical-flow declarations and mappings, runtime
-profile, configuration, the applicable production working baseline and
-preparation branch, including the branch-determining content of the
-Administrator approval selecting that branch: the selected path and, for the
-retained-data path, the named recovery's identity, acceptance checks and maximum
-duration. A new per-attempt Administrator record that repeats that content is no
-checked-input change. A newly established baseline is also a baseline
+intake validation, or when an input checked by the staging gate changes for a
+pending candidate. Checked inputs include required suites, critical-flow
+declarations and mappings, runtime profile, configuration, the applicable
+production working baseline and preparation branch, including the Administrator
+approval selecting that branch. A newly established baseline is also a baseline
 change. A changed input invalidates earlier evidence for the new input set and
 requires a fresh complete attempt, even if module versions are unchanged.
 A different retained release requires a new decision under decision 3.
@@ -118,10 +103,8 @@ A different retained release requires a new decision under decision 3.
 For a currently pending promotion decision, the Platform Maintainer may explicitly
 request a fresh attempt after evidence expires or the latest E2E attempt reaches
 a non-passing terminal outcome: failed, cancelled, incomplete, interrupted or
-superseded. A superseded attempt is one taken over by another attempt whose writer
-recorded the earlier attempt's terminal outcome as superseded (architecture
-Attempt resumption); it is non-passing and may leave its decision pending. The
-request MUST record the reason. Maintainer requests for completed or superseded decisions,
+superseded. A superseded attempt may leave its decision pending. The request MUST
+record the reason. Maintainer requests for completed or superseded decisions,
 or in any other state, including a fresh pass or a queued or running latest
 attempt, MUST be refused with the reason recorded. Version 1 has **no periodic retry loop**:
 expiry or a non-passing outcome alone does not authorize recurring reruns.
@@ -129,17 +112,13 @@ Automatic triggers apply only while the candidate's decision remains
 pending; a superseded decision receives no automatic triggers, including baseline
 changes. Automatic trigger requests and manual rerun requests enter the same
 serialized staging queue and cannot bypass an outstanding reset or active lock.
-An attempt whose decision is no longer pending when it reaches the staging lock
-MUST be cancelled with the reason recorded; it never starts and supersedes nothing.
 
 ### 3. Rerun acceptance: latest issued attempt, complete pass
 
 When a retained candidate passes intake, the trusted gate MUST open a pending
 promotion decision bound to that exact retained release and policy unless that
-release already has a pending one. At most one decision per retained release may be pending
-at a time; re-intake while one is pending opens no new decision and queues no
-attempt by itself. Intake of the release that production's latest-working pointer
-currently names opens no decision and queues no attempt. Checked-input
+release already has one. At most one decision per retained release may be pending
+at a time; re-intake while one is pending opens no new decision. Checked-input
 and baseline changes queue fresh attempts under that decision. Only a different
 retained release is a changed target; switching to the Administrator-approved
 retained-data or empty/degraded path keeps the same decision. Each new staging
@@ -150,23 +129,19 @@ a new decision identity and fresh evidence, even when its bytes match an earlier
 decision.
 
 A decision closes only as completed, when its release becomes production's
-working baseline, or as superseded. The trusted gate MUST record completed closure
-when production's latest-working pointer names the decision's release, before that
-baseline change queues any automatic trigger. A non-working production release outcome leaves
+working baseline, or as superseded. A non-working production release outcome leaves
 the decision pending, and every production release attempt for that decision MUST
 repeat promotion admission. Production recovery attempts follow the architecture's
 separate recovery rules.
 Version 1 defines no other closure. At admission, the evaluator MUST verify the
 decision's current authoritative state is pending. Completed or superseded
 decisions MUST NOT reopen under their old identity; a reopened or new decision
-requires its own identity and fresh full evidence. A release whose decision was
-completed or superseded may return only under a new decision with fresh evidence,
-and only when the latest-working pointer does not name it.
+requires its own identity and fresh full evidence. A superseded release may
+return only under a new decision with fresh evidence.
 
 Only the **latest issued serialized staging evidence attempt** for that pending
-decision may qualify. Issuance order, rather than completion time, selects the
-latest attempt; that selection does not change any earlier attempt's recorded
-outcome or label it superseded. A newer queued, running, failed, cancelled,
+decision may qualify. Issuance order, rather than completion time, determines
+which attempt supersedes the others. A newer queued, running, failed, cancelled,
 incomplete, interrupted or superseded attempt prevents fallback to an earlier pass. A
 qualifying rerun MUST rerun the full required suite for every included module and
 pass every required check under the same current bindings and applicable
@@ -188,10 +163,8 @@ E2E evidence attempt, and neither is a passing E2E rerun.
 Removal means omitting a previously declared critical flow or making its required
 coverage optional. Remap means changing a flow's identity or its required
 flow-to-check associations, including a rename, split or check replacement.
-If unchanged coverage cannot be established, the transition MUST be treated as a
-removal or remap requiring review. Adding a new flow, or adding a required check
-to a flow while keeping all its existing required associations, is neither a
-removal nor a remap; Tenants review of every lifecycle flow still applies.
+If unchanged coverage cannot be established, treat the transition as a removal
+or remap requiring review.
 
 Before a candidate declaration containing a removal or remap can join the gate,
 the owning module and Platform MUST approve a review record binding the before
@@ -232,37 +205,33 @@ a substitute for production smoke.
 When an unadopted candidate wrote state that production's working baseline cannot
 read, staging MUST complete a separate in-place data-restore attempt before a
 later candidate's staging attempt starts. Without a production working baseline,
-or when its readability of the candidate's writes is unproven, those writes MUST
-be treated as unreadable and require the same reset. A same-candidate rerun after breaking
+or when its readability of the candidate's writes is unproven, treat those writes
+as unreadable and require the same reset. A same-candidate rerun after breaking
 or unproven-readability writes MUST also wait for a verified reset first.
-Staging MUST issue the required initial reset automatically ahead of the blocked
-later-candidate or same-candidate attempt; automatic issuance covers only that
-initial reset.
+Staging MUST issue the required reset automatically ahead of the blocked
+later-candidate or same-candidate attempt.
 
 The restore uses the earliest recovery point cut for that candidate since the
 last verified reset, before any of that candidate's writes, rather than a later
 rerun's point that already contains its writes. That point and its retained
-artifacts MUST be kept while the unadopted candidate can still require a reset,
-or while an open recovery, a pending reset or a pending named recovery references
-them, regardless of evidence expiry. Closed lineage references in attempt history
-do not by themselves require retention. Additive unadopted candidates whose
-writes are proven baseline-readable need no reset. A later candidate's start makes an earlier
+artifacts MUST be kept while the unadopted candidate can still require a reset
+or any reset or recovery reference remains, regardless of evidence expiry.
+Additive unadopted candidates whose writes are proven
+baseline-readable need no reset. A later candidate's start makes an earlier
 unadopted candidate no longer adoptable unless an Administrator record reserves
 it. Without that reservation the trusted gate MUST close the earlier decision as
 superseded, refuse its promotion admission and stop all automatic triggers for it.
 
 The reset is a recovery-kind attempt with its own identity, staging lock, epoch,
 recovery entry time and lineage to the candidate attempt and recovery point.
-For the initial entry, the executor MUST record
-`resetLifetimeDeadline = recoveryEntryAt + 3600 seconds`;
+For the initial entry, record `resetLifetimeDeadline = recoveryEntryAt + 3600 seconds`;
 re-entry follows the deadline inheritance rule below. The declared maximum
 lifetime is **3,600 seconds (60 minutes) from recovery entry**, not from
 the candidate attempt, queue request or a later recovery phase. The independent
 off-site monitor MUST read the deadline from the durable attempt record. At or
 after this deadline, if the reset remains non-terminal, it MUST notify
-**Administrator, the recovery deputy and the Platform Maintainer**, even if the
-executor has died, and record the exceeded bound and notification in that
-notification issue. It MUST use the architecture's
+**Administrator and the Platform Maintainer**, even if the executor has died,
+and record the exceeded bound and notification. It MUST use the architecture's
 single accepted notification path: a GitHub issue in the private notification
 repository with the operations repository's writer set, raised through an
 issues-only credential, assigned to Administrator and mentioning the recovery
@@ -274,16 +243,11 @@ to start. Recovery phase deadlines remain separate and do not replace this
 maximum-lifetime deadline.
 
 A staging reset MUST NOT resume in a replacement job. Executor loss interrupts
-the recovery-kind attempt without automatic recovery: the lock stays held and the
-attempt record stays non-terminal, so the maximum-lifetime notification still
-applies, until an Administrator or recovery-deputy re-entry takes it over and
-records its terminal outcome as superseded (architecture Attempt ownership,
-Attempt resumption, and Binding classes and records). That re-entry runs the data
-restore from the same recovery point under the architectural authority and
-fencing rules. An observation gap, a failed or incomplete restore or failed
-verification leaves the reset unverified and likewise requires Administrator or
-the deputy to re-enter from the same recovery point under the deadline
-inheritance rule below.
+and fails the recovery-kind attempt without automatic recovery; Administrator or
+the recovery deputy re-enters the data restore from the same recovery point
+under the architectural authority and fencing rules. An observation gap leaves
+the reset unverified and likewise requires Administrator or the deputy to
+re-enter from the same point.
 
 A re-entry is a distinct attempt. Before the prior maximum-lifetime deadline,
 it inherits that deadline; at or after the prior deadline it records its new
@@ -332,10 +296,10 @@ path still needs full passing E2E and its separately qualified named recovery.
 Fresh-install-plus-candidate proof also serves the existing Administrator-approved
 empty/degraded path; it never replaces compatibility or named-recovery
 qualification when application data remain. These preparation requirements do
-not change release authority. Staging catalog, key and secret retirements MUST
-follow AD-15's expand-only rule relative to production's working baseline. A
-baseline change requires fresh applicable evidence; an Administrator approval
-never waives it.
+not change release authority. Catalog, key and secret retirements MUST remain
+expand-only relative to the current
+working baseline. A baseline change requires fresh applicable evidence; an
+Administrator approval never waives it.
 
 ## Decision accountability and revisit conditions
 
@@ -344,7 +308,7 @@ never waives it.
 | Evidence age: 86,400 seconds from attempt start, exclusive admission deadline | Platform Maintainer, `@jpiquot`; Builds and Platform implement and qualify the gate | Bound drift between the tested state and promotion without renewing age on completion | Observed freshness failures or qualified suite/queue costs make the bound unsuitable |
 | Automatic intake/input-change queueing; explicit reruns after expiry or a non-passing terminal outcome; no periodic loop | Platform Maintainer, `@jpiquot`; Builds and Platform implement intake and queueing | Exercise changed release inputs while preventing uncontrolled repeated attempts | Intake or checked-input/baseline lifecycle changes, or a trigger is ambiguous or missing |
 | Latest issued attempt, full passing rerun, preserved history and no cross-decision reuse | Platform Maintainer, `@jpiquot`; Builds and Platform implement ordering and evidence lineage | A later partial or failed attempt cannot be hidden by an earlier pass | Qualification or operation exposes rerun ordering, history or decision-lineage ambiguity |
-| Owning-module and Platform approval of removal/remap; Tenants reviews every lifecycle flow before enrollment and before any changed declaration joins the gate | Platform Maintainer, `@jpiquot`, accountable; modules own flow rationale and approvals; Tenants reviews every lifecycle flow and approves lifecycle-flow removal/remap; Builds implements validation | Content agreement alone cannot justify lost critical-flow coverage | An owner review gap, missed lifecycle impact or accepted coverage reduction escapes review |
+| Owning-module and Platform approval of removal/remap; Tenants reviews every lifecycle flow before enrollment and before any changed declaration joins the gate | Platform Maintainer, `@jpiquot`, accountable; modules own flow rationale and approvals; Builds implements validation | Content agreement alone cannot justify lost critical-flow coverage | An owner review gap, missed lifecycle impact or accepted coverage reduction escapes review |
 | Reset lifetime: 3,600 seconds from recovery entry; notify without aborting | Platform Maintainer, `@jpiquot`; Builds and Platform implement; Administrator and EventStore qualify reset/recovery behavior | Detect unexpectedly long restores while preserving restoration and serialized staging | A rehearsal or real restore exceeds the bound, or interruption/re-entry cannot preserve its lineage |
 
 A revisit trigger requires a new explicit Platform decision, not an exception to
@@ -370,15 +334,14 @@ this policy. A configured pin or this publication alone is insufficient.
 | --- | --- |
 | Story 5.3 | Validate every included module's non-empty flows, complete required E2E mappings and separate non-empty smoke declaration; verify removal/remap review bindings and owning-module, Platform and applicable Tenants approvals for each latest-accepted and applicable production-baseline transition |
 | Story 5.4 | Obtain Tenants and owning-module review of every lifecycle flow before enrollment and before any changed declaration joins the gate; refuse E2E tenant creation/deletion outside reviewed lifecycle flows and qualify synthetic-tenant cleanup or creating-run reports without treating this policy as approval |
-| Story 5.6 | Implement decision creation and intake/input-change triggers only for pending decisions, with no attempt queued by re-intake alone and no decision or attempt for intake of the release the latest-working pointer currently names; cancellation with a recorded reason of any attempt whose decision is no longer pending when it reaches the staging lock, so it never starts and supersedes nothing; completed closure when production's latest-working pointer names the release, before that baseline change queues triggers; manual request authorization only for currently pending decisions in the permitted expiry/non-passing states (including superseded E2E attempts), reason recording and refusal for completed/superseded decisions or other states, serialization, pre-write recovery points, start/completion/expiry recording, exact input identities including the preparation branch and its selecting approval's branch-determining content, full required E2E and durable ordered attempt/rerun history; completed-closure qualification requires Story 6.16's latest-working pointer move |
+| Story 5.6 | Implement decision creation and intake/input-change triggers only for pending decisions, manual request authorization only for currently pending decisions in the permitted expiry/non-passing states (including superseded E2E attempts), reason recording and refusal for completed/superseded decisions or other states, serialization, pre-write recovery points, start/expiry recording, exact input identities, full required E2E and durable ordered attempt/rerun history |
 | Story 5.7 | Qualify explicitly labelled no-baseline fresh-install proof without a rollback target |
 | Story 5.8 | Qualify current-baseline compatibility and rollback rehearsal, preserving breaking rehearsal evidence |
 | Story 5.9 | Qualify the approved retained-data path's named recovery, required authority and verification without an automatic rollback set |
-| Story 5.10 | Qualify separate resets for unreadable or unproven-readability writes, including same-candidate reruns; retain the earliest pre-write point since the last verified reset, verify restoration, regenerate the realm, remove candidate-only objects, close superseded decisions and qualify 3,600-second notification/interruption/re-entry behavior; notification qualification requires Story 6.4's off-site monitor, deputy re-entry qualification requires Story 6.3's recovery authority, and re-entry fencing qualification requires Story 6.15's takeover fencing |
-| Story 5.11 | Enforce policy/decision/release/input/baseline bindings and current pending/adoptable state, refusing superseded decisions; qualify exclusive age admission, latest E2E-attempt full-pass acceptance, recovery-evidence separation, all preparation branches including default refusal, both release modes and refusal reasons; qualify that only the Platform publication workflow publishes an attested McpCli candidate as stable after all applicable staging evidence passes, and that failed, stale or mismatched evidence publishes no stable version; admission qualification requires Story 6.14's precondition 4 check under the production lock and new epoch |
-| Story 6.4 | For staging resets, the off-site monitor notifies at the recorded maximum-lifetime deadline through the accepted notification path and mentions the Platform Maintainer as well as the deputy |
+| Story 5.10 | Qualify separate resets for unreadable or unproven-readability writes, including same-candidate reruns; retain the earliest pre-write point since the last verified reset, verify restoration, regenerate the realm, remove candidate-only objects, close superseded decisions and qualify 3,600-second notification/interruption/re-entry behavior; notification qualification requires Story 6.4's off-site monitor, and deputy re-entry qualification requires Story 6.3's recovery authority |
+| Story 5.11 | Enforce policy/decision/release/input/baseline bindings and current pending/adoptable state, refusing superseded decisions; qualify exclusive age admission, latest E2E-attempt full-pass acceptance, recovery-evidence separation, all preparation branches including default refusal, both release modes and refusal reasons |
 
-Only the architecture's Platform publication workflow may publish an attested McpCli
+Only the existing Platform publication workflow may publish an attested McpCli
 candidate as stable after all applicable staging validation passes. The policy
 does not change release authority, runners, schemas, workflows, tool pins,
 submodules, vulnerability policy or tenant implementation. Vulnerability policy
@@ -391,29 +354,24 @@ and its scan gate remain separately owned by Stories 5.2 and 5.5.
 | Attempt starts 2026-10-30 12:00:00 UTC; admission is 2026-10-31 11:59:59 UTC | Fresh, eligible only if the latest attempt fully passed with all exact bindings and applicable branch proof |
 | Same attempt; admission is 2026-10-31 12:00:00 UTC or later | Refuse as stale, including when approval or completion occurred earlier |
 | Start/completion timestamp is missing, future or inconsistent, or reported expiry differs from start plus 86,400 seconds | Refuse with the timing reason; do not infer a timestamp or extend freshness |
-| Suite, profile, configuration, flow mapping, production baseline, applicable preparation branch or the branch-determining content of its selecting Administrator approval changes for a pending decision after a pass | Refuse the old binding and automatically queue a fresh complete serialized attempt under the same decision for the changed inputs |
+| Suite, profile, configuration, flow mapping, production baseline or applicable preparation branch/Administrator approval changes for a pending decision after a pass | Refuse the old binding and automatically queue a fresh complete serialized attempt under the same decision for the changed inputs |
 | A different retained release passes intake, or the pending release switches to the approved retained-data or empty/degraded path | A different release gets a new decision and fresh evidence; a path switch automatically queues a fresh complete attempt under the same pending decision for full applicable branch proof |
-| The same retained release passes intake again while its decision is pending | Open no additional decision and queue no attempt from the re-intake itself; at most one decision for that release is pending, and checked-input changes still queue attempts under it |
-| The release that production's latest-working pointer currently names passes intake again | Open no decision and queue no attempt; a completed or superseded release returns under a new decision only when the pointer does not name it |
-| A new per-attempt Administrator record repeats the selected path and, for the retained-data path, the named recovery's identity, acceptance checks and maximum duration | No checked-input change; queue no attempt from the new record alone |
-| A production release attempt for a decision ends non-working, or its release becomes production's working baseline | A non-working release outcome leaves the decision pending and the next production release attempt for that decision repeats admission; when the latest-working pointer names the release, close the decision as completed before that baseline change queues any automatic trigger, so the release's own baseline change queues no attempt for it |
+| The same retained release passes intake again while its decision is pending | Open no additional decision; at most one decision for that release is pending |
+| A production release attempt for a decision ends non-working, or its release becomes production's working baseline | A non-working release outcome leaves the decision pending and the next production release attempt for that decision repeats admission; becoming the working baseline closes it as completed |
 | For a pending decision, evidence expires or the latest E2E attempt ends failed, cancelled, incomplete, interrupted or superseded with no input change | Platform Maintainer may request a fresh attempt with its reason; preserve the prior result and do not start a periodic retry loop |
 | Maintainer requests a manual rerun for a completed or superseded decision, or while the latest attempt is queued, running or a fresh pass | Refuse the request and record the reason |
 | Attempt 1 passes, then attempt 2 is issued and is queued, running, failed, cancelled, incomplete, interrupted or superseded | Refuse fallback to attempt 1, regardless of finish order; retain both attempts |
 | Latest attempt reruns every required flow and passes after an earlier failure | Eligible for that pending decision subject to current freshness, exact bindings and branch proof; earlier failure and rerun reason remain visible |
 | Two attempts pass different subsets, or an unchanged module offers another decision's pass | Refuse aggregation or reuse; require a full passing attempt for this decision |
-| A flow removal/remap has recorded and declared digests that agree but no owning-module or Platform coverage approval for either applicable predecessor transition | Refuse; require both approvals of each transition's before/after digests, affected flows/checks and coverage rationale; every lifecycle flow also needs Tenants review before enrollment and before any changed declaration joins the gate, including Tenants approval of lifecycle removal/remap |
-| A removal/remap review record binds each applicable predecessor transition, or one record covers identical predecessors, with owning-module, Platform and, for a lifecycle flow, Tenants approvals | Accept the declaration into the gate; its evidence still needs a full passing attempt under current bindings |
-| A new tenant-lifecycle flow has no Tenants review | Refuse its enrollment until Tenants and the owning module review its exact declaration and mapping digests |
+| A flow removal/remap has matching digests but no owning-module or Platform coverage approval for either applicable predecessor transition | Refuse; require both approvals of each transition's before/after digests, affected flows/checks and coverage rationale; every lifecycle flow also needs Tenants review before enrollment and before any changed declaration joins the gate, including Tenants approval of lifecycle removal/remap |
 | An E2E flow creates or deletes tenants without being declared and reviewed as a tenant-lifecycle flow | Refuse; tenant creation/deletion makes it a lifecycle flow regardless of its label |
 | Candidate A's later rerun writes incompatible state, or readability is unproven without a production baseline | Reset before a same-candidate rerun or later candidate, using A's earliest pre-write recovery point since the last verified reset |
 | Candidate B starts without an Administrator reservation of unadopted candidate A; then the production baseline changes | Close A's decision as superseded, refuse A at admission and issue no automatic baseline-change trigger for A |
 | Reset enters at 12:00 UTC and remains non-terminal at 13:00 UTC | Off-site monitor notifies Administrator, recovery deputy and Platform Maintainer through the accepted private-issue path, continues restoration and keeps later candidates blocked pending verified reset |
-| Reset executor dies or has an observation gap at 12:30 UTC | Executor loss interrupts the reset and leaves it non-terminal, so the 13:00 lifetime notification still applies until re-entry records it superseded; an observation gap leaves it unverified. No replacement job resumes it; Administrator or the deputy re-enters from the same point |
+| Reset executor dies or has an observation gap at 12:30 UTC | Executor loss fails the reset; an observation gap leaves it unverified. No replacement job resumes it; Administrator or the deputy re-enters from the same point |
 | Reset entered at 12:00 UTC; authorized re-entry occurs at 12:30 UTC | New attempt inherits the 13:00 deadline and preserves the same recovery point and prior lineage |
 | Same interrupted restore re-enters at or after 13:00 UTC | Authorized re-entry is a new attempt with entry plus 3,600 seconds, the same recovery point and preserved prior lineage |
-| Restore fails or is incomplete, or finishes but verification fails | The reset is unverified and is not reissued automatically; Administrator or the deputy re-enters from the same recovery point under the deadline inheritance rule. Keep later candidates blocked and retain the point and failed evidence; elapsed time or restore completion is not verification |
-| Pruning sees a pending reset reference | Retain the point |
+| Restore finishes but verification fails, or pruning sees a pending reset reference | Keep later candidates blocked; retain the point and failed evidence rather than treating elapsed time or restore completion as verification |
 | A reset or named-recovery qualification follows a full passing E2E attempt | Recovery evidence does not count as or supersede the latest E2E evidence attempt; admission still checks all current bindings and applicable branch proof |
 | A baseline lacks valid compatibility evidence and no Administrator-approved retained-data path applies, or applicable preparation proof is missing | Refuse admission; no unmatched state or missing branch proof defaults to acceptance |
 | Administrator approves stale evidence or a retained-data path supplies only fresh-install proof | Refuse; approval cannot waive freshness or the applicable recovery qualification |
