@@ -1688,3 +1688,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
   summary: Story 2.9 needs a production native endpoint-credential producer/consumer contract test.
   evidence: V1: concrete PlatformNativeTestPreparation writer is not exercised by tests; reader tests construct independent JSON, so a writer headerName regression reaches HXT008 only at execution. Concurrent credential grant excluded from story 3.3 qualification.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Port the remaining Tenants and McpCli legacy fixtures before publishing the replacement EventStore testing API.
+  evidence: Tenants source fixtures still override removed bootstrap members; McpCli retains the generic published-package consumer. The approved breaking API migration and epics.md:1520–1541 target EventStore/Parties, while these legacy consumers need their own descriptor port before an SDK publication/cohort qualification. No successful Tenants/McpCli fixture qualification is claimed.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Enforce and verify owner-restricted Windows runner-workspace and credential-file ACLs before Windows qualification.
+  evidence: CompositionWorkspace.CreatePrivateDirectory already creates Windows directories with inherited ACLs and documents privacy only where supported; it is unchanged by this story. The new private channel relies on that existing owner workspace policy. A broadly readable Windows override can expose runner secrets, so owner ACL enforcement/validation remains required before Windows qualification; this run qualifies Linux source only.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Move the private Platform host Swagger surface ahead of the HTTP unmatched-endpoint boundary while preserving its human policy.
+  evidence: The private Platform host installs its 404-for-unmatched-endpoints boundary ahead of Swagger middleware, so Swagger cannot run. This is real, but belongs to preserved independent host/security changes (host commit6346018797bb0b2ecff470cd7aa701923510297a), not this fixture migration; its native flow uses the Builds-owned seed. Reorder middleware and verify human Swagger access in that owner work.

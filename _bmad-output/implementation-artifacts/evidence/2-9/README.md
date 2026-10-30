@@ -1,45 +1,82 @@
 # Story 2.9 implementation evidence
 
-The descriptor consumer, exported fixture migration and real declared source suite now pass.
-Final integrated run `23013726fd912b1143fae3f1302661c3` retained actual persistence observations and
-completed verified empty cleanup. Final current isolated/private-owner checks are recorded below when
-complete. No attachment, expiry-termination, installed/published package, CI, immutable-consumption or
-broader tool qualification is granted.
+The descriptor consumer, exported fixture migration and declared Parties source suite pass after review.
+Final run `60799ff601e46cf61d4b3ae7c2316d3f` verified real dependencies and persisted events, then completed
+empty cleanup. All ten review patches are verified. Attached execution, expiry/termination, published
+packages, CI and immutable consumption remain outside this Linux source qualification.
 
-## Final integrated source acceptance
+## Final acceptance after review
 
-[Final runtime evidence](runtime-prerequisites/live-integrated-source-acceptance/README.md) retains the
-ready owner descriptor/result, inspected MTP TRX, functional persistence observations, actual preparation,
-source/artifact identities, credential-scan scope and exact cleanup. One real case executed/passed in
-7.628s with zero failures/errors/not-executed. Real Tenants served the native tenant and the real Memories
-workflow reached Active. Two persisted Party events at sequences 1/2 matched metadata sequence 2, the
-synthetic stream/command, envelope subjects/correlation/causation/format/timestamps and Current projection.
-The separate inspected functional artifact has SHA256
-`64916a4ce50c9b532f6a5f21a7b45dc1fafde6545256d2c0284792886f077edc`.
+[Final live evidence](runtime-prerequisites/post-review-native-acceptance/README.md) retains the ready
+owner descriptor, terminal result, inspected report, persistence observations, actual owner preparation,
+source/binary hashes, credential scan and independent cleanup checks. All five tests passed: one real
+create/query/persistence flow (4.6449999 seconds) and four small JSON assertion controls. The real flow
+queried Tenants and a currently Active Memories tenant; its two Party events at sequences1/2 match
+aggregate metadata sequence2, synthetic stream identity, command/correlation/causation, user, format and
+timestamps. The query projection is Current. Functional artifact SHA256 is
+`b1c10726df96d70e4d3a78e9dd4263c36fbfa40499776b3fa7bfe852df16e225`.
 
-The final snapshot root is `b4118eda9740781ca8e1f4f745d4cff7f046ecfa`, distinct from original spec baseline
-`d5f16fb64f766eea4cf9dbc1a324ba3d46a1266a`, initial isolated snapshot `c31e4f7…` and earlier merge input
-`2030542…`. The supported private CLI/AppHost/SDK/model/native closure was rebuilt from the integrated
-physical source roots. All eighteen selected heads and 104,609 captured source bytes were checked, with
-forty explicit task inputs and the final test-only observation-writer delta separately hashed. These are
-honest source selections/changes, with no immutable or published claim. Other actors' commits, staged
-work and independent registry/package/container changes are preserved.
+Automatic cleanup completed for22 owned logical resources with zero leftovers/failures. Independent
+run-label container, observed PID, workspace and private endpoint-credential checks are empty. Descriptor
+and result immutable bindings match; the result adds measured execution duration15.1709564s. Thirteen
+actual configuration/native-bearer values, held only in memory, were checked across50 runtime files with
+zero exact matches or supplemental JWT/private-key patterns. In-process preparation operator/workload
+values are outside the external exact-value scan; runner inspection covers actual native/Dapr handoff.
+The observer cache was deleted. No private channel file, environment, plan, kubeconfig or payload is archived.
 
-Final integrated affected checks passed: EventStore Testing 232, Testing.Integration 54, runner 77
-(including pinned-model/runtime-closure, preparation/diagnostic and private-channel cases), and actual
-composition 2. All had zero failures/skips/not-run. Verbose named classes cover 35 descriptor-reader,
-42 endpoint-credential and 10 fixture cases. The private credential channel supplies only the existing
-actual DAPR_API_TOKEN for the exact supplied invocation URI; APP_API_TOKEN remains on the sidecar/app
-channel. The file is excluded from every archive and deleted with the workspace. Intentional TRX Output
-redaction stays enabled; real persistence details use the existing inspected functional-observations
-channel after assertions. Thirteen actual configuration/native-bearer values across 49 retained files had
-zero exact matches or supplemental JWT/private-key patterns. Preparation operator/workload values are
-outside the external exact-value scan; runner report inspection also covers actual native/Dapr handoff.
+| Final check | Result |
+| --- | --- |
+| EventStore Testing full project | 248 passed; zero failures/skips. |
+| Exported Testing.Integration full project | 58 passed; zero failures/skips. |
+| Required named reader/credential/fixture matrix | 45 +48 +14 =107 passed. |
+| Runner selection/execution/readiness/model/preparation classes | 144 passed; zero failures/skips. |
+| All15 isolated Parties projects | 6,183 total; 6,178 passed; five existing optional skips; zero failures/errors/not-run. |
+| Private EventStore resilience/cutover-policy classes | 24 passed (9/15); zero failures/skips. |
+| Declaration renderer | Seven passed. |
+| Actual declared source suite | Five passed, including one real flow; zero failures/skips/not-executed. |
 
-All failed runs and two intermediate runtime passes are retained separately under
-[runtime-prerequisites](runtime-prerequisites/). The following initial checkpoint is historical; its
-incomplete-acceptance and failing-test statements are superseded by the later continuation and final
-source records rather than erased.
+[Full verification](runtime-prerequisites/review-fixes-and-full-verification/README.md) records commands,
+logs, all20 patched input hashes and the initial incomplete snapshot refresh. The final full SDK rerun
+and [coherent binaries](runtime-prerequisites/post-review-coherent-builds-and-sdk/README.md) supersede the
+234-case checkpoint: four actual Tooling copies and both SDK/native SDK copies match exactly. The full
+current composition partial class also retains its earlier179 total/175 passed/four optional native
+skips and five exact current identifier/deadline checks. No required matrix or native case skips.
+The five isolated optional skips are four existing main-suite Memory cases and the published-SDK-only
+large-history Projections case; their conditions are unchanged.
+
+All three independent review layers completed before triage. Each of13 findings has its own verdict and
+evidence in the specification: ten fixed, three deferred. Fixes cover local paths before I/O, exact HTTP
+transport/Host guards before sends, required Redis preflight, current Active Memories observation,
+mandatory inspected persistence artifacts for both Parties profiles, immutable schema bytes, actual
+selected-child secret exclusion and invalid prepared-scope refusals with positive controls. Both Parties
+solutions keep the native project explicitly selectable while excluding its unpublished API from ordinary
+solution builds. Pins and CI workflows are unchanged.
+
+The three deferred issues are legacy Tenants/McpCli fixture ports outside the EventStore/Parties author
+intent, the existing Windows workspace ACL policy and preserved independent private-host Swagger ordering.
+They grant no broader consumer or Windows qualification. The agreed
+`attached-test-execution-and-expiry-enforcement` follow-up remains open. Package acceptance still requires
+authoritative publication of the migrated API; Debug builds grant no package/CI/immutable credit.
+
+The spec baseline remains `d5f16fb64f766eea4cf9dbc1a324ba3d46a1266a`. The exact runtime snapshot root is
+`b4118eda9740781ca8e1f4f745d4cff7f046ecfa`, with32 stable current foreign production/config refreshes,
+all20 review inputs and earlier task/test repairs. All104669 launch source-file hashes match again after
+execution. Actual CLI/AppHost/model/native binary hashes are retained. Current production inputs were
+also compared with the shared workspace with zero semantic differences. These are mutable-source facts,
+not immutable receipts. Other actors' commits, gitlinks and staged work are preserved; this agent made
+no push or publication. Local completion commits are recorded in the final review receipt; root gitlinks
+and published pins remain unchanged.
+
+The separate [29b5 checkpoint](runtime-prerequisites/final-current-source-native-acceptance/README.md),
+earlier230137 pass, failed/interrupted attempts and [isolated-check history](runtime-prerequisites/final-isolated-and-private-checks/README.md)
+remain retained. Interrupted `d04e42…` lost its observer's in-memory values during DCP cleanup; only
+allowlisted metadata is retained and no exact-scan credit is claimed for it. Earlier package-cache,
+source-import, ancestry and fixture-input failures are historical evidence, not omitted failures. Local
+source/package fixtures retain strict selected/actual/clean gates, private restore caches, Release/API
+and dependency assertions. Their local success grants no publication credit.
+
+The initial checkpoint below is historical. Its incomplete acceptance and failing-test statements are
+superseded by the post-review records above rather than erased.
 
 ## Initial implementation checkpoint — historical
 
