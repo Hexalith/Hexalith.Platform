@@ -1,0 +1,45 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootObserverPermissionTests.PermissionFingerprintUsesTheActualCapturedDaprCredential [FAIL]
+      Shouldly.ShouldAssertException : ProtectionQualificationObserverPermissions.DaprCredential(client, "permission-owner")
+          should be
+      "captured-read-only-channel"
+          but was
+      ""
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | c    a    p    t    u    r    e    d    -    r    e    a    d    -    o    n    l    y    -    c    h    ...  
+      Actual Value   |                                                                                                          ...  
+      Expected Code  | 99   97   112  116  117  114  101  100  45   114  101  97   100  45   111  110  108  121  45   99   104  ...  
+      Actual Code    |                                                                                                          ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | ...  5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   
+      Expected Value | ...  r    e    d    -    r    e    a    d    -    o    n    l    y    -    c    h    a    n    n    e    l    
+      Actual Value   | ...                                                                                                           
+      Expected Code  | ...  114  101  100  45   114  101  97   100  45   111  110  108  121  45   99   104  97   110  110  101  108  
+      Actual Code    | ...                                                                                                           
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootObserverPermissionTests.cs(21,0): at Hexalith.Platform.Protection.Tests.ErasureRootObserverPermissionTests.PermissionFingerprintUsesTheActualCapturedDaprCredential()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportDiagnostics.BootstrapAndWrapOneRoot [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.NativeTenantAndCompleteContextSubstitutionCannotDecrypt [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.ThousandTargetManifestReturnsCompleteOrderedOriginalVector [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt [SKIP]
+      Requires the owned disposable OpenBao native harness.
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '4ce8cde9c2460452574835c32d29e475d7078c9d923b189867e395df944eb55f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 383, Errors: 0, Failed: 1, Skipped: 6, Not Run: 0, Time: 103.109s

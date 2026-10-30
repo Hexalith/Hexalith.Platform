@@ -14,6 +14,21 @@ using YamlDotNet.RepresentationModel;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
+    public void CatalogAuthorityScopingPreservesEveryExistingDeclaredInvocationRule()
+    {
+        var declarations = PlatformDeclarationSet.Load(Options());
+        var bindings = PlatformDaprBindings.Resolve(declarations);
+        string[] apps = declarations.SelectMany(module => module.Declaration.GetProperty("identity").GetProperty("servers").EnumerateArray())
+            .Where(server => server.GetProperty("enabled").GetBoolean()).Select(server => server.GetProperty("appId").GetString()!).ToArray();
+        var before = apps.ToDictionary(app => app, app => bindings.AccessControl(app, "default", "public").GetRawText());
+        string[] participants = ["eventstore", "tenants", "tenants-api", "memories", "memories-domain-service"];
+        bindings.BindRoutingCatalog("routing-isolation-test", participants);
+        foreach (string app in apps) bindings.AccessControl(app, "default", "public").GetRawText().ShouldBe(before[app]);
+        foreach (string app in apps) bindings.Consumes("routing-isolation-test", app).ShouldBe(participants.Contains(app));
+        bindings.DeclaredCallers("eventstore").ShouldContain("timesheets");
+    }
+
+    [Fact]
     public async Task FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
     {
         PlatformCompositionOptions options = PackageOptions() with

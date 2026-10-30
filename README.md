@@ -23,7 +23,7 @@ Those hosting concerns live here.
 ## Requirements
 
 - .NET SDK `10.0.402` or later (`latestPatch` roll-forward)
-- Aspire CLI `13.6.1` exactly. The module tool compares `aspire --version` with
+- Aspire CLI `13.6.4` exactly for the prepared tool below. The module tool compares `aspire --version` with
   the catalog-selected `Aspire.AppHost.Sdk` and refuses any other version with
   `HXR015`.
 
@@ -36,19 +36,28 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The local tool manifest pins `hexalith.builds.module.cli` `4.35.2`, accepted for
-Platform `run`, `debug` and opt-in domain enrollment validation.
-`hexalith-platform.json` accepts versions in `[4.35.2, 5.0.0-0)`.
-The floor includes corrected Story 1.13 adoption checks for real workspaces.
-Later 4.x releases, prereleases included, are accepted without a Platform edit; 5.0
-prereleases are excluded. The catalog commit is
-`4248b8c70cb35ba79fdd7e4dd63049d4c73211a0`, matching release tag `v4.35.2`.
-The pinned tool's run/debug topology, SDK and Dapr/Aspire pins are unchanged from
-`4.34.0`; its package catalog selects EventStore `3.126.1`, Tenants `5.10.0` and
-Parties `1.5.1`. Only the pinned version is guaranteed to embed that catalog.
-Another accepted 4.x tool brings its own embedded Dapr, Redis and AppHost SDK
-pins, and nothing compares them with the catalog yet. When the exact pin moves,
-the Builds gitlink moves to that version's release-tag commit.
+The local tool manifest prepares `hexalith.builds.module.cli` `4.38.3`, and
+`hexalith-platform.json` prepares the matching floor `[4.38.3, 5.0.0-0)`.
+This is a local preparation candidate. Platform integration qualification,
+verification of the recorded Builds gitlink, publication of the resulting Platform identity
+and consumer adoption remain pending. The historical accepted `4.35.2` evidence
+below does not qualify this candidate for `run`, `debug` or package composition.
+
+[Builds release `v4.38.3`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.38.3)
+identifies exact source `d1931b1e803144048d927fff16cb8119afde541e`. Its official
+qualification inventory and signed NuGet archive were verified for Story 6.4.
+The Platform Builds selection targets that same exact published source.
+Exact-candidate integration/CI qualification remains pending. This release preserves the current Projects catalog, including
+Conversations `1.3.1`, Tenants `5.11.1` and EventStore `3.128.4`; its embedded runtime catalog selects
+Aspire `13.6.4`, Dapr CLI `1.18.2` and Dapr runtime `1.18.7`. The direct file AppHost
+also selects Aspire `13.6.4` and must use EventStore `3.128.4` and Toolkit
+`13.6.2-beta.959` for this tuple. Both generated and direct launch paths require
+their own integration qualification. Version agreement alone is not acceptance. No runtime prerequisite was installed or deployment performed.
+
+The configured range permits later 4.x versions, including prereleases, and excludes
+5.0 prereleases. Each accepted tool carries its own catalog; matching the range
+alone does not establish integration qualification. The exact tool pin and Builds
+gitlink must identify the same published release before acceptance.
 See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)
 for owner approval, gated publication and fresh released-tool acceptance. The
 [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
@@ -56,8 +65,8 @@ records McpCli, EventStore and Memories verification with `4.34.0`; the
 [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
 records the earlier EventStore and Memories proof with `4.33.1`.
 
-Versions below the configured range are not Platform-accepted, including
-`4.34.0`, `4.35.0` and `4.35.1`. Version `4.34.0` first built McpCli; `4.33.1` composed only
+Versions below the prepared range, including `4.38.1`, are refused by its range
+check once that Platform identity is recorded. Version `4.34.0` first built McpCli; `4.33.1` composed only
 servers. The earlier `4.33.0` also had a mismatched packaged Tooling identity and build-machine paths.
 From `4.31.0`, a tool outside the range is refused with `HXW010` in package mode
 and warned in source mode. Older tools do not check the range, so run the pinned
@@ -75,6 +84,45 @@ publish strict, offline-readable schemas for runner endpoints, composition ident
 reserved candidate proof, attachment holds and the four terminal outcomes. Builds
 ships the schemas and consumer reader; lifecycle and evidence adoption remain
 downstream responsibilities.
+
+
+## Staging policies
+
+The canonical [staging evidence policy v1](docs/contracts/staging-evidence-policy-v1.md)
+fixes the 24-hour evidence age, staging triggers, complete latest-attempt reruns,
+critical-flow review and 60-minute reset lifetime. Publication records Platform's
+decisions; Builds and Platform must implement and qualify downstream validators,
+executors and promotion evaluation before accepting staging evidence. Modules
+must record required flow reviews, and Administrator and EventStore must qualify
+reset behavior. This policy does not establish runtime enforcement or release
+authorization.
+
+Platform adopts the Builds-owned
+[image and dependency vulnerability policy v1](docs/contracts/image-and-dependency-vulnerability-policy-v1.md)
+for exact module and composed images. It fixes Trivy, blocking High/Critical
+findings and recorded Administrator exceptions lasting at most 30 days.
+Stories 5.5 and 5.11 own implementation and promotion acceptance; publication of
+the policy does not establish current workflow enforcement.
+
+## Exact tuple CI preflight
+
+The approved tool/catalog selection is Builds `4.38.3` at
+`d1931b1e803144048d927fff16cb8119afde541e`. Local Debug defaults retain source
+references. For owner CI, `HexalithBuildsPublishedToolRoot` binds Tooling and the
+EventStore seed to that signed tool archive, including the host dependency
+manifest and MVC Testing content root. CI rejects foreign project references.
+
+The manual `Platform tuple CI preflight` workflow accepts a full recorded
+candidate SHA, initializes only this standalone owner's direct dependencies,
+verifies the pinned signed archive, retains package graphs, builds Release and
+runs test projects individually. Artifacts include failures. It publishes or
+deploys nothing. Do not initialize this umbrella checkout's nested dependencies.
+
+A passing preflight does not grant candidate acceptance. The authenticated
+candidate-decision request, expected/loaded runtime identities, required live
+services and distinct generated/direct-host qualification remain mandatory under
+[candidate policy v1](docs/contracts/candidate-and-attachment-policy-v1.md).
+Publication and consumer adoption need their own approvals.
 
 ## Parties reference domain
 
@@ -129,7 +177,8 @@ duplicates a module and fails with `HXP003`/`HXP020`).
 ### Prerequisites
 
 - The pinned tool (`dotnet tool restore`), the .NET SDK and Aspire CLI
-  `13.6.1` listed above, and a running Docker engine.
+  `13.6.4` listed above, and a running Docker engine. This candidate's integration
+  qualification remains pending.
 - The direct submodules `references/Hexalith.Builds`, `references/Hexalith.EventStore`,
   `references/Hexalith.Tenants` and `references/Hexalith.Memories`, initialized
   without `--recursive`. The tool reads all three declaration owners even for
@@ -140,14 +189,14 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   Each checkout's `HEAD` must equal the gitlink staged in this
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
-- The local Aspire orchestration and dashboard packages at `13.6.1`. From this
+- The local Aspire orchestration and dashboard packages at `13.6.4`. From this
   workspace, run `dotnet restore apphost.cs` once before the first `run` or `debug`.
   Tool restore alone does not install these SDK packages. If NuGet uses a custom
   `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both
   restore and `debug`; the tool otherwise checks `~/.nuget/packages` and reports
   `HXR016` when the required packages are missing.
-- `HEXALITH_DAPR_HOME`: an absolute, isolated Dapr home with Dapr CLI `1.18.0`
-  at `tools/dapr` and runtime `1.18.2` at `.dapr/bin/{daprd,placement,scheduler}`.
+- `HEXALITH_DAPR_HOME`: an absolute, isolated Dapr home with Dapr CLI `1.18.2`
+  at `tools/dapr` and runtime `1.18.7` at `.dapr/bin/{daprd,placement,scheduler}`.
   A machine-wide `dapr init` does not qualify. On Linux x64 (including WSL2),
   prepare one from the official release assets; other platforms need the
   matching `<os>_<arch>` assets of the same releases. The subshell stops at the
@@ -157,16 +206,16 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   ```bash
   (
     set -euo pipefail
-    dapr_home="$HOME/.hexalith/dapr/1.18.2"
+    dapr_home="$HOME/.hexalith/dapr/1.18.7"
     mkdir -p "$dapr_home/tools" "$dapr_home/.dapr/bin"
     downloads="$(mktemp -d)"
     trap 'rm -rf "$downloads"' EXIT
     cd "$downloads"
     base=https://github.com/dapr
-    for asset in cli/releases/download/v1.18.0/dapr_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.2/daprd_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.2/placement_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.2/scheduler_linux_amd64.tar.gz; do
+    for asset in cli/releases/download/v1.18.2/dapr_linux_amd64.tar.gz \
+        dapr/releases/download/v1.18.7/daprd_linux_amd64.tar.gz \
+        dapr/releases/download/v1.18.7/placement_linux_amd64.tar.gz \
+        dapr/releases/download/v1.18.7/scheduler_linux_amd64.tar.gz; do
       curl -fsSLO "$base/$asset"
       curl -fsSLO "$base/$asset.sha256"
     done
@@ -175,7 +224,7 @@ duplicates a module and fails with `HXP003`/`HXP020`).
     for binary in daprd placement scheduler; do
       tar -xzf "${binary}_linux_amd64.tar.gz" -C "$dapr_home/.dapr/bin"
     done
-    DAPR_RUNTIME_PATH="$dapr_home" "$dapr_home/tools/dapr" --version   # CLI 1.18.0, runtime 1.18.2
+    DAPR_RUNTIME_PATH="$dapr_home" "$dapr_home/tools/dapr" --version   # CLI 1.18.2, runtime 1.18.7
   )
   ```
 

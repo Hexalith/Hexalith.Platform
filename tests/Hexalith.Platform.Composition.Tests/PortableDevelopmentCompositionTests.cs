@@ -12,29 +12,36 @@ public sealed class PortableDevelopmentCompositionTests
         string path=Path.Combine(Path.GetTempPath(),"development-slots-"+Guid.NewGuid().ToString("N"));
         using var release=new ManualResetEventSlim();int entered=0,finished=0;
         var allEntered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var allFinished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var callers=new CancellationTokenSource();Task<byte[]>[] workers=[];
         try
         {
             await File.WriteAllTextAsync(path,"{}",TestContext.Current.CancellationToken);
-            using var callers=new CancellationTokenSource(TimeSpan.FromMilliseconds(200));
             Task<byte[]> Start()=>BoundedDevelopmentFile.ReadAsync(path,100,callers.Token,()=>
             {
                 if(Interlocked.Increment(ref entered)==4) allEntered.TrySetResult();
                 try { release.Wait(); }finally { if(Interlocked.Increment(ref finished)==4) allFinished.TrySetResult(); }
             });
-            var workers=Enumerable.Range(0,4).Select(_=>Start()).ToArray();await allEntered.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken);
+            workers=Enumerable.Range(0,4).Select(_=>Start()).ToArray();await allEntered.Task.WaitAsync(TimeSpan.FromSeconds(10),TestContext.Current.CancellationToken);
+            callers.CancelAfter(TimeSpan.FromMilliseconds(200));
             foreach(var worker in workers) await Should.ThrowAsync<OperationCanceledException>(()=>worker);
             using var fifth=new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
             await Should.ThrowAsync<OperationCanceledException>(()=>BoundedDevelopmentFile.ReadAsync(path,100,fifth.Token,()=>Interlocked.Increment(ref entered)));
             entered.ShouldBe(4);finished.ShouldBe(0);release.Set();await allFinished.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken);
             (await BoundedDevelopmentFile.ReadAsync(path,100,TestContext.Current.CancellationToken)).ShouldBe("{}"u8.ToArray());
         }
-        finally { release.Set();File.Delete(path); }
+        finally
+        {
+            callers.Cancel();release.Set();
+            try { await Task.WhenAll(workers); }catch(OperationCanceledException) { }
+            File.Delete(path);
+        }
     }
     [Theory]
     [InlineData("valid")][InlineData("parent-link")][InlineData("file-link")][InlineData("changing")][InlineData("oversize")][InlineData("directory")][InlineData("cancel")][InlineData("stall")]
     [InlineData("missing-profile")][InlineData("missing-sibling")][InlineData("rebuilder-collision")][InlineData("rebuilder-collision-case")]
     public async Task ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(string fault)
     {
+        ArgumentNullException.ThrowIfNull(fault);
         string root=Path.Combine(Path.GetTempPath(),"portable-composition-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         using var release=new ManualResetEventSlim();using var cancelled=new CancellationTokenSource();var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var finished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         try

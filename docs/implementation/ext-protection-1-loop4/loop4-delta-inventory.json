@@ -1,0 +1,330 @@
+{
+  "platform": [
+    {
+      "path": ".gitattributes",
+      "sha256": "de23842ca5b57e8d678bc3e2662402624f5b5e30924921ec839bc992a81cc72d",
+      "keepSha256": "8a1ed65dd2d2861eb0d414e93de75f05aee87cc35e7ffb85f50280aa8f8e6536",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "deploy/erasure-root/bootstrap.py",
+      "sha256": "c264aee179ade30d87b349c03ebede644a3373c72579ca0f1c9a352dffc95916",
+      "keepSha256": "e8f890628eaa383f8150fd0f58f957635990dd56150245088458736ef1cc4bd9",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "deploy/erasure-root/statefulset.yaml",
+      "sha256": "a939af06811151ba0a416b73c70d0f719a456924a15b78cc0a3c28136ff0fc7a",
+      "keepSha256": "470ae1062e26f03524c9319f50ec61d4253c1b00424089c7677e27703056b155",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "eng/ext-protection-1/probe_erc_native.py",
+      "sha256": "a4a49e414bf070ff84e5bd9633e14d7fb1c3cc5a596a68e403d2e453ec3e00a1",
+      "keepSha256": "8824a567260828d8660eecb1e696b428761db18fefeb7b90dfbc59928ca3a808",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "sha256": "854eafc8b3be81c9f250095b8d0d64d082452d210cc553b00971750b742daaad",
+      "keepSha256": "7eb22d34833accba2afb93a6176edaea29964e1bbf6d8108314fd2f0da0428bc",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "eng/ext-protection-1/test_probe_erc_native.py",
+      "sha256": "0bc626342b0adfa1cfad5413811d6d7ecec5599b701023af66e02aa6f1e09c87",
+      "keepSha256": "a6dc55c87c06bc205b234b283c33a562dd43ef81b547380e2c9860e8d109b32d",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "eng/ext-protection-1/verify_loop4_vector.py",
+      "sha256": "f36491d8d225e52d00f4d27d9afabc51752447cd0122884ead801347a42c5d67",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+      "sha256": "a185f2693ca5a5a18030fdaaa7f2878a92b045ae515a225dfa879dbe00d1564b",
+      "keepSha256": "76acb865e740c9259020cccae2c53a478298f7dc8a64ad29016097e72f1e8213",
+      "comparison": "original baseline"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+      "sha256": "fe2060f348e0a115ecb90683fe1ca8e2efa434e43ac6bff99162aa6b1ca211a5",
+      "keepSha256": "752ca8a7274d70acb229982f9ae0563fdf8c4736e7300f6f04b9d10b360beb7a",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+      "sha256": "23a32e813d1e8c0b352c534e228537a179ea5d8ae0d6de6db45b214d568bfb72",
+      "keepSha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionDiagnostics.cs",
+      "sha256": "2d579f6f30096d00b223f5ec62096a41c0b17d0ccff841d0f8739d353bf0aaba",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionLogger.cs",
+      "sha256": "13490c05d2c187b3a71ca7ab0c1adca259d615bcb69a2fc6c1f1685ef091d574",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionReporter.cs",
+      "sha256": "f18b8ca31b4aa26e4dc420b914b67e2afbc6c8431bff12ec767acf74da145de8",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+      "sha256": "889fdf666dc5f409fe65f9f55c6f99c3158aade6f7284d1c2ac93fbf11d9bcc0",
+      "keepSha256": "98c280aa2e38c90e5ab4de09c6a58f6566349d2816ccab64216928b6c4faf374",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionHealth.cs",
+      "sha256": "91e8eb44530efc16472b1e12e59e960d89614730a20a78913952226c31e0eeb2",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+      "sha256": "07d25e7a7dd10cb57f2a7497457418ca5210d9609d75a0b9eab337c86bbc4d28",
+      "keepSha256": "6a9a80f7db935e47c8281b66b6c7c1f2f277c1a0aea2256a4c287a197057587d",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+      "sha256": "81dc72aa37d302efd70b8698704a0ad00e02cd40b793e53af2b2325469b0002c",
+      "keepSha256": "3b1085474f7b6e7231106d96c4e9f0d9330a36756f002aff30855b329f92df91",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootIndexedTransitionArchive.cs",
+      "sha256": "dc8b13064d7120a036763b74329264578a116c1a40ee349593691a97e1204a4b",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+      "sha256": "530b56b130a2b41bd14e5926b12915b97784580e6f9c45762efb7d9b4dc8c1d8",
+      "keepSha256": "5fb4c8293890ab86d3d19df42d1cbdd272719e71dc3dcf6f52e0b6fc8754606b",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+      "sha256": "2775c81e25d045406085cf699161f1883d7d48e15c898d7bb23062f60852adab",
+      "keepSha256": "48705b74bacfa597dc444fc59ead599b48b6379015c66112416e76a8958f61e2",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootObservationBatches.cs",
+      "sha256": "fd6115811943e697ea70c097b77cb5e7b48b8ece2ac35b030e015f4d8ac73ddd",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootObservationSelection.cs",
+      "sha256": "f4c34db072728c4542a0ce95a2d3a53f149ba94639b5b02005d5c48f2e018e3f",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+      "sha256": "612715a58b0f5a146d3fe78394c0312f130541209851851bc85ead2b9523631a",
+      "keepSha256": "6603d9573c34218f5297b756592ce7a1babc674dc8bfabc46f0da1ca9a84bc00",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootSourceIndex.cs",
+      "sha256": "77399d18ee4432ae01915b1aae55df9d4ed956cf0f2fb2746add558a112bd0af",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootSourceIndexNode.cs",
+      "sha256": "0fc0aad48f2a89f4b26f77272c00c74150f0ab188311594b70b6fb2cbdb6d915",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+      "sha256": "3d62c5808fd234e7744438558c727d0040495b2259a708c8528ed41d5388e144",
+      "keepSha256": "7a2922ba6eb8ab2663d6e8be9864bb63527b2f5679e982fa1e74f067ce8cb008",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTenantLifecycleAuthority.cs",
+      "sha256": "4d56a0f78476b7ba6c4bf2e3198b7db16ee5066a6047429f760b58f84d4ae117",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+      "sha256": "771b011a9a2a1eca5614171bbb9f731857b50221796bf2afcc40a667332780b3",
+      "keepSha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionPayloadArchive.cs",
+      "sha256": "9298ae67e383af5945496bc9e876e61bc1c2b0d78084e87b99e7a5732cb053a0",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+      "sha256": "d247b9100c64f299f890d38d5817ec46ec0decdb186697d6c276a80d4aa15750",
+      "keepSha256": "de8db2b621327db01e96c2f6b2b0def2a0c32cc71ee94051d05de0f34f8cb185",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCanonical.cs",
+      "sha256": "50ef388223eef35044a70cadc859946b0dfdadf4e7b0f39d5bf7119dc780cb0d",
+      "keepSha256": "c058518c80232582ca0bd9a049ee4cd044eddcac40785cd121154202960bc643",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+      "sha256": "48fc3ccf4226654dd0453e5ca5f491e13f8505e88cc5f653f870c7b14017cb3e",
+      "keepSha256": "2d685a3a08a6a1bbbbe5997cbb7f829d0a591938e88301bdd70f36654baf27ba",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeProjection.cs",
+      "sha256": "efc5996e07033ab6c8dd1a59e4585530b7cf7230e59faef57b55b011d5a0b33c",
+      "keepSha256": "ce63318cf4576489635653842ff9ffcf0918b4b07c691928eb91cfb9360652a0",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperationJournal.cs",
+      "sha256": "33327d7f7134314d2dd9f27b19217823824ac09269a01213c1cfa1d8a68fefde",
+      "keepSha256": "ee688723ffa5b0355969b3b77bb1f47a1c504db9cc9dd97aa0709cfce330ab9d",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+      "sha256": "845e0a355d256d4c82d331b6c3a2a8e3dea53c94c4a7f686bf9f952642b983f3",
+      "keepSha256": "bc896eea7e2a0f58677f63c8d56ae45dcbdb3e8bfa4cf946575725abb0ab9eed",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+      "sha256": "4816871e42a2ac160593c7c2ff72758b96ef3a613c1fb178a03a74b0bb0fcbd6",
+      "keepSha256": "ab20ee46cc7f54e9da2aedc52dfd379ca8ee540c99407905c2d63eff2de1b032",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs",
+      "sha256": "cb03e907c41ef10f91253461872c3c20aad730e8d4c21b9e972a7e4fc635d863",
+      "keepSha256": "c9bc7c73338369393fda2d2fefafbce9e15456c11ffd2ebcd3e95062bc8a0728",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceCatalog.cs",
+      "sha256": "8f06b98ccc940a9d5ddc14fbf848ee4d6a7d7e4c48c70010999db42d74b4221f",
+      "keepSha256": "5d326943369f7e8065d416ca8dfe84c9dd73daba736fc4b1d4fa859696442118",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs",
+      "sha256": "7888bd37f0c45c08df6f3fbc1ae41953b844b8b9cd22185909a681ea17187a96",
+      "keepSha256": "7036ce66e55399cacb861f10e145c16c7eb458c45824f3eed42d5eaa78793ef0",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootIndependentSourceFixture.cs",
+      "sha256": "b5167f944022136aff0b9027a885ea1f20222877a62cc18ef8b7d7375cd76601",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs",
+      "sha256": "ec1a642df779c0ef16d860cd3b7c2cc24d5d7455755178f21156e798ae964bbd",
+      "keepSha256": "9389321a1a41868f5f22beb8d417c5e1969301d51f3e7564ffd3bce8dcd96c71",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4CompletionTests.cs",
+      "sha256": "365c614f4e99c2eb08ba956a6a101cbbc6fc82b12024eccaea25f2745045f897",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4SnapshotLossTests.cs",
+      "sha256": "055757100ff683d41561de7e2ac5e7fe04c1667c81c44e644f33f1d36942f6bf",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4StorageTests.cs",
+      "sha256": "d900310c6e2384e7c7b6ddfb73ed53cbc37ed131c24087e1eb1d0a44c39f74cb",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+      "sha256": "047fb2cb19b7ab61cd25ab22a3f0df3a508d45bc9369fd5bc28c6294ab64e536",
+      "keepSha256": "04ac66faee3fd571d0a6e5bf7dc31fd604777d20cc0372f12b24646b596ac8e3",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+      "sha256": "8e6e397eb4d15e99e9499d70af3f00ff8270ae337e6f59a17b412d84da13662d",
+      "keepSha256": "7e5de50c33de391bfe75d0fdf4afa0894a46d2013eec61508dc604d99f86a1b5",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+      "sha256": "5beea809898d0a7909f2fbe65c52a67df3fb0156ed9579ff73c06cc0cf8242f4",
+      "keepSha256": "6eb937c5ddb5200a73f8e1e538a317917933d77febebec85e2f21fa3c321fcce",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+      "sha256": "472bb3e869315b0f647460697b10a935682ebf0006c891e8dfb2ede90816c271",
+      "keepSha256": "0a5c1b7ffc64c87efd13583d02ef37359eb9291ea0395b0373a1d254caf5c169",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostHeadAcknowledgement.cs",
+      "sha256": "9dc7bd36914632698d28c8202993643b1270268c20eaed74379e86d48dab1ee0",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs",
+      "sha256": "0bba6aaf979cee741acb9b368aae476a5a31054bc9ebf3720b95c6eace191fd0",
+      "keepSha256": null,
+      "comparison": "new loop-4 file"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+      "sha256": "4193d13514d7cbe68a3b5e779c61593fc1c5c1de20100e44374e9354c151902a",
+      "keepSha256": "9f9466a165b9123b7168a78ef45d44ba8aeb2127e0a199b275a1d01ccc790612",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationSourceTests.cs",
+      "sha256": "d71fde53892a5d7c91e6c55a89e89b06c300c3831a7a3042fbd565c8dd0bd763",
+      "keepSha256": "0c79fa91c0254ec947529ce8887b6d2f2af2bc9be865cab260ba1b5ed83b8455",
+      "comparison": "loop-4 KEEP"
+    }
+  ],
+  "eventstore": [
+    {
+      "path": "tools/ext_protection_1.py",
+      "sha256": "f84250426b39ff3b67b398b2ca620bda390ae366df2a4fe5862b4a75264ac26a",
+      "keepSha256": "2fc1e0de7d33df3e0a2a30705ab70db7a7f75b49f38ef355dd92fef8336e380d",
+      "comparison": "loop-4 KEEP"
+    },
+    {
+      "path": "tools/tests/test_ext_protection_1.py",
+      "sha256": "0ba1413c56348f59364f076b5a0bafc08b1add61235ce0441b60c9d21c0e6298",
+      "keepSha256": "1066c7a4573f7ce5ff6d36dcef2591ae05861220b64a70192ec0ec1ea111f20a",
+      "comparison": "loop-4 KEEP"
+    }
+  ]
+}

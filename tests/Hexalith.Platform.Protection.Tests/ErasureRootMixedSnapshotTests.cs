@@ -1,3 +1,9 @@
+using Dapr.Actors.Runtime;
+using Hexalith.EventStore.Server.Configuration;
+using Hexalith.EventStore.Server.Events;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using NSubstitute;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -18,9 +24,9 @@ public sealed class ErasureRootMixedSnapshotTests
         Safe = 7,
         Entries = new[] { "a", "b" }.Select(id => new { ProtectedContent = new { Target = new ProtectionTarget("tenant-a", "interaction-" + id, "alias-" + id), Value = new { Secret = "secret-" + id } } }).ToArray(),
     });
-    private static (ErasureRootOccurrenceEnrollment[] Originals, PayloadProtectionOccurrenceContext Parent) Enroll(ErasureRootEngineFixture fixture, JsonElement state)
+    private static (ErasureRootOccurrenceEnrollment[] Originals, PayloadProtectionOccurrenceContext Parent) Enroll(ErasureRootEngineFixture fixture, JsonElement state, string snapshotType = "hx-snapshot-v1:directory-state")
     {
-        var parent = new PayloadProtectionOccurrenceContext(77, PayloadProtectionPayloadKind.Snapshot, "hx-snapshot-v1:directory-state");
+        var parent = new PayloadProtectionOccurrenceContext(77, PayloadProtectionPayloadKind.Snapshot, snapshotType);
         var layout = InteractionSnapshotEntries.Describe(JsonSerializer.SerializeToUtf8Bytes(state), "tenant-a", Token);
         var result = new List<ErasureRootOccurrenceEnrollment>();
         for (int i = 0; i < layout.Entries.Count; i++)
@@ -49,6 +55,53 @@ public sealed class ErasureRootMixedSnapshotTests
         }
         await fixture.Engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, Token);
         return write;
+    }
+
+    [Theory]
+    [InlineData("version")]
+    [InlineData("content-hint")]
+    [InlineData("missing-flags")]
+    [InlineData("empty-flags")]
+    [InlineData("unknown-layout")]
+    [InlineData("extra-flag")]
+    public async Task UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(string field)
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var write = await Seal(fixture, state, originals, parent); var metadata = write.ProtectionResult.Metadata!;
+        metadata = field switch
+        {
+            "version" => metadata with { MetadataVersion = 2 }, "content-hint" => metadata with { ContentHint = null },
+            "missing-flags" => metadata with { CompatibilityFlags = null }, "empty-flags" => metadata with { CompatibilityFlags = new Dictionary<string, string>() },
+            "unknown-layout" => metadata with { CompatibilityFlags = new Dictionary<string, string> { ["snapshot-layout"] = "entries-v3" } },
+            _ => metadata with { CompatibilityFlags = new Dictionary<string, string> { ["snapshot-layout"] = "entries-v2", ["extra"] = "unsupported" } },
+        };
+        int before = fixture.Store.ArchiveReads, cas = fixture.Store.CasCount;
+        (await fixture.Engine.TryUnprotectSnapshotAsync(originals[0].Binding.Identity.Owner, write.ProtectionResult.State, metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        (await fixture.Engine.TryReplaySnapshotAsync(originals[0].Binding.Identity.Owner, write.ProtectionResult.State, metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        fixture.Store.ArchiveReads.ShouldBe(before); fixture.Store.CasCount.ShouldBe(cas);
+    }
+
+    [Theory]
+    [InlineData("reference")]
+    [InlineData("store")]
+    [InlineData("lifecycle")]
+    [InlineData("purpose")]
+    public async Task MalformedLaterEnrollmentRefusesBeforeAnyFirstEntryRootOrRegistryEffect(string corruption)
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var second = originals[1];
+        var malformed = corruption switch
+        {
+            "store" => second with { RootIdentity = second.RootIdentity with { StoreTarget = "foreign-store" } },
+            "lifecycle" => second with { ExpectedLifecycleRevision = -1 },
+            "purpose" => second with { RootIdentity = second.RootIdentity with { Purpose = Hexalith.Platform.Custody.PlatformKeyPurpose.DigestKey } },
+            _ => second with { Binding = second.Binding with { KeyReference = "not-a-canonical-reference" } },
+        };
+        fixture.Source.Enrollments[ErasureRootOccurrenceBindings.Id(second.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(second.Binding.Identity))] = malformed;
+        byte[] before = (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes;
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.Engine.ProtectSnapshotAsync(originals[0].Binding.Identity.Owner, state, Type, parent, Token));
+        (await fixture.Store.ReadHeadAsync("tenant-a", Token))!.Bytes.ShouldBe(before);
+        fixture.RegistryState.CommittedState.ShouldBeEmpty(); (await fixture.Store.HeadAsync("tenant-a")).Targets.ShouldBeEmpty();
     }
 
     [Fact]
@@ -81,6 +134,27 @@ public sealed class ErasureRootMixedSnapshotTests
     }
 
     [Fact]
+    public async Task ConcreteSnapshotManagerLoadsMixedPartialErasureThroughItsTrustedCommandReplayCaller()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State();
+        var (originals, parent) = Enroll(fixture, state, "hx-snapshot-v1:folded-state");
+        var write = await Seal(fixture, state, originals, parent);
+        var targets = new[] { originals[0].Binding.Identity.Target };
+        var request = new DeletionBatchConsumptionRequest(new("issuer", "audience", "tenant-a", "deletion", "seal", "accepted", 0, "erase-a",
+            DeletionBatchCapabilityIdentity.TargetManifestDigest(targets), "guard", 1, 1, 1, "key"), "component-signature", 1, "dispatch", 2, targets);
+        (await fixture.Manifests.ConsumeAsync(request, "reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
+        var identity = originals[0].Binding.Identity.Owner;
+        var snapshot = new SnapshotRecord(77, write.ProtectionResult.State, DateTimeOffset.UtcNow, identity.Domain, identity.AggregateId, identity.TenantId, write.ProtectionResult.Metadata) { SnapshotEnvelopeVersion = 1 };
+        var manager = new SnapshotManager(Options.Create(new SnapshotOptions()), Substitute.For<ILogger<SnapshotManager>>(), fixture.Engine);
+        var native = Substitute.For<IActorStateManager>();
+        native.TryGetStateAsync<object>(identity.SnapshotKey, Arg.Any<CancellationToken>()).Returns(new ConditionalValue<object>(true, JsonSerializer.SerializeToElement(snapshot, JsonSerializerOptions.Web)));
+        var loaded = await manager.LoadSnapshotAsync(identity, native, cancellationToken: Token);
+        loaded.ShouldNotBeNull(); var restored = (JsonElement)loaded.State;
+        restored.GetProperty("Entries")[0].GetProperty("ProtectedContent").GetProperty("Value").GetProperty("State").GetString().ShouldBe("Erased");
+        restored.GetProperty("Entries")[1].GetProperty("ProtectedContent").GetProperty("Value").GetProperty("Secret").GetString().ShouldBe("secret-b");
+    }
+
+    [Fact]
     public async Task MissingEntryEnrollmentRefusesBeforeAnyRootIssueAndChangedSkeletonCannotReplay()
     {
         using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
@@ -93,6 +167,19 @@ public sealed class ErasureRootMixedSnapshotTests
         var skeleton = JsonNode.Parse(carrier.SkeletonBytes)!; skeleton["Safe"] = 8;
         var changed = carrier with { SkeletonBytes = JsonSerializer.SerializeToUtf8Bytes(skeleton) };
         (await fixture.Engine.TryReplaySnapshotAsync(originals[0].Binding.Identity.Owner, changed, write.ProtectionResult.Metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task DuplicateCaseCarrierFieldsAndOverlappingProtectedValuesRefuse()
+    {
+        using var fixture = new ErasureRootEngineFixture(); var state = State(); var (originals, parent) = Enroll(fixture, state);
+        var write = await Seal(fixture, state, originals, parent);
+        string encoded = JsonSerializer.Serialize(write.ProtectionResult.State);
+        using var duplicate = JsonDocument.Parse(encoded.Insert(1, "\"format\":\"json+pdenc-v2-entries\","));
+        (await fixture.Engine.TryReplaySnapshotAsync(originals[0].Binding.Identity.Owner, duplicate.RootElement, write.ProtectionResult.Metadata, Type, parent, Token)).IsUnreadable.ShouldBeTrue();
+        byte[] nested = JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Target = originals[0].Binding.Identity.Target,
+            Value = new { ProtectedContent = new { Target = originals[1].Binding.Identity.Target, Value = "nested" } } } });
+        Should.Throw<Exception>(() => InteractionSnapshotEntries.Describe(nested, "tenant-a", Token));
     }
 
     [Fact]

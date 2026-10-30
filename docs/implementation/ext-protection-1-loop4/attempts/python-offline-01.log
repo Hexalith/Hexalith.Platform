@@ -1,0 +1,76 @@
+................................................E...........E...E..........................................
+======================================================================
+ERROR: test_hold_dispatch_race_does_not_require_post_dispatch_owner_reservation (test_ext_protection_1.ExtProtectionPolicyTests.test_hold_dispatch_race_does_not_require_post_dispatch_owner_reservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/test_ext_protection_1.py", line 183, in test_hold_dispatch_race_does_not_require_post_dispatch_owner_reservation
+    self.evaluate(observation, ['race', 'hold-order'])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/test_ext_protection_1.py", line 114, in evaluate
+    v.evaluate(observation, {'steps': [], 'checks': checks}, targets, b'plaintext-canary', 'a' * 40, 'b' * 64)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 1369, in evaluate
+    _evaluate(observation, case, targets, canary, commit, binary_sha, capability_trust, role_configs, budget)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 1769, in _evaluate
+    bind_hold_scope(observation, targets, capability_snapshot or validate_capability_trust(capability_trust, role_configs or {}, budget))
+                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 303, in validate_capability_trust
+    snapshot = CapabilityTrustSnapshot(entries, roles, budget or VerificationBudget())
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 252, in __init__
+    raise Blocked('CAPABILITY_TRUST_MISSING')
+ext_protection_1.Blocked: CAPABILITY_TRUST_MISSING
+
+======================================================================
+ERROR: test_substituted_hold_pin_activation_and_restore_originals_reject (test_ext_protection_1.ExtProtectionPolicyTests.test_substituted_hold_pin_activation_and_restore_originals_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/test_ext_protection_1.py", line 199, in test_substituted_hold_pin_activation_and_restore_originals_reject
+    self.evaluate(observation, ['hold-order'])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/test_ext_protection_1.py", line 114, in evaluate
+    v.evaluate(observation, {'steps': [], 'checks': checks}, targets, b'plaintext-canary', 'a' * 40, 'b' * 64)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 1369, in evaluate
+    _evaluate(observation, case, targets, canary, commit, binary_sha, capability_trust, role_configs, budget)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 1769, in _evaluate
+    bind_hold_scope(observation, targets, capability_snapshot or validate_capability_trust(capability_trust, role_configs or {}, budget))
+                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 303, in validate_capability_trust
+    snapshot = CapabilityTrustSnapshot(entries, roles, budget or VerificationBudget())
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/ext_protection_1.py", line 252, in __init__
+    raise Blocked('CAPABILITY_TRUST_MISSING')
+ext_protection_1.Blocked: CAPABILITY_TRUST_MISSING
+
+======================================================================
+ERROR: setUpClass (test_ext_protection_1_cross_language.CapabilityCrossLanguageTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/test_ext_protection_1_cross_language.py", line 54, in setUpClass
+    raise RuntimeError('Cross-language build failed: ' + result.stderr)
+RuntimeError: Cross-language build failed: 
+
+----------------------------------------------------------------------
+Ran 106 tests in 38.194s
+
+FAILED (errors=3)
+{"buildCommand": ["dotnet", "build", "/tmp/ext-protection-interop-6puccz9q/Interop.csproj", "--configuration", "Debug", "-p:UseHexalithProjectReferences=true", "-m:1", "-nodeReuse:false", "--nologo"], "exitCode": 1}
+{"sourceSha256": {"/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/tools/tests/fixtures/ext-protection-1/CapabilityInterop.cs": "5f8e13ec1f3fc0d16e83fde0b9b0e972042381f395597f3d12b7fb6c1aa99c45", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs": "0599741ef8e115ce644375dcda436c23fc731b196d142bc0f522706afb66fd93", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionBatchCapabilityCodec.cs": "a18fb4951dd1897c9383265d58334d140fe07c6219ba345f166ef0ae0f74cd5d", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionCapabilityTrustProfile.cs": "cb4ab421cbf95f470615a7e62efedcb5505e1054786e2f2f57d4590a19c4b7c5", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DetachedEs256JwsCore.cs": "67ca22b9262bee59cd7b71cd78ada37de1da51d0d6567e914934dddd8b2588f5", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningOutcome.cs": "f99423fff1b127855ffbb5ba33e62de8e47b76521e5464e166873456beac3fa9", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningState.cs": "49c338a7f3392978fd014a0d71a597bc138fa646e3a0c27c9cff602294456ecf", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionCapabilityNoIssueProof.cs": "409656b998eded489c31b92cc724d9163f2f10b1b4cfdd3b6d57fb130818fc39", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningSuccessor.cs": "b5dd22d45a8323dd371ba609f884a7748f58bc97105b7e6acbae392a865d270d", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Security/DeletionBatchCapabilityIdentity.cs": "22581048d4614a25b708af48e82db84ccdc507627c33dacdb8fe5bbedc091814", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Security/DeletionBatchCapabilityV1.cs": "99f7e91519068619bf65b52ec546d48e2ab7ee76813874a8eebd02f619805a84", "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Security/ProtectionTarget.cs": "84b5c6e62f27e337d3847d60359760cab71d3432a1e757d39ac3956621e39c04"}}
+  Determining projects to restore...
+  Restored /tmp/ext-protection-interop-6puccz9q/Interop.csproj (in 199 ms).
+  Restored /home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj (in 199 ms).
+  Restored /home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 198 ms).
+  Hexalith.Commons.UniqueIds -> /home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/bin/Debug/net10.0/Hexalith.Commons.UniqueIds.dll
+  Successfully created package '/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/bin/Debug/Hexalith.Commons.UniqueIds.1.0.0.nupkg'.
+  Successfully created package '/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/bin/Debug/Hexalith.Commons.UniqueIds.1.0.0.snupkg'.
+CSC : error CS0006: Metadata file '/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/obj/Debug/net10.0/ref/Hexalith.Commons.UniqueIds.dll' could not be found [/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj]
+
+Build FAILED.
+
+CSC : error CS0006: Metadata file '/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/obj/Debug/net10.0/ref/Hexalith.Commons.UniqueIds.dll' could not be found [/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.14
+

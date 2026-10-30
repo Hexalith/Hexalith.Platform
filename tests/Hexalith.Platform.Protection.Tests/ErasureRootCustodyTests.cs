@@ -40,7 +40,7 @@ public sealed class ErasureRootCustodyTests
         var first = await RootAsync();
         var second = await RootAsync("interaction-002");
         var survivor = await RootAsync("interaction-003");
-        var before = await _store.HeadAsync("tenant-a");
+        var before = await _store.RetainedHeadAsync("tenant-a");
         var leaked = before.Targets[ErasureRootCustody.TargetId(first.Identity)].Wrapped;
         var originalSurvivor = before.Targets[ErasureRootCustody.TargetId(survivor.Identity)].Wrapped;
         byte[] expected = await _store.DecryptAsync("tenant-a", originalSurvivor, TestContext.Current.CancellationToken);
@@ -50,7 +50,7 @@ public sealed class ErasureRootCustodyTests
         result.TargetReceipts.Select(receipt => receipt.Target).ShouldBe(request.Targets);
         _store.TrimCount.ShouldBe(1);
         _store.RotateCount.ShouldBe(1);
-        var after = await _store.HeadAsync("tenant-a");
+        var after = await _store.RetainedHeadAsync("tenant-a");
         after.Targets.Count.ShouldBe(1);
         after.Erased.Count.ShouldBe(2);
         (await _store.DecryptAsync("tenant-a", after.Targets.Single().Value.Wrapped, TestContext.Current.CancellationToken)).ShouldBe(expected);
@@ -87,7 +87,7 @@ public sealed class ErasureRootCustodyTests
     {
         var template = await RootAsync();
         var survivor = await RootAsync("survivor");
-        var head = await _store.HeadAsync("tenant-a");
+        var head = await _store.RetainedHeadAsync("tenant-a");
         var original = head.Targets[ErasureRootCustody.TargetId(template.Identity)];
         head.Targets.Remove(ErasureRootCustody.TargetId(template.Identity));
         var roots = new List<CustodyKeyRegistration>();
@@ -107,12 +107,12 @@ public sealed class ErasureRootCustodyTests
         var request = Request(roots);
         _store.Failure = "rewrap";
         (await _custody.ConsumeAsync(request, "thousand-original", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
-        var pending = await _store.HeadAsync("tenant-a");
+        var pending = await _store.RetainedHeadAsync("tenant-a");
         pending.Erased.ShouldBeEmpty();
         pending.Targets.Count.ShouldBe(1001);
         _store.TrimCount.ShouldBe(0);
         (await _custody.LookupAsync(request, "thousand-original", cancellationToken: TestContext.Current.CancellationToken)).TargetReceipts.Count.ShouldBe(1000);
-        var final = await _store.HeadAsync("tenant-a");
+        var final = await _store.RetainedHeadAsync("tenant-a");
         final.Erased.Count.ShouldBe(1000);
         final.Targets.Single().Value.Registration.ShouldBe(survivor);
     }
@@ -154,7 +154,7 @@ public sealed class ErasureRootCustodyTests
     {
         await Should.ThrowAsync<ArgumentException>(() => _custody.WrapAsync(Identity(), "wrap", -1, TestContext.Current.CancellationToken));
         _store.CasCount.ShouldBe(0);
-        (await _store.HeadAsync("tenant-a")).Targets.ShouldBeEmpty();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.ShouldBeEmpty();
     }
 
     [Fact]
@@ -166,6 +166,39 @@ public sealed class ErasureRootCustodyTests
         var missing = new ErasureRootCustody(new ErasureRootStoreFixture(), _installation, new ErasureRootAuthorizationFixture());
         (await missing.WrapAsync(Identity(), "wrap", 0, cancellationToken: TestContext.Current.CancellationToken)).ShouldBeNull();
         _store.RotateCount.ShouldBe(0);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UnreachableOrMissingCustodyIsUnknownRatherThanNotStarted(bool missingVolume)
+    {
+        var root = await RootAsync();
+        var request = Request([root]);
+        int writes = _store.CasCount;
+        if (missingVolume) { _store.LoseVolume("tenant-a"); }
+        else { _store.Failure = "read"; }
+        (await _custody.LookupAsync(request, "reservation", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        _store.CasCount.ShouldBe(writes);
+        _store.RotateCount.ShouldBe(0);
+        _store.TrimCount.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task UnknownManifestEligibilityCannotAdmitOrRotateAHead()
+    {
+        var root = await RootAsync();
+        var request = Request([root]);
+        int writes = _store.CasCount;
+        _authorization.ManifestAllowed = false;
+        (await _custody.ConsumeAsync(request, "reservation", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        _store.CasCount.ShouldBe(writes);
+        _store.RotateCount.ShouldBe(0);
+        _store.TrimCount.ShouldBe(0);
+        var current = await _store.RetainedHeadAsync("tenant-a");
+        current.Pending.ShouldBeNull();
+        current.Targets.Single().Value.Registration.ShouldBe(root);
+        current.Erased.ShouldBeEmpty();
     }
 
     [Fact]
@@ -185,11 +218,11 @@ public sealed class ErasureRootCustodyTests
         (await _custody.LookupAsync(request, "reservation", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Consumed);
         _store.RotateCount.ShouldBe(2);
         _store.TrimCount.ShouldBe(1);
-        (await _store.HeadAsync("tenant-a")).Epoch.ShouldBe(2);
+        (await _store.RetainedHeadAsync("tenant-a")).Epoch.ShouldBe(2);
         (await _store.ReadEpochAsync("tenant-a", TestContext.Current.CancellationToken)).ShouldBe(3);
         // New root issue must still use epoch 2 even though an unused native version 3 exists.
         (await RootAsync("later-root")).ShouldNotBeNull();
-        (await _store.HeadAsync("tenant-a")).Targets.Single().Value.Wrapped.Ciphertext.ShouldStartWith("vault:v2:");
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Wrapped.Ciphertext.ShouldStartWith("vault:v2:");
     }
 
     [Fact]
@@ -201,9 +234,9 @@ public sealed class ErasureRootCustodyTests
         (await _custody.ConsumeAsync(request, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
         (await _custody.LookupAsync(request, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Consumed);
         _store.RotateCount.ShouldBe(1);
-        var final = await _store.HeadAsync("tenant-a");
+        var final = await _store.RetainedHeadAsync("tenant-a");
         final.Pending.ShouldBeNull();
-        final.Manifests.Single().Key.ShouldBe(request.Capability.BatchId);
+        final.ManifestArchives.Single().Key.ShouldBe(request.Capability.BatchId);
     }
 
     [Fact]
@@ -217,7 +250,7 @@ public sealed class ErasureRootCustodyTests
         bool pinned = (await pinTask).Status == CustodyKeyLifecycleStatus.Pinned;
         bool consumed = (await manifestTask).State == DeletionManifestProviderState.Consumed;
         (pinned ^ consumed).ShouldBeTrue();
-        var head = await _store.HeadAsync("tenant-a");
+        var head = await _store.RetainedHeadAsync("tenant-a");
         if (pinned) { head.Targets.Single().Value.Pins.ShouldBe(["hold"]); head.Erased.ShouldBeEmpty(); }
         else { head.Targets.ShouldBeEmpty(); head.Erased.Count.ShouldBe(1); }
     }
@@ -260,7 +293,7 @@ public sealed class ErasureRootCustodyTests
     {
         var root = await RootAsync();
         var other = await RootAsync(tenant: "tenant-b");
-        var head = await _store.HeadAsync("tenant-a");
+        var head = await _store.RetainedHeadAsync("tenant-a");
         var leaked = head.Targets.Single().Value.Wrapped;
         await Should.ThrowAsync<CryptographicException>(() => _store.DecryptAsync("tenant-b", leaked, TestContext.Current.CancellationToken));
         (await _custody.UnwrapAsync(root with { Identity = other.Identity }, "foreign-holder", cancellationToken: TestContext.Current.CancellationToken)).ShouldBeNull();

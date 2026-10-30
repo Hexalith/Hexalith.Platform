@@ -1,0 +1,37 @@
+{
+  "missing-transit": {
+    "NativeEpochMetadataAvailable": false,
+    "Preflight": true,
+    "IndependentSourceRegistration": true,
+    "IndependentSourceWrites": 1,
+    "ErcCasWrites": 1,
+    "RootRefused": true
+  },
+  "denied-encryption": {
+    "NativeEpochMetadataAvailable": true,
+    "Preflight": true,
+    "IndependentSourceRegistration": true,
+    "IndependentSourceWrites": 1,
+    "ErcCasWrites": 1,
+    "RootRefused": true
+  },
+  "missingGenesis": {
+    "Preflight": true,
+    "RootCreated": true,
+    "MissingAnchors": 0,
+    "ActualOwnerGenesisValidation": false
+  },
+  "deadlineWrapper": {
+    "HasIndependentOriginal": true,
+    "ReturnedNull": true,
+    "UnderlyingReadCalls": 0
+  },
+  "roleClientConfiguration": {
+    "AcceptedConfigSha256": "aad81144fe96a473e9eb5afb7cadf06a48f07f0597b9381b909f7bf9baaffe41",
+    "ReplacementSha256": "ca971fc40057ed8d4cd1cd0c3d01c97f5bf9fa7aa45b4c6db1d159d72f5f5ac2",
+    "Endpoint": "https://substitute.invalid/role",
+    "SyntheticBearerSent": true,
+    "ResponseFailedAfterSend": true,
+    "ExternalNetworkUsed": false
+  }
+}

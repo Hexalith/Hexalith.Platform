@@ -5,8 +5,21 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Current source originals through the existing independently authenticated ES256 authority transport, with exact identity/digest correlation.</summary>
-public sealed class DaprErasureRootOccurrenceSource(IndependentDaprAuthority source) : IErasureRootOccurrenceSource
+public sealed class DaprErasureRootOccurrenceSource(ErasureRootTenantAuthority source) : IErasureRootOccurrenceSource
 {
+    /// <inheritdoc />
+    public Task<bool> VerifyEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken)
+        => source.InvokeAsync<bool>("erc-verify-source-enrollment", new { enrollment }, cancellationToken);
+    /// <inheritdoc />
+    public Task<byte[]?> ReadErasedSnapshotSkeletonAsync(Hexalith.EventStore.PayloadProtection.InteractionProtectionBinding binding, string sealedPayloadSha256, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
+        => source.InvokeAsync<byte[]>("erc-read-erased-snapshot", new { binding, sealedPayloadSha256, loss }, cancellationToken);
+    /// <inheritdoc />
+    public Task<bool> RegisterOriginalAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken)
+        => source.InvokeAsync<bool>("erc-register-source-original", new { enrollment }, cancellationToken);
+    /// <inheritdoc />
+    public Task<ErasureRootOccurrenceEnrollment?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
+        string sealedPayloadSha256, string keyReference, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
+        => source.InvokeAsync<ErasureRootOccurrenceEnrollment>("erc-read-erased-original", new { owner, occurrence, sealedPayloadSha256, keyReference, loss }, cancellationToken);
     /// <inheritdoc />
     public async Task<ErasureRootOccurrenceEnrollment?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken token)
     {

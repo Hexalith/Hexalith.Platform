@@ -13,11 +13,22 @@ public sealed class ErasureRootDigestKeyResolver(DaprClient dapr, IPlatformKeyIn
     /// <summary>Transfers one exact privately owned tenant-digest buffer after independent current inventory checks before and after native read.</summary>
     public async Task<InteractionOccurrenceOwnedKey?> ResolveAsync(ErasureRootOccurrenceEnrollment enrollment, string version, CancellationToken token)
     {
-        var reference = enrollment.Digest;
-        var identity = enrollment.Binding.Identity;
+        if (enrollment.Binding.DigestKeyVersion != version) { return null; }
+        byte[]? bytes = await ResolveNativeAsync(enrollment.Digest, enrollment.Binding.Identity.Target.TenantId, version, token).ConfigureAwait(false);
+        return bytes is null ? null : new(enrollment.Binding.Identity.Target, "tenant-digest", version, bytes);
+    }
+    /// <summary>Validates actual native inventory, current permissions and exact key bytes before role enrollment, without issuing roots or retaining originals.</summary>
+    public async Task<bool> IsAvailableAsync(CustodyInteractionDigestReference reference, CancellationToken token)
+    {
+        byte[]? bytes = await ResolveNativeAsync(reference, reference.InventoryKey.TenantId, reference.InventoryKey.Version, token).ConfigureAwait(false);
+        if (bytes is null) { return false; }
+        CryptographicOperations.ZeroMemory(bytes); return true;
+    }
+    private async Task<byte[]?> ResolveNativeAsync(CustodyInteractionDigestReference reference, string tenant, string version, CancellationToken token)
+    {
         var key = reference.InventoryKey;
-        if (key.TenantId != identity.Target.TenantId || key.Purpose != PlatformKeyPurpose.DigestKey || key.Version != version
-            || enrollment.Binding.DigestKeyVersion != version || !ulong.TryParse(reference.NativeVersion, System.Globalization.NumberStyles.None,
+        if (key.TenantId != tenant || key.Purpose != PlatformKeyPurpose.DigestKey || key.Version != version
+            || !ulong.TryParse(reference.NativeVersion, System.Globalization.NumberStyles.None,
                 System.Globalization.CultureInfo.InvariantCulture, out ulong native) || native == 0
             || native.ToString(System.Globalization.CultureInfo.InvariantCulture) != reference.NativeVersion) { return null; }
         async Task<bool> Current()
@@ -38,9 +49,7 @@ public sealed class ErasureRootDigestKeyResolver(DaprClient dapr, IPlatformKeyIn
             if (!Convert.TryFromBase64String(encoded, owned, out int written) || written != 32 || Convert.ToBase64String(owned) != encoded
                 || !await Current().ConfigureAwait(false)) { return null; }
             token.ThrowIfCancellationRequested();
-            var result = new InteractionOccurrenceOwnedKey(identity.Target, "tenant-digest", version, owned);
-            owned = null;
-            return result;
+            byte[] result = owned; owned = null; return result;
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
         catch (Exception) { token.ThrowIfCancellationRequested(); return null; }

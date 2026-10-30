@@ -4,6 +4,48 @@ The local owner form now carries the approved operational-security work scope, s
 
 The [authoritative amendment](../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md) and [dependency register](../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md) retain the complete contracts, availability gates and OQ-5.4-1 order. The [current Platform owner form](../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json) records pending inputs under `mvpOperationalInputs`. No null field is an accepted policy, installed artifact, appointed person or delivery. Requested destinations identify future evidence only.
 
+## Approved continuation — 2026-10-29
+
+The owner approved the [operational-priority decision and checkpoints](../story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json): reuse existing operational services, collect evidence progressively through the canonical owner form, and leave full replacement dates pending. Advanced custody provisioning remains deferred. This is work selection, with full delivery and availability still incomplete.
+
+Newer owner evidence records the exact bounded expired-HMAC recovery scope as approved and its executor as implemented/tested. Carry that approval forward without another ownership/scope question. The finalized recovery handoff/blockers referenced in the owner form now control the pending return list; earlier missing-plan wording below describes the prior state. This decision invokes no executor or live operation and extends no window.
+
+| Checkpoint | Accountable owner | Completion evidence / dependency |
+| --- | --- | --- |
+| Preservation | Cluster credential/Kubernetes administration; Memories and Agents register owners for their own records | Authentic complete Secret history through the controlling revision, plus separate exact Memories/register dispositions; existing public return schema |
+| Provider metadata | Existing OpenBao metadata-read authority owner | Complete current public metadata for all four exact keys/mappings/windows, provenance/times and a verified already authenticated read transport; retained 403 responses remain unresolved |
+| Operational recovery | Existing operational custody/inventory/HMAC owner | Existing approved bounded scope; preservation/provider prerequisites and all current inputs pass before effects; actual resulting accepted profile/readiness evidence |
+| Backup and identity | Existing backup/storage and identity owners; independent decision issuer | Actual backup/access/restore facts and installed current identity/approver/decision evidence; can be prepared while recovery prerequisites are pending |
+| Host evidence | Platform host/storage/identity and EventStore replay/recorder owners | Installed restricted bindings, accepted actual durability/failure model and persisted exact-outcome recovery evidence; collection can proceed independently |
+| Formal replacement planning | Platform and EventStore maintainers | Credible complete delivery plan and all applicable full contracts/actual installations; operational checkpoints alone do not authorize a complete packet |
+
+These checkpoints introduce no calendar promises. Collect stable evidence first and obtain short-lived currentness/readiness observations when the relevant validation can use them. Missing history stays unresolved or receives a genuine owner-approved recovery disposition; current hashes cannot recreate it. Existing additional owner-form requirements remain intact.
+
+The dated historical verifier currently refuses because it requires the separately scoped recovery plan to remain null. Its original report/provenance is retained; current application checks are recorded separately with this decision.
+
+## Corrected metadata input handoff — 2026-10-29
+
+The canonical form's `metadataTransportCorrection` now pins the [sealed metadata correction](/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/HANDOFF.md), its manifest, exact tested source hashes and missing-input requirements. Its **34 executor / 8 preparer** passes are retained source/fixture results. The scripts remain in their external worktree and sealed bundle. No correction script is installed or invoked by this reconciliation.
+
+The correction supplies the public `--metadata-credential-record` input contract. Return only the intended isolated Secret name, exact UID/resourceVersion, public accessor, existing metadata-only policy and authenticated owner/channel/provenance. The separately authorized executor verifies the exact Secret identity, lookup-self lease/accessor and capabilities-self, then reads only the four approved metadata paths. Credential values belong in neither the record nor CLI. Shared scope/run locking binds the first authoritative application journal directory and preserves uncertain originals across alternate directories.
+
+Both genuine returns remain absent. Their [unaccepted metadata template](/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-metadata-credential.template.json) and [unaccepted preservation template](/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/preservation-decision.template.json) describe required facts; they supply no actual credential reference or historical acceptance. Record validated actual returns in the existing form at:
+
+| Required input | Canonical field under `mvpOperationalInputs` |
+| --- | --- |
+| `owner-return/metadata-credential-reference.json` | `currentOperationalProfile.ownerMetadataCredentialRecordReference` |
+| `owner-return/preservation-decision.json` | `maintenancePreservationBaseline.expiredRecoveryPreservationDecisionReference` |
+
+Both fields are null. Existing provider/key/current-profile and preservation-return fields also remain null until their own complete validation succeeds. Preservation still requires complete Secret history from the original revision through the controlling current revision, plus separate exact Memories and Agents-register dispositions. Current hashes and recovery approval cannot create that history.
+
+Autonomous public-file discovery also found a [later provider resume](/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md). Its retained observation is dated `2026-10-29T17:59:47.879504+00:00`, with **45 focused tests**, all four key-metadata reads still `403`, authority readiness `200`, and expired-profile inventory/custody readiness `503`. Its recorded 950-object/register equality and original tenant hashes establish only that observation's scope. This reconciliation performed no new observation. The genuine returns remain absent at both bundles' requested paths; their templates are not current or installed evidence. Older copied missing-input wording does not reopen the already granted scope approval.
+
+The provider resume's external `HANDOFF.md` has since changed: its observed hash starts `0e38596b`, while the original pinned hash starts `dccde662`. Verification uses the [pre-existing archived original](../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/HANDOFF.md) and records both full hashes and paths separately. This verifies historical original bytes; neither the archive nor the changed external text establishes freshness or acceptance.
+
+The approved recovery window still ends exclusively at **`2026-10-30T16:53:50Z`**. Missing metadata transport and preservation history keep recovery blocked. This handoff requests no further scope approval, extends no window and executes no retained observation/application command. Backup/current restore, identity/approver/independent decision and installed replay/spool returns remain pending. Full installations, one canonical shared Platform commit and owner-confirmed dates remain prerequisites for complete coordinated packets; live and recovery-fixture acceptance is deferred.
+
+The [reconciliation archive](../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provenance.json) preserves the prior owner form, README and spec bytes, selected public handoff documents and historical reports. Its [offline integrity report](../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verification.json) is separate from all historical verification. Reproduce this revision's checks from the Platform root with `python3 -B docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verify_reconciliation.py`. These checks read public files only and establish integrity/reference reconciliation, not runtime readiness or full Story 5.4 acceptance.
+
 ## What is reusable
 
 Keep the installed OpenBao operational key service, inventory and `ext-secrets-1-hmac-authority`. The retained runtime references four successor key versions, two hosts and two callers; it still has 42 null inputs. This change reads retained public files only and makes no fresh health, lease, credential-scope or readiness assertion. Kubernetes/IdP separation inside the same cluster does not establish independent lifecycle or business-decision authority.
@@ -18,7 +60,9 @@ Existing host source already supplies the relevant controls:
 
 No runtime code, installer, dependency status, accepted target/date, retention trigger or verification gate changes. Preserve host `192.168.1.30`, Parties Branch B, L/S/O/H/R `300/30/600/86400/604800`, 365 fixed history days from binding-effective-at with exclusive expiry, Open export policy and every original journal.
 
-## Owner returns and operational order
+## Historical owner returns and operational order — October 28
+
+This table retains the earlier return list. Use the approved continuation above and the finalized recovery blockers in the canonical owner form for current controlling revisions, additional preservation dispositions and the existing recovery approval.
 
 | Owner | Exact required return | Owner-form field |
 | --- | --- | --- |
@@ -53,7 +97,9 @@ A reduced operation-specific proposal would first need genuinely independent beh
 
 After complete delivery and explicit exact-target acceptance, qualification retains `protection → secrets without host references → host with consumers refusing DependencyNotAvailable → mutual`. Preserve the original attempt/recovery identity and every journal. No new target, integration date, attempt or qualification permission is accepted by this handoff.
 
-## Precise next operational action
+## Historical operational action — superseded
+
+The following paragraphs preserve the earlier baseline-export sequence and missing-plan state. They are not current execution instructions. Current continuation uses the finalized recovery blockers, complete controlling-revision preservation evidence and the already approved bounded executor referenced by the owner form. Do not invoke the historical exporter from this section as a continuation of the new decision.
 
 The **cluster credential / Kubernetes administration owner** must return the actual public historical-proof files and owner acceptance record in the exact [bounded reconciliation schema](../../../eng/ext-secrets-1/README.md#bounded-next-baseline-reconciliation-input), then set `historicalMetadataProofAndAcceptanceReference` in the owner form. Current managed fields, another copy of current metadata and newly enabled audit cannot supply historical scope evidence.
 
@@ -67,6 +113,6 @@ Because the retained windows have now elapsed, accepted historical proof alone c
 
 The [provenance record](provenance.json) pins the authoritative amendment/register, source owner overlay, retained blocker/deadlines/runtime/receipts and original delivery evidence. Prior local owner form, installation documents and original SHA256SUMS bytes are preserved under `prior-platform-documents`. The original coupled-delivery SHA256SUMS remains historical; its changed document entries resolve to these archived originals. The new [verification report](verification.json) checks current overlay files and historical preservation separately.
 
-Reproduce the offline handoff checks from the Platform root with `python3 docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py`. This reads public local files only and prints a report; `--report <path>` explicitly saves it. It verifies this blocked handoff version, including the implementation spec, not runtime health or acceptance of future owner returns. The retained `preparation-evidence/EXT-HOST-1.stdout.json` is an empty raw stdout capture from the initial refusal; it is explicitly excluded from structured JSON parsing, while its bytes remain hashed. The pre-review verification report remains separately archived.
+The historical offline command is `python3 docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py`. It reads public local files only and prints a report; `--report <path>` explicitly saves it. Its dated recovery-plan-null expectation now refuses the already approved recovery-plan reference; the failure and original verifier/provenance remain preserved. Use the separate reconciliation checks above for this revision. Neither checker proves runtime health or acceptance of future owner returns. The retained `preparation-evidence/EXT-HOST-1.stdout.json` is an empty raw stdout capture from the initial refusal; it is explicitly excluded from structured JSON parsing, while its bytes remain hashed. The pre-review verification report remains separately archived.
 
 Luna, independent nonrollback lifecycle-authority and WORM provisioning stay deferred. Dependent Human/history/content/export/destruction paths remain blocked by their full contracts. OpenBao `ObservedRevival` remains authoritative: ordinary software-key deletion, rotation, denial or restored state provides no irreversible backup non-revival or all-copy erasure guarantee.

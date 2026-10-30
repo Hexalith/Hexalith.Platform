@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Custody;
 /// Deterministic exact lookup resolves unknown calls; no provider signature or interface itself proves guard issuance.</remarks>
 public interface IDeletionCapabilitySigningProvider
 {
+    /// <summary>Reads current independently authorized backend/key availability for all required signing operations; omission denies preflight.</summary>
+    Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request, CancellationToken cancellationToken = default)
+        => Task.FromResult<DeletionCapabilitySigningAvailability?>(null);
     /// <summary>Performs first exact signing and retains the immutable artifact for the deterministic request.</summary>
     Task<DeletionCapabilitySigningResult> SignAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, CancellationToken cancellationToken = default);
     /// <summary>Reads exact prior result only; unknown/absent result never permits blind repeat signing.</summary>

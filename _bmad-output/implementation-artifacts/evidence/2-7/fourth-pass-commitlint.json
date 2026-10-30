@@ -1,0 +1,20 @@
+{
+  "builds": {
+    "commit": "84ac6d3f0714491d818bfd03d3a659494c6786ea",
+    "message": "fix(module): finish attached-run withdrawal review fixes\n\nStop non-attachable session AppHosts before cleanup and report each\ncleanup recording failure (HXT008) once per result. Verify the ready\nsession's locality against the recorded owner execution context, and keep\ndelayed native fixtures within their execution limit.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n",
+    "command": "node node_modules/@commitlint/cli/cli.js --edit <message-file>",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "",
+    "cliVersion": "21.2.4"
+  },
+  "platform": {
+    "message": "fix: complete story 2.7 fourth-pass review\n\nRecord the fourth-pass triage, coordinator verification and deferred\nitems for attached-run withdrawal, mark the spec done, move the story to\nreview, and bump the Builds gitlink to the verified review fixes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n",
+    "command": "node node_modules/@commitlint/cli/cli.js --edit <message-file>",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "",
+    "cliVersion": "21.2.1",
+    "pinnedVersion": "21.2.1"
+  }
+}

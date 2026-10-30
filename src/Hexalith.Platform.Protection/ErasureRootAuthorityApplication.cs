@@ -12,5 +12,10 @@ public static class ErasureRootAuthorityApplication
         IGovernanceScopeGuard actualGuard, IDeletionCapabilityRevocationAuthenticator actualRevocationAuthenticator, string acceptedCopyPolicySha256,
         CancellationToken cancellationToken = default)
         => IndependentAuthorityHttpApplication.RunAsync(receiverInstallationFile, ownerHandlers:
-            [new ErasureRootAuthorityOperationHandler(custody, source, actualGuard, actualRevocationAuthenticator, acceptedCopyPolicySha256, TimeProvider.System)], cancellationToken: cancellationToken);
+            [new ErasureRootAuthorityOperationHandler(custody, source, actualGuard, actualRevocationAuthenticator, acceptedCopyPolicySha256, TimeProvider.System)],
+            holderCompletionWorker: new ErasureRootVerifierHolderCompletionWorker(source), cancellationToken: cancellationToken);
+
+    /// <summary>Builds the actual independent receiver with the exact source-owned completion worker registered for its entire idle lifetime.</summary>
+    public static Microsoft.AspNetCore.Builder.WebApplication BuildApplication(IndependentAuthorityReceiver receiver, ErasureRootNativeOccurrenceSource source)
+        => IndependentAuthorityHttpApplication.BuildApplication(receiver, new ErasureRootVerifierHolderCompletionWorker(source));
 }

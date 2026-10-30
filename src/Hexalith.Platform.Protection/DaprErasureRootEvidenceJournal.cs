@@ -4,7 +4,7 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Independent actual admission/registrar/activation evidence verification for the existing published-trust proof protocol; it never advances an owner anchor.</summary>
-public sealed class DaprErasureRootEvidenceJournal(IndependentDaprAuthority evidence) : IAnchoredStateTransitionAuthority
+public sealed class DaprErasureRootEvidenceJournal(ErasureRootTenantAuthority evidence) : IAnchoredStateTransitionAuthority
 {
     /// <inheritdoc />
     public async Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default)

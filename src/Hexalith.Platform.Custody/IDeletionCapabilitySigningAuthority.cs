@@ -4,6 +4,9 @@ namespace Hexalith.Platform.Custody;
 /// <summary>Independent target-limited recorded guard signing authorization; never human approval, recorder or custodian self-authorization.</summary>
 public interface IDeletionCapabilitySigningAuthority : IAnchoredStateTransitionAuthority
 {
+    /// <summary>Authenticates the exact installed read-only availability request without creating guard/signing intent; omitted independent grant denies.</summary>
+    Task<bool> AuthorizeReadinessAsync(DeletionCapabilitySigningReadinessRequest request, CancellationToken cancellationToken = default)
+        => Task.FromResult(false);
     /// <summary>Authenticates current private caller/credential for the exact request and named SignDeletionCapability or LookupDeletionCapability; historical artifact reads do not mint issuance.</summary>
     Task<bool> AuthorizeOperationAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string operation, CancellationToken cancellationToken = default);
     /// <summary>Authenticates exact tenant/batch/seal/manifest/attestation/attempt/intended guard revision/current per-tenant healthy key and audience.</summary>

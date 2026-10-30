@@ -1,0 +1,44 @@
+{
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "prepared": true,
+  "liveAcceptance": false,
+  "approvalGranted": false,
+  "newCollectionPerformed": false,
+  "baselineCommit": "c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/staging-secrets",
+        "-v"
+      ],
+      "exitCode": 0,
+      "stdout": "secrets-tests.stdout.txt",
+      "stderr": "secrets-tests.stderr.txt"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/staging-secrets/prepare.py",
+        "assess",
+        "--inputs",
+        "eng/staging-secrets/inputs.resolved.json"
+      ],
+      "exitCode": 2,
+      "stdout": "current-assessment.stdout.txt",
+      "stderr": "current-assessment.stderr.txt"
+    }
+  ],
+  "foundationSuite": {
+    "command": "python3 -B -m unittest discover -s eng/staging-foundation -v",
+    "passed": 34,
+    "observedBy": "parent before implementation; unchanged source",
+    "exitCode": 0
+  }
+}

@@ -112,6 +112,18 @@ class WorksToolchainTests(unittest.TestCase):
                         with self.assertRaisesRegex(ValueError, "qualified Works proof"):
                             works_toolchain.qualify(root, runtime, environ={})
 
+    def test_wrong_hash_executable_is_refused_without_running_any_tool(self):
+        root = self.fixture()
+        marker = root / 'executed'
+        runtime = root / 'daprd'
+        runtime.write_text('#!/bin/sh\ntouch "' + str(marker) + '"\nprintf "1.18.7\\n"\n')
+        runtime.chmod(0o755)
+        with patch.object(works_toolchain.subprocess, 'check_output', wraps=subprocess.check_output) as execute:
+            with self.assertRaisesRegex(ValueError, 'qualified Works proof runtime hash'):
+                works_toolchain.qualify(root, runtime, environ={})
+        execute.assert_not_called()
+        self.assertFalse(marker.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

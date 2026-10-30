@@ -5,4 +5,13 @@
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="ValidatePlatformCiReferences" BeforeTargets="PrepareForBuild" Condition="'$(CI)' == 'true'">
+    <Error Condition="'$(Configuration)' != 'Release' or '$(UseHexalithProjectReferences)' == 'true'" Text="Platform CI requires Release assets and package references." />
+    <ItemGroup>
+      <_PlatformForeignProjectReference Include="@(ProjectReference)" Condition="!$([System.String]::Copy('%(ProjectReference.FullPath)').StartsWith('$(MSBuildThisFileDirectory)'))" />
+    </ItemGroup>
+    <Error Condition="'@(_PlatformForeignProjectReference)' != ''" Text="Platform CI refuses foreign project references: @(_PlatformForeignProjectReference). Bind the verified published Builds artifacts." />
+    <Error Condition="'$(MSBuildProjectName)' == 'Hexalith.Platform.Composition' and !Exists('$(BuildsToolingAssemblyPath)')" Text="Platform CI requires the verified published Builds Tooling assembly." />
+    <Error Condition="'$(MSBuildProjectName)' == 'Hexalith.Platform.Composition.Tests' and !Exists('$(BuildsEventStoreHostAssemblyPath)')" Text="Platform CI requires the verified published Builds EventStoreHost assembly." />
+  </Target>
 </Project>

@@ -2,19 +2,27 @@
 title: 'Complete coupled Secrets and Host delivery for Agents 5.4'
 type: 'feature'
 created: '2026-10-25'
-status: 'draft'
+replanned: '2026-10-29'
+approved_work_priority: 'operational-mvp'
+full_delivery_status: 'deferred-incomplete'
+offline_reconciliation_status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '1b7a00381794bb7ecf40caf643c63c50758a81eb'
+planning_baseline_commit: '965b00249b473d602a663f1f48be39424f996337'
 context:
   - '../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
-  - '../agents/_bmad-output/implementation-artifacts/story-5-4-dependency-reconciliation-2026-10-22.md'
-  - 'tests/story-5-4-coupled-delivery-2026-10-25/investigation.md'
-  - '../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-decision.md'
-  - '../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-commands.md'
+  - '../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md'
 ---
 
 <frozen-after-approval reason="human-owned intent — do not modify unless human renegotiates">
+
+## Approved current execution scope — 2026-10-29
+
+Owner decision: **“apply recommended.”** Keep operational MVP priority under DEC-5.4-MVP-CUSTODY-2026-10-28. Collect owner evidence progressively through the existing form; keep advanced custody provisioning deferred and formal Platform/EventStore replacement dates pending. Use prerequisite checkpoints without invented calendar commitments. Retain current authorization, independent business approvals, replay/audit durability and all full acceptance gates.
+
+The existing bounded recovery scope is already approved; carry it forward without asking again. Genuine provider/preservation prerequisites and the unchanged fixed window still control execution. This decision performs no live operation. The original full-delivery goal below remains deferred and incomplete.
 
 ## Intent
 
@@ -38,56 +46,73 @@ Complete the real JointLivePhaseRunner and installed production composition for 
 
 </frozen-after-approval>
 
-## Open Questions
-
-1. **MVP constraint and installation D1:** the owner has ruled **AWS out of MVP**. Preserve existing Kubernetes/Dapr/OpenBao for its observed operational-secret scope. Choose MVP-1 (reuse an independently qualifying non-AWS semantic custody installation, with evidence) or MVP-2 (implement/qualify a non-AWS infrastructure backend behind the existing Dapr contract). No qualifying non-AWS installation was established; OpenBao/Raft revival remains a blocker for physical erasure. The old AWS accounts/regions/seven-key proposal and associated deployment work are superseded, not MVP prerequisites. See the [installation decision](../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-decision.md).
-2. **Identity/access decisions D2–D8:** supply actual non-AWS custody/authority/archive host, appliance or service/store identities and read-only access; independent role compute/Dapr routing, named primary recovery administrator and different human deputy; independently enrolled public P-256 trust/current revocation and restricted credential references. The [owner return form](../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json) names each missing implementation, resource, identity, access and physical-evidence return. No cloud account is presumed and no secret value is requested.
-3. **Dates D9:** withdraw prior 2026-11-30 / 2026-12-03 / 2026-12-04 proposals because they were estimated around the excluded AWS route. Platform and EventStore owners must supply coordinated replacement dates based on the selected actual non-AWS provider's readiness/completion/recovery/qualification bounds and source/installation effort. Preserve accepted 2026-10-08 and EventStore's unaccepted 2026-11-02 as historical evidence until explicit complete replacement acceptance. Do not invent another provider interval or reserve an OQ attempt.
-
 ## Code Map
 
-The investigation attachment maps exact files and missing services. Reuse `QualificationHost`, the Dapr lifecycle clients, `PlatformPrivateCapabilityComposition`, replicated spool/worker and existing protection providers. Qualification programs currently register no role providers; the spool authority uses process dictionaries; host AppHost DI does not configure child-process DI; Full remains component-only. No joint runner exists.
+Reuse the [source investigation](tests/story-5-4-coupled-delivery-2026-10-29-plan/investigation.md) and [resume evidence](tests/story-5-4-coupled-delivery-resume-2026-10-29/investigation.md). Correction scripts remain external; recorded 34/8 tests establish source behavior only.
 
 ## Tasks & Acceptance
 
-**Execution:**
-- [x] Prepare the read-only installation decision packet, named proposed resource/role scopes, conditional command runbook, independently sourced public transport facts and exact D1–D9 owner returns. This completes planning only; no implementation/installation task below is closed.
-- [ ] `src/Hexalith.Platform.Secrets.Runtime/` — implement durable original locators, authenticated current-authority/role sources and qualification providers/stores; retain complete original registrations/manifests.
-- [ ] `src/Hexalith.Platform.Secrets.Qualification.{Executor,Observer,Enrollment}/Program.cs` — compose separate authenticated roles, scoped credentials, retained originals and independently enrolled signing/verification.
-- [ ] `src/Hexalith.Platform.Custody/PlatformPrivateCapabilityComposition.cs` and `PrivateReplicatedSpoolAuthority.cs` — bind real current replay/spool authority, replicated storage, denial recorder and recovery worker in owning processes; preserve private access.
-- [ ] `src/Hexalith.Platform.Protection/` and `src/Hexalith.Platform.Composition/AgentsHostComposition.cs` — compose the actual protection owner, persisted observer and FR-34 gates; complete every host slot and receiving custody API with accepted EventStore integration.
-- [ ] `eng/ext-secrets-1/joint_live_phase_runner.py` (new), `qualify.py`, `eng/ext-host-1/verify_full.py` — add durable phase coordination and read-only preflight; keep component evidence distinct; test ordering, tampering, loss and exact recovery without a cohort invocation.
-- [ ] `AgentsDeploymentProfile.cs`, both `prepare_acceptance.py` scripts and `eng/ext-secrets-1/custody-deployment/` — replace literal missed-date checks with accepted date/hash binding; install reviewed artifacts and independent enrollments using supplied resources, then verify actual hashes/ACLs/placement.
-- [ ] Select/implement the actual non-AWS semantic custody infrastructure executable, closed profile, private credentials and deployment recipe; reuse provider-neutral lifecycle/ES256/original-recovery primitives. The current `infrastructure/Hexalith.Platform.Custody.Dapr` executable/profile/image preparer is AWS-specific reference source, not a configurable non-AWS MVP. Do not add its account/region/ARN/credential or regional-client work as MVP tasks. Complete actual independent stores, receiving-service/signer mounts and Dapr routing/identity for the selected backend without ambient credential fallback or unsafe retry.
-- [ ] `tests/Hexalith.Platform.{Custody,Secrets.Runtime,Protection,Composition}.Tests/` and both verifier test directories — verify the matrix, zero-effect denials and all host consumer refusal assertions using isolated fixtures.
-- [ ] `docs/implementation/story-5-4-coupled-delivery-2026-10-25/` (new) — retain installed inventories and coordinated nine-field replacement packets after one clean Platform commit; prepare exact commands without executing them.
+**Applied:**
+- [x] Record approved priority and checkpoints.
+
+**Current preparation:**
+- [x] `docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json` — bind the verified metadata correction and missing-input references; retain all factual return fields and D1–D9.
+- [x] `docs/implementation/story-5-4-operational-security-2026-10-28/README.md` — document the corrected input path; preserve history/gates.
+- [x] `docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/` — archive originals and offline integrity checks.
+- [ ] Canonical owner form — autonomously collect genuine preservation/provider, backup, identity/decision and replay/spool evidence; absent returns stay pending.
+
+**Deferred full delivery:** All original full-delivery paths/tasks remain [deferred obligations](tests/story-5-4-coupled-delivery-resume-2026-10-29/prior-spec.md). Reopening, actual installations, canonical shared commit and owner dates remain prerequisites.
 
 **Acceptance Criteria:**
-- Given complete independently enrolled installations, when packet preparation runs, then both complete packets pin one canonical Platform commit and the exact installed artifacts, explicit dates and executable commands.
-- Given the delivered runner, when offline recovery/order tests run, then phases cannot skip, evidence cannot be relabeled, and no accepted-set journal or cohort attempt is created.
-- Given any missing prerequisite, when production admission or packet validation runs, then it refuses without promoting availability or replacing historical evidence.
+- Given the sealed correction, when references are reconciled offline, then its manifest/source hashes verify and no template or test becomes installed/current evidence.
+- Given absent metadata transport or preservation history, when readiness is assessed, then recovery remains blocked without another scope-approval request, window extension or live probe.
+- Given complete installations, when preparation runs, then both packets bind one canonical commit, actual hashes, dates and executable commands.
+- Given isolated recovery fixtures, when tested, then phases retain original identities/order and create no accepted-set journal/cohort attempt.
 
 ## Implementation Notes
 
-The [installation packet](../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-decision.md) and [conditional command runbook](../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-commands.md) are required build inputs alongside the unchanged investigation. Proposed names are not installed identities. AWS is outside MVP; the reference executable, its two-tenant/five-epoch/seven-native-key profile and provider-specific preflight remain historical reference evidence. Implement/select and measure the actual non-AWS provider against all accepted limits and proof requirements; do not inherit reference resource counts as MVP requirements. Authority/currentness services need their own actual independently administered store bundle.
+2026-10-29: Applied priority/evidence/date decisions. Full delivery stays draft pending actual prerequisites. Recovery approval already exists. New verification binds this revision; prior planning hashes remain dated evidence.
 
-Fresh read-only observations on 2026-10-25 used kubeconfig `/home/administrator/.kube/hexalith-production`, context `jpiquot@local`, endpoint `https://192.168.1.30:6443`. The sole node `node1` maps to host 192.168.1.30; all inspected OpenBao and isolated-registry pods are on it. Both storage classes use local hostpath; neither three same-node replicas nor Retain reclaim policy proves independent recovery. No named custody/authorizer/qualification-role workload or lifecycle binding appeared in the inspected cluster. This establishes scoped cluster state, not global absence.
+Planning only; frozen intent preserved. No runtime/installation/qualification operation ran. Prior notes/verification remain archived.
 
-The retained actual runtime reference SHA-256 `31c28a9d1dd21eed8ca4d0c421088cb946b262c624ba461d0795cab92cd1feb3` still has 51 null fields and no role-anchor paths. The host profile still has 14 unfilled slots; its five service paths are checkouts. Protection accepted-profile and Conversations live-manifest remain absent. The earlier AWS local-access observation is historical and creates no MVP account/resource requirement. No installed hash is inferred for missing files. The observed public local Dapr CA and token audience are transport discovery, not independent qualification enrollment; their precise provenance/hashes are retained in the packet.
+Resume: reconcile the newer correction offline in the owner form, README and report. Missing facts remain blockers; no intent gap or irreversible effect. Full acceptance stays draft/incomplete.
 
-Source dispositions remain open for private authorizer, durable control issuer, independent closure observer, custody receiving API/composition, complete registration and reserved-manifest original locators, EventStore accepted source/package integration, actual role providers/original stores, current replay/spool authority and real FR-34 engine/observer. Credential references cannot close missing implementations. EventStore's G1–G7 remain open/BlockedNotSubmitted. Existing Open export and history-policy obligations are unchanged.
+Implementation — 2026-10-29: Reconciled the sealed metadata correction and its two genuine missing returns in the canonical form. Preserved all prior factual nulls, D1–D9, original owner/README/spec bytes and historical reports. Bounded autonomous public-source discovery found a separately produced provider-resume bundle with timestamped four-key 403 refusals and no actual metadata/preservation returns; it is linked as retained evidence only. No source was adopted and no live observation was repeated. Backup, current restore, identity/decision and installed replay/spool returns remain pending.
+
+The separate [offline reconciliation report](../../docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verification.json) verifies 17 correction, 128 original and 141 later-source manifest entries, references/pointers, archived bytes and unchanged gates. Applicable documentation acceptance is verified; complete installed packets and isolated full-delivery recovery/phase acceptance remain deferred. The historical checker's recovery-plan-null refusal is preserved. The original fixed exclusive deadline remains `2026-10-30T16:53:50Z`; this change grants no currentness or window extension. Full delivery stays deferred/incomplete.
+
+Finalization — 2026-10-29: The approved offline reconciliation is complete. Review patched the exact pending-return/requirement bindings, contradictory status/counter admission, copied-source summaries, index/reproduction behavior and tracked/untracked whitespace/runtime checks. A concurrently changed external handoff is disclosed and checked against its pre-existing exact original archive. No external source or historical manifest was rewritten. The separately maintained native-access proposal remains outside this run. Full-story status stays in-progress because genuine returns and full acceptance remain incomplete.
 
 ## Spec Change Log
 
 - 2026-10-25 — Owner correction “AWS is not MVP”: removed AWS from active installation choices, resource/access requests, packaging/provisioning commands and tasks; withdrew AWS-derived date proposals. Retained historical evidence and all full-delivery/physical/independent-authority requirements.
 - 2026-10-25 — Added the installation decision packet and required commands/owner returns using fresh read-only infrastructure/enrollment evidence. Narrowed backend/placement and date questions into concrete unaccepted choices; preserved the frozen intent, draft status, all implementation tasks, existing dependency records, timing, journals and OQ-5.4-1.
+- 2026-10-29 — Refreshed source map/amendment; preserved frozen intent/history. Scope/owner returns remain unresolved.
+
+- 2026-10-29 — Owner approved operational priority/progressive collection/pending dates; full obligations deferred.
 
 ## Review Triage Log
 
+P2 — Patched: historical exporter instructions explicitly superseded by current approved recovery blockers.
+
+
+Offline reconciliation review — 2026-10-29 (all three independent layers completed):
+
+| Finding | Verdict / route | Evidence |
+| --- | --- | --- |
+| B1 | medium / patch | Mutable pending-return destinations allowed template substitution. Pin the two input/field/path bindings independently. |
+| B2 | medium / patch | A resolving preservation pointer was accepted for the metadata requirement. Check the referenced input identity. |
+| B3 | medium / patch | Contradictory reconciliation availability/completion/counters were accepted while the report emitted constants. Check its own invariants. |
+| B4 | medium / patch | Copied provider summaries were not compared with their pinned source. Compare copied status/test/readiness values. |
+| B5 | false / reject | The fixed-host evidence check has no ordinary-checkout portability promise. provenance.json already enumerates exact source bundles/context paths; missing files identify their path. External prerequisites remain explicit. |
+| B6 | medium / defer | The immutable archived external future command invokes mutable worktree code; the executor logs its source hash but does not itself compare it with the sealed tested-source hash. This predates this reconciliation, which adopts or invokes no executor. |
+| B7 | low / patch | An otherwise valid documented artifact check fails when documentation is staged. Keep the historical index observation separate from current artifact verification. |
+| B8 | medium / patch | Working-tree git diff omits untracked runtime files. Check src/eng/infrastructure untracked paths before reporting no runtime changes. |
+| B9 | low / patch | Whitespace verification omits the spec and untracked delivered files. Check the complete delivered set without staging. |
+| B10 | low / patch | The broad negative discovery summary lacks exact retained patterns/bounds. Record available trace details and explicitly limit unsupported negative conclusions. |
+| E1 | medium / patch | Clearing pendingReturns bypasses protection of both newly added factual-null fields. Same root cause as B1; independently check both fields and exact required set. |
+| C1 | low / patch | Final verification found a concurrently changed external handoff. Its pre-existing archive retains the original pinned bytes; verify those exact original bytes and disclose drift without inferring currentness. |
+
 ## Verification
 
-Original planning verification: fifteen public-metadata requests exited 0; follow-up public CA/token metadata retained separately. Offline `custody-deployment/preflight.py` exited 1 with 68 unique missing inputs and all installed/physical/availability/runnable flags false. See the packet's retained evidence, checksum manifest and preservation verification. No Live/Full entry point, qualification enrollment, worker, native probe, attempt reservation, deployment or dependency mutation was executed. This planning result does not satisfy implementation acceptance.
-
-Run targeted dotnet suites and Python verifier/deployment tests against fresh isolated fixture directories. Check independent enrollment signatures, currentness, actual installed hashes and private ACLs through read-only installation checks. Retain command/exit/hash evidence. Do not run owner Live/Full entry points, native destructive probes, consuming Agents paths or OQ phases as verification of this delivery.
-
-MVP correction verification: see `verification-mvp-no-aws.json` in the packet evidence directory. Current documentation and command syntax were checked without rerunning infrastructure/preflight/qualification. Earlier 68-field refusal describes the excluded reference runtime, not a mandatory non-AWS MVP input list.
+Validate JSON/pointers, hashes, scope, links and archives. Preserve the obsolete historical-checker failure. No live invocation.

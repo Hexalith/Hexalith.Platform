@@ -1,0 +1,38 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/ext-secrets-1",
+      "-p",
+      "test_recover_expired_hmac.py",
+      "-v"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform-ext-secrets-1-runtime-foundations-20261017",
+    "exitCode": 0,
+    "stderr": "executor-tests.stderr.log",
+    "stdout": "executor-tests.stdout.log"
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/ext-secrets-1",
+      "-p",
+      "test_prepare_expired_hmac_recovery.py",
+      "-v"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform-ext-secrets-1-runtime-foundations-20261017",
+    "exitCode": 0,
+    "stderr": "preparer-tests.stderr.log",
+    "stdout": "preparer-tests.stdout.log"
+  }
+]

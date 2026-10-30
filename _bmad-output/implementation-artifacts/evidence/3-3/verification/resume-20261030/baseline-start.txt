@@ -1,0 +1,39 @@
+Starting Aspire AppHost in the background...
+❌ Failed to start the AppHost.
+ℹ️ Recent AppHost startup output:
+NativeCertificateToolRunner: Failed to trust the certificate in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium 
+family of browsers. This likely indicates that the database already contains an entry for the certificate under a different name. Please remove it and try 
+again.
+NativeCertificateToolRunner: The certificate is only partially trusted - some clients will not accept it.
+NativeCertificateToolRunner: The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+NativeCertificateToolRunner: The certificate is not trusted in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family
+of browsers.
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 362 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 362 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 
+362 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 362 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 362 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 368 ms).
+  Restored /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 380 ms).
+/home/administrator/.nuget/packages/aspire.hosting.apphost/13.6.4/build/Aspire.Hosting.AppHost.targets(157,5): warning ASPIRE010: apphost.cs is configured with 
+AspireUseCliBundle=false. Some Aspire features require the Aspire CLI bundle. Set AspireUseCliBundle=true to enable those features, or suppress ASPIRE010 to 
+continue without the bundle. See https://aka.ms/aspire/diagnostics/aspire010 for more information.
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.128.4, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 
+for net10.0.
+  Hexalith.Builds.Tooling -> 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.Platform.Works.Runtime -> 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DeadlineAnchoredStateAuthority.cs(22,47): error CS1061: 
+'IAnchoredStateTransitionAuthority' does not contain a definition for 'ReadAdmittedOriginalAsync' and no accessible extension method 'ReadAdmittedOriginalAsync'
+accepting a first argument of type 'IAnchoredStateTransitionAuthority' could be found (are you missing a using directive or an assembly reference?)
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs(28,53): error CS0117: 
+'DeletionBatchCapabilityIdentity' does not contain a definition for 'IssueOperationId'
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs(163,71): error CS1061: 'ICustodyKeyLifecycleAuthority' 
+does not contain a definition for 'ReadCurrentOriginalAsync' and no accessible extension method 'ReadCurrentOriginalAsync' accepting a first argument of type 
+'ICustodyKeyLifecycleAuthority' could be found (are you missing a using directive or an assembly reference?)
+❌ AppHost failed to build.
+📄 See logs at /home/administrator/.aspire/logs/cli_20261030T151743_d75f2f5b.log
+🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261030T151743848_detach-child_6172e0781c814a809fd1bab2a48d76d3.log

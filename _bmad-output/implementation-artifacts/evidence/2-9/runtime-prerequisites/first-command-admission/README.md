@@ -1,0 +1,3 @@
+First continuation command admission failure
+
+The exact declared platform-source test command stopped at HXW004 before a run identifier or resources were allocated. ChatBot checkout HEAD6628dd3e did not match staged gitlink90cbaa11; root and Builds revisions were advancing during an unrelated authorized /pushall. HXW009 catalog-selection and HXW010 tool-range warnings are retained. This is a real prerequisite refusal, not runtime readiness or native-test acceptance. No checkout reset, staging, deinitialization, pin change or lifecycle operation was performed to bypass it. The preparation build is recorded separately.

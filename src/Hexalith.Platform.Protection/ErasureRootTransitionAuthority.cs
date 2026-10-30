@@ -16,13 +16,23 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
     public async Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
     {
         if (requestedScopeId != ScopeId || !await authorization.AuthorizeAsync(TenantId, ScopeId, "ReadCurrentOwnerOriginal", ErasureRootCustody.Hash(ScopeId), cancellationToken).ConfigureAwait(false)) { return null; }
-        var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+        var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
         if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
         var original = anchor.Completed.Values.SingleOrDefault(value => value.TargetRevision == anchor.Revision && value.TargetDigest == anchor.Digest);
         if (original is null || original.ScopeId != ScopeId || Convert.ToHexString(SHA256.HashData(original.TargetBytes)) != anchor.Digest) { return null; }
         return original with { TargetBytes = original.TargetBytes.ToArray() };
     }
 
+    /// <inheritdoc />
+    public async Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string requestedScopeId, CancellationToken cancellationToken = default)
+    {
+        if (requestedScopeId != ScopeId) { return null; }
+        var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
+        if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return null; }
+        var original = anchor.Admissions.Values.SingleOrDefault(value => value.ExpectedRevision == anchor.Revision && value.PredecessorDigest == anchor.Digest);
+        return original is not null && await authorization.VerifyTransitionPermissionAsync(original, "RecoverTransition", cancellationToken).ConfigureAwait(false)
+            ? original with { TargetBytes = original.TargetBytes.ToArray() } : null;
+    }
     /// <summary>Verifies fresh independently surviving revision/digest, including only explicitly installed genesis.</summary>
     public async Task<bool> ValidateStateAsync(long revision, string exactStateDigest, CancellationToken cancellationToken = default)
     {
@@ -30,7 +40,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
         {
             if (revision < 0 || !Digest(exactStateDigest)
                 || !await authorization.AuthorizeAsync(TenantId, ScopeId, "ValidateOwnerState", ErasureRootCustody.Hash(new { revision, exactStateDigest }), cancellationToken).ConfigureAwait(false)) { return false; }
-            var read = await custody.ReadAsync(TenantId, cancellationToken).ConfigureAwait(false);
+            var read = await custody.ReadAsync(TenantId, cancellationToken, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
             return read is { } current && current.Head.Anchors.TryGetValue(ScopeId, out var anchor)
                 && anchor.Revision == revision && anchor.Digest == exactStateDigest;
         }
@@ -57,16 +67,21 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
         {
             if (supplied is null || supplied.ScopeId != ScopeId || supplied.ExpectedRevision < 0 || supplied.ExpectedRevision == long.MaxValue
                 || supplied.TargetRevision != supplied.ExpectedRevision + 1 || !Digest(supplied.PredecessorDigest) || !Digest(supplied.TargetDigest)
-                || supplied.TargetBytes is not { Length: > 0 and <= 8388608 }
+                || supplied.TargetBytes is not { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }
                 || Convert.ToHexString(SHA256.HashData(supplied.TargetBytes)) != supplied.TargetDigest) { return false; }
             var transition = supplied with { TargetBytes = supplied.TargetBytes.ToArray() };
             string id = ErasureRootCustody.Hash(transition);
             for (int attempt = 0; attempt < 16; attempt++)
             {
                 if (!await authorization.VerifyTransitionPermissionAsync(transition, operation, token).ConfigureAwait(false)) { return false; }
-                var read = await custody.ReadAsync(TenantId, token).ConfigureAwait(false);
+                var read = await custody.ReadAsync(TenantId, token, false, new HashSet<string>([ScopeId], StringComparer.Ordinal)).ConfigureAwait(false);
                 if (read is not { } current || !current.Head.Anchors.TryGetValue(ScopeId, out var anchor)) { return false; }
                 if (anchor.Completed.TryGetValue(id, out var completed)) { return ErasureRootCustody.Hash(completed) == id; }
+                if (transition.TargetRevision <= anchor.Revision)
+                {
+                    var historical = await custody.ReadHistoricalAsync(TenantId, ScopeId, anchor, transition.TargetRevision, token).ConfigureAwait(false);
+                    return historical is not null && ErasureRootCustody.Hash(historical) == id;
+                }
                 if (operation == "VerifyTransition" || current.Head.Pending is not null) { return false; }
                 if (anchor.Revision != transition.ExpectedRevision || anchor.Digest != transition.PredecessorDigest) { return false; }
                 if (operation == "AdmitTransition")
@@ -83,6 +98,7 @@ public sealed class ErasureRootTransitionAuthority(ErasureRootCustody custody, I
                     current.Head.Anchors[ScopeId] = anchor with { Revision = transition.TargetRevision, Digest = transition.TargetDigest };
                 }
                 if (!await authorization.VerifyTransitionPermissionAsync(transition, operation, token).ConfigureAwait(false)) { return false; }
+                using var boundary = new ErasureRootNativeOperationScope(TenantId, ScopeId, operation);
                 if (await custody.SaveAsync(TenantId, current.Version, current.Head, token).ConfigureAwait(false)) { return true; }
             }
         }

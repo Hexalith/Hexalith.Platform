@@ -1,0 +1,233 @@
+{
+  "phase": "grouped-routed-human-escalation",
+  "findings": [
+    {
+      "id": "R6-BH-1",
+      "verdict": "medium",
+      "route": "patch",
+      "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs:158",
+      "evidence": "Permanent-loss event replay skips TryUnprotectEventPayloadAsync and its ValidateOccurrence call. ResolveErasedStored authenticates the supplied occurrence but never compares eventTypeName, so an event-type mismatch can return readable Erased output; reuse the existing occurrence/type validation before branching.",
+      "routingReason": "Trivial reuse of existing private occurrence/type validation; no new public surface or speculative state guard."
+    },
+    {
+      "id": "R6-BH-2",
+      "verdict": "high",
+      "route": "patch",
+      "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntriesProtector.cs:55",
+      "evidence": "ReadAsync checks State/Scheme/KeyAlias but omits MetadataVersion, ContentHint and the exact emitted snapshot-layout compatibility flags. The public mixed-snapshot read/replay API can consequently release plaintext under unsupported metadata; the whole-snapshot path instead requires complete metadata equality.",
+      "routingReason": "Direct complete equality check against the metadata already emitted for mixed snapshots; no new metadata scheme."
+    },
+    {
+      "id": "R6-BH-3",
+      "verdict": "false",
+      "route": "reject",
+      "location": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs:49",
+      "evidence": "carried R5-BH-3 false/reject: the unchanged immutable ciphertext, registry, writer, producer and admitted-call binders plus ERC version/bytes fence disprove acceptance of mismatched persisted originals. A global instantaneous source snapshot is not a required guarantee; no consumer violation was established. Verification skipped as required for this exact unchanged claim.",
+      "routingReason": "Exact unchanged claim retains its prior false/reject disposition; no repeated verification or patch."
+    },
+    {
+      "id": "R6-BH-4",
+      "verdict": "high",
+      "route": "bad_spec",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs:344",
+      "evidence": "FinishManifestAsync permanently adds each erased target, while SaveAsync retains Erased, ManifestArchives, LifecycleOutcomes and growing guard pointer maps in the 30 MiB head. ManifestCapacity/FitsHead eventually refuse ordinary tenant writes and subsequent destruction even with available ERC volume; the four occurrence maps fixed in round 5 are distinct collections.",
+      "routingReason": "Several authoritative lifetime indexes need coherent bounded indexing, migration, exact lookup and repeated-destruction verification; this is substantive redesign outside frozen intent."
+    },
+    {
+      "id": "R6-BH-5",
+      "verdict": "high",
+      "route": "patch",
+      "location": "deploy/erasure-root/bootstrap.py:33",
+      "evidence": "Enrollment tests storeId/enrollmentId only for truthiness and serializes them unchanged during apply. Accepted integer/list values create CAS-zero native heads incompatible with the runtime string schema, leaving all runtime owners unusable after actual bootstrap mutations.",
+      "routingReason": "Direct string/type/length validation of demonstrated malformed enrolled identity values before existing apply effects."
+    },
+    {
+      "id": "R6-BH-6",
+      "verdict": "high",
+      "route": "patch",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs:50",
+      "evidence": "ReadBytesAsync batches and retains all distinct hash-valid chunks before checking any chunk framing or cumulative length against the original bound. A reachable malformed retained archive can therefore allocate thousands of oversized chunks before rejection; validate format-specific sizes and cumulative retained bytes before dictionary insertion.",
+      "routingReason": "Private early chunk-size and cumulative-size validation can correct the demonstrated late checks without a public API or new state model."
+    },
+    {
+      "id": "R6-BH-7",
+      "verdict": "high",
+      "route": "bad_spec",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs:14",
+      "evidence": "Both holder workers cancel their timer/completion path on host stop and provide no final drain. A root/verifier buffer disposed after the last tick but before an ordinary graceful restart loses its sole process-owned completion evidence, leaving a durable holder that permanently refuses destruction; crashed/undisposed holders must still remain restrictive.",
+      "routingReason": "Correct quiescence ordering, bounded final completion and independent shutdown cancellation must be designed across the owning EventStore and source hosts; adding an arbitrary final tick is insufficient."
+    },
+    {
+      "id": "R6-BH-8",
+      "verdict": "high",
+      "route": "bad_spec",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootSourceIndex.cs:76",
+      "evidence": "WriteNodeAsync sends 4 MiB byte arrays through JSON Dapr state calls, expanding each full chunk to 5,592,410 JSON bytes before protocol framing. The executable uses default DaprClient composition and this delivery establishes no larger sidecar limits; the documented 4 MiB default rejects supported large independent originals, so fake-store tests do not establish the production pass path.",
+      "routingReason": "Transport-safe framing must coherently preserve stored-format compatibility and real Dapr request/response limits, then be verified through the actual transport. This is not a constant-only correction."
+    },
+    {
+      "id": "R6-BH-9",
+      "verdict": "low",
+      "route": "reject",
+      "location": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs:54",
+      "evidence": "The API accepts larger target inventories while SealAllTargets emits four calls for two outbox/event pairs. The actual 41-case owner verifier always constructs exactly two fixture targets; larger direct requests fail qualification rather than yield false evidence, so everyday users do not encounter this negligible fixture-only mismatch and adding dynamic calls or new guards would add complexity.",
+      "routingReason": "Low-severity direct fixture misuse is unlikely in everyday execution; fixing it adds guards or dynamic programming complexity, so the workflow rejects it."
+    },
+    {
+      "id": "R6-BH-10",
+      "verdict": "medium",
+      "route": "patch",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs:156",
+      "evidence": "ReadPinned uses unbounded File.ReadAllBytes for installation, inventory and copy policy; even the inventory limit is checked after acquisition/hash. A huge invalid or growing local input can exhaust host startup memory before typed refusal; bound this existing private acquisition while retaining the single accepted byte buffer and digest checks.",
+      "routingReason": "Bound the existing private pinned-file acquisition on the demonstrated oversized/growing-file state while retaining digest verification of the exact accepted buffer."
+    },
+    {
+      "id": "R6-EC-1",
+      "verdict": "high",
+      "route": "bad_spec",
+      "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotEntryLayout.cs:51-63",
+      "evidence": "For a supported whole encrypted snapshot containing a Target/Value envelope and a confidential sibling, layout construction clears only Value and retains the sibling verbatim. InteractionOccurrenceProtector attaches that skeleton to the sealed result, and registry plus independent source persist it outside encryption, leaving confidential bytes recoverable after root erasure.",
+      "routingReason": "The whole-snapshot representation needs content-free authenticated replay metadata without retaining arbitrary encrypted sibling bytes. Safe schema classification and legacy compatibility are nontrivial."
+    },
+    {
+      "id": "R6-EC-2",
+      "verdict": "high",
+      "route": "bad_spec",
+      "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs:328-331",
+      "evidence": "The supported opaque-snapshot compatibility path creates no skeleton when the state has zero Target/Value entries. After trim or independently proven permanent loss, TryReplaySnapshotAsync therefore returns Unreadable rather than typed Erased; SnapshotManager propagates SnapshotUnreadableProtected instead of usable erased replay, contradicting the accepted all-payload loss behavior.",
+      "routingReason": "A compatible typed-Erased representation for supported opaque whole snapshots must be designed and exercised through the actual load/replay consumer. Frozen loss semantics are clear; representation is outside frozen intent."
+    },
+    {
+      "id": "R6-VG-1",
+      "verdict": "medium",
+      "route": "bad_spec",
+      "location": "deploy/erasure-root/bootstrap.py:101; tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs:33",
+      "evidence": "Pre-verified gap, verification skipped: successful shipped --apply never feeds its installed occurrence/deletion/lifecycle genesis into ErasureRootTransitionAuthority. Existing negative/default CLI checks stop before serialization or write nothing, and native tests bootstrap separately; serializing empty Anchors stays green while BootstrappedNotQualified heads reject all three owners.",
+      "routingReason": "Filed patch disposition considered. Connecting successful shipped Python apply to the actual C# anchored-owner consumer in an owned disposable test path is meaningful cross-language integration, not a trivial patch; prefer bad_spec under the explicit routing rule."
+    },
+    {
+      "id": "R6-P-1",
+      "verdict": "medium",
+      "route": "patch",
+      "location": "../eventstore/src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs:10; tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs:29",
+      "evidence": "The original Server helper was internal; this change makes it public and exposes the unchanged pinned local owner fixture with the same fully qualified type. The full Secrets.Runtime.Tests build now fails five CS0436 errors in FeasibilityTests/LocalTransport; narrow 58 adapter/failure passes do not resolve this developer regression, and earlier pre-existing attribution is corrected.",
+      "routingReason": "Narrowly disambiguate the demonstrated intentional pinned local fixture at the two referencing test files without changing its pinned bytes or suppressing unrelated diagnostics; no new production public surface is needed."
+    }
+  ],
+  "reviewedDiff": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/review6-reviewed-scope-eda624d28f7a143641d75d57bcbecf5243fa325bf66ce5be735f07e72bbcc53a.diff",
+  "reviewedDiffSha256": "eda624d28f7a143641d75d57bcbecf5243fa325bf66ce5be735f07e72bbcc53a",
+  "entries": [
+    {
+      "members": [
+        "R6-BH-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "rootCause": "Trivial reuse of existing private occurrence/type validation; no new public surface or speculative state guard."
+    },
+    {
+      "members": [
+        "R6-BH-2"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "rootCause": "Direct complete equality check against the metadata already emitted for mixed snapshots; no new metadata scheme."
+    },
+    {
+      "members": [
+        "R6-BH-4"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "rootCause": "Several authoritative lifetime indexes need coherent bounded indexing, migration, exact lookup and repeated-destruction verification; this is substantive redesign outside frozen intent."
+    },
+    {
+      "members": [
+        "R6-BH-5"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "rootCause": "Direct string/type/length validation of demonstrated malformed enrolled identity values before existing apply effects."
+    },
+    {
+      "members": [
+        "R6-BH-6"
+      ],
+      "verdict": "high",
+      "route": "patch",
+      "rootCause": "Private early chunk-size and cumulative-size validation can correct the demonstrated late checks without a public API or new state model."
+    },
+    {
+      "members": [
+        "R6-BH-7"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "rootCause": "Correct quiescence ordering, bounded final completion and independent shutdown cancellation must be designed across the owning EventStore and source hosts; adding an arbitrary final tick is insufficient."
+    },
+    {
+      "members": [
+        "R6-BH-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "rootCause": "Transport-safe framing must coherently preserve stored-format compatibility and real Dapr request/response limits, then be verified through the actual transport. This is not a constant-only correction."
+    },
+    {
+      "members": [
+        "R6-BH-10"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "rootCause": "Bound the existing private pinned-file acquisition on the demonstrated oversized/growing-file state while retaining digest verification of the exact accepted buffer."
+    },
+    {
+      "members": [
+        "R6-EC-1"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "rootCause": "The whole-snapshot representation needs content-free authenticated replay metadata without retaining arbitrary encrypted sibling bytes. Safe schema classification and legacy compatibility are nontrivial."
+    },
+    {
+      "members": [
+        "R6-EC-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec",
+      "rootCause": "A compatible typed-Erased representation for supported opaque whole snapshots must be designed and exercised through the actual load/replay consumer. Frozen loss semantics are clear; representation is outside frozen intent."
+    },
+    {
+      "members": [
+        "R6-VG-1"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec",
+      "rootCause": "Filed patch disposition considered. Connecting successful shipped Python apply to the actual C# anchored-owner consumer in an owned disposable test path is meaningful cross-language integration, not a trivial patch; prefer bad_spec under the explicit routing rule."
+    },
+    {
+      "members": [
+        "R6-P-1"
+      ],
+      "verdict": "medium",
+      "route": "patch",
+      "rootCause": "Narrowly disambiguate the demonstrated intentional pinned local fixture at the two referencing test files without changing its pinned bytes or suppressing unrelated diagnostics; no new production public surface is needed."
+    }
+  ],
+  "counts": {
+    "bad_spec": 6,
+    "patch": 6,
+    "reject": 2,
+    "defer": 0,
+    "intent_gap": 0
+  },
+  "grouping": "Each survivor has a distinct defect. Snapshot plaintext retention and missing opaque Erased representation are separate bad outcomes/root causes; nearby bootstrap input validation and missing successful-apply integration are also separate.",
+  "reviewLoopBefore": 5,
+  "reviewLoopAfter": 6,
+  "limit": 5,
+  "patchesApplied": false,
+  "deferEntriesAppended": false,
+  "implementationReverted": false,
+  "rederivationStarted": false,
+  "outcome": "halt-human-escalation"
+}

@@ -23,6 +23,9 @@ public sealed class ErasureRootDeletionOwnerAuthority : IDeletionConsumptionOwne
     public Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string scopeId, CancellationToken cancellationToken = default)
         => _transitions.ReadCurrentOriginalAsync(scopeId, cancellationToken);
     /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string scopeId, CancellationToken cancellationToken = default)
+        => _transitions.ReadAdmittedOriginalAsync(scopeId, cancellationToken);
+    /// <inheritdoc />
     public Task<bool> ValidateStateAsync(long ownerRevision, string exactStateDigest, CancellationToken cancellationToken = default)
         => _transitions.ValidateStateAsync(ownerRevision, exactStateDigest, cancellationToken);
     /// <inheritdoc />

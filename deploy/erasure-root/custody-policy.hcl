@@ -46,3 +46,8 @@ path "sys/storage/raft/snapshot*" {
 path "sys/raw/*" {
   capabilities = ["deny"]
 }
+# Immutable originals live in the same snapshot-excluded ERC, with create-only native CAS zero.
+# No archive update, delete, metadata or restore authority is granted to the runtime.
+path "erc-heads/data/archives/*" {
+  capabilities = ["read", "create"]
+}

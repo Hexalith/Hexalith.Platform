@@ -1,0 +1,22 @@
+<assemblies schema-version="3" id="a83f5d4a-27f9-4cf5-bf24-bacc75f99f3e" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-10-29T20:44:43.5186451+00:00" finish-rtf="2026-10-29T20:44:43.7705305+00:00" timestamp="10/29/2026 21:44:43"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]" id="d6d63533-4447-4eec-a909-ec3138a33fb1" name="/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.Tests.dll" run-date="2026-10-29" run-time="20:44:43" start-rtf="2026-10-29T20:44:43.5186451+00:00" test-framework="xUnit.net v3 4.0.2+0c7aa4991f" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="1" finish-rtf="2026-10-29T20:44:43.7705305+00:00" not-run="0" passed="0" skipped="0" time="0.252" time-rtf="00:00:00.2520000" total="1"><collection name="Test collection for Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests (id: 8c04a9fb6fb1918b5bbde3887efa655f5a195043ce277a1eec463c7a6555687c)" id="3c8a9f29-ef48-497e-b52a-20cbdfae39ec" failed="1" not-run="0" passed="0" skipped="0" time="0.168" time-rtf="00:00:00.1680000" total="1"><test id="22ad53a3-5b1d-49db-ba88-34cfba7b03b4" name="Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken" result="Fail" time="0.168" time-rtf="00:00:00.1680000" start-rtf="2026-10-29T20:44:43.5776323+00:00" finish-rtf="2026-10-29T20:44:43.7581866+00:00" type="Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests" method="CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken" source-file="/tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs" source-line="251"><failure exception-type="Shouldly.ShouldAssertException"><message>Shouldly.ShouldAssertException : Task `fixture.Service.TryReplaySnapshotAsync( fixture.Binding.Identity.Owner, write.ProtectionResult.State, write.ProtectionResult.Metadata, options.GetTypeInfo(typeof(JsonElement)), Occurrence(fixture.Binding), cancellation.Token)`
+    should throw
+System.OperationCanceledException
+    but did not</message><stack-trace>   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task&amp; currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken() in /tmp/bmad-protection-loop2-_qctor_8/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs:line 270
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)</stack-trace></failure></test></collection></assembly></assemblies>

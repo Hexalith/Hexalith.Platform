@@ -1,0 +1,6 @@
+Unhandled exception. System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.KeyValuePair`2[System.String,Hexalith.Platform.Protection.ErasureRootAnchor]' to type 'System.Collections.DictionaryEntry'.
+   at System.Linq.Enumerable.CastICollectionIterator`1.TryGetFirst(Boolean& found)
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Program.<Main>$(String[] args) in /tmp/ext-protection-loop7-review8-parent-probe/Program.cs:line 40
+   at Program.<Main>(String[] args)

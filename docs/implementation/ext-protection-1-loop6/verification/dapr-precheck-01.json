@@ -1,0 +1,66 @@
+{
+  "attempts": [
+    {
+      "counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exitCode": 1,
+      "measurements": [],
+      "phase": "large",
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-384298fa0824442ebf7180ed96f630c4",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "49119",
+        "--dapr-grpc-port",
+        "60255",
+        "--dapr-internal-grpc-port",
+        "41527",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-y1q34lc4/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    }
+  ],
+  "cleanup": false,
+  "component": {
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+      "name": "erc-source-test"
+    },
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "127.0.0.1:51341"
+        },
+        {
+          "name": "enableTLS",
+          "value": "false"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    }
+  },
+  "daprVersion": "1.18.7",
+  "daprdSha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488",
+  "failureType": "AssertionError",
+  "liveExecuted": false,
+  "nonce": "384298fa0824442ebf7180ed96f630c4",
+  "outcome": "BlockedUnknown",
+  "productionQualified": false,
+  "redisImageId": "sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541",
+  "scope": "Owned Dapr source framing only"
+}

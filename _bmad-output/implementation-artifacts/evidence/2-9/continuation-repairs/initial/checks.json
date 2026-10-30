@@ -1,0 +1,127 @@
+[
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Tests/bin/Debug/net10.0/Hexalith.Parties.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1
+  },
+  {
+    "project": "Hexalith.Parties.Aspire.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Aspire.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Aspire.Tests/bin/Debug/net10.0/Hexalith.Parties.Aspire.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Contracts.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Contracts.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Contracts.Tests/bin/Debug/net10.0/Hexalith.Parties.Contracts.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Client.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Client.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Client.Tests/bin/Debug/net10.0/Hexalith.Parties.Client.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Ci.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "project": "Hexalith.Parties.Ci.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Ci.Tests/bin/Debug/net10.0/Hexalith.Parties.Ci.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 1
+  }
+]

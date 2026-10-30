@@ -1,0 +1,34 @@
+[
+  {
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "exitCode": 0,
+    "seconds": 1.7566007610002998
+  },
+  {
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.EventStore.PayloadProtection.Tests/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.Tests.dll",
+      "-method",
+      "*.CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken",
+      "-result-xml",
+      "/tmp/ext-protection-loop2-evidence/snapshot-cancel-prefixed-tests.xml",
+      "-noColor"
+    ],
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "exitCode": 1,
+    "seconds": 0.4473120699985884
+  }
+]

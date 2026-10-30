@@ -5,7 +5,7 @@ using Hexalith.Platform.Secrets.Runtime;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Fresh private registrar evidence. Synchronous compatibility methods remain restrictive; production consumption uses independently authenticated asynchronous reads.</summary>
-public sealed class DaprErasureRootRevocationEvidence(IndependentDaprAuthority registrar) : IAsyncPublishedTrustRevocationEvidence
+public sealed class DaprErasureRootRevocationEvidence(ErasureRootTenantAuthority registrar) : IAsyncPublishedTrustRevocationEvidence
 {
     /// <inheritdoc />
     public bool Matches(DeletionCapabilityRevocationEnvelope envelope) => false;

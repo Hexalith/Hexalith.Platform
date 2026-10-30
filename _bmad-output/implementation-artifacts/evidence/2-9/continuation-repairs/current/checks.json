@@ -1,0 +1,29 @@
+[
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "exitCode": 0,
+    "seconds": 24.585
+  },
+  {
+    "project": "Hexalith.Parties.Tests",
+    "stage": "tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Tests/bin/Debug/net10.0/Hexalith.Parties.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "exitCode": 0,
+    "seconds": 80.018
+  }
+]

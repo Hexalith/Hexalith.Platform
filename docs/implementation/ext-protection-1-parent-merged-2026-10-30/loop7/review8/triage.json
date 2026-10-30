@@ -1,0 +1,265 @@
+{
+  "schema": "EXT-PROTECTION-1.review8-triage.v1",
+  "reviewDiff": "/tmp/bmad-protection-loop7-reviewed-57yijpwa.diff",
+  "reviewDiffSha256": "f161c6a41e0f6132c9fef155eedd2cf0e97c7d235a94ab69f44daa00add03c13",
+  "allThreeFinalBeforeTriage": true,
+  "findings": [
+    {
+      "id": "R8-BH-1",
+      "layer": "blind",
+      "location": "../eventstore/tools/ext_protection_1.py:2293",
+      "verdict": "high",
+      "route": "patch",
+      "evidence": "Actual retained P36 operationProducerOriginals has seven fields including SafeRequest; the exact execute native_record guard permits six and raises OPERATION_PRODUCER_ORIGINAL_SCHEMA_INVALID. ObserveAsync always emits SafeRequest, and bind_producer_originals already needs it. Align this existing closed schema and exercise the real emitted envelope through the execute boundary; no new public surface or state is needed.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-2",
+      "layer": "blind",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs:76-92",
+      "verdict": "high",
+      "route": "bad_spec",
+      "evidence": "Parent component probes show positive PreflightWrap and successful source registration with one independent-source write and one ERC CAS, followed by Wrap refusal, both for an absent transit key and for denied encryption with metadata still available. RegisterOriginalAsync is directly reached by the authenticated erc-register-source-original handler. A metadata-only key check cannot settle the demonstrated denied-operation case; complete positive native custody/policy readiness must precede admission effects coherently.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-3",
+      "layer": "blind",
+      "location": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs:469-473",
+      "verdict": "high",
+      "route": "bad_spec",
+      "evidence": "Parent probe removes all actual owner anchors from the healthy native fixture head: PreflightWrap succeeds and Wrap creates a root, while the actual ErasureRootTransitionAuthority rejects the formerly installed owner genesis. ReadAsync discards missing default-scope reads and neither the source handler nor generic host composition establishes them first. Required installed owner inventory and production admission must agree without inventing genesis or indiscriminately changing standalone component semantics.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-4",
+      "layer": "blind",
+      "location": "src/Hexalith.Platform.Custody/DeadlineAnchoredStateAuthority.cs:6",
+      "verdict": "high",
+      "route": "patch",
+      "evidence": "CustodyKeyLifecycleActor passes this wrapper into ReconcileAsync with recoverAdmittedOriginal for mutations. The wrapper omits ReadAdmittedOriginalAsync, so the interface default returns null. Parent reflection probe supplies a non-null inner admitted original but observes null and zero underlying lookup calls. Forward the existing method under the existing deadline and cover lifecycle loss before pending persistence.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-5",
+      "layer": "blind",
+      "location": "../eventstore/tools/ext_protection_1.py:202-204",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "A full actual v3 profile validation accepts an ASCII credential of8186 bytes. The emitted Bearer header is8193 characters and the actual server rejects lengths above8192 before comparison. Existing validation must agree with the HTTP credential boundary, including header-compatible values; direct bounded input validation needs no new public surface.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-6",
+      "layer": "blind",
+      "location": "../eventstore/tools/tests/test_ext_protection_1_loop7_installation.py:25-27",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The paired-checkout test unconditionally reads the installed pinned commitlint package and invokes node. The payload-protection job performs checkout, flat declared-submodule initialization and .NET setup, then discovers this test with no npm installation or alternate CLI environment. On a clean checkout node_modules is absent, so the blocking offline job fails before checkout assertions. Supply its pinned test prerequisite in that existing job.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-7",
+      "layer": "blind",
+      "location": "../eventstore/tools/tests/test_ext_protection_1_loop7_installation.py:66",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "ShippedRoleClosureTests chooses only ROOT.parent/platform and then builds that missing project. The actual payload-protection workflow checks out only EventStore and initializes its declared references/Hexalith.Platform; it creates no sibling. Resolve the supported declared-submodule or sibling layout and its root-declared build dependencies in the existing test harness.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-8",
+      "layer": "blind",
+      "location": "../eventstore/tools/ext_protection_1.py:1005-1011; src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs:18",
+      "verdict": "high",
+      "route": "bad_spec",
+      "evidence": "Role.request checks files before launch, but RunAsync independently reads its role JSON without the accepted digest or bytes. InvokeAsync sends the private bearer before signature verification. Parent owned-handler probe loads a replacement endpoint under the unchanged public anchor and captures the synthetic bearer at substitute.invalid before the response fails; no external network is used. Complete inventory membership fixed the previous issue but does not bind acquired configuration across this handoff. The accepted-byte/ownership contract needs a coherent cross-process correction.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-9",
+      "layer": "blind",
+      "location": "eng/ext-protection-1/probe_erc_native.py:50-66",
+      "verdict": "medium",
+      "route": "bad_spec",
+      "evidence": "Parent probe copies the actual257-file runtime, supplies a manifest listing only the actual test DLL, mutates its unlisted selected Protection.dll, and reaches image inspection with frozenRuntimeManifestSha256 already reported. No container is created. The new frozen-runtime mode can therefore certify an incomplete mutable application closure; the integration-evidence caller needs an enforceable resolved closure contract. Current native evidence remains separately valid because all257 files were independently hashed.",
+      "carried": false
+    },
+    {
+      "id": "R8-BH-10",
+      "layer": "blind",
+      "location": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs:39",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Parent symbol searches find InvokeAsync/RunAsync only at the three shipped entry programs and their definitions, with no invocation from tests. The HTTP boundary test hand-builds headers and installation tests substitute child execution. This leaves the production authentication, correlation and signature handoff unguarded for the verifier caller; add an owned HTTPS client/service regression using the actual client.",
+      "carried": false
+    },
+    {
+      "id": "R8-EC-1",
+      "layer": "edge",
+      "location": "../eventstore/tools/ext_protection_1.py:2293",
+      "verdict": "high",
+      "route": "patch",
+      "evidence": "The submitted guard snippet is the proposed seven-field replacement; current code permits only six. The actual P36 retained producer with SafeRequest fails the exact current helper, confirming the shipped after-effects failure. This is the same closed-schema defect as R8-BH-1.",
+      "carried": false
+    },
+    {
+      "id": "R8-EC-2",
+      "layer": "edge",
+      "location": "../eventstore/src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs:31-32",
+      "verdict": "high",
+      "route": "patch",
+      "evidence": "The submitted forwarding guard is a proposed fix, absent from DeadlineAnchoredStateAuthority. ReconcileAsync actually queries it when primary pending is absent. Parent probe confirms an inner original exists while the wrapper returns null without invoking its owner. This is the same lifecycle recovery defect as R8-BH-4, rather than the earlier corrected TransitionAuthority retention defect.",
+      "carried": false
+    },
+    {
+      "id": "R8-EC-3",
+      "layer": "edge",
+      "location": "../eventstore/tools/ext_protection_1.py:202-204",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Parent actual v3 profile probe accepts8186 ASCII credential bytes while the server rejects the resulting8193-character Authorization value. The filed boundary is reachable and shares R8-BH-5 input-validation root cause.",
+      "carried": false
+    },
+    {
+      "id": "R8-EC-4",
+      "layer": "edge",
+      "location": "../eventstore/tools/ext_protection_1.py:2293",
+      "verdict": "high",
+      "route": "patch",
+      "evidence": "The explicit installed-pass-path claim is disproved by actual P36 producer bytes: SafeRequest is emitted but rejected by execute before evaluate. It is an additional individual claim row for the same verified R8-BH-1/R8-EC-1 schema mismatch.",
+      "carried": false
+    },
+    {
+      "id": "R8-VG-1",
+      "layer": "verification-gap",
+      "location": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs:56",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Pre-verified regression gap; verification skipped as required. Filed evidence shows the HTTP test bypasses the shipped client, shell fixtures replace it, and installation tests mock child execution; removing its Authorization header leaves those tests green while installed calls fail401. Accept the filed patch disposition: an owned HTTPS production-client/authenticated-service test asserting exact signed response and request correlation.",
+      "carried": false
+    },
+    {
+      "id": "R8-VG-2",
+      "layer": "verification-other",
+      "location": "../eventstore/tools/tests/test_ext_protection_1_loop7_installation.py:25-27",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Other-finding verification reads the actual test and full payload-protection workflow: the new package.json read/node invocation has no dependency installation or alternate CLI input on the clean runner. This independently confirms R8-BH-6 and names the blocking offline discovery caller.",
+      "carried": false
+    },
+    {
+      "id": "R8-VG-3",
+      "layer": "verification-other",
+      "location": "../eventstore/tools/tests/test_ext_protection_1_loop7_installation.py:66-78",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Other-finding verification reads the test, workflow and root .gitmodules: only references/Hexalith.Platform is initialized, while the test hardcodes the nonexistent sibling. The current closure fixture therefore fails its normal CI caller, confirming R8-BH-7.",
+      "carried": false
+    }
+  ],
+  "groups": [
+    {
+      "id": "R8-G1",
+      "members": [
+        "R8-BH-1",
+        "R8-EC-1",
+        "R8-EC-4"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "id": "R8-G2",
+      "members": [
+        "R8-BH-2"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8-G3",
+      "members": [
+        "R8-BH-3"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8-G4",
+      "members": [
+        "R8-BH-4",
+        "R8-EC-2"
+      ],
+      "verdict": "high",
+      "route": "patch"
+    },
+    {
+      "id": "R8-G5",
+      "members": [
+        "R8-BH-5",
+        "R8-EC-3"
+      ],
+      "verdict": "medium",
+      "route": "patch"
+    },
+    {
+      "id": "R8-G6",
+      "members": [
+        "R8-BH-6",
+        "R8-VG-2"
+      ],
+      "verdict": "medium",
+      "route": "patch"
+    },
+    {
+      "id": "R8-G7",
+      "members": [
+        "R8-BH-7",
+        "R8-VG-3"
+      ],
+      "verdict": "medium",
+      "route": "patch"
+    },
+    {
+      "id": "R8-G8",
+      "members": [
+        "R8-BH-8"
+      ],
+      "verdict": "high",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8-G9",
+      "members": [
+        "R8-BH-9"
+      ],
+      "verdict": "medium",
+      "route": "bad_spec"
+    },
+    {
+      "id": "R8-G10",
+      "members": [
+        "R8-BH-10",
+        "R8-VG-1"
+      ],
+      "verdict": "medium",
+      "route": "patch"
+    }
+  ],
+  "summary": {
+    "individualFindings": 17,
+    "rootCauses": 10,
+    "badSpec": 4,
+    "patch": 6,
+    "false": 0,
+    "maybeFalse": 0,
+    "lowRejected": 0,
+    "defer": 0,
+    "carried": 0
+  },
+  "gapLayerTrusted": true,
+  "codeRolledBack": false,
+  "patchesApplied": false,
+  "lowerEntriesMoot": true
+}

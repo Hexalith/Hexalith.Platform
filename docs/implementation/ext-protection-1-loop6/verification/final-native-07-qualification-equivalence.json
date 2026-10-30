@@ -1,0 +1,88 @@
+[
+  {
+    "qualification": {
+      "root": "/tmp/ext-protection-loop6-final-transport-19cb7cc6686a43a9bf56c44a7c38a5b0",
+      "manifest": "/tmp/ext-protection-loop6-final-transport-19cb7cc6686a43a9bf56c44a7c38a5b0/runtime-manifest.json",
+      "manifestSha256": "647a4bb59f89a56f941a99df3ce57f6104305c4c0d22707f66755399db6d5202",
+      "sourceManifest": "/tmp/ext-protection-loop6-final-transport-19cb7cc6686a43a9bf56c44a7c38a5b0/source-manifest.json",
+      "sourceManifestSha256": "caacc41e5b9125827ee36c107934f66f07b9525a9e68f9debffd03a702a70e95",
+      "assemblySha256": "f252d2b3d4738accafffca3e9ba23664f045e35f4521f1aa343bded822f385be"
+    },
+    "native": {
+      "root": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "manifest": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b/runtime-manifest.json",
+      "manifestSha256": "9e311f108173ad5a3dbcd1d4b57c63987823418b3e9f379817166f8594548658",
+      "sourceManifest": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b/source-manifest.json",
+      "sourceManifestSha256": "91006ab7cb4db18e42ec08be3841f75d57b62693955d86a39755f9d3179b76b0",
+      "assemblySha256": "83b37429cd0f71f0883473256b2f32dcca52c577c44ac81bd81e9c742c562e71"
+    },
+    "wholeBinariesEqual": false,
+    "allProductionSourcesByteIdentical": true,
+    "differences": [
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6DaprIntegrationTests.cs",
+        "qualificationSha256": "b55cea5b362d111033bcf93f324b5339e0287a3285be1dc6d42fd7c716fe8fd8",
+        "nativeSha256": "1f611a73af8b9139a1f5b5d25aee5d9bac631c400d3582e9bba91a94b52b835b"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "qualificationSha256": "5beea809898d0a7909f2fbe65c52a67df3fb0156ed9579ff73c06cc0cf8242f4",
+        "nativeSha256": "1cecc7b1b0ab67433b72f17b57229ecb9224d6573484c04706cf98c5d9ddf6ba"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCommandChannel.cs",
+        "qualificationSha256": null,
+        "nativeSha256": "504e4e06a016d9b944ee045380338200a30de2677072fe314a840ed5f9dc0a84"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "qualificationSha256": "ee8460140ee0cc935cc53bf8a36e61eb4647f8151147ae6ccbd79bac1b750313",
+        "nativeSha256": "573f1f1b0e32a20601e1ecc302e18f0a3af864f1047ba84b6d1c04fb57ac16f3"
+      }
+    ]
+  },
+  {
+    "qualification": {
+      "root": "/tmp/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373",
+      "manifest": "/tmp/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373/runtime-manifest.json",
+      "manifestSha256": "20a5c7fe162172d6cba303a324768cf24ea4a12e3bbd15e4229cf04a503cc7ea",
+      "sourceManifest": "/tmp/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373/source-manifest.json",
+      "sourceManifestSha256": "6a1aef0139881ac7d900c63bdc81d17048779a3c70e844857d20275965952513",
+      "assemblySha256": "78a87c8003bf8384b96282595518ab913b9a9959701b25bbe9b23b641764283f"
+    },
+    "native": {
+      "root": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "manifest": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b/runtime-manifest.json",
+      "manifestSha256": "9e311f108173ad5a3dbcd1d4b57c63987823418b3e9f379817166f8594548658",
+      "sourceManifest": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b/source-manifest.json",
+      "sourceManifestSha256": "91006ab7cb4db18e42ec08be3841f75d57b62693955d86a39755f9d3179b76b0",
+      "assemblySha256": "83b37429cd0f71f0883473256b2f32dcca52c577c44ac81bd81e9c742c562e71"
+    },
+    "wholeBinariesEqual": false,
+    "allProductionSourcesByteIdentical": true,
+    "differences": [
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "qualificationSha256": "5beea809898d0a7909f2fbe65c52a67df3fb0156ed9579ff73c06cc0cf8242f4",
+        "nativeSha256": "1cecc7b1b0ab67433b72f17b57229ecb9224d6573484c04706cf98c5d9ddf6ba"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCommandChannel.cs",
+        "qualificationSha256": null,
+        "nativeSha256": "504e4e06a016d9b944ee045380338200a30de2677072fe314a840ed5f9dc0a84"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "qualificationSha256": "ee8460140ee0cc935cc53bf8a36e61eb4647f8151147ae6ccbd79bac1b750313",
+        "nativeSha256": "573f1f1b0e32a20601e1ecc302e18f0a3af864f1047ba84b6d1c04fb57ac16f3"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2178 @@
+{
+  "eventstore": {
+    "commit": "4730eb0ac03785e0a3b863b7388f5f5db5e0e7bf",
+    "tree": "b82d559f83f9153ea94ce25cbd33ac14b0c7e9ef",
+    "parent": "a5b55e8c34892c30fb4feccefd5498dfe0363585",
+    "ref": "refs/ext-protection-1/source-20261030-loop7-review",
+    "sourceFiles": [
+      {
+        "path": "docs/implementation/ext-protection-1-verifier-protocol.md",
+        "blob": "bd5b918a6a31a466d0642bb1a6e21aa75b9bfac9",
+        "source": "/home/administrator/projects/hexalith/eventstore/docs/implementation/ext-protection-1-verifier-protocol.md",
+        "workingTreeSha256": "4f553f50add56f1689324254ccd47a3f7a7e017b8c7db4cafc3eaa9879ece6c6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/DeletionBatchCapabilityIdentity.cs",
+        "blob": "b7073df5935c9440bc85943b277905ab63bcfedd",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/DeletionBatchCapabilityIdentity.cs",
+        "workingTreeSha256": "22581048d4614a25b708af48e82db84ccdc507627c33dacdb8fe5bbedc091814",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/DeletionBlockedReplacementReconciliation.cs",
+        "blob": "94f76c31f3a2cff00d30e22a315e38d29b3695fc",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/DeletionBlockedReplacementReconciliation.cs",
+        "workingTreeSha256": "1f5925a0de904a792c86a23d7e4d40befeba8dbaf05a519ba561643fbae0fa6c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/GovernanceBatchState.cs",
+        "blob": "dcd2717d9959e88dab7b245bb66e45cabaf6ef92",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/GovernanceBatchState.cs",
+        "workingTreeSha256": "366fb7ff650657dc1b1c4fcdeb48628b5f99fd90322ee827b5dceccc50a7b99e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/GovernanceRejectedIssueOriginal.cs",
+        "blob": "4231ba0dd7446cb22639662cfbd683194a787bab",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/GovernanceRejectedIssueOriginal.cs",
+        "workingTreeSha256": "cf836588bef73932dedc8972461d05eed0ea864b54c8727f51917891dd9dc45c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IAnchoredStateTransitionAuthority.cs",
+        "blob": "28a4cd425f439c9a17f4f2a60ad50af6cc59ccd2",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/IAnchoredStateTransitionAuthority.cs",
+        "workingTreeSha256": "95179addc0d5d903878c2d0d5c59893b0fd2a5e823fe3b91501d4a027fd1b28f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IEventPayloadProtectionService.cs",
+        "blob": "ebccad7b63efd6adeed9cdee32331021cbf73945",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/IEventPayloadProtectionService.cs",
+        "workingTreeSha256": "26fd6741d92067fe4caf64e5aacb42da62b262d6d68ad86c77857a9ed5e09cac",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/IGovernanceScopeGuard.cs",
+        "blob": "3d131e03d72c87f470c8d57e5ff3d5bb40c126d2",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/IGovernanceScopeGuard.cs",
+        "workingTreeSha256": "ab33460bb8d13da40a70d7c9b24971f31e836b01d9c726ddb26fb5035955f60b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/InteractionOccurrenceSealedResult.cs",
+        "blob": "bbe7009ca826eefcc86abb1741e8447cd3e3718c",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/InteractionOccurrenceSealedResult.cs",
+        "workingTreeSha256": "cf82b23b24b205e7c8498914cb2340b573917a40e4b702d3e00e51389fb1a840",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/PayloadProtectionCompletionContext.cs",
+        "blob": "0cb6aad5691764adde75b7f94504086795108380",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/PayloadProtectionCompletionContext.cs",
+        "workingTreeSha256": "86aeb1c5f229d0c0acadcd966f78608663d9684088bd705e4e6b7f79956d1e4f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/PayloadProtectionResult.cs",
+        "blob": "9ac221ffaf56eaf4ffc12585a076c2d61ff0c6c2",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/PayloadProtectionResult.cs",
+        "workingTreeSha256": "7b7eb96fe18880ca5577bc5183e925a151c3826e0392d3fb0a64f5cef13df6e6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntriesV2.cs",
+        "blob": "7f9a7e9d76e1206579604d4a370183eb1e9a7c7a",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntriesV2.cs",
+        "workingTreeSha256": "82c261deb9cd3319ecd787101c2f74f8199ba1863b949c370e43da87d891c145",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntryV2.cs",
+        "blob": "510eea7a3b4538206d998db0c72b53b296d6b9d3",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/ProtectedSnapshotEntryV2.cs",
+        "workingTreeSha256": "c13c869f1a64b9670589d3571a42744b2626525114964a9f8a1a814efc256e5c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs",
+        "blob": "caa4c4a850ebe26fb41b67bcb3e178503cd7c3b3",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs",
+        "workingTreeSha256": "4f02c82ecb0b68b6acf7a6cdf02c8d6bec7e955fb8d8108c584f1c74020d3c6e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/SnapshotEntrySourceBinding.cs",
+        "blob": "0729b6618669dba9bf81ffeeeaf42d92241fff81",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/SnapshotEntrySourceBinding.cs",
+        "workingTreeSha256": "38f701709f9f85f97fbdd5367586c442ddbfd6a25e0626289347e880e178eda1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Contracts/Security/SnapshotProtectionEntry.cs",
+        "blob": "b3e4e724c0591972dfc2b2cd5d39e6668c12c6bd",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Security/SnapshotProtectionEntry.cs",
+        "workingTreeSha256": "c40e423eae4fc6a53fac92fe9c53218fca5438bfe9802cafb273180414c0496a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/IInteractionProtectionBindingProvider.cs",
+        "blob": "5e9efe217e1f9c63489d877bf971fd837417226b",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/IInteractionProtectionBindingProvider.cs",
+        "workingTreeSha256": "7c15423fd76551385a7b67c254851c27206630291e8520bf45901300f4c1190e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceOwnedKey.cs",
+        "blob": "240358a6234556c07d83b1a94af7b5936e4a67e5",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceOwnedKey.cs",
+        "workingTreeSha256": "1900a4e35433f42b0c514c2f19619ada334ecce65a7871d84c0c5b8c5572dcdc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceProtector.cs",
+        "blob": "306677a598147f7afefca84ae875448110e040a3",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceProtector.cs",
+        "workingTreeSha256": "0b23ad3d0ccfceb03baab0851f1a8330156e32525943488f5f7e2a51cf8605de",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceSealedVerifier.cs",
+        "blob": "f821ffe8aa0d0834d8ab406015f5197d23e3ee0b",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionOccurrenceSealedVerifier.cs",
+        "workingTreeSha256": "970728622b65eac521262d11dbd2ba87cbea93a649237c0f075df0ffa69caf3c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs",
+        "blob": "c5657bdcafb3264c08dfd7f7d121e79a1b9bcbe5",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs",
+        "workingTreeSha256": "39e658e868ad36dc6f3571336a46d600034d64267a6746d11d270ee7f8dc8cff",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntries.cs",
+        "blob": "9ef4551a00f6fdb68ca625d266cc0d2e74026a9e",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntries.cs",
+        "workingTreeSha256": "3d552f42474c6f356ab6bd055dcf7cadf88961ae9f9d91cf570af3ffbe7b95e1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntriesProtector.cs",
+        "blob": "17da6005012455d3635d947cecf064dd3597b087",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotEntriesProtector.cs",
+        "workingTreeSha256": "39d5698214cf37b8d5245b7f9bf34d955ef10dc2e3195891e64830a2f0af0aee",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotJsonContext.cs",
+        "blob": "a10c2280b160a92c950b3f9cbfbfa6143e4ad859",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionSnapshotJsonContext.cs",
+        "workingTreeSha256": "51f451fcca250529bc96dcc97d99736a19c075ec5bf393a4bf991fc3128e7923",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/PayloadProtectionOccurrenceConflictException.cs",
+        "blob": "54e058b3c7e2eaca1e5ef06d433f008d3b44e804",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/PayloadProtectionOccurrenceConflictException.cs",
+        "workingTreeSha256": "51f8d1b9bbc1c4131a2060377d6455dfe3447171094e11ecfee590267409c035",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryFragment.cs",
+        "blob": "dd6dea3af5c6137ee7e63e4e81c8f02c73b90c3a",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotEntryFragment.cs",
+        "workingTreeSha256": "e2b9c4d7b9d0e8498e3ef2d575d6b125777e6fe62768ec3d8a547028a1f4a890",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryLayout.cs",
+        "blob": "8a156630342b4e3209619f677ff57ede98be1e5b",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotEntryLayout.cs",
+        "workingTreeSha256": "a8d5d78729e3a9ebf9e4eeea8066d12402aafff409e31e9201bae4a02a9ca1c0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotEntryOccurrenceIdentity.cs",
+        "blob": "928c6fcc72e027b436b9bd6889727e4f75bdc961",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotEntryOccurrenceIdentity.cs",
+        "workingTreeSha256": "1476112d4d2f993c036ce5a50929281352bc8228c4bbf42892c3a6de252c78ba",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionEntriesDescription.cs",
+        "blob": "e6dbc28165141d98433a41c0217940a139f63f43",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotProtectionEntriesDescription.cs",
+        "workingTreeSha256": "726126d60ffdc636b36c2568065eaf3b2366774cb2c99c9ee7c9c9dfbc98b69f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.PayloadProtection/WholeSnapshotReplayMetadata.cs",
+        "blob": "f9718d131157ac41c9b413d11d4c021b16317e05",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/WholeSnapshotReplayMetadata.cs",
+        "workingTreeSha256": "397f318d64bb3a5c677aac11ff31e18e5470c6ed10333dd1835622b2743c10b2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Configuration/InteractionPayloadProtectionServiceCollectionExtensions.cs",
+        "blob": "e8eb59040dcc20310175ffb48c1efd2608415f62",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Configuration/InteractionPayloadProtectionServiceCollectionExtensions.cs",
+        "workingTreeSha256": "c2bf27bef078c26b395d5ef2397ec9fdc024862d043f6bc620409fbc1ef082ee",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "blob": "5fb30c2595ba8fdfcd2a1c9fee3fed2c036b9644",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "workingTreeSha256": "7aeed985406c54a169ccdb862f846c20124864a8f52f54dccaa0d526206712ff",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeadlineDeletionConsumptionAuthority.cs",
+        "blob": "f0dc3349ecd159c9e5e3e6a6c29360f906ade9ea",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/DeadlineDeletionConsumptionAuthority.cs",
+        "workingTreeSha256": "850a108280ff91edaf6a79de5ce743bf7a858555b183acc8da289cf4147e5713",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs",
+        "blob": "5acd7fbf28eed27fa381a0898fbef65122e9b135",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs",
+        "workingTreeSha256": "675d560b025495d4fa2c7a33372e39bca3209df2d855de48c8c2f1b9db00ba50",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs",
+        "blob": "f02b1d48e1732d2f3d2c0274ded73f89ec58e799",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs",
+        "workingTreeSha256": "0599741ef8e115ce644375dcda436c23fc731b196d142bc0f522706afb66fd93",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardOwner.cs",
+        "blob": "fdc05d64e1f86050f70c7eed21448a71c593b01b",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardOwner.cs",
+        "workingTreeSha256": "709af95459987f8990e18af96fa8ab5a7869174a09ed921fda95b56e81f362b2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+        "blob": "15e2d4bdc41f0a144bbe80a21aa583d9c71bd796",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+        "workingTreeSha256": "96c04a2eec076dad635e6c6efc677b84a4b68d96d9fc223812881aae223f0cc3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/IAsyncPublishedTrustRevocationEvidence.cs",
+        "blob": "4645a84d4eaff06e1f7e0164ad361e3a6ae2025c",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/IAsyncPublishedTrustRevocationEvidence.cs",
+        "workingTreeSha256": "4ff3cc4f4c08243ce40eee4411080387986297ff4c026a5c8b0d2f85b67fb0be",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+        "blob": "525f35a631b81229e491e116c5c5309cf64095c1",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+        "workingTreeSha256": "eeaa71d38220e03c203e576e72bd547affead022fef001dfbe865517a5689f9d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+        "blob": "67a157c8ed29010772cae993fc4ca56f5612a215",
+        "source": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+        "workingTreeSha256": "bc4c432a74b90b25a343fdc6cfbce4376d40d4beec5eed36034da2476aa27c86",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/CancellingMixedSnapshotConverter.cs",
+        "blob": "d80686da716a97be649887a6292d713892e97fc0",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/CancellingMixedSnapshotConverter.cs",
+        "workingTreeSha256": "3851f1e64a51fb7c79015847691bfaa8e04a773cb1a6de3318d22767d13e4fb7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs",
+        "blob": "cd018702f2cb37046ead3a9baa693859cb406612",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionEventReplayAuthorityFailureTests.cs",
+        "workingTreeSha256": "702a7645c3f8ae0e7ce9a95f9f68d18d3e8810775d112feb56b6c07e7f3b3acf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotFixture.cs",
+        "blob": "5466993cec3d428d832f63d59090ea3aa34ec680",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotFixture.cs",
+        "workingTreeSha256": "00210a6159ae9866d34898cb1f2be84c699c17e81afdebdcd2341f6b1a9c46c4",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotProtectionTests.cs",
+        "blob": "2f09f71c481b26935da7b23607d9280a3f15a926",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionMixedSnapshotProtectionTests.cs",
+        "workingTreeSha256": "f54b29f3db68a1fb80a94d0e7612c9f51700f7fa06566fcf7818bbd3e204d62b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs",
+        "blob": "e79c66cb9bf2a1c64a5abacc15540221e9e832bb",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs",
+        "workingTreeSha256": "b91dd9b84bfbfac7f113411f283ce84292cb2955c93a80a60efa6a9e7942835b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/ReviewDeadlineTests.cs",
+        "blob": "fa33870745fdad8867d4e6845d8c6a0858c910a4",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/ReviewDeadlineTests.cs",
+        "workingTreeSha256": "4564092cbe0535d1932ee84356438d5cf1b88a62807181f393f44e15a75aae2b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.PayloadProtection.Tests/SubmittedMutationDeadlineClock.cs",
+        "blob": "9292789fe24e8fea13d7b24483a05fbdc7c929d3",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.PayloadProtection.Tests/SubmittedMutationDeadlineClock.cs",
+        "workingTreeSha256": "62c8fd6f3c6cc9be797c57d64ceb0a59dc8a5675c7b7a042377e8eb4d8be4163",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/DeletionConsumptionOriginalTests.cs",
+        "blob": "c206dd23233a3cfd5da38cc7a1acddddf41a0baf",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/DeletionConsumptionOriginalTests.cs",
+        "workingTreeSha256": "ca5b4c929ee71517241ab97361fb1192c6e6bb4ad49dc8312901d466a4aa1aa1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/GovernanceGuardFixture.cs",
+        "blob": "468394ca0bd8c5105da5ebaaa24843ef38081675",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/GovernanceGuardFixture.cs",
+        "workingTreeSha256": "c2cd1ed285f3284c30daad0a377f640718ff3e485cc7ffb7a7b2c5d611b5c152",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/GuardedTransactionFixture.cs",
+        "blob": "e9890972901a8e5770ce5d5742b693db632555ae",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/GuardedTransactionFixture.cs",
+        "workingTreeSha256": "ea67af3b19aec80f61db342b97bd88e5ec044ab3bd81fd31c98f084144828907",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionMixedSnapshotPersistenceFixture.cs",
+        "blob": "0267c57cf1b5be52c2506e7a86108ef23ae3a9d4",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/InteractionMixedSnapshotPersistenceFixture.cs",
+        "workingTreeSha256": "4975e010f8c7802ee1de13c33ded160c1c69b3946fca681dd371774c584ef831",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs",
+        "blob": "afd8f6e2e6366750f12a25ef9f513de3a5118475",
+        "source": "/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs",
+        "workingTreeSha256": "198db698dcee42bfd176444deada1c716a65cfb6546df9b910f1801be3cb16b0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/ext-protection-1/runtime-closure/Program.cs",
+        "blob": "858f862523742fef0a118b76d4c9d9947d67156d",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/ext-protection-1/runtime-closure/Program.cs",
+        "workingTreeSha256": "4ceaf26becbcc9d984c53461e850c405bd06cf83fa2fe94811c0d0a117714483",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/ext-protection-1/runtime-closure/RuntimeClosure.csproj",
+        "blob": "a4503649be51c0463fa4ecfad889eb5c47f83bfe",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/ext-protection-1/runtime-closure/RuntimeClosure.csproj",
+        "workingTreeSha256": "8120202eb11e6107cc2db7188828f48b4484f05249ceeec6a6c55ed7ccc21aac",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/ext_protection_1.py",
+        "blob": "8f64a3130318ea53e6e9345b5fe783d8230640d9",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/ext_protection_1.py",
+        "workingTreeSha256": "ac2919e7ea4a5eb382dbf37b45ec64b52214ef2a794ff860efcfea880ad10f86",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1.py",
+        "blob": "dff94726255f6fbb41734149cfca8e914cc0d265",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1.py",
+        "workingTreeSha256": "3284f008538853780b2f89b682c9a2769d29405871451961d1c6c40ad4d8b87f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_cross_language.py",
+        "blob": "da17b36b1b321f13d9455de78dffacf22a225a50",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_cross_language.py",
+        "workingTreeSha256": "b3616af6b556e8200da8ef6cbac62064638bdcb880241ff276cfd184db1124e8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_event_evidence.py",
+        "blob": "ef8a1762a7e7a4fe876b269b55cf79ac80d316d2",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_event_evidence.py",
+        "workingTreeSha256": "081f91018898e21347424ce0ef351173587e84b5bf4389791d7114f0676ffcbc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_hold_attempts.py",
+        "blob": "396fccd54e269fb2867af8276d1d6ef2d5899d67",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_hold_attempts.py",
+        "workingTreeSha256": "0ca5ddc4ce5088ca174ea3710c6e7fcf202ed366d7ce3743188a2bbdbfe16dcb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_loop7_installation.py",
+        "blob": "c5d0bd4e29b0bf43dd905d9bbdc162e42cb6d370",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_loop7_installation.py",
+        "workingTreeSha256": "d4f70c04230eaada574aec312fd12f5b781aa6c7493b0bf0dabcec3b753a6831",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_loop7_recovery.py",
+        "blob": "00af0485e52815c533990ebb9e477e03fa0862c6",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_loop7_recovery.py",
+        "workingTreeSha256": "9ee0801b7971561602646fa2d9a9c18759516919bbc2b6a1e04cae81c4a69240",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_mixed_snapshot.py",
+        "blob": "d665721bc297c015d25a4e4f3164421db2877d12",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_mixed_snapshot.py",
+        "workingTreeSha256": "f8ba78449eba71ce0b18b506dc88fcff3d89e26c6222d0b84034601da2262527",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_producer_originals.py",
+        "blob": "f27c17c7e32a145f15cfcee98efd2b289f6ad77e",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_producer_originals.py",
+        "workingTreeSha256": "c16e8b6225546aade8e5529e1216c6a34732ce98350ac725a3bfcd8ed0d16ffd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_rejected_replacement.py",
+        "blob": "ef8c8f46cc6799ec715ed02542288631bb34e5ed",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_rejected_replacement.py",
+        "workingTreeSha256": "2dffcbd88404515b1184f3634b2c8efd98e282f8f1ba85272bb8b1a4ee066c29",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_p13.py",
+        "blob": "08ab4b9a5fa628d647af017a78ec0acd9fd7ebe6",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_source_p13.py",
+        "workingTreeSha256": "ca0ce0f9d2769224f67f91fbd978ce6d04b92bbb0a4d4330db517287b08fe449",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_p34.py",
+        "blob": "40060f94b189125b6dacfd4d7ddff1675e8fdc2a",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_source_p34.py",
+        "workingTreeSha256": "e902705adacc02fe28044803ff7ceeb8784ec24367e03d2dbb264e0e34412236",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tools/tests/test_ext_protection_1_source_snapshot.py",
+        "blob": "c937049e384dab581f3a69c117f619159bbc5710",
+        "source": "/home/administrator/projects/hexalith/eventstore/tools/tests/test_ext_protection_1_source_snapshot.py",
+        "workingTreeSha256": "1a922951c84d31cdb391ac731ac7ca957740f893940c48848def81bc217534f8",
+        "sharedWorkingTreeMatches": true
+      }
+    ],
+    "published": false,
+    "candidateUsesPreservedSharedHost": null
+  },
+  "platform": {
+    "commit": "46501f335ba3527f9479f432cd737f1c6eecb3b5",
+    "tree": "2cadd5558c987e2223306fcb15bfe0978f0ff5e3",
+    "parent": "5c81bd1d48863da501502e4bdd084c471487b1db",
+    "ref": "refs/ext-protection-1/source-20261030-loop7-review",
+    "sourceFiles": [
+      {
+        "path": ".gitattributes",
+        "blob": "728b3ec924b4ee2aa75822819dcc3f41aa158e86",
+        "source": "/home/administrator/projects/hexalith/platform/.gitattributes",
+        "workingTreeSha256": "119a7183c36312a0555aa6f1b55bc991426add4688ee830ba8f1c7091c42ced1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "Hexalith.Platform.slnx",
+        "blob": "17f9fd2a396280cbb4de9bf39413e4dcf8269d21",
+        "source": "/home/administrator/projects/hexalith/platform/Hexalith.Platform.slnx",
+        "workingTreeSha256": "f3d72c8022776bd0cadae77a6b11431de86ce589f2c17b8580d2a8455b0c87ff",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/README.md",
+        "blob": "d78cf80af7fb0743cc721c75c5c1f0cfc660b7ad",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/README.md",
+        "workingTreeSha256": "d1ca6daf0abd555419c83a7e0e3373f0ffcbb12a14313bfb22e7fd2504122a60",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/bootstrap.py",
+        "blob": "bfb04347b00a1439530c63b44d083f8528b78f02",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/bootstrap.py",
+        "workingTreeSha256": "f32146adcfa4d2ef3e44c79b314932a02ea50455b3dffa2814804dc537b5a854",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/custody-policy.hcl",
+        "blob": "49d37ee6d9ca5aaa24687e4dfceaed9924540801",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/custody-policy.hcl",
+        "workingTreeSha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/namespace.yaml",
+        "blob": "e397c925a77a4cf6f4d12f6e08537ef1ccb01188",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/namespace.yaml",
+        "workingTreeSha256": "71f03e56231b945a2f8e2e06b2ecfa1c4e1ac09901411e258dff3522633ff2fd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/network-policy.yaml",
+        "blob": "795b3d70df4983b7b19e20e931673eed677534e9",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/network-policy.yaml",
+        "workingTreeSha256": "587b61e5952de653d4a24b7878631692be16c24ff44f2851efa82ecc011433f6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "deploy/erasure-root/statefulset.yaml",
+        "blob": "56ed41007cc61a060242aee5a8f64db9d64e7b5a",
+        "source": "/home/administrator/projects/hexalith/platform/deploy/erasure-root/statefulset.yaml",
+        "workingTreeSha256": "a939af06811151ba0a416b73c70d0f719a456924a15b78cc0a3c28136ff0fc7a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "eng/ext-protection-1/probe_dapr_source.py",
+        "blob": "cc6d3ef20297b55410f3560284460b1991801c25",
+        "source": "/home/administrator/projects/hexalith/platform/eng/ext-protection-1/probe_dapr_source.py",
+        "workingTreeSha256": "15d892c099059e1f980e3a31b52fbd5036f8c38daa40dcb0ce935700d3a7a9c4",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "eng/ext-protection-1/probe_erc_native.py",
+        "blob": "5bd9f7b256dcd7cb70d4c22b1a8564da27c51f8e",
+        "source": "/home/administrator/projects/hexalith/platform/eng/ext-protection-1/probe_erc_native.py",
+        "workingTreeSha256": "f6bac775230a640bc1f9f0dc3e2efe24e83a9f7e3ce2dd25651108a613af42fc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "eng/ext-protection-1/test_bootstrap.py",
+        "blob": "5074fb48972675d0088230aadc0adf9d7c76dad2",
+        "source": "/home/administrator/projects/hexalith/platform/eng/ext-protection-1/test_bootstrap.py",
+        "workingTreeSha256": "138b11ef5d09c42f370e64efa6450bcc394ab6ed8ac130494ef64cfc21096cc8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "eng/ext-protection-1/test_probe_erc_native.py",
+        "blob": "de8f91b9f44e41bf4074189a5867edaa3a5dfdb1",
+        "source": "/home/administrator/projects/hexalith/platform/eng/ext-protection-1/test_probe_erc_native.py",
+        "workingTreeSha256": "0bc626342b0adfa1cfad5413811d6d7ecec5599b701023af66e02aa6f1e09c87",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "eng/ext-protection-1/verify_loop4_vector.py",
+        "blob": "9d1b1b47ec67c4dd072fdfacca0a5ad462c55b6a",
+        "source": "/home/administrator/projects/hexalith/platform/eng/ext-protection-1/verify_loop4_vector.py",
+        "workingTreeSha256": "62d7b8cc74edb83ab87b01bc0a3e9fc48c8826a3f1830bac9fad87b0229f5542",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+        "blob": "ac873e066eeba6764e071fca1f56e6a006e26105",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+        "workingTreeSha256": "a185f2693ca5a5a18030fdaaa7f2878a92b045ae515a225dfa879dbe00d1564b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/CustodyKeyWrapCore.cs",
+        "blob": "3c88dfb9cc3734f4cafbe11c65031fb1dc644472",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/CustodyKeyWrapCore.cs",
+        "workingTreeSha256": "b2d439d3d94d1e31ca0b9c46ef39ee9b66e3d78e86a187e22b4c06ef0e9dd5ae",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscriber.cs",
+        "blob": "1c02ee80972d28cc7602545474f27a001e2858f4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscriber.cs",
+        "workingTreeSha256": "92610202db2ac50259d303c0fd4aecb5d0687c2a2d1953f6162352d82f439402",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningActor.cs",
+        "blob": "179a1427bd4b90840a65b8554c0a43a48a8dfb3c",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningActor.cs",
+        "workingTreeSha256": "794a2448336129a9a144d20f673a32666f1fe4ebedb9581afd99a8e92fec62bb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningAvailability.cs",
+        "blob": "129b7905022da4ad462334a66f0bbba1ee92ce31",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningAvailability.cs",
+        "workingTreeSha256": "bce1268b793367c8cc975d42eec07ca0efff23f674c174bbe89c6443135d9d3e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningReadinessRequest.cs",
+        "blob": "cb9c52ad34beffc5f992416a7ffbc1d7da0aa21a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/DeletionCapabilitySigningReadinessRequest.cs",
+        "workingTreeSha256": "5acaecb65654cb865b89c7d176139424cd72c06998a30845c5aa192494902c8b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs",
+        "blob": "36b935d29bff66ba474cd0fc03b9b5546f33447d",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs",
+        "workingTreeSha256": "5971f70d64041f33322f69b24f3d0f7e0f513c3eef8d32371a0d300de634b410",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "blob": "c7dfc8e94a6ad11fead352ea4c934c8df61d6756",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "workingTreeSha256": "62cb63c1db8cba6b095897969154508a158ed160ae8d30086ce693360d0d58a6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityRevocationAuthenticator.cs",
+        "blob": "987d18f325d5416324d19ad377c7cc1bace2e8a7",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/IDeletionCapabilityRevocationAuthenticator.cs",
+        "workingTreeSha256": "206d6359b4e7830a2e636d7105db96d74508f5a7ae2501790cb7bb07a675eba2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningActor.cs",
+        "blob": "c6ba7d5013fe3ab016184d506ae2046cf347a994",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/IDeletionCapabilitySigningActor.cs",
+        "workingTreeSha256": "5f723c826b0902e9f0eeb28ee7802499b9b7dc11b9ce3e73981c5203788d4e25",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningAuthority.cs",
+        "blob": "f1457cf4fa637f725a0273c7df2c545538421e31",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/IDeletionCapabilitySigningAuthority.cs",
+        "workingTreeSha256": "432779440ad4f86e7aef7b0feeae8ad695059ec8f70d285056ef170ea3375db8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningProvider.cs",
+        "blob": "d0beea1b6c074517feddc23f9cf515fd3487dde1",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/IDeletionCapabilitySigningProvider.cs",
+        "workingTreeSha256": "204f33359fe82860909f5e89af96998ac1cf89f7222b2f052797ae6713810a28",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "blob": "1ce9540e39bcdbf056269013a3fb765de281c3c8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "workingTreeSha256": "e24a666fc93a97be74cc028be0b8791df28ade3477515f535e32a669c8ec8029",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.EventStoreHost/Program.cs",
+        "blob": "995c915a9d744467c9a4c1c8b9a535e9d48b4786",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.EventStoreHost/Program.cs",
+        "workingTreeSha256": "c64b6d7f8c3e376d3d5d6e53a8c9593073553b7c163e1a76ee0011bd5110e6f3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+        "workingTreeSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Program.cs",
+        "blob": "bc19e6d6f0d9ebdd38047251914e4485965df340",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Enrollment/Program.cs",
+        "workingTreeSha256": "6c5b2cd94bac959af5f164cfe88b9cb819cd372f944e39f924e63c042e0ef93c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+        "workingTreeSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Program.cs",
+        "blob": "f6642a7311928852bcea108e8f4d824afa84d890",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Executor/Program.cs",
+        "workingTreeSha256": "c6ea0d304ea9a549e330b6858243d8b5a18ba8d749dfe6f77fac82eaa6530504",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+        "blob": "e902acf4c0a3ec57d269b4468ff52a77fbb0d53a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+        "workingTreeSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Program.cs",
+        "blob": "0775651b848fa9141e46f9e912ec27ceff501614",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Observer/Program.cs",
+        "workingTreeSha256": "d7452d34b5298dff0731715c471f9717dc75536e2d3181227569093b22b67475",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+        "blob": "d5a5c2293000f87155470d1c6b77b5bfa30f23e5",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+        "workingTreeSha256": "86112842d370b52d59962fd441ee43cb09e75987d7770b4d90e6d8deed59dc71",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootAuthorization.cs",
+        "blob": "ceb20c3e4a3e6a15e8fe141657ff534b192fa627",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootAuthorization.cs",
+        "workingTreeSha256": "b368f8ee326f4d173b9410cdeb9b42858d5ef2d506584e9303727257f5414935",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootEvidenceJournal.cs",
+        "blob": "9cbea288acc7794435023619f7605671df132f98",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootEvidenceJournal.cs",
+        "workingTreeSha256": "6e9b6f2199925c535de8bbcac8a2610af32205c67c0f2e0081412b23c148b81e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootGovernanceGuard.cs",
+        "blob": "590e5d1d443650dfd23303fccb589696e4d4add8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootGovernanceGuard.cs",
+        "workingTreeSha256": "3827aa27a22313a0574715975192e93477a22f9d0863f56dfdba5d30db3fdfc3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootInventory.cs",
+        "blob": "fe257243522df2031b521c85a128bf9df7d8f60a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootInventory.cs",
+        "workingTreeSha256": "be1ff1523aa3a52a580b8321fe7d2a67aa28bed6a3a5e6ebcd73cd55a97b74f2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootOccurrenceSource.cs",
+        "blob": "1175949dc0738bf5631a9dd5bf3f2eaf25764528",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootOccurrenceSource.cs",
+        "workingTreeSha256": "9cd346740748ae9b8dd961a63d30fc1b8da19f798c34bc487bdeec7ae16fe4bb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DaprErasureRootRevocationEvidence.cs",
+        "blob": "aff36568a7f334ba64fe49cc3b185ced025436be",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DaprErasureRootRevocationEvidence.cs",
+        "workingTreeSha256": "fb00d6296c2a943ee5752d8e22c5650132b838f691544c04e1cdd43b14d406b9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/DeletionSigningAvailabilityComposition.cs",
+        "blob": "22f5d74d49aa3ad49f208fdccbf06ff5403bf911",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/DeletionSigningAvailabilityComposition.cs",
+        "workingTreeSha256": "e5d2cacb2d54c510f4ed179f710bedff192a080942cd0a1acd267cc32b2188e7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+        "blob": "36f9305a37fbeb4e3b35ae589f8d54434b140769",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+        "workingTreeSha256": "fe2060f348e0a115ecb90683fe1ca8e2efa434e43ac6bff99162aa6b1ca211a5",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+        "blob": "1cf2cf7ebf9102ba4a3fa808c5993a70c42870d5",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+        "workingTreeSha256": "091a585b9ac3296f55b834d80c27c4cb27163855738b6c5c87be1f823dc8eb3e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+        "blob": "b6d8577d39a82a9aeb7a177cde9a3637c0466d4e",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+        "workingTreeSha256": "ae38bc8985b91503d0d6e7af73901ab721c274d15d123ecf6777d3b661ed3d61",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+        "blob": "72fe8991dbb54b52bf1fad145dae997a6340fab0",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+        "workingTreeSha256": "d18b3b0eae1834f9b5622c95dd649ac3ed20237ad1fd2c7e5442d21d671ac8d7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+        "blob": "dc6a211c33fe48429770e2b0f7b4410c7bdfe2b7",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+        "workingTreeSha256": "6a7d185ed3b5f5393ce5b5c54ae12fa77052723ba09368aa5dcd6b149fef8ccc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCiphertext.cs",
+        "blob": "1c2fae329fef0257aae9ef445b2a8eee9b358870",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCiphertext.cs",
+        "workingTreeSha256": "2f9c52cee5320eec351f63a1314059c8c085cf04cbaa03651b5f12d86fd0cd04",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionDiagnostics.cs",
+        "blob": "dcdbd6a156a713a356a9a61f58eae773244c86be",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCompletionDiagnostics.cs",
+        "workingTreeSha256": "2d579f6f30096d00b223f5ec62096a41c0b17d0ccff841d0f8739d353bf0aaba",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionLogger.cs",
+        "blob": "b78583cc88a66ce99435fe42b1564ccc9f3b4bd8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCompletionLogger.cs",
+        "workingTreeSha256": "13490c05d2c187b3a71ca7ab0c1adca259d615bcb69a2fc6c1f1685ef091d574",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCompletionReporter.cs",
+        "blob": "afb531940f68dd5680e571afbd374ac87523a660",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCompletionReporter.cs",
+        "workingTreeSha256": "f18b8ca31b4aa26e4dc420b914b67e2afbc6c8431bff12ec767acf74da145de8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.Lifetime.cs",
+        "blob": "9ce69ff11fd5b126924aee97d800d096240c745b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCustody.Lifetime.cs",
+        "workingTreeSha256": "a1257a75e1ed3a2b71aeb0b985ba4fc7dad67e334d5f62bdb18b63509011553b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+        "blob": "7592b4a3a6cf45dcf37599a1fa928af2517b1b47",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+        "workingTreeSha256": "aed7d8c70a1c3804046fcb8e02d438d8393aa7a6b87321679a90481d58ad2e9f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDaprTransport.cs",
+        "blob": "3385d020ddcc8ae1296bc8902994384814ba78d4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootDaprTransport.cs",
+        "workingTreeSha256": "d3e5b26e3fee391fbcc435ec3f0068ced3503a8a972e6420d24639523457a522",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+        "blob": "3c4afdaf4f8269f1491f116d16139e38a7f509db",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+        "workingTreeSha256": "966d795d20624ae3727cce7106f70ba490e38046dc95717efb76f3eab5e02acf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDigestKeyResolver.cs",
+        "blob": "1746df7f22944ba940c4e4a2157b8f183f6d4633",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootDigestKeyResolver.cs",
+        "workingTreeSha256": "1d3767a3d6356f68bc2947c5c9ac2f0e5f0f3cc52f9b3045c8c1c3b87fddf2d3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootDurabilityPolicy.cs",
+        "blob": "7f61f455d8592236231f8e8a7807de0d31af809a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootDurabilityPolicy.cs",
+        "workingTreeSha256": "3c1ae40355995a1f9cd5c0ec29697eab0cbe92fb44d9fea4493c0cf5147adff9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootEffectBoundaryEvidence.cs",
+        "blob": "3e368e6f332c272b7e29401f755700428916ec5d",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootEffectBoundaryEvidence.cs",
+        "workingTreeSha256": "b53f2bf391b64ecd4b1c80486e4b0d73255b55e2006dcf24f8f3d90cebb5d3c7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootErasure.cs",
+        "blob": "c831f4647c8ed387ebacfb353c7bf80155c27780",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootErasure.cs",
+        "workingTreeSha256": "4fa2260c0dde03bc1e5cfa4fe1856e04509384446ac3b7cc625033e4f01189ab",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+        "blob": "cf5482448cbb534a5bca70ff524998fa6b5bebec",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+        "workingTreeSha256": "453fd559e524ec014fa8e7b541aba54acf543ac0ca5661b36a52d1dad116b21a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAttempt.cs",
+        "blob": "62d4357e853d0ccec291a8490a25220b7c640e57",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootGuardAttempt.cs",
+        "workingTreeSha256": "38cdc8b4afcaa388ba23cd88554855afd60c17a636f6addfdc316afdf2108235",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+        "blob": "78963f4d3669002d1665d52ac2b4c185ba79084b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+        "workingTreeSha256": "d7afa9486af92054634f3b24805c7b130e4fa90717d041e6cb8d3d880c4247fc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHeadSnapshot.cs",
+        "blob": "b4a2e5d79b7fdf047f1ff424813391844e067e16",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHeadSnapshot.cs",
+        "workingTreeSha256": "32b6979f9243bb722316e5310fe30548217170c5342da3da02017870a79da606",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderArchive.cs",
+        "blob": "640034cb533f2054566178957f2d7b1e93749907",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHolderArchive.cs",
+        "workingTreeSha256": "064f49f0e7f85151f0d66232f14a313209de7ac3a26086e724c9b11762698f19",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionHealth.cs",
+        "blob": "46fb188ea555f5920e3c5d3e1684078e6987d967",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHolderCompletionHealth.cs",
+        "workingTreeSha256": "91e8eb44530efc16472b1e12e59e960d89614730a20a78913952226c31e0eeb2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+        "blob": "f6944852626c1a197834ec360421eb8c54ccc3f5",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+        "workingTreeSha256": "da21ba4c690eb0313861677c6dcdea6324c33ab85b908de65ad38736f83b4c6b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHolderIdentity.cs",
+        "blob": "bf809e841485796c5c2d6f27b5f91fe29e245fa9",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHolderIdentity.cs",
+        "workingTreeSha256": "00c451babc2e431517825d62fbd9e84ab922729e472d90cd7032fb924fdde806",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+        "blob": "0fce997251a18704e2a5f8b44624b8a99afba591",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+        "workingTreeSha256": "acf03c48ef4e94f704f05a6b047b2d1b9dfa309b300f11f099b625bd6b528b7d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootHostInstallation.cs",
+        "blob": "4366fae3d1f7a93161fcf6b07b9e673eca33ca82",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootHostInstallation.cs",
+        "workingTreeSha256": "2a6af817ca6e5b3fbe590411052f09b28038da969acee798e10241a9cf8cc0fb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootIndexedTransitionArchive.cs",
+        "blob": "23de6695aa5cce18845a1bc3bec520f8d80abdd8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootIndexedTransitionArchive.cs",
+        "workingTreeSha256": "dc8b13064d7120a036763b74329264578a116c1a40ee349593691a97e1204a4b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+        "blob": "d611a598c71926239bfc9c12758e1b10e031db0a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+        "workingTreeSha256": "7ec5274ca2dafe0093e47d80b5b49e418853883e98e73d320d3a43afadeb7b7e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+        "blob": "fc6d2910836352590756bcd25ab94ae5e6c5be40",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+        "workingTreeSha256": "26ea2a32dfed72298bb9ec36d65280068628905eed9e39fa70df0d72f529e36a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+        "blob": "fb4d459aa60f52c09e0e6c76bee7973995a94eb4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+        "workingTreeSha256": "5a43f52bb5c06e0db352f0489dc6be6f417a297191c27d3bd8e1cde9ebaf88ca",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootManifestProvider.cs",
+        "blob": "1dbf0454bf7598080ccf7cd06d3e1fccba13cfd4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootManifestProvider.cs",
+        "workingTreeSha256": "e757d281a0e90620d8073579e3b3e1ac9fceea9ee3947525bfc5ecd7a9b65a2d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeControlsInstallation.cs",
+        "blob": "0a06605dd0c3249cd79ed7d83363b5de64eccb29",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootNativeControlsInstallation.cs",
+        "workingTreeSha256": "a1f93c26331d6eb34cf07b331d0525b9a6b3fe7852ce8f2fd1a42c2599142602",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+        "blob": "9ace4d4f2a498086cc82210eb2a6cf2beccbfe40",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+        "workingTreeSha256": "1ada0fd753f3841ccbbab8d6d02b53d48f4921e57bb205e3c3cbbf3964a6aff6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOperationScope.cs",
+        "blob": "516af6716b0b62ef792d712b7db88750550181bd",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootNativeOperationScope.cs",
+        "workingTreeSha256": "85ebd30fc99d5e107dd3232bd114a46b2eaf4f070c02149fdaabfa4c6d42b460",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootNativePolicy.cs",
+        "blob": "27aaef84196dd5ab4b484e2eec4938247f744dad",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootNativePolicy.cs",
+        "workingTreeSha256": "b53a476e27640a198b4220762f904c8f17e8bfbfb5149f0da3846cb3343815cd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootObservationBatches.cs",
+        "blob": "1b854a2c100b52de28d83194e1f2ef26541ba9b5",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootObservationBatches.cs",
+        "workingTreeSha256": "fd6115811943e697ea70c097b77cb5e7b48b8ece2ac35b030e015f4d8ac73ddd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootObservationSelection.cs",
+        "blob": "19a8da06cd447d0b3e0db4982ee3f87a8e80a4da",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootObservationSelection.cs",
+        "workingTreeSha256": "2688510e4d5055d330f7ca1fe0ad9f90e228b2f2e6cdbce976ab9cb494d17697",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrence.cs",
+        "blob": "fc0cdcc9e64a36d39b45e4209fc79baaf9985cc8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrence.cs",
+        "workingTreeSha256": "04baabf3786c7eb958981962d8ed974a31d944f8086c840c9e8e8394db919368",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+        "blob": "1d5bebd9221cb74c07784b672bb61298ba2e6b3a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+        "workingTreeSha256": "e4e0e95d0b22ce3ede3c61cf582a939361839b40a15f628695ae27f64be730b0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+        "blob": "2691c51965c1912ac11347c11ea06295fd7ae252",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+        "workingTreeSha256": "bdb73646c2de2d05f7cecdc6a2875b31e3baba58fd4b264c02c40f4bc6a6064d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceEnrollment.cs",
+        "blob": "7b095f2a97e6dbeba52a5faf6a401aa6e50dbae2",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceEnrollment.cs",
+        "workingTreeSha256": "a8326e862d4b4eb7151acc88e3ca782e7a4b60c61f96aae69d9504c3569da417",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndex.cs",
+        "blob": "0a207ad980b76598b70be67bd41b57848de951a7",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndex.cs",
+        "workingTreeSha256": "8ab11e041917cd27a4c1d0a52d8425bd85ff7d87df30f6794588ea79d57a1b4f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndexNode.cs",
+        "blob": "3ba01677c512d7b3cc25da4e1a5bd985bdf7ffe2",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceIndexNode.cs",
+        "workingTreeSha256": "33e7ad150838706f605f5cf468ace06cdc9825543d043f9c37df13d917ca50b6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+        "blob": "9161379ab2b035496f98fbf0bf8683f553f8d6d8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+        "workingTreeSha256": "157bde3f15b2e7cc4efdb769186264d82515b55e6b18e3d49d246b375a2e6fcc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceReference.cs",
+        "blob": "2ce67cac804178bc53992f4ff7097f9b04c3dab8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOccurrenceReference.cs",
+        "workingTreeSha256": "7ba9e04f5f8c43039ce663d95f2acef303b2548f4b801223b6c715b5a160e169",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootOperationLease.cs",
+        "blob": "924614fbf2cc3048abe0e34059e07b982f1f1a6b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootOperationLease.cs",
+        "workingTreeSha256": "4c9365e9d350994a3529bc71eb4d664a2e422023c9c831a7ccc1908bd6ba0043",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPermanentLossReceipt.cs",
+        "blob": "c2ce8c2e5e076c308c1f4db273f2975d5dcfa36c",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootPermanentLossReceipt.cs",
+        "workingTreeSha256": "bdeaa5f1026e475a1a2fd6020e2496901b4cbadbb6896181c772f38722811173",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPermissionEvidence.cs",
+        "blob": "d7e8f35bb7ef4ba48abf09f00ea28b848447b69d",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootPermissionEvidence.cs",
+        "workingTreeSha256": "efdf9da5eab64048042f119df5ec1e34832e51f45ce04716e6b5225f253bcd8e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusal.cs",
+        "blob": "51f77cb0d29744f7d66a73e79d5cf4b0301d7f24",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootPinRefusal.cs",
+        "workingTreeSha256": "ca1a4f9336f3bf9befd7d525ef6650183bb87f7222511be30c4d075e19b919c9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusalOriginal.cs",
+        "blob": "8029a3a3827c9f25bd8942ba0529450d82134185",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootPinRefusalOriginal.cs",
+        "workingTreeSha256": "614830f8dd18984011cffd724a7fd5ef3231da3a88ac60189cc03942e5296b6f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+        "blob": "7f080822ca381d03531156c4aaf473b820ab0e46",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+        "workingTreeSha256": "b93f303c927570fa9da897951ca4d9e84a06e51172d9d23a71115b27b19d0df9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootQualificationCallScope.cs",
+        "blob": "e1520fda23c6cac20ae9b17938875ebde118f514",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootQualificationCallScope.cs",
+        "workingTreeSha256": "ac3555b2de73159940f812cdb3a80b29445f8828ae29e7c12f4700a6469d1290",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootQuiescence.cs",
+        "blob": "a90954d9070e21571bcae104d7541ba3ddfbcb25",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootQuiescence.cs",
+        "workingTreeSha256": "080103c477e4e0c36117c53bd5054665789f9790fe71c455373923cc8e619768",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootRecordingRevocationAuthenticator.cs",
+        "blob": "4d3c0629e91c70ae415cebaab052335cc5abce8c",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootRecordingRevocationAuthenticator.cs",
+        "workingTreeSha256": "422157fbf5576a486d375f6e371708ce7c26a15ffc989bde0f0f973a5fb96439",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootRevocationOriginal.cs",
+        "blob": "47e4ab850a15106473e5f4f4102110e4a61761f9",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootRevocationOriginal.cs",
+        "workingTreeSha256": "6099b5a89a3f028cbd4f7e6a94e5d14b53e23fab8b51cd6168aa37c715afb99f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootSourceIndex.cs",
+        "blob": "447f070c7c77f7c4dabc8015edd06459cf53ccbe",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootSourceIndex.cs",
+        "workingTreeSha256": "ebc9b302100d9a885a715eb63cb87bd3a4a09fb5a49adf1f14e47275d37ae578",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootSourceIndexNode.cs",
+        "blob": "55f7702a5ecb5b955cbaf68e398b9bc9859b02b0",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootSourceIndexNode.cs",
+        "workingTreeSha256": "dd2dff318d3ece408ba3643aa11e3bcb38e5cdf3e56138ea12643f0cea887adc",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+        "blob": "27b0d18abbd3b5646d620c527b4143e738ecc322",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+        "workingTreeSha256": "3d62c5808fd234e7744438558c727d0040495b2259a708c8528ed41d5388e144",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTarget.cs",
+        "blob": "e95c15e110c451314977726ad0082e858d9ed5ac",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTarget.cs",
+        "workingTreeSha256": "5b4b86e7905540b52beebf46fb8abfe5cee9291e6c15c2faa3caa42d22fdc590",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthority.cs",
+        "blob": "07eaf26a009ab854bf1d77a5373510a9532f3592",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTenantAuthority.cs",
+        "workingTreeSha256": "bdec0011ff55d89492bcc49624a9351cc73718270c9576915269e1f319c45e07",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthorityBindings.cs",
+        "blob": "0399757bb5ef62155532ec219c134da936ace03a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTenantAuthorityBindings.cs",
+        "workingTreeSha256": "402ce95693233c9e5a680d4451dfb9321ed1dd376449a0e85188390fa7ae6caf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantIdentity.cs",
+        "blob": "06c1c3d1c81606811a7b078d796dc5cfda3bdca8",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTenantIdentity.cs",
+        "workingTreeSha256": "1ee153a2354d087cee20f1e1e9800f7d042bf7cf149ae1c0c3973f213590c566",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTenantLifecycleAuthority.cs",
+        "blob": "62157ee84a4ad72a5a6557de1b7d866b7d4c325b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTenantLifecycleAuthority.cs",
+        "workingTreeSha256": "4d56a0f78476b7ba6c4bf2e3198b7db16ee5066a6047429f760b58f84d4ae117",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionArchive.cs",
+        "blob": "072abb5cd64a3710e56e312fc04cbc306ccc4906",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTransitionArchive.cs",
+        "workingTreeSha256": "39e6ba35cb3658a1ccc70d0cbfb50f61f139463d1690f04c8ca4a9131b18dfd5",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+        "blob": "0eb74d9b729459845deb6660c6a21cbf3a431116",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+        "workingTreeSha256": "282662290f5614905633a08a94fdb6f6a60867954338e6a5884b18444f8bcd8d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionPayloadArchive.cs",
+        "blob": "0589d307768896dd6880357e016d4e08014e0ef1",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootTransitionPayloadArchive.cs",
+        "workingTreeSha256": "9298ae67e383af5945496bc9e876e61bc1c2b0d78084e87b99e7a5732cb053a0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+        "blob": "e4af89c80428aec94fbcaf4eda410c0c5dd62064",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+        "workingTreeSha256": "15d26b4c2acc5febb79fc07a7a6e4808ffc81fb1d2602ee1f8340d01cbd97dc7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootWriterProof.cs",
+        "blob": "9877bade83a1e7061f786cf1ae9a72d77393b222",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootWriterProof.cs",
+        "workingTreeSha256": "fb5bd20ddddfcc968f72dcb79ea4cee43c01a6f008ac729020e063d418a459cf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootWriterReference.cs",
+        "blob": "c2a228dc894ea2d5cd1bad2d3349b22b3d58e612",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ErasureRootWriterReference.cs",
+        "workingTreeSha256": "db57e1049eda52da7cdc2b3562e087b3ad2c49840e53421cd4b225145cd4c672",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+        "blob": "ffabaa4c0383289aa0051313594a1dec30924dfb",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+        "workingTreeSha256": "def037073cc8dc8feca961028ebe43d257c76e695ce1553f2b3634a43552b476",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootAuthorization.cs",
+        "blob": "f0d4186852d9a9da7acbd25c63b913c31059e25f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/IErasureRootAuthorization.cs",
+        "workingTreeSha256": "ad6e3edaafa7b444920cb5c5d58c8536e5bab7b95b62fabe7927407cb2823d6b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootOccurrenceSource.cs",
+        "blob": "26931a81aa76ff0100ced6a65e3d3318f89cfe1b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/IErasureRootOccurrenceSource.cs",
+        "workingTreeSha256": "f883982e1dc8fd0a2dabb8e976af8e468770339cef385e444fe3ef2918882db1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/IErasureRootStore.cs",
+        "blob": "0e458be330e05eb931a37dcfe26eec9f03e0f76c",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/IErasureRootStore.cs",
+        "workingTreeSha256": "2c336f0a2cfe5638557af71102ba32ac55745be23015fa0daaf08dfd5d375854",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+        "blob": "1a50d70a2621f575d3d05f203d8a3f8111550582",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+        "workingTreeSha256": "e1bdec94792664f2e63cb750cfeb6a375618e4624ce072adb00f4180cd4cb033",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/OwnedErasureRootKey.cs",
+        "blob": "2ac6c7db144c07fe18005da613782c9746cb26ca",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/OwnedErasureRootKey.cs",
+        "workingTreeSha256": "ff257acb0491ac361017bbeb43055e97ec75ae9730e4a578f443bf483a445bd6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionPinnedFile.cs",
+        "blob": "ac25a7cf18eaab62792f50dc3a4783de3ed24867",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionPinnedFile.cs",
+        "workingTreeSha256": "cbfb1726557f27d6df2cd8798ed099af88014b4e00007873f83de6cb94677f24",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionCatalog.cs",
+        "blob": "3eb9c5e2edb00e348645a37e813de7d3d3e6bbc1",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationActionCatalog.cs",
+        "workingTreeSha256": "e7ef2557abcc024d937ae3fbc04f230813c09cc1e1e9b6d14a24be240156bd3f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRecipe.cs",
+        "blob": "8f85d2434929f538b136e6fe419f5ef1d3ddb8a5",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationActionRecipe.cs",
+        "workingTreeSha256": "3fc56591ed9159b6ccc975a26b4a7d510deb5c01ad3325a0323408b4e36170c6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs",
+        "blob": "0a59002a65bea9b8ca2f32c98dcba8b920bcd948",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs",
+        "workingTreeSha256": "4a1ab6ff7374bab471c97ba2089279218df30e0fc38f074ba888185bf076f846",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCanonical.cs",
+        "blob": "a72f4bbb66cf9a8d192a67e33e7890e3d97a9e6a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationCanonical.cs",
+        "workingTreeSha256": "50ef388223eef35044a70cadc859946b0dfdadf4e7b0f39d5bf7119dc780cb0d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledErasureRootStore.cs",
+        "blob": "4bd4bab179d3e4139e4f8538b824b21337459fd1",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationControlledErasureRootStore.cs",
+        "workingTreeSha256": "231b77dbd89a87d6edb1b520d7fb51fddf85b188e52a05664222b9164c84d250",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledGuard.cs",
+        "blob": "34c31476cce342dd08c3d501ae4c26c659aff415",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationControlledGuard.cs",
+        "workingTreeSha256": "9004cbe5551977f7d2f10308df8e281c153a6c1abeb7862b913d63dd339af08e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCopyOriginal.cs",
+        "blob": "f14b06c3a8ab2387834a98e726859e4eaa192ed6",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationCopyOriginal.cs",
+        "workingTreeSha256": "bd8103e6926db5d8c3c9942a57535cb166f8e23b8b448116d1436c7fb20f0513",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationEventPayload.cs",
+        "blob": "0f51630eb826643053957b6dcb922ac669610bd1",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationEventPayload.cs",
+        "workingTreeSha256": "89f8c4a9bcf455344d674dce139cb839c4f35325765b3ece9b6c8a164a7afe82",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaultState.cs",
+        "blob": "cdd58f73f1d1cf51e17def1c39af795ae9d1d715",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationFaultState.cs",
+        "workingTreeSha256": "bb0db83fc9ed173181a33020a45eaa7d06f0f6d2a17032b54d20c88dbcd87e9e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaults.cs",
+        "blob": "21cc2f7b094b02b20064b22f03c87bd0f32b5956",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationFaults.cs",
+        "workingTreeSha256": "ca138378097102b15d91b328a932c797909c7d27f31d911418cf054556e67215",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs",
+        "blob": "e6549c99bc25d00221299db637d0b24d1ff72037",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationInputSchema.cs",
+        "workingTreeSha256": "c12c4a9b893a30f1bc16abdcc1b1e12b3bec68bf9aebad8e4b51bade5f897e37",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCall.cs",
+        "blob": "b6be87cc578c6d7477d404092837117b90d41cd4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeCall.cs",
+        "workingTreeSha256": "944623db48047e779e73cd51a3df46842a507e45babcb73764889e0feb583ee3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCallKind.cs",
+        "blob": "63ea57f688556490a958c3c2844cdec507c05481",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeCallKind.cs",
+        "workingTreeSha256": "ba3e0268de1f0b85a69d3864d87f828310d73dd39020512968aa322ea701d295",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCell.cs",
+        "blob": "13a2af59a122347e1a2e1c781bb4787c81f9c568",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeCell.cs",
+        "workingTreeSha256": "e24b5d3f3f8f6f5670287ea6cfc144018c6f6c9ce8837634205b9cb8feacc77c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+        "blob": "cdd03ef627060ccf88055e1e1c627ab2c1a5a73e",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+        "workingTreeSha256": "5bc81414e8978c38a92f8506057297b4e42cde816c8ddd26c4ac4cf48417abbd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeOriginal.cs",
+        "blob": "6e2cceb15972a1c7998c03bbecde3f645cbbbecd",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeOriginal.cs",
+        "workingTreeSha256": "9c2b27f631ccaf4aec18eaef6e1b385b2a5ca2d8ff240858d7d8aef1463c05e1",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeProjection.cs",
+        "blob": "75ef2a5afeec75f22b76ef435fbb51500a8f9399",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeProjection.cs",
+        "workingTreeSha256": "1d677f23e3b5b694b4142da77c744c50898a9e44cfe79975186d959ab733d4fb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeRoot.cs",
+        "blob": "ba27514a17f581348d8df375ec1e1ba2caaa4b50",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeRoot.cs",
+        "workingTreeSha256": "43e8f480a97f62c96c9fe0134bff7d42cad4fe7b93acd25a0ef1eb5bccd6dfbe",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSeal.cs",
+        "blob": "fb9ff28e6d57b47ad174aac308eda402f878ea39",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeSeal.cs",
+        "workingTreeSha256": "b119fb6f2126dd6e008b0101708e987c7a1bc20bb5e24cf4680f3577f443cdd4",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshot.cs",
+        "blob": "ab0a0cc05436a694579b99d59b73a1f9ebf49750",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshot.cs",
+        "workingTreeSha256": "e7d3c249395f5bb263b06a6366900645122b4ca3e0c9f834766e1e1353fbdebe",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshotRead.cs",
+        "blob": "4479cb561777f548682c5a0250d2e30097a740e7",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshotRead.cs",
+        "workingTreeSha256": "36a178c68a8ad5ae39e434311c14fd498ae35ad2e4ec907fff419d24bf38e4f0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationArchiveStore.cs",
+        "blob": "67737b7c280b4ff6393d4214af9b6c8ce57cf286",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationObservationArchiveStore.cs",
+        "workingTreeSha256": "e32a8c0abf580a044bd0dcf55c16e96da6e4a5cdc1e997397a3109f12404dc2c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationField.cs",
+        "blob": "be449b2a7132daa33209027dcc0d0478a6f94865",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationObservationField.cs",
+        "workingTreeSha256": "036b9c79460a8d670d496c6df4f44a54d3cffac2a10a42d66936d5d0f02e3390",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationRecipe.cs",
+        "blob": "a9023510623d42601ba0e6deac206d4f3d842bea",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationObservationRecipe.cs",
+        "workingTreeSha256": "cbd19ddc097bced320266bb27c3a9662a44e001b972133c5afb0f28748b2b323",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermission.cs",
+        "blob": "4248880f0b21b1987f3d84567db81ecee39dfb4a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermission.cs",
+        "workingTreeSha256": "3d39ffee2f0f0e848bc878afff6fc63f4d3e87b9c83bd013394953775e05c9c8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermissions.cs",
+        "blob": "d2b911135c7956946df95f34510d89f239ce74cf",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermissions.cs",
+        "workingTreeSha256": "7734034d02bc8d936dfd853f2f000380bb851dba5dc6d418c7fc633bde5b2815",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperation.cs",
+        "blob": "4c0c6cf630c49528bb00d4c4680f92090f875557",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationOperation.cs",
+        "workingTreeSha256": "bc2bb5cb2dd9223d37d1d44ca596d626f4105b46cb1a7ab106b837f9dc0b7bda",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperationJournal.cs",
+        "blob": "b555cd1f272678f83c3f63f1872be9e3b760f447",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationOperationJournal.cs",
+        "workingTreeSha256": "5976273fa2d1ea3db78264b349b4fd27e9b03256a0257338d59695a80cc5eab2",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedEvent.cs",
+        "blob": "a72e32c0d494624da71e291563d87e9ed0d4444f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationPersistedEvent.cs",
+        "workingTreeSha256": "e47348d9e156492335c6c6b90e328787fc34ef694e1d917a23a825d2c54f65af",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+        "blob": "eaf7ed5945ddca274b51ed56c9a40fbf88b05076",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+        "workingTreeSha256": "537f2a6cc27f797fb1542af688535ea22c6668d797023ba68c43269165075669",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerIdentity.cs",
+        "blob": "2daafb224bf914537d06bb0d2d6750cec56b05e6",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationProducerIdentity.cs",
+        "workingTreeSha256": "aaeecb865cdf89eca7ab5096dd643d6780b83d04e782fccc9e9a81105f02c106",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerOriginal.cs",
+        "blob": "0126ecc84b20226ff807268c7d6efa52e1df00e4",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationProducerOriginal.cs",
+        "workingTreeSha256": "310d963246e657d989565cba92612ed797ccd02d0bf800f65e8a0d15e5eba335",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs",
+        "blob": "e7148c8ebcb1c3d8286aee9bcd41a0f04c5ac1bb",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs",
+        "workingTreeSha256": "19b9183b286bb233fe387c5e13bfe735e82813246824144ba318e628c066d5ca",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleApplication.cs",
+        "blob": "74715a124a259974082beba99fb5f027d6276b6e",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationRoleApplication.cs",
+        "workingTreeSha256": "9a20a3189168b6bfe221f5c862a20816fe3e689b8af0e67e32d17b6fb7a1b45c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleInstallation.cs",
+        "blob": "66cb6a0c9283935034be73a236022f5130994424",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationRoleInstallation.cs",
+        "workingTreeSha256": "cafab931c548a46f94afd4020b6107069b820c074826b25b0e904f83b8705c6b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs",
+        "blob": "c17a23886a6130247af18182e687dd9650fa2da2",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs",
+        "workingTreeSha256": "0c8fc4cf2b352704d32a93233c5ceb9913204ab5a8cd7cb7b730de179a7f17a8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+        "blob": "90ba722ed2ce690f4f27dfb2c6c8c17f925f752f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+        "workingTreeSha256": "0bf513a3c22ca0249b7e33756a7f8669f68604eea64b29b690917c8e30107f0d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSeedOriginal.cs",
+        "blob": "d85a84534cfc5cc13cca07c4d1d6c87c837172e9",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSeedOriginal.cs",
+        "workingTreeSha256": "9c0869db6fa2866724e116ca5ca14f3bb082e3c60c8f40b4bb846675e27c8f25",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs",
+        "blob": "500a36584c8c7497111c0bdde9df49dd02f2f481",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs",
+        "workingTreeSha256": "643c8fcc36ebc2bbdc27a14c22c60ec246aa6358097388e7678c2a11e5dd50a7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerInstallation.cs",
+        "blob": "ae079ba2af69a09183c52eec9d717d08ecb0011c",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationServerInstallation.cs",
+        "workingTreeSha256": "c1347e5cc5296d485277d41f148f299194cfdc5f65e8c6027fad59ead4fdf83d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServiceScope.cs",
+        "blob": "37dd814f1efb20321bddcc04076e4a43e85e034a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationServiceScope.cs",
+        "workingTreeSha256": "1d593ce45ef53b32967e261690d050ab500ad14e9b85496fc3c6e68f3f28dbda",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSigningPreflight.cs",
+        "blob": "5149e89dff407a1536f6690b73541ca17d99154f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSigningPreflight.cs",
+        "workingTreeSha256": "75868cc2dfd04d62a004d4468b94c0934230c414ee35662ed5a5be5346f8a8bd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceCatalog.cs",
+        "blob": "4fffb7ee392ca7ff6e288859e9bbc2ddcc5cbc36",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSourceCatalog.cs",
+        "workingTreeSha256": "45424a058e26a73c115806bae62c3c044671921b2fd91ea0a2e5a8747f0164be",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceProgram.cs",
+        "blob": "96ab7683ae79dde811f3c04be5af2b6622bf0f2d",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSourceProgram.cs",
+        "workingTreeSha256": "87b03f4c4e940443323b5c46fdacd225f5499c3e1f69583b8c7c1f09736b1857",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitution.cs",
+        "blob": "71040a1d7c301c434ab583a42afe3595a287ac6e",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSubstitution.cs",
+        "workingTreeSha256": "5cc6c46f20ac95cc4b2eaf0c7c8ab1375d2b6090cef91fe86d7ebf3dc51cf56d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitutions.cs",
+        "blob": "b6e139a31d67ef97d63cb89936218cca7cfcf89f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/ProtectionQualificationSubstitutions.cs",
+        "workingTreeSha256": "b4b3582e4627f5d31a12db4647add4a62b75d88007c61451daebe3d0facb739c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+        "blob": "da3786bc17a8d5837f12e8e7c599ea2c234fbe2a",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+        "workingTreeSha256": "6e895216261d888a12fe024ccf9fa5ad06557ca841ac821a7658916dc1d2c5d9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/DaprDeletionSigningAvailabilityAuthority.cs",
+        "blob": "625dda20d4631b2263de600286ac66af3a586304",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/DaprDeletionSigningAvailabilityAuthority.cs",
+        "workingTreeSha256": "ccaab26f5b41e630a12675495149ef7e5fbb80f999fcf019a6dfa394571779bb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/DeletionSigningAvailabilityOperationHandler.cs",
+        "blob": "f4f11b99a164691db1a12196f96e5f7364a00b8b",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/DeletionSigningAvailabilityOperationHandler.cs",
+        "workingTreeSha256": "7f7325dd4e61064d4c545c763b1acdcc540a083bdf710f06ea7c2a1f3ea20e3d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityCredential.cs",
+        "blob": "e4d196102278a2624b98118cc9f6f80db275484f",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityCredential.cs",
+        "workingTreeSha256": "c6081b39b4624922e0e52a08f42e6d6bc318253c7a8f5db46510b663d293755c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "src/Hexalith.Platform.Secrets.Runtime/QualificationSigningActorRouter.cs",
+        "blob": "961768fe2af1052d3e1612bc4413085a7d798c42",
+        "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/QualificationSigningActorRouter.cs",
+        "workingTreeSha256": "1b7416273703167eb746ea017e9dfc860e76c746aa4b98b142f7904e2db4388b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAsyncEvidenceDispatchTests.cs",
+        "blob": "e4f9a78ac8b824aede9d15b5cc01a06329ee69b2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootAsyncEvidenceDispatchTests.cs",
+        "workingTreeSha256": "94feb7b5c6082c2d0b6692b83ab061d83cf6af2bed363543979b394dfbc5ffe8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+        "blob": "625b85233e4d91729a290c1ff1ef3b889aade407",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+        "workingTreeSha256": "ef6c654aa4c90ca3f26c8f1ec268b22eaa76fd09bc96be63ae8cd928805280e0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCompositionTests.cs",
+        "blob": "4c7aa0559719846b65c96dd14fa025be6256d809",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootCompositionTests.cs",
+        "workingTreeSha256": "5a85f5e8b2df7ece1c8228a60a5cfbd5848b9f31b9d153ad83829aa00bef87fa",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionFixture.cs",
+        "blob": "7be484d40f7fc9af6180f9efdcea1e953a8a6e42",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionFixture.cs",
+        "workingTreeSha256": "ecf05e010fa724d68844633965692dcc2e6537e861b3eb2755311ffce259e612",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionTests.cs",
+        "blob": "4670627e2978d8578a385b07c60ed09133d42061",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionTests.cs",
+        "workingTreeSha256": "6e40f9834c05352497649a8406fd1f1c19c76b0622af0a3f7f30954a08022563",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+        "blob": "ed8c9a490c4443858efe4a3d7452d98da3f51eaa",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+        "workingTreeSha256": "623d8216b867941b2d32cb1ac5f9c3a40065d3a0e9d883bd1a7ba07e031ec71b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineFixture.cs",
+        "blob": "227469118275a9f117d5a60ce84c4b0201c88165",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineFixture.cs",
+        "workingTreeSha256": "f5615c1e75b379e85bcbe8adf8b7f1e0ebb1ac4899ef5173a3fd9f2b6b10659d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineTests.cs",
+        "blob": "6f97816ccf138519148be4670a5f15cdeac5c37e",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineTests.cs",
+        "workingTreeSha256": "b0198958abf1ae78073fcaaaada12ca43744e8a17f5506ab84d7adefebbc8d6a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs",
+        "blob": "ae313aa884f3c335eb967006cd89d729211534fc",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs",
+        "workingTreeSha256": "7888bd37f0c45c08df6f3fbc1ae41953b844b8b9cd22185909a681ea17187a96",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootIndependentSourceFixture.cs",
+        "blob": "d76bde1db4a70802074099f087b1077d67a305bd",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootIndependentSourceFixture.cs",
+        "workingTreeSha256": "b5167f944022136aff0b9027a885ea1f20222877a62cc18ef8b7d7375cd76601",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs",
+        "blob": "134ca1c015c7d205efbef6c26351b47b5150543b",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs",
+        "workingTreeSha256": "f31cc2efcf0b57382d01730a31f32f72cb225ce18ce81a30c49d22542def51df",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs",
+        "blob": "6a78a2985df4b8d7f58d2b8fef09f88e503b39f3",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs",
+        "workingTreeSha256": "98aac0d3da796aa5bd12d5e84239dcbba527437def6ec36e44afc81ec3e6cc52",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2RegistryGrowthTests.cs",
+        "blob": "7bf40a460c36d6d029b206ab3be5b2c604162167",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2RegistryGrowthTests.cs",
+        "workingTreeSha256": "5a113fda7018bffe3493619566ce7d525b16c6bb461613b769fb869cb89509d5",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotObservationTests.cs",
+        "blob": "a8814a2f01f38e84fd56fffdc93994372bd03e8c",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotObservationTests.cs",
+        "workingTreeSha256": "bd59698e8a03c990132bf9850f7bab5ee11cee582b444836fb4f1db99c7596ab",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotTests.cs",
+        "blob": "62e0d8ba8db899b604453c997690b0a4cb9c38b2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotTests.cs",
+        "workingTreeSha256": "6e99ae6d48b5ba943d65fd71f8748a16ddec8e71605fb11b3c943e2d086bacc3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2TransitionTests.cs",
+        "blob": "f98d52c171dc3d940a0559435d7ccc477f8f9fee",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2TransitionTests.cs",
+        "workingTreeSha256": "84e736465aa5daadf2e093415c94f2bd1d16546bdcef2b4be254625ee499cf24",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2VerifierHolderTests.cs",
+        "blob": "970f73905b5d9378e9ace8c307cd8a912181a15a",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2VerifierHolderTests.cs",
+        "workingTreeSha256": "8ad5d4652137c52d8b1f7b425a0827e5c255bda575de8d8872128e20784293aa",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3PlainReplayTests.cs",
+        "blob": "3cadb826b5d4979ea8599e4ff6423a84b0e4baa9",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3PlainReplayTests.cs",
+        "workingTreeSha256": "d54a367ad0aae2738dae488a0adbbd5d50a8e041aa3f6ce2169cde3c0f123c99",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3ReceivingTests.cs",
+        "blob": "91dfc34d9c2b4dc944288e04bd3bc041b9c229a5",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3ReceivingTests.cs",
+        "workingTreeSha256": "0344eb11c43ae70d6a3fde36aaf4df002396a9cd2dd611a5b38b5ab24112b106",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs",
+        "blob": "f3d3eeb094f6c75a419e8d79db54b2ce2bae8237",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs",
+        "workingTreeSha256": "a45f6f64b87b64ca01a7c7b8818c2aa7914b6d6cbf76893aac4c16e701ff16f0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4CompletionTests.cs",
+        "blob": "eb30b56f0568f3d032dd19034216f97181fc24f0",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4CompletionTests.cs",
+        "workingTreeSha256": "3a1ac41be26eaa98b7c414c57f3bf4f2f66e7aeb6ee11e2811eae6e3d3ec8119",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4SnapshotLossTests.cs",
+        "blob": "40596afb70324e9a1940906cc21ab7a173564dbc",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4SnapshotLossTests.cs",
+        "workingTreeSha256": "055757100ff683d41561de7e2ac5e7fe04c1667c81c44e644f33f1d36942f6bf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4StorageTests.cs",
+        "blob": "69d5c387ce4246c34a48851e6ee079c6d738e0a7",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop4StorageTests.cs",
+        "workingTreeSha256": "d900310c6e2384e7c7b6ddfb73ed53cbc37ed131c24087e1eb1d0a44c39f74cb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5BoundaryTests.cs",
+        "blob": "2e1b096ab9ac8c7b73bac79915a1b33c4901eb50",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5BoundaryTests.cs",
+        "workingTreeSha256": "9fb39b3cfd662979ef4aa29f0cac1386e3a1f3f26635ee59431231b9e7b846c6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5ConfiguredSealTests.cs",
+        "blob": "79a4bde2cbb3026d9f8d25793167621d9d0980c0",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5ConfiguredSealTests.cs",
+        "workingTreeSha256": "fe40a794abd0df3dce9f2e24af1bd17ea3b99ccedf5dfded9216ee5faa2af5eb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5GrowthTests.cs",
+        "blob": "0d745ad046aad18f60677a2722a73e9cdc01a1d2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5GrowthTests.cs",
+        "workingTreeSha256": "721988f53aea7ada4cbf0149969cb7f09d3287021bafe58ce96359529e912010",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5RecoveryTests.cs",
+        "blob": "1b31aedddacbd4b5d84cbdfc140685a4c1c1525b",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop5RecoveryTests.cs",
+        "workingTreeSha256": "56cfd86a63f0fae0c9c0629f42fab714d48eb174fa1dee5b2e4e2d0278bc69cf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6AuthorityTests.cs",
+        "blob": "ed17812eac6c0445dd84dda759adfd54838b424a",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6AuthorityTests.cs",
+        "workingTreeSha256": "9491489734889e6a464d0552871d62f00bccdf4ec50b5f196097bea7e9e43349",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6BoundariesTests.cs",
+        "blob": "f58656fe3bb21bba35b43020c21ad64f0eb5129e",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6BoundariesTests.cs",
+        "workingTreeSha256": "5167d16429c5fd0da4ec1eeb200e2bc461181ef079ae373897ec59c81eb967d9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6DaprIntegrationTests.cs",
+        "blob": "c3622c1086bf746abcf86cacd4c02936641de83c",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6DaprIntegrationTests.cs",
+        "workingTreeSha256": "1f611a73af8b9139a1f5b5d25aee5d9bac631c400d3582e9bba91a94b52b835b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6GrowthTests.cs",
+        "blob": "b35b4dcc605f27d7e931cb2543dfe464ca6e0f2f",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6GrowthTests.cs",
+        "workingTreeSha256": "6a5f4ba1fd77fa808927cf807e9cc012156a894ff9b18687acc39a87b044479e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6ShutdownTests.cs",
+        "blob": "cbdecca38118902af1263c540e1054765c9ffd88",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6ShutdownTests.cs",
+        "workingTreeSha256": "801a1c1812ba8972865eeaab7b5ccf581c8ab125e8713f060287c1b9eda7f23c",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6SnapshotTests.cs",
+        "blob": "202c20919336092ddf561f38806ff4115a129c60",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6SnapshotTests.cs",
+        "workingTreeSha256": "43dd091fbd43f5351beebac23177b9ab871043c9f079b8a5d51ae42640773893",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop7BoundaryTests.cs",
+        "blob": "14d0d3d295ae14168ac8c4d9929196e27664e0a0",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop7BoundaryTests.cs",
+        "workingTreeSha256": "117d4a8724d95a91f62c1b763fc0cc6fdbb9cc51bc6645d63b74df7e43538369",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootMixedSnapshotTests.cs",
+        "blob": "d1eb7f28ec5af423187ae0a84c0f3d26e554ec50",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootMixedSnapshotTests.cs",
+        "workingTreeSha256": "6d71ed8f1b8b708f4ea55446f876806e32e74099d0bf29db568261dd2fba878e",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootObserverPermissionTests.cs",
+        "blob": "f0fea8fa06cbdfc8b6c39e3ca00febdb73311853",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootObserverPermissionTests.cs",
+        "workingTreeSha256": "8c93cbc65b00c9a16b1a91ba954388fcdfa8cfb8fb3ec50b4781ea9695f7de7f",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+        "blob": "871b1509a95abdf18ee0013a4ea0de83320e4933",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+        "workingTreeSha256": "647bc9e1b5a7dcfe311d162fa56651f7bf7170a3f427903e7ebd4f2ce12110d0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootRegistryFixture.cs",
+        "blob": "5f89376e42f26aad2d62e56e5dce4ea40f2e62c2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootRegistryFixture.cs",
+        "workingTreeSha256": "4cfdff7cdeb2b21efdc73d7e1e91937fc0e7f1467ff15414930e98b4f21d97a6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReplacementEvidenceFixture.cs",
+        "blob": "7d6f5435ac6b6d80afea870765a9919bf75dc4f6",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootReplacementEvidenceFixture.cs",
+        "workingTreeSha256": "34116df10fb0a1c46e89ad07a0e32b2431949acbc22fd95c4f0353fd8a7f4cfd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootSourceFixture.cs",
+        "blob": "bc96b689ef193a1a0cda62a6da7fe7593ebeb891",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootSourceFixture.cs",
+        "workingTreeSha256": "94e11657a9ab3a028095055a9c529b1823b847e60d2d4264ff91e4c2f361c359",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+        "blob": "835bf4a3275c551a2cdcf0b801f665469c40b97a",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+        "workingTreeSha256": "857071a73fd0e84d63406fa0d137543653850e3fa308a1a1ecdf22be75b83c29",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransitionAuthorityTests.cs",
+        "blob": "fb9048a3d2e77340b19dd1f926eecce4d3579d17",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootTransitionAuthorityTests.cs",
+        "workingTreeSha256": "e562940a9e689f547ba346e3ed8f68661e82735f1f09724194a967ccb9a2c1b7",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransportHandler.cs",
+        "blob": "5df7416f4fd8d66641b80a290899203a3afa3c35",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootTransportHandler.cs",
+        "workingTreeSha256": "892841ee685f0d12c01b7ebdeaa9d292c6b24f8e07622e0d95c819fa3a631854",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+        "blob": "3e24f34b8e6e84643b00f9cd37dae4bc5c9a5322",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+        "workingTreeSha256": "c365dab69fee79fe3efd54a1019268e618290ab4761bfeef09fcf8602fe91a39",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "blob": "d2d98e4a102904692aa86bc7cbac68014c1dcbde",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "workingTreeSha256": "5021bd0966acb582b7ec3e9ee31f22f5f33a120f7c651034440cbca8c46af733",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs",
+        "blob": "feaa04cfd06276aff92b9db4f02f381d62a13b0a",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs",
+        "workingTreeSha256": "aad86f86877e9831d1c3cabaadbd130ba8c16791c43306fc8e68016dbfec3fdb",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "blob": "45a8080e622e6d55bfdbf1a1cc6ecc309027cbb1",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "workingTreeSha256": "1cecc7b1b0ab67433b72f17b57229ecb9224d6573484c04706cf98c5d9ddf6ba",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+        "blob": "fbd635650fecdc26f19d810f0a756f4c634272c3",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+        "workingTreeSha256": "c41cb1e72d7460dcf5d789ab95f74f97854246812a991ee994bc249dd306185a",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+        "blob": "8cc0dcffecb957281c9abf40bfcf6e92f2c34fe0",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+        "workingTreeSha256": "3fd7f04f145cfa460779c4c5c7c09cf7726a3f4e316b2a6889ef8372b0f1589b",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostHeadAcknowledgement.cs",
+        "blob": "36d72c4473588a28fd0a8597695747571bad66a3",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostHeadAcknowledgement.cs",
+        "workingTreeSha256": "9dc7bd36914632698d28c8202993643b1270268c20eaed74379e86d48dab1ee0",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostRotationAcknowledgement.cs",
+        "blob": "76156f7169b580d941e2e679b8eea776738d4448",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostRotationAcknowledgement.cs",
+        "workingTreeSha256": "8524584f4ec865ec81e202c6e04af43068e03829bd540870ef0ab019bdbaf017",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostTrimAcknowledgement.cs",
+        "blob": "03ac9e50796d859835e1e98395d301710a87618b",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoLostTrimAcknowledgement.cs",
+        "workingTreeSha256": "74a603a32ebb9c519e3652517dd4aaae5e96900c3f50a7ec9ff43b385ddb21cf",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCommandChannel.cs",
+        "blob": "50c578f498793dc93f569da04cefcc45bc08cda2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCommandChannel.cs",
+        "workingTreeSha256": "504e4e06a016d9b944ee045380338200a30de2677072fe314a840ed5f9dc0a84",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+        "blob": "ee4fce8f783193bf23d6df89e52718069c297b43",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+        "workingTreeSha256": "c0a3122c336470f05f5e927051abe7b9ac18d5be1e10ca709945f9c3a2f5c531",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "blob": "aaf747b618cdc85e4d8d28f02708a81f5b4e2eb1",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "workingTreeSha256": "573f1f1b0e32a20601e1ecc302e18f0a3af864f1047ba84b6d1c04fb57ac16f3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationHttpBoundaryTests.cs",
+        "blob": "5d5690ec6218a4c5105d7f334cf1e53da3258d2c",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationHttpBoundaryTests.cs",
+        "workingTreeSha256": "1b016e77aa35211f34eeeae790f8aa9f7288d504d1de532807f6820089985bb8",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs",
+        "blob": "ccc1b57e525492a1a9ade0991ee808f4e20efb47",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs",
+        "workingTreeSha256": "28cc64a391f124d57d2c105bb012ec1031188249862b804457eaff5042f470e6",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs",
+        "blob": "636af59a4a9cdbaebbcefc4dbeb211806a1b5196",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs",
+        "workingTreeSha256": "802c054fa529103c999199bcb04f6bb7670092dbb9e320945f658ed3d200ce2d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs",
+        "blob": "ba7419921cffcbe5b5fd254b59480adda57733c2",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop4EvidenceTests.cs",
+        "workingTreeSha256": "4ef301d957617dbdb9988944c01db5822d73073edc3956f101026cd7468372e5",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7ProxyTests.cs",
+        "blob": "bd68780b3d28c6a3cf34ee5ac67ec4f020547c43",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7ProxyTests.cs",
+        "workingTreeSha256": "a6cab0c24c9bf9ad7f14630099baee9549d3dcd25646f0781579c6e6d58c9b8d",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7RecoveryTests.cs",
+        "blob": "01f3323b29bd54090fabc2a8415e010925d8aa42",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7RecoveryTests.cs",
+        "workingTreeSha256": "c7c2c3d8efe75b83df758a7fce9e10ce332db6ad7032de228c4ee8ac4a7238bd",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7SigningTests.cs",
+        "blob": "59027f413d1de9f685c484f253510cb0258ce474",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop7SigningTests.cs",
+        "workingTreeSha256": "57f734d90555e49e56b97fd47118236bd5cf5abee7a50d70ddfef320d218b6c9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+        "blob": "d9477d75116da7e852ea978eb0b2cd2e0f59f517",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+        "workingTreeSha256": "ef3ff6099341354dbde2c81908f5a99fc2f2767322e7b8f21208ad96248d69a3",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs",
+        "blob": "b126f58f3381b3e79a71f2cde797afdc189780fc",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs",
+        "workingTreeSha256": "b949375a8411df1d3fe4ecd505432167e722ce25eb7486339313955b6ac183de",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationProjectionTests.cs",
+        "blob": "5935a00fcc09dbc668242d8b6526c7be980b5a78",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationProjectionTests.cs",
+        "workingTreeSha256": "0d930e89b20e7781481dbd82da55b266a3f7c174c811592182d8395912ac7513",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRecoveryTests.cs",
+        "blob": "c1685a0a512231175041284460001655e3277477",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRecoveryTests.cs",
+        "workingTreeSha256": "954634c6784b25ff80585e8cc5a6a56e6b5b30d8f5511b96a91566628ef8ef34",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationReplayTests.cs",
+        "blob": "c7b8d00fe0d26a2dd591c2c5bb5da025851da39c",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationReplayTests.cs",
+        "workingTreeSha256": "c4b985a3cb3e9b06f46c9fa2c7e87c8618fa2b827005fe617a0111ac39d952d9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRoleServiceTests.cs",
+        "blob": "0b240129ffc602e0a863e47e99718684f71267c4",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRoleServiceTests.cs",
+        "workingTreeSha256": "7b243630e6ff04ee4c84900b80ecbb5f9c6eb6cc3e607da8648c55669dd081f9",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationSourceTests.cs",
+        "blob": "3a7f4aceb908c51a18a622b0c4d6c6b9a5bf011e",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationSourceTests.cs",
+        "workingTreeSha256": "d71fde53892a5d7c91e6c55a89e89b06c300c3831a7a3042fbd565c8dd0bd763",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Protection.Tests/StalledErasureRootBody.cs",
+        "blob": "d49934e4e95ef9ae0426a617d8513f0a911fbf9b",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/StalledErasureRootBody.cs",
+        "workingTreeSha256": "beed25d26ca66daa402d881aecdc32733b6dd98e64839c872a1e92cd72fd1b35",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs",
+        "blob": "0a6e30ede13bb933517d7e1ab94fae17f24f2c28",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs",
+        "workingTreeSha256": "cff700acf794a5fcae870646959f5a1da4e3b31ac970bb00369bc436fa1da293",
+        "sharedWorkingTreeMatches": true
+      },
+      {
+        "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs",
+        "blob": "a1ecbcaffda65ee453fc9acb7d2509b58f53577d",
+        "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs",
+        "workingTreeSha256": "b26bf878f7edbfc2586b3667b0ec9cba61a11a0d828a875646366bc1690091ab",
+        "sharedWorkingTreeMatches": true
+      }
+    ],
+    "published": false,
+    "candidateUsesPreservedSharedHost": true
+  }
+}

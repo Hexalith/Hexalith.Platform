@@ -1,0 +1,440 @@
+{
+  "schema": "platform.story-5.4.metadata-reconciliation-provenance.v1",
+  "recordedAtUtc": "2026-10-29T18:04:08.085403+00:00",
+  "scope": "Offline public evidence reconciliation only; no runtime source adoption or invocation",
+  "originalDocuments": [
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+      "archivedAt": "prior-owner-decisions.json",
+      "sha256": "c82c38e0b2363f561dc8ae22119aebb7a3dff7c240a8c5c3934f3b8bbeb2dec2"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/README.md",
+      "archivedAt": "prior-README.md",
+      "sha256": "94e068238ff3dc14557e1679458d8d5116a76653d95864927d68d3c0e9709875"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md",
+      "archivedAt": "prior-spec.md",
+      "sha256": "a4802d298524bf672c4c496cd6cc227bdf7f1d8c47e3ef9f3d1df69afad34ced"
+    }
+  ],
+  "publicSourceCopies": [
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/HANDOFF.md",
+      "archivedAt": "correction/HANDOFF.md",
+      "sha256": "0953c7020d586c608f2c3029712222a096090558ebdcd803d8c92568905a3466"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/evidence-manifest.json",
+      "archivedAt": "correction/evidence-manifest.json",
+      "sha256": "a3f6756a4271b2cef90a2f450f08ad6582d237c10157f00106c5ac8c16078379"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/verification.json",
+      "archivedAt": "correction/verification.json",
+      "sha256": "4625d9f92f4703b0bc169195295ca10daf5edbefc6f44ef10c5cad83e6970427"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return-required.json",
+      "archivedAt": "correction/owner-return-required.json",
+      "sha256": "3f0721391d5edf4341cb612adce68ecc3c5e158a246865db95c8a052d8b042b0"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-metadata-credential.template.json",
+      "archivedAt": "correction/owner-metadata-credential.template.json",
+      "sha256": "3c48b3f341257caddbe1ec2c7364a912b97a2be480dbb42d34f2f30924b3b788"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/preservation-decision.template.json",
+      "archivedAt": "correction/preservation-decision.template.json",
+      "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/commands.json",
+      "archivedAt": "correction/commands.json",
+      "sha256": "513feeec04869fe42911dab00e4101bb9474216230c4fac7a8ccc55807dd317e"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/test-commands.json",
+      "archivedAt": "correction/test-commands.json",
+      "sha256": "7386cf5597e735131db4e52b49c434a9c358a8008d752cb9245875cbac2ec821"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+      "archivedAt": "provider-resume/HANDOFF.md",
+      "sha256": "dccde6629842f66eeac1fb5eecb093a06a3889ae5074b937058be5179c8605b9"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/evidence-manifest.json",
+      "archivedAt": "provider-resume/evidence-manifest.json",
+      "sha256": "def0e07ad365d1f169610642f54ff000ae4f91712c257720599accd98db530ce"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/verification.json",
+      "archivedAt": "provider-resume/verification.json",
+      "sha256": "1bc35807d252e1fad29de0c66adef28b27c715860041f7872892488f1239a8ed"
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-return-required.json",
+      "archivedAt": "provider-resume/owner-return-required.json",
+      "sha256": "c0bb47fbc04fd640a72a4ada5866214f6f018dfe95b2a13ed6018050d6f56db3"
+    }
+  ],
+  "sourceManifests": [
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/evidence-manifest.json",
+      "sha256": "a3f6756a4271b2cef90a2f450f08ad6582d237c10157f00106c5ac8c16078379",
+      "filesVerified": 17
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+      "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31",
+      "filesVerified": 128
+    },
+    {
+      "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/evidence-manifest.json",
+      "sha256": "def0e07ad365d1f169610642f54ff000ae4f91712c257720599accd98db530ce",
+      "filesVerified": 141
+    }
+  ],
+  "preservedEvidence": [
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/deployment-preflight.json",
+      "sha256": "36f0b4862233365128fdc93539fac4bb00f2d10cf9fa07aa3c47752a5c353192"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/filesystem-access-observation.json",
+      "sha256": "643e797050ea9f54de1e22591a90eb138540afafa4ef10d5bf8f2e29e875536d"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json",
+      "sha256": "9cf7ee66f0f1a045bd67c0f645faf262140b8ba8c4594193789e00ea17ef3e2b"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/observed-dapr-transport-ca.pem",
+      "sha256": "32241a03538035dcd13b3c0d848465ccb52b8cb45bb9961354f35ab39ccd4626"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json",
+      "sha256": "bfa855853fbca479e7b3f3724a8424fac38480f4295153dd52231d0e206ea207"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stderr.txt",
+      "sha256": "a3a32c85cca8aba76305a0e440e65fc5cb7c9a410a5891065286718a12904772"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/owner-decisions.validation-observation.json",
+      "sha256": "feeadd3ab765940cefe77557f0c9dbbf103adfed456e2263e7bf65abbb1b1224"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-README.md",
+      "sha256": "c54a72c50f858714700d0ecb623d81dcc53a1f3b00693a6a62ff8feeb86e7737"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-owner-decisions.json",
+      "sha256": "6d6bf9359916a11b0bdc19224a17b22089f18d410adba4398a41917af0859495"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-spec-5-4-complete-coupled-secrets-host-delivery.md",
+      "sha256": "0e473a4c1e10c1eb26c2602b58f991be5bbd04f72aaa5ece4b333593ed03b494"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/review.json",
+      "sha256": "3bf36c42c3c240d90c1b38a2897aa92d5b5c0697fa9393cdd01aa47d19f89a84"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/verification.json",
+      "sha256": "0f8c5c7e4937d658f6afb78fb3aa08e4dc7e28589569f8dfeec486a277fc5ead"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/owner-decisions.before-ext-parties-1-handoff-2026-10-29.json",
+      "sha256": "fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/preservation-observation.json",
+      "sha256": "e5b0e5c5c7b762c30f8525401e2f40c9cc28841db301b827745d2c698005445a"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/source-and-enrollment-observation.json",
+      "sha256": "1cbe77862a22f06eddb3c80557fc1f473f62846ced59925a4d3e386cb7af35ca"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/SHA256SUMS.original",
+      "sha256": "65a2a5df251f622c1f46568715b619c1b911fe4772304ba77620b64ceef398fd"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/SPEC.md.original",
+      "sha256": "c5b2378dedc651599d6951b9310842efa7832b1538bd5a5da5fa0eec86e18df4"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/installation-commands.md.original",
+      "sha256": "553e312e27f6cc097ad455eea54b6f2085e3b92f65e32046343b8024f14386e7"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/installation-decision.md.original",
+      "sha256": "d13bdd7baff7da72dc7aa3b0708df4eb6f2f8ce254a1f45d2c62ed63840f0c12"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/legacy-draft.md.original",
+      "sha256": "e40a37d4aeae13c9a11f3f1998a8ba321cf4b4eb5767b7dbeb8d034fbb361960"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/owner-decisions.json.original",
+      "sha256": "de3d9117d772991366f9593e642412674dbda50ed37cd39d562ac6c314e58094"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/snapshot-index.json",
+      "sha256": "b7adc6c06495e89bb1e67c94e0adc4998f8c6afca014355a7cfdb53ea9ad4fa5"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/verification.json.original",
+      "sha256": "f3dee50109d4870996c41972c82b3771dc37ae2aecf4d5fa184db8b7139bfc16"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/transport-trust-observation.json",
+      "sha256": "f3da421e624f75864b3648edc017bfc820d3d4b250dcf5c932db7fb199067d47"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/verification-mvp-no-aws.json",
+      "sha256": "74a44a59ef609d7b5f88feadb3e89d8f72be9eb8662c777ed873c3629e166804"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/verification.json",
+      "sha256": "f3dee50109d4870996c41972c82b3771dc37ae2aecf4d5fa184db8b7139bfc16"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/acceptance-inputs.json",
+      "sha256": "05f58528e475911dda556dbd23593b5fc671ccb1235d5ac1db8ee10a1cca0c7a"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/accepted-scope-snapshot.md",
+      "sha256": "1885f1c1bf99454d6d23475ec88560ad659fdec5c470971165005a5c420f9d3c"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
+      "sha256": "09d7efb3b80b8dba6757b7cc9660de9569b4bcda759dc86831bb522dcfedec45"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.clean.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.clean.stdout.json",
+      "sha256": "c40f2a8bab6b26dd19b9b69fcf8f21f7dfb1f85c936b94a6e7c1389da2c5c4f6"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.stderr.log",
+      "sha256": "a51d69b62a93a0f5763853b668cdd6900671338f5e4aad7a7806147672a09f98"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.stdout.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.clean.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.clean.stdout.json",
+      "sha256": "f5ae05b1497898f078a59dee0c72c8e043a554e4fdf6d4410cc3d6e21913b482"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.stdout.json",
+      "sha256": "ebde02b66b7eac5bb24cff9dc8176738439e2d37792eb18e4efaf090c521d17d"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stdout.json",
+      "sha256": "c40f2a8bab6b26dd19b9b69fcf8f21f7dfb1f85c936b94a6e7c1389da2c5c4f6"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stdout.json",
+      "sha256": "f5ae05b1497898f078a59dee0c72c8e043a554e4fdf6d4410cc3d6e21913b482"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-inputs-invocations.json",
+      "sha256": "ab94edf0b9a12fd2c29dff9aa0550ddaae058728430f908715b42296cdfb964b"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/clean-invocations.json",
+      "sha256": "94179c716f2b44ed8a67bbe3725da21e43245a94a6faf5813b35ef6a0753ece6"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/host-blocked-inputs.json",
+      "sha256": "da1f35dde383de70d30a303799d53fa303718cd62725345da306d8552b4c6ef0"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/initial-secrets-blocked-inputs.json",
+      "sha256": "bcb13255013af597ff5987afb8b26628a556e5c532b87f63162ff8cdee92deba"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/invocations.json",
+      "sha256": "0387cf14411fcf006cf6b2a6f262997434c9208b7246ee777e842802e7cf776c"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/secrets-blocked-inputs.json",
+      "sha256": "6d5ad76dc5dbe445b6f454960ac0a83a99c3ca5b6c444644ad5b9acfaf49d94e"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/SHA256SUMS",
+      "sha256": "d11c23d95a07071274aa487876d3e98022503769aab4f4d6c316e256e8700020"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/installation-commands.md",
+      "sha256": "a3189aeb0e0526f5465dfc84f660b2dd82bf43f7301cd3acfe7063ee193cfe9b"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/installation-decision.md",
+      "sha256": "c3b5d8f7808b9165f4fe2d723234b820614d66a288f2ea1343452e07b5bb8629"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/owner-decisions.json",
+      "sha256": "e03c6eb00bc59cdfd6ad83c9801c5c7adb8eb1f176e912ebc0a3c0f6b4d8a17d"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/provenance.json",
+      "sha256": "ca38bc8f7d4d42f30907d362b60c49640c3770cecafe7245c74737c3c95ed581"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verification.before-review.json",
+      "sha256": "d0d17946377e7bcabbdc40629ba7864b8052876676057be3c9234aa88ed22be2"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verification.json",
+      "sha256": "b2f39c90600ae052424510e7af19a066ca5bf4fc60f8a6e418c5a199c458cdf4"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
+      "sha256": "6b6f4db20149039e5df2d5d9837866d4f8ecb642b2a7d9b72071172e6e701b0e"
+    }
+  ],
+  "authoritativeContext": [
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "sha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+      "sha256": "50823c6a105d659eac99f103cc4bfe749bd80e49d999fbd001b7b382371dcecf"
+    }
+  ],
+  "stagedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sourceDiscovery": {
+    "method": "Bounded public filename discovery and targeted retained-document reads; no credential stores or snapshot contents searched",
+    "roots": [
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1",
+      "/home/administrator/hexalith-recovery-evidence",
+      "/home/administrator/hexalith-evidence",
+      "/home/administrator/hexalith-management-evidence",
+      "/home/administrator/hexalith-admin-exposure-evidence",
+      "/home/administrator/evidence",
+      "/home/administrator/projects/hexalith/memories/docs",
+      "/home/administrator/projects/hexalith/memories/_bmad-output",
+      "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts"
+    ],
+    "matchingReturnFiles": [
+      "expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+      "metadata-transport-correction-20261029-f7Z2ajmP/preservation-decision.template.json",
+      "provider-inventory-resume-20261029T175713722948Z/preservation-decision.template.json"
+    ],
+    "actualMetadataOrPreservationReturnFound": false,
+    "newBackupIdentityReplayOrSpoolOwnerReturnFound": false,
+    "detailsRecordedFrom": "Retained session tool-call arguments and output; the historical search was not rerun for this correction.",
+    "workingDirectory": "/home/administrator/projects/hexalith/platform",
+    "filenameCommandArgv": [
+      "rg",
+      "--files",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1",
+      "/home/administrator/hexalith-recovery-evidence",
+      "/home/administrator/hexalith-evidence",
+      "/home/administrator/hexalith-management-evidence",
+      "/home/administrator/hexalith-admin-exposure-evidence",
+      "/home/administrator/evidence",
+      "../memories/docs",
+      "../memories/_bmad-output",
+      "../agents/_bmad-output/planning-artifacts"
+    ],
+    "filterCommandArgv": [
+      "rg",
+      "(^|/)(owner-return|[^/]*(preservation-decision|metadata-credential-reference|backup.*owner.return|restore.*owner.return|identity.*owner.return|replay.*owner.return|spool.*owner.return)[^/]*)($|/)"
+    ],
+    "pipeline": "filenameCommandArgv stdout was piped to filterCommandArgv; no shell command or source discovery was rerun.",
+    "historicalPipelineExitCode": 0,
+    "perStageExitCodesRetained": false,
+    "searchObservedAtUtc": null,
+    "exactSearchTimestampRetained": false,
+    "resultArchiveRecordedAtUtc": "2026-10-29T18:04:08.085403+00:00",
+    "bounds": {
+      "roots": [
+        "/home/administrator/hexalith-secrets-evidence/ext-secrets-1",
+        "/home/administrator/hexalith-recovery-evidence",
+        "/home/administrator/hexalith-evidence",
+        "/home/administrator/hexalith-management-evidence",
+        "/home/administrator/hexalith-admin-exposure-evidence",
+        "/home/administrator/evidence",
+        "/home/administrator/projects/hexalith/memories/docs",
+        "/home/administrator/projects/hexalith/memories/_bmad-output",
+        "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts"
+      ],
+      "depthLimit": null,
+      "dateFilter": null,
+      "selection": "Recursive rg --files discovery within the named roots, followed only by the exact filename filter above",
+      "broadContentSearchPerformed": false,
+      "returnedPaths": 3
+    },
+    "accessLimitations": [
+      "Default rg hidden/ignore exclusions apply; symlink targets were not followed.",
+      "Credential stores, private key values and backup/snapshot contents were not searched.",
+      "No exhaustive accessibility inventory or exact per-stage timing/status record was retained.",
+      "Other names, ignored/hidden/inaccessible paths, external archives and later concurrent evidence are outside the negative finding."
+    ],
+    "conclusionScope": "The retained filename-filter output lists three preservation templates. The missing observation timestamp and access limits prevent a reproducible broad absence claim. Repeatable absence verification is limited to the four exact pinned metadata/preservation return paths below; backup, identity, replay and spool fields remain pending without asserting that every possible source was searched.",
+    "pinnedReturnPaths": [
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/metadata-credential-reference.json",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/preservation-decision.json",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-return/metadata-credential-reference.json",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-return/preservation-decision.json"
+    ],
+    "clarificationRecordedAtUtc": "2026-10-29T18:18:22.508981+00:00"
+  },
+  "legacyVerifier": {
+    "argv": [
+      "python3",
+      "-B",
+      "docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py"
+    ],
+    "exitCode": 1,
+    "classification": "Historical checker retains its superseded recovery-plan-null expectation. Refusal is preserved; no dated verifier/report/provenance was modified.",
+    "stdout": {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/legacy-verifier.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/legacy-verifier.stderr.txt",
+      "sha256": "a3a32c85cca8aba76305a0e440e65fc5cb7c9a410a5891065286718a12904772"
+    }
+  },
+  "stagedDiffObservation": {
+    "classification": "Historical index observation at initial archive creation; staging documentation is not an artifact-verification failure",
+    "archiveRecordedAtUtc": "2026-10-29T18:04:08.085403+00:00",
+    "digestField": "stagedDiffSha256",
+    "comparedWithCurrentIndexOnRepeatVerification": false
+  }
+}

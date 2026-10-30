@@ -10,23 +10,50 @@ using System.Text.RegularExpressions;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Native OpenBao 2.6.2 transit and KV v2 CAS transport for the dedicated A1 installation. Contains no provisioning, snapshot, export or automatic mutation retry.</summary>
-public sealed class OpenBaoErasureRootStore : IErasureRootStore
+public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
 {
     private const int MaximumResponseBytes = 32 * 1024 * 1024;
+    internal const int MaximumHeadBytes = 30 * 1024 * 1024;
     private readonly HttpClient _http;
     private readonly ErasureRootInstallation _installation;
     private readonly string _credentialEnvironmentVariable;
+    private readonly bool _ownsHttp;
 
-    /// <summary>Creates an enrolled native transport. Cleartext transport is accepted only for explicitly requested loopback disposable tests.</summary>
+    /// <summary>Creates an owned native transport with redirects and proxies disabled before any credential-bearing request.</summary>
+    /// <param name="endpoint">Exact dedicated HTTPS installation endpoint.</param>
+    /// <param name="installation">Installed reference-only configuration.</param>
+    /// <param name="credentialReference">Dedicated native environment reference, never its value.</param>
+    /// <param name="operationTimeout">Bounded complete request and body deadline.</param>
+    public OpenBaoErasureRootStore(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? operationTimeout = null)
+        : this(CreateClient(endpoint, operationTimeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, ownsHttp: true)
+    { }
+
+    private static HttpClient CreateClient(Uri endpoint, TimeSpan timeout)
+    {
+        if (endpoint is null || !endpoint.IsAbsoluteUri || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30))
+        { throw new ArgumentException("Exact bounded native endpoint required."); }
+        return new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false }) { BaseAddress = endpoint, Timeout = timeout };
+    }
+
+    internal static OpenBaoErasureRootStore CreateDisposableLoopback(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? timeout = null)
+        => new(CreateClient(endpoint, timeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, allowDisposableLoopback: true, ownsHttp: true);
+
+    /// <summary>Explicit internal transport seam for synthetic or owned disposable native handlers.</summary>
     /// <param name="http">Dedicated client with a bounded timeout and fixed base address.</param>
     /// <param name="installation">Installed reference-only configuration.</param>
     /// <param name="credentialReference">Environment reference of the dedicated native credential, never its value.</param>
     /// <param name="allowDisposableLoopback">Allows HTTP only at a loopback address for disposable component integration.</param>
-    public OpenBaoErasureRootStore(HttpClient http, ErasureRootInstallation installation, string credentialReference,
-        bool allowDisposableLoopback = false)
+    /// <param name="ownsHttp">Disposes a controlled owned client, including validation failure.</param>
+    internal OpenBaoErasureRootStore(HttpClient http, ErasureRootInstallation installation, string credentialReference,
+        bool allowDisposableLoopback = false, bool ownsHttp = false)
     {
+        try
+        {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentNullException.ThrowIfNull(installation);
+        if (!Regex.IsMatch(installation.StoreId ?? "", "\\A[A-Za-z0-9][A-Za-z0-9._-]{0,255}\\z", RegexOptions.CultureInvariant)
+            || !Regex.IsMatch(installation.EnrollmentId ?? "", "\\A[A-Za-z0-9][A-Za-z0-9._-]{0,255}\\z", RegexOptions.CultureInvariant))
+        { throw new ArgumentException("Canonical bounded store and enrollment identities required."); }
         if (http.BaseAddress is not { } address || !string.IsNullOrEmpty(address.UserInfo)
             || !string.IsNullOrEmpty(address.Query) || !string.IsNullOrEmpty(address.Fragment)
             || address.AbsolutePath != "/" || address.Scheme != "https" && !(allowDisposableLoopback && address.Scheme == "http" && address.IsLoopback)
@@ -40,7 +67,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         Segment(installation.TransitMount);
         foreach (var entry in installation.NativeKeys)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(entry.Key);
+            ErasureRootTenantIdentity.Validate(entry.Key);
             Segment(entry.Value);
         }
         if (installation.NativeKeys.Values.Distinct(StringComparer.Ordinal).Count() != installation.NativeKeys.Count)
@@ -50,7 +77,13 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         _http = http;
         _installation = installation;
         _credentialEnvironmentVariable = credentialReference[4..];
+        _ownsHttp = ownsHttp;
+        }
+        catch { if (ownsHttp) { http?.Dispose(); } throw; }
     }
+
+    /// <inheritdoc />
+    public void Dispose() { if (_ownsHttp) { _http.Dispose(); } }
 
     /// <inheritdoc />
     public async Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)
@@ -73,7 +106,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
     public async Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken)
     {
         Key(tenantId);
-        if (version <= 0 || head.Length is <= 0 or > MaximumResponseBytes) { throw new ArgumentException("Existing bounded head required."); }
+        if (version <= 0 || head.Length is <= 0 or > MaximumHeadBytes) { throw new ArgumentException("Existing bounded head required."); }
         using var document = JsonDocument.Parse(head);
         byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { options = new { cas = version }, data = document.RootElement });
         try
@@ -86,6 +119,53 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         finally { CryptographicOperations.ZeroMemory(body); }
     }
 
+    /// <inheritdoc />
+    public async Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken cancellationToken)
+    {
+        byte[]? bytes = await SendAsync(HttpMethod.Get, ArchivePath(tenantId, archiveId), null, true, cancellationToken).ConfigureAwait(false);
+        if (bytes is null) { return null; }
+        try
+        {
+            using var document = JsonDocument.Parse(bytes);
+            var data = document.RootElement.GetProperty("data");
+            if (data.GetProperty("metadata").GetProperty("version").GetInt64() != 1) { throw new InvalidOperationException("Immutable ERC archive version required."); }
+            return data.GetProperty("data").GetProperty("bytes").GetBytesFromBase64();
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
+    /// <inheritdoc />
+    public async Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken)
+    {
+        if (bytes.Length is <= 0 or > 12 * 1024 * 1024) { throw new ArgumentException("Bounded immutable archive required."); }
+        byte[]? original = await ReadArchiveAsync(tenantId, archiveId, cancellationToken).ConfigureAwait(false);
+        if (original is not null) { return original.AsSpan().SequenceEqual(bytes); }
+        byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { options = new { cas = 0 }, data = new { bytes = Convert.ToBase64String(bytes) } });
+        byte[]? response = await SendAsync(HttpMethod.Post, ArchivePath(tenantId, archiveId), body, false, cancellationToken, true).ConfigureAwait(false);
+        if (response is not null) { return true; }
+        original = await ReadArchiveAsync(tenantId, archiveId, cancellationToken).ConfigureAwait(false);
+        return original is not null && original.AsSpan().SequenceEqual(bytes);
+    }
+    private string ArchivePath(string tenant, string archiveId)
+    {
+        Key(tenant);
+        if (archiveId is not { Length: 64 } || archiveId.Any(value => !char.IsAsciiHexDigit(value))) { throw new ArgumentException("Exact archive identity required."); }
+        return "v1/" + _installation.HeadMount + "/data/archives/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(tenant))) + "/" + archiveId;
+    }
+
+    /// <inheritdoc />
+    public async Task<ErasureRootNativePolicy> ReadPolicyAsync(string tenantId, CancellationToken cancellationToken)
+    {
+        byte[] bytes = (await SendAsync(HttpMethod.Get, "v1/" + _installation.TransitMount + "/keys/" + Key(tenantId), null, false, cancellationToken).ConfigureAwait(false))!;
+        try
+        {
+            using var document = JsonDocument.Parse(bytes); var data = document.RootElement.GetProperty("data");
+            return new(data.GetProperty("latest_version").GetInt32(), data.GetProperty("min_encryption_version").GetInt32(),
+                data.GetProperty("min_decryption_version").GetInt32(), data.GetProperty("min_available_version").GetInt32(),
+                data.GetProperty("derived").GetBoolean(), data.GetProperty("exportable").GetBoolean(),
+                data.GetProperty("allow_plaintext_backup").GetBoolean(), data.GetProperty("deletion_allowed").GetBoolean());
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
     /// <inheritdoc />
     public async Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken)
     {
@@ -228,6 +308,9 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
 
     private async Task<byte[]?> SendAsync(HttpMethod method, string path, byte[]? body, bool allowMissing, CancellationToken token, bool allowCasConflict = false)
     {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        deadline.CancelAfter(_http.Timeout);
+        token = deadline.Token;
         string? credential = Environment.GetEnvironmentVariable(_credentialEnvironmentVariable);
         if (string.IsNullOrWhiteSpace(credential)) { throw new InvalidOperationException("DependencyNotAvailable: ERC credential reference."); }
         using var request = new HttpRequestMessage(method, path);

@@ -1,0 +1,238 @@
+{
+  "schema": "hexalith.g4-readiness-progress.v1",
+  "runId": "c10db490feb3719eae0326eadee39204",
+  "resources": [
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "parties",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:29351"
+        }
+      ],
+      "observedAt": "2026-10-30T12:11:46.7638511+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "eventstore",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7639117+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7639282+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7639383+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Starting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.763949+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "eventstore",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7639655+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7639913+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7640147+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.764034+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7640487+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7640661+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7640812+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-domain-service",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7641004+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-domain-service-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7641143+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-graph",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Starting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7641326+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-vectors",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "moduleId": "memories",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:19066"
+        }
+      ],
+      "observedAt": "2026-10-30T12:11:46.7641573+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7641758+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7641985+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7642169+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7642359+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7642514+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:11:46.7642679+00:00",
+      "processId": null
+    }
+  ]
+}

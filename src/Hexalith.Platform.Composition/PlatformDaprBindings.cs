@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Manifest;
+using Hexalith.EventStore.Contracts.Routing;
 using YamlDotNet.RepresentationModel;
 
 /// <summary>Resolves the shared Dapr capability graph before resources exist.</summary>
@@ -111,12 +112,32 @@ public sealed class PlatformDaprBindings
     /// <summary>Checks whether an app consumes a component.</summary>
     internal bool Consumes(string name, string appId) => _components.TryGetValue(name, out var binding) && binding.Consumers.Contains(appId);
 
+    /// <summary>Adds an environment-specific catalog authority scoped only to its independently observing hosts.</summary>
+    internal void BindRoutingCatalog(string name, IReadOnlyCollection<string> appIds)
+    {
+        _components.Add(name, ("state", "live-authority-only", "routing-catalog.yaml", new(appIds, StringComparer.Ordinal)));
+    }
+
+    /// <summary>Returns callers from the independently loaded owner transport declarations.</summary>
+    internal IReadOnlyList<string> DeclaredCallers(string appId) => _rules[appId].Select(rule => rule.Caller).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+
+    /// <summary>Returns the effective grants rendered from the existing owner declarations, before any catalog binding.</summary>
+    internal IReadOnlyList<RouteCatalogDeclaredInvocation> DeclaredInvocations(string appId) => AccessControl(appId, "default", "public")
+        .GetProperty("policies").EnumerateArray().SelectMany(policy => policy.GetProperty("operations").EnumerateArray()
+            .Select(operation => new RouteCatalogDeclaredInvocation(policy.GetProperty("appId").GetString()!, operation.GetProperty("name").GetString()!,
+                operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()!).ToArray()))).ToArray();
+
     /// <summary>Renders all components, receiver configurations and explicit subscriptions in memory.</summary>
     internal IReadOnlyDictionary<string, string> Render(string directory, int redisPort, int telemetryPort, string secretsPath, string? discovery, string? sentryAddress = null)
     {
         Dictionary<string, string> files = new(StringComparer.Ordinal);
         foreach (var (name, binding) in _components.Where(pair => pair.Value.Consumers.Count > 0))
         {
+            if (binding.Template == "routing-catalog.yaml")
+            {
+                files.Add(binding.Template, PlatformRoutingCatalogComponentRenderer.Render(name, binding.Consumers, redisPort));
+                continue;
+            }
             if (_retentionProfile is not null && name == Name("state", "telemetry-state"))
             {
                 files.Add(binding.Template, _retentionProfile.RenderComponent(binding.Consumers));

@@ -1,0 +1,176 @@
+{
+  "schema": "EXT-PROTECTION-1.parent-loop3-source.v1",
+  "status": "prepared-for-independent-review",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "sourceCandidates": {
+    "eventstore": "950476cc749bf76bae3e480da994fa3359bf50f2",
+    "platform": "63aa5d5273a9829e119480aff25c7880aaf055ec"
+  },
+  "sourceCandidateFiles": {
+    "eventstore": 59,
+    "platform": 174
+  },
+  "candidatesPublishedByThisWorkflow": false,
+  "sharedBranchesMovedByThisWorkflow": false,
+  "unrelatedDirtyChangesIncluded": false,
+  "metrics": {
+    "protection": {
+      "total": 384,
+      "passed": 378,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0,
+      "time": 99.008
+    },
+    "eventstoreUnion": {
+      "total": 444,
+      "passed": 444,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "time": 5.025
+    },
+    "payloadProtection": {
+      "total": 897,
+      "passed": 897,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "time": 3.527
+    },
+    "offlineVerifier": {
+      "passed": 109,
+      "seconds": 12.348
+    },
+    "harness": {
+      "passed": 9,
+      "seconds": 0.507
+    }
+  },
+  "retainedContractsAnchors": {
+    "passed": 14,
+    "sourceUnchanged": true,
+    "proof": "../../ext-protection-1-loop3-2026-10-29/final/contracts-anchor-final.xml"
+  },
+  "native": {
+    "nativeTestSummary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "nativeSuiteElapsedSeconds": 842.242,
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "testAssemblySha256": "c39c19b82450872e5f61154a34738afc6a8f1e19b94e646f578e37fcc119d60b",
+    "frozenRuntimeManifestSha256": "cd3b0e84268e71adf53e26ab17f1972647b8aed288fe8f0370959169615583f8",
+    "harnessSourceSha256": "41e544047f84963ef879b523a6e1c20f7d162e3c31c50229fe925acf09a2b5a7",
+    "runtimePolicies": [
+      {
+        "headMount": "heads-33ba793e94b344e5832cf7e83a51a4cb",
+        "renderedPolicySha256": "00514482983ac192804f607dfc899075d8d903b26d8bea01cf884f400ee53a95",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-33ba793e94b344e5832cf7e83a51a4cb",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-33ba793e94b344e5832cf7e83a51a4cb"
+      },
+      {
+        "headMount": "heads-9f3c6389cf654eb6963948afc80ccb2d",
+        "renderedPolicySha256": "2aac5bef3c680be42de3c82ab7e016f887015f5cf0b2803deb126f61cb3e60bd",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-9f3c6389cf654eb6963948afc80ccb2d",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-9f3c6389cf654eb6963948afc80ccb2d"
+      },
+      {
+        "headMount": "heads-c82c48ae167e465da0805662b70057bb",
+        "renderedPolicySha256": "303ba72b9995ab6762f54d7d3e80def73690272b33fd194e8b5b3c7fcfabfd93",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-c82c48ae167e465da0805662b70057bb",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-c82c48ae167e465da0805662b70057bb"
+      },
+      {
+        "headMount": "heads-dc17a274b25e42b98b60e48b1d7d0101",
+        "renderedPolicySha256": "b0671d6c25c707b5de232e5771b9d0a667c4223db691af855e62b6178e27bfc7",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-dc17a274b25e42b98b60e48b1d7d0101",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-dc17a274b25e42b98b60e48b1d7d0101"
+      },
+      {
+        "headMount": "heads-eb5854f762ac43f2892a273a826d4cdf",
+        "renderedPolicySha256": "f9db3b984cf637f583fedb99bd9b20801b345abe1a75e2779be4d52ef4cf87cd",
+        "rootUsedOnlyForBootstrap": true,
+        "runtimePolicyName": "erc-runtime-eb5854f762ac43f2892a273a826d4cdf",
+        "shippedPolicySha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+        "transitMount": "transit-eb5854f762ac43f2892a273a826d4cdf"
+      }
+    ]
+  },
+  "nativeScope": "Actual custody/store/head/archive/transition primitives with synthetic private eligibility; actual shipped ACL with only declared mount substitutions. No physical-copy/host-memory qualification.",
+  "allRequiredBuilds": {
+    "warnings": 0,
+    "errors": 0,
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false
+  },
+  "matrixAuditPassed": true,
+  "matrixCoverage": {
+    "Seal/replay": [
+      "SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased",
+      "CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue"
+    ],
+    "Manifest erase": [
+      "ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector",
+      "RewrapFailureDoesNotDestroyAnyOfOneThousandTargets",
+      "PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects",
+      "UnknownManifestEligibilityCannotAdmitOrRotateAHead"
+    ],
+    "Loss/restore": [
+      "ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim",
+      "ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore",
+      "PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext",
+      "SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite"
+    ],
+    "v23 race": [
+      "AdmissionAndReservationRaceHasOneOwnerWinner",
+      "CompromiseAndReservationRaceNeverCancelsAnOriginalReservation",
+      "ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve"
+    ]
+  },
+  "functionalHandbackFilesMatching": 232,
+  "artifactHashesChecked": 154,
+  "csharpFiles": 203,
+  "newMultipleTypeViolations": [],
+  "preexistingNestedType": "SnapshotManager.Log",
+  "frozenBlockSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "registerSha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+  "sourceMode": {
+    "mode": "Source",
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "countsOverlap": true,
+  "wholeNativeAndQualificationRuntimeEqualityClaimed": false,
+  "fullCopyInventoryQualified": false,
+  "installed41Executed": false,
+  "agentsExecuted": false,
+  "registerEdited": false,
+  "clusterOrProductionOperationExecuted": false,
+  "sourceCandidateRef": "refs/ext-protection-1/source-20261029-loop3-review",
+  "supersededInitialCandidates": {
+    "eventstore": "3fe83716fdb940fbb9996c0cf0c966d4b015f735",
+    "platform": "c57fa687329e5be123ac2881f6e45b03335e0d7d"
+  },
+  "supersessionReason": "Evidence-only .gitattributes rule preserves original forensic whitespace; runtime source unchanged."
+}

@@ -1,0 +1,25 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(mode: "seed-missing-receipt") [FAIL]
+      Assert.ThrowsAny() Failure: No exception was thrown
+      Expected: typeof(System.Exception)
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs(127,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(String mode)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(mode: "seed-empty-receipt") [FAIL]
+      Assert.ThrowsAny() Failure: No exception was thrown
+      Expected: typeof(System.Exception)
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs(127,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(String mode)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(mode: "seed-blank-receipt") [FAIL]
+      Assert.ThrowsAny() Failure: No exception was thrown
+      Expected: typeof(System.Exception)
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs(127,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop2InputTests.CompleteRolePreflightRejectsUnusableCanaryBeforeAnyMutationAndAcceptsExactSealedSeed(String mode)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '4d8288650635297b0a884efcdd2784f80b3603ce37be6a872458592410c37c83')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 13, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 0.657s

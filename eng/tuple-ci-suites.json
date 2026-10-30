@@ -1,0 +1,27 @@
+{
+  "purpose": "Tuple binding and analyzer regression preflight only",
+  "remainingQualification": "Other Platform suites, explicitly enabled live cases, authenticated candidate-decision evidence and generated/direct runtime integration remain mandatory before acceptance.",
+  "groups": [
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests",
+        "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests",
+        "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+        "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests"
+      ],
+      "requiredCount": 80
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-method",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+      ],
+      "requiredCount": 2
+    }
+  ]
+}

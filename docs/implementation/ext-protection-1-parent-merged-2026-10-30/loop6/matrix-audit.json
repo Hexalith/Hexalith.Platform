@@ -1,0 +1,269 @@
+{
+  "all20CommandsPassed": true,
+  "allRequiredBuildsZeroWarningsErrors": true,
+  "rows": {
+    "Seal/replay": {
+      "SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased"
+      ],
+      "CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue"
+      ]
+    },
+    "Manifest erase": {
+      "ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector"
+      ],
+      "RewrapFailureDoesNotDestroyAnyOfOneThousandTargets": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.RewrapFailureDoesNotDestroyAnyOfOneThousandTargets"
+      ],
+      "PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects"
+      ],
+      "UnknownManifestEligibilityCannotAdmitOrRotateAHead": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.UnknownManifestEligibilityCannotAdmitOrRotateAHead"
+      ]
+    },
+    "Loss/restore": {
+      "ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim"
+      ],
+      "ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore"
+      ],
+      "PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext"
+      ],
+      "SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite": [
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-pascal\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-lowercase\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-seed\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-producer-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"seed-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"producer-retention-loss\\\")"
+      ]
+    },
+    "v23 race": {
+      "AdmissionAndReservationRaceHasOneOwnerWinner": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: False)"
+      ],
+      "CompromiseAndReservationRaceNeverCancelsAnOriginalReservation": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: False)"
+      ],
+      "ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve": [
+        "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionActorTests.ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve"
+      ]
+    }
+  },
+  "additionalExecutedCases": {
+    "ErasureRootLoop6AuthorityTests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6AuthorityTests.OrphanErasureAndLifecyclePrewritesCannotRefuseAHealthyRootOrCreateCompletion",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6AuthorityTests.SigningRecoveryReferenceKeepsLatestObservedOriginalAndEveryExactEarlierIdentity",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6AuthorityTests.PermittedOwnerGuardAndQualificationBookkeepingDoesNotChangeCustodyEffectFingerprint"
+    ],
+    "ErasureRootLoop6BoundariesTests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.ActualPinnedAcquisitionMaximaKeepOneExactAcceptedBuffer(maximum: 1048576)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.ActualPinnedAcquisitionMaximaKeepOneExactAcceptedBuffer(maximum: 8388608)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.PinnedAcceptedMaximumBufferKeepsExactDigestAndLegacyNodeHashOmitsNewNullFormat",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.PinnedAcquisitionRejectsOversizedAndGrowingInputsWithoutReopeningAcceptedFile(growing: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.PinnedAcquisitionRejectsOversizedAndGrowingInputsWithoutReopeningAcceptedFile(growing: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.HashValidOversizedChunkRefusesBeforeFetchingAnyFollowingDistinctBuffer(format: \\\"erc-shared-v2\\\", length: 131073)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.HashValidOversizedChunkRefusesBeforeFetchingAnyFollowingDistinctBuffer(format: \\\"erc-chunks-v1\\\", length: 4194305)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.ProductionInitialDaprTransportRegistrationSurvivesLaterDefaultRegistration",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.CumulativeAndDuplicateChunksRefuseAtTheFirstRemainingLengthViolation(duplicate: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6BoundariesTests.CumulativeAndDuplicateChunksRefuseAtTheFirstRemainingLengthViolation(duplicate: True)"
+    ],
+    "ErasureRootLoop6GrowthTests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6GrowthTests.RepeatedActualManifestLifecycleAndGuardTrafficKeepsHeadBoundedPastFormerLifetimeCliff"
+    ],
+    "ErasureRootLoop6ShutdownTests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: False, delayed: False, recovered: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: False, delayed: True, recovered: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: True, delayed: False, recovered: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: True, delayed: True, recovered: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: False, delayed: False, recovered: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6ShutdownTests.GracefulOwningHostStopDrainsAfterLastTickAndCanceledOrInflightRequest(verifier: True, delayed: False, recovered: False)"
+    ],
+    "ErasureRootLoop6SnapshotTests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.WholeSnapshotAuxiliaryOriginalsNeverRetainEncryptedConfidentialSiblings(permanentLoss: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.WholeSnapshotAuxiliaryOriginalsNeverRetainEncryptedConfidentialSiblings(permanentLoss: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: False, legacy: False, permanentLoss: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: False, legacy: False, permanentLoss: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: False, legacy: True, permanentLoss: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: False, legacy: True, permanentLoss: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: True, legacy: False, permanentLoss: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: True, legacy: False, permanentLoss: True)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: True, legacy: True, permanentLoss: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop6SnapshotTests.EmptyAndArbitraryOpaqueV2SnapshotsReplayTypedErasedThroughConcreteManager(empty: True, legacy: True, permanentLoss: True)"
+    ],
+    "UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"version\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"content-hint\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"missing-flags\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"empty-flags\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"unknown-layout\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootMixedSnapshotTests.UnsupportedCompleteMixedMetadataRefusesBothPublicApisBeforeAnyCustodyRead(field: \\\"extra-flag\\\")"
+    ],
+    "PermanentLossCannotBypassExactProtectedEventTypeValidation": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3PlainReplayTests.PermanentLossCannotBypassExactProtectedEventTypeValidation"
+    ],
+    "UnsafeHistoricalWholeObjectReplayMetadataRequiresIndependentSanitization": [
+      "Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.UnsafeHistoricalWholeObjectReplayMetadataRequiresIndependentSanitization"
+    ]
+  },
+  "explicitIntegrationSkips": [
+    "Hexalith.Platform.Protection.Tests.ErasureRootLoop6DaprIntegrationTests.RealDaprSourceFramingRetainsLargeExactOriginalsAndReplaysWithDeadErc",
+    "Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportDiagnostics.BootstrapAndWrapOneRoot",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.ThousandTargetManifestReturnsCompleteOrderedOriginalVector",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.NativeTenantAndCompleteContextSubstitutionCannotDecrypt",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt",
+    "Hexalith.Platform.Protection.Tests.OpenBaoBootstrapIntegrationTests.ShippedApplyInstallsAllExactRuntimeOwnerGenesis"
+  ],
+  "metrics": {
+    "protection": [
+      {
+        "total": "510",
+        "passed": "502",
+        "failed": "0",
+        "skipped": "8",
+        "time": "326.711"
+      }
+    ],
+    "custody-lifecycle": [
+      {
+        "total": "68",
+        "passed": "68",
+        "failed": "0",
+        "skipped": "0",
+        "time": "1.820"
+      }
+    ],
+    "secrets-affected": [
+      {
+        "total": "185",
+        "passed": "185",
+        "failed": "0",
+        "skipped": "0",
+        "time": "10.558"
+      }
+    ],
+    "eventstore": [
+      {
+        "total": "450",
+        "passed": "450",
+        "failed": "0",
+        "skipped": "0",
+        "time": "12.127"
+      }
+    ],
+    "payload": [
+      {
+        "total": "898",
+        "passed": "898",
+        "failed": "0",
+        "skipped": "0",
+        "time": "18.393"
+      }
+    ],
+    "contracts": [
+      {
+        "total": "17",
+        "passed": "17",
+        "failed": "0",
+        "skipped": "0",
+        "time": "0.242"
+      }
+    ],
+    "harness": {
+      "tests": 13,
+      "seconds": 1.067
+    },
+    "offline-verifier": {
+      "tests": 116,
+      "seconds": 25.178
+    }
+  },
+  "sourceMode": {
+    "mode": "Source",
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "nativePending": false,
+  "countsOverlap": true,
+  "ownedIntegrations": {
+    "native": {
+      "path": "/tmp/ext-protection-loop6-evidence/native-final-02.json",
+      "sha256": "5507f89cd4efee3cd9bdfc2d1966db8a7844296f1172ae1759f7ef776d4750fc",
+      "summary": {
+        "errors": 0,
+        "failed": 0,
+        "notRun": 0,
+        "skipped": 0,
+        "total": 5
+      },
+      "seconds": 2998.951,
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "independentOwnedContainerAbsence": true,
+      "policiesVerified": 5,
+      "growth": [
+        {
+          "archiveWriteBytes": 1667407,
+          "archiveWrites": 75,
+          "nativeHeadBytes": 9439430,
+          "nativeHistoryGeometry": 131072,
+          "restrictedRuntimePolicy": true,
+          "supportedBytes": 7372800,
+          "transitions": 8
+        },
+        {
+          "archiveWriteBytes": 10240298,
+          "archiveWrites": 146,
+          "nativeHeadBytes": 9439430,
+          "nativeHistoryGeometry": 5242880,
+          "restrictedRuntimePolicy": true,
+          "supportedBytes": 22708224,
+          "transitions": 8
+        }
+      ],
+      "occurrence": [
+        {
+          "archiveWriteBytes": 7013381,
+          "archiveWrites": 5021,
+          "lookupReadBound": 16,
+          "nativeHeadBytes": 2216,
+          "nativeOccurrences": 256,
+          "nativeOwners": 256,
+          "restrictedRuntimePolicy": true
+        }
+      ],
+      "cases": [
+        "TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot",
+        "ThousandTargetManifestReturnsCompleteOrderedOriginalVector",
+        "PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest",
+        "LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt",
+        "NativeTenantAndCompleteContextSubstitutionCannotDecrypt"
+      ]
+    },
+    "dapr": {
+      "path": "/tmp/ext-protection-loop6-evidence/dapr-final-05.json",
+      "sha256": "06eede70d91cb57308f4c11a059e0e12f1d56aac83b720337c35a2aba46bf7e7"
+    },
+    "bootstrap": {
+      "path": "/tmp/ext-protection-loop6-evidence/bootstrap-final-02.json",
+      "sha256": "79573a9538215e60f357aed436416c642df80528f6a2f334b0742bd60f1ab0a7"
+    },
+    "nativeDiagnostic": {
+      "path": "/tmp/ext-protection-loop6-evidence/native-channel-precheck-02.json",
+      "sha256": "3869a71339010d8e5b053eefd341b68591f679716aae8ae95c8c7daa150c3c7e"
+    }
+  }
+}

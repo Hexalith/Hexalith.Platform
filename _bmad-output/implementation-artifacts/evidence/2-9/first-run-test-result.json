@@ -1,0 +1,143 @@
+{
+  "schema": "hexalith.test-result.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "e3ea18e127cc57e7a43ad7c9c386131e",
+      "attemptId": "1499670bcac6df1c2a99fe50c3e10380",
+      "attemptSequence": 1,
+      "ownerRunId": "e3ea18e127cc57e7a43ad7c9c386131e",
+      "environmentId": "acf139ee3468cb7e72a0ee4f92331425",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "state": "not-yet-populated"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "state": "not-yet-populated"
+      },
+      "isolation": {
+        "state": "not-yet-populated"
+      },
+      "resources": {
+        "state": "not-yet-populated"
+      },
+      "readiness": {
+        "state": "not-yet-populated"
+      },
+      "startupTasks": {
+        "state": "not-yet-populated"
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "populated",
+      "classification": "baseline-only",
+      "reason": "No authenticated candidate request was selected."
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-30T07:34:45.4364156Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-30T07:44:45.4364156Z",
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "not-yet-populated"
+      }
+    }
+  },
+  "terminal": {
+    "outcome": "failed",
+    "recordedAt": "2026-10-30T07:37:05.5573962Z",
+    "cause": "startup-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ]
+  },
+  "termination": {
+    "state": "not-yet-populated"
+  },
+  "retention": {
+    "state": "populated",
+    "disposition": "released",
+    "failureRunIds": [
+      "e3ea18e127cc57e7a43ad7c9c386131e"
+    ],
+    "retainedResourceIds": [],
+    "reason": "owned-cleanup-verified",
+    "recordedAt": "2026-10-30T07:39:25.1647362Z"
+  },
+  "cleanup": {
+    "state": "populated",
+    "disposition": "complete",
+    "observedAt": "2026-10-30T07:39:25.1647362Z",
+    "ownedResourceIds": [
+      "resource:eventstore",
+      "resource:memories",
+      "resource:memories-access-telemetry",
+      "resource:memories-access-telemetry-clock",
+      "resource:memories-access-telemetry-clock-dapr-cli",
+      "resource:memories-access-telemetry-dapr-cli",
+      "resource:memories-dapr-cli",
+      "resource:parties",
+      "resource:parties-dapr-cli",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "leftoverResourceIds": [],
+    "failures": [],
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "attemptId": "71a5bc05f808815df596acae0c4592c9"
+  },
+  "diagnostics": [
+    {
+      "id": "lifecycle",
+      "classification": "internal",
+      "redacted": true,
+      "reference": "lifecycle-0f1ce3b6caf7076d060d02aa5a252ee73b8673e47cdf47dd4b8eb6488ee8a97b.json",
+      "contentIdentity": "sha256:0f1ce3b6caf7076d060d02aa5a252ee73b8673e47cdf47dd4b8eb6488ee8a97b"
+    }
+  ]
+}

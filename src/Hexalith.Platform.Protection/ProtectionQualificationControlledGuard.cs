@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Protection;
 public sealed class ProtectionQualificationControlledGuard(IGovernanceScopeGuard native, ProtectionQualificationFaults controls) : IGovernanceScopeGuard
 {
     /// <inheritdoc />
+    public Task<GovernanceProtocolReceipt?> LookupOriginalAsync(GovernanceGuardTransition transition, IReadOnlyList<GuardedStateMutation> targets, CancellationToken cancellationToken = default)
+        => native.LookupOriginalAsync(transition, targets, cancellationToken);
+    /// <inheritdoc />
     public async Task<TenantGovernanceGuardState?> ReadAsync(string tenantId, CancellationToken cancellationToken = default)
     {
         await controls.CheckAsync("guard:" + tenantId + ":read", "before", cancellationToken).ConfigureAwait(false);
@@ -21,4 +24,7 @@ public sealed class ProtectionQualificationControlledGuard(IGovernanceScopeGuard
     /// <inheritdoc />
     public Task<GovernanceSigningRecovery?> ReadNoIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
         => native.ReadNoIssueAsync(payload, signingRequestId, detachedJwsDigest, cancellationToken);
+    /// <inheritdoc />
+    public Task<GovernanceRejectedIssueOriginal?> ReadRejectedIssueAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, string detachedJwsDigest, CancellationToken cancellationToken = default)
+        => native.ReadRejectedIssueAsync(payload, signingRequestId, detachedJwsDigest, cancellationToken);
 }

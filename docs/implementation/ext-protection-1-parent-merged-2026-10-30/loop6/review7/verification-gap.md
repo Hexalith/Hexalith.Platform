@@ -1,0 +1,9 @@
+### Platform checkout enforcement is unverified at the qualification entry point
+
+- **Changed surface:** `eventstore/tools/ext_protection_1.py:2040` adds verification that the Platform checkout matches its accepted commit and is clean and reachable from `origin/main`.
+- **Impacted consumer or site:** the qualification command at `eventstore/tools/verify-ext-protection-1.py:6`, through `main()` before role execution at `eventstore/tools/ext_protection_1.py:2041`.
+- **Existing test evidence:** `Regression gap`: `eventstore/tools/tests/test_ext_protection_1.py:1175` checks profile schema and commit-string agreement through `validate_profile()`. Its successful fixture uses a temporary directory as `platformRoot`; it never verifies a Git checkout. Searches across both repositories’ owned Python tests and verifier import references found no invocation of `exact_checkout()` or this `main()` path. The reproduced verification command uses Source mode, which returns before checkout verification (`platform/docs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/reproduce-checks.py:18`).
+- **Missing verification:** an assertion that the qualification preflight refuses a Platform checkout with a different HEAD, dirty files, or an accepted commit absent from `origin/main`.
+- **Demonstration:** removing the Platform `exact_checkout()` call leaves the profile tests and Source verification unchanged. Matching profile strings would still pass those checks even when `platformRoot` contains the wrong working tree.
+- **Consequence:** the qualification entry point could lose its accepted Platform source enforcement without the checked verification detecting it.
+- **Disposition:** `patch` — add an offline unittest using temporary local Git repositories to exercise the actual paired-checkout preflight, asserting rejection before any role invocation. Extracting that preflight permits verification without running installed roles or Live effects.

@@ -46,12 +46,12 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
         {
             var read = await custody.ReadAsync(request.Identity.TenantId, cancellationToken).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null) { return false; }
-            if (current.Head.LifecycleOutcomes.TryGetValue(request.OperationId, out var retained))
+            if (await custody.ReadLifecycleAsync(current.Head, request.OperationId, cancellationToken).ConfigureAwait(false) is { } retained)
             {
                 return ErasureRootCustody.Hash(retained) == ErasureRootCustody.Hash(outcome)
                     && await AuthorizeOperationAsync(request.Identity, request.OperationId, "VerifyLifecycleOutcome", outcome.RequestDigest, cancellationToken).ConfigureAwait(false);
             }
-            if (!current.Head.Erased.TryGetValue(ErasureRootCustody.TargetId(request.Identity), out var erased)) { return false; }
+            if (await custody.ReadErasedAsync(current.Head, ErasureRootCustody.TargetId(request.Identity), cancellationToken).ConfigureAwait(false) is not { } erased) { return false; }
             var original = await custody.LookupAsync(erased.Registration, request, outcome.RequestDigest, cancellationToken).ConfigureAwait(false);
             return ErasureRootCustody.Hash(original) == ErasureRootCustody.Hash(outcome);
         }
@@ -68,6 +68,10 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
         // The legacy digest-only method cannot manufacture an admitted original.
         return Task.FromResult(false);
     }
+    /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadCurrentOriginalAsync(string scopeId, CancellationToken cancellationToken = default) => transitions.ReadCurrentOriginalAsync(scopeId, cancellationToken);
+    /// <inheritdoc />
+    public Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string scopeId, CancellationToken cancellationToken = default) => transitions.ReadAdmittedOriginalAsync(scopeId, cancellationToken);
     /// <inheritdoc />
     public Task<bool> AdmitTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default) => transitions.AdmitTransitionAsync(transition, cancellationToken);
     /// <inheritdoc />

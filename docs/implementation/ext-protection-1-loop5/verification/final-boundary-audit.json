@@ -1,0 +1,54 @@
+{
+  "schema": "EXT-PROTECTION-1.loop5-final-boundary-audit.v1",
+  "frozenGraphs": [
+    {
+      "graph": "native-runtime-v7",
+      "kind": "runtime",
+      "active": "/tmp/ext-protection-loop5-native-runtime-v7",
+      "persistent": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop5-implementation-native-v7-d014aedf8a634625a10208035a428fbd/runtime",
+      "manifestSha256": "d02279cd78537159faf8bf5539d049fc970ce6537f2f794bc6a3e1ebb32926f6",
+      "files": 258
+    },
+    {
+      "graph": "native-runtime-v7",
+      "kind": "source",
+      "active": "/tmp/ext-protection-loop5-native-source-v7",
+      "persistent": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop5-implementation-native-v7-d014aedf8a634625a10208035a428fbd/source",
+      "manifestSha256": "e55836f5fee408ee202ca6c3953101bb6624e4440e71da6b9713d652f0aec04c",
+      "files": 5942
+    },
+    {
+      "graph": "qualification-runtime-v8",
+      "kind": "runtime",
+      "active": "/tmp/ext-protection-loop5-qualification-runtime-v8",
+      "persistent": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop5-implementation-qualification-v8-e5418d5d34fb49b796c9ff7bc2a31de5/runtime",
+      "manifestSha256": "9c2b1719778187b914ce36874795dc117e4c26349174ba73846b82d55052e482",
+      "files": 258
+    },
+    {
+      "graph": "qualification-runtime-v8",
+      "kind": "source",
+      "active": "/tmp/ext-protection-loop5-qualification-source-v8",
+      "persistent": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop5-implementation-qualification-v8-e5418d5d34fb49b796c9ff7bc2a31de5/source",
+      "manifestSha256": "82a56b38838c87b01d78770e009e3d029d609562649be3085210e114ae450d1c",
+      "files": 5942
+    }
+  ],
+  "currentSourceMatchesQualificationV8": true,
+  "scopedSourceFiles": 267,
+  "loop5DeltaFiles": 64,
+  "frozenIntentUnchanged": true,
+  "frozenIntentSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "nativeResultSha256": "b356afe5547a05f5dc41e3d15a675f012f26953aebefe9f1680e5e9e4e05582b",
+  "nativeOutcome": "NativeCasesPassed",
+  "nativeCleanup": {
+    "complete": true,
+    "containerAbsent": true,
+    "containerTmpfsUnmounted": true
+  },
+  "finalCommandSelections": 18,
+  "allFinalCommandsPassed": true,
+  "externalQualificationEstablished": false,
+  "sharedRootsMutatedByImplementation": false,
+  "gitMutationsByImplementation": false
+}

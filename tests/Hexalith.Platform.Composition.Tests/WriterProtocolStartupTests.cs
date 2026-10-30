@@ -15,6 +15,17 @@ using Shouldly;
 
 public sealed class WriterProtocolStartupTests
 {
+    [Fact]
+    public async Task DeclaredStartupBoundCancelsAnUnallocatedEndpoint()
+    {
+        using CancellationTokenSource owner = new();
+        var failure = await Assert.ThrowsAsync<TimeoutException>(() => CompositionWriterProtocolCutover.ActivateAsync(
+            async token => { await Task.Delay(Timeout.InfiniteTimeSpan, token); return new Uri("http://127.0.0.1"); },
+            "unit-test", "UnitTestSigningKeyOfAtLeast32Characters", TimeSpan.FromMilliseconds(50), owner.Token));
+        failure.Message.ShouldBe("cutover-timeout;endpoint-unallocated");
+        owner.IsCancellationRequested.ShouldBeFalse();
+    }
+
     [Theory]
     [InlineData(true)]
     [InlineData(false)]

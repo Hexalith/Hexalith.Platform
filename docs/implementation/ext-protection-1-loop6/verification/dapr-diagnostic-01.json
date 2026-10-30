@@ -1,0 +1,87 @@
+{
+  "attempts": [
+    {
+      "counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exitCode": 1,
+      "measurements": [
+        {
+          "code": "FailedPrecondition",
+          "daprDiagnostic": true,
+          "detailLength": 45,
+          "refusedConsistency": false,
+          "refusedSize": false,
+          "refusedState": true
+        }
+      ],
+      "phase": "large",
+      "safeFailureLines": [
+        "ErasureRootLoop6DaprIntegrationTests.cs(49,0)"
+      ],
+      "safeFailureTypes": [
+        "Dapr.DaprException",
+        "Grpc.Core.RpcException",
+        "InnerException"
+      ],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-627d99991c7a46ae81ae50887102b0ad",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "41581",
+        "--dapr-grpc-port",
+        "44971",
+        "--dapr-internal-grpc-port",
+        "33199",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-pvn6mto5/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    }
+  ],
+  "cleanup": true,
+  "component": {
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+      "name": "erc-source-test"
+    },
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "127.0.0.1:49258"
+        },
+        {
+          "name": "enableTLS",
+          "value": "false"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    }
+  },
+  "containerId": "8396447454f92318a7b4dca8029ab1c1b204ed47e841a7296c828117f57ce2d5",
+  "daprVersion": "1.18.7",
+  "daprdSha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488",
+  "failureType": "AssertionError",
+  "harnessSourceSha256": "36a1306bef6b4d82ba365fc978e5d5dccd01d59185a65761492e1d7416789e00",
+  "liveExecuted": false,
+  "name": "erc-loop6-redis-627d99991c7a46ae81ae50887102b0ad",
+  "nonce": "627d99991c7a46ae81ae50887102b0ad",
+  "outcome": "BlockedUnknown",
+  "productionQualified": false,
+  "redisImageId": "sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541",
+  "scope": "Owned Dapr source framing only",
+  "testAssemblySha256": "3010549d31425c0b971c7e399576e1317bd7e652e20e1db8af28c7301ba883b5"
+}

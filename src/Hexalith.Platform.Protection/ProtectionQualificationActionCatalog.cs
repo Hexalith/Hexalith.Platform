@@ -24,13 +24,13 @@ public static class ProtectionQualificationActionCatalog
         ["DestroyWithLostAcknowledgement"] = ProtectionQualificationNativeCallKind.Reserve,
         ["RetryExactManifest"] = ProtectionQualificationNativeCallKind.Reserve,
         ["RejectManifestDestroy"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectChangedManifest"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectCrossTenantAlias"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectCrossTenantManifest"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectCanonicalHeaderPayloadSubstitutions"] = ProtectionQualificationNativeCallKind.Reserve,
+        ["RejectChangedManifest"] = ProtectionQualificationNativeCallKind.RejectSubstitutions,
+        ["RejectCrossTenantAlias"] = ProtectionQualificationNativeCallKind.RejectForeignRoot,
+        ["RejectCrossTenantManifest"] = ProtectionQualificationNativeCallKind.RejectSubstitutions,
+        ["RejectCanonicalHeaderPayloadSubstitutions"] = ProtectionQualificationNativeCallKind.RejectSubstitutions,
         ["RejectStaleRevokedDispatch"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectStaleWriter"] = ProtectionQualificationNativeCallKind.Reserve,
-        ["RejectTenantKeyAttestationDispatchRevisionSubstitutions"] = ProtectionQualificationNativeCallKind.Reserve,
+        ["RejectStaleWriter"] = ProtectionQualificationNativeCallKind.SealEvent,
+        ["RejectTenantKeyAttestationDispatchRevisionSubstitutions"] = ProtectionQualificationNativeCallKind.RejectSubstitutions,
         ["IssueContainmentSingletons"] = ProtectionQualificationNativeCallKind.Guard,
         ["LinkSameTargetResource"] = ProtectionQualificationNativeCallKind.Guard,
         ["DelayAndRestoreDispatch"] = ProtectionQualificationNativeCallKind.Guard,
@@ -57,8 +57,8 @@ public static class ProtectionQualificationActionCatalog
         ["LoseActivationResult"] = ProtectionQualificationNativeCallKind.Activate,
         ["LookupOriginalDestruction"] = ProtectionQualificationNativeCallKind.Lookup,
         ["LookupAlreadyDestroyed"] = ProtectionQualificationNativeCallKind.Lookup,
-        ["LookupOriginalBlock"] = ProtectionQualificationNativeCallKind.Lookup,
-        ["LookupOriginalActivation"] = ProtectionQualificationNativeCallKind.Lookup,
+        ["LookupOriginalBlock"] = ProtectionQualificationNativeCallKind.LookupBlock,
+        ["LookupOriginalActivation"] = ProtectionQualificationNativeCallKind.LookupActivation,
         ["TwoStaleSigningAttempts"] = ProtectionQualificationNativeCallKind.Sign,
         ["CreateBackup"] = ProtectionQualificationNativeCallKind.Backup,
         ["RestoreBackup"] = ProtectionQualificationNativeCallKind.Restore,
@@ -83,7 +83,9 @@ public static class ProtectionQualificationActionCatalog
             foreach (var entry in actions)
             {
                 var recipe = entry.Value;
-                if (recipe.Effect.Kind != Actions[entry.Key] || recipe.Before is null || recipe.After is null
+                var expected = entry.Key == "RejectActivation" && id is "P30" or "P31" ? ProtectionQualificationNativeCallKind.ReconcileBlockedReplacement : Actions[entry.Key];
+                if (entry.Key == "RejectManifestDestroy" && id == "P20") { expected = ProtectionQualificationNativeCallKind.ReserveIfDispatched; }
+                if (recipe.Effect.Kind != expected || recipe.Before is null || recipe.After is null
                     || recipe.Before.Concat([recipe.Effect]).Concat(recipe.Race is { } race ? [race] : []).Concat(recipe.After).Any(call => string.IsNullOrWhiteSpace(call.Id) || call.Payload is null || !Enum.IsDefined(call.Kind)))
                 { throw new InvalidOperationException("Actual typed native action recipe required."); }
             }

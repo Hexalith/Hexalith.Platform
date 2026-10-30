@@ -1,0 +1,3 @@
+# Fixed-step preparation progress
+
+Private `preparation-progress.json` reports only closed allowlisted step names, validated HTTP100..599 or null, exact run ID, timestamp and complete=false. Atomic replacement retains the latest actual partial observation. No exception message, response payload, headers, credentials or readiness/success claim is included. Source validation and actual command commitments precede their recorded completed steps; final preparation.json and readiness remain gated on all actual owner work. The original startup cancellation/deadline remains authoritative. Actual Platform.Composition source build passed with zero warnings/errors.

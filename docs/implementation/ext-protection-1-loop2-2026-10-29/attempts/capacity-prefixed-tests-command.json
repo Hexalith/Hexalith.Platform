@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "dotnet",
+    "tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+    "-method",
+    "*AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary",
+    "-result-xml",
+    "/tmp/ext-protection-loop2-evidence/capacity-prefixed-tests.xml",
+    "-noColor"
+  ],
+  "cwd": "/tmp/bmad-protection-loop2-_qctor_8/platform",
+  "exitCode": 1,
+  "seconds": 0.8459857490015565
+}

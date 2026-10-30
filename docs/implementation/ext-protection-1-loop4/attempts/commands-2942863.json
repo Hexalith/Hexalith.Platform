@@ -1,0 +1,40 @@
+[
+  {
+    "name": "custody-lifecycle-build",
+    "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "seconds": 2.697,
+    "path": "custody-lifecycle-build.log",
+    "sha256": "0d102067a57237c0c7076fcd911a686a2c25d1ad6ebc65a7564c8659c60f9457"
+  },
+  {
+    "name": "custody-lifecycle-tests",
+    "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Custody.Tests/bin/Debug/net10.0/Hexalith.Platform.Custody.Tests.dll",
+      "-noColor",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop4-evidence/custody-lifecycle.xml"
+    ],
+    "exitCode": 1,
+    "seconds": 19.582,
+    "path": "custody-lifecycle-tests.log",
+    "sha256": "6d5b73f0525e97f1f769186f19f08f8e568417187626368604d014a20340a643"
+  }
+]

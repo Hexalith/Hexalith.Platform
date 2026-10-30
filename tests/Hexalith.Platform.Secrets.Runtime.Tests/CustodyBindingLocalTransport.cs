@@ -9,6 +9,9 @@ using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.Server.Security;
 using Hexalith.Platform.Secrets.Runtime;
 
+// This test intentionally executes the embedded, hash-pinned owner fixture in this assembly.
+// The production Server also exports this name. Keep the fixture and every unrelated diagnostic enforced.
+#pragma warning disable CS0436 // Intentional local pinned owner fixture at the callers below.
 namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 // Explicit opt-in, test-only actual SDK driver. No production provider or
@@ -164,3 +167,5 @@ internal static class CustodyBindingLocalTransport
 
     private sealed record Configuration(string Endpoint, string Output, string SinkObservations, string[] Cases);
 }
+
+#pragma warning restore CS0436

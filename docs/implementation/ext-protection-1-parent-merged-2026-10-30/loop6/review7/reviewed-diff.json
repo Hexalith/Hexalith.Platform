@@ -1,0 +1,26 @@
+{
+  "path": "/tmp/bmad-protection-loop6-reviewed-_p83wmvh.diff",
+  "sha256": "157052bdccbd563df8c38d39f62d013fe2841160511315b3914a48fa16ea57bd",
+  "bytes": 51155182,
+  "repositories": {
+    "platform": {
+      "scopePaths": 1482,
+      "untrackedFilesIncluded": 264
+    },
+    "eventstore": {
+      "scopePaths": 64,
+      "untrackedFilesIncluded": 0
+    }
+  },
+  "staged": false,
+  "persistentCopy": "/home/administrator/hexalith-protection-evidence/ext-protection-1/loop6-1bfadd624b0d46ccaae6751e9922d0d8/parent-review7/reviewed.diff",
+  "sourceOverrides": {
+    "repository": "platform",
+    "paths": [
+      "src/Hexalith.Platform.EventStoreHost/Program.cs",
+      "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj"
+    ],
+    "source": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop6-07bd8b0dea/platform",
+    "reason": "Preserve concurrent catalog-only shared host edits; they reference two types present only in the separate platform/references/Hexalith.EventStore checkout. Exact task host source already passes isolated and earlier combined builds. Supplemental shared host build fails3 CS0234; failure retained, not protection qualification."
+  }
+}

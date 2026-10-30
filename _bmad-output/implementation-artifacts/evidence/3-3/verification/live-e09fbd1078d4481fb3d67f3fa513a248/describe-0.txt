@@ -1,0 +1,1966 @@
+{
+  "resources": [
+    {
+      "name": "access-telemetry-config",
+      "displayName": "access-telemetry-config",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=access-telemetry-config",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "access-telemetry-secrets",
+      "displayName": "access-telemetry-secrets",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=access-telemetry-secrets",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "access-telemetry-store",
+      "displayName": "access-telemetry-store",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=access-telemetry-store",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "aspire-dashboard-jsmvpvyx",
+      "displayName": "aspire-dashboard",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:35.17+00:00",
+      "source": "Aspire.Dashboard",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=aspire-dashboard-jsmvpvyx",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "otlp-grpc",
+          "displayName": "otlp-grpc",
+          "url": "https://localhost:46825"
+        },
+        {
+          "name": "http",
+          "displayName": "Dashboard (http)",
+          "url": "http://localhost:46633/login?t=[redacted]"
+        },
+        {
+          "name": "https",
+          "displayName": "Dashboard (https)",
+          "url": "https://localhost:46099/login?t=[redacted]"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools/Aspire.Dashboard",
+        "executable.pid": 3618150,
+        "executable.workDir": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools",
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "ASPIRE_DASHBOARD_API_ENABLED": "[redacted]",
+        "ASPIRE_DASHBOARD_APPLICATION_NAME": "[redacted]",
+        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "[redacted]",
+        "ASPIRE_DASHBOARD_PERSISTENCE_MODE": "[redacted]",
+        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "DASHBOARD__API__AUTHMODE": "[redacted]",
+        "DASHBOARD__API__PRIMARYAPIKEY": "[redacted]",
+        "DASHBOARD__FRONTEND__AUTHMODE": "[redacted]",
+        "DASHBOARD__FRONTEND__BROWSERTOKEN": "[redacted]",
+        "DASHBOARD__FRONTEND__PUBLICURL": "[redacted]",
+        "DASHBOARD__OTLP__AUTHMODE": "[redacted]",
+        "DASHBOARD__OTLP__PRIMARYAPIKEY": "[redacted]",
+        "DASHBOARD__RESOURCESERVICECLIENT__APIKEY": "[redacted]",
+        "DASHBOARD__RESOURCESERVICECLIENT__AUTHMODE": "[redacted]",
+        "Kestrel__Certificates__Default__Path": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "configstore",
+      "displayName": "configstore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=configstore",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "dapr-placement-mtls-epwzrkpt",
+      "displayName": "dapr-placement-mtls",
+      "resourceType": "Container",
+      "state": "Waiting",
+      "waitingFor": [
+        "dapr-sentry"
+      ],
+      "source": "daprio/dapr:1.18.7",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-placement-mtls-epwzrkpt",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": null,
+        "container.image": "daprio/dapr:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [],
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.waitingFor": [
+          "dapr-sentry-mhwsyxbu"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "dapr-placement-mtls_health_/healthz_200_check": {}
+      },
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "dapr-scheduler-mtls-keytvppd",
+      "displayName": "dapr-scheduler-mtls",
+      "resourceType": "Container",
+      "state": "Waiting",
+      "waitingFor": [
+        "dapr-sentry"
+      ],
+      "source": "daprio/dapr:1.18.7",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-scheduler-mtls-keytvppd",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": null,
+        "container.image": "daprio/dapr:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [],
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.waitingFor": [
+          "dapr-sentry-mhwsyxbu"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "dapr-scheduler-mtls_health_/healthz_200_check": {}
+      },
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "dapr-sentry-mhwsyxbu",
+      "displayName": "dapr-sentry",
+      "resourceType": "Container",
+      "state": "Starting",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "source": "daprio/sentry:1.18.7",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-sentry-mhwsyxbu",
+      "relationships": [],
+      "urls": [],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/dapr-credentials-95E45B1362319903B199B2DD93E3AACE",
+          "target": "/var/run/dapr/credentials",
+          "mountType": "bind"
+        },
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/sentry.yaml",
+          "target": "/var/run/dapr/config/sentry.yaml",
+          "mountType": "bind",
+          "isReadOnly": true
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": "/sentry",
+        "container.id": null,
+        "container.image": "daprio/sentry:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [
+          8080,
+          50001
+        ],
+        "resource.appArgs": [
+          "--issuer-credentials=/var/run/dapr/credentials",
+          "--trust-domain=localhost",
+          "--config=/var/run/dapr/config/sentry.yaml",
+          "--listen-address=0.0.0.0",
+          "--healthz-listen-address=0.0.0.0"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "dapr-sentry_health_/healthz_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "eventstore-dapr",
+      "displayName": "eventstore-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "eventstore-dapr-cli-bfaqbxkq",
+      "displayName": "eventstore-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-dapr-cli-bfaqbxkq",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "eventstore-hqznavcc",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "eventstore-hqznavcc",
+      "displayName": "eventstore",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls"
+      ],
+      "source": "Hexalith.EventStore.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-hqznavcc",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "eventstore-rebuilder-arahvgse",
+      "displayName": "eventstore-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-rebuilder-arahvgse",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "eventstore-hqznavcc"
+      },
+      "environment": {},
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "llm",
+      "displayName": "llm",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=llm",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr",
+      "displayName": "memories-access-telemetry-clock-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli-gbhuqqtq",
+      "displayName": "memories-access-telemetry-clock-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-dapr-cli-gbhuqqtq",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-yptthqvx"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-clock-yptthqvx",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-clock-rebuilder-unbasmtz",
+      "displayName": "memories-access-telemetry-clock-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-rebuilder-unbasmtz",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-yptthqvx"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-clock-yptthqvx"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-yptthqvx",
+      "displayName": "memories-access-telemetry-clock",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Memories.AccessTelemetry.Clock.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-yptthqvx",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-dapr",
+      "displayName": "memories-access-telemetry-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli-cnqdezgp",
+      "displayName": "memories-access-telemetry-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-dapr-cli-cnqdezgp",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-vrxsnqxc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-vrxsnqxc",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-rebuilder-vckqwcnr",
+      "displayName": "memories-access-telemetry-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-rebuilder-vckqwcnr",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-vrxsnqxc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-vrxsnqxc"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-vrxsnqxc",
+      "displayName": "memories-access-telemetry",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Memories.AccessTelemetry.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-vrxsnqxc",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-dapr",
+      "displayName": "memories-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-dapr-cli-pxjnjrwt",
+      "displayName": "memories-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-dapr-cli-pxjnjrwt",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-rtrmdhbj"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-rtrmdhbj",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-dapr",
+      "displayName": "memories-domain-service-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-domain-service-dapr-cli-adytccnf",
+      "displayName": "memories-domain-service-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-dapr-cli-adytccnf",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-domain-service-gmxzdwuc",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-gmxzdwuc",
+      "displayName": "memories-domain-service",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Memories.DomainService.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-gmxzdwuc",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-domain-service_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-rebuilder-dhcgmdtp",
+      "displayName": "memories-domain-service-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-rebuilder-dhcgmdtp",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-domain-service-gmxzdwuc"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-domain-service_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-graph-cwtskban",
+      "displayName": "memories-graph",
+      "resourceType": "Container",
+      "state": "Starting",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "source": "falkordb/falkordb:latest",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-graph-cwtskban",
+      "relationships": [],
+      "urls": [],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/graph-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": null,
+        "container.image": "falkordb/falkordb:latest",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "FALKORDB_DATA_PATH": "[redacted]",
+        "REDIS_ARGS": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "memories-graph-redis-ping": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-rebuilder-scypyshk",
+      "displayName": "memories-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-rebuilder-scypyshk",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-rtrmdhbj"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-rtrmdhbj"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-rtrmdhbj",
+      "displayName": "memories",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "memories-vectors",
+        "memories-graph",
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Memories.Server.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-rtrmdhbj",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "memories-vectors-fmzzhtqd",
+          "memories-graph-cwtskban",
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "memories_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "memories-vectors-fmzzhtqd",
+      "displayName": "memories-vectors",
+      "resourceType": "Container",
+      "state": "Starting",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "source": "redis/redis-stack:latest",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-vectors-fmzzhtqd",
+      "relationships": [],
+      "urls": [],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/vectors-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": null,
+        "container.image": "redis/redis-stack:latest",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "REDIS_ARGS": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "memories-vectors-redis-ping": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "parties-dapr",
+      "displayName": "parties-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "parties-dapr-cli-gnsbmauf",
+      "displayName": "parties-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore",
+        "tenants",
+        "tenants-api",
+        "memories",
+        "memories-domain-service"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dapr-cli-gnsbmauf",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "parties-dmwkwsbt"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "parties-dmwkwsbt",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc",
+          "tenants-rvxfwhbw",
+          "tenants-api-zepvxrsp",
+          "memories-rtrmdhbj",
+          "memories-domain-service-gmxzdwuc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "parties-dmwkwsbt",
+      "displayName": "parties",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore",
+        "tenants",
+        "tenants-api",
+        "memories",
+        "memories-domain-service"
+      ],
+      "source": "Hexalith.Parties.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dmwkwsbt",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "tenants-rvxfwhbw"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "tenants-rvxfwhbw"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "tenants-api-zepvxrsp"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-rtrmdhbj"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc",
+          "tenants-rvxfwhbw",
+          "tenants-api-zepvxrsp",
+          "memories-rtrmdhbj",
+          "memories-domain-service-gmxzdwuc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "parties_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "parties-rebuilder-gucqnuww",
+      "displayName": "parties-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-rebuilder-gucqnuww",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "parties-dmwkwsbt"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "parties-dmwkwsbt"
+      },
+      "environment": {},
+      "healthReports": {
+        "parties_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "pubsub",
+      "displayName": "pubsub",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=pubsub",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "redis-cfadxrcy",
+      "displayName": "redis",
+      "resourceType": "Container",
+      "state": "Starting",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "source": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+      "dashboardUrl": "https://localhost:46099/?resource=redis-cfadxrcy",
+      "relationships": [],
+      "urls": [],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/redis-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": null,
+        "container.image": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [
+          "redis-server",
+          "--appendonly",
+          "yes",
+          "--dir",
+          "/data"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "redis-redis-ping": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "displayName": "routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "secretstore",
+      "displayName": "secretstore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=secretstore",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "statestore",
+      "displayName": "statestore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=statestore",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-dapr",
+      "displayName": "tenants-api-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-dapr-cli-rvmjnxxs",
+      "displayName": "tenants-api-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-dapr-cli-rvmjnxxs",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-zepvxrsp"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-api-zepvxrsp",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "tenants-api-rebuilder-nejchygu",
+      "displayName": "tenants-api-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-rebuilder-nejchygu",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-zepvxrsp"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-api-zepvxrsp"
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-zepvxrsp",
+      "displayName": "tenants-api",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Tenants.Api.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-zepvxrsp",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "tenants-dapr",
+      "displayName": "tenants-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-dapr-cli-xuyvxdqw",
+      "displayName": "tenants-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "daprd",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-dapr-cli-xuyvxdqw",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-rvxfwhbw"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-rvxfwhbw",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {},
+      "commands": {
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    },
+    {
+      "name": "tenants-rebuilder-mznevzug",
+      "displayName": "tenants-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-rebuilder-mznevzug",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-rvxfwhbw"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-rvxfwhbw"
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "tenants-rvxfwhbw",
+      "displayName": "tenants",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "waitingFor": [
+        "redis",
+        "dapr-sentry",
+        "dapr-placement-mtls",
+        "dapr-scheduler-mtls",
+        "eventstore"
+      ],
+      "source": "Hexalith.Tenants.csproj",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-rvxfwhbw",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.launchConfigurationType": "project",
+        "resource.waitingFor": [
+          "redis-cfadxrcy",
+          "dapr-sentry-mhwsyxbu",
+          "dapr-placement-mtls-epwzrkpt",
+          "dapr-scheduler-mtls-keytvppd",
+          "eventstore-hqznavcc"
+        ]
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants_http_/ready_200_check": {}
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "start": {
+          "displayName": "Start",
+          "description": "Start resource",
+          "state": "Enabled",
+          "sortOrder": 0
+        }
+      }
+    }
+  ]
+}

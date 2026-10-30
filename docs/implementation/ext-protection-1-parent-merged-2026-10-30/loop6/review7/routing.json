@@ -1,0 +1,99 @@
+[
+  {
+    "members": [
+      "R7-BH-8",
+      "R7-EC-1"
+    ],
+    "verdict": "medium",
+    "route": "patch",
+    "rootCause": "Unbounded separate-open role-file acquisition"
+  },
+  {
+    "members": [
+      "R7-BH-1"
+    ],
+    "verdict": "high",
+    "route": "patch",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:1779"
+  },
+  {
+    "members": [
+      "R7-BH-2"
+    ],
+    "verdict": "high",
+    "route": "patch",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:188"
+  },
+  {
+    "members": [
+      "R7-BH-3"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:172"
+  },
+  {
+    "members": [
+      "R7-BH-4"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:1770"
+  },
+  {
+    "members": [
+      "R7-BH-5"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:1811"
+  },
+  {
+    "members": [
+      "R7-BH-6"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:1840"
+  },
+  {
+    "members": [
+      "R7-BH-7"
+    ],
+    "verdict": "medium",
+    "route": "defer",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:890"
+  },
+  {
+    "members": [
+      "R7-BH-9"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:26"
+  },
+  {
+    "members": [
+      "R7-BH-10"
+    ],
+    "verdict": "medium",
+    "route": "patch",
+    "rootCause": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:31"
+  },
+  {
+    "members": [
+      "R7-EC-2"
+    ],
+    "verdict": "high",
+    "route": "bad_spec",
+    "rootCause": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs:85-118"
+  },
+  {
+    "members": [
+      "R7-VG-1"
+    ],
+    "verdict": "medium",
+    "route": "patch",
+    "rootCause": "../eventstore/tools/ext_protection_1.py:2040"
+  }
+]

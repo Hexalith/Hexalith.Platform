@@ -6,10 +6,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 /// <summary>Runs the existing fresh-store protocol operation concurrently with local resource startup.</summary>
-internal sealed class PlatformGatewayStartup(IServiceProvider services, string runId, string signingKey) : BackgroundService
+internal sealed class PlatformGatewayStartup(IServiceProvider services, string runId, string signingKey, string? workspace = null) : BackgroundService
 {
     /// <inheritdoc />
-    protected override Task ExecuteAsync(CancellationToken stoppingToken) => CompositionWriterProtocolCutover.ActivateAsync(ResolveEndpointAsync, runId, signingKey, stoppingToken);
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
+            await CompositionWriterProtocolCutover.ActivateAsync(ResolveEndpointAsync, runId, signingKey, stoppingToken).ConfigureAwait(false);
+        }
+        catch (Exception failure) when (!stoppingToken.IsCancellationRequested)
+        {
+            if (workspace is not null) PlatformCompositionWorkspace.MarkFailed(workspace, failure.Message);
+            throw;
+        }
+    }
 
     private async Task<Uri> ResolveEndpointAsync(CancellationToken cancellationToken)
     {

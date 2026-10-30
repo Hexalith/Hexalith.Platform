@@ -660,7 +660,10 @@ class IndependentCalibrationTests(unittest.TestCase):
     def test_launch_supervises_measurements_without_returning_ready_to_caller(self):
         q = self.runner()
         order = []
-        with patch.object(lifecycle.CampaignQualification, 'launch', side_effect=lambda: order.append('startup')), \
+        def inherited_launch():
+            order.append('startup')
+            q.monitor()  # The real superclass dispatches the overridden monitor.
+        with patch.object(lifecycle.CampaignQualification, 'launch', side_effect=inherited_launch), \
              patch.object(q, 'monitor', side_effect=lambda: order.append('measurements')):
             q.launch()
         self.assertEqual(['startup', 'measurements'], order)

@@ -1,0 +1,89 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.PayloadProtection.Tests
+  Discovered:  Hexalith.EventStore.PayloadProtection.Tests
+  Starting:    Hexalith.EventStore.PayloadProtection.Tests
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.ForeignTenantSingleTargetDeniesBeforeBinding [FAIL]
+      Shouldly.ShouldAssertException : Task `fixture.Service.ProtectSnapshotAsync(fixture.Binding.Identity.Owner, State(Expand("{\"Request\":ENVELOPE}").Replace("tenant-a", "tenant-b", StringComparison.Ordinal)), StateType, Occurrence(fixture.Binding), TestContext.Current.CancellationToken)`
+          should throw
+      System.InvalidOperationException
+          but threw
+      Hexalith.EventStore.PayloadProtection.PayloadProtectionFormatException
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs(90,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.ForeignTenantSingleTargetDeniesBeforeBinding()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(before: "interaction-a", after: "interaction-b", insideValue: False) [FAIL]
+      Shouldly.ShouldAssertException : fixture.Bindings.ReceivedCalls()
+          should be empty but had
+      1
+          item and was
+      [NSubstitute.Core.Call (13077851)]
+      Stack Trace:
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs(78,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(String before, String after, Boolean insideValue)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(before: "alias-a", after: "alias-b", insideValue: False) [FAIL]
+      Shouldly.ShouldAssertException : fixture.Bindings.ReceivedCalls()
+          should be empty but had
+      1
+          item and was
+      [NSubstitute.Core.Call (54172779)]
+      Stack Trace:
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs(78,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(String before, String after, Boolean insideValue)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(before: "tenant-a", after: "tenant-b", insideValue: False) [FAIL]
+      Shouldly.ShouldAssertException : Task `fixture.Service.ProtectSnapshotAsync(fixture.Binding.Identity.Owner, State(template), StateType, Occurrence(fixture.Binding), TestContext.Current.CancellationToken)`
+          should throw
+      System.InvalidOperationException
+          but threw
+      Hexalith.EventStore.PayloadProtection.PayloadProtectionFormatException
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs(76,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.MixedTargetsDenyBeforeAnyAuthorityOrKeyCall(String before, String after, Boolean insideValue)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.EventStore.PayloadProtection.Tests (ID = 'bf0343a3c15f5722ef3d156c1649a4a7d4cbe9ff571e08ab237ef5fcea57e29e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.PayloadProtection.Tests  Total: 876, Errors: 0, Failed: 4, Skipped: 0, Not Run: 0, Time: 3.802s

@@ -1,0 +1,2955 @@
+{
+  "wholeBinaryEqualityClaimed": false,
+  "allFrozenInputs": [
+    {
+      "path": "deploy/erasure-root/README.md",
+      "nativeFreezeSha256": "7112b1c545aa202c84df2b7048503ec551eea1bb32a38946c6cc0609dc91c7b2",
+      "finalSha256": "7112b1c545aa202c84df2b7048503ec551eea1bb32a38946c6cc0609dc91c7b2",
+      "unchanged": true
+    },
+    {
+      "path": "deploy/erasure-root/bootstrap.py",
+      "nativeFreezeSha256": "e8f890628eaa383f8150fd0f58f957635990dd56150245088458736ef1cc4bd9",
+      "finalSha256": "e8f890628eaa383f8150fd0f58f957635990dd56150245088458736ef1cc4bd9",
+      "unchanged": true
+    },
+    {
+      "path": "deploy/erasure-root/custody-policy.hcl",
+      "nativeFreezeSha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+      "finalSha256": "89248b7353d59920dde4626bb2de509e3f7a0b4e82d8ae02ffdf4d04260c35e7",
+      "unchanged": true
+    },
+    {
+      "path": "deploy/erasure-root/namespace.yaml",
+      "nativeFreezeSha256": "71f03e56231b945a2f8e2e06b2ecfa1c4e1ac09901411e258dff3522633ff2fd",
+      "finalSha256": "71f03e56231b945a2f8e2e06b2ecfa1c4e1ac09901411e258dff3522633ff2fd",
+      "unchanged": true
+    },
+    {
+      "path": "deploy/erasure-root/network-policy.yaml",
+      "nativeFreezeSha256": "587b61e5952de653d4a24b7878631692be16c24ff44f2851efa82ecc011433f6",
+      "finalSha256": "587b61e5952de653d4a24b7878631692be16c24ff44f2851efa82ecc011433f6",
+      "unchanged": true
+    },
+    {
+      "path": "deploy/erasure-root/statefulset.yaml",
+      "nativeFreezeSha256": "470ae1062e26f03524c9319f50ec61d4253c1b00424089c7677e27703056b155",
+      "finalSha256": "470ae1062e26f03524c9319f50ec61d4253c1b00424089c7677e27703056b155",
+      "unchanged": true
+    },
+    {
+      "path": "eng/ext-protection-1/probe_erc_native.py",
+      "nativeFreezeSha256": "41e544047f84963ef879b523a6e1c20f7d162e3c31c50229fe925acf09a2b5a7",
+      "finalSha256": "8824a567260828d8660eecb1e696b428761db18fefeb7b90dfbc59928ca3a808",
+      "unchanged": false
+    },
+    {
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "nativeFreezeSha256": "00a85258deaf396f60e98db376e1ec93761c4ec93df9dfc83469299a8b3ff1d3",
+      "finalSha256": "7eb22d34833accba2afb93a6176edaea29964e1bbf6d8108314fd2f0da0428bc",
+      "unchanged": false
+    },
+    {
+      "path": "eng/ext-protection-1/test_probe_erc_native.py",
+      "nativeFreezeSha256": "c53cd08134ba95c3bb338f2092b20a934956754907e7c0b94b25853bd59846fc",
+      "finalSha256": "a6dc55c87c06bc205b234b283c33a562dd43ef81b547380e2c9860e8d109b32d",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleAction.cs",
+      "nativeFreezeSha256": "5e2d290e77360a730a5231611b6a2b007f1979b2873400b37c1d7e3bbeabe990",
+      "finalSha256": "5e2d290e77360a730a5231611b6a2b007f1979b2873400b37c1d7e3bbeabe990",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+      "nativeFreezeSha256": "76acb865e740c9259020cccae2c53a478298f7dc8a64ad29016097e72f1e8213",
+      "finalSha256": "76acb865e740c9259020cccae2c53a478298f7dc8a64ad29016097e72f1e8213",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleEntry.cs",
+      "nativeFreezeSha256": "b4a1747e9f6bb2f873daf48d71be94cefb5c96c7803abb26b241704362cf9b2d",
+      "finalSha256": "b4a1747e9f6bb2f873daf48d71be94cefb5c96c7803abb26b241704362cf9b2d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleLedger.cs",
+      "nativeFreezeSha256": "41ab6e41a92ced28c4fec9a5f9fa4714a7707a93dd80a45bf908dff5c26cc6a6",
+      "finalSha256": "41ab6e41a92ced28c4fec9a5f9fa4714a7707a93dd80a45bf908dff5c26cc6a6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleOutcome.cs",
+      "nativeFreezeSha256": "6ed70ca1cab0e692eb4811dbd904ab3a37442fe58d15ec36ed295545fbc551cd",
+      "finalSha256": "6ed70ca1cab0e692eb4811dbd904ab3a37442fe58d15ec36ed295545fbc551cd",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleRequest.cs",
+      "nativeFreezeSha256": "156d71653710dc1f372684dc62fb61f4061075d7aa918322636ff9f31e950526",
+      "finalSha256": "156d71653710dc1f372684dc62fb61f4061075d7aa918322636ff9f31e950526",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleStatus.cs",
+      "nativeFreezeSha256": "8aa1e00be1fb3669c2f00d1577b183418365f0cbbafc54768584fbaec8bc8464",
+      "finalSha256": "8aa1e00be1fb3669c2f00d1577b183418365f0cbbafc54768584fbaec8bc8464",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyObjectIdentity.cs",
+      "nativeFreezeSha256": "ce4d4cfeb95563dfbf003b13a44954cb983635e6a31849897af7034e5a13c999",
+      "finalSha256": "ce4d4cfeb95563dfbf003b13a44954cb983635e6a31849897af7034e5a13c999",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyRegistration.cs",
+      "nativeFreezeSha256": "093a0efcfefa2acd0728b2552027f06ac27163dd5a40b7ac02f6c12596dc19b2",
+      "finalSha256": "093a0efcfefa2acd0728b2552027f06ac27163dd5a40b7ac02f6c12596dc19b2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyWrapCore.cs",
+      "nativeFreezeSha256": "b2d439d3d94d1e31ca0b9c46ef39ee9b66e3d78e86a187e22b4c06ef0e9dd5ae",
+      "finalSha256": "b2d439d3d94d1e31ca0b9c46ef39ee9b66e3d78e86a187e22b4c06ef0e9dd5ae",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodySharedCutModel.cs",
+      "nativeFreezeSha256": "7f42863175579ce8fdab4d882fcd0fb0ef31d329a86ba66b3746002366206393",
+      "finalSha256": "7f42863175579ce8fdab4d882fcd0fb0ef31d329a86ba66b3746002366206393",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/CustodyStatus.cs",
+      "nativeFreezeSha256": "bdbba11231cfa282fc4069dfc0211fdf011e83f38a31e47a0e88b5a60be6fd0c",
+      "finalSha256": "bdbba11231cfa282fc4069dfc0211fdf011e83f38a31e47a0e88b5a60be6fd0c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationMaterialSource.cs",
+      "nativeFreezeSha256": "a18cb3d234b63cb8253d4dcff1c12313ea6ecca42fc57c50f292e9e4f16a2643",
+      "finalSha256": "a18cb3d234b63cb8253d4dcff1c12313ea6ecca42fc57c50f292e9e4f16a2643",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationOperation.cs",
+      "nativeFreezeSha256": "0552249f43a3b018163928fe3c61e6a1b621a9a6eaf4d607bfa2e974f94a7e16",
+      "finalSha256": "0552249f43a3b018163928fe3c61e6a1b621a9a6eaf4d607bfa2e974f94a7e16",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationProfile.cs",
+      "nativeFreezeSha256": "c435c848f2268a378a0d1b9887b6b37a04690224d7070d5d40c8a69dc03a278b",
+      "finalSha256": "c435c848f2268a378a0d1b9887b6b37a04690224d7070d5d40c8a69dc03a278b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationReference.cs",
+      "nativeFreezeSha256": "460bebdaf625e2bf727ea98819adbc8fe0d077a2baa969bdd3ed71e6fadede7e",
+      "finalSha256": "460bebdaf625e2bf727ea98819adbc8fe0d077a2baa969bdd3ed71e6fadede7e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationReferenceReader.cs",
+      "nativeFreezeSha256": "c7dc0ef20a27d552795858c5215597cf3dea2b2bcc3ce916904cefcc14bbba79",
+      "finalSha256": "c7dc0ef20a27d552795858c5215597cf3dea2b2bcc3ce916904cefcc14bbba79",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprExportQualificationTrustSource.cs",
+      "nativeFreezeSha256": "141571d89b7e897a498c880865771e2a3abf1d3eeb6a5745e60a26d6e901913b",
+      "finalSha256": "141571d89b7e897a498c880865771e2a3abf1d3eeb6a5745e60a26d6e901913b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DaprPlatformHmacBinding.cs",
+      "nativeFreezeSha256": "d069a14b7b92408026e58f910ffd6f42ad9635e22a603f1167814d9fdd1da647",
+      "finalSha256": "d069a14b7b92408026e58f910ffd6f42ad9635e22a603f1167814d9fdd1da647",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeadlineAnchoredStateAuthority.cs",
+      "nativeFreezeSha256": "72fc0d02f466b109fd95cc56069d0d99ce9eba89d8c0fc9da75e3c74487bbb4e",
+      "finalSha256": "72fc0d02f466b109fd95cc56069d0d99ce9eba89d8c0fc9da75e3c74487bbb4e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityApprover.cs",
+      "nativeFreezeSha256": "2875fb0dac8d031d7592e20be99eb378f7f680f1bda96524b36aa51fc2f87dda",
+      "finalSha256": "2875fb0dac8d031d7592e20be99eb378f7f680f1bda96524b36aa51fc2f87dda",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityExpectedBasis.cs",
+      "nativeFreezeSha256": "3e17d6591ebc7fc6322fcafeb147f87616d3f75b0ffd9fa94b103c0f5844da87",
+      "finalSha256": "3e17d6591ebc7fc6322fcafeb147f87616d3f75b0ffd9fa94b103c0f5844da87",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityManifest.cs",
+      "nativeFreezeSha256": "508973e9668ca23892630c022d2b1af3b2d2edea645c111ffd38601683d78ed9",
+      "finalSha256": "508973e9668ca23892630c022d2b1af3b2d2edea645c111ffd38601683d78ed9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityManifestCodec.cs",
+      "nativeFreezeSha256": "7372ec250e4125feebcf51f712da427156289ac073778f7669132bf6a1c9e958",
+      "finalSha256": "7372ec250e4125feebcf51f712da427156289ac073778f7669132bf6a1c9e958",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DecisionAuthorityPublishedProfile.cs",
+      "nativeFreezeSha256": "8f212285624da26b98f7d68db585d70142d8e25f62f69a2be7192d9c43e208ab",
+      "finalSha256": "8f212285624da26b98f7d68db585d70142d8e25f62f69a2be7192d9c43e208ab",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchCapabilityCodec.cs",
+      "nativeFreezeSha256": "a18fb4951dd1897c9383265d58334d140fe07c6219ba345f166ef0ae0f74cd5d",
+      "finalSha256": "a18fb4951dd1897c9383265d58334d140fe07c6219ba345f166ef0ae0f74cd5d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchExecutionCoordinator.cs",
+      "nativeFreezeSha256": "f16b069b16888c6511a39b5ec91069830d384ffa0fd8712d45a66e2b84cbde2d",
+      "finalSha256": "f16b069b16888c6511a39b5ec91069830d384ffa0fd8712d45a66e2b84cbde2d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchExecutionResult.cs",
+      "nativeFreezeSha256": "618b7055e42923ec87db03df9bc92667ce681a86b0d0b1f21ddc1bf796d9b890",
+      "finalSha256": "618b7055e42923ec87db03df9bc92667ce681a86b0d0b1f21ddc1bf796d9b890",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionBatchGuardSnapshot.cs",
+      "nativeFreezeSha256": "a22b78c80a680e020a1e90554a2726aa39f33fbf43c7810e0fcf66c74a945f1f",
+      "finalSha256": "a22b78c80a680e020a1e90554a2726aa39f33fbf43c7810e0fcf66c74a945f1f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityNoIssueProof.cs",
+      "nativeFreezeSha256": "409656b998eded489c31b92cc724d9163f2f10b1b4cfdd3b6d57fb130818fc39",
+      "finalSha256": "409656b998eded489c31b92cc724d9163f2f10b1b4cfdd3b6d57fb130818fc39",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityPublishedTrust.cs",
+      "nativeFreezeSha256": "f2e28ec561e964466f2c606a658bbfc6977a350e3751e4e400e4f77a24ca43a6",
+      "finalSha256": "f2e28ec561e964466f2c606a658bbfc6977a350e3751e4e400e4f77a24ca43a6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationAuthorization.cs",
+      "nativeFreezeSha256": "576014506d860da31f7e8262ab1fe8435ebcac5f1ae3049103947a751f01c81a",
+      "finalSha256": "576014506d860da31f7e8262ab1fe8435ebcac5f1ae3049103947a751f01c81a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscriber.cs",
+      "nativeFreezeSha256": "bf1d9ec61d6bc2f5906e35a93255828f40e32f3b863f70a8b66d12da57792db8",
+      "finalSha256": "bf1d9ec61d6bc2f5906e35a93255828f40e32f3b863f70a8b66d12da57792db8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityRevocationSubscription.cs",
+      "nativeFreezeSha256": "4a00a382d4c4976ba3d26d4eca692a37d3429c07843f1b386e78728463435654",
+      "finalSha256": "4a00a382d4c4976ba3d26d4eca692a37d3429c07843f1b386e78728463435654",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningActor.cs",
+      "nativeFreezeSha256": "a6dda194fa783d9c334463833a1bdeb40492a9e35d6570b8164f255a68992619",
+      "finalSha256": "a6dda194fa783d9c334463833a1bdeb40492a9e35d6570b8164f255a68992619",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningOutcome.cs",
+      "nativeFreezeSha256": "f99423fff1b127855ffbb5ba33e62de8e47b76521e5464e166873456beac3fa9",
+      "finalSha256": "f99423fff1b127855ffbb5ba33e62de8e47b76521e5464e166873456beac3fa9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningResult.cs",
+      "nativeFreezeSha256": "a2905b11b5dee5c0b9d7087b29ae16a623a79e13ee58bdb1d5bedaa0b3153da1",
+      "finalSha256": "a2905b11b5dee5c0b9d7087b29ae16a623a79e13ee58bdb1d5bedaa0b3153da1",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningState.cs",
+      "nativeFreezeSha256": "49c338a7f3392978fd014a0d71a597bc138fa646e3a0c27c9cff602294456ecf",
+      "finalSha256": "49c338a7f3392978fd014a0d71a597bc138fa646e3a0c27c9cff602294456ecf",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilitySigningSuccessor.cs",
+      "nativeFreezeSha256": "b5dd22d45a8323dd371ba609f884a7748f58bc97105b7e6acbae392a865d270d",
+      "finalSha256": "b5dd22d45a8323dd371ba609f884a7748f58bc97105b7e6acbae392a865d270d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DeletionCapabilityTrustProfile.cs",
+      "nativeFreezeSha256": "cb4ab421cbf95f470615a7e62efedcb5505e1054786e2f2f57d4590a19c4b7c5",
+      "finalSha256": "cb4ab421cbf95f470615a7e62efedcb5505e1054786e2f2f57d4590a19c4b7c5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/DetachedEs256JwsCore.cs",
+      "nativeFreezeSha256": "67ca22b9262bee59cd7b71cd78ada37de1da51d0d6567e914934dddd8b2588f5",
+      "finalSha256": "67ca22b9262bee59cd7b71cd78ada37de1da51d0d6567e914934dddd8b2588f5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionBatchGuardPort.cs",
+      "nativeFreezeSha256": "5971f70d64041f33322f69b24f3d0f7e0f513c3eef8d32371a0d300de634b410",
+      "finalSha256": "5971f70d64041f33322f69b24f3d0f7e0f513c3eef8d32371a0d300de634b410",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionCapabilityGuardRevocationMirror.cs",
+      "nativeFreezeSha256": "bed1172722de14f2c6f62b1b14332df13b078fad439b967d649e28dff9f01da5",
+      "finalSha256": "bed1172722de14f2c6f62b1b14332df13b078fad439b967d649e28dff9f01da5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/EventStoreDeletionCapabilityNoIssueAuthority.cs",
+      "nativeFreezeSha256": "9d477bc63f37321c5667bfece52499ee8254b9d8b37d9f9267ebdbffae761911",
+      "finalSha256": "9d477bc63f37321c5667bfece52499ee8254b9d8b37d9f9267ebdbffae761911",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryActor.cs",
+      "nativeFreezeSha256": "4198b0b8ad15661d262e3d1e1aacd55a654099630a0a919893f1d70986b303ae",
+      "finalSha256": "4198b0b8ad15661d262e3d1e1aacd55a654099630a0a919893f1d70986b303ae",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryDenialOriginal.cs",
+      "nativeFreezeSha256": "2fcf7999af14ad1ff0786c9f198a93cc3b943b5a7ed28353e62f70334e74da5f",
+      "finalSha256": "2fcf7999af14ad1ff0786c9f198a93cc3b943b5a7ed28353e62f70334e74da5f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryIdentity.cs",
+      "nativeFreezeSha256": "680326d462e891e88a0a04f2b3136b727e7a3a3ca015b10611062552dc70d31f",
+      "finalSha256": "680326d462e891e88a0a04f2b3136b727e7a3a3ca015b10611062552dc70d31f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryOutcome.cs",
+      "nativeFreezeSha256": "0917df1b0406538b81ef323d07d5d0ab71b417baee52e2a3c37e3badbe747cb5",
+      "finalSha256": "0917df1b0406538b81ef323d07d5d0ab71b417baee52e2a3c37e3badbe747cb5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryRawIdentity.cs",
+      "nativeFreezeSha256": "1ead6dd71c2d43ef40f7e08873bd0271f298a709bd0cf2206491e287daf2ec01",
+      "finalSha256": "1ead6dd71c2d43ef40f7e08873bd0271f298a709bd0cf2206491e287daf2ec01",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingDenialOriginal.cs",
+      "nativeFreezeSha256": "4a1b42d8668248c4a892094c008ff6ac56fc44812455ad414b9f8339d4ee39b8",
+      "finalSha256": "4a1b42d8668248c4a892094c008ff6ac56fc44812455ad414b9f8339d4ee39b8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingRequest.cs",
+      "nativeFreezeSha256": "fe24468f33f7c99e01fa083b986a6881c090fb6c35036ff1f177cee8f2f970e4",
+      "finalSha256": "fe24468f33f7c99e01fa083b986a6881c090fb6c35036ff1f177cee8f2f970e4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryReceivingResult.cs",
+      "nativeFreezeSha256": "1cb35fbc07c9361f6032059dc0e2ac5b09daa964bf3546b7602aaaf59fd65ea1",
+      "finalSha256": "1cb35fbc07c9361f6032059dc0e2ac5b09daa964bf3546b7602aaaf59fd65ea1",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyDeliveryState.cs",
+      "nativeFreezeSha256": "e03850937db3730f8bdb236c70b1570616cf0fda940e3857e7ccb7df75f15b6e",
+      "finalSha256": "e03850937db3730f8bdb236c70b1570616cf0fda940e3857e7ccb7df75f15b6e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyWrapContext.cs",
+      "nativeFreezeSha256": "c031461abae326899081b1e1af46e38e40ca1af11e0d806b4a728347b9771b49",
+      "finalSha256": "c031461abae326899081b1e1af46e38e40ca1af11e0d806b4a728347b9771b49",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportKeyWrappingCore.cs",
+      "nativeFreezeSha256": "d911042db4b32e28f3f81ed24d1f4e1dd70481276e06f14f02e152cdc248cbf6",
+      "finalSha256": "d911042db4b32e28f3f81ed24d1f4e1dd70481276e06f14f02e152cdc248cbf6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportManifestSignatureContext.cs",
+      "nativeFreezeSha256": "6821454a856001c18495604b50abcaa80f86edc48e0bb55edc5f6ce140fd409d",
+      "finalSha256": "6821454a856001c18495604b50abcaa80f86edc48e0bb55edc5f6ce140fd409d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportManifestSignatureCore.cs",
+      "nativeFreezeSha256": "c6adb0ed286bb397273358be71db49c09202cddb592ac4e24cf59f67277d3aaa",
+      "finalSha256": "c6adb0ed286bb397273358be71db49c09202cddb592ac4e24cf59f67277d3aaa",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationEngine.cs",
+      "nativeFreezeSha256": "94d7c6d2a7e6a3dac6f6a5d22b24c754ea13c83ce20c3942132445283c6d884d",
+      "finalSha256": "94d7c6d2a7e6a3dac6f6a5d22b24c754ea13c83ce20c3942132445283c6d884d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationInput.cs",
+      "nativeFreezeSha256": "e14df055770c7dee7dfa0ded202222ebd9ee2ca867dd8dd330c91b8d28c8f557",
+      "finalSha256": "e14df055770c7dee7dfa0ded202222ebd9ee2ca867dd8dd330c91b8d28c8f557",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationMaterial.cs",
+      "nativeFreezeSha256": "7071c6cb79d0c2a43f1eb9f38c0aa1405cb498486ddd71b8d81cbe413c2cf0f9",
+      "finalSha256": "7071c6cb79d0c2a43f1eb9f38c0aa1405cb498486ddd71b8d81cbe413c2cf0f9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationMaterialUse.cs",
+      "nativeFreezeSha256": "99a7409539545ffb26a4445064844b78ee071fb2c6a7d84b7a11ef85b9ab7851",
+      "finalSha256": "99a7409539545ffb26a4445064844b78ee071fb2c6a7d84b7a11ef85b9ab7851",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationObservation.cs",
+      "nativeFreezeSha256": "66ce5f6385c28d49904f04c943285191c46f5298ef6089d7135b6ee4d4810014",
+      "finalSha256": "66ce5f6385c28d49904f04c943285191c46f5298ef6089d7135b6ee4d4810014",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationOriginal.cs",
+      "nativeFreezeSha256": "23bf1c38c10bac254ec08785b16386e94ca888078624089fd9fc7452f2154ba6",
+      "finalSha256": "23bf1c38c10bac254ec08785b16386e94ca888078624089fd9fc7452f2154ba6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ExportQualificationTrust.cs",
+      "nativeFreezeSha256": "340ef18fd7a74f2cf5751f2e259849847cd566e221939d1735792a506d271e2e",
+      "finalSha256": "340ef18fd7a74f2cf5751f2e259849847cd566e221939d1735792a506d271e2e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34CanaryAuthorization.cs",
+      "nativeFreezeSha256": "016495685afa367fa2a18d3d022da75361d3d50b9227b62c7c77f90dc323b4ef",
+      "finalSha256": "016495685afa367fa2a18d3d022da75361d3d50b9227b62c7c77f90dc323b4ef",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34CanaryReference.cs",
+      "nativeFreezeSha256": "b394d18df6ab943a9c11cd5e9a3727068d4a493cf0a8990b0c3b4cc0c4f9a261",
+      "finalSha256": "b394d18df6ab943a9c11cd5e9a3727068d4a493cf0a8990b0c3b4cc0c4f9a261",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34PersistedCanary.cs",
+      "nativeFreezeSha256": "ab4ed8dc7b9766c87249996986caa95cf6a7346345a6c44452cef521aced0ae9",
+      "finalSha256": "ab4ed8dc7b9766c87249996986caa95cf6a7346345a6c44452cef521aced0ae9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionGate.cs",
+      "nativeFreezeSha256": "f60e616cda31f85913340b331e88101022fc8208517ad3fcdf349c2239d8d777",
+      "finalSha256": "f60e616cda31f85913340b331e88101022fc8208517ad3fcdf349c2239d8d777",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionReadinessCheck.cs",
+      "nativeFreezeSha256": "8af942a46e594ac4edc332b4d0d6a1646a4202cb4435d91004724076b5eaf501",
+      "finalSha256": "8af942a46e594ac4edc332b4d0d6a1646a4202cb4435d91004724076b5eaf501",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionStartupGate.cs",
+      "nativeFreezeSha256": "aa895522d174480ba4f74d67b7de18f5f0d06e52181adc866379f9ca7a63bacf",
+      "finalSha256": "aa895522d174480ba4f74d67b7de18f5f0d06e52181adc866379f9ca7a63bacf",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Fr34ProtectionTarget.cs",
+      "nativeFreezeSha256": "ff613d6e58c686b561cce5187b0bea66650df8aac131362c82b47474d005f35a",
+      "finalSha256": "ff613d6e58c686b561cce5187b0bea66650df8aac131362c82b47474d005f35a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+      "nativeFreezeSha256": "62cb63c1db8cba6b095897969154508a158ed160ae8d30086ce693360d0d58a6",
+      "finalSha256": "62cb63c1db8cba6b095897969154508a158ed160ae8d30086ce693360d0d58a6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleActor.cs",
+      "nativeFreezeSha256": "c704bd2c5b22b95c6a655b640b9826e0e85d348c0fa51b15c7f82f083a4574db",
+      "finalSha256": "c704bd2c5b22b95c6a655b640b9826e0e85d348c0fa51b15c7f82f083a4574db",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleAuthority.cs",
+      "nativeFreezeSha256": "f173db92e6ba0f4d663cdcd2655a98b172dd9f6be5dc23f99690d60fab159a0c",
+      "finalSha256": "f173db92e6ba0f4d663cdcd2655a98b172dd9f6be5dc23f99690d60fab159a0c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleProvider.cs",
+      "nativeFreezeSha256": "4a7e151cce4aa0b0f931bcc4cce922f9e3df5029467d051a00d545c479da68f9",
+      "finalSha256": "4a7e151cce4aa0b0f931bcc4cce922f9e3df5029467d051a00d545c479da68f9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionBatchGuardPort.cs",
+      "nativeFreezeSha256": "a712c5b7c9af24a51e369e1912098baa7ff8dcc82d716f104de266e70c1c2405",
+      "finalSha256": "a712c5b7c9af24a51e369e1912098baa7ff8dcc82d716f104de266e70c1c2405",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityGuardRevocationMirror.cs",
+      "nativeFreezeSha256": "768a2d33f16cb090e948c8aef7e4aae7d4b902e51d4da99a397d23941f928e72",
+      "finalSha256": "768a2d33f16cb090e948c8aef7e4aae7d4b902e51d4da99a397d23941f928e72",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityNoIssueAuthority.cs",
+      "nativeFreezeSha256": "bce4c9ccd98b740c6a4b3ba127380b0f330e4b4ecf20941f537e7ffbc4d92a3b",
+      "finalSha256": "bce4c9ccd98b740c6a4b3ba127380b0f330e4b4ecf20941f537e7ffbc4d92a3b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityOriginalSigningReceiptAuthority.cs",
+      "nativeFreezeSha256": "db812aefebfea8f85ddcae2c4ee29f05c7b05c6be83c8f0868719e4d4a59be36",
+      "finalSha256": "db812aefebfea8f85ddcae2c4ee29f05c7b05c6be83c8f0868719e4d4a59be36",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilityRevocationAuthenticator.cs",
+      "nativeFreezeSha256": "629f2d771bdbd1653060e7a8ce0b894ae2b75e8e4ba5a7c49cd1fca6c433c520",
+      "finalSha256": "629f2d771bdbd1653060e7a8ce0b894ae2b75e8e4ba5a7c49cd1fca6c433c520",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningActor.cs",
+      "nativeFreezeSha256": "27371e0d2b81167d96bd8c59bb5a7df08b8f784b1a379c64db305ac9dfe86463",
+      "finalSha256": "27371e0d2b81167d96bd8c59bb5a7df08b8f784b1a379c64db305ac9dfe86463",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningAuthority.cs",
+      "nativeFreezeSha256": "e8fffb92475dd8a2b3113fe467a8327f4f88ecfd06589a9003bdd5e9e930bb93",
+      "finalSha256": "e8fffb92475dd8a2b3113fe467a8327f4f88ecfd06589a9003bdd5e9e930bb93",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningProvider.cs",
+      "nativeFreezeSha256": "9b848b26668b5842cf969106f97451e7f8fceabcd92b8b4cc0933ec9f2b7ce30",
+      "finalSha256": "9b848b26668b5842cf969106f97451e7f8fceabcd92b8b4cc0933ec9f2b7ce30",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IDeletionCapabilitySigningTrustProvider.cs",
+      "nativeFreezeSha256": "0db1af23249feaeadb035998049fc94828819b2f0a82771c1873004afa771ed8",
+      "finalSha256": "0db1af23249feaeadb035998049fc94828819b2f0a82771c1873004afa771ed8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDeliveryActor.cs",
+      "nativeFreezeSha256": "e41a65fc279039fca616fd0dd99feb996c1280c4a87ba2b76163226b3c68dbe7",
+      "finalSha256": "e41a65fc279039fca616fd0dd99feb996c1280c4a87ba2b76163226b3c68dbe7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDeliveryAuthority.cs",
+      "nativeFreezeSha256": "7f8305b83a3c70787342ab3c0144c2fa25c9a6e64d552152f950c4679688a520",
+      "finalSha256": "7f8305b83a3c70787342ab3c0144c2fa25c9a6e64d552152f950c4679688a520",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDeliveryDenialOriginalStore.cs",
+      "nativeFreezeSha256": "ba7e7ef8470b6b50595a99327009f5966c47584b64416bda5b58335f13a76ff4",
+      "finalSha256": "ba7e7ef8470b6b50595a99327009f5966c47584b64416bda5b58335f13a76ff4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportKeyDirectDeliveryProvider.cs",
+      "nativeFreezeSha256": "0b631ff42fcf9e645d6f410a5328caefb6d68a79e30f1a7fbd507bae3ddeee24",
+      "finalSha256": "0b631ff42fcf9e645d6f410a5328caefb6d68a79e30f1a7fbd507bae3ddeee24",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportQualificationMaterialSource.cs",
+      "nativeFreezeSha256": "d4313552e9a8824d9b544ba79070d4c60aa78b662e8580345478a79d56e9f7d7",
+      "finalSha256": "d4313552e9a8824d9b544ba79070d4c60aa78b662e8580345478a79d56e9f7d7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IExportQualificationTrustSource.cs",
+      "nativeFreezeSha256": "79cebd8ff8742a909c2693f0bf00da63d3a245693c79aefc74763af2b800efc7",
+      "finalSha256": "79cebd8ff8742a909c2693f0bf00da63d3a245693c79aefc74763af2b800efc7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34CanaryAuthority.cs",
+      "nativeFreezeSha256": "8ec2225aa5cf9dd599e49349b4440b85d7fe70efcd862dc13f44d5508f9538a4",
+      "finalSha256": "8ec2225aa5cf9dd599e49349b4440b85d7fe70efcd862dc13f44d5508f9538a4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34PersistedCanaryReader.cs",
+      "nativeFreezeSha256": "e25225b8c0b28903ae1d8a6a3e2e17e6f6c4dcfa8561f8709466876a00a7313d",
+      "finalSha256": "e25225b8c0b28903ae1d8a6a3e2e17e6f6c4dcfa8561f8709466876a00a7313d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IFr34ProtectionCanaryEngine.cs",
+      "nativeFreezeSha256": "4ecd3992f1d4c1d9d0d53f51b5662310f21c5f2adcae65ae130cc2ff6438991d",
+      "finalSha256": "4ecd3992f1d4c1d9d0d53f51b5662310f21c5f2adcae65ae130cc2ff6438991d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IIndependentDecisionAuthority.cs",
+      "nativeFreezeSha256": "0fef5c1bcbb42a2dbdb923c3262ddd3b90e1c01985ec853f271040ab7b563e5b",
+      "finalSha256": "0fef5c1bcbb42a2dbdb923c3262ddd3b90e1c01985ec853f271040ab7b563e5b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformHmacKeyProvider.cs",
+      "nativeFreezeSha256": "929b244db6cd2b7297f88d4b7b0981dea59859d6cf2f394b49e3272e98950224",
+      "finalSha256": "929b244db6cd2b7297f88d4b7b0981dea59859d6cf2f394b49e3272e98950224",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformKeyInventoryActor.cs",
+      "nativeFreezeSha256": "0dbb5ddbcbaaf3cf3d0ce1aa937a2efdf23a488134a8352be1594a860adaa03f",
+      "finalSha256": "0dbb5ddbcbaaf3cf3d0ce1aa937a2efdf23a488134a8352be1594a860adaa03f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformKeyInventoryAuthority.cs",
+      "nativeFreezeSha256": "0a4965c87837eea8fa4eca4e6e676de1d0b747e77f2efc21b8eba8b534a320cc",
+      "finalSha256": "0a4965c87837eea8fa4eca4e6e676de1d0b747e77f2efc21b8eba8b534a320cc",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPlatformSigningProfileProvider.cs",
+      "nativeFreezeSha256": "11e9cc3cd32526c383d669b39a94a732037ed9853a25cb8cbc7d8392eb37b97d",
+      "finalSha256": "11e9cc3cd32526c383d669b39a94a732037ed9853a25cb8cbc7d8392eb37b97d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IPrivateOwnerOperationGrantSource.cs",
+      "nativeFreezeSha256": "1aa450bf684e3c7838897833023c9cf17e80ca4bbd2dd870c3ea07f87348da14",
+      "finalSha256": "1aa450bf684e3c7838897833023c9cf17e80ca4bbd2dd870c3ea07f87348da14",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IReplicatedSecuritySpoolAuthority.cs",
+      "nativeFreezeSha256": "286f7e5b1be1e0a9391ecd347c7e6ee63ee87d53c586f9525a5d65efdda08175",
+      "finalSha256": "286f7e5b1be1e0a9391ecd347c7e6ee63ee87d53c586f9525a5d65efdda08175",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ISecurityObservationRecorder.cs",
+      "nativeFreezeSha256": "49f97e2895169731b39ce6cbeb7f9b1bfd2c1cdb7bc16afbd8c68abb691bc6ca",
+      "finalSha256": "49f97e2895169731b39ce6cbeb7f9b1bfd2c1cdb7bc16afbd8c68abb691bc6ca",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ITrustedEnvelopeReplayRegistrar.cs",
+      "nativeFreezeSha256": "1ac256743bf75d71937fb8e582a582567e195891af0d6ada36f02de92a73bdfe",
+      "finalSha256": "1ac256743bf75d71937fb8e582a582567e195891af0d6ada36f02de92a73bdfe",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryClassOutcome.cs",
+      "nativeFreezeSha256": "80773ea163aeff3161a0c3522d67005802e38f4ba7cddfc650ff1570126fe5b8",
+      "finalSha256": "80773ea163aeff3161a0c3522d67005802e38f4ba7cddfc650ff1570126fe5b8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCleanup.cs",
+      "nativeFreezeSha256": "459bf37506ff2c5a3de43ced6e93b93f64abc14e2736e3f462044a7f6ff3c79a",
+      "finalSha256": "459bf37506ff2c5a3de43ced6e93b93f64abc14e2736e3f462044a7f6ff3c79a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCleanupOutcome.cs",
+      "nativeFreezeSha256": "c86707b2bbb70980e9b1896653e2ceef7f08979e17041dfa719c4de56945f831",
+      "finalSha256": "c86707b2bbb70980e9b1896653e2ceef7f08979e17041dfa719c4de56945f831",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCopyRecord.cs",
+      "nativeFreezeSha256": "61a790ffecdd87ff7eba74d031c0f884ff2b090559681d829740b04270ceaa90",
+      "finalSha256": "61a790ffecdd87ff7eba74d031c0f884ff2b090559681d829740b04270ceaa90",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCopyRegistration.cs",
+      "nativeFreezeSha256": "0228b264a18bc6d396e7c172657df28ba7e5bca9e8aca8efec3896875e73f105",
+      "finalSha256": "0228b264a18bc6d396e7c172657df28ba7e5bca9e8aca8efec3896875e73f105",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCustodyOptions.cs",
+      "nativeFreezeSha256": "93d3a6aa292090368f5e24d4f6790b3533e7bb99c6267696742679464271de2d",
+      "finalSha256": "93d3a6aa292090368f5e24d4f6790b3533e7bb99c6267696742679464271de2d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryCustodyUnit.cs",
+      "nativeFreezeSha256": "e961874210ac0fb9de9c9bce60509b8188ca349766e89860406ee85a817f9aca",
+      "finalSha256": "e961874210ac0fb9de9c9bce60509b8188ca349766e89860406ee85a817f9aca",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryDestructionReceipt.cs",
+      "nativeFreezeSha256": "8da3c71eff75647f9797c13ea8e8c71daa3ce6b54b5fff65eebd1b080a60e4b0",
+      "finalSha256": "8da3c71eff75647f9797c13ea8e8c71daa3ce6b54b5fff65eebd1b080a60e4b0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs",
+      "nativeFreezeSha256": "89d407069b96ca56b962597b4e602ab73b3cf99d53cae28e57c53400cd8b235e",
+      "finalSha256": "89d407069b96ca56b962597b4e602ab73b3cf99d53cae28e57c53400cd8b235e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IdentityHistoryLifecycleState.cs",
+      "nativeFreezeSha256": "067739d1b9de3bdbe43e5c9e7cfc7b96d3455b00ff983edefe8d9cfa54656914",
+      "finalSha256": "067739d1b9de3bdbe43e5c9e7cfc7b96d3455b00ff983edefe8d9cfa54656914",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/IndependentDecisionManifestVerifier.cs",
+      "nativeFreezeSha256": "ceeb8a39b93e5d2509d3144ee9f6b3a9892c299e362573c65363c30013ab5a1a",
+      "finalSha256": "ceeb8a39b93e5d2509d3144ee9f6b3a9892c299e362573c65363c30013ab5a1a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/OwnedExportKey.cs",
+      "nativeFreezeSha256": "f71b697f704a049d078b06cb21a1d90c8085ff71db6d074c58f13850024ef7c3",
+      "finalSha256": "f71b697f704a049d078b06cb21a1d90c8085ff71db6d074c58f13850024ef7c3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformAcceptedEnvelopeTiming.cs",
+      "nativeFreezeSha256": "6174b0186506271094ca90a4b0285c8b5bfe73290e16e9a86f1a5907edb7cc96",
+      "finalSha256": "6174b0186506271094ca90a4b0285c8b5bfe73290e16e9a86f1a5907edb7cc96",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformCanonicalBytes.cs",
+      "nativeFreezeSha256": "a4624fbc113d5cdc79fbf75e5875f2000a3821821e4eff8442c006fec186171a",
+      "finalSha256": "a4624fbc113d5cdc79fbf75e5875f2000a3821821e4eff8442c006fec186171a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformCustodyServiceCollectionExtensions.cs",
+      "nativeFreezeSha256": "564f7715fa04df908c1b49d0598a3eb9ca374c37338bd13d6c22d56cb0bf09f8",
+      "finalSha256": "564f7715fa04df908c1b49d0598a3eb9ca374c37338bd13d6c22d56cb0bf09f8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyMetadata.cs",
+      "nativeFreezeSha256": "6871b94c140f917a2847b6e4fa88aef5d85267cb070ec48bfadb780fd3fd95c9",
+      "finalSha256": "6871b94c140f917a2847b6e4fa88aef5d85267cb070ec48bfadb780fd3fd95c9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyResolution.cs",
+      "nativeFreezeSha256": "51f44587dec6ff4e854efbfefb2d23ba206be102d26fb73f122842b7840a0a30",
+      "finalSha256": "51f44587dec6ff4e854efbfefb2d23ba206be102d26fb73f122842b7840a0a30",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeySnapshot.cs",
+      "nativeFreezeSha256": "0e8082c10791d7e5c318cb5fdf48bff7b5c2d8556cdc47587f91af6f4d69c26b",
+      "finalSha256": "0e8082c10791d7e5c318cb5fdf48bff7b5c2d8556cdc47587f91af6f4d69c26b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacKeyState.cs",
+      "nativeFreezeSha256": "3ea583bddffecb3c583f733627f35d6bb39029cb7cf74caaeede572e649e81fe",
+      "finalSha256": "3ea583bddffecb3c583f733627f35d6bb39029cb7cf74caaeede572e649e81fe",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacPurpose.cs",
+      "nativeFreezeSha256": "f5ac7f0ed2dbef0f7a30a0ddd938006017bf521a41e10b8e8df519e039c8a31b",
+      "finalSha256": "f5ac7f0ed2dbef0f7a30a0ddd938006017bf521a41e10b8e8df519e039c8a31b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacResult.cs",
+      "nativeFreezeSha256": "30e70b6dc05abeb2493c4e874c73949b4f191208569083b2e961d91ed8dd6aa5",
+      "finalSha256": "30e70b6dc05abeb2493c4e874c73949b4f191208569083b2e961d91ed8dd6aa5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacScope.cs",
+      "nativeFreezeSha256": "67a9ad4a570dd7b8311615fb0fb120917ee16fadabf949ec81504c10ccad7aa8",
+      "finalSha256": "67a9ad4a570dd7b8311615fb0fb120917ee16fadabf949ec81504c10ccad7aa8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformHmacService.cs",
+      "nativeFreezeSha256": "65050608d927fac05f13a26a0ec962498d4e422874bb2914898a08544f179721",
+      "finalSha256": "65050608d927fac05f13a26a0ec962498d4e422874bb2914898a08544f179721",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryAction.cs",
+      "nativeFreezeSha256": "52d9372504c4514765ce3ac8fe5f897f7c1f59f23224ef82eec38f4f0f0afec7",
+      "finalSha256": "52d9372504c4514765ce3ac8fe5f897f7c1f59f23224ef82eec38f4f0f0afec7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryActor.cs",
+      "nativeFreezeSha256": "08adde91f27dc7b1676bfeb151a02a0a36b55b2cc39d96d2949ef10d9e0902f2",
+      "finalSha256": "08adde91f27dc7b1676bfeb151a02a0a36b55b2cc39d96d2949ef10d9e0902f2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryChange.cs",
+      "nativeFreezeSha256": "0d3ce3ad0641b79a1bdc590db198f1398689cc6bb235df6369964413be68a138",
+      "finalSha256": "0d3ce3ad0641b79a1bdc590db198f1398689cc6bb235df6369964413be68a138",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventoryEntry.cs",
+      "nativeFreezeSha256": "777811790b32fa18d3de97d1789c83a21c95adb07938438f80748ba358527de2",
+      "finalSha256": "777811790b32fa18d3de97d1789c83a21c95adb07938438f80748ba358527de2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventorySignal.cs",
+      "nativeFreezeSha256": "1788b0822b3f00cd2a43b9e5122898b3da17eb3112ed4899ec80f35a66e86563",
+      "finalSha256": "1788b0822b3f00cd2a43b9e5122898b3da17eb3112ed4899ec80f35a66e86563",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyInventorySnapshot.cs",
+      "nativeFreezeSha256": "7b39865a93a13e8d994bdf6320ba7dabe1399e9d00a599eb58a3947cf741068a",
+      "finalSha256": "7b39865a93a13e8d994bdf6320ba7dabe1399e9d00a599eb58a3947cf741068a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyPurpose.cs",
+      "nativeFreezeSha256": "abcf087ee4f5ec1b2821848fab9567dcc7a2a2690ccff29647339a8958d5a15d",
+      "finalSha256": "abcf087ee4f5ec1b2821848fab9567dcc7a2a2690ccff29647339a8958d5a15d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyResolution.cs",
+      "nativeFreezeSha256": "46c5db43be142f848700711d0ed9061607cdcbd73b39433b5cf8f363d0def8c0",
+      "finalSha256": "46c5db43be142f848700711d0ed9061607cdcbd73b39433b5cf8f363d0def8c0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformKeyVersion.cs",
+      "nativeFreezeSha256": "90067f867ac8dda8b94a61abbd79c88146fc765783fef80f5f9e17609b6a0971",
+      "finalSha256": "90067f867ac8dda8b94a61abbd79c88146fc765783fef80f5f9e17609b6a0971",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformPrivateCapabilityComposition.cs",
+      "nativeFreezeSha256": "e604aaa95efd89b78f326c1b424ed37f87e7350306dbe053b00f9c7e6a9ce49a",
+      "finalSha256": "e604aaa95efd89b78f326c1b424ed37f87e7350306dbe053b00f9c7e6a9ce49a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformSecurityDenialRecorder.cs",
+      "nativeFreezeSha256": "814c5f057c60f9896d785c9120e6ce36d903b5bf7e4a48d06d7f159f4518e47a",
+      "finalSha256": "814c5f057c60f9896d785c9120e6ce36d903b5bf7e4a48d06d7f159f4518e47a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PlatformSigningProfile.cs",
+      "nativeFreezeSha256": "b81e1119fad9b213ce405f496d6be85240ad41b80b4644781fcd58af3fd0ca25",
+      "finalSha256": "b81e1119fad9b213ce405f496d6be85240ad41b80b4644781fcd58af3fd0ca25",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateActorStateIoLifetime.cs",
+      "nativeFreezeSha256": "c52054de973614974eb2e7342907a9fbb8dd55497b9d1a628638dab6a2817bd5",
+      "finalSha256": "c52054de973614974eb2e7342907a9fbb8dd55497b9d1a628638dab6a2817bd5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateCustodyBindingAuthority.cs",
+      "nativeFreezeSha256": "2306e8fb5ac74e6fac32d4da22c071afe2a0a4ec9a791eaaf7704638becea779",
+      "finalSha256": "2306e8fb5ac74e6fac32d4da22c071afe2a0a4ec9a791eaaf7704638becea779",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationAuthenticator.cs",
+      "nativeFreezeSha256": "24ea0280917d383adb7e529773f9374e889f95aedead28071c69f979aa4c8081",
+      "finalSha256": "24ea0280917d383adb7e529773f9374e889f95aedead28071c69f979aa4c8081",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationCredential.cs",
+      "nativeFreezeSha256": "1d81c90aa66a819c686d1435dab49efae9e6d1f2691d5370c7ee54ff16ac1b5b",
+      "finalSha256": "1d81c90aa66a819c686d1435dab49efae9e6d1f2691d5370c7ee54ff16ac1b5b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationDeadline.cs",
+      "nativeFreezeSha256": "84ccceb3ee3c727767a7bcfe3da62d90bbacc29a12fc8f4af37130f7e7c10e02",
+      "finalSha256": "84ccceb3ee3c727767a7bcfe3da62d90bbacc29a12fc8f4af37130f7e7c10e02",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationGrant.cs",
+      "nativeFreezeSha256": "bb8ee04d48ddad2cc650918e28ee013cd44e326a06d446e19e43d250ab10494c",
+      "finalSha256": "bb8ee04d48ddad2cc650918e28ee013cd44e326a06d446e19e43d250ab10494c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationMachine.cs",
+      "nativeFreezeSha256": "bb49a48a63a9cd20b5b4e884ef0b6a910d86b5fae6e84b685471e0014cc24615",
+      "finalSha256": "bb49a48a63a9cd20b5b4e884ef0b6a910d86b5fae6e84b685471e0014cc24615",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateOwnerOperationScope.cs",
+      "nativeFreezeSha256": "9759119564a9ab6ddde3bf82f90d69d276ca322e4cf56eb7ffafc0884c3820e4",
+      "finalSha256": "9759119564a9ab6ddde3bf82f90d69d276ca322e4cf56eb7ffafc0884c3820e4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/PrivateReplicatedSpoolAuthority.cs",
+      "nativeFreezeSha256": "02f45b90f5e65388b28f0d5f0242f88e6feaafa969f612cfdada198aa89e9c81",
+      "finalSha256": "02f45b90f5e65388b28f0d5f0242f88e6feaafa969f612cfdada198aa89e9c81",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpool.cs",
+      "nativeFreezeSha256": "3cd74b3aa4ebc94eb45e6ec9ec6cd2d59561a3e5063ab67f8aae33f0cb6e8300",
+      "finalSha256": "3cd74b3aa4ebc94eb45e6ec9ec6cd2d59561a3e5063ab67f8aae33f0cb6e8300",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecurityObservationSpoolWorker.cs",
+      "nativeFreezeSha256": "7f2a370e2cf0c65ca116fa77635c69463e8d2099e4032a656cb35f31fcc792a7",
+      "finalSha256": "7f2a370e2cf0c65ca116fa77635c69463e8d2099e4032a656cb35f31fcc792a7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/ReplicatedSecuritySpoolTarget.cs",
+      "nativeFreezeSha256": "ba4b3d53d088473ad72057c8b582e686ea3eb369de3a9b5d60fc232a3f7a8e9e",
+      "finalSha256": "ba4b3d53d088473ad72057c8b582e686ea3eb369de3a9b5d60fc232a3f7a8e9e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventNoRecordProof.cs",
+      "nativeFreezeSha256": "761ee97fb868b1baece666170ae018a2f77ffada95019353c640576b4dd22ea3",
+      "finalSha256": "761ee97fb868b1baece666170ae018a2f77ffada95019353c640576b4dd22ea3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecordReceipt.cs",
+      "nativeFreezeSha256": "eee27da2dd7a951dd87a144dfdedd40ef36deb3a4ba1196768c5b4f3b37e84f7",
+      "finalSha256": "eee27da2dd7a951dd87a144dfdedd40ef36deb3a4ba1196768c5b4f3b37e84f7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecorderLookup.cs",
+      "nativeFreezeSha256": "6e2ac52534ab8315db30c6d587c30c8be562f7036ef750d6f540f445100db87c",
+      "finalSha256": "6e2ac52534ab8315db30c6d587c30c8be562f7036ef750d6f540f445100db87c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityEventRecorderLookupState.cs",
+      "nativeFreezeSha256": "eed18ae93d65a4b57998b39d0887f9c707aac7d9ad48d57038f9651dee8dca89",
+      "finalSha256": "eed18ae93d65a4b57998b39d0887f9c707aac7d9ad48d57038f9651dee8dca89",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationIntent.cs",
+      "nativeFreezeSha256": "2fc25a8bc4afd374903860217d4a03c586d0f94c05cafdf8b15b3f0f6eb8f00b",
+      "finalSha256": "2fc25a8bc4afd374903860217d4a03c586d0f94c05cafdf8b15b3f0f6eb8f00b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationOriginalLookup.cs",
+      "nativeFreezeSha256": "68e6abf233109deeaa602da14cabf95c3aaa28ecba7a2eff0862cc802178d620",
+      "finalSha256": "68e6abf233109deeaa602da14cabf95c3aaa28ecba7a2eff0862cc802178d620",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationOriginalLookupResult.cs",
+      "nativeFreezeSha256": "fcc95bd698a376e064a0eed7c84b951e9005d380eb0518ec74bacb7c117195af",
+      "finalSha256": "fcc95bd698a376e064a0eed7c84b951e9005d380eb0518ec74bacb7c117195af",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationRecord.cs",
+      "nativeFreezeSha256": "9c56d100dc97b474d16979766d8193230bfe445bbbf102b35ec1a9546a3a4411",
+      "finalSha256": "9c56d100dc97b474d16979766d8193230bfe445bbbf102b35ec1a9546a3a4411",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecurityObservationRecoveryGrant.cs",
+      "nativeFreezeSha256": "49e7e3a42c34a7813c5ece2d2870fa18f30d7966e71ec2dc7b0772213465a0b9",
+      "finalSha256": "49e7e3a42c34a7813c5ece2d2870fa18f30d7966e71ec2dc7b0772213465a0b9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecuritySpoolArchivePage.cs",
+      "nativeFreezeSha256": "70ee7c03cb6568b85afee4f0ec14c430d69d5d30cada7e0313afc2693ef53b77",
+      "finalSha256": "70ee7c03cb6568b85afee4f0ec14c430d69d5d30cada7e0313afc2693ef53b77",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/SecuritySpoolSnapshot.cs",
+      "nativeFreezeSha256": "8578a880c5ebdc2482f3f9eea835bbdf5f270e9c7cd88d20ea8a27873dc4b272",
+      "finalSha256": "8578a880c5ebdc2482f3f9eea835bbdf5f270e9c7cd88d20ea8a27873dc4b272",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelope.cs",
+      "nativeFreezeSha256": "e056effa2d9745b5997ce314cdabe62afc76581429a5d7e2d4c33d627a4142cb",
+      "finalSha256": "e056effa2d9745b5997ce314cdabe62afc76581429a5d7e2d4c33d627a4142cb",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeAuthenticator.cs",
+      "nativeFreezeSha256": "de97f8a48db0f1b4e6de1f34403f6bdb290f8a6af476fdd45106a767d311df48",
+      "finalSha256": "de97f8a48db0f1b4e6de1f34403f6bdb290f8a6af476fdd45106a767d311df48",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeCodec.cs",
+      "nativeFreezeSha256": "6c6010b914fb315cd66108cc6d711cdd92235f70b0fa1245ffc02abd3f236780",
+      "finalSha256": "6c6010b914fb315cd66108cc6d711cdd92235f70b0fa1245ffc02abd3f236780",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeDenialCause.cs",
+      "nativeFreezeSha256": "4da03e3844f9a69afb9c351f8a76d6d436093420c4195af22306ff0b5ec79c04",
+      "finalSha256": "4da03e3844f9a69afb9c351f8a76d6d436093420c4195af22306ff0b5ec79c04",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeIdentity.cs",
+      "nativeFreezeSha256": "24a07db789e949f143f8ef02134304580d874ba15de74f47face4e8f1a37ad46",
+      "finalSha256": "24a07db789e949f143f8ef02134304580d874ba15de74f47face4e8f1a37ad46",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayIntent.cs",
+      "nativeFreezeSha256": "c09fb8c868442c61e85cccb66b79c6af0d3048e43c5cb17894b03d05f0756658",
+      "finalSha256": "c09fb8c868442c61e85cccb66b79c6af0d3048e43c5cb17894b03d05f0756658",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayReceipt.cs",
+      "nativeFreezeSha256": "c6c58f1b737fef92d51fe9dd36b617259eac932f0966e7313fd2d97050599687",
+      "finalSha256": "c6c58f1b737fef92d51fe9dd36b617259eac932f0966e7313fd2d97050599687",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeReplayVerifier.cs",
+      "nativeFreezeSha256": "be05c042fc5dceba36f7d059a606e43166ca68bbf8f5fe281ccd8ad13fc0c224",
+      "finalSha256": "be05c042fc5dceba36f7d059a606e43166ca68bbf8f5fe281ccd8ad13fc0c224",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedEnvelopeResult.cs",
+      "nativeFreezeSha256": "30e0caa267c5243d87cc7e5fd5f362c17e90257c42bdd16682ce201afd2cdcd5",
+      "finalSha256": "30e0caa267c5243d87cc7e5fd5f362c17e90257c42bdd16682ce201afd2cdcd5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedPrincipal.cs",
+      "nativeFreezeSha256": "36dc110f0d9a4908b3146a2ab4f400e175b8f761f98727c067819de1d70b1b26",
+      "finalSha256": "36dc110f0d9a4908b3146a2ab4f400e175b8f761f98727c067819de1d70b1b26",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/TrustedPrincipalKind.cs",
+      "nativeFreezeSha256": "d24ae1b599acdc3a3e691822af71571672992556379d0ef257a6e81c46ddbe46",
+      "finalSha256": "d24ae1b599acdc3a3e691822af71571672992556379d0ef257a6e81c46ddbe46",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/UnavailablePlatformHmacKeyProvider.cs",
+      "nativeFreezeSha256": "cf1d4a65e130eb63f18cd8a635892055dd52ce6c7c5b5d72dd3cf3f5d9f362b6",
+      "finalSha256": "cf1d4a65e130eb63f18cd8a635892055dd52ce6c7c5b5d72dd3cf3f5d9f362b6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/UnavailablePlatformSigningProfileProvider.cs",
+      "nativeFreezeSha256": "c1fd8b528ecc563a35e470a55e693824c385466854dd9ae35004e3ddbcf2a75e",
+      "finalSha256": "c1fd8b528ecc563a35e470a55e693824c385466854dd9ae35004e3ddbcf2a75e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/WrappedCustodyKey.cs",
+      "nativeFreezeSha256": "bed0bf2bb09fcb71b55dd771041dd4da938630ee7c5318e0b492a49d78c5a236",
+      "finalSha256": "bed0bf2bb09fcb71b55dd771041dd4da938630ee7c5318e0b492a49d78c5a236",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Custody/WrappedExportKey.cs",
+      "nativeFreezeSha256": "688d4b90872bcb1a69f862775a5e621512d6b964bb548ae384bfe530ba8058e4",
+      "finalSha256": "688d4b90872bcb1a69f862775a5e621512d6b964bb548ae384bfe530ba8058e4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/AtomicDeletionManifestBindingProvider.cs",
+      "nativeFreezeSha256": "a69cbc4d6fdfbdc97e5e8b88601008105c430ec885df8a676d9e0a820f14036e",
+      "finalSha256": "a69cbc4d6fdfbdc97e5e8b88601008105c430ec885df8a676d9e0a820f14036e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyDeletionConsumptionOwnerAuthority.cs",
+      "nativeFreezeSha256": "4495acf4eb68948c01ce41c919be64450be07e0d9e7b3673904c5fb6ab0c486f",
+      "finalSha256": "4495acf4eb68948c01ce41c919be64450be07e0d9e7b3673904c5fb6ab0c486f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyGovernanceGuardInstallation.cs",
+      "nativeFreezeSha256": "1cf05cd29069780c6251ebfa91c9591cd7689b82b27c568e98a95e59a7586800",
+      "finalSha256": "1cf05cd29069780c6251ebfa91c9591cd7689b82b27c568e98a95e59a7586800",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyGuardedStateInstallation.cs",
+      "nativeFreezeSha256": "2737f65e1675861c2e8dec51a0bbfcc754f84bc9d007a0ca98a1cf8d285e4bb6",
+      "finalSha256": "2737f65e1675861c2e8dec51a0bbfcc754f84bc9d007a0ca98a1cf8d285e4bb6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyGuardedTransactionAnchors.cs",
+      "nativeFreezeSha256": "4b886437a3b596c904d076c8da95e8313b5e5097748f15f6fad0377d1dc0c65e",
+      "finalSha256": "4b886437a3b596c904d076c8da95e8313b5e5097748f15f6fad0377d1dc0c65e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionBindingRecord.cs",
+      "nativeFreezeSha256": "3e7d92b1bbb2487000fe34232d1ad8cf3421c061cbc22087b2aad8716a3806f6",
+      "finalSha256": "3e7d92b1bbb2487000fe34232d1ad8cf3421c061cbc22087b2aad8716a3806f6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionBindingResource.cs",
+      "nativeFreezeSha256": "a9a44cbe37aa8ff4e920cec117a569a830e993d643195ea7f098fc6b9625d327",
+      "finalSha256": "a9a44cbe37aa8ff4e920cec117a569a830e993d643195ea7f098fc6b9625d327",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionDigestReference.cs",
+      "nativeFreezeSha256": "67c71ced6173d89533c1183ce82bd59a1612dff49083663b8a157c59664c7813",
+      "finalSha256": "67c71ced6173d89533c1183ce82bd59a1612dff49083663b8a157c59664c7813",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionMaterialProfile.cs",
+      "nativeFreezeSha256": "18a86c494d02137102a79822557ad73bc978f8beded3cf5206fed49d6219edd9",
+      "finalSha256": "18a86c494d02137102a79822557ad73bc978f8beded3cf5206fed49d6219edd9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyDelivery.cs",
+      "nativeFreezeSha256": "386586cb2cab9f28a8cc95fc77fd00efa1d2cc07bb108b61d7088c27d29242f5",
+      "finalSha256": "386586cb2cab9f28a8cc95fc77fd00efa1d2cc07bb108b61d7088c27d29242f5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionOccurrenceKeyProvider.cs",
+      "nativeFreezeSha256": "86112842d370b52d59962fd441ee43cb09e75987d7770b4d90e6d8deed59dc71",
+      "finalSha256": "86112842d370b52d59962fd441ee43cb09e75987d7770b4d90e6d8deed59dc71",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyInteractionProtectionBindingSource.cs",
+      "nativeFreezeSha256": "63d1e1465e91fd1740e60ffe3fdc63435220a8d627f6eb64472c599547311cee",
+      "finalSha256": "63d1e1465e91fd1740e60ffe3fdc63435220a8d627f6eb64472c599547311cee",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyMaterialUseIdentity.cs",
+      "nativeFreezeSha256": "d091cfd6ab3d585de322201a17abd2a450d6d87978c2db28cfb52f752198fdf7",
+      "finalSha256": "d091cfd6ab3d585de322201a17abd2a450d6d87978c2db28cfb52f752198fdf7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyOccurrenceHolderCompletionWorker.cs",
+      "nativeFreezeSha256": "2e0215e0e485def71b8f5163494d4049911e382a20f9554b520d96231a7e4071",
+      "finalSha256": "2e0215e0e485def71b8f5163494d4049911e382a20f9554b520d96231a7e4071",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/CustodyOccurrenceMaterialClient.cs",
+      "nativeFreezeSha256": "5072e5af3dac115ee4a7c88eea47b9969160a676553e333fe184898ac329276b",
+      "finalSha256": "5072e5af3dac115ee4a7c88eea47b9969160a676553e333fe184898ac329276b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprAtomicDeletionManifestProvider.cs",
+      "nativeFreezeSha256": "1fecc811d9581c087f465ae6498f2d32df3ed105db28359cd090a92a50189fef",
+      "finalSha256": "1fecc811d9581c087f465ae6498f2d32df3ed105db28359cd090a92a50189fef",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootAuthorization.cs",
+      "nativeFreezeSha256": "31d72d901875586867c43d0db7664e3bf12b49ce86942984ff45333be508ac8a",
+      "finalSha256": "31d72d901875586867c43d0db7664e3bf12b49ce86942984ff45333be508ac8a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootEvidenceJournal.cs",
+      "nativeFreezeSha256": "6e9b6f2199925c535de8bbcac8a2610af32205c67c0f2e0081412b23c148b81e",
+      "finalSha256": "6e9b6f2199925c535de8bbcac8a2610af32205c67c0f2e0081412b23c148b81e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootGovernanceGuard.cs",
+      "nativeFreezeSha256": "00b9f4567ec6e080166ba7ae993ce0aa89a09d3a8aefb52f1cca1cb944caed74",
+      "finalSha256": "3827aa27a22313a0574715975192e93477a22f9d0863f56dfdba5d30db3fdfc3",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootInventory.cs",
+      "nativeFreezeSha256": "be1ff1523aa3a52a580b8321fe7d2a67aa28bed6a3a5e6ebcd73cd55a97b74f2",
+      "finalSha256": "be1ff1523aa3a52a580b8321fe7d2a67aa28bed6a3a5e6ebcd73cd55a97b74f2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootOccurrenceSource.cs",
+      "nativeFreezeSha256": "3e768ef2e9c1a14b61a6938e3d4258717fe4878f3c4ca7efea9f42e16571bc8d",
+      "finalSha256": "3e768ef2e9c1a14b61a6938e3d4258717fe4878f3c4ca7efea9f42e16571bc8d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprErasureRootRevocationEvidence.cs",
+      "nativeFreezeSha256": "fb00d6296c2a943ee5752d8e22c5650132b838f691544c04e1cdd43b14d406b9",
+      "finalSha256": "fb00d6296c2a943ee5752d8e22c5650132b838f691544c04e1cdd43b14d406b9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprFr34MeasuredOriginalReader.cs",
+      "nativeFreezeSha256": "0f99e08a6a0e180e3fb63cc93d39a8e2575177c3a11343c07ee36548bd1c3ce8",
+      "finalSha256": "0f99e08a6a0e180e3fb63cc93d39a8e2575177c3a11343c07ee36548bd1c3ce8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprFr34OccurrenceEnrollment.cs",
+      "nativeFreezeSha256": "54c166b75efedeaf88efe954e8d49fd2b6dc02f27d5613c790bdf6c68c9ceff9",
+      "finalSha256": "54c166b75efedeaf88efe954e8d49fd2b6dc02f27d5613c790bdf6c68c9ceff9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/DaprJointPhaseNativeSourcePublisher.cs",
+      "nativeFreezeSha256": "ab746d7fd8466ec062351d0e2c9cf440799587649421053b2bcfe32e892682a3",
+      "finalSha256": "ab746d7fd8466ec062351d0e2c9cf440799587649421053b2bcfe32e892682a3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootAnchor.cs",
+      "nativeFreezeSha256": "752ca8a7274d70acb229982f9ae0563fdf8c4736e7300f6f04b9d10b360beb7a",
+      "finalSha256": "752ca8a7274d70acb229982f9ae0563fdf8c4736e7300f6f04b9d10b360beb7a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+      "nativeFreezeSha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+      "finalSha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityApplication.cs",
+      "nativeFreezeSha256": "ae38bc8985b91503d0d6e7af73901ab721c274d15d123ecf6777d3b661ed3d61",
+      "finalSha256": "ae38bc8985b91503d0d6e7af73901ab721c274d15d123ecf6777d3b661ed3d61",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+      "nativeFreezeSha256": "5a0e07372c966ba8b2818a9c6bb4486349d1d5eaca56242bb6231826c2386244",
+      "finalSha256": "d8b48ece4b9036b61a70f494e1bd700544eb2b96ef1868d42043de320fed75e1",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootChunkedArchive.cs",
+      "nativeFreezeSha256": "6a7d185ed3b5f5393ce5b5c54ae12fa77052723ba09368aa5dcd6b149fef8ccc",
+      "finalSha256": "6a7d185ed3b5f5393ce5b5c54ae12fa77052723ba09368aa5dcd6b149fef8ccc",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCiphertext.cs",
+      "nativeFreezeSha256": "2f9c52cee5320eec351f63a1314059c8c085cf04cbaa03651b5f12d86fd0cd04",
+      "finalSha256": "2f9c52cee5320eec351f63a1314059c8c085cf04cbaa03651b5f12d86fd0cd04",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+      "nativeFreezeSha256": "98c280aa2e38c90e5ab4de09c6a58f6566349d2816ccab64216928b6c4faf374",
+      "finalSha256": "98c280aa2e38c90e5ab4de09c6a58f6566349d2816ccab64216928b6c4faf374",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootDeletionOwnerAuthority.cs",
+      "nativeFreezeSha256": "966d795d20624ae3727cce7106f70ba490e38046dc95717efb76f3eab5e02acf",
+      "finalSha256": "966d795d20624ae3727cce7106f70ba490e38046dc95717efb76f3eab5e02acf",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootDigestKeyResolver.cs",
+      "nativeFreezeSha256": "1d3767a3d6356f68bc2947c5c9ac2f0e5f0f3cc52f9b3045c8c1c3b87fddf2d3",
+      "finalSha256": "1d3767a3d6356f68bc2947c5c9ac2f0e5f0f3cc52f9b3045c8c1c3b87fddf2d3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootDurabilityPolicy.cs",
+      "nativeFreezeSha256": "3c1ae40355995a1f9cd5c0ec29697eab0cbe92fb44d9fea4493c0cf5147adff9",
+      "finalSha256": "3c1ae40355995a1f9cd5c0ec29697eab0cbe92fb44d9fea4493c0cf5147adff9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootErasure.cs",
+      "nativeFreezeSha256": "4fa2260c0dde03bc1e5cfa4fe1856e04509384446ac3b7cc625033e4f01189ab",
+      "finalSha256": "4fa2260c0dde03bc1e5cfa4fe1856e04509384446ac3b7cc625033e4f01189ab",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAdmission.cs",
+      "nativeFreezeSha256": "453fd559e524ec014fa8e7b541aba54acf543ac0ca5661b36a52d1dad116b21a",
+      "finalSha256": "453fd559e524ec014fa8e7b541aba54acf543ac0ca5661b36a52d1dad116b21a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootGuardAttempt.cs",
+      "nativeFreezeSha256": "38cdc8b4afcaa388ba23cd88554855afd60c17a636f6addfdc316afdf2108235",
+      "finalSha256": "38cdc8b4afcaa388ba23cd88554855afd60c17a636f6addfdc316afdf2108235",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+      "nativeFreezeSha256": "ada3cc25a04389193ea4ae92807aaae86f145a6707e381251eb5902ed03c8354",
+      "finalSha256": "ada3cc25a04389193ea4ae92807aaae86f145a6707e381251eb5902ed03c8354",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHeadSnapshot.cs",
+      "nativeFreezeSha256": "32b6979f9243bb722316e5310fe30548217170c5342da3da02017870a79da606",
+      "finalSha256": "32b6979f9243bb722316e5310fe30548217170c5342da3da02017870a79da606",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHolderArchive.cs",
+      "nativeFreezeSha256": "064f49f0e7f85151f0d66232f14a313209de7ac3a26086e724c9b11762698f19",
+      "finalSha256": "064f49f0e7f85151f0d66232f14a313209de7ac3a26086e724c9b11762698f19",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHolderCompletionWorker.cs",
+      "nativeFreezeSha256": "6a9a80f7db935e47c8281b66b6c7c1f2f277c1a0aea2256a4c287a197057587d",
+      "finalSha256": "6a9a80f7db935e47c8281b66b6c7c1f2f277c1a0aea2256a4c287a197057587d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHolderIdentity.cs",
+      "nativeFreezeSha256": "00c451babc2e431517825d62fbd9e84ab922729e472d90cd7032fb924fdde806",
+      "finalSha256": "00c451babc2e431517825d62fbd9e84ab922729e472d90cd7032fb924fdde806",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs",
+      "nativeFreezeSha256": "37410c53bfef230dfdc5da3e0eb64e3fecab14aa0e09e6ea250ee26cfc807016",
+      "finalSha256": "3b1085474f7b6e7231106d96c4e9f0d9330a36756f002aff30855b329f92df91",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHostInstallation.cs",
+      "nativeFreezeSha256": "2a6af817ca6e5b3fbe590411052f09b28038da969acee798e10241a9cf8cc0fb",
+      "finalSha256": "2a6af817ca6e5b3fbe590411052f09b28038da969acee798e10241a9cf8cc0fb",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+      "nativeFreezeSha256": "7ec5274ca2dafe0093e47d80b5b49e418853883e98e73d320d3a43afadeb7b7e",
+      "finalSha256": "7ec5274ca2dafe0093e47d80b5b49e418853883e98e73d320d3a43afadeb7b7e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootLifecycleAuthority.cs",
+      "nativeFreezeSha256": "5fb4c8293890ab86d3d19df42d1cbdd272719e71dc3dcf6f52e0b6fc8754606b",
+      "finalSha256": "5fb4c8293890ab86d3d19df42d1cbdd272719e71dc3dcf6f52e0b6fc8754606b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootManifest.cs",
+      "nativeFreezeSha256": "39009425eb8f55bb99b0e67065dc0f3f751fdc6e5a26d3e62b7fb53e2c0c513b",
+      "finalSha256": "39009425eb8f55bb99b0e67065dc0f3f751fdc6e5a26d3e62b7fb53e2c0c513b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootManifestProvider.cs",
+      "nativeFreezeSha256": "e757d281a0e90620d8073579e3b3e1ac9fceea9ee3947525bfc5ecd7a9b65a2d",
+      "finalSha256": "e757d281a0e90620d8073579e3b3e1ac9fceea9ee3947525bfc5ecd7a9b65a2d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootNativeControlsInstallation.cs",
+      "nativeFreezeSha256": "a1f93c26331d6eb34cf07b331d0525b9a6b3fe7852ce8f2fd1a42c2599142602",
+      "finalSha256": "a1f93c26331d6eb34cf07b331d0525b9a6b3fe7852ce8f2fd1a42c2599142602",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs",
+      "nativeFreezeSha256": "48705b74bacfa597dc444fc59ead599b48b6379015c66112416e76a8958f61e2",
+      "finalSha256": "48705b74bacfa597dc444fc59ead599b48b6379015c66112416e76a8958f61e2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootNativeOperationScope.cs",
+      "nativeFreezeSha256": "85ebd30fc99d5e107dd3232bd114a46b2eaf4f070c02149fdaabfa4c6d42b460",
+      "finalSha256": "85ebd30fc99d5e107dd3232bd114a46b2eaf4f070c02149fdaabfa4c6d42b460",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrence.cs",
+      "nativeFreezeSha256": "04baabf3786c7eb958981962d8ed974a31d944f8086c840c9e8e8394db919368",
+      "finalSha256": "04baabf3786c7eb958981962d8ed974a31d944f8086c840c9e8e8394db919368",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceAuthority.cs",
+      "nativeFreezeSha256": "e4e0e95d0b22ce3ede3c61cf582a939361839b40a15f628695ae27f64be730b0",
+      "finalSha256": "e4e0e95d0b22ce3ede3c61cf582a939361839b40a15f628695ae27f64be730b0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs",
+      "nativeFreezeSha256": "e3492e142a2fd80619d6adf6f6888e9d606104d13ad2251a382c3cefaa2d38f9",
+      "finalSha256": "e3492e142a2fd80619d6adf6f6888e9d606104d13ad2251a382c3cefaa2d38f9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceEnrollment.cs",
+      "nativeFreezeSha256": "a8326e862d4b4eb7151acc88e3ca782e7a4b60c61f96aae69d9504c3569da417",
+      "finalSha256": "a8326e862d4b4eb7151acc88e3ca782e7a4b60c61f96aae69d9504c3569da417",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs",
+      "nativeFreezeSha256": "6603d9573c34218f5297b756592ce7a1babc674dc8bfabc46f0da1ca9a84bc00",
+      "finalSha256": "6603d9573c34218f5297b756592ce7a1babc674dc8bfabc46f0da1ca9a84bc00",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootPermanentLossReceipt.cs",
+      "nativeFreezeSha256": "bdeaa5f1026e475a1a2fd6020e2496901b4cbadbb6896181c772f38722811173",
+      "finalSha256": "bdeaa5f1026e475a1a2fd6020e2496901b4cbadbb6896181c772f38722811173",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootPermissionEvidence.cs",
+      "nativeFreezeSha256": "efdf9da5eab64048042f119df5ec1e34832e51f45ce04716e6b5225f253bcd8e",
+      "finalSha256": "efdf9da5eab64048042f119df5ec1e34832e51f45ce04716e6b5225f253bcd8e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusal.cs",
+      "nativeFreezeSha256": "ca1a4f9336f3bf9befd7d525ef6650183bb87f7222511be30c4d075e19b919c9",
+      "finalSha256": "ca1a4f9336f3bf9befd7d525ef6650183bb87f7222511be30c4d075e19b919c9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootPinRefusalOriginal.cs",
+      "nativeFreezeSha256": "614830f8dd18984011cffd724a7fd5ef3231da3a88ac60189cc03942e5296b6f",
+      "finalSha256": "614830f8dd18984011cffd724a7fd5ef3231da3a88ac60189cc03942e5296b6f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootPreparedSurvivors.cs",
+      "nativeFreezeSha256": "b93f303c927570fa9da897951ca4d9e84a06e51172d9d23a71115b27b19d0df9",
+      "finalSha256": "b93f303c927570fa9da897951ca4d9e84a06e51172d9d23a71115b27b19d0df9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootRecordingRevocationAuthenticator.cs",
+      "nativeFreezeSha256": "cbaea54bbbf4bc6eb6de27549dcb694bd498efc05ca7bc9e2d79575b9caca328",
+      "finalSha256": "cbaea54bbbf4bc6eb6de27549dcb694bd498efc05ca7bc9e2d79575b9caca328",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootRevocationOriginal.cs",
+      "nativeFreezeSha256": "6099b5a89a3f028cbd4f7e6a94e5d14b53e23fab8b51cd6168aa37c715afb99f",
+      "finalSha256": "6099b5a89a3f028cbd4f7e6a94e5d14b53e23fab8b51cd6168aa37c715afb99f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootSourceOriginals.cs",
+      "nativeFreezeSha256": "7a2922ba6eb8ab2663d6e8be9864bb63527b2f5679e982fa1e74f067ce8cb008",
+      "finalSha256": "7a2922ba6eb8ab2663d6e8be9864bb63527b2f5679e982fa1e74f067ce8cb008",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTarget.cs",
+      "nativeFreezeSha256": "58ec4f1ee398ed93cbf32c1850891d4f1720b6ee5d715f0e2ba6cd3bb234226c",
+      "finalSha256": "58ec4f1ee398ed93cbf32c1850891d4f1720b6ee5d715f0e2ba6cd3bb234226c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthority.cs",
+      "nativeFreezeSha256": "bdec0011ff55d89492bcc49624a9351cc73718270c9576915269e1f319c45e07",
+      "finalSha256": "bdec0011ff55d89492bcc49624a9351cc73718270c9576915269e1f319c45e07",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTenantAuthorityBindings.cs",
+      "nativeFreezeSha256": "402ce95693233c9e5a680d4451dfb9321ed1dd376449a0e85188390fa7ae6caf",
+      "finalSha256": "402ce95693233c9e5a680d4451dfb9321ed1dd376449a0e85188390fa7ae6caf",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionArchive.cs",
+      "nativeFreezeSha256": "39e6ba35cb3658a1ccc70d0cbfb50f61f139463d1690f04c8ca4a9131b18dfd5",
+      "finalSha256": "39e6ba35cb3658a1ccc70d0cbfb50f61f139463d1690f04c8ca4a9131b18dfd5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+      "nativeFreezeSha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+      "finalSha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootVerifierHolderCompletionWorker.cs",
+      "nativeFreezeSha256": "de8db2b621327db01e96c2f6b2b0def2a0c32cc71ee94051d05de0f34f8cb185",
+      "finalSha256": "de8db2b621327db01e96c2f6b2b0def2a0c32cc71ee94051d05de0f34f8cb185",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootWriterProof.cs",
+      "nativeFreezeSha256": "fb5bd20ddddfcc968f72dcb79ea4cee43c01a6f008ac729020e063d418a459cf",
+      "finalSha256": "fb5bd20ddddfcc968f72dcb79ea4cee43c01a6f008ac729020e063d418a459cf",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootWriterReference.cs",
+      "nativeFreezeSha256": "db57e1049eda52da7cdc2b3562e087b3ad2c49840e53421cd4b225145cd4c672",
+      "finalSha256": "db57e1049eda52da7cdc2b3562e087b3ad2c49840e53421cd4b225145cd4c672",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/EventStoreFr34CanaryEngine.cs",
+      "nativeFreezeSha256": "f7dcd0c6722818040f3fe547bd3f05e860e7d28f758e2a86ae72cd549e651395",
+      "finalSha256": "f7dcd0c6722818040f3fe547bd3f05e860e7d28f758e2a86ae72cd549e651395",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/EventStorePrivateRecordingPort.cs",
+      "nativeFreezeSha256": "faa1bc256f3e509a9824a1579ce425a0db7bb65b3175524156ad257107fa8414",
+      "finalSha256": "faa1bc256f3e509a9824a1579ce425a0db7bb65b3175524156ad257107fa8414",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34AuthorityApplication.cs",
+      "nativeFreezeSha256": "b363850a4556d989204d2a227a6872d3ce6d4e91d1fa65aad396218980ba4c24",
+      "finalSha256": "b363850a4556d989204d2a227a6872d3ce6d4e91d1fa65aad396218980ba4c24",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryAggregate.cs",
+      "nativeFreezeSha256": "c633a228e7a8da57840a8eeda5190fe6c69577df03fb231f695d12374fc7a8ff",
+      "finalSha256": "c633a228e7a8da57840a8eeda5190fe6c69577df03fb231f695d12374fc7a8ff",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryCommandProofSource.cs",
+      "nativeFreezeSha256": "a0f190d042f1bac4f4d3bcf2f569350c1dec9d079087e0918debcd2d259925cd",
+      "finalSha256": "a0f190d042f1bac4f4d3bcf2f569350c1dec9d079087e0918debcd2d259925cd",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryContent.cs",
+      "nativeFreezeSha256": "8befcdbe9ece0fc636df460e06c9dff32639d91a4db5fb69c6401f5de6294398",
+      "finalSha256": "8befcdbe9ece0fc636df460e06c9dff32639d91a4db5fb69c6401f5de6294398",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryDomainApplication.cs",
+      "nativeFreezeSha256": "7706943edc0cda7d2cd1d9526cd436a596c36cc8294991fa870a234c8dfa7348",
+      "finalSha256": "7706943edc0cda7d2cd1d9526cd436a596c36cc8294991fa870a234c8dfa7348",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryPersisted.cs",
+      "nativeFreezeSha256": "c556bf542eb27fcad88f7d872c3ee822018cc204483713c6eb832c0c1f6c8626",
+      "finalSha256": "c556bf542eb27fcad88f7d872c3ee822018cc204483713c6eb832c0c1f6c8626",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CanaryState.cs",
+      "nativeFreezeSha256": "f4fee1b71c2e0869fbdf8ff294c3dc67dce1749871c5e70bb802cd1f3108273a",
+      "finalSha256": "f4fee1b71c2e0869fbdf8ff294c3dc67dce1749871c5e70bb802cd1f3108273a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34CommandAuthorizationHandler.cs",
+      "nativeFreezeSha256": "0e25197d5ac5a431a966a748b52a7ff31bcafa581c2e7945e414816dde94d9e6",
+      "finalSha256": "0e25197d5ac5a431a966a748b52a7ff31bcafa581c2e7945e414816dde94d9e6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34EventStoreCanaryReader.cs",
+      "nativeFreezeSha256": "23f3c243b6fd53dc39a1297ef93227a292b028617905d31685aad0936bd9556a",
+      "finalSha256": "23f3c243b6fd53dc39a1297ef93227a292b028617905d31685aad0936bd9556a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34IndependentOriginalCollector.cs",
+      "nativeFreezeSha256": "0852c0dd9319e7ea006d609271e12dcfa490432745ebdc5c827c2162b376411f",
+      "finalSha256": "0852c0dd9319e7ea006d609271e12dcfa490432745ebdc5c827c2162b376411f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34MeasuredCanaryOriginal.cs",
+      "nativeFreezeSha256": "26ebae5cfba8c5b43f90eb2023158f89357eca3893d6d979d2e10faef99082d4",
+      "finalSha256": "26ebae5cfba8c5b43f90eb2023158f89357eca3893d6d979d2e10faef99082d4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34NativeManifestBinding.cs",
+      "nativeFreezeSha256": "92c5d1483e8845a8d162eda2518471f6e43d123f87d25f29f5e97599f2d48f02",
+      "finalSha256": "92c5d1483e8845a8d162eda2518471f6e43d123f87d25f29f5e97599f2d48f02",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceAuthorityApplication.cs",
+      "nativeFreezeSha256": "5c5c71e901b59c742c444984fcc820b0d937441c1eddcc57210bc627a3060be4",
+      "finalSha256": "5c5c71e901b59c742c444984fcc820b0d937441c1eddcc57210bc627a3060be4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceClaim.cs",
+      "nativeFreezeSha256": "bd4b29817af41665528d4dd2902829fc5857131f0b983a5ce5a25d35cafa5a5e",
+      "finalSha256": "bd4b29817af41665528d4dd2902829fc5857131f0b983a5ce5a25d35cafa5a5e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceOperationHandler.cs",
+      "nativeFreezeSha256": "f2cd7dd6578590164bc686dee478a50118b2e1c1075cacf478edf57683612d76",
+      "finalSha256": "f2cd7dd6578590164bc686dee478a50118b2e1c1075cacf478edf57683612d76",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceProducer.cs",
+      "nativeFreezeSha256": "7e8be589deefb1d78bf1e2dfe5eca1dd55d06731a41bc276ebf6e8d9976eb265",
+      "finalSha256": "7e8be589deefb1d78bf1e2dfe5eca1dd55d06731a41bc276ebf6e8d9976eb265",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceRecipe.cs",
+      "nativeFreezeSha256": "da256acb59cd62eafc1245598e59c84304fd7fe37b7675edce554e0792ed9869",
+      "finalSha256": "da256acb59cd62eafc1245598e59c84304fd7fe37b7675edce554e0792ed9869",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OccurrenceSlot.cs",
+      "nativeFreezeSha256": "012faa06e1a5ed26ac2941e10ad0831ea7dddae945851a5ccbec800b666b23a9",
+      "finalSha256": "012faa06e1a5ed26ac2941e10ad0831ea7dddae945851a5ccbec800b666b23a9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34OwnerOperationHandler.cs",
+      "nativeFreezeSha256": "01f141573b9ebfd9b9ca3605456016b8a75497a56ae0b08b91d558e5e7819506",
+      "finalSha256": "01f141573b9ebfd9b9ca3605456016b8a75497a56ae0b08b91d558e5e7819506",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34ProductionComposition.cs",
+      "nativeFreezeSha256": "3afdffd1607aedbb4d40bdff4a160b6dff7782948a906753c2bfa1abbd183a50",
+      "finalSha256": "3afdffd1607aedbb4d40bdff4a160b6dff7782948a906753c2bfa1abbd183a50",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34ProductionPorts.cs",
+      "nativeFreezeSha256": "ae6e4e024c3560651825d66690093cd1e2180f1e952d12b2089c7e402501b563",
+      "finalSha256": "ae6e4e024c3560651825d66690093cd1e2180f1e952d12b2089c7e402501b563",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Fr34StoredCanary.cs",
+      "nativeFreezeSha256": "6ae06d07eb6c1fdc043a67ad2cafab74ca5b6e7384d69f83c2496373ff217bd8",
+      "finalSha256": "6ae06d07eb6c1fdc043a67ad2cafab74ca5b6e7384d69f83c2496373ff217bd8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+      "nativeFreezeSha256": "def037073cc8dc8feca961028ebe43d257c76e695ce1553f2b3634a43552b476",
+      "finalSha256": "def037073cc8dc8feca961028ebe43d257c76e695ce1553f2b3634a43552b476",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ICustodyOccurrenceMaterialClient.cs",
+      "nativeFreezeSha256": "b99bba227baea39c04a76751c3e6b6058e9b215bf29cccf88a172f7d75d8e744",
+      "finalSha256": "b99bba227baea39c04a76751c3e6b6058e9b215bf29cccf88a172f7d75d8e744",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IErasureRootAuthorization.cs",
+      "nativeFreezeSha256": "721efe23cbbfdf13341cdf2564dff2588aa2030f62c3a07b52578b4c71533a71",
+      "finalSha256": "721efe23cbbfdf13341cdf2564dff2588aa2030f62c3a07b52578b4c71533a71",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IErasureRootOccurrenceSource.cs",
+      "nativeFreezeSha256": "0dba365de9a04ff6efc3fdf7f06b1f8ee2ec65dc86885ba7ec6d9881b6447c97",
+      "finalSha256": "0dba365de9a04ff6efc3fdf7f06b1f8ee2ec65dc86885ba7ec6d9881b6447c97",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IErasureRootStore.cs",
+      "nativeFreezeSha256": "85d6c8f9d2aee3baef0fc9b46d445e939b771a3d8c87e4442e526f62c111b3f0",
+      "finalSha256": "85d6c8f9d2aee3baef0fc9b46d445e939b771a3d8c87e4442e526f62c111b3f0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IFr34OccurrenceEnrollment.cs",
+      "nativeFreezeSha256": "0567709482340aee7f9e41af59570ae6af0c876c8b1bbc0f42aba15fba57ea2f",
+      "finalSha256": "0567709482340aee7f9e41af59570ae6af0c876c8b1bbc0f42aba15fba57ea2f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IFr34UnsealMeasurement.cs",
+      "nativeFreezeSha256": "0f694d2cdd4f045a9723af8e9dff932a05bf56d7db39269d226b8e2b5ddcf5fa",
+      "finalSha256": "0f694d2cdd4f045a9723af8e9dff932a05bf56d7db39269d226b8e2b5ddcf5fa",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IInteractionRootRegistrationSource.cs",
+      "nativeFreezeSha256": "f84ebf5b3ba5d2ee86d89528a3c69ea316ff7e5e4174efd853b85a2968370e82",
+      "finalSha256": "f84ebf5b3ba5d2ee86d89528a3c69ea316ff7e5e4174efd853b85a2968370e82",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IJointPhaseNativeSourcePublisher.cs",
+      "nativeFreezeSha256": "636eb19a7e1b6a69e26ea6520e573b3add5d54442e4169bd99df968147c034bd",
+      "finalSha256": "636eb19a7e1b6a69e26ea6520e573b3add5d54442e4169bd99df968147c034bd",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IJointSecretsCaseExecutor.cs",
+      "nativeFreezeSha256": "318ce9b7b701a2248223e92d832681471235ece97a2eee378076fd2b101d20a0",
+      "finalSha256": "318ce9b7b701a2248223e92d832681471235ece97a2eee378076fd2b101d20a0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IPrivateRecoveryCommandProofSource.cs",
+      "nativeFreezeSha256": "8a58fc6659fc82851d5257357b976ce8ddb8759f5f63a04017dfdeb0ad533b45",
+      "finalSha256": "8a58fc6659fc82851d5257357b976ce8ddb8759f5f63a04017dfdeb0ad533b45",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IPrivateReplayRecoveryCommandProofSource.cs",
+      "nativeFreezeSha256": "09d13514cb5a602dbe253095164b8fdec03ade733d5d324ee7904ab019293e0c",
+      "finalSha256": "09d13514cb5a602dbe253095164b8fdec03ade733d5d324ee7904ab019293e0c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseCommand.cs",
+      "nativeFreezeSha256": "431e8b43df017a95a618342017261032fa8580f2f319784dc43f4ec45daa9c9a",
+      "finalSha256": "431e8b43df017a95a618342017261032fa8580f2f319784dc43f4ec45daa9c9a",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseCommandExecutable.cs",
+      "nativeFreezeSha256": "88fd9ff8c533e3bbd35a526be28cf8ffb3895872f4bff0cdaed727b841fc33ed",
+      "finalSha256": "88fd9ff8c533e3bbd35a526be28cf8ffb3895872f4bff0cdaed727b841fc33ed",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseCommandInstallation.cs",
+      "nativeFreezeSha256": "829dd21eac888919674cb6afcfe00384bce0442c6c15813f02edad5ef070d9d9",
+      "finalSha256": "829dd21eac888919674cb6afcfe00384bce0442c6c15813f02edad5ef070d9d9",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseCommandScope.cs",
+      "nativeFreezeSha256": "f082e07647171e9916dbd5f15ebec4067f5d083bc7d96b8b4f3d07a100741162",
+      "finalSha256": "f082e07647171e9916dbd5f15ebec4067f5d083bc7d96b8b4f3d07a100741162",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseMetadataFinalizer.cs",
+      "nativeFreezeSha256": "963afaa3f242cec17b72773f1cd73160cebb58a3d3d307ad9155a4c9f5ff7c47",
+      "finalSha256": "963afaa3f242cec17b72773f1cd73160cebb58a3d3d307ad9155a4c9f5ff7c47",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseNativeSourcePublisher.cs",
+      "nativeFreezeSha256": "890c3ccdcacbbaf6bfc751778563d7433ee5373eac128f3e0597e418c6b79eb8",
+      "finalSha256": "890c3ccdcacbbaf6bfc751778563d7433ee5373eac128f3e0597e418c6b79eb8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseNativeSourceScope.cs",
+      "nativeFreezeSha256": "a4053c2a734b534c9f707e3aecedef4aade39a3dab32f7befb0a2fb126505f84",
+      "finalSha256": "a4053c2a734b534c9f707e3aecedef4aade39a3dab32f7befb0a2fb126505f84",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseOriginalStores.cs",
+      "nativeFreezeSha256": "3f0f571a2ce99a656c8068d684d6658421577832f5990733b2166b1960e9a488",
+      "finalSha256": "3f0f571a2ce99a656c8068d684d6658421577832f5990733b2166b1960e9a488",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseRequestRecipe.cs",
+      "nativeFreezeSha256": "3633db55904e66cba9f0e5caeb0c88e22756991e66672d0edd8e5c520d551a84",
+      "finalSha256": "3633db55904e66cba9f0e5caeb0c88e22756991e66672d0edd8e5c520d551a84",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseSemanticReadiness.cs",
+      "nativeFreezeSha256": "ed15c8d3648dd79d3f939124888a04b62d78c2bc7305b4ce03a4bfeb40c9389b",
+      "finalSha256": "ed15c8d3648dd79d3f939124888a04b62d78c2bc7305b4ce03a4bfeb40c9389b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseSourceApplication.cs",
+      "nativeFreezeSha256": "d52d7cb8784c144cbfee1584a12baece146f9ff96e40604d88794472c12bfff7",
+      "finalSha256": "d52d7cb8784c144cbfee1584a12baece146f9ff96e40604d88794472c12bfff7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseSourceExecutable.cs",
+      "nativeFreezeSha256": "2ade59770c58ba985875fe8dfd6faf7352c82a51923c912d38c36c0ada324005",
+      "finalSha256": "2ade59770c58ba985875fe8dfd6faf7352c82a51923c912d38c36c0ada324005",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseSourceInstallation.cs",
+      "nativeFreezeSha256": "552a0af89ee531caf96e7ed9467b2190a78c221f9e6105a232a2921a21c43ebc",
+      "finalSha256": "552a0af89ee531caf96e7ed9467b2190a78c221f9e6105a232a2921a21c43ebc",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointPhaseSourceOperationHandler.cs",
+      "nativeFreezeSha256": "d4af0f1b69e4ff83d2bec18eee3a96750409d9642c92a15389e3284c8d80c4d8",
+      "finalSha256": "d4af0f1b69e4ff83d2bec18eee3a96750409d9642c92a15389e3284c8d80c4d8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/JointSecretsCaseExecutor.cs",
+      "nativeFreezeSha256": "d7112714c7e0eab6e9edee105d9919c0a0cf0278778284cfb6d7e85c819fdbeb",
+      "finalSha256": "d7112714c7e0eab6e9edee105d9919c0a0cf0278778284cfb6d7e85c819fdbeb",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "nativeFreezeSha256": "a9891e309b5e1540cb6f0ba432f51707b40704f5dcafd37fcf0807d769005f49",
+      "finalSha256": "a9891e309b5e1540cb6f0ba432f51707b40704f5dcafd37fcf0807d769005f49",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/OwnedErasureRootKey.cs",
+      "nativeFreezeSha256": "ff257acb0491ac361017bbeb43055e97ec75ae9730e4a578f443bf483a445bd6",
+      "finalSha256": "ff257acb0491ac361017bbeb43055e97ec75ae9730e4a578f443bf483a445bd6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/OwnedWorkloadProof.cs",
+      "nativeFreezeSha256": "435bb6849e9fec71d0f07d906aef1ba930b11b2d2dab8847a4284b83d54f32df",
+      "finalSha256": "435bb6849e9fec71d0f07d906aef1ba930b11b2d2dab8847a4284b83d54f32df",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/PersistFr34Canary.cs",
+      "nativeFreezeSha256": "2d736b95d768b5992641f2cea76b942d82fd50f20da4b51ff2de3b6b070ea5e7",
+      "finalSha256": "2d736b95d768b5992641f2cea76b942d82fd50f20da4b51ff2de3b6b070ea5e7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/PrivateRecordingAuthorityApplication.cs",
+      "nativeFreezeSha256": "6bf4ee9b208bc5e17001a6e6bc18d9a300e2066114d2888cb02565e599d4377d",
+      "finalSha256": "6bf4ee9b208bc5e17001a6e6bc18d9a300e2066114d2888cb02565e599d4377d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionCatalog.cs",
+      "nativeFreezeSha256": "e7ef2557abcc024d937ae3fbc04f230813c09cc1e1e9b6d14a24be240156bd3f",
+      "finalSha256": "e7ef2557abcc024d937ae3fbc04f230813c09cc1e1e9b6d14a24be240156bd3f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRecipe.cs",
+      "nativeFreezeSha256": "3fc56591ed9159b6ccc975a26b4a7d510deb5c01ad3325a0323408b4e36170c6",
+      "finalSha256": "3fc56591ed9159b6ccc975a26b4a7d510deb5c01ad3325a0323408b4e36170c6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs",
+      "nativeFreezeSha256": "2460344fb1e48c7d6f6c28e0995f8b2e267ef14c4ab0fe607012f1e5396e46a8",
+      "finalSha256": "2460344fb1e48c7d6f6c28e0995f8b2e267ef14c4ab0fe607012f1e5396e46a8",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCanonical.cs",
+      "nativeFreezeSha256": "c058518c80232582ca0bd9a049ee4cd044eddcac40785cd121154202960bc643",
+      "finalSha256": "c058518c80232582ca0bd9a049ee4cd044eddcac40785cd121154202960bc643",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledErasureRootStore.cs",
+      "nativeFreezeSha256": "fef02cd502b8dcab8e95c01d8d69987bb5a4f8e8ba26b87b9cb07ad865ab5596",
+      "finalSha256": "fef02cd502b8dcab8e95c01d8d69987bb5a4f8e8ba26b87b9cb07ad865ab5596",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationControlledGuard.cs",
+      "nativeFreezeSha256": "9004cbe5551977f7d2f10308df8e281c153a6c1abeb7862b913d63dd339af08e",
+      "finalSha256": "9004cbe5551977f7d2f10308df8e281c153a6c1abeb7862b913d63dd339af08e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationCopyOriginal.cs",
+      "nativeFreezeSha256": "bd8103e6926db5d8c3c9942a57535cb166f8e23b8b448116d1436c7fb20f0513",
+      "finalSha256": "bd8103e6926db5d8c3c9942a57535cb166f8e23b8b448116d1436c7fb20f0513",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationEventPayload.cs",
+      "nativeFreezeSha256": "89f8c4a9bcf455344d674dce139cb839c4f35325765b3ece9b6c8a164a7afe82",
+      "finalSha256": "89f8c4a9bcf455344d674dce139cb839c4f35325765b3ece9b6c8a164a7afe82",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaultState.cs",
+      "nativeFreezeSha256": "5515274f5d2d10d953993f0d27cf0e5b28206a701d7cc81527b622df5df7dc36",
+      "finalSha256": "5515274f5d2d10d953993f0d27cf0e5b28206a701d7cc81527b622df5df7dc36",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationFaults.cs",
+      "nativeFreezeSha256": "891849275a912aef39d23777c47a8df770cbbe0d1368bb0f5c549aecb9f556d5",
+      "finalSha256": "891849275a912aef39d23777c47a8df770cbbe0d1368bb0f5c549aecb9f556d5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCall.cs",
+      "nativeFreezeSha256": "944623db48047e779e73cd51a3df46842a507e45babcb73764889e0feb583ee3",
+      "finalSha256": "944623db48047e779e73cd51a3df46842a507e45babcb73764889e0feb583ee3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCallKind.cs",
+      "nativeFreezeSha256": "ba3e0268de1f0b85a69d3864d87f828310d73dd39020512968aa322ea701d295",
+      "finalSha256": "ba3e0268de1f0b85a69d3864d87f828310d73dd39020512968aa322ea701d295",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeCell.cs",
+      "nativeFreezeSha256": "e24b5d3f3f8f6f5670287ea6cfc144018c6f6c9ce8837634205b9cb8feacc77c",
+      "finalSha256": "e24b5d3f3f8f6f5670287ea6cfc144018c6f6c9ce8837634205b9cb8feacc77c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs",
+      "nativeFreezeSha256": "e69038c3c37aba18f22f2312902dd8d189e8916d220a9e9799f86e0aa4c5cf82",
+      "finalSha256": "2d685a3a08a6a1bbbbe5997cbb7f829d0a591938e88301bdd70f36654baf27ba",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeOriginal.cs",
+      "nativeFreezeSha256": "9c2b27f631ccaf4aec18eaef6e1b385b2a5ca2d8ff240858d7d8aef1463c05e1",
+      "finalSha256": "9c2b27f631ccaf4aec18eaef6e1b385b2a5ca2d8ff240858d7d8aef1463c05e1",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeProjection.cs",
+      "nativeFreezeSha256": "ce63318cf4576489635653842ff9ffcf0918b4b07c691928eb91cfb9360652a0",
+      "finalSha256": "ce63318cf4576489635653842ff9ffcf0918b4b07c691928eb91cfb9360652a0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeRoot.cs",
+      "nativeFreezeSha256": "43e8f480a97f62c96c9fe0134bff7d42cad4fe7b93acd25a0ef1eb5bccd6dfbe",
+      "finalSha256": "43e8f480a97f62c96c9fe0134bff7d42cad4fe7b93acd25a0ef1eb5bccd6dfbe",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSeal.cs",
+      "nativeFreezeSha256": "b119fb6f2126dd6e008b0101708e987c7a1bc20bb5e24cf4680f3577f443cdd4",
+      "finalSha256": "b119fb6f2126dd6e008b0101708e987c7a1bc20bb5e24cf4680f3577f443cdd4",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshot.cs",
+      "nativeFreezeSha256": "e7d3c249395f5bb263b06a6366900645122b4ca3e0c9f834766e1e1353fbdebe",
+      "finalSha256": "e7d3c249395f5bb263b06a6366900645122b4ca3e0c9f834766e1e1353fbdebe",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationNativeSnapshotRead.cs",
+      "nativeFreezeSha256": "36a178c68a8ad5ae39e434311c14fd498ae35ad2e4ec907fff419d24bf38e4f0",
+      "finalSha256": "36a178c68a8ad5ae39e434311c14fd498ae35ad2e4ec907fff419d24bf38e4f0",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationField.cs",
+      "nativeFreezeSha256": "036b9c79460a8d670d496c6df4f44a54d3cffac2a10a42d66936d5d0f02e3390",
+      "finalSha256": "036b9c79460a8d670d496c6df4f44a54d3cffac2a10a42d66936d5d0f02e3390",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObservationRecipe.cs",
+      "nativeFreezeSha256": "cbd19ddc097bced320266bb27c3a9662a44e001b972133c5afb0f28748b2b323",
+      "finalSha256": "cbd19ddc097bced320266bb27c3a9662a44e001b972133c5afb0f28748b2b323",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermission.cs",
+      "nativeFreezeSha256": "5bdf8a7d1b22feb2110fa8a0453f7de4d42048bb2c94af640f3a2d030d077bcb",
+      "finalSha256": "5bdf8a7d1b22feb2110fa8a0453f7de4d42048bb2c94af640f3a2d030d077bcb",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationObserverPermissions.cs",
+      "nativeFreezeSha256": "7fbdc7fdf95d0974f29ad0b03a0bc34207c73fbeb25febb5641a86dbb7aede93",
+      "finalSha256": "e6964e44395a3f3abf5cef70d912f9e86cc015ff185c53962dc450725b4496ba",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperation.cs",
+      "nativeFreezeSha256": "bc2bb5cb2dd9223d37d1d44ca596d626f4105b46cb1a7ab106b837f9dc0b7bda",
+      "finalSha256": "bc2bb5cb2dd9223d37d1d44ca596d626f4105b46cb1a7ab106b837f9dc0b7bda",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationOperationJournal.cs",
+      "nativeFreezeSha256": "ee688723ffa5b0355969b3b77bb1f47a1c504db9cc9dd97aa0709cfce330ab9d",
+      "finalSha256": "ee688723ffa5b0355969b3b77bb1f47a1c504db9cc9dd97aa0709cfce330ab9d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedEvent.cs",
+      "nativeFreezeSha256": "e47348d9e156492335c6c6b90e328787fc34ef694e1d917a23a825d2c54f65af",
+      "finalSha256": "e47348d9e156492335c6c6b90e328787fc34ef694e1d917a23a825d2c54f65af",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationPersistedObserver.cs",
+      "nativeFreezeSha256": "d61a3f01e2f80579727159037c3df18492a04f7d223d907005940a92d5cb3eb6",
+      "finalSha256": "bc896eea7e2a0f58677f63c8d56ae45dcbdb3e8bfa4cf946575725abb0ab9eed",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerIdentity.cs",
+      "nativeFreezeSha256": "aaeecb865cdf89eca7ab5096dd643d6780b83d04e782fccc9e9a81105f02c106",
+      "finalSha256": "aaeecb865cdf89eca7ab5096dd643d6780b83d04e782fccc9e9a81105f02c106",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationProducerOriginal.cs",
+      "nativeFreezeSha256": "3431900a2e3012a23c36710dcdc6796a5a3015c565515f204125484d7a7c9c88",
+      "finalSha256": "564cde94326b9bfc8f023163dc1b95ef194f1324a5a477e73824abc1b7ce06ae",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRecipeBinding.cs",
+      "nativeFreezeSha256": "19b9183b286bb233fe387c5e13bfe735e82813246824144ba318e628c066d5ca",
+      "finalSha256": "19b9183b286bb233fe387c5e13bfe735e82813246824144ba318e628c066d5ca",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleApplication.cs",
+      "nativeFreezeSha256": "9a20a3189168b6bfe221f5c862a20816fe3e689b8af0e67e32d17b6fb7a1b45c",
+      "finalSha256": "9a20a3189168b6bfe221f5c862a20816fe3e689b8af0e67e32d17b6fb7a1b45c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleInstallation.cs",
+      "nativeFreezeSha256": "cafab931c548a46f94afd4020b6107069b820c074826b25b0e904f83b8705c6b",
+      "finalSha256": "cafab931c548a46f94afd4020b6107069b820c074826b25b0e904f83b8705c6b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleProgram.cs",
+      "nativeFreezeSha256": "14264b6e53a067f0c0b482f4a66b3d7425297198853a2f043a6ce31ed14f64af",
+      "finalSha256": "14264b6e53a067f0c0b482f4a66b3d7425297198853a2f043a6ce31ed14f64af",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationRoleService.cs",
+      "nativeFreezeSha256": "797ead036e8a60682afe964a5f54cb1212ff0bafac09c0904b4783de85b8ea6c",
+      "finalSha256": "ab20ee46cc7f54e9da2aedc52dfd379ca8ee540c99407905c2d63eff2de1b032",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSeedOriginal.cs",
+      "nativeFreezeSha256": "9c0869db6fa2866724e116ca5ca14f3bb082e3c60c8f40b4bb846675e27c8f25",
+      "finalSha256": "9c0869db6fa2866724e116ca5ca14f3bb082e3c60c8f40b4bb846675e27c8f25",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerExecutable.cs",
+      "nativeFreezeSha256": "c64943a1c2054bb4b3249decf951e254312738de3de712914d5ac43738aa7376",
+      "finalSha256": "c9bc7c73338369393fda2d2fefafbce9e15456c11ffd2ebcd3e95062bc8a0728",
+      "unchanged": false
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServerInstallation.cs",
+      "nativeFreezeSha256": "c1347e5cc5296d485277d41f148f299194cfdc5f65e8c6027fad59ead4fdf83d",
+      "finalSha256": "c1347e5cc5296d485277d41f148f299194cfdc5f65e8c6027fad59ead4fdf83d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationServiceScope.cs",
+      "nativeFreezeSha256": "1d593ce45ef53b32967e261690d050ab500ad14e9b85496fc3c6e68f3f28dbda",
+      "finalSha256": "1d593ce45ef53b32967e261690d050ab500ad14e9b85496fc3c6e68f3f28dbda",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceCatalog.cs",
+      "nativeFreezeSha256": "5d326943369f7e8065d416ca8dfe84c9dd73daba736fc4b1d4fa859696442118",
+      "finalSha256": "5d326943369f7e8065d416ca8dfe84c9dd73daba736fc4b1d4fa859696442118",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSourceProgram.cs",
+      "nativeFreezeSha256": "87b03f4c4e940443323b5c46fdacd225f5499c3e1f69583b8c7c1f09736b1857",
+      "finalSha256": "87b03f4c4e940443323b5c46fdacd225f5499c3e1f69583b8c7c1f09736b1857",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitution.cs",
+      "nativeFreezeSha256": "5cc6c46f20ac95cc4b2eaf0c7c8ab1375d2b6090cef91fe86d7ebf3dc51cf56d",
+      "finalSha256": "5cc6c46f20ac95cc4b2eaf0c7c8ab1375d2b6090cef91fe86d7ebf3dc51cf56d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ProtectionQualificationSubstitutions.cs",
+      "nativeFreezeSha256": "b4b3582e4627f5d31a12db4647add4a62b75d88007c61451daebe3d0facb739c",
+      "finalSha256": "b4b3582e4627f5d31a12db4647add4a62b75d88007c61451daebe3d0facb739c",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationDirectoryBoundaryOriginalReader.cs",
+      "nativeFreezeSha256": "53b2c74a5ee5a8bff13ce9a1d2e1eb4de050cde45fccf363706faf2a28092a57",
+      "finalSha256": "53b2c74a5ee5a8bff13ce9a1d2e1eb4de050cde45fccf363706faf2a28092a57",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationDirectoryBoundaryOriginals.cs",
+      "nativeFreezeSha256": "5f833e125585d0c0b5f8a38fe43e0ef9e219b44b8521423b9c5f437f721221a3",
+      "finalSha256": "5f833e125585d0c0b5f8a38fe43e0ef9e219b44b8521423b9c5f437f721221a3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationDispatchOriginalReference.cs",
+      "nativeFreezeSha256": "610c5f9bf3a817efe09d2e1d716ee83ae0dc0a71a3ccb8f0ef719a8d0408a3ae",
+      "finalSha256": "610c5f9bf3a817efe09d2e1d716ee83ae0dc0a71a3ccb8f0ef719a8d0408a3ae",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationEventStoreAuditReader.cs",
+      "nativeFreezeSha256": "32730889db61917c7cd3558216febbfce9fca6de5bb531900332bf55f0c5cebc",
+      "finalSha256": "32730889db61917c7cd3558216febbfce9fca6de5bb531900332bf55f0c5cebc",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationEventStoreAuditScope.cs",
+      "nativeFreezeSha256": "e2922179859d280c24eca6f54f8519026007594ec1c1085cbd13f40eb6df247d",
+      "finalSha256": "e2922179859d280c24eca6f54f8519026007594ec1c1085cbd13f40eb6df247d",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationEventStoreAuditSnapshot.cs",
+      "nativeFreezeSha256": "dcf4ea5685bd8630f08aaf03be63796d325734e5af25e622aa3a573ce2182444",
+      "finalSha256": "dcf4ea5685bd8630f08aaf03be63796d325734e5af25e622aa3a573ce2182444",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationEventStoreCaseAuditReader.cs",
+      "nativeFreezeSha256": "1a857eb06102afedd06a73c4e5dd2a2641d686cfa75d5faf7925929b40979073",
+      "finalSha256": "1a857eb06102afedd06a73c4e5dd2a2641d686cfa75d5faf7925929b40979073",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGatewayReadProofs.cs",
+      "nativeFreezeSha256": "cfbf094e891fa1049b80c06618cd2bad92009dac451e2a84de19d8b62ff8cc53",
+      "finalSha256": "cfbf094e891fa1049b80c06618cd2bad92009dac451e2a84de19d8b62ff8cc53",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardCaseDefinition.cs",
+      "nativeFreezeSha256": "2ea68de787be36bd439b53f7af80a402cfcf9cb933db0af2aa09543b0d782cb3",
+      "finalSha256": "2ea68de787be36bd439b53f7af80a402cfcf9cb933db0af2aa09543b0d782cb3",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardCaseWorkflow.cs",
+      "nativeFreezeSha256": "6315fdd9852df9c33f6a500196cb2222c5324cc254948c696b6a4bc4f0210cf2",
+      "finalSha256": "6315fdd9852df9c33f6a500196cb2222c5324cc254948c696b6a4bc4f0210cf2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardEvidenceEnrollment.cs",
+      "nativeFreezeSha256": "d70013bbe5d72c446f543d6d4be4159af5f09f456aaaa5580c303cebe2924bc5",
+      "finalSha256": "d70013bbe5d72c446f543d6d4be4159af5f09f456aaaa5580c303cebe2924bc5",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardInvariantProjection.cs",
+      "nativeFreezeSha256": "57e1ec888f451be1e50eec25b32eb6571d7d2a8936a3c18c26166bdc7ca66449",
+      "finalSha256": "57e1ec888f451be1e50eec25b32eb6571d7d2a8936a3c18c26166bdc7ca66449",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardOriginalReader.cs",
+      "nativeFreezeSha256": "2c996276b253bfeabcb7f8016a80e06c875aeaab314244ad4d4a7d29fa469f8b",
+      "finalSha256": "2c996276b253bfeabcb7f8016a80e06c875aeaab314244ad4d4a7d29fa469f8b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardProductionComposition.cs",
+      "nativeFreezeSha256": "51bd505a3f3a7e727f623c70ad0f9a79b323d656a9fa40932bd2168e625e8026",
+      "finalSha256": "51bd505a3f3a7e727f623c70ad0f9a79b323d656a9fa40932bd2168e625e8026",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardProductionPorts.cs",
+      "nativeFreezeSha256": "6a438cfdcea34923fb6dca9bb080940dcf0539423ed18dabc40d8bcca2244ada",
+      "finalSha256": "6a438cfdcea34923fb6dca9bb080940dcf0539423ed18dabc40d8bcca2244ada",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardRecipeCatalog.cs",
+      "nativeFreezeSha256": "a4ab0a8c8cd6d3e68340e8c71d4325b476ccf9a3ccf41a8b2b24ce0bc4496aa6",
+      "finalSha256": "a4ab0a8c8cd6d3e68340e8c71d4325b476ccf9a3ccf41a8b2b24ce0bc4496aa6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardStep.cs",
+      "nativeFreezeSha256": "1d262d7a210c2e41da9fc6b566b180b73bc7f8b11021b9ae0c8e99ffd583340b",
+      "finalSha256": "1d262d7a210c2e41da9fc6b566b180b73bc7f8b11021b9ae0c8e99ffd583340b",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardStepKind.cs",
+      "nativeFreezeSha256": "2ea8effbe81f5826690ba4fa3e16e63c0260b5e311f11a7f90db9565b89d6cb6",
+      "finalSha256": "2ea8effbe81f5826690ba4fa3e16e63c0260b5e311f11a7f90db9565b89d6cb6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardedOriginal.cs",
+      "nativeFreezeSha256": "b71e6c3193ac147629d776272c3a1e902ef93af16f9107ed4a0256175a31f662",
+      "finalSha256": "b71e6c3193ac147629d776272c3a1e902ef93af16f9107ed4a0256175a31f662",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationGuardedOriginalReader.cs",
+      "nativeFreezeSha256": "06b05647aef45a9cc71813f34074d85ae7b047292549085adaa740257d6173de",
+      "finalSha256": "06b05647aef45a9cc71813f34074d85ae7b047292549085adaa740257d6173de",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationInvariantProjection.cs",
+      "nativeFreezeSha256": "1e55385dd4fc9cdca264042508b06746521bd3e04b803d4d93a35a34bd27f8df",
+      "finalSha256": "1e55385dd4fc9cdca264042508b06746521bd3e04b803d4d93a35a34bd27f8df",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationMountedReadCredentials.cs",
+      "nativeFreezeSha256": "854b23b1c9793c922176694a3fe5c7755fde8ebf3c7415c4bb7b4b776dcf9d72",
+      "finalSha256": "854b23b1c9793c922176694a3fe5c7755fde8ebf3c7415c4bb7b4b776dcf9d72",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationNativeEvent.cs",
+      "nativeFreezeSha256": "3661a288de81a42b9a7310cd232867704456475af2410f455922c79df92d1b41",
+      "finalSha256": "3661a288de81a42b9a7310cd232867704456475af2410f455922c79df92d1b41",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationNativeSourceReader.cs",
+      "nativeFreezeSha256": "0450aa9ed8eb7b8404e7880fd14a7aaa2210529a5bc54109116b54829d3b904f",
+      "finalSha256": "0450aa9ed8eb7b8404e7880fd14a7aaa2210529a5bc54109116b54829d3b904f",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationNativeStream.cs",
+      "nativeFreezeSha256": "526f8fa8fd9f0724f8c6d8986798ac8eafe6781e074e920633bc9fb065af07d2",
+      "finalSha256": "526f8fa8fd9f0724f8c6d8986798ac8eafe6781e074e920633bc9fb065af07d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationOwnerDriverExecutable.cs",
+      "nativeFreezeSha256": "c69aaf4d574f18ce16bef557010a96bfc4c762705a54b97036c23dc5db5b82ca",
+      "finalSha256": "c69aaf4d574f18ce16bef557010a96bfc4c762705a54b97036c23dc5db5b82ca",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationOwnerQueryClient.cs",
+      "nativeFreezeSha256": "ee7fe5803313672c52867c57d41363cbde043ddf95a46b59897b79d070b31379",
+      "finalSha256": "ee7fe5803313672c52867c57d41363cbde043ddf95a46b59897b79d070b31379",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationOwnerReadScope.cs",
+      "nativeFreezeSha256": "b5208f5fb655077a572accafe204267173de271baded2f88b7997d302e64d1e2",
+      "finalSha256": "b5208f5fb655077a572accafe204267173de271baded2f88b7997d302e64d1e2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationProjectionAudit.cs",
+      "nativeFreezeSha256": "8024c733ddc95acd00c0ac8ec71132f278449ce7029f9480a3099436f188d91e",
+      "finalSha256": "8024c733ddc95acd00c0ac8ec71132f278449ce7029f9480a3099436f188d91e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationProtectionInstallation.cs",
+      "nativeFreezeSha256": "65e1a070ec289aeec1e5a80d10414d2d69b0c1bed335fee0e096b950017207e2",
+      "finalSha256": "65e1a070ec289aeec1e5a80d10414d2d69b0c1bed335fee0e096b950017207e2",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationReplayCaseInput.cs",
+      "nativeFreezeSha256": "6fcfab885234f98df22e6d72d3964eea3c019f941680a2ffd945cb005235d067",
+      "finalSha256": "6fcfab885234f98df22e6d72d3964eea3c019f941680a2ffd945cb005235d067",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationReplayCaseWorkflow.cs",
+      "nativeFreezeSha256": "3ae1ca8198f05ceea9a25554811ecc7386f1b986f0146b14ce073fdb4d4369d7",
+      "finalSha256": "3ae1ca8198f05ceea9a25554811ecc7386f1b986f0146b14ce073fdb4d4369d7",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationReplayOriginalReader.cs",
+      "nativeFreezeSha256": "7c2c5bd4998f54008784e151540218e2feb78c636e3a306d6fb808ded13a4864",
+      "finalSha256": "7c2c5bd4998f54008784e151540218e2feb78c636e3a306d6fb808ded13a4864",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationRuntimeOriginalReader.cs",
+      "nativeFreezeSha256": "780fe8845eb34ceeb31b4c04e23f9ab9d7b7baaca7d7b11f1e9774424edb63b6",
+      "finalSha256": "780fe8845eb34ceeb31b4c04e23f9ab9d7b7baaca7d7b11f1e9774424edb63b6",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationTypedOwnerReader.cs",
+      "nativeFreezeSha256": "8d94a4eb2e508dafeabfd9a0ba1bf7a5cee8474025f2f79d859fa8a6c55b7956",
+      "finalSha256": "8d94a4eb2e508dafeabfd9a0ba1bf7a5cee8474025f2f79d859fa8a6c55b7956",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/QualificationWorkloadReadGateway.cs",
+      "nativeFreezeSha256": "3c2cd44d8e374044a7859db0e7f25b784003933bcb4a6d0ed4a03a8f4b536845",
+      "finalSha256": "3c2cd44d8e374044a7859db0e7f25b784003933bcb4a6d0ed4a03a8f4b536845",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs",
+      "nativeFreezeSha256": "3bc542885aa0fa61aa2ef3f3267a22a7cb4c8c5454211a6dea3cba4743d93531",
+      "finalSha256": "3bc542885aa0fa61aa2ef3f3267a22a7cb4c8c5454211a6dea3cba4743d93531",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/AtomicDeletionManifestBindingTests.cs",
+      "nativeFreezeSha256": "844b40d914ca516710ca38a2acd14bbdd3b25df208ab2a3a6641ab249a727f5a",
+      "finalSha256": "844b40d914ca516710ca38a2acd14bbdd3b25df208ab2a3a6641ab249a727f5a",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/BoundedPhaseSignerTests.cs",
+      "nativeFreezeSha256": "ecea013bea9919e91e3f2860e32b3fdbef391321121101a302cb9a187dac1d9f",
+      "finalSha256": "ecea013bea9919e91e3f2860e32b3fdbef391321121101a302cb9a187dac1d9f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/CustodyGovernanceGuardInstallationTests.cs",
+      "nativeFreezeSha256": "639fc670911d5f26e8ef48423b49d8e24bd3384f43ae3451321074753a9e7da4",
+      "finalSha256": "639fc670911d5f26e8ef48423b49d8e24bd3384f43ae3451321074753a9e7da4",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/CustodyGuardInstallationTests.cs",
+      "nativeFreezeSha256": "ed1c0ffb88ed0dd03e97a77efa0286eff7cc107910c5e7ce549c37004c2dcb69",
+      "finalSha256": "ed1c0ffb88ed0dd03e97a77efa0286eff7cc107910c5e7ce549c37004c2dcb69",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs",
+      "nativeFreezeSha256": "b4fec34a5a783c993ed29f48fd8b1c537158a00b7eeb17a4e1d01db9c26a0408",
+      "finalSha256": "b4fec34a5a783c993ed29f48fd8b1c537158a00b7eeb17a4e1d01db9c26a0408",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/DaprAtomicDeletionManifestProviderTests.cs",
+      "nativeFreezeSha256": "18f15dbbcf9d4de214a1697b06b71cc99a24f1e3d129c472f70e8a684fe76845",
+      "finalSha256": "18f15dbbcf9d4de214a1697b06b71cc99a24f1e3d129c472f70e8a684fe76845",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAsyncEvidenceDispatchTests.cs",
+      "nativeFreezeSha256": "94feb7b5c6082c2d0b6692b83ab061d83cf6af2bed363543979b394dfbc5ffe8",
+      "finalSha256": "94feb7b5c6082c2d0b6692b83ab061d83cf6af2bed363543979b394dfbc5ffe8",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootAuthorizationFixture.cs",
+      "nativeFreezeSha256": "bf4e3a3a2873963782d2e1ddf6f54f6f629ff573bbcdf208c7f2b61e24120669",
+      "finalSha256": "bf4e3a3a2873963782d2e1ddf6f54f6f629ff573bbcdf208c7f2b61e24120669",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCompositionTests.cs",
+      "nativeFreezeSha256": "5a85f5e8b2df7ece1c8228a60a5cfbd5848b9f31b9d153ad83829aa00bef87fa",
+      "finalSha256": "5a85f5e8b2df7ece1c8228a60a5cfbd5848b9f31b9d153ad83829aa00bef87fa",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionFixture.cs",
+      "nativeFreezeSha256": "ecf05e010fa724d68844633965692dcc2e6537e861b3eb2755311ffce259e612",
+      "finalSha256": "ecf05e010fa724d68844633965692dcc2e6537e861b3eb2755311ffce259e612",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootConsumptionTests.cs",
+      "nativeFreezeSha256": "6e40f9834c05352497649a8406fd1f1c19c76b0622af0a3f7f30954a08022563",
+      "finalSha256": "6e40f9834c05352497649a8406fd1f1c19c76b0622af0a3f7f30954a08022563",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+      "nativeFreezeSha256": "7a7aade45de04d5c635a20e25848f354c41faff66c04da82138e41cacd87a2ac",
+      "finalSha256": "7a7aade45de04d5c635a20e25848f354c41faff66c04da82138e41cacd87a2ac",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineFixture.cs",
+      "nativeFreezeSha256": "da2fce90a220a4931a8a4853d7a1b8dba97f66df8431690b071968374cac047b",
+      "finalSha256": "da2fce90a220a4931a8a4853d7a1b8dba97f66df8431690b071968374cac047b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootEngineTests.cs",
+      "nativeFreezeSha256": "e63cbebef2b805cfc8e869a5c5eba3acfac98f26663f43f59ca0baf44c3a1b96",
+      "finalSha256": "e63cbebef2b805cfc8e869a5c5eba3acfac98f26663f43f59ca0baf44c3a1b96",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs",
+      "nativeFreezeSha256": "7036ce66e55399cacb861f10e145c16c7eb458c45824f3eed42d5eaa78793ef0",
+      "finalSha256": "7036ce66e55399cacb861f10e145c16c7eb458c45824f3eed42d5eaa78793ef0",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs",
+      "nativeFreezeSha256": "9584710f26aff744d051295f81834b4be2d81cb2f7cdba7492286330d7ecd6b7",
+      "finalSha256": "9584710f26aff744d051295f81834b4be2d81cb2f7cdba7492286330d7ecd6b7",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2OwnerTests.cs",
+      "nativeFreezeSha256": "16d5148c3ee26b57e8d0c07f2d11e8bf357d3ec68ab7ca6188f997b1e81f095d",
+      "finalSha256": "16d5148c3ee26b57e8d0c07f2d11e8bf357d3ec68ab7ca6188f997b1e81f095d",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2RegistryGrowthTests.cs",
+      "nativeFreezeSha256": "5a113fda7018bffe3493619566ce7d525b16c6bb461613b769fb869cb89509d5",
+      "finalSha256": "5a113fda7018bffe3493619566ce7d525b16c6bb461613b769fb869cb89509d5",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotObservationTests.cs",
+      "nativeFreezeSha256": "bd59698e8a03c990132bf9850f7bab5ee11cee582b444836fb4f1db99c7596ab",
+      "finalSha256": "bd59698e8a03c990132bf9850f7bab5ee11cee582b444836fb4f1db99c7596ab",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2SnapshotTests.cs",
+      "nativeFreezeSha256": "92362c87b9287a24be88d517052476a31e523cf1a1a5e276ce35befd69f1c315",
+      "finalSha256": "92362c87b9287a24be88d517052476a31e523cf1a1a5e276ce35befd69f1c315",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2TransitionTests.cs",
+      "nativeFreezeSha256": "84e736465aa5daadf2e093415c94f2bd1d16546bdcef2b4be254625ee499cf24",
+      "finalSha256": "84e736465aa5daadf2e093415c94f2bd1d16546bdcef2b4be254625ee499cf24",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2VerifierHolderTests.cs",
+      "nativeFreezeSha256": "8ad5d4652137c52d8b1f7b425a0827e5c255bda575de8d8872128e20784293aa",
+      "finalSha256": "8ad5d4652137c52d8b1f7b425a0827e5c255bda575de8d8872128e20784293aa",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3PlainReplayTests.cs",
+      "nativeFreezeSha256": "c15a304f160567d3d21ff5b2456d6675c0a470bc47e62ffe90fe4da3ca133411",
+      "finalSha256": "c15a304f160567d3d21ff5b2456d6675c0a470bc47e62ffe90fe4da3ca133411",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3ReceivingTests.cs",
+      "nativeFreezeSha256": "4e2627c682d2e3eb64c9a9838f2367649c74de9c009d28613e6ae8b695d9a827",
+      "finalSha256": "75690c07d34807ad3c03cf6c524e348585ada0d31789ba88f8ed0cdce0eb3c21",
+      "unchanged": false
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs",
+      "nativeFreezeSha256": "9389321a1a41868f5f22beb8d417c5e1969301d51f3e7564ffd3bce8dcd96c71",
+      "finalSha256": "9389321a1a41868f5f22beb8d417c5e1969301d51f3e7564ffd3bce8dcd96c71",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootMixedSnapshotTests.cs",
+      "nativeFreezeSha256": "6cd6db918e2dc215026b60450bede0e2329aadbcbe2ba04bdcdb98786da88289",
+      "finalSha256": "6cd6db918e2dc215026b60450bede0e2329aadbcbe2ba04bdcdb98786da88289",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootObserverPermissionTests.cs",
+      "nativeFreezeSha256": "380bf2ad000866fd97ecfbbed5bd2295861abf957445a05c5676759695e317c3",
+      "finalSha256": "3de6dab96446cd8c34b864d3666b07f5707ac076091f6f97d2b528ea6959b78c",
+      "unchanged": false
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+      "nativeFreezeSha256": "04ac66faee3fd571d0a6e5bf7dc31fd604777d20cc0372f12b24646b596ac8e3",
+      "finalSha256": "04ac66faee3fd571d0a6e5bf7dc31fd604777d20cc0372f12b24646b596ac8e3",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootRegistryFixture.cs",
+      "nativeFreezeSha256": "4cfdff7cdeb2b21efdc73d7e1e91937fc0e7f1467ff15414930e98b4f21d97a6",
+      "finalSha256": "4cfdff7cdeb2b21efdc73d7e1e91937fc0e7f1467ff15414930e98b4f21d97a6",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReplacementEvidenceFixture.cs",
+      "nativeFreezeSha256": "34116df10fb0a1c46e89ad07a0e32b2431949acbc22fd95c4f0353fd8a7f4cfd",
+      "finalSha256": "34116df10fb0a1c46e89ad07a0e32b2431949acbc22fd95c4f0353fd8a7f4cfd",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootSourceFixture.cs",
+      "nativeFreezeSha256": "7017271a8ad16cb41a0e92d06637c34e5fe6af0a4e5193a1e5266c48f32ecc96",
+      "finalSha256": "7017271a8ad16cb41a0e92d06637c34e5fe6af0a4e5193a1e5266c48f32ecc96",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootStoreFixture.cs",
+      "nativeFreezeSha256": "7e5de50c33de391bfe75d0fdf4afa0894a46d2013eec61508dc604d99f86a1b5",
+      "finalSha256": "7e5de50c33de391bfe75d0fdf4afa0894a46d2013eec61508dc604d99f86a1b5",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransitionAuthorityTests.cs",
+      "nativeFreezeSha256": "1a2a8c2a35b2ec508b47c57b411be76c46bfd18d62fef4a4ed67d413021839bb",
+      "finalSha256": "1a2a8c2a35b2ec508b47c57b411be76c46bfd18d62fef4a4ed67d413021839bb",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransportHandler.cs",
+      "nativeFreezeSha256": "892841ee685f0d12c01b7ebdeaa9d292c6b24f8e07622e0d95c819fa3a631854",
+      "finalSha256": "892841ee685f0d12c01b7ebdeaa9d292c6b24f8e07622e0d95c819fa3a631854",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+      "nativeFreezeSha256": "c365dab69fee79fe3efd54a1019268e618290ab4761bfeef09fcf8602fe91a39",
+      "finalSha256": "c365dab69fee79fe3efd54a1019268e618290ab4761bfeef09fcf8602fe91a39",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/EventStorePrivateRecordingPortTests.cs",
+      "nativeFreezeSha256": "68f48cdf8267d7a371dd62b4ae628232bf7b7eb1e46a7e41ad6452d64e3e07d7",
+      "finalSha256": "68f48cdf8267d7a371dd62b4ae628232bf7b7eb1e46a7e41ad6452d64e3e07d7",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Fr34AuthorityHostingTests.cs",
+      "nativeFreezeSha256": "331a449738e5f2ac3fc44e9e849db980c2f0ff74f5b398f726be4a6865d16a59",
+      "finalSha256": "331a449738e5f2ac3fc44e9e849db980c2f0ff74f5b398f726be4a6865d16a59",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Fr34DynamicOccurrenceTests.cs",
+      "nativeFreezeSha256": "ca646def9e0e305bce81aa47352b6404bf339c5cd112b11d4ec72ccfa5721728",
+      "finalSha256": "ca646def9e0e305bce81aa47352b6404bf339c5cd112b11d4ec72ccfa5721728",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Fr34IndependentCollectorTests.cs",
+      "nativeFreezeSha256": "16984b2046dede1a277494ad1a279513eb3222aae733c8d06f6a189f9b56ce6d",
+      "finalSha256": "16984b2046dede1a277494ad1a279513eb3222aae733c8d06f6a189f9b56ce6d",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Fr34ManifestCustodyFixture.cs",
+      "nativeFreezeSha256": "50bd97753d29773716cd2fca181b6c6bdafec79b169b648393281f89fe5d1233",
+      "finalSha256": "50bd97753d29773716cd2fca181b6c6bdafec79b169b648393281f89fe5d1233",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Fr34NativeReceivingTests.cs",
+      "nativeFreezeSha256": "280e32fdc10b4b983945fe8ed943e6bc774de179d092af35daf3f932d2bb7182",
+      "finalSha256": "280e32fdc10b4b983945fe8ed943e6bc774de179d092af35daf3f932d2bb7182",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/GuardedTransactionAnchorTests.cs",
+      "nativeFreezeSha256": "9cc195ea6e42597015cdc8998d2cc16830adcd267f9a08b44079ac56c369ee5b",
+      "finalSha256": "9cc195ea6e42597015cdc8998d2cc16830adcd267f9a08b44079ac56c369ee5b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "nativeFreezeSha256": "097a02e9d05b2101d25793bc0ab5fc23e9c98112f1c346360d59811ff0a30b00",
+      "finalSha256": "097a02e9d05b2101d25793bc0ab5fc23e9c98112f1c346360d59811ff0a30b00",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/IndependentReceivingDiagnosticTests.cs",
+      "nativeFreezeSha256": "862c00ab471b025da59b177dbd8f346b1343fc6511059151028721bb515795e9",
+      "finalSha256": "862c00ab471b025da59b177dbd8f346b1343fc6511059151028721bb515795e9",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/JointPhaseCommandTests.cs",
+      "nativeFreezeSha256": "61be47483c0ce34ef6e1d22da657c2122c00ab419787d51074e98d484f3ba54b",
+      "finalSha256": "61be47483c0ce34ef6e1d22da657c2122c00ab419787d51074e98d484f3ba54b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/JointPhaseNativePublisherTests.cs",
+      "nativeFreezeSha256": "e39f1fbfb8a80c47230fd244673aa28a6e4df5bd7c64b93255461b18c0f56813",
+      "finalSha256": "e39f1fbfb8a80c47230fd244673aa28a6e4df5bd7c64b93255461b18c0f56813",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/JointPhaseOriginalCompositionTests.cs",
+      "nativeFreezeSha256": "967c3a2c6d7f565e04e3cbdf84a8f934b5bd6138776ae804671d7d2bc721fa60",
+      "finalSha256": "967c3a2c6d7f565e04e3cbdf84a8f934b5bd6138776ae804671d7d2bc721fa60",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/JointPhasePreparingRecoveryTests.cs",
+      "nativeFreezeSha256": "918267d7ffcacab3be5a64d18b596d27e3a5be2bb7663560a6b246e7974c9388",
+      "finalSha256": "918267d7ffcacab3be5a64d18b596d27e3a5be2bb7663560a6b246e7974c9388",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+      "nativeFreezeSha256": "6eb937c5ddb5200a73f8e1e538a317917933d77febebec85e2f21fa3c321fcce",
+      "finalSha256": "6eb937c5ddb5200a73f8e1e538a317917933d77febebec85e2f21fa3c321fcce",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootIntegrationTests.cs",
+      "nativeFreezeSha256": "0a5c1b7ffc64c87efd13583d02ef37359eb9291ea0395b0373a1d254caf5c169",
+      "finalSha256": "0a5c1b7ffc64c87efd13583d02ef37359eb9291ea0395b0373a1d254caf5c169",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+      "nativeFreezeSha256": "3fd7f04f145cfa460779c4c5c7c09cf7726a3f4e316b2a6889ef8372b0f1589b",
+      "finalSha256": "3fd7f04f145cfa460779c4c5c7c09cf7726a3f4e316b2a6889ef8372b0f1589b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoLostTrimAcknowledgement.cs",
+      "nativeFreezeSha256": "74a603a32ebb9c519e3652517dd4aaae5e96900c3f50a7ec9ff43b385ddb21cf",
+      "finalSha256": "74a603a32ebb9c519e3652517dd4aaae5e96900c3f50a7ec9ff43b385ddb21cf",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+      "nativeFreezeSha256": "c0a3122c336470f05f5e927051abe7b9ac18d5be1e10ca709945f9c3a2f5c531",
+      "finalSha256": "c0a3122c336470f05f5e927051abe7b9ac18d5be1e10ca709945f9c3a2f5c531",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+      "nativeFreezeSha256": "ee8460140ee0cc935cc53bf8a36e61eb4647f8151147ae6ccbd79bac1b750313",
+      "finalSha256": "ee8460140ee0cc935cc53bf8a36e61eb4647f8151147ae6ccbd79bac1b750313",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OwnedWorkloadProofTests.cs",
+      "nativeFreezeSha256": "7ad8ae4bbda1de57c0a1f118134c56d02c6c59b8e810894642fa4b5e354cb4c9",
+      "finalSha256": "7ad8ae4bbda1de57c0a1f118134c56d02c6c59b8e810894642fa4b5e354cb4c9",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectedJointOriginalRecoveryTests.cs",
+      "nativeFreezeSha256": "f49626ac626466361399cb5ce12fd9ecea768f90a80d4725a944ae0708a942fb",
+      "finalSha256": "f49626ac626466361399cb5ce12fd9ecea768f90a80d4725a944ae0708a942fb",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationHttpBoundaryTests.cs",
+      "nativeFreezeSha256": "16eec242255fadd6adead6e710b15d9feaca9dd4f8cc6db2d1f82c8410231727",
+      "finalSha256": "1b016e77aa35211f34eeeae790f8aa9f7288d504d1de532807f6820089985bb8",
+      "unchanged": false
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop2InputTests.cs",
+      "nativeFreezeSha256": "b17830776dfd5843be42ce76113324ab7d42866caedac032ba382a1f99607f2b",
+      "finalSha256": "b17830776dfd5843be42ce76113324ab7d42866caedac032ba382a1f99607f2b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationFixture.cs",
+      "nativeFreezeSha256": "9f9466a165b9123b7168a78ef45d44ba8aeb2127e0a199b275a1d01ccc790612",
+      "finalSha256": "9f9466a165b9123b7168a78ef45d44ba8aeb2127e0a199b275a1d01ccc790612",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs",
+      "nativeFreezeSha256": "16bcbc38119a9bfc6c6460e66160c277bf5dc0f1341939b32296cc2f2f3f79b7",
+      "finalSha256": "16bcbc38119a9bfc6c6460e66160c277bf5dc0f1341939b32296cc2f2f3f79b7",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationProjectionTests.cs",
+      "nativeFreezeSha256": "98755af2379c477baa14aad733ecba2e4c4309aeff5849fc2e8be3e405c285db",
+      "finalSha256": "e6a01022bbea224920b14c7e6855b3300793270456d3b714e9e6706596813f02",
+      "unchanged": false
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRecoveryTests.cs",
+      "nativeFreezeSha256": "954634c6784b25ff80585e8cc5a6a56e6b5b30d8f5511b96a91566628ef8ef34",
+      "finalSha256": "954634c6784b25ff80585e8cc5a6a56e6b5b30d8f5511b96a91566628ef8ef34",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationReplayTests.cs",
+      "nativeFreezeSha256": "cb62c86bb2188652dd40b1790df63c28a2bf113e9359bc05e0714f40ad36306f",
+      "finalSha256": "cb62c86bb2188652dd40b1790df63c28a2bf113e9359bc05e0714f40ad36306f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationRoleServiceTests.cs",
+      "nativeFreezeSha256": "d9602a9571be6a3ccf01078684ee8f2c95bcc329b948c94f74ab5c91529f5d91",
+      "finalSha256": "3bd9c73426b2cd5d32ab432998e7a3ac3f5a30a8869e35ed29d41b80b3be5c88",
+      "unchanged": false
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationSourceTests.cs",
+      "nativeFreezeSha256": "0c79fa91c0254ec947529ce8887b6d2f2af2bc9be865cab260ba1b5ed83b8455",
+      "finalSha256": "0c79fa91c0254ec947529ce8887b6d2f2af2bc9be865cab260ba1b5ed83b8455",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/QualificationGatewayReadProofReceivingTests.cs",
+      "nativeFreezeSha256": "5f52559bfbbf774603534735259f6a05c3decee01e45d61684206427807ed26b",
+      "finalSha256": "5f52559bfbbf774603534735259f6a05c3decee01e45d61684206427807ed26b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/QualificationGuardJoinTests.cs",
+      "nativeFreezeSha256": "7c8516dcf1826fe7f37b629a72fd385857e910eade4b3ee73ccac357d63ee5a9",
+      "finalSha256": "7c8516dcf1826fe7f37b629a72fd385857e910eade4b3ee73ccac357d63ee5a9",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/QualificationGuardSourceTests.cs",
+      "nativeFreezeSha256": "34c5afd082389da4a875915be6a526edc88425617532dbf786c1c98d4929c81b",
+      "finalSha256": "34c5afd082389da4a875915be6a526edc88425617532dbf786c1c98d4929c81b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/QualificationHistoryReaderTests.cs",
+      "nativeFreezeSha256": "dcf57b8dd186fa636e63f4ad6f25ec04b758db8029938c86e61d6ed63393a73d",
+      "finalSha256": "dcf57b8dd186fa636e63f4ad6f25ec04b758db8029938c86e61d6ed63393a73d",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/QualificationNativeAuditTests.cs",
+      "nativeFreezeSha256": "4de9abf60ee11ad2c4bfc2e5791e193f535701a9c3fae124c9ea546da693bae2",
+      "finalSha256": "4de9abf60ee11ad2c4bfc2e5791e193f535701a9c3fae124c9ea546da693bae2",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/ReceivingAuthorityFixture.cs",
+      "nativeFreezeSha256": "0891f9ef8c6dab94393d36c793399bf65bb040029d19754a4ab5cbb15aea3230",
+      "finalSha256": "0891f9ef8c6dab94393d36c793399bf65bb040029d19754a4ab5cbb15aea3230",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs",
+      "nativeFreezeSha256": "bd0a8371b1b43bb61a8c487cc67b892ee99a23ff88146babb7f186c359bb9c9f",
+      "finalSha256": "bd0a8371b1b43bb61a8c487cc67b892ee99a23ff88146babb7f186c359bb9c9f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/StalledErasureRootBody.cs",
+      "nativeFreezeSha256": "beed25d26ca66daa402d881aecdc32733b6dd98e64839c872a1e92cd72fd1b35",
+      "finalSha256": "beed25d26ca66daa402d881aecdc32733b6dd98e64839c872a1e92cd72fd1b35",
+      "unchanged": true
+    }
+  ],
+  "criticalNativeCustodyInputs": [
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootArchives.cs",
+      "nativeFreezeSha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+      "finalSha256": "319ae3128707603678df4ce94bb648d6488b1b222c73cb2ac0d4b037525e0246",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+      "nativeFreezeSha256": "98c280aa2e38c90e5ab4de09c6a58f6566349d2816ccab64216928b6c4faf374",
+      "finalSha256": "98c280aa2e38c90e5ab4de09c6a58f6566349d2816ccab64216928b6c4faf374",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootHead.cs",
+      "nativeFreezeSha256": "ada3cc25a04389193ea4ae92807aaae86f145a6707e381251eb5902ed03c8354",
+      "finalSha256": "ada3cc25a04389193ea4ae92807aaae86f145a6707e381251eb5902ed03c8354",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootInstallation.cs",
+      "nativeFreezeSha256": "7ec5274ca2dafe0093e47d80b5b49e418853883e98e73d320d3a43afadeb7b7e",
+      "finalSha256": "7ec5274ca2dafe0093e47d80b5b49e418853883e98e73d320d3a43afadeb7b7e",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/ErasureRootTransitionAuthority.cs",
+      "nativeFreezeSha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+      "finalSha256": "2c7f8500ba79cd8c4fe78477c6634ef5e852bf26d513368d4e6d3247c0982191",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/IErasureRootAuthorization.cs",
+      "nativeFreezeSha256": "721efe23cbbfdf13341cdf2564dff2588aa2030f62c3a07b52578b4c71533a71",
+      "finalSha256": "721efe23cbbfdf13341cdf2564dff2588aa2030f62c3a07b52578b4c71533a71",
+      "unchanged": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "nativeFreezeSha256": "a9891e309b5e1540cb6f0ba432f51707b40704f5dcafd37fcf0807d769005f49",
+      "finalSha256": "a9891e309b5e1540cb6f0ba432f51707b40704f5dcafd37fcf0807d769005f49",
+      "unchanged": true
+    }
+  ],
+  "newLoop3FunctionalPlatformFilesAfterNativeSourceInventory": [
+    {
+      "repository": "platform",
+      "path": ".gitattributes",
+      "bytes": 3498,
+      "sha256": "fd10fb2909828dc36f920d356949ee5d95b3cceefb17fca3bb37db70f72dcb4a",
+      "keepSha256": "397a7460782931357ff37ec4bb765e7c154b7d4c1bea43f87d8128ce81fd1d93",
+      "originalBaselineSha256": "ce4bacea60e88be1319e173bb8cf937fe6cbb8bc709b207916f1b1dc7eb006ac",
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "Hexalith.Platform.slnx",
+      "bytes": 3269,
+      "sha256": "f3d72c8022776bd0cadae77a6b11431de86ce589f2c17b8580d2a8455b0c87ff",
+      "keepSha256": "f3d72c8022776bd0cadae77a6b11431de86ce589f2c17b8580d2a8455b0c87ff",
+      "originalBaselineSha256": "c11ba063ffd299d756e7060143238e400b918eeb85c321d435fdadeac7a9cc3f",
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "bytes": 454,
+      "sha256": "a6300d5d197679814cab07e29d0a2553adf57bfd08f2cbaa3e1733477c814cfd",
+      "keepSha256": "a6300d5d197679814cab07e29d0a2553adf57bfd08f2cbaa3e1733477c814cfd",
+      "originalBaselineSha256": "ab902862c1da00078ba9a3f469acb7aac508a5f5c61324f559ef70c9ae20ae3b",
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.EventStoreHost/Program.cs",
+      "bytes": 3360,
+      "sha256": "dd3b6cb86ac264401b28fd3179f87442afd4ab957422a6387bb4d1713b270e67",
+      "keepSha256": "dd3b6cb86ac264401b28fd3179f87442afd4ab957422a6387bb4d1713b270e67",
+      "originalBaselineSha256": "14c64bcc1d27ac269048cc48bda6b17556a80ab5547bd3e106a050f477d711ec",
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+      "bytes": 261,
+      "sha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "keepSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Enrollment/Program.cs",
+      "bytes": 376,
+      "sha256": "6c5b2cd94bac959af5f164cfe88b9cb819cd372f944e39f924e63c042e0ef93c",
+      "keepSha256": "6c5b2cd94bac959af5f164cfe88b9cb819cd372f944e39f924e63c042e0ef93c",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+      "bytes": 261,
+      "sha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "keepSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Executor/Program.cs",
+      "bytes": 370,
+      "sha256": "c6ea0d304ea9a549e330b6858243d8b5a18ba8d749dfe6f77fac82eaa6530504",
+      "keepSha256": "c6ea0d304ea9a549e330b6858243d8b5a18ba8d749dfe6f77fac82eaa6530504",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+      "bytes": 261,
+      "sha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "keepSha256": "8bfdcf351b5e342bda7611ef5dd16e5ddbea147cf1beaa6a70d4db8792dc5407",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection.Qualification.Observer/Program.cs",
+      "bytes": 370,
+      "sha256": "d7452d34b5298dff0731715c471f9717dc75536e2d3181227569093b22b67475",
+      "keepSha256": "d7452d34b5298dff0731715c471f9717dc75536e2d3181227569093b22b67475",
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Secrets.Runtime/IndependentAuthorityCredential.cs",
+      "bytes": 604,
+      "sha256": "c6081b39b4624922e0e52a08f42e6d6bc318253c7a8f5db46510b663d293755c",
+      "keepSha256": null,
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs",
+      "bytes": 16683,
+      "sha256": "3736e45410b6b9aff80dd8d6f3c60cc2a4cc621b1e2f929ff8d5ccb518be7b67",
+      "keepSha256": null,
+      "originalBaselineSha256": null,
+      "originalBaselineCommit": "231b0f2b57e96984a919ac1cdce97cc36df18542"
+    }
+  ]
+}

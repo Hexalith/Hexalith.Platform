@@ -1,0 +1,29 @@
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 376 ms).
+  Restored /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj (in 379 ms).
+  Restored /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj (in 376 ms).
+  1 of 11 projects are up-to-date for restore.
+  Hexalith.Commons.UniqueIds -> /home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/bin/Debug/net10.0/Hexalith.Commons.UniqueIds.dll
+  Hexalith.EventStore.Contracts -> /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Contracts/bin/Debug/net10.0/Hexalith.EventStore.Contracts.dll
+  Hexalith.Platform.Custody -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/bin/Debug/net10.0/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/bin/Debug/net10.0/Hexalith.Platform.Custody.Component.dll
+  Hexalith.EventStore.Client -> /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Client/bin/Debug/net10.0/Hexalith.EventStore.Client.dll
+  Hexalith.Platform.Secrets.Runtime -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/bin/Debug/net10.0/Hexalith.Platform.Secrets.Runtime.dll
+  Hexalith.EventStore.ServiceDefaults -> /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.ServiceDefaults/bin/Debug/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+  Hexalith.EventStore.DomainService -> /home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.DomainService/bin/Debug/net10.0/Hexalith.EventStore.DomainService.dll
+/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs(326,13): error CA1062: In externally visible method 'string GovernanceScopeGuardReducer.DestructionSealId(string tenantId, string requestId, GovernanceScopeV1 scope)', validate parameter 'scope' is non-null before using it. If appropriate, throw an 'ArgumentNullException' when the argument is 'null'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1062) [/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj]
+
+Build FAILED.
+
+/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs(326,13): error CA1062: In externally visible method 'string GovernanceScopeGuardReducer.DestructionSealId(string tenantId, string requestId, GovernanceScopeV1 scope)', validate parameter 'scope' is non-null before using it. If appropriate, throw an 'ArgumentNullException' when the argument is 'null'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1062) [/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:14.75

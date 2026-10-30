@@ -30,6 +30,21 @@ SPINE = """### AD-9 — Dapr runtime boundary [ADOPTED, AMENDED]
 
 
 class VerifyPlatformPinsTests(unittest.TestCase):
+    def test_file_host_uses_canonical_mapped_dependencies(self):
+        for override, expected in [("", 0), (' Version="3.119.0"', 1), (' VersionOverride="3.119.0"', 1)]:
+            with self.subTest(override=override), tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                (root / "catalog.props").write_text(CATALOG)
+                (root / "spine.md").write_text(SPINE)
+                (root / "apphost.cs").write_text("#:sdk Aspire.AppHost.Sdk@13.6.1\n#:package CommunityToolkit.Aspire.Hosting.Dapr@9.9.9\n#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n")
+                project = root / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+                project.parent.mkdir(parents=True)
+                project.write_text("<Project><ItemGroup>" + "".join(
+                    f'<PackageReference Include="{package}"{override}/><ProjectReference Include="$(HexalithEventStoreRoot)/src/{package}/{package}.csproj"/>'
+                    for package in ("Hexalith.EventStore.Aspire", "Hexalith.EventStore.ServiceDefaults")) + "</ItemGroup></Project>")
+                result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"), "--spine", str(root / "spine.md")], capture_output=True, text=True)
+                self.assertEqual(result.returncode, expected, result.stderr)
+
     def run_script(self, sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0", spine=SPINE, helper=None, layout="explicit", relative_root=False):
         with tempfile.TemporaryDirectory() as root:
             root = pathlib.Path(root)

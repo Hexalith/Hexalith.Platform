@@ -1,5 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Builds loads this model from its private output directory; native preparation also uses its runtime dependencies. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+    <HexalithTenantPreparationRoot Condition="'$(HexalithTenantsRoot)' != ''">$(HexalithTenantsRoot)</HexalithTenantPreparationRoot>
+    <HexalithTenantPreparationRoot Condition="'$(HexalithTenantPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Tenants</HexalithTenantPreparationRoot>
+    <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesRoot)' != ''">$(HexalithMemoriesRoot)</HexalithMemoriesPreparationRoot>
+    <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Memories</HexalithMemoriesPreparationRoot>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithTenantPreparationRoot)/src/Hexalith.Tenants.Contracts/Hexalith.Tenants.Contracts.csproj" />
+    <ProjectReference Include="$(HexalithMemoriesPreparationRoot)/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" />
     <PackageReference Include="Aspire.Hosting.Kubernetes" />
@@ -21,6 +36,9 @@
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+    <PackageReference Include="JsonSchema.Net" />
+    <PackageReference Include="NuGet.Versioning" />
+    <PackageReference Include="StackExchange.Redis" />
   </ItemGroup>
   <ItemGroup><None Update="Declarations/*.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /><Compile Include="../../DaprSelfHostedMtlsSubscriber.cs" Link="DaprSelfHostedMtlsSubscriber.cs" /></ItemGroup>

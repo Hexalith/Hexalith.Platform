@@ -17,4 +17,7 @@ internal sealed class DeadlineAnchoredStateAuthority(IAnchoredStateTransitionAut
     /// <inheritdoc/>
     public Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default)
         => deadline.ReadAsync(() => authority.VerifyTransitionAsync(transition, CancellationToken.None));
+    /// <inheritdoc/>
+    public Task<AnchoredStateTransition?> ReadAdmittedOriginalAsync(string scopeId, CancellationToken cancellationToken = default)
+        => deadline.ReadAsync(() => authority.ReadAdmittedOriginalAsync(scopeId, CancellationToken.None));
 }

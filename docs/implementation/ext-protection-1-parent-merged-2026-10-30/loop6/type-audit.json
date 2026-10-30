@@ -1,0 +1,53 @@
+{
+  "csharpFiles": 256,
+  "newViolations": [],
+  "preexistingExceptions": [
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+      "types": [
+        "SnapshotManager",
+        "Log"
+      ],
+      "baselineTypes": [
+        "SnapshotManager",
+        "Log"
+      ]
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+      "types": [
+        "DaprSigningTrustAdapter",
+        "DaprRevocationAuthenticatorAdapter",
+        "DaprSigningProviderAdapter",
+        "DaprReplayRegistrarAdapter",
+        "DaprCompromiseRegistrarAdapter",
+        "CapabilityIdentity"
+      ],
+      "baselineTypes": [
+        "DaprSigningTrustAdapter",
+        "DaprRevocationAuthenticatorAdapter",
+        "DaprSigningProviderAdapter",
+        "DaprReplayRegistrarAdapter",
+        "DaprCompromiseRegistrarAdapter",
+        "CapabilityIdentity"
+      ]
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs",
+      "types": [
+        "CustodyBindingLocalTransport",
+        "CountingHandler",
+        "Configuration"
+      ],
+      "baselineTypes": [
+        "CustodyBindingLocalTransport",
+        "CountingHandler",
+        "Configuration"
+      ]
+    }
+  ],
+  "frozenAndRegisterUnchanged": true
+}

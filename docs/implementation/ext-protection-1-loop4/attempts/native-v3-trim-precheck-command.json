@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "python3",
+    "/tmp/ext-protection-loop4-source-final-v3/platform/eng/ext-protection-1/probe_erc_native.py",
+    "--test-assembly",
+    "/tmp/ext-protection-loop4-runtime-final-v3/Hexalith.Platform.Protection.Tests.dll",
+    "--test-assembly-sha256",
+    "86f9666a175b7fec961a591f92ee11e3f465551e7e602865f67a47995967e662",
+    "--runtime-manifest",
+    "/tmp/ext-protection-loop4-runtime-final-v3/runtime-manifest.json",
+    "--runtime-manifest-sha256",
+    "e1665075161f90fd1a5acd01cb496f42071ec695ecce967d6a0e894b8417a6b2",
+    "--case",
+    "TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot",
+    "--output",
+    "/tmp/ext-protection-loop4-evidence/native-v3-trim-precheck.json"
+  ],
+  "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop4-00722d7d17/platform",
+  "startedAt": 1793319057.1022196,
+  "exitCode": 0,
+  "finishedAt": 1793319074.173164,
+  "logSha256": "f9f0cdf88b3b221ac9a2a1ef7875d68bef0c8a323628ab6b1c13bf9e80774c10"
+}

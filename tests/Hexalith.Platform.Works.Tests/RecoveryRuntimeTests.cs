@@ -33,6 +33,7 @@ public sealed class RecoveryRuntimeTests
     [InlineData(EventStoreWorkloadAuthenticationDefaults.ActorBindingClaimType)]
     public async Task MissingAndWrongBindingRefuses(string claimType)
     {
+        ArgumentNullException.ThrowIfNull(claimType);
         var authorizer = new WorksSyntheticDispositionAuthorizer([_source], "eventstore-admin");
         ClaimsPrincipal principal = Principal();
         (await authorizer.AuthorizeAsync(principal, _source, TestContext.Current.CancellationToken)).ShouldBeTrue();
@@ -280,14 +281,14 @@ public sealed class RecoveryRuntimeTests
     {
         var checkpoints = new ProcessCheckpointStore(store, options, TimeProvider.System);
         var sweeps = new ProcessSweepStore(store, options, TimeProvider.System);
-        await checkpoints.EnsureCandidateAsync(_source, TestContext.Current.CancellationToken);
-        ProcessSourceState owned = (await checkpoints.AcquireAsync(_source, TestContext.Current.CancellationToken))!;
+        await checkpoints.EnsureCandidateAsync(_source, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        ProcessSourceState owned = (await checkpoints.AcquireAsync(_source, TestContext.Current.CancellationToken).ConfigureAwait(true))!;
         owned = await checkpoints.UpdateOwnedAsync(owned, state => state with
         {
             Status = ProcessSourceStatus.Quarantined, ReasonCode = "invalid-evidence", FailureSequence = 1,
-        }, TestContext.Current.CancellationToken);
-        await checkpoints.ReleaseAsync(owned, TestContext.Current.CancellationToken);
-        return (checkpoints, sweeps, await checkpoints.GetAsync(_source, TestContext.Current.CancellationToken));
+        }, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        await checkpoints.ReleaseAsync(owned, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        return (checkpoints, sweeps, await checkpoints.GetAsync(_source, TestContext.Current.CancellationToken).ConfigureAwait(true));
     }
 
     private static HealthReport Report(HealthStatus status, Dictionary<string, object> data)

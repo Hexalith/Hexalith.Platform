@@ -1,0 +1,17 @@
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 979 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 977 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 1.84 sec).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 2.97 sec).
+  Hexalith.Builds.Module.EventStoreHost -> /home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-output/Hexalith.Builds.Module.EventStoreHost.dll
+  Hexalith.Builds.Module.UiHost -> /home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-output/Hexalith.Builds.Module.UiHost.dll
+  Platform version catalog validation failed: Catalog field Hexalith.EventStore.Aspire has inconsistent build selection '3.128.5-story33.0'; authoritative catalog selects '3.128.4'. Change the catalog instead of overriding controlled selections.
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj(62,5): error MSB3073: The command "pwsh -NoLogo -NoProfile -File "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/../../../Tools/write-platform-version-catalog.ps1" -CatalogPath "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/../../../Props/Directory.Packages.props" -OutputPath "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-build/obj/Hexalith.Builds.Tooling/release//platform-version-catalog.json" -BuildSelectionsPath "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-build/obj/Hexalith.Builds.Tooling/release//platform-version-catalog.build.txt" -Configuration "Release" -TargetFramework "net10.0"" exited with code 1.
+
+Build FAILED.
+
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj(62,5): error MSB3073: The command "pwsh -NoLogo -NoProfile -File "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/../../../Tools/write-platform-version-catalog.ps1" -CatalogPath "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/../../../Props/Directory.Packages.props" -OutputPath "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-build/obj/Hexalith.Builds.Tooling/release//platform-version-catalog.json" -BuildSelectionsPath "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-build/obj/Hexalith.Builds.Tooling/release//platform-version-catalog.build.txt" -Configuration "Release" -TargetFramework "net10.0"" exited with code 1.
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:23.92

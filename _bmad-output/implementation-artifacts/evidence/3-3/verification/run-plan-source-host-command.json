@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "--artifacts-path",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/source-host-build",
+    "--output",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/source-host-output",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:UseNuGetDeps=false",
+    "-p:HexalithEventStoreFromSource=true",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:HexalithMcpCliFromSource=true",
+    "--nologo",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli"
+  ],
+  "workspace": "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3"
+}

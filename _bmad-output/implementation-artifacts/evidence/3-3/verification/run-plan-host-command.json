@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "--artifacts-path",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-build",
+    "--output",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3/host-output",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:HexalithEventStoreFromSource=false",
+    "-p:HexalithEventStoreVersion=3.128.5-story33.0",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "-p:RestoreConfigFile=/home/administrator/projects/hexalith/platform/artifacts/story33-packages/0443c7b4d0d149beb582260d9e76ddb6/nuget.config",
+    "--nologo"
+  ],
+  "runtimeEnvironment": "Development",
+  "workspace": "/home/administrator/projects/hexalith/platform/artifacts/story33-runplan/38c10c24e45645e1bf820b2a968c83a3",
+  "packageCache": "/home/administrator/projects/hexalith/platform/artifacts/story33-packages/0443c7b4d0d149beb582260d9e76ddb6/cache"
+}

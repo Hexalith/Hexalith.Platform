@@ -37,6 +37,9 @@ public sealed class DaprSigningTrustAdapter(SecretsRuntimeConfiguration configur
 /// <summary>Revocation proof must echo the evidence digest and event identity.</summary>
 public sealed class DaprRevocationAuthenticatorAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null) : IDeletionCapabilityRevocationAuthenticator
 {
+    /// <inheritdoc/>
+    public Task<DeletionCapabilityRevocationAuthorization?> VerifyBeforeEffectsAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken = default)
+        => VerifyAsync(envelope, signedEvidence, cancellationToken);
     private readonly SecretsDaprSession _session = new(invoker, configuration.CallTimeout ?? TimeSpan.Zero, clock ?? TimeProvider.System);
 
     /// <inheritdoc/>
@@ -71,6 +74,21 @@ public sealed class DaprRevocationAuthenticatorAdapter(SecretsRuntimeConfigurati
 public sealed class DaprSigningProviderAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null) : IDeletionCapabilitySigningProvider
 {
     private readonly SecretsDaprSession _session = new(invoker, configuration.CallTimeout ?? TimeSpan.Zero, clock ?? TimeProvider.System);
+
+    /// <inheritdoc />
+    public async Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request, CancellationToken cancellationToken = default)
+    {
+        var body = new JsonObject { ["request"] = System.Text.Json.JsonSerializer.SerializeToNode(request),
+            ["operations"] = new JsonArray("SignDeletionCapability", "LookupDeletionCapability", "ObsoleteUnissued", "RecoverSigningSuccessor") };
+        var current = await _session.CallPrivateAsync(configuration.CapabilitySignerReference, "runtime.capabilitySignerReference", configuration.CapabilitySignerCredentialReference,
+            "runtime.capabilitySignerCredentialReference", "query-signing-availability", body, cancellationToken).ConfigureAwait(false);
+        if (request.ProviderIdentity != configuration.CapabilitySignerReference || current.Unavailable || !SecretsProof.Authorized(current.Proof, body, _session.Clock.GetUtcNow())
+            || !SecretsProof.SameText(current.Proof, "status", "present")
+            || !SecretsProof.SameText(current.Proof, "providerIdentity", configuration.CapabilitySignerReference)) { return null; }
+        return new(request, SecretsProof.Text(current.Proof, "providerIdentity")!, SecretsProof.Text(current.Proof, "authorityRevision")!,
+            SecretsProof.Texts(current.Proof, "operations")!,
+            SecretsProof.Instant(current.Proof, "observedAt")!.Value, SecretsProof.Instant(current.Proof, "validUntil")!.Value);
+    }
 
     /// <inheritdoc/>
     public Task<DeletionCapabilitySigningResult> SignAsync(DeletionBatchCapabilityV1 payload, string signingRequestId, CancellationToken cancellationToken = default)

@@ -1,0 +1,55 @@
+{
+  "schema": "platform.story-5.4.resume-planning-verification.v1",
+  "verifiedAtUtc": "2026-10-29T17:58:17.563602+00:00",
+  "observedPlatformCommit": "c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8",
+  "scope": "Planning refresh only; checkpoint 1 pending. No scope reopening or live authorization.",
+  "existingDirtyWorkspacePreserved": true,
+  "initialPorcelainSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "initialDirtyEntryCount": 0,
+  "frozenIntentVerbatimPreserved": true,
+  "appendOnlyNotesAndLogsPreserved": true,
+  "specStatus": "draft",
+  "sourceBundles": [
+    {
+      "manifest": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/evidence-manifest.json",
+      "sha256": "a3f6756a4271b2cef90a2f450f08ad6582d237c10157f00106c5ac8c16078379",
+      "filesVerified": 17,
+      "failed": []
+    },
+    {
+      "manifest": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+      "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31",
+      "filesVerified": 128,
+      "failed": []
+    }
+  ],
+  "recordedPriorTestResults": {
+    "executor": 34,
+    "preparer": 8,
+    "failed": 0,
+    "skipped": 0,
+    "rerunByThisResume": false
+  },
+  "actualReturnFilePresence": {
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/metadata-credential-reference.json": false,
+    "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-return/preservation-decision.json": false
+  },
+  "genuineReturnReferencesPopulated": false,
+  "scopeApprovalAlreadyRecorded": true,
+  "recoveryWindowExtended": false,
+  "indexOperations": 0,
+  "runtimeChanges": 0,
+  "liveOperations": 0,
+  "qualificationInvocations": 0,
+  "cohortAttemptsReserved": 0,
+  "dependencyAvailable": false,
+  "fullDeliveryComplete": false,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md": "727069dead5767f93d07e2dc4fae250cf295f97cae8078a021ebe6cf3273f081",
+    "_bmad-output/implementation-artifacts/tests/story-5-4-coupled-delivery-resume-2026-10-29/prior-spec.md": "65bdb51483eae1f35bd691231bcacdc3109ce3859660c5266551acbd94eff6e0",
+    "_bmad-output/implementation-artifacts/tests/story-5-4-coupled-delivery-resume-2026-10-29/investigation.md": "b1a2958379d84971302663b3f4945bb45bc461aaa2892bfe9c482060e4a242c5",
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json": "c82c38e0b2363f561dc8ae22119aebb7a3dff7c240a8c5c3934f3b8bbeb2dec2"
+  },
+  "specTokensO200kBase": 1580,
+  "jsonAndLinksValidated": true
+}

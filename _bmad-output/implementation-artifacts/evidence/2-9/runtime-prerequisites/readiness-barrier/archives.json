@@ -1,0 +1,83 @@
+[
+  {
+    "source_log": "/tmp/story-2-9-actual-apphost-focused-build.log",
+    "raw_sha256": "eb8675f86f92308c3506571ce15f43538407fb6a8a5d4fc824eab5bdbfa5ecfd",
+    "archive_sha256": "1cf1b5490c02632d24484ec14cd35ba3e5dfa4c466d99b5800e0ae04dca0c049"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-focused-build.log",
+    "raw_sha256": "5b09b3b1dbb1b83d0b166b3d4ba84aadd11f5dd486889c1f9881bec594022b9f",
+    "archive_sha256": "45db6684b9212df3abf111d9048ccea398723916495d3f20939ebcbd70ca2cad"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-focused-tests.log",
+    "raw_sha256": "7fc68a1974291e5acb170fefc7e37dd1ca54ec7a87d8b88891b85da966d44ce7",
+    "archive_sha256": "c2e86f5463a094e1b7d903bd78cbd730dcc210fdd05fd759e00f55864563be3b"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-negative-control-build.log",
+    "raw_sha256": "313c9e0eaa817a379f75ebbbad8cd713db385d83644cb3a85f4cbc70937cb71a",
+    "archive_sha256": "43d758cd86740d5e5fe96f1280eb4ea25eb226b6637a037138c9f2e1e2c90be0"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-negative-control-tests.log",
+    "raw_sha256": "c4a706062e99345283cf67697f59ee6782129c872a47d016f6c574469affdaee",
+    "archive_sha256": "724de3040957f64a97618a6cf618a1104197e630e8ecd3c83795c3bd97131172"
+  },
+  {
+    "source_log": "/tmp/story-2-9-run-preparation-build.log",
+    "raw_sha256": "42b71a58860ada63879d8ae7169d745a1e79ec426a189b83200111b22d77b58d",
+    "archive_sha256": "3495d891d12b4ed5eae324a1dd79b6aef58599be165e74c5fbc7d5aa40991ea2"
+  },
+  {
+    "source_log": "/tmp/story-2-9-run-preparation-source-build.log",
+    "raw_sha256": "7b3919a74bcb6428d993111093b3ad3cc83a4e99856f3fe371743223395d1587",
+    "archive_sha256": "59bd05f027f572bd9a09b582d93dedc4d30d78379e4674ffa5d996b2e544909a"
+  },
+  {
+    "source_path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/AppHostRunner.cs",
+    "sha256": "fad7def742cb6cd08546aeed17506d21ae30dcde532d1b233dd8579cc8e9ebd9"
+  },
+  {
+    "source_path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs",
+    "sha256": "984366f2403bd36bae90e632a766073e4a3774ed7bfa09b1dadf5a0f5135892d"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-diagnostic-tests.log",
+    "raw_sha256": "6fb24b6cea014807c642de032ea7386a236bccc295447d3a4b89d4b8f25ea344",
+    "archive_sha256": "85610ab8297e78468999ef4a619dd0139fc7bd7d561f820aa3286cec2cb909dc"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-diagnostic2-tests.log",
+    "raw_sha256": "a4924447af6bbbc5793f99ad7726cba3d30be1317f8978c6238c08b27808305d",
+    "archive_sha256": "7f8b268d15ff67dfae9d49a1b2b8698088bcbd93aca558cd869f9d426ef3dddf"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-frozen-final-build.log",
+    "raw_sha256": "ae60449c3c8a71fa4ad49bc0f59946ac81e156e1653dfa33d72173c9c4dccdb8",
+    "archive_sha256": "531f1f80477ebc80c1c72229eb41aff146145aff475b4882d3634a4a442bc029"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-frozen-final-tests.log",
+    "raw_sha256": "9397e99d7f6dbcc6691d665bb04e4b0c24a293d7d73ca8598da9da2bea28315e",
+    "archive_sha256": "d7e04820fcc85cb21c7dc126ec95baff6304bba35108d5ca17dbb3d4566cc79e"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-frozen-final2-build.log",
+    "raw_sha256": "3a7f60441552751cbaa8ee18dc41760398867543960cdb7cf2f17157178a55a3",
+    "archive_sha256": "fd47bc8e60571ae3d5f6389c4cbe4b3db9720a83fb368160f80e855d0a6ef31f"
+  },
+  {
+    "source_log": "/tmp/story-2-9-readiness-frozen-final2-tests.log",
+    "raw_sha256": "8f7d8e327bc159ff27bdf89f6f4a493d020509c60649c4c1eb7cbd497223934c",
+    "archive_sha256": "562f6a4f0b686a549dc0fa9524465ef80e728d6755426f9b96d5607755760367"
+  },
+  {
+    "actual_deps": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.deps.json",
+    "sha256": "62f1b8c6989d166b21d16778945406131233386433f621b0990ffaa130384c39"
+  },
+  {
+    "actual_deps": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.deps.json",
+    "sha256": "7a0d4758360ff43f67f2bf36122a9ba9c0d5b45b7664f5594dc46947a171a79b"
+  }
+]

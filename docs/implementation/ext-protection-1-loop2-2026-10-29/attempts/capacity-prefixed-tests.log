@@ -1,0 +1,67 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(prepared: False) [FAIL]
+      Shouldly.ShouldAssertException : Task `journal.UpdateAsync("tenant", "oversized-metadata", "QualificationNativeResult", new string('B', 64), head => { head.QualificationAttempts.Add("padding", new string('x', OpenBaoErasureRootStore.MaximumHeadBytes - before.Length - 64)); var compact = head with { Pending = head.Pending! with { Survivors = null } }; proposedBytes = JsonSerializer.SerializeToUtf8Bytes(compact).Length; return true; }, Token)`
+          should throw
+      System.InvalidOperationException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(113,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.<>c__DisplayClass13_0.<<AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary>g__RefuseCapacityStealingMetadata|0>d.MoveNext()
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(125,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(Boolean prepared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(prepared: True) [FAIL]
+      Shouldly.ShouldAssertException : Task `journal.UpdateAsync("tenant", "oversized-metadata", "QualificationNativeResult", new string('B', 64), head => { head.QualificationAttempts.Add("padding", new string('x', OpenBaoErasureRootStore.MaximumHeadBytes - before.Length - 64)); var compact = head with { Pending = head.Pending! with { Survivors = null } }; proposedBytes = JsonSerializer.SerializeToUtf8Bytes(compact).Length; return true; }, Token)`
+          should throw
+      System.InvalidOperationException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(113,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.<>c__DisplayClass13_0.<<AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary>g__RefuseCapacityStealingMetadata|0>d.MoveNext()
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(125,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(Boolean prepared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '4d8288650635297b0a884efcdd2784f80b3603ce37be6a872458592410c37c83')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 2, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 0.622s

@@ -1,0 +1,6 @@
+{
+  "outcome": "ParserAssumptionRefusedAbsence",
+  "exitCode": 1,
+  "sourceOrNativeTestsAffected": false,
+  "detail": "An additional read-only docker inspect correctly returned exit 1, stdout [] and no-such-object stderr. The wrapper incorrectly expected empty stdout; retained native harness cleanup had already passed."
+}

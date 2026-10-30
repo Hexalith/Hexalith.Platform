@@ -1,0 +1,166 @@
+{
+  "attempts": [
+    {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "exitCode": 0,
+      "measurements": [
+        {
+          "deadErcReplay": "Erased",
+          "exactSourceStateBytes": 9437198,
+          "originalBytes": 1398789,
+          "phase": "large",
+          "plaintextBytes": 786451,
+          "realDapr": true,
+          "sdkReceiveBytes": 8388608,
+          "sdkSendLimit": "unchanged SDK default",
+          "sealedBytes": 1048803,
+          "sidecarRequestBytes": 4194304,
+          "sourceChunkBytes": 1048576
+        }
+      ],
+      "phase": "large",
+      "safeFailureLines": [],
+      "safeFailureTypes": [],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-0450083338bb4da6b958f14d8deea27c",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "51193",
+        "--dapr-grpc-port",
+        "40711",
+        "--dapr-internal-grpc-port",
+        "36531",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-6z3_7dml/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    },
+    {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "exitCode": 0,
+      "measurements": [
+        {
+          "legacyChunkBytes": 4194304,
+          "originalBytes": 5242882,
+          "phase": "legacy-seed",
+          "realDapr": true,
+          "sdkReceiveBytes": 8388608
+        }
+      ],
+      "phase": "legacy-seed",
+      "safeFailureLines": [],
+      "safeFailureTypes": [],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-0450083338bb4da6b958f14d8deea27c",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "36773",
+        "--dapr-grpc-port",
+        "50171",
+        "--dapr-internal-grpc-port",
+        "51271",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-6z3_7dml/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "8Mi"
+      ]
+    },
+    {
+      "counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exitCode": 1,
+      "measurements": [],
+      "phase": "legacy-read",
+      "safeFailureLines": [
+        "ErasureRootLoop6DaprIntegrationTests.cs(45,0)"
+      ],
+      "safeFailureTypes": [
+        "Dapr.DaprException",
+        "Grpc.Core.RpcException",
+        "InnerException"
+      ],
+      "sidecarArguments": [
+        "/home/administrator/.dapr/bin/daprd",
+        "--app-id",
+        "erc-loop6-0450083338bb4da6b958f14d8deea27c",
+        "--dapr-listen-addresses",
+        "127.0.0.1",
+        "--dapr-http-port",
+        "34265",
+        "--dapr-grpc-port",
+        "43593",
+        "--dapr-internal-grpc-port",
+        "41355",
+        "--resources-path",
+        "/tmp/erc-loop6-dapr-6z3_7dml/components",
+        "--enable-metrics=false",
+        "--log-level",
+        "error",
+        "--max-body-size",
+        "4Mi"
+      ]
+    }
+  ],
+  "cleanup": true,
+  "component": {
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+      "name": "erc-source-test"
+    },
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "127.0.0.1:60209"
+        },
+        {
+          "name": "enableTLS",
+          "value": "false"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    }
+  },
+  "containerId": "9253c4fc0ad07d43dae4a5a59c842ff129471790ed25a1b6cc6b8bd309575341",
+  "daprVersion": "1.18.7",
+  "daprdSha256": "e988a6f53abec017fc9ebcb4f89de9bed11bce005eb49bd8e85e8d3d6adbf488",
+  "failureType": "AssertionError",
+  "harnessSourceSha256": "15b4888d381a7d9a3649565be5bd159a3a4beabc2635f7097c8163f2d4c81fbe",
+  "liveExecuted": false,
+  "name": "erc-loop6-redis-0450083338bb4da6b958f14d8deea27c",
+  "nonce": "0450083338bb4da6b958f14d8deea27c",
+  "outcome": "BlockedUnknown",
+  "productionQualified": false,
+  "redisImageId": "sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541",
+  "scope": "Owned Dapr source framing only",
+  "testAssemblySha256": "dc71ddd82466b06b1c69da1913c415491a38913ca30881e46436c6098b11521e"
+}

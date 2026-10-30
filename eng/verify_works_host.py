@@ -160,7 +160,18 @@ def require_host_package_pins(apphost, version):
                 raise ValueError("The Platform file host repeats an EventStore package directive: " + match.group(1))
             pins[match.group(1)] = match.group(2)
     if not pins:
-        raise ValueError("The Platform file host declares no EventStore package directive: " + str(apphost))
+        composition = Path(apphost).parent / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+        text = Path(apphost).read_text()
+        if "#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" not in text or not composition.is_file():
+            raise ValueError("The Platform file host declares no EventStore package directive or canonical mapped project: " + str(apphost))
+        model = ET.parse(composition).getroot()
+        for package in ("Hexalith.EventStore.Aspire", "Hexalith.EventStore.ServiceDefaults"):
+            packages = model.findall(".//PackageReference[@Include='" + package + "']")
+            projects = model.findall(".//ProjectReference[@Include='$(HexalithEventStoreRoot)/src/" + package + "/" + package + ".csproj']")
+            if len(packages) != 1 or len(projects) != 1 or packages[0].get("Version") or packages[0].get("VersionOverride"):
+                raise ValueError("The canonical mapped hosting dependency is absent or overrides its catalog: " + package)
+        return {"path": str(apphost), "version": version, "packages": ["Hexalith.EventStore.Aspire", "Hexalith.EventStore.ServiceDefaults"],
+                "sha256": sha256(apphost), "mappedProject": str(composition), "mappedProjectSha256": sha256(composition)}
     differing = sorted(name + "@" + pinned for name, pinned in pins.items() if pinned != version)
     if differing:
         raise ValueError("Platform file host EventStore packages differ from the catalog selection " + version + ": " + ", ".join(differing))
@@ -1175,13 +1186,17 @@ def run_verification(args):
         # Qualify against the target's adapter in an isolated output. The retained Works graph keeps its own pin.
         catalog = ET.parse(platform / CATALOG).getroot()
         adapter = next(item.text for item in catalog.findall(".//HexalithAspireHostingDaprVersion") if not item.get("Condition"))
+        # Match the root-declared Identity and Parties inputs in linkedFixtureSources,
+        # regardless of ambient source overrides. Composition retains its selected Platform root.
+        consumer_sources = ["-p:HexalithPartiesRoot=" + str(works / "references/Hexalith.Parties"),
+                            "-p:HexalithPlatformRoot=" + str(works / "references/Hexalith.Platform")]
         if "Debug" in profile["consumerConfigurations"]:
             build("works-consumer-debug", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Debug", works, artifacts / "consumer-debug",
                   ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
-                   "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version])
+                   "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources])
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
-               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, path_map(consumer_output)])
+               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources, path_map(consumer_output)])
         host_runtime = host_output / "bin/release" / (PLATFORM_RUNTIME + ".dll")
         summary["platformRuntimeIdentity"] = require_identical_runtime(
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))

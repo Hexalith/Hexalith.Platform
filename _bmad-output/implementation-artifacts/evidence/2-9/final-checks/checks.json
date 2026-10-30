@@ -1,0 +1,111 @@
+[
+  {
+    "name": "Hexalith.EventStore.Testing.Tests.build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "seconds": 1.78,
+    "note": "Final retry after adding the Theory input null guard; retained build log is the final pass.",
+    "stdoutArchive": "final-checks/Hexalith.EventStore.Testing.Tests.build.log.gz"
+  },
+  {
+    "name": "Hexalith.EventStore.Testing.Tests.tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Testing.Tests/bin/Debug/net10.0/Hexalith.EventStore.Testing.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "counts": {
+      "total": 189,
+      "failed": 0,
+      "skipped": 0
+    },
+    "stdoutArchive": "final-checks/Hexalith.EventStore.Testing.Tests.tests.log.gz"
+  },
+  {
+    "name": "Hexalith.EventStore.Testing.Integration.Tests.build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "seconds": 2.582,
+    "stdoutArchive": "final-checks/Hexalith.EventStore.Testing.Integration.Tests.build.log.gz"
+  },
+  {
+    "name": "Hexalith.EventStore.Testing.Integration.Tests.tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Debug/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll",
+      "-class",
+      "*"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "seconds": 0.696,
+    "stdoutArchive": "final-checks/Hexalith.EventStore.Testing.Integration.Tests.tests.log.gz"
+  },
+  {
+    "name": "Hexalith.EventStore.IntegrationTests.build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.IntegrationTests/Hexalith.EventStore.IntegrationTests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 1,
+    "seconds": 17.563,
+    "stdoutArchive": "final-checks/Hexalith.EventStore.IntegrationTests.build.log.gz"
+  },
+  {
+    "name": "Parties.Platform.build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "seconds": 2.944,
+    "stdoutArchive": "final-checks/Parties.Platform.build.log.gz"
+  },
+  {
+    "name": "Parties.declarations",
+    "command": [
+      "python3",
+      "scripts/test_platform_declaration.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "seconds": 0.863,
+    "stdoutArchive": "final-checks/Parties.declarations.log.gz"
+  }
+]

@@ -1,0 +1,100 @@
+{
+  "frozenMatrixComponentsPassed": true,
+  "rows": {
+    "Seal/replay": {
+      "SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.SourceOutboxAndTargetEventsShareOneNativeRootRemainSealedAndReplayTypedErased"
+      ],
+      "CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.CallerAliasAndMissingIndependentSourceRefuseBeforeAnyRootIssue"
+      ]
+    },
+    "Manifest erase": {
+      "ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ManifestTrimsOnceRetainsSurvivorsAndOriginalOrderedVector"
+      ],
+      "RewrapFailureDoesNotDestroyAnyOfOneThousandTargets": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.RewrapFailureDoesNotDestroyAnyOfOneThousandTargets"
+      ],
+      "PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.PinAndAuthorizedUnpinAreImmutableAndBlockManifestBeforeNativeEffects"
+      ],
+      "UnknownManifestEligibilityCannotAdmitOrRotateAHead": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.UnknownManifestEligibilityCannotAdmitOrRotateAHead"
+      ]
+    },
+    "Loss/restore": {
+      "ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.ProductionLookupRestoresCurrentOriginalStateAndReceiptsWithoutAnotherTrim"
+      ],
+      "ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootEngineTests.ProductionRegistryLookupRecoversExactCommittedOriginalAfterStaleStateRestore"
+      ],
+      "PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext"
+      ],
+      "SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite": [
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-pascal\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-lowercase\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-seed\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"snapshot-producer-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"seed-retention-loss\\\")",
+        "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: \\\"producer-retention-loss\\\")"
+      ]
+    },
+    "v23 race": {
+      "AdmissionAndReservationRaceHasOneOwnerWinner": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.AdmissionAndReservationRaceHasOneOwnerWinner(reserveFirst: False)"
+      ],
+      "CompromiseAndReservationRaceNeverCancelsAnOriginalReservation": [
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: True)",
+        "Hexalith.Platform.Protection.Tests.ErasureRootConsumptionTests.CompromiseAndReservationRaceNeverCancelsAnOriginalReservation(reserveFirst: False)"
+      ],
+      "ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve": [
+        "Hexalith.EventStore.Server.Tests.Security.DeletionConsumptionActorTests.ActivationCompareIsAtomicAndPostActivationCompromiseStillBlocksReserve"
+      ]
+    }
+  },
+  "loop4AdditionalExecutedCases": {
+    "IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4SnapshotLossTests.IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss(mixed: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4SnapshotLossTests.IndexedIndependentOriginalsReplaySingleAndMixedSnapshotsAfterPermanentErcLoss(mixed: True)"
+    ],
+    "LostCompletionAcknowledgementFollowedBySecondOwnerEraseClearsExactDisposedQueue": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.LostCompletionAcknowledgementFollowedBySecondOwnerEraseClearsExactDisposedQueue"
+    ],
+    "NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython": [
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: \\\"P05\\\")",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.NativeTypedProviderAndActiveCredentialIntegersSignThroughActualRoleHttpAndPython(caseId: \\\"P29\\\")"
+    ],
+    "RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets": [
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P20\\\", holdWins: True)",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P21\\\", holdWins: True)",
+      "Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop4EvidenceTests.RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(caseId: \\\"P21\\\", holdWins: False)"
+    ],
+    "CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(initialBytes: 131072)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4StorageTests.CumulativeTransitionsSharePayloadAndBoundMetadataWithExactIndexedHistoricalLookup(initialBytes: 5242880)"
+    ],
+    "OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery(verifier: False)",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop4CompletionTests.OwningWorkerReportsActualDisposedBacklogAndClearsAfterPermissionRecovery(verifier: True)"
+    ],
+    "CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects"
+    ]
+  },
+  "nativeGeometryPrecheckPassed": true,
+  "finalFiveCaseNativePending": false,
+  "finalFiveCaseNativePassed": {
+    "total": 5,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "seconds": 1149.427,
+    "fullTargetCount": 1000,
+    "cleanupComplete": true
+  }
+}

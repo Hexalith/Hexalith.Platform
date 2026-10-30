@@ -1,0 +1,29 @@
+{
+  "actualProducerSchema": {
+    "vector": "P36",
+    "actualFields": [
+      "AttemptId",
+      "BindingDigest",
+      "OperationId",
+      "Producer",
+      "RequestSha256",
+      "Role",
+      "SafeRequest"
+    ],
+    "failure": "OPERATION_PRODUCER_ORIGINAL_SCHEMA_INVALID"
+  },
+  "incompleteNativeRuntime": {
+    "oneFileManifestAcceptedBeforeImageInspection": true,
+    "frozenManifestReported": true,
+    "actualSelectedDependencyUnlisted": "Hexalith.Platform.Protection.dll",
+    "selectedDependencyChanged": true,
+    "containerCreated": false
+  },
+  "credentialLimit": {
+    "acceptedProfile": true,
+    "asciiCredentialBytes": 8186,
+    "wireAuthorizationCharacters": 8193,
+    "serverMaxAuthorizationCharacters": 8192,
+    "serverRefuses": true
+  }
+}

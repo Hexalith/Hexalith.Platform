@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/tests",
+    "-p",
+    "test_ext_protection_1*.py",
+    "-v"
+  ],
+  "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop3-b8fd390531/eventstore",
+  "environment": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+    "HexalithTenantsBasePath": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+    "EXT_PROTECTION_P13_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_P13_COMPONENT_SHA256": "f7986292c424f69e08afd8b3944bddb6f1bf4801861ab02262f7ef2baccea629",
+    "EXT_PROTECTION_P34_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_P34_COMPONENT_SHA256": "f7986292c424f69e08afd8b3944bddb6f1bf4801861ab02262f7ef2baccea629",
+    "EXT_PROTECTION_SNAPSHOT_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_SNAPSHOT_COMPONENT_SHA256": "f7986292c424f69e08afd8b3944bddb6f1bf4801861ab02262f7ef2baccea629"
+  }
+}

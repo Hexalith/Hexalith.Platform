@@ -1,0 +1,95 @@
+{
+  "status": "in-progress",
+  "workflowStep": "03-implement",
+  "matrixCoverage": [
+    {
+      "row": "Ready owner",
+      "test": "ReadyOwner_ResolvesExactBindingsAndSyntheticTenant",
+      "finishedCases": 1,
+      "result": "passed"
+    },
+    {
+      "row": "Ready owner",
+      "test": "ReadyHandoff_BindsBothFixturesWithoutLocalPrerequisites",
+      "finishedCases": 1,
+      "result": "passed"
+    },
+    {
+      "row": "Invalid handoff",
+      "test": "InvalidFile_RefusesWithoutLeakingContents",
+      "finishedCases": 6,
+      "result": "passed"
+    },
+    {
+      "row": "Invalid handoff",
+      "test": "MissingHandoff_FailsBothFixturesWithoutStartupOrSkip",
+      "finishedCases": 1,
+      "result": "passed"
+    },
+    {
+      "row": "Unready",
+      "test": "InconsistentHandoff_RefusesAtomicallyWithoutSuppliedValues",
+      "finishedCases": 22,
+      "result": "passed"
+    },
+    {
+      "row": "Disposed",
+      "test": "Disposal_CancelsOutstandingRequestsAndReleasesClients",
+      "finishedCases": 1,
+      "result": "passed"
+    },
+    {
+      "row": "Disposed",
+      "test": "DisposalFailure_IsReportedWithoutLosingClientCleanupOrExposingDetails",
+      "finishedCases": 1,
+      "result": "passed"
+    }
+  ],
+  "matrixTests": {
+    "reader": 34,
+    "fixtures": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "stdoutArchivesVerified": 51,
+  "preservedPrivateAndFrozenSources": [
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.IntegrationTests/Security/AspireTopologyFixture.cs",
+      "sha256": "c9e9aaf74ac3489966af2f255c21596772ac746329e1b47449447fcd5f48b0ff",
+      "unchangedFrom": "6e0280bf489171326e2ce1ba3dde361712b7c977"
+    },
+    {
+      "path": "references/Hexalith.EventStore/tests/Hexalith.EventStore.IntegrationTests/Fixtures/AspireContractTestFixture.cs",
+      "sha256": "d0b473a3ec0c4e2de9b5d6a353f4c736d09f9f27b83be29aeb70d4c67f6207b3",
+      "unchangedFrom": "6e0280bf489171326e2ce1ba3dde361712b7c977"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.IntegrationTests/HealthChecks/PartiesAspireTopologyFixture.cs",
+      "sha256": "90c810f5873984ef13c71dba78d19e4bb6409f1e9bae6455bdc2eba5de391fc9",
+      "unchangedFrom": "784215a8fe91b4d5ae00eb65ab61d3b9507ca0c2"
+    }
+  ],
+  "completedTasks": [
+    1,
+    2,
+    5
+  ],
+  "pendingTasks": [
+    3,
+    4
+  ],
+  "acceptance": {
+    "descriptorOnlyFixtures": "verified by source diff and executed regressions",
+    "realPartiesFlow": "not executed: route-catalog readiness prevented descriptor/fixture launch; synthetic records also unavailable",
+    "allIsolatedTestsPass": "not satisfied: recorded broad failures",
+    "privateOwnerRuntime": "source preserved; runtime rebuild blocked by CS7036 in an unchanged owner test"
+  },
+  "reviewStarted": false,
+  "reasonReviewNotStarted": "Implementation acceptance gate is unsatisfied; Story 2.9 remains in-progress.",
+  "whitespaceCheck": {
+    "command": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check",
+    "cwd": "references/Hexalith.Parties",
+    "exitCode": 0,
+    "note": "Recognizes the repository-required CRLF line endings; normal trailing-space checks stay enabled."
+  }
+}

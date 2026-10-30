@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "eng/staging-foundation",
+    "-v"
+  ],
+  "startedAt": "2026-10-29T17:36:50.954527+00:00",
+  "completedAt": "2026-10-29T17:36:51.033524+00:00",
+  "exitCode": 0,
+  "stdout": "foundation-tests-final.stdout.txt",
+  "stderr": "foundation-tests-final.stderr.txt",
+  "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "sources": {
+    "eng/staging-foundation/render.py": "b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc",
+    "eng/staging-foundation/cni_probe.py": "5c2378632404c08b616baad036f64bf6be56e08113bee911ba466fe94169cbd7",
+    "eng/staging-foundation/test_staging_foundation.py": "6cb3a8d9518d60893ed5ece58c7c5ce55df49a2c4999f684dceea01e0bb2a799",
+    "eng/staging-foundation/inputs.example.json": "1bcbb1b3ac7d40d3add060bb6081142e720028023c9f7318d330b608589d5b7f",
+    "eng/staging-foundation/inputs.resolved.json": "c531c07bf814bff20d8f77da8026679fee1f31f675d7601521fc56ca12b9aade",
+    "eng/staging-foundation/apply-plan.json": "ec72aa44995a5a9ad9eea35b0e53a36246d1113be073f6a1288be9393f729fcf"
+  },
+  "sourceSnapshots": {
+    "eng/staging-foundation/inputs.resolved.json": "inputs.resolved.initial.json",
+    "eng/staging-foundation/apply-plan.json": "apply-plan.initial.json"
+  }
+}

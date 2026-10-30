@@ -1,0 +1,244 @@
+{
+  "artifact-inventory.json": {
+    "rows": 211,
+    "sha256": "8a3ef553a55622d314277fba7b78d11b5861e53e37e152e31a4cf408c3f5d911",
+    "verified": true
+  },
+  "functional-source-inventory.json": {
+    "rows": 287,
+    "sha256": "332b466c3ce6c6c0b773fb70162a3a2cb71217be80c837dc090f93f853afc145",
+    "verified": true
+  },
+  "loop6-delta-inventory.json": {
+    "rows": 80,
+    "sha256": "2e481edc96b392f8d8663052b8e9229cff461e35ff81e0099e9974428255ebb8",
+    "verified": true
+  },
+  "sharedSourceDifferences": [
+    {
+      "repository": "platform",
+      "path": ".gitattributes",
+      "sharedSha256": "1dfd93f3c7aa3afaaf6784c82f1d4a75ca3c7a048b8c30874261a07285f19bc6",
+      "isolatedSha256": "0ce8b99d80620795256a3924c07da19a5c9333cdd10eb137addaa7c14f25ac72"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "sharedSha256": "c698bc148a970e6296bdd7bf887965b73bebaa51d9667c3f00d63729b0261ad4",
+      "isolatedSha256": "a6300d5d197679814cab07e29d0a2553adf57bfd08f2cbaa3e1733477c814cfd"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.EventStoreHost/Program.cs",
+      "sharedSha256": "f5414245d007561aba749ad17114f73c08d027585f57e4cdb851cef7fbcb4c00",
+      "isolatedSha256": "f97873d8ab59d077b97c2cec3e012fc257bb6ceb1e741eddffad96ec71920655"
+    }
+  ],
+  "graphVerification": [
+    {
+      "graph": "05",
+      "root": "/tmp/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373",
+      "kind": "runtime",
+      "files": 257,
+      "manifestSha256": "20a5c7fe162172d6cba303a324768cf24ea4a12e3bbd15e4229cf04a503cc7ea",
+      "verified": true
+    },
+    {
+      "graph": "05",
+      "root": "/tmp/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373",
+      "kind": "source",
+      "files": 5505,
+      "manifestSha256": "6a1aef0139881ac7d900c63bdc81d17048779a3c70e844857d20275965952513",
+      "verified": true
+    },
+    {
+      "graph": "05",
+      "root": "/home/administrator/hexalith-protection-evidence/ext-protection-1/loop6-1bfadd624b0d46ccaae6751e9922d0d8/graphs/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373",
+      "kind": "runtime",
+      "files": 257,
+      "manifestSha256": "20a5c7fe162172d6cba303a324768cf24ea4a12e3bbd15e4229cf04a503cc7ea",
+      "verified": true
+    },
+    {
+      "graph": "05",
+      "root": "/home/administrator/hexalith-protection-evidence/ext-protection-1/loop6-1bfadd624b0d46ccaae6751e9922d0d8/graphs/ext-protection-loop6-final-transport-exact-770d739f1dc2479bb5ecfe62911dc373",
+      "kind": "source",
+      "files": 5505,
+      "manifestSha256": "6a1aef0139881ac7d900c63bdc81d17048779a3c70e844857d20275965952513",
+      "verified": true
+    },
+    {
+      "graph": "07",
+      "root": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "kind": "runtime",
+      "files": 257,
+      "manifestSha256": "9e311f108173ad5a3dbcd1d4b57c63987823418b3e9f379817166f8594548658",
+      "verified": true
+    },
+    {
+      "graph": "07",
+      "root": "/tmp/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "kind": "source",
+      "files": 5506,
+      "manifestSha256": "91006ab7cb4db18e42ec08be3841f75d57b62693955d86a39755f9d3179b76b0",
+      "verified": true
+    },
+    {
+      "graph": "07",
+      "root": "/home/administrator/hexalith-protection-evidence/ext-protection-1/loop6-1bfadd624b0d46ccaae6751e9922d0d8/graphs/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "kind": "runtime",
+      "files": 257,
+      "manifestSha256": "9e311f108173ad5a3dbcd1d4b57c63987823418b3e9f379817166f8594548658",
+      "verified": true
+    },
+    {
+      "graph": "07",
+      "root": "/home/administrator/hexalith-protection-evidence/ext-protection-1/loop6-1bfadd624b0d46ccaae6751e9922d0d8/graphs/ext-protection-loop6-native-channel-final-0cfb8f5b54a34dbe9b36d7a49958037b",
+      "kind": "source",
+      "files": 5506,
+      "manifestSha256": "91006ab7cb4db18e42ec08be3841f75d57b62693955d86a39755f9d3179b76b0",
+      "verified": true
+    }
+  ],
+  "graph04To07": {
+    "productionSourcesByteIdentical": true,
+    "wholeBinaryEqualityClaimed": false,
+    "differences": [
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop6DaprIntegrationTests.cs",
+        "graph04": "b55cea5b362d111033bcf93f324b5339e0287a3285be1dc6d42fd7c716fe8fd8",
+        "graph07": "1f611a73af8b9139a1f5b5d25aee5d9bac631c400d3582e9bba91a94b52b835b"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoDisposableNativeHandler.cs",
+        "graph04": "5beea809898d0a7909f2fbe65c52a67df3fb0156ed9579ff73c06cc0cf8242f4",
+        "graph07": "1cecc7b1b0ab67433b72f17b57229ecb9224d6573484c04706cf98c5d9ddf6ba"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCommandChannel.cs",
+        "graph04": null,
+        "graph07": "504e4e06a016d9b944ee045380338200a30de2677072fe314a840ed5f9dc0a84"
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeTransportDiagnostics.cs",
+        "graph04": "ee8460140ee0cc935cc53bf8a36e61eb4647f8151147ae6ccbd79bac1b750313",
+        "graph07": "573f1f1b0e32a20601e1ecc302e18f0a3af864f1047ba84b6d1c04fb57ac16f3"
+      }
+    ]
+  },
+  "native": {
+    "path": "/tmp/ext-protection-loop6-evidence/native-final-02.json",
+    "sha256": "5507f89cd4efee3cd9bdfc2d1966db8a7844296f1172ae1759f7ef776d4750fc",
+    "summary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "seconds": 2998.951,
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "independentOwnedContainerAbsence": true,
+    "policiesVerified": 5,
+    "growth": [
+      {
+        "archiveWriteBytes": 1667407,
+        "archiveWrites": 75,
+        "nativeHeadBytes": 9439430,
+        "nativeHistoryGeometry": 131072,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 7372800,
+        "transitions": 8
+      },
+      {
+        "archiveWriteBytes": 10240298,
+        "archiveWrites": 146,
+        "nativeHeadBytes": 9439430,
+        "nativeHistoryGeometry": 5242880,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 22708224,
+        "transitions": 8
+      }
+    ],
+    "occurrence": [
+      {
+        "archiveWriteBytes": 7013381,
+        "archiveWrites": 5021,
+        "lookupReadBound": 16,
+        "nativeHeadBytes": 2216,
+        "nativeOccurrences": 256,
+        "nativeOwners": 256,
+        "restrictedRuntimePolicy": true
+      }
+    ],
+    "cases": [
+      "TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot",
+      "ThousandTargetManifestReturnsCompleteOrderedOriginalVector",
+      "PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest",
+      "LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt",
+      "NativeTenantAndCompleteContextSubstitutionCannotDecrypt"
+    ]
+  },
+  "frozenAndRegisterUnchanged": true,
+  "types": {
+    "csharpFiles": 256,
+    "newViolations": [],
+    "preexistingExceptions": [
+      {
+        "repository": "eventstore",
+        "path": "src/Hexalith.EventStore.Server/Events/SnapshotManager.cs",
+        "types": [
+          "SnapshotManager",
+          "Log"
+        ],
+        "baselineTypes": [
+          "SnapshotManager",
+          "Log"
+        ]
+      },
+      {
+        "repository": "platform",
+        "path": "src/Hexalith.Platform.Secrets.Runtime/DaprCapabilityAdapters.cs",
+        "types": [
+          "DaprSigningTrustAdapter",
+          "DaprRevocationAuthenticatorAdapter",
+          "DaprSigningProviderAdapter",
+          "DaprReplayRegistrarAdapter",
+          "DaprCompromiseRegistrarAdapter",
+          "CapabilityIdentity"
+        ],
+        "baselineTypes": [
+          "DaprSigningTrustAdapter",
+          "DaprRevocationAuthenticatorAdapter",
+          "DaprSigningProviderAdapter",
+          "DaprReplayRegistrarAdapter",
+          "DaprCompromiseRegistrarAdapter",
+          "CapabilityIdentity"
+        ]
+      },
+      {
+        "repository": "platform",
+        "path": "tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs",
+        "types": [
+          "CustodyBindingLocalTransport",
+          "CountingHandler",
+          "Configuration"
+        ],
+        "baselineTypes": [
+          "CustodyBindingLocalTransport",
+          "CountingHandler",
+          "Configuration"
+        ]
+      }
+    ],
+    "frozenAndRegisterUnchanged": true
+  }
+}

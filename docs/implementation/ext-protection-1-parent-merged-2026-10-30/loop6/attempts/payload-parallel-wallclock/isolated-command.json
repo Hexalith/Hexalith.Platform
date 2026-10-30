@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "dotnet",
+    "tests/Hexalith.EventStore.PayloadProtection.Tests/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.Tests.dll",
+    "-noColor",
+    "-parallel",
+    "none",
+    "-method",
+    "Hexalith.EventStore.PayloadProtection.Tests.ReviewWorkerTests.AStalledLocalDrainDoesNotAcknowledgeOrPreventTheNextRootFromProgressing",
+    "-result-xml",
+    "/tmp/ext-protection-loop6-parent-final/attempts/payload-parallel-wallclock/isolated.xml"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/eventstore",
+  "exitCode": 0,
+  "seconds": 0.590721651999047,
+  "sha256": "5772e73db5eb1256234bdf281cec0b3e2d2beeb78581195abd444e3200cc9a71"
+}

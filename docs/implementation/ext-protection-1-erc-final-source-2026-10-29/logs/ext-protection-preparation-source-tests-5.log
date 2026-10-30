@@ -1,0 +1,16 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.ContainmentPreparationCommitsOriginalViolationsAndDistinctSingletonOwners [FAIL]
+      System.InvalidOperationException : Original native owner result unresolved; read-only original recovery required.
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ProtectionQualificationNativeDriver.cs(331,0): at Hexalith.Platform.Protection.ProtectionQualificationNativeDriver.ExecuteAsync(ProtectionQualificationNativeCall step, JsonObject request, CancellationToken token)
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(43,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.<>c__DisplayClass5_0.<<ExecuteAsync>g__Run|0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        src/Hexalith.Platform.Protection/ProtectionQualificationActionRunner.cs(57,0): at Hexalith.Platform.Protection.ProtectionQualificationActionRunner.ExecuteAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, IReadOnlyDictionary`2 previous, Func`3 admit, Func`4 retain, CancellationToken token)
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationPreparationTests.cs(46,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationPreparationTests.ContainmentPreparationCommitsOriginalViolationsAndDistinctSingletonOwners()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Protection.Tests (ID = 'cf325e76b96e084af2c47700db5ba8e7d26cf93c93769469308413a9d0232f6a')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 4, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.806s

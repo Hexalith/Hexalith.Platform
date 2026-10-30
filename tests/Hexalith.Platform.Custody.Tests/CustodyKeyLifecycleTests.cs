@@ -347,4 +347,25 @@ public sealed class CustodyKeyLifecycleTests
         result.Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); fixture.Backend.CommittedState.ShouldBeEmpty(); fixture.Effects.ShouldBe(0); fixture.Anchor.ShouldBe(0);
     }
 
+    /// <summary>A deadline wrapper still asks the underlying owner for an admitted original when pending bytes were never stored.</summary>
+    [Fact]
+    public async Task DeadlineWrapperForwardsAdmittedOriginalAndReconcilesLossBeforePending()
+    {
+        var admitted = RecoverableAnchoredState.Prepare("scope", 0, 1, "current-ledger", "admitted-ledger");
+        var inner = Substitute.For<IAnchoredStateTransitionAuthority>();
+        inner.ReadAdmittedOriginalAsync("scope", Arg.Any<CancellationToken>()).Returns(admitted);
+        inner.VerifyTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(true);
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        var wrapper = new DeadlineAnchoredStateAuthority(inner, new PrivateOwnerOperationDeadline(TimeProvider.System, deadline.Token));
+        (await wrapper.ReadAdmittedOriginalAsync("scope", TestContext.Current.CancellationToken)).ShouldBe(admitted);
+        await inner.Received(1).ReadAdmittedOriginalAsync("scope", Arg.Any<CancellationToken>());
+        inner.ClearReceivedCalls();
+        bool persisted = false;
+        string result = await RecoverableAnchoredState.ReconcileAsync("scope", "current-ledger", null, value => value, _ => Task.FromResult(true), wrapper,
+            value => { persisted = true; return Task.FromResult(value); }, recoverAdmittedOriginal: true);
+        persisted.ShouldBeTrue();
+        result.ShouldBe("admitted-ledger");
+        await inner.Received(1).ReadAdmittedOriginalAsync("scope", Arg.Any<CancellationToken>());
+    }
+
 }

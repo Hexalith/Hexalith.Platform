@@ -7,6 +7,7 @@ using Hexalith.EventStore.Middleware;
 using Hexalith.EventStore.OpenApi;
 using Hexalith.EventStore.Server.Configuration;
 using Hexalith.EventStore.ServiceDefaults;
+using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Hexalith.EventStore.SignalRHub;
 using Dapr;
 using Microsoft.Extensions.Options;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddDaprClient();
+builder.Services.AddDaprClient(options => ErasureRootDaprTransport.Configure(options));
 builder.Services.AddHealthChecks()
     .AddEventStoreDaprHealthChecks()
     .AddEventStoreAppChannelTokenHealthCheck();
@@ -27,20 +28,36 @@ builder.Services.AddEventStoreSignalR(builder.Configuration);
 builder.Services.AddPlatformIdentity(builder.Configuration);
 builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
 
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+#else
+if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"]))
+    throw new InvalidOperationException("Development catalog bootstrap requires the authoritative published owner SDK and adapters before package qualification.");
+#endif
+
 WebApplication app = builder.Build();
 
 // Middleware order per architecture: CorrelationIdMiddleware FIRST (before everything)
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseExceptionHandler();
 app.MapDefaultEndpoints();
+app.UseRouting();
 app.UseAuthentication();
 app.UseRateLimiter();
+app.UseEventStoreHttpHostSecurity();
 app.UseAuthorization();
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+#endif
 app.UseCloudEvents();
 
 // OpenAPI/Swagger UI (gated by configuration, H13)
 if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
-    _ = app.MapOpenApi();
+    _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
+    _ = app.UseEventStoreHumanSurface("/swagger");
     _ = app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
         options.RoutePrefix = "swagger";
@@ -59,8 +76,8 @@ app.MapControllers().Add(endpoint =>
 });
 app.MapErrorReferences();
 app.MapApiVersionFallback();
-if (!declarativeSubscriptions) app.MapSubscribeHandler();
-app.MapActorsHandlers();
+if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
+app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
 app.MapApplicationRuntimeProofEndpoints();
 
 // SignalR hub for real-time projection change notifications (conditional)

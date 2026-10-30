@@ -1,0 +1,14 @@
+[
+  "dotnet",
+  "build",
+  "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+  "-c",
+  "Debug",
+  "-m:1",
+  "--artifacts-path",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/tests-build",
+  "-p:GeneratePackageOnBuild=false",
+  "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+  "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+  "--nologo"
+]

@@ -25,7 +25,7 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
         if (signed is null || !Valid(signed)) { return null; }
         var snapshot = await ReadAsync(signed.Payload, cancellationToken).ConfigureAwait(false); if (snapshot is null) { return null; }
         var batch = Carrier(snapshot.Batch, signed);
-        string id = "issue-" + Hash(new[] { signed.SigningRequestId, batch.AttestationDigest });
+        string id = DeletionBatchCapabilityIdentity.IssueOperationId(signed.SigningRequestId, batch.AttestationDigest);
         var original = snapshot.State.Receipts.SingleOrDefault(value => value.OperationId == id && value.Capability == signed.Payload
             && value.SigningRequestId == signed.SigningRequestId && value.DetachedJwsDigest == batch.AttestationDigest);
         if (original is not null) { return original; }

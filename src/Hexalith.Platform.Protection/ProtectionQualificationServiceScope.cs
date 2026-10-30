@@ -7,4 +7,8 @@ namespace Hexalith.Platform.Protection;
 public sealed record ProtectionQualificationServiceScope(string Role, string Identity, string TenantId, string BindingDigest,
     ProtectionQualificationNativeCell InstallationProof,
     Dictionary<string, Dictionary<string, ProtectionQualificationActionRecipe>> Recipes,
-    Dictionary<string, ProtectionQualificationObservationRecipe> Observations);
+    Dictionary<string, ProtectionQualificationObservationRecipe> Observations)
+{
+    /// <summary>Complete exact native argument values for the closed source catalog. They cannot provide executable recipes or expected observations.</summary>
+    public Dictionary<string, System.Text.Json.Nodes.JsonObject>? NativeArguments { get; init; }
+}

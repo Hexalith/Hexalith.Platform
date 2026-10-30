@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "eng/timesheets-deployment/observe_native.py",
+    "--output",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json"
+  ],
+  "startedAt": "2026-10-29T17:30:43.618860+00:00",
+  "completedAt": "2026-10-29T17:30:48.123315+00:00",
+  "exitCode": 0,
+  "stdout": "native-collector.stdout.txt",
+  "stderr": "native-collector.stderr.txt",
+  "observation": "native-observation.json",
+  "mutationAuthorized": false,
+  "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "sources": {
+    "eng/timesheets-deployment/observe_native.py": "d565bdf441242463ba0fb7d4ddaf656be0484daf7d672bad2ed6e8c6b4e67155"
+  },
+  "postCollectionClientMeasurement": "native-client-post-collection.json",
+  "clientVersionAtOriginalCollection": "not recorded; later local measurement is explicitly separate"
+}

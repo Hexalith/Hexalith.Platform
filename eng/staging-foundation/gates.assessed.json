@@ -1,0 +1,186 @@
+{
+  "kind": "staging-foundation-dependency-assessment",
+  "assessedAt": "2026-10-29T17:33:34.105183+00:00",
+  "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "approvalGranted": false,
+  "acceptanceRule": "A scoped passing receipt is credited only for its stated scope. A dependency remains blocked where the current story explicitly retains incomplete operational acceptance or full workflow review. No story status is advanced by this assessment.",
+  "dependencies": [
+    {
+      "story": "4-1",
+      "sprintKey": "4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Both upgrade hop gates remain closed/unsigned; operational outcomes are not-run. Retained recovery expired 2026-10-15T11:40:42Z. Fresh accepted recovery, retirement, compatibility/workload evidence, exact successor approval and actual signed sequential upgrades remain required.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 87
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md",
+          "sha256": "5fdd7ef956befb4a6ac3f8775a05ed69e1436def5241f918d3882e89a1cc9599"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261023t085443z-recovery-preflight-preparation/summary.md",
+          "sha256": "a1f8eed2293799dd0b4c70795ab7dbc2500edce5d2c0702680546d1468da0fb5"
+        }
+      ]
+    },
+    {
+      "story": "4-2",
+      "sprintKey": "4-2-close-public-admin-exposure-and-anonymous-registry-reads",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [
+        "Administrator-confirmed exposure closure/native-access waiver; admin-exposure-result pass",
+        "Registry authentication pass",
+        "Post-cleanup EventStore GC confirmation pass"
+      ],
+      "reason": "Administration/exposure closure and registry authentication pass, with Administrator-confirmed login and recorded native-access waiver. The later GC confirmation passes. The story explicitly remains in-progress pending full workflow review, so complete dependency acceptance is not recorded.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 88
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md",
+          "sha256": "25fd82071b07417ea22caf0a48c4ae1c419181482e03c0aa995a5acaab35bec4"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/admin-exposure-result.json",
+          "sha256": "ae4ea56cec2c9afe0de84bafa8d3f23920a77038caa508b1ba6a9775ce998d22",
+          "pointer": "/result"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/registry-auth-result.json",
+          "sha256": "c35e37c58af78ba30e02afc318c3cbcea95bd39ef9d9a878676a6d1fae41c5a7",
+          "pointer": "/result"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261007t093420z-gc-confirmation/registry-gc-confirmation.json",
+          "sha256": "2d8697f8fdc16950d17d9035c9dbde9b4e27882da5d03428e2afd0c5838e5b47",
+          "pointer": "/result"
+        }
+      ]
+    },
+    {
+      "story": "4-3",
+      "sprintKey": "4-3-relocate-the-privileged-forgejo-runner",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Local preparation and source observation only. Destination qualification, job/network matrix, cutover, credential revocation, source removal, secure erasure and signed operational acceptance remain absent.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 89
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-3-relocate-the-privileged-forgejo-runner.md",
+          "sha256": "0e415614d26f1bfa515f802d981a34182b9d321c4959fce1353044b1832c7e33"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-3/20261007t153936z-local-preparation/summary.md",
+          "sha256": "2d4d0db86df3f89b92dee99cb3c030636320b99debb0044016fbda620b6b0af8"
+        }
+      ]
+    },
+    {
+      "story": "4-27",
+      "sprintKey": "4-27-retire-kubesphere-without-changing-workload-data",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [
+        "Offline native-certificate prerequisite complete (scopedSpecStatus=done, 336 passing tests); no operational retirement or recovery acceptance"
+      ],
+      "reason": "Latest receipt qualifies the offline native-certificate prerequisite only: operationalGate closed, operationalQualification null, recoveryAcceptance null, publicActivation disabled, parentStoryStatus in-progress. Actual runtime/authority/system/recovery and accepted retirement remain pending.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 116
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md",
+          "sha256": "2b4a7ab156faeff04f30036aedaf1419711189c3347fd26c1c533ebceb8a755d"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+          "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+          "pointer": "/operationalGate"
+        }
+      ]
+    },
+    {
+      "story": "4-28",
+      "sprintKey": "4-28-deploy-rancher-and-register-the-existing-cluster",
+      "sprintStatus": "backlog",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Backlog installation/qualification scope. Accepted retirement and supported upgrade precede live Rancher installation/registration, private TLS/MFA/access, authority restoration and independent native/recovery qualification.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 117
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md",
+          "sha256": "303b305eb4c1fe6e8999ade5376a5576441be7e436b4fd1d2315fc8469cb46ea"
+        }
+      ]
+    }
+  ],
+  "acceptedSeparateQualification": {
+    "story": "4-26",
+    "sprintStatus": "done",
+    "qualificationAcceptedForOriginalStoryScope": true,
+    "managementInstallationAccepted": false,
+    "productionRetirementAccepted": false,
+    "productionUpgradeAccepted": false,
+    "sources": [
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+        "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0"
+      },
+      {
+        "path": "eng/cluster-management/QUALIFICATION.md",
+        "sha256": "cf7fa72152234133e468c965ea5d87b085ae607ed056f8cd1ba189203c0c4b3e",
+        "lines": "3-29"
+      }
+    ]
+  },
+  "nativeAccess": {
+    "historicalIndependentAccessDemonstrated": true,
+    "currentTargetAndCertificateAuthenticationObserved": true,
+    "currentObservationCut": "2026-10-29T17:30:48.110013+00:00",
+    "full428AccessRecoveryAcceptance": false,
+    "limits": "Current authentication does not establish historical revocation, deputy custody, MFA, layer deploy identity qualification or manager-unavailable maintenance/recovery acceptance.",
+    "sources": [
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t112212z-independent-native-access/independent-native-access.json",
+        "sha256": "baf8fa62efc17835e00c2a546f8ba8dd98a8457ad85720ed21cfe097c606dec6"
+      },
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+        "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+        "pointer": "/observations/identity"
+      },
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+        "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+        "pointer": "/observations/tls"
+      }
+    ]
+  },
+  "liveCniEnforcement": {
+    "accepted": false,
+    "result": null,
+    "reason": "No accepted live allow/deny result found in investigated Platform evidence. Calico presence is not enforcement proof. Probe execution would require writes and is outside this task."
+  }
+}

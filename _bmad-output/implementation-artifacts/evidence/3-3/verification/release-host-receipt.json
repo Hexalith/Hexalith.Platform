@@ -1,0 +1,25 @@
+{
+  "hostBuiltFromPackagesOnly": true,
+  "hostAssembly": "/home/administrator/projects/hexalith/platform/artifacts/story33-packages/0443c7b4d0d149beb582260d9e76ddb6/release-host/bin/Hexalith.Builds.Module.EventStoreHost/release/Hexalith.Builds.Module.EventStoreHost.dll",
+  "hostSha256": "b56e04e9f59a4c0b1cdf3e9faac4a9886ef15b167f33dec5913d8c0118ee0766",
+  "runtimeEnvironment": "Development",
+  "instanceId": "0443c7b4d0d149beb582260d9e76ddb6-catalog",
+  "rootDigest": "d37f1374ca52911215f3a4a0bf4e94e6e487fb28b7ea530c59ea393bfc077966",
+  "requiredHosts": [
+    "eventstore",
+    "memories",
+    "memories-domain-service",
+    "parties",
+    "tenants",
+    "tenants-api"
+  ],
+  "httpMetadataStatus": null,
+  "processExit": -6,
+  "gatewayObservationPresent": false,
+  "committed": false,
+  "qualification": "Release/package gateway binding and fail-closed probe only; real owner cohort and sidecars are absent, so package activation/readiness is not established",
+  "hostSourceSha256": {
+    "Program.cs": "e3d0bc592df3f14881a2cf83eff033c3a5c5ec846b0283fa032520c1543d4a1c",
+    "Hexalith.Builds.Module.EventStoreHost.csproj": "3a85e18a3bc7563cbe19de2129247b3858cecd5b0e33dc43380d5d6a9e0a5ae3"
+  }
+}

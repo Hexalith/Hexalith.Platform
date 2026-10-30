@@ -1,0 +1,112 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "c10db490feb3719eae0326eadee39204",
+  "ruleId": "HXR027",
+  "resource": "eventstore",
+  "appId": "eventstore",
+  "status": "cutover-timeout;health-request-timeout",
+  "unreadyResources": [
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "eventstore",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1996092+00:00",
+      "processId": 3894679
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997041+00:00",
+      "processId": 3894816
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997202+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997353+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997445+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997533+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-domain-service",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1997784+00:00",
+      "processId": 3894839
+    },
+    {
+      "name": "parties",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1998289+00:00",
+      "processId": 3894990
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1998544+00:00",
+      "processId": 3894813
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T12:13:43.1998647+00:00",
+      "processId": 3894807
+    }
+  ],
+  "failingTask": null,
+  "blockingRunId": null
+}

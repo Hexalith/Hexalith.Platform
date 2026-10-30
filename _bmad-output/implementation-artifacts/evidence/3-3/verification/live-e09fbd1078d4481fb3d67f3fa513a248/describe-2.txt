@@ -1,0 +1,3775 @@
+{
+  "resources": [
+    {
+      "name": "access-telemetry-config",
+      "displayName": "access-telemetry-config",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=access-telemetry-config",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "[redacted]",
+      "displayName": "[redacted]",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=[redacted]",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "access-telemetry-store",
+      "displayName": "access-telemetry-store",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=access-telemetry-store",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "aspire-dashboard-jsmvpvyx",
+      "displayName": "aspire-dashboard",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:35.17+00:00",
+      "source": "Aspire.Dashboard",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=aspire-dashboard-jsmvpvyx",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "otlp-grpc",
+          "displayName": "otlp-grpc",
+          "url": "https://localhost:46825"
+        },
+        {
+          "name": "http",
+          "displayName": "Dashboard (http)",
+          "url": "http://localhost:46633/login?t=[redacted]"
+        },
+        {
+          "name": "https",
+          "displayName": "Dashboard (https)",
+          "url": "https://localhost:46099/login?t=[redacted]"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools/Aspire.Dashboard",
+        "executable.pid": 3618150,
+        "executable.workDir": "/home/administrator/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools",
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "ASPIRE_DASHBOARD_API_ENABLED": "[redacted]",
+        "ASPIRE_DASHBOARD_APPLICATION_NAME": "[redacted]",
+        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "[redacted]",
+        "ASPIRE_DASHBOARD_PERSISTENCE_MODE": "[redacted]",
+        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "DASHBOARD__API__AUTHMODE": "[redacted]",
+        "DASHBOARD__API__PRIMARYAPIKEY": "[redacted]",
+        "DASHBOARD__FRONTEND__AUTHMODE": "[redacted]",
+        "DASHBOARD__FRONTEND__BROWSERTOKEN": "[redacted]",
+        "DASHBOARD__FRONTEND__PUBLICURL": "[redacted]",
+        "DASHBOARD__OTLP__AUTHMODE": "[redacted]",
+        "DASHBOARD__OTLP__PRIMARYAPIKEY": "[redacted]",
+        "DASHBOARD__RESOURCESERVICECLIENT__APIKEY": "[redacted]",
+        "DASHBOARD__RESOURCESERVICECLIENT__AUTHMODE": "[redacted]",
+        "Kestrel__Certificates__Default__Path": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "configstore",
+      "displayName": "configstore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=configstore",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "dapr-placement-mtls-epwzrkpt",
+      "displayName": "dapr-placement-mtls",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:38+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.886881+00:00",
+      "source": "daprio/dapr:1.18.7",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-placement-mtls-epwzrkpt",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        }
+      ],
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:45373"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:24662"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/dapr-credentials-95E45B1362319903B199B2DD93E3AACE",
+          "target": "/var/run/dapr/credentials",
+          "mountType": "bind",
+          "isReadOnly": true
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": "./placement",
+        "container.id": "8e42f8987ced41565da8d83541feab04f8a783ee599e02f228da7dbb66ffd575",
+        "container.image": "daprio/dapr:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [
+          8080,
+          50005
+        ],
+        "resource.appArgs": [
+          "./placement",
+          "--tls-enabled",
+          "--sentry-address=dapr-sentry:50001",
+          "--trust-domain=localhost",
+          "--trust-anchors-file=/var/run/dapr/credentials/ca.crt",
+          "--healthz-listen-address=0.0.0.0"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "dapr-placement-mtls_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "dapr-scheduler-mtls-keytvppd",
+      "displayName": "dapr-scheduler-mtls",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:38+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.858213+00:00",
+      "source": "daprio/dapr:1.18.7",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-scheduler-mtls-keytvppd",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        }
+      ],
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:41317"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:22564"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/dapr-credentials-95E45B1362319903B199B2DD93E3AACE",
+          "target": "/var/run/dapr/credentials",
+          "mountType": "bind",
+          "isReadOnly": true
+        },
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/scheduler-data",
+          "target": "/var/lock",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": "./scheduler",
+        "container.id": "15531efa494dec60d7da63c7ca5edfc04e47d7787f989747c87025840aa15dc0",
+        "container.image": "daprio/dapr:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [
+          8080,
+          50006
+        ],
+        "resource.appArgs": [
+          "./scheduler",
+          "--tls-enabled",
+          "--sentry-address=dapr-sentry:50001",
+          "--trust-domain=localhost",
+          "--trust-anchors-file=/var/run/dapr/credentials/ca.crt",
+          "--etcd-data-dir=/var/lock/dapr/scheduler",
+          "--override-broadcast-host-port=localhost:22564"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "dapr-scheduler-mtls_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "dapr-sentry-mhwsyxbu",
+      "displayName": "dapr-sentry",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:38.148689+00:00",
+      "source": "daprio/sentry:1.18.7",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=dapr-sentry-mhwsyxbu",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:34707"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:19149"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/dapr-credentials-95E45B1362319903B199B2DD93E3AACE",
+          "target": "/var/run/dapr/credentials",
+          "mountType": "bind"
+        },
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/sentry.yaml",
+          "target": "/var/run/dapr/config/sentry.yaml",
+          "mountType": "bind",
+          "isReadOnly": true
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": "/sentry",
+        "container.id": "aa07f9800eff51e7a1f1b122d577ad20b5d79fb06e3d68535a9209153e88b998",
+        "container.image": "daprio/sentry:1.18.7",
+        "container.lifetime": "Session",
+        "container.ports": [
+          8080,
+          50001
+        ],
+        "resource.appArgs": [
+          "/sentry",
+          "--issuer-credentials=/var/run/dapr/credentials",
+          "--trust-domain=localhost",
+          "--config=/var/run/dapr/config/sentry.yaml",
+          "--listen-address=0.0.0.0"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "dapr-sentry_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "eventstore-dapr",
+      "displayName": "eventstore-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "eventstore-dapr-cli-bfaqbxkq",
+      "displayName": "eventstore-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.86+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-dapr-cli-bfaqbxkq",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:20153"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:29627"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:13754"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3620785,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "eventstore",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.eventstore.yaml",
+          "--dapr-internal-grpc-port",
+          "24284",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "36621",
+          "--dapr-grpc-port",
+          "13754",
+          "--dapr-http-port",
+          "29627",
+          "--metrics-port",
+          "20153",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "eventstore-hqznavcc"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "eventstore-hqznavcc",
+      "displayName": "eventstore",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.86+00:00",
+      "source": "Hexalith.EventStore.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-hqznavcc",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:36621"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3620791,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_CONTENTROOT": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__BoundCommand__AllowedDomains__memories": "[redacted]",
+        "Authentication__BoundStreamRead__AllowedDomains__tenants": "[redacted]",
+        "Authentication__BoundStreamRead__PublicKeys__memories": "[redacted]",
+        "Authentication__BoundStreamRead__PublicKeys__tenants": "[redacted]",
+        "Authentication__DaprInternal": "[redacted]",
+        "Authentication__DaprInternal__AllowedCallers__0": "[redacted]",
+        "Authentication__DaprInternal__AllowedCallers__1": "[redacted]",
+        "Authentication__DaprInternal__Audience": "[redacted]",
+        "Authentication__DaprInternal__MaximumLifetimeSeconds": "[redacted]",
+        "Authentication__JwtBearer__AllowedAlgorithms__0": "[redacted]",
+        "Authentication__JwtBearer__AllowInsecureSymmetricKey": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__ValidAudiences__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Authentication__WorkloadIssuer": "[redacted]",
+        "Authentication__WorkloadIssuer__AudienceScopePrefix": "[redacted]",
+        "Authentication__WorkloadIssuer__ClientId": "[redacted]",
+        "Authentication__WorkloadIssuer__ClientSecret": "[redacted]",
+        "Authentication__WorkloadIssuer__LifetimeSeconds": "[redacted]",
+        "Authentication__WorkloadIssuer__OperationScopePrefix": "[redacted]",
+        "Authentication__WorkloadIssuer__TokenEndpoint": "[redacted]",
+        "Authentication__WorkloadIssuer__Workload": "[redacted]",
+        "[redacted]": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "EventStore__AppChannelToken": "[redacted]",
+        "EventStore__CommandStatus__StateStoreName": "[redacted]",
+        "EventStore__DaprConfigPath": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__DomainServices__ConfigStoreName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_global-administrators_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_global-administrators_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_global-administrators_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_global-administrators_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_global-administrators_v1__Version": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-cases_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-cases_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-cases_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-cases_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-cases_v1__Version": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-memory-units_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-memory-units_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-memory-units_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-memory-units_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-memory-units_v1__Version": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-tenants_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-tenants_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-tenants_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-tenants_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_memories-tenants_v1__Version": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_party_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_party_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_party_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_party_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_party_v1__Version": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_tenants_v1__AppId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_tenants_v1__Domain": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_tenants_v1__MethodName": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_tenants_v1__TenantId": "[redacted]",
+        "EventStore__DomainServices__Registrations__wildcard_tenants_v1__Version": "[redacted]",
+        "EventStore__IdempotencyAdmission__ActiveDigestKeyVersion": "[redacted]",
+        "EventStore__IdempotencyAdmission__DigestKeys__[redacted]": "[redacted]",
+        "EventStore__IdempotencyAdmission__DigestKeySecretGeneration": "[redacted]",
+        "EventStore__IdempotencyAdmission__DigestKeySecretName": "[redacted]",
+        "EventStore__IdempotencyAdmission__DigestKeySecretStoreName": "[redacted]",
+        "EventStore__IdempotencyAdmission__DigestKeySource": "[redacted]",
+        "EventStore__IdempotencyAdmission__Enabled": "[redacted]",
+        "EventStore__ProjectionChanges__PubSubName": "[redacted]",
+        "EventStore__ProjectionDeliveryIdempotency": "[redacted]",
+        "EventStore__ProjectionDeliveryIdempotency__CompletedReceiptLimit": "[redacted]",
+        "EventStore__ProjectionDeliveryIdempotency__MaxStateTransitionAttempts": "[redacted]",
+        "EventStore__ProjectionDeliveryIdempotency__ReservationLease": "[redacted]",
+        "EventStore__ProjectionDispatch": "[redacted]",
+        "EventStore__ProjectionDispatch__MaxRetryAttempts": "[redacted]",
+        "EventStore__ProjectionDispatch__RetryBaseDelay": "[redacted]",
+        "EventStore__ProjectionDispatch__RetryLeaseDuration": "[redacted]",
+        "EventStore__ProjectionDispatch__RetryMaxDelay": "[redacted]",
+        "EventStore__ProjectionDispatch__RetryScanBatchSize": "[redacted]",
+        "EventStore__ProjectionDispatch__RetryWorkerInterval": "[redacted]",
+        "EventStore__Projections": "[redacted]",
+        "EventStore__Projections__CheckpointStateStoreName": "[redacted]",
+        "EventStore__Projections__DefaultRefreshIntervalMs": "[redacted]",
+        "EventStore__Projections__ReadModelStateStoreName": "[redacted]",
+        "EventStore__Projections__RebuildIndexCleanupCadenceSeconds": "[redacted]",
+        "EventStore__Projections__RebuildMaxPrefixBytes": "[redacted]",
+        "EventStore__Projections__RebuildMaxPrefixEventCount": "[redacted]",
+        "EventStore__Projections__RebuildPageSize": "[redacted]",
+        "EventStore__Projections__WorkersEnabled": "[redacted]",
+        "EventStore__Publisher__PubSubName": "[redacted]",
+        "EventStore__PubSubComponentPath": "[redacted]",
+        "EventStore__RateLimiting__[redacted]StoreName": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AdapterAssemblies__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AdapterAssemblies__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AdapterAssemblies__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__OwnerAssemblies__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__OwnerAssemblies__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__OwnerAssemblies__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "EventStore__StateStoreComponentPath": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "UseSharedCompilation": "[redacted]"
+      },
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "eventstore-rebuilder-arahvgse",
+      "displayName": "eventstore-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=eventstore-rebuilder-arahvgse",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "eventstore-hqznavcc"
+      },
+      "environment": {},
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "llm",
+      "displayName": "llm",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=llm",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr",
+      "displayName": "memories-access-telemetry-clock-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli-gbhuqqtq",
+      "displayName": "memories-access-telemetry-clock-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:48+00:00",
+      "startTimestamp": "2026-10-30T11:58:48.26+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-dapr-cli-gbhuqqtq",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-yptthqvx"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:15561"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:11774"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:18158"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3624271,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "memories-access-telemetry-clock",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.memories-access-telemetry-clock.yaml",
+          "--dapr-internal-grpc-port",
+          "11937",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "35029",
+          "--dapr-grpc-port",
+          "18158",
+          "--dapr-http-port",
+          "11774",
+          "--metrics-port",
+          "15561",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "memories-access-telemetry-clock-yptthqvx"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-clock-rebuilder-unbasmtz",
+      "displayName": "memories-access-telemetry-clock-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-rebuilder-unbasmtz",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-yptthqvx"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-clock-yptthqvx"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-clock-yptthqvx",
+      "displayName": "memories-access-telemetry-clock",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:48+00:00",
+      "startTimestamp": "2026-10-30T11:58:48.26+00:00",
+      "source": "Hexalith.Memories.AccessTelemetry.Clock.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-clock-yptthqvx",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:35029"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3624272,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AccessTelemetryLifecycle__AttestationVerificationKey": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc": "[redacted]",
+        "AccessTelemetryLifecycle__CapacityEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__ClockSignerKeyEpoch": "[redacted]",
+        "AccessTelemetryLifecycle__ComponentProfileHash": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]Epoch": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreComponentPath": "[redacted]",
+        "AccessTelemetryLifecycle__DeploymentId": "[redacted]",
+        "AccessTelemetryLifecycle__Enabled": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyGeneration": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyReference": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest": "[redacted]",
+        "AccessTelemetryLifecycle__RetentionSource": "[redacted]",
+        "AccessTelemetryLifecycle__StateStoreComponentPath": "[redacted]",
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__TenantClaimName": "[redacted]",
+        "Authentication__JwtBearer__ValidAlgorithms__0": "[redacted]",
+        "Clock__AllowDevelopmentSources": "[redacted]",
+        "Clock__SecretStoreName": "[redacted]",
+        "Clock__SignerKeyEpoch": "[redacted]",
+        "Clock__SigningKeySecretName": "[redacted]",
+        "[redacted]": "[redacted]",
+        "ConnectionStrings__falkordb": "[redacted]",
+        "ConnectionStrings__redis": "[redacted]",
+        "Conversation__ProviderApiKey": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "Embedding__CredentialNamespace": "[redacted]",
+        "EmbeddingProviders__Google__ApiBaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__BaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcClientId": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcScope": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcTokenEndpoint": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "IsStubBackfill__Enabled": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "Memories__AppChannelToken": "[redacted]",
+        "Memories__DaprApiToken": "[redacted]",
+        "Memories__LlmComponentPath": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "NaturalLanguage__RetryWorkerEnabled": "[redacted]",
+        "OrphanSemanticIndex__Enabled": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "retentionSeconds": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "TenantEventRouting__AutoProvisionRoutedTenants": "[redacted]",
+        "UseSharedCompilation": "[redacted]",
+        "WorkflowReplaySafety__Enabled": "[redacted]"
+      },
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-dapr",
+      "displayName": "memories-access-telemetry-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli-cnqdezgp",
+      "displayName": "memories-access-telemetry-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:48+00:00",
+      "startTimestamp": "2026-10-30T11:58:48.26+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-dapr-cli-cnqdezgp",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-vrxsnqxc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:21583"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:26277"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:19264"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3624275,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "memories-access-telemetry",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.memories-access-telemetry.yaml",
+          "--dapr-internal-grpc-port",
+          "10571",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "46743",
+          "--dapr-grpc-port",
+          "19264",
+          "--dapr-http-port",
+          "26277",
+          "--metrics-port",
+          "21583",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "memories-access-telemetry-vrxsnqxc"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-access-telemetry-rebuilder-vckqwcnr",
+      "displayName": "memories-access-telemetry-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-rebuilder-vckqwcnr",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-vrxsnqxc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-access-telemetry-vrxsnqxc"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-access-telemetry-vrxsnqxc",
+      "displayName": "memories-access-telemetry",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:48+00:00",
+      "startTimestamp": "2026-10-30T11:58:48.26+00:00",
+      "source": "Hexalith.Memories.AccessTelemetry.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-access-telemetry-vrxsnqxc",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:46743"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3624269,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AccessTelemetryLifecycle__AttestationVerificationKey": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc": "[redacted]",
+        "AccessTelemetryLifecycle__CapacityEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__ClockSignerKeyEpoch": "[redacted]",
+        "AccessTelemetryLifecycle__ComponentProfileHash": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]Epoch": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreComponentPath": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreName": "[redacted]",
+        "AccessTelemetryLifecycle__DeploymentId": "[redacted]",
+        "AccessTelemetryLifecycle__Enabled": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyGeneration": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyReference": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest": "[redacted]",
+        "AccessTelemetryLifecycle__RetentionSource": "[redacted]",
+        "AccessTelemetryLifecycle__SecretStoreName": "[redacted]",
+        "AccessTelemetryLifecycle__StateStoreComponentPath": "[redacted]",
+        "AccessTelemetryLifecycle__StateStoreName": "[redacted]",
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__TenantClaimName": "[redacted]",
+        "Authentication__JwtBearer__ValidAlgorithms__0": "[redacted]",
+        "Clock__AllowDevelopmentSources": "[redacted]",
+        "Clock__SecretStoreName": "[redacted]",
+        "Clock__SignerKeyEpoch": "[redacted]",
+        "Clock__SigningKeySecretName": "[redacted]",
+        "[redacted]": "[redacted]",
+        "ConnectionStrings__falkordb": "[redacted]",
+        "ConnectionStrings__redis": "[redacted]",
+        "Conversation__ProviderApiKey": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "Embedding__CredentialNamespace": "[redacted]",
+        "EmbeddingProviders__Google__ApiBaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__BaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcClientId": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcScope": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcTokenEndpoint": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "IsStubBackfill__Enabled": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "Memories__AppChannelToken": "[redacted]",
+        "Memories__DaprApiToken": "[redacted]",
+        "Memories__LlmComponentPath": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "NaturalLanguage__RetryWorkerEnabled": "[redacted]",
+        "OrphanSemanticIndex__Enabled": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "retentionSeconds": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "TenantEventRouting__AutoProvisionRoutedTenants": "[redacted]",
+        "UseSharedCompilation": "[redacted]",
+        "WorkflowReplaySafety__Enabled": "[redacted]"
+      },
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-dapr",
+      "displayName": "memories-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-dapr-cli-pxjnjrwt",
+      "displayName": "memories-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.97+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-dapr-cli-pxjnjrwt",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-rtrmdhbj"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:17067"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:13229"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:25147"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3621002,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "memories",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.memories.yaml",
+          "--dapr-internal-grpc-port",
+          "10028",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "45481",
+          "--dapr-grpc-port",
+          "25147",
+          "--dapr-http-port",
+          "13229",
+          "--metrics-port",
+          "17067",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "memories-rtrmdhbj"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-dapr",
+      "displayName": "memories-domain-service-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "memories-domain-service-dapr-cli-adytccnf",
+      "displayName": "memories-domain-service-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.92+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-dapr-cli-adytccnf",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:27352"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:13484"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:22021"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3620894,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "memories-domain-service",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.memories-domain-service.yaml",
+          "--dapr-internal-grpc-port",
+          "12997",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "37137",
+          "--dapr-grpc-port",
+          "22021",
+          "--dapr-http-port",
+          "13484",
+          "--metrics-port",
+          "27352",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "memories-domain-service-gmxzdwuc"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-gmxzdwuc",
+      "displayName": "memories-domain-service",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.96+00:00",
+      "source": "Hexalith.Memories.DomainService.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-gmxzdwuc",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:37137"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3620958,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AccessTelemetryLifecycle__AttestationVerificationKey": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc": "[redacted]",
+        "AccessTelemetryLifecycle__CapacityEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__ClockSignerKeyEpoch": "[redacted]",
+        "AccessTelemetryLifecycle__ComponentProfileHash": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]Epoch": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreComponentPath": "[redacted]",
+        "AccessTelemetryLifecycle__DeploymentId": "[redacted]",
+        "AccessTelemetryLifecycle__Enabled": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyGeneration": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyReference": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest": "[redacted]",
+        "AccessTelemetryLifecycle__RetentionSource": "[redacted]",
+        "AccessTelemetryLifecycle__StateStoreComponentPath": "[redacted]",
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__TenantClaimName": "[redacted]",
+        "Authentication__JwtBearer__ValidAlgorithms__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Clock__AllowDevelopmentSources": "[redacted]",
+        "Clock__SecretStoreName": "[redacted]",
+        "Clock__SignerKeyEpoch": "[redacted]",
+        "Clock__SigningKeySecretName": "[redacted]",
+        "[redacted]": "[redacted]",
+        "ConnectionStrings__falkordb": "[redacted]",
+        "ConnectionStrings__redis": "[redacted]",
+        "Conversation__ProviderApiKey": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "Embedding__CredentialNamespace": "[redacted]",
+        "EmbeddingProviders__Google__ApiBaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__BaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcClientId": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcScope": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcTokenEndpoint": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__ReadModelStore__StateStoreName": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "EventStore__StateStoreName": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "IsStubBackfill__Enabled": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "Memories__AppChannelToken": "[redacted]",
+        "Memories__DaprApiToken": "[redacted]",
+        "Memories__LlmComponentPath": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "NaturalLanguage__RetryWorkerEnabled": "[redacted]",
+        "OrphanSemanticIndex__Enabled": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "retentionSeconds": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "TenantEventRouting__AutoProvisionRoutedTenants": "[redacted]",
+        "UseSharedCompilation": "[redacted]",
+        "WorkflowReplaySafety__Enabled": "[redacted]"
+      },
+      "healthReports": {
+        "memories-domain-service_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-domain-service-rebuilder-dhcgmdtp",
+      "displayName": "memories-domain-service-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-domain-service-rebuilder-dhcgmdtp",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.DomainService",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-domain-service-gmxzdwuc"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories-domain-service_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-graph-cwtskban",
+      "displayName": "memories-graph",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:38.016325+00:00",
+      "source": "falkordb/falkordb:latest",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-graph-cwtskban",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:40023"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/graph-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": "00306b9b389763ec44ae6532949752aec5fa4cc96f062bca17b34b60aa9a0753",
+        "container.image": "falkordb/falkordb:latest",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "FALKORDB_DATA_PATH": "[redacted]",
+        "REDIS_ARGS": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "memories-graph-redis-ping": {
+          "status": "Healthy",
+          "description": "Redis answered PING."
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-rebuilder-scypyshk",
+      "displayName": "memories-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-rebuilder-scypyshk",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-rtrmdhbj"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "memories-rtrmdhbj"
+      },
+      "environment": {},
+      "healthReports": {
+        "memories_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "memories-rtrmdhbj",
+      "displayName": "memories",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.96+00:00",
+      "source": "Hexalith.Memories.Server.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-rtrmdhbj",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-fmzzhtqd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-cwtskban"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:45481"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3620959,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AccessTelemetryLifecycle__AttestationVerificationKey": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned": "[redacted]",
+        "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc": "[redacted]",
+        "AccessTelemetryLifecycle__CapacityEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__ClockSignerKeyEpoch": "[redacted]",
+        "AccessTelemetryLifecycle__ComponentProfileHash": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]Epoch": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreComponentPath": "[redacted]",
+        "AccessTelemetryLifecycle__[redacted]StoreName": "[redacted]",
+        "AccessTelemetryLifecycle__DeploymentId": "[redacted]",
+        "AccessTelemetryLifecycle__Enabled": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyGeneration": "[redacted]",
+        "AccessTelemetryLifecycle__MarkerKeyReference": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId": "[redacted]",
+        "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest": "[redacted]",
+        "AccessTelemetryLifecycle__RetentionSource": "[redacted]",
+        "AccessTelemetryLifecycle__SecretStoreName": "[redacted]",
+        "AccessTelemetryLifecycle__StateStoreComponentPath": "[redacted]",
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__TenantClaimName": "[redacted]",
+        "Authentication__JwtBearer__ValidAlgorithms__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Clock__AllowDevelopmentSources": "[redacted]",
+        "Clock__SecretStoreName": "[redacted]",
+        "Clock__SignerKeyEpoch": "[redacted]",
+        "Clock__SigningKeySecretName": "[redacted]",
+        "[redacted]": "[redacted]",
+        "ConnectionStrings__falkordb": "[redacted]",
+        "ConnectionStrings__redis": "[redacted]",
+        "Conversation__ProviderApiKey": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "Embedding__CredentialNamespace": "[redacted]",
+        "EmbeddingProviders__Google__ApiBaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__BaseUrl": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcClientId": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcScope": "[redacted]",
+        "EmbeddingProviders__Ollama__OidcTokenEndpoint": "[redacted]",
+        "EventStore__CommandGateway__Audience": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "EventStore__CommandGateway__BoundCommand__PrivateKeyPkcs8Base64": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "EventStoreIntegration__Routing__PubSubName": "[redacted]",
+        "EventStoreIntegration__StateStore__StateStoreName": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "Ingestion__WorkflowPayloadStore__StateStoreName": "[redacted]",
+        "IsStubBackfill__Enabled": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "Memories__AppChannelToken": "[redacted]",
+        "Memories__DaprApiToken": "[redacted]",
+        "Memories__LlmComponentPath": "[redacted]",
+        "Memories__SecretStoreName": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "NaturalLanguage__DaprComponentName": "[redacted]",
+        "NaturalLanguage__RetryWorkerEnabled": "[redacted]",
+        "OrphanSemanticIndex__Enabled": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "retentionSeconds": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "TenantEventRouting__AutoProvisionRoutedTenants": "[redacted]",
+        "UseSharedCompilation": "[redacted]",
+        "WorkflowReplaySafety__Enabled": "[redacted]"
+      },
+      "healthReports": {
+        "memories_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "memories-vectors-fmzzhtqd",
+      "displayName": "memories-vectors",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:38.050125+00:00",
+      "source": "redis/redis-stack:latest",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=memories-vectors-fmzzhtqd",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:24102"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/vectors-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": "9fd65b0d49ea48f5482a30b78aaf9059010f0715f9b37f0db111a705f6b17bf1",
+        "container.image": "redis/redis-stack:latest",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [],
+        "resource.appArgsSensitivity": []
+      },
+      "environment": {
+        "REDIS_ARGS": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "memories-vectors-redis-ping": {
+          "status": "Healthy",
+          "description": "Redis answered PING."
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "parties-dapr",
+      "displayName": "parties-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "parties-dapr-cli-gnsbmauf",
+      "displayName": "parties-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:40.1+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dapr-cli-gnsbmauf",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "parties-dmwkwsbt"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:21460"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:26402"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:22151"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3621202,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "parties",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.parties.yaml",
+          "--dapr-internal-grpc-port",
+          "19796",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "34523",
+          "--dapr-grpc-port",
+          "22151",
+          "--dapr-http-port",
+          "26402",
+          "--metrics-port",
+          "21460",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "parties-dmwkwsbt"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "parties-dmwkwsbt",
+      "displayName": "parties",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:40.09+00:00",
+      "source": "Hexalith.Parties.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-dmwkwsbt",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "tenants-rvxfwhbw"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "tenants-rvxfwhbw"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "tenants-api-zepvxrsp"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-rtrmdhbj"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-domain-service-gmxzdwuc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:34523"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3621200,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__AllowedAlgorithms__0": "[redacted]",
+        "Authentication__JwtBearer__AllowInsecureSymmetricKey": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__ValidAudiences__0": "[redacted]",
+        "Authentication__Workload__AllowedCallers__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Authentication__Workload__MaximumLifetimeSeconds": "[redacted]",
+        "[redacted]": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "EventStore__AppChannelToken": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "EventStore__CommandStatus__StateStoreName": "[redacted]",
+        "EventStore__DataProtection__PersistToStateStore": "[redacted]",
+        "EventStore__DataProtection__StateStoreName": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__ProjectionChanges__PubSubName": "[redacted]",
+        "EventStore__Projections__CheckpointStateStoreName": "[redacted]",
+        "EventStore__Projections__ReadModelStateStoreName": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "Parties__MemoriesSearch__Enabled": "[redacted]",
+        "Parties__MemoriesSearch__MappingStore__StateStoreName": "[redacted]",
+        "Parties__Security__StateStoreName": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "Tenants__CommandApiAppId": "[redacted]",
+        "Tenants__Enabled": "[redacted]",
+        "Tenants__PubSubName": "[redacted]",
+        "Tenants__ReadinessBaseAddress": "[redacted]",
+        "Tenants__ServiceName": "[redacted]",
+        "Tenants__TopicName": "[redacted]",
+        "UseSharedCompilation": "[redacted]"
+      },
+      "healthReports": {
+        "parties_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "parties-rebuilder-gucqnuww",
+      "displayName": "parties-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=parties-rebuilder-gucqnuww",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "parties-dmwkwsbt"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/src/Hexalith.Parties",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "parties-dmwkwsbt"
+      },
+      "environment": {},
+      "healthReports": {
+        "parties_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "pubsub",
+      "displayName": "pubsub",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=pubsub",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "redis-cfadxrcy",
+      "displayName": "redis",
+      "resourceType": "Container",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:35+00:00",
+      "startTimestamp": "2026-10-30T11:58:38.073632+00:00",
+      "source": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=redis-cfadxrcy",
+      "relationships": [],
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:27355"
+        }
+      ],
+      "volumes": [
+        {
+          "source": "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/redis-data",
+          "target": "/data",
+          "mountType": "bind"
+        }
+      ],
+      "properties": {
+        "container.args": null,
+        "container.command": null,
+        "container.id": "8ab4ddd3953ac8b12049b67e05ee14e20db26877e0e98273757c7df8fb6d3c4d",
+        "container.image": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+        "container.lifetime": "Session",
+        "container.ports": [
+          6379
+        ],
+        "resource.appArgs": [
+          "docker-entrypoint.sh",
+          "redis-server",
+          "--appendonly",
+          "yes",
+          "--dir"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "environment": {
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {
+        "redis-redis-ping": {
+          "status": "Healthy",
+          "description": "Redis answered PING."
+        }
+      },
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "displayName": "routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=routing-live-e09fbd1078d4481fb3d67f3fa513a248-catalog",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "[redacted]",
+      "displayName": "[redacted]",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=[redacted]",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "statestore",
+      "displayName": "statestore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=statestore",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-dapr",
+      "displayName": "tenants-api-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-dapr-cli-rvmjnxxs",
+      "displayName": "tenants-api-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.98+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-dapr-cli-rvmjnxxs",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-zepvxrsp"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:22932"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:26552"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:16330"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3621016,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "tenants-api",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.tenants-api.yaml",
+          "--dapr-internal-grpc-port",
+          "20500",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "46565",
+          "--dapr-grpc-port",
+          "16330",
+          "--dapr-http-port",
+          "26552",
+          "--metrics-port",
+          "22932",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "tenants-api-zepvxrsp"
+      },
+      "environment": {
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "tenants-api-rebuilder-nejchygu",
+      "displayName": "tenants-api-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-rebuilder-nejchygu",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-zepvxrsp"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-api-zepvxrsp"
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "tenants-api-zepvxrsp",
+      "displayName": "tenants-api",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:40.01+00:00",
+      "source": "Hexalith.Tenants.Api.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-api-zepvxrsp",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:46565"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3621084,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__JwtBearer__AllowedAlgorithms__0": "[redacted]",
+        "Authentication__JwtBearer__AllowInsecureSymmetricKey": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__ValidAudiences__0": "[redacted]",
+        "Authentication__Workload__AllowedCallers__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Authentication__Workload__MaximumLifetimeSeconds": "[redacted]",
+        "[redacted]": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_API_TOKEN": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "EventStore__Authentication__Audience": "[redacted]",
+        "EventStore__Authentication__Authority": "[redacted]",
+        "EventStore__Authentication__ClientId": "[redacted]",
+        "EventStore__Authentication__Issuer": "[redacted]",
+        "EventStore__Authentication__Password": "[redacted]",
+        "EventStore__Authentication__RequireHttpsMetadata": "[redacted]",
+        "EventStore__Authentication__SigningKey": "[redacted]",
+        "EventStore__Authentication__Username": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "EventStore__CommandStatus__StateStoreName": "[redacted]",
+        "EventStore__DataProtection__PersistToStateStore": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__GatewayReadiness__BaseAddress": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "Jwt__SigningKey": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "Oidc__Authority": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "Tenants__ApiDaprToken": "[redacted]",
+        "Tenants__AppChannelToken": "[redacted]",
+        "Tenants__BootstrapGlobalAdminEnabled": "[redacted]",
+        "Tenants__BootstrapGlobalAdminUserId": "[redacted]",
+        "Tenants__DaprConfigPath": "[redacted]",
+        "UseSharedCompilation": "[redacted]"
+      },
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "tenants-dapr",
+      "displayName": "tenants-dapr",
+      "resourceType": "DaprSidecar",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-dapr",
+      "relationships": [],
+      "urls": [],
+      "volumes": [],
+      "properties": {},
+      "environment": {},
+      "healthReports": {},
+      "commands": {}
+    },
+    {
+      "name": "tenants-dapr-cli-xuyvxdqw",
+      "displayName": "tenants-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.96+00:00",
+      "source": "daprd",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-dapr-cli-xuyvxdqw",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-rvxfwhbw"
+        }
+      ],
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:29848"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:10522"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:10993"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "executable.pid": 3620955,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform",
+        "resource.appArgs": [
+          "--app-id",
+          "tenants",
+          "--config",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/accesscontrol.tenants.yaml",
+          "--dapr-internal-grpc-port",
+          "11583",
+          "--placement-host-address",
+          "localhost:24662",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea/subscriptions",
+          "--resources-path",
+          "/tmp/hexalith-platform/517ebd8e30294776bcdef159a78ff0ea",
+          "--scheduler-host-address",
+          "localhost:22564",
+          "--app-port",
+          "44551",
+          "--dapr-grpc-port",
+          "10993",
+          "--dapr-http-port",
+          "10522",
+          "--metrics-port",
+          "29848",
+          "--app-channel-address",
+          "localhost",
+          "--app-protocol",
+          "http",
+          "--enable-mtls",
+          "--sentry-address",
+          "localhost:19149"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.parentName": "tenants-rvxfwhbw"
+      },
+      "environment": {
+        "APP_API_TOKEN": "[redacted]",
+        "DAPR_CERT_CHAIN": "[redacted]",
+        "DAPR_CERT_KEY": "[redacted]",
+        "DAPR_CONTROLPLANE_NAMESPACE": "[redacted]",
+        "DAPR_CONTROLPLANE_TRUST_DOMAIN": "[redacted]",
+        "DAPR_TRUST_ANCHORS": "[redacted]",
+        "NAMESPACE": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]"
+      },
+      "healthReports": {},
+      "commands": {
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    },
+    {
+      "name": "tenants-rebuilder-mznevzug",
+      "displayName": "tenants-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "source": "dotnet",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-rebuilder-mznevzug",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-rvxfwhbw"
+        }
+      ],
+      "urls": [],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": null,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants",
+        "resource.appArgs": null,
+        "resource.appArgsSensitivity": null,
+        "resource.parentName": "tenants-rvxfwhbw"
+      },
+      "environment": {},
+      "healthReports": {
+        "tenants_http_/ready_200_check": {}
+      },
+      "commands": {}
+    },
+    {
+      "name": "tenants-rvxfwhbw",
+      "displayName": "tenants",
+      "resourceType": "Project",
+      "state": "Running",
+      "creationTimestamp": "2026-10-30T11:58:40+00:00",
+      "startTimestamp": "2026-10-30T11:58:39.96+00:00",
+      "source": "Hexalith.Tenants.csproj",
+      "healthStatus": "Healthy",
+      "dashboardUrl": "https://localhost:46099/?resource=tenants-rvxfwhbw",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "redis-cfadxrcy"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-hqznavcc"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-mhwsyxbu"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-epwzrkpt"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-keytvppd"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-hqznavcc"
+        }
+      ],
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:44551"
+        }
+      ],
+      "volumes": [],
+      "properties": {
+        "executable.args": null,
+        "executable.path": "dotnet",
+        "executable.pid": 3620957,
+        "executable.workDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants",
+        "project.launchProfile": null,
+        "project.path": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj",
+        "resource.appArgs": [
+          "run",
+          "--project",
+          "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj",
+          "--configuration",
+          "Debug",
+          "--no-launch-profile",
+          "--no-build",
+          "--no-restore"
+        ],
+        "resource.appArgsSensitivity": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource.launch[redacted]Type": "project"
+      },
+      "environment": {
+        "AfterMicrosoftNETSdkTargets": "[redacted]",
+        "APP_API_TOKEN": "[redacted]",
+        "ASPNETCORE_ENVIRONMENT": "[redacted]",
+        "ASPNETCORE_URLS": "[redacted]",
+        "Authentication__BoundStreamRead__PrivateKey": "[redacted]",
+        "Authentication__JwtBearer__AllowedAlgorithms__0": "[redacted]",
+        "Authentication__JwtBearer__AllowInsecureSymmetricKey": "[redacted]",
+        "Authentication__JwtBearer__Audience": "[redacted]",
+        "Authentication__JwtBearer__Authority": "[redacted]",
+        "Authentication__JwtBearer__Issuer": "[redacted]",
+        "Authentication__JwtBearer__RequireHttpsMetadata": "[redacted]",
+        "Authentication__JwtBearer__SigningKey": "[redacted]",
+        "Authentication__JwtBearer__ValidAudiences__0": "[redacted]",
+        "Authentication__Workload__AllowedCallers__0": "[redacted]",
+        "Authentication__Workload__Audience": "[redacted]",
+        "Authentication__Workload__MaximumLifetimeSeconds": "[redacted]",
+        "[redacted]": "[redacted]",
+        "CustomAfterDirectoryBuildTargets": "[redacted]",
+        "CustomAfterMicrosoftCommonProps": "[redacted]",
+        "CustomBeforeDirectoryBuildProps": "[redacted]",
+        "CustomBeforeDirectoryBuildTargets": "[redacted]",
+        "Dapr__DeclarativeSubscriptions": "[redacted]",
+        "DAPR_GRPC_ENDPOINT": "[redacted]",
+        "DAPR_GRPC_PORT": "[redacted]",
+        "DAPR_HTTP_ENDPOINT": "[redacted]",
+        "DAPR_HTTP_PORT": "[redacted]",
+        "DOTNET_CLI_USE_MSBUILD_SERVER": "[redacted]",
+        "DOTNET_ENVIRONMENT": "[redacted]",
+        "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION": "[redacted]",
+        "EventStore__Authentication__Audience": "[redacted]",
+        "EventStore__Authentication__Authority": "[redacted]",
+        "EventStore__Authentication__ClientId": "[redacted]",
+        "EventStore__Authentication__Issuer": "[redacted]",
+        "EventStore__Authentication__Password": "[redacted]",
+        "EventStore__Authentication__RequireHttpsMetadata": "[redacted]",
+        "EventStore__Authentication__SigningKey": "[redacted]",
+        "EventStore__Authentication__Username": "[redacted]",
+        "EventStore__CommandGateway__BaseAddress": "[redacted]",
+        "EventStore__CommandStatus__StateStoreName": "[redacted]",
+        "EventStore__DataProtection__PersistToStateStore": "[redacted]",
+        "EventStore__DataProtection__StateStoreName": "[redacted]",
+        "EventStore__DomainService__AppId": "[redacted]",
+        "EventStore__DomainService__ServiceVersion": "[redacted]",
+        "EventStore__ProjectionChanges__PubSubName": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__AttemptId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__CoordinatorHostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__Directory": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__HostId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__InstanceId": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__0": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__1": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__2": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__3": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__4": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__5": "[redacted]",
+        "EventStore__RouteCatalog__DevelopmentBootstrap__RootDigest": "[redacted]",
+        "EventStore__RouteCatalog__StateKey": "[redacted]",
+        "EventStore__RouteCatalog__StateStore": "[redacted]",
+        "HEXALITH_SOURCE_MAPPING_HASH": "[redacted]",
+        "Jwt__SigningKey": "[redacted]",
+        "LOGGING__CONSOLE__FORMATTERNAME": "[redacted]",
+        "MSBUILDDISABLENODEREUSE": "[redacted]",
+        "Oidc__Authority": "[redacted]",
+        "OTEL_BLRP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_BSP_SCHEDULE_DELAY": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION": "[redacted]",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "[redacted]",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "[redacted]",
+        "OTEL_EXPORTER_OTLP_HEADERS": "[redacted]",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "[redacted]",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "[redacted]",
+        "OTEL_METRIC_EXPORT_INTERVAL": "[redacted]",
+        "OTEL_METRICS_EXEMPLAR_FILTER": "[redacted]",
+        "OTEL_RESOURCE_ATTRIBUTES": "[redacted]",
+        "OTEL_SERVICE_NAME": "[redacted]",
+        "OTEL_TRACES_SAMPLER": "[redacted]",
+        "SSL_CERT_DIR": "[redacted]",
+        "Tenants__ApiDaprToken": "[redacted]",
+        "Tenants__AppChannelToken": "[redacted]",
+        "Tenants__BootstrapGlobalAdminEnabled": "[redacted]",
+        "Tenants__BootstrapGlobalAdminUserId": "[redacted]",
+        "Tenants__DaprConfigPath": "[redacted]",
+        "UseSharedCompilation": "[redacted]"
+      },
+      "healthReports": {
+        "tenants_http_/ready_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "commands": {
+        "rebuild": {
+          "displayName": "Rebuild",
+          "description": "Stop the resource, rebuild the project from source, and restart. Use this to apply source code changes.",
+          "state": "Enabled",
+          "sortOrder": 3
+        },
+        "restart": {
+          "displayName": "Restart",
+          "description": "Restart resource. Source code is not recompiled.",
+          "state": "Enabled",
+          "sortOrder": 2
+        },
+        "stop": {
+          "displayName": "Stop",
+          "description": "Stop resource",
+          "state": "Enabled",
+          "sortOrder": 1
+        }
+      }
+    }
+  ]
+}

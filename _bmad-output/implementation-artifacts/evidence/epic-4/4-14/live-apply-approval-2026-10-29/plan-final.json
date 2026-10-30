@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "eng/staging-foundation/render.py",
+    "plan",
+    "--inputs",
+    "eng/staging-foundation/inputs.resolved.json",
+    "--observed-context",
+    "jpiquot@local",
+    "--observed-cluster-uid",
+    "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "--manifest-dir",
+    "eng/staging-foundation/manifests"
+  ],
+  "startedAt": "2026-10-29T17:42:54.862090+00:00",
+  "completedAt": "2026-10-29T17:42:54.891523+00:00",
+  "exitCode": 2,
+  "expectedExitCode": 2,
+  "status": "REFUSED_MISSING_INPUTS",
+  "stdout": "plan-final.stdout.txt",
+  "stderr": "plan-final.stderr.txt",
+  "inputSha256": "a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00",
+  "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "manifestDirectoryExists": false,
+  "apiCallMade": false,
+  "sources": {
+    "eng/staging-foundation/render.py": "b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc",
+    "eng/staging-foundation/cni_probe.py": "5c2378632404c08b616baad036f64bf6be56e08113bee911ba466fe94169cbd7",
+    "eng/staging-foundation/test_staging_foundation.py": "6cb3a8d9518d60893ed5ece58c7c5ce55df49a2c4999f684dceea01e0bb2a799",
+    "eng/staging-foundation/inputs.example.json": "1bcbb1b3ac7d40d3add060bb6081142e720028023c9f7318d330b608589d5b7f",
+    "eng/staging-foundation/inputs.resolved.json": "a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00",
+    "eng/staging-foundation/apply-plan.json": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351"
+  }
+}

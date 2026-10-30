@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-10-29
+last_updated: 2026-10-30
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -61,16 +61,16 @@ development_status:
   # 2026-10-28: fresh four-scenario local source qualification passed; evidence/2-5/live-requalification-20261028/verification.json.
   2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs: done
   2-6-attach-a-run-to-a-compatible-environment: done
-  2-7-withdraw-attached-runs-and-keep-failure-retention: backlog
+  2-7-withdraw-attached-runs-and-keep-failure-retention: in-progress
   2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: backlog
-  2-9-migrate-eventstore-and-parties-test-fixtures-to-the-environm: backlog
+  2-9-migrate-eventstore-and-parties-test-fixtures-to-the-environm: in-progress
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: backlog
   epic-2-retrospective: optional
 
-  epic-3: backlog
-  3-1-apply-the-candidate-selection-policy-to-the-runner-contract: backlog
+  epic-3: in-progress
+  3-1-apply-the-candidate-selection-policy-to-the-runner-contract: review
   3-2-compose-the-eventstore-host-with-enrolled-extension-packages: backlog
-  3-3-generate-the-run-scoped-routing-catalog: backlog
+  3-3-generate-the-run-scoped-routing-catalog: in-progress
   3-4-generate-the-local-realm-from-the-realm-contract: backlog
   3-5-provide-the-synthetic-tenant-in-local-and-ci-environments: backlog
   3-6-run-all-seven-mvp-modules-together-locally: backlog
@@ -99,7 +99,7 @@ development_status:
   4-11-define-the-check-suite-contract-and-own-the-reference-suites: in-progress
   4-12-publish-retained-releases-with-provenance: backlog
   4-13-retain-artifacts-off-the-primary-failure-domain: backlog
-  4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: backlog
+  4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: in-progress
   4-15-provide-staging-secrets-through-a-per-environment-openbao-an: backlog
   4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy: backlog
   4-17-select-and-qualify-the-durable-production-broker: backlog
@@ -117,9 +117,9 @@ development_status:
   4-28-deploy-rancher-and-register-the-existing-cluster: backlog
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-decide-the-staging-evidence-policies: backlog
-  5-2-decide-the-image-and-dependency-vulnerability-policy: backlog
+  epic-5: in-progress
+  5-1-decide-the-staging-evidence-policies: review
+  5-2-decide-the-image-and-dependency-vulnerability-policy: review
   5-3-validate-critical-flow-and-smoke-declarations-for-every-incl: backlog
   5-4-review-tenant-lifecycle-flows-and-handle-leftover-synthetic: backlog
   5-5-scan-module-and-composed-images-against-the-vulnerability-po: backlog

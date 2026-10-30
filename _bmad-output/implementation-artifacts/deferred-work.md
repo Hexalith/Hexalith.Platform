@@ -1449,10 +1449,115 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Explicit `down`/cleanup while holds are live leaves them `live`; `EndReason: cleanup` is never written (medium, unverified).
-  evidence: Check whether the listing/`IsLive` treats a cleaned owner's holds as live and whether Stories 2.7/2.8 cover it.
+  status: resolved by Story 2.7 (2026-10-30).
+  evidence: Exact down records `developer-stop` withdrawals under `attachments.lock` after recording cleanup in-progress and before stopping resources. Unrecordable withdrawal returns retryable `HXR037` without teardown; passive listing projects expired holds as withdrawn.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Attach racing the start of cleanup; cleanup start never takes `attachments.lock` (medium, unverified).
-  evidence: Compare when `CleanupDisposition` becomes `in-progress` with when `WaitForNoLiveHoldsAsync` returns.
+  status: resolved by Story 2.7 (2026-10-30).
+  evidence: Owner cancellation/cleanup state is recorded before taking `attachments.lock` to withdraw holds. Admission rechecks the latest owner state under that same lock, so an admission racing cleanup is withdrawn or refused.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Corrupt `attachments.json` makes `TestResultWriter` throw `InvalidDataException` via `ReadContractBinding` (medium, unverified).
   evidence: Confirm the caller catches it and the first terminal result is still retained.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Make data-service TLS NetworkPolicies per-service (pod labels and own tlsPort) and allow data-namespace peer traffic for replication.
+  evidence: Current rules select all pods and union ports; per-service labels and topology are unknown inputs. Unverified for replication (medium if true).
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Add an admission policy (VAP/Kyverno) restricting staging PVCs to the staging StorageClass; quota only denies the production class.
+  evidence: ResourceQuota cannot allow-list; an unencrypted other class remains claimable. Admission mechanism is not chosen.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Verify the Timesheets boundary policy and workload egress (Gateway, Dapr, OpenBao) under default-deny with a real policy evaluation.
+  evidence: Compatibility test only greps template text; workload allowances belong to 4.15, 4.16 and 4.18.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md`
+  summary: Bind separately approved recovery invocation to exact tested executor and helper hashes before any future application.
+  evidence: B6; the pre-existing sealed metadata-correction commands invoke a mutable sibling-worktree executor, while this offline reconciliation hashes sealed tested-source copies. The executor records its own source hash at process start without comparing it to that sealed copy. Preserve historical command bytes; review and pin any future separately scoped invocation. No executor was adopted or invoked by this reconciliation.
+
+## Deferred from: implementation of spec-2-7-withdraw-attached-runs-and-keep-failure-retention (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Stop attached-run owned work and end its environment access at expiry in Story 2.9.
+  target_story: 2.9
+  evidence: Approved 2026-10-30 decision limits Story 2.7 withdrawal to durable outcome recording. The runner currently owns no attached-run processes/tasks, so it does not terminate them. Environment teardown on cancellation or explicit down ends access; expiry records `withdrawn` without stopping independently owned attached work. Fixture migration must establish work/access ownership and preserve stopping failures without extending the hold.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Harden pre-existing attachment timestamp consistency checks for externally edited metadata.
+  evidence: Review B07: the baseline IsConsistent validator accepted terminal end times at/after expiry and expired end times differing from ExpiresAtUtc. Current EndAsync and ObservedAt writers enforce the correct exclusive boundary; stricter validation of forged/foreign records must preserve valid legacy records and immutable v1 reader semantics.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Implement supervised attached test execution and expiry enforcement in follow-up attached-test-execution-and-expiry-enforcement.
+  evidence: User chose split on 2026-10-30. This reassigns the still-open work/access termination obligation previously targeted at Story 2.9 by Story 2.7; it does not resolve or waive it. Fixture migration can ship independently, while Builds currently rejects attached declared-suite execution. The follow-up must establish owned child work and per-attachment access, stop both at original hold expiry or withdrawal, preserve first outcomes and immutable expiry across retries, publish attached result/termination observations, and report stopping failures without extending holds or granting qualification to withdrawn runs.
+
+## Deferred from: implementation of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Complete the proposed service-surface eligibility matrix before Story 3.3 implementation approval.
+  target_story: 3.3
+  evidence: Blind review B7 verified that the independent evidence/3-3/investigation.md proposal names ui, agent and service but defines eligibility only for UI and agents. A service-gate implementer could diverge. This routing proposal is outside Story 5.1 and was not changed by it.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Include the canonical Builds vulnerability policy and exact owner revision when recording or delivering Story 5.2 adoption.
+  target_story: 5.2
+  status: resolved by Story 5.2 (2026-10-30).
+  evidence: Blind review B8 verified that docs/contracts/image-and-dependency-vulnerability-policy-v1.md links the on-disk Builds docs/vulnerability-policy-v1.md, which is untracked and absent from the recorded Builds commit. A parent-only patch does not reproduce that independent owner record; Story 5.2 owns its delivery, not the staging-evidence policy.
+  resolution_evidence: Recorded Builds commit bdd369c9544af78b1b975c0230f75a753fa4433b contains docs/vulnerability-policy-v1.md. Its bytes match canonical commit 64949791383203c358a685d3b132b1fceed67742 and SHA-256 553102bcddc3a1198fa8e81091821d13e6e99d62fd43efb710782b6b4b9d5a7b retained by the Platform adoption record at docs/contracts/image-and-dependency-vulnerability-policy-v1.md.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Correct the independent protection delivery note's loop-6 coordinates and historical status labels.
+  evidence: Blind review B10 verified that docs/implementation/ext-protection-1-erc-component-delivery-2026-10-29.md points to loop-6 isolated worktrees below without providing coordinates and retains adjacent superseded Current status labels. This is a pre-existing independent handoff, outside Story 5.1.
+
+## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: `CandidatePolicyValidator.ValidateArtifacts` does not check non-candidate expected artifacts against Builds catalog pins (AD-4 "other modules remain pinned to the Builds catalog").
+  evidence: references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidatePolicyValidator.cs:237 checks candidate-module items for Release, revision and repository, and checks expected/loaded set equality, but never checks dependency items against the catalog. Story 3.9 owns the loaded-artifact producers; the unconditional `tool-qualification-authentication-unavailable` refusal prevents acceptance meanwhile.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: A candidate artifact loaded by only one consumer kind (for example only tests, never the composed host) still passes artifact validation (medium, unverified).
+  evidence: v1 expected items carry no consumer binding, and `SameArtifact` ignores `consumerKind`. To settle it, Story 3.9 must define which consumers must load which candidate-module artifacts.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: Candidate CI trust root. The approved workflow must supply `HEXALITH_CANDIDATE_GATE_CONFIG` and the read-only token to selection and validation independently of consumer scripts (high).
+  evidence: Decision 2026-10-30 adopts Builds-owned per-repository enrollment read at the approved workflow's own `job.workflow_sha`. It is deferred to live issuer enrollment because the candidate CI wiring was removed from `domain-ci.yml` (it broke `@main` callers). The new opt-in consumer workflow must also replace the hard-coded `/domain-ci.yml@` consumer proof reference in `CandidateGateClient.AuthenticateAsync`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: The stalled-provisioning cleanup exit classifies a recorded bookkeeping failure (HXT008) as `TopologyOrLifecycle`, while its `IncompleteDown` sibling exit classifies the same failure as `EvidenceSchemaOrPolicy` (low).
+  evidence: In `CompositionEngine.DownOwnedCoreAsync`, the provisioning-lock timeout exit (internal 5 s bound, outer bound still live) returns HXR023 with exit `TopologyOrLifecycle`, but the cancelled-bound exit derives `recordingFailed` from bookkeeping and exits `EvidenceSchemaOrPolicy`. This is pre-existing: Builds `184a79a` had the same split, and Story 2.7 only made HXT008 visible on the stalled exit.
+
+## Deferred from: code review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reconcile staging's own promotion-stop semantics with "a staging failure blocks only that candidate" (medium).
+  evidence: The architecture's Promotion stop row sets each environment's stop on every non-working terminal outcome and every recovery entry, so read literally one failed candidate or any reset blocks all later staging work; the Staging gate row and policy L189-191 say a staging failure blocks only its candidate and resets affect only staging's stop. The policy restates the frozen Story 5.1 wording; define what staging's stop blocks, who clears it and whether a verified reset clears it in the architecture or Stories 5.6/5.10.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Define Administrator reservation of an earlier staging candidate (medium).
+  target_story: 5.10
+  evidence: Policy L156-157 and the architecture's Staging reset row let an Administrator record reserve an earlier candidate when a later attempt starts, but neither states whether the reserved candidate's incompatible writes are still reset before the later attempt, how long the reservation lasts, or whether its existing evidence stays admissible.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reconcile Story 5.7's "fresh-install proof serves only a first installation" with the architecture's empty/degraded fresh-install requirement (medium).
+  evidence: The architecture's Empty or degraded production row says staging proves a fresh install plus the candidate for that approved path, with precondition 9 still applying to retained data; policy L205/L212 follow it. epics.md Story 5.7 says the proof serves only a first installation with no retained data, and no consumer story qualifies the degraded-branch rehearsal. Needs an epics.md correction (correct-course), not a policy change.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reference `hexalith.platform.staging-evidence-policy.v1` from epics.md Stories 5.3 and 5.6 so the epic-context pointer survives regeneration (low).
+  evidence: epic-5-context.md is compiled from planning artifacts; its hand-added policy paragraph will be lost on regeneration because epics.md cites only "the policy from Story 5.1".
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Module.Tests live-process tests share the fixed run id `CompositionTestFiles.RunId`, and run-process discovery is machine-wide. Any teardown for that id, from another test class or another checkout's test run, can stop a different test's live AppHost (medium).
+  evidence: `CompositionRunResourceScanner` enumerates `/proc/*/environ` for the run-id variable. `AttachAdmissionTests.CancellationPublicationRefusalPreservesLiveAppHostAsync` failed in both Story 2.7 fourth-pass seven-class runs at the same position, but passed in 3 isolated reruns, with its class alone (121/121) and in three bisect combinations (Builds `evidence/2-7/fourth-pass-*.xml`). The fix is to give live-process fixtures unique run ids, or to scope discovery to the test's own process tree.
+
+## Deferred from: resumed build review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Qualify the trusted latest-accepted declaration/mapping predecessor source and advancement authority in Story 5.3 (medium if divergent, unverified).
+  evidence: Resumed review R1 questioned whether enrollment, staging success or production adoption advances the latest accepted predecessor. The policy requires an authoritative accepted predecessor plus a separate production-baseline comparison, but the future validator selection path is not implemented here. Inspect its trusted source, acceptance event and authority and qualify that callers cannot choose another predecessor before accepting removal/remap evidence.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Give the two pre-existing Story 2.7 ledger entries their own Story 2.7 headings (low).
+  evidence: Resumed review R7 verified that the stalled-provisioning cleanup exit-classification entry sits below the Story 3.1 review heading and the fixed-run-id live-process-test entry sits below the Story 5.1 review heading. Both source_spec fields correctly identify Story 2.7; neither entry was introduced or moved by this resumed Story 5.1 implementation. Preserve their evidence while correcting ownership grouping in the owning ledger-maintenance work.
+
+## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30, follow-up)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: The opt-in consumer workflow must also run `candidate_workspace.py`. This extends the candidate CI trust-root item (low).
+  evidence: The `domain-ci.yml` revert removed the only step that called `Github/governed-provenance/candidate_workspace.py`, and `governed_provenance.py:427` maps the helper only when `domain-ci.yml` mentions it. The clean-checkout check still needs the workflow-owned output exclusion (B11) once the consumer workflow exists.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: "One candidate invocation per job attempt" is enforced only within one local state directory (medium).
+  evidence: The producing RunId comes from the signed payload, and `CompositionEngine.InitializeStateAsync` reserves it through the local state and diagnostics directories only. Matrix legs share `GITHUB_JOB`, so they pass the `jobId`/`ConsumerJobName` checks. A second state directory on the same runner is not checked either. The opt-in consumer workflow must guarantee a single invocation or bind the numeric GitHub job.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: A setup timeout after candidate issuance may discard the issued RunId (medium, unverified).
+  evidence: `CompositionEngine.ReportSetupTimeoutAsync` always passes a null run ID, and `ModuleCommandExecutionService` (around line 1260) sets `ownedRunId = expired.RunId`. To settle it, check whether `startupToken` can be cancelled while a session exists and `session.Plan.ExecutionTiming` is null (for example, batch entry two after the per-entry reset). If it can, the issued owner never gets a terminal result.

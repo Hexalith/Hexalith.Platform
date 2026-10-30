@@ -1,0 +1,12 @@
+{
+  "method": "GET",
+  "url": "http://localhost:33279/api/v1/routing/catalog",
+  "authentication": "signed JWT; eventstore:surface=agent; bearer redacted",
+  "status": 503,
+  "body": "{\"type\":\"https://hexalith.io/problems/service-unavailable\",\"title\":\"Service Unavailable\",\"status\":503,\"detail\":\"Catalog authority cannot safely admit this operation.\"}",
+  "catalogPath": "/tmp/hexalith-platform/42c144296375498db619705f0e64e48f/live-697123b1f64c49f997d77b6f9fad38f1-catalog/catalog.json",
+  "expectedRootDigest": "d37f1374ca52911215f3a4a0bf4e94e6e487fb28b7ea530c59ea393bfc077966",
+  "expectedSchemaVersion": 3,
+  "expectedGeneration": 1,
+  "committedHosts": []
+}

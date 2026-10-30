@@ -6,15 +6,44 @@ namespace Hexalith.Platform.Protection;
 public sealed class ProtectionQualificationFaults(DaprClient nativeControls, ProtectionQualificationNativeCell control, string enrollmentId,
     IReadOnlySet<string> allowedOperations)
 {
-    /// <summary>Arms one exact before/after acknowledgement fault at an already enrolled fixture operation.</summary>
-    public Task ArmAsync(string stepId, string boundary, CancellationToken token)
+    /// <summary>Checks installed fault enrollment without arming or consuming a control.</summary>
+    internal async Task<bool> PreflightAsync(string stepId, string boundary, CancellationToken token)
     {
-        if (!allowedOperations.Contains(stepId) || boundary is not ("before" or "after")) { throw new ArgumentException("Exact independently enrolled native fault boundary required."); }
+        if (!allowedOperations.Contains(stepId) || boundary is not ("before" or "after")) { return false; }
+        var state = await nativeControls.GetStateAsync<ProtectionQualificationFaultState>(control.Component, control.Key, ConsistencyMode.Strong, control.Metadata, token).ConfigureAwait(false);
+        return state?.EnrollmentId == enrollmentId;
+    }
+    /// <summary>Arms one exact before/after acknowledgement fault at an already enrolled fixture operation.</summary>
+    public Task ArmAsync(string stepId, string boundary, string originalId, CancellationToken token)
+    {
+        if (!allowedOperations.Contains(stepId) || boundary is not ("before" or "after") || string.IsNullOrWhiteSpace(originalId) || originalId.Length > 200 || originalId.Contains('\n')) { throw new ArgumentException("Exact independently enrolled native fault boundary required."); }
         return ChangeAsync(state =>
         {
-            if (state.Armed.ContainsKey(stepId) || state.Consumed.ContainsKey(stepId)) { throw new InvalidOperationException("Fault original already armed."); }
-            state.Armed.Add(stepId, boundary); return true;
+            if (state.Armed.ContainsKey(stepId) || state.Consumed.ContainsKey(originalId)) { throw new InvalidOperationException("Fault original already armed."); }
+            state.Armed.Add(stepId, originalId + "\n" + boundary); return true;
         }, token);
+    }
+    /// <summary>Atomically arms a fault and retains its exact admitted call original; lookup never rearms control work.</summary>
+    internal Task ArmCallAsync(ProtectionQualificationNativeCall call, string originalId, CancellationToken token)
+    {
+        string stepId = call.Payload["stepId"]!.GetValue<string>(), boundary = call.Payload["boundary"]!.GetValue<string>();
+        if (call.OperationId is null || call.RequestSha256 is null || !allowedOperations.Contains(stepId) || boundary is not ("before" or "after")
+            || string.IsNullOrWhiteSpace(originalId) || originalId.Length > 200 || originalId.Contains('\n')) { throw new ArgumentException("Exact admitted native fault required."); }
+        string digest = ErasureRootCustody.Hash(call);
+        return ChangeAsync(state =>
+        {
+            if (state.CallOriginals.ContainsKey(digest)) { throw new InvalidOperationException("Fault call already executed."); }
+            if (state.Armed.ContainsKey(stepId) || state.Consumed.ContainsKey(originalId)) { throw new InvalidOperationException("Fault original already armed."); }
+            state.Armed.Add(stepId, originalId + "\n" + boundary);
+            state.CallOriginals.Add(digest, new() { ["originalStepId"] = stepId, ["armed"] = true }); return true;
+        }, token);
+    }
+    /// <summary>Reads only the exact independently retained control call; stale prior armed/current state is insufficient.</summary>
+    internal async Task<System.Text.Json.Nodes.JsonNode?> LookupAsync(ProtectionQualificationNativeCall call, CancellationToken token)
+    {
+        if (call.OperationId is null || call.RequestSha256 is null) { return null; }
+        var state = await nativeControls.GetStateAsync<ProtectionQualificationFaultState>(control.Component, control.Key, ConsistencyMode.Strong, control.Metadata, token).ConfigureAwait(false);
+        return state?.EnrollmentId == enrollmentId && state.CallOriginals.TryGetValue(ErasureRootCustody.Hash(call), out var result) ? result.DeepClone() : null;
     }
     /// <summary>Applies the once-only fault without changing any native return value.</summary>
     public async Task CheckAsync(string stepId, string boundary, CancellationToken token)
@@ -24,8 +53,9 @@ public sealed class ProtectionQualificationFaults(DaprClient nativeControls, Pro
         await ChangeAsync(state =>
         {
             applied = false;
-            if (!state.Armed.TryGetValue(stepId, out var original) || original != boundary) { return false; }
-            state.Armed.Remove(stepId); state.Consumed.Add(stepId, boundary); applied = true; return true;
+            if (!state.Armed.TryGetValue(stepId, out var original)) { return false; }
+            string[] parts = original.Split('\n'); if (parts.Length != 2 || parts[1] != boundary) { return false; }
+            state.Armed.Remove(stepId); state.Consumed.Add(parts[0], stepId + "\n" + boundary); applied = true; return true;
         }, token).ConfigureAwait(false);
         if (applied) { throw new IOException("Isolated native acknowledgement boundary."); }
     }

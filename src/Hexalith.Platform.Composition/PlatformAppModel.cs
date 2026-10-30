@@ -65,7 +65,7 @@ public static class PlatformAppModel
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"] });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
     }
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
@@ -82,7 +82,7 @@ public static class PlatformAppModel
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/clock", "memories/telemetry" })
+        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
         {
             configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
             configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
@@ -112,6 +112,8 @@ public static class PlatformAppModel
         if (options.TimesheetsEnabled && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         PlatformTimesheetsBinding.ValidateMode(options);
+        if (options.UsePrebuiltProjects && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source))
+            throw new InvalidDataException("Prebuilt owner launches require the explicit Development/source verification lane.");
         if (options.RetentionProfile is not null && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source || options.RunPlan is null))
             throw new InvalidDataException("The PostgreSQL retention experiment requires a runner-owned Development source run.");
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
@@ -137,6 +139,7 @@ public static class PlatformAppModel
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, options.PlatformRoot, rendered, checkouts);
         CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(rendered)!);
         CompositionWorkspace.CreatePrivateDirectory(rendered);
+        PlatformRoutingCatalogBootstrap? catalog = null;
         try
         {
             CompositionRunPorts localPorts = AllocateOwnedSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan);
@@ -154,6 +157,12 @@ public static class PlatformAppModel
             if (options.RetentionProfile is { } retentionDiscovery) discovery = retentionDiscovery.ConfigureDiscovery(discovery);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
+            catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+            if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
+                builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
+                    servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess));
+#endif
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
@@ -238,7 +247,8 @@ public static class PlatformAppModel
                     IResourceBuilder<ProjectResource> project = builder.AddProject(server.ResourceId, projectPath, launchProfileName: null)
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
-                        .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
+                        .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile", "-p:GeneratePackageOnBuild=false");
+                    if (options.UsePrebuiltProjects) project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
                     else if (options.RunPlan?.SelectedTest is not null)
@@ -254,6 +264,7 @@ public static class PlatformAppModel
                     }
                     else project.WithHttpEndpoint(name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
                     ConfigureEnvironment(project, server, options, clockKey);
+                    catalog?.Configure(project, server);
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
@@ -268,6 +279,8 @@ public static class PlatformAppModel
                         .WithHttpHealthCheck(server.ReadinessEndpoint)
                         .WithAnnotation(new PlatformServerAnnotation(server));
                     ConfigureEnvironment(container, server, options, clockKey);
+                    catalog?.Configure(container, server);
+                    if (catalog?.Participates(server) == true) container.WithBindMount(rendered, rendered);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         container.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
                     if (options.RunPlan is not null) container.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={options.RunPlan.RunId}");
@@ -320,6 +333,7 @@ public static class PlatformAppModel
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
                         if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore") resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
+                        if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects["tenants"].GetEndpoint("http"));
                     }
                     if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? project)) Attach(project);
                     else Attach(containers[server.ResourceId]);
@@ -337,9 +351,16 @@ public static class PlatformAppModel
             foreach (JsonElement dependency in server.Module.Declaration.GetProperty("identity").GetProperty("dependencies").EnumerateArray())
             foreach (PlatformServerBinding target in servers.Where(s => PlatformDeclarationSet.Id(s.Module.Declaration) == dependency.GetString()))
             {
+                // Catalog participants must start together. Workers that wait for the committed
+                // gateway cannot be startup prerequisites of a participant in that same cohort.
+                if (catalog?.Participates(server) == true && !catalog.Participates(target)) continue;
                 if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? sourceProject))
                 {
-                    if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) sourceProject.WaitFor(targetProject);
+                    if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject))
+                    {
+                        if (catalog?.Participates(server) == true && catalog.Participates(target)) sourceProject.WaitForStart(targetProject);
+                        else sourceProject.WaitFor(targetProject);
+                    }
                     else sourceProject.WaitFor(containers[target.ResourceId]);
                 }
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
@@ -380,7 +401,7 @@ public static class PlatformAppModel
                 PlatformServerBinding binding = servers.Single(server => server.ResourceId == "eventstore");
                 string runId = "platform-" + Path.GetFileName(rendered);
                 // DCP startup can wait on dependent resources; this operation must start before that wait.
-                builder.Services.Insert(0, ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(services => new PlatformGatewayStartup(services, runId, binding.Environment["Authentication__JwtBearer__SigningKey"])));
+                builder.Services.Insert(0, ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(services => new PlatformGatewayStartup(services, runId, binding.Environment["Authentication__JwtBearer__SigningKey"], rendered)));
             }
         }
         catch (Exception failure)
