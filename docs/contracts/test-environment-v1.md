@@ -281,6 +281,24 @@ EventStore, Tenants and Memories closures therefore carry ownership without a
 separate module named `platform`; unavailable declaration ownership still refuses
 handoff.
 
+A suite may explicitly request a Dapr invocation endpoint with a separate
+`DaprInvocation` fixture requirement. The descriptor carries only the actual
+allocated loopback invocation URI, including its declared public route prefix.
+`HEXALITH_TEST_ENDPOINT_CREDENTIALS_PATH` names the fixed private
+`native-endpoint-credentials.json` beside the descriptor in the owned workspace.
+The strict `hexalith.test-endpoint-credentials.v1` channel binds run, synthetic
+tenant, data isolation, resource, module, endpoint name and exact URI to one
+`dapr-api-token` header value. It is created atomically with private permissions
+only after actual owner preparation succeeds, validated before client allocation
+and native launch, included in exact-value report scanning, excluded from all
+retained evidence, and deleted with the owned workspace. Missing or conflicting
+credentials refuse; no credential is inferred from an endpoint name. The client
+confines this key to the supplied invocation prefix and rejects Dapr target
+header/Basic-auth overrides, path escapes and redirects. The native bearer
+remains a distinct credential. `APP_API_TOKEN` remains exclusively on the
+sidecar-to-application channel. Ordinary HTTP fixture bindings are unchanged.
+This private transport does not add fields or change semantics in descriptor v1.
+
 The startup clock begins at the environment request (600 seconds by default,
 with justified finite declaration overrides). A non-600 caller fallback requires
 an existing justified declaration override before provisioning. Unsupported or

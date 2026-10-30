@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Reference-only enrollment for an already installed A1 custody. Runtime code never creates tenant genesis or native keys.</summary>
@@ -8,4 +10,9 @@ namespace Hexalith.Platform.Protection;
 /// <param name="NativeKeys">Exact tenant to native derived transit-key enrollment.</param>
 /// <param name="DurabilityPolicy">Accepted A1 copy policy.</param>
 public sealed record ErasureRootInstallation(string StoreId, string EnrollmentId, string TransitMount, string HeadMount,
-    IReadOnlyDictionary<string, string> NativeKeys, ErasureRootDurabilityPolicy DurabilityPolicy = ErasureRootDurabilityPolicy.None);
+    IReadOnlyDictionary<string, string> NativeKeys, ErasureRootDurabilityPolicy DurabilityPolicy = ErasureRootDurabilityPolicy.None)
+{
+    /// <summary>PEM of the dedicated erasure-root-tls CA. Production transport refuses to start when this pin is absent.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? TrustedCaCertificatePem { get; init; }
+}

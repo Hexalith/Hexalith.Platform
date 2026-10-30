@@ -25,7 +25,7 @@ public sealed class ErasureRootLoop7BoundaryTests
         Should.Throw<ArgumentException>(() => new OpenBaoErasureRootStore(http, Installed with { StoreId = identity }, "env:ERC_TEST"));
         Should.Throw<ArgumentException>(() => new OpenBaoErasureRootStore(http, Installed with { EnrollmentId = identity }, "env:ERC_TEST"));
         Should.Throw<ArgumentException>(() => new OpenBaoErasureRootStore(http, Installed with { EnrollmentId = new string('x', 257) }, "env:ERC_TEST"));
-        using var valid = new OpenBaoErasureRootStore(new Uri("https://erc.invalid/"), Installed with { StoreId = new string('x', 256) }, "env:ERC_TEST");
+        using var valid = new OpenBaoErasureRootStore(new Uri("https://erc.invalid/"), Installed with { StoreId = new string('x', 256), TrustedCaCertificatePem = ErasureRootPinnedCa.Pem }, "env:ERC_TEST");
     }
 
     [Fact]

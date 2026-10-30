@@ -1,8 +1,11 @@
 using System.Buffers;
 using System.Globalization;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Security;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -14,10 +17,13 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
 {
     private const int MaximumResponseBytes = 32 * 1024 * 1024;
     internal const int MaximumHeadBytes = 30 * 1024 * 1024;
+    private static readonly ConcurrentDictionary<string, X509Certificate2> PinnedCertificates = new(StringComparer.Ordinal);
+    private static readonly AsyncLocal<X509Certificate2?> PendingPinnedCertificate = new();
     private readonly HttpClient _http;
     private readonly ErasureRootInstallation _installation;
     private readonly string _credentialEnvironmentVariable;
     private readonly bool _ownsHttp;
+    private readonly X509Certificate2? _pinnedCa;
 
     /// <summary>Creates an owned native transport with redirects and proxies disabled before any credential-bearing request.</summary>
     /// <param name="endpoint">Exact dedicated HTTPS installation endpoint.</param>
@@ -25,7 +31,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <param name="credentialReference">Dedicated native environment reference, never its value.</param>
     /// <param name="operationTimeout">Bounded complete request and body deadline.</param>
     public OpenBaoErasureRootStore(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? operationTimeout = null)
-        : this(CreateClient(endpoint, operationTimeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, ownsHttp: true)
+        : this(CreateProductionClient(endpoint, installation, operationTimeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, ownsHttp: true)
     { }
 
     private static HttpClient CreateClient(Uri endpoint, TimeSpan timeout)
@@ -33,6 +39,54 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
         if (endpoint is null || !endpoint.IsAbsoluteUri || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30))
         { throw new ArgumentException("Exact bounded native endpoint required."); }
         return new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false }) { BaseAddress = endpoint, Timeout = timeout };
+    }
+
+    private static HttpClient CreateProductionClient(Uri endpoint, ErasureRootInstallation installation, TimeSpan timeout)
+    {
+        ArgumentNullException.ThrowIfNull(installation);
+        X509Certificate2 certificate = LoadPinnedCertificate(installation.TrustedCaCertificatePem);
+        try
+        {
+            if (endpoint is null || !endpoint.IsAbsoluteUri || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30))
+            { throw new ArgumentException("Exact bounded native endpoint required."); }
+            var handler = new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false };
+            handler.ServerCertificateCustomValidationCallback = (_, presented, _, errors) => ValidatePinnedCa(presented, certificate, errors);
+            var client = new HttpClient(handler, true) { BaseAddress = endpoint, Timeout = timeout };
+            PendingPinnedCertificate.Value = certificate;
+            return client;
+        }
+        catch
+        {
+            certificate.Dispose();
+            PendingPinnedCertificate.Value = null;
+            throw;
+        }
+    }
+
+    private static X509Certificate2 LoadPinnedCertificate(string? pem)
+    {
+        if (string.IsNullOrWhiteSpace(pem)) { throw new ArgumentException("Dedicated erasure-root TLS CA pin required."); }
+        try { return X509Certificate2.CreateFromPem(pem); }
+        catch (Exception exception) when (exception is CryptographicException or ArgumentException) { throw new ArgumentException("Dedicated erasure-root TLS CA pin required.", exception); }
+    }
+
+    internal static HttpMessageHandler CreatePinnedHandler(string? pem)
+    {
+        X509Certificate2 certificate = PinnedCertificates.GetOrAdd(pem ?? "", value => LoadPinnedCertificate(value));
+        var handler = new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false };
+        handler.ServerCertificateCustomValidationCallback = (_, presented, _, errors) => ValidatePinnedCa(presented, certificate, errors);
+        return handler;
+    }
+
+    private static bool ValidatePinnedCa(X509Certificate? presented, X509Certificate2 pinnedCa, SslPolicyErrors errors)
+    {
+        if (presented is null || errors.HasFlag(SslPolicyErrors.RemoteCertificateNameMismatch) || errors.HasFlag(SslPolicyErrors.RemoteCertificateNotAvailable)) { return false; }
+        using var certificate = new X509Certificate2(presented);
+        using var chain = new X509Chain();
+        chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+        chain.ChainPolicy.CustomTrustStore.Add(pinnedCa);
+        chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+        return chain.Build(certificate);
     }
 
     internal static OpenBaoErasureRootStore CreateDisposableLoopback(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? timeout = null)
@@ -44,9 +98,12 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <param name="credentialReference">Environment reference of the dedicated native credential, never its value.</param>
     /// <param name="allowDisposableLoopback">Allows HTTP only at a loopback address for disposable component integration.</param>
     /// <param name="ownsHttp">Disposes a controlled owned client, including validation failure.</param>
+    /// <param name="pinnedCa">Dedicated erasure-root TLS CA owned by this store. Production construction supplies it; synthetic handlers omit it.</param>
     internal OpenBaoErasureRootStore(HttpClient http, ErasureRootInstallation installation, string credentialReference,
-        bool allowDisposableLoopback = false, bool ownsHttp = false)
+        bool allowDisposableLoopback = false, bool ownsHttp = false, X509Certificate2? pinnedCa = null)
     {
+        pinnedCa ??= PendingPinnedCertificate.Value;
+        PendingPinnedCertificate.Value = null;
         try
         {
         ArgumentNullException.ThrowIfNull(http);
@@ -78,12 +135,13 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
         _installation = installation;
         _credentialEnvironmentVariable = credentialReference[4..];
         _ownsHttp = ownsHttp;
+        _pinnedCa = pinnedCa;
         }
-        catch { if (ownsHttp) { http?.Dispose(); } throw; }
+        catch { if (ownsHttp) { http?.Dispose(); } pinnedCa?.Dispose(); throw; }
     }
 
     /// <inheritdoc />
-    public void Dispose() { if (_ownsHttp) { _http.Dispose(); } }
+    public void Dispose() { if (_ownsHttp) { _http.Dispose(); } _pinnedCa?.Dispose(); }
 
     /// <inheritdoc />
     public async Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)
@@ -204,16 +262,20 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     public async Task<byte[]> DecryptAsync(string tenantId, ErasureRootCiphertext value, CancellationToken cancellationToken)
     {
         byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { ciphertext = value.Ciphertext, context = value.Context });
-        byte[] response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "decrypt"), body, false, cancellationToken).ConfigureAwait(false))!;
         try
         {
-            using var document = JsonDocument.Parse(response);
-            byte[] root = document.RootElement.GetProperty("data").GetProperty("plaintext").GetBytesFromBase64();
-            if (root.Length == 32) { return root; }
-            CryptographicOperations.ZeroMemory(root);
-            throw new InvalidOperationException("Native root length mismatch.");
+            byte[] response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "decrypt"), body, false, cancellationToken).ConfigureAwait(false))!;
+            try
+            {
+                using var document = JsonDocument.Parse(response);
+                byte[] root = document.RootElement.GetProperty("data").GetProperty("plaintext").GetBytesFromBase64();
+                if (root.Length == 32) { return root; }
+                CryptographicOperations.ZeroMemory(root);
+                throw new InvalidOperationException("Native root length mismatch.");
+            }
+            finally { CryptographicOperations.ZeroMemory(response); }
         }
-        finally { CryptographicOperations.ZeroMemory(response); }
+        finally { CryptographicOperations.ZeroMemory(body); }
     }
 
     /// <inheritdoc />
@@ -235,20 +297,31 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     {
         if (epoch <= 0 || values.Count > 1000) { throw new ArgumentException("Bounded native rewrap required."); }
         if (values.Count == 0) { return Array.Empty<string>(); }
-        byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { key_version = epoch,
-            batch_input = values.Select(value => new { ciphertext = value.Ciphertext, context = value.Context, key_version = epoch }).ToArray() });
-        byte[] response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "rewrap"), body, false, cancellationToken).ConfigureAwait(false))!;
-        using var document = JsonDocument.Parse(response);
-        var results = document.RootElement.GetProperty("data").GetProperty("batch_results");
-        if (results.GetArrayLength() != values.Count) { throw new InvalidOperationException("Incomplete native rewrap."); }
-        string prefix = "vault:v" + epoch.ToString(CultureInfo.InvariantCulture) + ":";
-        return results.EnumerateArray().Select(result =>
+        byte[]? body = null;
+        byte[]? response = null;
+        try
         {
-            if (result.TryGetProperty("error", out var error) && !string.IsNullOrEmpty(error.GetString()))
-            { throw new InvalidOperationException("Native survivor rewrap refused."); }
-            string value = result.GetProperty("ciphertext").GetString()!;
-            return value.StartsWith(prefix, StringComparison.Ordinal) ? value : throw new InvalidOperationException("Survivor epoch mismatch.");
-        }).ToArray();
+            body = JsonSerializer.SerializeToUtf8Bytes(new { key_version = epoch,
+                batch_input = values.Select(value => new { ciphertext = value.Ciphertext, context = value.Context, key_version = epoch }).ToArray() });
+            response = (await SendAsync(HttpMethod.Post, TransitPath(tenantId, "rewrap"), body, false, cancellationToken).ConfigureAwait(false))!;
+            using var document = JsonDocument.Parse(response);
+            var results = document.RootElement.GetProperty("data").GetProperty("batch_results");
+            if (results.GetArrayLength() != values.Count) { throw new InvalidOperationException("Incomplete native rewrap."); }
+            string prefix = "vault:v" + epoch.ToString(CultureInfo.InvariantCulture) + ":";
+            return results.EnumerateArray().Select(result =>
+            {
+                if (result.TryGetProperty("error", out var error) && !string.IsNullOrEmpty(error.GetString()))
+                { throw new InvalidOperationException("Native survivor rewrap refused."); }
+                string? value = result.GetProperty("ciphertext").GetString();
+                if (value is null || !value.StartsWith(prefix, StringComparison.Ordinal)) { throw new InvalidOperationException("Survivor epoch mismatch."); }
+                return value;
+            }).ToArray();
+        }
+        finally
+        {
+            if (body is not null) { CryptographicOperations.ZeroMemory(body); }
+            if (response is not null) { CryptographicOperations.ZeroMemory(response); }
+        }
     }
 
     /// <inheritdoc />
@@ -270,7 +343,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
             && data.GetProperty("min_decryption_version").GetInt32() == epoch
             && data.GetProperty("min_encryption_version").GetInt32() == epoch
             && data.GetProperty("latest_version").GetInt32() >= epoch
-            && data.GetProperty("keys").EnumerateObject().All(entry => int.Parse(entry.Name, CultureInfo.InvariantCulture) >= epoch);
+            && data.GetProperty("keys").EnumerateObject().All(entry => int.TryParse(entry.Name, NumberStyles.None, CultureInfo.InvariantCulture, out int version) && version >= epoch);
     }
 
     private async Task<JsonDocument> ReadKeyAsync(string tenantId, CancellationToken token)

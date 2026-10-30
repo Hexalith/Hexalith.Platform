@@ -30,7 +30,7 @@ using Microsoft.Extensions.Options;
 
 /// <summary>Prepares synthetic owner state through the real native APIs before the runner publishes readiness.</summary>
 internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, string catalogDirectory, string signingKey,
-    PlatformTenantBootstrapAccess tenantBootstrap) : ICompositionRunPreparation
+    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding) : ICompositionRunPreparation
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
 
@@ -38,7 +38,29 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
     public CompositionNativeTestScope? NativeTestScope { get; private set; }
 
     /// <inheritdoc />
+    public IReadOnlyList<CompositionNativeHttpEndpoint> NativeHttpEndpoints { get; private set; } = [];
+
+    /// <inheritdoc />
+    public string? NativeEndpointCredentialsPath { get; private set; }
+
+    /// <inheritdoc />
     public async Task PrepareAsync(IServiceProvider services, CancellationToken cancellationToken)
+    {
+        NativeTestScope = null;
+        NativeHttpEndpoints = [];
+        NativeEndpointCredentialsPath = null;
+        string path = Path.Combine(Path.GetFullPath(plan.Workspace), NativeTestHandoff.EndpointCredentialsFileName);
+        File.Delete(path);
+        File.Delete(path + ".tmp");
+        try { await PrepareCoreAsync(services, path, cancellationToken).ConfigureAwait(false); }
+        finally
+        {
+            if (NativeTestScope is null) File.Delete(path);
+            File.Delete(path + ".tmp");
+        }
+    }
+
+    private async Task PrepareCoreAsync(IServiceProvider services, string credentialPath, CancellationToken cancellationToken)
     {
         var scope = JsonSerializer.Deserialize<CompositionNativeTestScope>(await ReadRequiredAsync(Path.Combine(catalogDirectory, "native-scope.json"), cancellationToken).ConfigureAwait(false))
             ?? throw new InvalidOperationException("The actual native owner scope is unavailable.");
@@ -65,6 +87,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             if (readback is not { Serving: true } || readback.RootDigest != scope.RoutingCatalogRoot)
                 throw new InvalidOperationException("A real catalog participant did not commit the selected native scope.");
         }
+        await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
         DateTimeOffset now = DateTimeOffset.UtcNow;
         TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, now);
         if (remaining <= TimeSpan.Zero) cancellationToken.ThrowIfCancellationRequested();
@@ -77,25 +100,42 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         using var gatewayHttp = Client(Endpoint(services, "eventstore"), operatorToken);
         var gateway = new EventStoreGatewayClient(gatewayHttp, Options.Create(new EventStoreGatewayClientOptions { BaseAddress = gatewayHttp.BaseAddress! }));
         var receipts = new List<CommandStatusQueryResponse>();
+        await WriteProgressAsync("bootstrap-submitting", null, cancellationToken).ConfigureAwait(false);
         string bootstrapId = await SubmitBootstrapAsync(services, subject, catalog, cancellationToken).ConfigureAwait(false);
         receipts.Add(await WaitForCommittedAsync(gateway, bootstrapId, cancellationToken).ConfigureAwait(false));
+        await WriteProgressAsync("bootstrap-committed", null, cancellationToken).ConfigureAwait(false);
+        await WriteProgressAsync("tenant-submitting", null, cancellationToken).ConfigureAwait(false);
         receipts.Add(await SubmitAsync(gateway, new CreateTenant(plan.TenantNamespace, "Synthetic native test tenant", "Run-owned test state"), plan.TenantNamespace, cancellationToken).ConfigureAwait(false));
+        await WriteProgressAsync("tenant-committed", null, cancellationToken).ConfigureAwait(false);
+        await WriteProgressAsync("member-submitting", null, cancellationToken).ConfigureAwait(false);
         receipts.Add(await SubmitAsync(gateway, new AddUserToTenant(plan.TenantNamespace, "g4-native-tests", TenantRole.TenantReader), plan.TenantNamespace, cancellationToken).ConfigureAwait(false));
+        await WriteProgressAsync("member-committed", null, cancellationToken).ConfigureAwait(false);
         using var tenants = Client(Endpoint(services, "tenants-api"), nativeProbe);
-        await PollAsync(tenants, "api/tenants/" + Uri.EscapeDataString(plan.TenantNamespace), element =>
+        await WriteProgressAsync("tenants-native-observing", null, cancellationToken).ConfigureAwait(false);
+        await PollAsync("tenants-native-observing", tenants, "api/tenants/" + Uri.EscapeDataString(plan.TenantNamespace), element =>
             element.TryGetProperty("tenantId", out var tenant) && tenant.GetString() == plan.TenantNamespace, cancellationToken).ConfigureAwait(false);
-        using var memories = Client(Endpoint(services, "memories"), nativeProbe);
-        using (var response = await memories.PostAsJsonAsync("api/v1/tenants", new TenantProvisioningInput(plan.TenantNamespace, "Synthetic native test tenant")
+        await WriteProgressAsync("tenants-native-observed", null, cancellationToken).ConfigureAwait(false);
+        PlatformNativeInvocationAccess memoriesAccess = await MemoriesInvocationAsync(services, cancellationToken).ConfigureAwait(false);
+        CompositionNativeHttpEndpoint memoriesEndpoint = memoriesAccess.Endpoint;
+        string daprToken = memoriesAccess.ApiToken;
+        using var memories = Client(memoriesEndpoint.Uri, nativeProbe);
+        memories.DefaultRequestHeaders.Add("dapr-api-token", daprToken);
+        await WriteProgressAsync("memories-submit-started", null, cancellationToken).ConfigureAwait(false);
+        using (var response = await memories.PostAsJsonAsync("tenants", new TenantProvisioningInput(plan.TenantNamespace, "Synthetic native test tenant")
             { VectorDimensions = 3 }, JsonOptions, cancellationToken).ConfigureAwait(false))
         {
+            await WriteProgressAsync(response.StatusCode == HttpStatusCode.Accepted ? "memories-submit-accepted" : "memories-submit-refused",
+                (int)response.StatusCode, cancellationToken).ConfigureAwait(false);
             if (response.StatusCode != HttpStatusCode.Accepted)
                 throw new InvalidOperationException("The real Memories tenant provisioning workflow was not accepted: " + (int)response.StatusCode);
         }
-        await PollAsync(memories, "api/v1/tenants/" + Uri.EscapeDataString(plan.TenantNamespace), element =>
+        await WriteProgressAsync("memories-active-observing", null, cancellationToken).ConfigureAwait(false);
+        await PollAsync("memories-active-observing", memories, "tenants/" + Uri.EscapeDataString(plan.TenantNamespace), element =>
         {
             var tenant = element.Deserialize<TenantInfo>(JsonOptions);
             return tenant?.Id == plan.TenantNamespace && tenant.Status == Hexalith.Memories.Contracts.V1.TenantStatus.Active;
         }, cancellationToken).ConfigureAwait(false);
+        await WriteProgressAsync("memories-active-observed", null, cancellationToken).ConfigureAwait(false);
         await File.WriteAllBytesAsync(Path.Combine(catalogDirectory, "preparation.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
             plan.RunId, scope.RoutingCatalogRoot, tenant = plan.TenantNamespace, nativeSubject = "g4-native-tests",
@@ -104,6 +144,9 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             commands = receipts.Select(receipt => new { receipt.MessageId, receipt.Domain, receipt.AggregateId, receipt.Status, receipt.CommittedEventSequence, receipt.EventCount }).ToArray(),
             tenantsNativeQueryObserved = true, memoriesRegistryObserved = nameof(Hexalith.Memories.Contracts.V1.TenantStatus.Active), observedAtUtc = DateTimeOffset.UtcNow,
         }), cancellationToken).ConfigureAwait(false);
+        await WriteEndpointCredentialsAsync(credentialPath, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
+        NativeHttpEndpoints = [memoriesEndpoint];
+        NativeEndpointCredentialsPath = credentialPath;
         NativeTestScope = scope;
     }
 
@@ -177,11 +220,12 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         }
     }
 
-    private static async Task PollAsync(HttpClient client, string path, Func<JsonElement, bool> ready, CancellationToken token)
+    private async Task PollAsync(string step, HttpClient client, string path, Func<JsonElement, bool> ready, CancellationToken token)
     {
         while (true)
         {
             using var response = await client.GetAsync(path, token).ConfigureAwait(false);
+            await WriteProgressAsync(step, (int)response.StatusCode, token).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 using var document = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(token).ConfigureAwait(false));
@@ -190,6 +234,99 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             else if (response.StatusCode is not (HttpStatusCode.NotFound or HttpStatusCode.Forbidden or HttpStatusCode.Conflict or HttpStatusCode.ServiceUnavailable))
                 throw new InvalidOperationException("The real owner readiness observation failed: " + (int)response.StatusCode);
             await Task.Delay(100, token).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<PlatformNativeInvocationAccess> MemoriesInvocationAsync(IServiceProvider services, CancellationToken cancellationToken)
+    {
+        DistributedApplicationModel model = services.GetRequiredService<DistributedApplicationModel>();
+        IResource application = model.Resources.Single(resource => resource.Name == memoriesBinding.ResourceId);
+        PlatformServerBinding actual = application.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+        if (actual.ResourceId != memoriesBinding.ResourceId || actual.AppId != memoriesBinding.AppId
+            || PlatformDeclarationSet.Id(actual.Module.Declaration) != "memories"
+            || !actual.Environment.TryGetValue("DAPR_API_TOKEN", out string? token) || string.IsNullOrWhiteSpace(token)
+            || token.Length > 8192 || token.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not ('-' or '.' or '_' or '~' or '+' or '/' or '=')))
+            throw new InvalidOperationException("The actual owner-bound Memories Dapr credential is unavailable.");
+        // BindGeneratedSidecar owns this generated executable name; require the actual resource and allocation.
+        ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == application.Name + "-dapr-cli");
+        EndpointReference http = sidecar.GetEndpoint("http");
+        if (!http.IsAllocated) throw new InvalidOperationException("The actual Memories Dapr HTTP listener is not allocated.");
+        var origin = new Uri(http.Url);
+        JsonElement surface = actual.Module.Declaration.GetProperty("surfaces").GetProperty("interfaces").EnumerateArray()
+            .Single(candidate => candidate.GetProperty("name").GetString() == "memories-api"
+                && candidate.GetProperty("server").GetString() == actual.ServerId
+                && candidate.GetProperty("protocol").GetString() == "http" && candidate.GetProperty("exposure").GetString() == "public");
+        string prefix = surface.GetProperty("routePrefix").GetString() ?? throw new InvalidOperationException("The actual Memories public interface prefix is unavailable.");
+        var uri = new Uri(origin, "v1.0/invoke/" + Uri.EscapeDataString(actual.AppId) + "/method/" + prefix.Trim('/') + "/");
+        if (!CompositionNativeHttpEndpoints.IsInvocationUri(uri)) throw new InvalidOperationException("The actual Memories invocation URI is unavailable.");
+        await WriteProgressAsync("memories-sidecar-observing", null, cancellationToken).ConfigureAwait(false);
+        using var probe = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false, UseProxy = false })
+        { BaseAddress = origin, Timeout = Timeout.InfiniteTimeSpan, MaxResponseContentBufferSize = 65536 };
+        probe.DefaultRequestHeaders.Add("dapr-api-token", token);
+        using var response = await probe.GetAsync("v1.0/metadata", cancellationToken).ConfigureAwait(false);
+        await WriteProgressAsync("memories-sidecar-observing", (int)response.StatusCode, cancellationToken).ConfigureAwait(false);
+        if (response.StatusCode != HttpStatusCode.OK) throw new InvalidOperationException("The actual Memories sidecar identity could not be observed.");
+        using var metadata = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false));
+        if (!metadata.RootElement.TryGetProperty("id", out var observed) || observed.GetString() != actual.AppId)
+            throw new InvalidOperationException("The actual Memories sidecar identity differs from its owner binding.");
+        await WriteProgressAsync("memories-sidecar-observed", null, cancellationToken).ConfigureAwait(false);
+        return new(new(actual.ResourceId, PlatformDeclarationSet.Id(actual.Module.Declaration), "dapr-invocation", uri, sidecar.Name), token);
+    }
+
+    private async Task WriteEndpointCredentialsAsync(string path, CompositionNativeHttpEndpoint endpoint, string apiToken, CancellationToken token)
+    {
+        string temporary = path + ".tmp";
+        var options = new FileStreamOptions { Access = FileAccess.Write, Mode = FileMode.CreateNew, Share = FileShare.None, Options = FileOptions.Asynchronous };
+        if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+        await using (var stream = new FileStream(temporary, options))
+        {
+            using var writer = new Utf8JsonWriter(stream);
+            writer.WriteStartObject();
+            writer.WriteString("schema", NativeTestHandoff.EndpointCredentialsSchema);
+            writer.WriteString("runId", plan.RunId);
+            writer.WriteString("syntheticTenantId", plan.TenantNamespace);
+            writer.WriteString("dataIsolationId", plan.ResourceNamespace);
+            writer.WriteStartArray("endpoints");
+            writer.WriteStartObject();
+            writer.WriteString("resourceId", endpoint.ResourceId);
+            writer.WriteString("moduleId", endpoint.ModuleId);
+            writer.WriteString("endpointName", endpoint.EndpointName);
+            writer.WriteString("uri", endpoint.Uri.AbsoluteUri);
+            writer.WriteString("headerName", "dapr-api-token");
+            writer.WriteString("value", apiToken);
+            writer.WriteEndObject();
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+            await writer.FlushAsync(token).ConfigureAwait(false);
+            await stream.FlushAsync(token).ConfigureAwait(false);
+        }
+        token.ThrowIfCancellationRequested();
+        File.Move(temporary, path, overwrite: true);
+    }
+
+    /// <summary>Publishes only fixed-step partial observations; the final receipt remains the readiness authority.</summary>
+    private async Task WriteProgressAsync(string step, int? httpStatus, CancellationToken token)
+    {
+        if (step is not ("source-validated" or "bootstrap-submitting" or "bootstrap-committed"
+            or "tenant-submitting" or "tenant-committed" or "member-submitting" or "member-committed"
+            or "tenants-native-observing" or "tenants-native-observed" or "memories-sidecar-observing" or "memories-sidecar-observed" or "memories-submit-started"
+            or "memories-submit-accepted" or "memories-submit-refused" or "memories-active-observing" or "memories-active-observed"))
+            throw new ArgumentOutOfRangeException(nameof(step));
+        if (httpStatus is < 100 or > 599) throw new ArgumentOutOfRangeException(nameof(httpStatus));
+        string path = Path.Combine(catalogDirectory, "preparation-progress.json");
+        string temporary = path + ".tmp";
+        try
+        {
+            await File.WriteAllBytesAsync(temporary, JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                plan.RunId, step, httpStatus, complete = false, observedAtUtc = DateTimeOffset.UtcNow,
+            }), token).ConfigureAwait(false);
+            token.ThrowIfCancellationRequested();
+            File.Move(temporary, path, overwrite: true);
+        }
+        finally
+        {
+            if (File.Exists(temporary)) File.Delete(temporary);
         }
     }
 

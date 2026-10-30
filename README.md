@@ -92,10 +92,10 @@ The canonical [staging evidence policy v1](docs/contracts/staging-evidence-polic
 fixes the 24-hour evidence age, staging triggers, complete latest-attempt reruns,
 critical-flow review and 60-minute reset lifetime. Publication records Platform's
 decisions; Builds and Platform must implement and qualify downstream validators,
-executors and promotion evaluation before accepting staging evidence. Modules
-must record required flow reviews, and Administrator and EventStore must qualify
-reset behavior. This policy does not establish runtime enforcement or release
-authorization.
+executors and promotion evaluation before accepting staging evidence. Modules,
+Platform and Tenants must record their required flow approvals and reviews, and
+Administrator and EventStore must qualify reset behavior. This policy does not
+establish runtime enforcement or release authorization.
 
 Platform adopts the Builds-owned
 [image and dependency vulnerability policy v1](docs/contracts/image-and-dependency-vulnerability-policy-v1.md)

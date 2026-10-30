@@ -41,7 +41,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string mappingWorkspace = options.RunPlan?.Workspace ?? workspace;
         string output = Path.Combine(build, "output");
         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
-            "--output", output, "-m:1", "-p:GeneratePackageOnBuild=false", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
+            "--output", output, "-m:1", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
         var compiled = CompositionProcess.RunAsync(start, TimeSpan.FromMinutes(5), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");

@@ -5,6 +5,7 @@ metadata:
   namespace: erasure-root
 data:
   erasure-root.hcl: |
+    disable_mlock = true
     ui = false
     api_addr = "https://erasure-root.erasure-root.svc:8200"
     cluster_addr = "https://erasure-root-0.erasure-root.erasure-root.svc:8201"
@@ -44,6 +45,7 @@ spec:
     - name: cluster
       port: 8201
       targetPort: 8201
+      # Raft only. Client namespaces are not granted 8201.
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -105,16 +107,18 @@ spec:
             - name: tls
               mountPath: /bao/tls
               readOnly: true
+            - name: scratch
+              mountPath: /tmp
           readinessProbe:
             exec:
               command:
-                - bao
-                - read
-                - -address=https://127.0.0.1:8200
-                - -ca-cert=/bao/tls/ca.crt
-                - -tls-server-name=erasure-root.erasure-root.svc
-                - -format=json
-                - sys/health
+                - /bin/sh
+                - -ec
+                - |
+                  health=$(bao read -address=https://127.0.0.1:8200 -ca-cert=/bao/tls/ca.crt -tls-server-name=erasure-root.erasure-root.svc -format=json sys/health) || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"version"[[:space:]]*:[[:space:]]*"2\.6\.2"' || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"initialized"[[:space:]]*:[[:space:]]*true' || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"sealed"[[:space:]]*:[[:space:]]*false' || exit 1
             timeoutSeconds: 5
             periodSeconds: 10
             failureThreshold: 3
@@ -125,6 +129,9 @@ spec:
         - name: tls
           secret:
             secretName: erasure-root-tls
+            defaultMode: 0400
+        - name: scratch
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: custody

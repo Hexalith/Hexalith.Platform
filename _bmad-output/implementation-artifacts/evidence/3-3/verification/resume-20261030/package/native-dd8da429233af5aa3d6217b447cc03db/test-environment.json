@@ -1,0 +1,573 @@
+{
+  "schema": "hexalith.test-environment.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "dd8da429233af5aa3d6217b447cc03db",
+      "attemptId": "3ebfcc56ffe482fe760c708ca1fd26ff",
+      "attemptSequence": 1,
+      "ownerRunId": "dd8da429233af5aa3d6217b447cc03db",
+      "environmentId": "7c6e1ddfb45929076e3187a29932c392",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "id": "parties",
+        "contentIdentity": "sha256:006c2d89bf6a7086a9e5256937f66e925ef353ad92eb249f2102a949bd00fdcc"
+      },
+      "mode": "package",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "commit": "9d3d720cfaa936b1009c25f0ae2ebaf87d0aa7d0",
+        "instanceId": "7c6e1ddfb45929076e3187a29932c392-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "g4t-dd8da429233a",
+        "dataIsolationId": "g4r-dd8da429233a",
+        "resourceScopeId": "7c6e1ddfb45929076e3187a29932c392",
+        "catalogScopeId": "7c6e1ddfb45929076e3187a29932c392-catalog"
+      },
+      "resources": [
+        {
+          "resourceId": "dapr-placement-mtls",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:28299/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:41665/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-scheduler-mtls",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:22616/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:45663/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-sentry",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:18681/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:44373/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:34595/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore-dapr-cli",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:11322/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:24437/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:26494/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:44797/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-access-telemetry",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:35231/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-access-telemetry-clock",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:37941/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-access-telemetry-clock-dapr-cli",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:14265/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:18727/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:26715/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-access-telemetry-dapr-cli",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:28465/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:29448/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:24196/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-dapr-cli",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:25240/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:24247/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:23858/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-domain-service",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:34183/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-domain-service-dapr-cli",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:22835/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:14101/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:20329/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-graph",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:35433/"
+            }
+          ]
+        },
+        {
+          "resourceId": "memories-vectors",
+          "moduleId": "memories",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:21071/"
+            }
+          ]
+        },
+        {
+          "resourceId": "parties",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:34657/"
+            }
+          ]
+        },
+        {
+          "resourceId": "parties-dapr-cli",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:19175/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:13361/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:29791/"
+            }
+          ]
+        },
+        {
+          "resourceId": "redis",
+          "moduleId": "parties",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:20809/"
+            }
+          ]
+        },
+        {
+          "resourceId": "tenants",
+          "moduleId": "tenants",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:34661/"
+            }
+          ]
+        },
+        {
+          "resourceId": "tenants-api",
+          "moduleId": "tenants",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:38613/"
+            }
+          ]
+        },
+        {
+          "resourceId": "tenants-api-dapr-cli",
+          "moduleId": "tenants",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:12988/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:19590/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:13669/"
+            }
+          ]
+        },
+        {
+          "resourceId": "tenants-dapr-cli",
+          "moduleId": "tenants",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:14757/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:12595/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:22282/"
+            }
+          ]
+        }
+      ],
+      "readiness": {
+        "state": "populated",
+        "status": "ready",
+        "observedAt": "2026-10-30T16:50:42.7290822Z",
+        "resources": [
+          {
+            "resourceId": "dapr-placement-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280411Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-scheduler-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280496Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-sentry",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280648Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280249Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280746Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280830Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-access-telemetry",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280924Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-access-telemetry-clock",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281010Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-access-telemetry-clock-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281101Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-access-telemetry-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281209Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281287Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-domain-service",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281378Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-domain-service-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281496Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-graph",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281571Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "memories-vectors",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281644Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "parties",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281732Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "parties-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281815Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "redis",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7280064Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "tenants",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281912Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "tenants-api",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7281995Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "tenants-api-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7282080Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "tenants-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-30T16:50:42.7282193Z",
+            "diagnosticIds": []
+          }
+        ]
+      },
+      "startupTasks": {
+        "state": "populated",
+        "tasks": []
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "populated",
+      "classification": "baseline-only",
+      "reason": "No authenticated candidate request was selected."
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-30T16:49:59.4629522Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-30T16:59:59.4629522Z",
+        "actualDurationSeconds": 43.7230457,
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "populated",
+        "origin": "test-execution-started",
+        "originAt": "2026-10-30T16:50:43.2186738Z",
+        "effectiveSeconds": 300,
+        "expiresAt": "2026-10-30T16:55:43.2186738Z",
+        "configurationContentIdentity": "sha256:84b26c5d26ea67815e73e7823e2251e14e2984e2c7dadf294eeeaac76894e78f"
+      }
+    }
+  },
+  "diagnostics": []
+}

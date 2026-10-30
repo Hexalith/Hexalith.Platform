@@ -1,0 +1,62 @@
+{
+  "qualification": "Private local package-release authority; not public owner release or hosted acceptance",
+  "versions": {
+    "EventStore": "3.128.5-story33.1",
+    "Tenants": "5.11.2-story33.1",
+    "Parties": "2.0.1-story33.1",
+    "Memories": "3.0.11-story33.1"
+  },
+  "owners": {
+    "EventStore": {
+      "commit": "1626fbb1dc0e4d5c0e3e02f2c902c4a9e300ce09",
+      "declarationSha256": "a56951dcc4a8c53f22e449a2399516e51c4d2569bec1357f8197593a8d9e44a2"
+    },
+    "Tenants": {
+      "commit": "30c503a9607a98ea0d361a1b0f8d688040d985df",
+      "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+    },
+    "Parties": {
+      "commit": "1f725c531ccc393283d90c532402e92f0b083bd3",
+      "declarationSha256": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504"
+    },
+    "Memories": {
+      "commit": "26d1d6fe0bbe76b920d13c9df542a99d6a9f37bb",
+      "declarationSha256": "648d75d2c7a252851bc673ddd430ebca34e5cb358ebe29e69dfefc5e9e2ef81f"
+    }
+  },
+  "buildsCommit": "9d3d720cfaa936b1009c25f0ae2ebaf87d0aa7d0",
+  "platformCommit": "9ad613635229a9e49e8e8e28701706e4bdb6766a",
+  "privateRegistry": "localhost:15033",
+  "registryQualification": "owned loopback-only local artifact storage; no hosted publication",
+  "qualificationTransport": "explicit private build constant; strict canonical loopback and Development/package only",
+  "declaredArtifact": {
+    "sourceCommit": "26d1d6fe0bbe76b920d13c9df542a99d6a9f37bb",
+    "sourcePath": "tools/verify-access-telemetry-lifecycle.py",
+    "stagedPath": "tools/verify-access-telemetry-lifecycle.py",
+    "sha256": "0c8b3e714cc83d638611079e9dbf401b0825ee9c7c1cb530a29e608939fcf612",
+    "purpose": "Actual owner artifact required by unchanged released declaration; not executed by Parties package profile"
+  },
+  "portableParties": {
+    "ownerCommit": "1f725c531ccc393283d90c532402e92f0b083bd3",
+    "manifest": "eng/story33-package/parties.json",
+    "manifestSha256": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504",
+    "realConsumerFiles": [
+      {
+        "source": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+        "staged": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+        "sourceSha256": "d9a2cd16840d41de86aef410ccd6ef5beb1af694cccd06713a4db5683e825802",
+        "packageConsumerAdaptation": "Only direct Parties.Contracts project reference becomes matching catalog-selected NuGet package; real test source unchanged."
+      },
+      {
+        "source": "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs",
+        "staged": "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs",
+        "sourceSha256": "d1c300e5417bc9b057e9fe75c5ce622b281a6c6fb4d6af206fe83a3fc4198d56"
+      },
+      {
+        "source": "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "staged": "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "sourceSha256": "c359bb2902a8b17bc827d9ead77673de8c8d5c80627a0f65e43082a832eba657"
+      }
+    ]
+  }
+}
