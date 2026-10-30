@@ -2,7 +2,7 @@
 title: '2.7 Withdraw attached runs and keep failure retention'
 type: 'feature'
 created: '2026-10-30'
-status: 'ready-for-dev'
+status: 'in-progress'
 baseline_commit: 'f60f2c7596b1fa3010c91d1d546c71600da24715'
 builds_baseline_commit: '2980efdf51f305dc5c39bb854261c252d13465f5'
 route: 'dispatch'
