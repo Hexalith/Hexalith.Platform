@@ -37,13 +37,13 @@ public sealed class PartiesAdoptionTests
     }
 
     [Fact]
-    public void ActualPartiesDeclarationValidatesAndSelectsSevenMappedServers()
+    public void ActualPartiesDeclarationValidatesAndSelectsEightMappedServers()
     {
         PlatformCompositionOptions options = Options();
         PlatformManifestValidationResult validation = PlatformManifestValidator.Validate(options.DeclarationPaths, TestContext.Current.CancellationToken);
         validation.IsValid.ShouldBeTrue(string.Join("; ", validation.Diagnostics.Select(diagnostic => diagnostic.Message)));
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
-        servers.Select(server => server.ResourceId).Order().ShouldBe(new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry", "parties" }.Order());
+        servers.Select(server => server.ResourceId).Order().ShouldBe(new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry", "parties" }.Order());
         servers.ShouldAllBe(server => server.ProjectPath != null && server.Image == null && server.ReadinessEndpoint == "/ready");
         PlatformServerBinding parties = servers.Single(server => server.ResourceId == "parties");
         parties.ProjectPath.ShouldBe(Path.Combine(Root, "references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj"));
@@ -69,7 +69,7 @@ public sealed class PartiesAdoptionTests
         IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
         PlatformAppModel.Compose(builder, Options());
         ProjectResource[] servers = builder.Resources.OfType<ProjectResource>().Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-        servers.Length.ShouldBe(7);
+        servers.Length.ShouldBe(8);
         servers.Select(server => server.Name).ShouldNotContain("parties-ui");
         servers.Select(server => server.Name).ShouldNotContain("parties-mcp");
         ProjectResource gateway = servers.Single(server => server.Name == "eventstore");
@@ -130,6 +130,31 @@ public sealed class PartiesAdoptionTests
         rules[0].GetProperty("path").GetString().ShouldBe("/ready");
         rules[0].GetProperty("verbs").EnumerateArray().Select(verb => verb.GetString()).ShouldBe(["GET"]);
         await using DistributedApplication application = builder.Build();
+    }
+
+    /// <summary>Verifies the declared source suite uses only its runner-supplied, mapped Builds host.</summary>
+    [Fact]
+    public void NativeSourceSuiteRequiresTheExactMappedRunnerSeed()
+    {
+        PlatformCompositionOptions options = Options();
+        string buildsRoot = Path.Combine(Root, "references", "Hexalith.Builds");
+        string seed = Path.Combine(buildsRoot, "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj");
+        SourceMapping mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new("Hexalith.Builds", "source", buildsRoot)] };
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.GetTempPath(), Path.GetTempPath(),
+            CompositionPortAllocator.Allocate(1), [], [], mapping) with
+        {
+            SelectedTest = new("parties", "platform-source", "dotnet", "tests/native", new string('a', 64), new string('b', 64), 120, 10, now, now.AddMinutes(2), now.AddMinutes(2), "source"),
+        };
+        options = options with { Mapping = mapping, RunPlan = plan, EventStoreSeedProject = seed };
+        PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(seed);
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with { EventStoreSeedProject = null })).Message.ShouldContain("seed");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with
+        {
+            EventStoreSeedProject = Path.Combine(Root, "src", "Hexalith.Platform.EventStoreHost", "Hexalith.Platform.EventStoreHost.csproj"),
+        })).Message.ShouldContain("tool-selected Builds host");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with { Mapping = mapping with { Entries = options.Mapping.Entries.Where(entry => entry.Identity != "Hexalith.Builds").ToArray() } }))
+            .Message.ShouldContain("Builds source identity");
     }
 
     [Fact]
