@@ -19,11 +19,20 @@ context:
 
 **Decision (2026-10-30):** Implement the EventStore-owned contract and gateway prerequisites first, then Platform integration; approve the revised cross-repository spec before implementation.
 
+**Scope decision (2026-10-30):** Include necessary Tenants, Parties and Memories Contracts, adapter and enrollment changes. Preserve the public agent operations documented by each owner; retain internal service boundaries.
+
+**Operation policy:**
+- Tenants' nine documented McpCli commands and five queries remain agent-eligible. Global-administrator listing is UI-only; set/remove grants require confirmation. Bootstrap, delegated authority queries and projection dispatch remain internal.
+- Parties' four decorated commands (CreatePartyComposite, UpdatePartyComposite, DeactivateParty, ReactivateParty) and three queries (GetParty, ListParties, SearchParties) remain agent-eligible. EraseParty requires confirmation. Other ordinary public operations are UI-only; identity/custody/delegated operations remain internal.
+- Memories' six existing EventStore commands remain internal services. Enroll their existing DomainService receiver; do not turn REST search, ingestion or compatibility MCP tools into new gateway operations.
+- Add EventStore-owned `eventstore:surface`: exactly one authenticated `ui`, `agent` or `service` value. UI admits agent-eligible/UI-only/confirmation-required, agents admit agent-eligible, and services admit agent-eligible plus confirmation only with existing verified originating proof. Missing/ambiguous claims refuse; step-up refuses every class in the MVP. Internal workload calls retain their existing explicit workload/delegation checks and cannot become human/agent calls.
+- Preserve Tenants' existing idempotency policies. Newly declared Parties/Memories local/CI policies use Mutation (24-hour replay), canonical target plus complete canonical-payload SHA-256, and trusted acting subject for human operations. Keep payload values out of catalogs. These local policies grant no hosted acceptance.
+
 ## Boundaries & Constraints
 
 **Always:** EventStore.Contracts owns schema, canonicalization, eligibility vocabulary and digest semantics. Eligibility is agent-eligible, UI-only, confirmation-required or step-up, covered together with the operation schema by its digest. Consume the command's single source/package mapping. Generate before starting resources; reject invalid inputs without publishing partial output. Preserve supplied committed history and unrelated workspace changes.
 
-**Never:** Invent a Platform-only catalog format, equate a routing declaration digest with a contract-schema digest, infer eligibility from authorization/surface class, add another hand-maintained operation list, or claim acceptance while the owner prerequisite is absent. Hosted activation, contraction/retirement authorization, McpCli implementation and real-module eligibility decisions remain outside this story's Platform implementation.
+**Never:** Invent a Platform-only catalog format, equate a routing declaration digest with a contract-schema digest, infer eligibility from authorization/surface class, add another hand-maintained operation list, or claim acceptance while the owner prerequisite is absent. Hosted activation, contraction/retirement authorization, McpCli implementation remains outside this story.
 
 ## I/O & Edge-Case Matrix
 
@@ -38,36 +47,34 @@ context:
 
 </frozen-after-approval>
 
-## Open Questions
-
-1. **Module enrollment:** Further investigation found missing complete schema/eligibility inventories in the reference module Contracts. Choose: **include module Contracts and review their explicit per-operation policies in this run**, or **implement EventStore prerequisites first and leave Story 3.3 open pending owner enrollment**. Missing policies cannot be inferred from McpCli annotations or interface surface classes. This question has been presented asynchronously; its answer is pending.
-
 ## Code Map
 
-- `src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs` / `PlatformServerBindings.cs`: reuse validated closure and mapped enabled targets. Current manifest operations do not identify Contracts artifacts or carry eligibility/schema metadata.
-- `src/Hexalith.Platform.Composition/PlatformAppModel.cs`: shared local/runner composition seam; owned output is a fresh temporary workspace or `RunPlan.Workspace/platform-components`.
-- `src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs`: copies/filter gateway registration settings; currently binds no catalog.
-- `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs`: reuse `EnvironmentId + "-catalog"`; preserve the Builds package meaning of `catalog.commit`.
-- `references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/{RouteCatalogEnvelope,RouteContractDeclaration,RouteCatalogEntry,RouteCatalogCodec,RouteCatalogValidator}.cs`: authoritative closed v1/v2 schema; unknown fields fail. Validator requires active command joins for idempotency, preventing removed-command retention.
-- `references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/{CompiledRouteCatalogDeclarations,CommittedRouteCatalogSnapshot,RouteCatalogEndpointExtensions}.cs`: compiled declaration reader, runtime resolver and lifecycle endpoints; required eligibility/metadata behavior is absent.
-- `tests/Hexalith.Platform.Composition.Tests/{PlatformRunIsolationTests,PlatformTestEnvironmentProvisioningTests,GatewaySeedSubscriptionTests}.cs`: existing isolation, descriptor and actual host HTTP patterns.
+- `evidence/3-3/investigation.md`: prior investigation; module scope is now included by the decision above.
+- EventStore `Routing` code in Contracts/Client/ServiceDefaults owns codec, declarations, leases and activation. Preserve v1/v2 bytes and existing declaration identities; extend schema 3 instead.
+- `PlatformDeclarationSet.Load`, `PlatformServerBindings.Resolve` and `PlatformCompositionOptions.Mapping` supply the selected closure and targets. `PlatformAppModel.Compose` is the shared local/CI seam.
+- Builds `TestEnvironmentDescriptorWriter` already names `EnvironmentId + "-catalog"`; preserve `catalog.commit` as the Builds package-catalog revision.
+- Tenants `TenantCatalogDeclarations` has policies/route inventories; Parties `PartyDomainProcessor` has 28 command payloads and 11 query handlers, including retry/identity special cases. Memories has six commands across three domains, with an unenrolled receiver. Contracts contain the result DTOs; use actual serializers and existing wire aliases.
 
 ## Tasks & Acceptance
 
-**Execution:**
-- [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogEnvelope.cs` and owner routing APIs -- verify delivered schema/digest/retention plus gateway behavior before Platform implementation; resolve the open question and finalize Contracts artifact enrollment first.
-- [ ] `src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs` -- implement generation from authoritative declarations/Contracts and optional committed generation, using the delivered owner codec and deterministic validation.
-- [ ] `src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs` -- expose explicit committed-generation and Contracts inputs through the existing mapping; never scan arbitrary assemblies/checkouts.
-- [ ] `src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj` -- reference owner Contracts in both modes.
-- [ ] `src/Hexalith.Platform.Composition/PlatformAppModel.cs` and `PlatformGatewayConfiguration.cs` -- create private run-owned output, use the existing descriptor instance name and bind the gateway to those exact bytes.
-- [ ] `tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs` -- cover the matrix, input-order determinism, schema/eligibility changes and preservation of retained key readers.
-- [ ] `tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs` -- exercise real gateway metadata/refusals and descriptor identity across independent local/CI-mode runs.
+**Execution, in dependency order:**
+- [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/{RouteCatalogEnvelope,RouteCatalogEntry,RouteCatalogCodec,RouteCatalogValidator,RouteOperationContract,RetainedIdempotencyCatalogEntry}.cs` -- add schema 3 operation schemas/eligibility/digests and a separate retained-idempotency collection. Preserve original historical entry generation/content digests and key references; carry prior retained and executable history, deduplicating immutable identity. Retention never enters dispatch arrays.
+- [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/{RouteCatalogGenerationInput,VersionedRouteCatalogBuilder}.cs` -- build canonical schema 3 generations from explicit compiled owner inputs, bindings and optional committed predecessor; validate before output.
+- [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/{CompiledRouteCatalogDeclarations,CommittedRouteCatalogSnapshot,RouteCatalogActivationBinding,RouteCatalogHostObservation,ObservedRouteCatalogHost,GeneratedRouteCatalogFilter}.cs` -- read owner operation schemas beside Routes/Commands; freeze metadata; independently verify installed operation identities during activation; preserve lease, trust and topology checks.
+- [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs`, `Extensions/ServiceCollectionExtensions.cs`, `Controllers/RoutingCatalogMetadataController.cs` and `../Hexalith.EventStore.ServiceDefaults/Authentication/RouteCatalogSurfacePolicy.cs` -- enforce policy after tenant/RBAC authorization under a held dispatch lease, including generated ingress. Serve authenticated executable public command/query metadata at `GET /api/v1/routing/catalog`, with generation/root/schema/eligibility and no keys, retention or internal endpoints.
+- [ ] `references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Routing/TenantCatalogDeclarations.cs` -- attribute its assembly source; add explicit request/result schemas and policy above. Preserve existing intent policies, system-envelope tenancy, aliases and actual computed/projection targets.
+- [ ] `references/Hexalith.Parties/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs` and `src/Hexalith.Parties.EventStoreExtensions/{PartiesCatalogAdapters.cs,Hexalith.Parties.EventStoreExtensions.csproj}` within that owner -- declare complete actual routes/results and explicit local intent adapters; add missing legacy query request contracts while preserving wire names. Keep identity/custody and retry paths intact.
+- [ ] `references/Hexalith.Memories/src/Hexalith.Memories.EventStore/Routing/MemoriesCatalogDeclarations.cs`, `src/Hexalith.Memories.EventStoreExtensions/{MemoriesCatalogAdapters.cs,Hexalith.Memories.EventStoreExtensions.csproj}` and `module/hexalith.module-manifest.v2.json` within that owner -- preserve command CLR identities, declare schemas/internal workload policies and enroll the existing DomainService receiver; add its runtime adapters without creating new query transports.
+- [ ] `src/Hexalith.Platform.Composition/{PlatformRoutingCatalog,PlatformCatalogContractBinding,PlatformCompositionOptions,PlatformAppModel,PlatformGatewayConfiguration}.cs` and `Hexalith.Platform.Composition.csproj` -- resolve only mapped Contracts projects/packages, generate atomically in the private run workspace, reuse descriptor instance identity and wire exact bytes. Add the private reader project `src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj`; no operation-name list in Platform.
+- [ ] `src/Hexalith.Platform.Composition/{PlatformRoutingCatalogBootstrap,PlatformRoutingCatalogComponentRenderer}.cs` and `src/Hexalith.Platform.EventStoreHost/Program.cs` -- provision disposable digest keys, exact adapter registrations, run-specific authority component/key and actual host observers. Prepare, ready-validate every required host and commit using existing authority; readiness waits for agreement. CI uses Release packages with an explicitly Development runtime, never production fixture trust.
+- [ ] `references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs` -- bind the same owner runtime in the package seed without changing the descriptor format or its package-catalog meaning.
+- [ ] `references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Routing/RouteCatalogV3Tests.cs`, `references/Hexalith.Tenants/tests/Hexalith.Tenants.Contracts.Tests/TenantCatalogTests.cs`, `references/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs`, `references/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/MemoriesCatalogTests.cs` and `tests/Hexalith.Platform.Composition.Tests/{PlatformRoutingCatalogTests,PlatformRoutingCatalogIntegrationTests}.cs` -- cover the matrix, v1/v2 golden bytes, policy/schema tampering, historical coexistence, surfaces, generated/command/query ingress, independent runs and actual sidecar activation. Refusals precede effects.
 
 **Acceptance Criteria:**
-- Given enrolled declarations and Contracts, when generation repeats with identical inputs, then bytes match and every executable operation has digest-covered schema and eligibility.
-- Given local or CI composition, when the gateway starts, then its catalog is run-scoped and named in the validated environment descriptor.
-- Given a supplied committed generation, when generating its successor, then committed idempotency/key history survives as non-executable retention entries.
-- Given the active gateway generation, when invoking or discovering operations, then eligibility is enforced and metadata excludes all non-executable entries.
+- Given enrolled declarations and Contracts, when generation repeats with identical inputs, then canonical bytes match and every public operation carries digest-covered schema and eligibility.
+- Given local or CI composition, when readiness succeeds, then every participating host serves the run-owned catalog named in its descriptor.
+- Given a committed predecessor, when generating a successor, then its idempotency/key history survives non-executably, including removed or revised operations.
+- Given the active generation, when invoking/discovering operations, then its eligibility governs execution and metadata excludes retention/internal entries.
 
 ## Implementation Notes
 
@@ -77,10 +84,12 @@ context:
 
 ## Design Notes
 
-EventStore revision `6e0280bf489171326e2ce1ba3dde361712b7c977` lacks AR-62 delivery. Footprint: owner contract/gateway, generator, composition and tests. No irreversible actions or runtime changes during planning. Detailed observations and proposed design: `evidence/3-3/investigation.md`.
+Schema 3 keeps executable declarations/routes separate from retained historical policies. Its digest covers operation identity/version, actual serialized request/result shapes, ingress classification and eligibility; a routing declaration digest alone is insufficient. Internal dispatchers stay workload-only. Real owner schemas and installed adapters, rather than fixture inventories or candidate-supplied observations, establish readiness. No production deployment or data migration is included.
 
 ## Verification
 
-- Build `tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj` in mapped Debug/source mode; run the focused xUnit classes directly.
-- Verify generation and descriptor handoff in Release/package CI with matching owner versions; source fixtures cannot establish package acceptance.
-- Retain canonical byte comparisons and gateway HTTP evidence. Finalize runnable commands against delivered APIs before approval.
+- Before code edits, run and inspect the exact isolated AppHost using the Aspire lifecycle skill; retain any baseline failure.
+- Build owner test projects individually in mapped Debug/source mode; invoke their built xUnit assemblies with `-class`.
+- `dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -p:HexalithEventStoreRoot="$PWD/references/Hexalith.EventStore" -p:HexalithBuildsRoot="$PWD/references/Hexalith.Builds"`; run the built assembly's two new classes. Use the same explicit mapping for other owner dependencies.
+- Run the existing `HEXALITH_PLATFORM_LIVE_SMOKE=1` reference readiness lane and real-sidecar catalog activation tests; retain generation/readback, HTTP and descriptor evidence.
+- Qualify Release/package consumption using matching owner packages in an isolated feed/mapping. Old published packages, source substitutes or synthetic fixtures cannot establish package acceptance; record any undelivered boundary and keep the story open.
