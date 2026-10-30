@@ -33,7 +33,7 @@ public sealed record PlatformCompositionOptions
     public IReadOnlyDictionary<string, string> Images { get; init; } = PlatformServerBindings.ReferenceImages;
     /// <summary>Gets the full-key, server-scoped configuration binding overrides.</summary>
     public IReadOnlyDictionary<string, string> Configuration { get; init; } = new Dictionary<string, string>();
-    /// <summary>Gets the package-mode EventStoreHost seed project.</summary>
+    /// <summary>Gets the runner-selected EventStoreHost seed project for package or declared source-suite composition.</summary>
     public string? EventStoreSeedProject { get; init; }
     /// <summary>Gets the shared local component directory.</summary>
     public string? ComponentsDirectory { get; init; }
