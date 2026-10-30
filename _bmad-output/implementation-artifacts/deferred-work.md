@@ -1487,3 +1487,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
   summary: Implement supervised attached test execution and expiry enforcement in follow-up attached-test-execution-and-expiry-enforcement.
   evidence: User chose split on 2026-10-30. This reassigns the still-open work/access termination obligation previously targeted at Story 2.9 by Story 2.7; it does not resolve or waive it. Fixture migration can ship independently, while Builds currently rejects attached declared-suite execution. The follow-up must establish owned child work and per-attachment access, stop both at original hold expiry or withdrawal, preserve first outcomes and immutable expiry across retries, publish attached result/termination observations, and report stopping failures without extending holds or granting qualification to withdrawn runs.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Complete the proposed service-surface eligibility matrix before Story 3.3 implementation approval.
+  evidence: Blind review B7 verified that the independent evidence/3-3/investigation.md proposal names ui, agent and service but defines eligibility only for UI and agents. A service-gate implementer could diverge. This routing proposal is outside Story 5.1 and was not changed by it.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Include the canonical Builds vulnerability policy and exact owner revision when recording or delivering Story 5.2 adoption.
+  evidence: Blind review B8 verified that docs/contracts/image-and-dependency-vulnerability-policy-v1.md links the on-disk Builds docs/vulnerability-policy-v1.md, which is untracked and absent from the recorded Builds commit. A parent-only patch does not reproduce that independent owner record; Story 5.2 owns its delivery, not the staging-evidence policy.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Correct the independent protection delivery note's loop-6 coordinates and historical status labels.
+  evidence: Blind review B10 verified that docs/implementation/ext-protection-1-erc-component-delivery-2026-10-29.md points to loop-6 isolated worktrees below without providing coordinates and retains adjacent superseded Current status labels. This is a pre-existing independent handoff, outside Story 5.1.

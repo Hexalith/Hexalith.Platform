@@ -2,7 +2,7 @@
 title: '5.1 Decide the staging evidence policies'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -52,10 +52,10 @@ Confirmed by the user on 2026-10-30:
 
 **Execution:**
 
-- [ ] `docs/contracts/staging-evidence-policy-v1.md` — record approved rules, timing/identity boundaries, owners/revisit triggers, immutable version adoption, acceptance/refusal examples and downstream handoff.
-- [ ] `README.md` — link policy and state downstream implementation/qualification obligations.
-- [ ] `_bmad-output/implementation-artifacts/epic-5-context.md` — point downstream planning to the approved policy without claiming enforcement.
-- [ ] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize Story 5.1 and Epic 5 only under workflow rules.
+- [x] `docs/contracts/staging-evidence-policy-v1.md` — record approved rules, timing/identity boundaries, owners/revisit triggers, immutable version adoption, acceptance/refusal examples and downstream handoff.
+- [x] `README.md` — link policy and state downstream implementation/qualification obligations.
+- [x] `_bmad-output/implementation-artifacts/epic-5-context.md` — point downstream planning to the approved policy without claiming enforcement.
+- [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize Story 5.1 and Epic 5 only under workflow rules.
 
 **Acceptance Criteria:**
 
@@ -66,10 +66,33 @@ Confirmed by the user on 2026-10-30:
 
 ## Implementation Notes
 
+- 2026-10-30: Added canonical policy `hexalith.platform.staging-evidence-policy.v1`, README discovery and Epic 5 adoption handoff. Records the approved five rules, exact input/decision bindings, boundary examples, ownership/revisit conditions and downstream qualification obligations.
+- Parent inspected the full unified diff from baseline, including untracked files. Concurrent changes in other specs, the vulnerability policy, README and submodules are independent and preserved. Story 5.1 tracking is in progress; Epic 5 was already in progress.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
+2026-10-30: All three independent layers completed before triage. Edge-case review returned no findings; verification-gap review found no gaps. Blind review returned the ten findings below. Each claim was checked against the policy, architecture and cited artifact before grouping or routing.
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| B1: Degraded/empty preparation omitted | medium | The policy restricts fresh-install proof to no-baseline/no-data; the architecture's Empty or degraded production rule also requires fresh-install proof for that approved path, alongside retained-data qualification. Patch the table and restrictive sentence to preserve the existing path. |
+| B2: Authoritative before-review inputs | medium | The review section binds submitted before/after digests without explicitly tying the before inputs to accepted declarations. A validator needs the actual accepted transition to detect omitted removals. Patch this evidence clarification without adding an approval authority. |
+| B3: Pending decision lifecycle | medium | The policy requires a pending decision but does not explicitly prevent reusing its identity after closure. Patch current authoritative pending-state verification and fresh identities for reopened/new requests, preserving the approved no-reuse rule. |
+| B4: Admission race | false | The evidence boundary already requires the evaluator to compare current checked inputs/current production baseline at promotion admission, and the latest issued attempt alone may qualify. No implementation or mandated sequence of separate reads exists here; the proposed atomic store mechanism belongs to later implementation, not a demonstrated defect in this rule. |
+| B5: Reset-expiry notification execution | medium | The policy names recipients but leaves notification execution implicit. The architecture assigns non-terminal maximum-lifetime notification to the independent off-site monitor. Patch that existing ownership so a dead executor does not become the notification source. |
+| B6: Replacement-job resumption limits | medium | The reset section preserves timers and distinguishes interrupted recovery but omits explicit grace/takeover conditions on replacement-job resumption. Patch a direct architectural qualification; do not create a new recovery allowance. |
+| B7: Story 3.3 service eligibility | medium | The independent, unfinished routing proposal names a service surface but specifies only UI/agent behavior. A future service gate could diverge. Defer to Story 3.3; routing eligibility is unrelated to the staging-policy goal and was not introduced by this story. |
+| B8: Story 5.2 owner-policy delivery | medium | The independent vulnerability adoption document links an on-disk Builds policy absent from the recorded submodule commit, confirmed with git cat-file. Parent-only delivery cannot reproduce that owner document. Defer owner-record/revision delivery to Story 5.2; no vulnerability or submodule changes belong to Story 5.1. |
+| B9: Spec/sprint state mismatch | false | Build step 4 explicitly sets spec in-review; sprint review synchronization occurs in presentation after review. The current in-progress sprint value is a workflow intermediate state, not a missed final transition; no spec correction is warranted. |
+| B10: Unrelated loop-6 handoff reference | low | The independent protection delivery note points to loop-6 worktrees below without coordinates and retains older Current status labels. Defer that direct documentation correction to its owner; this story did not change the handoff. |
+
+The original implementation agent applied B1, B2, B3, B5 and B6 as direct policy clarifications. Parent inspected each correction and repeated scoped verification successfully. B7, B8 and B10 were appended to the deferred ledger without modifying their independently owned artifacts; B4 and B9 were rejected with the evidence above. No unresolved finding remains for Story 5.1.
+
 ## Verification
 
 Run scoped `git diff --check`; inspect new Markdown whitespace and links. Cross-check five rules, timing/identity boundaries, history, reviews and reset lifetime against Story 5.1/FR-6/architecture. No new tests or workloads. Verify preservation of unrelated changes.
+
+- 2026-10-30: Parent independently confirmed 21 local links/fragments, final newlines and whitespace across policy/README/context, and the approved frozen block's unchanged SHA-256. Scoped `git diff --check` passed. All four tasks and acceptance criteria were checked against the diff and governing requirements; no matrix applies and no tests or workloads were run.
+- 2026-10-30: After review corrections, parent repeated all 21 link/fragment, whitespace/newline and frozen-intent checks, inspected each of the five corrected passages, and reconfirmed the five concrete policy rules and all completed tasks. Scoped diff checks pass. Spec is done and Story 5.1 sprint tracking moves to review; Epic 5 remains in progress. Implementation/qualification of policy consumers remains downstream work.

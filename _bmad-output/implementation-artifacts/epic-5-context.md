@@ -42,6 +42,23 @@ A retained-data approved attempt lacking safe compatibility needs a named, rehea
 
 ## Cross-Story Dependencies
 
+The approved [staging evidence policy v1](../../docs/contracts/staging-evidence-policy-v1.md)
+(`hexalith.platform.staging-evidence-policy.v1`, Story 5.1) is the canonical
+decision record for Stories 5.3, 5.6–5.11 and the related lifecycle review in
+Story 5.4. It fixes a 24-hour (86,400-second) exclusive evidence deadline from
+attempt start at promotion admission; automatic attempts for retained intake
+candidates or checked-input/baseline changes, with explicit Maintainer requests
+after expiry/failure and no periodic retry loop; full passing reruns from only
+the latest issued serialized attempt, preserving history without cross-decision
+reuse; owning-module and Platform approval of flow removal/remap, with Tenants
+review for lifecycle changes; and a 60-minute (3,600-second) reset lifetime from
+recovery entry that notifies Administrator and the Platform Maintainer without
+aborting restoration or unblocking later candidates before verification.
+Platform Maintainer `@jpiquot` is accountable. Builds and Platform must implement
+and qualify adoption; modules must record flow reviews, and Administrator and
+EventStore must qualify resets. Publication does not establish enforcement,
+record unprovided owner approvals or authorize promotion.
+
 The owned reference check suites precede declaration validation. Staging policy decisions precede evidence acceptance; the vulnerability decision precedes scan enforcement. Tenants and module owners review lifecycle flows before gate enrollment. Module recovery hooks are prerequisites for staging resets and applicable named recoveries.
 
 The no-baseline branch enables the first production deployment. Baseline-dependent rollback and retained-data qualification follow establishment of the first working production baseline and must close before accepting a second production candidate. Only the Platform publication workflow may turn an attested McpCli candidate into a stable version after the complete applicable staging gate passes.
