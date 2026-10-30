@@ -1,0 +1,166 @@
+[
+  {
+    "name": "EventStore-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--artifacts-path",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-EventStore",
+      "-p:GeneratePackageOnBuild=false",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "EventStore-catalog",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-EventStore/bin/Hexalith.EventStore.Contracts.Tests/debug/Hexalith.EventStore.Contracts.Tests.dll",
+      "-class",
+      "Hexalith.EventStore.Contracts.Tests.Routing.RouteCatalogV3Tests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Tenants-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--artifacts-path",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Tenants",
+      "-p:GeneratePackageOnBuild=false",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Tenants-catalog",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Tenants/bin/Hexalith.Tenants.Contracts.Tests/debug/Hexalith.Tenants.Contracts.Tests.dll",
+      "-class",
+      "Hexalith.Tenants.Contracts.Tests.TenantCatalogTests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Parties-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--artifacts-path",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Parties",
+      "-p:GeneratePackageOnBuild=false",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Parties-catalog",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Parties/bin/Hexalith.Parties.Contracts.Tests/debug/Hexalith.Parties.Contracts.Tests.dll",
+      "-class",
+      "Hexalith.Parties.Contracts.Tests.PartiesCatalogTests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Memories-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/Hexalith.Memories.EventStore.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--artifacts-path",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Memories",
+      "-p:GeneratePackageOnBuild=false",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Memories-catalog",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/owner-Memories/bin/Hexalith.Memories.EventStore.Tests/debug/Hexalith.Memories.EventStore.Tests.dll",
+      "-class",
+      "Hexalith.Memories.EventStore.Tests.MemoriesCatalogTests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Platform-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--artifacts-path",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/PlatformRepaired",
+      "-p:GeneratePackageOnBuild=false",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Platform-routing-and-policy",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PlatformLoopbackRegistryProbeTests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Platform-mount-containment",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CatalogOwnerViewRefusesSymlinkThroughPlatformIdentityFallback"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Platform-live-catalog",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogIntegrationTests"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "Platform-reference-readiness",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"
+    ],
+    "exitCode": 0
+  }
+]

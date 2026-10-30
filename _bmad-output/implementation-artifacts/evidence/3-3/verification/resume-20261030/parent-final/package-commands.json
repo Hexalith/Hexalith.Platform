@@ -1,0 +1,244 @@
+[
+  {
+    "name": "registry-start",
+    "command": [
+      "docker",
+      "run",
+      "--detach",
+      "--pull",
+      "never",
+      "--name",
+      "story33-parent-registry-9f0a1b0e6c",
+      "--label",
+      "hexalith.platform.story=3-3",
+      "--label",
+      "hexalith.platform.parent-verification=true",
+      "--publish",
+      "127.0.0.1:15033:5000",
+      "registry:2"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-0",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/tenants:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-0",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/tenants:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-0",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/tenants:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-1",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/tenants-api:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-1",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/tenants-api:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-1",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/tenants-api:5.11.2-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-2",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/parties:2.0.1-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-2",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/parties:2.0.1-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-2",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/parties:2.0.1-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-3",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/memories:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-3",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/memories:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-3",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/memories:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-4",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/memories-domain-service:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-4",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/memories-domain-service:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-4",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/memories-domain-service:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-5",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/memories-access-telemetry-clock:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-5",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/memories-access-telemetry-clock:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-5",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/memories-access-telemetry-clock:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-inspect-6",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "localhost:15033/memories-access-telemetry:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-push-6",
+    "command": [
+      "docker",
+      "push",
+      "localhost:15033/memories-access-telemetry:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "image-manifest-6",
+    "command": [
+      "docker",
+      "manifest",
+      "inspect",
+      "--insecure",
+      "localhost:15033/memories-access-telemetry:3.0.11-story33.1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "package-down",
+    "command": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cli-output/Hexalith.Builds.Module.Cli.dll",
+      "down",
+      "91021c1904c986041184792bc4b61ca1",
+      "--output",
+      "json"
+    ],
+    "exitCode": 1
+  }
+]

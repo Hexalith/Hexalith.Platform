@@ -1,5 +1,5 @@
 {
-  "observedAtUtc": "2026-10-30T17:53:18.649747+00:00",
+  "observedAtUtc": "2026-10-30T18:09:06.548102+00:00",
   "frozenBlockSha256": "ffb9327ae823c1464f10f265d090a93f336f9bcb5c1124ae2328d0767a8070d3",
   "scenarioCoverage": [
     {
@@ -106,16 +106,35 @@
     {
       "scenario": "Existing affected AppModel partial class",
       "receipts": [
-        "PlatformAppModelTests-final-class.txt"
+        "PlatformAppModelTests-final-class.txt",
+        "PlatformAppModelTests-final-focused.txt",
+        "full-class-source-receipt.json",
+        "final-source-receipt.json"
       ],
-      "status": "running",
-      "explicitTestRoot": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform"
+      "status": "verified by complete class plus focused test-only corrections",
+      "collectingRun": {
+        "total": 178,
+        "failuresBeforeCorrections": 5,
+        "gatedSkips": 4,
+        "seconds": 886.021
+      },
+      "focusedRun": {
+        "total": 5,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 126.898
+      },
+      "aggregatePassingCases": 174,
+      "requestedTestRoot": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
+      "observedEffectiveTestRoot": "/home/administrator/projects/hexalith/platform",
+      "rootEvidence": "review-fixes/historical-test-root-correction.json"
     }
   ],
   "qualificationLimits": [
     "Source/native and private package snapshots have separate immutable source and binary identities; current shared user story 2.9 handoff changes are excluded from story 3.3 qualification.",
     "Full native consumer suites remain non-passing; story 2.9 migration boundary, no new consumer credential grant by story 3.3.",
     "No hosted, candidate, public owner release or musl curl canary acceptance.",
-    "Final package HTTP refresh was unavailable after its processes disappeared; earlier matching owner artifacts and identical catalog root supply the authenticated schema comparison."
+    "Final package HTTP refresh was unavailable after its processes disappeared; earlier matching owner artifacts and identical catalog root supply the authenticated schema comparison.",
+    "The AppModel collecting/focused checks requested a private test root, but compiled metadata selected the shared checkout; their passing outcomes do not claim isolated owner-root execution."
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "observedAtUtc": "2026-10-30T18:39:30.321140+00:00",
+  "requestedEnvironmentRoot": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
+  "effectiveRoot": "/home/administrator/projects/hexalith/platform",
+  "finalFocusedAssembly": {
+    "path": "/home/administrator/projects/hexalith/platform/artifacts/story33-review-fixes/historical-final-focused-1db4f371e1f7237d0d9a00ebead0dcee451a6d58986bd7081e37225a39dd5935.dll",
+    "sha256": "1db4f371e1f7237d0d9a00ebead0dcee451a6d58986bd7081e37225a39dd5935",
+    "metadata": {
+      "PlatformTestRepositoryRoot": "/home/administrator/projects/hexalith/platform",
+      "Microsoft.Testing.Platform.Application": "true"
+    }
+  },
+  "fullClassAssembly": {
+    "recordedSha256": "87ee5e1d05423eb889920fc4d796e0b415d57470895d271ec18b2642f4ddcdf2",
+    "retainedExactBinaryAvailable": false,
+    "metadataOfExactHistoricalBinary": "not independently re-read; exact binary not found among retained build outputs",
+    "effectiveRootEvidence": "Full-class reader build uses the shared checkout source paths; metadata-first Root getter gives compiled PlatformTestRepositoryRoot precedence over the requested environment value.",
+    "buildTrace": {
+      "path": "review-fixes/full-class-effective-root-build-trace.txt",
+      "sha256": "0814479894c2eb25026285e1fd50822c6e17b15c4b58da0e17b91c54bc017ad3"
+    }
+  },
+  "correction": "The private path was requested, not the effective observed root. The affected AppModel class and its final focused rerun used the shared checkout. Historical source/binary hashes and test outcomes are preserved."
+}

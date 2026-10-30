@@ -55,6 +55,37 @@ public sealed partial class PlatformAppModelTests
                 Dictionary<string, object> environment = [];
                 foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
                     await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, environment, TestContext.Current.CancellationToken));
+                if (server is ContainerResource container)
+                {
+                    var mounts = container.Annotations.OfType<ContainerMountAnnotation>().ToArray();
+                    if (environment.TryGetValue("EventStore__RouteCatalog__DevelopmentBootstrap__Directory", out object? catalogDirectory))
+                    {
+                        var required = new Dictionary<string, bool>
+                        {
+                            [catalogDirectory.ToString()!] = false,
+                            [environment["EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath"].ToString()!] = true,
+                            [environment["EventStore__RouteCatalog__DevelopmentBootstrap__AccessControlPath"].ToString()!] = true,
+                        };
+                        mounts.Select(mount => mount.Source).Order().ShouldBe(required.Keys.Order());
+                        foreach (var mount in mounts)
+                        {
+                            mount.Target.ShouldBe(mount.Source);
+                            mount.IsReadOnly.ShouldBe(required[mount.Source!]);
+                        }
+                        if (!OperatingSystem.IsWindows())
+                            (File.GetUnixFileMode(catalogDirectory.ToString()!) & (UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute | UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute)).ShouldBe((UnixFileMode)0);
+                        if (DaprSelfHostedMtls.ResolveContainerUser() is { } user)
+                        {
+                            List<object> runtimeArguments = [];
+                            foreach (var callback in container.Annotations.OfType<ContainerRuntimeArgsCallbackAnnotation>())
+                                await callback.Callback(new ContainerRuntimeArgsCallbackContext(runtimeArguments, TestContext.Current.CancellationToken));
+                            int option = runtimeArguments.IndexOf("--user");
+                            option.ShouldBeGreaterThanOrEqualTo(0);
+                            runtimeArguments[option + 1].ShouldBe(user);
+                        }
+                    }
+                    else mounts.ShouldBeEmpty();
+                }
                 if (server.Name == "memories") environment["EventStore__CommandGateway__BaseAddress"].ShouldBe("http://127.0.0.1:" + sidecar.DaprHttpPort);
                 else if (server.Name != "eventstore") environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
                 if (server.Name == "tenants-api") environment["EventStore__GatewayReadiness__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);

@@ -15,6 +15,35 @@ using YamlDotNet.RepresentationModel;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
+    public void CatalogOwnerViewRefusesSymlinkThroughPlatformIdentityFallback()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "catalog-owner-containment-" + Guid.NewGuid().ToString("N"));
+        string platform = Path.Combine(directory, "platform");
+        string owner = Path.Combine(platform, "src", "owner");
+        string contract = Path.Combine(owner, "src", "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Contracts.csproj");
+        string foreign = Path.Combine(platform, "src", "foreign", "Hexalith.Tenants.Contracts.csproj");
+        Directory.CreateDirectory(Path.GetDirectoryName(contract)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(foreign)!);
+        File.WriteAllText(foreign, "<Project />");
+        File.CreateSymbolicLink(contract, foreign);
+        try
+        {
+            var options = Options();
+            var servers = PlatformAppModel.Prepare(options);
+            var selected = new SourceMappingEntry("Hexalith.Tenants", "source", owner);
+            var mapping = options.Mapping with
+            {
+                Entries = options.Mapping.Entries.Select(entry => entry.Identity == selected.Identity ? selected : entry).ToArray(),
+                PlatformIdentity = new("commit", "commit", "commit", platform, null, null, null, Path.Combine(platform, "hexalith-platform.json"), true),
+            };
+            (mapping with { Entries = [selected] }).ContainsProject(contract).ShouldBeTrue("the Platform identity fallback demonstrates the former escape");
+            Should.Throw<InvalidDataException>(() => PlatformCatalogContractBinding.Resolve(options with { Mapping = mapping }, servers))
+                .Message.ShouldContain("Contracts project Hexalith.Tenants.Contracts is absent or outside its mapped owner");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Fact]
     public void EventStoreOnlyUsesItsComponentsAndRegistersConfigStore()
     {
         string directory = Path.Combine(Path.GetTempPath(), "platform-eventstore-components-" + Guid.NewGuid().ToString("N"));

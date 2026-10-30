@@ -1,0 +1,14 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ExpiredRunRefusesBeforeAnyReaderPreparation [FAIL]
+      System.ArgumentException : A run requires one HTTP and four sidecar ports per module and distinct ports. (Parameter 'modules')
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlanFactory.cs(121,0): at Hexalith.Builds.Tooling.Runtime.CompositionRunPlanFactory.Create(String runId, String workspace, String daprHome, CompositionRunPorts ports, IReadOnlyList`1 modules, IReadOnlyList`1 uiMarkers, SourceMapping sourceMapping, IReadOnlyList`1 platformDeclarationPaths, String platformActiveModule, String platformModelAssemblyPath)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs(117,0): at Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ExpiredRunRefusesBeforeAnyReaderPreparation()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '60430d37795fb7df0bdbabc8324349aace035eca39d10c86743f6860422e9bd7')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 7, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 36.464s

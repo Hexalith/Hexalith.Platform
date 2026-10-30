@@ -1,0 +1,22 @@
+{
+  "command": [
+    "dotnet",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cli-output/Hexalith.Builds.Module.Cli.dll",
+    "test",
+    "--manifest",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/eng/story33-package/parties.json",
+    "--profile",
+    "platform-package",
+    "--mode",
+    "package",
+    "--output",
+    "json",
+    "--evidence",
+    "artifacts/native-package-parent-final-evidence.json"
+  ],
+  "environment": {
+    "HEXALITH_G4_APPHOST": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/host-output/Hexalith.Builds.Module.AppHost.dll",
+    "NUGET_PACKAGES": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/cache"
+  },
+  "workingDirectory": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform"
+}

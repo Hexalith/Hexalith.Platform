@@ -1660,3 +1660,31 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
   evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Fresh hosted OpenBao bootstrap rejects a just-created KV mount default configuration.
+  evidence: B7: ensure_config refuses existing defaults; distinguish a mount created in this invocation. Official API: https://openbao.org/docs/api/secret/kv/kv-v2/ . Concurrent hosted custody work, outside routing catalog activation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Hosted custody policy cannot complete a native trim beyond epoch 64.
+  evidence: B8: render_policy enumerates 1..64 while ErasureRootCustody advances successor epochs. Add an owner-supported policy/admission solution before that boundary.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Hosted McpCli setup can review a different operator subject from the private seed membership subject.
+  evidence: B9: prepare.validate calls seed.validate with namespace/tenant only; the profile and seed subjects are never compared.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Hosted operator packets omit validation of environment secret dependencies.
+  evidence: B10: prepare references(docs) excludes environment documents and only handles secretKeyRef, leaving volumes and envFrom references unresolved.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Hosted operator environment ConfigMaps can expose credential values under generic keys.
+  evidence: B11: credential screening checks key names only before copying raw ConfigMaps into environment.yaml.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Hosted operator seed response reads can exceed the promised deadline or memory bound.
+  evidence: B12: response.read() is unbounded; the outer deadline is checked only before the blocking response read.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Story 2.9 needs a production native endpoint-credential producer/consumer contract test.
+  evidence: V1: concrete PlatformNativeTestPreparation writer is not exercised by tests; reader tests construct independent JSON, so a writer headerName regression reaches HXT008 only at execution. Concurrent credential grant excluded from story 3.3 qualification.

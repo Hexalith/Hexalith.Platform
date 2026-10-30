@@ -1,0 +1,157 @@
+[
+  {
+    "name": "/parties-hffhunap",
+    "image": "localhost:15033/parties:2.0.1-story33.1",
+    "user": "1000:1000",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.parties.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.parties.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "name": "/memories-domain-service-nezrffvj",
+    "image": "localhost:15033/memories-domain-service:3.0.11-story33.1",
+    "user": "1000:1000",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.memories-domain-service.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.memories-domain-service.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "name": "/tenants-api-ahnempyy",
+    "image": "localhost:15033/tenants-api:5.11.2-story33.1",
+    "user": "1000:1000",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.tenants-api.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.tenants-api.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "name": "/memories-snzvkuuq",
+    "image": "localhost:15033/memories:3.0.11-story33.1",
+    "user": "1000:1000",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.memories.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.memories.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "name": "/tenants-yrssumxn",
+    "image": "localhost:15033/tenants:5.11.2-story33.1",
+    "user": "1000:1000",
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/8b928f86293af8acd166dec0830c455a-catalog",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.tenants.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/accesscontrol.tenants.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Destination": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/91021c1904c986041184792bc4b61ca1/platform-components/routing-catalog.yaml",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  }
+]

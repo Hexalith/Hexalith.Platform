@@ -24,7 +24,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
                 if (!fromSource && options.Mapping.Mode != WorkspaceMode.Source) return assembly;
                 if (selected.Origin != "source" || selected.Path is null) throw new InvalidDataException($"{module}: mapped Contracts source is unavailable.");
                 string project = Path.GetFullPath(Path.Combine(selected.Path, "src", assembly, assembly + ".csproj"));
-                if (!(options.Mapping with { Entries = [selected] }).ContainsProject(project))
+                if (!(options.Mapping with { Entries = [selected], PlatformIdentity = null }).ContainsProject(project))
                     throw new InvalidDataException($"{module}: Contracts project {assembly} is absent or outside its mapped owner.");
                 return project;
             }

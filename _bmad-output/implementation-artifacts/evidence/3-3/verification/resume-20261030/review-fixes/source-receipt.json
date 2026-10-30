@@ -1,0 +1,49 @@
+{
+  "observedAtUtc": "2026-10-30T18:43:22.415680+00:00",
+  "scope": "Parent review fixes only; no live or whole-class rerun",
+  "sourceContentSha256": {
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "771804655e0bad86b3ffcc67c287686fceae41da7307ad0f7099361399c8babe",
+    "src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs": "e2fbe900781af20f6c86aa1c3f82a89a6438081018db89a6d07de80def43fb23",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs": "a29499a53121793e0ae5f0ffd3871d2798789645415c05e37e291c2af45e6c00",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "0ffc8ff80d73d8c6884d40d288b69ffbb7d5fac0a1b6c3a95666e8934cc25604",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs": "911520b550796dd0277f1ab327231c5de09bd6552def393418e2f99699e11cf6",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs": "84f63f6d6d883926f6e80b8f12a997e9689d5b77e06c2683dabd79556260e155",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs": "4094ce79cc8b8808da3ad95038e64b0164171c2b5a696843cba91f865e3ed552"
+  },
+  "binaries": {
+    "artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition/debug/Hexalith.Platform.Composition.dll": "68abc702051b955832c438d008e056ac2f76213f48788a43acbd199d177c8432",
+    "artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll": "e487a5ac7d19b68d70c04b6b1920f0aff92e419515c1dadf83f7171742e945c1"
+  },
+  "verification": {
+    "compositionBuild": "0 warnings/errors",
+    "testsBuild": "0 warnings/errors",
+    "firstTargetedRun": {
+      "catalog": {
+        "total": 7,
+        "passed": 6,
+        "failedTestSetup": 1
+      },
+      "mountsUidAndSymlink": {
+        "total": 2,
+        "passed": 2
+      },
+      "cleanup": {
+        "total": 3,
+        "passed": 2,
+        "failedTestSetup": 1
+      }
+    },
+    "correctedTestSetupRerun": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "aggregatePassingCases": 12
+  },
+  "historicalRootCorrection": "historical-test-root-correction.json",
+  "limits": [
+    "Historical source/binary hashes in earlier receipts were preserved; this receipt identifies the review-fix source and binaries.",
+    "Full-class exact historical binary was not retained; final-focused historical metadata was inspected directly and the full-class shared-root build trace was retained.",
+    "Parent performs full verification after this focused review-fix pass."
+  ]
+}

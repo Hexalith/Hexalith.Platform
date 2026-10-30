@@ -14,7 +14,7 @@ Changes made in this implementation session:
 - Disable package generation on source launches, honor mapped contract origins, mark the generated reader's actual central package import, and explicitly enable the reader's required JSON reflection.
 - Bind package-container readiness through the correct resource endpoints and start catalog participants together without readiness cycles. Gateway-only infrastructure retains its existing behavior and does not claim an empty business catalog.
 - Restrict insecure manifest inspection to an explicit private qualification build, Development/package mode, and canonical loopback authorities. Fifteen tests cover accepted loopbacks and refusal of ambiguous/remote authorities.
-- Repair the existing graph fixtures with actual reader inputs, correctly scoped owner source mappings, an explicit isolated test root, and the additional DomainService's host/port/build/component expectations. Synthetic image graph fixtures confer no package acceptance.
+- Repair the existing graph fixtures with actual reader inputs, correctly scoped owner source mappings, an explicit test-root request (compiled metadata retained the shared checkout), and the additional DomainService's host/port/build/component expectations. Synthetic image graph fixtures confer no package acceptance.
 
 Own implementation paths, relative to Platform unless marked as an owner repository:
 
@@ -59,6 +59,10 @@ Verification receipts:
 | Genuine matching Release/package descriptor | `package/native-bbe72c24968a7d674910976671cc656b` |
 | Signed package HTTP schema comparison | `package/native-dd8da429233af5aa3d6217b447cc03db/metadata-http.json` |
 | Unchanged eligibility/effect/ACL matrix | Earlier audited receipts: surface 18, registered ingress 4, bootstrap 4, topology 3, writer 3, ACL 1, real package-admission refusal 1 |
-| Affected AppModel partial class | Final runner summary pending; original stale-fixture failures and focused repairs retained |
+| Affected AppModel partial class | 178 collected: 5 stale expectation failures and 4 gated skips; focused 5/5 pass in 126.898 seconds. Aggregate: 174 passing, 4 explicit gates; required live lanes passed independently. |
 
 The native consumer suites remain non-passing. The source bearer-only Memories boundary was isolated without granting its private channel to consumers; full migration belongs to story 2.9. Same-attempt participant restart remains an explicit refusal. The Memories musl curl hash mismatch was preserved; routing package images used the supported linux-x64 runtime alternative with exact OCI provenance, and this does not qualify the musl curl canary. Hosted activation, public owner releases and candidate acceptance were not claimed.
+
+Final verification uses the exact source/test hashes in `final-source-receipt.json`; the collecting assembly/source checkpoint is separately retained in `full-class-source-receipt.json`. The five corrections after the collecting run are test-only; no further full-class rerun was claimed. Full class duration: 886.021 seconds. Focused rerun: five cases, zero failures/skips, 126.898 seconds.
+
+Historical test-root correction: `HEXALITH_PLATFORM_TEST_ROOT` requested the private checkout, but the final focused DLL (SHA-256 `1db4f371e1f7237d0d9a00ebead0dcee451a6d58986bd7081e37225a39dd5935`) contains `PlatformTestRepositoryRoot=/home/administrator/projects/hexalith/platform`; the AppModel getter returns that metadata first. The effective affected-class/focused root was the shared checkout. The exact collecting DLL (recorded SHA-256 `87ee5e1d05423eb889920fc4d796e0b415d57470895d271ec18b2642f4ddcdf2`) is no longer retained for an independent metadata read; its shared-root reader build trace is retained. Historical source/binary hashes and outcomes were preserved. This correction changes no private package-authority claim.

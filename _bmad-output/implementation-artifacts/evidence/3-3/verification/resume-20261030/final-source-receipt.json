@@ -1,5 +1,5 @@
 {
-  "observedAtUtc": "2026-10-30T17:53:18.649747+00:00",
+  "observedAtUtc": "2026-10-30T18:09:06.548102+00:00",
   "qualification": "Exact current shared source, compiled tests, and separately retained immutable runtime qualification",
   "baselineRevisions": {
     "Platform": "64018786ab799ae7ed2f1fb3c1d5936f8e4ab20a",
@@ -10,12 +10,12 @@
     "Memories": "466e3b9dacec3f7c16edb3b5f242a6727c55583f"
   },
   "revisions": {
-    "Platform": "b8a6437f0b2648746c74155eb4728c43cb58ba30",
-    "Builds": "69701dfcf54cb9c69fc6cb0c51b031af8d218142",
-    "EventStore": "a5db1ffe36238c21a8e974b72c961d2243ac2cf9",
-    "Tenants": "7fb91a6385481b46fd7a5ae340591299f06c9f4d",
+    "Platform": "0bc92322563aaba6beb86e9dfd3a66474ff9bb8f",
+    "Builds": "76aafc85122fb7ae4b2668ed4895e4bc213c404a",
+    "EventStore": "014ad13c862b6e872e188f8060ac13ab7629a3df",
+    "Tenants": "a16d89746c0b16470df899981af889332bea8da0",
     "Parties": "8b0e23e437296691d0233fe86afc765063f9fef5",
-    "Memories": "c3f689cda9a7d763a8d87c1ad947fedf468773de"
+    "Memories": "2537cad34e173d61d6bffad9e5c20cbe47cdd9d2"
   },
   "sourceContentSha256": {
     "references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/DevelopmentBindingInventory.cs": "a9d0274d0ea8adcf36d701873526702a15390ad6eac2da832427de4ab2c1a29e",
@@ -221,12 +221,14 @@
     "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": "ec57f02a8453306aff5f31978f9374694daa39fba2c82f86141e1ba557fd140f",
     "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "b7d4ed36b156201e05771c31cce8b4a8c4c1f318cf55c6fad77a69950988f932",
     "src/Hexalith.Platform.Composition/WorksProductionProfile.cs": "1dca97f316ec39e56f755403907bbc85acae50b044b43ed7809a2cf5c114c9e7",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs": "f6f96603705eb24c1131032634e8ea3b78d03fa62aa13abe284baf6c0a9657c1",
     "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "145096abd0853763b1b24a055c4c16bc83b15c33b30a494cbc3520ae9a783332",
-    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "809004e27d24a0c24b92f391faa5c298a2ab2d08de4dc535a3c119b25bd11060",
-    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs": "6946be9de3fecae65268d14cee2d01da80f7c6bd4bba4a6bf715d45590e44078",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "ddc25822b3aca4910227b97397575c4fcc14aaf42117d4d72d1c87ef24e20481",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs": "8f065621dd1573204c135076cf6a7bb3d76c1bbbb1569953136b719ba19d0ad0",
     "tests/Hexalith.Platform.Composition.Tests/PlatformDaprToolchainTests.cs": "64aa1a70f956e1ac9dc1fb35bc344eadf1b3a9b06b5935804e9df41f4d0655c0",
     "tests/Hexalith.Platform.Composition.Tests/PlatformFourthReviewTests.cs": "b3dd90757eca6c7df66100b56fab1dd167d85bd2b5ad1e1467481b3f6d1969c9",
     "tests/Hexalith.Platform.Composition.Tests/PlatformLoopbackRegistryProbeTests.cs": "d3e2027b6507346b883018f4b167f1b5eba9e6bf029fd58a63feec5ca1dc17a3",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesGatewayTransportTests.cs": "d2caeb50a465384bd633f7058212e1d846388409ea910857bdfc71e917601a4b",
     "tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs": "60475a31732d53f066b16dff064fe612f430fdb54f0d79eeccc8a14a758b8605",
     "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs": "525f1c4980c80ca1cb3f7b3eaceaf07a89705565e239bb6fc10beb35b79881b7",
     "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionDiscoveryTests.cs": "b45ea33e9607f38c861699f359182796e0d41cba813c34f54c4dcb4c97d4a6b0",
@@ -234,12 +236,12 @@
     "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs": "f2aa12523e32261e05ad9ca7a2aa707e114b52851fcbdcc2f616c22b794726f9",
     "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs": "c8e24adcee79b4fe9575316d898c441bcbb7ab865e1772f300d0d87aa98e60df",
     "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationReviewTests.cs": "5123642553fa3d7ad45113a40012978d86a2e80d73b57ce5b6e40cc3d9e87005",
-    "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs": "a9a837b2a29f8a9e86ef29494f1a9d30b3783e83f9711e1c3d41226de233b9d3"
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs": "ebc4d4f3ca224396c8eacaedc3ebb7fb2171fd796e0fa6eb08d63b2dc6e00d87"
   },
   "binaries": {
     "artifacts/story33-resume-20261030/cli-output/Hexalith.Builds.Module.Cli.dll": "18556fc4e69700f64b7020bf65be7f039818dc53ed1cd8f1bcad735aecfc89ed",
     "artifacts/story33-resume-20261030/host-output/Hexalith.Builds.Module.AppHost.dll": "07b38e2895b1705d9a089bf06614edfb3bd23f7965290d7ddfcd437f479d4bc0",
-    "artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll": "87ee5e1d05423eb889920fc4d796e0b415d57470895d271ec18b2642f4ddcdf2",
+    "artifacts/story33-resume-20261030/PlatformRepaired/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll": "1db4f371e1f7237d0d9a00ebead0dcee451a6d58986bd7081e37225a39dd5935",
     "artifacts/story33-resume-20261030/api-under-test/Hexalith.Tenants.Api.dll": "be94b0ee92a7593c5535b56a6c59946d4ba14a42bb7db7f0b4dd26ee718c93b2",
     "artifacts/story33-resume-20261030/EventStoreFinite/bin/Hexalith.EventStore.ServiceDefaults.Tests/debug/Hexalith.EventStore.ServiceDefaults.Tests.dll": "b934c789a786533d8f543a3c6696142ee9f2fc498f7a646b31e217e22493f313"
   },
@@ -308,11 +310,41 @@
   "limits": [
     "The final source-test assembly includes preserved concurrent source. Native source run 6f1e6d and package runs retain their own exact immutable source/binary receipts.",
     "Final package run bbe72c2 proves ready descriptor/all-six readbacks; earlier dd8da429 with identical owner artifacts/root supplies authenticated HTTP schema comparison.",
-    "Current fixture class verification remains pending its final runner summary."
+    "Historical root correction: the requested private root did not override the compiled shared checkout metadata for the AppModel tests. Historical hashes and outcomes remain unchanged."
   ],
   "testRoot": {
     "environmentVariable": "HEXALITH_PLATFORM_TEST_ROOT",
-    "value": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
-    "purpose": "Explicit isolated owner checkout for final source fixture class; does not change production composition."
+    "requestedValue": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
+    "observedEffectiveRoot": "/home/administrator/projects/hexalith/platform",
+    "precedence": "Compiled PlatformTestRepositoryRoot assembly metadata is returned before the environment override by PlatformAppModelTests.Root.",
+    "evidence": "review-fixes/historical-test-root-correction.json",
+    "historicalExactBinaryMetadataVerified": true
+  },
+  "verification": {
+    "fullClass": {
+      "receipt": "PlatformAppModelTests-final-class.txt",
+      "total": 178,
+      "failedBeforeTestOnlyCorrections": 5,
+      "skipped": 4,
+      "seconds": 886.021,
+      "sourceReceipt": "full-class-source-receipt.json"
+    },
+    "focusedCorrections": {
+      "receipt": "PlatformAppModelTests-final-focused.txt",
+      "total": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 126.898,
+      "commandReceipt": "final-focused-command.json"
+    },
+    "aggregate": {
+      "passingCases": 174,
+      "gatedLiveSkips": 4,
+      "requiredLiveLanesPassedSeparately": true
+    }
+  },
+  "lineEndings": {
+    "existingCRLFPreserved": true,
+    "restoredAfterCompilation": []
   }
 }

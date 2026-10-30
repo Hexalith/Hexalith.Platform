@@ -308,11 +308,15 @@
   "limits": [
     "The final source-test assembly includes preserved concurrent source. Native source run 6f1e6d and package runs retain their own exact immutable source/binary receipts.",
     "Final package run bbe72c2 proves ready descriptor/all-six readbacks; earlier dd8da429 with identical owner artifacts/root supplies authenticated HTTP schema comparison.",
-    "Current fixture class verification remains pending its final runner summary."
+    "Current fixture class verification remains pending its final runner summary.",
+    "Historical root correction: the requested private root did not override the compiled shared checkout metadata for the AppModel tests. Historical hashes and outcomes remain unchanged."
   ],
   "testRoot": {
     "environmentVariable": "HEXALITH_PLATFORM_TEST_ROOT",
-    "value": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
-    "purpose": "Explicit isolated owner checkout for final source fixture class; does not change production composition."
+    "requestedValue": "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform",
+    "observedEffectiveRoot": "/home/administrator/projects/hexalith/platform",
+    "precedence": "Compiled PlatformTestRepositoryRoot assembly metadata is returned before the environment override by PlatformAppModelTests.Root.",
+    "evidence": "review-fixes/historical-test-root-correction.json",
+    "historicalExactBinaryMetadataVerified": false
   }
 }

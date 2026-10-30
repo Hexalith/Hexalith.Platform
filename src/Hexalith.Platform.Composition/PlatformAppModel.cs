@@ -285,7 +285,16 @@ public static class PlatformAppModel
                         .WithAnnotation(new PlatformServerAnnotation(server));
                     ConfigureEnvironment(container, server, options, clockKey);
                     catalog?.Configure(container, server);
-                    if (catalog?.Participates(server) == true) container.WithBindMount(rendered, rendered);
+                    if (catalog?.Participates(server) == true)
+                    {
+                        string authorityComponent = Path.Combine(rendered, "routing-catalog.yaml");
+                        string accessControl = Path.Combine(rendered, "accesscontrol." + server.AppId + ".yaml");
+                        container.WithBindMount(catalog.Directory, catalog.Directory)
+                            .WithBindMount(authorityComponent, authorityComponent, isReadOnly: true)
+                            .WithBindMount(accessControl, accessControl, isReadOnly: true);
+                        if (DaprSelfHostedMtls.ResolveContainerUser() is { } applicationUser)
+                            container.WithContainerRuntimeArgs("--user", applicationUser);
+                    }
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         container.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
                     if (options.RunPlan is not null) container.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={options.RunPlan.RunId}");

@@ -35,7 +35,6 @@ public class PlatformRoutingCatalogIntegrationTests
         };
         string apphost = Path.Combine(root, "apphost.cs");
         bool started = false;
-        bool passed = false;
         try
         {
             foreach (var server in PlatformAppModel.Prepare(options))
@@ -110,18 +109,17 @@ public class PlatformRoutingCatalogIntegrationTests
             }));
             File.WriteAllBytes(Path.Combine(evidence, "catalog.json"), canonical);
             File.Copy(Path.Combine(catalogDirectory, "receipt.json"), Path.Combine(evidence, "receipt.json"), true);
-            passed = true;
 
             static string Encode(object value) => Convert.ToBase64String(JsonSerializer.SerializeToUtf8Bytes(value)).TrimEnd('=').Replace('+', '-').Replace('/', '_');
         }
         finally
         {
-            if (started && passed) (await RunAsync("stop", [], null, TimeSpan.FromSeconds(30))).ExitCode.ShouldBe(0);
+            await StopStartedHostAsync(started, (timeout, cancellation) => RunAsync("stop", [], null, timeout, cancellation));
         }
 
-        async Task<CompositionProcessResult> RunAsync(string command, string[] arguments, IReadOnlyDictionary<string, string>? values, TimeSpan timeout)
+        async Task<CompositionProcessResult> RunAsync(string command, string[] arguments, IReadOnlyDictionary<string, string>? values, TimeSpan timeout, CancellationToken? cancellationToken = null)
         {
-            var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", [command, .. arguments, "--apphost", apphost, "--non-interactive"], root, values), timeout, TestContext.Current.CancellationToken);
+            var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", [command, .. arguments, "--apphost", apphost, "--non-interactive"], root, values), timeout, cancellationToken ?? TestContext.Current.CancellationToken);
             string safe = result.Output + result.ErrorOutput;
             if (command == "describe" && result.ExitCode == 0 && safe.TrimStart().StartsWith('{'))
             {
@@ -135,5 +133,52 @@ public class PlatformRoutingCatalogIntegrationTests
             File.WriteAllText(Path.Combine(evidence, command + ".txt"), safe);
             return result;
         }
+    }
+
+    [Fact]
+    public async Task FailedAssertionAfterStartupStillStopsWithAnUncancelledBound()
+    {
+        using CancellationTokenSource cancelled = new();
+        cancelled.Cancel();
+        bool stopped = false;
+        var failure = await Should.ThrowAsync<InvalidOperationException>(async () =>
+        {
+            try { throw new InvalidOperationException("original assertion"); }
+            finally
+            {
+                await StopStartedHostAsync(true, (timeout, cancellation) =>
+                {
+                    timeout.ShouldBe(TimeSpan.FromSeconds(30));
+                    cancellation.CanBeCanceled.ShouldBeFalse();
+                    stopped = true;
+                    return Task.FromResult(new CompositionProcessResult(true, 0, "stopped", false));
+                });
+            }
+        });
+        stopped.ShouldBeTrue();
+        failure.Message.ShouldBe("original assertion");
+    }
+
+    [Fact]
+    public async Task UnstartedHostDoesNotIssueStop()
+    {
+        await StopStartedHostAsync(false, (_, _) => throw new InvalidOperationException("must not stop"));
+    }
+
+    [Fact]
+    public async Task CleanupFailureRetainsProcessDiagnostics()
+    {
+        var failure = await Assert.ThrowsAsync<ShouldAssertException>(() => StopStartedHostAsync(true, (_, _) =>
+            Task.FromResult(new CompositionProcessResult(true, 1, "stop stdout", false) { ErrorOutput = "stop stderr" })));
+        failure.Message.ShouldContain("stop stdout");
+        failure.Message.ShouldContain("stop stderr");
+    }
+
+    internal static async Task StopStartedHostAsync(bool started, Func<TimeSpan, CancellationToken, Task<CompositionProcessResult>> stop)
+    {
+        if (!started) return;
+        CompositionProcessResult result = await stop(TimeSpan.FromSeconds(30), CancellationToken.None);
+        result.TimedOut.ShouldBeFalse(result.Output + result.ErrorOutput);
+        result.ExitCode.ShouldBe(0, result.Output + result.ErrorOutput);
     }
 }

@@ -59,6 +59,71 @@ public class PlatformRoutingCatalogTests
             .Message.ShouldContain("tenants");
     }
 
+    [Theory]
+    [InlineData(121)]
+    [InlineData(128)]
+    public void DerivedInstanceLimitRefusesBeforeReaderFilesAreWritten(int length)
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "catalog-identifier-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspace);
+        try
+        {
+            var options = new PlatformCompositionOptions
+            {
+                PlatformRoot = workspace, EnvironmentId = new string('a', length),
+                Mapping = new SourceMapping(WorkspaceMode.Source, workspace, "Hexalith.Platform", [], false),
+            };
+            Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.Generate(options, [], workspace)).Message.ShouldContain("128");
+            Directory.GetFileSystemEntries(workspace).ShouldBeEmpty();
+        }
+        finally { Directory.Delete(workspace, true); }
+    }
+
+    [Fact]
+    public void MaximumDerivedInstanceLengthPassesIdentifierValidation()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "catalog-identifier-" + Guid.NewGuid().ToString("N"));
+        var options = new PlatformCompositionOptions
+        {
+            PlatformRoot = workspace, EnvironmentId = new string('a', 120),
+            Mapping = new SourceMapping(WorkspaceMode.Source, workspace, "Hexalith.Platform", [], false),
+        };
+        Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.Generate(options, [], workspace)).Message.ShouldContain("no compiled catalog owners");
+        Directory.Exists(workspace).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ReaderStagesUseOnlyTheirRemainingStartupBudget()
+    {
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        foreach (TimeSpan stage in new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1) })
+        {
+            PlatformRoutingCatalog.ReaderTimeout(stage, null, now).ShouldBe(stage);
+            PlatformRoutingCatalog.ReaderTimeout(stage, now.AddHours(1), now).ShouldBe(stage);
+            PlatformRoutingCatalog.ReaderTimeout(stage, now.AddSeconds(3), now).ShouldBe(TimeSpan.FromSeconds(3));
+            Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.ReaderTimeout(stage, now, now)).Message.ShouldContain("deadline");
+            Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.ReaderTimeout(stage, now.AddTicks(-1), now)).Message.ShouldContain("deadline");
+        }
+    }
+
+    [Fact]
+    public void ExpiredRunRefusesBeforeAnyReaderPreparation()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "catalog-expired-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspace);
+        try
+        {
+            var mapping = new SourceMapping(WorkspaceMode.Source, workspace, "Hexalith.Platform", [], false);
+            var plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace,
+                CompositionPortAllocator.Allocate(1), [], [], mapping, [Path.Combine(workspace, "module.json")], null, typeof(PlatformAppModel).Assembly.Location)
+                with { StartupDeadlineUtc = DateTimeOffset.UtcNow.AddSeconds(-1) };
+            var options = new PlatformCompositionOptions { PlatformRoot = workspace, Mapping = mapping, RunPlan = plan };
+            Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.Generate(options, [], workspace)).Message.ShouldContain("deadline");
+            Directory.GetFileSystemEntries(workspace).ShouldBeEmpty();
+        }
+        finally { Directory.Delete(workspace, true); }
+    }
+
     internal static async Task<PlatformCompositionOptions> OptionsAsync(bool includeParties = false)
     {
         string root = Root;

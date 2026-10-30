@@ -10,13 +10,22 @@ using Hexalith.EventStore.Contracts.Routing;
 internal sealed record PlatformRoutingCatalog(string InstanceId, string Directory, string CatalogPath, string RootDigest,
     RouteCatalogEnvelope Envelope, IReadOnlyList<string> OwnerAssemblies, IReadOnlyList<string> AdapterAssemblies)
 {
+    internal static TimeSpan ReaderTimeout(TimeSpan maximum, DateTimeOffset? startupDeadlineUtc, DateTimeOffset now)
+    {
+        if (startupDeadlineUtc is null) return maximum;
+        TimeSpan remaining = CompositionStartupClock.Remaining(startupDeadlineUtc, now);
+        if (remaining <= TimeSpan.Zero) throw new InvalidDataException("The routing catalog startup deadline has expired.");
+        return remaining < maximum ? remaining : maximum;
+    }
+
     internal static PlatformRoutingCatalog Generate(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers, string workspace)
     {
         string environment = options.RunPlan?.EnvironmentId ?? options.EnvironmentId ?? Path.GetFileName(workspace);
-        if (environment.Length is 0 or > 128 || environment.Any(c => !char.IsAsciiLetterOrDigit(c) && c is not '-' and not '_')
-            || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
-            throw new InvalidDataException("The routing catalog requires this run's exact environment identity.");
         string instance = environment + "-catalog";
+        if (environment.Length == 0 || instance.Length > 128 || environment.Any(c => !char.IsAsciiLetterOrDigit(c) && c is not '-' and not '_')
+            || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
+            throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
+        _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
         CompositionWorkspace.CreatePrivateDirectory(build);
@@ -42,7 +51,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string output = Path.Combine(build, "output");
         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
             "--output", output, "-m:1", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
-        var compiled = CompositionProcess.RunAsync(start, TimeSpan.FromMinutes(5), CancellationToken.None).GetAwaiter().GetResult();
+        var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
         string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
@@ -58,7 +67,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         try
         {
             var run = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll"), request], build, null),
-                TimeSpan.FromMinutes(1), CancellationToken.None).GetAwaiter().GetResult();
+                ReaderTimeout(TimeSpan.FromMinutes(1), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
             File.WriteAllText(Path.Combine(build, "generation.log"), run.Output + run.ErrorOutput);
             if (run.ExitCode != 0 || run.TimedOut) throw new InvalidDataException($"Owner routing catalog generation refused; see {Path.Combine(build, "generation.log")}.");
             byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
