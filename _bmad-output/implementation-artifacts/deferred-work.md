@@ -1449,10 +1449,12 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Explicit `down`/cleanup while holds are live leaves them `live`; `EndReason: cleanup` is never written (medium, unverified).
-  evidence: Check whether the listing/`IsLive` treats a cleaned owner's holds as live and whether Stories 2.7/2.8 cover it.
+  status: resolved by Story 2.7 (2026-10-30).
+  evidence: Exact down records `developer-stop` withdrawals under `attachments.lock` after recording cleanup in-progress and before stopping resources. Unrecordable withdrawal returns retryable `HXR037` without teardown; passive listing projects expired holds as withdrawn.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Attach racing the start of cleanup; cleanup start never takes `attachments.lock` (medium, unverified).
-  evidence: Compare when `CleanupDisposition` becomes `in-progress` with when `WaitForNoLiveHoldsAsync` returns.
+  status: resolved by Story 2.7 (2026-10-30).
+  evidence: Owner cancellation/cleanup state is recorded before taking `attachments.lock` to withdraw holds. Admission rechecks the latest owner state under that same lock, so an admission racing cleanup is withdrawn or refused.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
   summary: Corrupt `attachments.json` makes `TestResultWriter` throw `InvalidDataException` via `ReadContractBinding` (medium, unverified).
   evidence: Confirm the caller catches it and the first terminal result is still retained.
@@ -1470,3 +1472,10 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md`
   summary: Bind separately approved recovery invocation to exact tested executor and helper hashes before any future application.
   evidence: B6; the pre-existing sealed metadata-correction commands invoke a mutable sibling-worktree executor, while this offline reconciliation hashes sealed tested-source copies. The executor records its own source hash at process start without comparing it to that sealed copy. Preserve historical command bytes; review and pin any future separately scoped invocation. No executor was adopted or invoked by this reconciliation.
+
+## Deferred from: implementation of spec-2-7-withdraw-attached-runs-and-keep-failure-retention (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Stop attached-run owned work and end its environment access at expiry in Story 2.9.
+  target_story: 2.9
+  evidence: Approved 2026-10-30 decision limits Story 2.7 withdrawal to durable outcome recording. The runner currently owns no attached-run processes/tasks, so it does not terminate them. Environment teardown on cancellation or explicit down ends access; expiry records `withdrawn` without stopping independently owned attached work. Fixture migration must establish work/access ownership and preserve stopping failures without extending the hold.
