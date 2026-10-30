@@ -1,0 +1,88 @@
+name: Platform tuple CI preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate-sha:
+        description: Full recorded Platform candidate SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  tuple:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CI: 'true'
+      PLATFORM_CANDIDATE_SHA: ${{ inputs.candidate-sha }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Retain bootstrap provenance before checkout and setup
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          output = Path(os.environ['RUNNER_TEMP']) / 'platform-tuple-bootstrap'
+          output.mkdir()
+          keys = ['PLATFORM_CANDIDATE_SHA', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'RUNNER_OS', 'RUNNER_ARCH', 'ImageOS', 'ImageVersion']
+          (output / 'bootstrap.json').write_text(json.dumps({'status': 'started-only', 'candidateAcceptance': False, 'context': {key: os.environ.get(key) for key in keys}}, indent=2))
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        id: checkout
+        with:
+          ref: ${{ inputs.candidate-sha }}
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Verify exact candidate and initialize only owner-declared direct dependencies
+        id: dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          bootstrap="$RUNNER_TEMP/platform-tuple-bootstrap"
+          exec > >(tee "$bootstrap/initialize.stdout") 2> >(tee "$bootstrap/initialize.stderr" >&2)
+          trap 'code=$?; printf "%s\n" "$code" > "$bootstrap/initialize.exit"' EXIT
+          [[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
+          test "$(git rev-parse HEAD:references/Hexalith.Builds)" = d1931b1e803144048d927fff16cb8119afde541e
+          git submodule update --init
+          test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = d1931b1e803144048d927fff16cb8119afde541e
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+        id: dotnet
+        with:
+          global-json-file: global.json
+      - name: Verify published tuple, reject source fallback, build and test Release
+        id: preflight
+        run: python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci
+      - name: Retain bootstrap and preflight outcomes
+        if: always()
+        env:
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          SDK_OUTCOME: ${{ steps.dotnet.outcome }}
+          PREFLIGHT_OUTCOME: ${{ steps.preflight.outcome }}
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os
+          from pathlib import Path
+          path = Path(os.environ['RUNNER_TEMP']) / 'platform-tuple-bootstrap/bootstrap.json'
+          record = json.loads(path.read_text())
+          keys = ['CHECKOUT_OUTCOME', 'DEPENDENCIES_OUTCOME', 'SDK_OUTCOME', 'PREFLIGHT_OUTCOME']
+          record['outcomes'] = {key: os.environ.get(key) for key in keys}
+          record['status'] = 'completed' if all(value == 'success' for value in record['outcomes'].values()) else 'failed-or-incomplete'
+          record['finishedUtc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+          path.write_text(json.dumps(record, indent=2))
+          PY
+      - name: Retain successful and failed preflight evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: platform-tuple-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/platform-tuple-bootstrap
+            artifacts/tuple-ci
+          if-no-files-found: error
