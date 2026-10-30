@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 from joint_live_phase_runner import calendar_date, digest, full_plan
 from case_driver_inventory import blockers as driver_blockers
+from packet_snapshot import PublicPacketSnapshot, AdmittedCoordination, snapshot_for
 
 REQUIRED_ARTIFACTS = ("custodyConfiguration", "hostProfile", "protectionProfile", "providerProfile", "authorityEnrollment",
                       "publicTrust", "executorAnchor", "observerAnchor", "enrollmentAnchor", "installedImageInventory", "physicalQualificationPlan", "jointConfiguration", "launchInventory")
@@ -37,12 +38,16 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
         return ["ExplicitCoordinatedInstallationContext", "ExplicitPlatformIntegrationDate", "ExplicitProtectionIntegrationDate"], {}, {}
     import qualify as q
     try:
-        context = q.read_json(context_path)
+        snapshot = PublicPacketSnapshot()
+        parsed_context = snapshot.json(context_path, capture=True)
+        if not isinstance(parsed_context, dict):
+            return ["ValidExplicitCoordinatedInstallationContext"], {}, {}
+        context = AdmittedCoordination(parsed_context, snapshot)
         if not isinstance(context, dict) or not isinstance(context.get("installedArtifacts"), dict) or not isinstance(context.get("exactCommands"), dict):
             return ["ValidExplicitCoordinatedInstallationContext"], {}, {}
         if any(not isinstance(value, dict) for value in context["installedArtifacts"].values()):
             return ["ValidExplicitCoordinatedInstallationContext"], {}, {}
-        raw = q.bounded_public_file(register_path, 1024 * 1024)
+        raw = snapshot.capture(register_path)
         if hashlib.sha256(raw).hexdigest() != context.get("acceptedRegisterSha256"):
             missing.append("ExactAcceptedRegisterBytes")
         text = raw.decode("utf-8")
@@ -64,7 +69,7 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
         for name in REQUIRED_ARTIFACTS:
             descriptor = context.get("installedArtifacts", {}).get(name, {})
             try:
-                data = q.bounded_public_file(descriptor["path"], 1024 * 1024)
+                data = snapshot.capture(descriptor["path"])
                 actual = hashlib.sha256(data).hexdigest()
                 if descriptor.get("sha256") != actual:
                     raise ValueError("installed bytes changed")
@@ -75,12 +80,12 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
                 hashes[name + "Sha256"] = None
                 missing.append("installedArtifacts." + name)
         try:
-            joint = q.read_json(context["installedArtifacts"]["jointConfiguration"]["path"])
-            missing.extend(validate_joint_configuration(joint, hashes, context))
+            joint = snapshot.json(context["installedArtifacts"]["jointConfiguration"]["path"])
+            missing.extend(validate_joint_configuration(joint, hashes, context, snapshot=snapshot))
             from launch_inventory import blockers as launch_blockers
-            launch=q.read_json(context["installedArtifacts"]["launchInventory"]["path"])
+            launch=snapshot.json(context["installedArtifacts"]["launchInventory"]["path"])
             if joint["binding"].get("launchInventorySha256")!=digest(launch):missing.append("ExactAcceptedCompleteLaunchInventoryBinding")
-            missing.extend(launch_blockers(launch,q.read_json(context["installedArtifacts"]["hostProfile"]["path"])))
+            missing.extend(launch_blockers(launch,snapshot.json(context["installedArtifacts"]["hostProfile"]["path"])))
             protection = section(text, "EXT-PROTECTION-1")
             expected_protection = {"targetCommit": joint["binding"]["protectionCommit"],
                 "integrationDate": calendar_date(context["protectionIntegrationDate"]),
@@ -97,7 +102,7 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
         anchors = []
         for name in ("executorAnchor", "observerAnchor", "enrollmentAnchor"):
             try:
-                anchors.append(q.public_key_identity(q.read_public_anchor(context["installedArtifacts"][name]["path"])))
+                anchors.append(q.public_key_identity(snapshot.capture(context["installedArtifacts"][name]["path"],4096)))
             except (OSError, KeyError, ValueError, TypeError, ImportError):
                 missing.append("IndependentInstalledTrustBytes")
         if len(anchors) != 3 or len(set(anchors)) != 3:
@@ -116,11 +121,11 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
             if pins[0] != pins[1]:
                 raise ValueError("independent installation authority differs")
             pin = pins[0]
-            anchor = q.read_public_anchor(pin["anchorFile"])
+            anchor = snapshot.capture(pin["anchorFile"],4096)
             if hashlib.sha256(anchor).hexdigest() != pin["anchorSha256"]:
                 raise ValueError("enrolled authority key substituted")
             q.public_key_identity(anchor)
-            envelope = q.read_json(context["installationProofFile"])
+            envelope = snapshot.json(context["installationProofFile"],capture=True)
             payload = envelope["payload"]
             key = serialization.load_pem_public_key(anchor)
             key.verify(base64.b64decode(envelope["signature"], validate=True), q.canonical(payload), ec.ECDSA(crypto_hashes.SHA256()))
@@ -167,7 +172,7 @@ def _admission(context_path, register_path, candidate, clean, profile_date=None)
         if not all(context.get("installedArtifacts", {}).get(name, {}).get("enrollmentReference") for name in REQUIRED_ARTIFACTS):
             missing.append("IndependentInstallationEnrollmentReferences")
         return sorted(set(missing)), hashes, context
-    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError):
         return ["ValidExplicitCoordinatedInstallationContext"], hashes, context
 
 
@@ -212,7 +217,7 @@ def valid_owner_command(command, record, candidate, joint_path):
 def shared_binding(installed_hashes, coordinated):
     from cases import plan_digest
     return {"jointConfigurationFile": coordinated["installedArtifacts"]["jointConfiguration"]["path"], "jointConfigurationSha256": installed_hashes["jointConfigurationSha256"],
-            "configurationSha256": __import__("qualify").digest(__import__("qualify").read_json(coordinated["installedArtifacts"]["custodyConfiguration"]["path"])),
+            "configurationSha256": __import__("qualify").digest(snapshot_for(coordinated).json(coordinated["installedArtifacts"]["custodyConfiguration"]["path"])),
             "configurationRawSha256": installed_hashes["custodyConfigurationSha256"],
             "profileSha256": installed_hashes["hostProfileSha256"], "planSha256": plan_digest(),
             "cohortPlanSha256": digest(full_plan()),"launchInventorySha256":installed_hashes["launchInventorySha256"],
@@ -222,23 +227,23 @@ def shared_binding(installed_hashes, coordinated):
 
 def protection_binding(installed_hashes, coordinated):
     import qualify as q
-    joint = q.read_json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])
+    joint = snapshot_for(coordinated).json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])
     return {"targetCommit": joint["binding"]["protectionCommit"], "integrationDate": calendar_date(coordinated["protectionIntegrationDate"]),
         "profileSha256": installed_hashes["protectionProfileSha256"], "configurationSha256": installed_hashes["jointConfigurationSha256"],
         "planSha256": digest(full_plan()), "acceptedSectionSha256": coordinated["acceptedProtectionSectionSha256"]}
 
 
-def records(register_path, target, platform_date, commands, bindings):
+def records(register_path, target, platform_date, commands, bindings, *, snapshot):
     """Preserve all nine fields and every extension verbatim except explicit proposed fields. Acceptance remains external."""
     import qualify as q
-    text = q.bounded_public_file(register_path, 1024 * 1024).decode("utf-8")
+    text = snapshot.retained(register_path).decode("utf-8")
     result = {}
     for record in ("EXT-SECRETS-1", "EXT-HOST-1"):
         original = section(text, record)
         proposed = re.sub(r"(\| `TargetVersionOrCommit` \| )`[^`]+`", lambda m: m[1] + "`" + target + "`", original)
         proposed = re.sub(r"(\| `TargetIntegrationDate` \| )`[^`]+`", lambda m: m[1] + "`" + calendar_date(platform_date) + "`", proposed)
         proposed = re.sub(r"Command: `[^`]+`", lambda _: "Command: `" + commands[record] + "`", proposed)
-        joint = q.read_json(bindings["jointConfigurationFile"])
+        joint = snapshot.json(bindings["jointConfigurationFile"])
         joint_binding = {"configurationSha256": bindings["jointConfigurationSha256"], "bindingSha256": digest(joint["binding"]), "planSha256": digest(full_plan())}
         proposed = replace_binding_row(proposed, "JointQualificationBinding", joint_binding)
         if record == "EXT-SECRETS-1":
@@ -248,7 +253,7 @@ def records(register_path, target, platform_date, commands, bindings):
     return result
 
 
-def validate_joint_configuration(config, installed_hashes=None, context=None):
+def validate_joint_configuration(config, installed_hashes=None, context=None, *, snapshot=None):
     """Validate every public pin without network calls or reserving an attempt."""
     import qualify as q
     from joint_live_phase_runner import PHASES, partitions
@@ -289,10 +294,10 @@ def validate_joint_configuration(config, installed_hashes=None, context=None):
                 if not isinstance(service, dict) or not isinstance(service.get('appId'), str) or not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}', service['appId']) \
                         or not isinstance(service.get('credentialReference'), str) or not service['credentialReference'].startswith('file:/'):
                     raise ValueError()
-                raw = q.read_public_anchor(service['publicAnchorFile'])
+                raw = q.read_public_anchor(service['publicAnchorFile']) if snapshot is None else snapshot.capture(service['publicAnchorFile'],4096)
                 if hashlib.sha256(raw).hexdigest() != service['publicAnchorSha256']: raise ValueError()
                 fingerprints.append(q.public_key_identity(raw)); apps.append(service['appId'])
-            except (OSError, KeyError, TypeError, ValueError): missing.append('JointConfiguration.services.' + role)
+            except (OSError, KeyError, TypeError, ValueError, ImportError): missing.append('JointConfiguration.services.' + role)
         if len(set(fingerprints)) != 5 or len(set(apps)) != 5: missing.append('JointConfiguration.IndependentServiceTrust')
     profiles, pins = config.get('phaseExecutionProfiles'), binding.get('phaseExecutionProfileSha256')
     if not isinstance(profiles, dict) or not isinstance(pins, dict) or set(profiles) != {'0','1','2','3'} or set(pins) != set(profiles):
@@ -320,12 +325,12 @@ def validate_joint_configuration(config, installed_hashes=None, context=None):
         for field, installed in mapping.items():
             if binding.get(field) != installed_hashes.get(installed): missing.append('JointConfiguration.CrossArtifact.' + field)
         try:
-            raw = q.bounded_public_file(context['installedArtifacts']['custodyConfiguration']['path'],1024*1024)
+            raw = snapshot_for(context).retained(context['installedArtifacts']['custodyConfiguration']['path'])
             if binding.get('configurationSha256') != q.digest(q.decode_json(raw)) or binding.get('configurationRawSha256') != hashlib.sha256(raw).hexdigest():
                 missing.append('JointConfiguration.CrossArtifact.configurationSha256')
-            protection = q.read_json(context['installedArtifacts']['protectionProfile']['path'])
+            protection = snapshot_for(context).json(context['installedArtifacts']['protectionProfile']['path'])
             if protection.get('targetCommit') != binding.get('protectionCommit'): missing.append('JointConfiguration.CrossArtifact.protectionCommit')
-            profile = q.read_json(context['installedArtifacts']['hostProfile']['path'])
+            profile = snapshot_for(context).json(context['installedArtifacts']['hostProfile']['path'])
             if profile.get('integrationDate') != context.get('platformIntegrationDate'): missing.append('JointConfiguration.CrossArtifact.hostDate')
         except (OSError, KeyError, ValueError, TypeError): missing.append('JointConfiguration.CrossArtifact.Structure')
         if binding.get('platformCommit') != context.get('sourceCommit') or any(binding.get(n) != context.get(n) for n in ('platformIntegrationDate','protectionIntegrationDate')):

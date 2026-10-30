@@ -1,0 +1,60 @@
+{
+  "environment": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+    "HexalithTenantsBasePath": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+    "EXT_PROTECTION_P13_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final-v2/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_P13_COMPONENT_SHA256": "c920c5c79b6831c11fbcec93373a8b36a0c9236768fbcc301ed5d918c3736960",
+    "EXT_PROTECTION_P34_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final-v2/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_P34_COMPONENT_SHA256": "c920c5c79b6831c11fbcec93373a8b36a0c9236768fbcc301ed5d918c3736960",
+    "EXT_PROTECTION_SNAPSHOT_COMPONENT_ASSEMBLY": "/tmp/ext-protection-loop3-qualification-runtime-final-v2/Hexalith.Platform.Protection.Tests.dll",
+    "EXT_PROTECTION_SNAPSHOT_COMPONENT_SHA256": "c920c5c79b6831c11fbcec93373a8b36a0c9236768fbcc301ed5d918c3736960"
+  },
+  "commands": [
+    {
+      "name": "offline-verifier-final",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_ext_protection_1*.py",
+        "-v"
+      ],
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop3-b8fd390531/eventstore",
+      "exitCode": 0,
+      "logSha256": "a0d9bef9ef3c1910580904ffe77da63c229580558e50e4df3ea658aa00b5d97e"
+    },
+    {
+      "name": "harness-bootstrap-final",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-protection-1",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop3-b8fd390531/platform",
+      "exitCode": 0,
+      "logSha256": "c46f2c51ea45b0f381f3b034f25425395288d363a58eabff43baae4f66b1ea16"
+    },
+    {
+      "name": "source-mode-final",
+      "argv": [
+        "python3",
+        "tools/verify-ext-protection-1.py",
+        "--mode",
+        "Source"
+      ],
+      "cwd": "/home/administrator/hexalith-protection-worktrees/ext-protection-loop3-b8fd390531/eventstore",
+      "exitCode": 0,
+      "logSha256": "b331043bc1b4ef5a172a6a5a89501e59ac85ec72adc1efe6608d8f249e07549a"
+    }
+  ]
+}

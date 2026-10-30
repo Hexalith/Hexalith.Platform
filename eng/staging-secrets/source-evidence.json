@@ -1,0 +1,193 @@
+{
+  "kind": "offline-preparation-source-index",
+  "baselineCommit": "c4d68ed739977c5e24e5c91e4bfd601e2a44dcd8",
+  "newCollectionPerformed": false,
+  "liveAcceptance": false,
+  "sources": [
+    {
+      "id": "story-criteria",
+      "path": "_bmad-output/planning-artifacts/epics.md",
+      "sha256": "64e3e7f4382953b2b9e473de5d583bd5fd4800f3d972421815d4924a1620ef30",
+      "lineStart": 2311,
+      "lineEnd": 2336,
+      "pointer": null,
+      "claim": "4.15 separate stores, snapshot exclusion, per-app Dapr tokens, restart, named renewal owner and required generations."
+    },
+    {
+      "id": "executor-identities",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 127,
+      "lineEnd": 136,
+      "pointer": null,
+      "claim": "AD-7 isolated per-job environment/layer identities and independent recovery executor."
+    },
+    {
+      "id": "environment-isolation",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 138,
+      "lineEnd": 148,
+      "pointer": null,
+      "claim": "AD-8 environment namespaces, instances, least privilege, restricted pods and complete isolation matrix."
+    },
+    {
+      "id": "independent-custody",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 187,
+      "lineEnd": 196,
+      "pointer": null,
+      "claim": "AD-12 separate tenant-key backup custody, no erased key resurrection and independent manual Administrator/deputy unseal."
+    },
+    {
+      "id": "secrets-contract",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 235,
+      "lineEnd": 239,
+      "pointer": null,
+      "claim": "Environment-current contract digest; per-app startup-cached tokens, outside-Dapr renewal and pod restart, generations and sole dynamic writer."
+    },
+    {
+      "id": "release-tiers",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 257,
+      "lineEnd": 263,
+      "pointer": null,
+      "claim": "Environment layer owns stores, Components, bootstrap exceptions and forward-only changes."
+    },
+    {
+      "id": "backup-coverage",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 315,
+      "lineEnd": 319,
+      "pointer": null,
+      "claim": "Cadence/retention floors, independent access, current lineage/key coverage, monitoring and response coverage requirements."
+    },
+    {
+      "id": "recovery-sequence",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 337,
+      "lineEnd": 347,
+      "pointer": null,
+      "claim": "Separate keys, current tombstones, quarantine, fencing/reissue, restored credential rotation and in-place live key retention."
+    },
+    {
+      "id": "owned-work",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "lineStart": 501,
+      "lineEnd": 502,
+      "pointer": null,
+      "claim": "Secret-contract instance missing work; per-app mount seed and historical shared-token/expiry planning assertion."
+    },
+    {
+      "id": "foundation-APPROVAL-PACKAGE.md",
+      "path": "eng/staging-foundation/APPROVAL-PACKAGE.md",
+      "sha256": "4ffff30842efb4f7bd86000e9f0643abc9c2c8563abda130672d9da979ee4eba",
+      "lineStart": 1,
+      "lineEnd": 179,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "foundation-inputs.resolved.json",
+      "path": "eng/staging-foundation/inputs.resolved.json",
+      "sha256": "a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00",
+      "lineStart": 1,
+      "lineEnd": 105,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "foundation-MISSING-INPUTS.md",
+      "path": "eng/staging-foundation/MISSING-INPUTS.md",
+      "sha256": "00db84e7976015c52fbd574236a02c0e6a6f67eee24b9ba7943e3a14c3ca6267",
+      "lineStart": 1,
+      "lineEnd": 57,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "foundation-DEPENDENCY-DIRECTION.md",
+      "path": "eng/staging-foundation/DEPENDENCY-DIRECTION.md",
+      "sha256": "bbde8ac2e5593c7d9a06ee019e2e68e1d3f36c228d35fa9287b606ae02092f8a",
+      "lineStart": 1,
+      "lineEnd": 21,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "foundation-render.py",
+      "path": "eng/staging-foundation/render.py",
+      "sha256": "b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc",
+      "lineStart": 1,
+      "lineEnd": 366,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "foundation-apply-plan.json",
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "lineStart": 1,
+      "lineEnd": 272,
+      "pointer": null,
+      "claim": "Unchanged prerequisite/source; not live operational authorization."
+    },
+    {
+      "id": "native-cluster",
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "lineStart": null,
+      "lineEnd": null,
+      "pointer": "/observations/cluster/identity",
+      "claim": "Dated target cluster identity only; no later deployment authorization."
+    },
+    {
+      "id": "native-dns",
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "lineStart": null,
+      "lineEnd": null,
+      "pointer": "/observations/workloads/records/105",
+      "claim": "Candidate CoreDNS namespace/selector only; actual pod DNS datapath unqualified."
+    },
+    {
+      "id": "native-shared-workload",
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "lineStart": null,
+      "lineEnd": null,
+      "pointer": "/observations/workloads/records/51",
+      "claim": "Existing shared OpenBao workload observation, including image and replicas, is not a staging selection."
+    },
+    {
+      "id": "native-namespace-cut",
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "lineStart": null,
+      "lineEnd": null,
+      "pointer": "/observations/namespaces",
+      "claim": "Both target namespaces absent from this complete successful dated listing; no new collection."
+    },
+    {
+      "id": "retained-shared-component",
+      "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json",
+      "sha256": "9cf7ee66f0f1a045bd67c0f645faf262140b8ba8c4594193789e00ea17ef3e2b",
+      "lineStart": 3296,
+      "lineEnd": 3342,
+      "pointer": "/observations/9/selectedPublicMetadata/12",
+      "claim": "One retained Vault Component has two app scopes and vaultToken secretKeyRef openbao-runtime-bootstrap/token; proves shared references, no secret bytes or issuer/token authority."
+    }
+  ],
+  "absentContract": {
+    "path": "deploy/dapr/openbao-secret-contract.yaml",
+    "existsAtPreparation": false,
+    "meaning": "Architecture references an instance that is absent in this worktree; app IDs and required generations remain unknown."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "reviewFindingsVerified": 10,
+  "parentAuditFindingsVerified": 3,
+  "findings": {
+    "B1": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: True)"
+    ],
+    "B2": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: True)"
+    ],
+    "B3": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: True)"
+    ],
+    "B4": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync"
+    ],
+    "B6": [
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"deadlines\\\", replacement: null)",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"deadlines\\\", replacement: \\\"null\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"deadlines\\\", replacement: \\\"[]\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"deadlines\\\", replacement: \\\"1\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"execution\\\", replacement: null)",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"execution\\\", replacement: \\\"null\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"execution\\\", replacement: \\\"[]\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"state\\\", replacement: null)",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"state\\\", replacement: \\\"null\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: \\\"state\\\", replacement: \\\"1\\\")"
+    ],
+    "B7": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.DelayedStoppingOriginPreservesMetadataRecoveryAllowanceAsync",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync"
+    ],
+    "E1": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.TornClaimWithoutReceiptNeverEstablishesEmptyCleanupAsync(stalePeerReceipt: True)"
+    ],
+    "E2": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"parent-link\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"exclusive\\\", tracked: True)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.UnverifiableCleanupMarkerCannotPermitIssuanceAsync(obstruction: \\\"cancelled\\\", tracked: True)"
+    ],
+    "V1": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"snapshot-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-cancelled\\\")"
+    ],
+    "V2": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"snapshot-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-cancelled\\\")"
+    ],
+    "P1": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"snapshot-flush\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-eintr\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-cancelled\\\")"
+    ],
+    "P2": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.UnverifiablePeerClaimDoesNotBlockOwnedCleanupAsync",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.EmptyReleasePreservesProofAcrossLaterPeerCorruption"
+    ],
+    "P3": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExplicitStopAcrossProcessesPreservesFirstFailureAsync"
+    ]
+  },
+  "normalNativeCases": [
+    "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"eintr\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"snapshot-flush\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-eintr\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.NativeMetadataPublicationTests.NativeMetadataFailuresPreserveCommittedBytesAsync(scenario: \\\"document-flush-cancelled\\\")"
+  ]
+}

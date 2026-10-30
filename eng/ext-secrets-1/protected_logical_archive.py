@@ -55,7 +55,7 @@ def read(path,maximum,enrollments=()):
 def _read_protected(path,maximum,config):
     chunk,count,metadata=config['ChunkBytes'],config['ChunkCount'],config['MaximumMetadataBytes']
     roots=config['ArchiveRoots'];pool=config['Directory']
-    if (config['StorageProtocol']!='Ext4PrivateWrittenNoSnapshotsV1' or type(chunk) is not int or not 4096<=chunk<=65536 or chunk%4096
+    if (config['StorageProtocol']!='Ext4PrivateWrittenNoSnapshotsV1' or type(chunk) is not int or not 4096<=chunk<=65536 or chunk%4096 or 65536%chunk
             or type(count) is not int or not 1<=count<=65536 or type(metadata) is not int or not 65536<=metadata<=32*1024*1024
             or not isinstance(roots,dict) or not 1<=len(roots)<=64):raise ValueError('Exact protected allocation geometry')
     with ExitStack() as stack:

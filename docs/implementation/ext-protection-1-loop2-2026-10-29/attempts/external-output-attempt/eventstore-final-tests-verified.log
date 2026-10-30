@@ -1,0 +1,31 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.Server.Tests
+  Discovered:  Hexalith.EventStore.Server.Tests
+  Starting:    Hexalith.EventStore.Server.Tests
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(mutation: "missing") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(551,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.Candidate()
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(487,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(mutation: "changed") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(551,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.Candidate()
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(487,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(mutation: "lineage") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(551,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.Candidate()
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(487,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ActualEngineLogicalReaderRequiresOriginalCiphertextDigestBeforeProviderCalls(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ProductionActorFoldsErasedWhileExternalProductionReaderRemainsUnreadable [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(551,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.Candidate()
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionActorRecoveryTests.cs(448,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionActorRecoveryTests.ProductionActorFoldsErasedWhileExternalProductionReaderRemainsUnreadable()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.Server.Tests (ID = 'abf99511395918dc5fd35bc18c5160206a3af6bc06b75b13e3d7d42924838a4c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.Server.Tests  Total: 444, Errors: 0, Failed: 4, Skipped: 0, Not Run: 0, Time: 5.436s

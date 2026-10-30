@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+    "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+    "-m:1",
+    "-nodeReuse:false"
+  ],
+  "cwd": "/tmp/bmad-protection-loop2-_qctor_8/platform",
+  "exitCode": 0,
+  "seconds": 2.721971379003662
+}

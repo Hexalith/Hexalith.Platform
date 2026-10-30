@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "python3",
+    "/tmp/bmad-protection-rederive-5cvvn0rc/platform/eng/ext-protection-1/probe_erc_native.py",
+    "--test-assembly",
+    "/tmp/bmad-protection-rederive-5cvvn0rc/platform/tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+    "--test-assembly-sha256",
+    "94b81d7854ad4c769edea7a82fad4ca0eacc080b41514440c388ac2e61d4c9bb",
+    "--case",
+    "NativeTenantAndCompleteContextSubstitutionCannotDecrypt",
+    "--output",
+    "/tmp/rederive-native-archive-delta-result.json"
+  ],
+  "cwd": "/tmp/bmad-protection-rederive-5cvvn0rc/platform"
+}

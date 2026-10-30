@@ -1,0 +1,16 @@
+{
+  "frozenBlockUnchanged": true,
+  "frozenBlockSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "registerReadOnlySha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "regressionEvidence": {
+    "path": "platform/tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs",
+    "sha256": "fa21501141b271d1bd58c7a2696afda1788c09d4a4bac419a2b8bb4e0d33d38b",
+    "testSelection": "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+    "result": "42/42",
+    "commands": "custody-lifecycle-v3-commands.json"
+  }
+}

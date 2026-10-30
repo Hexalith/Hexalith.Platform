@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup><IsPackable>false</IsPackable><EnableContainer>true</EnableContainer><ContainerRepository>eventstore</ContainerRepository></PropertyGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" /></ItemGroup>
 </Project>

@@ -1,0 +1,93 @@
+{
+  "schema": "EXT-PROTECTION-1.parent-loop2-source.v1",
+  "status": "prepared-for-independent-review",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "sourceCandidates": {
+    "eventstore": "23a54b13bfb20b24cc232c50968bf2b197d7a7f9",
+    "platform": "72dfd8de78c94dea54ea5db4bcd3aa2110690834"
+  },
+  "candidatesPublishedByThisWorkflow": false,
+  "sharedBranchesMovedByThisWorkflow": false,
+  "unrelatedDirtyChangesIncluded": false,
+  "sourceCandidateFiles": {
+    "eventstore": 58,
+    "platform": 159
+  },
+  "metrics": {
+    "protection": {
+      "total": 353,
+      "passed": 347,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0,
+      "time": 117.161
+    },
+    "eventstoreUnion": {
+      "total": 444,
+      "passed": 444,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "time": 5.748
+    },
+    "payloadProtection": {
+      "total": 897,
+      "passed": 897,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "time": 3.686
+    },
+    "offlineVerifier": {
+      "passed": 104,
+      "seconds": 13.418
+    },
+    "harness": {
+      "passed": 7,
+      "seconds": 0.508
+    }
+  },
+  "native": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 751.951,
+    "testAssemblySha256": "97a4b9910727233ec24343028e0518b734fffca1aa34e3bc7fcb66a59f95369a",
+    "cleanupVerified": true
+  },
+  "allRequiredBuilds": {
+    "warnings": 0,
+    "errors": 0,
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false
+  },
+  "matrixAuditPassed": true,
+  "functionalHandbackFilesMatching": 212,
+  "mergedConcurrentVerifier": "tools/ext_protection_1.py with event grammar test coverage",
+  "csharpFiles": 188,
+  "additionalTypesInFiles": false,
+  "preexistingNestedType": "SnapshotManager.Log",
+  "artifactHashesChecked": 85,
+  "frozenBlockSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+  "handbackFrozenHashScope": {
+    "sha256": "c6caa911712db5f46a2115fb0c211cde3efc3bfa30415ce110d82cb1957967b5",
+    "range": "after literal <frozen-after-approval through before closing marker, including opening attributes"
+  },
+  "sourceMode": {
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "fullCopyInventoryQualified": false,
+  "installed41Executed": false,
+  "agentsExecuted": false,
+  "registerEdited": false,
+  "clusterOrProductionOperationExecuted": false,
+  "runtimeEquivalenceClaimed": false,
+  "nativeScope": "Pinned actual custody/store with synthetic eligibility; reader-only correction separately tested, native task source unchanged",
+  "countsOverlap": true
+}

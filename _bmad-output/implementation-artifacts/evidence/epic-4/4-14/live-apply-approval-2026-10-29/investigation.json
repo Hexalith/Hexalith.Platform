@@ -1,0 +1,87 @@
+{
+  "assessedAt": "2026-10-29T17:33:34.105183+00:00",
+  "baselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "offlineDefinitionCommits": [
+    "d3b53877b2210b09646b7b6ab7fcf3bcf96f2bf9",
+    "3eb1df9ef704a89d32650e503a6d9f4fa98fcf90"
+  ],
+  "schemaFieldsInvestigated": 37,
+  "resolvedFields": [
+    "network.dns.namespace",
+    "network.dns.podLabels"
+  ],
+  "missingFields": [
+    "storage.provisioner",
+    "storage.parameters",
+    "storage.reclaimPolicy",
+    "storage.stagingStorageClassName",
+    "storage.productionStorageClassName",
+    "storage.encryptionAttestation.evidenceRef",
+    "storage.encryptionAttestation.attestedBy",
+    "custody.holders",
+    "priority.stagingValue",
+    "priority.productionValue",
+    "priority.productionClassName",
+    "deployIdentities.sharedInfrastructure",
+    "deployIdentities.environmentLayer",
+    "deployIdentities.jobs",
+    "network.dataServices",
+    "limitRange.defaultRequestCpu",
+    "limitRange.defaultRequestMemory",
+    "limitRange.defaultLimitCpu",
+    "limitRange.defaultLimitMemory",
+    "limitRange.pvcMinStorage",
+    "limitRange.pvcMaxStorage",
+    "quotas.application.requestsCpu",
+    "quotas.application.requestsMemory",
+    "quotas.application.limitsCpu",
+    "quotas.application.limitsMemory",
+    "quotas.application.pods",
+    "quotas.application.persistentVolumeClaims",
+    "quotas.application.requestsStorage",
+    "quotas.data.requestsCpu",
+    "quotas.data.requestsMemory",
+    "quotas.data.limitsCpu",
+    "quotas.data.limitsMemory",
+    "quotas.data.pods",
+    "quotas.data.persistentVolumeClaims",
+    "quotas.data.requestsStorage"
+  ],
+  "externalHandoffInspection": [
+    {
+      "path": "../timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261029t092023z-continuation-intake/README.md",
+      "repositoryCommit": "7a8a89ca727f44b7b1fa6a58a79d8050f853af67",
+      "sha256": "b7d1b45d4d52f9098fb1bb52a906a800b4f5611335b057830912c07290efc439",
+      "role": "consumer context only; not a Platform input or acceptance dependency"
+    },
+    {
+      "path": "../timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261029t092023z-continuation-intake/prerequisite-inspection.json",
+      "repositoryCommit": "7a8a89ca727f44b7b1fa6a58a79d8050f853af67",
+      "sha256": "95b51ccc2f2ef9f2ea596e43a6338e22cb5432ba7b6cecfa060900980ac2df71",
+      "role": "consumer context only; not a Platform input or acceptance dependency"
+    },
+    {
+      "path": "../timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261029t092023z-continuation-intake/verification.json",
+      "repositoryCommit": "7a8a89ca727f44b7b1fa6a58a79d8050f853af67",
+      "sha256": "08ccd17fa1d65d9a49bf843f2996aa87298aa4d61dfe02b8254423e3bd56a990",
+      "role": "consumer context only; not a Platform input or acceptance dependency"
+    },
+    {
+      "path": "../timesheets/_bmad-output/implementation-artifacts/3-6-resume-checkpoint.md",
+      "repositoryCommit": "7a8a89ca727f44b7b1fa6a58a79d8050f853af67",
+      "sha256": "938b59e5eefeadf62c4122a6e7998cc6e8b811414b4d590eaf8d0d035ea67bdc",
+      "role": "consumer context only; not a Platform input or acceptance dependency"
+    },
+    {
+      "path": "../timesheets/references/Hexalith.Platform/eng/timesheets-deployment/staging-dependency-handoff.md",
+      "repositoryCommit": "7a8a89ca727f44b7b1fa6a58a79d8050f853af67",
+      "sha256": "6d08e5e0d25be8fec590ad84c58bf02eb9356af743b6598cd7aedda5b2a9e525",
+      "role": "consumer context only; not a Platform input or acceptance dependency"
+    }
+  ],
+  "consumerStory36Accepted": false,
+  "consumerStory36Status": "in-progress",
+  "consumerLaunchResult": "FAIL",
+  "consumerFactsArePlatformGates": false,
+  "note": "Sibling handoff facts are dated context only; no missing foundation inputs were established. Historical evidence, story statuses and gitlinks are unchanged."
+}

@@ -28,7 +28,35 @@ _bmad-output/implementation-artifacts/evidence/1-13/pass-4/builds-pass4.patch -t
 # Preserve exact Story 2.5 runtime/source hashes and captured failure-output bytes.
 _bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/** -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-5/delta-review-fixes-20261025/** -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/** -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/** -text -whitespace
 
 # The shared Dapr source follows this repository's CRLF EditorConfig policy.
 # Check the default whitespace rules while treating its required CR as a line ending.
 DaprSelfHostedMtls*.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep the qualification fixture and existing ignore file's CRLF endings valid.
+tests/Hexalith.Platform.Composition.Tests/PlatformLocalRunLifecycleTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+.gitignore whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve exact re-derived protection verification and native evidence bytes.
+docs/implementation/ext-protection-1-rederived-2026-10-29/** -text -whitespace
+
+# Preserve retained failure logs verbatim and recognize the existing CRLF source policy.
+docs/implementation/ext-protection-1-erc-final-source-2026-10-29/logs/** -whitespace
+Hexalith.Platform.slnx whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+src/Hexalith.Platform.EventStoreHost/Program.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/implementation/ext-protection-1-parent-merged-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-two protection source/component/native evidence bytes.
+docs/implementation/ext-protection-1-loop2-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-3 source/native/runtime/test evidence bytes.
+docs/implementation/ext-protection-1-loop3-2026-10-29/** -text -whitespace
+
+# Preserve exact loop-4 forensic source/component/native evidence bytes.
+docs/implementation/ext-protection-1-loop4/** -text -whitespace
+
+# Recognize the existing CRLF lifecycle actor without changing executed source bytes.
+src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,3 +1,22 @@
+# Current source continuation — 2026-10-28
+
+Source23 and review23 are finished for this continuation. **Full EXT-SECRETS-1 / EXT-HOST-1 delivery remains blocked; neither dependency is Available.** The broad specification remains `in-review` because installed delivery tasks are incomplete. No Live/Full/cohort/phase/attempt, installation, consumer activation, credential maintenance, accepted-record edit or repository publication occurred.
+
+The eleven review22 corrections and three review23 patches cover exact signed Preparing recovery, consistent admitted packet snapshots, durable completion reporting, short archive reads, matched geometry, conservative completion headers, portable Development acquisition, startup timeout refusal, correct CLI exits, fresh retained-digest verification, generated-resource collision refusal, missing-profile behavior and complete host packet artifacts.
+
+Verification: Protection217/217; final Composition141/141; focused new Runtime17/17; final packet/archive Python21/21 and host preparation3/3. Full Runtime843/847 and broad Python466/467 remain failed aggregates: their4 and1 failures reproduce against authenticated starting inputs. Every previous source22 Runtime823/Protection211/Composition128 named case remains present and passing. Four critical guards plus host command-artifact removal are caught semantically. Temporary setup/diagnostic failures are retained separately.
+
+Builds use exact authenticated retained dependency binaries because3 historical external source bodies were unavailable. This is not a fresh full dependency-graph source rebuild. Native Windows/macOS execution was unavailable; portable paths were tested on Linux. Actual canonical AppHost bytes compiled only; no host was started.
+
+- [Sealed source handback](source-correction-pass-23.json), SHA256 `17a5f4461c7335fc6b883f132f22288b327253197ce53aaf72f8b43e16e398ea`.
+- [Review patch supplement](source-correction-pass-23-review-fixes.json), SHA256 `c4ca30d218d72e02f5b7d064ad6b4fe177c8e45a4db8cc7283d8d13103a8cc97`.
+- [Root verification](source-root-verification-pass-23.json) and [individual review triage](independent-review-pass-23-triage.json).
+- [Deferred work](../../../_bmad-output/implementation-artifacts/deferred-work.md) retains8 pre-existing authority/custody/Dapr findings and2 baseline-verification follow-ups. They were not silently patched or dismissed.
+
+Next delivery inputs remain the actual independently enrolled installation/authority/archive/trust and physical/history/protection evidence, explicit Platform/protection integration dates and a complete accepted immutable target. The existing [installation ledger](remaining-installation-ledger.md) names those requirements. Existing source review is complete; do not rerun the old source22 archive or maintenance scripts. The earlier clean-stop checkpoint below is historical.
+
+---
+
 # Story5.4 continuation checkpoint
 
 Stopped at the user's explicit request on 2026-10-27T14:19:38.335132+00:00. Resume only on the user's continuation request. No review22 claim has been verified or triaged; no verdicts/grouping/patches have begun. All source editors and reviewers are final/idle.

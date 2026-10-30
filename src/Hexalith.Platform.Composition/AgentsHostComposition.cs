@@ -37,7 +37,7 @@ public static class AgentsHostComposition
     {
         ArgumentNullException.ThrowIfNull(builder);
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(startupTimeout);var utf8=new UTF8Encoding(false,true);
-        byte[] Read(string path)=>(acquire is null?BoundedRegularFile.ReadAsync(path,1024*1024,budget.Token):acquire(path,1024*1024,budget.Token)).WaitAsync(budget.Token).GetAwaiter().GetResult();
+        byte[] Read(string path)=>(acquire is not null?acquire(path,1024*1024,budget.Token):builder.Environment.IsDevelopment()?BoundedDevelopmentFile.ReadAsync(path,1024*1024,budget.Token):BoundedRegularFile.ReadAsync(path,1024*1024,budget.Token)).WaitAsync(budget.Token).GetAwaiter().GetResult();
         string? configured = builder.Configuration[ProfilePathKey];
         if (string.IsNullOrWhiteSpace(configured))
             return false;
@@ -45,7 +45,9 @@ public static class AgentsHostComposition
         try
         {
             string path = Path.GetFullPath(configured, builder.AppHostDirectory);
-            string json=utf8.GetString(Read(path));
+            string json;
+            try { json=utf8.GetString(Read(path)); }
+            catch(FileNotFoundException) when(builder.Environment.IsDevelopment()) { return false; }
             if (builder.Environment.IsDevelopment()) profile = AgentsDeploymentProfile.Validate(json);
             else
             {
@@ -71,7 +73,7 @@ public static class AgentsHostComposition
     public static void Compose(IDistributedApplicationBuilder builder, AgentsDeploymentProfileModel profile, AgentsPrivateCapabilities? capabilities)
     {
         using var budget=new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        ComposeCore(builder,profile,capabilities,budget.Token,path=>BoundedRegularFile.ReadAsync(path,1024*1024,budget.Token).GetAwaiter().GetResult());
+        ComposeCore(builder,profile,capabilities,budget.Token,path=>(builder.Environment.IsDevelopment()?BoundedDevelopmentFile.ReadAsync(path,1024*1024,budget.Token):BoundedRegularFile.ReadAsync(path,1024*1024,budget.Token)).GetAwaiter().GetResult());
     }
     private static void ComposeCore(IDistributedApplicationBuilder builder,AgentsDeploymentProfileModel profile,AgentsPrivateCapabilities? capabilities,CancellationToken token,Func<string,byte[]> read)
     {
@@ -110,7 +112,8 @@ public static class AgentsHostComposition
                 }
                 else projects.Add((resource,RequireProject(builder,profile,service,relative,read),null));
             }
-            if(Projects.Any(project=>builder.Resources.Any(existing=>string.Equals(existing.Name,project.Resource,StringComparison.OrdinalIgnoreCase))))
+            if(Projects.Any(project=>builder.Resources.Any(existing=>string.Equals(existing.Name,project.Resource,StringComparison.OrdinalIgnoreCase)
+                || !production && string.Equals(existing.Name,project.Resource+"-rebuilder",StringComparison.OrdinalIgnoreCase))))
                 throw new InvalidOperationException("An intended sibling resource name is already registered.");
             token.ThrowIfCancellationRequested();
         }

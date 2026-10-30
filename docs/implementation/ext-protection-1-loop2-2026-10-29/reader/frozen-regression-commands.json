@@ -1,0 +1,77 @@
+[
+  {
+    "name": "protection-full-frozen",
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/platform",
+    "argv": [
+      "dotnet",
+      "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-reader-final-d191bb30bd914441900cb7881a42d932/runtime/Hexalith.Platform.Protection.Tests.dll",
+      "-result-xml",
+      "/tmp/ext-protection-loop2-evidence/reader-final/protection-full-frozen.xml",
+      "-noColor"
+    ],
+    "environment": {},
+    "assemblySha256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+    "exitCode": 0,
+    "seconds": 135.18346528599795
+  },
+  {
+    "name": "verifier-full-frozen",
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-p",
+      "test_ext_protection_1*.py",
+      "-v"
+    ],
+    "environment": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "EXT_PROTECTION_P13_COMPONENT_ASSEMBLY": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-reader-final-d191bb30bd914441900cb7881a42d932/runtime/Hexalith.Platform.Protection.Tests.dll",
+      "EXT_PROTECTION_P13_COMPONENT_SHA256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+      "EXT_PROTECTION_P34_COMPONENT_ASSEMBLY": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-reader-final-d191bb30bd914441900cb7881a42d932/runtime/Hexalith.Platform.Protection.Tests.dll",
+      "EXT_PROTECTION_P34_COMPONENT_SHA256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+      "EXT_PROTECTION_SNAPSHOT_COMPONENT_ASSEMBLY": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop2-reader-final-d191bb30bd914441900cb7881a42d932/runtime/Hexalith.Platform.Protection.Tests.dll",
+      "EXT_PROTECTION_SNAPSHOT_COMPONENT_SHA256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d"
+    },
+    "assemblySha256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+    "exitCode": 0,
+    "seconds": 12.227670668995415
+  },
+  {
+    "name": "harness-final",
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/platform",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/ext-protection-1",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "environment": {},
+    "assemblySha256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+    "exitCode": 0,
+    "seconds": 0.5598337020055624
+  },
+  {
+    "name": "source-final",
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "argv": [
+      "python3",
+      "tools/verify-ext-protection-1.py",
+      "--mode",
+      "Source"
+    ],
+    "environment": {},
+    "assemblySha256": "76036fb783ea6c1db5ba0369db50effb97e17f70d8b0108e154eb26b8375ab2d",
+    "exitCode": 0,
+    "seconds": 0.03424085699953139
+  }
+]

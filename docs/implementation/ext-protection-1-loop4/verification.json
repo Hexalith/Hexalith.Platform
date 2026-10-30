@@ -1,0 +1,360 @@
+{
+  "schema": "EXT-PROTECTION-1.loop4-implementation.v1",
+  "status": "in-progress-for-parent-audit-review",
+  "baselines": {
+    "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+    "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+  },
+  "invariants": {
+    "frozenBlockUnchanged": true,
+    "frozenBlockSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+    "registerReadOnlySha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+    "baselines": {
+      "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
+      "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
+    },
+    "regressionEvidence": {
+      "path": "platform/tests/Hexalith.Platform.Custody.Tests/CustodyKeyLifecycleTests.cs",
+      "sha256": "fa21501141b271d1bd58c7a2696afda1788c09d4a4bac419a2b8bb4e0d33d38b",
+      "testSelection": "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+      "result": "42/42",
+      "commands": "custody-lifecycle-v3-commands.json"
+    }
+  },
+  "restoration": "attempts/restoration.json",
+  "functionalInventory": "functional-source-inventory.json",
+  "deltaInventory": "loop4-delta-inventory.json",
+  "originalBaselinePatch": "original-baseline-task-delta.patch",
+  "finalCommands": "attempts/final-v5-complete-commands.json",
+  "tests": {
+    "protection": {
+      "total": 404,
+      "passed": 398,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 117.501,
+      "artifact": "attempts/protection-final-v5.xml"
+    },
+    "eventstoreUnion": {
+      "total": 444,
+      "passed": 444,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 5.328,
+      "artifact": "attempts/eventstore-final-tests-v3.xml"
+    },
+    "contractsAnchors": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 0.189,
+      "artifact": "attempts/contracts-final-tests-v3.xml"
+    },
+    "standalonePayload": {
+      "total": 897,
+      "passed": 897,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 3.032,
+      "artifact": "attempts/payload-final-tests-v3.xml"
+    },
+    "existingCustodyLifecycle": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 0.673,
+      "artifact": "attempts/custody-lifecycle-v3.xml"
+    },
+    "focusedLatest": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 9.745,
+      "artifact": "attempts/targeted-09.xml"
+    },
+    "offlineVerifier": {
+      "total": 109,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": "attempts/offline-verifier-final-v3.log"
+    },
+    "harnessBootstrap": {
+      "total": 11,
+      "failed": 0,
+      "skipped": 0,
+      "artifact": "attempts/harness-final-v3.log"
+    }
+  },
+  "sourceMode": {
+    "mode": "Source",
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "builds": {
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false,
+    "allRequiredZeroWarningsErrors": true,
+    "protectionBuild": "attempts/build-16-command.json",
+    "otherBuilds": "attempts/final-v5-complete-commands.json",
+    "custodyBuild": "attempts/custody-lifecycle-v3-commands.json"
+  },
+  "growth": {
+    "component": [
+      {
+        "geometry": 131072,
+        "transitions": 20,
+        "cumulative": 8848070,
+        "stored": 4762372,
+        "writes": 110,
+        "supported": 9371648
+      },
+      {
+        "geometry": 5242880,
+        "transitions": 20,
+        "cumulative": 111084230,
+        "stored": 8429377,
+        "writes": 180,
+        "supported": 19595264
+      }
+    ],
+    "observer": [
+      {
+        "observerUnrelatedSameTargetBatches": 40,
+        "unrelatedGuardOriginals": 128,
+        "baselineReads": 15,
+        "baselineBytes": 21976,
+        "finalReads": 23,
+        "finalBytes": 198915
+      }
+    ],
+    "nativePrecheck": [
+      {
+        "archiveWriteBytes": 1770048,
+        "archiveWrites": 40,
+        "nativeHeadBytes": 9484911,
+        "nativeHistoryGeometry": 131072,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 7372800,
+        "transitions": 8
+      },
+      {
+        "archiveWriteBytes": 8658982,
+        "archiveWrites": 114,
+        "nativeHeadBytes": 9484911,
+        "nativeHistoryGeometry": 5242880,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 22708224,
+        "transitions": 8
+      }
+    ],
+    "measurementScope": "Cumulative JSON through common production transition authority; separate actual source/registry/owner regressions cover adapters, not independent writer benchmarks."
+  },
+  "freezes": [
+    {
+      "version": "v1",
+      "runtime": "/tmp/ext-protection-loop4-runtime-final",
+      "runtimeFiles": 257,
+      "manifestSha256": "a594bc76de827d16635428c94520d64d6fef6ed20886356d5dd94cf31e25362f",
+      "assemblySha256": "cfedf46206a2090a995b2c0c18ea83713546cf55a3aea51e853fecea02e94df0",
+      "source": "/tmp/ext-protection-loop4-source-final",
+      "sourceFiles": 5926,
+      "sourceManifestSha256": "f29c3ea65685be4ae679dcdff763cbbf700cd7e4a2743dba99f3a814467fdc94",
+      "active": false,
+      "persistentMirrors": {
+        "runtime": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-native-final-b02e5a4f78784a54ab89ae9ed6e777e0",
+        "source": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-source-final-44a1e06ef11242e6a10eb35f94ff7e61"
+      },
+      "runtimeVerifiedFiles": 257,
+      "sourceVerifiedFiles": 5926
+    },
+    {
+      "version": "v2",
+      "runtime": "/tmp/ext-protection-loop4-runtime-final-v2",
+      "runtimeFiles": 257,
+      "manifestSha256": "cdc417a96d91925e5e66e13a56db02cc010e966f764df0af0449054ef4099585",
+      "assemblySha256": "27a7f6f239d9e1f28639769c36e169d56560b612ef9fa8aaa3ba601b310d65b5",
+      "source": "/tmp/ext-protection-loop4-source-final-v2",
+      "sourceFiles": 5926,
+      "sourceManifestSha256": "dd121d435a206480caead82407da6a3cd8a847a1aedb3165c9b21cc58ae82574",
+      "active": false,
+      "persistentMirrors": {
+        "runtime": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-native-final-7210039d2da6471babc33ef3e175be70",
+        "source": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-source-final-061e3a8540254b6f98dc257f93f7a8b3"
+      },
+      "runtimeVerifiedFiles": 257,
+      "sourceVerifiedFiles": 5926
+    },
+    {
+      "version": "v3",
+      "runtime": "/tmp/ext-protection-loop4-runtime-final-v3",
+      "runtimeFiles": 257,
+      "manifestSha256": "e1665075161f90fd1a5acd01cb496f42071ec695ecce967d6a0e894b8417a6b2",
+      "assemblySha256": "86f9666a175b7fec961a591f92ee11e3f465551e7e602865f67a47995967e662",
+      "source": "/tmp/ext-protection-loop4-source-final-v3",
+      "sourceFiles": 5927,
+      "sourceManifestSha256": "ff7822713a911478975999ec86ad7de4d92d4b8c390bdcd8c0eea16aaac4679e",
+      "active": false,
+      "persistentMirrors": {
+        "runtime": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-native-final-ae66318521af434b8bf44422d613f652",
+        "source": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-source-final-6fad29c84fb849aaa241c87d464e15e8"
+      },
+      "runtimeVerifiedFiles": 257,
+      "sourceVerifiedFiles": 5927
+    },
+    {
+      "version": "v4",
+      "runtime": "/tmp/ext-protection-loop4-runtime-final-v4",
+      "runtimeFiles": 257,
+      "manifestSha256": "d769058d59eb00083b23e4fb1c33b39b34cb3a1380f8328ea6585a95dec2c6b6",
+      "assemblySha256": "2d7627c479b71b3a462a1435478ec89c77d364027918208b7e2272bbc3c85f37",
+      "source": "/tmp/ext-protection-loop4-source-final-v4",
+      "sourceFiles": 5928,
+      "sourceManifestSha256": "74963d56588bd8205400e26a3d7b0916a06b7a7711a83ae961c3efc662618882",
+      "active": true,
+      "persistentMirrors": {
+        "runtime": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-native-final-830ff255d326452e8b40ffc32d5547bc",
+        "source": "/home/administrator/hexalith-protection-evidence/ext-protection-1/source-recovery/loop4-source-final-3f1acbb174654f7dadb6bfe9bcbc6a2f"
+      },
+      "runtimeVerifiedFiles": 257,
+      "sourceVerifiedFiles": 5928
+    }
+  ],
+  "finalFunctionalFreezeEquivalence": "attempts/final-v4-source-equivalence.json",
+  "native": {
+    "state": "complete",
+    "finalArtifact": "attempts/native-final-five-4.json",
+    "outcome": "NativeCasesPassed",
+    "summary": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "seconds": 1149.427,
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "geometry": [
+      {
+        "archiveWriteBytes": 1493764,
+        "archiveWrites": 40,
+        "nativeHeadBytes": 9484916,
+        "nativeHistoryGeometry": 131072,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 7372800,
+        "transitions": 8
+      },
+      {
+        "archiveWriteBytes": 8730609,
+        "archiveWrites": 117,
+        "nativeHeadBytes": 9484916,
+        "nativeHistoryGeometry": 5242880,
+        "restrictedRuntimePolicy": true,
+        "supportedBytes": 22708224,
+        "transitions": 8
+      }
+    ],
+    "attempts": [
+      {
+        "artifact": "attempts/native-final-five-1.json",
+        "outcome": "BlockedUnknown",
+        "failure": "InterruptedOrUnexpectedNativeFailure",
+        "cleanup": {
+          "complete": true,
+          "containerAbsent": true,
+          "containerTmpfsUnmounted": true
+        },
+        "summary": null,
+        "seconds": null,
+        "runtimeManifestSha256": "a594bc76de827d16635428c94520d64d6fef6ed20886356d5dd94cf31e25362f"
+      },
+      {
+        "artifact": "attempts/native-final-five-2.json",
+        "outcome": "BlockedUnknown",
+        "failure": "InterruptedOrUnexpectedNativeFailure",
+        "cleanup": {
+          "complete": true,
+          "containerAbsent": true,
+          "containerTmpfsUnmounted": true
+        },
+        "summary": null,
+        "seconds": null,
+        "runtimeManifestSha256": "cdc417a96d91925e5e66e13a56db02cc010e966f764df0af0449054ef4099585"
+      },
+      {
+        "artifact": "attempts/native-final-five-3.json",
+        "outcome": "BlockedUnknown",
+        "failure": "InterruptedOrUnexpectedNativeFailure",
+        "cleanup": {
+          "complete": true,
+          "containerAbsent": true,
+          "containerTmpfsUnmounted": true
+        },
+        "summary": null,
+        "seconds": null,
+        "runtimeManifestSha256": "e1665075161f90fd1a5acd01cb496f42071ec695ecce967d6a0e894b8417a6b2"
+      },
+      {
+        "artifact": "attempts/native-final-five-4.json",
+        "outcome": "NativeCasesPassed",
+        "failure": null,
+        "cleanup": {
+          "complete": true,
+          "containerAbsent": true,
+          "containerTmpfsUnmounted": true
+        },
+        "summary": {
+          "errors": 0,
+          "failed": 0,
+          "notRun": 0,
+          "skipped": 0,
+          "total": 5
+        },
+        "seconds": 1149.427,
+        "runtimeManifestSha256": "d769058d59eb00083b23e4fb1c33b39b34cb3a1380f8328ea6585a95dec2c6b6"
+      }
+    ],
+    "geometryPrecheck": "attempts/native-v4-geometry-precheck.json",
+    "holderRecoveryPrecheck": "attempts/native-v3-trim-precheck.json",
+    "privateEligibility": "ExplicitSyntheticTestFixture",
+    "unchangedTargetCount": 1000
+  },
+  "acceptance": {
+    "replacementTargetsProposed": false,
+    "acceptedDateOrProfileProposed": false,
+    "liveExecuted": false,
+    "agentsExecuted": false,
+    "physicalCopyQualified": false,
+    "completeInstalled41CaseRun": false,
+    "productionDestructionIndependentlyGated": true
+  },
+  "scope": {
+    "functionalFiles": {
+      "platform": 193,
+      "eventstore": 59
+    },
+    "runtimeChangesAfterV4Freeze": false,
+    "postFreezeChanges": "Handback/evidence/owner/spec documents and forensic evidence attributes only.",
+    "forbiddenOperationsPerformed": false
+  }
+}

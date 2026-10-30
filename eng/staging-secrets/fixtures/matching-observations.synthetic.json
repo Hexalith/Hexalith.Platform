@@ -1,0 +1,34 @@
+{
+  "environment": "staging",
+  "contractDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "apps": [
+    {
+      "appId": "synthetic-app-alpha",
+      "tokenDeliveryRevision": 4,
+      "podUid": "synthetic-new-pod-0",
+      "sidecarStartedAfterDelivery": true,
+      "rotationAcknowledged": true,
+      "generations": [
+        {
+          "secretId": "synthetic-secret-alpha",
+          "generation": 7,
+          "present": true
+        }
+      ]
+    },
+    {
+      "appId": "synthetic-app-beta",
+      "tokenDeliveryRevision": 4,
+      "podUid": "synthetic-new-pod-1",
+      "sidecarStartedAfterDelivery": true,
+      "rotationAcknowledged": true,
+      "generations": [
+        {
+          "secretId": "synthetic-secret-beta",
+          "generation": 7,
+          "present": true
+        }
+      ]
+    }
+  ]
+}

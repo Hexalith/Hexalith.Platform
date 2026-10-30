@@ -1,0 +1,156 @@
+{
+  "kind": "offline-parameterized-staging-secrets-proposal",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "approvalGranted": false,
+  "liveAcceptance": false,
+  "deployable": false,
+  "executableDispatcherExists": false,
+  "parameters": "inputs.schema.json: every null blocks; no backend or workload resources are selected here",
+  "environment": {
+    "identityFrom": "/environment",
+    "ordinaryOpenBao": {
+      "selectedDefinition": null,
+      "fromInput": "/ordinaryStore",
+      "purpose": "Environment-specific ordinary secrets only"
+    },
+    "tenantKeyStore": {
+      "selectedDefinition": null,
+      "fromInput": "/tenantStore",
+      "purpose": "Separate physical persisted state and snapshot domain for tenant keys",
+      "backendSelected": false
+    }
+  },
+  "snapshotBoundary": {
+    "ordinaryMembers": null,
+    "ordinaryMembersFrom": "/snapshotBoundary/ordinaryStateMembers",
+    "tenantKeyMembers": null,
+    "tenantKeyMembersFrom": "/snapshotBoundary/tenantKeyStateMembers",
+    "ordinarySnapshotsContainTenantKeys": false,
+    "tenantKeyBackupsAreSeparateCustodyClass": true,
+    "tenantKeyBackupsHeldWithCiphertextBackups": false,
+    "separateInstancePhysicalStateVolumesAndSnapshotDomainsRequired": true,
+    "logicalPathExclusionSufficient": false,
+    "reason": "A KV mount or path cannot filter the persisted state of a whole-instance snapshot; distinct membership must follow from the selected backend and separate physical state.",
+    "backupPolicyFrom": "/backup",
+    "erasedKeysMayBeResurrected": false,
+    "credentialRewindAllowed": false
+  },
+  "perAppComponentProposal": {
+    "description": "Repeat only for owner-supplied apps; symbolic metadata, no Kubernetes resource emitted",
+    "resourceFamily": "Dapr Component",
+    "type": "secretstores.hashicorp.vault",
+    "componentVersion": null,
+    "versionFrom": "/providers/dapr",
+    "name": null,
+    "nameFrom": "/secretContract/apps/*/componentName",
+    "namespaceFrom": "/environment/applicationNamespace",
+    "scopes": null,
+    "scopesFrom": "/secretContract/apps/*/scopes",
+    "metadata": {
+      "vaultAddr": null,
+      "vaultAddrFrom": "/ordinaryStore/nativeTls/endpoint",
+      "vaultTokenMountPath": null,
+      "vaultTokenMountPathFrom": "/secretContract/apps/*/token/mountPath",
+      "nativeTlsAndCaQualificationFrom": "/ordinaryStore/nativeTls",
+      "tlsServerName": null,
+      "tlsServerNameFrom": "/ordinaryStore/nativeTls/serverName",
+      "skipVerify": false,
+      "caCert": null,
+      "caPem": null
+    },
+    "policyFrom": "/secretContract/apps/*/policyRef",
+    "tokenValuesAccepted": false,
+    "environmentLayerOwned": true,
+    "caDeliveryContract": {
+      "selectedMode": null,
+      "decisionAndQualificationFromEvidence": "/ordinaryStore/nativeTls/caBundleRef",
+      "exactlyOneSelectedMetadataFieldRequired": [
+        "caCert",
+        "caPem"
+      ],
+      "verificationRequired": true,
+      "caCert": {
+        "sidecarFilePath": null,
+        "publicCaSourceRef": null,
+        "sidecarDirectoryMountRef": null,
+        "bindingsFromEvidence": "/ordinaryStore/nativeTls/caBundleRef",
+        "meaning": "Selected mounted public-CA file path goes into caCert; source, directory mount and readable file mapping require owner evidence."
+      },
+      "caPem": {
+        "publicCaSourceRef": null,
+        "inlineMetadataMappingRef": null,
+        "bindingsFromEvidence": "/ordinaryStore/nativeTls/caBundleRef",
+        "meaning": "Selected inline public-CA mapping goes into caPem; no CA bytes are supplied or rendered here."
+      },
+      "mutuallyExclusive": true,
+      "meaning": "The delivery mode, source, paths and mapping remain unknown. TLS verifies the selected server name and CA; skipVerify is false."
+    }
+  },
+  "perPodMountProposal": {
+    "bootstrapException": "Named per-app token bootstrap Secret; secret values remain outside this package and rendered application charts",
+    "bootstrapSecretRef": null,
+    "bootstrapSecretRefFrom": "/secretContract/apps/*/token/bootstrapSecretRef",
+    "volumeName": null,
+    "volumeNameFrom": "/secretContract/apps/*/token/volumeName",
+    "tokenFilePath": null,
+    "tokenFilePathFrom": "/secretContract/apps/*/token/mountPath",
+    "annotation": {
+      "name": "dapr.io/volume-mounts",
+      "value": null,
+      "binding": "Selected volumeName:mountDirectory pair; verify pinned injector semantics and actual read-only sidecar directory mount, projected key mapping and full token file path before live acceptance"
+    },
+    "readOnly": true,
+    "perAppPerPodOnly": true,
+    "applicationChartContainsSecret": false,
+    "qualificationRequired": "Restricted Pod Security, no excessive capabilities, readable only by intended runtime, no broad RBAC or cross-app token access",
+    "sidecarReadsTokenAtStartupOnly": true,
+    "mountDirectory": null,
+    "mountDirectoryFrom": "/secretContract/apps/*/token/mountDirectory",
+    "projectedKeyToFile": {
+      "sourceKey": null,
+      "sourceKeyFrom": "/secretContract/apps/*/token/sourceKey",
+      "relativeFileName": null,
+      "relativeFileNameFrom": "/secretContract/apps/*/token/projectedFileName"
+    },
+    "filePathInvariant": "vaultTokenMountPath equals mountDirectory/projectedFileName; directory mount and token file path are separate parameters",
+    "bootstrapSecretNamespaceFrom": "/environment/applicationNamespace",
+    "bootstrapSecretRefGrammar": "Unqualified Secret DNS-subdomain name only; projected sourceKey is a separate parameter."
+  },
+  "ownership": {
+    "storeComponentPoliciesAndNamedBootstrapSecrets": "Environment-layer identity; exact principal remains null in inputs",
+    "scopesAndAcknowledgedRotation": "Platform",
+    "dynamicNamespaceWriter": "Sole owning app declared in the future secret contract; no identity selected",
+    "unsealAndRecovery": "Administrator and independently equipped recovery deputy, manually within declared coverage",
+    "tokenRenewal": "Named per-app owner outside Dapr; exact identities, lifecycle and monitoring remain null",
+    "rotationRestartAndRevocation": "Named restart owner coordinates issuer and app owner; exact identities remain null"
+  },
+  "rotationSequence": [
+    "Verify owner approval, current contract and issuer metadata; retain least-privilege scope and expand-only required generations.",
+    "Issuer owner prepares a separate per-app replacement and delivers it through the selected per-pod bootstrap reference without exposing bytes in evidence.",
+    "Restart each affected pod and its Dapr sidecar after delivery; a mounted file update alone cannot reload a running sidecar.",
+    "Bind observations to staging, app ID, exact contract digest, required token delivery revision and exact required secret generations; record new pod identity and sidecar-after-delivery acknowledgment.",
+    "Platform and the named owner acknowledge every affected pod; otherwise keep readiness refused and stop the cutover.",
+    "Only after full acknowledgment may the separately authorized issuer owner revoke the old per-app or shared token; prove old access denied, retain expiry/renewal monitoring."
+  ],
+  "proposedReadinessContract": {
+    "liveAppGateImplemented": false,
+    "description": "prepare.py checks supplied metadata consistency only; no observation authentication, restart/new-pod proof, all-replica coverage, deployed readiness or live acceptance",
+    "binds": [
+      "environment",
+      "app ID",
+      "exact secret-contract digest",
+      "each logical secret ID and exact required generation",
+      "token delivery revision",
+      "new pod identity and sidecar-start-after-delivery acknowledgment"
+    ],
+    "refuses": [
+      "missing, stale or unexpected generations",
+      "wrong environment, app or contract",
+      "duplicate or malformed observations",
+      "unacknowledged rotation or stale delivery revision"
+    ],
+    "scope": "Exactly one supplied pod observation per app, with distinct podUid values across apps. metadataReady cannot establish complete expected pod inventory or all-replica acknowledgment.",
+    "authenticatedRestartAndCoverageEvidenceFrom": "/secretContract/apps/*/token/restartEvidenceRef",
+    "suppliedBooleansProveRestartOrNewness": false
+  }
+}

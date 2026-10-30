@@ -128,7 +128,7 @@ class RetainedProtocolEquivalenceTests(unittest.TestCase):
 
     def test_imported_schema_is_compared_in_both_directions(self):
         self.assertEqual(len(self.check(self.descriptors())), 2)
-        for mutation in ("field-number", "scalar-type", "extra-field", "streaming", "missing-service", "extra-message"):
+        for mutation in ("field-number", "scalar-type", "extra-field", "streaming", "missing-service", "extra-message", "extra-nested", "nested-map-type"):
             descriptor = copy.deepcopy(self.descriptors()); message = descriptor[0]["messageType"][0]
             if mutation == "field-number": message["field"][0]["number"] = 2
             if mutation == "scalar-type": message["field"][0]["type"] = "TYPE_STRING"
@@ -136,12 +136,14 @@ class RetainedProtocolEquivalenceTests(unittest.TestCase):
             if mutation == "streaming": descriptor[0]["service"][0]["method"][0]["clientStreaming"] = True
             if mutation == "missing-service": descriptor[0]["service"] = []
             if mutation == "extra-message": descriptor[0]["messageType"].append({"name": "Unexpected"})
+            if mutation in ("extra-nested", "nested-map-type"): message["nestedType"] = [{"name":"Unexpected","options":{"mapEntry": mutation == "nested-map-type"},"nestedType":[{"name":"Deeper"}]}]
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): self.check(descriptor)
 
 
 class OriginalFaultHistoryTests(unittest.TestCase):
     def observations(self):
         faults, sink = [], []
+        wire = {"api":[], "component":[]}
         for fault, count in (("cancellation", 1), ("late-duplicate", 2), ("lost-result", 1), ("reconnect", 1)):
             identity = "synthetic-original-" + fault
             faults += [{"Name": fault, "SdkCalls": 1, "Result": "ReceivedSyntheticUnverified" if fault == "reconnect" else "Unknown:RpcException", "CancellationUnixMilliseconds": 11},
@@ -152,13 +154,28 @@ class OriginalFaultHistoryTests(unittest.TestCase):
                              "dataSha256": "digest-" + fault, "producerIncarnation": "component-1", "timeUnixNano": number * 10000000})
             sink.append({"kind": "sink", "path": "/status", "identity": identity, "attempts": count, "dataSha256": "digest-" + fault,
                          "producerIncarnation": "component-2" if fault == "reconnect" else "component-1", "timeUnixNano": 30000000})
-        return faults, sink
+        for row in faults:
+            fault = row["Name"].removeprefix("status-")
+            row.update(Operation="fixture-status" if row["Name"].startswith("status-") else "fixture-send", DataBytes=7, DataSha256="digest-" + fault)
+            for hop in wire:
+                wire[hop].append(IndependentFrameTests().frame() | {"kind":"grpcFrame", "direction":"request", "syntheticCase":row["Name"],"operation":row["Operation"],"dataBytes":7,"dataSha256":row["DataSha256"]})
+        for row in sink: row["dataBytes"] = 7
+        return faults, sink, wire
 
     def test_original_delivery_and_status_keep_uncertainty_and_old_incarnation(self):
         check_fault_history(*self.observations())
 
+    def test_sdk_original_cannot_borrow_sink_digest_or_another_wire_case(self):
+        for change in ("bytes", "digest", "operation", "wire-case"):
+            faults,sink,wire=self.observations()
+            if change=="bytes":faults[0]["DataBytes"]=0
+            if change=="digest":faults[0]["DataSha256"]="another-original"
+            if change=="operation":faults[0]["Operation"]="fixture-status"
+            if change=="wire-case":wire["component"][0]["syntheticCase"]="another-original"
+            with self.subTest(change=change),self.assertRaises(ValueError):check_fault_history(faults,sink,wire)
+
     def test_missing_duplicate_or_changed_attempt_cannot_be_claimed_closed(self):
-        original_faults, original_sink = self.observations()
+        original_faults, original_sink, original_wire = self.observations()
         for mutation in ("missing-original", "blind-resend", "changed-lookup-digest", "changed-status-count", "failed-lookup", "extra-sdk-send", "new-original-identity", "dropped-old-incarnation", "early-duplicate", "false-sequence"):
             faults, sink = copy.deepcopy(original_faults), copy.deepcopy(original_sink)
             if mutation == "missing-original": sink.pop(0)
@@ -171,7 +188,7 @@ class OriginalFaultHistoryTests(unittest.TestCase):
             if mutation == "dropped-old-incarnation": sink[-2]["producerIncarnation"] = "component-2"
             if mutation == "early-duplicate": sink[3]["timeUnixNano"] = 10000000
             if mutation == "false-sequence": sink[3]["attempts"] = 1
-            with self.subTest(mutation=mutation), self.assertRaises(ValueError): check_fault_history(faults, sink)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): check_fault_history(faults, sink, original_wire)
 
 # Keep these offline: test the producer/consumer contracts using local bytes.
 import os
@@ -212,8 +229,13 @@ class BuildProducerConsumerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             environment = builder.isolated_go_environment(directory, inherited)
             self.assertNotIn("GOROOT", environment); self.assertNotIn("CGO_CFLAGS", environment)
-            record = {"required":builder.GO_SETTINGS,"effective":environment.copy()}
+            self.assertEqual(environment["GOENV"], "off")
+            # go env -json normalizes the disabled environment file to no path.
+            record = {"required":builder.GO_SETTINGS,"effective":environment | {"GOENV":""}}
             audit.check_go_environment(record, directory)
+            for path in ("off", "/home/example/.config/go/env"):
+                with self.subTest(goenv=path), self.assertRaises(ValueError):
+                    audit.check_go_environment({"required":builder.GO_SETTINGS,"effective":environment | {"GOENV":path}}, directory)
             for key in builder.GO_SETTINGS:
                 changed = copy.deepcopy(record); changed["effective"][key] = "inherited-override"
                 with self.subTest(key=key), self.assertRaises(ValueError): audit.check_go_environment(changed, directory)
@@ -258,6 +280,24 @@ class BuildProducerConsumerTests(unittest.TestCase):
                 self.assertTrue(binding["startTicks"])
                 terminal=runner.terminal_binding(process,binding)
                 self.assertEqual(terminal["terminalImageSha256"],binding["executionImageSha256"])
+
+    def test_fixture_seal_rejects_extra_compiled_source_and_module_replacements(self):
+        sealer=local_module("seal_build")
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);local=root/"reviewed";fixture=root/"fixture"
+            local.mkdir();fixture.mkdir()
+            for name,value in {"main.go":"package main", "go.sum":"pinned", "go.mod":"module example\n\ngo 1.26.4\n"}.items():
+                (local/name).write_text(value);(fixture/name).write_text(value)
+            mod=(local/"go.mod").read_text().rstrip()+"\n\nreplace github.com/dapr/dapr => ../dapr-"+sealer.PIN+"\n"
+            (fixture/"go.mod").write_text(mod);sealer.fixture_closure(fixture,local)
+            (fixture/"extra.go").write_text("package main\nfunc init() {}")
+            with self.assertRaises(ValueError):sealer.fixture_closure(fixture,local)
+            (fixture/"extra.go").unlink()
+            (fixture/"extra.syso").write_bytes(b"unreviewed linker input")
+            with self.assertRaises(ValueError):sealer.fixture_closure(fixture,local)
+            (fixture/"extra.syso").unlink()
+            (fixture/"go.mod").write_text(mod+"replace google.golang.org/grpc => /unreviewed\n")
+            with self.assertRaises(ValueError):sealer.fixture_closure(fixture,local)
 
 
 class ProbeEnforcementTests(unittest.TestCase):
@@ -318,6 +358,12 @@ class ProbeEnforcementTests(unittest.TestCase):
             target["syntheticCase"]="later-go-probe"
             with self.assertRaises(ValueError):audit.check_sdk_data_delivery(n,sdk,wire,component,sink)
             target["syntheticCase"]=case
+
+    def test_boundary_name_cannot_substitute_for_independent_measured_size(self):
+        for name in ("data-67108864", "protobuf-api-134217728", "protobuf-component-134217728"):
+            args=list(self.metadata());args[0]["name"]=name
+            args[0]["hop"]="component" if "component" in name else "api"
+            with self.subTest(name=name),self.assertRaises(ValueError):audit.check_probe_observations(*args)
 
 
 class ProcessInventoryTests(unittest.TestCase):
@@ -453,13 +499,29 @@ class PublishedPacketChecksTests(unittest.TestCase):
         def write(name,data):(output/name).write_text(json.dumps(data))
         write("commands.json",[["dotnet","build","project","--artifacts-path",str(root/"artifacts")],["dotnet",str(assembly)]])
         write("f1-packet-check.json",{"CompletionPermission":False,"DependencyAvailable":False,"KeyDeliveryEnabled":False,"LiveReady":False,"installedPathProved":False,"physicalCompletionProved":False,"terminationPacketConforms":True,"transportPacketConforms":True})
-        write("custody-binding-f1.json",{"Kind":"SyntheticF1SourceContractOnly","DaprClient":"1.18.10","DependencyAvailable":False,"LiveReady":False,"QualifiedComponentInstalled":False,"PhysicalEvidence":False,"RealSidecarPathExecuted":False,"NativeEffects":0})
+        fixture={"Kind":"SyntheticF1SourceContractOnly","DaprClient":"1.18.10","DependencyAvailable":False,"LiveReady":False,"QualifiedComponentInstalled":False,"PhysicalEvidence":False,"RealSidecarPathExecuted":False,"NativeEffects":0}
+        import verify_f1
+        fixture["CandidateSdkCaptures"] = {name: {"DataBytes":a,"DataSha256":b,"ApiProtobufBytes":c,"ApiProtobufSha256":d,"GrpcFrameBytes":c+5,"SdkCalls":1,"MaxSendMessageBytes":134217728,"MaxReceiveMessageBytes":1048575,"RealSidecarPathExecuted":False} for name,(a,b,c,d) in verify_f1.CANDIDATE_CAPTURES.items()}
+        fixture["CandidateSdkCaptures"].update(SidecarOrComponentExecuted=False,ProductionInvokerProfileChanged=False,DecodeCapBytes=67108864,FullManifestRequestBoundBytes=45508608,FullTransitionRequestBoundBytes=48933548,ComponentForwardedMetadataWireBudgetBytes=66560)
+        write("custody-binding-f1.json",fixture)
+        import xml.etree.ElementTree as ET
+        xml=ET.Element("assemblies");assembly_xml=ET.SubElement(xml,"assembly",total="238",passed="238")
+        cases=[(cls,method) for cls,methods in verify_f1.BEHAVIORAL_COVERAGE.items() for method in methods]
+        cases.append(("Hexalith.Platform.Secrets.Runtime.Tests.CustodyBindingFeasibilityTests","EmitDeterministicF1Evidence"))
+        cases += [("Synthetic.CustodyBindingCoverage",f"F1{i}") for i in range(101-len(cases))]
+        cases += [("Synthetic.Other",f"Other{i}") for i in range(238-len(cases))]
+        for cls,method in cases:ET.SubElement(assembly_xml,"test",type=cls,method=method,result="Pass")
+        ET.ElementTree(xml).write(output/"runtime-tests.xml")
         (output/"runtime-build.log").write_text("0 Warning(s)\n0 Error(s)\n")
-        for name in ("runtime-tests.log","runtime-tests.xml","owner-capture-source.json"):(output/name).write_text(name)
+        for name in ("runtime-tests.log","owner-capture-source.json"):(output/name).write_text(name)
         repo=Path(__file__).resolve().parents[2]
-        write("source-sha256.json",{name:audit.sha(repo/name) for name in ("eng/ext-secrets-1/audit_local_transport.py","eng/ext-secrets-1/local-transport/main.go","eng/ext-secrets-1/local-transport/wire.go","eng/ext-secrets-1/local-transport/build.py","eng/ext-secrets-1/local-transport/run.py","eng/ext-secrets-1/local-transport/seal_build.py")})
+        source_names={str(p.relative_to(repo)) for p in (repo/"eng/ext-secrets-1/local-transport").rglob("*") if p.is_file() and "__pycache__" not in p.parts}
+        source_names |= {str(p.relative_to(repo)) for p in (repo/"eng/ext-secrets-1").glob("*.py")}
+        source_names |= {"eng/ext-secrets-1/audit_local_transport.py","eng/ext-secrets-1/test_audit_local_transport.py","eng/ext-secrets-1/verify_f1.py","eng/ext-secrets-1/check_f1_packets.py","tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingLocalTransport.cs","tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyBindingFeasibilityTests.cs"}
+        write("source-sha256.json",{name:audit.sha(repo/name) for name in source_names})
         write("verification.json",{"kind":"SyntheticF1SourceContractOnly","candidateBaseCommit":packet["candidateSourceHead"],"counts":{"behavioralMethodsCovered":29,"f1Passed":101,"passed":238,"total":238},"dependencyAvailable":False,"runtimeQualificationCompleted":False,"qualificationEffects":0,"sourceInputs":{},"sha256":{p.name:audit.sha(p) for p in output.iterdir()}})
-        log=root/"python.log";log.write_text("Ran focused tests\n\nOK\n")
+        log=root/"python.log";inventory=audit.python_test_inventory(repo)
+        log.write_text("command: python3 -m unittest discover -s eng/ext-secrets-1 -p test_*.py -v\n" + "\n".join(test + " ... ok" for test in inventory) + f"\nRan {len(inventory)} tests in 1.0s\n\nOK\nexitCode: 0\n")
         verification={"authority":"Source contract only","f1Artifacts":str(root/"artifacts"),"f1Directory":str(output),"pythonSuiteLog":str(log),"requiredRuntimeTests":238,
                       "f1ReportSha256":audit.sha(output/"verification.json"),"pythonSuiteSha256":audit.sha(log),"f1AssemblySha256":audit.sha(assembly)}
         return verification,packet
@@ -479,3 +541,17 @@ class PublishedPacketChecksTests(unittest.TestCase):
                 if change!="unsealed-tamper":verification["f1ReportSha256"]=audit.sha(report)
                 with self.subTest(change=change),self.assertRaises(ValueError):audit.check_detached_verification(verification,packet,root)
                 report.write_text(original);verification["f1ReportSha256"]=audit.sha(report)
+
+    def test_hashed_invalid_xml_and_focused_python_log_cannot_claim_full_verification(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);verification,packet=self.detached(root)
+            output=Path(verification["f1Directory"]);report=output/"verification.json"
+            xml=output/"runtime-tests.xml";original=xml.read_text();xml.write_text("runtime-tests.xml")
+            data=json.loads(report.read_text());data["sha256"]["runtime-tests.xml"]=audit.sha(xml)
+            report.write_text(json.dumps(data));verification["f1ReportSha256"]=audit.sha(report)
+            with self.assertRaises(ValueError):audit.check_detached_verification(verification,packet,root)
+            xml.write_text(original);data["sha256"]["runtime-tests.xml"]=audit.sha(xml)
+            report.write_text(json.dumps(data));verification["f1ReportSha256"]=audit.sha(report)
+            log=Path(verification["pythonSuiteLog"]);log.write_text("Ran focused tests\n\nOK\n")
+            verification["pythonSuiteSha256"]=audit.sha(log)
+            with self.assertRaises(ValueError):audit.check_detached_verification(verification,packet,root)

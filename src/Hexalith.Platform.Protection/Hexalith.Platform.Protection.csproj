@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" />
     <ProjectReference Include="../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" />
     <ProjectReference Include="../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj" />
   </ItemGroup>
@@ -14,6 +15,7 @@
     <PackageReference Include="Hexalith.EventStore.Server" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/native-phase-invariant-inventory.json" LogicalName="NativePhaseInvariantInventory" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="$(HexalithEventStoreRoot)/tools/ext-protection-1/plan.json" LogicalName="ExtProtectionOwnerPlan" /></ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Hexalith.Platform.Protection.Tests" />
     <InternalsVisibleTo Include="Hexalith.Platform.Secrets.Runtime.Tests" />

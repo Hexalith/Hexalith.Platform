@@ -1,0 +1,99 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportDiagnostics.BootstrapAndWrapOneRoot [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.ErasureRootTransitionAuthorityTests.SustainedGrowingTransitionsKeepBoundedHeadAndRetainEveryExactOriginal [FAIL]
+      Shouldly.ShouldAssertException : await _authority.AdmitTransitionAsync(transition, Token)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootTransitionAuthorityTests.cs(54,0): at Hexalith.Platform.Protection.Tests.ErasureRootTransitionAuthorityTests.SustainedGrowingTransitionsKeepBoundedHeadAndRetainEveryExactOriginal()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(prepared: False) [FAIL]
+      Shouldly.ShouldAssertException : (await _custody.LookupAsync(request, "reservation", Token)).State
+          should be
+      DeletionManifestProviderState.Consumed
+          but was
+      DeletionManifestProviderState.Unknown
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(128,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(Boolean prepared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(prepared: True) [FAIL]
+      Shouldly.ShouldAssertException : (await _custody.LookupAsync(request, "reservation", Token)).State
+          should be
+      DeletionManifestProviderState.Consumed
+          but was
+      DeletionManifestProviderState.Unknown
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop2CustodyTests.cs(128,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop2CustodyTests.AuthorizedPendingMetadataCannotConsumeReservedTerminalCapacityEvenAtTrimBoundary(Boolean prepared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.PinRaceOrdersBeforeManifestOrLosesToTheCompleteManifest [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.LostTrimAcknowledgementRecoversOnlyOriginalNativeEpochAndReceipt [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.NativeTenantAndCompleteContextSubstitutionCannotDecrypt [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests.ThousandTargetManifestReturnsCompleteOrderedOriginalVector [SKIP]
+      Requires the owned disposable OpenBao native harness.
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects [FAIL]
+      System.InvalidOperationException : DependencyNotAvailable:EXT-PROTECTION-1:CompletePinnedErasureRootInstallationRequired
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs(68,0): at Hexalith.Platform.Protection.ErasureRootHostComposition.AddPlatformErasureRootProtection(IServiceCollection services, IConfiguration configuration)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(65,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(83,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(83,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3TenantGraphTests.cs(83,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3TenantGraphTests.CompletePinnedGraphRoutesBothTenantsAndRefusesMissingOrSharedGrantBeforeEffects()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootHostCompositionTests.PinnedConfiguredEnginePersistsSealedEventsAndMissingNativeDigestHasZeroEffects(digestAvailable: True) [FAIL]
+      System.InvalidOperationException : DependencyNotAvailable:EXT-PROTECTION-1:CompletePinnedErasureRootInstallationRequired
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs(68,0): at Hexalith.Platform.Protection.ErasureRootHostComposition.AddPlatformErasureRootProtection(IServiceCollection services, IConfiguration configuration)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs(48,0): at Hexalith.Platform.Protection.Tests.ErasureRootHostCompositionTests.PinnedConfiguredEnginePersistsSealedEventsAndMissingNativeDigestHasZeroEffects(Boolean digestAvailable)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootHostCompositionTests.PinnedConfiguredEnginePersistsSealedEventsAndMissingNativeDigestHasZeroEffects(digestAvailable: False) [FAIL]
+      System.InvalidOperationException : DependencyNotAvailable:EXT-PROTECTION-1:CompletePinnedErasureRootInstallationRequired
+      Stack Trace:
+        src/Hexalith.Platform.Protection/ErasureRootHostComposition.cs(68,0): at Hexalith.Platform.Protection.ErasureRootHostComposition.AddPlatformErasureRootProtection(IServiceCollection services, IConfiguration configuration)
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootHostCompositionTests.cs(48,0): at Hexalith.Platform.Protection.Tests.ErasureRootHostCompositionTests.PinnedConfiguredEnginePersistsSealedEventsAndMissingNativeDigestHasZeroEffects(Boolean digestAvailable)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext [FAIL]
+      Shouldly.ShouldAssertException : await sourceClient.ResolveAsync(original.Binding.Identity.Owner, occurrence, TestContext.Current.CancellationToken)
+          should not be null but was
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs(80,0): at Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.PermanentVolumeLossRequiresSignedRetirementAndExactIndependentPersistedCiphertext()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '55b63b98ebb7e1c4b8a05a161f72b3300da3f972d8a14957e6654e9273ccd0f0')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 384, Errors: 0, Failed: 7, Skipped: 6, Not Run: 0, Time: 99.362s

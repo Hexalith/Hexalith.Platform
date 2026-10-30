@@ -1,0 +1,25 @@
+{
+  "applyInvoked": false,
+  "freshProviderObservationsCapturedThisContinuation": true,
+  "freshProviderObservationsReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/observations/observation-677a090bcb2548eb90aeccf82f35d982.json",
+  "lastVerifiedProviderFactsReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+  "latestVerificationReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/verification.json",
+  "metadataTransportCredentialReferenceStillMissing": true,
+  "missingInputs": [
+    {
+      "input": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-return/metadata-credential-reference.json",
+      "nextAction": "Supply the existing owner-controlled metadata credential reference record. The executor atomically reads only that exact Secret token/UID/RV, verifies lookup-self identity/current lease and capabilities-self, then reads only the four approved metadata paths. No policy creation or permission widening is requested.",
+      "owner": "Provider administration / independently authenticated metadata-read owner",
+      "required": "An actual intended isolated cluster Secret name, exact creation/current UID and resourceVersion, native public accessor, existing metadata-only policy, authenticated owner identity/channel and public provenance. Return no token or key value.",
+      "returnTemplate": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-metadata-credential.template.json"
+    },
+    {
+      "input": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/owner-return/preservation-decision.json",
+      "nextAction": "Return real source fingerprints, original-to-current history coverage, authenticated owner identity/channel and exact accepted changes. Current metadata or approval of recovery supplies none of this history.",
+      "owner": "Cluster credential / Kubernetes administration owner, Agents register owner and Memories PostgreSQL/TLS owners",
+      "required": "Authentic complete historical Secret write coverage and authenticated exact preservation dispositions; the prior unaccepted template is preserved.",
+      "returnTemplate": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/preservation-decision.template.json"
+    }
+  ],
+  "ownershipAndScopeApprovalAlreadyGranted": true
+}

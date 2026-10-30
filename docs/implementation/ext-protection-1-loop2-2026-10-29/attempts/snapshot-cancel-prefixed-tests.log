@@ -1,0 +1,32 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.PayloadProtection.Tests
+  Discovered:  Hexalith.EventStore.PayloadProtection.Tests
+  Starting:    Hexalith.EventStore.PayloadProtection.Tests
+    Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken [FAIL]
+      Shouldly.ShouldAssertException : Task `fixture.Service.TryReplaySnapshotAsync( fixture.Binding.Identity.Owner, write.ProtectionResult.State, write.ProtectionResult.Metadata, options.GetTypeInfo(typeof(JsonElement)), Occurrence(fixture.Binding), cancellation.Token)`
+          should throw
+      System.OperationCanceledException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.EventStore.PayloadProtection.Tests/InteractionSnapshotProtectionTests.cs(270,0): at Hexalith.EventStore.PayloadProtection.Tests.InteractionSnapshotProtectionTests.CancellationDuringSingleRootErasedReplayMaterializationKeepsTheCallerToken()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.EventStore.PayloadProtection.Tests (ID = '2d4508b2f83fff1ce0a1320f473fa32a7797a4ed3596991fd03748423c81cecb')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.PayloadProtection.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.252s

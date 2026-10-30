@@ -1,0 +1,37 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.Server.Tests
+  Discovered:  Hexalith.EventStore.Server.Tests
+  Starting:    Hexalith.EventStore.Server.Tests
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests.MixedTargetDirectorySnapshotStagesNothingAndConsultsNoAuthority(before: "interaction-a", after: "interaction-b") [FAIL]
+      Shouldly.ShouldAssertException : fixture.Bindings.ReceivedCalls()
+          should be empty but had
+      1
+          item and was
+      [NSubstitute.Core.Call (10640542)]
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs(218,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests.MixedTargetDirectorySnapshotStagesNothingAndConsultsNoAuthority(String before, String after)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests.MixedTargetDirectorySnapshotStagesNothingAndConsultsNoAuthority(before: "alias-a", after: "alias-b") [FAIL]
+      Shouldly.ShouldAssertException : fixture.Bindings.ReceivedCalls()
+          should be empty but had
+      1
+          item and was
+      [NSubstitute.Core.Call (25462339)]
+      Stack Trace:
+        tests/Hexalith.EventStore.Server.Tests/Security/InteractionProtectionPersistenceTests.cs(218,0): at Hexalith.EventStore.Server.Tests.Security.InteractionProtectionPersistenceTests.MixedTargetDirectorySnapshotStagesNothingAndConsultsNoAuthority(String before, String after)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.EventStore.Server.Tests (ID = 'a98b8b4ff75e03fb07c6a535af5a48d96cbb59ddd19f2e7fc5cd00cd14047b65')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.Server.Tests  Total: 315, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 5.036s

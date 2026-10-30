@@ -1,0 +1,164 @@
+{
+  "schema": "ext-protection-1-final-source-evidence/v1",
+  "liveExecuted": false,
+  "oqExecuted": false,
+  "agentsExecuted": false,
+  "clusterChanged": false,
+  "registerChanged": false,
+  "productionQualified": false,
+  "fullCopyInventoryQualified": false,
+  "nativeResultSha256": "b30d0d8265a350cca419ca6f3962f20638090a1590561bd6ab705f655fbf87ff",
+  "nativeRuntimeSha256": "9e01c58e0a6dd5e0e520ff7ebbcf979fa28a54e727861f47ac53a54e7f42b2c6",
+  "nativeRuntimeScope": "Five actual custody/native-store cases with explicit synthetic private eligibility. Qualification/snapshot-only source refinements followed this pinned runtime; custody/native-harness source is unchanged.",
+  "observedPlatformHead": "251bc9465459b9c28ce1d1738bfbb0525fb07293",
+  "observedEventStoreHead": "71829366dd34406119f80d7a37a30ac48e9ed48c",
+  "completeImmutableTarget": null,
+  "acceptedProfileSha256": null,
+  "status": "IndependentReviewRequiresRederivation",
+  "workflowStep": 3,
+  "independentReviewCompleted": false,
+  "protection": {
+    "total": 291,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 6,
+    "notRun": 0,
+    "seconds": 180.385,
+    "executed": 285
+  },
+  "focused": {
+    "total": 17,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "seconds": 1.062,
+    "executed": 17
+  },
+  "eventstore": {
+    "total": 317,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "seconds": 4.587,
+    "executed": 317
+  },
+  "payload": {
+    "total": 880,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "seconds": 3.763,
+    "executed": 880
+  },
+  "offlineVerifier": {
+    "passed": 78,
+    "failed": 0
+  },
+  "nativeHarnessUnit": {
+    "passed": 4,
+    "failed": 0
+  },
+  "native": {
+    "errors": 0,
+    "failed": 0,
+    "notRun": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  "source": {
+    "cases": 41,
+    "planSha256": "c1e7759a2687c122dd182aa48f1828e531166c0157a04b2ae0eba35e9ac4d10c",
+    "liveExecuted": false
+  },
+  "sourceBranches": {
+    "knownConcreteMissingPassPath": null,
+    "all41InstalledRecipesExecuted": false,
+    "p15": "Real source-catalog/guard/signature/ERC-owner component regression returns exact original AlreadyDestroyedByBatch coverage for a distinct later dispatched request; unchanged epoch/one manifest/no root reissue.",
+    "qualificationBoundary": "Source mapping and focused component tests do not establish the installed 41-case pass path. Full-copy and independently installed runtime evidence remain unestablished."
+  },
+  "build": {
+    "configuration": "Debug",
+    "projectReferences": true,
+    "nodeReuse": false,
+    "warnings": 0,
+    "errors": 0,
+    "projects": [
+      "ext-protection-finish-p15-source-build.log",
+      "ext-protection-finish-eventstore-server-build-final.log",
+      "ext-protection-finish-eventstore-payload-build-final.log",
+      "ext-protection-finish-host-build-final.log",
+      "ext-protection-finish-executor-build-final.log",
+      "ext-protection-finish-observer-build-final.log",
+      "ext-protection-finish-enrollment-build-final.log"
+    ]
+  },
+  "typeLayout": {
+    "changedPlatformCSharpFiles": 117,
+    "changedEventStoreCSharpFiles": 38,
+    "additionalTypesIntroduced": 0,
+    "preexistingNestedType": "SnapshotManager.Log predates the task and is unchanged"
+  },
+  "preparedYaml": {
+    "documents": 6,
+    "applied": false
+  },
+  "finalBuiltRuntime": [
+    {
+      "path": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection/bin/Debug/net10.0/Hexalith.Platform.Protection.dll",
+      "sha256": "35a80eb5b5f0db3bf65c777f21a85246e90632d99b07e20a578b8f2b35548c06"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+      "sha256": "33ce6e5b6d400ab0a49752fcbea9b0569aa79f7a32aec26900799613a911324a"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.EventStoreHost/bin/Debug/net10.0/Hexalith.Platform.EventStoreHost.dll",
+      "sha256": "5234953a0838237aa4eb9c0da2463fdd5fc3adc410c0d54a0cde237462e0a14f"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.Server/bin/Debug/net10.0/Hexalith.EventStore.Server.dll",
+      "sha256": "d3f56c808f377a3eabd50468b56a4f76cd71a3573894493d42800ef186c89cf1"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/src/Hexalith.EventStore.PayloadProtection/bin/Debug/net10.0/Hexalith.EventStore.PayloadProtection.dll",
+      "sha256": "36d04e57a94a54df4575e56c119821d71eeb0583cdc0ec03449796f808c9dba4"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Executor/bin/Debug/net10.0/Hexalith.Platform.Protection.Qualification.Executor.dll",
+      "sha256": "b0ece805580c9bec38cea0c88a387072172257c618d28907c96fc970bf4ad6ff"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Observer/bin/Debug/net10.0/Hexalith.Platform.Protection.Qualification.Observer.dll",
+      "sha256": "58f2b8a201b715d76d8238f1dcd45c7231a838dffb3ac3dc8fa1239f64509dc0"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Protection.Qualification.Enrollment/bin/Debug/net10.0/Hexalith.Platform.Protection.Qualification.Enrollment.dll",
+      "sha256": "cd0447b0e7e5cbaa6a32bde822f526aee3e1d01b44fe584a51c05940b89f65f4"
+    }
+  ],
+  "observedFinalPlatformHead": "965b00249b473d602a663f1f48be39424f996337",
+  "observedFinalEventStoreHead": "5945ba8b3575f76597075e460bb9a973453272ea",
+  "gitMutationsByThisImplementation": "Parent scoped staging only; no commit/push/remote mutation. External commits preserved.",
+  "acceptedTarget": null,
+  "parentMatrixAudit": {
+    "total": 25,
+    "executed": 25,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "seconds": 0.515,
+    "newCases": 3,
+    "runtimeSourceChanged": false,
+    "testAssemblySha256": "5748a149721acb83375778a38e6c7f8ecc066a880c52cc9d7ad1805fc2b8d2fb"
+  },
+  "reviewLayersCompleted": true,
+  "reviewLoopIteration": 1,
+  "withdrawnRuntimeCandidates": {
+    "platform": "965b00249b473d602a663f1f48be39424f996337",
+    "eventstore": "5945ba8b3575f76597075e460bb9a973453272ea"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "runId": "04ac10450130e068fbf13ed8784a04c9",
+  "ownerId": "04ac10450130e068fbf13ed8784a04c9",
+  "selection": {
+    "moduleId": "platform",
+    "name": "lifecycle-partial-startup",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "4600BE73D479725BD689F5C28DA42DBA870E71E5AAD88F7FCD8222106ED144AD",
+    "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+    "executionTimeoutSeconds": 120,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-28T10:36:08.9494993+00:00",
+    "executionDeadlineUtc": "2026-10-28T10:38:08.9494993+00:00",
+    "credentialExpiryUtc": "2026-10-28T10:38:09+00:00",
+    "mode": "source"
+  },
+  "sourceMappingHash": "e3f91f6801632db402b490a7a8802913068310b96b0f53292bbd67e9c8fd5ecc",
+  "declaredPlatformCommit": "ab539bd7542070ca5cd8c420411ac6d8e47fd915",
+  "checkoutPlatformCommit": "ab539bd7542070ca5cd8c420411ac6d8e47fd915",
+  "observedCandidateHash": null,
+  "observedBackendIdentity": null,
+  "qualificationCredit": false,
+  "resources": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:18476"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:36247"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3885171+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:13888"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:44543"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3885306+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:10695"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:40415"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3885419+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:43151"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3885018+00:00",
+      "processId": 3144403
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:26138"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:29543"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:23944"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3885562+00:00",
+      "processId": 3144400
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:13192"
+        }
+      ],
+      "observedAt": "2026-10-28T10:37:22.3884798+00:00",
+      "processId": null
+    }
+  ],
+  "terminalStatus": "failed",
+  "terminalOutcome": {
+    "exitCode": "TopologyOrLifecycle",
+    "phase": "Topology",
+    "category": "TopologyOrLifecycle",
+    "ruleId": "HXR021"
+  },
+  "terminalAtUtc": "2026-10-28T10:37:22.7329066+00:00",
+  "resourceDisposition": "removed",
+  "remainingResources": {
+    "containerIds": [],
+    "processIds": [],
+    "unverified": false,
+    "isEmpty": true,
+    "workspaceIds": [],
+    "claimIds": [],
+    "discoveryFailures": [],
+    "resourceIds": []
+  },
+  "observationHash": null,
+  "environmentBindings": null,
+  "terminalCause": "startup-failure",
+  "failureRetained": true,
+  "cleanupDisposition": "complete",
+  "cleanupAttemptId": "3283069a0c3080cd50a2fa10e1894038",
+  "diagnosticRuleIds": [
+    "HXR021"
+  ],
+  "laterDiagnosticRuleIds": [
+    "HXR023",
+    "HXR028"
+  ],
+  "executionTiming": null,
+  "selections": [
+    {
+      "moduleId": "platform",
+      "name": "lifecycle-partial-startup",
+      "executor": "python3",
+      "entry": "eng/test-environment-provisioning/suite.py",
+      "manifestHash": "4600BE73D479725BD689F5C28DA42DBA870E71E5AAD88F7FCD8222106ED144AD",
+      "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+      "executionTimeoutSeconds": 120,
+      "stopTimeoutSeconds": 90,
+      "requestedAtUtc": "2026-10-28T10:36:08.9494993+00:00",
+      "executionDeadlineUtc": "2026-10-28T10:38:08.9494993+00:00",
+      "credentialExpiryUtc": "2026-10-28T10:38:09+00:00",
+      "mode": "source"
+    }
+  ],
+  "reportHash": null,
+  "testCounts": null
+}

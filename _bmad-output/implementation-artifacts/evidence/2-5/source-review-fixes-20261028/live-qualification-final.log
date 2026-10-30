@@ -1,0 +1,27 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests.LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync [FAIL]
+      Shouldly.ShouldAssertException : startedPeer.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.PrerequisiteUnavailable
+      
+      Additional Info:
+          {"Status":"unavailable","Outcome":{"ExitCode":2,"Phase":3,"Category":3,"RuleId":"HXR015"},"Diagnostics":[{"RuleId":"HXR015","Phase":3,"Category":3,"Message":"Aspire CLI observed \u002713.6.1\u002B3751e615ad660621f2a7aa4c390ef48e08a0eed8\u0027 (exit 0); expected Aspire.AppHost.Sdk/13.6.4.","Field":"aspire","Hint":"Install Aspire CLI 13.6.4 to match the catalog-selected Aspire.AppHost.Sdk/13.6.4, then retry.","Source":null,"Location":null,"Row":null}]}
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformLocalRunLifecycleTests.cs(48,0): at Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests.LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformLocalRunLifecycleTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests.LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 2.137s

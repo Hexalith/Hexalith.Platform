@@ -13,6 +13,13 @@ public sealed class DeletionCapabilityRevocationSubscriber(DeletionCapabilityRev
     IDeletionCapabilityRevocationAuthenticator authenticator, IDeletionCapabilityCompromiseRegistrar registrar,
     IDeletionCapabilityGuardRevocationMirror mirror, TimeProvider clock)
 {
+    /// <summary>Validates exact current independent input before any source/guard/signing/owner operation; it cannot register or mirror.</summary>
+    public async Task<bool> PreflightAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken = default)
+    {
+        if (!Valid(envelope) || string.IsNullOrWhiteSpace(signedEvidence) || signedEvidence.Length > 16384) { return false; }
+        var authorization = await authenticator.VerifyBeforeEffectsAsync(envelope, signedEvidence, cancellationToken).ConfigureAwait(false);
+        return Current(authorization, envelope);
+    }
     /// <summary>Returns true only after exact authenticated protection and mirror lookup; retries reuse the original block.</summary>
     /// <param name="envelope">Exact closed revocation.</param>
     /// <param name="signedEvidence">Opaque signed authentication evidence; never logged or retained here.</param>

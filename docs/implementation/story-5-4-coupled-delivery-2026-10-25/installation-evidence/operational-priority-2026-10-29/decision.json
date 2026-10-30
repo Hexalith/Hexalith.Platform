@@ -1,0 +1,194 @@
+{
+  "schema": "platform.story-5.4.operational-priority.v1",
+  "decisionId": "DEC-5.4-OPERATIONAL-PRIORITY-2026-10-29",
+  "recordedAtUtc": "2026-10-29T17:32:27.726117+00:00",
+  "approvalSource": {
+    "instruction": "apply recommended",
+    "context": "User approved operational MVP priority, progressive owner evidence collection, and prerequisite-based milestones with formal replacement dates pending."
+  },
+  "status": "ApprovedAppliedPendingActualOwnerDeliveries",
+  "parentDecisionId": "DEC-5.4-MVP-CUSTODY-2026-10-28",
+  "canonicalOwnerForm": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+  "canonicalOwnerFormSha256AtApplication": "6d6bf9359916a11b0bdc19224a17b22089f18d410adba4398a41917af0859495",
+  "scope": {
+    "workPriority": "OperationalMvpFirst",
+    "reuse": [
+      "Existing operational OpenBao, inventory and HMAC services",
+      "Existing authenticated ingress, private replay, denial spool and restricted recovery implementations"
+    ],
+    "evidenceCollection": "Progressive returns through existing mvpOperationalInputs; missing inputs continue to block dependent operations.",
+    "advancedCustodyProvisioning": "Deferred; no Luna/independent nonrollback lifecycle-authority/WORM procurement or custom custody-platform construction selected.",
+    "retainedAuthority": "Current identity/role/revocation, independent business-decision issuance and replay/audit currentness remain required.",
+    "fullDelivery": "Incomplete; full Human/history/content/export/erasure and coupled acceptance requirements remain applicable."
+  },
+  "dates": {
+    "policy": "Prerequisite-based owner checkpoints; owner-confirmed coordinated full replacement dates remain pending.",
+    "proposedPlatformReplacementDate": null,
+    "proposedProtectionReplacementDate": null,
+    "calendarCheckpointDates": null,
+    "acceptanceRequirement": "Actual installations, credible remaining delivery plan and accountable Platform/EventStore owner commitments; historical accepted dates and withdrawn estimates are preserved."
+  },
+  "recovery": {
+    "ownershipAndExactScopeAlreadyApproved": true,
+    "requestRepeatApproval": false,
+    "references": {
+      "approvalRecord": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+        "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+      },
+      "recordedChatApprovalSource": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+        "sha256": "111d9476992d1061188d09697413f58c32d389b71b706976b46207de147598f4"
+      },
+      "finalizedHandoff": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/HANDOFF.md",
+        "sha256": "295105a4a2834d1bbc349c6a7dccc3ce31f4ca8cf0390c75429af4252b2dcef2"
+      },
+      "verification": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+        "sha256": "753f06d735ed9e60bf67172adaabce2e9b5210d8d260f073341aff09fa438461"
+      },
+      "remainingOwnerBlockers": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/blockers.json",
+        "sha256": "c3cc5834898bd1480883439f32101620998b6cfcee3268da89e0ab39cb03c908"
+      },
+      "unacceptedPreservationReturnTemplate": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+        "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+      }
+    },
+    "classification": "Reference integrity and recorded scope approval are not completed recovery, current readiness or authentic preservation acceptance.",
+    "separateAuthorizationPreserved": true,
+    "fixedScopeWindowExtended": false,
+    "executionByThisDecision": false
+  },
+  "checkpoints": [
+    {
+      "id": "preservation",
+      "owner": "Cluster credential/Kubernetes administration owner; Memories owners and Agents register owner for their separate records",
+      "dependsOn": [],
+      "returns": [
+        "#/mvpOperationalInputs/maintenancePreservationBaseline/historicalMetadataProofAndAcceptanceReference",
+        "#/mvpOperationalInputs/maintenancePreservationBaseline/furtherSecretWriteCoverageAndDispositionReference",
+        "#/mvpOperationalInputs/maintenancePreservationBaseline/memoriesPreservationDispositionReference",
+        "#/mvpOperationalInputs/maintenancePreservationBaseline/agentsRegisterPreservationDispositionReference"
+      ],
+      "completion": "Authentic complete Secret history through the actual controlling identity/revision, and separately authenticated exact Memories/register dispositions; use the existing public preservation return schema.",
+      "status": "PendingAuthenticOwnerReturns"
+    },
+    {
+      "id": "provider-metadata",
+      "owner": "Existing OpenBao provider/exact metadata-read authority owner",
+      "dependsOn": [],
+      "returns": [
+        "#/mvpOperationalInputs/maintenancePreservationBaseline/freshPublicLeaseKeyAndPolicyEvidenceReference",
+        "#/mvpOperationalInputs/currentOperationalProfile/credentialAndScopeEvidenceReference",
+        "#/mvpOperationalInputs/currentOperationalProfile/exactKeyInventoryEvidenceReference"
+      ],
+      "completion": "Current complete public metadata of all four exact version-2 key mappings/windows plus authenticated provenance/times and an already authenticated metadata-read transport. Retained accessor absence and policy fingerprints are dated observations; no renewal or implicit credential reuse.",
+      "status": "PendingCurrentMetadataAndVerifiedReadTransport"
+    },
+    {
+      "id": "operational-recovery",
+      "owner": "Existing Platform operational custody, inventory and HMAC authority maintainer",
+      "dependsOn": [
+        "preservation",
+        "provider-metadata"
+      ],
+      "returns": [
+        "#/mvpOperationalInputs/currentOperationalProfile/currentAcceptedProfileReference",
+        "#/mvpOperationalInputs/currentOperationalProfile/freshAuthorizedReadinessEvidenceReference",
+        "#/mvpOperationalInputs/currentOperationalProfile/rotationAndRevocationEvidenceReference",
+        "#/mvpOperationalInputs/currentOperationalProfile/timestampFormatCompatibilityEvidenceReference"
+      ],
+      "completion": "Under the existing exact bounded authorization, independently verify every controlling prerequisite and actual input/window before any effect; retain exact outcomes and owner-accepted current profile/readiness. This work-selection record invokes no executor.",
+      "status": "ApprovedExactScopePendingGenuinePrerequisites"
+    },
+    {
+      "id": "backup-and-identity",
+      "owner": "Application-host/storage/backup owner; Platform identity owners and independent business-decision issuer",
+      "dependsOn": [],
+      "returns": [
+        "#/mvpOperationalInputs/backupAndRestore",
+        "#/mvpOperationalInputs/currentIdentityAndApprovers",
+        "#/mvpOperationalInputs/independentDecisionAuthority"
+      ],
+      "completion": "Actual backup lifetime/copy inventory/access/restore policy and evidence; installed current identity, approver and independent decision authority evidence. Preserve full custody coupling and all additional existing owner-form requirements.",
+      "status": "PendingOwnerDeliveries"
+    },
+    {
+      "id": "host-evidence",
+      "owner": "Platform host/identity/storage owners with EventStore replay/security-recorder owners",
+      "dependsOn": [],
+      "returns": [
+        "#/mvpOperationalInputs/authenticatedIngressAndReplay",
+        "#/mvpOperationalInputs/durableDenialAndRecovery"
+      ],
+      "completion": "Installed bindings and scoped ACLs; accepted actual replica placement/failure model; persisted exact-identity replay and denial recovery across outage/restart/lost acknowledgement. Collect independently; execution retains every dependency gate.",
+      "status": "PendingAcceptedInstallationEvidence"
+    },
+    {
+      "id": "full-replacement-planning",
+      "owner": "Platform Maintainer and EventStore Maintainer",
+      "dependsOn": [
+        "operational-recovery",
+        "backup-and-identity",
+        "host-evidence"
+      ],
+      "returns": [
+        "#/D9_dates"
+      ],
+      "completion": "Only after explicit reopening if needed and all applicable full-scope prerequisites: actual independent installations, protection/custody qualification evidence, complete exact-scope packets, one clean canonical Platform target and coordinated owner dates. The listed operational checkpoints alone are insufficient.",
+      "status": "DeferredPendingCompleteApplicableDelivery"
+    }
+  ],
+  "collectionRules": [
+    "Use the existing owner form and actual public evidence references; no new service or evidence platform.",
+    "Keep observation time, issuer/source, exact resource/version/hash, freshness and owner acceptance distinct.",
+    "Collect stable facts progressively and obtain fresh currentness/readiness proofs when their governing operation is ready.",
+    "Unavailable history remains unresolved or follows a genuine owner-approved recovery disposition; current facts never reconstruct history.",
+    "Add source/infrastructure only for a concrete accepted requirement and demonstrated gap; advanced scope is not reopened."
+  ],
+  "preserved": {
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "cohort": "OQ-5.4-1",
+    "existingJournals": "Preserve unchanged",
+    "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
+    "acceptedIntegrationDate": "2026-10-08"
+  },
+  "installationInvocations": 0,
+  "maintenanceInvocations": 0,
+  "recoveryInvocations": 0,
+  "qualificationInvocations": 0,
+  "cohortAttemptsReserved": 0,
+  "dependencyAvailable": false,
+  "fullStory54Complete": false,
+  "completeReplacementPacket": false,
+  "priorFiles": [
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md",
+      "sha256": "0e473a4c1e10c1eb26c2602b58f991be5bbd04f72aaa5ece4b333593ed03b494",
+      "preservedAt": "prior-spec-5-4-complete-coupled-secrets-host-delivery.md"
+    },
+    {
+      "path": "docs/implementation/story-5-4-operational-security-2026-10-28/README.md",
+      "sha256": "c54a72c50f858714700d0ecb623d81dcc53a1f3b00693a6a62ff8feeb86e7737",
+      "preservedAt": "prior-README.md"
+    },
+    {
+      "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+      "sha256": "6d6bf9359916a11b0bdc19224a17b22089f18d410adba4398a41917af0859495",
+      "preservedAt": "prior-owner-decisions.json"
+    }
+  ],
+  "planningBaselineCommit": "965b00249b473d602a663f1f48be39424f996337",
+  "stagedDiffSha256Before": "1ce251f061a4214763bbaea3362ab571bf0202bba2a3bb0888e2167264cb2b76"
+}

@@ -1,0 +1,2745 @@
+{
+  "schema": "platform.story-5.4.metadata-reconciliation-verification.v1",
+  "verifiedAtUtc": "2026-10-29T18:25:00.307318+00:00",
+  "checksPassed": 670,
+  "checks": [
+    {
+      "check": "archive.prior-owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "archive.prior-README.md",
+      "passed": true
+    },
+    {
+      "check": "archive.prior-spec.md",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/evidence-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/verification.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/owner-metadata-credential.template.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/commands.json",
+      "passed": true
+    },
+    {
+      "check": "archive.correction/test-commands.json",
+      "passed": true
+    },
+    {
+      "check": "archive.provider-resume/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "archive.provider-resume/evidence-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive.provider-resume/verification.json",
+      "passed": true
+    },
+    {
+      "check": "archive.provider-resume/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/deployment-preflight.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/filesystem-access-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/observed-dapr-transport-ca.pem",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stderr.txt",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/legacy-verifier.stdout.txt",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/owner-decisions.validation-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-README.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/prior-spec-5-4-complete-coupled-secrets-host-delivery.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/review.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/verification.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/owner-decisions.before-ext-parties-1-handoff-2026-10-29.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/preservation-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/source-and-enrollment-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/SHA256SUMS.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/SPEC.md.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/installation-commands.md.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/installation-decision.md.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/legacy-draft.md.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/owner-decisions.json.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/snapshot-index.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/superseded-aws-proposal/verification.json.original",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/transport-trust-observation.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/verification-mvp-no-aws.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/verification.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/acceptance-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/accepted-scope-snapshot.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.clean.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.clean.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-HOST-1.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.clean.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.clean.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/EXT-SECRETS-1.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-HOST-1.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-EXT-SECRETS-1.stdout.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/bound-inputs-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/clean-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/host-blocked-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/initial-secrets-blocked-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/invocations.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/preparation-evidence/secrets-blocked-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/SHA256SUMS",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/installation-commands.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/installation-decision.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/prior-platform-documents/owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verification.before-review.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verification.json",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "passed": true
+    },
+    {
+      "check": "preserved./home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+      "passed": true
+    },
+    {
+      "check": "manifestHash.metadata-transport-correction-20261029-f7Z2ajmP",
+      "passed": true
+    },
+    {
+      "check": "manifestCount.metadata-transport-correction-20261029-f7Z2ajmP",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/commands.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/executor-tests.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/executor-tests.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/invocation-spec.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/owner-metadata-credential.template.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/preparer-tests.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/preparer-tests.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/spec-provenance.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/test-commands.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/tested-source/eng/ext-secrets-1/prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/tested-source/eng/ext-secrets-1/recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/tested-source/eng/ext-secrets-1/test_prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/tested-source/eng/ext-secrets-1/test_recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.metadata-transport-correction-20261029-f7Z2ajmP/verification.json",
+      "passed": true
+    },
+    {
+      "check": "manifestHash.expired-hmac-recovery-run-20261029-approved",
+      "passed": true
+    },
+    {
+      "check": "manifestCount.expired-hmac-recovery-run-20261029-approved",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/approval-record.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/blockers.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/commands.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/execution-source-83ec7a63cbb54aca8dd2bf7de61705c3.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/execution-source-9c4b7c37282c4b549290081998ca05ae.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/execution-source-e0e949a09af94cd6ab0d79642fb94b75.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-executor-tests.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-executor-tests.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-preparer-tests.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-preparer-tests.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-test-commands.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/test_prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/test_recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/first-observe-prepare_expired_hmac_recovery.py.source",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/first-observe-recover_expired_hmac.py.source",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/first-observe-source-provenance.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/audit_local_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/authentication_acquisition.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/bind_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/bounded_cohort_http.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/bounded_file_io.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/capture_native_installation.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/capture_operational_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/case_driver_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/cases.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/check_f1_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/closed_phase_invariants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/coordinated_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/deploy_native_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/detached_packet_output.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/enroll_native_tenants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/enrolled_sqlite.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/execution_profile.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/initialize_native_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/install_current_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/install_hmac_authority.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/install_isolated_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/joint_authority_service.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/joint_live_phase_runner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/launch_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/linux_persistent_storage.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/maintain_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/native_journal.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/observe_provider_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/packet_snapshot.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/phase_completion_pool.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/preload_isolated_image.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/prepare_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/probe_raft_non_revival.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/protected_archive_observer_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/protected_logical_archive.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/provision_operational_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/provision_registry_identity.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/qualify.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/reconcile_inputs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/recover_native_aof.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/registry_redis.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/renew_hmac_data.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/renew_inventory_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/repair_native_runtime.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/sqlite_storage_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/sqlite_vfs_abi.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_audit_local_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_bind_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_bounded_cohort_http.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_case_driver_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_check_f1_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_closed_phase_invariants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_complete_startup_owner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_coordinated_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_credential_cleanup.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_execution_profile.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_install_hmac_authority.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_joint_admission_ordering.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_joint_live_phase_runner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_launch_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_maintain_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_model_audit.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_native_local_gate.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_native_redis_aof.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_observe_provider_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_operational_hmac_provisioning.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_operational_review.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_outer_cohort_uncertainty.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass10_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass12_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass13_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass15_storage.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass16_startup_ownership.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass17_authentication_deadline.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass17_storage_and_permissions.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass18_file_and_sqlite.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass19_sqlite_and_phase.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass23_archive_liability.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_pass23_packet_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_persisted_phase_observer.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_phase_metadata_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_preload_isolated_image.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_prepare_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_probe_raft_non_revival.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_qualification_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_qualify.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_reconcile_inputs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_recovery_proof_deadline.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_regular_role_mount_layout.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_review_provisioning.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_static_elf_structure.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/test_verify_f1.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/verify_csharp_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/verify_f1.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/verify_inventory_registry_reads.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/immutable-helper-source/eng/ext-secrets-1/worker_startup_ownership.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/inventory-restricted-registry-observation.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/native-enrollment-receipts.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/native-helper-pins.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/observation-272273853d4147abb1b870529b07c0a2.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/observation-5b6e8811e77843879ec9a72c1fc53c99.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/observation-c994258b7ce546528f7441ca148f2019.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/observation-d89f3c6c09754920a69410aa6e062809.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/run.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/spec-provenance.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.expired-hmac-recovery-run-20261029-approved/verification.json",
+      "passed": true
+    },
+    {
+      "check": "manifestHash.provider-inventory-resume-20261029T175713722948Z",
+      "passed": true
+    },
+    {
+      "check": "manifestCount.provider-inventory-resume-20261029T175713722948Z",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/blockers.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/commands.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/ext-secrets-1-custody-runtime-29a4ace57e04.runtime-reference.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/ext-secrets-1-inventory-runtime.runtime-reference.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/focused-tests.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/focused-tests.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/forward-cleanup.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/health.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/installation-references.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observation-command.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observation-exit.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/execution-source-733b708b20c047ea82233791ddbf56bb.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/audit_local_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/authentication_acquisition.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/bind_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/bounded_cohort_http.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/bounded_file_io.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/capture_native_installation.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/capture_operational_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/case_driver_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/cases.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/check_f1_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/closed_phase_invariants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/coordinated_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/deploy_native_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/detached_packet_output.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/enroll_native_tenants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/enrolled_sqlite.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/enrolled_sqlite_vfs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/execution_profile.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/initialize_native_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/install_current_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/install_hmac_authority.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/install_isolated_registry.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/joint_authority_service.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/joint_live_phase_runner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/launch_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/linux_persistent_storage.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/maintain_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/native_journal.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/observe_provider_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/packet_snapshot.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/phase_completion_pool.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/preload_isolated_image.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/prepare_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/probe_raft_non_revival.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/protected_archive_observer_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/protected_logical_archive.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/provision_operational_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/provision_registry_identity.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/qualify.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/reconcile_inputs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/recover_native_aof.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/registry_redis.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/renew_hmac_data.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/renew_inventory_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/repair_native_runtime.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/sqlite_storage_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/sqlite_vfs_abi.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_audit_local_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_bind_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_bounded_cohort_http.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_case_driver_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_check_f1_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_closed_phase_invariants.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_complete_startup_owner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_coordinated_packets.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_credential_cleanup.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_execution_profile.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_install_hmac_authority.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_joint_admission_ordering.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_joint_live_phase_runner.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_launch_inventory.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_maintain_isolated_custody.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_model_audit.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_native_local_gate.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_native_redis_aof.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_observe_provider_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_operational_hmac_provisioning.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_operational_review.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_outer_cohort_uncertainty.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass10_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass12_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass13_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass15_storage.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass16_startup_ownership.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass17_authentication_deadline.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass17_storage_and_permissions.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass18_file_and_sqlite.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass19_sqlite_and_phase.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass23_archive_liability.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_pass23_packet_boundaries.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_persisted_phase_observer.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_phase_metadata_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_preload_isolated_image.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_prepare_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_probe_raft_non_revival.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_qualification_transport.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_qualify.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_reconcile_inputs.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_recovery_proof_deadline.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_regular_role_mount_layout.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_review_provisioning.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_static_elf_structure.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/test_verify_f1.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/verify_csharp_fixture.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/verify_f1.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/verify_inventory_registry_reads.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/immutable-helper-source/eng/ext-secrets-1/worker_startup_ownership.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/inventory-restricted-registry-observation.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/native-enrollment-receipts.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/native-helper-pins.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/observation-677a090bcb2548eb90aeccf82f35d982.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/run.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observations/run.lock",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observe.stderr.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/observe.stdout.log",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/owner-metadata-credential.template.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preservation-after.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preservation-before.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preserved-source/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-provider-inventory-installation.md",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preserved-source/eng/ext-secrets-1/prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preserved-source/eng/ext-secrets-1/recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preserved-source/eng/ext-secrets-1/test_prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/preserved-source/eng/ext-secrets-1/test_recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/prior-evidence-preservation.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/public-evidence-scan.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/recover_expired_hmac.py.diff",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/remaining-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/runtime-reference.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/test-command.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/test_recover_expired_hmac.py.diff",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/tested-source-pins.json",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/tested-source/eng/ext-secrets-1/prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/tested-source/eng/ext-secrets-1/recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/tested-source/eng/ext-secrets-1/test_prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/tested-source/eng/ext-secrets-1/test_recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "manifestFile.provider-inventory-resume-20261029T175713722948Z/verification.json",
+      "passed": true
+    },
+    {
+      "check": "allPriorFactualNullsRemainNull",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.purpose",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.status",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.installationAuthorized",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.qualificationAuthorized",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.attemptReserved",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.dependencyAvailable",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.preserved",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D1_backend",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D2_resources",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D3_recovery",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D4_rolesAndTrust",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D5_implementations",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D6_releaseAndPhysicalProfile",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D7_protection",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D8_host",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.D9_dates",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.mvpConstraints",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.installationAuthorizationScope",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.mvpScopeAmendment",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.currentWorkDisposition",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.operationalPreparationReference",
+      "passed": true
+    },
+    {
+      "check": "existingOwnerSectionUnchanged.extParties1OwnerEvidenceHandoff",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/returnThrough",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/requestedEvidenceDestination",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/backupRetentionSeconds",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/privilegedRestoreSubjectsAndScopedCredentialReferences",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/acceptedRestorePolicyReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/restoreProcedureReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/authorizedRecoveryTestEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/nextAction",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/backupAndRestore/everyRecoveryCopyInventoryAndActualDisposalEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/retainedBlockerReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/retainedBlockerSha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/maintenanceProcedureReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/acceptedPublicPreservationBaselineReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/historicalMetadataProofAndAcceptanceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/providerPublicFactsOwner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/freshPublicLeaseKeyAndPolicyEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/furtherSecretWriteCoverageAndDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/memoriesPreservationDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/maintenancePreservationBaseline/agentsRegisterPreservationDispositionReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/existingRuntimeReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/currentAcceptedProfileReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/freshAuthorizedReadinessEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/credentialAndScopeEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/exactKeyInventoryEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/rotationAndRevocationEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/timestampFormatCompatibilityEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/requiredEvidence/0",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/requiredEvidence/1",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/requiredEvidence/2",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/requiredEvidence/3",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/lastVerifiedDeadlinesReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/deadlineHandling",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/retainedDeadlineAssessmentReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/path",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/sha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/approvalRecordReference/path",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/approvalRecordReference/sha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/recordedChatApprovalSourceReference/path",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/recordedChatApprovalSourceReference/sha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/preparedExpiredHmacRecoveryScopeReference/path",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/preparedExpiredHmacRecoveryScopeReference/sha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/currentOriginalTenantEnrollmentEvidenceReference/path",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/currentOriginalTenantEnrollmentEvidenceReference/sha256",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentOperationalProfile/currentOriginalTenantEnrollmentEvidenceReference/jsonPointer",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/requiredEvidence/0",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/requiredEvidence/1",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/requiredEvidence/2",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/requiredEvidence/3",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/currentAuthorityAndBindingEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/currentIdentityAndApprovers/acceptedIntegrationReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/requiredEvidence/0",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/requiredEvidence/1",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/requiredEvidence/2",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/installedIssuerAndPublicTrustEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/currentRolesAndRevocationEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/independentDecisionAuthority/custodianMayMintApprovals",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/requiredEvidence/0",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/requiredEvidence/1",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/requiredEvidence/2",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/requiredEvidence/3",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/installedAdaptersAndAclEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/authenticatedIngressAndReplay/persistedReplayRecoveryEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/status",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/owner",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/requiredEvidence/0",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/requiredEvidence/1",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/requiredEvidence/2",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/requiredEvidence/3",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/acceptedReplicaPlacementAndFailureModelReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/installedWorkerAndAclEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "existingReturnUnchanged./mvpOperationalInputs/durableDenialAndRecovery/persistedDenialRecoveryEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "sevenCanonicalReturnGroupsRetained",
+      "passed": true
+    },
+    {
+      "check": "noExecutionAvailabilityOrAttemptPromotion",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/approvalRecordReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/separatelyScopedOwnerRecoveryPlanReference/recordedChatApprovalSourceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/preparedExpiredHmacRecoveryScopeReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/currentOriginalTenantEnrollmentEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./mvpOperationalInputs/currentOperationalProfile/currentOriginalTenantEnrollmentEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./mvpOperationalInputs/currentOperationalProfile/metadataReadAccessCorrectionReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/priorCanonicalForm",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/appliedDirectionReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/completedFeasibilityVerdictReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/preparedRecoveryScopeValidation/manifestReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/latestNonProviderReadReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/processStartProvenanceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/inspectedExecutorSourceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/immutableHelperPinsReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/originalNativeEnrollmentReceiptsReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/earlierPartialProviderReadReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/earlierPartialProviderReadReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/retainedOperationalObservations/earlierProviderProvenanceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/currentConfigurationAndVersionReadReceipt",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/exactVersionInventory",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/installedLocalSnapshotCommand",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/failedLocalSnapshotStat",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/historicalDestinationSetup",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/historicalRestoreSummary",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/allowedSignersReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/0/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/0/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/1/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/1/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/2/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/2/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/3/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/0/detachedSignaturesVerified/3/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/allowedSignersReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/0/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/0/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/1/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/1/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/2/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/2/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/3/record",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/existingBackupEvidenceReferences/verifiedHistoricalSignedRecords/records/1/detachedSignaturesVerified/3/signature",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/0/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/0/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/0/laterDriftRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/0/laterDriftRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/0/newRecoveryReturnSchemaReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/1/memoriesSourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/1/memoriesSourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/1/registerSourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/1/newRecoveryReturnSchemaReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/preparedScopeRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/preparedScopeRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/finalizedBlockerReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/2/finalizedBlockerReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/3/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/3/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/3/approvedScopeReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/4/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/5/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/unresolvedOwnerReturns/6/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/separatePlatformImplementationWork/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./extParties1OwnerEvidenceHandoff/separatePlatformImplementationWork/sourceRequirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/separatePlatformImplementationWork/laterImplementationEvidenceReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/approvalRecord",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/recordedChatApprovalSource",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/specProvenance",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/finalizedHandoff",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/verification",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/remainingOwnerBlockers",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/unacceptedPreservationReturnTemplate",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/approvedRecoveryReturnReferences/manifest",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/soleOwnerDeclaration/existingDocumentaryPolicyReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./extParties1OwnerEvidenceHandoff/continuationDisposition/basis",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/priorCanonicalFormReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/manifest",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/handoff",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/verification",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/missingInputRequirements",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/unexecutedCommands",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/unacceptedMetadataTemplate",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/sealedCorrection/unacceptedPreservationTemplate",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/implementationEvidence/sourceHashesReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./metadataTransportCorrection/implementationEvidence/sourceHashesReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/pendingReturns/0/requirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./metadataTransportCorrection/pendingReturns/0/requirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/pendingReturns/1/requirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferencePointer./metadataTransportCorrection/pendingReturns/1/requirementReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/laterDiscoveredProviderEvidence/manifest",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/laterDiscoveredProviderEvidence/handoff",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/laterDiscoveredProviderEvidence/verification",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/laterDiscoveredProviderEvidence/missingInputRequirements",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/laterDiscoveredProviderEvidence/observation",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./metadataTransportCorrection/existingOperatorAccessCorrectionReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/authenticatedPublicObservations/configurationAndRoleReads",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/authenticatedPublicObservations/principalAndEffectiveCapabilities",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/canonicalBlockerContinuationReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/exactAccessCorrectionReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/fourReadStanzaPatchReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/commandsAndReversalReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/localVerificationReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/publicEvidenceManifestReference",
+      "passed": true
+    },
+    {
+      "check": "ownerReferenceHash./currentNativeKeyMetadataAccess/retainedOriginalManifestReference",
+      "passed": true
+    },
+    {
+      "check": "onePinnedBundle.correction",
+      "passed": true
+    },
+    {
+      "check": "canonicalBundlePin.correction",
+      "passed": true
+    },
+    {
+      "check": "pinnedSourceReference.correction.verification",
+      "passed": true
+    },
+    {
+      "check": "pinnedSourceReference.correction.missingInputRequirements",
+      "passed": true
+    },
+    {
+      "check": "onePinnedBundle.later",
+      "passed": true
+    },
+    {
+      "check": "canonicalBundlePin.later",
+      "passed": true
+    },
+    {
+      "check": "pinnedSourceReference.later.verification",
+      "passed": true
+    },
+    {
+      "check": "pinnedSourceReference.later.missingInputRequirements",
+      "passed": true
+    },
+    {
+      "check": "pinnedSourceReference.later.observation",
+      "passed": true
+    },
+    {
+      "check": "exactTwoPendingReturnInputs",
+      "passed": true
+    },
+    {
+      "check": "exactCanonicalPendingField.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "pinnedReturnPaths.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "oneMatchingSealedRequirement.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "matchingSealedRequirementReference.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "actualReturnPending.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "dependentFactsStillPending.owner-return/metadata-credential-reference.json",
+      "passed": true
+    },
+    {
+      "check": "exactCanonicalPendingField.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "pinnedReturnPaths.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "oneMatchingSealedRequirement.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "matchingSealedRequirementReference.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "actualReturnPending.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "dependentFactsStillPending.owner-return/preservation-decision.json",
+      "passed": true
+    },
+    {
+      "check": "reconciliationFalseInvariants",
+      "passed": true
+    },
+    {
+      "check": "reconciliationZeroCounters",
+      "passed": true
+    },
+    {
+      "check": "copiedCorrectionFixtureResults",
+      "passed": true
+    },
+    {
+      "check": "retained34And8FixtureResultsOnly",
+      "passed": true
+    },
+    {
+      "check": "testedExternalSource.eng/ext-secrets-1/prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "testedExternalSource.eng/ext-secrets-1/recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "testedExternalSource.eng/ext-secrets-1/test_prepare_expired_hmac_recovery.py",
+      "passed": true
+    },
+    {
+      "check": "testedExternalSource.eng/ext-secrets-1/test_recover_expired_hmac.py",
+      "passed": true
+    },
+    {
+      "check": "copiedProviderMetadataStatuses",
+      "passed": true
+    },
+    {
+      "check": "copiedProviderFixtureResults",
+      "passed": true
+    },
+    {
+      "check": "copiedProviderCompletion",
+      "passed": true
+    },
+    {
+      "check": "copiedProviderReadiness",
+      "passed": true
+    },
+    {
+      "check": "laterEvidenceRemainsDatedAndIncomplete",
+      "passed": true
+    },
+    {
+      "check": "approvedScopeAndOriginalFixedWindowPreserved",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../story-5-4-coupled-delivery-2026-10-25/installation-evidence/operational-priority-2026-10-29/decision.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/owner-metadata-credential.template.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verification.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink./home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.deadline-assessment-2026-10-29.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.acceptance-inputs.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.accepted-scope-snapshot.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.preparation-evidence/bound-inputs-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.preparation-evidence/clean-invocations.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.preparation-evidence/invocations.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.../../../eng/ext-secrets-1/README.md",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.provenance.json",
+      "passed": true
+    },
+    {
+      "check": "readmeLink.verification.json",
+      "passed": true
+    },
+    {
+      "check": "structuredJsonSyntax",
+      "passed": true
+    },
+    {
+      "check": "historicalVerifierRefusalPreserved",
+      "passed": true
+    },
+    {
+      "check": "historicalVerifierCapture.stdout",
+      "passed": true
+    },
+    {
+      "check": "historicalVerifierCapture.stderr",
+      "passed": true
+    },
+    {
+      "check": "frozenIntentPreserved",
+      "passed": true
+    },
+    {
+      "check": "fullDeliveryStillDeferredIncomplete",
+      "passed": true
+    },
+    {
+      "check": "runtimeDiffPreserved",
+      "passed": true
+    },
+    {
+      "check": "noUntrackedRuntimeSource",
+      "passed": true
+    },
+    {
+      "check": "scopedTrackedWhitespace",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace._bmad-output/implementation-artifacts/tests/story-5-4-coupled-delivery-resume-2026-10-29/investigation.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace._bmad-output/implementation-artifacts/tests/story-5-4-coupled-delivery-resume-2026-10-29/prior-spec.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace._bmad-output/implementation-artifacts/tests/story-5-4-coupled-delivery-resume-2026-10-29/verification.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/commands.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/evidence-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/owner-metadata-credential.template.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/preservation-decision.template.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/test-commands.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/correction/verification.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/legacy-verifier.stderr.txt",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/legacy-verifier.stdout.txt",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/observed-source-drift.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/prior-README.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/prior-owner-decisions.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/prior-spec.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/evidence-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/owner-return-required.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/verification.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/review.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verification.json",
+      "passed": true
+    },
+    {
+      "check": "scopedUntrackedWhitespace.docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/verify_reconciliation.py",
+      "passed": true
+    }
+  ],
+  "sourceBundles": [
+    {
+      "manifest": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/metadata-transport-correction-20261029-f7Z2ajmP/evidence-manifest.json",
+      "filesVerified": 17,
+      "sha256": "a3f6756a4271b2cef90a2f450f08ad6582d237c10157f00106c5ac8c16078379",
+      "evidenceBasis": "Pinned original bytes; any public-archive fallback is recorded separately",
+      "currentExternalBytesPreserved": true
+    },
+    {
+      "manifest": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+      "filesVerified": 128,
+      "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31",
+      "evidenceBasis": "Pinned original bytes; any public-archive fallback is recorded separately",
+      "currentExternalBytesPreserved": true
+    },
+    {
+      "manifest": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/evidence-manifest.json",
+      "filesVerified": 141,
+      "sha256": "def0e07ad365d1f169610642f54ff000ae4f91712c257720599accd98db530ce",
+      "evidenceBasis": "Pinned original bytes; any public-archive fallback is recorded separately",
+      "currentExternalBytesPreserved": false
+    }
+  ],
+  "externalSourceDrift": [
+    {
+      "source": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-resume-20261029T175713722948Z/HANDOFF.md",
+      "expectedSha256": "dccde6629842f66eeac1fb5eecb093a06a3889ae5074b937058be5179c8605b9",
+      "observedSha256": "0e38596bdbf806b330a6f577fc2d7b14136c9e80b9a91128ab6a521d173a47e9",
+      "archive": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/metadata-transport-reconciliation-2026-10-29/provider-resume/HANDOFF.md",
+      "archiveSha256": "dccde6629842f66eeac1fb5eecb093a06a3889ae5074b937058be5179c8605b9",
+      "classification": "Original evidence verified from its pre-existing public archive; current external bytes differ"
+    }
+  ],
+  "externalSourcePreservationScope": "Pinned historical original evidence only; source drift is explicit and establishes no freshness or acceptance",
+  "priorFactualNullsPreserved": 79,
+  "publicOwnerReferencesVerified": 93,
+  "markdownLinksVerified": 21,
+  "ownerFormSha256": "35e134ea0e907abfa7cc7d69f81661f914fd059b0ad5ae6b518e433415c7b9ec",
+  "readmeSha256": "7ea7dbe25f935fe028debb72a0ca4edc268fa3dbcccf00d84014c4f4f3e9a167",
+  "specSha256": "6ef9cbd755e9d2da7e2418b8fcc82a94054e2ccf1445c3e5d68b255b7bf38e63",
+  "provenanceSha256": "2b49ca162ffca14cc7589abe9eddea05c6e35d34077c1e8db3a8b34841fad8ad",
+  "verifierSha256": "2851e1b37e61d6ff3d6103db24a4bd435fa814902199a430b2506b91b1c4a5be",
+  "historicalIndexObservation": {
+    "stagedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentIndexCompared": false,
+    "classification": "Historical observation only"
+  },
+  "applicableDocumentationAcceptance": "Correction manifests/source hashes, pointers, archives and blocked-return boundaries verified",
+  "fullPacketAndRecoveryFixtureAcceptance": "Deferred; actual installations, accepted shared target/dates and reopened full delivery remain prerequisites",
+  "runtimeSourceChanges": 0,
+  "liveInvocations": 0,
+  "credentialOperations": 0,
+  "qualificationInvocations": 0,
+  "cohortAttemptsReserved": 0,
+  "dependencyAvailable": false,
+  "operationCountScope": "This offline reconciliation only; separate concurrent native metadata-access observations are not attributed to it",
+  "completeReplacementPacket": false,
+  "fullDeliveryComplete": false
+}

@@ -1,0 +1,143 @@
+{
+  "qualifiedAtUtc": "2026-10-28T10:23:51.408433+00:00",
+  "story": "2.5",
+  "qualificationStatus": "source-live-qualified",
+  "freshLiveQualification": true,
+  "mode": "source",
+  "executionContext": "local",
+  "platform": "Linux/WSL x64",
+  "daprHome": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+  "daprCliVersion": "1.18.2",
+  "daprRuntimeVersion": "1.18.7",
+  "aspireCliVersion": "13.6.4",
+  "liveTestPassed": true,
+  "liveScenariosPassed": 4,
+  "durationSeconds": 423.363,
+  "scenarioResults": [
+    {
+      "scenario": "success",
+      "runId": "d915806c4edeb9e72c288d3773f9b267",
+      "outcome": "passed",
+      "cause": "tests-completed",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "failure",
+      "runId": "95741970230e1b66376a3ee59026453d",
+      "outcome": "failed",
+      "cause": "test-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 2,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "timeout",
+      "runId": "5bfc28751ce456377605a546ec58bab9",
+      "outcome": "failed",
+      "cause": "execution-timeout",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    },
+    {
+      "scenario": "partial-startup",
+      "runId": "b196750ff989f2dd9d0e28db283dae23",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "cleanupComplete": true,
+      "diagnosticHashesVerified": 1,
+      "peerContainersAndStableProcessesPreserved": true,
+      "peerRedisValue": "unchanged"
+    }
+  ],
+  "cleanupAttempts": {
+    "success": [
+      {
+        "attempt": 1,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "failure": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "timeout": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ],
+    "partial-startup": [
+      {
+        "attempt": 1,
+        "exitCode": 3,
+        "ruleId": "HXR028"
+      },
+      {
+        "attempt": 2,
+        "exitCode": 0,
+        "ruleId": null
+      }
+    ]
+  },
+  "ownedContainersProcessesWorkspacesClaimsAbsent": true,
+  "independentPeerContainersStableProcessesAndDataPreserved": true,
+  "runtimeArchiveByteParityPassed": true,
+  "immutableResultFieldsPreservedAcrossFinalCleanup": true,
+  "retainedEvidenceAuditPassed": true,
+  "relocatedEvidenceAuditPassed": true,
+  "sourceFilesUnchanged": 234,
+  "priorOfflineVerification": {
+    "executedPassingCases": 950,
+    "sourceHashesMatched": 184,
+    "rerunDuringThisQualification": false,
+    "evidence": "../source-review-fixes-20261028/verification.json"
+  },
+  "packageQualification": false,
+  "windowsMacOSNativeQualification": false,
+  "storySprintStatus": "review",
+  "productSourceChanges": false,
+  "pushed": false,
+  "supersededAuditObservations": [
+    {
+      "command": "host-before.command.json",
+      "resolution": "The preexisting protected user systemd process is tracked by PID/start time; no newly uninspectable process exists after teardown."
+    },
+    {
+      "command": "runtime-audit.command.json",
+      "resolution": "Repeated final cleanup changes cleanup/retention observations and cleanup-request attempt identity. Preserve both snapshots, compare all immutable result fields, and verify complete final snapshots byte-for-byte against the runtime."
+    }
+  ],
+  "evidence": {
+    "liveCommand": "live-qualification.command.json",
+    "testXml": "platform-live-tests.xml",
+    "runtimeAudit": "runtime-audit.json",
+    "retainedAudit": "retained-audit.json",
+    "hostAudit": "host-after.json",
+    "portability": "portability.json",
+    "sourceBefore": "source-before.json",
+    "sourceAfter": "source-after.json"
+  },
+  "frozenIntentPreserved": true,
+  "executedAssemblyBytesUnchangedThroughQualification": true
+}

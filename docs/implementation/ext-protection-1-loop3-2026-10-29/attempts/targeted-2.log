@@ -1,0 +1,24 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.OwnGrantCannotRelabelForeignSourceGuardOrOwnerIdentity [FAIL]
+      Shouldly.ShouldAssertException : await new DaprErasureRootOccurrenceSource(receiver.Authority).RegisterOriginalAsync(original, token)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop3ReceivingTests.cs(33,0): at Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.OwnGrantCannotRelabelForeignSourceGuardOrOwnerIdentity()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '4ce8cde9c2460452574835c32d29e475d7078c9d923b189867e395df944eb55f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 34, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 2.305s

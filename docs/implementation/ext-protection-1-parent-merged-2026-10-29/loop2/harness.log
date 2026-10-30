@@ -1,0 +1,14 @@
+test_credential_never_follows_redirect_to_another_origin (test_bootstrap.BootstrapRedirectTests.test_credential_never_follows_redirect_to_another_origin) ... /usr/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 302: 'Found'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_probe_uses_verified_https_native_health_and_never_listening_tcp (test_bootstrap.PreparedReadinessTests.test_probe_uses_verified_https_native_health_and_never_listening_tcp) ... ok
+test_unready_headless_service_dns_is_not_needed_to_become_ready (test_bootstrap.PreparedReadinessTests.test_unready_headless_service_dns_is_not_needed_to_become_ready) ... ok
+test_invalid_assembly_pin_refuses_before_docker (test_probe_erc_native.NativeHarnessControls.test_invalid_assembly_pin_refuses_before_docker) ... ok
+test_missing_local_image_cannot_create_or_pull (test_probe_erc_native.NativeHarnessControls.test_missing_local_image_cannot_create_or_pull) ... ok
+test_shared_container_creation_is_offline_tmpfs_and_create_only (test_probe_erc_native.NativeHarnessControls.test_shared_container_creation_is_offline_tmpfs_and_create_only) ... ok
+test_source_has_only_the_narrow_five_native_cases (test_probe_erc_native.NativeHarnessControls.test_source_has_only_the_narrow_five_native_cases) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.508s
+
+OK

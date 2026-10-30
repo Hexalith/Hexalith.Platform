@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "evidenceMode": "recorded-evidence",
+  "environment": {
+    "name": "staging",
+    "context": "jpiquot@local",
+    "apiServer": "https://192.168.1.30:6443",
+    "clusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "applicationNamespace": "hexalith-staging",
+    "dataNamespace": "hexalith-staging-data"
+  },
+  "providers": {
+    "openbao": null,
+    "tenantStore": null,
+    "dapr": null,
+    "installationTool": null,
+    "verificationTool": null
+  },
+  "ordinaryStore": null,
+  "tenantStore": null,
+  "snapshotBoundary": {
+    "ordinaryStateMembers": null,
+    "tenantKeyStateMembers": null,
+    "separationEvidenceRef": null
+  },
+  "network": {
+    "dnsNamespace": "kube-system",
+    "dnsPodLabels": {
+      "key": "k8s-app",
+      "value": "kube-dns"
+    },
+    "resolverDatapathEvidenceRef": null,
+    "policyEvidenceRef": null,
+    "dependencies": null
+  },
+  "authority": {
+    "environmentLayerPrincipal": null,
+    "sharedInfrastructurePrincipal": null,
+    "jobPrincipals": null,
+    "rbacEvidenceRef": null
+  },
+  "custody": {
+    "administrator": null,
+    "deputy": null,
+    "mechanismRef": null,
+    "manualUnsealProcedureRef": null,
+    "coverage": null,
+    "monitoringEvidenceRef": null
+  },
+  "backup": {
+    "ordinary": null,
+    "tenantKeys": null,
+    "retentionPolicyRef": null,
+    "erasureLineageAuthorityRef": null,
+    "fenceReissueProcedureRef": null,
+    "restoreQualificationRef": null
+  },
+  "secretContract": {
+    "path": null,
+    "digest": null,
+    "generationOwner": null,
+    "apps": null
+  },
+  "bootstrapToken": {
+    "name": "openbao-runtime-bootstrap",
+    "historicalExpiry": "2027-07-19",
+    "inventoryEvidenceRef": null,
+    "classificationDecisionRef": null,
+    "cutoverOwner": null,
+    "cutoverDeadline": null,
+    "revocationAuthorityRef": null
+  },
+  "verificationRecovery": {
+    "foundationAcceptanceRef": null,
+    "verificationOwner": null,
+    "verificationPlanRef": null,
+    "recoveryAuthorityRef": null,
+    "approvalRecordRef": null
+  },
+  "_provenance": {
+    "/environment/context": {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "pointer": "/target/context",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded target only; no deployment or live acceptance."
+    },
+    "/environment/apiServer": {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "pointer": "/target/api",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded target only; no deployment or live acceptance."
+    },
+    "/environment/clusterUid": {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "pointer": "/target/clusterUid",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded target only; no deployment or live acceptance."
+    },
+    "/environment/applicationNamespace": {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "pointer": "/target/applicationNamespace",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded target only; no deployment or live acceptance."
+    },
+    "/environment/dataNamespace": {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "pointer": "/target/dataNamespace",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded target only; no deployment or live acceptance."
+    },
+    "/environment/name": {
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "pointer": null,
+      "lineStart": 143,
+      "lineEnd": 143,
+      "meaning": "Architectural staging environment dimension, not a live instance selection."
+    },
+    "/network/dnsNamespace": {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "pointer": "/observations/workloads/records/105/namespace",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded CoreDNS namespace only; actual resolver datapath remains unqualified."
+    },
+    "/network/dnsPodLabels/key": {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "pointer": "/observations/workloads/records/105/selector",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Selector key from the recorded single-entry selector; no policy or pod resolver claim."
+    },
+    "/network/dnsPodLabels/value": {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+      "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+      "pointer": "/observations/workloads/records/105/selector/k8s-app",
+      "lineStart": null,
+      "lineEnd": null,
+      "meaning": "Recorded CoreDNS selector value only; no live DNS datapath acceptance."
+    },
+    "/bootstrapToken/name": {
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "pointer": null,
+      "lineStart": 502,
+      "lineEnd": 502,
+      "meaning": "Historical identifier, never a token value; policies, privilege and custody remain unproven."
+    },
+    "/bootstrapToken/historicalExpiry": {
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "sha256": "cc95a53ab85becee18f924cc9a1a915a2a05fcce8caed3a3d46643ee1051e936",
+      "pointer": null,
+      "lineStart": 502,
+      "lineEnd": 502,
+      "meaning": "Historical expiry; not a current token lookup, renewability or validity claim."
+    }
+  }
+}

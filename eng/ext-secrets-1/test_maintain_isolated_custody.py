@@ -14,6 +14,16 @@ import maintain_isolated_custody as subject
 from native_journal import durable_write
 
 NOW = datetime(2030, 1, 2, 1, 2, 3, 456780, timezone.utc)
+# Independent authorization fixture: changing production constants must not
+# silently widen the one transition authorized by the reconciliation spec.
+PUBLIC_REFRESH = {
+    'reference': 'Secret/kubesphere-system/kubesphere-sa-token',
+    'originalIdentity': {'uid': 'a97fa037-798b-46b6-9232-76e600480142', 'resourceVersion': '36774577'},
+    'observedIdentity': {'uid': 'a97fa037-798b-46b6-9232-76e600480142', 'resourceVersion': '37223806'},
+    'label': {'name': 'kubernetes.io/legacy-token-last-used', 'value': '2026-10-28'},
+    'managedField': {'manager': 'kube-apiserver', 'operation': 'Update', 'apiVersion': 'v1',
+        'fieldsType': 'FieldsV1', 'time': '2026-10-28T00:00:02Z',
+        'fieldsV1': {'f:metadata': {'f:labels': {'f:kubernetes.io/legacy-token-last-used': {}}}}}}
 
 
 class Clock(datetime):
@@ -139,7 +149,7 @@ class MaintenanceTests(unittest.TestCase):
         return bytearray(('synthetic-private-token-' + role).encode())
 
     def snapshot(self):
-        result = {}
+        result = deepcopy(getattr(self, 'snapshot_extras', {}))
         for key, obj in self.objects.items():
             material = {name: value for name, value in obj.items() if name not in ('metadata', 'status', 'kind', 'apiVersion')}
             material['metadata'] = {name: obj['metadata'][name] for name in ('labels', 'annotations') if name in obj['metadata']}
@@ -558,6 +568,400 @@ class MaintenanceTests(unittest.TestCase):
                 native.assert_not_called()
         self.assertEqual(subject.validate_baseline(output), self.state)
         self.assertTrue(all(path.read_bytes() == content for path, content in originals.items()))
+
+    def completed_public_refresh_fixture(self, legacy=False):
+        """Synthetic owner evidence only; no assertion about real historical scope."""
+        transition = PUBLIC_REFRESH
+        self.snapshot_extras = {transition['reference']: deepcopy(transition['originalIdentity']),
+            'Secret/other/untouched': {'uid': 'untouched', 'resourceVersion': '1'}}
+        durable_write(self.baseline / 'preserved-kubernetes-before.json', self.snapshot())
+        subject.maintain(self.instance)
+        plan = subject.read(self.evidence / 'maintenance-plan.json')
+        facts = {'state': deepcopy(self.state),
+            'credentials': {role: subject.read(self.evidence / ('credential-' + role + '.after.json')) for role in ('data', 'metadata')},
+            'key_metadata': deepcopy(self.metadata), 'public_runtime': subject.read(self.runtime),
+            'openbao': {'existing-policy-hashes': 'preserved'},
+            'objects': [deepcopy(self.objects[item['reference']]) for item in plan['objects']],
+            'health': subject.read(self.evidence / 'health.after.json'),
+            'output': self.evidence.parent / 'accepted-baseline'}
+        self.snapshot_extras[transition['reference']] = deepcopy(transition['observedIdentity'])
+        facts['kubernetes'] = self.snapshot()
+        current = {'name': 'kubesphere-sa-token', 'namespace': 'kubesphere-system',
+            **transition['observedIdentity'], 'annotations': {'preserved': 'annotation'},
+            'labels': {transition['label']['name']: transition['label']['value'], 'preserved': 'label'},
+            'managedFields': [{'manager': 'original-manager', 'time': '2026-07-16T12:04:47Z'}, deepcopy(transition['managedField'])]}
+        blocker = self.baseline / 'next-maintenance-baseline-blocker.json'
+        durable_write(blocker, {'phase': 'NextMaintenanceBaselineBlocked', 'baselineIssued': False,
+            **{key: transition[key] for key in ('reference', 'originalIdentity', 'observedIdentity')}, 'publicMetadata': current})
+        current_path = self.evidence.parent / 'current-public-metadata.json'
+        durable_write(current_path, dict(current, creationTimestamp='2026-07-16T12:04:47Z'))
+        historical = self.evidence.parent / 'synthetic-owner-historical-evidence.json'
+        durable_write(historical, {'fixture': 'synthetic historical evidence accepted by a test owner',
+            'writeCount': 1, 'onlyChangedField': 'metadata.labels.kubernetes.io/legacy-token-last-used',
+            'noOtherSecretFieldChanges': True, 'noInterveningWrites': True})
+        fingerprint = lambda path: {'path': str(path), 'sha256': subject.sha(path.read_bytes())}
+        acceptance = self.evidence.parent / 'synthetic-owner-acceptance.json'
+        durable_write(acceptance, {'schema': 'EXT-SECRETS-1.public-metadata-acceptance.v1',
+            'ownerIdentity': 'Synthetic cluster credential owner',
+            'historicalEvidence': {'sourceDescription': 'Synthetic complete historical write scope for offline tests', 'files': [fingerprint(historical)]},
+            'retainedBlocker': fingerprint(blocker), 'currentPublicMetadata': fingerprint(current_path),
+            'transition': deepcopy(transition), 'attestation': {'ownerAccepted': True,
+                'historicalEvidenceEstablishesOnlyLabelRefresh': True, 'noOtherSecretFieldChanges': True, 'noInterveningWrites': True}})
+        if legacy:
+            # The completed real run retains all nine journals and plan in operations/.
+            operations = self.evidence / 'operations'
+            operations.mkdir()
+            for path in self.evidence.glob('*.json'):
+                path.rename(operations / path.name)
+        return plan, facts, acceptance
+
+    def emit_public_facts_offline(self, plan, facts, acceptance=None):
+        with patch.object(subject, 'administration_request') as admin, patch.object(subject, 'application_request') as provider, \
+             patch.object(subject, 'kube') as kube, patch.object(subject, 'kjson') as kjson, \
+             patch.object(subject, 'read_pinned_credential_secret') as credential, patch.object(subject, 'http_health') as health, \
+             patch.object(self.instance, 'credential') as lookup, patch.object(self.instance, 'metadata') as metadata, \
+             patch.object(self.instance, 'openbao_snapshot') as policies:
+            try:
+                return subject.emit_verified_baseline(self.instance, plan, **facts, public_metadata_acceptance=acceptance)
+            finally:
+                for installed in (admin, provider, kube, kjson, credential, health, lookup, metadata, policies):
+                    installed.assert_not_called()
+
+    def test_owner_accepted_public_refresh_retains_exact_facts_and_legacy_journals_without_installed_calls(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture(legacy=True)
+        originals = {path: path.read_bytes() for root in (self.baseline, self.binding, self.evidence)
+                     for path in root.rglob('*') if path.is_file()}
+        output = self.emit_public_facts_offline(plan, facts, acceptance)
+        self.assertEqual(subject.validate_baseline(output), self.state)
+        self.assertEqual(len(subject.read(output / 'original-owner-receipts.json')), 19)
+        self.assertEqual(subject.read(output / 'authority-state.before.json')['audit'], self.state['audit'])
+        self.assertEqual(subject.read(output / 'key-metadata.before.json'), self.metadata)
+        self.assertEqual(subject.read(output / 'preserved-openbao-before.json'), facts['openbao'])
+        self.assertEqual(subject.read(output / 'runtime-reference.json'), plan['publicRuntime'])
+        self.assertEqual(len(subject.null_paths(subject.read(output / 'runtime-reference.json'))), 42)
+        self.assertEqual(subject.read(output / 'runtime-reference.json')['runtime']['timing'], self.public['runtime']['timing'])
+        for role in ('data', 'metadata'):
+            retained = subject.read(output / 'credentials.before.json')[role]
+            self.assertEqual(retained['lease'], facts['credentials'][role]['lease'])
+            self.assertEqual(retained['originalRecordedSecretIdentity'], self.identities[role])
+            self.assertEqual(subject.credential_identity(role, output), subject.credential_identity(role, self.baseline))
+        retained_acceptance = subject.read(output / 'accepted-public-metadata-difference.json')
+        self.assertEqual(retained_acceptance['acceptedDifference'], PUBLIC_REFRESH)
+        self.assertIn('never truth or authenticity', retained_acceptance['trustBoundary'])
+        manifest = subject.read(output / 'baseline-verification.json')
+        for name in ['maintenance-plan.json', 'renewal-data.json', 'runtime-file-update.json', 'completion.json',
+                     *('owner-operation-' + str(index) + '.json' for index in range(9))]:
+            path = self.evidence / 'operations' / name
+            self.assertEqual(manifest['sourceFingerprints'][str(path)], subject.sha(path.read_bytes()))
+        self.assertTrue(all(path.read_bytes() == content for path, content in originals.items()))
+        output_before = {path: path.read_bytes() for path in output.iterdir()}
+        self.assertEqual(self.emit_public_facts_offline(plan, facts, acceptance), output)
+        self.assertTrue(all(path.read_bytes() == content for path, content in output_before.items()))
+
+    def test_only_original_identity_and_current_managed_fields_never_establish_historical_scope(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        with self.assertRaisesRegex(RuntimeError, 'owner-historical-scope-evidence-missing'):
+            self.emit_public_facts_offline(plan, facts)
+        self.assertFalse(facts['output'].exists())
+        record = subject.read(acceptance)
+        cases = [('owner', lambda value: value.update(ownerIdentity='')),
+                 ('attestation', lambda value: value['attestation'].update(noInterveningWrites=False)),
+                 ('missing-attestation', lambda value: value.pop('attestation')),
+                 ('no-historical-files', lambda value: value['historicalEvidence'].update(files=[])),
+                 ('no-historical-source', lambda value: value['historicalEvidence'].update(sourceDescription='')),
+                 ('wildcard-schema', lambda value: value.update(ignoreLabels=['*'])),
+                 ('missing-blocker', lambda value: value.pop('retainedBlocker')),
+                 ('current-metadata-as-history', lambda value: value['historicalEvidence'].update(files=[value['currentPublicMetadata']]))]
+        for name, mutate in cases:
+            with self.subTest(name=name):
+                changed = deepcopy(record)
+                mutate(changed)
+                durable_write(acceptance, changed)
+                with self.assertRaises(RuntimeError):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+        durable_write(acceptance, record)
+
+    def test_acceptance_denies_wrong_identity_later_refresh_other_resource_and_independent_drift(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        reference = PUBLIC_REFRESH['reference']
+        for name, change in [('uid', {'uid': 'replacement'}), ('resourceVersion', {'resourceVersion': '37223807'})]:
+            with self.subTest(name=name):
+                changed = deepcopy(facts)
+                changed['kubernetes'][reference].update(change)
+                with self.assertRaisesRegex(RuntimeError, 'outside-exact-recorded-transition'):
+                    self.emit_public_facts_offline(plan, changed, acceptance)
+                self.assertFalse(facts['output'].exists())
+        changed = deepcopy(facts)
+        changed['kubernetes']['Secret/other/untouched']['resourceVersion'] = '2'
+        with self.assertRaisesRegex(RuntimeError, 'preservation-mismatch'):
+            self.emit_public_facts_offline(plan, changed, acceptance)
+        self.assertFalse(facts['output'].exists())
+        record = subject.read(acceptance)
+        for field, value in [('reference', 'Secret/other/untouched'), ('observedIdentity', {'uid': 'replacement', 'resourceVersion': '37223806'})]:
+            changed = deepcopy(record)
+            changed['transition'][field] = value
+            durable_write(acceptance, changed)
+            with self.assertRaises(RuntimeError):
+                self.emit_public_facts_offline(plan, facts, acceptance)
+            self.assertFalse(facts['output'].exists())
+        durable_write(acceptance, record)
+        before = len(self.posts), len(self.renewals), len(self.replaces)
+        with self.assertRaisesRegex(RuntimeError, 'out-of-scope-kubernetes-preservation-change'):
+            subject.inspect(self.instance)
+        with self.assertRaisesRegex(RuntimeError, 'out-of-scope-kubernetes-preservation-change'):
+            subject.maintain(self.instance)
+        self.assertEqual((len(self.posts), len(self.renewals), len(self.replaces)), before)
+
+    def test_current_public_metadata_must_match_retained_blocker_and_exact_label_manager_time_fields(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        current_path = Path(record['currentPublicMetadata']['path'])
+        blocker_path = Path(record['retainedBlocker']['path'])
+        current, blocker = subject.read(current_path), subject.read(blocker_path)
+        for name, mutate in [('annotation', lambda value: value['annotations'].update(extra='drift')),
+                             ('later-label', lambda value: value['labels'].update({'kubernetes.io/legacy-token-last-used': '2026-10-29'})),
+                             ('later-time', lambda value: value['managedFields'][-1].update(time='2026-10-29T00:00:02Z')),
+                             ('manager', lambda value: value['managedFields'][-1].update(manager='foreign-manager')),
+                             ('fields', lambda value: value['managedFields'][-1]['fieldsV1'].update({'f:data': {}})),
+                             ('extra-metadata', lambda value: value.update(finalizers=['new-finalizer'])),
+                             ('secret-data', lambda value: value.update(data={'token': 'prohibited-fixture'}))]:
+            with self.subTest(name=name):
+                changed = deepcopy(current)
+                mutate(changed)
+                durable_write(current_path, changed)
+                owner_record = deepcopy(record)
+                owner_record['currentPublicMetadata']['sha256'] = subject.sha(current_path.read_bytes())
+                durable_write(acceptance, owner_record)
+                with self.assertRaises(RuntimeError):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+                # Even matching retained metadata cannot widen the exact manager/time/fields boundary.
+                if name in ('later-label', 'later-time', 'manager', 'fields'):
+                    altered_blocker = deepcopy(blocker)
+                    altered_blocker['publicMetadata'] = changed
+                    durable_write(blocker_path, altered_blocker)
+                    owner_record['retainedBlocker']['sha256'] = subject.sha(blocker_path.read_bytes())
+                    durable_write(acceptance, owner_record)
+                    with self.assertRaisesRegex(RuntimeError, 'label-manager-time-or-fields-mismatch'):
+                        self.emit_public_facts_offline(plan, facts, acceptance)
+                    self.assertFalse(facts['output'].exists())
+                    durable_write(blocker_path, blocker)
+        durable_write(current_path, current)
+        durable_write(acceptance, record)
+
+    def test_acceptance_and_every_evidence_source_are_pinned_against_tampering(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        output = self.emit_public_facts_offline(plan, facts, acceptance)
+        record = subject.read(acceptance)
+        paths = [acceptance, *(Path(source['path']) for source in [record['retainedBlocker'], record['currentPublicMetadata'], *record['historicalEvidence']['files']]),
+                 output / 'accepted-public-metadata-difference.json', self.evidence / 'maintenance-plan.json',
+                 *(self.evidence / ('owner-operation-' + str(index) + '.json') for index in range(9))]
+        for path in paths:
+            with self.subTest(path=path.name):
+                original = path.read_bytes()
+                path.write_bytes(original + b' ')
+                with self.assertRaisesRegex(RuntimeError, 'provenance-changed'):
+                    subject.validate_baseline(output)
+                path.write_bytes(original)
+        alternative = acceptance.with_name('different-owner-acceptance.json')
+        durable_write(alternative, dict(record, ownerIdentity='Another synthetic owner'))
+        with self.assertRaisesRegex(RuntimeError, 'acceptance-or-preservation-changed'):
+            self.emit_public_facts_offline(plan, facts, alternative)
+        self.assertEqual(subject.validate_baseline(output), self.state)
+
+    def test_missing_or_changed_historical_file_denies_before_output_and_original_bytes_survive(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        path = Path(record['historicalEvidence']['files'][0]['path'])
+        before = path.read_bytes()
+        path.write_bytes(before + b' ')
+        with self.assertRaisesRegex(RuntimeError, 'evidence-changed'):
+            self.emit_public_facts_offline(plan, facts, acceptance)
+        self.assertFalse(facts['output'].exists())
+        path.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'evidence-changed'):
+            self.emit_public_facts_offline(plan, facts, acceptance)
+        self.assertFalse(facts['output'].exists())
+        path.write_bytes(before)
+
+    def test_later_baseline_still_pins_the_full_accepted_owner_evidence_chain(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        accepted_baseline = self.emit_public_facts_offline(plan, facts, acceptance)
+        Clock.current = NOW + timedelta(hours=6)
+        self.evidence = self.evidence.parent / 'later-maintenance'
+        self.evidence.mkdir()
+        self.instance.evidence, self.instance.baseline = self.evidence, accepted_baseline
+        subject.maintain(self.instance)
+        later_baseline = self.evidence / 'verified-next-baseline'
+        self.assertEqual(len(subject.validate_baseline(later_baseline)['audit']), 28)
+        original = acceptance.read_bytes()
+        acceptance.write_bytes(original + b' ')
+        with self.assertRaisesRegex(RuntimeError, 'provenance-changed'):
+            subject.validate_baseline(later_baseline)
+        acceptance.write_bytes(original)
+
+    def test_owner_record_snapshot_and_all_accepted_evidence_are_rechecked_before_output(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        original_owner = acceptance.read_bytes()
+        fingerprint = subject.fingerprinted_public_file
+        mutated = False
+
+        def mutate_owner_during_validation(source):
+            nonlocal mutated
+            if not mutated:
+                mutated = True
+                changed = json.loads(original_owner)
+                changed['ownerIdentity'] = 'Changed during validation'
+                durable_write(acceptance, changed)
+            return fingerprint(source)
+
+        with patch.object(subject, 'fingerprinted_public_file', side_effect=mutate_owner_during_validation):
+            with self.assertRaisesRegex(RuntimeError, 'evidence-changed'):
+                self.emit_public_facts_offline(plan, facts, acceptance)
+        self.assertFalse(facts['output'].exists())
+        acceptance.write_bytes(original_owner)
+        validate = subject.accepted_public_metadata
+        pins = validate(acceptance)['sourceFingerprints']
+        for name in pins:
+            with self.subTest(path=Path(name).name):
+                target = Path(name)
+                original = target.read_bytes()
+
+                def mutate_after_validation(*args, **kwargs):
+                    result = validate(*args, **kwargs)
+                    target.write_bytes(original + b' ')
+                    return result
+
+                with patch.object(subject, 'accepted_public_metadata', side_effect=mutate_after_validation):
+                    with self.assertRaisesRegex(RuntimeError, 'evidence-changed'):
+                        self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+                target.write_bytes(original)
+
+    def test_optional_creation_timestamp_rejects_invalid_and_nested_values_before_output(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        current_path = Path(record['currentPublicMetadata']['path'])
+        current = subject.read(current_path)
+        for value in (None, 7, True, [], {}, {'data': {'token': 'synthetic-nested-value'}},
+                      'not-a-timestamp', '2026-07-16', '2026-07-16T12:04:47'):
+            with self.subTest(value=value):
+                durable_write(current_path, dict(current, creationTimestamp=value))
+                changed = deepcopy(record)
+                changed['currentPublicMetadata']['sha256'] = subject.sha(current_path.read_bytes())
+                durable_write(acceptance, changed)
+                with self.assertRaisesRegex(RuntimeError, 'invalid-creation-timestamp'):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+
+    def test_historical_evidence_rejects_copied_hard_linked_and_empty_content(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        historical = Path(record['historicalEvidence']['files'][0]['path'])
+        current = Path(record['currentPublicMetadata']['path'])
+        blocker = Path(record['retainedBlocker']['path'])
+        cases = [('copy-current', current.read_bytes()), ('copy-blocker', blocker.read_bytes()),
+                 ('hard-link-current', None), ('empty', b''), ('whitespace', b' \n')]
+        for name, content in cases:
+            with self.subTest(name=name):
+                historical.unlink()
+                if content is None:
+                    historical.hardlink_to(current)
+                else:
+                    historical.write_bytes(content)
+                changed = deepcopy(record)
+                changed['historicalEvidence']['files'][0]['sha256'] = subject.sha(historical.read_bytes())
+                durable_write(acceptance, changed)
+                with self.assertRaisesRegex(RuntimeError, 'nonempty-distinct-historical-content'):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+
+    def test_accepted_export_requires_every_original_completed_journal_before_output(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture(legacy=True)
+        names = ['completion.json', 'renewal-data.json', 'renewal-metadata.json', 'runtime-file-update.json']
+        for item in plan['objects']:
+            kind, _, name = item['reference'].split('/')
+            names.append('runtime-update-' + kind.lower() + '-' + name + '.json')
+        for name in names:
+            with self.subTest(name=name):
+                path = self.evidence / 'operations' / name
+                original = path.read_bytes()
+                path.unlink()
+                with self.assertRaisesRegex(RuntimeError, 'missing-original-completed-journal:' + name):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+                path.write_bytes(original)
+
+    def test_output_reuse_rejects_changed_valid_credential_expiry_and_preserves_output_bytes(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        output = self.emit_public_facts_offline(plan, facts, acceptance)
+        before = {path: path.read_bytes() for path in output.iterdir()}
+        changed = deepcopy(facts)
+        changed['credentials']['data']['lease']['expire_time'] = (subject.instant(
+            facts['credentials']['data']['lease']['expire_time']) + timedelta(hours=1)).isoformat()
+        with self.assertRaisesRegex(RuntimeError, 'retained-next-maintenance-baseline-credential-facts-changed'):
+            self.emit_public_facts_offline(plan, changed, acceptance)
+        decreasing_ttl = deepcopy(facts)
+        decreasing_ttl['credentials']['data']['lease']['ttl'] -= 1
+        self.assertEqual(self.emit_public_facts_offline(plan, decreasing_ttl, acceptance), output)
+        self.assertTrue(all(path.read_bytes() == content for path, content in before.items()))
+
+    def test_malformed_public_metadata_types_have_actionable_errors_before_output(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        current_path = Path(record['currentPublicMetadata']['path'])
+        blocker_path = Path(record['retainedBlocker']['path'])
+        current, blocker = subject.read(current_path), subject.read(blocker_path)
+        cases = [('labels', None, 'invalid-labels-string-map'), ('labels', [], 'invalid-labels-string-map'),
+                 ('labels', {'nested': {}}, 'invalid-labels-string-map'),
+                 ('annotations', [], 'invalid-annotations-string-map'),
+                 ('annotations', {'nested': []}, 'invalid-annotations-string-map'),
+                 ('managedFields', {}, 'invalid-managed-fields-types'),
+                 ('managedFields', [None], 'invalid-managed-fields-types'),
+                 ('managedFields', [{'manager': []}], 'invalid-managed-fields-types'),
+                 ('managedFields', [{'manager': 'kube-apiserver', 'fieldsV1': []}], 'invalid-managed-fields-types')]
+        for field, value, reason in cases:
+            with self.subTest(field=field, value=value):
+                metadata = dict(current, **{field: value})
+                durable_write(current_path, metadata)
+                durable_write(blocker_path, dict(blocker, publicMetadata=metadata))
+                changed = deepcopy(record)
+                changed['currentPublicMetadata']['sha256'] = subject.sha(current_path.read_bytes())
+                changed['retainedBlocker']['sha256'] = subject.sha(blocker_path.read_bytes())
+                durable_write(acceptance, changed)
+                with self.assertRaisesRegex(RuntimeError, reason):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+
+    def test_owner_authorization_json_rejects_duplicate_fields_and_attestations(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        record = subject.read(acceptance)
+        encoded = json.dumps(record)
+        conflicting = deepcopy(record)
+        conflicting['attestation']['ownerAccepted'] = False
+        cases = [encoded[:-1] + ', "ownerIdentity": "Conflicting synthetic owner"}',
+                 encoded.replace('"ownerAccepted": true', '"ownerAccepted": false, "ownerAccepted": true'),
+                 json.dumps(conflicting)[:-1] + ', "attestation": ' + json.dumps(record['attestation']) + '}']
+        for value in cases:
+            with self.subTest(value=value):
+                acceptance.write_text(value)
+                with self.assertRaisesRegex(RuntimeError, 'duplicate-json-key'):
+                    self.emit_public_facts_offline(plan, facts, acceptance)
+                self.assertFalse(facts['output'].exists())
+
+    def test_output_reuse_rejects_changed_deployment_preservation_snapshot_with_same_owner_record(self):
+        plan, facts, acceptance = self.completed_public_refresh_fixture()
+        output = self.emit_public_facts_offline(plan, facts, acceptance)
+        before = {path: path.read_bytes() for path in output.iterdir()}
+        changed = deepcopy(facts)
+        deployment = changed['objects'][2]
+        deployment['metadata'].setdefault('annotations', {})['deployment.kubernetes.io/revision'] = '2'
+        self.assertEqual(subject.public_object(deployment), subject.public_object(plan['objects'][2]['intended']))
+        changed['kubernetes'][plan['objects'][2]['reference']] = subject.object_identity(deployment)
+        with self.assertRaisesRegex(RuntimeError, 'acceptance-or-preservation-changed'):
+            self.emit_public_facts_offline(plan, changed, acceptance)
+        self.assertTrue(all(path.read_bytes() == content for path, content in before.items()))
 
     def fractional_cap(self, sufficient):
         cap = NOW + timedelta(hours=4, microseconds=250000)

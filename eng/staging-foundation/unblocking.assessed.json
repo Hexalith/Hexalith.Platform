@@ -1,0 +1,1037 @@
+{
+  "kind": "staging-foundation-offline-unblocking-assessment",
+  "assessedDate": "2026-10-29",
+  "baselineCommit": "2a18cdd33fcb609a563011e9bfd4153f56445c63",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "story": "4-14",
+  "storyStatus": "in-progress",
+  "approvalGranted": false,
+  "liveAcceptance": false,
+  "executable": false,
+  "newCollectionPerformed": false,
+  "manifestBytesAvailable": false,
+  "applyPlanAvailable": false,
+  "scope": "Module-agnostic Platform foundation. Consumer acceptance never gates this assessment. This reassessment rechecks retained repository evidence without new observations or operational authority.",
+  "requiredFieldCount": 37,
+  "resolvedFieldCount": 2,
+  "missingFieldCount": 35,
+  "fieldInventory": [
+    {
+      "field": "storage.provisioner",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 1,
+      "question": "Which exact provisioner is approved for staging's node-encrypted volumes on this cluster, and which evidence records that selection?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 9
+    },
+    {
+      "field": "storage.parameters",
+      "kind": "map",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 2,
+      "question": "What exact string-to-string provisioner parameters are approved for the staging StorageClass, and where is that configuration evidenced?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 10
+    },
+    {
+      "field": "storage.reclaimPolicy",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 3,
+      "question": "Which reclaimPolicy, Retain or Delete, do you approve for staging's new StorageClass?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 11
+    },
+    {
+      "field": "storage.stagingStorageClassName",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 4,
+      "question": "What exact new staging StorageClass name do you approve?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 12
+    },
+    {
+      "field": "storage.productionStorageClassName",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 5,
+      "question": "Which exact production StorageClass name must staging quotas deny?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 13
+    },
+    {
+      "field": "storage.encryptionAttestation.evidenceRef",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 6,
+      "question": "What is the path/reference to current node-level volume-encryption evidence covering the staging backing devices and independent key custody?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 14
+    },
+    {
+      "field": "storage.encryptionAttestation.attestedBy",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 7,
+      "question": "Who is the named attestor for that node-encryption evidence?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 15
+    },
+    {
+      "field": "custody.holders",
+      "kind": "list",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 8,
+      "question": "Who are the named Administrator and deputy holders of the staging node-volume encryption keys, and where is their independent custody attested?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 16
+    },
+    {
+      "field": "priority.stagingValue",
+      "kind": "int",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 9,
+      "question": "What exact integer value do you approve for PriorityClass hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 17
+    },
+    {
+      "field": "priority.productionValue",
+      "kind": "int",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 10,
+      "question": "What exact production PriorityClass integer value will exceed staging's value, and where is it evidenced?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 18
+    },
+    {
+      "field": "priority.productionClassName",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 11,
+      "question": "What exact production PriorityClass name must the staging denial quota prohibit?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "storage-custody-priority",
+      "ownerDecision": null,
+      "questionLine": 19
+    },
+    {
+      "field": "deployIdentities.sharedInfrastructure",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 12,
+      "question": "What exact Kubernetes principal is approved to apply the shared-infrastructure layer?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "identities-network",
+      "ownerDecision": null,
+      "questionLine": 20
+    },
+    {
+      "field": "deployIdentities.environmentLayer",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 13,
+      "question": "What exact distinct Kubernetes principal is approved to apply the environment layer?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "identities-network",
+      "ownerDecision": null,
+      "questionLine": 21
+    },
+    {
+      "field": "deployIdentities.jobs",
+      "kind": "list",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 14,
+      "question": "What is the complete list of per-job Kubernetes deploy principals whose denial checks must pass?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "identities-network",
+      "ownerDecision": null,
+      "questionLine": 22
+    },
+    {
+      "field": "network.dns.namespace",
+      "kind": "str",
+      "value": "kube-system",
+      "state": "observed-only",
+      "provenance": {
+        "sources": [
+          {
+            "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+            "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+            "pointer": "/observations/workloads/records/105/namespace"
+          },
+          {
+            "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t085143z-census/inventory.json",
+            "sha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf",
+            "pointer": "/resources/760/namespace"
+          }
+        ],
+        "observedAt": "2026-10-29T17:30:45.207505+00:00",
+        "meaning": "Observed CoreDNS namespace; not proof of the effective pod resolver datapath.",
+        "collectionCompletedAt": "2026-10-29T17:30:48.110013+00:00"
+      }
+    },
+    {
+      "field": "network.dns.podLabels",
+      "kind": "map",
+      "value": {
+        "k8s-app": "kube-dns"
+      },
+      "state": "observed-only",
+      "provenance": {
+        "sources": [
+          {
+            "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+            "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+            "pointer": "/observations/workloads/records/105/selector"
+          }
+        ],
+        "observedAt": "2026-10-29T17:30:45.207505+00:00",
+        "meaning": "Exact current CoreDNS Service pod selector; not a claim that NodeLocal DNS traffic is allowed by the rendered policy.",
+        "collectionCompletedAt": "2026-10-29T17:30:48.110013+00:00"
+      }
+    },
+    {
+      "field": "network.dataServices",
+      "kind": "list",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 15,
+      "question": "What complete module-agnostic list of staging data-service names and native-TLS TCP ports is approved, with evidence that each selected port terminates TLS?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "identities-network",
+      "ownerDecision": null,
+      "questionLine": 23
+    },
+    {
+      "field": "limitRange.defaultRequestCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 16,
+      "question": "What exact default container CPU request do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 24
+    },
+    {
+      "field": "limitRange.defaultRequestMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 17,
+      "question": "What exact default container memory request do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 25
+    },
+    {
+      "field": "limitRange.defaultLimitCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 18,
+      "question": "What exact default container CPU limit do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 26
+    },
+    {
+      "field": "limitRange.defaultLimitMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 19,
+      "question": "What exact default container memory limit do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 27
+    },
+    {
+      "field": "limitRange.pvcMinStorage",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 20,
+      "question": "What exact minimum PVC storage quantity do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 28
+    },
+    {
+      "field": "limitRange.pvcMaxStorage",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 21,
+      "question": "What exact maximum PVC storage quantity do you approve for both staging namespaces?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 29
+    },
+    {
+      "field": "quotas.application.requestsCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 22,
+      "question": "What exact aggregate CPU request quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 30
+    },
+    {
+      "field": "quotas.application.requestsMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 23,
+      "question": "What exact aggregate memory request quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 31
+    },
+    {
+      "field": "quotas.application.limitsCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 24,
+      "question": "What exact aggregate CPU limit quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 32
+    },
+    {
+      "field": "quotas.application.limitsMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 25,
+      "question": "What exact aggregate memory limit quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 33
+    },
+    {
+      "field": "quotas.application.pods",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 26,
+      "question": "What exact pod-count quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 34
+    },
+    {
+      "field": "quotas.application.persistentVolumeClaims",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 27,
+      "question": "What exact PVC-count quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 35
+    },
+    {
+      "field": "quotas.application.requestsStorage",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 28,
+      "question": "What exact aggregate requested-storage quota do you approve for hexalith-staging?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 36
+    },
+    {
+      "field": "quotas.data.requestsCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 29,
+      "question": "What exact aggregate CPU request quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 37
+    },
+    {
+      "field": "quotas.data.requestsMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 30,
+      "question": "What exact aggregate memory request quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 38
+    },
+    {
+      "field": "quotas.data.limitsCpu",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 31,
+      "question": "What exact aggregate CPU limit quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 39
+    },
+    {
+      "field": "quotas.data.limitsMemory",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 32,
+      "question": "What exact aggregate memory limit quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 40
+    },
+    {
+      "field": "quotas.data.pods",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 33,
+      "question": "What exact pod-count quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 41
+    },
+    {
+      "field": "quotas.data.persistentVolumeClaims",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 34,
+      "question": "What exact PVC-count quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 42
+    },
+    {
+      "field": "quotas.data.requestsStorage",
+      "kind": "str",
+      "value": null,
+      "state": "unresolved",
+      "questionNumber": 35,
+      "question": "What exact aggregate requested-storage quota do you approve for hexalith-staging-data?",
+      "questionRef": "eng/staging-foundation/MISSING-INPUTS.md",
+      "ownerGroup": "resource-budgets",
+      "ownerDecision": null,
+      "questionLine": 43
+    }
+  ],
+  "ownerDecisionGroups": [
+    {
+      "id": "storage-custody-priority",
+      "answer": null,
+      "questionNumbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "question": "Which exact encrypted staging storage configuration, production-class denial, independent Administrator/deputy custody and relative priority choices do you approve, with evidence and attestor?"
+    },
+    {
+      "id": "identities-network",
+      "answer": null,
+      "questionNumbers": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "question": "Which separated layer/job principals, complete RBAC definitions, real DNS path and complete per-service native-TLS/network flows do you approve, and which digest-pinned probe image and finite cleanup deadline may a later authorization cover?"
+    },
+    {
+      "id": "resource-budgets",
+      "answer": null,
+      "questionNumbers": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "question": "Which exact namespace CPU/memory/container/PVC defaults, bounds, counts and aggregate quotas do you approve, with units, ordering and budget evidence?"
+    },
+    {
+      "id": "provider-bootstrap-acceptance",
+      "answer": null,
+      "questionNumbers": [],
+      "question": "Which limited foundation milestone and authorization boundary, if any, do you approve before environment-owned provider bootstrap with workload deployment authority withheld, and which complete ordered bootstrap, actual-provider TLS/denial verification and final 4.14 acceptance sequence preserves all required proof without making 4.15/4.16 story acceptance a reverse foundation gate?"
+    }
+  ],
+  "phasePrerequisites": [
+    {
+      "phase": "before-render",
+      "requirements": [
+        {
+          "id": "resolve-fields",
+          "state": "pending",
+          "requirement": "Resolve all 35 null fields by an explicit recorded owner decision or current source evidence, keeping exact individual questions and provenance. Never adopt example or synthetic values."
+        },
+        {
+          "id": "quantity-validation",
+          "state": "pending",
+          "requirement": "Review quantity syntax, units, nonnegative ranges, request/limit and PVC min/max ordering and quota consistency; current string checks do not establish Kubernetes validity or capacity suitability."
+        },
+        {
+          "id": "empty-storage-parameters",
+          "state": "pending-owner-selection",
+          "requirement": "If the approved provisioner needs an empty map, record that legitimate choice and separately correct/review the offline validator; never fabricate a parameter."
+        },
+        {
+          "id": "storage-enforcement",
+          "state": "pending",
+          "requirement": "Design staging-only StorageClass enforcement for every other class and omitted/default/static binding route. The named production-class denial quota is insufficient."
+        },
+        {
+          "id": "priority-enforcement",
+          "state": "pending",
+          "requirement": "Select and review enforcement of staging priority below production for every permitted workload, including other high/system classes and omitted/default paths. The named production-class denial quota alone does not establish this criterion; qualify positive/negative cases live."
+        },
+        {
+          "id": "rbac-definitions",
+          "state": "pending",
+          "requirement": "Supply complete least-privilege RBAC objects and full effective-permission matrix: positive shared/environment operations; negative cross-layer/job writes for every mutation verb, arbitrary data workloads/PVCs and environment-owned ConfigMaps; data Secret get/list/watch denial; bind/escalate/impersonate and credential/ServiceAccount or group-membership escalation paths. Separately define the verification observer and tightly scoped impersonation authority. No RBAC definitions are emitted today."
+        },
+        {
+          "id": "dns-datapath",
+          "state": "pending",
+          "requirement": "Review the actual pod resolver path, NodeLocal/host-network behavior and TCP/UDP DNS policies; the observed CoreDNS selector alone proves neither resolver traffic nor enforcement."
+        },
+        {
+          "id": "per-service-tls-flows",
+          "state": "pending",
+          "requirement": "Define complete service-specific selectors, source/destination identities, native-TLS ports, replication/HA, monitoring, backup and custody flows or justified non-applicability. The current schema aggregates namespace-wide TCP ports without service selectors or topology."
+        }
+      ]
+    },
+    {
+      "phase": "before-live-authorization",
+      "requirements": [
+        {
+          "id": "dependency-acceptance",
+          "state": "pending",
+          "requirement": "Obtain authoritative accepted completion evidence for each of 4.1, 4.2, 4.3, 4.27 and 4.28; scoped passes and 4.26 original qualification do not satisfy these five gates."
+        },
+        {
+          "id": "exact-target-argv",
+          "state": "pending",
+          "requirement": "Review argv/tool and credential/CA binding to the exact API server, context and cluster UID, with immediate pre/post-stage UID checks and refusal of context/config drift. Existing renderer argv selects context only; a supplied observed UID is not a live target guard."
+        },
+        {
+          "id": "review-exact-bytes",
+          "state": "pending",
+          "requirement": "After inputs and definition corrections, render exact manifests and blocked ordered plan offline; bind their hashes, chosen principals, approved tools and exact target/effects to separate Administrator authorization."
+        },
+        {
+          "id": "probe-and-recovery-plan",
+          "state": "pending",
+          "requirement": "Select an approved digest-pinned busybox-compatible probe image and owner-selected finite cleanup deadline. Before future authorization, review fixed-namespace collision refusal, fresh namespace/attempt ownership and UID verification, bounded probe/create/cleanup effects, complete verification matrix and forward-only partial-apply recovery. Never adopt or delete a namespace based solely on reusable purpose labels; do not change or run the historical generator."
+        },
+        {
+          "id": "provider-bootstrap-sequence",
+          "state": "pending-owner-selection",
+          "requirement": "Resolve the fourth owner question defining any limited foundation milestone, separately authorized environment-owned provider bootstrap with workload deployment authority withheld, and final actual-provider native-TLS/denial proof and 4.14 acceptance sequence. The shared/environment stage order is known but the complete bootstrap/acceptance sequence is blocked. No milestone, new acceptance boundary or proof waiver is selected; 4.15/4.16 story acceptance never becomes a reverse foundation gate."
+        }
+      ]
+    },
+    {
+      "phase": "separately-authorized-live-evidence",
+      "requirements": [
+        {
+          "id": "live-target-and-cni",
+          "state": "not-run",
+          "requirement": "Under separate exact authority, revalidate API CA/SAN/context/server/UID and demonstrate allowed plus denied CNI connections. Refuse namespace collisions; prove fresh namespace/attempt ownership and UID before operation or cleanup, never adopt/delete solely by reusable purpose labels, and enforce the owner-selected finite cleanup deadline. No collector or probe is run by this handoff."
+        },
+        {
+          "id": "ordered-layer-operations",
+          "state": "not-run",
+          "requirement": "Verify target; shared-infrastructure server dry-run then shared apply; verify target/effects; environment-layer server dry-run only after namespaces exist then environment apply; verify target/effects again. Stop on drift/partial failure and withhold workload deployment authority."
+        },
+        {
+          "id": "full-isolation-evidence",
+          "state": "not-run",
+          "requirement": "Collect actual PSA restricted, quota/limits and all workload-priority paths, encryption and independent custody, staging-only storage, real DNS, per-service native TLS and complete positive/negative RBAC results. Metadata/ports/offline tests do not prove runtime behavior."
+        },
+        {
+          "id": "actual-provider-tls-acceptance",
+          "state": "not-run",
+          "requirement": "Only under the later owner-approved bootstrap/acceptance sequence, verify any approved limited foundation milestone, perform separately authorized environment-owned provider bootstrap with workload deployment authority withheld, and collect actual-provider native-TLS/denial evidence before final 4.14 acceptance. No limited milestone or final acceptance is granted here, no required proof is waived and downstream story acceptance is not a foundation gate."
+        },
+        {
+          "id": "operational-acceptance",
+          "state": "not-run",
+          "requirement": "Assess actual 4.14 criteria and separately record Administrator/Platform acceptance. Forward correction may converge reviewed objects; no rollback, namespace/PVC/PV deletion, data/credential rewind or unapproved restore."
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "story": "4-1",
+      "sprintKey": "4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Both upgrade hop gates remain closed/unsigned; operational outcomes are not-run. Retained recovery expired 2026-10-15T11:40:42Z. Fresh accepted recovery, retirement, compatibility/workload evidence, exact successor approval and actual signed sequential upgrades remain required.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 87
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md",
+          "sha256": "5fdd7ef956befb4a6ac3f8775a05ed69e1436def5241f918d3882e89a1cc9599"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261023t085443z-recovery-preflight-preparation/summary.md",
+          "sha256": "a1f8eed2293799dd0b4c70795ab7dbc2500edce5d2c0702680546d1468da0fb5"
+        }
+      ]
+    },
+    {
+      "story": "4-2",
+      "sprintKey": "4-2-close-public-admin-exposure-and-anonymous-registry-reads",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [
+        "Administrator-confirmed exposure closure/native-access waiver; admin-exposure-result pass",
+        "Registry authentication pass",
+        "Post-cleanup EventStore GC confirmation pass"
+      ],
+      "reason": "Administration/exposure closure and registry authentication pass, with Administrator-confirmed login and recorded native-access waiver. The later GC confirmation passes. The story explicitly remains in-progress pending full workflow review, so complete dependency acceptance is not recorded.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 88
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md",
+          "sha256": "25fd82071b07417ea22caf0a48c4ae1c419181482e03c0aa995a5acaab35bec4"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/admin-exposure-result.json",
+          "sha256": "ae4ea56cec2c9afe0de84bafa8d3f23920a77038caa508b1ba6a9775ce998d22",
+          "pointer": "/result"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/registry-auth-result.json",
+          "sha256": "c35e37c58af78ba30e02afc318c3cbcea95bd39ef9d9a878676a6d1fae41c5a7",
+          "pointer": "/result"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261007t093420z-gc-confirmation/registry-gc-confirmation.json",
+          "sha256": "2d8697f8fdc16950d17d9035c9dbde9b4e27882da5d03428e2afd0c5838e5b47",
+          "pointer": "/result"
+        }
+      ]
+    },
+    {
+      "story": "4-3",
+      "sprintKey": "4-3-relocate-the-privileged-forgejo-runner",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Local preparation and source observation only. Destination qualification, job/network matrix, cutover, credential revocation, source removal, secure erasure and signed operational acceptance remain absent.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 89
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-3-relocate-the-privileged-forgejo-runner.md",
+          "sha256": "0e415614d26f1bfa515f802d981a34182b9d321c4959fce1353044b1832c7e33"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-3/20261007t153936z-local-preparation/summary.md",
+          "sha256": "2d4d0db86df3f89b92dee99cb3c030636320b99debb0044016fbda620b6b0af8"
+        }
+      ]
+    },
+    {
+      "story": "4-27",
+      "sprintKey": "4-27-retire-kubesphere-without-changing-workload-data",
+      "sprintStatus": "in-progress",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [
+        "Offline native-certificate prerequisite complete (scopedSpecStatus=done, 336 passing tests); no operational retirement or recovery acceptance"
+      ],
+      "reason": "Latest receipt qualifies the offline native-certificate prerequisite only: operationalGate closed, operationalQualification null, recoveryAcceptance null, publicActivation disabled, parentStoryStatus in-progress. Actual runtime/authority/system/recovery and accepted retirement remain pending.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 116
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md",
+          "sha256": "2b4a7ab156faeff04f30036aedaf1419711189c3347fd26c1c533ebceb8a755d"
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+          "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+          "pointer": "/operationalGate"
+        }
+      ]
+    },
+    {
+      "story": "4-28",
+      "sprintKey": "4-28-deploy-rancher-and-register-the-existing-cluster",
+      "sprintStatus": "backlog",
+      "acceptedForLiveApply": false,
+      "acceptedScopedEvidence": [],
+      "reason": "Backlog installation/qualification scope. Accepted retirement and supported upgrade precede live Rancher installation/registration, private TLS/MFA/access, authority restoration and independent native/recovery qualification.",
+      "sources": [
+        {
+          "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+          "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+          "lines": 117
+        },
+        {
+          "path": "_bmad-output/implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md",
+          "sha256": "303b305eb4c1fe6e8999ade5376a5576441be7e436b4fd1d2315fc8469cb46ea"
+        }
+      ]
+    }
+  ],
+  "acceptedSeparateQualification": {
+    "story": "4-26",
+    "sprintStatus": "done",
+    "qualificationAcceptedForOriginalStoryScope": true,
+    "managementInstallationAccepted": false,
+    "productionRetirementAccepted": false,
+    "productionUpgradeAccepted": false,
+    "sources": [
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+        "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0"
+      },
+      {
+        "path": "eng/cluster-management/QUALIFICATION.md",
+        "sha256": "cf7fa72152234133e468c965ea5d87b085ae607ed056f8cd1ba189203c0c4b3e",
+        "lines": "3-29"
+      }
+    ]
+  },
+  "nativeAccess": {
+    "historicalIndependentAccessDemonstrated": true,
+    "currentTargetAndCertificateAuthenticationObserved": true,
+    "currentObservationCut": "2026-10-29T17:30:48.110013+00:00",
+    "full428AccessRecoveryAcceptance": false,
+    "limits": "Current authentication does not establish historical revocation, deputy custody, MFA, layer deploy identity qualification or manager-unavailable maintenance/recovery acceptance.",
+    "sources": [
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t112212z-independent-native-access/independent-native-access.json",
+        "sha256": "baf8fa62efc17835e00c2a546f8ba8dd98a8457ad85720ed21cfe097c606dec6"
+      },
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+        "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+        "pointer": "/observations/identity"
+      },
+      {
+        "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-14/live-apply-approval-2026-10-29/native-observation.json",
+        "sha256": "051122d91d2bd9dbdf943828e3f7bfff41f2f3a1bb3291fefd327c2da9744484",
+        "pointer": "/observations/tls"
+      }
+    ]
+  },
+  "liveCniEnforcement": {
+    "accepted": false,
+    "result": null,
+    "reason": "No accepted live allow/deny result found in investigated Platform evidence. Calico presence is not enforcement proof. Probe execution would require writes and is outside this task."
+  },
+  "downstreamPreparation": {
+    "story": "4-15",
+    "foundationGate": false,
+    "suppliesNewFoundationChoices": false,
+    "reason": "The offline preparation inherits and pins six unchanged foundation sources. Its unresolved staging choices and synthetic fixtures are not owner decisions. The limited foundation milestone, environment-owned provider bootstrap and final actual-provider TLS/acceptance sequence remain an unanswered owner decision; downstream story acceptance is never a reverse foundation gate.",
+    "history": {
+      "suppliedCommit": "a55cafcf22520ca4d8a8699e11b2290f05d5e4c8",
+      "preservedSyntheticTestCorrection": "9ab03523530d6cb63c878c8ddb776a0279dddb74",
+      "comparisonAndIntegrationPreservation": "Parent records exact Git comparisons and integration outside foundation evidence. The import includes an intervening synthetic-test edit followed by the preserved test correction; no tree or byte equivalence is claimed. Current non-test preparation bytes match the supplied commit; protected-file hashes here bind all current staging-secrets bytes.",
+      "importedPreparationCommit": "0e6306b090e654473c2397bb49807eb377447519"
+    }
+  },
+  "sources": [
+    {
+      "path": "eng/staging-foundation/inputs.resolved.json",
+      "sha256": "a9fea6fd88ea6fbeffa8a5b2ee3f67856ec9ef57e6200abdbf550c9c60f03a00",
+      "lineStart": 1,
+      "lineEnd": 105
+    },
+    {
+      "path": "eng/staging-foundation/MISSING-INPUTS.md",
+      "sha256": "00db84e7976015c52fbd574236a02c0e6a6f67eee24b9ba7943e3a14c3ca6267",
+      "lineStart": 1,
+      "lineEnd": 57
+    },
+    {
+      "path": "eng/staging-foundation/INPUT-EVIDENCE.md",
+      "sha256": "e05d679edefb3c826875b44000a5dea9bd170e9d625cf8dbe6e85f9b4e41881f",
+      "lineStart": 1,
+      "lineEnd": 50
+    },
+    {
+      "path": "eng/staging-foundation/gates.assessed.json",
+      "sha256": "1f66168d2ff9ef64254181dfde7690c202e62f7536de170483683fd64df10398",
+      "lineStart": 1,
+      "lineEnd": 186
+    },
+    {
+      "path": "eng/staging-foundation/render.py",
+      "sha256": "b614c1364b80c238c6ae8042e37832cd5555131e69038c424fd1cf1c3e61abdc",
+      "lineStart": 1,
+      "lineEnd": 366
+    },
+    {
+      "path": "eng/staging-foundation/apply-plan.json",
+      "sha256": "475411c7096fc807a5b2b33a531c2d11501965e34db3914ac47c8423f2c91351",
+      "lineStart": 1,
+      "lineEnd": 272
+    },
+    {
+      "path": "eng/staging-foundation/cni_probe.py",
+      "sha256": "5c2378632404c08b616baad036f64bf6be56e08113bee911ba466fe94169cbd7",
+      "lineStart": 1,
+      "lineEnd": 167
+    },
+    {
+      "path": "eng/staging-foundation/DEPENDENCY-DIRECTION.md",
+      "sha256": "bbde8ac2e5593c7d9a06ee019e2e68e1d3f36c228d35fa9287b606ae02092f8a",
+      "lineStart": 1,
+      "lineEnd": 21
+    },
+    {
+      "path": "eng/staging-foundation/APPROVAL-PACKAGE.md",
+      "sha256": "4ffff30842efb4f7bd86000e9f0643abc9c2c8563abda130672d9da979ee4eba",
+      "lineStart": 1,
+      "lineEnd": 179
+    },
+    {
+      "path": "eng/staging-secrets/APPROVAL-PACKAGE.md",
+      "sha256": "35de693688f777692edd406ebd9e0fbc5e046ce85d043268650b15a1232e97a1",
+      "lineStart": 1,
+      "lineEnd": 115
+    },
+    {
+      "path": "eng/staging-secrets/source-evidence.json",
+      "sha256": "62bedb1afdfdd4cbf34673c2ef08109bf81bfbd0cb4d89cbe164677023aa3c7d",
+      "lineStart": 1,
+      "lineEnd": 193
+    },
+    {
+      "path": "eng/staging-secrets/inputs.resolved.json",
+      "sha256": "056651533c723573a068389d6d1ca7656948f0e0a096e749dda752723a1d767c",
+      "lineStart": 1,
+      "lineEnd": 170
+    },
+    {
+      "path": "eng/staging-secrets/definitions.json",
+      "sha256": "52ff4fea588e09e8ec957241e398cd353d485a0b7e9516e03da64c2651758994",
+      "lineStart": 1,
+      "lineEnd": 156
+    },
+    {
+      "path": "eng/staging-secrets/prepare.py",
+      "sha256": "11584c401fb062ac6eb7a177b21d5a69b1d2a8171a612daad6679d80fae4f758",
+      "lineStart": 1,
+      "lineEnd": 442
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sha256": "3394eca9e8aab477e5dc36aa086958f9b70e97ab4cf9af453b2017c33cf94537",
+      "lineStart": 1,
+      "lineEnd": 272
+    },
+    {
+      "path": "_bmad-output/planning-artifacts/epics.md",
+      "sha256": "64e3e7f4382953b2b9e473de5d583bd5fd4800f3d972421815d4924a1620ef30",
+      "lineStart": 1,
+      "lineEnd": 4838
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/admin-exposure-result.json",
+      "sha256": "ae4ea56cec2c9afe0de84bafa8d3f23920a77038caa508b1ba6a9775ce998d22",
+      "pointer": "/result",
+      "expectedValue": "pass"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/registry-auth-result.json",
+      "sha256": "c35e37c58af78ba30e02afc318c3cbcea95bd39ef9d9a878676a6d1fae41c5a7",
+      "pointer": "/result",
+      "expectedValue": "pass"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261007t093420z-gc-confirmation/registry-gc-confirmation.json",
+      "sha256": "2d8697f8fdc16950d17d9035c9dbde9b4e27882da5d03428e2afd0c5838e5b47",
+      "pointer": "/result",
+      "expectedValue": "pass"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/scopedSpecStatus",
+      "expectedValue": "done"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/operationalGate",
+      "expectedValue": "closed"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/operationalQualification",
+      "expectedValue": null
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/recoveryAcceptance",
+      "expectedValue": null
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/publicActivation",
+      "expectedValue": "disabled"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/native-client-certificate-final-verification-20261024/verification.json",
+      "sha256": "edba6a8ecb9c5e5830dafe0247fcd9d2a73a899824837eb7112def725a23b74a",
+      "pointer": "/parentStoryStatus",
+      "expectedValue": "in-progress"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+      "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0",
+      "pointer": "/qualificationAcceptedForOriginalStoryScope",
+      "expectedValue": true
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+      "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0",
+      "pointer": "/managementInstallationAccepted",
+      "expectedValue": false
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+      "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0",
+      "pointer": "/productionRetirementAccepted",
+      "expectedValue": false
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json",
+      "sha256": "9782028c1577c72c034bb953283e2e5631a849708199dd0edb9acc3709b5b3f0",
+      "pointer": "/productionUpgradeAccepted",
+      "expectedValue": false
+    }
+  ],
+  "upstreamOwnerDecisions": [
+    {
+      "story": "4-28",
+      "state": "pending",
+      "decisions": [
+        "Qualify a fresh unique never-reused native CN without an organization/O group, sole independent unowned binding and revocation proof.",
+        "Record separately approved treatment of five retained jpiquot objects and dangling ServiceAccount grant; Administrator review date is 2026-11-03.",
+        "Choose disabled local Rancher admin or sealed MFA-less break-glass with independent custody; sealed choice requires an explicit amendment to the Keycloak-MFA decision."
+      ],
+      "source": {
+        "path": "_bmad-output/implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md",
+        "sha256": "303b305eb4c1fe6e8999ade5376a5576441be7e436b4fd1d2315fc8469cb46ea",
+        "lineStart": 40,
+        "lineEnd": 42
+      }
+    }
+  ]
+}

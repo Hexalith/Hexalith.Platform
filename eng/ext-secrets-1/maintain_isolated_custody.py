@@ -31,6 +31,19 @@ ABSOLUTE_LIFETIME_SECONDS = 7 * HORIZON_SECONDS
 FLAGS = {'dependencyAvailable': False, 'liveRun': False, 'contractOperations': 0,
          'providerDataReads': 0, 'providerWrites': 0}
 LEASE_FIELDS = ('accessor', 'creation_time', 'issue_time', 'expire_time', 'explicit_max_ttl', 'policies', 'renewable', 'ttl')
+PUBLIC_METADATA_TRANSITION = {
+    'reference': 'Secret/kubesphere-system/kubesphere-sa-token',
+    'originalIdentity': {'uid': 'a97fa037-798b-46b6-9232-76e600480142', 'resourceVersion': '36774577'},
+    'observedIdentity': {'uid': 'a97fa037-798b-46b6-9232-76e600480142', 'resourceVersion': '37223806'},
+    'label': {'name': 'kubernetes.io/legacy-token-last-used', 'value': '2026-10-28'},
+    'managedField': {'manager': 'kube-apiserver', 'operation': 'Update', 'apiVersion': 'v1',
+        'fieldsType': 'FieldsV1', 'time': '2026-10-28T00:00:02Z',
+        'fieldsV1': {'f:metadata': {'f:labels': {'f:kubernetes.io/legacy-token-last-used': {}}}}}}
+OWNER_SCOPE_ATTESTATION = {'ownerAccepted': True, 'historicalEvidenceEstablishesOnlyLabelRefresh': True,
+                         'noOtherSecretFieldChanges': True, 'noInterveningWrites': True}
+OWNER_EVIDENCE_TRUST = ('Owner-accepted historical scope is a trusted human input. SHA256 fingerprints '
+                        'establish file integrity, never truth or authenticity; current managed fields '
+                        'do not establish historical scope or credential-value equality.')
 
 
 def read(path):
@@ -55,6 +68,112 @@ def fail(reason):
     raise RuntimeError(reason)
 
 
+def fingerprinted_public_file(source):
+    if (not isinstance(source, dict) or set(source) != {'path', 'sha256'}
+        or not isinstance(source['path'], str) or not Path(source['path']).is_absolute()
+        or not isinstance(source['sha256'], str) or len(source['sha256']) != 64
+        or any(char not in '0123456789abcdef' for char in source['sha256'])):
+        fail('public-metadata-acceptance-invalid-public-file-fingerprint')
+    path = Path(source['path'])
+    if not path.is_file():
+        fail('public-metadata-acceptance-evidence-changed')
+    content = path.read_bytes()
+    if sha(content) != source['sha256']:
+        fail('public-metadata-acceptance-evidence-changed')
+    return path, content
+
+
+def unique_owner_fields(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            fail('public-metadata-acceptance-duplicate-json-key')
+        result[key] = value
+    return result
+
+
+def recheck_accepted_evidence(accepted):
+    for path, expected in accepted['sourceFingerprints'].items():
+        fingerprinted_public_file({'path': path, 'sha256': expected})
+
+
+def accepted_public_metadata(path, *, retained_blocker=None):
+    """Validate owner-supplied public evidence, without asserting its authenticity."""
+    path = Path(path)
+    if not path.is_absolute() or not path.is_file():
+        fail('public-metadata-acceptance-requires-absolute-owner-record-file')
+    owner_bytes = path.read_bytes()
+    try:
+        record = json.loads(owner_bytes, object_pairs_hook=unique_owner_fields)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        fail('public-metadata-acceptance-invalid-owner-json')
+    fields = {'schema', 'ownerIdentity', 'historicalEvidence', 'retainedBlocker',
+              'currentPublicMetadata', 'transition', 'attestation'}
+    if (not isinstance(record, dict) or set(record) != fields
+        or record['schema'] != 'EXT-SECRETS-1.public-metadata-acceptance.v1'
+        or not isinstance(record['ownerIdentity'], str) or not record['ownerIdentity'].strip()
+        or record['transition'] != PUBLIC_METADATA_TRANSITION
+        or record['attestation'] != OWNER_SCOPE_ATTESTATION
+        or any(value is not True for value in record['attestation'].values())):
+        fail('public-metadata-acceptance-requires-exact-owner-historical-scope-attestation')
+    historical = record['historicalEvidence']
+    if (not isinstance(historical, dict) or set(historical) != {'sourceDescription', 'files'}
+        or not isinstance(historical['sourceDescription'], str) or not historical['sourceDescription'].strip()
+        or not isinstance(historical['files'], list) or not historical['files']):
+        fail('public-metadata-acceptance-missing-historical-evidence')
+    sources = [record['retainedBlocker'], record['currentPublicMetadata'], *historical['files']]
+    snapshots = [fingerprinted_public_file(source) for source in sources]
+    paths = [item[0] for item in snapshots]
+    protected_bytes = [owner_bytes, snapshots[0][1], snapshots[1][1]]
+    if any(not content.strip() or content in protected_bytes for _, content in snapshots[2:]):
+        fail('public-metadata-acceptance-requires-nonempty-distinct-historical-content')
+    if (retained_blocker is not None and paths[0].resolve() != retained_blocker.resolve()
+        or len({str(item.resolve()) for item in [path, *paths]}) != len(paths) + 1):
+        fail('public-metadata-acceptance-requires-distinct-original-blocker-and-historical-evidence')
+    blocker, current = json.loads(snapshots[0][1]), json.loads(snapshots[1][1])
+    transition = PUBLIC_METADATA_TRANSITION
+    if (not isinstance(blocker, dict) or blocker.get('phase') != 'NextMaintenanceBaselineBlocked' or blocker.get('baselineIssued') is not False
+        or any(blocker.get(key) != transition[key] for key in ('reference', 'originalIdentity', 'observedIdentity'))):
+        fail('public-metadata-acceptance-retained-blocker-transition-mismatch')
+    public = blocker.get('publicMetadata')
+    permitted = {'annotations', 'labels', 'managedFields', 'name', 'namespace', 'resourceVersion', 'uid', 'creationTimestamp'}
+    if (not isinstance(public, dict) or not isinstance(current, dict)
+        or set(public) - permitted or set(current) - permitted):
+        fail('public-metadata-acceptance-requires-metadata-only-observations')
+    for metadata in (public, current):
+        for name in ('labels', 'annotations'):
+            values = metadata.get(name, {})
+            if not isinstance(values, dict) or any(not isinstance(value, str) for value in values.values()):
+                fail('public-metadata-acceptance-invalid-' + name + '-string-map')
+        managed = metadata.get('managedFields', [])
+        if (not isinstance(managed, list) or any(not isinstance(item, dict) for item in managed)
+            or any(not isinstance(item.get('manager'), str)
+                   or 'fieldsV1' in item and not isinstance(item['fieldsV1'], dict) for item in managed)):
+            fail('public-metadata-acceptance-invalid-managed-fields-types')
+        if 'creationTimestamp' in metadata:
+            value = metadata['creationTimestamp']
+            try:
+                valid = isinstance(value, str) and 'T' in value and instant(value).tzinfo is not None
+            except ValueError:
+                valid = False
+            if not valid:
+                fail('public-metadata-acceptance-invalid-creation-timestamp')
+    comparable = dict(current)
+    if 'creationTimestamp' not in public:
+        comparable.pop('creationTimestamp', None)
+    if comparable != public:
+        fail('public-metadata-acceptance-current-metadata-differs-from-retained-blocker')
+    if (current.get('name') != 'kubesphere-sa-token' or current.get('namespace') != 'kubesphere-system'
+        or {key: current.get(key) for key in ('uid', 'resourceVersion')} != transition['observedIdentity']
+        or current.get('labels', {}).get(transition['label']['name']) != transition['label']['value']
+        or [item for item in current.get('managedFields', []) if item.get('manager') == 'kube-apiserver'] != [transition['managedField']]):
+        fail('public-metadata-acceptance-label-manager-time-or-fields-mismatch')
+    pins = {str(item): source['sha256'] for item, source in zip(paths, sources)}
+    pins[str(path)] = sha(owner_bytes)
+    return {'record': record, 'recordSource': {'path': str(path), 'sha256': pins[str(path)]},
+            'sourceFingerprints': pins, 'acceptedDifference': deepcopy(transition), 'trustBoundary': OWNER_EVIDENCE_TRUST}
+
+
 def preserved_originals(baseline):
     verification = baseline / 'baseline-verification.json'
     if verification.exists():
@@ -65,6 +184,15 @@ def preserved_originals(baseline):
         pins.update({str(baseline / name): expected for name, expected in manifest['files'].items()})
         if any(sha(Path(name).read_bytes()) != expected for name, expected in pins.items()):
             fail('verified-maintenance-baseline-provenance-changed')
+        accepted_name = 'accepted-public-metadata-difference.json'
+        if manifest.get('acceptedPublicMetadataDifference') is not None:
+            accepted = read(baseline / accepted_name)
+            if (manifest['acceptedPublicMetadataDifference'] != accepted
+                or accepted_public_metadata(accepted['recordSource']['path']) != accepted
+                or any(manifest['sourceFingerprints'].get(name) != expected
+                       for name, expected in accepted['sourceFingerprints'].items())
+                or manifest['files'].get(accepted_name) != sha((baseline / accepted_name).read_bytes())):
+                fail('verified-maintenance-baseline-accepted-evidence-changed')
     expanded = baseline / 'original-public-evidence-recursive-fingerprints.json'
     fingerprints = read(expanded if expanded.exists() else baseline / 'original-public-evidence-fingerprints.json')
     if not fingerprints or any(sha(Path(name).read_bytes()) != expected for name, expected in fingerprints.items()):
@@ -503,7 +631,7 @@ def expected_records(plan, count):
     return expected
 
 
-def validate_progress(instance, plan, state):
+def validate_progress(instance, plan, state, *, journal_directory=None):
     original = plan['beforeState']
     if state['audit'][:len(original['audit'])] != original['audit']:
         fail('ten-original-receipts-changed-or-removed')
@@ -512,7 +640,7 @@ def validate_progress(instance, plan, state):
         fail('foreign-authority-audit-operation')
     for index, receipt in enumerate(state['audit'][len(original['audit']):]):
         operation = plan['operations'][index]
-        journal_path = instance.evidence / ('owner-operation-' + str(index) + '.json')
+        journal_path = (journal_directory or instance.evidence) / ('owner-operation-' + str(index) + '.json')
         if not journal_path.exists() or read(journal_path)['operation'] != operation or not receipt_matches(receipt, operation):
             fail('authority-operation-outcome-not-exact-original-journal')
         journal = read(journal_path)
@@ -789,15 +917,28 @@ def exposure_check(instance):
         fail('credential-exposure-check-failed')
 
 
+def export_journal_directory(instance, plan):
+    """Read either retained layout, never synthesize or copy original journals."""
+    candidates = [directory for directory in (instance.evidence, instance.evidence / 'operations')
+                  if (directory / 'maintenance-plan.json').exists()]
+    if len(candidates) != 1:
+        fail('next-maintenance-baseline-requires-one-original-plan-layout')
+    directory = candidates[0]
+    if read(directory / 'maintenance-plan.json') != plan:
+        fail('original-plan-file-changed-before-baseline-emission')
+    return directory
+
+
 def emit_verified_baseline(instance, plan, *, state, credentials, key_metadata, public_runtime,
-                           kubernetes, openbao, objects, health, output):
+                           kubernetes, openbao, objects, health, output, public_metadata_acceptance=None):
     """Retain already verified public facts in a fresh directory; no installed calls.
 
     Coordinators can call this independently after read-only verification of an
     already completed run. Existing source plans, journals and evidence are read-only.
     """
     validate_plan(instance, plan)
-    if validate_progress(instance, plan, state) != len(plan['operations']):
+    journal_directory = export_journal_directory(instance, plan)
+    if validate_progress(instance, plan, state, journal_directory=journal_directory) != len(plan['operations']):
         fail('cannot-emit-baseline-for-incomplete-owner-maintenance')
     validate_scope(state, state, read(BINDING / 'successor-key-plan.json'), datetime.now(timezone.utc))
     if datetime.now(timezone.utc) >= instant(plan['deadline']):
@@ -808,7 +949,32 @@ def emit_verified_baseline(instance, plan, *, state, credentials, key_metadata, 
     if len(objects) != 4 or [item['kind'] + '/' + NS + '/' + item['metadata']['name'] for item in objects] != [item['reference'] for item in plan['objects']]:
         fail('verified-next-baseline-object-scope-mismatch')
     allowed = {item['reference'] for item in plan['objects']}
-    if any(kubernetes.get(key) != value for key, value in plan['beforeKubernetes'].items() if key not in allowed):
+    accepted = None
+    completed_journals = []
+    if public_metadata_acceptance is not None:
+        accepted = accepted_public_metadata(public_metadata_acceptance,
+            retained_blocker=instance.baseline / 'next-maintenance-baseline-blocker.json')
+        transition = accepted['acceptedDifference']
+        reference = transition['reference']
+        if (plan['beforeKubernetes'].get(reference) != transition['originalIdentity']
+            or kubernetes.get(reference) != transition['observedIdentity']
+            or len(plan['beforeState']['audit']) != 10 or len(state['audit']) != 19):
+            fail('public-metadata-acceptance-outside-exact-recorded-transition')
+        names = ['completion.json', 'renewal-data.json', 'renewal-metadata.json', 'runtime-file-update.json']
+        for item in plan['objects']:
+            kind, _, name = item['reference'].split('/')
+            names.append('runtime-update-' + kind.lower() + '-' + name + '.json')
+        completed_journals = [journal_directory / name for name in names]
+        for path in completed_journals:
+            if not path.is_file():
+                fail('public-metadata-acceptance-missing-original-completed-journal:' + path.name)
+        allowed.add(reference)
+    drift = [key for key, value in plan['beforeKubernetes'].items() if key not in allowed and kubernetes.get(key) != value]
+    if (accepted is None and drift == [PUBLIC_METADATA_TRANSITION['reference']]
+        and plan['beforeKubernetes'][drift[0]] == PUBLIC_METADATA_TRANSITION['originalIdentity']
+        and kubernetes[drift[0]] == PUBLIC_METADATA_TRANSITION['observedIdentity']):
+        fail('public-metadata-acceptance-required-owner-historical-scope-evidence-missing')
+    if drift:
         fail('verified-next-baseline-preservation-mismatch')
     for obj, item in zip(objects, plan['objects']):
         if (obj['metadata']['uid'] != item['uid'] or public_object(obj) != public_object(item['intended'])
@@ -821,44 +987,69 @@ def emit_verified_baseline(instance, plan, *, state, credentials, key_metadata, 
             fail('verified-next-baseline-credential-facts-mismatch')
     if any(health[label][path]['status'] != 200 for label in ('authority', 'inventory', 'custody') for path in ('/alive', '/health', '/ready')):
         fail('verified-next-baseline-requires-nine-passing-health-checks')
+    current_credentials = {role: {'credentialReference': facts['identity']['credentialReference'],
+        'originalRecordedSecretIdentity': facts['identity']['secretIdentity'], 'lease': facts['lease'],
+        'sourceJournal': str(BINDING / (role + '-credential-issuance.json')),
+        'sourceResourceJournal': str(BINDING / 'resource-journal.json')} for role, facts in credentials.items()}
     output = Path(output)
     if output.exists():
         if (output / 'baseline-verification.json').exists() and read(output / 'baseline-verification.json').get('runId') == plan['runId']:
             retained = validate_baseline(output)
             if retained != state:
                 fail('retained-next-maintenance-baseline-state-changed')
+            manifest = read(output / 'baseline-verification.json')
+            if (manifest.get('acceptedPublicMetadataDifference') != accepted
+                or read(output / 'preserved-kubernetes-before.json') != kubernetes):
+                fail('retained-next-maintenance-baseline-acceptance-or-preservation-changed')
+            retained_credentials = read(output / 'credentials.before.json')
+            for role, facts in current_credentials.items():
+                observed, retained_facts = deepcopy(facts), deepcopy(retained_credentials[role])
+                observed_ttl, retained_ttl = observed['lease'].pop('ttl'), retained_facts['lease'].pop('ttl')
+                if observed != retained_facts or observed_ttl > retained_ttl:
+                    fail('retained-next-maintenance-baseline-credential-facts-changed')
+            if accepted is not None:
+                recheck_accepted_evidence(accepted)
             return output
         fail('next-maintenance-baseline-output-must-be-fresh')
     receipts = retained_receipts(instance.baseline, plan['beforeState'])
     for index, receipt in enumerate(state['audit'][len(plan['beforeState']['audit']):]):
-        path = instance.evidence / ('owner-operation-' + str(index) + '.json')
+        path = journal_directory / ('owner-operation-' + str(index) + '.json')
         journal = read(path)
-        if journal.get('phase') != 'Committed' or journal.get('receipt') != receipt:
+        if (journal.get('phase') != 'Committed' or journal.get('receipt') != receipt
+            or journal.get('operation') != plan['operations'][index]):
             fail('next-maintenance-baseline-requires-exact-committed-receipts')
         receipts.append({'operationId': receipt['operationId'], 'source': str(path), 'sourceSha256': sha(path.read_bytes()),
                          'receipt': receipt, 'receiptRetained': True})
-    current_credentials = {role: {'credentialReference': facts['identity']['credentialReference'],
-        'originalRecordedSecretIdentity': facts['identity']['secretIdentity'], 'lease': facts['lease'],
-        'sourceJournal': str(BINDING / (role + '-credential-issuance.json')),
-        'sourceResourceJournal': str(BINDING / 'resource-journal.json')} for role, facts in credentials.items()}
     files = {'authority-state.before.json': state, 'credentials.before.json': current_credentials,
              'key-metadata.before.json': key_metadata, 'runtime-reference.json': public_runtime, 'runtime-objects.json': objects,
              'preserved-kubernetes-before.json': kubernetes, 'preserved-openbao-before.json': openbao,
              'agents-register-before.json': read(instance.baseline / 'agents-register-before.json'),
              'original-public-evidence-recursive-fingerprints.json': preserved_originals(instance.baseline),
              'original-owner-receipts.json': receipts, 'health.before.json': health}
+    if accepted is not None:
+        files['accepted-public-metadata-difference.json'] = accepted
     sources = {str(path): sha(path.read_bytes()) for path in instance.baseline.glob('*.json')}
-    plan_path = instance.evidence / 'maintenance-plan.json'
-    if read(plan_path) != plan:
-        fail('original-plan-file-changed-before-baseline-emission')
+    parent_verification = instance.baseline / 'baseline-verification.json'
+    if parent_verification.exists():
+        sources.update(read(parent_verification)['sourceFingerprints'])
+    # Retain renewal/runtime/completion journals alongside the plan and receipts,
+    # including the completed run's legacy operations/ evidence layout.
+    if accepted is not None or journal_directory != instance.evidence:
+        sources.update({str(path): sha(path.read_bytes()) for path in journal_directory.glob('*.json')})
+    plan_path = journal_directory / 'maintenance-plan.json'
     sources[str(plan_path)] = sha(plan_path.read_bytes())
     sources.update({source['source']: source['sourceSha256'] for source in receipts})
+    if accepted is not None:
+        sources.update(accepted['sourceFingerprints'])
+        sources.update({str(path): sha(path.read_bytes()) for path in completed_journals})
+        recheck_accepted_evidence(accepted)
     output.mkdir(mode=0o700)
     for name, value in files.items():
         durable_write(output / name, value, create_only=True)
     durable_write(output / 'baseline-verification.json', {'schema': 'EXT-SECRETS-1.verified-maintenance-baseline.v1',
         'phase': 'VerifiedNextMaintenanceBaseline', 'observedAt': timestamp(), 'runId': plan['runId'],
         'parentBaseline': str(instance.baseline), 'receiptCount': len(receipts), 'originalReceiptCount': 10,
+        'acceptedPublicMetadataDifference': accepted,
         'sourceFingerprints': sources, 'files': {name: sha((output / name).read_bytes()) for name in files}, **FLAGS}, create_only=True)
     return output
 

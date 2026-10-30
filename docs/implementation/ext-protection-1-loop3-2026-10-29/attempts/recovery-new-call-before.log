@@ -1,0 +1,85 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Protection.Tests
+  Discovered:  Hexalith.Platform.Protection.Tests
+  Starting:    Hexalith.Platform.Protection.Tests
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "snapshot-pascal") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 2], ["PayloadTypeId" => hx-snapshot-v1:state]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["State" => [["Format" => json+pdenc-v2], ["SnapshotTypeId" => hx-snapshot-v1:state], ["Envelope" => SFhQMgIBAQEAHAAaAAAAAQAAAAAMEAAAAAAArTAxQVJaM05ERUtUU1Y0UlJGRlE2OUc1RkFXAAAAAAAAAAAAAAAAmWwJkquHEMbrVpdQwoGuS0uO33T2mX5igLKpavdsj2Jdf4Lm9iF7JKw4hpbGsy6prAyd_1Nxldl29wtOq2W7RuYpmkoWTV3doOF2jebZRNjChhMEGf-yWb2-mXsV0Rz5z-G_xzQFymaLN7nuxZ6lcNnKPjWBgbXu6wBQfGb76XgYhbi82HBTxhLYMdWr0fZtoY88LbPOhTl5fjjGzSR8s5F6vPQx94nyN2YdrPGr9L7WBlqxKjS7nJ3ZR1Nu]]], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "snapshot-lowercase") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 2], ["PayloadTypeId" => hx-snapshot-v1:state]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["State" => [["Format" => json+pdenc-v2], ["SnapshotTypeId" => hx-snapshot-v1:state], ["Envelope" => SFhQMgIBAQEAHAAaAAAAAQAAAAAMEAAAAAAArTAxQVJaM05ERUtUU1Y0UlJGRlE2OUc1RkFXAAAAAAAAAAAAAAAA2sQy2qtR7kfiJcvqBVbJ_Z7S8ESw_86yiU8KGexnXJnzb-TZGyVxPxQ_qRkrDMw6eEj8sbBHRTa7I2SKvaYdlySYZgPgbjSe02lUwVkN8qN96knOIgSso6X5znLvKBNhKwVxGruYAgGC1-iuN61DXe4yvsrAseEAVkakC4HD2Z6oYP3A0FTgIcmFC8JspdcXP6ST5PTtvsYm31DSWam_brhPQC-FLBa1iej2KoCOBtlR0FOJmhYkkWoRqXwf]]], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "snapshot-seed") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 2], ["PayloadTypeId" => hx-snapshot-v1:state]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["State" => [["Format" => json+pdenc-v2], ["SnapshotTypeId" => hx-snapshot-v1:state], ["Envelope" => SFhQMgIBAQEAHAAaAAAAAQAAAAAMEAAAAAAArTAxQVJaM05ERUtUU1Y0UlJGRlE2OUc1RkFXAAAAAAAAAAAAAAAASos9cCi2cTd82YREFLadFFSTBUziqq-G9GHCiem6SJIbzeNDBRBkWzd5br_vz5IewKC6JIGINp1GrCa19PtRfcOJPE113pK8LP0ccZYvUt5f8XRxph_dmRQjhlt6CSAcjyl8zgu6zvANw6AnqtAjyP6JRvT_37ST_syZ-9iHPqG4yvjn0rOaTDWU7zsz-ZY3qR3KK2zhK-pwevody_tjT_6hONeIU5unc1Zzd4EpI_j3elITnJHCKi9PZLY2]]], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "snapshot-producer-retention-loss") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 2], ["PayloadTypeId" => hx-snapshot-v1:state]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["State" => [["Format" => json+pdenc-v2], ["SnapshotTypeId" => hx-snapshot-v1:state], ["Envelope" => SFhQMgIBAQEAHAAaAAAAAQAAAAAMEAAAAAAArTAxQVJaM05ERUtUU1Y0UlJGRlE2OUc1RkFXAAAAAAAAAAAAAAAAsPEzkA1HuVOERhhNBxJCk680dQ2V7P-G-p_NRH7qOCkM4OHoJn4yoL1l7oWHmt2iIUXkBDV7HS7GpNvlL3NsYHyW5687HQ_1aTpWqYw3w5mKaVghKqCt_p4XmSgxwtFcg_zB2AJGzQdKqYe0xjoxwgm7SC2LxRPrRTeCB7bu-W7t08IOvx_N_-DlUXi3IN7IbFKbLtwh8q9IA5nNAiOQfJZMnrWhvxhDwBK7KRmHQZ4dMJzfzA64pnMSqd31]]], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "seed-retention-loss") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 1], ["PayloadTypeId" => Event.Type]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["PayloadBytes" => eyJQcm90ZWN0ZWRDb250ZW50Ijp7IlRhcmdldCI6eyJUZW5hbnRJZCI6InRlbmFudC1hIiwiQWdlbnRJbnRlcmFjdGlvbklkIjoiaW50ZXJhY3Rpb24tYSIsIlRhcmdldFByb3RlY3Rpb25LZXlBbGlhcyI6ImFsaWFzLWEifSwiVmFsdWUiOnsiJHBkZW5jIjoiU0ZoUU1nSUJBUUVBSEFBYUFBQUFBUUFBQUFBTUVBQUFBQUFBSXpBeFFWSmFNMDVFUlV0VVUxWTBVbEpHUmxFMk9VYzFSa0ZYQUFBQUFBQUFBQUFBQUFBQVBESHhtbzBvcVRtcVV2YldNek0tWnpISXFOSWtEbzdEUmNZSkxOWEo3M3U4ZkpqS3JsdGozUW1WMGJoUHdCVUZXRm9pIn19fQ==], ["SerializationFormat" => json+pdenc-v2], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(mode: "producer-retention-loss") [FAIL]
+      Shouldly.ShouldAssertException : await driver.RecoverAsync(changedCall, token)
+          should be null but was
+      [["CompletionContext" => [["Identity" => [["TenantId" => tenant-a], ["Domain" => conversations], ["AggregateId" => directory], ["ActorId" => tenant-a:conversations:directory], ["EventStreamKeyPrefix" => tenant-a:conversations:directory:events:], ["MetadataKey" => tenant-a:conversations:directory:metadata], ["SnapshotKey" => tenant-a:conversations:directory:snapshot], ["PipelineKeyPrefix" => tenant-a:conversations:directory:pipeline:], ["PubSubTopic" => tenant-a.conversations.events], ["QueueSession" => tenant-a:conversations:directory]]], ["Occurrence" => [["RecordSequence" => 2], ["PayloadKind" => 1], ["PayloadTypeId" => Event.Type]]], ["OperationId" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["KeyReference" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["DekVersion" => 1], ["LifecycleEpoch" => 1]]], ["ProtectionResult" => [["PayloadBytes" => eyJQcm90ZWN0ZWRDb250ZW50Ijp7IlRhcmdldCI6eyJUZW5hbnRJZCI6InRlbmFudC1hIiwiQWdlbnRJbnRlcmFjdGlvbklkIjoiaW50ZXJhY3Rpb24tYSIsIlRhcmdldFByb3RlY3Rpb25LZXlBbGlhcyI6ImFsaWFzLWEifSwiVmFsdWUiOnsiJHBkZW5jIjoiU0ZoUU1nSUJBUUVBSEFBYUFBQUFBUUFBQUFBTUVBQUFBQUFBSXpBeFFWSmFNMDVFUlV0VVUxWTBVbEpHUmxFMk9VYzFSa0ZYQUFBQUFBQUFBQUFBQUFBQXZvZVQ5Zk5CMDZhY0tsdmtOMFJxUm80bjdlNWRhTHFWLVI1TE96azRUcXZQUXhYcm1pRHA1OWlXMG9tMU9waGUxby1SIn19fQ==], ["SerializationFormat" => json+pdenc-v2], ["Metadata" => [["State" => 1], ["MetadataVersion" => 1], ["Scheme" => hexalith-pdenc-v2], ["KeyAlias" => 01ARZ3NDEKTSV4RRFFQ69G5FAW], ["ContentHint" => application/json], ["CompatibilityFlags" => null]]]]]]
+      Stack Trace:
+        tests/Hexalith.Platform.Protection.Tests/ProtectionQualificationLoop3SealingTests.cs(119,0): at Hexalith.Platform.Protection.Tests.ProtectionQualificationLoop3SealingTests.SourceOwnedSealAndSnapshotRecoverExactProducerWithoutAnotherWrite(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Protection.Tests (ID = '4ce8cde9c2460452574835c32d29e475d7078c9d923b189867e395df944eb55f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Protection.Tests  Total: 6, Errors: 0, Failed: 6, Skipped: 0, Not Run: 0, Time: 0.787s

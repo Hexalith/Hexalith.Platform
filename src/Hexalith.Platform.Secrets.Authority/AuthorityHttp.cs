@@ -50,6 +50,7 @@ public static class AuthorityHttp
                 .RequireClaim("eventstore:operation", "hmac:administer").RequireAssertion(context =>
                     configuration["Authority:AdministratorClientId"] is { Length: > 0 } administrator && SingleCaller(context.User) == administrator));
         });
+        services.AddSingleton<AdministratorChannelTokenReader>();
     }
 
     /// <summary>Maps the unchanged query contracts and the distinct owner operation protocol.</summary>
@@ -61,10 +62,10 @@ public static class AuthorityHttp
             {
                 if (context.Request.Path.Value is "/alive" or "/health" or "/ready") { await next(); return; }
                 bool administrator = context.Request.Path.StartsWithSegments("/admin");
-                string? expected = administrator
-                    ? await File.ReadAllTextAsync(app.Configuration["Authority:AdministratorChannelTokenFile"]!, context.RequestAborted).ConfigureAwait(false)
-                    : app.Configuration["APP_API_TOKEN"];
-                string received = context.Request.Headers[administrator ? "authority-admin-token" : "dapr-api-token"].ToString();
+                // Administrator channel acquisition runs in the authorized endpoint filter below.
+                if (administrator) { await next(); return; }
+                string? expected = app.Configuration["APP_API_TOKEN"];
+                string received = context.Request.Headers["dapr-api-token"].ToString();
                 byte[] expectedBytes = Encoding.UTF8.GetBytes(expected?.Trim() ?? "");
                 byte[] actualBytes = Encoding.UTF8.GetBytes(received);
                 if (expectedBytes.Length == 0 || expectedBytes.Length != actualBytes.Length || !CryptographicOperations.FixedTimeEquals(expectedBytes, actualBytes))
@@ -78,6 +79,22 @@ public static class AuthorityHttp
         });
         app.UseAuthentication();
         app.UseAuthorization();
+        var administration = app.MapGroup("/admin").RequireAuthorization("authority-administrator");
+        administration.AddEndpointFilter(async (context, next) =>
+        {
+            HttpContext http = context.HttpContext;
+            try
+            {
+                bool matches = await http.RequestServices.GetRequiredService<AdministratorChannelTokenReader>().MatchesAsync(
+                    app.Configuration["Authority:AdministratorChannelTokenFile"], http.Request.Headers["authority-admin-token"].ToString(),
+                    http.RequestAborted).ConfigureAwait(false);
+                if (!matches) { return Results.Unauthorized(); }
+            }
+            catch (OperationCanceledException) when (http.RequestAborted.IsCancellationRequested) { throw; }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or OperationCanceledException)
+            { return Results.StatusCode(503); }
+            return await next(context).ConfigureAwait(false);
+        });
         app.MapGet("/alive", () => Results.Ok(new { status = "Alive" }));
         app.MapGet("/health", async (IAuthorityRepository repository, CancellationToken token) =>
         {
@@ -102,15 +119,15 @@ public static class AuthorityHttp
             JsonObject? proof = body is null ? null : await authority.RevocationAsync(SingleCaller(context.User)!, body, context.RequestAborted).ConfigureAwait(false);
             return proof is null ? Results.StatusCode(503) : Results.Ok(proof);
         }).RequireAuthorization("authority-query");
-        app.MapGet("/admin/state", async (IAuthorityRepository repository, CancellationToken token)
-            => Results.Ok(await repository.ReadAsync(token).ConfigureAwait(false))).RequireAuthorization("authority-administrator");
-        app.MapPost("/admin/operations", async (HttpContext context, IAuthorityRepository repository, TimeProvider clock) =>
+        administration.MapGet("/state", async (IAuthorityRepository repository, CancellationToken token)
+            => Results.Ok(await repository.ReadAsync(token).ConfigureAwait(false)));
+        administration.MapPost("/operations", async (HttpContext context, IAuthorityRepository repository, TimeProvider clock) =>
         {
             AuthorityAdministration? operation = await Body<AuthorityAdministration>(context).ConfigureAwait(false);
             if (operation is null) { return Results.BadRequest(); }
             AuthorityReceipt receipt = await repository.AdministerAsync(SingleCaller(context.User)!, operation, clock.GetUtcNow(), context.RequestAborted).ConfigureAwait(false);
             return Results.Json(receipt, statusCode: receipt.Outcome == "Applied" ? 200 : 409);
-        }).RequireAuthorization("authority-administrator");
+        });
     }
 
     private static string? SingleCaller(System.Security.Claims.ClaimsPrincipal principal)

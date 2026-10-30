@@ -1,0 +1,38 @@
+[
+  {
+    "name": "prefixed-build-2",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.PayloadProtection.Tests/Hexalith.EventStore.PayloadProtection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:OutputPath=/tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/",
+      "-p:AppendTargetFrameworkToOutputPath=false"
+    ],
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "exitCode": 0,
+    "seconds": 1.8585198650034727
+  },
+  {
+    "name": "prefixed-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/ext-protection-loop2-evidence/reader-delta/prefixed-runtime/Hexalith.EventStore.PayloadProtection.Tests.dll",
+      "-class",
+      "Hexalith.EventStore.PayloadProtection.Tests.InteractionEventReplayAuthorityFailureTests",
+      "-result-xml",
+      "/tmp/ext-protection-loop2-evidence/reader-delta/prefixed-tests.xml",
+      "-noColor"
+    ],
+    "cwd": "/tmp/bmad-protection-loop2-_qctor_8/eventstore",
+    "exitCode": 1,
+    "seconds": 0.4415354640004807
+  }
+]

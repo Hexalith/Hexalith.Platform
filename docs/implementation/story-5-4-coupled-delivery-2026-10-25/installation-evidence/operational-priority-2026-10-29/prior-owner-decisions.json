@@ -1,0 +1,681 @@
+{
+  "purpose": "Owner return form for coupled installation decisions; not a deployment, enrollment or acceptance packet",
+  "status": "MvpOperationalHandoffPreparedPendingOwnerInputs",
+  "installationAuthorized": false,
+  "qualificationAuthorized": false,
+  "attemptReserved": false,
+  "dependencyAvailable": false,
+  "preserved": {
+    "host": "192.168.1.30",
+    "partiesBranch": "B",
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "cohort": "OQ-5.4-1",
+    "existingJournals": "Preserve unchanged",
+    "acceptedPlatformCommit": "abbec4093715c1db854433119b32d4e16df20d08",
+    "acceptedIntegrationDate": "2026-10-08"
+  },
+  "D1_backend": {
+    "owner": "Project owner acting as Platform Maintainer",
+    "confirmedConstraint": "AWS is not MVP",
+    "choices": [
+      "MVP-1 reuse an existing independently qualifying non-AWS semantic custody installation",
+      "MVP-2 implement and qualify a non-AWS semantic Dapr backend",
+      "MVP operational-security work: reuse installed operational custody/inventory/HMAC; defer advanced lifecycle custody provisioning"
+    ],
+    "selectedChoice": "MVP operational-security work: reuse installed operational custody/inventory/HMAC; defer advanced lifecycle custody provisioning",
+    "actualNonAwsProviderAndMaintainer": null,
+    "approvedNonAwsResourceAndCostScopeReference": null,
+    "approvedRetentionAndExtensionScheduleReference": null,
+    "existingQualifyingInstallationBundle": null,
+    "currentMvpScopeDecisionReference": "../story-5-4-operational-security-2026-10-28/provenance.json"
+  },
+  "D2_resources": {
+    "owner": "Independent custody, current-authority and archive custodians",
+    "actualNonAwsBackendVersionHostOrApplianceIds": null,
+    "independentCurrentAuthorityHostServiceStoreIdIncarnationSchemaAndGenesis": null,
+    "independentArchiveResourcesProtectedVersionsAndEnrollmentHashes": null,
+    "originalOpaqueKeyEpochKekMappingsReference": null,
+    "actualProviderCompletionAndRecoveryBoundsReference": null,
+    "scopedReadOnlyAccessOrSignedResourceCensusReference": null,
+    "backupExclusionsRetentionAndIndependentAdministrationReference": null,
+    "exactReviewedBackendInstallationAndReadOnlyVerificationCommandsReference": null,
+    "currentWorkDisposition": "Advanced Luna/independent lifecycle-authority/WORM provisioning deferred; retain full requirements for dependent operations."
+  },
+  "D3_recovery": {
+    "owner": "Project owner with independent recovery/access owners",
+    "primaryHumanSubjectAndIssuer": null,
+    "differentDeputyHumanSubjectAndIssuer": null,
+    "appointmentAndTwoPersonChangeAuthorityReference": null,
+    "independentMfaRecoveryAccessAndEscalationReference": null,
+    "delegatedRoleArnsAndFencingReadBackEvidenceReference": null
+  },
+  "D4_rolesAndTrust": {
+    "owner": "Independent role provisioning, network and Kubernetes identity owners",
+    "authorityComputeTargetIdAndAuditAccess": null,
+    "observerComputeTargetIdAndAuditAccess": null,
+    "enrollmentComputeTargetIdAndAuditAccess": null,
+    "crossClusterDaprRoutingDiscoveryAndAcceptedTrustReference": null,
+    "executorCompleteRoleInputsReference": null,
+    "observerCompleteRoleInputsReference": null,
+    "enrollmentCompleteRoleInputsReference": null,
+    "independentPublicP256AnchorsSignedManifestsAndCurrentRevocationReference": null,
+    "custodyPurposeSpecificPublicTrustAndGenesisReference": null,
+    "credentialReferencesOnlyNoPrivateValues": true
+  },
+  "D5_implementations": {
+    "owner": "Platform and independent service maintainers",
+    "missingOwningServiceSourceImagesAndCompositionBundle": null,
+    "authorityServiceStoreBundle": null,
+    "registrationAndReservedManifestExactOriginalMappingBundle": null,
+    "spoolActualReplicasPlacementAndFailureModel": null,
+    "actualNonAwsComponentExecutableProfileAndDeploymentRecipe": null
+  },
+  "D6_releaseAndPhysicalProfile": {
+    "owner": "Platform release, independent transport/security and storage owners",
+    "actualImagePublishFileAndVerifierInventoryReference": null,
+    "nativeSidecarSocketAndHostMeasurementReference": null,
+    "measuredCompletionReserveAndWorkerOutputOwnershipReference": null,
+    "completeCopyHolderProducerTransportClosureReference": null
+  },
+  "D7_protection": {
+    "owner": "EventStore Maintainer with Governance/protection owners",
+    "completeImmutableSourcePackageAndLockedRestoreReference": null,
+    "installedEngineRolesTrustAndAcceptedProfileReference": null,
+    "actualProfileFileSha256": null,
+    "g1ThroughG7OriginalClosureBundle": null,
+    "independentPhysicalNonRevivalAndSurvivorRecoveryReference": null
+  },
+  "D8_host": {
+    "owner": "Platform identity, independent decision issuer and dependency installation owners",
+    "all14ActualHostSlotsAndFiveServiceInstallationsBundle": null,
+    "independentDecisionAuthorityAndCurrentRoleReferences": null,
+    "branchBPartiesAndConversationsInstallationBindings": null
+  },
+  "D9_dates": {
+    "owners": [
+      "Platform Maintainer",
+      "EventStore Maintainer"
+    ],
+    "status": "Unresolved; AWS-derived estimates withdrawn",
+    "withdrawnPriorProposal": {
+      "protection": "2026-11-30",
+      "coupledPlatform": "2026-12-03",
+      "earliestCohortWindow": "2026-12-04",
+      "reason": "Estimate based on rejected AWS MVP path"
+    },
+    "actualNonAwsProviderReadinessCompletionRecoveryAndQualificationBoundsReference": null,
+    "ownerConfirmedProtectionDate": null,
+    "ownerConfirmedCoupledPlatformDate": null,
+    "laterExplicitReplacementAcceptanceReference": null,
+    "completeCanonicalPlatformTarget": null,
+    "completeCanonicalProtectionTargetAndPackage": null
+  },
+  "mvpConstraints": {
+    "awsIncluded": false,
+    "existingDaprKubernetesOpenBaoRetainedForOperationalSecretScope": true,
+    "qualifyingNonAwsSemanticCustodyBackendSelected": false,
+    "physicalErasureAndIndependentRecoveryObligationsWaived": false,
+    "advancedCustodyProvisioningRequiredForMvpWorkMilestone": false,
+    "dependentFeaturesStillRequireCompleteCustodyQualification": true,
+    "customCustodyPlatformSelected": false
+  },
+  "installationAuthorizationScope": "This handoff authorizes documentation and offline packet preparation only. Existing operational maintenance retains its separately accepted procedure and all preservation/currentness prerequisites. No generic installation, completed-installer replay, lifecycle provisioning, credential renewal, qualification or consuming execution is authorized by this form.",
+  "mvpScopeAmendment": {
+    "decisionId": "DEC-5.4-MVP-CUSTODY-2026-10-28",
+    "recordedAtUtc": "2026-10-28T10:27:26.985368+00:00",
+    "ownerInstruction": "apply recommended",
+    "approvalContext": "Latest pragmatic recommendation: defer Luna/independent-authority/WORM provisioning, retain existing operational services and ordinary security controls, explicitly separate work/acceptance milestones and keep affected features gated.",
+    "status": "ApprovedAppliedToWorkPriorityAndAcceptanceBoundaries",
+    "advancedCustodyProvisioningDeferred": true,
+    "newCustomCustodyPlatformAuthorized": false,
+    "retainedControls": [
+      "Tenant isolation",
+      "Fresh tenant/actor/role authorization",
+      "Current revocation",
+      "Branch B identity by tenant/id",
+      "Canonical HMAC and accepted timing",
+      "Replay admission before target-command construction",
+      "Durable content-free denial spool and restricted recovery",
+      "Existing retention, holds and exclusive expiry"
+    ],
+    "stillBlocked": [
+      "Consuming public Agents APIs while any complete required dependency is unavailable",
+      "Current Human binding and approver evidence without policy/current binding/custody",
+      "Retained human attribution without qualified history/custody/restore",
+      "Sensitive-content capture/context/generation/proposals/posting while FR-34 protection is unavailable",
+      "Custody-dependent export/key delivery/unwrapping and destruction/Erased/all-copy claims",
+      "Full host/protection qualification, full Story 5.4 acceptance and RQ-1"
+    ],
+    "backupRestorationLimit": "Operational software-managed key deletion does not establish irrecoverability from older backups. OpenBao ObservedRevival remains authoritative; no backup-resistant erasure guarantee is made by this milestone.",
+    "pendingOperationalInputs": [
+      "Owner-returned backup lifetime and restore privileges/procedure",
+      "Current accepted operational profile/credential/enrollment and fresh authorized readiness",
+      "Separate maintenance preservation-baseline reconciliation",
+      "Actual accepted identity/authority/replay/spool/host artifacts and independent decision authority"
+    ],
+    "reducedExecutableContractInstalled": false,
+    "dependencyAvailabilityChanged": false,
+    "parentStoryStatus": "in-progress",
+    "qualificationAuthorized": false,
+    "attemptReserved": false,
+    "reopeningCondition": "Later explicit scope/resource decision and supported erasure/migration/currentness construction; complete accepted actual owner deliveries and unchanged G1-G7/OQ order before any applicable qualification.",
+    "runtimeOrProviderWrites": 0,
+    "installationInvocations": 0,
+    "qualificationInvocations": 0,
+    "operationalDeliveryStatus": "PendingActualOwnerDeliveriesAndAcceptedContract",
+    "authoritativeAgentsAmendment": "../../../../agents/_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-28-mvp-custody.md",
+    "platformEvidenceReference": "../story-5-4-operational-security-2026-10-28/provenance.json",
+    "supersedesForCurrentMvpWork": [
+      "Earlier D1/D2 advanced-custody provisioning as the immediate MVP continuation; original requirements and evidence are retained."
+    ],
+    "priorLocalOwnerFormReference": "../story-5-4-operational-security-2026-10-28/prior-platform-documents/owner-decisions.json",
+    "canonicalBackupPolicyReturn": "owner-decisions.json#/mvpOperationalInputs/backupAndRestore; this is the sole owner-return location, pending actual policy evidence and acceptance."
+  },
+  "mvpOperationalInputs": {
+    "backupAndRestore": {
+      "status": "PendingOwnerDelivery",
+      "owner": "Existing Platform application-host and storage/backup owner",
+      "returnThrough": "owner-decisions.json#/mvpOperationalInputs/backupAndRestore",
+      "requestedEvidenceDestination": "installation-evidence/operational-backup-restore-owner-return.json",
+      "backupRetentionSeconds": null,
+      "privilegedRestoreSubjectsAndScopedCredentialReferences": null,
+      "acceptedRestorePolicyReference": null,
+      "restoreProcedureReference": null,
+      "authorizedRecoveryTestEvidenceReference": null,
+      "nextAction": "Return actual backup lifetime, existing privileged restore subjects/access references, accepted restoration procedure and authorized recovery evidence. No value, policy acceptance or successful restore is inferred from this scope decision.",
+      "everyRecoveryCopyInventoryAndActualDisposalEvidenceReference": null
+    },
+    "maintenancePreservationBaseline": {
+      "status": "PendingHistoricalMetadataReconciliation",
+      "owner": "Cluster credential/Kubernetes administration owner; operational custody maintainer only after accepted baseline reconciliation",
+      "retainedBlockerReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/blocker.json",
+      "retainedBlockerSha256": "0481d4d9e115e58c811c0ee83e02cefdd21052b6b50a32829563bae1708acb6e",
+      "maintenanceProcedureReference": "../../../eng/ext-secrets-1/README.md#separate-isolated-custody-maintenance-2026-10-28",
+      "acceptedPublicPreservationBaselineReference": null,
+      "historicalMetadataProofAndAcceptanceReference": null,
+      "nextAction": "Cluster credential/Kubernetes administration owner returns sanitized historical write-scope evidence and explicit acceptance. The provider owner separately returns fresh selected public lease, key-metadata and policy observations through already authenticated credential-safe transport, with provenance and observation times and no credential values. Review both with current public preservation facts before the existing coordinator attempts offline export. Additional drift denies. Do not edit the Secret, enable audit as retroactive proof, replay installers/maintenance or renew credentials for reconciliation.",
+      "providerPublicFactsOwner": "Existing OpenBao provider owner, using already authenticated credential-safe transport",
+      "freshPublicLeaseKeyAndPolicyEvidenceReference": null,
+      "furtherSecretWriteCoverageAndDispositionReference": null,
+      "memoriesPreservationDispositionReference": null,
+      "agentsRegisterPreservationDispositionReference": null
+    },
+    "currentOperationalProfile": {
+      "status": "PendingCurrentEvidenceUnderApprovedRecoveryScope",
+      "owner": "Existing Platform operational custody, inventory and HMAC authority maintainer",
+      "existingRuntimeReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/isolated-runtime-20261016/runtime-reference.json",
+      "currentAcceptedProfileReference": null,
+      "freshAuthorizedReadinessEvidenceReference": null,
+      "nextAction": "The exact expired-HMAC recovery scope is already approved; do not request ownership or scope approval again within its unchanged fixed window. Return the genuine missing current provider metadata/read transport and historical Secret plus separate Memories/register dispositions identified in the finalized recovery blockers. Recovery execution and resulting accepted profile/readiness remain separate Platform work; this owner handoff authorizes no credential, installer or Live operation.",
+      "credentialAndScopeEvidenceReference": null,
+      "exactKeyInventoryEvidenceReference": null,
+      "rotationAndRevocationEvidenceReference": null,
+      "timestampFormatCompatibilityEvidenceReference": null,
+      "requiredEvidence": [
+        "Current owner-accepted issuer/audience/profile, two hosts/two callers/four exact key versions and technical windows",
+        "Separately scoped data and metadata credential references; current grants/expiry/revocation, no private values",
+        "Fresh authorized readiness observations, rotation and emergency revocation evidence",
+        "Qualification timestamps must satisfy the existing strict UTC-Z parser; retained operational +00:00 timestamps are not directly admissible. Do not rewrite installed input to bypass acceptance."
+      ],
+      "lastVerifiedDeadlinesReference": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/next-baseline-reconciliation-20261028T070042156838Z/maintenance-deadlines.json",
+      "deadlineHandling": "No validity extension is made. If retained profile/enrollment or credential deadlines have passed, scope owner recovery separately from the existing maintenance procedure.",
+      "retainedDeadlineAssessmentReference": "../story-5-4-operational-security-2026-10-28/deadline-assessment-2026-10-29.json",
+      "separatelyScopedOwnerRecoveryPlanReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+        "approvalRecordReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+          "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+        },
+        "recordedChatApprovalSourceReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+          "sha256": "111d9476992d1061188d09697413f58c32d389b71b706976b46207de147598f4"
+        }
+      },
+      "preparedExpiredHmacRecoveryScopeReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947"
+      },
+      "currentOriginalTenantEnrollmentEvidenceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-c994258b7ce546528f7441ca148f2019.json",
+        "sha256": "445a07c2653ca2bce2f561caddd9fed3ff395c54fb3aa69e4fcef71bbcf163eb",
+        "jsonPointer": "/facts/enrollment"
+      }
+    },
+    "currentIdentityAndApprovers": {
+      "status": "PendingOwnerDeliveryCustodyCouplingRetained",
+      "owner": "Platform identity owner with Tenants, Parties and Conversations maintainers (D4/D8)",
+      "requiredEvidence": [
+        "Installed immutable current tenant/actor/role adapters including global-administrator authority, current grants/revocation and trust",
+        "Branch B identity by tenant/id; unique current Human binding/liveness and accepted approver policy",
+        "Exact installation/profile/version and negative stale/ambiguous/cross-tenant evidence; preserve Human custody dependency",
+        "Branch B Organization classification and active/liveness evidence by immutable tenant/id, with the complete Parties dependency Available before consumption. Organization identity grants no Human actor or approver authority; never reject or replace the approved identity on type alone."
+      ],
+      "currentAuthorityAndBindingEvidenceReference": null,
+      "acceptedIntegrationReference": null
+    },
+    "independentDecisionAuthority": {
+      "status": "PendingIndependentIssuerDelivery",
+      "owner": "Independent business-decision issuer and current-role authority owner (D4/D8)",
+      "requiredEvidence": [
+        "Actual independently governed signer; issuer/audience/purpose, public anchors, current role/freshness/revocation profile",
+        "Evidence that Platform custodian, release recorder and Workflow cannot request or mint approval evidence",
+        "Authority profile names stable current actor/role sources for Product, Governance, Security, Architecture and named maintainers. Signed decision-governance/authority manifests bind the exact contract/version, effective predecessor or root policy, nonempty required approvers, affected evaluations, freshness and revocation."
+      ],
+      "installedIssuerAndPublicTrustEvidenceReference": null,
+      "currentRolesAndRevocationEvidenceReference": null,
+      "custodianMayMintApprovals": false
+    },
+    "authenticatedIngressAndReplay": {
+      "status": "PendingInstalledOwnerDelivery",
+      "owner": "Platform host/identity owner and EventStore private replay owner",
+      "requiredEvidence": [
+        "Installed authenticated ingress binding and current HMAC/profile; replay admission before target command construction",
+        "Restricted separate registrar credential for exact system/TrustedEnvelopeReplay(Issuer,DeliveryNonce), conditional NoStream/TrustedEnvelopeFirstSeen writes and authenticated exact lookup",
+        "Replay retention at least 604800 seconds; changed-field/cross-tenant reuse denial; public/Workflow/handler credential denial",
+        "Immutable LogicalCommandId and issuer-wide DeliveryNonce; byte-identical retry routes only to domain idempotency. Emergency-revocation redispatch uses a new healthy key and a new nonce while retaining logical-command identity, with persisted exact-outcome recovery evidence."
+      ],
+      "installedAdaptersAndAclEvidenceReference": null,
+      "persistedReplayRecoveryEvidenceReference": null
+    },
+    "durableDenialAndRecovery": {
+      "status": "PendingAcceptedDurabilityAndInstallation",
+      "owner": "Platform host/storage owner with EventStore security-recorder owner",
+      "requiredEvidence": [
+        "Actual replica count/placement and explicitly accepted failure model, strong CAS/current authority/epoch, capacity and persistence",
+        "Separate recorder/drain/recovery credentials restricted to computed SecurityEventLog(RoutingTenantId,UtcDay) stream/event",
+        "Persisted exact SecurityObservationId acceptance/outcome/acknowledgement across outage, restart and lost acknowledgement; safe content-free evidence",
+        "Spool unavailable constructs no command and blocks tenant-access/audit readiness; single-node PVC evidence cannot certify replicated durability"
+      ],
+      "acceptedReplicaPlacementAndFailureModelReference": null,
+      "installedWorkerAndAclEvidenceReference": null,
+      "persistedDenialRecoveryEvidenceReference": null
+    }
+  },
+  "currentWorkDisposition": {
+    "D3_recovery": {
+      "retainedOrdinaryWork": [
+        "Existing operational credential/access recovery and backup/restore accountability; no appointment is inferred"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced custody appliance and independent lifecycle-authority/archive recovery setup"
+      ],
+      "inseparableBlockedWork": [
+        "Current Human/history or destructive recovery remains blocked wherever complete custody contracts require these roles"
+      ]
+    },
+    "D4_rolesAndTrust": {
+      "retainedOrdinaryWork": [
+        "Actual issuer/current-role authority, public trust/revocation and restricted transport for ordinary ingress; independent decision issuer remains required and uninstalled"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced lifecycle executor/closure observer/enrollment resources specific to the deferred stack"
+      ],
+      "inseparableBlockedWork": [
+        "Required trust/enrollment for an unavailable Human/host/protection seam cannot be waived or self-issued"
+      ]
+    },
+    "D5_implementations": {
+      "retainedOrdinaryWork": [
+        "Actual ordinary custody/inventory/HMAC host composition, replay registrar, durable denial spool and recovery services with accepted persisted outcomes"
+      ],
+      "deferredAdvancedWork": [
+        "Selected non-AWS lifecycle component and associated cut/control/original-archive implementation"
+      ],
+      "inseparableBlockedWork": [
+        "The full host/secret record cannot pass without its complete accepted implementation; a reduced contract needs separate complete owner acceptance"
+      ]
+    },
+    "D6_releaseAndPhysicalProfile": {
+      "retainedOrdinaryWork": [
+        "Exact installed ordinary service/image/profile/ACL evidence, actual audit-spool durability/replicas and credential isolation"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced key-holder/producer/transport all-copy physical closure and erasure measurements"
+      ],
+      "inseparableBlockedWork": [
+        "No retained-copy, single-node or source fixture result upgrades physical or full host qualification"
+      ]
+    },
+    "D7_protection": {
+      "retainedOrdinaryWork": [
+        "FR-34 and protection identity/availability checks remain enforced"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced physical non-revival/survivor recovery infrastructure and G1-G7 closure work"
+      ],
+      "inseparableBlockedWork": [
+        "Sensitive-content execution, typed irreversible Erased outcomes and full protection availability remain blocked until complete applicable accepted delivery"
+      ]
+    },
+    "D8_host": {
+      "retainedOrdinaryWork": [
+        "Actual ordinary ingress/replay/spool/worker adapters, current actor/role authority, independent decision issuer and Branch B contract work"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced lifecycle/protection-specific host installation within the full coupled stack"
+      ],
+      "inseparableBlockedWork": [
+        "All public APIs still require the complete four records; current Human/approver evidence still requires custody; all14 full host slots are not satisfied by this decision"
+      ]
+    },
+    "D9_dates": {
+      "retainedOrdinaryWork": [
+        "Any future executable ordinary scope needs actual owner-confirmed dates and a complete exact-target replacement packet"
+      ],
+      "deferredAdvancedWork": [
+        "Advanced-custody provisioning/completion and qualification date proposals"
+      ],
+      "inseparableBlockedWork": [
+        "Accepted historical target/date records remain exact; no new accepted date or qualification window exists"
+      ]
+    }
+  },
+  "operationalPreparationReference": "../story-5-4-operational-security-2026-10-28/acceptance-inputs.json",
+  "extParties1OwnerEvidenceHandoff": {
+    "status": "PendingAuthenticOwnerReturns",
+    "recordedAtUtc": "2026-10-29T17:28:45.161513+00:00",
+    "scope": "Reference reconciliation of existing owner evidence only; no repeated feasibility assessment or operation authorization.",
+    "priorCanonicalForm": {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/owner-decisions.before-ext-parties-1-handoff-2026-10-29.json",
+      "sha256": "fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d"
+    },
+    "appliedDirectionReference": {
+      "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-applied-direction-2026-10-29.md",
+      "sha256": "9f1ed5ea2c13605acffcf19ff3f76e031f58a746103975e9c6af4600606e255e"
+    },
+    "completedFeasibilityVerdictReference": {
+      "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+      "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+    },
+    "preparedRecoveryScopeValidation": {
+      "scopeSha256": "ef4a6896ed192137c4394cf5ef177ace1ce43ddf27a632731cf891f1c80cfbe3",
+      "manifestReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/evidence-manifest.json",
+        "sha256": "833f995c3e98ea0d2f57c0811b94ea94df898519c2116a252e419df826c5c9a6"
+      },
+      "pinnedInputFilesVerified": 38,
+      "originalReceiptsVerified": 19,
+      "classification": "The original prepared artifact remains unchanged. Later exact scope approval is recorded in approval-record.json and its pinned invocation-spec.md; it supplies neither preservation acceptance nor completed recovery. Carry that approval forward without asking again.",
+      "currentness": "Recheck the fixed proposed window, actual UIDs/revisions and all independent prerequisites before any separately authorized effect; no automatic rebase or extension."
+    },
+    "retainedOperationalObservations": {
+      "latestNonProviderReadReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-c994258b7ce546528f7441ca148f2019.json",
+        "sha256": "445a07c2653ca2bce2f561caddd9fed3ff395c54fb3aa69e4fcef71bbcf163eb"
+      },
+      "processStartProvenanceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/execution-source-9c4b7c37282c4b549290081998ca05ae.json",
+        "sha256": "fb2385e416f648e0dfad9f22f1b9bcbcbc11b19c7913ad3b32ab91dfb232f7b3"
+      },
+      "inspectedExecutorSourceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/final-tested-source/eng/ext-secrets-1/recover_expired_hmac.py",
+        "sha256": "8d0cabe971331e53ffe9548c908e20f792bde4273d954c70abacfec0a2108adc"
+      },
+      "immutableHelperPinsReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/native-helper-pins.json",
+        "sha256": "49b422c387ab0b8ecddb66159f1bd3a990053389806611cfc9d8a466e22ac69c"
+      },
+      "originalNativeEnrollmentReceiptsReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/native-registry-inventory-20261017T082852516535Z/native-enrollment-receipts.json",
+        "sha256": "c4bf09a87927fb6b54ea94597def63b3142b578e05810d9c74692f2b2a6fbacc"
+      },
+      "enrollmentObservedAt": "2026-10-29T17:23:57.543430+00:00",
+      "enrollmentValidation": "Both exact original tenant streams returned HTTP 200, one TenantCreated event, complete sequence 1 and matching original stream hashes; unrelated administrator-domain read denied 403. Verified against original receipts and the pinned restricted-read helper, not Kubernetes identity.",
+      "scopeLimit": "Authenticated service-observation evidence at the recorded time; no independent Human acceptance, provider mapping, custody qualification or future currentness. Re-observe complete native streams before any recovery effect.",
+      "healthClassification": "Custody/inventory readiness remains 503; authority storage readiness 200 and original 19 receipts do not establish current profile validity.",
+      "earlierPartialProviderReadReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/observation-272273853d4147abb1b870529b07c0a2.json",
+        "sha256": "53783521215ee5fa8e4f018d34d10171f032b2d34adc99bb3d446631602effa3",
+        "jsonPointer": "/facts/provider"
+      },
+      "partialProviderClassification": "Authenticated recorded observations establish both exact original accessors Absent by native canonical invalid-accessor responses and unchanged native mount/auth/policy fingerprints. Capability reads and all four exact key metadata reads returned 403. These facts do not establish current key mappings/windows or a complete fresh public-facts bundle. Never renew or silently reuse absent originals; no credential branch is executed by this handoff.",
+      "earlierProviderProvenanceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/execution-source-83ec7a63cbb54aca8dd2bf7de61705c3.json",
+        "sha256": "50ae1438b9fdff11400dad5ac025133e6b12e6f3704153fcd677e54c4c304542"
+      },
+      "earlierProviderProvenanceLimit": "The earlier process-start source fingerprint is retained; the complete finalized run manifest binds the observation and separate source histories. Its current metadata/capability denial remains explicit. Do not relabel later non-provider reads as refreshed provider evidence."
+    },
+    "existingBackupEvidenceReferences": {
+      "currentConfigurationAndVersionReadReceipt": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/scaleway-read-only.json",
+        "sha256": "060470fd270341efc1694d668a69aa8b837f2053d56404281c2ea4346506b13c"
+      },
+      "exactVersionInventory": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/bucket-version-inventory.json",
+        "sha256": "c793f6b2c439edf9512044cdfa1095f9d69270e953029829cac64b5cab56f328"
+      },
+      "installedLocalSnapshotCommand": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/kubernetes-read-only.json",
+        "sha256": "1e0b79e0cec9093024a1dd1ee07aceb586e1e08e9fdad21492d5cf8ba850b81e"
+      },
+      "failedLocalSnapshotStat": {
+        "path": "/home/administrator/projects/hexalith/parties/_bmad-output/implementation-artifacts/tests/ext-parties-1-feasibility-2026-10-29/local-snapshot-stat.json",
+        "sha256": "55030af96e53821c7fe8140f15bb3ac9d0ebea52dc111f881f39b186f2a3e2f7"
+      },
+      "historicalDestinationSetup": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/recovery-destination-setup.md",
+        "sha256": "5399f7acde40e555975e1a64ce9a1340faa48b705436962c758b330eb40f6161"
+      },
+      "historicalRestoreSummary": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-0/20261001t061620z/summary.md",
+        "sha256": "1b299140bf6fe4a6f840bd40b9c098a0579518f7dfdd3a89950fdc6be88aa134"
+      },
+      "classification": "Existing observation/historical sources only; no accepted lifetime, effective restore access, all-copy census or actual disposal is established. The October 1 restore gate expired October 2; host-directory removal was inferred, not observed. Preserve the feasibility no-go and its 31-day/current-version mismatch."
+    },
+    "independentAuthorityTimeAndRestoreCutEvidenceReference": null,
+    "intendedWorkloadCapacityEvidenceReference": null,
+    "assessmentAllocationAndImplementerReference": null,
+    "unresolvedOwnerReturns": [
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/historicalMetadataProofAndAcceptanceReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/acceptedPublicPreservationBaselineReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/furtherSecretWriteCoverageAndDispositionReference"
+        ],
+        "responsibleRole": "Cluster credential / Kubernetes administration owner",
+        "exactSourceRecordsNeeded": "Authenticated owner acceptance under EXT-SECRETS-1.public-metadata-acceptance.v1 plus authentic sanitized historical write/audit records for Secret/kubesphere-system/kubesphere-sa-token UID a97fa037-798b-46b6-9232-76e600480142, RV 36774577 -> 37223806, proving only the specified 2026-10-28 label refresh and no intervening/other-field writes. Separately cover later RV 37223806 -> 37671992 and any subsequent transition; the bounded earlier acceptance cannot cover later drift. Include original/current lineage, source coverage, timestamps, changed-field scope, public fingerprints and authenticated responsible-owner acceptance. Current managedFields or new audit collection cannot reconstruct history. For the approved expired-state executor, return the authentic scope-bound owner-return/preservation-decision.json using EXT-SECRETS-1.expired-recovery-preservation-decision.v1; its complete original-to-current evidence is additional to the historical bounded schema, never inferred from the supplied unaccepted template.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/owner-return-required.json",
+          "sha256": "f4ece685dc66961b37e18cf3912c6c1fa4cf7792de282c470023d46d27ad47c9",
+          "jsonPointer": "/historicalReturn"
+        },
+        "laterDriftRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/unresolvedPreservationDifferences"
+        },
+        "newRecoveryReturnSchemaReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+          "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+        }
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/memoriesPreservationDispositionReference",
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/agentsRegisterPreservationDispositionReference"
+        ],
+        "responsibleRole": "Memories workload/TLS owner and Agents external-dependency-register owner, each for their own record",
+        "exactSourceRecordsNeeded": "Separate authenticated dispositions with original-to-current provenance for Memories StatefulSet/access-telemetry-postgresql, Secret/access-telemetry-postgresql-tls and ConfigMap/postgresql-tls-reload-state, using the exact before/after UIDs and fingerprints in unresolvedPreservationDifferences. Separately reconcile the Agents register baseline mismatch recorded in agents-register-preservation-blocker.json. Neither disposition substitutes for system-Secret history. Preserve the register, Memories resources and all historical baselines.",
+        "memoriesSourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/unresolvedPreservationDifferences"
+        },
+        "registerSourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/owner-acquisition-20261028T131310446398Z/agents-register-preservation-blocker.json",
+          "sha256": "fb50fcad363f6a9d11f49907a10deee88af379a02960d29b09c23172523d24e2"
+        },
+        "newRecoveryReturnSchemaReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+          "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+        }
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/maintenancePreservationBaseline/freshPublicLeaseKeyAndPolicyEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/credentialAndScopeEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/exactKeyInventoryEvidenceReference"
+        ],
+        "responsibleRole": "Existing OpenBao provider owner over an already authenticated owner-controlled transport",
+        "exactSourceRecordsNeeded": "Authenticated current complete public metadata of all four exact original version-2 key paths, every original version/mapping/technical window and a verified already authenticated metadata-read owner transport usable for current readback. Follow blockers.json current-native-key-metadata-denied; return observation times, native success statuses, cluster/provider identity and public-file fingerprints, never tokens or key values. Both original accessors are already observed Absent and native mount/auth/policy fingerprints match the retained originals; their capability queries returned 403. Recheck those facts and effective exact scopes before any separately permitted successor use; do not ask for renewal or silently reuse absent credentials. Native original tenant hashes are already verified at the recorded observation and must be reread before effects.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/owner-return-required.json",
+          "sha256": "f4ece685dc66961b37e18cf3912c6c1fa4cf7792de282c470023d46d27ad47c9",
+          "jsonPointer": "/providerOwnerReturn"
+        },
+        "preparedScopeRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/independentRequiredFacts"
+        },
+        "finalizedBlockerReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/blockers.json",
+          "sha256": "c3cc5834898bd1480883439f32101620998b6cfcee3268da89e0ab39cb03c908",
+          "jsonPointer": "/blockers/0"
+        }
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/currentOperationalProfile/currentAcceptedProfileReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/freshAuthorizedReadinessEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/rotationAndRevocationEvidenceReference",
+          "#/mvpOperationalInputs/currentOperationalProfile/timestampFormatCompatibilityEvidenceReference"
+        ],
+        "responsibleRole": "Existing operational custody/inventory/HMAC maintainer, after genuine provider and preservation prerequisites",
+        "exactSourceRecordsNeeded": "Actual resulting owner-accepted current profile/credential/enrollment/readiness, rotation/revocation and existing strict UTC-Z compatibility evidence after the already approved separately scoped recovery passes its genuine prerequisites. The exact scope approval is recorded and needs no repeat. No currentness, successful cutover or readiness acceptance follows from source tests or healthy authority storage. This handoff performs none of that separate implementation/execution work.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+          "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+          "jsonPointer": "/activationOrdering"
+        },
+        "approvedScopeReference": {
+          "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+          "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+        }
+      },
+      {
+        "fields": [
+          "#/mvpOperationalInputs/backupAndRestore/backupRetentionSeconds",
+          "#/mvpOperationalInputs/backupAndRestore/everyRecoveryCopyInventoryAndActualDisposalEvidenceReference",
+          "#/mvpOperationalInputs/backupAndRestore/privilegedRestoreSubjectsAndScopedCredentialReferences",
+          "#/mvpOperationalInputs/backupAndRestore/acceptedRestorePolicyReference",
+          "#/mvpOperationalInputs/backupAndRestore/restoreProcedureReference",
+          "#/mvpOperationalInputs/backupAndRestore/authorizedRecoveryTestEvidenceReference"
+        ],
+        "responsibleRole": "Application-host/storage/backup owner with OpenBao seal/escrow and privileged recovery-access owners",
+        "exactSourceRecordsNeeded": "Owner-accepted actual lifetimes and sanitized per-copy capture/version/retention/hold/disposal records for local dated snapshots, checksums and undated openbao.snap on the Retain node1 PVC; all Scaleway openbao/ current/noncurrent versions, evidence/ contents classified for recoverable keys, replicas, multipart and exceptional copies; source openbao-seal, temporary restore seals, escrow/offline copies and node/etcd/workstation/export bundles. Supply verified deletion/non-revival evidence and failed-cleanup/outage handling, or keep unknown/Pending. Supply a still-valid existing read-only transport reference or owner-produced file inventory because the retained SSH attempt failed. Include current effective IAM/RBAC/MFA subjects and scoped access references, accepted restore procedure and exact still-valid authorized restore proof. Resolve the installed 31-day/version-lifecycle route against each C + L + M <= E + 2592000 requirement; configured TTL, lock expiry or Job success alone is insufficient. Do not change policy, delete copies or perform restore for this handoff.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        }
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/independentAuthorityTimeAndRestoreCutEvidenceReference"
+        ],
+        "responsibleRole": "Existing independently administered lifecycle/time-authority and recovery owners; required only to reopen full custody",
+        "exactSourceRecordsNeeded": "Actual already operated service/store identity, placement and independent administrators; authenticated time with <=100 ms uncertainty and <=1 second age; nonrollback fence/epoch receipts, lost-authority denial and restore exclusions. Existing evidence must show survival of node/application-host, authority-state and combined OpenBao/ledger restore cuts. If no such existing mechanism is available, return that owner disposition and retain the no-go; same-cluster HMAC storage readiness and off-node immutable objects do not establish it.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        }
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/intendedWorkloadCapacityEvidenceReference"
+        ],
+        "responsibleRole": "Parties workload owner and existing OpenBao/Platform performance owner; required only to reopen full custody",
+        "exactSourceRecordsNeeded": "Intended original-unit/key-family/generation counts, write/read arrival rates, lifetime and copy-volume forecasts, and existing reproducible direct-Transit workload measurements: key scale, sustained throughput, p95/p99 latency, destruction/disposal completion, cleanup backlog/drain and failure/recovery headroom on the actual configuration. Include measurement interval, commands, installed versions, raw results and workload assumptions. CPU requests/limits/top and the historical 42-second RPO do not supply these measurements. No new load test is authorized here.",
+        "sourceRequirementReference": {
+          "path": "/home/administrator/projects/hexalith/parties/docs/implementation/ext-parties-1-feasibility-verdict-2026-10-29.md",
+          "sha256": "d80c83ee3ded821ccbf779b06ef779da6381c9910cc3135588a663010ce6c610"
+        }
+      },
+      {
+        "fields": [
+          "#/extParties1OwnerEvidenceHandoff/assessmentAllocationAndImplementerReference",
+          "#/D3_recovery/primaryHumanSubjectAndIssuer",
+          "#/D3_recovery/differentDeputyHumanSubjectAndIssuer",
+          "#/D3_recovery/appointmentAndTwoPersonChangeAuthorityReference",
+          "#/D3_recovery/independentMfaRecoveryAccessAndEscalationReference"
+        ],
+        "responsibleRole": "Project owner acting as Platform Maintainer with independent recovery/access owners",
+        "exactSourceRecordsNeeded": "Authenticated actual existing engineering allocation and named assessment implementer under the approved two-engineer-day/zero-new-spend ceiling; task-specific accountable recovery-lead appointment and a different qualified Human deputy, with issuer/subject identities, scope, two-person change authority, independent MFA/recovery/escalation and competence/access references. Administrator jpiquot@itaneo.com, optional validator pduong@itaneo.com, Kubernetes/RBAC subjects and the assistant are not appointment evidence. Supply actual appointment records; no invented dates, allocation or target."
+      }
+    ],
+    "separatePlatformImplementationWork": {
+      "owner": "Platform implementation agent",
+      "sourceRequirementReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/recovery-scope.json",
+        "sha256": "f32c1128b54f30682a22734986258a1882483d5d80bb2c253c4769bfb1e7d947",
+        "jsonPointer": "/implementationStillRequired"
+      },
+      "disposition": "The prepared scope recorded a missing executor. The later finalized handoff supplies a separately implemented executor, immutable final-tested-source and recorded 23 executor/8 preparer test results; application remains uninvoked. This supersedes only the earlier absence statement. Implementation/integration and any prerequisite-gated recovery execution stay separate Platform work, never a missing Human owner-return. This evidence handoff runs no executor or installer.",
+      "laterImplementationEvidenceReference": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+        "sha256": "753f06d735ed9e60bf67172adaabce2e9b5210d8d260f073341aff09fa438461"
+      }
+    },
+    "validationLimits": "Referenced public-file fingerprints, prepared scope inputs, all three manifests, original tenant hashes and process-start/final-tested source bindings were checked locally. Fingerprints establish integrity, not owner identity or attestation truth. Scope approval is supported by the pinned recorded user instruction; no new preservation acceptance or appointment was found. Observations retain their original group timestamps and establish no future currentness or qualification.",
+    "sourceManifestsVerified": {
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-scope-20261029T165350Z-final/evidence-manifest.json": 10,
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-inventory-reconciliation-20261029TJ6KL9LyH/evidence-manifest.json": 26,
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json": 128
+    },
+    "providerOrClusterCallsByThisHandoff": 0,
+    "runtimeOrPolicyWritesByThisHandoff": 0,
+    "credentialRenewalsByThisHandoff": 0,
+    "qualificationInvocations": 0,
+    "dependencyAvailable": false,
+    "approvedRecoveryReturnReferences": {
+      "approvalRecord": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/approval-record.json",
+        "sha256": "2d25f7ff360b32688b2bc555e6442ad9a9e1f2cf0ee90c2f709d80e84146970e"
+      },
+      "recordedChatApprovalSource": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/invocation-spec.md",
+        "sha256": "111d9476992d1061188d09697413f58c32d389b71b706976b46207de147598f4"
+      },
+      "specProvenance": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/spec-provenance.json",
+        "sha256": "560e48241b040f9567082219c328eeb5bb3245f4233484152cc306c93ee1c864"
+      },
+      "finalizedHandoff": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/HANDOFF.md",
+        "sha256": "295105a4a2834d1bbc349c6a7dccc3ce31f4ca8cf0390c75429af4252b2dcef2"
+      },
+      "verification": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/verification.json",
+        "sha256": "753f06d735ed9e60bf67172adaabce2e9b5210d8d260f073341aff09fa438461"
+      },
+      "remainingOwnerBlockers": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/blockers.json",
+        "sha256": "c3cc5834898bd1480883439f32101620998b6cfcee3268da89e0ab39cb03c908"
+      },
+      "unacceptedPreservationReturnTemplate": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/preservation-decision.template.json",
+        "sha256": "aef349e44c674fccc5aad9ec50eaaa222813e69c21973723a9fc7829d15688dd"
+      },
+      "manifest": {
+        "path": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/expired-hmac-recovery-run-20261029-approved/evidence-manifest.json",
+        "sha256": "46d77631b1f790e6ff4deb06169aea1a884891657afe8ce61531901890fb6e31"
+      },
+      "scopeLimit": "Ownership and this exact bounded recovery scope are recorded approved. No historical-write acceptance, independent proof, appointment, current accepted profile or qualification follows from that approval. The preservation template remains unaccepted."
+    },
+    "localValidation": {
+      "publicReferencesAndJsonPointers": "Verified; all required owner-return field pointers remain null except the now-supported separately scoped plan reference, removed from the missing-input list.",
+      "historicalPartiesEvidenceFilesPreserved": 140,
+      "priorCanonicalBytesPreserved": true,
+      "legacyVerifierCommand": "python3 -B docs/implementation/story-5-4-operational-security-2026-10-28/verify_handoff.py",
+      "legacyVerifierResult": "Failed on pre-existing Agents reference-checkout owner-form fingerprint: expected c2885033c7d8dea94c3bef5e6da2191c0cbd8e1d9d5786e627f7c80836a188fc, actual fe004e05c82ded414fda1bfb58e9552309e1d7319c43ec5b81423a2d4aedf82d, identical to this handoff archived pre-edit form. The verifier also encodes the historical prepared-plan-null expectation. No historical verifier/provenance was rewritten.",
+      "legacyMismatchSourceReference": "/home/administrator/projects/hexalith/agents/references/Hexalith.Platform/docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json"
+    }
+  }
+}

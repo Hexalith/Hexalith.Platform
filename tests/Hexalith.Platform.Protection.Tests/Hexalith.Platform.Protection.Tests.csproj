@@ -12,7 +12,12 @@
     <PackageReference Include="Shouldly" />
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
-  <ItemGroup><Using Include="Xunit" /></ItemGroup>
+  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="../../deploy/erasure-root/custody-policy.hcl" LogicalName="ErcShippedCustodyPolicy" /></ItemGroup>
+  <ItemGroup><Compile Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Testing/Fakes/InMemoryStateManager.cs" Link="EventStoreInMemoryStateManager.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(HexalithEventStoreRoot)/tests/Hexalith.EventStore.Server.Tests/Security/GuardedTransactionFixture.cs" Link="EventStoreGuardedTransactionFixture.cs" />
+    <Compile Include="$(HexalithEventStoreRoot)/tests/Hexalith.EventStore.Server.Tests/Security/GovernanceGuardFixture.cs" Link="EventStoreGovernanceGuardFixture.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="../Shared/ProtectedArchiveFixture.cs" Link="ProtectedArchiveFixture.cs" />
     <Compile Include="../Hexalith.Platform.Custody.Tests/SecuritySpoolFixture.cs" Link="SecuritySpoolFixture.cs" />

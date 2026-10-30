@@ -1,0 +1,159 @@
+{
+  "schema": "hexalith.g4-run-readiness.v1",
+  "runId": "95741970230e1b66376a3ee59026453d",
+  "eventStoreEndpoint": "http://localhost:35419",
+  "uiEndpoint": null,
+  "resources": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:18738"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:33641"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.2602775+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:10580"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:35937"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.2602816+00:00",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:14876"
+        },
+        {
+          "name": "health",
+          "protocol": "http",
+          "uri": "http://localhost:38883"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.2602877+00:00",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:35419"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.2602713+00:00",
+      "processId": 2245825
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "eventstore",
+      "endpoints": [
+        {
+          "name": "grpc",
+          "protocol": "http",
+          "uri": "http://localhost:28848"
+        },
+        {
+          "name": "http",
+          "protocol": "http",
+          "uri": "http://localhost:15891"
+        },
+        {
+          "name": "metrics",
+          "protocol": "http",
+          "uri": "http://localhost:17049"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.2602958+00:00",
+      "processId": 2245823
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "moduleId": "platform",
+      "endpoints": [
+        {
+          "name": "tcp",
+          "protocol": "tcp",
+          "uri": "tcp://localhost:29133"
+        }
+      ],
+      "observedAt": "2026-10-28T10:18:42.260254+00:00",
+      "processId": null
+    }
+  ],
+  "refreshId": "a880ecafac0deb893050d037e28a7035",
+  "testObservation": null,
+  "effectiveDeadlineSeconds": 600,
+  "effectiveDeadlineIsOverride": false,
+  "effectiveDeadlineJustification": null,
+  "effectiveDeadlineModuleId": null,
+  "startupDurationSeconds": 82.9813894,
+  "selectedTest": {
+    "moduleId": "platform",
+    "name": "lifecycle-failure",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "0C0E387A1B57FB69DB718651C3CE153DC1522AFAF19710410F7AA6F38DF0F56F",
+    "entryHash": "8B0E3290B8472CEB6F7CE22A72A25EC2ECB311C440A42EE2C2FB32C303681BE6",
+    "executionTimeoutSeconds": 120,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-28T10:17:19.6176135+00:00",
+    "executionDeadlineUtc": "2026-10-28T10:19:19.6176135+00:00",
+    "credentialExpiryUtc": "2026-10-28T10:19:20+00:00",
+    "mode": "source"
+  },
+  "startupTaskResults": [
+    {
+      "taskId": "platform/verify-run-owner",
+      "status": "passed",
+      "startedAt": "2026-10-28T10:18:42.0824615+00:00",
+      "finishedAt": "2026-10-28T10:18:42.0840035+00:00"
+    }
+  ],
+  "observedAt": "2026-10-28T10:18:42.2603863+00:00"
+}

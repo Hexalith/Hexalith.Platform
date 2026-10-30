@@ -147,6 +147,9 @@ def _prepare(root, output, profile_path=None, register=None, coordination_contex
     output.mkdir(parents=True)
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ext-secrets-1"))
     from coordinated_packets import admission
+    from packet_snapshot import snapshot_for
+    import detached_packet_output as packet_output
+    packet_output.report(output / "blocked-inputs.json", {"packetPrepared": False, "completeReplacementPacket": False, "dependencyAvailable": False, "missingReferences": ["DetachedPacketOutputIncomplete"], "effects": 0})
     installation_missing, installed_hashes, coordinated = admission(coordination_context, register, head, True, profile["integrationDate"])
     missing.extend(installation_missing)
     if not installation_missing and hashlib.sha256(profile_bytes).hexdigest() != installed_hashes.get("hostProfileSha256"):
@@ -154,7 +157,7 @@ def _prepare(root, output, profile_path=None, register=None, coordination_contex
     if missing:
         report = {"packetPrepared": False, "completeReplacementPacket": False, "targetCommit": None,
                   "dependencyAvailable": False, "effects": 0, "missingReferences": sorted(set(missing)), "installedHashes": installed_hashes}
-        (output / "blocked-inputs.json").write_bytes(canonical(report))
+        packet_output.report(output / "blocked-inputs.json", report)
         return report
     profile_file = output / "agents-deployment-profile.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && '
@@ -165,7 +168,7 @@ def _prepare(root, output, profile_path=None, register=None, coordination_contex
     if coordinated["exactCommands"].get("EXT-HOST-1") != command:
         report = {"packetPrepared": False, "completeReplacementPacket": False, "targetCommit": None,
                   "dependencyAvailable": False, "effects": 0, "missingReferences": ["EXT-HOST-1.ExactCoordinatedCommand"], "installedHashes": installed_hashes}
-        (output / "blocked-inputs.json").write_bytes(canonical(report))
+        packet_output.report(output / "blocked-inputs.json", report)
         return report
     packet = {
         "schema": SCHEMA,
@@ -192,16 +195,21 @@ def _prepare(root, output, profile_path=None, register=None, coordination_contex
     packet["cohortPlanSha256"] = cohort_digest(full_plan())
     from coordinated_packets import protection_binding
     packet["protectionBinding"] = protection_binding(installed_hashes, coordinated)
-    packet["jointBinding"] = load_profile(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
+    packet["jointBinding"] = snapshot_for(coordinated).json(coordinated["installedArtifacts"]["jointConfiguration"]["path"])["binding"]
     packet["jointConfigurationSha256"] = installed_hashes["jointConfigurationSha256"]
-    packet["launchInventory"] = load_profile(coordinated["installedArtifacts"]["launchInventory"]["path"])
-    packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated))
-    (output / "joint-qualification-plan.json").write_bytes(canonical(full_plan()))
-    (output / "agents-deployment-profile.json").write_bytes(profile_bytes)
-    (output / "replacement-acceptance-packet.json").write_bytes(canonical(packet))
-    (output / "exact-command.sh").write_text(command + "\n")
-    return {"packetPrepared": True, "acceptedReplacementCommit": None, "dependencyAvailable": False,
-            "effects": 0, "missingReferences": missing, "candidateCommit": head}
+    packet["launchInventory"] = snapshot_for(coordinated).json(coordinated["installedArtifacts"]["launchInventory"]["path"])
+    packet["coordinatedRecords"] = records(register, head, coordinated["platformIntegrationDate"], coordinated["exactCommands"], shared_binding(installed_hashes, coordinated), snapshot=snapshot_for(coordinated))
+    outputs = {output / "joint-qualification-plan.json": canonical(full_plan()),
+               output / "agents-deployment-profile.json": profile_bytes,
+               output / "exact-command.sh": (command + "\n").encode("utf-8"),
+               output / "replacement-acceptance-packet.json": canonical(packet)}
+    for path, data in outputs.items():
+        packet_output.artifact(path, data)
+    packet_output.verify(outputs)
+    report = {"packetPrepared": True, "acceptedReplacementCommit": None, "dependencyAvailable": False,
+              "effects": 0, "missingReferences": missing, "candidateCommit": head}
+    packet_output.report(output / "blocked-inputs.json", report)
+    return report
 
 
 def profile_snapshot(path):
@@ -242,7 +250,7 @@ def main():
         print(str(error), file=sys.stderr)
         return 2
     print(json.dumps(report, sort_keys=True))
-    return 0
+    return 0 if report["packetPrepared"] else 2
 
 
 if __name__ == "__main__":

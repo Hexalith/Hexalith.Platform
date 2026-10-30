@@ -1,0 +1,65 @@
+{
+  "daprHome": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+  "observations": [
+    {
+      "argv": [
+        "aspire",
+        "--version"
+      ],
+      "stdout": "13.6.4+c89352703f78ae46de90fbf751ed8b52b77b89bf",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "version",
+        "--format",
+        "{{.Server.Version}}"
+      ],
+      "stdout": "29.8.2",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "dotnet",
+        "--version"
+      ],
+      "stdout": "10.0.402",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/tools/dapr",
+        "--version"
+      ],
+      "stdout": "CLI version: 1.18.2 \nRuntime version: 1.18.7",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7/.dapr/bin/daprd",
+        "--version"
+      ],
+      "stdout": "1.18.7",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-lc",
+        "printf \"%s\" \"$HEXALITH_DAPR_HOME\""
+      ],
+      "stdout": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-ic",
+        "printf \"%s\" \"$HEXALITH_DAPR_HOME\""
+      ],
+      "stdout": "/home/administrator/.hexalith/dapr/cli-1.18.2-runtime-1.18.7",
+      "exitCode": 0
+    }
+  ]
+}

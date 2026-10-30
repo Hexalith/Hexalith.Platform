@@ -1,0 +1,160 @@
+{
+  "allLayersFinalBeforeTriage": true,
+  "observedAtUtc": "2026-10-28T15:16:35.345357+00:00",
+  "findings": [
+    {
+      "id": "R23B-1",
+      "verdict": "false",
+      "route": "rejected",
+      "evidence": "carried R21B-1/R20B-10/R8E-3: same execution-profile whole-image/native-loader blocker and unchanged unselected external measurement protocol. No supported complete installed bundle is representable; refusal and incomplete delivery flags are required. No new verification, patch or deferral."
+    },
+    {
+      "id": "R23B-2",
+      "verdict": "false",
+      "route": "rejected",
+      "evidence": "carried R21B-2: same closed_phase_invariants verify fallback. Every complete REQUIRED case still has an explicitly missing native invariant; partial measure implementations cannot establish a complete case. Retain the prior rejected route without new verification or invented semantics."
+    },
+    {
+      "id": "R23B-3",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "AuthorityRepository writes its durable initialized marker before genesis Save; an interruption can leave a marker-only directory that conservatively refuses forever. Safe recovery must distinguish first initialization from lost previously committed state. This separately delivered isolated HMAC repository is absent from source22 owned paths and unchanged by all21 source23 paths; it was introduced at695b08853e726a1e8d95c51a0a59b7b4c25c89fe, outside this shared-target build implementation."
+    },
+    {
+      "id": "R23B-4",
+      "verdict": "high",
+      "route": "defer",
+      "evidence": "The separate AuthorityRepository retains every exact audit receipt in the same16MiB envelope; Save rejects overflow before any further update, including revocation. Rollover must preserve exact originals and retention rather than discard audit. Same independently delivered695b08853e726a1e8d95c51a0a59b7b4c25c89fe module, absent from source22 ownership and unchanged in this build."
+    },
+    {
+      "id": "R23B-5",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The separate operational authority repository creates an arbitrary directory, uses a permanent FileShare.None writer lock and fsync, and /ready reports local storage readiness without independently enrolled persistence/restore-domain/held-inode evidence. That does not qualify the full independent authority; all qualification flags remain false. Storage eligibility hardening belongs to the existing695b08853e726a1e8d95c51a0a59b7b4c25c89fe isolated authority delivery, unchanged by this build."
+    },
+    {
+      "id": "R23B-6",
+      "verdict": "high",
+      "route": "defer",
+      "evidence": "AuthorityHttp maps channel middleware before JWT auth and reads AdministratorChannelTokenFile with unbounded ReadAllTextAsync on every /admin request. A stalled/special/oversized input can retain unauthenticated work. This is the independently delivered isolated HMAC HTTP server introduced at695b08853e726a1e8d95c51a0a59b7b4c25c89fe, not the changed independent qualification receiver; source22/source23 do not own or alter it."
+    },
+    {
+      "id": "R23B-7",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The separately delivered custody Program synchronously File.ReadAllText loads the public permitted-reference file before startup; there is no size/type/deadline gate. Source23 changes the shared runtime-reference loader but never invokes or changes this independent allowlist startup path. Existing custody source at695b08853e726a1e8d95c51a0a59b7b4c25c89fe needs bounded acquisition separately."
+    },
+    {
+      "id": "R23B-8",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The standalone custody AuthenticatedSecretsInvoker uses an explicit http://127.0.0.1:3500 base address although its DaprClientBuilder uses injected SDK settings. A legitimate nondefault Dapr port can split those clients and refuse operations. This operational workload was independently delivered at695b08853e726a1e8d95c51a0a59b7b4c25c89fe and is not one of this build's seven composed sibling resources; unchanged source is deferred."
+    },
+    {
+      "id": "R23B-9",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "CustodyBinding.ReadyAsync creates a new uncancellable Task.Run for its synchronous profile port per public ready request. WaitAsync bounds callers but there is no finite admission bound for lingering actual work; the normal HTTP timeout does not bound concurrent requests. This separate695b08853e726a1e8d95c51a0a59b7b4c25c89fe operational custody binding predates and is unchanged by the current build."
+    },
+    {
+      "id": "R23B-10",
+      "verdict": "high",
+      "route": "defer",
+      "evidence": "DaprSelfHostedMtls exports Sentry issuer.crt/issuer.key in each sidecar environment. Possession of that intermediate-CA private key undermines isolation against a compromised sidecar. This follows documented self-hosted Dapr bootstrap, so a hardened replacement must assess its host trust boundary and supported independent workload enrollment. The wiring was separately introduced by story2.3 commitf187f346bb2a1136f4be7221af82136f779c2928, absent from source22 ownership and unchanged by this build; defer to that source owner."
+    },
+    {
+      "id": "R23E-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The actual Development composition preflight checks only seven explicit project names. AddProject also creates seven -rebuilder resources; a preexisting tenants-rebuilder passes the preflight and throws after adding earlier resources. Extend the same preflight to the demonstrated generated names and test zero mutation; production names remain exact."
+    },
+    {
+      "id": "R23E-2",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "TryCompose no longer retains the baseline configured-profile File.Exists refusal. Its Development catch rethrows every FileNotFoundException, conflating missing profile with the intentionally throwing missing-sibling path. Return false only for missing configured profile and preserve the existing missing-project exception test."
+    },
+    {
+      "id": "R23V-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Trusted preverified gap: deleting only the host exact-command.sh output leaves all19 coordinated/packet tests green. Existing required-output and interruption assertions are secrets-only. Assert all four actual host artifacts and exact admitted command plus newline; trust the filed demonstration without repeating root searches."
+    }
+  ],
+  "groupingStarted": true,
+  "primaryDaprSource": "https://docs.dapr.io/operations/security/mtls/",
+  "groups": [
+    {
+      "members": [
+        "R23B-3"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-4"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-5"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-6"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-7"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-8"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-9"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23B-10"
+      ],
+      "route": "defer"
+    },
+    {
+      "members": [
+        "R23E-1"
+      ],
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R23E-2"
+      ],
+      "route": "patch"
+    },
+    {
+      "members": [
+        "R23V-1"
+      ],
+      "route": "patch"
+    }
+  ],
+  "counts": {
+    "findings": 13,
+    "rejected": 2,
+    "patch": 3,
+    "defer": 8
+  }
+}

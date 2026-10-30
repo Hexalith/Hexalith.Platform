@@ -1,0 +1,66 @@
+{
+  "acceptedDifferences": {
+    "ConfigMap/hexalith-memories/postgresql-tls-reload-state": {
+      "after": {
+        "specSha256": "5d83fb7053bb4372b216426e62d2ea2b9acf1797149da29460922987dac3d33a",
+        "uid": "c034e795-80c5-4fbf-82ef-6c43457aab62"
+      },
+      "before": {
+        "specSha256": "f5cb67af5ca30334c8ebbb4d9750b5cf329395f4ff83bae6122559671d475da2",
+        "uid": "c034e795-80c5-4fbf-82ef-6c43457aab62"
+      }
+    },
+    "Secret/hexalith-memories/access-telemetry-postgresql-tls": {
+      "after": {
+        "resourceVersion": "37605927",
+        "uid": "4c5d9289-f147-46c3-bad8-99d65641c26f"
+      },
+      "before": {
+        "resourceVersion": "28632435",
+        "uid": "4c5d9289-f147-46c3-bad8-99d65641c26f"
+      }
+    },
+    "Secret/kubesphere-system/kubesphere-sa-token": {
+      "after": {
+        "resourceVersion": "37671992",
+        "uid": "a97fa037-798b-46b6-9232-76e600480142"
+      },
+      "before": {
+        "resourceVersion": "37223806",
+        "uid": "a97fa037-798b-46b6-9232-76e600480142"
+      }
+    },
+    "StatefulSet/hexalith-memories/access-telemetry-postgresql": {
+      "after": {
+        "specSha256": "d23b2d7b62b6d5dd73926be1da051717b80093abb74b8cec38f4fb44490bf25f",
+        "uid": "747db81b-04e5-4d22-b747-89d4c6d4d1f4"
+      },
+      "before": {
+        "specSha256": "9cb16a6f958c9d2cdcceafeabb435d2aa888c2b0b334238c22f4e08c2c08fdd0",
+        "uid": "747db81b-04e5-4d22-b747-89d4c6d4d1f4"
+      }
+    }
+  },
+  "authenticatedOwnerChannelReference": null,
+  "currentRegisterSha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+  "currentSnapshotSha256": "015c4771788ffae8a25847e9711f5899eda87c7697081c4b51a5dc0f5693b370",
+  "historicalSecretWriteEvidence": {
+    "completeIntervalCovered": null,
+    "currentIdentity": {
+      "resourceVersion": "37671992",
+      "uid": "a97fa037-798b-46b6-9232-76e600480142"
+    },
+    "noUnacceptedSecretFieldChanges": null,
+    "originalResourceVersion": "36774577",
+    "reference": "Secret/kubesphere-system/kubesphere-sa-token",
+    "retentionInterval": null,
+    "sourceFingerprints": {},
+    "sourceSystem": null
+  },
+  "note": "Unaccepted public return template; no owner provenance or historical claim is supplied.",
+  "originalRegisterSha256": "5bf35ac2857664c0589966a10944cd66278af85242c7c1f08e31ae29aa40e8a2",
+  "ownerAccepted": null,
+  "ownerIdentity": null,
+  "schema": "EXT-SECRETS-1.expired-recovery-preservation-decision.v1",
+  "scopeSha256": "ef4a6896ed192137c4394cf5ef177ace1ce43ddf27a632731cf891f1c80cfbe3"
+}

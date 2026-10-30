@@ -1,0 +1,61 @@
+{
+  "storage": {
+    "provisioner": null,
+    "parameters": null,
+    "reclaimPolicy": null,
+    "stagingStorageClassName": null,
+    "productionStorageClassName": null,
+    "encryptionAttestation": {
+      "evidenceRef": null,
+      "attestedBy": null
+    }
+  },
+  "custody": {
+    "holders": null
+  },
+  "priority": {
+    "stagingValue": null,
+    "productionValue": null,
+    "productionClassName": null
+  },
+  "deployIdentities": {
+    "sharedInfrastructure": null,
+    "environmentLayer": null,
+    "jobs": null
+  },
+  "network": {
+    "dns": {
+      "namespace": null,
+      "podLabels": null
+    },
+    "dataServices": null
+  },
+  "limitRange": {
+    "defaultRequestCpu": null,
+    "defaultRequestMemory": null,
+    "defaultLimitCpu": null,
+    "defaultLimitMemory": null,
+    "pvcMinStorage": null,
+    "pvcMaxStorage": null
+  },
+  "quotas": {
+    "application": {
+      "requestsCpu": null,
+      "requestsMemory": null,
+      "limitsCpu": null,
+      "limitsMemory": null,
+      "pods": null,
+      "persistentVolumeClaims": null,
+      "requestsStorage": null
+    },
+    "data": {
+      "requestsCpu": null,
+      "requestsMemory": null,
+      "limitsCpu": null,
+      "limitsMemory": null,
+      "pods": null,
+      "persistentVolumeClaims": null,
+      "requestsStorage": null
+    }
+  }
+}

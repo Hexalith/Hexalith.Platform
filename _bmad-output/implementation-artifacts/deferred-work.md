@@ -1380,3 +1380,93 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-custody-current-inventory-binding.md`
   summary: B09 — Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB.
   evidence: Earlier administration helper caps state reads at 1 MiB while repository capacity is 16 MiB. Current state is small and verified; align client bounds before retained audit reaches that cap.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs (2026-10-28)
+
+- Live lifecycle test and `suite.py` `lifecycle-*` profiles run only with `HEXALITH_PLATFORM_LIFECYCLE_LIVE=1`; add a Python unit test for the profile branches or a scheduled live job.
+- AC2 live proof does not resolve `diagnostics[].reference`/`contentIdentity` or scan for credentials; confirm Builds `TestResultWriterTests` cover it.
+- Unverified (medium if true): late `WriteStateAsync` resurrecting state after concurrent `down`; fabricated identities in `RecordTestOutcomeAsync` without owner state; `down` of an unknown run id leaving diagnostics dir + `cleanup.lock`; `onOutcome` failure skipping archival; removed archive-failure downgrade of a passing result; unscreened `justification`/leftover ids in `test-result.json`.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs (2026-10-28)
+
+- `down` on an unknown well-formed run ID may create diagnostics dir and locks (unverified, medium if true).
+- `list` `FailureRunIds` vs `TestResultWriter` `failureRunIds` can disagree for unretained failures (unverified).
+- Live lifecycle test lacks diagnostics-reference existence/hash assertions (AC2) and a cancellation scenario; skipped without `HEXALITH_PLATFORM_LIFECYCLE_LIVE=1`.
+- `CompositionDurableFlush` fsync failure path and directory fsync after rename untested.
+- Platform edge cases unverified: macOS argv empty arg, Windows OpenProcess denial, Windows OpenWithoutBlocking absence, owner receipts never deleted, `Directory.Move` onto empty dir.
+- `suite.py` / `startup-verify.sh` lifecycle hooks have no non-live test.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-3 (medium) — AuthorityRepository writes its durable initialized marker before genesis Save; an interruption can leave a marker-only directory that conservatively refuses forever.
+  evidence: AuthorityRepository writes its durable initialized marker before genesis Save; an interruption can leave a marker-only directory that conservatively refuses forever. Safe recovery must distinguish first initialization from lost previously committed state. This separately delivered isolated HMAC repository is absent from source22 owned paths and unchanged by all21 source23 paths; it was introduced at695b08853e726a1e8d95c51a0a59b7b4c25c89fe, outside this shared-target build implementation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-4 (high) — The separate AuthorityRepository retains every exact audit receipt in the same16MiB envelope; Save rejects overflow before any further update, including revocation.
+  evidence: The separate AuthorityRepository retains every exact audit receipt in the same16MiB envelope; Save rejects overflow before any further update, including revocation. Rollover must preserve exact originals and retention rather than discard audit. Same independently delivered695b08853e726a1e8d95c51a0a59b7b4c25c89fe module, absent from source22 ownership and unchanged in this build.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-5 (medium) — The separate operational authority repository creates an arbitrary directory, uses a permanent FileShare.None writer lock and fsync, and /ready reports local storage readiness without independently enrolled persistence/restore-domain/held-inode evidence.
+  evidence: The separate operational authority repository creates an arbitrary directory, uses a permanent FileShare.None writer lock and fsync, and /ready reports local storage readiness without independently enrolled persistence/restore-domain/held-inode evidence. That does not qualify the full independent authority; all qualification flags remain false. Storage eligibility hardening belongs to the existing695b08853e726a1e8d95c51a0a59b7b4c25c89fe isolated authority delivery, unchanged by this build.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-6 (high) — AuthorityHttp maps channel middleware before JWT auth and reads AdministratorChannelTokenFile with unbounded ReadAllTextAsync on every /admin request.
+  evidence: AuthorityHttp maps channel middleware before JWT auth and reads AdministratorChannelTokenFile with unbounded ReadAllTextAsync on every /admin request. A stalled/special/oversized input can retain unauthenticated work. This is the independently delivered isolated HMAC HTTP server introduced at695b08853e726a1e8d95c51a0a59b7b4c25c89fe, not the changed independent qualification receiver; source22/source23 do not own or alter it.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-7 (medium) — The separately delivered custody Program synchronously File.ReadAllText loads the public permitted-reference file before startup; there is no size/type/deadline gate.
+  evidence: The separately delivered custody Program synchronously File.ReadAllText loads the public permitted-reference file before startup; there is no size/type/deadline gate. Source23 changes the shared runtime-reference loader but never invokes or changes this independent allowlist startup path. Existing custody source at695b08853e726a1e8d95c51a0a59b7b4c25c89fe needs bounded acquisition separately.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-8 (medium) — The standalone custody AuthenticatedSecretsInvoker uses an explicit http://127.0.0.1:3500 base address although its DaprClientBuilder uses injected SDK settings.
+  evidence: The standalone custody AuthenticatedSecretsInvoker uses an explicit http://127.0.0.1:3500 base address although its DaprClientBuilder uses injected SDK settings. A legitimate nondefault Dapr port can split those clients and refuse operations. This operational workload was independently delivered at695b08853e726a1e8d95c51a0a59b7b4c25c89fe and is not one of this build's seven composed sibling resources; unchanged source is deferred.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-9 (medium) — CustodyBinding.ReadyAsync creates a new uncancellable Task.Run for its synchronous profile port per public ready request.
+  evidence: CustodyBinding.ReadyAsync creates a new uncancellable Task.Run for its synchronous profile port per public ready request. WaitAsync bounds callers but there is no finite admission bound for lingering actual work; the normal HTTP timeout does not bound concurrent requests. This separate695b08853e726a1e8d95c51a0a59b7b4c25c89fe operational custody binding predates and is unchanged by the current build.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: R23B-10 (high) — DaprSelfHostedMtls exports Sentry issuer.crt/issuer.key in each sidecar environment.
+  evidence: DaprSelfHostedMtls exports Sentry issuer.crt/issuer.key in each sidecar environment. Possession of that intermediate-CA private key undermines isolation against a compromised sidecar. This follows documented self-hosted Dapr bootstrap, so a hardened replacement must assess its host trust boundary and supported independent workload enrollment. The wiring was separately introduced by story2.3 commitf187f346bb2a1136f4be7221af82136f779c2928, absent from source22 ownership and unchanged by this build; defer to that source owner. Primary source for the self-hosted bootstrap and intermediate issuer: https://docs.dapr.io/operations/security/mtls/ .
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: Reconcile the four pre-existing CustodyRegistrationPublicationTests save/index-count failures without weakening original-publication or capacity assertions.
+  evidence: Current Runtime run843/847 and authenticated-before7-case reproduction both fail the identical4 named tests. None of these test or publication source files changed in source23. Exact names/assertions and retained source/binary/reference evidence are in /tmp/story54-round23-m5osbjqz/verification-summary-final.json and baseline-runtime-before/result.xml; diagnose accepted intended publication semantics before changing tests or production code.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-shared-target-completion.md`
+  summary: Diagnose the pre-existing isolated provisioning cleanup test failure while preserving uncertain-issuance reconciliation and original credentials.
+  evidence: Broad current Python466/467 and authenticated-before replay both fail test_review_provisioning.ReviewProvisioningTests.test_failed_secret_creation_revokes_only_new_token_and_policy with the same final native-call mismatch. Provisioning source/tests are unchanged by source23. Retained exact failure is /tmp/story54-round23-m5osbjqz/preexisting-provisioning-before.log; do not relabel the aggregate green or weaken safe cleanup.
+
+## Deferred from: code review of spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs (2026-10-28)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs.md`
+  summary: Live lifecycle proof (`PlatformLocalRunLifecycleTests.cs:113`) does not assert failure retention, cleanup status or referenced reports after explicit `down`; read the written result first to learn the expected post-down values (medium, unverified).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Artifact-identity compatibility for attach is refused as unverifiable until owners record expected/loaded identities.
+  evidence: Owner run state records no artifact identities (Epic 3 populates reserved fields); any --artifact-identity in an attach request is refused.
+
+## Deferred from: code review of spec-2-6-attach-a-run-to-a-compatible-environment (2026-10-29)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Explicit `down`/cleanup while holds are live leaves them `live`; `EndReason: cleanup` is never written (medium, unverified).
+  evidence: Check whether the listing/`IsLive` treats a cleaned owner's holds as live and whether Stories 2.7/2.8 cover it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Attach racing the start of cleanup; cleanup start never takes `attachments.lock` (medium, unverified).
+  evidence: Compare when `CleanupDisposition` becomes `in-progress` with when `WaitForNoLiveHoldsAsync` returns.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-attach-a-run-to-a-compatible-environment.md`
+  summary: Corrupt `attachments.json` makes `TestResultWriter` throw `InvalidDataException` via `ReadContractBinding` (medium, unverified).
+  evidence: Confirm the caller catches it and the first terminal result is still retained.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Make data-service TLS NetworkPolicies per-service (pod labels and own tlsPort) and allow data-namespace peer traffic for replication.
+  evidence: Current rules select all pods and union ports; per-service labels and topology are unknown inputs. Unverified for replication (medium if true).
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Add an admission policy (VAP/Kyverno) restricting staging PVCs to the staging StorageClass; quota only denies the production class.
+  evidence: ResourceQuota cannot allow-list; an unencrypted other class remains claimable. Admission mechanism is not chosen.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation.md`
+  summary: Verify the Timesheets boundary policy and workload egress (Gateway, Dapr, OpenBao) under default-deny with a real policy evaluation.
+  evidence: Compatibility test only greps template text; workload allowances belong to 4.15, 4.16 and 4.18.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-4-complete-coupled-secrets-host-delivery.md`
+  summary: Bind separately approved recovery invocation to exact tested executor and helper hashes before any future application.
+  evidence: B6; the pre-existing sealed metadata-correction commands invoke a mutable sibling-worktree executor, while this offline reconciliation hashes sealed tested-source copies. The executor records its own source hash at process start without comparing it to that sealed copy. Preserve historical command bytes; review and pin any future separately scoped invocation. No executor was adopted or invoked by this reconciliation.

@@ -106,7 +106,8 @@ def build(output, builds, eventstore):
     shutil.copytree(HERE, fixture, ignore=shutil.ignore_patterns("__pycache__"))
     environment = isolated_go_environment(output)
     effective = json.loads(subprocess.check_output([str(go), "env", "-json"], env=environment))
-    if any(effective.get(key) != value for key, value in GO_SETTINGS.items()):
+    # Go reports GOENV=off as an empty path (there is no environment file).
+    if any(effective.get(key) != ("" if key == "GOENV" else value) for key, value in GO_SETTINGS.items()):
         raise ValueError("Effective Go settings differ from the isolated pinned build profile")
     write(output / "go-build-environment.json", {"required": GO_SETTINGS, "effective": effective})
     commands = []
