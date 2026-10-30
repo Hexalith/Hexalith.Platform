@@ -2,7 +2,7 @@
 title: '5.1 Decide the staging evidence policies'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -120,6 +120,24 @@ Rejected:
 
 ## Review Triage Log
 
+### Resumed build review, 2026-10-30
+
+All three layers completed before triage. Edge Case Hunter returned no findings; Verification Gap Reviewer found no gaps. Blind Hunter returned seven findings (finding floor: 43.044 kB, seven). Each finding is recorded separately below.
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| R1: Define the latest accepted declaration authority/event | maybe-false | The policy requires an authoritative accepted predecessor and separately requires the production baseline, but no implementation of the future Story 5.3 selection path exists here to demonstrate that enrollment, staging success or adoption would advance it differently. Defer as an unverified medium implementation/qualification question: inspect and qualify the trusted predecessor source and advancement authority in Story 5.3 before acceptance. |
+| R2: Bind initial Tenants review to its exact inputs | medium | Removal/remap records name exact digests and approving identities, but the separate all-lifecycle-flow paragraph does not explicitly require the initial Tenants review to retain those bindings. Patch that paragraph to record reviewer identity and exact declaration/mapping digests, requiring renewed review when they change. |
+| R3: Removed modules escape flow comparison | false | Removal explicitly includes omitting a previously declared flow, and the validator must compare the candidate against both full authoritative predecessor declarations/mappings. No instruction limits comparison to candidate-present modules; omitting an entire module does not waive the predecessor transition or its required approvals. |
+| R4: Earliest recovery point may be pruned before a reset request | medium | The named retention condition starts with a pending reset/recovery reference, leaving a gap while the unadopted candidate can still require its mandatory reset. Patch retention to cover that interval as well as all pending references, preserving the already-required pre-write point. |
+| R5: No-baseline retained-data preparation lacks a qualifying consumer | medium | Carried: the previously recorded empty/degraded preparation inconsistency remains in epics.md Stories 5.7 and 5.9, while the architecture requires named recovery for retained data even without a working baseline. The policy explicitly records baseline absence and refuses missing applicable proof. Preserve the existing planning deferral; do not invent a baseline or a new recovery authority, or append a duplicate deferral. |
+| R6: Vulnerability-policy delivery deferral is now resolved | low | The concurrent recorded Builds revision `bdd369c9544af78b1b975c0230f75a753fa4433b` contains the canonical policy. Its bytes match canonical revision `64949791383203c358a685d3b132b1fceed67742` and SHA-256 `553102bcddc3a1198fa8e81091821d13e6e99d62fd43efb710782b6b4b9d5a7b`, which the Platform adoption record retains. Patch only the Story 5.1 ledger entry to record resolution and preserve its historical evidence. |
+| R7: Two unrelated Story 2.7 ledger entries lack their own headings | low | Both cited entries have explicit Story 2.7 source_spec values but sit below other stories' headings. They predate this resumed run and were not moved by Story 5.1's heading correction. Defer their ledger organization to the owning story; preserve their content and unrelated work. |
+
+R2, R4 and R6 are independent direct documentation patches. R1 and R7 are deferred; R5 retains its existing deferral; R3 is rejected on the comparison rules above. No intent or spec loopback is required.
+
+The implementation agent applied R2, R4 and R6. Parent inspected the exact corrected passages and verified the owner-policy bytes against both retained Builds revisions. R1 and R7 were appended to the deferred ledger, R5 was not duplicated, and the historical B8 delivery evidence was preserved alongside its resolved status. Final scoped whitespace, newline, link/fragment and frozen-intent checks passed; all 17 previously approved patches remain complete.
+
 2026-10-30: All three independent layers completed before triage. Edge-case review returned no findings; verification-gap review found no gaps. Blind review returned the ten findings below. Each claim was checked against the policy, architecture and cited artifact before grouping or routing.
 
 | Finding | Verdict | Evidence and route |
@@ -141,5 +159,10 @@ The original implementation agent applied B1, B2, B3, B5 and B6 as direct policy
 
 Run scoped `git diff --check`; inspect new Markdown whitespace and links. Cross-check five rules, timing/identity boundaries, history, reviews and reset lifetime against Story 5.1/FR-6/architecture. No new tests or workloads. Verify preservation of unrelated changes.
 
+- 2026-10-30 resumed build completion: Following three-layer review and the three direct fixes, parent repeated the 21 local link/fragment checks, five edited files' newline/whitespace checks, all 17 approved patch and four execution-task checks, and unchanged frozen-intent verification successfully. Review dispositions are recorded above, including two new follow-ups and the carried preparation-path deferral. Spec is done; Story 5.1 sprint tracking moves to review and Epic 5 remains in progress. Runtime adoption and qualification remain downstream obligations.
+
+- 2026-10-30 resumed build: Parent independently verified all 17 review patches and four execution tasks against the story diff, five edited files' whitespace/final newlines, 21 local Markdown links/fragments, and frozen-intent SHA-256 `2c4376a21f10965d0de5347fdfd277bcc30e0daaf7e6d10f3e18ce642469ac27`. Scoped `git diff --check` passed. No I/O matrix applies and no tests or workloads were run. Original baseline `2cbb8a68d277bdd55e321972b8aa11ef015fc54e` is preserved; complete historical diff is retained in the run's temporary review packet, with Story 5.1 deliverables extracted for review. Run-start revision `b96d9ffbe22d421e3c93adca28f4f6f36abf8f54` also anchors correction verification because concurrent commit `c31e4f747222cf4468a2f12bb367efdcf01e4899` incorporated most edits. No commit, push, pin or submodule change was performed by this build.
+
 - 2026-10-30: Parent independently confirmed 21 local links/fragments, final newlines and whitespace across policy/README/context, and the approved frozen block's unchanged SHA-256. Scoped `git diff --check` passed. All four tasks and acceptance criteria were checked against the diff and governing requirements; no matrix applies and no tests or workloads were run.
 - 2026-10-30: After review corrections, parent repeated all 21 link/fragment, whitespace/newline and frozen-intent checks, inspected each of the five corrected passages, and reconfirmed the five concrete policy rules and all completed tasks. Scoped diff checks pass. Spec is done and Story 5.1 sprint tracking moves to review; Epic 5 remains in progress. Implementation/qualification of policy consumers remains downstream work.
+- 2026-10-30 review follow-up: Implementation verification passed scoped `git diff --check` across the five edited documents, all 20 local Markdown links/fragments in the current policy/README/epic context, and final-newline checks for all five documents. All 17 open review patches are complete. The frozen-intent block matches `HEAD` byte for byte (SHA-256 `2c4376a21f10965d0de5347fdfd277bcc30e0daaf7e6d10f3e18ce642469ac27`). Cross-checked the policy and examples against the adopted review decisions, Story 5.1, the architecture's recovery/ownership/timing/notification rules and Story 5.4's lifecycle review requirement. No tests, workloads, deployments or remote publications were run; no runtime enforcement or unrecorded approval is claimed. Spec/sprint final status synchronization remains with the parent workflow.

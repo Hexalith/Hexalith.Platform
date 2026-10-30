@@ -1498,7 +1498,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Include the canonical Builds vulnerability policy and exact owner revision when recording or delivering Story 5.2 adoption.
   target_story: 5.2
+  status: resolved by Story 5.2 (2026-10-30).
   evidence: Blind review B8 verified that docs/contracts/image-and-dependency-vulnerability-policy-v1.md links the on-disk Builds docs/vulnerability-policy-v1.md, which is untracked and absent from the recorded Builds commit. A parent-only patch does not reproduce that independent owner record; Story 5.2 owns its delivery, not the staging-evidence policy.
+  resolution_evidence: Recorded Builds commit bdd369c9544af78b1b975c0230f75a753fa4433b contains docs/vulnerability-policy-v1.md. Its bytes match canonical commit 64949791383203c358a685d3b132b1fceed67742 and SHA-256 553102bcddc3a1198fa8e81091821d13e6e99d62fd43efb710782b6b4b9d5a7b retained by the Platform adoption record at docs/contracts/image-and-dependency-vulnerability-policy-v1.md.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Correct the independent protection delivery note's loop-6 coordinates and historical status labels.
@@ -1537,3 +1539,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
   summary: Module.Tests live-process tests share the fixed run id `CompositionTestFiles.RunId`, and run-process discovery is machine-wide. Any teardown for that id, from another test class or another checkout's test run, can stop a different test's live AppHost (medium).
   evidence: `CompositionRunResourceScanner` enumerates `/proc/*/environ` for the run-id variable. `AttachAdmissionTests.CancellationPublicationRefusalPreservesLiveAppHostAsync` failed in both Story 2.7 fourth-pass seven-class runs at the same position, but passed in 3 isolated reruns, with its class alone (121/121) and in three bisect combinations (Builds `evidence/2-7/fourth-pass-*.xml`). The fix is to give live-process fixtures unique run ids, or to scope discovery to the test's own process tree.
+
+## Deferred from: resumed build review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Qualify the trusted latest-accepted declaration/mapping predecessor source and advancement authority in Story 5.3 (medium if divergent, unverified).
+  evidence: Resumed review R1 questioned whether enrollment, staging success or production adoption advances the latest accepted predecessor. The policy requires an authoritative accepted predecessor plus a separate production-baseline comparison, but the future validator selection path is not implemented here. Inspect its trusted source, acceptance event and authority and qualify that callers cannot choose another predecessor before accepting removal/remap evidence.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Give the two pre-existing Story 2.7 ledger entries their own Story 2.7 headings (low).
+  evidence: Resumed review R7 verified that the stalled-provisioning cleanup exit-classification entry sits below the Story 3.1 review heading and the fixed-run-id live-process-test entry sits below the Story 5.1 review heading. Both source_spec fields correctly identify Story 2.7; neither entry was introduced or moved by this resumed Story 5.1 implementation. Preserve their evidence while correcting ownership grouping in the owning ledger-maintenance work.

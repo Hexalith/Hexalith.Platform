@@ -118,8 +118,9 @@ Only the **latest issued serialized staging evidence attempt** for that pending
 decision may qualify. Issuance order, rather than completion time, determines
 which attempt supersedes the others. A newer queued, running, failed, cancelled,
 incomplete or interrupted attempt prevents fallback to an earlier pass. A
-qualifying rerun MUST rerun the full required suite for every included module and pass every
-required check under the same current bindings and applicable preparation branch.
+qualifying rerun MUST rerun the full required suite for every included module and
+pass every required check under the same current bindings and applicable
+preparation branch.
 Partial passes MUST NOT be aggregated across attempts, and evidence MUST NOT be
 reused across decisions, including results for unchanged modules.
 
@@ -158,7 +159,10 @@ module-owner approval.
 
 Tenants MUST review every tenant-lifecycle flow with the owning module and
 Platform before it joins the gate, including initial enrollment and later
-changes. Those flows remain limited to staging-only admission and run-scoped
+changes. Every such review MUST record the Tenants reviewer identity and the
+exact declaration and flow-to-check mapping digests; a change to either input
+requires renewed review for the changed inputs before gate enrollment.
+Those flows remain limited to staging-only admission and run-scoped
 synthetic tenants with the immutable, attested synthetic-creation marker. Leftover
 synthetic tenants MUST be cleaned up or reported with their creating run. These
 review requirements do not implement tenant behavior. Production smoke remains
@@ -177,8 +181,9 @@ or unproven-readability writes MUST also wait for a verified reset first.
 The restore uses the earliest recovery point cut for that candidate since the
 last verified reset, before any of that candidate's writes, rather than a later
 rerun's point that already contains its writes. Keep that point and its retained
-artifact references while any pending reset or recovery references it, regardless
-of evidence expiry. Additive unadopted candidates whose writes are proven
+artifacts while the unadopted candidate can still require a reset or any
+reset or recovery reference remains, regardless of evidence expiry.
+Additive unadopted candidates whose writes are proven
 baseline-readable need no reset. A later candidate's start makes an earlier
 unadopted candidate no longer adoptable unless an Administrator record reserves
 it. Without that reservation the trusted gate MUST close the earlier decision as
@@ -199,8 +204,8 @@ repository with the operations repository's writer set, raised through an
 issues-only credential, assigned to Administrator and mentioning the recovery
 deputy. The notification MUST also reach the Platform Maintainer and carry the
 environment, release identity, outcome status and opaque references to
-access-controlled evidence. Lifetime
-expiry MUST NOT abort restoration, release the lock or permit a later candidate
+access-controlled evidence. Lifetime expiry MUST NOT abort restoration, release
+the lock or permit a later candidate
 to start. Recovery phase deadlines remain separate and do not replace this
 maximum-lifetime deadline.
 
