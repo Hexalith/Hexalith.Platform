@@ -21,6 +21,9 @@
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+    <PackageReference Include="JsonSchema.Net" />
+    <PackageReference Include="NuGet.Versioning" />
+    <PackageReference Include="StackExchange.Redis" />
   </ItemGroup>
   <ItemGroup><None Update="Declarations/*.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /><Compile Include="../../DaprSelfHostedMtlsSubscriber.cs" Link="DaprSelfHostedMtlsSubscriber.cs" /></ItemGroup>

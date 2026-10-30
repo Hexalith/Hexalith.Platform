@@ -11,5 +11,8 @@
     <HexalithEventStoreRoot Condition="'$(HexalithEventStoreRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.EventStore</HexalithEventStoreRoot>
     <UseHexalithProjectReferences Condition="'$(UseHexalithProjectReferences)' == '' and '$(Configuration)' == 'Debug'">true</UseHexalithProjectReferences>
     <UseHexalithProjectReferences Condition="'$(UseHexalithProjectReferences)' == ''">false</UseHexalithProjectReferences>
+    <!-- CI binds the two Builds assemblies to the verified published tool archive. -->
+    <BuildsToolingAssemblyPath Condition="'$(HexalithBuildsPublishedToolRoot)' != ''">$(HexalithBuildsPublishedToolRoot)/Hexalith.Builds.Tooling.dll</BuildsToolingAssemblyPath>
+    <BuildsEventStoreHostAssemblyPath Condition="'$(HexalithBuildsPublishedToolRoot)' != ''">$(HexalithBuildsPublishedToolRoot)/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll</BuildsEventStoreHostAssemblyPath>
   </PropertyGroup>
 </Project>

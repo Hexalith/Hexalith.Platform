@@ -20,6 +20,7 @@ public sealed class AgentsHostStartupBoundaryTests
     [InlineData("profile","late-name-conflict")][InlineData("profile","late-name-conflict-case")]
     public async Task ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(string selected,string fault)
     {
+        ArgumentNullException.ThrowIfNull(fault);
         string root=Path.Combine(Path.GetTempPath(),"apphost-boundary-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         using var released=new ManualResetEventSlim();using var cancel=new CancellationTokenSource();var finished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         try

@@ -35,6 +35,7 @@ public sealed class PortableDevelopmentCompositionTests
     [InlineData("missing-profile")][InlineData("missing-sibling")][InlineData("rebuilder-collision")][InlineData("rebuilder-collision-case")]
     public async Task ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(string fault)
     {
+        ArgumentNullException.ThrowIfNull(fault);
         string root=Path.Combine(Path.GetTempPath(),"portable-composition-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         using var release=new ManualResetEventSlim();using var cancelled=new CancellationTokenSource();var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var finished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         try
