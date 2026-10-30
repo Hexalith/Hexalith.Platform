@@ -1,0 +1,17 @@
+Starting Aspire AppHost in the background...
+❌ Failed to start the AppHost.
+ℹ️ Recent AppHost startup output:
+NativeCertificateToolRunner: Failed to trust the certificate in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium 
+family of browsers. This likely indicates that the database already contains an entry for the certificate under a different name. Please remove it and try 
+again.
+NativeCertificateToolRunner: The certificate is only partially trusted - some clients will not accept it.
+NativeCertificateToolRunner: The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+NativeCertificateToolRunner: The certificate is not trusted in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family
+of browsers.
+/tmp/platform-routing-generation-958b40aa96df4aaea3b83212a4ac0953/catalog-run-one/source-mapping/mapping.json : error HXW006: PackageReference 
+'Hexalith.EventStore.Aspire' cannot become source project 
+'/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj' because 
+metadata 'Version' has no equivalent project behavior.
+❌ AppHost failed to build.
+📄 See logs at /home/administrator/.aspire/logs/cli_20261030T112239_36848e9e.log
+🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261030T112239432_detach-child_cd7eac3c04624b1fa6e55b36d4fc4ca4.log

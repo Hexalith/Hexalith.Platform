@@ -39,9 +39,18 @@ if not hosting or any(f"`{package}`" not in hosting.group(1) for package in cano
 if arguments.hosting_helper and arguments.hosting_helper not in canonical:
     raise SystemExit(f"{arguments.hosting_helper}: helper is outside the recorded canonical hosting package set; record its ownership in AD-9 before admission.")
 text = (arguments.root / "apphost.cs").read_text()
+composition = arguments.root / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+mapped = None
+if re.search(r"^#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj$", text, re.MULTILINE) and composition.is_file():
+    mapped = ET.parse(composition).getroot()
 for package, expected in selected.items():
     match = re.search(r"^#:(?:sdk|package) " + re.escape(package) + r"@([^\s]+)$", text, re.MULTILINE)
     observed = match.group(1) if match else "<missing>"
+    if observed == "<missing>" and package in canonical[:2] and mapped is not None:
+        packages = mapped.findall(".//PackageReference[@Include='" + package + "']")
+        projects = mapped.findall(".//ProjectReference[@Include='$(HexalithEventStoreRoot)/src/" + package + "/" + package + ".csproj']")
+        if len(packages) == 1 and len(projects) == 1 and not packages[0].get("Version") and not packages[0].get("VersionOverride"):
+            observed = expected
     if observed != expected:
         raise SystemExit(f"{package}: apphost.cs selects {observed}; Builds catalog selects {expected}.")
-print("Platform file AppHost SDK, EventStore.Aspire and Dapr pins match Builds.")
+print("Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.")
