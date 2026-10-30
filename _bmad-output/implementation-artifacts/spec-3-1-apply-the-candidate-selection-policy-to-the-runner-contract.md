@@ -2,7 +2,7 @@
 title: '3.1 Apply the candidate-selection policy to the runner contract'
 type: 'feature'
 created: '2026-10-30'
-status: 'review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -76,6 +76,27 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 
 ## Review Triage Log
 
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| B1 | high | patch: a copied signed issuance plus forged CI environment passes VerifyExecutionAsync; its only process evidence is caller metadata and API job existence. Reuse existing OIDC verification for a fresh consumer challenge under the enrolled Builds workflow revision; no new public authority or configuration is needed. |
+| B2 | medium | patch: candidate state is issued before prerequisite probes, whose direct Failed returns leave no first result; both session-null recovery paths only read a committed result. Route those failures through the existing recording path. |
+| B3 | medium | patch: the release pending guard uses the first run response; the final successful completed response is accepted. Apply the same pending-state guard to the final response. |
+| B4 | medium | patch: absent/null WorkflowRef and CallerWorkflowPath reach StartsWith after deserialization and escape as NullReferenceException. Validate existing configuration fields before dereference. |
+| B5 | medium | patch: ResolveAsync classifies transport cancellation/IO but VerifyExecutionAsync does not; unrequested timeout is reported as cancellation and stream IO may escape. Reuse the same cancellation-versus-authority classification. |
+| B6 | medium | patch: expected coverage compares artifactId alone while loaded matching uses module/content; different-module aliases can omit candidate content. Compare the same complete tuple and refuse ambiguous expected entries. |
+| B7 | medium | patch: startupTasks is absent from cross-document immutable comparisons and required flags can disappear. Preserve task IDs/requirements while permitting observation progress. |
+| B8 | medium | patch: neither immutable-field comparison nor the attached-role check compares original hold acceptance/expiry fields. Preserve prior hold identity/request/acceptance/expiry, allowing valid end progress and later new holds. |
+| B9 | false | ValidateEvidence deliberately compares representations; its sole production caller ValidateAcceptanceAsync always refuses tool-qualification-authentication-unavailable. No altered claimed suite can gain candidate acceptance. Authenticated execution/artifact qualification remains an explicit independent prerequisite; matching JSON is never promoted to authority. |
+| B10 | medium | patch: workflow runs can truncate at the documented search ceiling; a short terminal page currently grants completeness. Refuse ambiguous ceiling/total-count observations in the existing pagination helper. |
+| B11 | medium | patch: the newly added clean check sees workflow-owned .hexalith/builds-execution as untracked when consumers lack an ignore rule. Establish an exact workflow-owned output exclusion without exempting arbitrary candidate inputs or modifying tracked ignore files. |
+| B12 | medium | patch: passed-result validation ignores actualDurationSeconds although the reader permits over-budget failed observations. Reject over-budget startup/execution durations for a passed result while preserving failure records. |
+| E1 | medium | patch, grouped with B4: edge reviewer reproduced {} enrollment causing unhandled NullReferenceException instead of HXP301 JSON. |
+| E2 | medium | patch, grouped with B6: distinct modules sharing artifactId satisfy the incomplete expected coverage test without loading candidate content. |
+| E3 | medium | patch, grouped with B3: final release completion is not subjected to the initial pending-state guard. |
+| V1 | medium | patch: filed pre-verified gap; the only public candidate test rejects stale authority before the clean/exact Git check. Add dirty and wrong-revision public command cases with zero startup calls. |
+| V2 | medium | patch: projection emits only the root workflow although traversal records nested workflows. The isolated fixture changes nested run/environment bytes without changing the reported digest. Include nested workflow blobs through the existing digest-bearing source representation and add the regression. |
+| P1 | medium | Parent expanded lifecycle verification exposed one reflection call still using the old ExecutePlatformAsync arity. Added the absent-candidate null argument; the timeout/retention expectations are preserved. Final rerun pending. |
+
 ## Verification
 
 From Builds, build `test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj` with `dotnet build -c Debug -m:1 -nodeReuse:false`. Run the built xUnit assembly with `-class` selections for new candidate tests, contract reader, provisioning and result writers. Run `python3 -m unittest discover -s Github/governed-provenance/tests` for changed gate helpers. From Platform, run `python3 -m unittest discover -s tests/contracts -p test_test_environment_contract_mirrors.py`. All selected checks must pass; retain exact blockers separately from focused evidence.
@@ -84,9 +105,9 @@ From Builds, build `test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tes
 ### Implemented verification (2026-10-30)
 
 - Required serialized Debug build passed with zero warnings/errors.
-- New candidate policy/runner selections: 40 passed, zero failed/skipped/not-run.
+- New candidate policy/runner selections: 50 passed, zero failed/skipped/not-run.
 - Contract reader, provisioning and result writer selections: 311 passed, zero failed/skipped/not-run.
-- Governed-provenance Python suite: 67 passed. Platform contract mirrors: 1 passed.
+- Governed-provenance Python suite: 69 passed. Platform contract mirrors: 1 passed.
 - Both changed workflows passed `actionlint`; Builds and scoped Platform `git diff --check` passed.
 - Named xUnit XML, exact commands, matrix-to-test mapping and logs are retained in
   `references/Hexalith.Builds/evidence/3-1/verification.json` and adjacent files.
@@ -98,3 +119,31 @@ qualification references without an independent accepted qualification authority
 Story 3.9 still supplies loaded-artifact producers. Publication/deployment, release
 authority, tool/catalog pins and first-outcome/attachment semantics are unchanged.
 Implementation is ready for independent review.
+
+
+Production-shape follow-up: PR workflow-run API `head_sha` binds H, while signed
+GitHub OIDC `sha`/`ref`/`event_name` bind the executed committed merge result M;
+caller workflow bytes are read at signed `workflow_sha`. Hosted Linux verification
+uses the approved workflow's authenticated `ubuntu-latest` requested job label and
+GitHub Actions runner group, with self-hosted/non-Linux refusals. The affected Debug
+build, 50 named candidate tests and 69 provenance tests passed again. Earlier
+reader/provisioning/result, mirror and workflow-lint evidence is retained unchanged.
+
+
+### Review disposition (2026-10-30)
+
+All 17 findings have individual verdicts above. E1/E2/E3 share the B4/B6/B3 root causes. The surviving corrections use existing entry points, policy fields, OIDC trust anchors and provenance representations; they add no public surface and address demonstrated states. They are patches under the workflow criteria. B9 is rejected because the advertised authentication bypass is prevented by the unconditional final qualification refusal. Preserve that refusal and every passing issuance, lineage, writer and GitHub response-shape test.
+
+### Verification artifact retention
+
+The owning Builds repository now admits only Story 3.1 command logs through its ignore rules and preserves evidence bytes through Git attributes, so the checked-in manifest can retain its referenced outputs without line-ending conversion. The first expanded run (497 passed, one reflection arity failure) remains archived as parent-tests-initial; the final rerun follows the call-site correction.
+
+### Final parent verification and completion (2026-10-30)
+
+- The final Debug build has zero warnings/errors. All 498 selected .NET tests passed, including all 86 candidate cases and the extended engine/state/lifecycle regressions; zero failures, errors, skips or not-run cases. The initial reflection failure is fixed without changing its timeout/retention expectations.
+- The complete provenance Python suite passed 74 tests; schema mirror and workflow lint passed. Both scoped whitespace checks passed. All six matrix rows resolve to executed passing named XML cases.
+- All 13 grouped review corrections and the additional parent call-site correction are applied and verified. One claim was refuted; nothing was deferred. Fresh consumer proof, terminal early failures, metadata immutability and nested closure hashing have explicit regressions.
+- Source fingerprints, named XML, commands, retained logs and artifact digests are in Builds evidence/3-1/parent-verification.json, referenced by verification.json. The approved intent fingerprint is unchanged.
+- The completion workflow requires scoped local Git commits; these record only this story and preserve unrelated staged work. No push or live enrollment is performed. Live issuer enrollment, authentic tool qualification and Story 3.9 artifact producers remain independent acceptance prerequisites.
+
+Recorded Builds local revision: `70ac3de6328157547096e025140c11144b1cd86f`.

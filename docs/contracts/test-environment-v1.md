@@ -391,6 +391,12 @@ approval, authentication, immutable source, request state or committed merge-par
 proof refuses before service startup. Candidate checkouts must be clean and exact.
 No live issuer enrollment or release-publication authority is supplied here.
 
+The executing consumer also obtains a fresh nonce-bound OIDC proof from the
+approved `domain-ci.yml` at that same enrolled Builds revision. Only its consumer
+job receives the required token permission. Copying a signed issuance and CI
+environment variables cannot authenticate a local invocation; the fresh proof
+binds the current run, attempt and candidate and is not retained in snapshots.
+
 The original workflow-run request identity remains immutable across pending
 retries. GitHub's `run_attempt` supplies the issuer-ordered sequence and each retry
 has distinct producing run and attempt identities. Reopened, retargeted or changed
