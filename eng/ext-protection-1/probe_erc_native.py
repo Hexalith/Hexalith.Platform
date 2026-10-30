@@ -67,6 +67,21 @@ class ErcProbe(base.Probe):
                     raise base.Blocked('FrozenRuntimeChanged')
             if self.assembly.name not in {entry['path'] for entry in manifest['files']}:
                 raise base.Blocked('FrozenAssemblyMissing')
+            listed = set()
+            for entry in manifest['files']:
+                relative = Path(entry['path'])
+                if relative.is_absolute() or '..' in relative.parts:
+                    raise base.Blocked('FrozenRuntimeChanged')
+                listed.add(relative.as_posix())
+            observed = set()
+            for path in root.rglob('*'):
+                if path.is_symlink():
+                    raise base.Blocked('FrozenRuntimeClosureIncomplete')
+                if not path.is_file() or path.resolve() == self.runtime_manifest.resolve():
+                    continue
+                observed.add(path.relative_to(root).as_posix())
+            if observed != listed:
+                raise base.Blocked('FrozenRuntimeClosureIncomplete')
             self.result['frozenRuntimeManifestSha256'] = self.runtime_manifest_sha256
             frozen_runtime = True
         if not frozen_runtime and self.assembly.resolve() != expected.resolve() or self.assembly.is_symlink() or not self.assembly.is_file() \

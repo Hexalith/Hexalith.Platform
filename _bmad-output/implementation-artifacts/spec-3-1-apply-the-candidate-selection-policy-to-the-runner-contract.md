@@ -248,3 +248,76 @@ All follow-up findings F1-F10 and G1 are corrected and verified; F4/G1 share the
 - A concurrently added diagnostic test received only mechanical analyzer-format corrections so the focused test project could compile; its behavior is preserved. This session performed no Git recording or remote operations.
 
 Status remains `in-review` because the required full-build gate is unresolved. The Build review step requires: "if verification fails and the failure cannot be fixed, HALT and escalate to the human." All authorized candidate-policy corrections are complete; host/package compatibility needs resolution before completion. Live enrollment, authentic tool qualification and Story 3.9 producers remain independent prerequisites.
+
+### Review Findings — follow-up review (2026-10-30)
+
+Code review 2026-10-30 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the Story 3.1 files in Builds `70ac3de..bdd369c`: `74b8723`, `d080758`, and the F1–G1 corrections that a concurrent `/pushall` recorded in `bdd369c` during this review. Excludes `evidence/` and the concurrent Story 2.7 hunks. Also covers Platform `docs/contracts/test-environment-v1.md` since `66aafa69`. `B/` resolves to `references/Hexalith.Builds/`.
+
+- [ ] [Review][Decision] The required full Debug build still fails, for reasons outside Story 3.1 — Verification requires `dotnet build -c Debug -m:1 -nodeReuse:false` of the test project.
+  - It fails with seven EventStoreHost errors: missing `Routing` namespaces, `UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel`, an inaccessible `EventStoreActorCallbackEndpointMetadata`, and an unused using.
+  - Builds `b8d1952` (source-mapped platform catalogs, not Story 3.1) introduced these calls. The pinned `Hexalith.EventStore` 3.128.4 does not provide them, and nothing since has touched the host or the pin.
+  - All 586 Story 3.1 .NET results come from the focused `-p:BuildProjectReferences=false` build.
+  - Choose one: accept the focused verification and defer the blocker to the work that owns it, keep 3.1 blocked, or repair the host here.
+- [ ] [Review][Patch] A passed result whose execution deadline was never populated skips the measured-duration check [B/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidatePolicyValidator.cs:145]
+  - The F3 fix refuses only an unpopulated startup deadline. If both documents carry `execution: {"state":"not-yet-populated"}`, `ValidatePassingDuration` checks nothing.
+  - Nothing else catches this: the reader has no rule linking a passed outcome to execution timing, and the contract reserves `not-declared` for undeclared budgets.
+  - Fix: refuse a passed result whose execution state is neither `populated` nor `not-declared`, with `passing-duration-required`. Add the execution counterpart of `PassingResultRefusesMatchingUnavailableStartupTimingAsync`.
+- [ ] [Review][Patch] No test covers the command's owned-run fallback for an unissued candidate [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1178]
+  - Restoring `?? options.CandidatePolicy?.RunId` still passes every test.
+  - With that fallback, a refusal before issuance, a cancellation while waiting on the lock, or a setup timeout would read the prior owner's committed `selected-test.json` and report its outcome as this invocation's.
+  - Add a command-level case: seed a passing prior record and use a start override that returns no run ID. Assert there is no `runId`, the exit code is this invocation's own, and the prior bytes are unchanged.
+- [ ] [Review][Patch] AC1's release kind is never written through the writers or the public command [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:123]
+  - Every accepted-startup command case and `DescriptorAndTerminalWritersPreserveSameIssuedCandidateAsync` use the PR-merge payload. Release decisions, which have no `pr` object, are exercised only at `ResolveAsync`.
+  - Parameterize the writer round trip and the public `startup` case over both kinds.
+- [ ] [Review][Patch] The README still says the consumer proof comes "currently" from `domain-ci.yml` [B/README.md:623]
+  - The same section says `domain-ci.yml` has no candidate wiring and requests only `contents: read`, so no shipped workflow can mint the proof.
+  - Say that no consumer workflow is enrolled yet, and that the opt-in consumer workflow will replace the verifier's `domain-ci.yml` reference.
+- [ ] [Review][Patch] The `domain-ci.yml` permission regression test only rejects four strings [B/Github/governed-provenance/tests/test_candidate_policy.py:155]
+  - Adding `packages: write`, `checks: write`, `write-all` or any other job-level `permissions:` would bring back the caller `startup_failure` without failing the test.
+  - Assert that the file has exactly one `permissions:` block and that it is `contents: read`.
+- [ ] [Review][Patch] The enrollment-format regression test misses the lowercase-hex rule for `CallerContentIdentity` [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:736]
+  - Only the bare 64-hex case runs, which exercises the prefix and length check. A `sha256:` prefix followed by uppercase hex is never tried, so removing `!char.IsAsciiLetterUpper` would go unnoticed.
+  - Add that case.
+- [ ] [Review][Patch] The issuance substitution theory has no `job_workflow_ref` case [B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs:319]
+  - The issuer-side `job_workflow_ref` equality is what separates issuer from consumer, and no isolated case tests it. The consumer side is covered by `wrong-workflow`.
+  - Add an `InlineData`.
+  - Two related points need no change: `alg: none` goes through the already-tested non-RS256 branch, and the JWK `use`/`alg` fields need no check while `kid`, `kty` and the header `alg` are pinned.
+- [x] [Review][Defer] The consumer side is orphaned since the `domain-ci.yml` revert [B/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidateGateClient.cs:440] — deferred: already recorded with the candidate CI trust-root item, which says the opt-in consumer workflow must replace the hard-coded `/domain-ci.yml@` consumer reference. That workflow must also run `candidate_workspace.py`; until then, its `governed_provenance.py` helper mapping does nothing.
+- [x] [Review][Defer] "One candidate invocation per job attempt" is enforced only within one local state directory [B/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:2393] — deferred: pre-existing, because the producing RunId comes from the signed payload.
+  - Matrix legs share `GITHUB_JOB`, and a second state directory on the same runner is never checked, so two invocations could both issue the same producing identity.
+  - The opt-in consumer workflow must guarantee a single invocation (no matrix, a fixed state root) or bind the numeric GitHub job.
+- [x] [Review][Defer] A setup timeout after candidate issuance may discard the issued RunId (medium, unverified) [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1260] — deferred:
+  - `ReportSetupTimeoutAsync` always passes a null run ID, and the command then sets `ownedRunId = expired.RunId`. Before F1, this path invented a random owner instead.
+  - To settle it: check whether `startupToken` can be cancelled while a session exists and `ExecutionTiming` is null — for example, batch entry two, after line 1217 resets it.
+
+**Rejected:**
+
+- Issuance-lock waits over 5 s escape as an `OperationCanceledException` and are reported as `HXT007` (Blind Hunter, Verification Gap, Edge Case Hunter): `low`.
+  - Verified: `OpenOutcomeLockAsync`'s internal bound matches no `StartAsync` filter.
+  - It needs duplicate invocations racing within one job attempt, the run still fails safe, and the fix adds a new catch path.
+- Issuance lock files are never deleted and keep the state root from being removed (Blind Hunter, Edge Case Hunter): `low`. They are 0-byte files on disposable runners, and deleting them would reintroduce a lock-file race.
+- The concurrency and cancellation tests never prove that the waiter blocked on the issuance lock: `low`.
+  - The Concurrent and WaitingDuplicate tests also pass against the pre-F5 code, so they do not prove the fix.
+  - The race they target is improbable, and a distinguishing test needs a redesign.
+- `main` is hard-coded rather than enrolled: `false`. The 2026-10-30 decision requires `refs/heads/main` in both issuer and verifier, and each dispatch is its own decision on the commit it dispatched.
+- Redundant guards, and the `alg` check running after the JWKS fetch: `false`. No harm is named.
+- Unexplained page size 30: `false`. `SuccessorLookupStartsAtGateCreationAsync` pins `per_page=30`, and the G1 test covers page continuation.
+- The v1 contract was amended in place: `false`.
+  - The edited section was added by this story (`66aafa69`) the same day, and it documents runner enforcement, not v1 representation.
+  - The policy's "existing release authority" is the owner-approved `main` dispatch.
+- The public-command theory has too many cases, and `starts.ShouldBe(0)` proves nothing for accepted startups: `low`. This is readability only, and splitting the theory is a restructure.
+- `ValidateRawPolicy` duplicates the reader's parsing: `low`. It runs only after the strict reader has refused, and only to name the refusal.
+- Prose line wrapping: `false`. No Markdown line-length tooling exists, and the rendered output is the same.
+- The review diff could not be applied as one patch: `false`. That is how this review's diff was built, not a defect in the code.
+- Task 4 is still ticked and the Spec Change Log is empty: rejected, because the fix would edit the spec under review.
+- Consumer-proof temporal failures are named `issuer-authentication-required`: `low`.
+  - The name is stable and the F7 tests assert it on purpose.
+  - The consumer path cannot run live yet, and renaming would change the condition contract.
+- The production engine now carries `DeclarationOptionsOverride`: `false`. It is an internal init-only property that only fixture tests set.
+- A JWT header without `kid`/`alg`, or with missing claims, is reported as `authority-unavailable` (Edge Case Hunter, two findings): `low`.
+  - Verified: `S` and `GetProperty` throw `KeyNotFoundException`, which the gate maps to `authority-unavailable`.
+  - Only forged tokens reach this, the request still fails closed, and the fix adds a guard.
+- An identity reserved after a failure before issuance has no result: `low`. This is the documented one-invocation-per-attempt rule, nothing is invented, and a re-run issues a fresh attempt.
+- The prior owner's workspace exists without diagnostics: `false`. Diagnostics are created before the workspace, and selected-test runs keep them (`RefusePreparedRunAsync` always tears down through `FailAndTearDownAsync`).
+- A populated deadline without `effectiveSeconds` skips the budget check: `false`. The schema requires `effectiveSeconds` for populated startup and execution deadlines, and the only production caller reads through the strict reader first.
+- `DeclarationOptionsOverride` does not reach the writer's closure reload: `low`. This only limits test fixtures, and fixing it means more override plumbing.

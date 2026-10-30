@@ -2,21 +2,23 @@
 title: 'EXT-PROTECTION-1 production engine, erasure-root custody and owner verifier'
 type: 'feature'
 created: '2026-10-19'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
 eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
-review_loop_iteration: 8
+review_loop_iteration: 9
 context:
   - '{project-root}/../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
   - '{project-root}/../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md'
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'
 ---
 
-> Current status — human authorized one correction cycle at counter 8. Four bad-spec gaps and six direct patches are mandatory. Loop7 source candidates and the unaccepted 2026-11-02 proposal stay withdrawn. Code, evidence and local refs remain preserved. No accepted target, profile, date or installed/physical qualification is established.
+> Current status — review 9 halted after the authorized counter-8 correction. Counter is now 9, past the limit of 5. Loop 8 corrections remain in the working trees. No rollback. No accepted target, profile, date, or installed/physical qualification.
 
 
 ### Current implementation dispatch — authorized loop 8
+
+Review 9, recorded at the end of this spec, supersedes this dispatch. The counter-8 cycle was implemented and then halted. Do not start another correction from this section.
 
 This is the implementation handoff inside the parent's already-rendered bmad-build workflow. The human answered yes to one further correction cycle after review 8. Counter `review_loop_iteration` stays 8. This directive and the final **Re-derivation loop 8** entry supersede every older execution-location, halt, restore, checkpoint, daemon-recovery and workflow-limit statement below, including the review 8 HALT and the loop 6/7 dispatches. Do not halt for lack of authorization. Do not increment the counter. Do not render, invoke or follow another build/review skill.
 
@@ -895,3 +897,62 @@ Required corrections and verification:
 12. Record a loop-8 handback under `docs/implementation/ext-protection-1-loop8/` with the corrections, commands, results and any remaining missing installed inputs. Leave status `in-progress`. Do not propose a replacement immutable target, profile, date or availability. The parent owns merge, candidate capture and the next review.
 
 Authoritative execution paths are the loop-8 dispatch at the top. Older path, restore and halt notes are historical.
+
+
+## Review 9 — 2026-10-30
+
+All three reviewers returned before triage. Twenty-nine submissions receive a verdict before grouping. None is an unchanged prior location-and-claim carry. Verification-gap rows are trusted as filed. Blind and edge claims were checked at the cited code. Counter increments 8→9 and exceeds the limit of 5. HALT before rollback, patch processing, or another re-derivation. Loop 8 source stays in the working trees.
+
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| R9-BH-1 | high | patch | `deploy/erasure-root/statefulset.yaml` — `erasure-root.hcl` never sets `disable_mlock`, the container drops every capability, and `readOnlyRootFilesystem` has no writable emptyDir. OpenBao memory locking and scratch writes can stop the prepared pod before it serves. Adding `disable_mlock` and a scratch volume is a direct manifest correction. |
+| R9-BH-2 | high | bad_spec | `OpenBaoErasureRootStore.cs:35` — the production handler is the default trust store. The StatefulSet requires the private `erasure-root-tls` CA and the readiness probe passes `-ca-cert`, but the store has no CA pin. A private ERC certificate cannot be verified by this client. The trust mount and validation callback are a client contract, not a one-line guard. |
+| R9-BH-3 | medium | bad_spec | `deploy/erasure-root/bootstrap.py` together with `ReadKeyAsync` — apply can create transit keys without the `deletion_allowed: false` predicate the fixture requires, and the prepared apply path does not install `custody-policy.hcl` or reread the CAS-0 head. That is a bootstrap contract, not a single predicate. |
+| R9-BH-4 | false | reject | `OpenBaoErasureRootStore.ReadKeyAsync` already rejects a body whose `version` is not `2.6.2`, whose `initialized` is false, or whose `sealed` is true. The shipped listener does not set `standbyok` or a sealed 200. A default standby is not the 200 this predicate accepts. |
+| R9-BH-5 | medium | bad_spec | `deploy/erasure-root/custody-policy.hcl` — the only rendered policy grants head and transit operations on `tenants/*`. One installed token can wrap and trim every tenant. The README says narrower policies are separate, and no manifest renders them. Tenant isolation needs that policy set. |
+| R9-BH-6 | medium | bad_spec | `deploy/erasure-root/network-policy.yaml` and the StatefulSet Service — ingress is any namespace and pod that carry `hexalith.com/erc-client: "true"`, port 8201 is published, and the namespace has no Pod Security label. A coherent client allowlist is more than a label tweak. |
+| R9-BH-7 | false | reject | `ErasureRootCustody` calls `VerifyTrimAsync` before and after `TrimAsync`, and returns null unless minimum versions and `latest_version` match the successor. A crash between the config post and the trim post is not reported as a completed trim. |
+| R9-BH-8 | high | bad_spec | `ErasureRootCustody.UnwrapAsync` — after the holder id is CAS-committed, a failed decrypt, second authorization, or confirmation read returns null and zeroes the root. `CompleteHolderAsync` then has no `_issuedHolders` entry, while `Holders` stays non-empty and manifest admission refuses the target. A transient failure after that CAS leaves a holder nobody can complete. Recovery has to distinguish a discarded decrypt from a live holder. |
+| R9-BH-9 | false | reject | A pending manifest after the CAS loop is the retained lost-result state. Later wrap refuses that pending head, and lookup is the specified continuation. The 32nd-attempt return is not a second manifest. |
+| R9-BH-10 | medium | patch | `ProveNativeCustodyReadyAsync` encrypts a throwaway buffer and checks the `vault:v{epoch}:` prefix. It never decrypts that buffer. An encrypt-only policy can pass preflight. A decrypt-and-compare in this private method is a direct correction. The archive-buffer half of this bullet was not the verified harm. |
+| R9-BH-11 | maybe-false | defer | Mixed-snapshot child completion and `replay: false` erasure were not traced through `CompletePayloadProtectionAsync`. If the partial-completion claim is true it is high. Settle it by reading that method's per-child catch and one mixed erased read. Lower defer processing is moot. |
+| R9-BH-12 | false | reject | `PublishedTrustDeletionConsumptionAuthority.VerifyBlockedReplacementAsync` checks the guard snapshot, signature, unissued proof, and journal. It does not stop at `RevocationAsync`. The DEK-copy and journal `TenantId` subclaims were not needed once that cited handler claim failed. |
+| R9-BH-13 | medium | bad_spec | `ErasureRootCustody.Json` has no comparer converter. Deserialized `SortedDictionary` keys then use `Comparer<string>.Default`, so head order and hashes can follow the process culture. One call-site sort does not cover every head dictionary. |
+| R9-EC-1 | low | patch | `GovernanceScopeGuardReducer.UnissuedReplacementProof` adds `AttestationOrdinal + 1` unchecked. `long.MaxValue` wraps and can satisfy the successor comparison. A `MaxValue` refusal is a direct guard. Everyday ordinals do not reach it, and the fix is still a direct correction, so it is not rejected. |
+| R9-EC-2 | low | patch | `VerifyTrimAsync` uses `int.Parse` on each key version name. A non-integer name throws rather than returning false. `TryParse` returning false is a direct correction. |
+| R9-EC-3 | low | patch | `RewrapAsync` keeps the request body and response after parsing. Those buffers hold survivor ciphertext until collection. A `finally` zero is a direct correction. |
+| R9-EC-4 | low | patch | `RewrapAsync` uses `GetString()!` and then `StartsWith`. A null ciphertext throws `NullReferenceException` before the epoch check. A null refusal is a direct correction. |
+| R9-EC-5 | medium | patch | `InteractionOccurrenceRegistryActor` deserializes a recovered snapshot and catches only `InvalidOperationException`. Invalid JSON throws `JsonException` out of the read. Catching that parse failure and returning null is a direct correction. |
+| R9-EC-6 | maybe-false | defer | The consumption-ledger deserialize claim was not opened. If true it is medium. Settle it at `DeletionConsumptionActor.cs` around the recovered-ledger deserialize. Moot while bad-spec entries remain. |
+| R9-EC-7 | maybe-false | defer | The ledger-reload claim was not opened. Same settlement as R9-EC-6. |
+| R9-EC-8 | medium | patch | `erc-read-rejected-issue` uses `SingleOrDefault` on guard attempts. Two matches throw, and `HandleCoreAsync` does not catch that exception. A length check that returns null is a direct correction. |
+| R9-EC-9 | maybe-false | defer | The duplicate-completion claim's `Take(2)` snippet was not found at the cited line. If a throwing lookup remains, it is medium. Moot while bad-spec entries remain. |
+| R9-EC-10 | medium | patch | `ReadAsync` calls `anchor.Admissions.Add`. A duplicate admission key throws. `TryAdd` returning null is a direct correction. |
+| R9-EC-11 | maybe-false | defer | The null-payload `finally` claim in the snapshot protector was not opened. If the `finally` throws and masks `Unreadable`, it is medium. |
+| R9-EC-12 | false | reject | The cited replay guard returns `SnapshotUnprotectionOutcome.Unreadable` when deserialize yields null. The caller does not receive a null readable snapshot. |
+| R9-EC-13 | low | reject | `ReadAdmittedOriginalAsync` is forwarded through `PrivateOwnerOperationDeadline.ReadAsync`. The wait observes the caller token. The inner call uses `CancellationToken.None`, which is that deadline type's existing contract for every method. Changing it would be a new cancellation policy. Everyday cancel already unblocks the caller. |
+| R9-EC-14 | false | reject | Same trim path as R9-BH-7. `VerifyTrimAsync` must pass after both posts. The split is not reported as a finished trim. |
+| R9-VG-1 | medium | patch | Pre-verified. `VerifyBlockedReplacementAsync` contains the unissued-proof branch, and the filed tests stub or skip it. Deleting that branch leaves those tests green. The filed patch is a direct unissued accept/reject test. |
+| R9-VG-2 | medium | patch | Pre-verified. `CompleteDisposedUsesAsync` skips a live key with `!use.IsDisposed` even when its bytes are zero. The filed custody test never zeroes a live buffer. Removing that disposed check leaves the test green. The filed patch is that one case. |
+
+| Root cause | Members | Route |
+|---|---|---|
+| R9-G1 | R9-BH-1 | patch |
+| R9-G2 | R9-BH-2 | bad_spec |
+| R9-G3 | R9-BH-3 | bad_spec |
+| R9-G4 | R9-BH-5 | bad_spec |
+| R9-G5 | R9-BH-6 | bad_spec |
+| R9-G6 | R9-BH-8 | bad_spec |
+| R9-G7 | R9-BH-10 | patch |
+| R9-G8 | R9-BH-13 | bad_spec |
+| R9-G9 | R9-EC-1 | patch |
+| R9-G10 | R9-EC-2 | patch |
+| R9-G11 | R9-EC-3 | patch |
+| R9-G12 | R9-EC-4 | patch |
+| R9-G13 | R9-EC-5 | patch |
+| R9-G14 | R9-EC-8 | patch |
+| R9-G15 | R9-EC-10 | patch |
+| R9-G16 | R9-VG-1 | patch |
+| R9-G17 | R9-VG-2 | patch |
+
+Rejected: R9-BH-4, R9-BH-7, R9-BH-9, R9-BH-12, R9-EC-12, R9-EC-13, R9-EC-14. R9-EC-13 is low and the fix would replace the deadline contract. The six bad-spec groups make the patch and maybe-false defer rows moot. No frozen intent change is inferred. No rollback, patch, or tenth correction cycle is started. Loop 7 candidates stay withdrawn. Loop 8 corrections and their passing focused tests remain in place.

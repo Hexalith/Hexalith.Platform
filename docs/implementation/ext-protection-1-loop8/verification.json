@@ -1,0 +1,34 @@
+{
+  "record": "EXT-PROTECTION-1",
+  "loop": 8,
+  "status": "in-progress",
+  "acceptedTarget": null,
+  "acceptedProfile": null,
+  "acceptedDate": null,
+  "availability": null,
+  "nativeFiveCaseRerun": false,
+  "nativeWorkloadUnchanged": true,
+  "attempt01": "BlockedUnknown",
+  "r7Bh7": "unchanged",
+  "builds": [
+    {
+      "project": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "configuration": "Debug",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "project": "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+      "configuration": "Debug",
+      "warnings": 0,
+      "errors": 0
+    }
+  ],
+  "tests": [
+    {"dll": "Hexalith.Platform.Protection.Tests.dll", "classes": ["ErasureRootLoop8AdmissionTests", "ProtectionQualificationRoleProgramClientTests", "ErasureRootLoop5ConfiguredSealTests"], "passed": 26, "failed": 0},
+    {"dll": "Hexalith.Platform.Protection.Tests.dll", "classes": ["ErasureRootCustodyTests", "ErasureRootHostCompositionTests", "ProtectionQualificationLoop4EvidenceTests"], "passed": 30, "failed": 0},
+    {"dll": "Hexalith.Platform.Custody.Tests.dll", "method": "DeadlineWrapperForwardsAdmittedOriginalAndReconcilesLossBeforePending", "passed": 1, "failed": 0},
+    {"command": "python3 -m unittest discover -s tools/tests -p test_ext_protection_1_loop8.py", "passed": 3, "failed": 0},
+    {"command": "python3 eng/ext-protection-1/test_probe_erc_native.py", "passed": 6, "failed": 0}
+  ]
+}

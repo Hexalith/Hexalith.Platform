@@ -50,6 +50,13 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
             _heads[tenant] = (prior.Version + 1, JsonSerializer.SerializeToUtf8Bytes(head, ErasureRootCustody.Json));
         }
     }
+    internal void RemoveTransitKey(string tenant)
+    {
+        lock (_gate)
+        {
+            if (_epochs.Remove(tenant, out var epochs)) { foreach (var key in epochs.Values) { CryptographicOperations.ZeroMemory(key); } }
+        }
+    }
     internal void LoseVolume(string tenant)
     {
         lock (_gate) { _heads.Remove(tenant); if (_epochs.Remove(tenant, out var epochs)) { foreach (var key in epochs.Values) { CryptographicOperations.ZeroMemory(key); } } }

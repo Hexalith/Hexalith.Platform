@@ -106,7 +106,14 @@ public sealed class ErasureRootLoop3TenantGraphTests
             foreach (string tenant in installation.NativeKeys.Keys)
             {
                 var read = (await custody.ReadAsync(tenant, token))!.Value;
-                read.Head.Anchors.Add(ErasureRootTenantLifecycleAuthority.Scope(tenant), new(0, ErasureRootCustody.Hash(new CustodyKeyLifecycleLedger(tenant, 0, [])), [], []));
+                string lifecycle = ErasureRootTenantLifecycleAuthority.Scope(tenant);
+                if (!read.Head.Anchors.ContainsKey(lifecycle))
+                { read.Head.Anchors.Add(lifecycle, new(0, ErasureRootCustody.Hash(new CustodyKeyLifecycleLedger(tenant, 0, [])), [], [])); }
+                foreach (string scope in new[] { DeletionConsumptionActor.GetOwnerScope(tenant), ErasureRootOccurrenceAuthority.Scope(tenant) })
+                {
+                    if (!read.Head.Anchors.ContainsKey(scope))
+                    { read.Head.Anchors.Add(scope, new(0, ErasureRootCustody.Hash(new { tenant, scope }), [], [])); }
+                }
                 (await custody.SaveAsync(tenant, read.Version, read.Head, token)).ShouldBeTrue();
                 var nativeCustody = provider.GetRequiredService<ErasureRootCustody>();
                 var root = (await nativeCustody.WrapAsync(new(tenant, "lifecycle-root", PlatformKeyPurpose.InteractionRootDek, "alias", "root-v1", "lifecycle", installation.StoreId, "custody"), "lifecycle-wrap-" + tenant, 0, token))!;

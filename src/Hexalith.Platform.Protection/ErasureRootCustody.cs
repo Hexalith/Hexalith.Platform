@@ -13,6 +13,17 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     IErasureRootAuthorization authorization) : IAtomicDeletionManifestProvider, ICustodyKeyLifecycleProvider
 {
     private readonly ErasureRootQuiescence _quiescence = new();
+    private readonly HashSet<string> _requiredOwnerScopes = new(StringComparer.Ordinal);
+    /// <summary>Installed production admission requires these owner anchors to already exist. An empty set keeps standalone component enrollment unchanged.</summary>
+    internal void RequireInstalledOwners(IEnumerable<string> scopes)
+    {
+        ArgumentNullException.ThrowIfNull(scopes);
+        foreach (string scope in scopes)
+        {
+            if (string.IsNullOrWhiteSpace(scope)) { throw new ArgumentException("Installed owner scope required."); }
+            _requiredOwnerScopes.Add(scope);
+        }
+    }
     internal void BeginQuiescence() => _quiescence.Close();
     internal Task WaitForQuiescenceAsync(CancellationToken token) => _quiescence.WaitAsync(token);
 
@@ -83,11 +94,13 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
             string digest = Hash(new { identity, operationId, expectedLifecycleRevision });
             if (!await authorization.AuthorizeAsync(identity.TenantId, operationId, "WrapDek", digest, token).ConfigureAwait(false)) { return false; }
             var read = await ReadAsync(identity.TenantId, token).ConfigureAwait(false);
-            return read is { } current && await ValidateOccurrenceWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
-                && await ValidateLifetimeWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
-                && current.Head.Pending is null && await ReadErasedAsync(current.Head, TargetId(identity), token).ConfigureAwait(false) is null
-                && (!current.Head.Targets.TryGetValue(TargetId(identity), out var existing) || existing.Registration.Identity == identity
-                    && existing.Registration.OperationId == operationId && existing.Registration.ExpectedRevision == expectedLifecycleRevision);
+            if (read is not { } current || !await ValidateOccurrenceWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
+                || !await ValidateLifetimeWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
+                || current.Head.Pending is not null || await ReadErasedAsync(current.Head, TargetId(identity), token).ConfigureAwait(false) is not null) { return false; }
+            if (current.Head.Targets.TryGetValue(TargetId(identity), out var existing) && (existing.Registration.Identity != identity
+                || existing.Registration.OperationId != operationId || existing.Registration.ExpectedRevision != expectedLifecycleRevision)) { return false; }
+            await ProveNativeCustodyReadyAsync(identity.TenantId, current.Head.Epoch, token).ConfigureAwait(false);
+            return true;
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
         catch { token.ThrowIfCancellationRequested(); return false; }
@@ -470,7 +483,9 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
         { DeletionConsumptionActor.GetOwnerScope(tenant), ErasureRootOccurrenceAuthority.Scope(tenant),
             CustodyKeyLifecycleActor.GetActorId(tenant) + "|custody-key-lifecycle-candidate-v1" };
         foreach (string scope in selectedScopes)
-        { _ = await ReadRetainedAsync(head, "Anchors", head.Anchors, scope, token).ConfigureAwait(false); }
+        {
+            if (await ReadRetainedAsync(head, "Anchors", head.Anchors, scope, token).ConfigureAwait(false) is null && _requiredOwnerScopes.Contains(scope)) { return null; }
+        }
         if (history)
         {
             await ReadIndexAsync(tenant, head.GuardAdmissionArchives, head.GuardAdmissions, token).ConfigureAwait(false);
@@ -731,6 +746,23 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
         if (pointer is null) { return null; }
         var retained = await ReadManifestAsync(tenant, batch, pointer, head.Epoch, token).ConfigureAwait(false);
         head.Manifests.Add(batch, retained); return retained;
+    }
+    private async Task ProveNativeCustodyReadyAsync(string tenant, int epoch, CancellationToken token)
+    {
+        var policy = await store.ReadPolicyAsync(tenant, token).ConfigureAwait(false);
+        int latest = await store.ReadEpochAsync(tenant, token).ConfigureAwait(false);
+        if (latest < epoch || policy.LatestVersion < epoch || policy.MinEncryptionVersion > epoch || policy.MinAvailableVersion > epoch
+            || !policy.Derived || policy.Exportable || policy.AllowPlaintextBackup || policy.DeletionAllowed)
+        { throw new InvalidOperationException("Native custody key is not an installed derived non-exportable root."); }
+        byte[] probe = RandomNumberGenerator.GetBytes(32);
+        string context = Convert.ToBase64String(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("erc-custody-readiness:" + tenant + ":" + epoch.ToString(CultureInfo.InvariantCulture))));
+        try
+        {
+            string ciphertext = await store.EncryptAsync(tenant, epoch, probe, context, token).ConfigureAwait(false);
+            if (!ciphertext.StartsWith("vault:v" + epoch.ToString(CultureInfo.InvariantCulture) + ":", StringComparison.Ordinal))
+            { throw new InvalidOperationException("Native custody encrypt did not bind the head epoch."); }
+        }
+        finally { CryptographicOperations.ZeroMemory(probe); }
     }
     internal Task<ErasureRootNativePolicy> ReadNativePolicyAsync(string tenant, CancellationToken token) => store.ReadPolicyAsync(tenant, token);
     internal async Task<System.Text.Json.Nodes.JsonNode?> ReadNativeCallResultAsync(string tenant, ProtectionQualificationNativeCall call, CancellationToken token)

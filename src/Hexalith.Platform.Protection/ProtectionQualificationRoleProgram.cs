@@ -16,6 +16,10 @@ public static class ProtectionQualificationRoleProgram
         try
         {
             byte[] installedBytes = ProtectionPinnedFile.Read(installationPath, 16 * 1024 * 1024);
+            string? acceptedConfiguration = Environment.GetEnvironmentVariable("EXT_PROTECTION_ACCEPTED_ROLE_CONFIGURATION_SHA256");
+            if (acceptedConfiguration is not { Length: 64 } || acceptedConfiguration.Any(static value => !Uri.IsHexDigit(value))
+                || !Convert.ToHexString(SHA256.HashData(installedBytes)).Equals(acceptedConfiguration, StringComparison.OrdinalIgnoreCase))
+            { throw new InvalidOperationException("Accepted role configuration digest required."); }
             CustodyBindingContract.RejectDuplicateProperties(installedBytes);
             var installation = JsonSerializer.Deserialize<ProtectionQualificationRoleInstallation>(installedBytes, ErasureRootCustody.Json)
                 ?? throw new InvalidOperationException();
@@ -48,11 +52,32 @@ public static class ProtectionQualificationRoleProgram
         if (!Allowed(installation.Role, action)) { throw new InvalidOperationException("Role operation unavailable."); }
         byte[] canonicalRequest = ProtectionQualificationCanonical.Bytes(request);
         string requestDigest = Convert.ToHexStringLower(SHA256.HashData(canonicalRequest));
-        string? credential = Environment.GetEnvironmentVariable(installation.CredentialReference[4..]);
-        if (string.IsNullOrWhiteSpace(credential)) { throw new InvalidOperationException("DependencyNotAvailable: role credential."); }
         byte[] publicBytes = ProtectionPinnedFile.Read(installation.PublicAnchorFile, 16384, installation.PublicAnchorSha256);
         if (Convert.ToHexString(SHA256.HashData(publicBytes)).Equals(installation.PublicAnchorSha256, StringComparison.OrdinalIgnoreCase) is false)
         { throw new InvalidOperationException("Changed role anchor."); }
+        string nonce = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
+        var binding = new JsonObject { ["endpoint"] = installation.Endpoint, ["nonce"] = nonce };
+        using (var proof = new HttpRequestMessage(HttpMethod.Post, installation.Endpoint) { Content = new ByteArrayContent(ProtectionQualificationCanonical.Bytes(binding)) })
+        {
+            proof.Content.Headers.ContentType = new("application/json");
+            using var bound = await http.SendAsync(proof, HttpCompletionOption.ResponseHeadersRead, token).ConfigureAwait(false);
+            if (!bound.IsSuccessStatusCode || bound.Content.Headers.ContentLength > 16 * 1024 * 1024) { throw new InvalidOperationException("Native role unavailable."); }
+            using var boundStream = await bound.Content.ReadAsStreamAsync(token).ConfigureAwait(false);
+            byte[] boundBytes = await ReadAsync(boundStream, 16 * 1024 * 1024, token).ConfigureAwait(false);
+            CustodyBindingContract.RejectDuplicateProperties(boundBytes);
+            var boundEnvelope = JsonNode.Parse(boundBytes) as JsonObject ?? throw new InvalidOperationException();
+            if (boundEnvelope.Count != 2 || boundEnvelope["statement"] is not JsonObject boundStatement || boundEnvelope["signature"] is not JsonValue boundSignature
+                || boundStatement.Count != 5 || boundStatement["purpose"]?.GetValue<string>() != "endpoint-binding" || boundStatement["role"]?.GetValue<string>() != installation.Role
+                || boundStatement["identity"]?.GetValue<string>() != installation.Identity || boundStatement["endpoint"]?.GetValue<string>() != installation.Endpoint
+                || boundStatement["nonce"]?.GetValue<string>() != nonce) { throw new InvalidOperationException("Unverified role endpoint."); }
+            using var endpointVerifier = ECDsa.Create(); endpointVerifier.ImportFromPem(new UTF8Encoding(false, true).GetString(publicBytes));
+            byte[] boundSignatureBytes = Convert.FromBase64String(boundSignature.GetValue<string>());
+            if (endpointVerifier.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7" || boundSignatureBytes.Length != 64
+                || !endpointVerifier.VerifyData(ProtectionQualificationCanonical.Bytes(boundStatement), boundSignatureBytes, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation))
+            { throw new InvalidOperationException("Unverified role endpoint."); }
+        }
+        string? credential = Environment.GetEnvironmentVariable(installation.CredentialReference[4..]);
+        if (string.IsNullOrWhiteSpace(credential)) { throw new InvalidOperationException("DependencyNotAvailable: role credential."); }
         using var call = new HttpRequestMessage(HttpMethod.Post, installation.Endpoint);
         call.Headers.Authorization = new AuthenticationHeaderValue("Bearer", credential);
         call.Headers.Add("X-Hexalith-Protection-Role-Contract", installation.Schema);

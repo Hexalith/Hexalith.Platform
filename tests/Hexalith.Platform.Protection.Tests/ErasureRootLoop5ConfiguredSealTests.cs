@@ -103,6 +103,19 @@ public sealed class ErasureRootLoop5ConfiguredSealTests
             var recipes = ProtectionQualificationSourceCatalog.Compile(arguments); string caseId = mode == "event" ? "P01" : "P10", action = mode == "event" ? "SealDirectoryOutbox" : "SealSnapshotAndCache";
             recipes[caseId][action] = new([], call, null, []);
             string binding = new('a', 64); var request = new JsonObject { ["operationId"] = "seal", ["action"] = action, ["bindingDigest"] = binding, ["caseId"] = caseId, ["fixtureId"] = "fixture", ["targets"] = JsonSerializer.SerializeToNode(targets), ["canaryBase64"] = Convert.ToBase64String("configured-canary"u8) };
+            var preparedHead = await fixture.Store.HeadAsync("tenant-a");
+            string deletionScope = DeletionConsumptionActor.GetOwnerScope("tenant-a");
+            byte[] ownerBytes = JsonSerializer.SerializeToUtf8Bytes(new JsonObject { ["Batches"] = new JsonArray() });
+            string ownerDigest = Convert.ToHexString(SHA256.HashData(ownerBytes));
+            var ownerOriginal = new AnchoredStateTransition(deletionScope, 0, 1, new string('0', 64), ownerDigest, ownerBytes);
+            foreach (string ownerScope in new[] { deletionScope, ErasureRootOccurrenceAuthority.Scope("tenant-a"), ErasureRootTenantLifecycleAuthority.Scope("tenant-a") })
+            {
+                if (preparedHead.Anchors.ContainsKey(ownerScope)) { continue; }
+                preparedHead.Anchors.Add(ownerScope, ownerScope == deletionScope
+                    ? new(1, ownerDigest, new SortedDictionary<string, AnchoredStateTransition>(StringComparer.Ordinal), new SortedDictionary<string, AnchoredStateTransition>(StringComparer.Ordinal) { [ownerDigest] = ownerOriginal })
+                    : new(0, ErasureRootCustody.Hash(new { tenant = "tenant-a", ownerScope }), [], []));
+            }
+            fixture.Store.ReplaceHead("tenant-a", preparedHead);
             var custody = provider.GetRequiredService<ErasureRootCustody>(); var journal = new ProtectionQualificationOperationJournal(custody, fixture.Permissions);
             await journal.UpdateAsync("tenant-a", "original-admission", "QualificationExecution", ProtectionQualificationOperationJournal.Digest(request), head => { head.QualificationOperations.Add("executor:seal", new("executor", binding, "attempt", ProtectionQualificationOperationJournal.Digest(request), new JsonObject())); return true; }, token);
             var faults = new ProtectionQualificationFaults(independent.Native, new("controls", "controls", new()), "enrollment", new HashSet<string>());

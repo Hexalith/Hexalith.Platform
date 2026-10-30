@@ -1549,3 +1549,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Give the two pre-existing Story 2.7 ledger entries their own Story 2.7 headings (low).
   evidence: Resumed review R7 verified that the stalled-provisioning cleanup exit-classification entry sits below the Story 3.1 review heading and the fixed-run-id live-process-test entry sits below the Story 5.1 review heading. Both source_spec fields correctly identify Story 2.7; neither entry was introduced or moved by this resumed Story 5.1 implementation. Preserve their evidence while correcting ownership grouping in the owning ledger-maintenance work.
+
+## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30, follow-up)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: The opt-in consumer workflow must also run `candidate_workspace.py`. This extends the candidate CI trust-root item (low).
+  evidence: The `domain-ci.yml` revert removed the only step that called `Github/governed-provenance/candidate_workspace.py`, and `governed_provenance.py:427` maps the helper only when `domain-ci.yml` mentions it. The clean-checkout check still needs the workflow-owned output exclusion (B11) once the consumer workflow exists.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: "One candidate invocation per job attempt" is enforced only within one local state directory (medium).
+  evidence: The producing RunId comes from the signed payload, and `CompositionEngine.InitializeStateAsync` reserves it through the local state and diagnostics directories only. Matrix legs share `GITHUB_JOB`, so they pass the `jobId`/`ConsumerJobName` checks. A second state directory on the same runner is not checked either. The opt-in consumer workflow must guarantee a single invocation or bind the numeric GitHub job.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: A setup timeout after candidate issuance may discard the issued RunId (medium, unverified).
+  evidence: `CompositionEngine.ReportSetupTimeoutAsync` always passes a null run ID, and `ModuleCommandExecutionService` (around line 1260) sets `ownedRunId = expired.RunId`. To settle it, check whether `startupToken` can be cancelled while a session exists and `session.Plan.ExecutionTiming` is null (for example, batch entry two after the per-entry reset). If it can, the issued owner never gets a terminal result.

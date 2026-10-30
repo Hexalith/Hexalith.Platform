@@ -73,6 +73,27 @@ class NativeHarnessControls(unittest.TestCase):
                 self.assertFalse(result['cleanup'].get('complete') is False)
                 self.assertEqual(result['outcome'], 'BlockedUnknown')
 
+    def test_unlisted_runtime_assembly_refuses_before_image_inspect_without_recording_the_manifest_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            assembly = root / 'Hexalith.Platform.Protection.Tests.dll'
+            assembly.write_bytes(b'pinned-offline-test-runtime')
+            extra = root / 'Hexalith.Platform.Protection.dll'
+            extra.write_bytes(b'mutated-unlisted-application')
+            assembly_hash = hashlib.sha256(assembly.read_bytes()).hexdigest()
+            manifest = root / 'runtime-manifest.json'
+            manifest.write_text(json.dumps({'files': [{'path': assembly.name, 'sha256': assembly_hash}]}))
+            manifest_hash = hashlib.sha256(manifest.read_bytes()).hexdigest()
+            calls = []
+            def runner(arguments, data=None):
+                calls.append(arguments)
+                raise AssertionError('Unexpected native command')
+            result, code = probe.ErcProbe(assembly, assembly_hash, runner=runner, runtime_manifest=manifest, runtime_manifest_sha256=manifest_hash).run()
+            self.assertEqual(code, 1)
+            self.assertFalse(calls)
+            self.assertNotIn('frozenRuntimeManifestSha256', result)
+            self.assertEqual(result['outcome'], 'BlockedUnknown')
+
     def test_shared_container_creation_is_offline_tmpfs_and_create_only(self):
         arguments = probe.base.create_args(probe.base.IMAGE, 'a' * 32, 'owned-native-test')
         self.assertIn('--pull=never', arguments)

@@ -86,7 +86,15 @@ public static class ErasureRootHostComposition
             return !observer && installation.QualificationNativeControls is not null ? new ProtectionQualificationControlledErasureRootStore(native, provider.GetRequiredService<ProtectionQualificationFaults>()) : native;
         });
         services.AddSingleton<IErasureRootAuthorization>(provider => new DaprErasureRootAuthorization(Authority(provider, installation, value => value.PrivateAuthority), provider.GetRequiredService<IErasureRootStore>(), installation.Native));
-        services.AddSingleton<ErasureRootCustody>(provider => new(provider.GetRequiredService<IErasureRootStore>(), installation.Native, provider.GetRequiredService<IErasureRootAuthorization>()));
+        services.AddSingleton<ErasureRootCustody>(provider =>
+        {
+            var custody = new ErasureRootCustody(provider.GetRequiredService<IErasureRootStore>(), installation.Native, provider.GetRequiredService<IErasureRootAuthorization>());
+            custody.RequireInstalledOwners(installation.Native.NativeKeys.Keys.SelectMany(tenant => new[]
+            {
+                DeletionConsumptionActor.GetOwnerScope(tenant), ErasureRootOccurrenceAuthority.Scope(tenant), ErasureRootTenantLifecycleAuthority.Scope(tenant)
+            }));
+            return custody;
+        });
         services.AddSingleton<IErasureRootOccurrenceSource>(provider => new DaprErasureRootOccurrenceSource(Authority(provider, installation, value => value.SourceAuthority)));
         services.AddSingleton<ErasureRootOccurrenceBindings>();
         services.AddSingleton<IInteractionProtectionBindingProvider>(provider => provider.GetRequiredService<ErasureRootOccurrenceBindings>());

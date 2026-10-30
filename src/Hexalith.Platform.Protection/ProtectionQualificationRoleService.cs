@@ -35,6 +35,20 @@ public sealed class ProtectionQualificationRoleService
         _observerPermission = observerPermission; _preflight = preflight; _signingPreflight = signingPreflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
     }
 
+    /// <summary>Signs the endpoint the caller already reached, before that caller may present its bearer.</summary>
+    internal async Task<JsonObject> SignEndpointBindingAsync(string endpoint, string nonce, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(endpoint) || nonce is not { Length: 64 } || nonce.Any(static value => !Uri.IsHexDigit(value)))
+        { throw new InvalidOperationException("Exact endpoint binding required."); }
+        var statement = new JsonObject { ["purpose"] = "endpoint-binding", ["role"] = _scope.Role, ["identity"] = _scope.Identity, ["endpoint"] = endpoint, ["nonce"] = nonce };
+        await _signing.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            return new JsonObject { ["statement"] = statement, ["signature"] = Convert.ToBase64String(_signer.SignData(ProtectionQualificationCanonical.Bytes(statement), HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation)) };
+        }
+        finally { _signing.Release(); }
+    }
+
     /// <summary>Handles exactly one authenticated request; it never retries an admitted mutation after response loss.</summary>
     public async Task<JsonObject> HandleAsync(JsonObject request, CancellationToken token)
     {
