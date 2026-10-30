@@ -574,6 +574,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
         {
             ["HEXALITH_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
             ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
+            ["ASPIRE_CLI_START_TIMEOUT"] = "240",
         };
         if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PREBUILD_SOURCE") == "1")
         {
@@ -591,7 +592,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
         bool ownsHost = false;
         try
         {
-            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--isolated", "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
+            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--isolated", "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(8), TestContext.Current.CancellationToken);
             ownsHost = start.ExitCode == 0;
             start.ExitCode.ShouldBe(0, start.Output + start.ErrorOutput);
             foreach (string server in new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry" })

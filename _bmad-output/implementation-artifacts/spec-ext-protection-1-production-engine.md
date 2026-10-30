@@ -2,7 +2,7 @@
 title: 'EXT-PROTECTION-1 production engine, erasure-root custody and owner verifier'
 type: 'feature'
 created: '2026-10-19'
-status: 'in-review'
+status: 'in-progress'
 baseline_commit: '231b0f2b57e96984a919ac1cdce97cc36df18542'
 eventstore_baseline_commit: 'a62241679854fa9c359c0f552114a42ca0f6a638'
 route: 'dispatch'
@@ -13,8 +13,14 @@ context:
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'
 ---
 
-> Current status — review 10 halted after the authorized counter-9 correction. Counter is now 10, past the limit of 5. Loop 9 corrections remain in the working trees. No rollback. No accepted target, profile, date, or installed/physical qualification.
+> Current status — human authorized one correction cycle at counter 10. Two bad-spec gaps and the review-10 direct patches are mandatory. Loop 9 corrections stay. No rollback. No accepted target, profile, date, or installed/physical qualification.
 
+
+### Current implementation dispatch — authorized loop 10
+
+This directive and the final **Re-derivation loop 10** entry supersede the review 10 halt and every older dispatch below. The human answered yes to one further correction cycle. Counter `review_loop_iteration` stays 10. Do not increment it. Do not halt for lack of authorization.
+
+Implement in Platform `/home/administrator/projects/hexalith/platform` and EventStore `/home/administrator/projects/hexalith/eventstore`. Do not reset or discard working-tree files. Preserve loop-9 behavior, unrelated concurrent hunks, and both original baselines. No Git mutation or remote operation. Build Debug with project references and `-nodeReuse:false`, using the same `HexalithEventStoreRoot`, physical `HexalithCommonsRoot`, and `HexalithTenantsBasePath` as loop 9. Run test DLLs directly. Leave status `in-progress`. Do not invent an immutable target, profile, date, or availability record.
 
 ### Current implementation dispatch — authorized loop 9
 
@@ -996,98 +1002,26 @@ Required corrections:
 16. R9-VG-2 — in `CustodyOccurrenceProviderTests`, zero the live root without `Dispose` and assert completion stays 0. After `Dispose`, completion is allowed.
 17. Run the tests that cover these files. Debug project-reference builds of the touched test projects must report zero warnings and errors. Run the DLLs directly. Record a handback at `docs/implementation/ext-protection-1-loop9/`. Leave status `in-progress`. Do not run Live, OQ, Agents, cluster apply, or production OpenBao. Do not claim a new native five-case pass unless that suite is actually run.
 
-Authoritative execution is this entry and the loop-9 dispatch at the top. Review 10 below supersedes both after this cycle was implemented.
+Authoritative execution is this entry and the loop-9 dispatch at the top. The human later answered yes to one correction cycle; that authorization is the Re-derivation loop 10 entry below.
 
 
-## Review 10 — 2026-10-30
+### Re-derivation loop 10 — 2026-10-30, explicitly authorized after escalation
 
-All three reviewers returned before triage. Verification-gap rows are trusted as filed. The trim-split and deadline-token claims match review 9 rows whose code still reads the same way, so those verdicts are carried. Counter increments 9→10 and exceeds the limit of 5. HALT before rollback, patch processing, or another re-derivation. Loop 9 source stays in the working trees.
+Authorization: review 10 incremented 9→10 and halted. The human answered yes to one additional correction cycle. Resume this one cycle with counter 10, original baselines, and frozen intent unchanged. Two bad_spec entries (R10-BH-1/R10-EC-7 and R10-BH-2) and the direct patches R10-BH-3, R10-BH-5, R10-BH-7, R10-BH-8, R10-BH-13, R10-BH-17, R10-EC-3, and R10-VG-1 through R10-VG-6 are mandatory. Do not change rejected rows or the unopened maybe-false rows. Do not change `PrivateOwnerOperationDeadline`.
 
-| Finding | Verdict | Route | Evidence |
-|---|---|---|---|
-| R10-BH-1 | medium | bad_spec | `deploy/erasure-root/bootstrap.py` — `--apply` posts mounts and keys from the start. A second run fails once `sys/mounts` exists, and every failure uses one `ERC_BOOTSTRAP_INPUT_OR_NATIVE_FAILURE` code. Resuming a partial apply needs a reconcile contract, not one more post. |
-| R10-BH-2 | high | bad_spec | `bootstrap.py` `call` uses the process trust store and sends `X-Vault-Token`. `OpenBaoErasureRootStore` now requires `TrustedCaCertificatePem`. The apply path does not load that pin, so a private-CA ERC is not the client the store enforces. |
-| R10-BH-3 | low | patch | Rendered per-tenant policies still use empty `allowed_parameters` lists, so any `min_encryption_version` is accepted. The tenant path itself matches the loop-9 per-tenant key. Pinning the allowed version values is a direct policy edit. |
-| R10-BH-4 | false | reject | Carried R9-BH-7. `VerifyTrimAsync` must pass after both posts. A crash between them is not reported as a finished trim. |
-| R10-BH-5 | medium | patch | `disable_mlock = true` is the required loop-9 setting. The TLS volume has no `defaultMode`, and the memory limit does not set a swap limit. Those two manifest fields are a direct correction. |
-| R10-BH-6 | low | reject | No audit device is configured. Custody operations still have their typed receipts. Adding an audit engine is a new subsystem, and everyday protection does not depend on it. |
-| R10-BH-7 | medium | patch | The readiness command is `bao read sys/health` and does not check `initialized`, `sealed`, or `version`. A probe that parses those fields is a direct command change. |
-| R10-BH-8 | medium | patch | The listener allows 64MiB requests and 128MiB of JSON against a 1Gi pod limit. Lowering those prepared limits to fit the pod is a direct config change. Ingress from the `hexalith` namespace matches the authorized namespace allowlist. |
-| R10-BH-9 | low | reject | Create-only archive objects written before a lost CAS do not become authority. Filling the 5Gi claim is an operations limit, and adding expansion or a retention job is more than a direct correction. |
-| R10-BH-10 | maybe-false | defer | The stuck `erc-execute-guard` admission was not traced. If a stored admission with no receipt blocks every retry, the harm is high. Settle it by reading that handler's recover path. Moot while bad-spec entries remain. |
-| R10-BH-11 | maybe-false | defer | `acceptedInventoryAcquired` and `GetResult` were not opened. If startup drops the inner exception, the harm is medium. |
-| R10-BH-12 | low | reject | Carried R9-EC-13. `ReadAdmittedOriginalAsync` still uses `PrivateOwnerOperationDeadline`, whose inner call is `CancellationToken.None` by contract. |
-| R10-BH-13 | medium | patch | Registry recovery can still throw `ArgumentNullException` when deserialize returns null, because the new catch lists `JsonException` and `InvalidOperationException` only. A null check in that catch is a direct correction. |
-| R10-BH-14 | low | reject | The holder worker's 250ms retry is a direct loop. Adding backoff is a new scheduler, and a healthy holder still completes. |
-| R10-BH-15 | maybe-false | defer | Whether `VerifyManifestAsync` maps an OpenBao timeout to a definitive denial, rather than Unknown, was not traced through the manifest caller. If true, the harm is high. |
-| R10-BH-16 | maybe-false | defer | The sidecar `--max-body-size` claim was not checked against the Dapr install. If the README's 8MiB read has no sidecar setting, the harm is medium. |
-| R10-BH-17 | low | patch | `DecryptAsync` leaves the request body that carried ciphertext. Zeroing it in `finally` is a direct correction. `X509RevocationMode.NoCheck` matches a private pin with no CRL. |
-| R10-EC-1 | maybe-false | defer | A reused write holder id that fails `TryAdd` was not traced past `RetainDisposedHolder`. If the new lease stays held, the harm is high. |
-| R10-EC-2 | false | reject | The cited sealed-payload parse already catches `JsonException` and returns false. |
-| R10-EC-3 | medium | patch | A JSON null registry snapshot is the same null-dereference hole as R10-BH-13. |
-| R10-EC-4 | false | reject | The cited archive parse catches `JsonException` and throws `InvalidOperationException` on the bounded-failure path. |
-| R10-EC-5 | maybe-false | defer | An empty snapshot `Entries` array was not traced to its caller. If it only throws `InvalidOperationException` inside a caught qualification path, the harm is low. |
-| R10-EC-6 | maybe-false | defer | A non-JSON CAS error body was not traced to `CompareExchange`. If the catch already becomes a typed refusal, the throw claim is false. |
-| R10-EC-7 | medium | bad_spec | Same partial-apply resume gap as R10-BH-1. |
-| R10-EC-8 | false | reject | Carried R10-BH-4. The trim is not accepted until `VerifyTrimAsync` passes. |
-| R10-EC-9 | false | reject | A missing head stays unreadable until a signed permanent-loss receipt exists. That is the accepted loss rule. Typed Erased is not produced from an absent head alone. |
-| R10-VG-1 | medium | patch | Pre-verified. Deleting the registry `ReadCurrentOriginalAsync` restore leaves the cited tests green. |
-| R10-VG-2 | medium | patch | Pre-verified. Narrowing the registry catch back to `InvalidOperationException` leaves the cited tests green. |
-| R10-VG-3 | medium | patch | Pre-verified. The sealed-skeleton length and copy checks have no actor test. Deleting them leaves the payload-only retry test green. |
-| R10-VG-4 | medium | patch | Pre-verified. `ReadCurrentOriginalAsync` on the published-trust authority has no test. Deleting the override leaves the admitted-original test green. |
-| R10-VG-5 | medium | patch | Pre-verified. The real `VerifyBlockedReplacementAsync` unissued branch is still stubbed in the actor test. Deleting the branch leaves that test green. This remains after the loop-9 test, which the filed evidence says does not call the real authority. |
-| R10-VG-6 | medium | patch | Pre-verified. The healthy replace clears `RejectedUnissuedReplacement`, and the test never reads that field afterward. Removing the clear leaves the test green. |
+KEEP: preserve every loop-9 correction, including the production CA pin, per-tenant policies, namespace ingress, holder rollback, ordinal dictionaries, `disable_mlock`, readiness decrypt, and the earlier loop-8 checks.
 
-| Root cause | Members | Route |
-|---|---|---|
-| R10-G1 | R10-BH-1, R10-EC-7 | bad_spec |
-| R10-G2 | R10-BH-2 | bad_spec |
+Required corrections:
 
-The two bad-spec groups make every patch and maybe-false defer moot. No frozen intent change is inferred. No rollback and no further correction cycle is started. Loop 9 corrections and their passing focused tests remain in place. Review 10 below supersedes both after this cycle was implemented.
+1. R10-BH-1 — `bootstrap.py --apply` must resume a partial run. When a mount, key, policy, or CAS-0 head already matches the enrollment, continue. When an existing object does not match, refuse before changing it. The failure result must name the step that stopped, not only `ERC_BOOTSTRAP_INPUT_OR_NATIVE_FAILURE`. Default `--apply` off stays zero native calls.
+2. R10-BH-2 — the bootstrap client must verify the ERC with the same pinned CA the production store uses. It must not send `X-Vault-Token` until that CA validates the certificate. A different CA refuses before the token is written. A matching local CA still applies.
+3. R10-BH-3 — rendered per-tenant key config must allow only the min encryption and decryption versions this bootstrap writes, not an empty parameter list.
+4. R10-BH-5 — set the TLS secret volume `defaultMode` to `0400`, and set the container memory swap limit equal to the memory limit.
+5. R10-BH-7 — the readiness command must fail unless health JSON reports version `2.6.2`, `initialized` true, and `sealed` false.
+6. R10-BH-8 — lower the listener `max_request_size` and `max_request_json_memory` so both fit under the 1Gi pod memory limit with headroom.
+7. R10-BH-13 and R10-EC-3 — registry recovery must return null when the recovered snapshot deserializes to null, including `ArgumentNullException`, and still return null for `JsonException`.
+8. R10-BH-17 — zero the `DecryptAsync` request body in `finally`.
+9. R10-VG-1 through R10-VG-6 — add the filed tests: newer current-original registry restore, non-JSON registry target bytes, sealed skeleton detachment and oversize rejection, published-trust `ReadCurrentOriginalAsync` vectors, real-authority unissued accept and mismatch, and a null `RejectedUnissuedReplacement` after the healthy issue.
+10. Run the bootstrap tests and the touched .NET DLL classes. Record `docs/implementation/ext-protection-1-loop10/`. Leave status `in-progress`. Do not run Live, cluster apply, or production OpenBao.
 
-
-## Review 10 — 2026-10-30
-
-All three reviewers returned before triage. Verification-gap rows are trusted as filed. The trim-split and deadline-token claims match review 9 rows whose code still reads the same way, so those verdicts are carried. Counter increments 9→10 and exceeds the limit of 5. HALT before rollback, patch processing, or another re-derivation. Loop 9 source stays in the working trees.
-
-| Finding | Verdict | Route | Evidence |
-|---|---|---|---|
-| R10-BH-1 | medium | bad_spec | `deploy/erasure-root/bootstrap.py` — `--apply` posts mounts and keys from the start. A second run fails once `sys/mounts` exists, and every failure uses one `ERC_BOOTSTRAP_INPUT_OR_NATIVE_FAILURE` code. Resuming a partial apply needs a reconcile contract, not one more post. |
-| R10-BH-2 | high | bad_spec | `bootstrap.py` `call` uses the process trust store and sends `X-Vault-Token`. `OpenBaoErasureRootStore` now requires `TrustedCaCertificatePem`. The apply path does not load that pin, so a private-CA ERC is not the client the store enforces. |
-| R10-BH-3 | low | patch | Rendered per-tenant policies still use empty `allowed_parameters` lists, so any `min_encryption_version` is accepted. The tenant path itself matches the loop-9 per-tenant key. Pinning the allowed version values is a direct policy edit. |
-| R10-BH-4 | false | reject | Carried R9-BH-7. `VerifyTrimAsync` must pass after both posts. A crash between them is not reported as a finished trim. |
-| R10-BH-5 | medium | patch | `disable_mlock = true` is the required loop-9 setting. The TLS volume has no `defaultMode`, and the memory limit does not set a swap limit. Those two manifest fields are a direct correction. |
-| R10-BH-6 | low | reject | No audit device is configured. Custody operations still have their typed receipts. Adding an audit engine is a new subsystem, and everyday protection does not depend on it. |
-| R10-BH-7 | medium | patch | The readiness command is `bao read sys/health` and does not check `initialized`, `sealed`, or `version`. A probe that parses those fields is a direct command change. |
-| R10-BH-8 | medium | patch | The listener allows 64MiB requests and 128MiB of JSON against a 1Gi pod limit. Lowering those prepared limits to fit the pod is a direct config change. Ingress from the `hexalith` namespace matches the authorized namespace allowlist. |
-| R10-BH-9 | low | reject | Create-only archive objects written before a lost CAS do not become authority. Filling the 5Gi claim is an operations limit, and adding expansion or a retention job is more than a direct correction. |
-| R10-BH-10 | maybe-false | defer | The stuck `erc-execute-guard` admission was not traced. If a stored admission with no receipt blocks every retry, the harm is high. Settle it by reading that handler's recover path. Moot while bad-spec entries remain. |
-| R10-BH-11 | maybe-false | defer | `acceptedInventoryAcquired` and `GetResult` were not opened. If startup drops the inner exception, the harm is medium. |
-| R10-BH-12 | low | reject | Carried R9-EC-13. `ReadAdmittedOriginalAsync` still uses `PrivateOwnerOperationDeadline`, whose inner call is `CancellationToken.None` by contract. |
-| R10-BH-13 | medium | patch | Registry recovery can still throw `ArgumentNullException` when deserialize returns null, because the new catch lists `JsonException` and `InvalidOperationException` only. A null check in that catch is a direct correction. |
-| R10-BH-14 | low | reject | The holder worker's 250ms retry is a direct loop. Adding backoff is a new scheduler, and a healthy holder still completes. |
-| R10-BH-15 | maybe-false | defer | Whether `VerifyManifestAsync` maps an OpenBao timeout to a definitive denial, rather than Unknown, was not traced through the manifest caller. If true, the harm is high. |
-| R10-BH-16 | maybe-false | defer | The sidecar `--max-body-size` claim was not checked against the Dapr install. If the README's 8MiB read has no sidecar setting, the harm is medium. |
-| R10-BH-17 | low | patch | `DecryptAsync` leaves the request body that carried ciphertext. Zeroing it in `finally` is a direct correction. `X509RevocationMode.NoCheck` matches a private pin with no CRL. |
-| R10-EC-1 | maybe-false | defer | A reused write holder id that fails `TryAdd` was not traced past `RetainDisposedHolder`. If the new lease stays held, the harm is high. |
-| R10-EC-2 | false | reject | The cited sealed-payload parse already catches `JsonException` and returns false. |
-| R10-EC-3 | medium | patch | A JSON null registry snapshot is the same null-dereference hole as R10-BH-13. |
-| R10-EC-4 | false | reject | The cited archive parse catches `JsonException` and throws `InvalidOperationException` on the bounded-failure path. |
-| R10-EC-5 | maybe-false | defer | An empty snapshot `Entries` array was not traced to its caller. If it only throws `InvalidOperationException` inside a caught qualification path, the harm is low. |
-| R10-EC-6 | maybe-false | defer | A non-JSON CAS error body was not traced to `CompareExchange`. If the catch already becomes a typed refusal, the throw claim is false. |
-| R10-EC-7 | medium | bad_spec | Same partial-apply resume gap as R10-BH-1. |
-| R10-EC-8 | false | reject | Carried R10-BH-4. The trim is not accepted until `VerifyTrimAsync` passes. |
-| R10-EC-9 | false | reject | A missing head stays unreadable until a signed permanent-loss receipt exists. That is the accepted loss rule. Typed Erased is not produced from an absent head alone. |
-| R10-VG-1 | medium | patch | Pre-verified. Deleting the registry `ReadCurrentOriginalAsync` restore leaves the cited tests green. |
-| R10-VG-2 | medium | patch | Pre-verified. Narrowing the registry catch back to `InvalidOperationException` leaves the cited tests green. |
-| R10-VG-3 | medium | patch | Pre-verified. The sealed-skeleton length and copy checks have no actor test. Deleting them leaves the payload-only retry test green. |
-| R10-VG-4 | medium | patch | Pre-verified. `ReadCurrentOriginalAsync` on the published-trust authority has no test. Deleting the override leaves the admitted-original test green. |
-| R10-VG-5 | medium | patch | Pre-verified. The real `VerifyBlockedReplacementAsync` unissued branch is still stubbed in the actor test. Deleting the branch leaves that test green. This remains after the loop-9 test, which the filed evidence says does not call the real authority. |
-| R10-VG-6 | medium | patch | Pre-verified. The healthy replace clears `RejectedUnissuedReplacement`, and the test never reads that field afterward. Removing the clear leaves the test green. |
-
-| Root cause | Members | Route |
-|---|---|---|
-| R10-G1 | R10-BH-1, R10-EC-7 | bad_spec |
-| R10-G2 | R10-BH-2 | bad_spec |
-
-The two bad-spec groups make every patch and maybe-false defer moot. No frozen intent change is inferred. No rollback and no further correction cycle is started. Loop 9 corrections and their passing focused tests remain in place.
+Authoritative execution is this entry and the loop-10 dispatch at the top.

@@ -47,15 +47,17 @@ The approved [staging evidence policy v1](../../docs/contracts/staging-evidence-
 decision record for Stories 5.3, 5.6–5.11 and the related lifecycle review in
 Story 5.4. It fixes a 24-hour (86,400-second) exclusive evidence deadline from
 attempt start at promotion admission; automatic attempts for retained intake
-candidates or checked-input/baseline changes under a pending decision, with
+candidates or checked-input/baseline changes under a pending decision, including
+the preparation branch and the Administrator approval selecting it, with
 explicit Maintainer requests after expiry or failed, cancelled, incomplete or
 interrupted terminal outcomes and no periodic retry loop; full passing reruns
 from only the latest issued serialized E2E attempt, preserving history without
 cross-decision reuse or replacement by reset/named-recovery evidence; and
 owning-module and Platform approval of flow removal/remap against each applicable
 latest-accepted and production-baseline predecessor, with Tenants review of every
-lifecycle flow before enrollment and after changes. Superseded candidates have
-closed decisions, refuse admission and receive no automatic triggers.
+lifecycle flow before enrollment and before any changed declaration joins the
+gate, including Tenants approval of lifecycle-flow removal/remap. Superseded
+decisions refuse admission and receive no automatic triggers.
 
 The reset lifetime is 60 minutes (3,600 seconds) from recovery entry. The off-site
 monitor notifies Administrator, the recovery deputy and the Platform Maintainer
@@ -68,12 +70,15 @@ Unreadable or unproven-readability candidate writes, including without a
 production baseline, require a verified reset before a same-candidate rerun or
 later candidate, using the earliest pre-write point since the last verified
 reset. Missing applicable preparation proof or an unmatched state refuses
-admission.
+admission. Story 5.10 reset qualification requires Story 6.4's off-site monitor
+for maximum-lifetime notification and Story 6.3's recovery authority for deputy
+re-entry.
 
 Platform Maintainer `@jpiquot` is accountable. Builds and Platform must implement
-and qualify adoption; modules must record flow reviews, and Administrator and
-EventStore must qualify resets. Publication does not establish enforcement,
-record unprovided owner approvals or authorize promotion.
+and qualify adoption; modules, Platform and Tenants must record their required
+flow approvals and reviews, and Administrator and EventStore must qualify resets.
+Publication does not establish enforcement, record unprovided owner approvals or
+authorize promotion.
 
 The owned reference check suites precede declaration validation. Staging policy decisions precede evidence acceptance; the vulnerability decision precedes scan enforcement. Tenants and module owners review lifecycle flows before gate enrollment. Module recovery hooks are prerequisites for staging resets and applicable named recoveries.
 
