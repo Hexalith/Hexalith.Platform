@@ -100,11 +100,13 @@ change. A changed input invalidates earlier evidence for the new input set and
 requires a fresh complete attempt, even if module versions are unchanged.
 A different retained release requires a new decision under decision 3.
 
-The Platform Maintainer may explicitly request a fresh attempt after evidence
-expires or any non-passing terminal outcome: failed, cancelled, incomplete or
-interrupted. The request MUST record the reason. Maintainer requests in any
-other state, including a fresh pass or a queued or running latest attempt, MUST
-be refused with the reason recorded. Version 1 has **no periodic retry loop**:
+For a currently pending promotion decision, the Platform Maintainer may explicitly
+request a fresh attempt after evidence expires or the latest E2E attempt reaches
+a non-passing terminal outcome: failed, cancelled, incomplete, interrupted or
+superseded. A superseded attempt may leave its decision pending. The request MUST
+record the reason. Maintainer requests for completed or superseded decisions,
+or in any other state, including a fresh pass or a queued or running latest
+attempt, MUST be refused with the reason recorded. Version 1 has **no periodic retry loop**:
 expiry or a non-passing outcome alone does not authorize recurring reruns.
 Automatic triggers apply only while the candidate's decision remains
 pending; a superseded decision receives no automatic triggers, including baseline
@@ -127,8 +129,10 @@ a new decision identity and fresh evidence, even when its bytes match an earlier
 decision.
 
 A decision closes only as completed, when its release becomes production's
-working baseline, or as superseded. A non-working production outcome leaves the
-decision pending, and every production attempt MUST repeat promotion admission.
+working baseline, or as superseded. A non-working production release outcome leaves
+the decision pending, and every production release attempt for that decision MUST
+repeat promotion admission. Production recovery attempts follow the architecture's
+separate recovery rules.
 Version 1 defines no other closure. At admission, the evaluator MUST verify the
 decision's current authoritative state is pending. Completed or superseded
 decisions MUST NOT reopen under their old identity; a reopened or new decision
@@ -138,14 +142,14 @@ return only under a new decision with fresh evidence.
 Only the **latest issued serialized staging evidence attempt** for that pending
 decision may qualify. Issuance order, rather than completion time, determines
 which attempt supersedes the others. A newer queued, running, failed, cancelled,
-incomplete or interrupted attempt prevents fallback to an earlier pass. A
+incomplete, interrupted or superseded attempt prevents fallback to an earlier pass. A
 qualifying rerun MUST rerun the full required suite for every included module and
 pass every required check under the same current bindings and applicable
 preparation branch.
 Partial passes MUST NOT be aggregated across attempts, and evidence MUST NOT be
 reused across decisions, including results for unchanged modules.
 
-The decision history MUST keep every earlier failed, incomplete and other
+The decision history MUST keep every earlier failed, incomplete, superseded and other
 terminal outcome, its original identities, timestamps, diagnostics and rerun
 reason visible. A later pass may qualify its own attempt; it MUST NOT overwrite
 earlier outcomes or present them as passed. In-flight check retries allowed by the
@@ -330,7 +334,7 @@ this policy. A configured pin or this publication alone is insufficient.
 | --- | --- |
 | Story 5.3 | Validate every included module's non-empty flows, complete required E2E mappings and separate non-empty smoke declaration; verify removal/remap review bindings and owning-module, Platform and applicable Tenants approvals for each latest-accepted and applicable production-baseline transition |
 | Story 5.4 | Obtain Tenants and owning-module review of every lifecycle flow before enrollment and before any changed declaration joins the gate; refuse E2E tenant creation/deletion outside reviewed lifecycle flows and qualify synthetic-tenant cleanup or creating-run reports without treating this policy as approval |
-| Story 5.6 | Implement decision creation and intake/input-change triggers only for pending decisions, manual request authorization, reason recording and refusal outside the permitted expiry/non-passing states, serialization, pre-write recovery points, start/expiry recording, exact input identities, full required E2E and durable ordered attempt/rerun history |
+| Story 5.6 | Implement decision creation and intake/input-change triggers only for pending decisions, manual request authorization only for currently pending decisions in the permitted expiry/non-passing states (including superseded E2E attempts), reason recording and refusal for completed/superseded decisions or other states, serialization, pre-write recovery points, start/expiry recording, exact input identities, full required E2E and durable ordered attempt/rerun history |
 | Story 5.7 | Qualify explicitly labelled no-baseline fresh-install proof without a rollback target |
 | Story 5.8 | Qualify current-baseline compatibility and rollback rehearsal, preserving breaking rehearsal evidence |
 | Story 5.9 | Qualify the approved retained-data path's named recovery, required authority and verification without an automatic rollback set |
@@ -353,10 +357,10 @@ and its scan gate remain separately owned by Stories 5.2 and 5.5.
 | Suite, profile, configuration, flow mapping, production baseline or applicable preparation branch/Administrator approval changes for a pending decision after a pass | Refuse the old binding and automatically queue a fresh complete serialized attempt under the same decision for the changed inputs |
 | A different retained release passes intake, or the pending release switches to the approved retained-data or empty/degraded path | A different release gets a new decision and fresh evidence; a path switch automatically queues a fresh complete attempt under the same pending decision for full applicable branch proof |
 | The same retained release passes intake again while its decision is pending | Open no additional decision; at most one decision for that release is pending |
-| A production attempt ends non-working, or its release becomes production's working baseline | A non-working outcome leaves the decision pending and the next production attempt repeats admission; becoming the working baseline closes it as completed |
-| Evidence expires or the latest attempt ends failed, cancelled, incomplete or interrupted with no input change | Platform Maintainer may request a fresh attempt with its reason; preserve the prior result and do not start a periodic retry loop |
-| Maintainer requests a manual rerun while the latest attempt is queued, running or a fresh pass | Refuse the request and record the reason |
-| Attempt 1 passes, then attempt 2 is issued and is queued, running, failed, cancelled, incomplete or interrupted | Refuse fallback to attempt 1, regardless of finish order; retain both attempts |
+| A production release attempt for a decision ends non-working, or its release becomes production's working baseline | A non-working release outcome leaves the decision pending and the next production release attempt for that decision repeats admission; becoming the working baseline closes it as completed |
+| For a pending decision, evidence expires or the latest E2E attempt ends failed, cancelled, incomplete, interrupted or superseded with no input change | Platform Maintainer may request a fresh attempt with its reason; preserve the prior result and do not start a periodic retry loop |
+| Maintainer requests a manual rerun for a completed or superseded decision, or while the latest attempt is queued, running or a fresh pass | Refuse the request and record the reason |
+| Attempt 1 passes, then attempt 2 is issued and is queued, running, failed, cancelled, incomplete, interrupted or superseded | Refuse fallback to attempt 1, regardless of finish order; retain both attempts |
 | Latest attempt reruns every required flow and passes after an earlier failure | Eligible for that pending decision subject to current freshness, exact bindings and branch proof; earlier failure and rerun reason remain visible |
 | Two attempts pass different subsets, or an unchanged module offers another decision's pass | Refuse aggregation or reuse; require a full passing attempt for this decision |
 | A flow removal/remap has matching digests but no owning-module or Platform coverage approval for either applicable predecessor transition | Refuse; require both approvals of each transition's before/after digests, affected flows/checks and coverage rationale; every lifecycle flow also needs Tenants review before enrollment and before any changed declaration joins the gate, including Tenants approval of lifecycle removal/remap |

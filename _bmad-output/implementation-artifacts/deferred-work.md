@@ -1596,3 +1596,7 @@
   summary: Apply the Story 5.1 immutability fix to the candidate and attachment policy v1 (low).
   target_story: 2.1
   evidence: docs/contracts/candidate-and-attachment-policy-v1.md calls itself immutable, but `8b7a1fea` reached origin/main and `642b5bdb` then rewrote it under the same identifier (+77/−50) with no pinned revision. Story 5.1 adopted wording (decision 2026-10-30) stating when the text becomes fixed and requiring adopters to bind the exact Platform revision; apply the same wording in the owning story.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Qualify the evidence-freshness evaluation boundary for stable McpCli publication in Story 5.11.
+  evidence: Unverified, medium if true (fourth-pass corrections build review F4). The policy requires all applicable staging validation before stable publication, but its freshness timestamp is the production attempt's precondition 4 admission. Story 5.11 forbids stable publication on stale evidence; no local publication/evaluator workflow exists to show whether that path can accept stale evidence. Establish the publication evaluation boundary and qualify refusal at the exclusive expiry without relying on a later production admission or an earlier reserved pass.

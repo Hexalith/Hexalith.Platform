@@ -2,7 +2,7 @@
 title: '5.1 Decide the staging evidence policies'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -173,6 +173,22 @@ Rejected (fourth pass):
 
 ## Review Triage Log
 
+### Fourth-pass corrections build review, 2026-10-30
+
+All three independent layers completed before triage. Blind Hunter returned seven findings (36.852 kB; finding floor seven); Edge Case Hunter returned no findings; Verification Gap Reviewer found no verification gaps. The verdicts below precede grouping. F1–F3 are separate direct policy clarifications within the approved pending-decision, non-passing rerun and promotion-admission rules; F4 is a new unverified downstream qualification question; F5–F7 carry existing deferrals without duplication. No intent or spec loopback is required.
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| F1: Manual rerun can name a closed decision | medium | Decision 2 explicitly limits automatic triggers to pending decisions but does not apply that condition to a manual request after expiry; Story 5.6's request-authorization handoff could therefore accept work for a completed or superseded decision. Patch the manual request rule to require current pending state and refuse completed/superseded decisions with a recorded reason, preserving the approved no-reopen rule. |
+| F2: Superseded attempt lacks a manual rerun path | medium | The architecture's Attempt resumption row makes a taken-over attempt terminal as superseded, independently of promotion-decision closure. A still-pending decision's latest E2E attempt can therefore have a non-passing outcome omitted from Decision 2's enumerated rerun states. Patch the existing non-passing outcome list and relevant examples to include a superseded attempt while retaining the pending-decision condition. |
+| F3: Repeated admission wording reaches recovery attempts | medium | Decision 3 says every production attempt repeats promotion admission, while the architecture defines production recovery attempts separately and Production preconditions explicitly govern production release attempts. Patch this sentence and its example to say production release attempts for the decision; do not add a staging-admission requirement to recovery. |
+| F4: Stable McpCli publication freshness evaluation time | maybe-false | The policy requires all applicable staging validation before stable publication, but defines its freshness timestamp at production precondition 4. Story 5.11 separately refuses stable publication on stale evidence, and only tuple-ci.yml currently exists locally, so no publication/evaluator implementation demonstrates whether that path can accept stale evidence. Defer as unverified medium to Story 5.11: establish the publication evaluation boundary and qualify refusal at expiry without borrowing a later production lock/admission or an earlier reserved pass. |
+| F5: Named-recovery evidence age and attempt binding | maybe-false | carried: the fourth-pass review's existing retained-data branch-proof deferral already records this unverified medium question for Stories 5.9/5.11. Recovery qualification remains separate evidence without the disputed age/attempt binding; preserve that route and do not append another deferral. |
+| F6: Empty-state pre-write point usability | maybe-false | carried: the fourth-pass review's existing no-baseline recovery-point deferral already records this unverified medium question for Stories 5.7/5.10. Preserve the requirement to settle usable empty-state restoration and the Administrator-authorized re-establishment path; do not append another deferral. |
+| F7: Latest accepted predecessor advancement authority | maybe-false | carried: R1 in the resumed-build triage log already defers this same unverified medium Story 5.3 question. The policy still requires the authoritative predecessor without implementing its selector; retain the trusted-source and advancement qualification route without another patch or ledger entry. |
+
+The original implementation agent applied F1–F3. Parent inspected the exact policy correction diff and synchronized the epic handoff with pending-only manual reruns and superseded E2E outcomes. F4 is recorded once in the deferred ledger; F5–F7 retain their existing routes. No unresolved patch remains.
+
 ### Resumed build review, 2026-10-30
 
 All three layers completed before triage. Edge Case Hunter returned no findings; Verification Gap Reviewer found no gaps. Blind Hunter returned seven findings (finding floor: 43.044 kB, seven). Each finding is recorded separately below.
@@ -223,3 +239,5 @@ Run scoped `git diff --check`; inspect new Markdown whitespace and links. Cross-
 - 2026-10-30 fourth-pass implementation verification: All 19 open review patches were cross-checked against their required passages, downstream rows and examples. Scoped `git diff --check`, final-newline/trailing-whitespace checks and all 21 local Markdown links/fragments across policy/README/epic context pass. The frozen-intent block is unchanged against `HEAD` and run-start revision `92f8f05187afc873806f48af75a736ee5ae997c0`, SHA-256 `2c4376a21f10965d0de5347fdfd277bcc30e0daaf7e6d10f3e18ce642469ac27`. No tests, workloads, runtime changes, deployments, commits, pins, submodule changes or remote publication were performed. Existing architecture/planning deferrals and downstream adoption/qualification obligations are preserved.
 
 - 2026-10-30 parent implementation audit: Independently inspected the Story 5.1 diff, all 19 fourth-pass patches, four execution tasks and four acceptance criteria. Six scoped files pass whitespace/newline checks; all 21 local Markdown links/fragments pass; frozen intent retains SHA-256 `2c4376a21f10965d0de5347fdfd277bcc30e0daaf7e6d10f3e18ce642469ac27`. No I/O matrix applies. Original baseline `2cbb8a68d277bdd55e321972b8aa11ef015fc54e` remains unchanged. A complete historical diff, including untracked files, is retained in the temporary run packet; independent subsequent work accounts for its approximately 49 MB size. Review scope isolates the Story 5.1 policy, README staging-evidence paragraph and epic handoff; historical spec claims and separately owned runtime/vulnerability changes are excluded from blind review. No tests or workloads were run for this documentation change.
+
+- 2026-10-30 fourth-pass corrections build completion: After all three review layers and the three direct corrections, parent independently repeated the scoped six-file whitespace/newline checks, 21 local link/fragment checks, all 19 original patch checks and unchanged frozen-intent verification successfully. All four execution tasks and acceptance criteria remain satisfied; no I/O matrix applies. One new unverified Story 5.11 publication-freshness question is deferred; three repeated findings retain existing deferrals. Spec is done, Story 5.1 sprint tracking moves to review, and Epic 5 remains in progress. Downstream runtime adoption and qualification remain required.

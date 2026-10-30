@@ -49,8 +49,9 @@ Story 5.4. It fixes a 24-hour (86,400-second) exclusive evidence deadline from
 attempt start at promotion admission; automatic attempts for retained intake
 candidates or checked-input/baseline changes under a pending decision, including
 the preparation branch and the Administrator approval selecting it, with
-explicit Maintainer requests after expiry or failed, cancelled, incomplete or
-interrupted terminal outcomes and no periodic retry loop; full passing reruns
+explicit Maintainer requests for pending decisions after expiry or failed,
+cancelled, incomplete, interrupted or superseded E2E terminal outcomes and no
+periodic retry loop; full passing reruns
 from only the latest issued serialized E2E attempt, preserving history without
 cross-decision reuse or replacement by reset/named-recovery evidence; and
 owning-module and Platform approval of flow removal/remap against each applicable
