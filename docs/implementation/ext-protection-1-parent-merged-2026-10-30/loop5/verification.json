@@ -1,6 +1,6 @@
 {
   "schema": "EXT-PROTECTION-1.parent-loop5-source.v1",
-  "status": "prepared-for-independent-review",
+  "status": "review-rejected-human-escalation",
   "baselines": {
     "platform": "231b0f2b57e96984a919ac1cdce97cc36df18542",
     "eventstore": "a62241679854fa9c359c0f552114a42ca0f6a638"
@@ -89,7 +89,7 @@
     },
     "matchingInventoryFiles": 266,
     "metadataOnlyFiles": 1,
-    "adapterSelection": "Existing exact adapter/failure test classes and helpers; temporary MSBuild selection excludes unrelated local owner-conformance duplicate; no source changes or warning suppression."
+    "adapterSelection": "Exact existing 58 adapter/failure cases passed under the retained narrow temporary selection. The full Secrets.Runtime.Tests project fails five CS0436 errors exposed by this task; no fixture/source change or diagnostic suppression was used."
   },
   "retainedContractsAnchors": {
     "passed": 14,
@@ -445,5 +445,56 @@
   "registerEdited": false,
   "clusterOrProductionOperationExecuted": false,
   "preRetentionReadLimit": "Unknown if no exact atomic original survived; no current-state substitution or redispatch.",
-  "effectBoundaryScope": "Native/custody effects include occurrence leases/enrollment via the authenticated index, lifecycle pins/holders/wrapped roots via Targets, Pending/manifests/erased state and real transit policy. Separate guard/owner/request bookkeeping is verified by its own originals and is not certified absent by this native-only fingerprint."
+  "effectBoundaryScope": "Native/custody effects include occurrence leases/enrollment via the authenticated index, lifecycle pins/holders/wrapped roots via Targets, Pending/manifests/erased state and real transit policy. Separate guard/owner/request bookkeeping is verified by its own originals and is not certified absent by this native-only fingerprint.",
+  "sourceCandidateProposalWithdrawn": true,
+  "proposedIntegrationDateWithdrawn": "2026-11-02",
+  "sourceAcceptanceEstablished": false,
+  "review6": {
+    "packet": "review6/escalation.md",
+    "findings": 14,
+    "routes": {
+      "bad_spec": 6,
+      "patch": 6,
+      "reject": 2,
+      "defer": 0,
+      "intent_gap": 0
+    },
+    "reviewLoopIteration": 6,
+    "limit": 5,
+    "halted": true,
+    "sourceReverted": false,
+    "patchesApplied": false,
+    "rederived": false
+  },
+  "fullSecretsRuntimeTestProjectBuild": {
+    "status": "failed",
+    "errors": 5,
+    "diagnostic": "CS0436",
+    "causedOrExposedByCurrentChange": true,
+    "cause": "DeletionConsumptionIdentity became public while the unchanged pinned local fixture remains.",
+    "command": "review6/full-secrets-project-build-command.json",
+    "log": "review6/full-secrets-project-build-failure.log"
+  },
+  "review6CurrentSourceCheck": {
+    "eventstore": {
+      "HEAD": "7b1df62102efb19da03553a890c62eb5ad6aeafe",
+      "count": 59,
+      "mismatches": [],
+      "status": " M .github/workflows/integration.yml\n M _bmad-output/implementation-artifacts/deferred-work.md\n M _bmad-output/implementation-artifacts/spec-5-14-authenticated-fallback-and-dapr-framework-route-protection.md\n M _bmad-output/implementation-artifacts/spec-folders-12-2-bounded-owner-identity.md\n M src/Hexalith.EventStore.Client/Projections/SharedProjectionCapturedIdentityStore.cs\n M tests/Hexalith.EventStore.Client.Tests/Projections/SharedProjectionBoundedIdentityTests.cs\n M tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/ProjectionBoundedIdentityLiveTests.cs\n"
+    },
+    "platform": {
+      "HEAD": "e3822304436e69f4caa58df7def79a1c8899cece",
+      "count": 209,
+      "mismatches": [
+        {
+          "path": ".gitattributes",
+          "expected": "5cd372697f83be27922fce4f4df7b2d67e982f55",
+          "actual": "4900251f9e92a61addb5f3f238ead25e477f3dbd"
+        }
+      ],
+      "status": " M _bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md\nM  references/Hexalith.Builds\n?? _bmad-output/implementation-artifacts/epic-3-context.md\n?? _bmad-output/implementation-artifacts/epic-5-context.md\n"
+    },
+    "frozenSha256": "87282445c06d0588eed81ca970ec21f961a596ba2b2b8fc61d77c32d2c244940",
+    "registerSha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860"
+  }
 }

@@ -1,0 +1,16 @@
+[
+  {
+    "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/SnapshotEntryLayout.cs:51-63",
+    "trigger_condition": "An encrypted whole snapshot contains confidential sibling fields outside its Target/Value envelopes",
+    "guard_snippet": "skeleton = BuildSkeletonFromIndependentlyValidatedTechnicalFields(source);",
+    "potential_consequence": "Unencrypted sibling fields persist in registry and independent source copies after root erasure."
+  },
+  {
+    "location": "../eventstore/src/Hexalith.EventStore.PayloadProtection/InteractionPayloadProtectionService.cs:328-331",
+    "trigger_condition": "Destroyed manifests and lost custody make every protected payload Erased",
+    "guard_snippet": "if (skeleton is null) return SnapshotUnprotectionOutcome.Unreadable(UnreadableProtectedDataReason.KeyInvalidatedOrDeleted, metadata);",
+    "potential_consequence": "Supported snapshots without Target/Value envelopes remain unreadable instead of producing typed Erased replay.",
+    "kind": "claim",
+    "confidence": "high"
+  }
+]
