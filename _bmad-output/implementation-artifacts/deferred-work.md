@@ -1530,3 +1530,6 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Reference `hexalith.platform.staging-evidence-policy.v1` from epics.md Stories 5.3 and 5.6 so the epic-context pointer survives regeneration (low).
   evidence: epic-5-context.md is compiled from planning artifacts; its hand-added policy paragraph will be lost on regeneration because epics.md cites only "the policy from Story 5.1".
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: Module.Tests live-process tests share the fixed run id `CompositionTestFiles.RunId`, and run-process discovery is machine-wide. Any teardown for that id, from another test class or another checkout's test run, can stop a different test's live AppHost (medium).
+  evidence: `CompositionRunResourceScanner` enumerates `/proc/*/environ` for the run-id variable. `AttachAdmissionTests.CancellationPublicationRefusalPreservesLiveAppHostAsync` failed in both Story 2.7 fourth-pass seven-class runs at the same position, but passed in 3 isolated reruns, with its class alone (121/121) and in three bisect combinations (Builds `evidence/2-7/fourth-pass-*.xml`). The fix is to give live-process fixtures unique run ids, or to scope discovery to the test's own process tree.

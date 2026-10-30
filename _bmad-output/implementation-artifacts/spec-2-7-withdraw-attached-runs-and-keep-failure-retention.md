@@ -2,7 +2,7 @@
 title: '2.7 Withdraw attached runs and keep failure retention'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'f60f2c7596b1fa3010c91d1d546c71600da24715'
 builds_baseline_commit: '2980efdf51f305dc5c39bb854261c252d13465f5'
 route: 'dispatch'
@@ -289,3 +289,9 @@ Scope: the third-pass patch only, which is Builds `d409ba1` without the unrelate
 Grouped patch work: (P1) FV01, a real `StartAsync` test of the session locality flag; (P2) FB01b/FV03, the doc comment; (P3) FB03/FE03a, one deduplicating bookkeeping merge for every exit; (P4) FE06, the evidence README pointer. FB04a/FE03b are deferred to the ledger.
 
 Coordinator review fixes: `ReadySessionLocalityMatchesRecordedExecutionContextAsync` runs the real `StartAsync` locally and under complete GitHub Actions metadata. It asserts that `LocalExecution` agrees with the recorded owner `ExecutionContext.kind`. `DownOwnedCoreAsync` now records the bookkeeping failure idempotently, so a result reports HXT008 at most once (`RepeatedBookkeepingFailuresReportOneRecordingFailureAsync`). The `LocalExecution` documentation now describes process locality. The evidence README names the follow-up instead of story 2.9. The 25 targeted cases pass. These changes are uncommitted in the Builds checkout.
+
+### Fourth-pass coordinator verification (2026-10-30)
+
+Verification ran in a scratch worktree at Builds `d409ba1` with only the Story 2.7 uncommitted changes applied; the concurrent Story 3.1 hunks were left out. Every focused build had 0 warnings and 0 errors; the full build is still blocked by the EventStoreHost errors already recorded. The first seven-class run exposed a fixture timing defect: `AttachedFailureRetainsPassedOwnerWithoutWaitingForPeerAsync(beforeOwner: True)` sleeps 1 s against the fixture's 2 s native execution limit. `OwnerRun` now raises that limit to 60 s for delayed native runs, as it already did for blocked runs. In the rerun, 308 of 309 cases passed, including every matrix-row test and both new fourth-pass tests.
+
+The remaining failure is `CancellationPublicationRefusalPreservesLiveAppHostAsync`. It failed at the same position in both seven-class runs. It passed in three isolated reruns, with its class alone (121/121) and in three bisect combinations. Its live AppHost carries the shared fixed test run id, and run-process discovery scans the whole machine, so another teardown for that id stops it. This test-isolation hazard predates this pass and is recorded in the deferred-work ledger. See [verification](../../references/Hexalith.Builds/evidence/2-7/third-pass-verification.json) (`coordinatorVerification`) and the `fourth-pass-*.xml` results.
