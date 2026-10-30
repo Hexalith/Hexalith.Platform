@@ -2,7 +2,7 @@
 title: '2.9 Migrate EventStore and Parties fixtures to the environment descriptor'
 type: 'feature'
 created: '2026-10-30'
-status: 'draft'
+status: 'in-progress'
 baseline_commit: 'd5f16fb64f766eea4cf9dbc1a324ba3d46a1266a'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -14,61 +14,61 @@ context:
 
 ## Intent
 
-**Problem:** EventStore exports infrastructure-starting fixtures; Parties starts its own topology and declares no runner suites. These cannot establish Platform-owned integration evidence.
+**Problem:** Exported EventStore fixtures start infrastructure, while Parties integration fixtures start their own topology and declare no runner suites. Tests must consume environments owned by Platform.
 
-**Approach:** Provide a shared descriptor consumer in EventStore testing packages and a declared Parties suite using real EventStore, Tenants and Memories supplied by the runner.
+**Approach:** Add a shared descriptor consumer to EventStore testing packages and a declared Parties suite using real EventStore, Tenants and Memories supplied by the runner.
 
 ## Boundaries & Constraints
 
 **Always:**
-- Read absolute `HEXALITH_TEST_ENVIRONMENT_PATH`; validate v1 schema, policy, semantic bindings, readiness, required startup success and synthetic isolation before exposing endpoints.
-- Resolve endpoints by declared resource/module/name. Keep credentials in the runner's private channel; reject missing or conflicting identity. Disposal releases fixture clients only.
-- Exported fixtures consume descriptors exclusively. Bootstrap stays in non-packaged EventStore tests. Document API migration.
-- Preserve frozen Parties topology tests separately without Platform evidence; isolated tests need no servers.
-- Verify Parties create/query/persisted events and real Tenants/Memories through declared interfaces. No suite doubles or successful missing-handoff skips.
 
-**Never:** Start an AppHost, daprd or containers from migrated fixtures; discover hosted endpoints; mint replacement credentials; infer unavailable bindings; change v1 semantics, optional feature policy, published pins or CI workflows.
+- Read absolute `HEXALITH_TEST_ENVIRONMENT_PATH`; validate v1 schema, policy, semantic bindings, readiness, required startup success and synthetic isolation before exposing endpoints.
+- Select endpoints by declared resource/module/name. Keep credentials in the separate runner channel; reject conflicting or missing identity. Disposal stops fixture requests and releases clients.
+- Exported fixtures consume descriptors exclusively. Keep bootstrap private to non-packaged EventStore tests and document API migration.
+- Preserve frozen Parties topology tests as a separate compatibility lane; isolated projects need no Platform or domain servers.
+- Verify Parties create/query/persisted events and real Tenants/Memories through declared interfaces. Missing handoff fails without startup or successful skips.
+- Decision (2026-10-30, user: split): attached execution, expiry enforcement and termination reporting remain open in follow-up `attached-test-execution-and-expiry-enforcement`. Preserve expiry semantics; fixture migration grants no attachment qualification.
+
+**Never:** Start infrastructure from migrated fixtures; use hosted endpoints or suite doubles; mint credentials; infer unavailable bindings; change v1 semantics, optional feature policy, published pins or CI workflows.
 
 ## I/O & Edge-Case Matrix
 
 | Scenario | Input / State | Expected behavior | Error handling |
 | --- | --- | --- | --- |
-| Ready owner | Valid descriptor and private credentials | Clients use supplied endpoints and synthetic tenant | Bounded execution |
-| Invalid handoff | Missing, oversized, malformed, unsupported or inconsistent | No client or infrastructure startup | Metadata-only refusal |
-| Unready | Missing dependency, unavailable isolation or failed required task | Suite cannot run | Fail, never skip |
-| Disposed | Fixture ends | Its requests stop; environment remains runner-owned | Report disposal failure |
+| Ready owner | Valid descriptor/private credentials | Supplied endpoints and synthetic tenant | Bounded requests |
+| Invalid handoff | Missing, oversized, malformed, unsupported or inconsistent | No clients or startup | Metadata-only refusal |
+| Unready | Missing dependency/isolation or failed required task | Refuse suite execution | Fail, never skip |
+| Disposed | Fixture ends | Its requests stop; runner retains lifecycle ownership | Report disposal failure |
 
 </frozen-after-approval>
 
-## Open Questions
-
-1. Story 2.7 assigns stopping attached work/access at expiry to 2.9; Builds currently rejects attached suite execution. **Split (recommended):** migrate fixtures first; move this open obligation into a named follow-up without attachment qualification claims. **Include:** add supervised attached execution and result/termination reporting here, expanding implementation and qualification. Expiry semantics stay fixed.
-
 ## Code Map
 
-Paths use E = `references/Hexalith.EventStore`, P = `references/Hexalith.Parties`, B = `references/Hexalith.Builds`.
+E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/src/Hexalith.EventStore.Testing`; I = `E/src/Hexalith.EventStore.Testing.Integration`.
 
-- `E/src/Hexalith.EventStore.Testing/`: add reader/model with embedded schema and JsonSchema.Net. Match `B/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs` guards; Tooling is non-packable.
-- `E/src/Hexalith.EventStore.Testing.Integration/`: replace exported `AspireTopologyFixtureBase.cs` and `DaprDomainServiceTestFixtureBase.cs` bootstrap with descriptor clients; update `DaprFactAttribute.cs`, dependencies and package description.
-- `E/tests/Hexalith.EventStore.Testing*.Tests/`: consumer/refusal tests. Private bootstrap stays in `E/tests/Hexalith.EventStore.IntegrationTests/`.
-- `P/tests/Hexalith.Parties.IntegrationTests/Gateway/EventStoreGatewayE2ETests.cs`: reuse create/query/persisted-envelope assertions. Add separate `P/tests/Hexalith.Parties.Platform.IntegrationTests/` without AppHost references.
+- New `T/TestEnvironmentDescriptorReader.cs` and `T/TestEnvironmentDescriptor.cs`: shared consumer/model. Embed authoritative schema through `T/Hexalith.EventStore.Testing.csproj` and use JsonSchema.Net. Match guards in `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs`; Tooling is non-packable.
+- `I/AspireTopologyFixtureBase.cs`, `I/DaprDomainServiceTestFixtureBase.cs`, `I/DaprFactAttribute.cs`: exported bootstrap and local-prerequisite gates. Replace with descriptor-only fixture APIs, removing startup dependencies in `I/Hexalith.EventStore.Testing.Integration.csproj`.
+- `E/tests/Hexalith.EventStore.Testing*.Tests/`: consumer/refusal regression projects. Private bootstrap already exists in `E/tests/Hexalith.EventStore.IntegrationTests/`.
+- `P/tests/Hexalith.Parties.IntegrationTests/Gateway/EventStoreGatewayE2ETests.cs`: reuse create/query/persisted-envelope assertions. Frozen infrastructure-control fixtures stay separate.
+- New `P/tests/Hexalith.Parties.Platform.IntegrationTests/`: descriptor-only project, fixture and flow tests, without AppHost references.
 - `P/scripts/render-platform-declaration.py` owns `P/module/hexalith.module-manifest.v2.json`; update both and `P/scripts/test_platform_declaration.py`.
-- `B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs` refuses attached suites. Its executor/process/gate own work and access; fixture cancellation cannot satisfy the attached-work obligation.
 
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `E/src/Hexalith.EventStore.Testing/` — implement validated descriptor consumption and client bindings.
-- [ ] `E/src/Hexalith.EventStore.Testing.Integration/` and affected test projects — remove exported startup and preserve private owner tests; cover every matrix row.
-- [ ] `P/tests/Hexalith.Parties.Platform.IntegrationTests/` — implement real-service flow, persisted-state assertions and dependency observations.
-- [ ] Parties renderer, manifest, declaration tests, `P/Hexalith.Parties.slnx` and `P/scripts/test.ps1` — enroll explicit source/package suites without changing isolated-lane behavior.
-- [ ] `E/docs/reference/nuget-packages.md`, `P/README.md`, `_bmad-output/implementation-artifacts/evidence/2-9/` — document migration and retain validation, exact revisions and limitations.
+
+- [ ] `T/TestEnvironmentDescriptorReader.cs`, `T/TestEnvironmentDescriptor.cs`, `T/Hexalith.EventStore.Testing.csproj` — add validated shared consumption and schema embedding.
+- [ ] The mapped I fixture/attribute/project files and `E/tests/Hexalith.EventStore.Testing*.Tests/*.cs` — replace exported startup; preserve private owner tests; test every matrix row.
+- [ ] `P/tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj`, `PlatformEnvironmentFixture.cs`, `PartyEnvironmentTests.cs` — implement real dependency observations, flow and persisted-state assertions.
+- [ ] Parties renderer/manifest/declaration test files, `P/Hexalith.Parties.slnx`, `P/scripts/test.ps1` — enroll explicit source/package suites while preserving isolated tests.
+- [ ] `E/docs/reference/nuget-packages.md`, `P/README.md`, `_bmad-output/implementation-artifacts/evidence/2-9/README.md` — document migration, exact revisions, validation and limits.
 
 **Acceptance Criteria:**
-- Given either exported EventStore testing package in Platform, when its integration fixture initializes, then it consumes the descriptor and starts no infrastructure.
-- Given Parties' declared runner suite, when executed by `hexalith-module test`, then real dependencies serve the flow and persisted state is verified.
+
+- Given either EventStore testing package in Platform, when its integration fixture initializes, then it consumes the descriptor and starts no infrastructure.
+- Given Parties' declared suite, when executed through `hexalith-module test`, then real dependencies serve the flow and persisted state is verified.
 - Given Parties isolated projects, when run directly without Platform/domain servers, then they pass with doubles confined to tests.
-- Given EventStore own-repository tests, when their private fixture is used, then their existing bootstrap path remains available without being exported.
+- Given EventStore own-repository tests, when using their private fixture, then bootstrap remains available without being exported.
 
 ## Implementation Notes
 
@@ -78,8 +78,8 @@ Paths use E = `references/Hexalith.EventStore`, P = `references/Hexalith.Parties
 
 ## Verification
 
-- Build test projects individually in Debug with `-nodeReuse:false`; run xUnit v3 DLLs with `-class`.
-- Run Parties' isolated project inventory and `python3 scripts/test_platform_declaration.py` from P.
-- Run declared source suites through the runner; retain descriptor/result and independent persisted-state observations. Inspect baseline resources before code changes.
-- Verify schema and packed API/dependency boundaries. Package acceptance requires authoritative published dependencies; Debug grants none.
+- Build affected projects individually in Debug with `-nodeReuse:false`; run xUnit v3 DLLs using `-class`.
+- Run Parties isolated projects and `python3 scripts/test_platform_declaration.py` from P.
+- Run declared source suites; retain descriptor/result and persistence observations. Inspect baseline resources before code changes.
+- Check schema/packaging boundaries. Package acceptance requires authoritative publications; Debug grants none.
 

@@ -2,9 +2,10 @@
 title: '3.1 Apply the candidate-selection policy to the runner contract'
 type: 'feature'
 created: '2026-10-30'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
 story_key: '3-1-apply-the-candidate-selection-policy-to-the-runner-contract'
 context:
   - 'docs/contracts/candidate-and-attachment-policy-v1.md'
@@ -25,6 +26,8 @@ Allow no cross-decision reuse, including unchanged modules. Preserve producing r
 
 Preserve ongoing work, attachment semantics and first outcomes. Exclude publication, deployment, merging, credential provisioning, pin changes and changes to release authority. Do not reinterpret v1 schemas or claim live qualification from fixtures.
 
+**Decision (2026-10-30):** The maintainer selected a GitHub-backed gate and instructed implementation to continue. An approved Builds reusable workflow issues decisions; authenticated GitHub observations establish request state, PR open/reopen epoch, exact merge parents and latest issued attempt. A release workflow dispatch creates a distinct request; retries retain it. Trusted workflow coordinates come from independent host configuration, never the request itself. Missing approval/authentication fails closed. Implement issuance and verification with local HTTP/workflow fixtures; live deployment and tool acceptance remain separate.
+
 ## I/O & Edge-Case Matrix
 
 | State | Required behavior |
@@ -37,10 +40,6 @@ Preserve ongoing work, attachment semantics and first outcomes. Exclude publicat
 | Descriptor/result disagreement or partial startup | Preserve issued immutable bindings; never invent proof or relabel outcomes. |
 
 </frozen-after-approval>
-
-## Open Questions
-
-1. Which authority should issue and authenticate candidate decisions? **A — GitHub-backed gate (recommended):** approve a Builds reusable workflow as issuer, use authenticated GitHub observations for current PR/request state and latest attempts, and define reopened-PR epochs and distinct release-dispatch identities. **B — Independent signed gate:** enroll a separate issuer and fresh authoritative registry; the maintainer must identify that authority and its delivery before the implementation can be specified. Neither exists today; provenance JSON and caller-provided authentication references are insufficient. The answer determines the gate adapter and workflow tasks below.
 
 ## Code Map
 
@@ -55,10 +54,10 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 
 **Execution:**
 
-- [ ] `T/CandidatePolicy/CandidateGateClient.cs`, `CandidatePolicyValidator.cs` — implement the selected authority adapter and separate candidate selection/acceptance checks; keep one type per file and refuse unauthenticated/unavailable current state.
+- [ ] `T/CandidatePolicy/CandidateGateClient.cs`, `CandidatePolicyValidator.cs` — implement authenticated GitHub issuance/current-state lookup and separate candidate selection/acceptance checks; keep one type per file and refuse unavailable state. Bind reopened PR epochs and distinct release-dispatch requests, with immutable retries and issuer-ordered attempts.
 - [ ] `B/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs`, `T/Runtime/ModuleInvocationCommand.cs`, `ModuleCommandExecutionService.cs`, `CompositionRunPlan.cs` — wire explicit candidate-request input and policy validation before service startup, plus an explicit result-validation command with fresh authority rechecks.
 - [ ] `T/TestEnvironment/TestEnvironmentDescriptorWriter.cs`, `TestResultWriter.cs` — populate selected candidate/decision/no-reuse bindings and issued sequence; preserve them in terminal and partial-startup snapshots.
-- [ ] `B/.github/workflows/domain-ci.yml`, `B/Github/governed-provenance/` — integrate the approved gate transport without granting publication authority; concrete issuance details depend on question 1.
+- [ ] `B/.github/workflows/domain-ci.yml`, `B/.github/workflows/candidate-policy.yml`, `B/Github/governed-provenance/` — integrate reusable gate issuance/verification and trusted workflow transport without granting publication authority. Do not treat unsigned saved observations as authentication.
 - [ ] `B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs`, `CandidateRunnerTests.cs` — cover every matrix row, authenticated current-state changes, attempt races and public command/writer integration; preserve reader/provisioning/result regressions.
 - [ ] `docs/contracts/test-environment-v1.md`, `B/README.md`, `_bmad-output/implementation-artifacts/sprint-status.yaml` — document enforcement, remaining qualification prerequisites and accurate story progress.
 
@@ -70,6 +69,8 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 - Given a consumer using another selection/acceptance rule, when validated, then it fails with a stable named condition.
 
 ## Implementation Notes
+
+- Builds baseline: `0b17f8022cdc23b8b242b000f5b2aa15580184ac`. Preserve concurrent work; no Git recording operations are requested.
 
 ## Spec Change Log
 

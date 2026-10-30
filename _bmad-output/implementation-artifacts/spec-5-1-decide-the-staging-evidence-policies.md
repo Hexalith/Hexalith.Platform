@@ -2,9 +2,10 @@
 title: '5.1 Decide the staging evidence policies'
 type: 'feature'
 created: '2026-10-30'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
 story_key: '5-1-decide-the-staging-evidence-policies'
 context:
   - '_bmad-output/implementation-artifacts/epic-5-context.md'
@@ -26,17 +27,18 @@ Reset lifetime expiry notifies without aborting restoration. Reset blocks later 
 
 **Never:** Change runners, schemas, workflows, pins, submodules, vulnerability policy or tenant implementation; start workloads, deploy, publish remotely or claim enforcement. Preserve independent work, including the authorized Builds checkout.
 
+## Decisions
+
+Confirmed by the user on 2026-10-30:
+
+- Evidence expires 24 hours (86,400 seconds) after attempt start, checked at promotion admission with an exclusive deadline; refuse missing/future timestamps or mismatches.
+- Queue staging automatically for a retained candidate passing intake or a checked-input/baseline change. Platform Maintainer may request fresh attempts after expiry/failure; no periodic retry loop.
+- Only the latest issued serialized attempt for a pending decision qualifies after a full passing rerun. Preserve earlier outcomes and rerun reason; no partial-pass aggregation or cross-decision reuse.
+- Removal/remap requires owning-module and Platform approval of before/after declaration/mapping digests, affected flows/checks and coverage rationale. Tenants also reviews lifecycle changes.
+- Reset lifetime is 60 minutes (3,600 seconds) from recovery entry; notify Administrator and Platform Maintainer on expiry without aborting. Resume/re-entry follow architectural timers.
+- Platform Maintainer `@jpiquot` is accountable; Builds implements, modules review flows, Administrator/EventStore qualify reset. Revisit respectively after freshness/cost issues, intake changes, rerun ambiguity, review gaps or restores exceeding the bound.
+
 </frozen-after-approval>
-
-## Open Questions
-
-1. Initial policy choices: approve the following proposed set or specify replacements. These are proposals, not ratified decisions:
-   - Evidence expires 24 hours (86,400 seconds) after attempt start, checked at promotion admission with an exclusive deadline; refuse missing/future timestamps or mismatches. Shorter age reduces drift but increases reruns; longer age allows delayed promotion.
-   - Queue staging automatically for a retained candidate passing intake or a checked-input/baseline change. Platform Maintainer may request fresh attempts after expiry/failure; no periodic retry loop. Alternative: explicit requests only, giving more scheduling control.
-   - Only the latest issued serialized attempt for a pending decision qualifies after a full passing rerun. Preserve earlier outcomes and rerun reason; no partial-pass aggregation or cross-decision reuse. Alternative: also require maintainer approval for every failed-attempt retry.
-   - Removal/remap requires owning-module and Platform approval of before/after declaration/mapping digests, affected flows/checks and coverage rationale. Tenants also reviews lifecycle changes. Alternative: forbid removal/remap in v1, delaying suite evolution.
-   - Reset lifetime is 60 minutes (3,600 seconds) from recovery entry; notify Administrator and Platform Maintainer on expiry without aborting. Resume/re-entry follow architectural timers. Shorter alerts sooner; longer tolerates slower restores.
-   - Platform Maintainer `@jpiquot` is accountable; Builds implements, modules review flows, Administrator/EventStore qualify reset. Revisit respectively after freshness/cost issues, intake changes, rerun ambiguity, review gaps or restores exceeding the bound.
 
 ## Code Map
 
