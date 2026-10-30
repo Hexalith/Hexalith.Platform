@@ -2,7 +2,7 @@
 title: '5.1 Decide the staging evidence policies'
 type: 'feature'
 created: '2026-10-30'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
