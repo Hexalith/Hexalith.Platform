@@ -79,15 +79,6 @@ descriptor and runner adoption; it does not establish implemented support or
 change the accepted tool pin. Accepting attachments under it requires Builds
 adoption; accepting evidence also requires a Platform-accepted, integration-qualified tool.
 
-The canonical [staging evidence policy v1](docs/contracts/staging-evidence-policy-v1.md)
-fixes the 24-hour evidence age, staging triggers, complete latest-attempt reruns,
-critical-flow review and 60-minute reset lifetime. Publication records Platform's
-decisions; Builds and Platform must implement and qualify downstream validators,
-executors and promotion evaluation before accepting staging evidence. Modules
-must record required flow reviews, and Administrator and EventStore must qualify
-reset behavior. This policy does not establish runtime enforcement or release
-authorization.
-
 The versioned [test environment and terminal result contracts](docs/contracts/test-environment-v1.md)
 publish strict, offline-readable schemas for runner endpoints, composition identity,
 reserved candidate proof, attachment holds and the four terminal outcomes. Builds
@@ -96,6 +87,15 @@ downstream responsibilities.
 
 
 ## Staging policies
+
+The canonical [staging evidence policy v1](docs/contracts/staging-evidence-policy-v1.md)
+fixes the 24-hour evidence age, staging triggers, complete latest-attempt reruns,
+critical-flow review and 60-minute reset lifetime. Publication records Platform's
+decisions; Builds and Platform must implement and qualify downstream validators,
+executors and promotion evaluation before accepting staging evidence. Modules
+must record required flow reviews, and Administrator and EventStore must qualify
+reset behavior. This policy does not establish runtime enforcement or release
+authorization.
 
 Platform adopts the Builds-owned
 [image and dependency vulnerability policy v1](docs/contracts/image-and-dependency-vulnerability-policy-v1.md)

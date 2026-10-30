@@ -47,13 +47,29 @@ The approved [staging evidence policy v1](../../docs/contracts/staging-evidence-
 decision record for Stories 5.3, 5.6–5.11 and the related lifecycle review in
 Story 5.4. It fixes a 24-hour (86,400-second) exclusive evidence deadline from
 attempt start at promotion admission; automatic attempts for retained intake
-candidates or checked-input/baseline changes, with explicit Maintainer requests
-after expiry/failure and no periodic retry loop; full passing reruns from only
-the latest issued serialized attempt, preserving history without cross-decision
-reuse; owning-module and Platform approval of flow removal/remap, with Tenants
-review for lifecycle changes; and a 60-minute (3,600-second) reset lifetime from
-recovery entry that notifies Administrator and the Platform Maintainer without
-aborting restoration or unblocking later candidates before verification.
+candidates or checked-input/baseline changes under a pending decision, with
+explicit Maintainer requests after expiry or failed, cancelled, incomplete or
+interrupted terminal outcomes and no periodic retry loop; full passing reruns
+from only the latest issued serialized E2E attempt, preserving history without
+cross-decision reuse or replacement by reset/named-recovery evidence; and
+owning-module and Platform approval of flow removal/remap against each applicable
+latest-accepted and production-baseline predecessor, with Tenants review of every
+lifecycle flow before enrollment and after changes. Superseded candidates have
+closed decisions, refuse admission and receive no automatic triggers.
+
+The reset lifetime is 60 minutes (3,600 seconds) from recovery entry. The off-site
+monitor notifies Administrator, the recovery deputy and the Platform Maintainer
+through the architecture's accepted private-issue path without aborting
+restoration or unblocking later candidates before verification. Executor loss
+fails the reset; an observation gap leaves it unverified. Administrator or the
+deputy re-enters from the same point in a distinct attempt, inheriting the prior
+deadline before it expires and recording entry plus 3,600 seconds at or after it.
+Unreadable or unproven-readability candidate writes, including without a
+production baseline, require a verified reset before a same-candidate rerun or
+later candidate, using the earliest pre-write point since the last verified
+reset. Missing applicable preparation proof or an unmatched state refuses
+admission.
+
 Platform Maintainer `@jpiquot` is accountable. Builds and Platform must implement
 and qualify adoption; modules must record flow reviews, and Administrator and
 EventStore must qualify resets. Publication does not establish enforcement,
