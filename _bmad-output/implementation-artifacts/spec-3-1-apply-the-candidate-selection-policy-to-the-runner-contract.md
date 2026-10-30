@@ -2,7 +2,7 @@
 title: '3.1 Apply the candidate-selection policy to the runner contract'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -253,32 +253,32 @@ Status remains `in-review` because the required full-build gate is unresolved. T
 
 Code review 2026-10-30 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the Story 3.1 files in Builds `70ac3de..bdd369c`: `74b8723`, `d080758`, and the F1–G1 corrections that a concurrent `/pushall` recorded in `bdd369c` during this review. Excludes `evidence/` and the concurrent Story 2.7 hunks. Also covers Platform `docs/contracts/test-environment-v1.md` since `66aafa69`. `B/` resolves to `references/Hexalith.Builds/`.
 
-- [ ] [Review][Decision] The required full Debug build still fails, for reasons outside Story 3.1 — Verification requires `dotnet build -c Debug -m:1 -nodeReuse:false` of the test project.
+- [x] [Review][Defer] The required full Debug build still fails, for reasons outside Story 3.1 — deferred (decision 2026-10-30): accept the focused verification. The blocker belongs to the EventStoreHost security wiring added in `b8d1952`, which needs an EventStore release that provides those APIs, or a pin bump. `origin/main` still pins 3.128.4. Verification requires `dotnet build -c Debug -m:1 -nodeReuse:false` of the test project.
   - It fails with seven EventStoreHost errors: missing `Routing` namespaces, `UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel`, an inaccessible `EventStoreActorCallbackEndpointMetadata`, and an unused using.
   - Builds `b8d1952` (source-mapped platform catalogs, not Story 3.1) introduced these calls. The pinned `Hexalith.EventStore` 3.128.4 does not provide them, and nothing since has touched the host or the pin.
   - All 586 Story 3.1 .NET results come from the focused `-p:BuildProjectReferences=false` build.
   - Choose one: accept the focused verification and defer the blocker to the work that owns it, keep 3.1 blocked, or repair the host here.
-- [ ] [Review][Patch] A passed result whose execution deadline was never populated skips the measured-duration check [B/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidatePolicyValidator.cs:145]
+- [x] [Review][Patch] A passed result whose execution deadline was never populated skips the measured-duration check [B/src/libraries/Hexalith.Builds.Tooling/CandidatePolicy/CandidatePolicyValidator.cs:145] — fixed: the validator now refuses unless execution is `populated` or `not-declared`. `PassingResultRefusesMatchingUnavailableTimingAsync` now covers both deadlines.
   - The F3 fix refuses only an unpopulated startup deadline. If both documents carry `execution: {"state":"not-yet-populated"}`, `ValidatePassingDuration` checks nothing.
   - Nothing else catches this: the reader has no rule linking a passed outcome to execution timing, and the contract reserves `not-declared` for undeclared budgets.
   - Fix: refuse a passed result whose execution state is neither `populated` nor `not-declared`, with `passing-duration-required`. Add the execution counterpart of `PassingResultRefusesMatchingUnavailableStartupTimingAsync`.
-- [ ] [Review][Patch] No test covers the command's owned-run fallback for an unissued candidate [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1178]
+- [x] [Review][Patch] No test covers the command's owned-run fallback for an unissued candidate [B/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1178] — fixed: added the public-command case `unissued`. Mutation check: with the fallback restored, the command exits 0 with the prior owner's pass and the case fails.
   - Restoring `?? options.CandidatePolicy?.RunId` still passes every test.
   - With that fallback, a refusal before issuance, a cancellation while waiting on the lock, or a setup timeout would read the prior owner's committed `selected-test.json` and report its outcome as this invocation's.
   - Add a command-level case: seed a passing prior record and use a start override that returns no run ID. Assert there is no `runId`, the exit code is this invocation's own, and the prior bytes are unchanged.
-- [ ] [Review][Patch] AC1's release kind is never written through the writers or the public command [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:123]
+- [x] [Review][Patch] AC1's release kind is never written through the writers or the public command [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:123] — fixed: the writer round trip runs for both kinds, and the public command has a `startup-release` case. Both assert the decision kind and the presence or absence of `pr`.
   - Every accepted-startup command case and `DescriptorAndTerminalWritersPreserveSameIssuedCandidateAsync` use the PR-merge payload. Release decisions, which have no `pr` object, are exercised only at `ResolveAsync`.
   - Parameterize the writer round trip and the public `startup` case over both kinds.
-- [ ] [Review][Patch] The README still says the consumer proof comes "currently" from `domain-ci.yml` [B/README.md:623]
+- [x] [Review][Patch] The README still says the consumer proof comes "currently" from `domain-ci.yml` [B/README.md:623] — fixed: the README now says no consumer workflow is enrolled yet, and that the opt-in consumer workflow will replace the verifier's `domain-ci.yml` reference.
   - The same section says `domain-ci.yml` has no candidate wiring and requests only `contents: read`, so no shipped workflow can mint the proof.
   - Say that no consumer workflow is enrolled yet, and that the opt-in consumer workflow will replace the verifier's `domain-ci.yml` reference.
-- [ ] [Review][Patch] The `domain-ci.yml` permission regression test only rejects four strings [B/Github/governed-provenance/tests/test_candidate_policy.py:155]
+- [x] [Review][Patch] The `domain-ci.yml` permission regression test only rejects four strings [B/Github/governed-provenance/tests/test_candidate_policy.py:155] — fixed: the test asserts exactly one top-level `permissions:` block granting only `contents: read`. Checked against in-memory variants: `packages: write`, top-level `write-all`, job-level `write-all` and job-level `checks: write` all fail it.
   - Adding `packages: write`, `checks: write`, `write-all` or any other job-level `permissions:` would bring back the caller `startup_failure` without failing the test.
   - Assert that the file has exactly one `permissions:` block and that it is `contents: read`.
-- [ ] [Review][Patch] The enrollment-format regression test misses the lowercase-hex rule for `CallerContentIdentity` [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:736]
+- [x] [Review][Patch] The enrollment-format regression test misses the lowercase-hex rule for `CallerContentIdentity` [B/test/Hexalith.Builds.Module.Tests/CandidateRunnerTests.cs:736] — fixed: added a `sha256:` + uppercase-hex case. It fails when `!char.IsAsciiLetterUpper` is removed.
   - Only the bare 64-hex case runs, which exercises the prefix and length check. A `sha256:` prefix followed by uppercase hex is never tried, so removing `!char.IsAsciiLetterUpper` would go unnoticed.
   - Add that case.
-- [ ] [Review][Patch] The issuance substitution theory has no `job_workflow_ref` case [B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs:319]
+- [x] [Review][Patch] The issuance substitution theory has no `job_workflow_ref` case [B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs:319] — no change, refuted (`false`) during resolution: `SavedIssuanceNeverOverridesCurrentAuthorityAsync("issuer")` already isolates it. `FabricatedIssuer` signs an otherwise valid token whose only differing claim is `job_workflow_ref`, and the check at `CandidateGateClient.cs:440` is the only use of that claim. Removing it already fails that case.
   - The issuer-side `job_workflow_ref` equality is what separates issuer from consumer, and no isolated case tests it. The consumer side is covered by `wrong-workflow`.
   - Add an `InlineData`.
   - Two related points need no change: `alg: none` goes through the already-tested non-RS256 branch, and the JWK `use`/`alg` fields need no check while `kid`, `kty` and the header `alg` are pinned.
@@ -321,3 +321,15 @@ Code review 2026-10-30 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - The prior owner's workspace exists without diagnostics: `false`. Diagnostics are created before the workspace, and selected-test runs keep them (`RefusePreparedRunAsync` always tears down through `FailAndTearDownAsync`).
 - A populated deadline without `effectiveSeconds` skips the budget check: `false`. The schema requires `effectiveSeconds` for populated startup and execution deadlines, and the only production caller reads through the strict reader first.
 - `DeclarationOptionsOverride` does not reach the writer's closure reload: `low`. This only limits test fixtures, and fixing it means more override plumbing.
+
+### Follow-up review resolution (2026-10-30)
+
+No Story 3.1 code changed after Builds `bdd369c`, so this pass resolved the open follow-up items without another review. The build-blocker decision is now a deferral. Six patches are applied, and one patch item was refuted, with no change made. The fixes are uncommitted on Builds `69701df`.
+
+- The standalone Tooling build and the focused test-project Debug build (`-p:BuildProjectReferences=false`) both finished with 0 warnings and 0 errors.
+- Candidate classes: 161 passed. Contract, provisioning, result, engine, state, lifecycle and declaration regressions: 432 passed. Neither run had failures, errors, skips or not-run cases.
+- Provenance Python: 86 passed. Contract mirror: 1 passed. Scoped whitespace check: clean.
+- Mutation check, run in a scratch worktree: each of the three new regression cases fails against its targeted mutation, and every other case still passes.
+- The required full Debug build was not rerun. It is deferred above.
+- Commands, XML results, the mutation run and source hashes are in `references/Hexalith.Builds/evidence/3-1/review3-verification.json`.
+- Live issuer enrollment, authentic tool qualification and the Story 3.9 loaded-artifact producers are still independent prerequisites. Final acceptance still refuses unavailable qualification authentication.

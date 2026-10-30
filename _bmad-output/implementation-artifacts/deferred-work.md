@@ -1617,3 +1617,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
   summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
   evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.
+
+## Deferred from: code review of spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract (2026-10-30, follow-up resolution)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
+  summary: The required full Builds Module.Tests Debug build fails with seven EventStoreHost API errors (medium). Story 3.1 is accepted on focused verification, by owner decision.
+  evidence: Builds `b8d1952` ("materialize source-mapped platform catalogs for module hosts") added `UseRouting`/`UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel` and `EventStoreActorCallbackEndpointMetadata` calls to `src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs`. The pinned `HexalithEventStoreVersion` 3.128.4, unchanged on `origin/main`, does not provide them. Resolve this in the host/pin work: consume an EventStore release that ships those APIs, or adjust the host. Stories 2.7 and 3.1 both verified with `-p:BuildProjectReferences=false` in the meantime.
