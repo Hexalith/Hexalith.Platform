@@ -1,0 +1,5 @@
+# Frozen source run: missing public API policy
+
+Run `f03f8b9e64d4cbf710b54f5fffbf1ab6` committed all six Serving catalog readbacks and completed/persisted actual BootstrapGlobalAdmin, CreateTenant and AddUserToTenant. The first native Tenants REST observation returned HTTP500 before Memories provisioning/native suite execution. Actual host exception type and fixed policy diagnostic identify missing `EventStoreHuman` at AuthorizationPolicy.CombineAsync; no request payload or exception message is exported by the derived diagnostic. The API registered bare AddAuthorization despite generated controllers requiring the shared policy.
+
+Exact-owned down completed with empty verified resources. Twelve actual configuration credentials were checked in memory against forty-one retained files, zero matching files and zero supplemental JWT/private-key patterns. In-process operator/workload token values are not claimed as exact-value scan coverage. Only allowlisted/sanitized metadata/logs are archived, no plan/environment/kubeconfig/request bodies. This is failed preparation evidence, not native acceptance.
