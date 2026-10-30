@@ -1,0 +1,72 @@
+{
+  "format": "Captured final finding content; blind prose is compacted without parent verdicts.",
+  "layers": {
+    "blind": {
+      "agent": "/root/review8_blind",
+      "floor": "61,427,379 bytes /1,000 =61,427.379kB; min(floor(sqrt(kB)+1),10)=10",
+      "findings": [
+        "execute exact producer-original schema excludes SafeRequest, which ObserveAsync always emits; every shipped observation fails after fixture effects and enrollment.",
+        "Wrap preflight omits actual transit-key availability; source enrollment/ERC metadata persist before missing or inaccessible native key is discovered.",
+        "ReadAsync ignores missing mandatory owner genesis anchors; root issuance succeeds before owner failure.",
+        "DeadlineAnchoredStateAuthority does not forward ReadAdmittedOriginalAsync; lifecycle admission cannot recover after primary pending loss.",
+        "Profile accepts16384-byte credentials; server rejects Authorization headers above8192 characters. Align limits and HTTP compatibility.",
+        "New paired Git fixtures require installed commitlint; clean payload-protection CI does not install npm dependencies.",
+        "Closure tests require sibling platform; workflow initializes references/Hexalith.Platform.",
+        "RoleProgram rereads mutable role configuration without accepted digest/bytes after parent pin validation, allowing bearer redirection.",
+        "Native frozen-runtime manifest requires only test DLL; selected dependencies/runtime configuration can stay unlisted and mutable.",
+        "No actual shipped-client InvokeAsync/RunAsync authenticated HTTPS integration coverage."
+      ]
+    },
+    "edge": {
+      "agent": "/root/review8_edge",
+      "findings": [
+        {
+          "location": "../eventstore/tools/ext_protection_1.py:2293",
+          "trigger_condition": "The shipped observer emits operationProducerOriginals containing SafeRequest.",
+          "guard_snippet": "native_record(original, 'OperationId RequestSha256 Role BindingDigest AttemptId Producer SafeRequest', 'OPERATION_PRODUCER_ORIGINAL_SCHEMA_INVALID')",
+          "potential_consequence": "Every shipped Live observation fails after fixture effects, consuming the binding's single authorized attempt."
+        },
+        {
+          "location": "../eventstore/src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs:31-32",
+          "trigger_condition": "Lifecycle admission succeeds, but the process dies before persisting primary pending bytes.",
+          "guard_snippet": "DeadlineAnchoredStateAuthority.ReadAdmittedOriginalAsync(scope, token) => deadline.ReadAsync(() => authority.ReadAdmittedOriginalAsync(scope, CancellationToken.None));",
+          "potential_consequence": "The deadline wrapper returns default null, preventing subsequent mutations from recovering the exclusive admitted original."
+        },
+        {
+          "location": "../eventstore/tools/ext_protection_1.py:202-204",
+          "trigger_condition": "An installed ASCII role credential contains8186 through16384 characters.",
+          "guard_snippet": "if not1 <= len(value) <=8185: raise Blocked('CREDENTIAL_REFERENCE_NOT_INSTALLED')",
+          "potential_consequence": "Profile validation succeeds, but the shipped role server rejects every credential-bearing request."
+        },
+        {
+          "location": "../eventstore/tools/ext_protection_1.py:2293",
+          "trigger_condition": "Given installed inputs, every case has a real pass path.",
+          "guard_snippet": "ObserveAsync emits SafeRequest; execute() rejects that additional field through native_record's exact schema.",
+          "potential_consequence": "The actual emitted loop7 P36 producer original raises OPERATION_PRODUCER_ORIGINAL_SCHEMA_INVALID before case evaluation.",
+          "kind": "claim",
+          "confidence": "high"
+        }
+      ]
+    },
+    "verification": {
+      "agent": "/root/review8_verification",
+      "gap": {
+        "surface": "ProtectionQualificationRoleProgram.cs:56",
+        "consumer": "Role.request at ext_protection_1.py:1010",
+        "evidence": [
+          "ProtectionQualificationHttpBoundaryTests.cs:44-56 hand-builds headers, bypassing client.",
+          "test_ext_protection_1.py:1163-1171 substitutes shell fixture.",
+          "loop7_installation.py:112-118 validates assets and mocks child subprocess.",
+          "No InvokeAsync/RunAsync calls in tests."
+        ],
+        "demonstration": "Removing production Authorization header leaves those tests green; installed services return401.",
+        "disposition": "patch",
+        "required": "Owned local HTTPS production-client/authenticated-service test asserting expected signed response."
+      },
+      "other": [
+        "CI does not install required pinned commitlint/node_modules before offline discovery.",
+        "Closure test assumes missing sibling Platform rather than initialized declared submodule."
+      ]
+    }
+  }
+}

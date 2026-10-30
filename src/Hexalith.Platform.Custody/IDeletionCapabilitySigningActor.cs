@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Custody;
 /// <summary>Private deterministic durable signing-request/outcome owner, unavailable until host/backend/current authority qualification.</summary>
 public interface IDeletionCapabilitySigningActor : IActor
 {
+    /// <summary>Queries actual actor/provider/current trust and independent read-only permission before attempt enrollment, without signing or state writes.</summary>
+    Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request)
+        => Task.FromResult<DeletionCapabilitySigningAvailability?>(null);
     /// <summary>Persists original intent before signing; retries return/lookup that result and never create another logical request.</summary>
     Task<DeletionCapabilitySigningOutcome> SignAsync(DeletionBatchCapabilityV1 payload);
     /// <summary>Authenticates exact original signer outcome after loss without new signing.</summary>

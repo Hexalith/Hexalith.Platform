@@ -1511,3 +1511,22 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-1-apply-the-candidate-selection-policy-to-the-runner-contract.md`
   summary: Candidate CI trust root. The approved workflow must supply `HEXALITH_CANDIDATE_GATE_CONFIG` and the read-only token to selection and validation independently of consumer scripts (high).
   evidence: Decision 2026-10-30 adopts Builds-owned per-repository enrollment read at the approved workflow's own `job.workflow_sha`. It is deferred to live issuer enrollment because the candidate CI wiring was removed from `domain-ci.yml` (it broke `@main` callers). The new opt-in consumer workflow must also replace the hard-coded `/domain-ci.yml@` consumer proof reference in `CandidateGateClient.AuthenticateAsync`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
+  summary: The stalled-provisioning cleanup exit classifies a recorded bookkeeping failure (HXT008) as `TopologyOrLifecycle`, while its `IncompleteDown` sibling exit classifies the same failure as `EvidenceSchemaOrPolicy` (low).
+  evidence: In `CompositionEngine.DownOwnedCoreAsync`, the provisioning-lock timeout exit (internal 5 s bound, outer bound still live) returns HXR023 with exit `TopologyOrLifecycle`, but the cancelled-bound exit derives `recordingFailed` from bookkeeping and exits `EvidenceSchemaOrPolicy`. This is pre-existing: Builds `184a79a` had the same split, and Story 2.7 only made HXT008 visible on the stalled exit.
+
+## Deferred from: code review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reconcile staging's own promotion-stop semantics with "a staging failure blocks only that candidate" (medium).
+  evidence: The architecture's Promotion stop row sets each environment's stop on every non-working terminal outcome and every recovery entry, so read literally one failed candidate or any reset blocks all later staging work; the Staging gate row and policy L189-191 say a staging failure blocks only its candidate and resets affect only staging's stop. The policy restates the frozen Story 5.1 wording; define what staging's stop blocks, who clears it and whether a verified reset clears it in the architecture or Stories 5.6/5.10.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Define Administrator reservation of an earlier staging candidate (medium).
+  target_story: 5.10
+  evidence: Policy L156-157 and the architecture's Staging reset row let an Administrator record reserve an earlier candidate when a later attempt starts, but neither states whether the reserved candidate's incompatible writes are still reset before the later attempt, how long the reservation lasts, or whether its existing evidence stays admissible.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reconcile Story 5.7's "fresh-install proof serves only a first installation" with the architecture's empty/degraded fresh-install requirement (medium).
+  evidence: The architecture's Empty or degraded production row says staging proves a fresh install plus the candidate for that approved path, with precondition 9 still applying to retained data; policy L205/L212 follow it. epics.md Story 5.7 says the proof serves only a first installation with no retained data, and no consumer story qualifies the degraded-branch rehearsal. Needs an epics.md correction (correct-course), not a policy change.
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Reference `hexalith.platform.staging-evidence-policy.v1` from epics.md Stories 5.3 and 5.6 so the epic-context pointer survives regeneration (low).
+  evidence: epic-5-context.md is compiled from planning artifacts; its hand-added policy paragraph will be lost on regeneration because epics.md cites only "the policy from Story 5.1".

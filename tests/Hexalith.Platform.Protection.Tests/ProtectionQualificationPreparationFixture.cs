@@ -96,7 +96,12 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             .Returns(call => { NativeState[call.ArgAt<string>(1)] = call.ArgAt<JsonElement>(2); return Task.CompletedTask; });
         _native.ExecuteStateTransactionAsync("source", Arg.Any<IReadOnlyList<StateTransactionRequest>>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(call => { foreach (var operation in call.ArgAt<IReadOnlyList<StateTransactionRequest>>(1)) { NativeState[operation.Key] = JsonDocument.Parse(operation.Value).RootElement.Clone(); } return Task.CompletedTask; });
-        var faults = new ProtectionQualificationFaults(_native, new("controls", "controls", new Dictionary<string, string>()), "component", new HashSet<string>());
+        var faultState = new ProtectionQualificationFaultState("component", new(), new());
+        _native.GetStateAsync<ProtectionQualificationFaultState>("controls", "controls", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(_ => faultState);
+        _native.GetStateAndETagAsync<ProtectionQualificationFaultState>("controls", "controls", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(_ => (faultState, "tag"));
+        _native.TrySaveStateAsync("controls", "controls", Arg.Any<ProtectionQualificationFaultState>(), "tag", Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call => { faultState = call.Arg<ProtectionQualificationFaultState>(); return true; });
+        var faults = new ProtectionQualificationFaults(_native, new("controls", "controls", new Dictionary<string, string>()), "component", ProtectionQualificationSourceCatalog.RequiredArguments().Keys.ToHashSet(StringComparer.Ordinal));
         IGovernanceScopeGuard executionGuard = Guard.Owner;
         if (holdWins is { } holdFirst)
         {
@@ -123,7 +128,15 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             new DaprDeletionCapabilityCompromiseRegistrar(proxies), new EventStoreDeletionCapabilityGuardRevocationMirror(Guard.Owner), TimeProvider.System);
         var driver = new ProtectionQualificationNativeDriver(Engine.Engine, Consumption.Custody, Engine.Keys, Engine.Source, _native, executionGuard, owner,
             executionConsumption, Signer, subscriber, faults, new HashSet<string> { "source" }, Consumption.Permissions);
-        Runner = new(driver);
+        Runner = new(driver); Runner.Producer = Runner.Producer with { BindingDigest = new string('a', 64) };
+        Guard.ChangeEvidence = (evidence, command) =>
+        {
+            if (command.Operation != GovernanceGuardOperation.RecordProtectionOutcome || command.Batch?.ProtectionOutcome != "Consumed") { return evidence; }
+            var original = Admitted.Values.Where(call => call.Kind == ProtectionQualificationNativeCallKind.Reserve && call.Payload["Capability"]?["BatchId"]?.GetValue<string>() == command.Batch.BatchId)
+                .Select(call => (Call: call, Result: Originals.GetValueOrDefault(call.Id)))
+                .LastOrDefault(item => item.Result?["Status"]?.GetValue<int>() == (int)DeletionConsumptionStatus.Consumed);
+            return original.Result is null ? evidence : evidence with { ProtectionOriginalRequest = original.Call.Payload.Deserialize<DeletionBatchConsumptionRequest>(), ProtectionTerminalOutcome = original.Result.Deserialize<DeletionConsumptionOutcome>() };
+        };
     }
     internal async Task InitializeAsync(bool containment = false)
     {
@@ -145,7 +158,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
     }
     internal JsonObject Request(string caseId, string action) => new()
     {
-        ["bindingDigest"] = new string('a', 64), ["caseId"] = caseId, ["fixtureId"] = caseId + "-fixture", ["action"] = action, ["operationId"] = caseId + ":operation", ["targets"] = JsonSerializer.SerializeToNode(_targets),
+        ["bindingDigest"] = new string('a', 64), ["caseId"] = caseId, ["fixtureId"] = caseId + "-fixture", ["action"] = action, ["operationId"] = caseId + ":" + action, ["targets"] = JsonSerializer.SerializeToNode(_targets),
     };
     internal Dictionary<string, Dictionary<string, ProtectionQualificationActionRecipe>> Recipes(string caseId)
     {
@@ -153,7 +166,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
         var args = required.ToDictionary(pair => pair.Key, pair => pair.Value.StartsWith("Guard:", StringComparison.Ordinal)
             ? new JsonObject { ["transition"] = new JsonObject { ["Operation"] = (int)Enum.Parse<GovernanceGuardOperation>(pair.Value[6..]) }, ["targets"] = new JsonArray() }
             : new JsonObject(), StringComparer.Ordinal);
-        string? signing = null, reserve = null, lastIssue = null, lastDispatch = null, firstCompromise = null; int compromises = 0; int attempt = 0, writes = 0, containmentOrdinal = 0; var acceptances = new Dictionary<int, string>();
+        string? signing = null, reserve = null, lastIssue = null, lastDispatch = null, firstCompromise = null, lastBlock = null, lastActivation = null; int compromises = 0; int attempt = 0, writes = 0, containmentOrdinal = 0; var acceptances = new Dictionary<int, string>();
         var controlTarget = new ProtectionTarget("tenant-a", "P13-fixture-accepted-control", "accepted-control");
         var containmentOriginals = new Dictionary<long, (GovernanceBatchCommand Batch, string Sign, string Issue, string Dispatch)>();
         var baseBatch = Guard.Batch(targets: (caseId == "P13" ? new[] { controlTarget } : _targets).Select(target => new GovernanceProtectionTarget(target.TenantId, target.AgentInteractionId, target.TargetProtectionKeyAlias)).ToArray());
@@ -202,7 +215,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 }
                 if (operation is GovernanceGuardOperation.AuthorizeContainment or GovernanceGuardOperation.CommitContainment)
                 { command = command with { ReferenceId = "resource-" + containmentOrdinal, AuthorizationId = "containment-" + containmentOrdinal }; }
-                command = command with { DeletionRequestId = deletionRequest, AuthorizationId = command.AuthorizationId + ":" + deletionRequest + (caseId is "P34" or "P29" or "P33" ? ":attestation-" + baseBatch.AttestationOrdinal : "") };
+                command = command with { DeletionRequestId = deletionRequest, AuthorizationId = command.AuthorizationId + ":" + deletionRequest + (caseId is "P34" or "P29" or "P33" or "P36" ? ":attestation-" + baseBatch.AttestationOrdinal : "") };
                 var node = (JsonObject)JsonSerializer.SerializeToNode(command)!;
                 if (operation == GovernanceGuardOperation.RecordViolation)
                 {
@@ -215,7 +228,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                     batch["Capability"] = Original(signing, "/Payload"); batch["DetachedJws"] = Original(signing, "/DetachedJws");
                     batch["SigningRequestId"] = Original(signing, "/SigningRequestId");
                     batch["AttestationDigest"] = Codec("SignedArtifactDigest", Original(signing, "/DetachedJws"));
-                    if (operation == GovernanceGuardOperation.RecordProtectionOutcome && !entry.Key.Contains("/ActivateReattestedDeletionBatch/", StringComparison.Ordinal))
+                    if (operation == GovernanceGuardOperation.RecordProtectionOutcome && !entry.Key.Contains("/ActivateReattestedDeletionBatch/", StringComparison.Ordinal) && !entry.Key.Contains("/LookupOriginalActivation/", StringComparison.Ordinal))
                     {
                         batch["ProtectionOutcome"] = "Consumed"; batch["ProtectionReceiptId"] = Original(reserve!, "/ReceiptId");
                         batch["TargetReceiptIds"] = new JsonArray(signedBatch.Targets.Select((_, index) => (JsonNode)Original(reserve!, "/TargetReceipts/" + index + "/ReceiptId")).ToArray());
@@ -226,7 +239,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             }
             else if (token == "Sign")
             {
-                if (caseId is "P34" or "P29" or "P33" && compromises > 0) { baseBatch = baseBatch with { AttestationOrdinal = 2, CapabilityKeyVersion = "healthy-key-b", BlockSetRevision = 1 }; attempt = 0; }
+                if (caseId is "P34" or "P29" or "P33" or "P36" && compromises > 0) { baseBatch = baseBatch with { AttestationOrdinal = 2, CapabilityKeyVersion = "healthy-key-b", BlockSetRevision = 1 }; attempt = 0; }
                 signing = entry.Key; signedBatch = baseBatch; attempt++;
                 args[entry.Key] = (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchCapabilityV1("qualified-issuer", "protection-audience", "tenant-a", deletionRequest,
                     GovernanceScopeGuardReducer.DestructionSealId("tenant-a", deletionRequest, Guard.Scope), baseBatch.BatchKind, baseBatch.BatchOrdinal, baseBatch.BatchId, baseBatch.ManifestDigest,
@@ -248,8 +261,22 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 string version = compromises == 1 ? "healthy-key-a" : "healthy-key-b";
                 args[entry.Key] = new() { ["envelope"] = JsonSerializer.SerializeToNode(new DeletionCapabilityRevocationEnvelope("qualified-issuer", "registrar", "tenant-a", "DeletionBatchCapabilitySigningKey", version, 1, 1, "revocation-" + version, new string('A', 64))), ["signedEvidence"] = "component-authenticated-revocation" };
             }
+            else if (token == "Block")
+            {
+                lastBlock = entry.Key;
+                args[entry.Key] = JsonSerializer.SerializeToNode(new DeletionBatchBlockRequest("tenant-a", signedBatch.BatchId, caseId + "-block", "independent-admission-integrity"))!.AsObject();
+            }
+            else if (token == "Fault")
+            {
+                string action = entry.Key.Split('/')[1]; string operation = caseId == "P06" ? "Reserve" : caseId == "P35" ? "Block" : "Activate";
+                string step = required.Single(value => value.Key.StartsWith(caseId + "/" + action + "/", StringComparison.Ordinal) && value.Value == operation).Key;
+                args[entry.Key] = new() { ["stepId"] = step, ["boundary"] = "after" };
+            }
+            else if (token == "LookupBlock") { args[entry.Key] = args[lastBlock!].DeepClone().AsObject(); }
+            else if (token == "LookupActivation") { args[entry.Key] = args[lastActivation!].DeepClone().AsObject(); }
             else if (token == "Activate")
             {
+                lastActivation = entry.Key;
                 var replacement = new JsonObject { ["Capability"] = Original(signing!, "/Payload"), ["DetachedJws"] = Original(signing!, "/DetachedJws"),
                     ["CommittedIssuedGuardRevision"] = Original(lastIssue!, "/GuardHighWater"), ["DispatchReceiptId"] = Original(lastDispatch!, "/ReceiptId"),
                     ["DispatchGuardRevision"] = Original(lastDispatch!, "/GuardHighWater"), ["Targets"] = JsonSerializer.SerializeToNode(signedBatch.Targets) };
@@ -261,22 +288,40 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
         }
         return ProtectionQualificationSourceCatalog.Compile(args);
     }
-    internal Task<JsonNode?> RunAsync(ProtectionQualificationActionRecipe recipe, string caseId, string action)
-        => Runner.ExecuteAsync(recipe, Request(caseId, action), Originals, (call, _) => { Admitted.Add(call.Id, call); return Task.FromResult(true); },
-            async (call, result, cancellation) =>
-            {
-                if (caseId is "P13" or "P14" or "P15" && call.Kind == ProtectionQualificationNativeCallKind.Guard)
-                { result.ShouldNotBeNull(call.Id); result["Status"]!.GetValue<string>().ShouldBeOneOf(["Committed", "Accepted", "CoverageLinked"], call.Id); }
-                Originals.Add(call.Id, result?.DeepClone());
-                await new ProtectionQualificationOperationJournal(Consumption.Custody, Consumption.Permissions) { BindingDigest = new string('a', 64) }.UpdateAsync("tenant-a", call.Id,
-                    "QualificationNativeResult", ErasureRootCustody.Hash(new { call, result }), head =>
-                    {
-                        string key = caseId + ":" + action;
-                        if (!head.QualificationOperations.TryGetValue(key, out var operation))
-                        { operation = new("executor", new string('a', 64), "component-attempt", ProtectionQualificationOperationJournal.Digest(Request(caseId, action)), Request(caseId, action)); head.QualificationOperations.Add(key, operation); }
-                        operation.Calls.Add(call.Id, new(call, result?.DeepClone())); return true;
-                    }, cancellation);
-            }, TestContext.Current.CancellationToken);
+    internal async Task<JsonNode?> RunAsync(ProtectionQualificationActionRecipe recipe, string caseId, string action)
+    {
+        var token = TestContext.Current.CancellationToken; var request = Request(caseId, action); string operationId = request["operationId"]!.GetValue<string>();
+        await Runner.ValidateInputsAsync(recipe, request, token);
+        var journal = new ProtectionQualificationOperationJournal(Consumption.Custody, Consumption.Permissions) { BindingDigest = new string('a', 64) };
+        await journal.UpdateAsync("tenant-a", operationId, "QualificationExecution", ProtectionQualificationOperationJournal.Digest(request), head =>
+        {
+            head.QualificationOperations.Add(ProtectionQualificationOperationJournal.Id("executor", operationId), new("executor", new string('a', 64), "component-attempt", ProtectionQualificationOperationJournal.Digest(request), request) { Producer = Runner.Producer });
+            return true;
+        }, token);
+        var outcome = await Runner.ExecuteAsync(recipe, request, Originals, async (call, cancellation) =>
+        { Admitted.Add(call.Id, call); return await journal.AdmitCallAsync("tenant-a", "executor", operationId, call, cancellation); }, async (call, result, cancellation) =>
+        {
+            if (caseId is "P13" or "P14" or "P15" && call.Kind == ProtectionQualificationNativeCallKind.Guard)
+            { result.ShouldNotBeNull(call.Id); result["Status"]!.GetValue<string>().ShouldBeOneOf(["Committed", "Accepted", "CoverageLinked"], call.Id); }
+            Originals.Add(call.Id, result?.DeepClone());
+            await journal.RetainCallAsync("tenant-a", "executor", operationId, call, result, cancellation);
+        }, token);
+        await journal.UpdateAsync("tenant-a", operationId, "QualificationResult", ErasureRootCustody.Hash(outcome), head =>
+        { string key = ProtectionQualificationOperationJournal.Id("executor", operationId); head.QualificationOperations[key] = head.QualificationOperations[key] with { Result = outcome!.DeepClone().AsObject() }; return true; }, token);
+        return outcome;
+    }
+    internal async Task RecoverLostActionAsync(string caseId, string action)
+    {
+        var recipes = Recipes(caseId); var scope = new ProtectionQualificationServiceScope("executor", Runner.Producer.RoleIdentity, "tenant-a", new string('a', 64), new("unused", "unused", new()), recipes,
+            recipes.Keys.ToDictionary(id => id, id => new ProtectionQualificationObservationRecipe("tenant-a", CopyCells, new()) { CaseId = id }));
+        var role = new ProtectionQualificationRoleService(scope, new(Consumption.Custody, Consumption.Permissions), Runner, null, _native, _key);
+        var request = Request(caseId, action);
+        await role.HandleAsync(new() { ["operationId"] = "recover-" + caseId, ["action"] = "LookupOriginalOperation", ["bindingDigest"] = new string('a', 64),
+            ["originalOperationId"] = request["operationId"]!.DeepClone(), ["originalRequestSha256"] = ProtectionQualificationOperationJournal.Digest(request) }, TestContext.Current.CancellationToken);
+        var head = (await Consumption.Custody.ReadAsync("tenant-a", TestContext.Current.CancellationToken, true))!.Value.Head;
+        foreach (var call in head.QualificationOperations[ProtectionQualificationOperationJournal.Id("executor", request["operationId"]!.GetValue<string>())].Calls.Values)
+        { Originals[call.Call.Id] = call.Result?.DeepClone(); }
+    }
     internal async Task SealExpectedSourcesAsync(string caseId)
     {
         string[] references = ["01ARZ3NDEKTSV4RRFFQ69G5FAV", "01ARZ3NDEKTSV4RRFFQ69G5FAW", "01ARZ3NDEKTSV4RRFFQ69G5FAX", "01ARZ3NDEKTSV4RRFFQ69G5FAY"];

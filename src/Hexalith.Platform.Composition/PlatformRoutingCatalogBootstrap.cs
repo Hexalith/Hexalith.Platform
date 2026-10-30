@@ -19,7 +19,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
     internal string Directory { get; }
 
     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
-        PlatformRoutingCatalog catalog, string rendered)
+        PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
     {
         Directory = catalog.Directory;
         string[] hosts = participants.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ToArray();
@@ -43,6 +43,9 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 ["Authentication__Workload__Audience"] = server.AppId,
             };
             for (int index = 0; index < hosts.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__" + index] = hosts[index];
+            string[] selected = servers.Select(item => item.AppId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+            for (int index = 0; index < selected.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__SelectedAppIds__" + index] = selected[index];
+            environment["EventStore__RouteCatalog__DevelopmentBootstrap__DeclaredInvocations"] = JsonSerializer.Serialize(dapr.DeclaredInvocations(server.AppId));
             _environment.Add(server.ResourceId, environment);
         }
         var gateway = _environment["eventstore"];
@@ -119,7 +122,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
             || server.ResourceId is "tenants-api" or "memories").ToArray();
         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
-        return new(options, participants, catalog, rendered);
+        return new(options, participants, catalog, rendered, dapr, servers);
     }
 
     internal bool Participates(PlatformServerBinding server) => _environment.ContainsKey(server.ResourceId);

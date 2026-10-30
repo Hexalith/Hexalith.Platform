@@ -62,8 +62,7 @@ public static class ErasureRootHostComposition
                     credentials[credentialIdentity] = tenant.Key;
                 }
             }
-            using var nativeHttp = new HttpClient { BaseAddress = endpoint, Timeout = TimeSpan.FromSeconds(30) };
-            _ = new OpenBaoErasureRootStore(nativeHttp, installation.Native, installation.CredentialReference);
+            using var nativeValidation = new OpenBaoErasureRootStore(endpoint, installation.Native, installation.CredentialReference);
             if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(installation.CredentialReference[4..])))
             { throw new InvalidOperationException("Current native bearer required."); }
         }
@@ -83,7 +82,7 @@ public static class ErasureRootHostComposition
         { services.AddSingleton(provider => new ProtectionQualificationFaults(provider.GetRequiredService<DaprClient>(), controls.Cell, controls.EnrollmentId, controls.Operations.ToHashSet(StringComparer.Ordinal))); }
         services.AddSingleton<IErasureRootStore>(provider =>
         {
-            IErasureRootStore native = new OpenBaoErasureRootStore(provider.GetRequiredService<IHttpClientFactory>().CreateClient("hexalith-erasure-root"), installation.Native, installation.CredentialReference);
+            IErasureRootStore native = new OpenBaoErasureRootStore(new Uri(installation.Endpoint), installation.Native, installation.CredentialReference);
             return !observer && installation.QualificationNativeControls is not null ? new ProtectionQualificationControlledErasureRootStore(native, provider.GetRequiredService<ProtectionQualificationFaults>()) : native;
         });
         services.AddSingleton<IErasureRootAuthorization>(provider => new DaprErasureRootAuthorization(Authority(provider, installation, value => value.PrivateAuthority), provider.GetRequiredService<IErasureRootStore>(), installation.Native));
@@ -155,18 +154,5 @@ public static class ErasureRootHostComposition
         }
     }
     internal static byte[] ReadPinned(string path, string digest, int maximumBytes, Action? opened = null)
-    {
-        if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path)
-            || new FileInfo(path).LinkTarget is not null) { throw new InvalidOperationException(); }
-        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 8192, FileOptions.SequentialScan);
-        if (stream.Length is <= 0 || stream.Length > maximumBytes) { throw new InvalidOperationException("Bounded pinned input required."); }
-        int length = checked((int)stream.Length);
-        byte[] bytes = new byte[length];
-        opened?.Invoke();
-        stream.ReadExactly(bytes);
-        // Reading exactly the accepted initial length plus one byte also detects a growing input,
-        // without a second open or a memory stream that can grow beyond the configured bound.
-        if (stream.ReadByte() != -1) { throw new InvalidOperationException("Pinned input changed length."); }
-        return Convert.ToHexString(SHA256.HashData(bytes)).Equals(digest, StringComparison.OrdinalIgnoreCase) ? bytes : throw new InvalidOperationException();
-    }
+        => ProtectionPinnedFile.Read(path, maximumBytes, digest, opened);
 }

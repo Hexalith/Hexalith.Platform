@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Builds loads this model from its private output directory; native preparation also uses its runtime dependencies. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
     <HexalithTenantPreparationRoot Condition="'$(HexalithTenantsRoot)' != ''">$(HexalithTenantsRoot)</HexalithTenantPreparationRoot>

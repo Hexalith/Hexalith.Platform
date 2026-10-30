@@ -16,6 +16,7 @@ for key, file in {"CustomBeforeDirectoryBuildProps": "SourceMapping.targets", "C
                   "AfterMicrosoftNETSdkTargets": "SourceMapping.final.targets"}.items():
     environment[key] = str(mapping / file)
 environment.update({"HEXALITH_PLATFORM_LIVE_SMOKE": "1", "HEXALITH_PLATFORM_PREBUILD_SOURCE": "1",
+                    "HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH": str(evidence / "package-composition-refusal.txt"),
                     "HEXALITH_PLATFORM_SOURCE_PREBUILD_LOG": str(evidence / "reference-readiness-prebuild.txt")})
 
 
@@ -33,6 +34,8 @@ def run(name, argv):
 run("Platform.Composition-final-build", build["argv"])
 artifacts = Path(build["argv"][build["argv"].index("--artifacts-path") + 1])
 assembly = artifacts / "bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll"
-for name in (["PlatformRoutingCatalogIntegrationTests"] if os.environ.get("STORY33_LIVE_ONLY") == "1" else ["PlatformRoutingCatalogTests", "WriterProtocolStartupTests", "PlatformRoutingCatalogIntegrationTests"]):
+for name in (["PlatformRoutingCatalogTests", "WriterProtocolStartupTests"] if os.environ.get("STORY33_UNIT_ONLY") == "1" else ["PlatformRoutingCatalogIntegrationTests"] if os.environ.get("STORY33_LIVE_ONLY") == "1" else ["PlatformRoutingCatalogTests", "WriterProtocolStartupTests", "PlatformRoutingCatalogIntegrationTests"]):
     run("Platform-final-" + name, ["dotnet", str(assembly), "-class", "Hexalith.Platform.Composition.Tests." + name])
-run("Platform-final-ReferenceReadiness", ["dotnet", str(assembly), "-method", "*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"])
+run("Platform-final-PackageAdmission", ["dotnet", str(assembly), "-method", "*PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources"])
+if os.environ.get("STORY33_UNIT_ONLY") != "1":
+    run("Platform-final-ReferenceReadiness", ["dotnet", str(assembly), "-method", "*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"])

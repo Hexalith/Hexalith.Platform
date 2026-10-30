@@ -22,6 +22,7 @@ public static class PlatformServerBindings
     /// <summary>Gets the released owner image identities, with versions resolved solely from Builds.</summary>
     public static IReadOnlyDictionary<string, string> ReferenceImages { get; } = new Dictionary<string, string>
     {
+        ["parties/domain"] = "registry.hexalith.com/parties",
         ["tenants/domain"] = "registry.hexalith.com/tenants",
         ["tenants/api"] = "registry.hexalith.com/tenants-api",
         ["memories/server"] = "registry.hexalith.com/memories",

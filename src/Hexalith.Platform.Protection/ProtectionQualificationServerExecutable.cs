@@ -25,8 +25,10 @@ public static class ProtectionQualificationServerExecutable
     {
         try
         {
-            var installed = JsonSerializer.Deserialize<ProtectionQualificationServerInstallation>(Read(installationFile, installationSha256), ErasureRootCustody.Json)!;
-            var scope = JsonSerializer.Deserialize<ProtectionQualificationServiceScope>(Read(installed.ScopeFile, installed.ScopeSha256), ErasureRootCustody.Json)!;
+            byte[] installedBytes = Read(installationFile, installationSha256); CustodyBindingContract.RejectDuplicateProperties(installedBytes);
+            var installed = JsonSerializer.Deserialize<ProtectionQualificationServerInstallation>(installedBytes, ErasureRootCustody.Json)!;
+            byte[] scopeBytes = Read(installed.ScopeFile, installed.ScopeSha256); CustodyBindingContract.RejectDuplicateProperties(scopeBytes);
+            var scope = JsonSerializer.Deserialize<ProtectionQualificationServiceScope>(scopeBytes, ErasureRootCustody.Json)!;
             if (scope.NativeArguments is null) { return 2; }
             scope = scope with { Recipes = ProtectionQualificationSourceCatalog.Compile(scope.NativeArguments) };
             if (!scope.Observations.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Recipes.Keys)) { return 2; }
@@ -35,11 +37,10 @@ public static class ProtectionQualificationServerExecutable
             if (scope.Role != role || installed.SourceComponents.Intersect(installed.ReadComponents, StringComparer.Ordinal).Any() && role == "observer"
                 || role == "observer" && installed.SourceComponents.Length != 0) { return 2; }
             byte[] publicBytes = Read(installed.PublicAnchorFile, installed.PublicAnchorSha256);
-            if (!Path.IsPathFullyQualified(installed.SignerFile) || new FileInfo(installed.SignerFile).LinkTarget is not null || new FileInfo(installed.SignerFile).Length > 16384) { return 2; }
-            using var signer = ECDsa.Create(); byte[] secret = await File.ReadAllBytesAsync(installed.SignerFile, token).ConfigureAwait(false);
-            char[] chars = System.Text.Encoding.UTF8.GetChars(secret);
+            using var signer = ECDsa.Create(); byte[] secret = ProtectionPinnedFile.Read(installed.SignerFile, 16384);
+            char[] chars = new System.Text.UTF8Encoding(false, true).GetChars(secret);
             try { signer.ImportFromPem(chars); } finally { CryptographicOperations.ZeroMemory(secret); Array.Clear(chars); }
-            using var anchor = ECDsa.Create(); anchor.ImportFromPem(System.Text.Encoding.UTF8.GetString(publicBytes));
+            using var anchor = ECDsa.Create(); anchor.ImportFromPem(new System.Text.UTF8Encoding(false, true).GetString(publicBytes));
             if (!HasPrivateSigner(signer, anchor)) { return 2; }
             signerValidated?.Invoke();
             ProtectionQualificationInputSchema.ValidateInstallation(scope, (role == "observer" ? installed.ReadComponents : installed.SourceComponents).ToHashSet(StringComparer.Ordinal), installed.FaultOperations.ToHashSet(StringComparer.Ordinal));
@@ -60,7 +61,7 @@ public static class ProtectionQualificationServerExecutable
                 services.Replace(ServiceDescriptor.Singleton<IErasureRootStore>(provider =>
                 {
                     var host = provider.GetRequiredService<ErasureRootHostInstallation>();
-                    return new ProtectionQualificationControlledErasureRootStore(new OpenBaoErasureRootStore(provider.GetRequiredService<IHttpClientFactory>().CreateClient("hexalith-erasure-root"), host.Native, host.CredentialReference), controls);
+                    return new ProtectionQualificationControlledErasureRootStore(new OpenBaoErasureRootStore(new Uri(host.Endpoint), host.Native, host.CredentialReference), controls);
                 }));
             }
             await using var provider = services.BuildServiceProvider();
@@ -125,7 +126,10 @@ public static class ProtectionQualificationServerExecutable
                 var proof = await permission.ReadObserverPermissionAsync(scope.TenantId, workload, cancellation).ConfigureAwait(false);
                 return proof is not null && ProtectionQualificationObserverPermissions.Matches(proof, scope, host, workload, Resolve(host.CredentialReference),
                     ProtectionQualificationObserverPermissions.DaprCredential(dapr, ErasureRootHostComposition.TenantBindings(host)[scope.TenantId].PrivateAuthority.AppId), Resolve(installed.CredentialReference), installed.ReadComponents.ToHashSet(StringComparer.Ordinal), TimeProvider.System.GetUtcNow()) ? proof : null;
-            });
+            }, async (request, cancellation) => role == "observer" || await ProtectionQualificationSigningPreflight.VerifyAsync(provider.GetRequiredService<ErasureRootHostInstallation>(), scope.TenantId,
+                ErasureRootCustody.Hash(new { scope.BindingDigest, installed.HostInstallationSha256, installed.ScopeSha256 }),
+                provider.GetRequiredService<SecretsRuntimeConfiguration>().CapabilitySignerReference ?? "", new QualificationSigningActorRouter(), cancellation, ProtectionQualificationSigningPreflight.RequiredKeyVersions(scope, request["action"]?.GetValue<string>() == "PrepareFixture"
+                    ? request["caseId"]?.GetValue<string>() ?? throw new InvalidOperationException("Exact owner case required before fixture preparation.") : null)).ConfigureAwait(false));
             await using var application = BuildApplication(provider, service, installed.CredentialReference);
             await application.RunAsync(token).ConfigureAwait(false); return 0;
         }
@@ -150,10 +154,5 @@ public static class ProtectionQualificationServerExecutable
         catch (CryptographicException) { return false; }
     }
     private static byte[] Read(string path, string digest)
-    {
-        if (!Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path) || new FileInfo(path).LinkTarget is not null || new FileInfo(path).Length > 16 * 1024 * 1024)
-        { throw new InvalidOperationException("Exact bounded pinned role installation required."); }
-        byte[] bytes = File.ReadAllBytes(path);
-        return Convert.ToHexString(SHA256.HashData(bytes)).Equals(digest, StringComparison.OrdinalIgnoreCase) ? bytes : throw new InvalidOperationException("Changed role installation.");
-    }
+        => ProtectionPinnedFile.Read(path, 16 * 1024 * 1024, digest);
 }

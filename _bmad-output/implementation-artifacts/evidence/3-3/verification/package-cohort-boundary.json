@@ -1,0 +1,37 @@
+{
+  "authoritativeVersions": {
+    "EventStore": "3.128.4",
+    "Tenants": "5.11.1",
+    "Parties": "2.0.0",
+    "Memories": "3.0.10"
+  },
+  "locallyQualifiedPackageVersions": {
+    "EventStore": "3.128.5-story33.0",
+    "Tenants": "5.11.2-story33.0",
+    "Parties": "2.0.1-story33.0",
+    "Memories": "3.0.11-story33.0"
+  },
+  "releasedV2DeclarationHashes": {},
+  "authoritativeReleaseCommits": {
+    "eventstore/3.120.0": "9b26956f9e825fd6771b62a79c7b81323ba856cf",
+    "tenants/5.8.0": "032573384d3df4bc7a5bc0e69945ecca4e00967f",
+    "memories/2.27.1": "d54dba5be30a3626e871b4fc56dd78e76a7acf71"
+  },
+  "missingAcceptanceArtifacts": [
+    "Authoritative version selections for the schema-3 producer/runtime prerequisites; local preview packages do not change the approved catalog",
+    "Released v2 declaration snapshot hashes and matching release commits for the selected owner versions (the authoritative hash map is empty)",
+    "Matching owner runtime image/release receipts containing the schema-3 observer/adapters, including registry.hexalith.com/memories-domain-service and registry.hexalith.com/parties"
+  ],
+  "ownerImageBindings": {
+    "parties/domain": {
+      "repository": "registry.hexalith.com/parties",
+      "source": "references/Hexalith.Parties/scripts/publish-parties-containers.ps1 and .github/workflows/release.yml"
+    },
+    "memories/domain": {
+      "repository": "registry.hexalith.com/memories-domain-service",
+      "source": "PlatformServerBindings.ReferenceImages; added DomainService enrollment"
+    }
+  },
+  "actualBuildRefusal": "run-plan-host-build.txt: authoritative catalog selects 3.128.4; inconsistent build selection 3.128.5-story33.0 is refused",
+  "qualification": "No package-mode activation/readiness, candidate acceptance or hosted acceptance claimed. No image publishing or release-provenance override was performed."
+}

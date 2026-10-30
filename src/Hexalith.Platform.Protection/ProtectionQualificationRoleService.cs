@@ -17,11 +17,12 @@ public sealed class ProtectionQualificationRoleService
     private readonly ECDsa _signer;
     private readonly Func<CancellationToken, Task<bool>>? _preflight;
     private readonly Func<CancellationToken, Task<ProtectionQualificationObserverPermission?>>? _observerPermission;
+    private readonly Func<JsonObject, CancellationToken, Task<bool>>? _signingPreflight;
     private readonly SemaphoreSlim _signing = new(1, 1);
 
     /// <summary>Captures explicit installed dependencies. Observer composition has no action runner and never invokes journal mutations.</summary>
     public ProtectionQualificationRoleService(ProtectionQualificationServiceScope scope, ProtectionQualificationOperationJournal journal,
-        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer, Func<CancellationToken, Task<bool>>? preflight = null, Func<CancellationToken, Task<ProtectionQualificationObserverPermission?>>? observerPermission = null)
+        ProtectionQualificationActionRunner? actions, ProtectionQualificationPersistedObserver? observer, DaprClient installationReader, ECDsa signer, Func<CancellationToken, Task<bool>>? preflight = null, Func<CancellationToken, Task<ProtectionQualificationObserverPermission?>>? observerPermission = null, Func<JsonObject, CancellationToken, Task<bool>>? signingPreflight = null)
     {
         ArgumentNullException.ThrowIfNull(scope); ArgumentNullException.ThrowIfNull(journal); ArgumentNullException.ThrowIfNull(installationReader); ArgumentNullException.ThrowIfNull(signer);
         if (scope.Role is not ("executor" or "observer" or "enrollment") || scope.BindingDigest is not { Length: 64 }
@@ -31,7 +32,7 @@ public sealed class ProtectionQualificationRoleService
         if (!scope.Recipes.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(scope.Observations.Keys)) { throw new ArgumentException("Complete independent 41-case observation recipes required."); }
         if (actions is not null) { actions.Producer = actions.Producer with { RoleIdentity = scope.Identity, BindingDigest = scope.BindingDigest }; }
         _journal = journal; _journal.BindingDigest = scope.BindingDigest;
-        _observerPermission = observerPermission; _preflight = preflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
+        _observerPermission = observerPermission; _preflight = preflight; _signingPreflight = signingPreflight; _scope = scope; _journal = journal; _actions = actions; _observer = observer; _installationReader = installationReader; _signer = signer;
     }
 
     /// <summary>Handles exactly one authenticated request; it never retries an admitted mutation after response loss.</summary>
@@ -43,6 +44,10 @@ public sealed class ProtectionQualificationRoleService
             || request["role"] is { } supplied && supplied.GetValue<string>() != _scope.Role || !ProtectionQualificationRoleProgram.Allowed(_scope.Role, action))
         { throw new InvalidOperationException("Exact enrolled role request required."); }
         string digest = ProtectionQualificationOperationJournal.Digest(request);
+        // Read-only availability is an entry gate. Later compromise/denial scenarios retain
+        // their actual restrictive semantics and are never mistaken for new absent inputs.
+        if (action is "InspectInstallation" or "EnrollSingleAttempt" or "PrepareFixture" && _signingPreflight is not null && !await _signingPreflight(request, token).ConfigureAwait(false))
+        { throw new InvalidOperationException("DependencyNotAvailable: actual remote signing availability."); }
         // Validate all role/installation/request inputs before enrollment or journal metadata is retained.
         if (action is not ("InspectInstallation" or "LookupOriginalOperation" or "ObservePersistedState" or "LookupAttemptOperations"))
         {
@@ -245,7 +250,8 @@ public sealed class ProtectionQualificationRoleService
             { throw new InvalidOperationException("Independent persisted original outcome unavailable."); }
             producers.TryAdd(ErasureRootCustody.Hash(actual.Producer), actual.Producer);
             producerOriginals.Add(new JsonObject { ["OperationId"] = id, ["RequestSha256"] = actual.RequestSha256, ["Role"] = actual.Role,
-                ["BindingDigest"] = actual.BindingDigest, ["AttemptId"] = actual.AttemptId, ["Producer"] = JsonSerializer.SerializeToNode(actual.Producer) });
+                ["BindingDigest"] = actual.BindingDigest, ["AttemptId"] = actual.AttemptId, ["Producer"] = JsonSerializer.SerializeToNode(actual.Producer),
+                ["SafeRequest"] = actual.SafeRequest.DeepClone() });
             operations.Add(new JsonObject { ["operationId"] = id, ["requestSha256"] = actual.RequestSha256, ["action"] = actual.SafeRequest["action"]!.GetValue<string>() });
         }
         if (producers.Count != 1) { throw new InvalidOperationException("One exact current expected-operation producer required."); }

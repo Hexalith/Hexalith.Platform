@@ -26,6 +26,39 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     private readonly TimeProvider _clock = timeProvider ?? TimeProvider.System;
     /// <summary>Gets the exact private actor registration name.</summary>
     public const string ActorTypeName = "DeletionCapabilitySigningActor";
+    /// <summary>Exact private read-only actor scope; it cannot collide with a signing request owner.</summary>
+    public static string GetReadinessActorId(DeletionCapabilitySigningReadinessRequest request)
+        => new AggregateIdentity(request.TenantId, "custody", "deletion-signing-availability-" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(request)))).ActorId;
+    /// <inheritdoc />
+    public async Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request)
+    {
+        if (Host.Id.GetId() != GetReadinessActorId(request) || request.KeyFamily != KeyFamily || request.TrustProfileRevision <= 0
+            || request.SubjectPublicKeyInfoSha256 is not { Length: 64 } || request.InstallationBinding is not { Length: 64 }
+            || authority is null || provider is null || trustProvider is null) { return null; }
+        var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
+        try
+        {
+            budget.Check(); _stateIo.CheckReady();
+            if (!await budget.ReadAsync(() => authority.AuthorizeReadinessAsync(request)).ConfigureAwait(false)) { return null; }
+            var trust = await budget.ReadAsync(() => trustProvider.ResolveAsync(request.TenantId, request.KeyFamily, request.KeyVersion)).ConfigureAwait(false);
+            if (trust is null || !trust.IsCurrentNonRevoked || trust.IsRevoked || trust.TenantId != request.TenantId || trust.KeyFamily != request.KeyFamily
+                || trust.CapabilityKeyVersion != request.KeyVersion || trust.Issuer != request.Issuer || trust.Audience != request.Audience
+                || trust.PublicAnchorId != request.PublicAnchorId || trust.PublicAnchorVersion != request.PublicAnchorVersion
+                || trust.TrustProfileRevision != request.TrustProfileRevision || trust.SubjectPublicKeyInfo is not { Length: > 0 and <= 512 }
+                || Convert.ToHexStringLower(SHA256.HashData(trust.SubjectPublicKeyInfo)) != request.SubjectPublicKeyInfoSha256) { return null; }
+            using var key = ECDsa.Create(); key.ImportSubjectPublicKeyInfo(trust.SubjectPublicKeyInfo, out int consumed);
+            if (consumed != trust.SubjectPublicKeyInfo.Length || key.ExportParameters(false).Curve.Oid.Value != ECCurve.NamedCurves.nistP256.Oid.Value) { return null; }
+            var evidence = await budget.ReadAsync(() => provider.ReadAvailabilityAsync(request)).ConfigureAwait(false);
+            string[] required = ["SignDeletionCapability", "LookupDeletionCapability", "ObsoleteUnissued", "RecoverSigningSuccessor"];
+            if (evidence is null || evidence.Request != request || evidence.ProviderIdentity != request.ProviderIdentity || string.IsNullOrWhiteSpace(evidence.ProviderIdentity) || evidence.ProviderIdentity.Length > 2048
+                || string.IsNullOrWhiteSpace(evidence.AuthorityRevision) || evidence.AuthorityRevision.Length > 2048
+                || evidence.Operations is null || evidence.Operations.Length != required.Length || !evidence.Operations.Order(StringComparer.Ordinal).SequenceEqual(required.Order(StringComparer.Ordinal))
+                || evidence.ObservedAt > _clock.GetUtcNow() || evidence.ValidUntil <= _clock.GetUtcNow() || evidence.ValidUntil - evidence.ObservedAt > TimeSpan.FromSeconds(30)
+                || !await budget.ReadAsync(() => authority.AuthorizeReadinessAsync(request)).ConfigureAwait(false)) { return null; }
+            return evidence;
+        }
+        catch (Exception) { return null; }
+    }
     /// <summary>Gets the exact tenant/canonical-request actor address; successful committed issue revision is absent by construction.</summary>
     public static string GetActorId(DeletionBatchCapabilityV1 payload)
     {

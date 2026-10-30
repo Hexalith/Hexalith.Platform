@@ -68,6 +68,7 @@ internal static class ProtectionQualificationNativeProjection
         var fixtureCalls = head.QualificationOperations.Values.Where(operation => operation.SafeRequest["caseId"]?.GetValue<string>() == caseId
             && operation.SafeRequest["targets"] is JsonArray selected && ErasureRootCustody.Hash(selected) == ErasureRootCustody.Hash(JsonSerializer.SerializeToNode(targets)))
             .SelectMany(operation => operation.Calls.Values).Where(call => call.Result is not null).ToArray();
+        observed["nativeCallOriginals"] = JsonSerializer.SerializeToNode(fixtureCalls);
         if (checks.Contains("no-effect"))
         {
             var audits = fixtureCalls.Select(call => call.Result).OfType<JsonObject>().Where(value => value["effectBefore"] is not null && value["effectAfter"] is not null).ToArray();
@@ -85,7 +86,7 @@ internal static class ProtectionQualificationNativeProjection
             if (identities.Length != 1) { throw new InvalidOperationException("Exact shared root source identity required."); }
             records.Add(new JsonObject { ["target"] = JsonSerializer.SerializeToNode(target), ["kind"] = kind, ["bytesBase64"] = Convert.ToBase64String(bytes),
                 ["protectedState"] = "Sealed", ["rootReference"] = ErasureRootCustody.Hash(identities[0]), ["copyId"] = copy + ":" + ErasureRootCustody.TargetId(target),
-                ["sourceIdentity"] = ProtectionQualificationNativeCell.LocationId(cells[copy]) });
+                ["sourceIdentity"] = ProtectionQualificationNativeCell.LocationId(cells[copy]), ["sourceDigest"] = ErasureRootCustody.Hash(sources[copy]) });
         }
         if (!head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(head.TenantId), out var ownerAnchor))
         { if (checks.Overlaps(["receipts", "blocked", "replacement-blocked", "capability", "signing-attempts"]) || checks.Contains("race") && !checks.Contains("hold-order")) { throw new InvalidOperationException("Actual owner original required."); } return observed; }
@@ -116,6 +117,8 @@ internal static class ProtectionQualificationNativeProjection
                 ["ReservationReceiptId"] = manifest.ReservationReceiptId, ["State"] = (int)DeletionManifestProviderState.Consumed, ["TargetReceipts"] = JsonSerializer.SerializeToNode(manifest.Receipts) });
         }
         observed["providerResults"] = Array(providers.Values);
+        observed["ownerOperationOriginals"] = ledger["Operations"]!.DeepClone();
+        observed["nativeCallOriginals"] = JsonSerializer.SerializeToNode(fixtureCalls);
         var calls = fixtureCalls;
         JsonArray ExactCalls(ProtectionQualificationNativeCallKind kind, IEnumerable<JsonNode?> originals)
         {
@@ -125,8 +128,21 @@ internal static class ProtectionQualificationNativeProjection
         observed["ownerRetryResults"] = ExactCalls(ProtectionQualificationNativeCallKind.Reserve, primary.Select(batch => batch["Outcome"]));
         observed["ownerLookupResults"] = ExactCalls(ProtectionQualificationNativeCallKind.Lookup, primary.Select(batch => batch["Outcome"]));
         observed["providerLookupResults"] = ExactCalls(ProtectionQualificationNativeCallKind.LookupProvider, providers.Values);
-        observed["reservationRecoveries"] = Array(primary.Where(batch => batch["ReservationOutcome"] is JsonObject).Select(batch => (JsonNode)new JsonObject
-            { ["reservationReceiptId"] = batch["ReservationOutcome"]!["ReceiptId"]!.DeepClone() }));
+        if (checks.Contains("reserved-recovery"))
+        {
+            var reserved = primary.Single(batch => batch["ReservationOutcome"] is JsonObject);
+            var original = fixtureCalls.Where(call => call.Call.Kind == ProtectionQualificationNativeCallKind.Reserve
+                && call.Call.Id.Contains("/" + (caseId == "P25" ? "ReserveBeforeAdmissionBlock" : "CompromiseAfterReserve") + "/", StringComparison.Ordinal))
+                .OrderBy(call => int.Parse(call.Call.Id.Split('/')[2], System.Globalization.CultureInfo.InvariantCulture)).First();
+            var recovery = fixtureCalls.Single(call => call.Call.Kind == ProtectionQualificationNativeCallKind.Lookup
+                && call.Call.Id.Contains("/LookupOriginalDestruction/", StringComparison.Ordinal));
+            observed["reservationRecoveries"] = new JsonArray(new JsonObject
+            {
+                ["Request"] = reserved["Current"]!.DeepClone(), ["ReservationOriginal"] = reserved["ReservationOutcome"]!.DeepClone(),
+                ["Original"] = JsonSerializer.SerializeToNode(original), ["Recovery"] = JsonSerializer.SerializeToNode(recovery),
+                ["OwnerOutcome"] = reserved["Outcome"]!.DeepClone(), ["ProviderOutcome"] = providers[reserved["Current"]!["Capability"]!["BatchId"]!.GetValue<string>()].DeepClone(),
+            });
+        }
         var coverage = batches.SingleOrDefault(batch => batch["Outcome"]!["Status"]!.GetValue<int>() == (int)DeletionConsumptionStatus.AlreadyDestroyedByBatch);
         if (coverage is not null) { observed["coverageRequest"] = coverage["Current"]!.DeepClone(); observed["coverageOutcome"] = coverage["Outcome"]!.DeepClone(); }
         var targetCoverage = new JsonArray(); var coverageOriginals = new JsonArray();
@@ -149,13 +165,19 @@ internal static class ProtectionQualificationNativeProjection
         if (checks.Contains("signing-attempts")) { ProjectSigning(observed, head, sources, ids); }
         if (checks.Contains("exact-results"))
         {
-            var terminal = primary.Select(batch => batch["Outcome"]!).Concat(((JsonArray)ledger["Operations"]!).OfType<JsonObject>().Select(operation => operation["Outcome"]!)).ToArray();
-            var exact = fixtureCalls.Where(call => call.Call.Kind is ProtectionQualificationNativeCallKind.Reserve or ProtectionQualificationNativeCallKind.Lookup
-                or ProtectionQualificationNativeCallKind.Block or ProtectionQualificationNativeCallKind.LookupBlock or ProtectionQualificationNativeCallKind.Activate or ProtectionQualificationNativeCallKind.LookupActivation)
-                .Select(call => StripStatus(call.Result!)).Where(result => terminal.Any(original => ErasureRootCustody.Hash(original) == ErasureRootCustody.Hash(result))).ToArray();
-            var groups = exact.GroupBy(ErasureRootCustody.Hash).Where(group => group.Count() >= 2).ToArray();
-            if (groups.Length != 1) { throw new InvalidOperationException("Unique exact retained native terminal result/lookup pair required."); }
-            observed["exactResults"] = Array(groups[0]);
+            var (action, originalKind, lookupAction, lookupKind) = caseId switch
+            {
+                "P06" => ("DestroyWithLostAcknowledgement", ProtectionQualificationNativeCallKind.Reserve, "LookupOriginalDestruction", ProtectionQualificationNativeCallKind.Lookup),
+                "P35" => ("LoseBlockDeliveryAndMirror", ProtectionQualificationNativeCallKind.Block, "LookupOriginalBlock", ProtectionQualificationNativeCallKind.LookupBlock),
+                "P36" => ("LoseActivationResult", ProtectionQualificationNativeCallKind.Activate, "LookupOriginalActivation", ProtectionQualificationNativeCallKind.LookupActivation),
+                _ => throw new InvalidOperationException("Unsupported exact recovery scenario."),
+            };
+            var original = fixtureCalls.Single(call => call.Call.Kind == originalKind && call.Call.Id.Contains("/" + action + "/", StringComparison.Ordinal));
+            var lookup = fixtureCalls.Where(call => call.Call.Kind == lookupKind && call.Call.Id.Contains("/" + lookupAction + "/", StringComparison.Ordinal))
+                .OrderBy(call => int.Parse(call.Call.Id.Split('/')[2], System.Globalization.CultureInfo.InvariantCulture)).Last();
+            if (!JsonNode.DeepEquals(StripStatus(original.Result!), StripStatus(lookup.Result!)))
+            { throw new InvalidOperationException("Actual original and exact lookup diverged."); }
+            observed["exactResults"] = JsonSerializer.SerializeToNode(new[] { original, lookup });
         }
         return observed;
     }

@@ -1,0 +1,22 @@
+{
+  "root": "/tmp/ext-protection-loop7-stable-source-16-c36d9f9f9341",
+  "files": 302,
+  "manifest": "/tmp/ext-protection-loop7-stable-source-16-c36d9f9f9341/source-manifest.json",
+  "manifestSha256": "da7ed3a354d14c33e51d785dfdf9758f23de3461ccc282ef82be30bc6eecd5fe",
+  "previous": {
+    "root": "/tmp/ext-protection-loop7-stable-source-15-66c82cfde0d9",
+    "files": 302,
+    "manifest": "/tmp/ext-protection-loop7-stable-source-15-66c82cfde0d9/source-manifest.json",
+    "manifestSha256": "271bd4a46f851e74e1faffcd8bdca8a003c82a0506df75b6ce71398cd3244708",
+    "scope": "Full prior functional inventory plus exact loop7 new files; no broad freeze or unrelated shared source expansion"
+  },
+  "delta": [
+    {
+      "repository": "eventstore",
+      "path": "tools/tests/test_ext_protection_1_producer_originals.py",
+      "sha256": "c16e8b6225546aade8e5529e1216c6a34732ce98350ac725a3bfcd8ed0d16ffd",
+      "bytes": 11712,
+      "stable15Sha256": "25b273a35bd3e0c14457d06dc9e7fbc81a2d33d1f354a94f2d4cde177943e5f7"
+    }
+  ]
+}

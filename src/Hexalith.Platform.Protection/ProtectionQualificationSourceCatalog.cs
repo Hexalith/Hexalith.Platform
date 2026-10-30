@@ -51,7 +51,7 @@ public static class ProtectionQualificationSourceCatalog
                     if (payload["transition"] is not JsonObject transition || transition["Operation"]?.GetValue<int>() != (int)expected)
                     { throw new InvalidOperationException("Source-owned guard operation cannot be substituted: " + id); }
                     if (payload.ContainsKey("UseCurrentGuardRevision")) { throw new InvalidOperationException("The source owns native comparison selection."); }
-                    if (name[1] == "ActivateReattestedDeletionBatch" && expected == GovernanceGuardOperation.RecordProtectionOutcome && transition["Batch"] is JsonObject batch)
+                    if ((name[1] == "ActivateReattestedDeletionBatch" || name[0] == "P36" && name[1] == "LookupOriginalActivation") && expected == GovernanceGuardOperation.RecordProtectionOutcome && transition["Batch"] is JsonObject batch)
                     {
                         string activation = entry.Key + "/1";
                         JsonObject Original(string pointer) => new() { ["$original"] = new JsonObject { ["id"] = activation, ["pointer"] = pointer } };
@@ -163,10 +163,10 @@ public static class ProtectionQualificationSourceCatalog
             "RaceHoldDispatch" => new(["Guard:AuthorizeDispatch"], "Guard:CommitDispatch", "Guard:RegisterHold", ["ContinueHoldAfterDispatch", "RegisterIfDispatched", "ReserveIfDispatched"]),
             "BlockAdmissionBeforeReserve" => Plain("Block"),
             "RaceAdmissionReserve" => new([], "Block", "Reserve"),
-            "ReserveBeforeAdmissionBlock" => new(["Reserve"], "Block", null, ["Guard:RecordProtectionOutcome", "Reserve", "Lookup", "LookupProvider"]),
+            "ReserveBeforeAdmissionBlock" => new(["Reserve", "LookupProvider"], "Block", null, ["Reserve", "Guard:RecordProtectionOutcome", "Lookup", "LookupProvider"]),
             "CompromiseBeforeRegistration" => Plain("Compromise"),
             "RaceCompromiseReserve" => new([], "Compromise", "Reserve"),
-            "CompromiseAfterReserve" => new(["Reserve"], "Compromise", null, ["Guard:RecordProtectionOutcome", "Reserve", "Lookup", "LookupProvider"]),
+            "CompromiseAfterReserve" => new(["Reserve", "LookupProvider"], "Compromise", null, ["Reserve", "Guard:RecordProtectionOutcome", "Lookup", "LookupProvider"]),
             "CompromiseAndReattest" => Replacement([], ["Sign", "Guard:ReplaceAttestation", "Guard:AuthorizeDispatch", "Guard:CommitDispatch"]),
             "CompromiseReplacementBeforeReplace" => Replacement(["Compromise", "Sign"], ["Guard:ReplaceAttestation"]),
             "CompromiseReplacementBeforeDispatch" => Replacement(["Compromise", "Sign", "Guard:ReplaceAttestation"], ["Guard:AuthorizeDispatch", "Guard:CommitDispatch"]),
@@ -179,11 +179,11 @@ public static class ProtectionQualificationSourceCatalog
             "LoseBlockDeliveryAndMirror" => Plain("Block", "Fault"),
             "MakeBlockOutcomeUnknown" => Plain("Block", "Fault"),
             "LoseActivationResult" => Plain("Activate", "Compromise", "Sign", "Guard:ReplaceAttestation", "Guard:AuthorizeDispatch", "Guard:CommitDispatch", "Fault"),
-            "LookupOriginalDestruction" when id == "P06" => new(["Lookup", "Guard:RecordProtectionOutcome", "Reserve", "LookupProvider"], "Lookup"),
+            "LookupOriginalDestruction" when id == "P06" => new(["Lookup", "LookupProvider", "Reserve", "Guard:RecordProtectionOutcome", "LookupProvider"], "Lookup"),
             "LookupOriginalDestruction" => Plain("Lookup"),
             "LookupAlreadyDestroyed" => new(Issue, "Lookup"),
             "LookupOriginalBlock" => Plain("LookupBlock"),
-            "LookupOriginalActivation" => Plain("LookupActivation"),
+            "LookupOriginalActivation" => new([], "LookupActivation", null, ["Guard:RecordProtectionOutcome"]),
             "TwoStaleSigningAttempts" => new(["Sign", "Guard:RegisterHold", "Guard:RecordBatchIssued", "ObsoleteUnissued", "Sign", "Guard:ReleaseHold", "Guard:RecordBatchIssued", "ObsoleteUnissued"],
                 "Sign", null, ["Guard:RecordBatchIssued", "Guard:AuthorizeDispatch", "Guard:CommitDispatch", "Register"]),
             _ => throw new InvalidOperationException("Missing source-owned owner action: " + action),

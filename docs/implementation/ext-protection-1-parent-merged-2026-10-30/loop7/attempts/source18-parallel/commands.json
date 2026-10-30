@@ -1,0 +1,39 @@
+[
+  {
+    "name": "protection-build",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false"
+    ],
+    "exitCode": 0,
+    "seconds": 20.959,
+    "path": "protection-build.log",
+    "sha256": "a9c46e545e80c8a4981f191c312d3366576ae682e0108bf0933f529868200844"
+  },
+  {
+    "name": "protection-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll",
+      "-noColor",
+      "-result-xml",
+      "/tmp/ext-protection-loop7-parent-final/protection.xml"
+    ],
+    "exitCode": 1,
+    "seconds": 345.394,
+    "path": "protection-tests.log",
+    "sha256": "a5e487a67df11333214fff6df82f1a353b73b97db372f0a121eba549efa5fd6a"
+  }
+]

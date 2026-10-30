@@ -15,7 +15,9 @@ public static class ProtectionQualificationRoleProgram
     {
         try
         {
-            var installation = JsonSerializer.Deserialize<ProtectionQualificationRoleInstallation>(await File.ReadAllBytesAsync(installationPath, cancellationToken).ConfigureAwait(false), ErasureRootCustody.Json)
+            byte[] installedBytes = ProtectionPinnedFile.Read(installationPath, 16 * 1024 * 1024);
+            CustodyBindingContract.RejectDuplicateProperties(installedBytes);
+            var installation = JsonSerializer.Deserialize<ProtectionQualificationRoleInstallation>(installedBytes, ErasureRootCustody.Json)
                 ?? throw new InvalidOperationException();
             Validate(role, installation);
             using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken); budget.CancelAfter(TimeSpan.FromSeconds(45));
@@ -48,7 +50,7 @@ public static class ProtectionQualificationRoleProgram
         string requestDigest = Convert.ToHexStringLower(SHA256.HashData(canonicalRequest));
         string? credential = Environment.GetEnvironmentVariable(installation.CredentialReference[4..]);
         if (string.IsNullOrWhiteSpace(credential)) { throw new InvalidOperationException("DependencyNotAvailable: role credential."); }
-        byte[] publicBytes = File.ReadAllBytes(installation.PublicAnchorFile);
+        byte[] publicBytes = ProtectionPinnedFile.Read(installation.PublicAnchorFile, 16384, installation.PublicAnchorSha256);
         if (Convert.ToHexString(SHA256.HashData(publicBytes)).Equals(installation.PublicAnchorSha256, StringComparison.OrdinalIgnoreCase) is false)
         { throw new InvalidOperationException("Changed role anchor."); }
         using var call = new HttpRequestMessage(HttpMethod.Post, installation.Endpoint);
@@ -66,11 +68,11 @@ public static class ProtectionQualificationRoleProgram
             || statement["operationId"]?.GetValue<string>() != request["operationId"]?.GetValue<string>()
             || statement["bindingDigest"]?.GetValue<string>() != request["bindingDigest"]?.GetValue<string>()
             || statement["requestSha256"]?.GetValue<string>() != requestDigest || statement["response"] is null) { throw new InvalidOperationException("Changed native role original."); }
-        using var verifier = ECDsa.Create(); verifier.ImportFromPem(Encoding.UTF8.GetString(publicBytes));
+        using var verifier = ECDsa.Create(); verifier.ImportFromPem(new UTF8Encoding(false, true).GetString(publicBytes));
         byte[] signatureBytes = Convert.FromBase64String(signature.GetValue<string>());
         if (verifier.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7" || signatureBytes.Length != 64
             || !verifier.VerifyData(ProtectionQualificationCanonical.Bytes(statement), signatureBytes, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation)
-            || !SHA256.HashData(File.ReadAllBytes(installation.PublicAnchorFile)).AsSpan().SequenceEqual(SHA256.HashData(publicBytes)))
+            || !SHA256.HashData(ProtectionPinnedFile.Read(installation.PublicAnchorFile, 16384, installation.PublicAnchorSha256)).AsSpan().SequenceEqual(SHA256.HashData(publicBytes)))
         { throw new InvalidOperationException("Invalid or changed native role verifier."); }
         return output;
     }

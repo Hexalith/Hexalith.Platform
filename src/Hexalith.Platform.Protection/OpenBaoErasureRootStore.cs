@@ -10,24 +10,50 @@ using System.Text.RegularExpressions;
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Native OpenBao 2.6.2 transit and KV v2 CAS transport for the dedicated A1 installation. Contains no provisioning, snapshot, export or automatic mutation retry.</summary>
-public sealed class OpenBaoErasureRootStore : IErasureRootStore
+public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
 {
     private const int MaximumResponseBytes = 32 * 1024 * 1024;
     internal const int MaximumHeadBytes = 30 * 1024 * 1024;
     private readonly HttpClient _http;
     private readonly ErasureRootInstallation _installation;
     private readonly string _credentialEnvironmentVariable;
+    private readonly bool _ownsHttp;
 
-    /// <summary>Creates an enrolled native transport. Cleartext transport is accepted only for explicitly requested loopback disposable tests.</summary>
+    /// <summary>Creates an owned native transport with redirects and proxies disabled before any credential-bearing request.</summary>
+    /// <param name="endpoint">Exact dedicated HTTPS installation endpoint.</param>
+    /// <param name="installation">Installed reference-only configuration.</param>
+    /// <param name="credentialReference">Dedicated native environment reference, never its value.</param>
+    /// <param name="operationTimeout">Bounded complete request and body deadline.</param>
+    public OpenBaoErasureRootStore(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? operationTimeout = null)
+        : this(CreateClient(endpoint, operationTimeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, ownsHttp: true)
+    { }
+
+    private static HttpClient CreateClient(Uri endpoint, TimeSpan timeout)
+    {
+        if (endpoint is null || !endpoint.IsAbsoluteUri || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30))
+        { throw new ArgumentException("Exact bounded native endpoint required."); }
+        return new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false }) { BaseAddress = endpoint, Timeout = timeout };
+    }
+
+    internal static OpenBaoErasureRootStore CreateDisposableLoopback(Uri endpoint, ErasureRootInstallation installation, string credentialReference, TimeSpan? timeout = null)
+        => new(CreateClient(endpoint, timeout ?? TimeSpan.FromSeconds(30)), installation, credentialReference, allowDisposableLoopback: true, ownsHttp: true);
+
+    /// <summary>Explicit internal transport seam for synthetic or owned disposable native handlers.</summary>
     /// <param name="http">Dedicated client with a bounded timeout and fixed base address.</param>
     /// <param name="installation">Installed reference-only configuration.</param>
     /// <param name="credentialReference">Environment reference of the dedicated native credential, never its value.</param>
     /// <param name="allowDisposableLoopback">Allows HTTP only at a loopback address for disposable component integration.</param>
-    public OpenBaoErasureRootStore(HttpClient http, ErasureRootInstallation installation, string credentialReference,
-        bool allowDisposableLoopback = false)
+    /// <param name="ownsHttp">Disposes a controlled owned client, including validation failure.</param>
+    internal OpenBaoErasureRootStore(HttpClient http, ErasureRootInstallation installation, string credentialReference,
+        bool allowDisposableLoopback = false, bool ownsHttp = false)
     {
+        try
+        {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentNullException.ThrowIfNull(installation);
+        if (!Regex.IsMatch(installation.StoreId ?? "", "\\A[A-Za-z0-9][A-Za-z0-9._-]{0,255}\\z", RegexOptions.CultureInvariant)
+            || !Regex.IsMatch(installation.EnrollmentId ?? "", "\\A[A-Za-z0-9][A-Za-z0-9._-]{0,255}\\z", RegexOptions.CultureInvariant))
+        { throw new ArgumentException("Canonical bounded store and enrollment identities required."); }
         if (http.BaseAddress is not { } address || !string.IsNullOrEmpty(address.UserInfo)
             || !string.IsNullOrEmpty(address.Query) || !string.IsNullOrEmpty(address.Fragment)
             || address.AbsolutePath != "/" || address.Scheme != "https" && !(allowDisposableLoopback && address.Scheme == "http" && address.IsLoopback)
@@ -51,7 +77,13 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         _http = http;
         _installation = installation;
         _credentialEnvironmentVariable = credentialReference[4..];
+        _ownsHttp = ownsHttp;
+        }
+        catch { if (ownsHttp) { http?.Dispose(); } throw; }
     }
+
+    /// <inheritdoc />
+    public void Dispose() { if (_ownsHttp) { _http.Dispose(); } }
 
     /// <inheritdoc />
     public async Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)

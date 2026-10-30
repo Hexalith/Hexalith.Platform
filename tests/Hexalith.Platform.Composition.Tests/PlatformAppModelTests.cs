@@ -64,6 +64,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
         refusal.Message.ShouldContain("3.120.0");
         refusal.Message.ShouldContain("947c843c");
         builder.Resources.ShouldBeEmpty();
+        if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
+            File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
     }
 
     [Theory]

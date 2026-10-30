@@ -72,6 +72,10 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         foreach (var value in sources.Values) { await HydrateReferencesAsync(erasureRoot, head.Head, value, token, sourceReferences).ConfigureAwait(false); }
         sources.Add("ERC", JsonSerializer.SerializeToNode(head.Head)!);
         var observed = recipe.CaseId is { } sourceCase ? ProtectionQualificationNativeProjection.Project(sourceCase, head.Head, sources, recipe.Sources, targets) : new JsonObject();
+        observed["operationProducerOriginals"] = new JsonArray(head.Head.QualificationOperations.Values.Where(operation => operation.SafeRequest["caseId"]?.GetValue<string>() == recipe.CaseId && operation.Producer is not null)
+            .Select(operation => (JsonNode)new JsonObject { ["OperationId"] = operation.SafeRequest["operationId"]!.DeepClone(), ["RequestSha256"] = operation.RequestSha256,
+                ["Role"] = operation.Role, ["BindingDigest"] = operation.BindingDigest, ["AttemptId"] = operation.AttemptId,
+                ["Producer"] = JsonSerializer.SerializeToNode(operation.Producer), ["SafeRequest"] = operation.SafeRequest.DeepClone() }).ToArray());
         if (effectOriginals.Count != 0) { observed["rejectedEffectOriginals"] = effectOriginals; }
         if (recipe.CaseId is null) { foreach (var field in recipe.Fields) { observed.Add(field.Key, Project(field.Value, sources, null)); } }
         var copyOriginals = new JsonArray();
@@ -112,8 +116,10 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         {
             string location = ProtectionQualificationNativeCell.LocationId(cell);
             string backing = componentBackings is null ? cell.Component : componentBackings[cell.Component];
+            var persistedDocument = sources.Single(item => recipe.Sources.TryGetValue(item.Key, out var selected) && ProtectionQualificationNativeCell.LocationId(selected) == location).Value;
             var locationOriginal = new JsonObject { ["Cell"] = JsonSerializer.SerializeToNode(cell), ["PhysicalBacking"] = backing,
-                ["PhysicalIdentity"] = ProtectionQualificationNativeCell.LocationId(cell with { Component = backing }), ["SourceIdentity"] = location, ["CopyKind"] = cell.CopyKind };
+                ["PhysicalIdentity"] = ProtectionQualificationNativeCell.LocationId(cell with { Component = backing }), ["SourceIdentity"] = location, ["CopyKind"] = cell.CopyKind,
+                ["PersistedDocument"] = persistedDocument.DeepClone(), ["PersistedDocumentBase64"] = Convert.ToBase64String(JsonSerializer.SerializeToUtf8Bytes(persistedDocument)) };
             copyLocations[location] = locationOriginal;
             bool direct = producer.CopyPurposes is not null && producer.CopyPurposes.TryGetValue(location, out string? actual) && actual == cell.CopyKind;
             if (direct) { return; }

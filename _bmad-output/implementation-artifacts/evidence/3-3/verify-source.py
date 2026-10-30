@@ -37,7 +37,7 @@ lanes = [
     ("Tenants.Contracts", ["TenantCatalogTests"]),
     ("Parties.Contracts", ["PartiesCatalogTests"]),
     ("Memories.EventStore", ["MemoriesCatalogTests"]),
-    ("EventStore.Server", ["Routing.RouteCatalogSurfaceTests", "Routing.RouteCatalogV3IngressTests", "Routing.DevelopmentCompositionBootstrapTests"]),
+    ("EventStore.Server", ["Routing.RouteCatalogSurfaceTests", "Routing.RouteCatalogV3IngressTests", "Routing.DevelopmentCompositionBootstrapTests", "Routing.RouteCatalogTopologyIsolationTests"]),
     ("Platform.Composition", ["PlatformRoutingCatalogTests"]),
 ]
 commands = evidence / "source-commands.jsonl"

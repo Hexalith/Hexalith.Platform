@@ -1,0 +1,131 @@
+[
+  {
+    "name": "Hexalith.Platform.EventStoreHost-build",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "exitCode": 0,
+    "seconds": 3.4026884009945206,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/Hexalith.Platform.EventStoreHost-build.log",
+    "sha256": "c9a0821502f9c149c626dc5db80b24de588f2c36c1eb8dd606b0a647b464c522"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Executor-build",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "exitCode": 0,
+    "seconds": 3.847909347998211,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/Hexalith.Platform.Protection.Qualification.Executor-build.log",
+    "sha256": "2e5b9d6401b2a9b1694a3a99860cdf6a4e87b44c73d8c91219ef84a333a3f125"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Observer-build",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "exitCode": 0,
+    "seconds": 2.7367694019922055,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/Hexalith.Platform.Protection.Qualification.Observer-build.log",
+    "sha256": "74b217b2d6f2e099ebc36983f9940da5d0937ec4b29868bc4085826f550653bd"
+  },
+  {
+    "name": "Hexalith.Platform.Protection.Qualification.Enrollment-build",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "exitCode": 0,
+    "seconds": 2.5296054920036113,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/Hexalith.Platform.Protection.Qualification.Enrollment-build.log",
+    "sha256": "d15ce70da7d60ee2fc4a58bce611134fd83033616a6b8602a085e494d7401332"
+  },
+  {
+    "name": "custody-current-build",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "exitCode": 0,
+    "seconds": 2.936224161996506,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/custody-current-build.log",
+    "sha256": "35fbdc30badeb6fc63efe134b1b78904577234d4c283ccc3b79c067dc204d0f5"
+  },
+  {
+    "name": "custody-current-signing-revocation-tests",
+    "cwd": "/home/administrator/hexalith-protection-sessions/ext-protection-loop7-recovered-cd78452ebe/platform",
+    "argv": [
+      "dotnet",
+      "tests/Hexalith.Platform.Custody.Tests/bin/Debug/net10.0/Hexalith.Platform.Custody.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests",
+      "-class",
+      "Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests",
+      "-noColor",
+      "-result-xml",
+      "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/custody-signing-revocation.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.8674615909985732,
+    "log": "/tmp/ext-protection-loop7-evidence-ac76e4b97d26/final-builds-18/custody-current-signing-revocation-tests.log",
+    "sha256": "8dfef56af3e2090cf79292cc1f8cfa5da64e0cee726f233ca9eb7642658d131d"
+  }
+]

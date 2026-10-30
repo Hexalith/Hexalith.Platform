@@ -151,7 +151,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             BootstrapGlobalAdmin.CommandType, JsonSerializer.SerializeToElement(new BootstrapGlobalAdmin(operatorSubject), EventStorePayloadSerialization.Options), CorrelationId: messageId);
         var bound = new BoundWorkloadCommandRequest(command, operatorSubject);
         string proof = BoundWorkloadCommandProof.Issue(bound, tenantBootstrap.AppId, tenantBootstrap.PrivateKey, DateTimeOffset.UtcNow);
-        using var transport = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false })
+        using var transport = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false, UseProxy = false })
         { BaseAddress = new Uri("http://127.0.0.1:" + port + "/"), Timeout = Timeout.InfiniteTimeSpan };
         using var request = new HttpRequestMessage(HttpMethod.Post,
             "v1.0/invoke/" + Uri.EscapeDataString(audience) + "/method/api/v1/commands/bound/workload")
@@ -201,7 +201,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
 
     private static HttpClient Client(Uri endpoint, string token)
     {
-        var client = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false }) { BaseAddress = endpoint, Timeout = Timeout.InfiniteTimeSpan };
+        var client = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false, UseProxy = false }) { BaseAddress = endpoint, Timeout = Timeout.InfiniteTimeSpan };
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         return client;
     }

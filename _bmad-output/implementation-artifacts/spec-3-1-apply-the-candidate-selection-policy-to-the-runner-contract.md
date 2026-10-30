@@ -235,3 +235,16 @@ All 16 remaining patch findings are implemented. The gate restricts release disp
 - Exact commands, named XML, all six matrix-row mappings, source/artifact hashes, initial fixture failures and the full-build blocker are retained in `references/Hexalith.Builds/evidence/3-1/review-followup-verification.json` and adjacent `review-followup-*` files.
 
 The approved intent and `in-progress` tracking status are preserved for parent review. This implementation session performed no Git recording operations. Concurrent workspace activity recorded the implementation and evidence during final verification; the retention manifest fingerprints only the explicit story files and records the observed Builds head. Live issuer enrollment, authentic tool qualification and Story 3.9 loaded-artifact producers remain independent prerequisites; final acceptance still refuses unavailable qualification authentication.
+
+
+### Final resumed review verification and remaining gate (2026-10-30)
+
+All follow-up findings F1-F10 and G1 are corrected and verified; F4/G1 share the pagination coverage correction. Candidate issuance is serialized before diagnostic mutation, malformed prior state is preserved, and cancellation/timeout before issuance remains unowned. Passing evidence requires populated startup timing. Full-page successor, signing-key, coherent-ref and temporal-claim regressions pass; missing/null merge results share the named refusal.
+
+- Final candidate selection: 156 passed. Parent contract/provisioning/result/engine/state/lifecycle/declaration selection: 430 passed. All 586 .NET cases have zero failures, errors, skips or not-run cases.
+- Provenance Python: 86 passed. Contract mirror: 1 passed. Workflow lint and scoped whitespace checks pass. Tooling and focused test-project Debug builds pass with zero warnings/errors; the focused build uses already-built dependencies.
+- The final exact required full Debug build was retried after review corrections and still fails with seven EventStoreHost API/package compatibility errors (Routing, UseEventStoreHttpHostSecurity, RequireEventStoreChannel, callback metadata accessibility and the related unused using). The earlier intermediate 17-error dependency observation remains archived separately. No dependency/catalog pin or host API repair was included.
+- Final commands, named XML, six-row matrix audit, source fingerprints, reviewed diff and retained logs are in `references/Hexalith.Builds/evidence/3-1/review2-parent-verification.json`. The frozen approved intent is unchanged.
+- A concurrently added diagnostic test received only mechanical analyzer-format corrections so the focused test project could compile; its behavior is preserved. This session performed no Git recording or remote operations.
+
+Status remains `in-review` because the required full-build gate is unresolved. The Build review step requires: "if verification fails and the failure cannot be fixed, HALT and escalate to the human." All authorized candidate-policy corrections are complete; host/package compatibility needs resolution before completion. Live enrollment, authentic tool qualification and Story 3.9 producers remain independent prerequisites.

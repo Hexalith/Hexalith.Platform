@@ -9,6 +9,9 @@ namespace Hexalith.Platform.Secrets.Runtime;
 /// <summary>Routes exact signing requests to the published durable actor address; no general signing or approval interface is exposed.</summary>
 public sealed class QualificationSigningActorRouter:IDeletionCapabilitySigningActor
 {
+    /// <inheritdoc />
+    public Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request)
+        => ActorProxy.Create<IDeletionCapabilitySigningActor>(new ActorId(DeletionCapabilitySigningActor.GetReadinessActorId(request)), DeletionCapabilitySigningActor.ActorTypeName).ReadAvailabilityAsync(request);
     private static IDeletionCapabilitySigningActor Actor(DeletionBatchCapabilityV1 payload)=>ActorProxy.Create<IDeletionCapabilitySigningActor>(new ActorId(DeletionCapabilitySigningActor.GetActorId(payload)),DeletionCapabilitySigningActor.ActorTypeName);
     /// <inheritdoc />
     public Task<DeletionCapabilitySigningOutcome> SignAsync(DeletionBatchCapabilityV1 payload)=>Actor(payload).SignAsync(payload);

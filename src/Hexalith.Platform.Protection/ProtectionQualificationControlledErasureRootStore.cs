@@ -1,8 +1,10 @@
 namespace Hexalith.Platform.Protection;
 
 /// <summary>Qualification-only controls around actual native ERC operations. Faults interrupt real calls; no native result or receipt is fabricated.</summary>
-public sealed class ProtectionQualificationControlledErasureRootStore(IErasureRootStore native, ProtectionQualificationFaults controls) : IErasureRootStore
+public sealed class ProtectionQualificationControlledErasureRootStore(IErasureRootStore native, ProtectionQualificationFaults controls) : IErasureRootStore, IDisposable
 {
+    /// <inheritdoc />
+    public void Dispose() { (native as IDisposable)?.Dispose(); }
     private async Task<T> Call<T>(string tenant, string method, Func<Task<T>> operation, CancellationToken token)
     {
         string id = "native:" + tenant + ":" + method;

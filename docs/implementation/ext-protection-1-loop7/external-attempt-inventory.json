@@ -1,0 +1,20 @@
+[
+  {
+    "attempt": "native01",
+    "outcome": "BlockedUnknown",
+    "result": "verification/native-final-01.json",
+    "reason": "Retained immediate failure after original cwd disappeared; no summary; owned cleanup verified"
+  },
+  {
+    "attempt": "native02",
+    "outcome": "NativeCasesPassed",
+    "result": "verification/native-final-02.json",
+    "seconds": 3263.46,
+    "cleanup": {
+      "complete": true,
+      "containerAbsent": true,
+      "containerTmpfsUnmounted": true
+    },
+    "runtimeManifestSha256": "a869f356b05b2c932f5ed8205de609ca15fa6e02ecea764005c53da951b6f859"
+  }
+]
