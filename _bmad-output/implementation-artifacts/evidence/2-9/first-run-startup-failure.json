@@ -1,0 +1,142 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "e3ea18e127cc57e7a43ad7c9c386131e",
+  "ruleId": "HXR027",
+  "resource": "eventstore",
+  "appId": "eventstore",
+  "status": "cutover-timeout;health-HTTP-503",
+  "unreadyResources": [
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "eventstore",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2637334+00:00",
+      "processId": 2561835
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638191+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638273+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638357+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638601+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638709+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2638787+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2639204+00:00",
+      "processId": null
+    },
+    {
+      "name": "parties-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "parties",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.26393+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2639378+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2639459+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2639536+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T07:37:05.2639618+00:00",
+      "processId": null
+    }
+  ],
+  "failingTask": null,
+  "blockingRunId": null
+}

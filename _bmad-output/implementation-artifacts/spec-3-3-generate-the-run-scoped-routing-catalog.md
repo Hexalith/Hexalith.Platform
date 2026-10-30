@@ -17,6 +17,8 @@ context:
 
 **Approach:** Generate deterministic catalog bytes from the selected enrollment closure and its mapped Contracts, using EventStore's versioned schema and codec. Bind each local/CI gateway and environment descriptor to that run's catalog instance, retaining committed idempotency and key metadata without retaining executable routes.
 
+**Decision (2026-10-30):** Implement the EventStore-owned contract and gateway prerequisites first, then Platform integration; approve the revised cross-repository spec before implementation.
+
 ## Boundaries & Constraints
 
 **Always:** EventStore.Contracts owns schema, canonicalization, eligibility vocabulary and digest semantics. Eligibility is agent-eligible, UI-only, confirmation-required or step-up, covered together with the operation schema by its digest. Consume the command's single source/package mapping. Generate before starting resources; reject invalid inputs without publishing partial output. Preserve supplied committed history and unrelated workspace changes.
@@ -38,14 +40,14 @@ context:
 
 ## Open Questions
 
-1. **Missing EventStore prerequisite:** The checked-out schema cannot represent the required schema/eligibility digest or non-executable retention, and the gateway lacks executable-operation metadata and eligibility enforcement. Choose: **expand this run to implement the EventStore-owned prerequisite first**, with an updated cross-repository spec before implementation; or **retain Platform scope and wait for owner delivery**, leaving this story draft. A Platform-only implementation cannot meet the acceptance criteria with the current contract.
+1. **Module enrollment:** Further investigation found missing complete schema/eligibility inventories in the reference module Contracts. Choose: **include module Contracts and review their explicit per-operation policies in this run**, or **implement EventStore prerequisites first and leave Story 3.3 open pending owner enrollment**. Missing policies cannot be inferred from McpCli annotations or interface surface classes. This question has been presented asynchronously; its answer is pending.
 
 ## Code Map
 
 - `src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs` / `PlatformServerBindings.cs`: reuse validated closure and mapped enabled targets. Current manifest operations do not identify Contracts artifacts or carry eligibility/schema metadata.
 - `src/Hexalith.Platform.Composition/PlatformAppModel.cs`: shared local/runner composition seam; owned output is a fresh temporary workspace or `RunPlan.Workspace/platform-components`.
 - `src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs`: copies/filter gateway registration settings; currently binds no catalog.
-- `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs`: names catalog instance `EnvironmentId + "-catalog"`. Reuse this identity. `catalog.commit` is the Builds package catalog revision; do not reinterpret it.
+- `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs`: reuse `EnvironmentId + "-catalog"`; preserve the Builds package meaning of `catalog.commit`.
 - `references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/{RouteCatalogEnvelope,RouteContractDeclaration,RouteCatalogEntry,RouteCatalogCodec,RouteCatalogValidator}.cs`: authoritative closed v1/v2 schema; unknown fields fail. Validator requires active command joins for idempotency, preventing removed-command retention.
 - `references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/{CompiledRouteCatalogDeclarations,CommittedRouteCatalogSnapshot,RouteCatalogEndpointExtensions}.cs`: compiled declaration reader, runtime resolver and lifecycle endpoints; required eligibility/metadata behavior is absent.
 - `tests/Hexalith.Platform.Composition.Tests/{PlatformRunIsolationTests,PlatformTestEnvironmentProvisioningTests,GatewaySeedSubscriptionTests}.cs`: existing isolation, descriptor and actual host HTTP patterns.
@@ -56,7 +58,7 @@ context:
 - [ ] `references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogEnvelope.cs` and owner routing APIs -- verify delivered schema/digest/retention plus gateway behavior before Platform implementation; resolve the open question and finalize Contracts artifact enrollment first.
 - [ ] `src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs` -- implement generation from authoritative declarations/Contracts and optional committed generation, using the delivered owner codec and deterministic validation.
 - [ ] `src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs` -- expose explicit committed-generation and Contracts inputs through the existing mapping; never scan arbitrary assemblies/checkouts.
-- [ ] `src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj` -- add mode-consistent owner Contracts references as needed.
+- [ ] `src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj` -- reference owner Contracts in both modes.
 - [ ] `src/Hexalith.Platform.Composition/PlatformAppModel.cs` and `PlatformGatewayConfiguration.cs` -- create private run-owned output, use the existing descriptor instance name and bind the gateway to those exact bytes.
 - [ ] `tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs` -- cover the matrix, input-order determinism, schema/eligibility changes and preservation of retained key readers.
 - [ ] `tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs` -- exercise real gateway metadata/refusals and descriptor identity across independent local/CI-mode runs.
@@ -75,10 +77,10 @@ context:
 
 ## Design Notes
 
-EventStore revision `6e0280bf489171326e2ce1ba3dde361712b7c977` has construction/codec work but lacks AR-62 delivery, required before generation. Footprint: generator, composition bindings and tests; owner changes require resolving the open question and revising this draft. No irreversible actions or runtime changes during planning.
+EventStore revision `6e0280bf489171326e2ce1ba3dde361712b7c977` lacks AR-62 delivery. Footprint: owner contract/gateway, generator, composition and tests. No irreversible actions or runtime changes during planning. Detailed observations and proposed design: `evidence/3-3/investigation.md`.
 
 ## Verification
 
 - Build `tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj` in mapped Debug/source mode; run the focused xUnit classes directly.
-- Verify the same generation and descriptor handoff in the existing Release/package CI lane using the delivered owner versions. Source-only fixtures cannot establish package acceptance.
+- Verify generation and descriptor handoff in Release/package CI with matching owner versions; source fixtures cannot establish package acceptance.
 - Retain canonical byte comparisons and gateway HTTP evidence. Finalize runnable commands against delivered APIs before approval.

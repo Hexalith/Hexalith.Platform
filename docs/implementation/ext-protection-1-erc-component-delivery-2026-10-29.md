@@ -1,3 +1,5 @@
+> Current status — the human explicitly authorized one further correction cycle after review round 6. Implementation resumes in the loop-6 isolated worktrees below. All prior source candidate pairs and their date proposals remain withdrawn. No accepted target/profile/date or installed/physical qualification is established.
+
 > Current status — human escalation after review round 6. Six nontrivial findings require another implementation iteration, which exceeds the BMAD review-loop limit. Loop-5 candidates and the unaccepted 2026-11-02 integration proposal are withdrawn; source/evidence/local refs are preserved. No accepted target/profile/date, Committed/Available status or installed/physical qualification is established.
 
 > Current status — complete loop-5 source candidates and local verification are prepared for independent review. All earlier candidates remain withdrawn. Installed/physical qualification and owner acceptance remain pending.

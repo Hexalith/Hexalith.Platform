@@ -376,3 +376,50 @@ The gated `PlatformLocalRunLifecycleTests` proof uses
 failed/partial-startup retention, timeout, explicit cleanup/retry and an
 independently started peer's unchanged Redis data. Package runtime qualification
 still requires published authoritative artifacts; local source proof grants none.
+
+## Candidate selection and acceptance enforcement
+
+Builds' `hexalith-module test` accepts an explicit `--candidate-request` signed
+GitHub gate issuance for a declared package-mode suite. The independently enrolled
+Builds reusable `candidate-policy.yml` workflow selects the committed PR merge
+result for the exact repository/module/PR/head/base and current open/reopen/retarget
+epoch, or the exact committed revision independently selected by a release workflow
+dispatch. Host-owned workflow coordinates, protected-environment approval settings,
+GitHub OIDC signatures and fresh authenticated GitHub API observations establish
+its authority. Saved request or observation JSON is insufficient. Unavailable
+approval, authentication, immutable source, request state or committed merge-parent
+proof refuses before service startup. Candidate checkouts must be clean and exact.
+No live issuer enrollment or release-publication authority is supplied here.
+
+The original workflow-run request identity remains immutable across pending
+retries. GitHub's `run_attempt` supplies the issuer-ordered sequence and each retry
+has distinct producing run and attempt identities. Reopened, retargeted or changed
+requests require a fresh workflow decision; a distinct release dispatch always
+creates a new request. The latest registered PR workflow request and latest issued
+attempt govern, including pending, failed and cancelled successors. A completed
+release request or closed PR refuses; terminal evidence never reopens its request.
+
+The descriptor and terminal result now populate the selected `candidate`,
+`decision` and `reuseLineage` representations already reserved by v1. Both preserve
+the issued sequence, producing run/attempt and explicitly empty reused-source
+lists; partial-startup results retain those same immutable bindings. Runs without
+an authenticated candidate request are explicitly `baseline-only` diagnostics.
+No test outcome, attachment hold, first outcome or cleanup semantics change.
+
+`hexalith-module validate-result --candidate-request <issuance> --environment
+<descriptor> --result <result>` performs fresh authority checks and compares
+immutable bindings under the exact policy. It refuses foreign or unchanged-module
+reuse, local/baseline/source evidence, wrong CI jobs/hosts, non-passing outcomes,
+missing or mismatched expected/loaded identities, non-Release candidate artifacts,
+wrong/empty/skipped/incomplete required suites and missing/inapplicable tool
+qualifications. Refusals use stable `HXP301` conditions. The offline reader remains
+an independent shape/timing validator and grants no acceptance.
+
+Signed local HTTP/workflow fixtures verify selection and refusal paths only.
+Authentic applicable tool adoption, Platform acceptance and integration qualification
+remain mandatory independent prerequisites, and Story 3.9 still supplies loaded
+artifact producers. Even complete JSON references cannot authenticate their own
+qualifications: the current final acceptance path refuses
+`tool-qualification-authentication-unavailable` until an independently accepted
+qualification authority is available. These checks do not claim live package-mode
+CI qualification or change schemas, tool/catalog pins, publication or staging gates.

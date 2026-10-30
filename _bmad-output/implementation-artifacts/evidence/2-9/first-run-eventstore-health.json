@@ -1,0 +1,65 @@
+{
+  "status": "Unhealthy",
+  "results": {
+    "self": {
+      "status": "Healthy",
+      "description": null,
+      "duration": "00:00:00.0000013",
+      "data": {}
+    },
+    "dapr-sidecar": {
+      "status": "Healthy",
+      "description": "Dapr sidecar is responsive.",
+      "duration": "00:00:00.0002310",
+      "data": {}
+    },
+    "dapr-actor-placement": {
+      "status": "Healthy",
+      "description": "DAPR actor host ready (placement: connected).",
+      "duration": "00:00:00.0005583",
+      "data": {}
+    },
+    "dapr-statestore": {
+      "status": "Healthy",
+      "description": "Dapr state store \u0027statestore\u0027 is accessible.",
+      "duration": "00:00:00.0010988",
+      "data": {}
+    },
+    "dapr-pubsub": {
+      "status": "Healthy",
+      "description": "Dapr pub/sub component \u0027pubsub\u0027 is available (type: pubsub.redis).",
+      "duration": "00:00:00.0008295",
+      "data": {}
+    },
+    "dapr-configstore": {
+      "status": "Healthy",
+      "description": "Dapr config store \u0027configstore\u0027 is accessible (type: configuration.redis).",
+      "duration": "00:00:00.0007752",
+      "data": {}
+    },
+    "dapr-app-channel-token": {
+      "status": "Healthy",
+      "description": null,
+      "duration": "00:00:00.0000039",
+      "data": {}
+    },
+    "route-catalog": {
+      "status": "Unhealthy",
+      "description": "No activated catalog agrees with this host\u0027s profile, inventory, authentication and topology.",
+      "duration": "00:00:00.0000678",
+      "data": {}
+    },
+    "projection-delivery-writer-protocol": {
+      "status": "Unhealthy",
+      "description": "Projection delivery writer protocol v2 is not active.",
+      "duration": "00:00:00.0008721",
+      "data": {}
+    },
+    "projection-delivery-unresolved-conflict": {
+      "status": "Healthy",
+      "description": "Projection delivery has no unresolved durable conflict evidence.",
+      "duration": "00:00:00.0040114",
+      "data": {}
+    }
+  }
+}

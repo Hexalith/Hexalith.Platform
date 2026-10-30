@@ -1,0 +1,41 @@
+{
+  "schemaSha256": {
+    "docs/contracts/schemas/hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+    "references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/Schemas/hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+    "references/Hexalith.Builds/schemas/hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357"
+  },
+  "projects": {
+    "Hexalith.EventStore.Testing": {
+      "packages": [
+        "JsonSchema.Net",
+        "Shouldly",
+        "NSubstitute",
+        "xunit.v3.assert"
+      ],
+      "projects": [
+        "..\\Hexalith.EventStore.Client\\Hexalith.EventStore.Client.csproj",
+        "..\\Hexalith.EventStore.Contracts\\Hexalith.EventStore.Contracts.csproj",
+        "..\\Hexalith.EventStore.Server\\Hexalith.EventStore.Server.csproj"
+      ],
+      "embeddedResources": [
+        {
+          "Include": "Schemas/hexalith.test-environment.v1.json",
+          "LogicalName": "Hexalith.EventStore.Testing.hexalith.test-environment.v1.json"
+        }
+      ]
+    },
+    "Hexalith.EventStore.Testing.Integration": {
+      "packages": [
+        "Dapr.Actors.AspNetCore",
+        "xunit.v3.extensibility.core",
+        "xunit.v3.assert"
+      ],
+      "projects": [
+        "..\\Hexalith.EventStore.Testing\\Hexalith.EventStore.Testing.csproj",
+        "..\\Hexalith.EventStore.Client\\Hexalith.EventStore.Client.csproj",
+        "..\\Hexalith.EventStore.Server\\Hexalith.EventStore.Server.csproj"
+      ],
+      "embeddedResources": []
+    }
+  }
+}

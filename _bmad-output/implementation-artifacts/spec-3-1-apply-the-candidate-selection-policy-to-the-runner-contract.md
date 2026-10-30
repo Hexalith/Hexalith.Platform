@@ -2,7 +2,7 @@
 title: '3.1 Apply the candidate-selection policy to the runner contract'
 type: 'feature'
 created: '2026-10-30'
-status: 'in-progress'
+status: 'review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '2cbb8a68d277bdd55e321972b8aa11ef015fc54e'
@@ -54,12 +54,12 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 
 **Execution:**
 
-- [ ] `T/CandidatePolicy/CandidateGateClient.cs`, `CandidatePolicyValidator.cs` — implement authenticated GitHub issuance/current-state lookup and separate candidate selection/acceptance checks; keep one type per file and refuse unavailable state. Bind reopened PR epochs and distinct release-dispatch requests, with immutable retries and issuer-ordered attempts.
-- [ ] `B/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs`, `T/Runtime/ModuleInvocationCommand.cs`, `ModuleCommandExecutionService.cs`, `CompositionRunPlan.cs` — wire explicit candidate-request input and policy validation before service startup, plus an explicit result-validation command with fresh authority rechecks.
-- [ ] `T/TestEnvironment/TestEnvironmentDescriptorWriter.cs`, `TestResultWriter.cs` — populate selected candidate/decision/no-reuse bindings and issued sequence; preserve them in terminal and partial-startup snapshots.
-- [ ] `B/.github/workflows/domain-ci.yml`, `B/.github/workflows/candidate-policy.yml`, `B/Github/governed-provenance/` — integrate reusable gate issuance/verification and trusted workflow transport without granting publication authority. Do not treat unsigned saved observations as authentication.
-- [ ] `B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs`, `CandidateRunnerTests.cs` — cover every matrix row, authenticated current-state changes, attempt races and public command/writer integration; preserve reader/provisioning/result regressions.
-- [ ] `docs/contracts/test-environment-v1.md`, `B/README.md`, `_bmad-output/implementation-artifacts/sprint-status.yaml` — document enforcement, remaining qualification prerequisites and accurate story progress.
+- [x] `T/CandidatePolicy/CandidateGateClient.cs`, `CandidatePolicyValidator.cs` — implement authenticated GitHub issuance/current-state lookup and separate candidate selection/acceptance checks; keep one type per file and refuse unavailable state. Bind reopened PR epochs and distinct release-dispatch requests, with immutable retries and issuer-ordered attempts.
+- [x] `B/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs`, `T/Runtime/ModuleInvocationCommand.cs`, `ModuleCommandExecutionService.cs`, `CompositionRunPlan.cs` — wire explicit candidate-request input and policy validation before service startup, plus an explicit result-validation command with fresh authority rechecks.
+- [x] `T/TestEnvironment/TestEnvironmentDescriptorWriter.cs`, `TestResultWriter.cs` — populate selected candidate/decision/no-reuse bindings and issued sequence; preserve them in terminal and partial-startup snapshots.
+- [x] `B/.github/workflows/domain-ci.yml`, `B/.github/workflows/candidate-policy.yml`, `B/Github/governed-provenance/` — integrate reusable gate issuance/verification and trusted workflow transport without granting publication authority. Do not treat unsigned saved observations as authentication.
+- [x] `B/test/Hexalith.Builds.Module.Tests/CandidatePolicyTests.cs`, `CandidateRunnerTests.cs` — cover every matrix row, authenticated current-state changes, attempt races and public command/writer integration; preserve reader/provisioning/result regressions.
+- [x] `docs/contracts/test-environment-v1.md`, `B/README.md`, `_bmad-output/implementation-artifacts/sprint-status.yaml` — document enforcement, remaining qualification prerequisites and accurate story progress.
 
 **Acceptance Criteria:**
 
@@ -79,3 +79,22 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 ## Verification
 
 From Builds, build `test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj` with `dotnet build -c Debug -m:1 -nodeReuse:false`. Run the built xUnit assembly with `-class` selections for new candidate tests, contract reader, provisioning and result writers. Run `python3 -m unittest discover -s Github/governed-provenance/tests` for changed gate helpers. From Platform, run `python3 -m unittest discover -s tests/contracts -p test_test_environment_contract_mirrors.py`. All selected checks must pass; retain exact blockers separately from focused evidence.
+
+
+### Implemented verification (2026-10-30)
+
+- Required serialized Debug build passed with zero warnings/errors.
+- New candidate policy/runner selections: 40 passed, zero failed/skipped/not-run.
+- Contract reader, provisioning and result writer selections: 311 passed, zero failed/skipped/not-run.
+- Governed-provenance Python suite: 67 passed. Platform contract mirrors: 1 passed.
+- Both changed workflows passed `actionlint`; Builds and scoped Platform `git diff --check` passed.
+- Named xUnit XML, exact commands, matrix-to-test mapping and logs are retained in
+  `references/Hexalith.Builds/evidence/3-1/verification.json` and adjacent files.
+
+These are local signed HTTP/workflow fixtures and runner regressions. No live
+issuer, tool adoption, Platform acceptance or integration qualification is enrolled.
+Final acceptance refuses missing or unauthenticated proof, including complete JSON
+qualification references without an independent accepted qualification authority;
+Story 3.9 still supplies loaded-artifact producers. Publication/deployment, release
+authority, tool/catalog pins and first-outcome/attachment semantics are unchanged.
+Implementation is ready for independent review.
