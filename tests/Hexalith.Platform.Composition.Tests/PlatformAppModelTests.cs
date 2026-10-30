@@ -2,6 +2,7 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using System.Reflection;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Eventing;
@@ -25,6 +26,9 @@ public sealed partial class PlatformAppModelTests : IDisposable
     {
         get
         {
+            string? declared = typeof(PlatformAppModelTests).Assembly.GetCustomAttributes<System.Reflection.AssemblyMetadataAttribute>()
+                .SingleOrDefault(metadata => metadata.Key == "PlatformTestRepositoryRoot")?.Value;
+            if (declared is not null) return Path.GetFullPath(declared);
             DirectoryInfo? directory = new(AppContext.BaseDirectory);
             while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
             return directory!.FullName;
@@ -35,15 +39,18 @@ public sealed partial class PlatformAppModelTests : IDisposable
 
     private PlatformCompositionOptions PackageOptions() => (_packageFixture ??= new PlatformPackageFixture(Root)).Options;
 
+    private PlatformCompositionOptions PackageGraphOptions() => (_packageFixture ??= new PlatformPackageFixture(Root)).SourceCatalogOptions;
+
     public void Dispose() => _packageFixture?.Dispose();
 
     private static PlatformCompositionOptions Options(string? active = null)
     {
-        SourceMappingEntry[] entries = new[] { "EventStore", "Tenants", "Memories" }
-            .Select(name => new SourceMappingEntry("Hexalith." + name, "source", Path.Combine(Root, "references", "Hexalith." + name))).ToArray();
+        SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(Root, "references"), "Hexalith.*")
+            .Where(path => Path.GetFileName(path) != "Hexalith.Parties")
+            .Select(path => new SourceMappingEntry(Path.GetFileName(path), "source", path)).ToArray();
         return new PlatformCompositionOptions
         {
-            PlatformRoot = Root, Mapping = new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", entries, false), ActiveModule = active,
+            PlatformRoot = Root, Mapping = new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", entries, true), ActiveModule = active,
             EventStoreSeedProject = Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
         };
     }
@@ -87,7 +94,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     {
         PlatformCompositionOptions options = PackageOptions();
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
-        servers.Count.ShouldBe(6);
+        servers.Count.ShouldBe(7);
         servers.Single(s => s.ResourceId == "eventstore").ProjectPath.ShouldBe(options.EventStoreSeedProject);
         servers.Single(s => s.ResourceId == "tenants").Image.ShouldBe("registry.hexalith.com/tenants:5.8.0");
         servers.Single(s => s.ResourceId == "memories").Image.ShouldBe("registry.hexalith.com/memories:2.27.1");
@@ -99,7 +106,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public async Task PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
     {
         List<string> inspected = [];
-        PlatformCompositionOptions options = PackageOptions() with
+        PlatformCompositionOptions options = PackageGraphOptions() with
         {
             Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-scoped-token", ["tenants/domain/Tenants:AppChannelToken"] = "domain-scoped-token" },
             ImageProbeRunner = (process, timeout, _) =>
@@ -114,10 +121,10 @@ public sealed partial class PlatformAppModelTests : IDisposable
         IDistributedApplicationBuilder builder = Builder();
         PlatformAppModel.Compose(builder, options);
         IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-        servers.Length.ShouldBe(6);
+        servers.Length.ShouldBe(7);
         servers.OfType<ProjectResource>().Single().Name.ShouldBe("eventstore");
         servers.OfType<ProjectResource>().Single().GetProjectMetadata().ProjectPath.ShouldBe(options.EventStoreSeedProject);
-        servers.OfType<ContainerResource>().Count().ShouldBe(5);
+        servers.OfType<ContainerResource>().Count().ShouldBe(6);
         inspected.Order().ShouldBe(servers.Select(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.Image).OfType<string>().Order());
         foreach (IResource server in servers)
         {

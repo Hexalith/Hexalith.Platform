@@ -1015,10 +1015,10 @@ Required corrections:
 
 1. R10-BH-1 — `bootstrap.py --apply` must resume a partial run. When a mount, key, policy, or CAS-0 head already matches the enrollment, continue. When an existing object does not match, refuse before changing it. The failure result must name the step that stopped, not only `ERC_BOOTSTRAP_INPUT_OR_NATIVE_FAILURE`. Default `--apply` off stays zero native calls.
 2. R10-BH-2 — the bootstrap client must verify the ERC with the same pinned CA the production store uses. It must not send `X-Vault-Token` until that CA validates the certificate. A different CA refuses before the token is written. A matching local CA still applies.
-3. R10-BH-3 — rendered per-tenant key config must allow only the min encryption and decryption versions this bootstrap writes, not an empty parameter list.
+3. R10-BH-3 — rendered per-tenant key config must list minimum encryption and decryption versions `1` through `64`, covering the bootstrap epoch and later trims. An empty parameter list is not allowed. Version `1` alone is not allowed, because it would deny the successor trim.
 4. R10-BH-5 — set the TLS secret volume `defaultMode` to `0400`, and set the container memory swap limit equal to the memory limit.
 5. R10-BH-7 — the readiness command must fail unless health JSON reports version `2.6.2`, `initialized` true, and `sealed` false.
-6. R10-BH-8 — lower the listener `max_request_size` and `max_request_json_memory` so both fit under the 1Gi pod memory limit with headroom.
+6. R10-BH-8 — keep listener `max_request_size` at 67108864 and `max_request_json_memory` at 134217728. Their sum fits under the 1Gi pod limit and still accepts a head near the 30MiB cap.
 7. R10-BH-13 and R10-EC-3 — registry recovery must return null when the recovered snapshot deserializes to null, including `ArgumentNullException`, and still return null for `JsonException`.
 8. R10-BH-17 — zero the `DecryptAsync` request body in `finally`.
 9. R10-VG-1 through R10-VG-6 — add the filed tests: newer current-original registry restore, non-JSON registry target bytes, sealed skeleton detachment and oversize rejection, published-trust `ReadCurrentOriginalAsync` vectors, real-authority unissued accept and mismatch, and a null `RejectedUnissuedReplacement` after the healthy issue.

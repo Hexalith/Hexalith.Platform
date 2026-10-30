@@ -315,3 +315,79 @@ xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
         src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
         tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(665,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileCompositionOwnsPrivateSecretsAndDeletesItsWorkspaceOnHostDisposalAsync()
         --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OnlySelectedRetentionDisablesDiscoveryGarbageCollectionAsync(selected: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/retention-discovery-e8b54b0b4dc4417a9a7153898836cdfd/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionDiscoveryTests.cs(54,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OnlySelectedRetentionDisablesDiscoveryGarbageCollectionAsync(Boolean selected)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OnlySelectedRetentionDisablesDiscoveryGarbageCollectionAsync(selected: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/retention-discovery-c0690873feee4400ae32e27293e2a7a3/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRetentionDiscoveryTests.cs(54,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OnlySelectedRetentionDisablesDiscoveryGarbageCollectionAsync(Boolean selected)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication [FAIL]
+      Shouldly.ShouldAssertException : PlatformAppModel.Prepare(options).Count
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(638,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ActualDaprCliListenersAndTokensRemainServerScopedAsync [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/98a7e9cc1f2242e89a4f3e27d23ff9a4/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(202,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ActualDaprCliListenersAndTokensRemainServerScopedAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/a8ff27a4ca2444c7a4fbae391e7dfd8b/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(46,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(180,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-isolation-69a7bdb445564c9fab582237ec76fe90/run-0/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(44,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(180,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+Cancelling... (Press Ctrl+C again to terminate)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedCompositionKeepsRunDiscoveryPortsSharedStateAndApiCredentialsAsync [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-signed-review-c1300c3af22545ac87798c5a94821f23/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(47,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(121,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(164,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(464,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedCompositionKeepsRunDiscoveryPortsSharedStateAndApiCredentialsAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '60430d37795fb7df0bdbabc8324349aace035eca39d10c86743f6860422e9bd7')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 113, Errors: 0, Failed: 38, Skipped: 3, Not Run: 0, Time: 574.969s

@@ -70,9 +70,9 @@ public sealed partial class PlatformAppModelTests
         string[] Scopes(string file) => ((YamlSequenceNode)((YamlMappingNode)Yaml(File.ReadAllText(Path.Combine(rendered, file))).Documents[0].RootNode)
             .Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
         string[] stateScopes = Scopes("statestore.yaml");
-        stateScopes.ShouldBe(["eventstore", "memories", "tenants", "tenants-api"]);
+        stateScopes.ShouldBe(["eventstore", "memories", "memories-domain-service", "tenants", "tenants-api"]);
         stateScopes.ShouldNotContain("memories-access-telemetry");
-        Scopes("pubsub.yaml").ShouldBe(["eventstore", "memories", "tenants"]);
+        Scopes("pubsub.yaml").ShouldBe(["eventstore", "memories", "memories-domain-service", "tenants"]);
         Scopes("telemetry-state.yaml").ShouldBe(["memories-access-telemetry"]);
     }
 
@@ -286,7 +286,7 @@ public sealed partial class PlatformAppModelTests
                 ReleaseSnapshotHashes = new Dictionary<string, string>(options.ReleaseSnapshotHashes) { [alternateIdentity] = options.ReleaseSnapshotHashes[identity] },
             };
         }
-        PlatformAppModel.Prepare(options).Count.ShouldBe(6);
+        PlatformAppModel.Prepare(options).Count.ShouldBe(7);
         if (value == "hash") options = options with { ReleaseSnapshotHashes = new Dictionary<string, string>(options.ReleaseSnapshotHashes) { [identity] = new string('f', 64) } };
         else if (value == "commit") options = options with { ReleaseCommits = new Dictionary<string, string>(options.ReleaseCommits) { [identity] = new string('d', 40) } };
         else
@@ -395,7 +395,7 @@ public sealed partial class PlatformAppModelTests
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
         try
         {
-            PlatformCompositionOptions release = PackageOptions();
+            PlatformCompositionOptions release = PackageGraphOptions();
             SourceMapping mapping = release.Mapping with
             {
                 Entries = [.. release.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", release.PlatformRoot)],
@@ -426,7 +426,7 @@ public sealed partial class PlatformAppModelTests
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure);
             builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore")
                 .GetProjectMetadata().ProjectPath.ShouldBe(release.EventStoreSeedProject);
-            builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).Count().ShouldBe(6);
+            builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).Count().ShouldBe(7);
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
             IDistributedApplicationBuilder refused = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(refused, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
@@ -635,7 +635,7 @@ public sealed partial class PlatformAppModelTests
     public void PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication()
     {
         PlatformCompositionOptions options = PackageOptions();
-        PlatformAppModel.Prepare(options).Count.ShouldBe(6);
+        PlatformAppModel.Prepare(options).Count.ShouldBe(7);
         string file = Path.Combine(options.PlatformRoot, "supplied-eventstore.json");
         string original = File.ReadAllText(Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json"));
         JsonNode document = JsonNode.Parse(original)!;
@@ -646,7 +646,7 @@ public sealed partial class PlatformAppModelTests
         failure.Message.ShouldContain(file + ": eventstore: modules[0]:");
         failure.Message.ShouldContain("authoritative release snapshot"); builder.Resources.ShouldBeEmpty();
         File.WriteAllText(file, original);
-        PlatformAppModel.Prepare(options with { DeclarationPaths = [file] }).Count.ShouldBe(6);
+        PlatformAppModel.Prepare(options with { DeclarationPaths = [file] }).Count.ShouldBe(7);
     }
 
     [Fact]

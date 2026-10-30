@@ -85,7 +85,8 @@ def render_policy(enrollment, tenant, scope):
         'path "' + transit + '/keys/' + key + '" {\n  capabilities = ["read"]\n}\n'
         'path "' + transit + '/keys/' + key + '/rotate" {\n  capabilities = ["update"]\n}\n'
         'path "' + transit + '/keys/' + key + '/config" {\n  capabilities = ["update"]\n'
-        '  allowed_parameters = {\n    "min_decryption_version" = [1]\n    "min_encryption_version" = [1]\n  }\n}\n'
+        '  allowed_parameters = {\n    "min_decryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n'
+        '    "min_encryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n  }\n}\n'
         'path "' + transit + '/keys/' + key + '/trim" {\n  capabilities = ["update"]\n}\n'
     )
     denies = Path(__file__).with_name('custody-policy.hcl').read_text()
