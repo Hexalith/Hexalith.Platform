@@ -12,6 +12,7 @@ evidence = Path(__file__).resolve().parent / "verification"
 evidence.mkdir(exist_ok=True)
 parser = argparse.ArgumentParser()
 parser.add_argument("--mapping-workspace", type=Path, required=True)
+parser.add_argument("--start-at")
 arguments = parser.parse_args()
 mapping = arguments.mapping_workspace / "source-mapping"
 environment = dict(os.environ)
@@ -23,6 +24,7 @@ environment.update({
     "AfterMicrosoftNETSdkTargets": str(mapping / "SourceMapping.final.targets"),
     "HEXALITH_SOURCE_MAPPING_HASH": json.loads((mapping / "mapping.json").read_text())["ContentHash"],
     "Configuration": "Debug",
+    "HEXALITH_CATALOG_HTTP_EVIDENCE_PATH": str(evidence / "http-ingress.json"),
 })
 flags = ["-c", "Debug", "-m:1", "--nologo", "-p:RestoreForceEvaluate=true", "-p:GeneratePackageOnBuild=false",
          "-p:UseHexalithProjectReferences=true", "-p:UseNuGetDeps=false", "-p:HexalithEventStoreFromSource=true",
@@ -39,7 +41,8 @@ lanes = [
     ("Platform.Composition", ["PlatformRoutingCatalogTests"]),
 ]
 commands = evidence / "source-commands.jsonl"
-commands.write_text("")
+if not arguments.start_at:
+    commands.write_text("")
 
 
 def run(name, args, expect_tests=False):
@@ -54,6 +57,8 @@ def run(name, args, expect_tests=False):
 
 
 verification_id = uuid.uuid4().hex
+if arguments.start_at:
+    lanes = lanes[next(index for index, lane in enumerate(lanes) if lane[0] == arguments.start_at):]
 for lane, classes in lanes:
     assembly = "Hexalith." + lane + ".Tests"
     owner = lane.split(".")[0]

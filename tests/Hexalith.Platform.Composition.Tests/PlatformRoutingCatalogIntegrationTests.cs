@@ -30,8 +30,17 @@ public class PlatformRoutingCatalogIntegrationTests
         };
         string apphost = Path.Combine(root, "apphost.cs");
         bool started = false;
+        bool passed = false;
         try
         {
+            foreach (var server in PlatformAppModel.Prepare(options))
+            {
+                var build = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+                    ["build", server.ProjectPath!, "-c", "Debug", "-m:1", "-p:GeneratePackageOnBuild=false", "--nologo"], root, launch),
+                    TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
+                File.WriteAllText(Path.Combine(evidence, server.ResourceId + "-build.txt"), build.Output + build.ErrorOutput);
+                build.ExitCode.ShouldBe(0, server.ResourceId + ": " + build.Output + build.ErrorOutput);
+            }
             var start = await RunAsync("start", ["--isolated", "--format", "Json"], launch, TimeSpan.FromMinutes(5));
             started = start.ExitCode == 0;
             start.ExitCode.ShouldBe(0, start.Output + start.ErrorOutput);
@@ -59,16 +68,18 @@ public class PlatformRoutingCatalogIntegrationTests
             }
             File.WriteAllBytes(Path.Combine(evidence, "catalog.json"), canonical);
             File.Copy(Path.Combine(catalogDirectory, "receipt.json"), Path.Combine(evidence, "receipt.json"), true);
+            passed = true;
         }
         finally
         {
-            if (started) (await RunAsync("stop", [], null, TimeSpan.FromSeconds(30))).ExitCode.ShouldBe(0);
+            if (started && passed) (await RunAsync("stop", [], null, TimeSpan.FromSeconds(30))).ExitCode.ShouldBe(0);
         }
 
         async Task<CompositionProcessResult> RunAsync(string command, string[] arguments, IReadOnlyDictionary<string, string>? values, TimeSpan timeout)
         {
             var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", [command, .. arguments, "--apphost", apphost, "--non-interactive"], root, values), timeout, TestContext.Current.CancellationToken);
-            File.WriteAllText(Path.Combine(evidence, command + ".log"), result.Output + result.ErrorOutput);
+            string safe = System.Text.RegularExpressions.Regex.Replace(result.Output + result.ErrorOutput, "([?&]t=)[^\\s\\\"&]+", "$1[redacted]");
+            File.WriteAllText(Path.Combine(evidence, command + ".txt"), safe);
             return result;
         }
     }
