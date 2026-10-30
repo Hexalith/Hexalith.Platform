@@ -134,9 +134,11 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
                 _ = await custody.ReadGuardAdmissionAsync(tenant, head.Head, signingIntent, token).ConfigureAwait(false);
             }
             // Legacy in-head originals remain readable. Old archived entries need an explicit complete migration; absence never invents a refusal.
-            var rejectedOriginal = head.Head.GuardAttempts.Values.SingleOrDefault(value => value.Transition.Operation == GovernanceGuardOperation.ReplaceAttestation
+            var matches = head.Head.GuardAttempts.Values.Where(value => value.Transition.Operation == GovernanceGuardOperation.ReplaceAttestation
                 && value.Transition.Batch?.Capability == proposed && value.Receipt.SigningRequestId == signingId && value.Receipt.DetachedJwsDigest == signature
-                && value.Receipt.Status is "Blocked" or "Stale");
+                && value.Receipt.Status is "Blocked" or "Stale").Take(2).ToArray();
+            if (matches.Length > 1) { return null; }
+            var rejectedOriginal = matches.Length == 1 ? matches[0] : null;
             if (rejectedOriginal is null)
             {
                 var candidates = head.Head.GuardAdmissions.Where(value => value.Value.Transition.Operation == GovernanceGuardOperation.ReplaceAttestation

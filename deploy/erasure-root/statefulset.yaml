@@ -5,6 +5,7 @@ metadata:
   namespace: erasure-root
 data:
   erasure-root.hcl: |
+    disable_mlock = true
     ui = false
     api_addr = "https://erasure-root.erasure-root.svc:8200"
     cluster_addr = "https://erasure-root-0.erasure-root.erasure-root.svc:8201"
@@ -44,6 +45,7 @@ spec:
     - name: cluster
       port: 8201
       targetPort: 8201
+      # Raft only. Client namespaces are not granted 8201.
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -105,6 +107,8 @@ spec:
             - name: tls
               mountPath: /bao/tls
               readOnly: true
+            - name: scratch
+              mountPath: /tmp
           readinessProbe:
             exec:
               command:
@@ -125,6 +129,8 @@ spec:
         - name: tls
           secret:
             secretName: erasure-root-tls
+        - name: scratch
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: custody

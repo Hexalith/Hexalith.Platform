@@ -1,0 +1,72 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "bed12810dac2492c3f77f40b1cef0baa",
+  "ruleId": "HXR027",
+  "resource": "eventstore",
+  "appId": "eventstore",
+  "status": "fault-InvalidOperationException;stage=owner-preparation",
+  "unreadyResources": [
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "eventstore",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8709652+00:00",
+      "processId": 228582
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8710875+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8710959+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8711021+00:00",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8711077+00:00",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-30T15:26:59.8712158+00:00",
+      "processId": 228745
+    }
+  ],
+  "failingTask": null,
+  "blockingRunId": null
+}

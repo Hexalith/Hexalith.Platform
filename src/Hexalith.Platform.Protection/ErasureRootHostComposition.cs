@@ -76,7 +76,7 @@ public static class ErasureRootHostComposition
         services.AddSingleton<IDeletionCapabilityRevocationAuthenticator>(provider => new ErasureRootRecordingRevocationAuthenticator(
             new DaprRevocationAuthenticatorAdapter(inventory, new DaprSecretsInvoker(provider.GetRequiredService<DaprClient>()), TimeProvider.System), Authority(provider, installation, value => value.RegistrarAuthority)));
         services.AddHttpClient("hexalith-erasure-root", client => { client.BaseAddress = new(installation.Endpoint); client.Timeout = TimeSpan.FromSeconds(30); })
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false });
+            .ConfigurePrimaryHttpMessageHandler(() => OpenBaoErasureRootStore.CreatePinnedHandler(installation.Native.TrustedCaCertificatePem));
         bool observer = configuration.GetValue<bool>("EventStore:PayloadProtection:QualificationObserver");
         if (!observer && installation.QualificationNativeControls is { } controls)
         { services.AddSingleton(provider => new ProtectionQualificationFaults(provider.GetRequiredService<DaprClient>(), controls.Cell, controls.EnrollmentId, controls.Operations.ToHashSet(StringComparer.Ordinal))); }

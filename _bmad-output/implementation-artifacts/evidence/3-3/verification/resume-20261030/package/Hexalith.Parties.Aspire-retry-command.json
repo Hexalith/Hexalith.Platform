@@ -1,0 +1,23 @@
+[
+  "dotnet",
+  "pack",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Parties/src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj",
+  "-c",
+  "Release",
+  "-m:1",
+  "--artifacts-path",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/builds/Parties",
+  "--output",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/feed",
+  "-p:GeneratePackageOnBuild=false",
+  "-p:UseHexalithProjectReferences=false",
+  "-p:UseNuGetDeps=true",
+  "-p:RestoreConfigFile=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/nuget.config",
+  "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds",
+  "--nologo",
+  "-p:HexalithEventStoreVersion=3.128.5-story33.1",
+  "-p:HexalithTenantsVersion=5.11.2-story33.1",
+  "-p:HexalithPartiesVersion=2.0.1-story33.1",
+  "-p:HexalithMemoriesVersion=3.0.11-story33.1",
+  "-p:HexalithPartiesAspireVersion=2.0.1-story33.1"
+]

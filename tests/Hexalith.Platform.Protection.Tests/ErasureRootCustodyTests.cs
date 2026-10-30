@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.EventStore.Contracts.Security;
@@ -300,5 +301,113 @@ public sealed class ErasureRootCustodyTests
         var request = Request([root]);
         (await _custody.ConsumeAsync(request, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Consumed);
         (await _custody.LookupAsync(request with { Targets = [new("tenant-a", "changed", "explicit-alias")] }, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+    }
+
+    [Fact]
+    public async Task PostCasAuthorizationFailureRollsTheHolderBackAndALaterUnwrapSucceeds()
+    {
+        var root = await RootAsync();
+        var token = TestContext.Current.CancellationToken;
+        _authorization.UnwrapAuthorizationsRemaining = 1;
+        (await _custody.UnwrapAsync(root, "holder-rolled-back", cancellationToken: token)).ShouldBeNull();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
+        _authorization.UnwrapAuthorizationsRemaining = int.MaxValue;
+        var holder = await _custody.UnwrapAsync(root, "holder-rolled-back", cancellationToken: token);
+        holder.ShouldNotBeNull();
+        holder.Dispose();
+        (await _custody.CompleteHolderAsync(root, holder, cancellationToken: token)).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task DecryptFailureAfterHolderCommitRollsTheUnissuedHolderBack()
+    {
+        var root = await RootAsync();
+        var token = TestContext.Current.CancellationToken;
+        _store.Failure = "decrypt";
+        (await _custody.UnwrapAsync(root, "holder-decrypt", cancellationToken: token)).ShouldBeNull();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
+        _store.Failure = null;
+        (await _custody.UnwrapAsync(root, "holder-decrypt", cancellationToken: token)).ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task ConfirmationReadFailureAfterHolderCommitRollsTheUnissuedHolderBack()
+    {
+        var root = await RootAsync();
+        var token = TestContext.Current.CancellationToken;
+        int reads = 0;
+        _store.ReadObserved = () => { if (++reads == 2) { _store.Failure = "read"; } };
+        (await _custody.UnwrapAsync(root, "holder-confirm", cancellationToken: token)).ShouldBeNull();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task PrefixOnlyReadinessDecryptRefusesBeforeAnyHeadWrite()
+    {
+        var token = TestContext.Current.CancellationToken;
+        _store.DecryptSubstitution = new byte[32];
+        (await _custody.PreflightWrapAsync(Identity(), "preflight", 0, token)).ShouldBeFalse();
+        _store.CasCount.ShouldBe(0);
+        _store.DecryptSubstitution = null;
+        (await _custody.PreflightWrapAsync(Identity(), "preflight", 0, token)).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void NonAsciiHeadKeysKeepOrdinalHashUnderAReorderingCulture()
+    {
+        var previous = CultureInfo.CurrentCulture;
+        var previousUi = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo? selected = null;
+            foreach (var candidate in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            {
+                CultureInfo.CurrentCulture = candidate;
+                CultureInfo.CurrentUICulture = candidate;
+                string[] cultureOrder = ["ä", "b"];
+                Array.Sort(cultureOrder, Comparer<string>.Default);
+                string[] ordinalOrder = ["ä", "b"];
+                Array.Sort(ordinalOrder, StringComparer.Ordinal);
+                if (!cultureOrder.SequenceEqual(ordinalOrder)) { selected = candidate; break; }
+            }
+            selected.ShouldNotBeNull();
+            CultureInfo.CurrentCulture = selected;
+            CultureInfo.CurrentUICulture = selected;
+            var ordinal = new SortedDictionary<string, string>(StringComparer.Ordinal) { ["ä"] = "a", ["b"] = "b" };
+            var head = new ErasureRootHead("tenant-a", _installation.StoreId, _installation.EnrollmentId, 1, [], [], [], [], []) { QualificationAttempts = ordinal };
+            var restored = JsonSerializer.Deserialize<ErasureRootHead>(JsonSerializer.SerializeToUtf8Bytes(head, ErasureRootCustody.Json), ErasureRootCustody.Json)!;
+            ErasureRootCustody.Hash(restored.QualificationAttempts).ShouldBe(ErasureRootCustody.Hash(ordinal));
+            var culture = new SortedDictionary<string, string> { ["ä"] = "a", ["b"] = "b" };
+            ErasureRootCustody.Hash(culture).ShouldNotBe(ErasureRootCustody.Hash(ordinal));
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+            CultureInfo.CurrentUICulture = previousUi;
+        }
+    }
+
+    [Fact]
+    public async Task DuplicateAdmissionArchiveKeyReturnsNullInsteadOfThrowing()
+    {
+        var token = TestContext.Current.CancellationToken;
+        var store = new ErasureRootStoreFixture();
+        string scope = "tenant-a:protection:deletion-consumption-v23|deletion-consumption-v23";
+        string digest = new string('B', 64);
+        store.Enroll(_installation, "tenant-a", scope, digest);
+        var transition = new AnchoredStateTransition(scope, 0, 1, digest, new string('C', 64), [1, 2, 3]);
+        byte[] payload = JsonSerializer.SerializeToUtf8Bytes(transition);
+        string id = Convert.ToHexString(SHA256.HashData(payload));
+        (await store.CreateArchiveAsync("tenant-a", id, payload, token)).ShouldBeTrue();
+        var head = await store.HeadAsync("tenant-a");
+        head.Anchors[scope].AdmissionArchives[id] = id;
+        store.ReplaceHead("tenant-a", head);
+        var custody = new ErasureRootCustody(store, _installation, new ErasureRootAuthorizationFixture());
+        (await custody.ReadAsync("tenant-a", token)).ShouldNotBeNull();
+        head = await store.HeadAsync("tenant-a");
+        head.Anchors[scope].Admissions[id] = transition;
+        head.Anchors[scope].AdmissionArchives[id] = id;
+        store.ReplaceHead("tenant-a", head);
+        (await custody.ReadAsync("tenant-a", token)).ShouldBeNull();
     }
 }

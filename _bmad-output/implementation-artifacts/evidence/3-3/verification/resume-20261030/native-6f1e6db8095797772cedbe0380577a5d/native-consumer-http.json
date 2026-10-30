@@ -1,0 +1,30 @@
+{
+  "runId": "6f1e6db8095797772cedbe0380577a5d",
+  "qualification": "read-only actual owned-runtime diagnostic; credentials kept in memory",
+  "observations": [
+    {
+      "resourceId": "tenants-api",
+      "method": "GET",
+      "pathTemplate": "/api/tenants/{syntheticTenant}",
+      "authenticatedSurface": "agent",
+      "privateApplicationChannelPresented": false,
+      "status": 200
+    },
+    {
+      "resourceId": "memories",
+      "method": "GET",
+      "pathTemplate": "/api/v1/tenants/{syntheticTenant}",
+      "authenticatedSurface": "agent",
+      "privateApplicationChannelPresented": false,
+      "status": 401
+    },
+    {
+      "resourceId": "memories",
+      "method": "GET",
+      "pathTemplate": "/api/v1/tenants/{syntheticTenant}",
+      "authenticatedSurface": "agent",
+      "privateApplicationChannelPresented": true,
+      "status": 200
+    }
+  ]
+}

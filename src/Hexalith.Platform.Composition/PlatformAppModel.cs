@@ -123,7 +123,11 @@ public static class PlatformAppModel
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
-            System.Diagnostics.ProcessStartInfo probe = CompositionProcess.CreateStartInfo("docker", ["manifest", "inspect", server.Image!], options.PlatformRoot, null);
+            IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
+#if HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION
+            arguments = PlatformLoopbackRegistryProbe.Arguments(server.Image!, options.Mapping.Mode, builder.Environment.IsDevelopment());
+#endif
+            System.Diagnostics.ProcessStartInfo probe = CompositionProcess.CreateStartInfo("docker", arguments, options.PlatformRoot, null);
             CompositionProcessResult result = options.ImageProbeRunner(probe, TimeSpan.FromSeconds(20), CancellationToken.None).GetAwaiter().GetResult();
             if (result.ExitCode != 0 || result.TimedOut) throw new InvalidDataException($"{server.Module.Source}: {PlatformDeclarationSet.Id(server.Module.Declaration)}/{server.ServerId}: image '{server.Image}' is unavailable from its released registry.");
         }
@@ -161,7 +165,8 @@ public static class PlatformAppModel
 #if HEXALITH_PLATFORM_SOURCE_CATALOG
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
-                    servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess));
+                    servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
+                    servers.Single(server => server.ResourceId == "memories").Environment["APP_API_TOKEN"]));
 #endif
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
@@ -331,7 +336,10 @@ public static class PlatformAppModel
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
-                        if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore") resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
+                        if (hasGateway && server.ResourceId == "memories")
+                            resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", "http://127.0.0.1:" + ports.Http);
+                        else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
+                            resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects["tenants"].GetEndpoint("http"));
                     }

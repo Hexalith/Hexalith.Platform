@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 2,
+	"mediaType": "application/vnd.oci.image.manifest.v1+json",
+	"config": {
+		"mediaType": "application/vnd.oci.image.config.v1+json",
+		"digest": "sha256:4df5c34dc41256fc4ed293482cb34281e17d133077e9aa3c6a87fda60a356c65",
+		"size": 5528
+	},
+	"layers": [
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:759efa4719c9a44e7f2561a03bff2434dd66e99c916d2e4d50b055bedf554144",
+			"size": 3625395
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:964ae3503686ef4eeee7318a649cfc799fd655a5c4b18cb8aa192611b4cbb889",
+			"size": 948
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:6577e1d2b27e8b5f279db362288e87913100e4752f44a15e7d3daaa8d271a5e0",
+			"size": 198653
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:5e61c876e61530d1da2b99556cf8484f0fbe0b26b5721584ba9f393c1a4a54d9",
+			"size": 12415971
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:766c91354b275669e574ec8032781ff8115ac1db6272c8d9700b222bf3f1d536",
+			"size": 100
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+			"size": 32
+		},
+		{
+			"mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+			"digest": "sha256:8bfa4f5e3c401cd5345ac2f54a6fbe530d7f3b229c1ab44b07f79e0380d9b7b5",
+			"size": 603
+		}
+	],
+	"annotations": {
+		"com.docker.official-images.bashbrew.arch": "amd64",
+		"org.opencontainers.image.base.digest": "sha256:f765c92e59538d44c6946f8073bdbffd2e8d5916981161faed1b30aa0ef0c2c5",
+		"org.opencontainers.image.base.name": "alpine:3.21",
+		"org.opencontainers.image.created": "2026-10-21T21:13:28Z",
+		"org.opencontainers.image.revision": "74654c612ee06275377d483dc4e134e57b463e9e",
+		"org.opencontainers.image.source": "https://github.com/redis/docker-library-redis.git#74654c612ee06275377d483dc4e134e57b463e9e:alpine",
+		"org.opencontainers.image.url": "https://hub.docker.com/_/redis",
+		"org.opencontainers.image.version": "7.4.11-alpine"
+	}
+}

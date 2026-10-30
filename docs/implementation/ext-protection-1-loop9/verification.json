@@ -1,0 +1,31 @@
+{
+  "record": "EXT-PROTECTION-1",
+  "loop": 9,
+  "status": "in-progress",
+  "acceptedTarget": null,
+  "acceptedProfile": null,
+  "acceptedDate": null,
+  "availability": null,
+  "nativeFiveCaseRerun": false,
+  "builds": [
+    {
+      "project": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "configuration": "Debug",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "project": "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "configuration": "Debug",
+      "buildProjectReferences": false,
+      "warnings": 0,
+      "errors": 0
+    }
+  ],
+  "tests": [
+    {"dll": "Hexalith.Platform.Protection.Tests.dll", "filter": "store, custody, rejected-issue, host, loop3, loop5, loop7, custody-occurrence", "passed": 99, "failed": 0},
+    {"dll": "Hexalith.Platform.Protection.Tests.dll", "filter": "FullyQualifiedName~ErasureRoot", "passed": 258, "failed": 0, "skipped": 6},
+    {"dll": "Hexalith.EventStore.Server.Tests.dll", "classes": ["PublishedTrustReplacementAuthorityTests", "InteractionOccurrenceRegistryActorTests"], "passed": 116, "failed": 0},
+    {"command": "python3 eng/ext-protection-1/test_bootstrap.py", "passed": 10, "failed": 0}
+  ]
+}

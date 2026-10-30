@@ -1,0 +1,18 @@
+[
+  "dotnet",
+  "pack",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj",
+  "-c",
+  "Release",
+  "-m:1",
+  "--artifacts-path",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/builds/EventStore",
+  "--output",
+  "/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/feed",
+  "-p:GeneratePackageOnBuild=false",
+  "-p:UseHexalithProjectReferences=false",
+  "-p:UseNuGetDeps=true",
+  "-p:RestoreConfigFile=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/nuget.config",
+  "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/artifacts/story33-private-package/platform/references/Hexalith.Builds",
+  "--nologo"
+]

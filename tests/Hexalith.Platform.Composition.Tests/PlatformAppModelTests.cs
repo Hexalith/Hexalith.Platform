@@ -567,12 +567,16 @@ public sealed partial class PlatformAppModelTests : IDisposable
         string apphost = Path.Combine(Root, "apphost.cs");
         string workspace = Path.Combine(Path.GetTempPath(), "platform-file-prebuild-" + Guid.NewGuid().ToString("N"));
         using PlatformCompositionWorkspace prebuildWorkspace = new(workspace);
-        IReadOnlyDictionary<string, string>? launchEnvironment = null;
+        string manifest = Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json");
+        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
+        await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken);
+        Dictionary<string, string> launchEnvironment = new(SourceMappingMaterializer.Environment(mapping, workspace))
+        {
+            ["HEXALITH_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
+            ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
+        };
         if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PREBUILD_SOURCE") == "1")
         {
-            string manifest = Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json");
-            SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
-            await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken);
             string log = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_SOURCE_PREBUILD_LOG") ?? Path.Combine(workspace, "prebuild.log");
             File.WriteAllText(log, "Sequential selected owner builds using verified source mapping " + mapping.ContentHash + Environment.NewLine);
             foreach (PlatformServerBinding server in PlatformAppModel.Prepare(Options() with { Mapping = mapping }))
@@ -582,12 +586,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
                 File.AppendAllText(log, server.ResourceId + Environment.NewLine + build.Output + build.ErrorOutput);
                 build.ExitCode.ShouldBe(0, server.ResourceId + ": " + build.Output + build.ErrorOutput);
             }
-            launchEnvironment = new Dictionary<string, string>(SourceMappingMaterializer.Environment(mapping, workspace))
-            {
-                ["HEXALITH_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
-                ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
-                ["Platform__UsePrebuiltProjects"] = "true",
-            };
+            launchEnvironment["Platform__UsePrebuiltProjects"] = "true";
         }
         bool ownsHost = false;
         try

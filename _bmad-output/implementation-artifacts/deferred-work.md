@@ -1562,6 +1562,37 @@
   summary: A setup timeout after candidate issuance may discard the issued RunId (medium, unverified).
   evidence: `CompositionEngine.ReportSetupTimeoutAsync` always passes a null run ID, and `ModuleCommandExecutionService` (around line 1260) sets `ownedRunId = expired.RunId`. To settle it, check whether `startupToken` can be cancelled while a session exists and `session.Plan.ExecutionTiming` is null (for example, batch entry two after the per-entry reset). If it can, the issued owner never gets a terminal result.
 
+## Deferred from: code review of spec-5-1-decide-the-staging-evidence-policies (2026-10-30, fourth pass)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Define how staging unblocks when no usable pre-write recovery point exists, including the no-baseline reset (medium, partly unverified).
+  target_story: 5.10
+  evidence: Policy L176-185 require a reset for no-baseline or unproven-readability writes from the earliest pre-write point, and L230-231 keep later candidates blocked on missing points or failed restores, with no escape path. Without a production baseline that point is an empty pre-install state, which may not meet the architecture's usable-recovery-point definition (compatible release and configuration identity). Settle in Stories 5.7/5.10 whether an empty-state point is usable or a fresh-install rehearsal serves as the no-baseline reset, and which Administrator-authorized path re-establishes staging.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Bind retained-data branch proof (named-recovery qualification) to the qualifying E2E attempt and its age (medium if true, unverified).
+  target_story: 5.9
+  evidence: Policy L62-79 age only E2E attempts, and L132-134 make named-recovery qualification separate recovery evidence with no stated age or binding to the latest E2E attempt. The architecture's precondition 9 and Release modes row refuse stale compatibility evidence. Settle in Stories 5.9/5.11 whether the named-recovery rehearsal must come from, or bind to, the qualifying attempt's recovery point and 24-hour age.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Define when a staging candidate counts as adopted while its production attempt is running (medium).
+  target_story: 5.10
+  evidence: The architecture's Staging reset row, restated at policy L187-190, makes an earlier candidate non-adoptable once a later candidate's staging attempt starts. If that happens while the earlier candidate's production attempt runs, the policy would close its decision as superseded and could reset its staging writes behind production's new baseline. Stories 5.10/5.11 must define whether admission or an in-flight production attempt counts as adoption.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Align epics.md Stories 5.4, 5.10 and 5.11 acceptance criteria with the staging evidence policy v1 (medium).
+  evidence: epics.md Story 5.10 restores "the recovery point cut at the start of the unadopted candidate's attempt" and keeps only points a pending staging reset references. The policy restores the earliest pre-write point since the last verified reset, retains it while a reset may still be required, and adds same-candidate rerun resets. Story 5.11 lacks refusal of superseded decisions. Implementers working only from epics.md would build the narrower behavior. This extends the existing epics.md policy-reference deferral; needs correct-course.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Cover a reserved candidate's rerun after a later candidate has started in the Administrator reservation definition (medium).
+  target_story: 5.10
+  evidence: Extends the existing "Define Administrator reservation of an earlier staging candidate" entry. If reserved candidate A reruns after candidate B's staging attempt has started, policy L187-190 does not say whether A's rerun start supersedes B, or how a reservation expires or is revoked.
+
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-7-withdraw-attached-runs-and-keep-failure-retention.md`
   summary: Release or cancel OwnerRun's native barrier during failure-path fixture disposal.
   evidence: Existing blockNative scenarios and the added ordering tests can fail before native-release; DisposeAsync ends the attachment and waits 20 seconds while the native child remains blocked until its execution timeout. This fixture behavior predates the fifth-pass change.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Apply the Story 5.1 immutability fix to the candidate and attachment policy v1 (low).
+  target_story: 2.1
+  evidence: docs/contracts/candidate-and-attachment-policy-v1.md calls itself immutable, but `8b7a1fea` reached origin/main and `642b5bdb` then rewrote it under the same identifier (+77/−50) with no pinned revision. Story 5.1 adopted wording (decision 2026-10-30) stating when the text becomes fixed and requiring adopters to bind the exact Platform revision; apply the same wording in the owning story.

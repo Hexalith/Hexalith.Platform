@@ -74,9 +74,6 @@ class BootstrapRedirectTests(unittest.TestCase):
                     transport.assert_not_called()
 
 
-if __name__ == '__main__':
-    unittest.main()
-
 class PreparedReadinessTests(unittest.TestCase):
     def test_probe_uses_verified_https_native_health_and_never_listening_tcp(self):
         source = (Path(__file__).resolve().parents[2] / 'deploy/erasure-root/statefulset.yaml').read_text()
@@ -187,3 +184,111 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                 self.assertEqual(requests, [])
             finally:
                 server.shutdown(); server.server_close(); thread.join(timeout=2)
+
+    def test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary(self):
+        import hashlib
+        value = self.valid()
+        scope = required_scopes('tenant-a')[0]
+        text = bootstrap.render_policy(value, 'tenant-a', scope)
+        digest = hashlib.sha256(b'tenant-a').hexdigest()
+        self.assertNotIn('tenants/*', text)
+        self.assertNotIn('encrypt/*', text)
+        self.assertIn('erc-heads/data/tenants/' + digest, text)
+        self.assertIn('erc-transit/encrypt/epoch-a', text)
+        self.assertNotIn('epoch-b', text)
+        self.assertIn('path "erc-transit/export/*"', text)
+        self.assertIn('path "erc-transit/backup/*"', text)
+        self.assertIn('path "erc-transit/restore/*"', text)
+        root = Path(__file__).resolve().parents[2] / 'deploy/erasure-root'
+        shared = (root / 'custody-policy.hcl').read_text()
+        self.assertNotIn('tenants/*', shared)
+        self.assertNotIn('encrypt/*', shared)
+        stateful = (root / 'statefulset.yaml').read_text()
+        self.assertIn('disable_mlock = true', stateful)
+        self.assertIn('emptyDir: {}', stateful)
+        self.assertIn('-ca-cert=/bao/tls/ca.crt', stateful)
+        policy = (root / 'network-policy.yaml').read_text()
+        self.assertNotIn('hexalith.com/erc-client', policy)
+        client = policy.split('kubernetes.io/metadata.name: hexalith', 1)[1].split('podSelector:', 1)[0]
+        self.assertIn('8200', client)
+        self.assertNotIn('8201', client)
+        namespace = (root / 'namespace.yaml').read_text()
+        self.assertIn('pod-security.kubernetes.io/enforce: restricted', namespace)
+
+    def test_apply_installs_non_deletable_keys_policies_and_reads_heads_back(self):
+        import os
+        import ssl
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); cert = root / 'cert.pem'; key = root / 'key.pem'
+            subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', str(key), '-out', str(cert), '-days', '1',
+                            '-subj', '/CN=127.0.0.1', '-addext', 'subjectAltName=IP:127.0.0.1'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            class Native(BaseHTTPRequestHandler):
+                records = []
+                policies = {}
+                heads = {}
+                mode = 'ok'
+                def _body(self):
+                    length = int(self.headers.get('Content-Length', 0) or 0)
+                    return self.rfile.read(length) if length else b''
+                def _json(self, payload, status=200):
+                    raw = json.dumps(payload).encode(); self.send_response(status)
+                    self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)
+                def do_GET(self): self._dispatch('GET', self._body())
+                def do_POST(self): self._dispatch('POST', self._body())
+                def _dispatch(self, method, body):
+                    Native.records.append((method, self.path, body))
+                    if self.path.endswith('/sys/health'):
+                        self._json({'version': '2.6.2', 'initialized': True, 'sealed': False}); return
+                    if '/sys/policies/acl/' in self.path:
+                        if method == 'POST':
+                            Native.policies[self.path] = json.loads(body)['policy']; self.send_response(204); self.end_headers(); return
+                        if Native.mode == 'policy-missing':
+                            self.send_response(404); self.end_headers(); return
+                        text = 'different' if Native.mode == 'policy-mismatch' else Native.policies[self.path]
+                        self._json({'policy': text}); return
+                    if '/data/tenants/' in self.path:
+                        if method == 'POST':
+                            Native.heads[self.path] = json.loads(body)['data']; self.send_response(204); self.end_headers(); return
+                        head = dict(Native.heads[self.path])
+                        if Native.mode == 'head-mismatch': head['Epoch'] = 2
+                        self._json({'data': {'data': head, 'metadata': {'version': 1}}}); return
+                    self.send_response(204); self.end_headers()
+                def log_message(self, *args): pass
+            server = HTTPServer(('127.0.0.1', 0), Native)
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); context.load_cert_chain(cert, key); server.socket = context.wrap_socket(server.socket, server_side=True)
+            thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+            def run(apply, mode):
+                Native.mode = mode; Native.records.clear(); Native.policies.clear(); Native.heads.clear()
+                value = self.valid(); value['address'] = 'https://127.0.0.1:' + str(server.server_port)
+                path = root / 'enrollment.json'; path.write_text(json.dumps(value))
+                command = ['python3', str(Path(bootstrap.__file__)), '--enrollment', str(path)]
+                if apply: command.append('--apply')
+                environment = dict(os.environ, ERC_BOOTSTRAP_TOKEN='synthetic-local-test-credential', SSL_CERT_FILE=str(cert))
+                return subprocess.run(command, env=environment, capture_output=True, text=True, timeout=20)
+            try:
+                prepared = run(False, 'ok')
+                self.assertEqual(prepared.returncode, 0, prepared.stdout + prepared.stderr)
+                self.assertEqual(Native.records, [])
+                applied = run(True, 'ok')
+                self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
+                self.assertEqual(json.loads(applied.stdout)['status'], 'BootstrappedNotQualified')
+                keys = [json.loads(body) for method, path, body in Native.records if method == 'POST' and '/keys/epoch-' in path]
+                self.assertEqual(len(keys), 2)
+                self.assertTrue(all(item['deletion_allowed'] is False for item in keys))
+                self.assertTrue(Native.policies)
+                self.assertTrue(all('tenants/*' not in text and 'encrypt/*' not in text for text in Native.policies.values()))
+                missing = run(True, 'policy-missing')
+                self.assertEqual(missing.returncode, 1, missing.stdout + missing.stderr)
+                self.assertIn('DependencyNotAvailable', missing.stdout)
+                mismatch = run(True, 'policy-mismatch')
+                self.assertEqual(mismatch.returncode, 1, mismatch.stdout + mismatch.stderr)
+                self.assertIn('DependencyNotAvailable', mismatch.stdout)
+                head = run(True, 'head-mismatch')
+                self.assertEqual(head.returncode, 1, head.stdout + head.stderr)
+                self.assertIn('DependencyNotAvailable', head.stdout)
+            finally:
+                server.shutdown(); server.server_close(); thread.join(timeout=2)
+
+if __name__ == '__main__':
+    unittest.main()

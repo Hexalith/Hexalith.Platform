@@ -64,6 +64,43 @@ def enrollment(path):
     return value
 
 
+def policy_name(tenant, scope):
+    return 'erc-' + tenant + '-' + hashlib.sha256(scope.encode()).hexdigest()[:32]
+
+
+def render_policy(enrollment, tenant, scope):
+    key = enrollment['nativeKeys'][tenant]
+    digest = hashlib.sha256(tenant.encode()).hexdigest()
+    head = enrollment['headMount']
+    transit = enrollment['transitMount']
+    grants = (
+        '# tenant ' + tenant + ' scope ' + scope + '\n'
+        'path "' + head + '/data/tenants/' + digest + '" {\n  capabilities = ["read", "update"]\n}\n'
+        'path "' + head + '/data/archives/' + digest + '/*" {\n  capabilities = ["read", "create"]\n}\n'
+        'path "' + transit + '/encrypt/' + key + '" {\n  capabilities = ["update"]\n}\n'
+        'path "' + transit + '/decrypt/' + key + '" {\n  capabilities = ["update"]\n}\n'
+        'path "' + transit + '/rewrap/' + key + '" {\n  capabilities = ["update"]\n}\n'
+        'path "' + transit + '/keys/' + key + '" {\n  capabilities = ["read"]\n}\n'
+        'path "' + transit + '/keys/' + key + '/rotate" {\n  capabilities = ["update"]\n}\n'
+        'path "' + transit + '/keys/' + key + '/config" {\n  capabilities = ["update"]\n'
+        '  allowed_parameters = {\n    "min_decryption_version" = []\n    "min_encryption_version" = []\n  }\n}\n'
+        'path "' + transit + '/keys/' + key + '/trim" {\n  capabilities = ["update"]\n}\n'
+    )
+    denies = Path(__file__).with_name('custody-policy.hcl').read_text()
+    if 'tenants/*' in denies or 'encrypt/*' in denies or 'tenants/*' in grants or 'encrypt/*' in grants:
+        raise ValueError('Shared custody policy must not grant every tenant')
+    return grants + denies
+
+
+def policy_text(response):
+    if isinstance(response, dict) and isinstance(response.get('policy'), str):
+        return response['policy']
+    data = response.get('data') if isinstance(response, dict) else None
+    if isinstance(data, dict) and isinstance(data.get('policy'), str):
+        return data['policy']
+    raise ValueError('Prepared custody policy readback missing')
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--enrollment', type=Path, required=True)
@@ -80,6 +117,8 @@ def main(argv=None):
         credential = os.environ.get(args.credential_reference[4:])
         if not credential:
             raise ValueError('DependencyNotAvailable: bootstrap credential reference')
+        prepared = [(tenant, scope, policy_name(tenant, scope), render_policy(value, tenant, scope))
+                    for tenant, scopes in value['genesisAnchors'].items() for scope in scopes]
 
         def call(method, path, body=None):
             data = None if body is None else json.dumps(body, separators=(',', ':')).encode()
@@ -100,13 +139,22 @@ def main(argv=None):
         call('POST', value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True})
         for tenant, key in value['nativeKeys'].items():
             call('POST', value['transitMount'] + '/keys/' + key,
-                 {'type': 'aes256-gcm96', 'derived': True, 'exportable': False, 'allow_plaintext_backup': False})
+                 {'type': 'aes256-gcm96', 'derived': True, 'exportable': False, 'allow_plaintext_backup': False, 'deletion_allowed': False})
+        for _, _, name, text in prepared:
+            call('POST', 'sys/policies/acl/' + name, {'policy': text})
+            if policy_text(call('GET', 'sys/policies/acl/' + name)) != text:
+                raise ValueError('Prepared custody policy readback mismatch')
+        for tenant, _ in value['nativeKeys'].items():
             head = {'TenantId': tenant, 'StoreId': value['storeId'], 'EnrollmentId': value['enrollmentId'], 'Epoch': 1,
                     'Targets': {}, 'Erased': {}, 'Manifests': {}, 'LifecycleOutcomes': {},
                     'Anchors': {scope: {'Revision': 0, 'Digest': digest, 'Admissions': {}, 'Completed': {}}
                                 for scope, digest in value['genesisAnchors'][tenant].items()}, 'Pending': None}
-            call('POST', value['headMount'] + '/data/tenants/' + hashlib.sha256(tenant.encode()).hexdigest(),
-                 {'options': {'cas': 0}, 'data': head})
+            path = value['headMount'] + '/data/tenants/' + hashlib.sha256(tenant.encode()).hexdigest()
+            call('POST', path, {'options': {'cas': 0}, 'data': head})
+            read = call('GET', path)
+            data = read.get('data') if isinstance(read, dict) else None
+            if not isinstance(data, dict) or data.get('data') != head:
+                raise ValueError('CAS-0 head readback mismatch')
         print(json.dumps({'status': 'BootstrappedNotQualified', 'tenants': len(value['nativeKeys']), 'copyPolicyQualified': False}))
         return 0
     except Exception:

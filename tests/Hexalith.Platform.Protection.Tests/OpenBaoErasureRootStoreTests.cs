@@ -1,4 +1,10 @@
 using System.Net;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using Shouldly;
 
@@ -138,5 +144,119 @@ public sealed class OpenBaoErasureRootStoreTests
     {
         using var http = new HttpClient { BaseAddress = new(endpoint), Timeout = TimeSpan.FromSeconds(5) };
         Should.Throw<ArgumentException>(() => new OpenBaoErasureRootStore(http, _installation, "env:ERC_TEST"));
+    }
+
+    [Fact]
+    public async Task NonIntegerKeyVersionNameRefusesTrimVerification()
+    {
+        string variable = "ERC_TRIM_NAME_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, "component-test-credential");
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((request, _) =>
+            {
+                if (request.RequestUri!.AbsolutePath == "/v1/sys/health")
+                { return ErasureRootTransportHandler.Json("{\"version\":\"2.6.2\",\"initialized\":true,\"sealed\":false}"); }
+                return ErasureRootTransportHandler.Json(JsonSerializer.Serialize(new { data = new {
+                    type = "aes256-gcm96", derived = true, exportable = false, allow_plaintext_backup = false, deletion_allowed = false,
+                    latest_version = 2, min_available_version = 2, min_decryption_version = 2, min_encryption_version = 2,
+                    keys = new Dictionary<string, int> { ["beta"] = 1 } } }));
+            });
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
+            (await store.VerifyTrimAsync("tenant", 2, Token)).ShouldBeFalse();
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    [Fact]
+    public async Task NullRewrapCiphertextRefusesBeforePrefixComparison()
+    {
+        string variable = "ERC_REWRAP_NULL_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, "component-test-credential");
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((_, _) => ErasureRootTransportHandler.Json("{\"data\":{\"batch_results\":[{\"ciphertext\":null}]}}"));
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
+            await Should.ThrowAsync<InvalidOperationException>(() => store.RewrapAsync("tenant", 2, [new("vault:v1:a", "YQ==")], Token));
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    [Fact]
+    public void MissingCaPinRefusesBeforeASocket()
+    {
+        Should.Throw<ArgumentException>(() => new OpenBaoErasureRootStore(new Uri("https://127.0.0.1/"), _installation, "env:ERC_TEST"));
+    }
+
+    [Fact]
+    public async Task MatchingPrivateCaReceivesTheTokenAndADifferentCaDoesNot()
+    {
+        var (leaf, matching) = IssueCa("matching-ca");
+        var (otherLeaf, different) = IssueCa("different-ca");
+        using (otherLeaf)
+        using (leaf)
+        {
+            string token = "erc-pin-token-" + Guid.NewGuid().ToString("N");
+            string seen = await ExchangeAsync(leaf, matching, token);
+            seen.ShouldContain(token);
+            string refused = await ExchangeAsync(leaf, different, token);
+            refused.ShouldNotContain(token);
+        }
+    }
+
+    private async Task<string> ExchangeAsync(X509Certificate2 leaf, string pem, string token)
+    {
+        using var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        var server = Task.Run(async () =>
+        {
+            using var tcp = await listener.AcceptTcpClientAsync(Token);
+            await using var ssl = new SslStream(tcp.GetStream(), false);
+            try
+            {
+                await ssl.AuthenticateAsServerAsync(new SslServerAuthenticationOptions
+                {
+                    ServerCertificate = leaf,
+                    ClientCertificateRequired = false,
+                    EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                }, Token);
+                var buffer = new byte[8192];
+                int count = await ssl.ReadAsync(buffer, Token);
+                await ssl.WriteAsync("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"u8.ToArray(), Token);
+                return Encoding.ASCII.GetString(buffer, 0, count);
+            }
+            catch (Exception) { return ""; }
+        });
+        string variable = "ERC_PIN_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, token);
+        try
+        {
+            using var store = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{port}/"), _installation with { TrustedCaCertificatePem = pem }, "env:" + variable, TimeSpan.FromSeconds(5));
+            try { await store.ReadHeadAsync("tenant", Token); }
+            catch (HttpRequestException) { }
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); listener.Stop(); }
+        return await server.WaitAsync(TimeSpan.FromSeconds(8), Token);
+    }
+
+    private static (X509Certificate2 Leaf, string CaPem) IssueCa(string name)
+    {
+        using var caKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var caRequest = new CertificateRequest("CN=" + name, caKey, HashAlgorithmName.SHA256);
+        caRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+        caRequest.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.CrlSign, true));
+        caRequest.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(caRequest.PublicKey, false));
+        using var ca = caRequest.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(2));
+        using var leafKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var leafRequest = new CertificateRequest("CN=127.0.0.1", leafKey, HashAlgorithmName.SHA256);
+        var san = new SubjectAlternativeNameBuilder();
+        san.AddIpAddress(IPAddress.Loopback);
+        leafRequest.CertificateExtensions.Add(san.Build());
+        leafRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, false));
+        using var issued = leafRequest.Create(ca, DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(1), [1, 2, 3, 4, 5, 6, 7, 8]);
+        return (issued.CopyWithPrivateKey(leafKey), ca.ExportCertificatePem());
     }
 }
