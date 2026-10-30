@@ -79,7 +79,8 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             string digest = Hash(new { identity, operationId, expectedLifecycleRevision });
             if (!await authorization.AuthorizeAsync(identity.TenantId, operationId, "WrapDek", digest, token).ConfigureAwait(false)) { return false; }
             var read = await ReadAsync(identity.TenantId, token).ConfigureAwait(false);
-            return read is { } current && current.Head.Pending is null && !current.Head.Erased.ContainsKey(TargetId(identity))
+            return read is { } current && await ValidateOccurrenceWriteSetAsync(identity.TenantId, current.Head, token).ConfigureAwait(false)
+                && current.Head.Pending is null && !current.Head.Erased.ContainsKey(TargetId(identity))
                 && (!current.Head.Targets.TryGetValue(TargetId(identity), out var existing) || existing.Registration.Identity == identity
                     && existing.Registration.OperationId == operationId && existing.Registration.ExpectedRevision == expectedLifecycleRevision);
         }
@@ -101,7 +102,7 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             {
                 if (!await authorization.AuthorizeAsync(identity.TenantId, operationId, "WrapDek", digest, cancellationToken).ConfigureAwait(false)) { return null; }
                 var current = await ReadAsync(identity.TenantId, cancellationToken).ConfigureAwait(false);
-                if (current is not { } read || read.Head.Pending is not null) { return null; }
+                if (current is not { } read || read.Head.Pending is not null || !await ValidateOccurrenceWriteSetAsync(identity.TenantId, read.Head, cancellationToken).ConfigureAwait(false)) { return null; }
                 string id = TargetId(identity);
                 if (read.Head.Erased.ContainsKey(id)) { return null; }
                 if (read.Head.Targets.TryGetValue(id, out var prior))
@@ -342,14 +343,15 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
             string id = TargetId(receipt.Target);
             head.Erased.Add(id, new(head.Targets[id].Registration, receipt, pending.ReservationReceiptId, pending.SuccessorEpoch));
         }
-        head.Manifests.Add(pending.Request.Capability.BatchId, pending with { Survivors = null, SurvivorArchive = null });
+        var completedOriginal = pending with { Survivors = null, SurvivorArchive = null, CompletingQualificationCallDigest = ErasureRootQualificationCallScope.Current };
+        head.Manifests.Add(pending.Request.Capability.BatchId, completedOriginal);
         var terminal = head with { Epoch = pending.SuccessorEpoch, Targets = pending.Survivors!, Pending = null };
         if (!await SaveAsync(tenant, version, terminal, token).ConfigureAwait(false)) { return null; }
         // The terminal receipt is returned only from a fresh native read after the irreversible native version inventory check.
         var observed = await ReadAsync(tenant, token).ConfigureAwait(false);
         if (observed is not { } final || final.Head.Pending is not null || !final.Head.ManifestArchives.TryGetValue(pending.Request.Capability.BatchId, out var pointer)) { return null; }
         var original = await ReadManifestAsync(tenant, pending.Request.Capability.BatchId, pointer, final.Head.Epoch, token).ConfigureAwait(false);
-        return Hash(original) == Hash(pending with { Survivors = null, SurvivorArchive = null })
+        return Hash(original) == Hash(completedOriginal)
             ? new(tenant, pending.Request.Capability.BatchId, pending.ReservationReceiptId, DeletionManifestProviderState.Consumed, original.Receipts) : null;
     }
 
@@ -480,8 +482,29 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         return (snapshot.Version, head);
     }
 
+    private async Task<bool> ValidateOccurrenceWriteSetAsync(string tenant, ErasureRootHead head, CancellationToken token)
+    {
+        if (head.SourceOriginals.Count + head.Occurrences.Count + head.SourceReservations.Count + head.SealedOriginals.Count > 0)
+        {
+            string operation = head.OccurrenceIndexRoot is null ? "MigrateOccurrenceIndex" : "RetainOccurrenceIndex";
+            string digest = Hash(new { head.OccurrenceIndexRoot, head.SourceOriginals, head.Occurrences, head.SourceReservations, head.SealedOriginals });
+            if (!await authorization.AuthorizeAsync(tenant, installation.EnrollmentId, operation, digest, token).ConfigureAwait(false))
+            { return false; }
+            foreach (var entry in head.SourceOriginals)
+            {
+                var value = entry.Value;
+                if (!ErasureRootOccurrenceBindings.ValidEnrollment(value, value.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(value.Binding.Identity), value.Binding.Identity.Target)
+                    || value.Binding.Identity.Target.TenantId != tenant || entry.Key != ErasureRootOccurrenceBindings.Id(value.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(value.Binding.Identity)))
+                { throw new InvalidOperationException("Exact legacy source migration required."); }
+            }
+        }
+        return true;
+    }
+
     internal async Task<bool> SaveAsync(string tenant, long version, ErasureRootHead head, CancellationToken token)
     {
+        if (!await ValidateOccurrenceWriteSetAsync(tenant, head, token).ConfigureAwait(false))
+        { throw new InvalidOperationException("Explicit current same-ERC occurrence retention/migration authorization required."); }
         var anchors = new SortedDictionary<string, ErasureRootAnchor>(StringComparer.Ordinal);
         foreach (var entry in head.Anchors)
         {
@@ -537,7 +560,25 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         var guardAdmissions = await WriteIndexAsync(tenant, head.GuardAdmissionArchives, head.GuardAdmissions, token).ConfigureAwait(false);
         var guardAttempts = await WriteIndexAsync(tenant, head.GuardAttemptArchives, head.GuardAttempts, token).ConfigureAwait(false);
         var conditionalHolds = await WriteIndexAsync(tenant, head.ConditionalHoldOriginalArchives, head.ConditionalHoldOriginals, token).ConfigureAwait(false);
-        var compact = head with { Anchors = anchors, Manifests = new(StringComparer.Ordinal), ManifestArchives = manifests, Pending = pending,
+        string? occurrenceRoot = head.OccurrenceIndexRoot;
+        var occurrenceIndex = new ErasureRootOccurrenceIndex(store, installation, tenant);
+        foreach (var entry in head.SourceOriginals)
+        {
+            if (!ErasureRootOccurrenceBindings.ValidEnrollment(entry.Value, entry.Value.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(entry.Value.Binding.Identity), entry.Value.Binding.Identity.Target)
+                || entry.Value.Binding.Identity.Target.TenantId != tenant || entry.Key != ErasureRootOccurrenceBindings.Id(entry.Value.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(entry.Value.Binding.Identity)))
+            { throw new InvalidOperationException("Exact legacy source migration required."); }
+            occurrenceRoot = await occurrenceIndex.WriteAsync(occurrenceRoot, "source:" + entry.Key, entry.Value, token).ConfigureAwait(false);
+            string reference = "reference:" + entry.Value.Binding.KeyReference;
+            var priorReference = await occurrenceIndex.ReadAsync<ErasureRootOccurrenceReference>(occurrenceRoot, reference, token).ConfigureAwait(false);
+            var reverse = priorReference is null ? new ErasureRootOccurrenceReference(entry.Key, false)
+                : priorReference with { Ambiguous = priorReference.Ambiguous || priorReference.OccurrenceId != entry.Key };
+            occurrenceRoot = await occurrenceIndex.WriteAsync(occurrenceRoot, reference, reverse, token).ConfigureAwait(false);
+
+        }
+        foreach (var entry in head.Occurrences) { occurrenceRoot = await occurrenceIndex.WriteAsync(occurrenceRoot, "occurrence:" + entry.Key, entry.Value, token).ConfigureAwait(false); }
+        foreach (var entry in head.SourceReservations) { occurrenceRoot = await occurrenceIndex.WriteAsync(occurrenceRoot, "reservation:" + entry.Key, entry.Value, token).ConfigureAwait(false); }
+        foreach (var entry in head.SealedOriginals) { occurrenceRoot = await occurrenceIndex.WriteAsync(occurrenceRoot, "sealed:" + entry.Key, entry.Value, token).ConfigureAwait(false); }
+        var compact = head with { OccurrenceIndexRoot = occurrenceRoot, SourceOriginals = new(StringComparer.Ordinal), Occurrences = new(StringComparer.Ordinal), SourceReservations = new(StringComparer.Ordinal), SealedOriginals = new(StringComparer.Ordinal), Anchors = anchors, Manifests = new(StringComparer.Ordinal), ManifestArchives = manifests, Pending = pending,
             ConditionalHoldOriginalArchives = conditionalHolds, ConditionalHoldOriginals = new(StringComparer.Ordinal),
             GuardSigningIntents = signingIntents, GuardAdmissionArchives = guardAdmissions, GuardAttemptArchives = guardAttempts, GuardAdmissions = new(StringComparer.Ordinal), GuardAttempts = new(StringComparer.Ordinal) };
         // Every metadata CAS crossing Pending must retain its preparation/terminal reservation. Use the
@@ -545,6 +586,38 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         if (!FitsHead(compact) || compact.Pending is { } reserved && !ManifestCapacity(compact, reserved))
         { throw new InvalidOperationException("ERC head capacity unavailable."); }
         return await store.CompareExchangeHeadAsync(tenant, version, JsonSerializer.SerializeToUtf8Bytes(compact, Json), token).ConfigureAwait(false);
+    }
+    internal Task<ErasureRootOccurrence?> ReadOccurrenceAsync(ErasureRootHead head, string id, CancellationToken token)
+        => ReadOccurrenceValueAsync(head, "occurrence:", head.Occurrences, id, token);
+    internal Task<ErasureRootOccurrenceEnrollment?> ReadSourceAsync(ErasureRootHead head, string id, CancellationToken token)
+        => ReadOccurrenceValueAsync(head, "source:", head.SourceOriginals, id, token);
+    internal Task<string?> ReadReservationAsync(ErasureRootHead head, string id, CancellationToken token)
+        => ReadOccurrenceValueAsync(head, "reservation:", head.SourceReservations, id, token);
+    internal Task<string?> ReadSealedAsync(ErasureRootHead head, string id, CancellationToken token)
+        => ReadOccurrenceValueAsync(head, "sealed:", head.SealedOriginals, id, token);
+    internal async Task<ErasureRootOccurrenceEnrollment?> ReadSourceReferenceAsync(ErasureRootHead head, string reference, CancellationToken token)
+    {
+        var reverse = await new ErasureRootOccurrenceIndex(store, installation, head.TenantId).ReadAsync<ErasureRootOccurrenceReference>(head.OccurrenceIndexRoot, "reference:" + reference, token).ConfigureAwait(false);
+        if (reverse is { Ambiguous: false })
+        {
+            var enrolled = await ReadSourceAsync(head, reverse.OccurrenceId, token).ConfigureAwait(false);
+            if (enrolled?.Binding.KeyReference != reference) { throw new InvalidOperationException("Reverse source identity conflict."); }
+            return enrolled;
+        }
+        if (reverse is { Ambiguous: true }) { return null; }
+        var candidates = head.SourceOriginals.Values.Select(value => value.Binding)
+            .Where(value => value.KeyReference == reference).DistinctBy(value => Hash(value)).ToArray();
+        if (candidates.Length != 1) { return null; }
+        var binding = candidates[0];
+        var value = await ReadSourceAsync(head, ErasureRootOccurrenceBindings.Id(binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(binding.Identity)), token).ConfigureAwait(false);
+        return value?.Binding == binding ? value : null;
+    }
+    private async Task<T?> ReadOccurrenceValueAsync<T>(ErasureRootHead head, string kind, SortedDictionary<string, T> values, string id, CancellationToken token) where T : class
+    {
+        if (values.TryGetValue(id, out var legacy)) { return legacy; }
+        var value = await new ErasureRootOccurrenceIndex(store, installation, head.TenantId).ReadAsync<T>(head.OccurrenceIndexRoot, kind + id, token).ConfigureAwait(false);
+        if (value is not null) { values.Add(id, value); }
+        return value;
     }
     internal async Task<SortedDictionary<string, AnchoredStateTransition>> ReadHistoryAsync(string tenant, string scope, ErasureRootAnchor anchor, CancellationToken token)
         => await ErasureRootArchives.ReadTransitionsAsync(store, tenant, scope, anchor, true, token).ConfigureAwait(false);
@@ -624,6 +697,56 @@ public sealed class ErasureRootCustody(IErasureRootStore store, ErasureRootInsta
         if (!head.ManifestArchives.TryGetValue(batch, out var pointer)) { return null; }
         var retained = await ReadManifestAsync(tenant, batch, pointer, head.Epoch, token).ConfigureAwait(false);
         head.Manifests.Add(batch, retained); return retained;
+    }
+    internal Task<ErasureRootNativePolicy> ReadNativePolicyAsync(string tenant, CancellationToken token) => store.ReadPolicyAsync(tenant, token);
+    internal async Task<System.Text.Json.Nodes.JsonNode?> ReadNativeCallResultAsync(string tenant, ProtectionQualificationNativeCall call, CancellationToken token)
+    {
+        if (call.OperationId is null || call.RequestSha256 is null) { return null; }
+        if (!await authorization.AuthorizeAsync(tenant, call.Id, "ReadNativeCallOriginal", Hash(call), token).ConfigureAwait(false)) { return null; }
+        var read = await ReadAsync(tenant, token).ConfigureAwait(false);
+        return read is { } current ? await new ErasureRootOccurrenceIndex(store, installation, tenant).ReadAsync<System.Text.Json.Nodes.JsonObject>(current.Head.QualificationEvidenceIndexRoot, "call-result:" + Hash(call), token).ConfigureAwait(false) : null;
+    }
+    internal async Task RetainNativeCallResultAsync(string tenant, ProtectionQualificationNativeCall call, System.Text.Json.Nodes.JsonObject result, CancellationToken token)
+    {
+        if (call.OperationId is null || call.RequestSha256 is null) { throw new InvalidOperationException("Exact admitted call identity required."); }
+        for (int attempt = 0; attempt < 16; attempt++)
+        {
+            if (!await authorization.AuthorizeAsync(tenant, call.Id, "RetainNativeCallOriginal", Hash(call), token).ConfigureAwait(false)) { throw new InvalidOperationException("Native original retention permission unavailable."); }
+            var read = await ReadAsync(tenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current native original authority required.");
+            var index = new ErasureRootOccurrenceIndex(store, installation, tenant);
+            string key = "call-result:" + Hash(call);
+            var prior = await index.ReadAsync<System.Text.Json.Nodes.JsonObject>(read.Head.QualificationEvidenceIndexRoot, key, token).ConfigureAwait(false);
+            if (prior is not null)
+            { if (!System.Text.Json.Nodes.JsonNode.DeepEquals(prior, result)) { throw new InvalidOperationException("Native call original conflict."); } return; }
+            string root = await index.WriteAsync(read.Head.QualificationEvidenceIndexRoot, key, result, token).ConfigureAwait(false);
+            if (await SaveAsync(tenant, read.Version, read.Head with { QualificationEvidenceIndexRoot = root }, token).ConfigureAwait(false)) { return; }
+        }
+        throw new InvalidOperationException("Native call original unresolved.");
+    }
+    internal async Task<ErasureRootEffectBoundaryEvidence?> ReadEffectBoundaryAsync(string tenant, ErasureRootHead head, string call, string boundary, CancellationToken token)
+        => await new ErasureRootOccurrenceIndex(store, installation, tenant).ReadAsync<ErasureRootEffectBoundaryEvidence>(head.QualificationEvidenceIndexRoot, "effect:" + call + ":" + boundary, token).ConfigureAwait(false);
+    internal async Task<ErasureRootEffectBoundaryEvidence?> CaptureEffectBoundaryAsync(string tenant, string call, string boundary, bool recovery, CancellationToken token)
+    {
+        if (call.Length != 64 || call.Any(value => !char.IsAsciiHexDigit(value)) || boundary is not ("before" or "after")) { return null; }
+        for (int attempt = 0; attempt < 16; attempt++)
+        {
+            var read = await ReadAsync(tenant, token).ConfigureAwait(false);
+            if (read is not { } current) { return null; }
+            var prior = await ReadEffectBoundaryAsync(tenant, current.Head, call, boundary, token).ConfigureAwait(false);
+            if (prior is not null) { return prior; }
+            if (recovery) { return null; }
+            var policy = await store.ReadPolicyAsync(tenant, token).ConfigureAwait(false);
+            string state = Hash(new { current.Head.Epoch, current.Head.Pending, current.Head.Targets, current.Head.Erased, current.Head.OccurrenceIndexRoot,
+                current.Head.Occurrences, current.Head.SourceOriginals, current.Head.SourceReservations, current.Head.SealedOriginals, current.Head.ManifestArchives, current.Head.Manifests });
+            var confirmed = await store.ReadHeadAsync(tenant, token).ConfigureAwait(false);
+            if (confirmed?.Version != current.Version || Hash(policy) != Hash(await store.ReadPolicyAsync(tenant, token).ConfigureAwait(false))) { continue; }
+            string fingerprint = Hash(new { CustodyStateSha256 = state, NativePolicy = policy });
+            string receipt = "erc-effect:" + Hash(new { tenant, installation.StoreId, installation.EnrollmentId, call, boundary, fingerprint });
+            var evidence = new ErasureRootEffectBoundaryEvidence(tenant, installation.StoreId, installation.EnrollmentId, call, boundary, state, policy, fingerprint, receipt);
+            string root = await new ErasureRootOccurrenceIndex(store, installation, tenant).WriteAsync(current.Head.QualificationEvidenceIndexRoot, "effect:" + call + ":" + boundary, evidence, token).ConfigureAwait(false);
+            if (await SaveAsync(tenant, current.Version, current.Head with { QualificationEvidenceIndexRoot = root }, token).ConfigureAwait(false)) { return evidence; }
+        }
+        return null;
     }
     internal Task<ErasureRootHeadSnapshot?> ReadObservationVersionAsync(string tenant, CancellationToken token) => store.ReadHeadAsync(tenant, token);
     private async Task<ErasureRootManifest> ReadManifestAsync(string tenant, string batch, string pointer, int epoch, CancellationToken token)

@@ -31,12 +31,36 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
     internal Dictionary<string, ProtectionQualificationNativeCell> CopyCells { get; } = new(StringComparer.Ordinal);
     internal string PublicKeyPem => _key.ExportSubjectPublicKeyInfoPem();
     internal ProtectionTarget[] Targets => _targets;
-    internal ProtectionQualificationPreparationFixture(bool? holdWins = null, IAtomicDeletionManifestProvider? provider = null)
+    internal ProtectionQualificationPreparationFixture(bool? holdWins = null, IAtomicDeletionManifestProvider? provider = null, bool? activationWins = null)
     {
         Consumption = new(provider);
         Engine = new(Consumption);
         var proxies = Substitute.For<IActorProxyFactory>();
         proxies.CreateActorProxy<IDeletionConsumptionActor>(Arg.Any<Dapr.Actors.ActorId>(), Arg.Any<string>(), Arg.Any<ActorProxyOptions>()).Returns(Consumption.Actor);
+        IDeletionConsumptionActor executionConsumption = Consumption.Actor;
+        if (activationWins is { } activateFirst)
+        {
+            var scheduled = Substitute.For<IDeletionConsumptionActor>(); var winner = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            scheduled.RegisterAsync(Arg.Any<DeletionBatchConsumptionRequest>()).Returns(call => Consumption.Invoke(() => Consumption.Actor.RegisterAsync(call.Arg<DeletionBatchConsumptionRequest>())));
+            scheduled.ReserveAndConsumeAsync(Arg.Any<DeletionBatchConsumptionRequest>()).Returns(call => Consumption.Invoke(() => Consumption.Actor.ReserveAndConsumeAsync(call.Arg<DeletionBatchConsumptionRequest>())));
+            scheduled.LookupAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(call => Consumption.Invoke(() => Consumption.Actor.LookupAsync(call.ArgAt<string>(0), call.ArgAt<string>(1))));
+            scheduled.RegisterRevocationAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>()).Returns(async call =>
+            {
+                var envelope = call.Arg<DeletionCapabilityRevocationEnvelope>();
+                if (envelope.KeyVersion == "healthy-key-b" && activateFirst) { await winner.Task.WaitAsync(TestContext.Current.CancellationToken); }
+                var receipt = await Consumption.Invoke(() => Consumption.Actor.RegisterRevocationAsync(envelope));
+                if (envelope.KeyVersion == "healthy-key-b" && !activateFirst) { winner.TrySetResult(); } return receipt;
+            });
+            scheduled.LookupRevocationAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>()).Returns(call => Consumption.Invoke(() => Consumption.Actor.LookupRevocationAsync(call.Arg<DeletionCapabilityRevocationEnvelope>())));
+            scheduled.ActivateAsync(Arg.Any<DeletionReattestationActivation>()).Returns(async call =>
+            {
+                if (!activateFirst) { await winner.Task.WaitAsync(TestContext.Current.CancellationToken); }
+                var result = await Consumption.Invoke(() => Consumption.Actor.ActivateAsync(call.Arg<DeletionReattestationActivation>()));
+                if (activateFirst) { winner.TrySetResult(); } return result;
+            });
+            proxies.CreateActorProxy<IDeletionConsumptionActor>(Arg.Any<Dapr.Actors.ActorId>(), Arg.Any<string>(), Arg.Any<ActorProxyOptions>()).Returns(scheduled);
+            executionConsumption = scheduled;
+        }
         var owner = new DaprDeletionProtectionOwner("tenant-a", proxies, TimeProvider.System);
         var verifier = new PublishedTrustDeletionConsumptionAuthority(new[] { "healthy-key-a", "healthy-key-b" }.Select(version => new PublishedDeletionCapabilityTrust("tenant-a", "DeletionBatchCapabilitySigningKey", version, "qualified-issuer", "protection-audience", "test-anchor", "1", _key.ExportSubjectPublicKeyInfo(), 1, false)).ToArray(), Guard.Owner);
         Consumption.Authority.VerifyDispatchAsync(Arg.Any<DeletionBatchConsumptionRequest>(), Arg.Any<CancellationToken>())
@@ -93,10 +117,12 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
         var observedAt = DateTimeOffset.UtcNow.AddSeconds(-1); var validUntil = observedAt.AddMinutes(20);
         authenticator.VerifyAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(), "component-authenticated-revocation", Arg.Any<CancellationToken>())
             .Returns(call => new DeletionCapabilityRevocationAuthorization(call.Arg<DeletionCapabilityRevocationEnvelope>(), "component-current-authority", observedAt, validUntil));
+        authenticator.VerifyBeforeEffectsAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(call => authenticator.VerifyAsync(call.Arg<DeletionCapabilityRevocationEnvelope>(), call.Arg<string>(), call.Arg<CancellationToken>()));
         var subscriber = new DeletionCapabilityRevocationSubscriber(new("qualified-issuer", "registrar", "tenant-a"), authenticator,
             new DaprDeletionCapabilityCompromiseRegistrar(proxies), new EventStoreDeletionCapabilityGuardRevocationMirror(Guard.Owner), TimeProvider.System);
         var driver = new ProtectionQualificationNativeDriver(Engine.Engine, Consumption.Custody, Engine.Keys, Engine.Source, _native, executionGuard, owner,
-            Consumption.Actor, Signer, subscriber, faults, new HashSet<string> { "source" }, Consumption.Permissions);
+            executionConsumption, Signer, subscriber, faults, new HashSet<string> { "source" }, Consumption.Permissions);
         Runner = new(driver);
     }
     internal async Task InitializeAsync(bool containment = false)
@@ -176,7 +202,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
                 }
                 if (operation is GovernanceGuardOperation.AuthorizeContainment or GovernanceGuardOperation.CommitContainment)
                 { command = command with { ReferenceId = "resource-" + containmentOrdinal, AuthorizationId = "containment-" + containmentOrdinal }; }
-                command = command with { DeletionRequestId = deletionRequest, AuthorizationId = command.AuthorizationId + ":" + deletionRequest + (caseId is "P34" or "P29" ? ":attestation-" + baseBatch.AttestationOrdinal : "") };
+                command = command with { DeletionRequestId = deletionRequest, AuthorizationId = command.AuthorizationId + ":" + deletionRequest + (caseId is "P34" or "P29" or "P33" ? ":attestation-" + baseBatch.AttestationOrdinal : "") };
                 var node = (JsonObject)JsonSerializer.SerializeToNode(command)!;
                 if (operation == GovernanceGuardOperation.RecordViolation)
                 {
@@ -200,7 +226,7 @@ internal sealed class ProtectionQualificationPreparationFixture : IDisposable
             }
             else if (token == "Sign")
             {
-                if (caseId is "P34" or "P29" && compromises > 0) { baseBatch = baseBatch with { AttestationOrdinal = 2, CapabilityKeyVersion = "healthy-key-b", BlockSetRevision = 1 }; attempt = 0; }
+                if (caseId is "P34" or "P29" or "P33" && compromises > 0) { baseBatch = baseBatch with { AttestationOrdinal = 2, CapabilityKeyVersion = "healthy-key-b", BlockSetRevision = 1 }; attempt = 0; }
                 signing = entry.Key; signedBatch = baseBatch; attempt++;
                 args[entry.Key] = (JsonObject)JsonSerializer.SerializeToNode(new DeletionBatchCapabilityV1("qualified-issuer", "protection-audience", "tenant-a", deletionRequest,
                     GovernanceScopeGuardReducer.DestructionSealId("tenant-a", deletionRequest, Guard.Scope), baseBatch.BatchKind, baseBatch.BatchOrdinal, baseBatch.BatchId, baseBatch.ManifestDigest,

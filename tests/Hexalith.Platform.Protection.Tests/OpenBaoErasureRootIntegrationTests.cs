@@ -177,6 +177,48 @@ public sealed class OpenBaoErasureRootIntegrationTests
         (await fixture.Native.CreateArchiveAsync("tenant-a", archived.ArchiveHead!, "changed"u8.ToArray(), Token)).ShouldBeFalse();
         (await fixture.Native.ReadArchiveAsync("tenant-a", archived.ArchiveHead!, Token))!.ShouldBe(originalArchive);
         (await fixture.Native.ReadArchiveAsync("tenant-b", archived.ArchiveHead!, Token)).ShouldBeNull();
+        // Authoritative occurrence retention uses the actual restricted native archive/CAS transport.
+        long indexBytesBefore = fixture.Transport.ArchiveWriteBytes; int indexWritesBefore = fixture.Transport.ArchiveWriteCount;
+        var nativeSources = new List<ErasureRootOccurrenceEnrollment>();
+        for (int batch = 0; batch < 16; batch++)
+        {
+            var indexed = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+            for (int item = 0; item < 16; item++)
+            {
+                int index = batch * 16 + item;
+                char[] referenceBytes = new string('0', 26).ToCharArray(); const string alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; int number = index + 1;
+                for (int offset = 25; number > 0; offset--) { referenceBytes[offset] = alphabet[number & 31]; number >>= 5; }
+                string reference = new(referenceBytes);
+                var identity = new InteractionOccurrenceIdentity(new(root.Identity.TenantId, root.Identity.ObjectId, root.Identity.KeyAlias),
+                    new Hexalith.EventStore.Contracts.Identity.AggregateIdentity("tenant-a", "native-source", "owner-" + index), PayloadProtectionPayloadKind.Event, (ulong)index + 1, "Native.Event", root.Identity.KeyVersion, "candidate-hkdf-sha256-v1");
+                var binding = new Hexalith.EventStore.PayloadProtection.InteractionProtectionBinding(identity, "digest-v1", 1, reference, reference, 1);
+                var enrollment = new ErasureRootOccurrenceEnrollment(binding, root.Identity, root.OperationId, root.ExpectedRevision,
+                    new("native-reference", "digest", "1", "value", new("tenant-a", PlatformKeyPurpose.DigestKey, "digest", "digest-v1", "native", "independent", null, null)), "native-epoch")
+                    { Writer = new("native-source", "writer-" + index, new() { ["partitionKey"] = "tenant-a" }) };
+                string id = ErasureRootOccurrenceBindings.Id(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity));
+                indexed.Head.SourceOriginals.Add(id, enrollment); indexed.Head.Occurrences.Add(id, new(enrollment, root, new string('A', 64), true));
+                indexed.Head.SourceReservations.Add(id, new string('B', 64)); indexed.Head.SealedOriginals.Add(id, new string('C', 64)); nativeSources.Add(enrollment);
+            }
+            (await fixture.Custody.SaveAsync("tenant-a", indexed.Version, indexed.Head, Token)).ShouldBeTrue();
+        }
+        var compactIndex = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        compactIndex.Head.SourceOriginals.ShouldBeEmpty(); compactIndex.Head.Occurrences.ShouldBeEmpty(); compactIndex.Head.SourceReservations.ShouldBeEmpty(); compactIndex.Head.SealedOriginals.ShouldBeEmpty();
+        foreach (int selected in new[] { 0, 127, 255 })
+        {
+            var enrollment = nativeSources[selected]; string id = ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity));
+            int reads = fixture.Transport.PublicStages.Count;
+            ErasureRootCustody.Hash(await fixture.Custody.ReadSourceAsync(compactIndex.Head, id, Token)).ShouldBe(ErasureRootCustody.Hash(enrollment));
+            (fixture.Transport.PublicStages.Count - reads).ShouldBeLessThan(16);
+            (await fixture.Custody.ReadOccurrenceAsync(compactIndex.Head, id, Token))!.CompletionLease.ShouldBeTrue();
+        }
+        var indexedFresh = (await fixture.Custody.ReadAsync("tenant-a", Token))!.Value;
+        ErasureRootCustody.Hash(await fixture.Custody.ReadSourceReferenceAsync(indexedFresh.Head, nativeSources[0].Binding.KeyReference, Token)).ShouldBe(ErasureRootCustody.Hash(nativeSources[0]));
+        string orphanIndex = await new ErasureRootOccurrenceIndex(fixture.Native, fixture.Installation, "tenant-a").WriteAsync(indexedFresh.Head.OccurrenceIndexRoot, "source:uncommitted-native", nativeSources[0], Token);
+        orphanIndex.ShouldNotBe(indexedFresh.Head.OccurrenceIndexRoot);
+        (await fixture.Custody.ReadSourceAsync(indexedFresh.Head, "uncommitted-native", Token)).ShouldBeNull();
+        await Should.ThrowAsync<InvalidOperationException>(() => new ErasureRootOccurrenceIndex(fixture.Native, fixture.Installation, "tenant-b").ReadAsync<ErasureRootOccurrenceEnrollment>(indexedFresh.Head.OccurrenceIndexRoot, "source:uncommitted-native", Token));
+        Console.WriteLine(JsonSerializer.Serialize(new { nativeOccurrences = 256, nativeOwners = 256, archiveWriteBytes = fixture.Transport.ArchiveWriteBytes - indexBytesBefore,
+            archiveWrites = fixture.Transport.ArchiveWriteCount - indexWritesBefore, nativeHeadBytes = (await fixture.Native.ReadHeadAsync("tenant-a", Token))!.Bytes.Length, lookupReadBound = 16, restrictedRuntimePolicy = true }));
         // Current states above the former 8 MiB cliff use real bounded immutable native chunks, including exclusive admission discovery.
         byte[] largeBytes = JsonSerializer.SerializeToUtf8Bytes(new { Records = new string('x', 9 * 1024 * 1024) });
         var large = new AnchoredStateTransition(scope, 2, 3, second.TargetDigest, Convert.ToHexString(SHA256.HashData(largeBytes)), largeBytes);
@@ -230,5 +272,13 @@ public sealed class OpenBaoErasureRootIntegrationTests
             Console.WriteLine(JsonSerializer.Serialize(new { nativeHistoryGeometry = initial, transitions = 8, archiveWriteBytes = actualBytes,
                 archiveWrites = fixture.Transport.ArchiveWriteCount - writes, supportedBytes, nativeHeadBytes = headBytes.Length, restrictedRuntimePolicy = true }));
         }
+        var losingRotation = new ErasureRootCustody(new OpenBaoLostRotationAcknowledgement(fixture.Native), fixture.Installation, new ErasureRootAuthorizationFixture());
+        string effectCall = ErasureRootCustody.Hash("native-pending-rotation-boundary");
+        var beforeRotation = (await losingRotation.CaptureEffectBoundaryAsync("tenant-a", effectCall, "before", false, Token))!;
+        (await losingRotation.ConsumeAsync(OpenBaoNativeCustodyFixture.Manifest([root]), "native-pending-rotation-reservation", Token)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        var pendingRotation = (await losingRotation.ReadAsync("tenant-a", Token))!.Value;
+        pendingRotation.Head.Pending.ShouldNotBeNull(); pendingRotation.Head.Pending.Survivors.ShouldBeNull();
+        var afterRotation = (await losingRotation.CaptureEffectBoundaryAsync("tenant-a", effectCall, "after", false, Token))!;
+        afterRotation.NativePolicy.LatestVersion.ShouldBeGreaterThan(pendingRotation.Head.Epoch); afterRotation.Fingerprint.ShouldNotBe(beforeRotation.Fingerprint);
     }
 }

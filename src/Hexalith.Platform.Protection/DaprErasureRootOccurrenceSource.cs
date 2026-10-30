@@ -8,6 +8,9 @@ namespace Hexalith.Platform.Protection;
 public sealed class DaprErasureRootOccurrenceSource(ErasureRootTenantAuthority source) : IErasureRootOccurrenceSource
 {
     /// <inheritdoc />
+    public Task<bool> VerifyEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken)
+        => source.InvokeAsync<bool>("erc-verify-source-enrollment", new { enrollment }, cancellationToken);
+    /// <inheritdoc />
     public Task<byte[]?> ReadErasedSnapshotSkeletonAsync(Hexalith.EventStore.PayloadProtection.InteractionProtectionBinding binding, string sealedPayloadSha256, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
         => source.InvokeAsync<byte[]>("erc-read-erased-snapshot", new { binding, sealedPayloadSha256, loss }, cancellationToken);
     /// <inheritdoc />

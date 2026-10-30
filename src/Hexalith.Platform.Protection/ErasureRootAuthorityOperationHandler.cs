@@ -14,11 +14,11 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
     IGovernanceScopeGuard guard, IDeletionCapabilityRevocationAuthenticator revocations, string acceptedCopyPolicySha256, TimeProvider clock) : IIndependentOwnerOperationHandler
 {
     /// <inheritdoc />
-    public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["erc-migrate-guard-history", "erc-permission", "erc-occurrence-original", "erc-source-proof", "erc-registrar-proof",
+    public IReadOnlySet<string> Methods { get; } = new HashSet<string>(["erc-verify-source-enrollment", "erc-capture-effect-boundary", "erc-migrate-guard-history", "erc-permission", "erc-occurrence-original", "erc-source-proof", "erc-registrar-proof",
         "erc-current-protocol-evidence", "erc-read-guard", "erc-execute-guard", "erc-lookup-guard-original", "erc-read-no-issue", "erc-register-source-original",
         "erc-read-observer-permissions", "erc-read-permanent-loss", "erc-read-erased-original", "erc-read-erased-snapshot", "erc-register-revocation-original", "erc-read-rejected-issue"], StringComparer.Ordinal);
     /// <inheritdoc />
-    public bool IsReadOnly(string method) => method is not ("erc-migrate-guard-history" or "erc-execute-guard" or "erc-source-proof" or "erc-register-source-original" or "erc-register-revocation-original" or "erc-registrar-proof" or "erc-read-no-issue" or "erc-read-rejected-issue" or "erc-lookup-guard-original");
+    public bool IsReadOnly(string method) => method is not ("erc-capture-effect-boundary" or "erc-migrate-guard-history" or "erc-execute-guard" or "erc-source-proof" or "erc-register-source-original" or "erc-register-revocation-original" or "erc-registrar-proof" or "erc-read-no-issue" or "erc-read-rejected-issue" or "erc-lookup-guard-original");
     /// <inheritdoc />
     public bool RequiresCurrentResultAdmission(string method) => true;
     /// <inheritdoc />
@@ -35,6 +35,14 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
         try { tenant = Tenant(payload, method); }
         catch (Exception) { return null; }
         if (caller.ScopeReference != tenant + "|erc") { return null; }
+        if (method == "erc-verify-source-enrollment")
+        { return await source.VerifyEnrollmentAsync(payload.GetProperty("enrollment").Deserialize<ErasureRootOccurrenceEnrollment>(ErasureRootCustody.Json)!, token).ConfigureAwait(false); }
+        if (method == "erc-capture-effect-boundary")
+        {
+            if (caller.Role != "erc-owner" || current.QualificationBindings is not { } effectGrants
+                || !effectGrants.TryGetValue("erc.allow.CaptureEffectBoundary", out var effectRole) || effectRole != caller.Role) { return null; }
+            return await custody.CaptureEffectBoundaryAsync(tenant, payload.GetProperty("callDigest").GetString()!, payload.GetProperty("boundary").GetString()!, recovery, token).ConfigureAwait(false);
+        }
         if (method == "erc-migrate-guard-history")
         {
             if (!payload.TryGetProperty("operationId", out var operationId) || operationId.GetString() is not { Length: > 0 and <= 2048 }

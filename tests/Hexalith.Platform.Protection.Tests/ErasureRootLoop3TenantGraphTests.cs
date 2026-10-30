@@ -65,6 +65,23 @@ public sealed class ErasureRootLoop3TenantGraphTests
             var absent = new ServiceCollection(); Should.Throw<InvalidOperationException>(() => absent.AddPlatformErasureRootProtection(Configuration(host with { TenantAuthorities = null }))); absent.ShouldBeEmpty();
             var shared = new ServiceCollection(); var sharedMap = new Dictionary<string, ErasureRootTenantAuthorityBindings>(bindings) { ["tenant-b"] = new(a, a, a, a, a) };
             Should.Throw<InvalidOperationException>(() => shared.AddPlatformErasureRootProtection(Configuration(host with { TenantAuthorities = sharedMap }))); shared.ShouldBeEmpty();
+            foreach (var invalid in new[] { host.CapabilityTrust[0] with { Issuer = "" }, host.CapabilityTrust[0] with { PublicAnchorVersion = "" },
+                host.CapabilityTrust[0] with { SubjectPublicKeyInfo = [] }, host.CapabilityTrust[0] with { SubjectPublicKeyInfo = new byte[] { 1, 2, 3 } },
+                host.CapabilityTrust[0] with { TenantId = "Tenant-A" }, host.CapabilityTrust[0] with { TrustProfileRevision = 0 } })
+            {
+                var invalidServices = new ServiceCollection(); int effects = fixture.Store.CasCount;
+                Should.Throw<InvalidOperationException>(() => invalidServices.AddPlatformErasureRootProtection(Configuration(host with { CapabilityTrust = [invalid, host.CapabilityTrust[1]] })));
+                invalidServices.ShouldBeEmpty(); fixture.Store.CasCount.ShouldBe(effects);
+            }
+            using (var wrongCurve = ECDsa.Create(ECCurve.NamedCurves.nistP384))
+            {
+                var invalidServices = new ServiceCollection();
+                Should.Throw<InvalidOperationException>(() => invalidServices.AddPlatformErasureRootProtection(Configuration(host with { CapabilityTrust = [host.CapabilityTrust[0] with { SubjectPublicKeyInfo = wrongCurve.ExportSubjectPublicKeyInfo() }, host.CapabilityTrust[1]] })));
+                invalidServices.ShouldBeEmpty();
+            }
+            var duplicatedTrust = new ServiceCollection();
+            Should.Throw<InvalidOperationException>(() => duplicatedTrust.AddPlatformErasureRootProtection(Configuration(host with { CapabilityTrust = [.. host.CapabilityTrust, host.CapabilityTrust[0]] })));
+            duplicatedTrust.ShouldBeEmpty();
             var services = new ServiceCollection(); services.AddLogging(); services.AddSingleton(native); Environment.SetEnvironmentVariable("EXT_PROTECTION_LOOP4_COMPONENT_NATIVE", "synthetic-component-native"); services.AddPlatformErasureRootProtection(Configuration(host));
             services.Replace(ServiceDescriptor.Singleton<IErasureRootStore>(fixture.Store));
             await using var provider = services.BuildServiceProvider(); var permission = provider.GetRequiredService<IErasureRootAuthorization>();
@@ -75,10 +92,10 @@ public sealed class ErasureRootLoop3TenantGraphTests
             var original = fixture.Enroll();
             foreach (string tenant in installation.NativeKeys.Keys)
             {
-                var enrollment = original with { Binding = original.Binding with { Identity = original.Binding.Identity with { Owner = new AggregateIdentity(tenant, "domain", "owner"), Target = original.Binding.Identity.Target with { TenantId = tenant } } }, RootIdentity = original.RootIdentity with { TenantId = tenant } };
+                var enrollment = original with { Binding = original.Binding with { Identity = original.Binding.Identity with { Owner = new AggregateIdentity(tenant, "domain", "owner"), Target = original.Binding.Identity.Target with { TenantId = tenant } } }, RootIdentity = original.RootIdentity with { TenantId = tenant }, Digest = original.Digest with { InventoryKey = original.Digest.InventoryKey with { TenantId = tenant } } };
                 var read = (await custody.ReadAsync(tenant, token))!.Value; read.Head.SourceOriginals.Add(ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity)), enrollment);
                 (await custody.SaveAsync(tenant, read.Version, read.Head, token)).ShouldBeTrue();
-                (await source.ResolveAsync(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), token)).ShouldBe(enrollment);
+                ErasureRootCustody.Hash(await source.ResolveAsync(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), token)).ShouldBe(ErasureRootCustody.Hash(enrollment));
             }
             // Exercise the registered private actor through Dapr's configured DI activator, with exact tenant authority routing.
             provider.GetRequiredService<IOptions<ActorRuntimeOptions>>().Value.Actors

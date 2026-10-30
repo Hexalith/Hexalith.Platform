@@ -37,6 +37,9 @@ public sealed class DaprSigningTrustAdapter(SecretsRuntimeConfiguration configur
 /// <summary>Revocation proof must echo the evidence digest and event identity.</summary>
 public sealed class DaprRevocationAuthenticatorAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null) : IDeletionCapabilityRevocationAuthenticator
 {
+    /// <inheritdoc/>
+    public Task<DeletionCapabilityRevocationAuthorization?> VerifyBeforeEffectsAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken = default)
+        => VerifyAsync(envelope, signedEvidence, cancellationToken);
     private readonly SecretsDaprSession _session = new(invoker, configuration.CallTimeout ?? TimeSpan.Zero, clock ?? TimeProvider.System);
 
     /// <inheritdoc/>

@@ -6,6 +6,7 @@ namespace Hexalith.Platform.Protection.Tests;
 /// <summary>Synthetic independent original/writer fixture. It compares actual sealed bytes with its separately retained source write; it supplies no installed authority.</summary>
 internal sealed class ErasureRootSourceFixture : IErasureRootOccurrenceSource
 {
+    public Task<bool> VerifyEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken) => RegisterOriginalAsync(enrollment, cancellationToken);
     internal Dictionary<string, ErasureRootOccurrenceEnrollment> Enrollments { get; } = [];
     internal Dictionary<string, InteractionOccurrenceSealedResult> SealedOriginals { get; } = [];
     public Task<byte[]?> ReadErasedSnapshotSkeletonAsync(Hexalith.EventStore.PayloadProtection.InteractionProtectionBinding binding, string sealedPayloadSha256, ErasureRootPermanentLossReceipt loss, CancellationToken token)

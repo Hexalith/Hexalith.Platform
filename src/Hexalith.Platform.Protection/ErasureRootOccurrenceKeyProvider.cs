@@ -16,11 +16,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <summary>Validates actual native digest inventory and current source-write permission before source enrollment or root issue.</summary>
     public async Task<bool> PreflightEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
-        if (!ErasureRootOccurrenceBindings.ValidEnrollment(enrollment, enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), enrollment.Binding.Identity.Target)) { return false; }
-        if (!await custody.PreflightWrapAsync(enrollment.RootIdentity, enrollment.RootOperationId, enrollment.ExpectedLifecycleRevision, token).ConfigureAwait(false)) { return false; }
-        using var digest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
-        return digest is not null && await authorization.AuthorizeAsync(enrollment.Binding.Identity.Target.TenantId, enrollment.Binding.OperationId,
-            "OccurrenceWrite", ErasureRootCustody.Hash(enrollment.Binding), token).ConfigureAwait(false);
+        return await bindings.PreflightAsync(enrollment, token).ConfigureAwait(false);
     }
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveDigestAsync(InteractionOccurrenceIdentity identity, string version, CancellationToken token)
@@ -69,7 +65,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
         for (int attempt = 0; attempt < 16; attempt++)
         {
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-            if (read is not { } current || current.Head.Pending is not null || !current.Head.Occurrences.TryGetValue(id, out var original)
+            if (read is not { } current || current.Head.Pending is not null || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } original)
                 || original.Enrollment.Binding != binding || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(binding.Identity.Target))) { return null; }
             long ordinal = checked(original.ReadOrdinal + 1);
             string holder = "erc-read:" + ErasureRootCustody.Hash(new { binding, ordinal });

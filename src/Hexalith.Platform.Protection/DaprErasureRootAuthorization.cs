@@ -11,6 +11,9 @@ public sealed class DaprErasureRootAuthorization(ErasureRootTenantAuthority auth
     ErasureRootInstallation installation) : IErasureRootAuthorization
 {
     /// <inheritdoc />
+    public Task<ErasureRootEffectBoundaryEvidence?> ReadEffectBoundaryAsync(string tenantId, string callDigest, string boundary, CancellationToken cancellationToken)
+        => authority.InvokeAsync<ErasureRootEffectBoundaryEvidence>("erc-capture-effect-boundary", new { tenantId, callDigest, boundary }, cancellationToken);
+    /// <inheritdoc />
     public Task<ProtectionQualificationObserverPermission?> ReadObserverPermissionAsync(string tenantId, string workloadIdentity, CancellationToken cancellationToken)
         => authority.InvokeAsync<ProtectionQualificationObserverPermission>("erc-read-observer-permissions", new { tenantId, workloadIdentity }, cancellationToken);
     /// <inheritdoc />

@@ -9,6 +9,9 @@ public sealed class ErasureRootRecordingRevocationAuthenticator(IDeletionCapabil
     : IDeletionCapabilityRevocationAuthenticator
 {
     /// <inheritdoc />
+    public Task<DeletionCapabilityRevocationAuthorization?> VerifyBeforeEffectsAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken = default)
+        => actual.VerifyBeforeEffectsAsync(envelope, signedEvidence, cancellationToken);
+    /// <inheritdoc />
     public async Task<DeletionCapabilityRevocationAuthorization?> VerifyAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken)
     {
         var verified = await actual.VerifyAsync(envelope, signedEvidence, cancellationToken).ConfigureAwait(false);

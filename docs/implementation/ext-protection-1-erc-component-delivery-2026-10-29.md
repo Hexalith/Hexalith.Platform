@@ -1,3 +1,5 @@
+> Current status — review round 5 requires corrections. Loop-4 review candidates Platform `6666ec6ee681730af9b904978c1e21b67614ecce` and EventStore `8e6be5f55175e6ba979df43f40c8713a42f5f50d` are withdrawn. Earlier passes/proposals are historical; no new accepted target/profile/date or installed/physical qualification is established.
+
 > Current status — complete loop-4 source candidates and verification are ready for independent review; all earlier review candidates remain withdrawn. No accepted target/profile/date or installed/physical qualification is established.
 
 ## Parent loop-4 source review candidates — 2026-10-30

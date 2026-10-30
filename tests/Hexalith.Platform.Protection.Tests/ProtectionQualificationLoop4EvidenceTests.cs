@@ -26,6 +26,7 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
     public async Task RealHoldSourceOriginalsBindSignedOuterTenantDeletionScopeAndCompleteTargets(string caseId, bool holdWins)
     {
         using var fixture = new ProtectionQualificationPreparationFixture(caseId == "P21" ? holdWins : null); await fixture.InitializeAsync();
+        if (caseId == "P20") { await fixture.SealExpectedSourcesAsync(caseId); }
         var recipes = fixture.Recipes(caseId)[caseId];
         if (caseId == "P20")
         { await fixture.RunAsync(recipes["HoldBeforeDispatch"], caseId, "HoldBeforeDispatch"); await fixture.RunAsync(recipes["RejectManifestDestroy"], caseId, "RejectManifestDestroy"); }
@@ -42,6 +43,12 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
         var observed = new JsonObject();
         ProtectionQualificationNativeProjection.ProjectHolds(observed, head.Head, calls, (JsonObject)JsonSerializer.SerializeToNode(fixture.Guard.State)!);
         await VerifyPythonAsync(new { kind = "hold", observation = observed, targets = fixture.Targets, publicKeyPem = fixture.PublicKeyPem });
+        if (caseId == "P20")
+        {
+            (await fixture.Consumption.Custody.SaveAsync("tenant-a", head.Version, head.Head, TestContext.Current.CancellationToken)).ShouldBeTrue();
+            var complete = await fixture.ObserveAsync(caseId);
+            await VerifyPythonAsync(new { kind = "no-effect", observation = complete, targets = fixture.Targets, publicKeyPem = fixture.PublicKeyPem });
+        }
     }
     [Theory]
     [InlineData("P05")]
@@ -73,7 +80,7 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
         using var signer = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         var observer = new ProtectionQualificationPersistedObserver(fixture.Native, fixture.Consumption.Custody, fixture.Engine.Engine, new HashSet<string> { "source" });
         var service = new ProtectionQualificationRoleService(scope, new(fixture.Consumption.Custody, fixture.Consumption.Permissions), null, observer, fixture.Native, signer,
-            observerPermission: _ => Task.FromResult<ProtectionQualificationObserverPermission?>(new("tenant-a", "erc-v23", "enrollment", "component", scope.Identity, binding, "native", "dapr", "role", "ReadPersistedStateOnly", [], [], [], [], DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1), "independently-verified-component-permission")));
+            observerPermission: _ => Task.FromResult<ProtectionQualificationObserverPermission?>(new("tenant-a", "erc-v23", "enrollment", "component", scope.Identity, binding, "native", "dapr", "role", "ReadPersistedStateOnly", [], [], [], [], DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1), "independently-verified-component-permission") { ComponentBackings = new() { ["source"] = "synthetic-native-source" } }));
         string variable = "LOOP4_ROLE_" + Guid.NewGuid().ToString("N").ToUpperInvariant(); Environment.SetEnvironmentVariable(variable, "synthetic-role-credential");
         await using var app = ProtectionQualificationRoleApplication.Build(service, "env:" + variable); app.Urls.Add("http://127.0.0.1:0");
         try

@@ -19,7 +19,9 @@ namespace Hexalith.Platform.Protection;
 public static class ProtectionQualificationServerExecutable
 {
     /// <summary>Runs only a fully pinned explicit installation. Startup refuses missing inputs; it never performs provisioning or native genesis.</summary>
-    public static async Task<int> RunAsync(string role, string installationFile, string installationSha256, CancellationToken token = default)
+    public static Task<int> RunAsync(string role, string installationFile, string installationSha256, CancellationToken token = default)
+        => RunCoreAsync(role, installationFile, installationSha256, null, token);
+    internal static async Task<int> RunCoreAsync(string role, string installationFile, string installationSha256, Action? signerValidated, CancellationToken token = default)
     {
         try
         {
@@ -38,7 +40,9 @@ public static class ProtectionQualificationServerExecutable
             char[] chars = System.Text.Encoding.UTF8.GetChars(secret);
             try { signer.ImportFromPem(chars); } finally { CryptographicOperations.ZeroMemory(secret); Array.Clear(chars); }
             using var anchor = ECDsa.Create(); anchor.ImportFromPem(System.Text.Encoding.UTF8.GetString(publicBytes));
-            if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(anchor.ExportSubjectPublicKeyInfo())) { return 2; }
+            if (!HasPrivateSigner(signer, anchor)) { return 2; }
+            signerValidated?.Invoke();
+            ProtectionQualificationInputSchema.ValidateInstallation(scope, (role == "observer" ? installed.ReadComponents : installed.SourceComponents).ToHashSet(StringComparer.Ordinal), installed.FaultOperations.ToHashSet(StringComparer.Ordinal));
             using var dapr = new DaprClientBuilder().Build();
             var services = new ServiceCollection(); services.AddLogging();
             // Only bounded content-free owning-worker events reach this private server's console.
@@ -96,11 +100,18 @@ public static class ProtectionQualificationServerExecutable
                     else if (value is System.Text.Json.Nodes.JsonArray array) { foreach (var item in array) { Visit(item); } }
                 }
                 foreach (var value in scope.NativeArguments.Values) { Visit(value); }
+                foreach (var fault in scope.Recipes.Values.SelectMany(value => value.Values).SelectMany(value => value.Before.Concat([value.Effect]).Concat(value.Race is { } race ? [race] : []).Concat(value.After)).Where(value => value.Kind == ProtectionQualificationNativeCallKind.Fault))
+                {
+                    if (!await controls.PreflightAsync(fault.Payload["stepId"]!.GetValue<string>(), fault.Payload["boundary"]!.GetValue<string>(), cancellation).ConfigureAwait(false)) { return false; }
+                }
                 if (references.Count == 0) { return false; }
                 var resolver = provider.GetRequiredService<ErasureRootDigestKeyResolver>();
                 foreach (var reference in references.Values)
                 { if (!await resolver.IsAvailableAsync(reference, cancellation).ConfigureAwait(false)) { return false; } }
-                foreach (string required in new[] { "RetainQualificationSeedOriginal", "RetainQualificationProducerOriginal", "RetainReserveRefusalOriginal" })
+                foreach (string required in new[] { "RetainQualificationSeedOriginal", "RetainQualificationProducerOriginal", "RetainReserveRefusalOriginal",
+                    "WrapDek", "EnrollOccurrence", "OccurrenceWrite", "OccurrenceRead", "RegisterIndependentSourceOriginal", "ReadIndependentSourceOriginal", "VerifyCommittedSourceEnrollment", "ReadOccurrenceBinding", "ReadInstalledRegistryEpoch",
+                    "Reserve", "RetainSealed", "CompleteWriter", "AcquireEncryptionLease", "AcquireCompletionLease", "UnwrapDek", "CompleteRootHolder", "AdmitIndependentSourceReservation", "VerifyNativeEngineSealedOriginal", "ConfirmNativePersistedWriter",
+                    "RetainOccurrenceIndex", "MigrateOccurrenceIndex", "VerifySnapshotEntryManifest", "AcquireSnapshotCompletionLeases", "RetainNativeCallOriginal", "ReadNativeCallOriginal", "CaptureEffectBoundary" })
                 {
                     if (!await permission.AuthorizeAsync(scope.TenantId, scope.BindingDigest, required, ErasureRootCustody.Hash(scope.NativeArguments), cancellation).ConfigureAwait(false)) { return false; }
                 }
@@ -124,6 +135,20 @@ public static class ProtectionQualificationServerExecutable
     /// <summary>Attaches the actual owning provider's completion workers to the role HTTP server lifetime. Observer providers register no mutation workers.</summary>
     public static Microsoft.AspNetCore.Builder.WebApplication BuildApplication(IServiceProvider owner, ProtectionQualificationRoleService service, string credentialReference)
         => ProtectionQualificationRoleApplication.Build(service, credentialReference, owner.GetServices<IHostedService>().ToArray());
+    /// <summary>Proves usable private P-256 signing before constructing any application or native graph.</summary>
+    internal static bool HasPrivateSigner(ECDsa signer, ECDsa anchor)
+    {
+        try
+        {
+            if (signer.ExportParameters(false).Curve.Oid.Value != ECCurve.NamedCurves.nistP256.Oid.Value
+                || anchor.ExportParameters(false).Curve.Oid.Value != ECCurve.NamedCurves.nistP256.Oid.Value
+                || !signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(anchor.ExportSubjectPublicKeyInfo())) { return false; }
+            byte[] challenge = RandomNumberGenerator.GetBytes(32);
+            byte[] signature = signer.SignData(challenge, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+            return anchor.VerifyData(challenge, signature, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+        }
+        catch (CryptographicException) { return false; }
+    }
     private static byte[] Read(string path, string digest)
     {
         if (!Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path) || new FileInfo(path).LinkTarget is not null || new FileInfo(path).Length > 16 * 1024 * 1024)

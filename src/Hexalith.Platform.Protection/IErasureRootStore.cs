@@ -17,6 +17,8 @@ public interface IErasureRootStore
     Task<byte[]> DecryptAsync(string tenantId, ErasureRootCiphertext value, CancellationToken cancellationToken);
     /// <summary>Returns the fresh native latest key version.</summary>
     Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken);
+    /// <summary>Reads actual native transit latest/minimum/trim policy for independent effect evidence.</summary>
+    Task<ErasureRootNativePolicy> ReadPolicyAsync(string tenantId, CancellationToken cancellationToken) => throw new NotSupportedException("Independent native policy evidence required.");
     /// <summary>Rotates once. A lost acknowledgement must be resolved with ReadEpochAsync.</summary>
     Task RotateAsync(string tenantId, CancellationToken cancellationToken);
     /// <summary>Rewraps survivors at an explicit successor epoch without exporting their plaintext.</summary>

@@ -14,7 +14,7 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
     InteractionPayloadProtectionService loadedEngine, IReadOnlySet<string> enrolledReadComponents)
 {
     /// <summary>Reads actual persisted facts and projects the owner-verifier wire fields without performing a native mutation.</summary>
-    public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token, ProtectionQualificationProducerIdentity? expectedProducer = null, IReadOnlySet<string>? expectedOperationIds = null)
+    public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token, ProtectionQualificationProducerIdentity? expectedProducer = null, IReadOnlySet<string>? expectedOperationIds = null, IReadOnlyDictionary<string, string>? componentBackings = null)
     {
         _ = loadedEngine;
         var before = await erasureRoot.ReadObservationVersionAsync(recipe.TenantId, token).ConfigureAwait(false)
@@ -26,6 +26,20 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         { throw new InvalidOperationException("DependencyNotAvailable: current complete ERC observation."); }
         if (before.Version != head.Version) { throw new InvalidOperationException("Native observation changed before original selection."); }
         await ErasureRootObservationSelection.SelectAsync(erasureRoot, head.Head, expectedOperationIds, recipe.CaseId, targets, token).ConfigureAwait(false);
+        ValidateCopyLocations(recipe.Sources, componentBackings);
+        var effectOriginals = new JsonArray();
+        foreach (var operation in head.Head.QualificationOperations.Values)
+        {
+            foreach (var nativeCall in operation.Calls.Values.Where(value => value.Result is JsonObject result && result["effectBefore"] is not null))
+            {
+                string callDigest = ErasureRootCustody.Hash(nativeCall.Call);
+                var first = await erasureRoot.ReadEffectBoundaryAsync(recipe.TenantId, head.Head, callDigest, "before", token).ConfigureAwait(false);
+                var last = await erasureRoot.ReadEffectBoundaryAsync(recipe.TenantId, head.Head, callDigest, "after", token).ConfigureAwait(false);
+                if (first is null || last is null || first.Fingerprint != nativeCall.Result!["effectBefore"]!.GetValue<string>() || last.Fingerprint != nativeCall.Result["effectAfter"]!.GetValue<string>())
+                { throw new InvalidOperationException("Independent exact native rejection boundaries required."); }
+                effectOriginals.Add(new JsonObject { ["Call"] = JsonSerializer.SerializeToNode(nativeCall.Call), ["Before"] = JsonSerializer.SerializeToNode(first), ["After"] = JsonSerializer.SerializeToNode(last) });
+            }
+        }
         var sources = new Dictionary<string, JsonNode>(StringComparer.Ordinal);
         foreach (var reference in recipe.Sources)
         {
@@ -46,8 +60,10 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
                 || ErasureRootCustody.Hash(value) != anchor.Digest))
             { throw new InvalidOperationException("Native observation is not independently current."); }
         }
+        foreach (var value in sources.Values) { await HydrateReferencesAsync(erasureRoot, head.Head, value, token).ConfigureAwait(false); }
         sources.Add("ERC", JsonSerializer.SerializeToNode(head.Head)!);
         var observed = recipe.CaseId is { } sourceCase ? ProtectionQualificationNativeProjection.Project(sourceCase, head.Head, sources, recipe.Sources, targets) : new JsonObject();
+        if (effectOriginals.Count != 0) { observed["rejectedEffectOriginals"] = effectOriginals; }
         if (recipe.CaseId is null) { foreach (var field in recipe.Fields) { observed.Add(field.Key, Project(field.Value, sources, null)); } }
         var copyOriginals = new JsonArray();
         var producers = new Dictionary<string, ProtectionQualificationProducerIdentity>(StringComparer.Ordinal);
@@ -82,6 +98,44 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
             producers.TryAdd(ErasureRootCustody.Hash(matches[0].Producer), matches[0].Producer);
             return matches[0];
         }
+        var copyLocations = new Dictionary<string, JsonObject>(StringComparer.Ordinal);
+        async Task ValidatePurposeAsync(ProtectionQualificationNativeCell cell, ProtectionQualificationProducerOriginal producer)
+        {
+            string location = ProtectionQualificationNativeCell.LocationId(cell);
+            string backing = componentBackings is null ? cell.Component : componentBackings[cell.Component];
+            var locationOriginal = new JsonObject { ["Cell"] = JsonSerializer.SerializeToNode(cell), ["PhysicalBacking"] = backing,
+                ["PhysicalIdentity"] = ProtectionQualificationNativeCell.LocationId(cell with { Component = backing }), ["SourceIdentity"] = location, ["CopyKind"] = cell.CopyKind };
+            copyLocations[location] = locationOriginal;
+            bool direct = producer.CopyPurposes is not null && producer.CopyPurposes.TryGetValue(location, out string? actual) && actual == cell.CopyKind;
+            if (direct) { return; }
+            // Legacy producer frames are accepted only for the one original write, whose purpose
+            // follows actual source enrollment. They cannot certify a cache or a second alias.
+            string legacyPurpose = producer.Bindings[0].Identity.Kind == PayloadProtectionPayloadKind.Snapshot ? "snapshot"
+                : producer.Bindings[0].Identity.Owner.AggregateId == producer.Bindings[0].Identity.Target.AgentInteractionId ? "target-event" : "source-outbox";
+            if (producer.CopyPurposes is null && producer.SourceIdentity == location && legacyPurpose == cell.CopyKind) { return; }
+            if (cell.CopyKind is "backup" or "restored")
+            {
+                var originals = head.Head.QualificationOperations.Values.SelectMany(operation => operation.Calls.Values)
+                    .Where(original => original.Result is not null && original.Call.Kind == (cell.CopyKind == "backup" ? ProtectionQualificationNativeCallKind.Backup : ProtectionQualificationNativeCallKind.Restore)).ToArray();
+                foreach (var original in originals)
+                {
+                    var input = original.Call.Payload.Deserialize<ProtectionQualificationNativeCell>()!;
+                    string destination = cell.CopyKind == "backup" ? input.Key + ":backup" : input.AnchorScope is null ? input.Key + ":restored" : input.Key;
+                    if (ProtectionQualificationNativeCell.LocationId(input with { Key = destination }) != location || producer.CopyPurposes?.ContainsKey(ProtectionQualificationNativeCell.LocationId(input)) is not true
+                        || !enrolledReadComponents.Contains(input.Component)) { continue; }
+                    var raw = await readOnlyNative.GetStateAsync<JsonElement>(input.Component, input.Key + ":native-original:" + ErasureRootCustody.Hash(original.Call), ConsistencyMode.Strong, input.Metadata, token).ConfigureAwait(false);
+                    var retainedCopy = raw.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined ? null : raw.Deserialize<ProtectionQualificationCopyOriginal>();
+                    var document = sources.Single(item => recipe.Sources.TryGetValue(item.Key, out var selected) && ProtectionQualificationNativeCell.LocationId(selected) == location).Value;
+                    if (retainedCopy?.CallDigest != ErasureRootCustody.Hash(original.Call) || retainedCopy.SourceIdentity != ProtectionQualificationNativeCell.LocationId(input)
+                        || retainedCopy.SourceDigest != original.Call.SourceDigest || retainedCopy.SourceDigest != ErasureRootCustody.Hash(document)
+                        || !JsonNode.DeepEquals(retainedCopy.Result, original.Result))
+                    { throw new InvalidOperationException("Independent exact atomic native copy original required."); }
+                    locationOriginal["CopyCall"] = JsonSerializer.SerializeToNode(original.Call); locationOriginal["CopyOriginal"] = JsonSerializer.SerializeToNode(retainedCopy);
+                    locationOriginal["PersistedDocument"] = document.DeepClone(); return;
+                }
+            }
+            throw new InvalidOperationException("Copy purpose must match an authenticated actual producer/native write.");
+        }
         foreach (var source in recipe.Sources.Where(entry => entry.Value.CopyKind is not null))
         {
             var value = sources[source.Key];
@@ -91,11 +145,12 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
                 var carrier = node.Deserialize<ProtectedSnapshotEntriesV2>()!;
                 var bindings = carrier.Entries.Select(entry => head.Head.SourceOriginals.Values.Single(original => original.Binding.KeyReference == entry.KeyReference
                     && original.Binding.Identity.Target == entry.Target && original.SnapshotEntry?.Path == entry.Path).Binding).ToArray();
-                _ = Producer(JsonSerializer.SerializeToUtf8Bytes(carrier), bindings);
+                var mixedProducer = Producer(JsonSerializer.SerializeToUtf8Bytes(carrier), bindings);
+                await ValidatePurposeAsync(source.Value, mixedProducer).ConfigureAwait(false);
                 continue;
             }
             InteractionProtectionBinding binding; byte[] payload;
-            if (source.Value.CopyKind is "source-outbox" or "target-event")
+            if (value is JsonObject persistedDocument && persistedDocument.ContainsKey("Binding") && persistedDocument.ContainsKey("Protected"))
             {
                 var persisted = value.Deserialize<ProtectionQualificationPersistedEvent>()!;
                 binding = persisted.Binding; payload = persisted.Protected.PayloadBytes;
@@ -122,9 +177,11 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
                 || completion.Identity != binding.Identity.Owner || completion.OperationId != binding.OperationId || completion.KeyReference != binding.KeyReference
                 || completion.Occurrence != ErasureRootOccurrenceBindings.Occurrence(binding.Identity) || completion.LifecycleEpoch != binding.LifecycleEpoch)
             { throw new InvalidOperationException("Exact original producer completion required."); }
+            await ValidatePurposeAsync(source.Value, producer).ConfigureAwait(false);
             copyOriginals.Add(new JsonObject { ["CopyId"] = source.Key + ":" + ErasureRootCustody.TargetId(binding.Identity.Target), ["SourceEnrollment"] = JsonSerializer.SerializeToNode(enrollment),
                 ["RegistryOriginal"] = JsonSerializer.SerializeToNode(registry), ["WriterProof"] = JsonSerializer.SerializeToNode(proof), ["ProducerOriginal"] = JsonSerializer.SerializeToNode(producer) });
         }
+        if (copyLocations.Count != 0) { observed["copyLocations"] = new JsonArray(copyLocations.Values.Select(value => (JsonNode)value).ToArray()); }
         if (copyOriginals.Count != 0) { observed["copyOriginals"] = copyOriginals; }
         var snapshotOriginals = new JsonArray(); var seenSnapshots = new HashSet<string>(StringComparer.Ordinal);
         foreach (var source in recipe.Sources)
@@ -187,6 +244,29 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
         return observed;
     }
 
+    internal static void ValidateCopyLocations(IReadOnlyDictionary<string, ProtectionQualificationNativeCell> sources, IReadOnlyDictionary<string, string>? componentBackings = null)
+    {
+        var locations = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var source in sources.Values.Where(value => value.CopyKind is not null))
+        {
+            if (source.CopyKind is not ("source-outbox" or "target-event" or "snapshot" or "cache" or "backup" or "restored")
+                || !locations.Add(ProtectionQualificationNativeCell.LocationId(componentBackings is null ? source : source with { Component = componentBackings.TryGetValue(source.Component, out string? backing) ? backing : throw new InvalidOperationException("Independent physical backing enrollment required.") })))
+            { throw new InvalidOperationException("Distinct independently enrolled physical copy locations required."); }
+        }
+    }
+    internal static async Task HydrateReferencesAsync(ErasureRootCustody custody, ErasureRootHead head, JsonNode? node, CancellationToken token)
+    {
+        if (node is JsonObject obj)
+        {
+            foreach (var item in obj)
+            {
+                if (item.Key is "KeyReference" or "KeyAlias" && item.Value is JsonValue value && value.TryGetValue<string>(out string? reference) && reference is not null)
+                { _ = await custody.ReadSourceReferenceAsync(head, reference, token).ConfigureAwait(false); }
+                await HydrateReferencesAsync(custody, head, item.Value, token).ConfigureAwait(false);
+            }
+        }
+        else if (node is JsonArray array) { foreach (var item in array) { await HydrateReferencesAsync(custody, head, item, token).ConfigureAwait(false); } }
+    }
     private static JsonNode? Project(ProtectionQualificationObservationField field, IReadOnlyDictionary<string, JsonNode> sources, JsonNode? item)
     {
         JsonNode? input = field.Source == "$item" ? item : sources.TryGetValue(field.Source, out var source) ? source : throw new InvalidOperationException("Unenrolled native observation source.");

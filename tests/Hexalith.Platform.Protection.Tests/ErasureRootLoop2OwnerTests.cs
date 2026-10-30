@@ -82,6 +82,35 @@ public sealed class ErasureRootLoop2OwnerTests
         if (Environment.GetEnvironmentVariable("EXT_PROTECTION_P34_VECTOR") is { Length: > 0 } path)
         { await File.WriteAllTextAsync(path, JsonSerializer.Serialize(new { observation = observed, targets = fixture.Targets, publicKeyPem = fixture.PublicKeyPem,
             sourceComponentOnly = true, liveExecuted = false, engineCommit = observed["engineSourceRevision"]!.GetValue<string>(), engineBinarySha256 = observed["engineBinarySha256"]!.GetValue<string>() }), Token); }
+        var captured = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token))!.Value;
+        var audits = captured.Head.QualificationOperations.Values.SelectMany(operation => operation.Calls.Values).Where(call => call.Result?["effectBefore"] is not null).ToArray(); audits.ShouldNotBeEmpty();
+        foreach (var audited in audits) { audited.Result!["effectBefore"] = new string('F', 64); audited.Result["effectAfter"] = new string('F', 64); }
+        (await fixture.Consumption.Custody.SaveAsync("tenant-a", captured.Version, captured.Head, Token)).ShouldBeTrue();
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.ObserveAsync("P34"));
+        var missing = (await fixture.Consumption.Custody.ReadAsync("tenant-a", Token))!.Value;
+        (await fixture.Consumption.Custody.SaveAsync("tenant-a", missing.Version, missing.Head with { QualificationEvidenceIndexRoot = null }, Token)).ShouldBeTrue();
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.ObserveAsync("P34"));
+    }
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task CompiledP33RacesBothActualOwnerOrderingsAndEmitsExactVerifierObservation(bool activationWins)
+    {
+        using var fixture = new ProtectionQualificationPreparationFixture(activationWins: activationWins); await fixture.InitializeAsync(); await fixture.SealExpectedSourcesAsync("P33");
+        var recipes = fixture.Recipes("P33")["P33"];
+        await fixture.RunAsync(recipes["RaceReplacementActivation"], "P33", "RaceReplacementActivation");
+        var activation = fixture.Admitted.Values.Single(call => call.Kind == ProtectionQualificationNativeCallKind.Activate);
+        var activated = fixture.Originals[activation.Id]!.Deserialize<DeletionConsumptionOutcome>()!;
+        var competing = fixture.Admitted.Values.Where(call => call.Kind == ProtectionQualificationNativeCallKind.Compromise).Last();
+        var revoked = fixture.Originals[competing.Id]!["receipt"]!.Deserialize<DeletionCapabilityRevocationReceipt>()!;
+        activated.Status.ShouldBe(activationWins ? DeletionConsumptionStatus.Unconsumed : DeletionConsumptionStatus.ActivationBlockedByReplacementKeyCompromise);
+        (activated.OwnerRevision < revoked.OwnerRevision).ShouldBe(activationWins); revoked.Envelope.KeyVersion.ShouldBe("healthy-key-b");
+        var observed = await fixture.ObserveAsync("P33");
+        observed["activationOutcome"]!["status"]!.GetValue<string>().ShouldBe(activationWins ? "ActivatedThenReplacementBlocked" : "ActivationBlockedByReplacementKeyCompromise");
+        fixture.Consumption.Store.TrimCount.ShouldBe(0); (await fixture.Consumption.Store.HeadAsync("tenant-a")).Targets.Count.ShouldBe(fixture.Targets.Length);
+        if (Environment.GetEnvironmentVariable("EXT_PROTECTION_P33_VECTOR_DIRECTORY") is { Length: > 0 } directory)
+        { await File.WriteAllTextAsync(Path.Combine(directory, activationWins ? "activation-first.json" : "compromise-first.json"), JsonSerializer.Serialize(new { observation = observed, targets = fixture.Targets,
+            publicKeyPem = fixture.PublicKeyPem, sourceComponentOnly = true, liveExecuted = false, engineCommit = observed["engineSourceRevision"]!.GetValue<string>(), engineBinarySha256 = observed["engineBinarySha256"]!.GetValue<string>() }), Token); }
     }
     [Fact]
     public async Task ActualSignedReservationAndAuthenticatedCopyPolicyDenialPrecedeNativeRotationAndTrim()

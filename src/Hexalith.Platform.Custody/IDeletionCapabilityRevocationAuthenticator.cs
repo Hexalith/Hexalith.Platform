@@ -7,6 +7,9 @@ namespace Hexalith.Platform.Custody;
 /// A provider must not derive trust from the envelope or authenticate an emergency revocation using the compromised key.</remarks>
 public interface IDeletionCapabilityRevocationAuthenticator
 {
+    /// <summary>Checks independently installed current revocation evidence without retaining source, registrar or guard state. Omitted providers deny.</summary>
+    Task<DeletionCapabilityRevocationAuthorization?> VerifyBeforeEffectsAsync(DeletionCapabilityRevocationEnvelope envelope,
+        string signedEvidence, CancellationToken cancellationToken = default) => Task.FromResult<DeletionCapabilityRevocationAuthorization?>(null);
     /// <summary>Authenticates the exact revocation and signed transport evidence under current independent trust; absent authority returns null.</summary>
     Task<DeletionCapabilityRevocationAuthorization?> VerifyAsync(DeletionCapabilityRevocationEnvelope envelope,
         string signedEvidence, CancellationToken cancellationToken = default);

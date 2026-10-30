@@ -248,7 +248,9 @@ public sealed class ProtectionQualificationRoleService
             operations.Add(new JsonObject { ["operationId"] = id, ["requestSha256"] = actual.RequestSha256, ["action"] = actual.SafeRequest["action"]!.GetValue<string>() });
         }
         if (producers.Count != 1) { throw new InvalidOperationException("One exact current expected-operation producer required."); }
-        var result = await _observer!.ObserveAsync(_scope.Observations[request["caseId"]!.GetValue<string>()].Bind(request), targets, token, producers.Values.Single(), ((JsonArray)request["expectedOperations"]!).Select(value => value!["operationId"]!.GetValue<string>()).ToHashSet(StringComparer.Ordinal)).ConfigureAwait(false);
+        var physicalProof = _observerPermission is null ? null : await _observerPermission(token).ConfigureAwait(false);
+        if (physicalProof?.ComponentBackings is null) { throw new InvalidOperationException("Independent physical copy enrollment required."); }
+        var result = await _observer!.ObserveAsync(_scope.Observations[request["caseId"]!.GetValue<string>()].Bind(request), targets, token, producers.Values.Single(), ((JsonArray)request["expectedOperations"]!).Select(value => value!["operationId"]!.GetValue<string>()).ToHashSet(StringComparer.Ordinal), physicalProof.ComponentBackings).ConfigureAwait(false);
         result["operationOutcomes"] = operations;
         result["operationProducerOriginals"] = producerOriginals;
         return result;

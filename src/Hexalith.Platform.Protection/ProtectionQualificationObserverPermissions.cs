@@ -28,6 +28,8 @@ public static class ProtectionQualificationObserverPermissions
             && proof.NativeCredentialSha256 == Fingerprint(nativeCredential) && proof.DaprCredentialSha256 == Fingerprint(daprCredential) && proof.RoleCredentialSha256 == Fingerprint(roleCredential)
             && proof.CredentialScope == "ReadPersistedStateOnly" && proof.ObservedAt <= now && proof.ValidUntil > now
             && proof.NativeReadPaths is { } paths && paths.ToHashSet(StringComparer.Ordinal).SetEquals([tenantPath, archivePath])
+            && proof.ComponentBackings is { } backings && backings.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(components)
+            && backings.Values.All(value => !string.IsNullOrWhiteSpace(value) && value.Length <= 2048)
             && proof.DaprReadComponents is { } reads && reads.ToHashSet(StringComparer.Ordinal).SetEquals(components)
             && proof.DaprApiScopes is { } apis && apis.ToHashSet(StringComparer.Ordinal).SetEquals(["state.get", "invoke:" + ErasureRootHostComposition.TenantBindings(host)[scope.TenantId].PrivateAuthority.AppId + "/platform-independent/v1/erc-read-observer-permissions"])
             && proof.DeniedCapabilities is { } denials && denials.ToHashSet(StringComparer.Ordinal).SetEquals(denied) && !string.IsNullOrWhiteSpace(proof.ReceiptId);

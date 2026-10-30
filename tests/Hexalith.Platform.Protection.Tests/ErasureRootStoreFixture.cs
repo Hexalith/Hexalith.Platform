@@ -118,6 +118,8 @@ internal sealed class ErasureRootStoreFixture : IErasureRootStore
     {
         lock (_gate) { return HMACSHA256.HashData(_epochs[tenant][epoch], Encoding.UTF8.GetBytes(context)); }
     }
+    public Task<ErasureRootNativePolicy> ReadPolicyAsync(string tenantId, CancellationToken cancellationToken)
+    { lock (_gate) { int min = _epochs[tenantId].Keys.Min(); return Task.FromResult(new ErasureRootNativePolicy(_epochs[tenantId].Keys.Max(), min, min, min, true, false, false, false)); } }
     public Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken)
     { lock (_gate) { return Task.FromResult(_epochs[tenantId].Keys.Max()); } }
     public async Task RotateAsync(string tenantId, CancellationToken cancellationToken)

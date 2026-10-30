@@ -41,6 +41,7 @@ public static class ErasureRootHostComposition
                 || installation.RegistryEpochs.Values.Any(string.IsNullOrWhiteSpace) || installation.CapabilityTrust.Length == 0
                 || string.IsNullOrWhiteSpace(inventory.CurrentInventoryAuthorityReference)
                 || !Uri.TryCreate(installation.Endpoint, UriKind.Absolute, out var endpoint) || endpoint.Scheme != "https") { throw new InvalidOperationException(); }
+            ValidateCapabilityTrust(installation);
             foreach (string tenant in installation.Native.NativeKeys.Keys)
             {
                 if (!installation.CapabilityTrust.Any(entry => entry.TenantId == tenant && entry.KeyFamily == "DeletionBatchCapabilitySigningKey")) { throw new InvalidOperationException(); }
@@ -133,6 +134,25 @@ public static class ErasureRootHostComposition
     internal static ErasureRootTenantAuthority Authority(IServiceProvider provider, ErasureRootHostInstallation installation, Func<ErasureRootTenantAuthorityBindings, IndependentDaprAuthorityBinding> select)
         => new(TenantBindings(installation).ToDictionary(entry => entry.Key,
             entry => new IndependentDaprAuthority(new DaprSecretsInvoker(provider.GetRequiredService<DaprClient>()), select(entry.Value), TimeProvider.System), StringComparer.Ordinal));
+    internal static void ValidateCapabilityTrust(ErasureRootHostInstallation installation)
+    {
+        var identities = new HashSet<string>(StringComparer.Ordinal);
+        foreach (string tenant in installation.Native.NativeKeys.Keys) { ErasureRootTenantIdentity.Validate(tenant); }
+        foreach (var trust in installation.CapabilityTrust)
+        {
+            if (trust is null) { throw new ArgumentException("Complete capability trust required."); }
+            ErasureRootTenantIdentity.Validate(trust.TenantId);
+            string[] fields = [trust.CapabilityKeyVersion, trust.Issuer, trust.Audience, trust.PublicAnchorId, trust.PublicAnchorVersion];
+            if (!installation.Native.NativeKeys.ContainsKey(trust.TenantId) || trust.KeyFamily != "DeletionBatchCapabilitySigningKey"
+                || fields.Any(value => string.IsNullOrWhiteSpace(value) || value.Length > 2048 || value.Any(char.IsControl))
+                || trust.TrustProfileRevision is <= 0 or > 9007199254740991 || trust.SubjectPublicKeyInfo is not { Length: > 0 and <= 4096 }
+                || !identities.Add(ErasureRootCustody.Hash(new { trust.TenantId, trust.KeyFamily, trust.CapabilityKeyVersion, trust.Issuer, trust.Audience })))
+            { throw new ArgumentException("Unambiguous complete capability trust required."); }
+            using var key = ECDsa.Create(); key.ImportSubjectPublicKeyInfo(trust.SubjectPublicKeyInfo, out int consumed);
+            if (consumed != trust.SubjectPublicKeyInfo.Length || key.ExportParameters(false).Curve.Oid.Value != ECCurve.NamedCurves.nistP256.Oid.Value)
+            { throw new ArgumentException("Exact P-256 capability anchor required."); }
+        }
+    }
     private static byte[] ReadPinned(string path, string digest)
     {
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || digest is not { Length: 64 } || !File.Exists(path)

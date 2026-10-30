@@ -14,6 +14,10 @@ internal sealed record ErasureRootHead(string TenantId, string StoreId, string E
 {
     /// <summary>Committed immutable completed-manifest originals. Prewritten archives without these pointers have no authority.</summary>
     public SortedDictionary<string, string> ManifestArchives { get; init; } = new(StringComparer.Ordinal);
+    /// <summary>Independent qualification call/effect bookkeeping, excluded from the prohibited custody-effect fingerprint.</summary>
+    public string? QualificationEvidenceIndexRoot { get; init; }
+    /// <summary>Authenticated persistent occurrence index; no orphan archive authorizes an occurrence.</summary>
+    public string? OccurrenceIndexRoot { get; init; }
     /// <summary>Exact occurrence originals and once-only source leases, independently surviving EventStore restore.</summary>
     public SortedDictionary<string, ErasureRootOccurrence> Occurrences { get; init; } = new(StringComparer.Ordinal);
     /// <summary>Independent source-owner enrollment, retained before a caller can request a binding.</summary>

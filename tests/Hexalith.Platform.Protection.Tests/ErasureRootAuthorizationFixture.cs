@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Protection.Tests;
 /// <summary>Explicit synthetic permission fixture for component tests; never registered by production composition.</summary>
 internal sealed class ErasureRootAuthorizationFixture : IErasureRootAuthorization
 {
+    internal Func<string, string, string, CancellationToken, Task<ErasureRootEffectBoundaryEvidence?>>? EffectBoundaryReader { get; set; }
+    public Task<ErasureRootEffectBoundaryEvidence?> ReadEffectBoundaryAsync(string tenantId, string callDigest, string boundary, CancellationToken cancellationToken)
+        => EffectBoundaryReader?.Invoke(tenantId, callDigest, boundary, cancellationToken) ?? Task.FromResult<ErasureRootEffectBoundaryEvidence?>(null);
     internal HashSet<string> DeniedOperations { get; } = new(StringComparer.Ordinal);
     internal bool Allowed { get; set; } = true;
     internal bool TransitionAllowed { get; set; } = true;

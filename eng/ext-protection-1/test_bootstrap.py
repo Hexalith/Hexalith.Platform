@@ -17,6 +17,12 @@ bootstrap = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(bootstrap)
 
 
+def required_scopes(tenant):
+    return [tenant + ':protection:candidate-interaction-occurrences-v1|candidate-interaction-occurrences-v1',
+            tenant + ':protection:deletion-consumption-v23|deletion-consumption-v23',
+            tenant + ':custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1']
+
+
 class BootstrapRedirectTests(unittest.TestCase):
     def test_credential_never_follows_redirect_to_another_origin(self):
         seen = []
@@ -54,7 +60,7 @@ class BootstrapRedirectTests(unittest.TestCase):
 
     def test_exact_public_mounts_agree_with_shipped_policy_before_any_native_effect(self):
         value = {'address': 'https://erc.invalid', 'storeId': 'erc-test', 'enrollmentId': 'enrollment', 'transitMount': 'erc-transit', 'headMount': 'erc-heads',
-                 'nativeKeys': {'tenant-a': 'epoch-a'}, 'genesisAnchors': {'tenant-a': {'tenant-a:custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1': 'A' * 64}}}
+                 'nativeKeys': {'tenant-a': 'epoch-a'}, 'genesisAnchors': {'tenant-a': {scope: 'A' * 64 for scope in required_scopes('tenant-a')}}}
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'enrollment.json'
             path.write_text(json.dumps(value))
@@ -102,7 +108,7 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
     def valid():
         return {'address': 'https://127.0.0.1:8200', 'storeId': 'erc-test', 'enrollmentId': 'accepted-enrollment',
                 'transitMount': 'erc-transit', 'headMount': 'erc-heads', 'nativeKeys': {'tenant-a': 'epoch-a', 'tenant-b': 'epoch-b'},
-                'genesisAnchors': {tenant: {tenant + ':custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1': 'A' * 64} for tenant in ('tenant-a', 'tenant-b')}}
+                'genesisAnchors': {tenant: {scope: 'A' * 64 for scope in required_scopes(tenant)} for tenant in ('tenant-a', 'tenant-b')}}
 
     def test_full_tenant_and_scope_grammar_and_duplicate_json_refuse_before_transport(self):
         import copy
@@ -123,6 +129,24 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                     native.assert_not_called()
             path.write_text(json.dumps(self.valid()).replace('"epoch-a"', '"epoch-a", "tenant-a":"epoch-other"'))
             with self.assertRaisesRegex(ValueError, 'Duplicate'): bootstrap.enrollment(path)
+
+    def test_every_runtime_genesis_is_required_before_any_transport_and_names_match_shipped_owners(self):
+        for tenant in ('tenant-a', 'tenant-b'):
+            for scope in required_scopes(tenant):
+                value = self.valid(); del value['genesisAnchors'][tenant][scope]
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / 'enrollment.json'; path.write_text(json.dumps(value))
+                    with patch.dict('os.environ', {'ERC_BOOTSTRAP_TOKEN': 'synthetic-scope-regression-credential'}), patch.object(bootstrap.urllib.request, 'build_opener') as native:
+                        with self.assertRaises(ValueError): bootstrap.enrollment(path)
+                        self.assertEqual(bootstrap.main(['--enrollment', str(path), '--apply']), 1); native.assert_not_called()
+        platform = Path(__file__).resolve().parents[2]
+        actor_sources = [platform / '../eventstore/src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs',
+                         platform / '../eventstore/src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs',
+                         platform / 'src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs']
+        for scope, path in zip(required_scopes('tenant-a'), actor_sources):
+            domain, actor = scope.split('|')[0].split(':')[1:]
+            text = path.read_text(); self.assertIn('"' + domain + '", "' + actor + '"', text)
+            self.assertIn('"' + scope.split('|')[1] + '"', text)
 
     def test_actual_cli_defaults_to_prepared_only_with_available_credential_and_zero_native_requests(self):
         import os

@@ -23,7 +23,7 @@ public sealed class ProtectionQualificationReplayTests
         fixture.Source.Persisted.Add(binding.OperationId, write.ProtectionResult.PayloadBytes);
         await fixture.Engine.CompletePayloadProtectionAsync(write.CompletionContext!, PayloadProtectionPersistenceOutcome.Persisted, token);
         var read = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value;
-        read.Head.SourceOriginals.Add("source", enrollment); (await fixture.Custody.SaveAsync("tenant-a", read.Version, read.Head, token)).ShouldBeTrue();
+        read.Head.SourceOriginals.Add(ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity)), enrollment); (await fixture.Custody.SaveAsync("tenant-a", read.Version, read.Head, token)).ShouldBeTrue();
         var persisted = new ProtectionQualificationPersistedEvent(binding, write.ProtectionResult);
         var state = new Dictionary<string, JsonElement> { ["copy-a"] = JsonSerializer.SerializeToElement(persisted), ["copy-b"] = JsonSerializer.SerializeToElement(persisted) };
         native.GetStateAsync<JsonElement>("source", Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
@@ -67,6 +67,7 @@ public sealed class ProtectionQualificationReplayTests
         var sources = new Dictionary<string, JsonNode> { ["a"] = JsonSerializer.SerializeToNode(persisted)!, ["b"] = JsonSerializer.SerializeToNode(persisted)!,
             ["a:replay"] = JsonNode.Parse(state["copy-a:replay"].GetRawText())!, ["b:replay"] = JsonNode.Parse(state["copy-b:replay"].GetRawText())! };
         var head = (await fixture.Custody.ReadAsync("tenant-a", token))!.Value.Head;
+        _ = await fixture.Custody.ReadSourceAsync(head, ErasureRootOccurrenceBindings.Id(binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(binding.Identity)), token);
         var projected = ProtectionQualificationNativeProjection.Project("P01", head, sources, cells, targets);
         ProtectionQualificationNativeProjection.ProjectCopies(projected, [], sources, cells, true);
         projected["copyStatesAfter"]!.AsArray().Count.ShouldBe(2);

@@ -38,8 +38,8 @@ public sealed class ErasureRootLoop4CompletionTests
             .Select(call => call.GetArguments()[2]?.ToString() ?? "").ToArray();
         var enrollment = fixture.Enroll();
         byte[] payload = JsonSerializer.SerializeToUtf8Bytes(new { ProtectedContent = new { Target = enrollment.Binding.Identity.Target, Value = "private-payload-never-log" } });
-        fixture.Permissions.DeniedOperations.Add("CompleteRootHolder");
         _ = await fixture.Engine.ProtectEventPayloadAsync(enrollment.Binding.Identity.Owner, Substitute.For<IEventPayload>(), enrollment.Binding.Identity.PayloadTypeId, payload, "json", ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity), token);
+        fixture.Permissions.DeniedOperations.Add("CompleteRootHolder");
         if (verifier)
         {
             // A source receiver owns a separate issued verifier holder and completion queue.

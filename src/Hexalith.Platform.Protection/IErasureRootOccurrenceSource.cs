@@ -7,6 +7,8 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Independent current source-writer/intent authority. It provides exact originals, never key bytes or caller-selected targets.</summary>
 public interface IErasureRootOccurrenceSource
 {
+    /// <summary>Confirms exact authoritative committed enrollment before any root issue; independent archive prewrites are insufficient.</summary>
+    Task<bool> VerifyEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken cancellationToken) => Task.FromResult(false);
     /// <summary>Reads only independently verified snapshot skeleton plus exact persisted ciphertext proof after authenticated permanent loss.</summary>
     Task<byte[]?> ReadErasedSnapshotSkeletonAsync(InteractionProtectionBinding binding, string sealedPayloadSha256, ErasureRootPermanentLossReceipt loss, CancellationToken cancellationToken)
         => Task.FromResult<byte[]?>(null);

@@ -46,7 +46,7 @@ public sealed class ErasureRootObserverPermissionTests
             Hash("native-read-only"), Hash("dapr-read-only"), Hash("role-read-only"), "ReadPersistedStateOnly", ["heads/data/tenants/" + tenant, "heads/data/archives/" + tenant + "/*"], ["source"],
             ["state.get", "invoke:permission-owner/platform-independent/v1/erc-read-observer-permissions"],
             ["erc-head-write", "erc-archive-write", "transit-encrypt", "transit-decrypt", "transit-rewrap", "transit-rotate", "transit-trim", "dapr-state-write", "dapr-state-transaction", "dapr-invoke-mutation", "dapr-secret-read"],
-            DateTimeOffset.UtcNow.AddMinutes(-5), DateTimeOffset.UtcNow.AddMinutes(20), "independently-installed-current-proof");
+            DateTimeOffset.UtcNow.AddMinutes(-5), DateTimeOffset.UtcNow.AddMinutes(20), "independently-installed-current-proof") { ComponentBackings = new() { ["source"] = "synthetic-native-source" } };
         proof = mode switch
         {
             "writable" => proof with { CredentialScope = "ExecutorWrites", DeniedCapabilities = [] },

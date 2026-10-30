@@ -41,7 +41,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         Segment(installation.TransitMount);
         foreach (var entry in installation.NativeKeys)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(entry.Key);
+            ErasureRootTenantIdentity.Validate(entry.Key);
             Segment(entry.Value);
         }
         if (installation.NativeKeys.Values.Distinct(StringComparer.Ordinal).Count() != installation.NativeKeys.Count)
@@ -120,6 +120,20 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore
         return "v1/" + _installation.HeadMount + "/data/archives/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(tenant))) + "/" + archiveId;
     }
 
+    /// <inheritdoc />
+    public async Task<ErasureRootNativePolicy> ReadPolicyAsync(string tenantId, CancellationToken cancellationToken)
+    {
+        byte[] bytes = (await SendAsync(HttpMethod.Get, "v1/" + _installation.TransitMount + "/keys/" + Key(tenantId), null, false, cancellationToken).ConfigureAwait(false))!;
+        try
+        {
+            using var document = JsonDocument.Parse(bytes); var data = document.RootElement.GetProperty("data");
+            return new(data.GetProperty("latest_version").GetInt32(), data.GetProperty("min_encryption_version").GetInt32(),
+                data.GetProperty("min_decryption_version").GetInt32(), data.GetProperty("min_available_version").GetInt32(),
+                data.GetProperty("derived").GetBoolean(), data.GetProperty("exportable").GetBoolean(),
+                data.GetProperty("allow_plaintext_backup").GetBoolean(), data.GetProperty("deletion_allowed").GetBoolean());
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
     /// <inheritdoc />
     public async Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken)
     {

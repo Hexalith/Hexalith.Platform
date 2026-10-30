@@ -16,7 +16,27 @@ with tempfile.TemporaryDirectory() as directory:
                     keyVersion=version, publicAnchorId='test-anchor', publicAnchorVersion='1', publicAnchorFile=str(anchor),
                     publicAnchorSha256=hashlib.sha256(anchor.read_bytes()).hexdigest(), trustProfileRevision=1) for version in ('healthy-key-a', 'healthy-key-b')]
     snapshot = v.validate_capability_trust(entries, {})
-    if packet['kind'] == 'hold':
+    if packet['kind'] == 'no-effect':
+        observed = packet['observation']
+        case = next(case for case in json.loads((Path(sys.argv[1]) / 'tools/ext-protection-1/plan.json').read_bytes())['cases'] if case['id'] == 'P20')
+        def verify(value):
+            v.evaluate(value, case, packet['targets'], b'p13-canary', observed['engineSourceRevision'], observed['engineBinarySha256'], entries, {})
+        verify(observed)
+        for mutation in ('missing', 'call', 'rotation', 'trim', 'pending', 'wrapped', 'holder', 'receipt', 'boolean'):
+            changed = copy.deepcopy(observed)
+            if mutation == 'missing': del changed['rejectedEffectOriginals']
+            elif mutation == 'call': changed['rejectedEffectOriginals'][0]['Call']['Id'] = 'undispatched'
+            else:
+                proof = changed['rejectedEffectOriginals'][0]['After']
+                if mutation == 'rotation': proof['NativePolicy']['LatestVersion'] += 1
+                elif mutation == 'trim': proof['NativePolicy']['MinAvailableVersion'] += 1
+                elif mutation == 'boolean': proof['NativePolicy']['Exportable'] = 'false'
+                elif mutation == 'receipt': proof['ReceiptId'] += 'substituted'
+                else: proof['CustodyStateSha256'] = hashlib.sha256(mutation.encode()).hexdigest().upper()
+            try: verify(changed)
+            except (v.Failed, v.Blocked): pass
+            else: raise AssertionError('Independent native no-effect mutation accepted: ' + mutation)
+    elif packet['kind'] == 'hold':
         observed = packet['observation']
         def verify(value):
             v.bind_hold_originals(value); v.bind_hold_scope(value, packet['targets'], snapshot)

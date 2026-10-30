@@ -6,6 +6,9 @@ namespace Hexalith.Platform.Protection;
 /// <summary>Current private caller, fence, original reservation, holder completion and transition permission. Native credentials alone never grant these permissions.</summary>
 public interface IErasureRootAuthorization
 {
+    /// <summary>Captures an exact boundary through the independent permission owner, which reads actual native/custody state and retains its original.</summary>
+    Task<ErasureRootEffectBoundaryEvidence?> ReadEffectBoundaryAsync(string tenantId, string callDigest, string boundary, CancellationToken cancellationToken)
+        => Task.FromResult<ErasureRootEffectBoundaryEvidence?>(null);
     /// <summary>Reads an independently installed current observer permission original; absent evidence never establishes read-only credentials.</summary>
     Task<ProtectionQualificationObserverPermission?> ReadObserverPermissionAsync(string tenantId, string workloadIdentity, CancellationToken cancellationToken)
         => Task.FromResult<ProtectionQualificationObserverPermission?>(null);

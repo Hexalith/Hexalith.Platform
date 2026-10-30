@@ -23,7 +23,7 @@ internal static class ProtectionQualificationNativeProjection
             if (kind is not ("source-outbox" or "target-event" or "snapshot" or "cache" or "backup" or "restored"))
             { throw new InvalidOperationException("Closed native copy purpose required."); }
             var value = sources[cell.Key] as JsonObject ?? throw new InvalidOperationException("Actual sealed copy required.");
-            if (kind is "source-outbox" or "target-event")
+            if (value.ContainsKey("Binding") && value.ContainsKey("Protected"))
             {
                 var persisted = value.Deserialize<ProtectionQualificationPersistedEvent>() ?? throw new InvalidOperationException("Actual sealed source required.");
                 var target = persisted.Binding.Identity.Target;
@@ -81,10 +81,11 @@ internal static class ProtectionQualificationNativeProjection
         if (checks.Overlaps(["copies", "restore"])) { ProjectCopies(observed, fixtureCalls, sources, cells, checks.Contains("erased")); }
         void AddRecord(ProtectionTarget target, byte[] bytes, string kind, string copy)
         {
-            var identities = head.SourceOriginals.Values.Where(original => original.Binding.Identity.Target == target).Select(original => original.RootIdentity).Distinct().ToArray();
+            var identities = head.Targets.Values.Where(original => ErasureRootCustody.TargetId(original.Registration.Identity) == ErasureRootCustody.TargetId(target)).Select(original => original.Registration.Identity).Concat(head.Erased.Values.Where(original => original.Receipt.Target == target).Select(original => original.Registration.Identity)).Distinct().ToArray();
             if (identities.Length != 1) { throw new InvalidOperationException("Exact shared root source identity required."); }
             records.Add(new JsonObject { ["target"] = JsonSerializer.SerializeToNode(target), ["kind"] = kind, ["bytesBase64"] = Convert.ToBase64String(bytes),
-                ["protectedState"] = "Sealed", ["rootReference"] = ErasureRootCustody.Hash(identities[0]), ["copyId"] = copy + ":" + ErasureRootCustody.TargetId(target) });
+                ["protectedState"] = "Sealed", ["rootReference"] = ErasureRootCustody.Hash(identities[0]), ["copyId"] = copy + ":" + ErasureRootCustody.TargetId(target),
+                ["sourceIdentity"] = ProtectionQualificationNativeCell.LocationId(cells[copy]) });
         }
         if (!head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(head.TenantId), out var ownerAnchor))
         { if (checks.Overlaps(["receipts", "blocked", "replacement-blocked", "capability", "signing-attempts"]) || checks.Contains("race") && !checks.Contains("hold-order")) { throw new InvalidOperationException("Actual owner original required."); } return observed; }

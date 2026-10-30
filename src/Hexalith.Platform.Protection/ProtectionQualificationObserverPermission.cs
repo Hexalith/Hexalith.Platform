@@ -9,4 +9,8 @@ namespace Hexalith.Platform.Protection;
 /// <param name="ObservedAt">Current proof instant.</param><param name="ValidUntil">Exclusive expiry.</param><param name="ReceiptId">Independent immutable proof identity.</param>
 public sealed record ProtectionQualificationObserverPermission(string TenantId, string StoreId, string EnrollmentId, string WorkloadIdentity, string RoleIdentity, string BindingDigest,
     string NativeCredentialSha256, string DaprCredentialSha256, string RoleCredentialSha256, string CredentialScope, string[] NativeReadPaths, string[] DaprReadComponents,
-    string[] DaprApiScopes, string[] DeniedCapabilities, DateTimeOffset ObservedAt, DateTimeOffset ValidUntil, string ReceiptId);
+    string[] DaprApiScopes, string[] DeniedCapabilities, DateTimeOffset ObservedAt, DateTimeOffset ValidUntil, string ReceiptId)
+{
+    /// <summary>Independently verified component-to-physical-store identities; aliases of a backing share the same identity.</summary>
+    public Dictionary<string, string>? ComponentBackings { get; init; }
+}

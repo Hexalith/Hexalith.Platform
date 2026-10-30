@@ -95,7 +95,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         string digest = ErasureRootCustody.Hash(request);
         if (!await authorization.AuthorizeAsync(request.Identity.Target.TenantId, id, "LookupIndependentSourceReservation", digest, token).ConfigureAwait(false)) { return false; }
         var read = await custody.ReadAsync(request.Identity.Target.TenantId, token).ConfigureAwait(false);
-        return read is { } head && head.Head.SourceReservations.TryGetValue(id, out var retained) && retained == digest;
+        return read is { } head && (await custody.ReadReservationAsync(head.Head, id, token).ConfigureAwait(false) is { } retained) && retained == digest;
     }
     /// <summary>Reads only a previously authenticated complete sealed output, without another root unwrap or verification mutation.</summary>
     public async Task<bool> LookupSealedAsync(InteractionOccurrenceRecord original, InteractionOccurrenceSealedResult result, CancellationToken token)
@@ -105,7 +105,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         if (!await authorization.AuthorizeAsync(original.Request.Identity.Target.TenantId, id, "LookupNativeEngineSealedOriginal", digest, token).ConfigureAwait(false)) { return false; }
         var read = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
         return read is { } head && head.Head.Pending is null && !head.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))
-            && head.Head.SealedOriginals.TryGetValue(id, out var retained) && retained == digest;
+            && (await custody.ReadSealedAsync(head.Head, id, token).ConfigureAwait(false) is { } retained) && retained == digest;
     }
     /// <summary>Registers only a separately authorized source-owner original before root issue. Exact retry cannot replace its target or source receipt location.</summary>
     public async Task<bool> RegisterOriginalAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
@@ -116,14 +116,15 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         if (enrollment.Writer is null || !ErasureRootOccurrenceBindings.ValidEnrollment(enrollment, identity.Owner,
             ErasureRootOccurrenceBindings.Occurrence(identity), identity.Target)) { return false; }
         using var nativeDigest = await digests.ResolveAsync(enrollment, enrollment.Binding.DigestKeyVersion, token).ConfigureAwait(false);
-        if (nativeDigest is null) { return false; }
+        if (nativeDigest is null || !await custody.PreflightWrapAsync(enrollment.RootIdentity, enrollment.RootOperationId, enrollment.ExpectedLifecycleRevision, token).ConfigureAwait(false)
+            || !await ErasureRootOccurrenceBindings.PreflightPermissionsAsync(authorization, enrollment, token).ConfigureAwait(false)) { return false; }
         for (int attempt = 0; attempt < 16; attempt++)
         {
             if (!await authorization.AuthorizeAsync(identity.Target.TenantId, id, "RegisterIndependentSourceOriginal", digest, token).ConfigureAwait(false)) { return false; }
             var read = await custody.ReadAsync(identity.Target.TenantId, token).ConfigureAwait(false);
             if (read is not { } current || current.Head.Pending is not null || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(identity.Target))) { return false; }
             if (!await RetainIndependentAsync(enrollment, token).ConfigureAwait(false)) { return false; }
-            if (current.Head.SourceOriginals.TryGetValue(id, out var prior)) { return ErasureRootCustody.Hash(prior) == digest; }
+            if ((await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false) is { } prior)) { return ErasureRootCustody.Hash(prior) == digest; }
             current.Head.SourceOriginals.Add(id, enrollment);
             if (await custody.SaveAsync(identity.Target.TenantId, current.Version, current.Head, token).ConfigureAwait(false)) { return true; }
         }
@@ -137,8 +138,19 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         var sourceOriginal = await ReadIndependentAsync(owner, occurrence, token).ConfigureAwait(false);
         if (sourceOriginal is not null) { return sourceOriginal; }
         var read = await custody.ReadAsync(owner.TenantId, token).ConfigureAwait(false);
-        return read is { } current && current.Head.SourceOriginals.TryGetValue(id, out var original) ? original : null;
+        return read is { } current ? await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false) : null;
     }
+    /// <inheritdoc />
+    public async Task<bool> VerifyEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
+    {
+        string tenant = enrollment.Binding.Identity.Target.TenantId;
+        string id = ErasureRootOccurrenceBindings.Id(enrollment.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(enrollment.Binding.Identity));
+        if (!await authorization.AuthorizeAsync(tenant, id, "VerifyCommittedSourceEnrollment", ErasureRootCustody.Hash(enrollment), token).ConfigureAwait(false)) { return false; }
+        var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+        return read is { } current && current.Head.Pending is null
+            && ErasureRootCustody.Hash(await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false)) == ErasureRootCustody.Hash(enrollment);
+    }
+
     /// <inheritdoc />
     public async Task<bool> VerifyReservationAsync(InteractionOccurrenceRequest request, CancellationToken token)
     {
@@ -149,10 +161,10 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         {
             if (!await authorization.AuthorizeAsync(tenant, id, "AdmitIndependentSourceReservation", digest, token).ConfigureAwait(false)) { return false; }
             var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-            if (read is not { } current || current.Head.Pending is not null || !current.Head.SourceOriginals.TryGetValue(id, out var original)
+            if (read is not { } current || current.Head.Pending is not null || (await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false) is not { } original)
                 || original.Binding.Identity != request.Identity || original.Binding.KeyReference != request.ProposedKeyReference
                 || original.Binding.DigestKeyVersion != request.DigestKeyVersion || original.Binding.ReservationAttemptOrdinal != request.ReservationAttemptOrdinal) { return false; }
-            if (current.Head.SourceReservations.TryGetValue(id, out var retained)) { return retained == digest; }
+            if ((await custody.ReadReservationAsync(current.Head, id, token).ConfigureAwait(false) is { } retained)) { return retained == digest; }
             current.Head.SourceReservations.Add(id, digest);
             if (await custody.SaveAsync(tenant, current.Version, current.Head, token).ConfigureAwait(false)) { return true; }
         }
@@ -163,7 +175,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
     {
         string id = ErasureRootOccurrenceBindings.Id(original.Request.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(original.Request.Identity));
         var read = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
-        if (read is not { } current || current.Head.Pending is not null || !current.Head.Occurrences.TryGetValue(id, out var occurrence)
+        if (read is not { } current || current.Head.Pending is not null || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } occurrence)
             || occurrence.EncryptionRequestDigest != ErasureRootCustody.Hash(original.Request) || result.KeyReference != original.KeyReference
             || current.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))
             || result.SerializationFormat != "json+pdenc-v2" || result.ProtectedPathCount <= 0 || result.PayloadBytes.Length > 16777216) { return false; }
@@ -175,7 +187,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
         if (!sealedShape || !await authorization.AuthorizeAsync(original.Request.Identity.Target.TenantId, original.KeyReference,
             "VerifyNativeEngineSealedOriginal", ErasureRootCustody.Hash(new { original, result }), token).ConfigureAwait(false)) { return false; }
         string verification = ErasureRootCustody.Hash(new { original.Request, result });
-        if (current.Head.SealedOriginals.TryGetValue(id, out string? retained)) { return retained == verification; }
+        if ((await custody.ReadSealedAsync(current.Head, id, token).ConfigureAwait(false) is { } retained)) { return retained == verification; }
         using var digest = await digests.ResolveAsync(occurrence.Enrollment, original.Request.DigestKeyVersion, token).ConfigureAwait(false);
         if (digest is null) { return false; }
         var root = await custody.UnwrapAsync(occurrence.Registration, "erc-sealed-verifier:" + verification + ":" + current.Version.ToString(System.Globalization.CultureInfo.InvariantCulture), token).ConfigureAwait(false);
@@ -188,7 +200,7 @@ public sealed class ErasureRootNativeOccurrenceSource(ErasureRootCustody custody
             {
                 var latest = await custody.ReadAsync(original.Request.Identity.Target.TenantId, token).ConfigureAwait(false);
                 if (latest is not { } fresh || fresh.Head.Pending is not null || fresh.Head.Erased.ContainsKey(ErasureRootCustody.TargetId(original.Request.Identity.Target))) { return false; }
-                if (fresh.Head.SealedOriginals.TryGetValue(id, out retained)) { return retained == verification; }
+                if ((await custody.ReadSealedAsync(fresh.Head, id, token).ConfigureAwait(false) is { } freshRetained)) { return freshRetained == verification; }
                 fresh.Head.SealedOriginals.Add(id, verification);
                 if (await custody.SaveAsync(original.Request.Identity.Target.TenantId, fresh.Version, fresh.Head, token).ConfigureAwait(false)) { return true; }
             }

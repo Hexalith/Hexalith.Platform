@@ -14,6 +14,8 @@ public sealed class ProtectionQualificationControlledErasureRootStore(IErasureRo
     private Task Call(string tenant, string method, Func<Task> operation, CancellationToken token)
         => Call(tenant, method, async () => { await operation().ConfigureAwait(false); return true; }, token);
     /// <inheritdoc />
+    public Task<ErasureRootNativePolicy> ReadPolicyAsync(string tenantId, CancellationToken cancellationToken) => native.ReadPolicyAsync(tenantId, cancellationToken);
+    /// <inheritdoc />
     public Task<byte[]?> ReadArchiveAsync(string tenantId, string archiveId, CancellationToken token) => native.ReadArchiveAsync(tenantId, archiveId, token);
     /// <inheritdoc />
     public Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken token) => native.CreateArchiveAsync(tenantId, archiveId, bytes, token);

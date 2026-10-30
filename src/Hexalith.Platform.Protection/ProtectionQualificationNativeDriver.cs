@@ -26,6 +26,17 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     /// <summary>Checks every enrollment and required plaintext/seed input without retaining operation, source, root or call state.</summary>
     public async Task ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
     {
+        string preflightTenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
+        var priorHead = await custody.ReadAsync(preflightTenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current recipe enrollment required.");
+        var earlier = priorHead.Head.QualificationOperations.Values.Where(value => value.SafeRequest["fixtureId"]?.GetValue<string>() == request["fixtureId"]?.GetValue<string>())
+            .SelectMany(value => value.Calls.Where(call => call.Value.Result is not null)).ToDictionary(call => call.Key, call => call.Value.Result, StringComparer.Ordinal);
+        ProtectionQualificationInputSchema.Validate(recipe, request, earlier);
+        foreach (var planned in recipe.Before.Concat([recipe.Effect]).Concat(recipe.Race is { } plannedRace ? [plannedRace] : []).Concat(recipe.After))
+        {
+            if (!await authorization.AuthorizeAsync(preflightTenant, planned.Id, "PreflightNative" + planned.Kind,
+                ErasureRootCustody.Hash(new { planned, Request = ProtectionQualificationOperationJournal.Digest(request), Phase = "Preflight" }), token).ConfigureAwait(false))
+            { throw new InvalidOperationException("Complete native recipe permission required before effects."); }
+        }
         if (request["canaryBase64"] is { } canary)
         {
             byte[] bytes = Convert.FromBase64String(canary.GetValue<string>());
@@ -34,6 +45,29 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         foreach (var template in recipe.Before.Concat([recipe.Effect]).Concat(recipe.Race is { } race ? [race] : []).Concat(recipe.After))
         {
+            void CheckInstalledCells(JsonNode? node)
+            {
+                if (node is JsonObject obj)
+                {
+                    if (obj["Component"] is JsonValue && obj["Key"] is JsonValue && obj["Metadata"] is JsonObject)
+                    { Check(obj.Deserialize<ProtectionQualificationNativeCell>(ErasureRootCustody.Json)!); }
+                    foreach (var item in obj) { CheckInstalledCells(item.Value); }
+                }
+                else if (node is JsonArray values) { foreach (var item in values) { CheckInstalledCells(item); } }
+            }
+            CheckInstalledCells(template.Payload);
+            if (template.Kind == ProtectionQualificationNativeCallKind.Fault)
+            {
+                var faultInput = ProtectionQualificationRecipeBinding.Bind(template, request, earlier);
+                if (!await faults.PreflightAsync(faultInput.Payload["stepId"]!.GetValue<string>(), faultInput.Payload["boundary"]!.GetValue<string>(), token).ConfigureAwait(false))
+                { throw new InvalidOperationException("Exact installed fault-control enrollment required before effects."); }
+            }
+            if (template.Kind == ProtectionQualificationNativeCallKind.Compromise)
+            {
+                var known = ProtectionQualificationRecipeBinding.Bind(template, request, earlier);
+                if (compromise is null || !await compromise.PreflightAsync(known.Payload["envelope"]!.Deserialize<DeletionCapabilityRevocationEnvelope>()!, known.Payload["signedEvidence"]!.GetValue<string>(), token).ConfigureAwait(false))
+                { throw new InvalidOperationException("Exact independently verified compromise inputs required before effects."); }
+            }
             if (template.Kind is ProtectionQualificationNativeCallKind.Reserve or ProtectionQualificationNativeCallKind.ReserveIfDispatched)
             {
                 string tenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
@@ -87,9 +121,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var head = await custody.ReadAsync(original.Binding.Identity.Target.TenantId, token).ConfigureAwait(false);
                 string id = ErasureRootOccurrenceBindings.Id(original.Binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity));
                 if (head is not { } current || current.Head.Pending is not null
-                    || !current.Head.SourceOriginals.TryGetValue(id, out var enrollment) || enrollment.Binding != original.Binding
-                    || !current.Head.Occurrences.TryGetValue(id, out var occurrence) || occurrence.EncryptionRequestDigest is null
-                    || !current.Head.SealedOriginals.ContainsKey(id) || !current.Head.Targets.ContainsKey(ErasureRootCustody.TargetId(original.Binding.Identity.Target))
+                    || (await custody.ReadSourceAsync(current.Head, id, token).ConfigureAwait(false) is not { } enrollment) || enrollment.Binding != original.Binding
+                    || (await custody.ReadOccurrenceAsync(current.Head, id, token).ConfigureAwait(false) is not { } occurrence) || occurrence.EncryptionRequestDigest is null
+                    || await custody.ReadSealedAsync(current.Head, id, token).ConfigureAwait(false) is null || !current.Head.Targets.ContainsKey(ErasureRootCustody.TargetId(original.Binding.Identity.Target))
                     || enrollment.Writer is not { } writer
                     || !current.Head.QualificationSeedOriginals.TryGetValue(ProtectionQualificationNativeCell.LocationId(seed), out var seedOriginal)
                     || seedOriginal.Binding != original.Binding || seedOriginal.SealedPayloadSha256 != Convert.ToHexString(SHA256.HashData(original.Protected.PayloadBytes)))
@@ -205,6 +239,33 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     {
         T Read<T>() => step.Payload.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Exact original native input required.");
         object? result = null;
+        if (step.Kind == ProtectionQualificationNativeCallKind.Fault) { return await faults.LookupAsync(step, token).ConfigureAwait(false); }
+        if (RetainsExactResult(step.Kind))
+        {
+            string? callTenant = step.Kind switch
+            {
+                ProtectionQualificationNativeCallKind.Lookup => step.Payload["tenantId"]?.GetValue<string>(),
+                ProtectionQualificationNativeCallKind.LookupProvider => step.Payload["request"]?.Deserialize<DeletionBatchConsumptionRequest>()?.Capability.TenantId,
+                ProtectionQualificationNativeCallKind.AuthorizeLifecycle => step.Payload.Deserialize<CustodyKeyLifecycleRequest>()?.Identity.TenantId,
+                ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch => step.Payload["transition"]?.Deserialize<GovernanceGuardTransition>()?.TenantId,
+                _ => null,
+            };
+            if (callTenant is null) { return null; }
+            var retained = await custody.ReadNativeCallResultAsync(callTenant, step, token).ConfigureAwait(false);
+            if (retained is not null) { return retained.DeepClone(); }
+            if (step.Kind == ProtectionQualificationNativeCallKind.LookupProvider
+                && await authorization.AuthorizeAsync(callTenant, step.Id, "ReadNativeCallOriginal", ErasureRootCustody.Hash(step), token).ConfigureAwait(false))
+            {
+                var request = step.Payload["request"]!.Deserialize<DeletionBatchConsumptionRequest>()!;
+                var observed = await custody.ReadAsync(callTenant, token).ConfigureAwait(false);
+                var manifest = observed is { } current ? await custody.ReadManifestOriginalAsync(callTenant, current.Head, request.Capability.BatchId, token).ConfigureAwait(false) : null;
+                string reservation = step.Payload["reservationReceiptId"]!.GetValue<string>();
+                if (manifest?.CompletingQualificationCallDigest == ErasureRootCustody.Hash(step) && manifest.RequestDigest == ErasureRootCustody.Hash(new { request, reservation }))
+                { return Result(new DeletionManifestProviderResult(callTenant, request.Capability.BatchId, reservation, DeletionManifestProviderState.Consumed, manifest.Receipts)); }
+            }
+            if (step.Kind == ProtectionQualificationNativeCallKind.Fault) { return await faults.LookupAsync(step, token).ConfigureAwait(false); }
+            return null;
+        }
         if (step.HoldBlockedOriginal is not null && step.Kind is ProtectionQualificationNativeCallKind.RegisterIfDispatched or ProtectionQualificationNativeCallKind.ReserveIfDispatched)
         {
             string tenant = step.Payload.Deserialize<DeletionBatchConsumptionRequest>()!.Capability.TenantId;
@@ -331,6 +392,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                     if (snapshotState?["Format"]?.GetValue<string>() == "json+pdenc-v2-entries")
                     {
                         var carrier = snapshotState.Deserialize<ProtectedSnapshotEntriesV2>()!;
+                        await ProtectionQualificationPersistedObserver.HydrateReferencesAsync(custody, snapshotHead.Head, snapshotState, token).ConfigureAwait(false);
                         bindings = carrier.Entries.Select(entry => snapshotHead.Head.SourceOriginals.Values.Single(original => original.Binding.KeyReference == entry.KeyReference
                             && original.Binding.Identity.Target == entry.Target && original.SnapshotEntry?.Path == entry.Path).Binding).ToArray();
                     }
@@ -354,7 +416,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         { step = step with { OperationId = request["operationId"]?.GetValue<string>() ?? ProtectionQualificationOperationJournal.Digest(request), RequestSha256 = ProtectionQualificationOperationJournal.Digest(request) }; }
         JsonElement? copyValue = null; string? copyKey = null;
         string tenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
-        string? effectBefore = request["action"]!.GetValue<string>().StartsWith("Reject", StringComparison.Ordinal) ? await EffectAsync(tenant, token).ConfigureAwait(false) : null;
+        if (RetainsExactResult(step.Kind) && (step.OperationId is null || step.RequestSha256 is null))
+        { step = step with { OperationId = request["operationId"]!.GetValue<string>(), RequestSha256 = ProtectionQualificationOperationJournal.Digest(request) }; }
+        string? effectBefore = request["action"]!.GetValue<string>().StartsWith("Reject", StringComparison.Ordinal) ? await EffectAsync(tenant, step, "before", token).ConfigureAwait(false) : null;
         T Read<T>() => step.Payload.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Exact typed native input required.");
         object? result;
         switch (step.Kind)
@@ -370,7 +434,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                     ?? throw new InvalidOperationException("Actual accepted-set control root unavailable.");
                 break;
             case ProtectionQualificationNativeCallKind.SealEvent:
-                var sealing = Read<ProtectionQualificationNativeSeal>();
+                var sealing = ReadSeal(step.Payload);
                 try { result = await SealAsync(step, sealing, request, sealing.ChangePayload ? Convert.ToBase64String("different-synthetic-owner-payload"u8) : null, token).ConfigureAwait(false); }
                 catch (PayloadProtectionOccurrenceConflictException) when (sealing.ChangePayload)
                 { result = new { status = "Conflict" }; }
@@ -398,7 +462,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                     var rootHead = await custody.ReadAsync(tenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current copy originals unavailable.");
                     var snapshotState = JsonSerializer.SerializeToElement(copySnapshot.State);
                     string reference = snapshotState.TryGetProperty("Entries", out var entries) ? entries[0].GetProperty("KeyReference").GetString()! : copySnapshot.Metadata!.KeyAlias!;
-                    var original = rootHead.Head.SourceOriginals.Values.Single(value => value.Binding.KeyReference == reference);
+                    var original = await custody.ReadSourceReferenceAsync(rootHead.Head, reference, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Exact snapshot source unavailable.");
                     result = await ReplaySnapshotAsync(new(original.Binding.Identity.Owner, original.SnapshotEntry?.Parent ?? ErasureRootOccurrenceBindings.Occurrence(original.Binding.Identity), copyCell), token).ConfigureAwait(false);
                 }
                 break;
@@ -500,7 +564,9 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 result = (await consumption.ReadActivationOriginalAsync(Read<DeletionReattestationActivation>()).WaitAsync(token).ConfigureAwait(false))?.Outcome
                     ?? throw new InvalidOperationException("Exact production activation original unavailable."); break;
             case ProtectionQualificationNativeCallKind.LookupProvider:
-                result = await custody.LookupAsync(step.Payload["request"]!.Deserialize<DeletionBatchConsumptionRequest>()!, step.Payload["reservationReceiptId"]!.GetValue<string>(), token).ConfigureAwait(false); break;
+                using (var originalCall = new ErasureRootQualificationCallScope(ErasureRootCustody.Hash(step)))
+                { result = await custody.LookupAsync(step.Payload["request"]!.Deserialize<DeletionBatchConsumptionRequest>()!, step.Payload["reservationReceiptId"]!.GetValue<string>(), token).ConfigureAwait(false); }
+                break;
             case ProtectionQualificationNativeCallKind.Backup:
                 var backup = Read<ProtectionQualificationNativeCell>(); Check(backup);
                 var actual = await native.GetStateAsync<JsonElement>(backup.Component, backup.Key, ConsistencyMode.Strong, backup.Metadata, token).ConfigureAwait(false);
@@ -511,10 +577,10 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
                 var restore = Read<ProtectionQualificationNativeCell>(); Check(restore);
                 var saved = await native.GetStateAsync<JsonElement>(restore.Component, restore.Key + ":backup", ConsistencyMode.Strong, restore.Metadata, token).ConfigureAwait(false);
                 if (saved.ValueKind == JsonValueKind.Undefined) { throw new InvalidOperationException("Missing exact original backup."); }
-                copyValue = saved; copyKey = restore.Key;
+                copyValue = saved; copyKey = restore.AnchorScope is null ? restore.Key + ":restored" : restore.Key;
                 result = new { receiptId = CopyReceipt(step.Kind, restore, saved) }; break;
             case ProtectionQualificationNativeCallKind.Fault:
-                await faults.ArmAsync(step.Payload["stepId"]!.GetValue<string>(), step.Payload["boundary"]!.GetValue<string>(), request["operationId"]!.GetValue<string>(), token).ConfigureAwait(false);
+                await faults.ArmCallAsync(step, request["operationId"]!.GetValue<string>(), token).ConfigureAwait(false);
                 result = new { originalStepId = step.Payload["stepId"]!.GetValue<string>(), armed = true }; break;
             case ProtectionQualificationNativeCallKind.SealSnapshot:
                 if (step.Payload.ContainsKey("Entries"))
@@ -569,11 +635,13 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             else if (await IsHoldPreventedAsync(Read<DeletionBatchConsumptionRequest>(), token).ConfigureAwait(false)) { refusedManifest["status"] = "HoldBlocked"; }
         }
         if (negative && result is DeletionConsumptionOutcome { Status: DeletionConsumptionStatus.ConsumptionReserved } && captured is JsonObject pendingResult && pendingResult["status"]?.GetValue<string>() != "HoldPinned")
-        { pendingResult["status"] = "ProviderUnavailable"; }
+        { throw new InvalidOperationException("Admitted native work remains Unknown; no zero-effect refusal can be certified."); }
         if (effectBefore is not null && captured is JsonObject audit)
-        { audit["effectBefore"] = effectBefore; audit["effectAfter"] = await EffectAsync(tenant, token).ConfigureAwait(false); }
+        { audit["effectBefore"] = effectBefore; audit["effectAfter"] = await EffectAsync(tenant, step, "after", token).ConfigureAwait(false); }
         if (step.HoldBlockedOriginal is not null && captured is JsonObject refused)
         { await RetainConditionalHoldOriginalAsync(tenant, step, refused, token).ConfigureAwait(false); }
+        if (RetainsExactResult(step.Kind) && captured is JsonObject exactResult)
+        { await custody.RetainNativeCallResultAsync(tenant, step, exactResult, token).ConfigureAwait(false); }
         await faults.CheckAsync(step.Id, "after", token).ConfigureAwait(false);
         return captured;
     }
@@ -655,12 +723,18 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
         }
         return node;
     }
-    private async Task<string> EffectAsync(string tenant, CancellationToken token)
+    private static bool RetainsExactResult(ProtectionQualificationNativeCallKind kind)
+        => kind is ProtectionQualificationNativeCallKind.Lookup or ProtectionQualificationNativeCallKind.LookupProvider or ProtectionQualificationNativeCallKind.Fault
+            or ProtectionQualificationNativeCallKind.AuthorizeLifecycle or ProtectionQualificationNativeCallKind.ContinueHoldAfterDispatch;
+    private async Task<string> EffectAsync(string tenant, ProtectionQualificationNativeCall call, string boundary, CancellationToken token)
     {
-        var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
-        if (read is not { } head) { throw new InvalidOperationException("Independent current native effect boundary unavailable."); }
-        return ErasureRootCustody.Hash(new { head.Head.Epoch, Targets = head.Head.Targets.ToDictionary(entry => entry.Key,
-            entry => new { entry.Value.Registration, entry.Value.Pins }, StringComparer.Ordinal), head.Head.Erased, head.Head.Occurrences });
+        var evidence = await authorization.ReadEffectBoundaryAsync(tenant, ErasureRootCustody.Hash(call), boundary, token).ConfigureAwait(false)
+            ?? throw new InvalidOperationException("Independent current native effect original unavailable.");
+        if (evidence.TenantId != tenant || evidence.StoreId != custody.Installation.StoreId || evidence.EnrollmentId != custody.Installation.EnrollmentId
+            || evidence.CallDigest != ErasureRootCustody.Hash(call) || evidence.Boundary != boundary
+            || evidence.Fingerprint != ErasureRootCustody.Hash(new { evidence.CustodyStateSha256, evidence.NativePolicy }))
+        { throw new InvalidOperationException("Exact independent effect boundary required."); }
+        return evidence.Fingerprint;
     }
     private async Task<JsonObject> MakeOwnersEffectiveAsync(JsonObject input, CancellationToken token)
     {
@@ -846,7 +920,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
             || ErasureRootCustody.Hash(producerOriginal.Producer) != ErasureRootCustody.Hash(originalProducer)) { return null; }
         foreach (var binding in bindings)
         {
-            var enrollment = current.Head.SourceOriginals.Values.SingleOrDefault(value => value.Binding == binding);
+            var enrollment = await custody.ReadSourceAsync(current.Head, ErasureRootOccurrenceBindings.Id(binding.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(binding.Identity)), token).ConfigureAwait(false);
             var retained = registry.Records.SingleOrDefault(value => value.Request.Identity == binding.Identity && value.KeyReference == binding.KeyReference);
             if (enrollment?.Writer is not { } writer || retained is not { WriterState: InteractionOccurrenceWriterState.Active, Sealed: { } sealedOutput }
                 || retained.WriterProofId != binding.OperationId) { return null; }
@@ -882,7 +956,14 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     private ProtectionQualificationProducerOriginal ProducerOriginal(ProtectionQualificationNativeCall call, InteractionProtectionBinding[] bindings, ProtectionQualificationNativeCell cell, byte[] payload, PayloadProtectionCompletionContext completion)
     {
         if (string.IsNullOrWhiteSpace(call.OperationId) || string.IsNullOrWhiteSpace(call.RequestSha256)) { throw new InvalidOperationException("Exact admitted source execution identity required."); }
-        return new(ProtectionQualificationNativeCell.LocationId(cell), bindings, Convert.ToHexString(SHA256.HashData(payload)), ErasureRootCustody.Hash(completion), completion, Producer) { Call = call };
+        string location = ProtectionQualificationNativeCell.LocationId(cell);
+        var copies = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (call.Kind == ProtectionQualificationNativeCallKind.SealSnapshot)
+        {
+            copies.Add(location, "snapshot"); copies.Add(ProtectionQualificationNativeCell.LocationId(cell with { Key = cell.Key + ":cache" }), "cache");
+        }
+        else { copies.Add(location, bindings[0].Identity.Owner.AggregateId == bindings[0].Identity.Target.AgentInteractionId ? "target-event" : "source-outbox"); }
+        return new(location, bindings, Convert.ToHexString(SHA256.HashData(payload)), ErasureRootCustody.Hash(completion), completion, Producer) { Call = call, CopyPurposes = copies };
     }
     private async Task RetainProducerOriginalAsync(ProtectionQualificationProducerOriginal proof, CancellationToken token)
     {

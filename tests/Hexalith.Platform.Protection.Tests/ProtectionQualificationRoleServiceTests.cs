@@ -112,7 +112,7 @@ public sealed class ProtectionQualificationRoleServiceTests
             var observedService = new ProtectionQualificationRoleService(observerScope, journal, null,
                 new ProtectionQualificationPersistedObserver(native, fixture.Custody, engine.Engine, new HashSet<string>()), native, signer,
                 observerPermission: _ => Task.FromResult<ProtectionQualificationObserverPermission?>(new("tenant-a", "erc-v23", "enrollment", "component", "component-observer", binding,
-                    "native", "dapr", "role", "ReadPersistedStateOnly", [], [], [], [], DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1), "independently-verified-component-permission")));
+                    "native", "dapr", "role", "ReadPersistedStateOnly", [], [], [], [], DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(1), "independently-verified-component-permission") { ComponentBackings = new() { ["source"] = "synthetic-native-source" } }));
             var observe = new JsonObject { ["operationId"] = "observe", ["action"] = "ObservePersistedState", ["bindingDigest"] = binding, ["caseId"] = "P06", ["fixtureId"] = "fixture", ["targets"] = JsonSerializer.SerializeToNode(manifest.Targets),
                 ["expectedOperations"] = new JsonArray(new JsonObject { ["operationId"] = "destroy", ["requestSha256"] = ProtectionQualificationOperationJournal.Digest(original), ["action"] = "DestroyWithLostAcknowledgement" }) };
             (await observedService.HandleAsync(observe, token))["statement"]!["response"]!["engineBinarySha256"]!.GetValue<string>().ShouldBe(selected.EngineBinarySha256);

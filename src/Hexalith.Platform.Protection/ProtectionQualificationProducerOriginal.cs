@@ -8,6 +8,9 @@ namespace Hexalith.Platform.Protection;
 /// <param name="CompletionDigest">Actual original engine completion identity.</param><param name="Completion">Exact native completion original.</param><param name="Producer">Actual producing executor engine and installed role.</param>
 public sealed record ProtectionQualificationProducerOriginal(string SourceIdentity, InteractionProtectionBinding[] Bindings, string SealedPayloadSha256, string CompletionDigest, PayloadProtectionCompletionContext Completion, ProtectionQualificationProducerIdentity Producer)
 {
+    /// <summary>Actual source-owned physical writes and purposes, retained in the atomic producer original.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? CopyPurposes { get; init; }
     /// <summary>Exact executed role operation, complete wire-request digest and admitted native call; persisted atomically with source/writer/completion.</summary>
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public ProtectionQualificationNativeCall? Call { get; init; }

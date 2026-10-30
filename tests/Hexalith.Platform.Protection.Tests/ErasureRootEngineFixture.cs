@@ -38,6 +38,7 @@ internal sealed class ErasureRootEngineFixture : IDisposable
         if (shared is null) { Store.Enroll(installation, "tenant-a", registryScope, genesis); }
         else { var head = Store.HeadAsync("tenant-a").GetAwaiter().GetResult(); head.Anchors.Add(registryScope, new(0, genesis, [], [])); Store.ReplaceHead("tenant-a", head); }
         Custody = shared?.Custody ?? new(Store, installation, Permissions);
+        Permissions.EffectBoundaryReader = (tenant, call, boundary, token) => Custody.CaptureEffectBoundaryAsync(tenant, call, boundary, false, token);
         _inventoryAuthority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         _inventoryAuthority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         _inventory.ReadAsync(Arg.Any<PlatformKeyVersion>()).Returns(call => { var key = call.Arg<PlatformKeyVersion>(); return Task.FromResult(new PlatformKeyInventorySnapshot(key.TenantId, key.Purpose, key.KeyAlias, 1, [new(key, PlatformHmacKeyState.Active, 1)], [])); });

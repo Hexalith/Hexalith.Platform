@@ -42,7 +42,15 @@ def enrollment(path):
     for tenant, scopes in value['genesisAnchors'].items():
         if not isinstance(tenant, str) or len(tenant) > 64 or not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?', tenant) or not isinstance(scopes, dict) or not scopes:
             raise ValueError('Independent genesis scope/digest enrollment required')
+        required = {tenant + ':protection:candidate-interaction-occurrences-v1|candidate-interaction-occurrences-v1',
+                    tenant + ':protection:deletion-consumption-v23|deletion-consumption-v23',
+                    tenant + ':custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1'}
+        if not required.issubset(scopes):
+            raise ValueError('Complete occurrence, deletion and lifecycle genesis required')
+        reserved = {scope.split('|')[0]: scope for scope in required}
         for scope, digest in scopes.items():
+            if isinstance(scope, str) and scope.split('|')[0] in reserved and reserved[scope.split('|')[0]] != scope:
+                raise ValueError('Exact runtime owner genesis scope required')
             parts = scope.split('|') if isinstance(scope, str) else []
             actor = parts[0].split(':') if parts else []
             if len(parts) != 2 or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,255}', parts[1]) or len(actor) != 3 or actor[0] != tenant \

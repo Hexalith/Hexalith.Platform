@@ -38,6 +38,7 @@ public sealed class ProtectionQualificationActionRunner(ProtectionQualificationN
         ArgumentNullException.ThrowIfNull(previous);
         ArgumentNullException.ThrowIfNull(admit);
         ArgumentNullException.ThrowIfNull(retain);
+        await driver.ValidateInputsAsync(recipe, request, token).ConfigureAwait(false);
         var originals = new Dictionary<string, JsonNode?>(previous, StringComparer.Ordinal);
         async Task<JsonNode?> Run(ProtectionQualificationNativeCall template)
         {
