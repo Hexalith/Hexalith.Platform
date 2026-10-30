@@ -1,0 +1,34 @@
+{
+  "claim": "current integrated source; external commits preserved, not an exclusive patch",
+  "files": [
+    {
+      "path": "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs",
+      "sha256": "cfce9d53f3f9d503d825409f0e4d00b6b6747a9b49562acd707b5255c9821b90"
+    },
+    {
+      "path": "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceAppHostTests.cs",
+      "sha256": "cc0f88748117a63a1a0b6ae9f6ca03cdb8d6bce21bd89f4c968c7428a82c0b3a"
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformServerBindings.cs",
+      "sha256": "ecfb2f98a4d3faafa038bd67d80b15581450bb8bb1e4272446ec8d1dabfb7158"
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+      "sha256": "11b11cfb85a1803a4ee104576f208493bc4ab549b7eb7734a5f51c124ca7400e"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs",
+      "sha256": "ec34bed60700c07fd3ca753cd3465363074f1a8b8c59d44489d3cf47e01952ed"
+    },
+    {
+      "path": "references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+      "sha256": "d02b804ca96286ceb1ad05230617ff36be223b9ffef4e58f2c417ced26a25a13"
+    }
+  ],
+  "heads": {
+    "Platform": "497ddda39f158745f341898a629ccd360f7d933d",
+    "Builds": "25dae308a5cfc954345f5f6ac7e090ca3dc1dd71",
+    "Parties": "1cd4947a8658bf2d8b8ed0f79b7a574edbf259e9"
+  }
+}

@@ -97,6 +97,24 @@ Paths below prefixed `B/` resolve to `references/Hexalith.Builds/`; `T/` resolve
 | V2 | medium | patch: projection emits only the root workflow although traversal records nested workflows. The isolated fixture changes nested run/environment bytes without changing the reported digest. Include nested workflow blobs through the existing digest-bearing source representation and add the regression. |
 | P1 | medium | Parent expanded lifecycle verification exposed one reflection call still using the old ExecutePlatformAsync arity. Added the absent-candidate null argument; the timeout/retention expectations are preserved. Final rerun pending. |
 
+### Resumed follow-up review triage (2026-10-30)
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| F1 | medium | patch: pre-issuance timeout passes null into ReportStartupTimeoutAsync, which then assigns a random producing identity and initializes it with CandidatePolicy. Preserve an unowned timeout rather than fabricate candidate state; add cancellation coverage. |
+| F2 | medium | patch: TryReadAsync returns null for malformed existing state; diagnostics are then modified before the strict reader refuses. Check the state entry itself and preserve it with fresh-producing-run-required. |
+| F3 | medium | patch: equal not-yet-populated startup deadlines bypass the measured timing checks in ValidateEvidence despite passed/ready evidence. Require populated startup timing for a passed result and test the exact substitution. Final qualification refusal remains mandatory. |
+| F4 | medium | patch: the fixture returns at most one successor run, so no test verifies successful page-two traversal or later-page supersession. Shares its root cause with G1. |
+| F5 | medium | patch: initial reservation checks precede the outcome lock, and simultaneous invocations have no regression. Verify exclusive producing identity and preservation through concurrent calls, including retained owner metadata after state cleanup. |
+| F6 | medium | patch: duplicate matching JWKS IDs and malformed RSA parameters lack authentication refusal regressions. Pin the existing unique-key invariant and name malformed signing-key refusal consistently. |
+| F7 | medium | patch: the authentication tests omit expired consumer tokens, future issuance, reversed expiry and the intentional archived-issuance distinction. Add isolated claim cases against the existing authentication contract. |
+| F8 | medium | patch: changing only consumer ref also breaks its workflow_ref equality, so the allowed-ref guard is not independently tested. Substitute both claims coherently for PR and release cases. |
+| F9 | low | patch: the issuer indexes merge_commit_sha before validating it, so an absent field raises KeyError. The direct optional-lookup correction preserves pr-binding-mismatch without adding policy surface. |
+| F10 | low | patch: CreateToken generates an unused RSA key on valid paths; only the foreign-key fixture needs it. Conditionally create that fixture key to remove unnecessary cryptographic work. |
+| G1 | medium | patch, pre-verified gap: all workflow-run responses have fewer than 30 entries, so reverting the continuation threshold to 100 survives the suite. Add a valid 30+1 page history and bind its resolved identities; grouped with F4. |
+
+Edge-case review returned no additional findings. Review is scoped to the resumed Story 3.1 correction diff; unrelated concurrent composition and writer changes are preserved. The retained comprehensive Platform diff contains independent work since the historical baseline and is not claimed as Story 3.1 implementation.
+
 ## Verification
 
 From Builds, build `test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj` with `dotnet build -c Debug -m:1 -nodeReuse:false`. Run the built xUnit assembly with `-class` selections for new candidate tests, contract reader, provisioning and result writers. Run `python3 -m unittest discover -s Github/governed-provenance/tests` for changed gate helpers. From Platform, run `python3 -m unittest discover -s tests/contracts -p test_test_environment_contract_mirrors.py`. All selected checks must pass; retain exact blockers separately from focused evidence.

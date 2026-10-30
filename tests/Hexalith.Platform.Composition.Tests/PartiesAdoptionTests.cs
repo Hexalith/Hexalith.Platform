@@ -142,7 +142,7 @@ public sealed class PartiesAdoptionTests
         SourceMapping mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new("Hexalith.Builds", "source", buildsRoot)] };
         DateTimeOffset now = DateTimeOffset.UtcNow;
         CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.GetTempPath(), Path.GetTempPath(),
-            CompositionPortAllocator.Allocate(1), [], [], mapping) with
+            CompositionPortAllocator.Allocate(1), [], [], mapping, options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location) with
         {
             SelectedTest = new("parties", "platform-source", "dotnet", "tests/native", new string('a', 64), new string('b', 64), 120, 10, now, now.AddMinutes(2), now.AddMinutes(2), "source"),
         };
