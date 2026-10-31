@@ -90,7 +90,10 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
         DateTimeOffset now = DateTimeOffset.UtcNow;
         TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, now);
-        if (remaining <= TimeSpan.Zero) cancellationToken.ThrowIfCancellationRequested();
+        // The deadline can elapse before its timer cancels the token; never mint zero-lifetime credentials.
+        // Cancellation, not a fault, keeps the runner's startup-deadline classification (HXR021).
+        if (remaining <= TimeSpan.Zero)
+            throw new OperationCanceledException("The startup deadline elapsed before native owner preparation.", cancellationToken);
         string subject = "g4-operator-" + plan.RunId;
         string operatorToken = CompositionTokenFactory.Create(signingKey, new(subject, [TenantIdentity.DefaultTenantId, plan.TenantNamespace],
             TenantCatalogDeclarations.Commands.Select(command => command.Route.Domain).Distinct(StringComparer.Ordinal).ToArray(),
@@ -144,7 +147,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             commands = receipts.Select(receipt => new { receipt.MessageId, receipt.Domain, receipt.AggregateId, receipt.Status, receipt.CommittedEventSequence, receipt.EventCount }).ToArray(),
             tenantsNativeQueryObserved = true, memoriesRegistryObserved = nameof(Hexalith.Memories.Contracts.V1.TenantStatus.Active), observedAtUtc = DateTimeOffset.UtcNow,
         }), cancellationToken).ConfigureAwait(false);
-        await WriteEndpointCredentialsAsync(credentialPath, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
+        await WriteEndpointCredentialsAsync(credentialPath, plan, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
         NativeHttpEndpoints = [memoriesEndpoint];
         NativeEndpointCredentialsPath = credentialPath;
         NativeTestScope = scope;
@@ -273,7 +276,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         return new(new(actual.ResourceId, PlatformDeclarationSet.Id(actual.Module.Declaration), "dapr-invocation", uri, sidecar.Name), token);
     }
 
-    private async Task WriteEndpointCredentialsAsync(string path, CompositionNativeHttpEndpoint endpoint, string apiToken, CancellationToken token)
+    /// <summary>Writes the private <c>hexalith.test-endpoint-credentials.v1</c> channel atomically with owner-only access.</summary>
+    internal static async Task WriteEndpointCredentialsAsync(string path, CompositionRunPlan runPlan, CompositionNativeHttpEndpoint endpoint, string apiToken, CancellationToken token)
     {
         string temporary = path + ".tmp";
         var options = new FileStreamOptions { Access = FileAccess.Write, Mode = FileMode.CreateNew, Share = FileShare.None, Options = FileOptions.Asynchronous };
@@ -283,9 +287,9 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             using var writer = new Utf8JsonWriter(stream);
             writer.WriteStartObject();
             writer.WriteString("schema", NativeTestHandoff.EndpointCredentialsSchema);
-            writer.WriteString("runId", plan.RunId);
-            writer.WriteString("syntheticTenantId", plan.TenantNamespace);
-            writer.WriteString("dataIsolationId", plan.ResourceNamespace);
+            writer.WriteString("runId", runPlan.RunId);
+            writer.WriteString("syntheticTenantId", runPlan.TenantNamespace);
+            writer.WriteString("dataIsolationId", runPlan.ResourceNamespace);
             writer.WriteStartArray("endpoints");
             writer.WriteStartObject();
             writer.WriteString("resourceId", endpoint.ResourceId);

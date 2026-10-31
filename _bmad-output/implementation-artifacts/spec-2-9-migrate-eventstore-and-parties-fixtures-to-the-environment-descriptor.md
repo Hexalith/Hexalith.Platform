@@ -72,6 +72,64 @@ E = `references/Hexalith.EventStore`; P = `references/Hexalith.Parties`; T = `E/
 - Given Parties isolated projects, when run directly without Platform/domain servers, then they pass with doubles confined to tests.
 - Given EventStore own-repository tests, when using their private fixture, then bootstrap remains available without being exported.
 
+### Review Findings
+
+Code review 2026-10-31 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) of the committed story-owned paths: EventStore `6e0280bf..46b41ffc` (Testing, Testing.Integration, their tests, `nuget-packages.md`; embedded schema copy and `ready-owner.json` fixtures excluded), Parties `784215a8..01ae1be2` (Platform suite, declaration, slnx, README, gateway routing tests), Builds `4d93e4fd..970101f4` (endpoint-credential channel, native scope, executor, readiness, their tests), Platform `d5f16fb6..615ef69a` (native preparation, invocation access, AppModel, their tests). `PlatformAppModel.cs` hunks from stories 2.7/3.3 were attributed by blame and routed to defer.
+
+- [x] [Review][Decision] The declared `platform-package` suite can never pass — `PlatformNativeTestPreparation` and its registration compile only under `HEXALITH_PLATFORM_SOURCE_CATALOG` (`UseHexalithProjectReferences=true`, source mode only), so package runs never publish the required `memories`/`dapr-invocation` binding, native scope or Memories tenant; the fixture refuses HXT110 and the runner (B6) requires its observations. README says package execution needs only authoritative publications. Choose: withdraw the package suite until package-mode preparation exists, make preparation package-capable, or keep it declared with an explicit documented limitation. Resolved 2026-10-31: document + defer — Parties README states the package-mode preparation limitation; package-capable preparation is a new deferred-work entry.
+- [x] [Review][Decision] Fixture `Environment` property shadows `System.Environment` in every derived fixture — the Tenants `AspireTopologyFixture` (8 `Environment.GetEnvironmentVariable` calls) will stop compiling when ported (deferred Tenants/McpCli port); new tests already write `System.Environment`. Rename before first publication (e.g. `Descriptor`) or keep the name. Resolved 2026-10-31: renamed to `Descriptor` in EventStore, its tests, the Parties fixture/tests and the migration notes.
+- [x] [Review][Patch] Linux arm/arm64 no-follow open follows final symlinks: `0x20000` is `O_LARGEFILE` there (`O_NOFOLLOW` is `0x8000`) [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorFile.cs:50]
+- [x] [Review][Patch] Package-mode Memories container receives `EventStore__CommandGateway__BaseAddress=http://127.0.0.1:<sidecar>`, its own loopback (daprd runs on the host; `DAPR_HTTP_ENDPOINT` is project-only); restrict the sidecar origin to project-hosted Memories and keep the gateway reference for containers [src/Hexalith.Platform.Composition/PlatformAppModel.cs:348]
+- [x] [Review][Patch] `PlatformNativeTestPreparation` has no tests: foreign run/module, global-admin domain and missing synthetic-tenant refusals, credential-file cleanup on failure/cancellation, and writer→reader contract for `hexalith.test-endpoint-credentials.v1` (hand-written in Platform, Builds and EventStore); also closes the open story 3.3 ledger item "Story 2.9 needs a production native endpoint-credential producer/consumer contract test" [src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs:67]
+- [x] [Review][Patch] Hosted (non-loopback) endpoint refusal HXT109 is untested; deleting the loopback check passes every test [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptor.cs:86]
+- [x] [Review][Patch] Attached-run (`role: attached`) HXT108 refusal is untested; the schema accepts attached descriptors [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptor.cs:25]
+- [x] [Review][Patch] Credential-bearing redirect refusal (`AllowAutoRedirect = false`) is untested for bearer and invocation clients [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentRequestHandler.cs:6]
+- [x] [Review][Patch] HXT110 finite timeout bounds (zero, negative, infinite, >5 min) are untested for both client factories [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptor.cs:109]
+- [x] [Review][Patch] Scope-derived native token claims (`domains`, `tenants`, `eventstore:surface=agent`) and `HEXALITH_G4_DOMAINS` are never asserted; the only scoped test uses fallback-equal values [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:419]
+- [x] [Review][Patch] Executor-level HXT008 refusal before child launch on an invalid endpoint-credential channel is untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:426]
+- [x] [Review][Patch] RunReadiness publication of preparation scope, bound endpoints and fixed credential path (and its inconsistency refusals) is untested with a registered `ICompositionRunPreparation` [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs:387]
+- [x] [Review][Patch] Descriptor refusals discard the contract source and field location that `test-environment-v1.md` diagnostics require; `Refuse` ignores `version`/`field` [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:463]
+- [x] [Review][Patch] API migration notes omit the removed public `DaprTestPrerequisites`, removed fixture members (`PrerequisitesAvailable`, `SkipReason`, `AppId`, `RedisPort`, `AspireResource`…), the `DaprInvocation` opt-in and the `HEXALITH_TEST_ENDPOINT_CREDENTIALS_PATH` channel [references/Hexalith.EventStore/docs/reference/nuget-packages.md:503]
+- [x] [Review][Patch] An elapsed startup deadline before the token fires mints zero/negative-lifetime operator and native tokens; throw instead of `ThrowIfCancellationRequested` [src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs:93]
+- [x] [Review][Defer] Legacy Tenants/McpCli fixtures still use removed bootstrap members [references/Hexalith.Tenants/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs:25] — deferred: already recorded (B2) in deferred-work.md
+- [x] [Review][Defer] Credential-file privacy unchecked on Windows readers [references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentEndpointCredentials.cs:32] — deferred: already recorded (B3 Windows ACL) in deferred-work.md
+- [x] [Review][Defer] Parties Platform.IntegrationTests is excluded from every solution build, so CI never compiles it or runs its assertion controls [references/Hexalith.Parties/Hexalith.Parties.slnx:80] — deferred: consequence of fix B1; CI workflows may not change; enroll once the migrated package API is published
+- [x] [Review][Defer] Consumer refusal codes HXT108–HXT110 are absent from the contract diagnostic table [docs/contracts/test-environment-v1.md:244] — deferred: fix edits the shared contract document
+- [x] [Review][Defer] Catalog-cohort `WaitForStart`/skipped waits and parties `Tenants__ReadinessBaseAddress` are unasserted [src/Hexalith.Platform.Composition/PlatformAppModel.cs:373] — deferred: pre-existing story 3.3 catalog cohort wiring
+- [x] [Review][Defer] `UsePrebuiltProjects` guard and `--no-build --no-restore` args are untested [src/Hexalith.Platform.Composition/PlatformAppModel.cs:115] — deferred: pre-existing story 2.7/3.3 change
+- [x] [Review][Defer] `UsePrebuiltProjects` combined with a selected-test or retention `--artifacts-path` would `--no-build` from an empty run-private output (medium if true, unverified) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:256] — deferred: pre-existing 2.7/3.3; settle by composing a runner plan with `Platform__UsePrebuiltProjects=true` and observing the owner launch
+- [x] [Review][Defer] Builds `SelectedNativeTestReport` has the same Linux arm/arm64 `O_NOFOLLOW` flag error [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:223] — deferred: pre-existing since 2026-10-16
+
+Fixes applied 2026-10-31 (uncommitted in EventStore, Parties and Platform working trees; Builds test patches on branch `review/story-2-9-runner-tests` commit `5876528`). EventStore Testing 263/263 and Testing.Integration 58/58; Parties declaration 7/7, Platform suite source build clean with assertion controls 4/4 and missing-handoff refusal HXT106 without skip; Builds NativeTestExecutorTests + AppHostRunnerValidationTests 57/57; Composition PlatformAppModelTests 180 (176 passed, 4 existing optional skips) and PlatformNativeTestPreparationTests 8/8. Every new guard test failed against its reverted guard in a scratch copy. The package-fixture assertion in `PlatformDaprBindingsTests` that expected the container `127.0.0.1` gateway was corrected with P2.
+
+Rejected:
+
+- Memories sidecar `DAPR_API_TOKEN` handed to the test process — low: synthetic disposable run, first-party suite, client prefix confinement; a dedicated invocation identity is a larger design change than this approved continuation.
+- Native token includes `system` tenant with `command:submit` — low: run-owned environment, non-admin TenantReader subject under domain authorization; `system` is needed for the Tenants system-scope query.
+- `native-scope.json` in a container-writable directory — false: participants already hold the run's symmetric HS256 signing key, so a writable scope grants nothing new.
+- Module-specific names in generic runner/composition — low: only Parties/Memories consume them; manifest-declared contributions are new design.
+- RunReadiness `SingleOrDefault` with several preparation owners — low: one owner exists.
+- `HasUnlinkedParents` rejects symlinked ancestors / parent-swap race — low: runner workspace is under LocalApplicationData, refusal is loud, the race needs write access to the private workspace.
+- Raw `DaprHttpEndpoint`/`AppEndpoint` strings — low: addresses for actor proxies, not fixture requests.
+- Test-root metadata makes `HEXALITH_PLATFORM_TEST_ROOT` dead/NRE — false: metadata-first is the documented private-output design; the fallback is unreachable.
+- Half-written preparation inputs — false: scope/closure are written synchronously in Compose before preparation; committed readbacks use tmp+move.
+- `Dispose` `AggregateException` masks the original refusal — low: client/CTS disposal practically never throws.
+- Duplicate `Resources` tuple raises `ArgumentException` — low: a static suite declaration error that fails loudly.
+- Gateway routing tests no longer assert anonymous docs access; positional `null` handler args — low: isolated fixture adapting to host security; signature drift fails at compile time.
+- `MemoriesTenantObservationTests` as suite doubles — false: unit tests of the assertion helper, not dependency doubles; disclosed as controls.
+- Redis key-prefix discovery infers a binding — false: the declared `redis/parties/tcp` endpoint is used; only the in-store key prefix is observed, with ambiguity refusal.
+- `DaprLocalEndpoints`/`DaprDiagnostics` still exported — low: pre-existing helpers unused by migrated fixtures; removal is a separate breaking choice.
+- Out-of-Code-Map changes — false: Contracts.UI keeps its family version (dedup, a8e24f6e); eligibility-gate removal is isolated-test-only; Memories transport/ACL grant and runner-owned operator token are recorded under the 2026-10-30 continuation; `GeneratePackageOnBuild` belongs to story 2.7.
+- `Completed` status with zero events polls to the deadline — low: fresh-run preparation commands always emit events.
+- Missing `native-scope.json` polls to the deadline — low: registration requires the selected Parties participant that writes it.
+- HTTP URI with non-HTTP declared protocol fails the fixture — false: refusing that inconsistent binding is the intended B10 behavior.
+- Client allocated before a later binding refusal — false: the catch disposes the environment and its clients; refusal stays atomic.
+- Empty credentials variable refuses HXT110 — false: loud refusal of an invalid handoff is correct.
+- Comma in native-scope values splits `HEXALITH_G4_DOMAINS` — low: identifiers cannot contain commas in practice.
+- Null readiness scope fields raise NRE — low: readiness is produced by the runner itself.
+- TCP endpoint without a port — low: the runner always supplies explicit ports; failure is loud.
+- Reader refuses `attemptId == runId` unlike Builds — false: the contract requires a distinct `attemptId`.
+
 ## Implementation Notes
 
 - Implemented strict shared descriptor consumption with the embedded authoritative v1 schema,

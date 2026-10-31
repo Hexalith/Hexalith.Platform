@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json;
+using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
@@ -35,6 +36,30 @@ public sealed partial class PlatformAppModelTests
         {
             using ServiceProvider provider = builder.Services.BuildServiceProvider();
             provider.GetService<PlatformCompositionWorkspace>()?.Dispose();
+        }
+    }
+
+    /// <summary>Keeps a package-mode Memories container on the EventStore endpoint; its own loopback hosts no daprd.</summary>
+    [Fact]
+    public async Task PackageMemoriesContainerKeepsTheGatewayEndpointReferenceAsync()
+    {
+        IDistributedApplicationBuilder builder = Builder();
+        try
+        {
+            PlatformAppModel.Compose(builder, PackageGraphOptions() with
+            {
+                ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
+            });
+            IResource memories = builder.Resources.Single(resource => resource.Name == "memories").ShouldBeOfType<ContainerResource>();
+            Dictionary<string, object> environment = await MemoriesGatewayEnvironmentAsync(builder, memories);
+            environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.Name.ShouldBe("eventstore");
+            environment.ShouldNotContainKey("DAPR_HTTP_ENDPOINT");
+        }
+        finally
+        {
+            string? policy = builder.Resources.SelectMany(resource => resource.Annotations.OfType<DaprSidecarAnnotation>())
+                .Select(sidecar => sidecar.Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config).FirstOrDefault();
+            if (policy is not null) await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(policy)!, CancellationToken.None);
         }
     }
 

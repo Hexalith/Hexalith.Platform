@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
+  <!-- Native owner preparation exists only in the source-catalog Composition build. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants></PropertyGroup>
   <ItemGroup><AssemblyMetadata Include="PlatformTestRepositoryRoot" Value="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)/../..'))" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>

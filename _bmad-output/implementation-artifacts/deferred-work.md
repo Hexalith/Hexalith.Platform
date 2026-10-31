@@ -1715,6 +1715,30 @@
   target_story: 5.6
   evidence: Sixth-pass Blind BH10. Policy L137, L146, L153 and L251 make the trusted gate open pending decisions, issue attempt order and record completed and superseded closures, and L159-160 make admission verify the decision's authoritative state. The ownership paragraph (L10-13) names only Builds tools and Platform's staging executor and promotion evaluator. The architecture's Records and writers rule accepts a record only when signed by its writer and lists no promotion-decision record. The candidate and attachment policy (Story 2.1) and the vulnerability policy (Story 5.2) use the same undefined term. Settle in Story 5.6, with an architecture correct-course that adds the record and names its writer, before Stories 5.6 and 5.11 implement decision state.
 
+## Deferred from: code review of spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor (2026-10-31)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Compile and run the Parties Platform.IntegrationTests project in CI once the migrated EventStore testing API is published (medium).
+  evidence: Fix B1 marks the project `<Build Project="false" />` in both Parties solutions and `scripts/test.ps1` only inventories it, so compile errors and the `MemoriesTenantObservationTests` assertion controls surface only in live native runs. CI workflows may not change under this story.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Add the consumer refusal codes HXT108–HXT110 to the test-environment v1 diagnostic table (low).
+  evidence: EventStore `TestEnvironmentDescriptor`/`TestEnvironmentEndpointCredentials` refuse with HXT108 (unready/attached), HXT109 (selection/hosted) and HXT110 (credential/transport/bounds) inside the contract's HXT1xx range; `docs/contracts/test-environment-v1.md:244` lists only HXT101–HXT107, so future contract codes can collide.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Assert the catalog-cohort startup wiring in a Compose-only test (medium).
+  evidence: Verification-gap VG9. `PlatformAppModel.cs:373-389` uses `WaitForStart` between catalog participants, skips waits on non-participants and binds parties `Tenants__ReadinessBaseAddress` (`:353`); only a name-level wait assertion exists (`PlatformAppModelReviewTests.cs:549`). Reverting to `WaitFor` would deadlock live startup unnoticed. Story 3.3 cohort wiring.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Cover the `UsePrebuiltProjects` guard and its `--no-build --no-restore` launch args (medium).
+  evidence: Verification-gap VG10. `PlatformAppModel.cs:115` refuses non-Development/non-source use and `:256` appends the args; only skipped live lanes set `Platform__UsePrebuiltProjects`. Introduced by story 2.7/3.3 commit 63460187.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Refuse or support `UsePrebuiltProjects` combined with a selected-test or retention `--artifacts-path` (medium if true, unverified).
+  evidence: Edge-case ECH2. With both set, owner projects launch `dotnet run --no-build` against an empty run-private artifacts path. Settle by composing a runner plan with `Platform__UsePrebuiltProjects=true` and observing the owner launch. Story 2.7/3.3 code.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Select `O_NOFOLLOW` per architecture in Builds `SelectedNativeTestReport` (medium).
+  evidence: `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs:223` uses `0x800 | 0x20000 | 0x80000` on every non-macOS Unix; on Linux arm/arm64 `0x20000` is `O_LARGEFILE` and `O_NOFOLLOW` is `0x8000`, so selected reports follow final symlinks. Pre-existing since 2026-10-16; the EventStore copy is a story 2.9 patch.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
+  summary: Make Platform's native owner preparation available to package-mode compositions so the declared Parties `platform-package` suite can pass (medium).
+  evidence: Review decision 2026-10-31 (document + defer). `src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs` and its registration (`PlatformAppModel.cs` ~line 165) compile only under `HEXALITH_PLATFORM_SOURCE_CATALOG` (`UseHexalithProjectReferences=true`, source mode only), because they reference the Tenants and Memories contracts as source projects. Package runs therefore publish no Memories `dapr-invocation` binding, native scope or synthetic tenant/membership; `PlatformEnvironmentFixture` refuses HXT110 and the runner requires the suite's functional observations. The Parties README now states the limitation. Settle by referencing the published contracts packages in package mode (or an owner-neutral preparation contract) and running `hexalith-module test --profile platform-package --mode package` once the migrated EventStore testing packages are published.
+
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: R6-BH-5: The independently committed campaign environment topology validates only regular containers in supplied provider/reporter workloads. Init containers can bypass image, filesystem and resource checks
   evidence: The independently committed campaign environment topology validates only regular containers in supplied provider/reporter workloads. Init containers can bypass image, filesystem and resource checks; qualify this environment-owned campaign boundary separately from the application chart.

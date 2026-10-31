@@ -86,8 +86,8 @@ public sealed partial class PlatformAppModelTests
                     }
                     else mounts.ShouldBeEmpty();
                 }
-                if (server.Name == "memories") environment["EventStore__CommandGateway__BaseAddress"].ShouldBe("http://127.0.0.1:" + sidecar.DaprHttpPort);
-                else if (server.Name != "eventstore") environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
+                // Package containers, Memories included, cannot reach daprd on their own loopback.
+                if (server.Name != "eventstore") environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
                 if (server.Name == "tenants-api") environment["EventStore__GatewayReadiness__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gateway);
             }
         }

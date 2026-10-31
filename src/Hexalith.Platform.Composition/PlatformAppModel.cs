@@ -345,7 +345,8 @@ public static class PlatformAppModel
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
-                        if (hasGateway && server.ResourceId == "memories")
+                        // Only a host process shares daprd's loopback; a Memories container keeps the routable gateway reference.
+                        if (hasGateway && server.ResourceId == "memories" && projects.ContainsKey(server.ResourceId))
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", "http://127.0.0.1:" + ports.Http);
                         else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
