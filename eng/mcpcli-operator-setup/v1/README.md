@@ -2,7 +2,7 @@
 
 Final execution status (2026-10-31): the approved packet completed all owner phases through handoff. The three actual named-client sessions and the user's assisted 685-second setup attempt are retained in the [McpCli acceptance checklist](../../../../mcpcli/docs/release/operator-setup-checklist.md) and [session evidence](../../../../mcpcli/_bmad-output/implementation-artifacts/evidence/story-4-17/sessions/). The user accepted their own timed run because no first-time operator was available; a first-time operator measurement remains deferred. The environment and its volume were removed after those sessions. There is no live Gateway or usable handoff here.
 
-Cleanup on 2026-10-31 required an approved manual API deletion with a server-enforced namespace UID precondition after checking the owner label: the reviewed runner refused with `fixture-changed-after-review` after unrelated McpCli fixture edits. The private forward was stopped first, and namespace/PV absence was verified. See the [cleanup receipt](../../../../mcpcli/_bmad-output/implementation-artifacts/evidence/story-4-17/cleanup-20261031/receipt.json); private backups and execution journals remain preserved. Later runner fixes skip fixture/evidence hash checks only for cleanup and `--forward`; review, runner/helper, manifest, scope, expiry, private-input and namespace ownership/UID checks still apply. These source changes invalidate the old runner/helper bindings, so another execution needs a fresh concrete packet and review.
+Cleanup on 2026-10-31 required an approved manual API deletion with a server-enforced namespace UID precondition after checking the owner label: the reviewed runner refused with `fixture-changed-after-review` after unrelated McpCli fixture edits. The private forward was stopped first, and namespace/PV absence was verified. See the [cleanup receipt](../../../../mcpcli/_bmad-output/implementation-artifacts/evidence/story-4-17/cleanup-20261031/receipt.json); private backups and execution journals remain preserved under `/tmp`, while the copied registry credentials were deleted (see the disposal note after the cleanup procedure). Later runner fixes skip fixture/evidence hash checks only for cleanup and `--forward`; review, runner/helper, manifest, scope, expiry, private-input and namespace ownership/UID checks still apply. These source changes invalidate the old runner/helper bindings, so another execution needs a fresh concrete packet and review.
 
 The original assisted Desktop keyed Party request remains a recorded unknown outcome; the effective Gateway composition had no registered trusted intent adapter, so adding digest keys/restarting alone was insufficient. CreateParty's key is optional; subsequent separately approved fresh unkeyed tasks succeeded. Preserve the original failed attempt and `evidence/admission-20261031/assessment.json`; no command was replayed as a recovery. All issued operator credentials have expired; the original handoff expiry below is historical.
 
@@ -32,7 +32,16 @@ python3 eng/mcpcli-operator-setup/v1/phases.py \
   --review-sha256 063bac572c44e85441169aa4410b4001886f5ae7ed6e212f3c5138c607e86be4
 ```
 
-Each execution verifies the reviewed document, exact runner/helper, manifest/private-input hashes, scope and expiry before the phase. Fixture/evidence hashes are also required for verification and deployment phases; cleanup and `--forward` skip only those two checks because they do not consume those sources. Source or credential edits require a fresh packet and review. An expired packet must be prepared into fresh output/private paths, retaining this attempt; do not edit its expiry. Immediately before approval/application, repeat local verification and the bounded namespace-absence, context/API, Dapr/storage observations recorded in the validation evidence. Stop if target metadata has materially changed.
+Each execution verifies the reviewed document, exact runner/helper, manifest/private-input hashes, scope and expiry before the phase. Fixture/evidence hashes are also required for verification and deployment phases; cleanup and `--forward` skip only those two checks because they do not consume those sources. Source or credential edits require a fresh packet and review. An expired packet must be prepared into fresh output/private paths, retaining this attempt; do not edit its expiry. To prepare one, choose a new absolute private root outside both repositories and a new packet folder. Preparation applies nothing; it prints the namespace and the `reviewSha256` to review:
+
+```bash
+cd /home/administrator/projects/hexalith/platform
+python3 eng/mcpcli-operator-setup/v1/prepare.py \
+  --private-root /tmp/mcpcli-417-v1-private-YYYYMMDD-attemptN \
+  --output eng/mcpcli-operator-setup/v1/packet-YYYYMMDD
+```
+
+Immediately before approval/application, repeat local verification and the bounded namespace-absence, context/API, Dapr/storage observations recorded in the validation evidence. Stop if target metadata has materially changed.
 
 After explicit approval of this exact packet, run the following sequence in one Bash session. `set -e` stops at the first failure. Run each phase once and inspect its result before continuing. `--execute-reviewed` expresses an already granted approval; it is not permission to skip review.
 
@@ -98,3 +107,5 @@ python3 eng/mcpcli-operator-setup/v1/phases.py \
 ```
 
 Cleanup also requires an unexpired review; arrange it within the review window. If the window expires or identity differs, stop and obtain a reviewed recovery decision. Preserve private backup/journal evidence and revoke task credentials through that recovery process; no automated broad cleanup is provided. No package/tag/release publication is part of this packet.
+
+After cleanup completes, delete the private root's `mcpcli-pull-.dockerconfigjson` and record the deletion. It is a copy of the configured live `registry.hexalith.com` credential, so unlike the task credentials it stays valid after the namespace is gone. Verification re-hashes every private input until cleanup, so delete it only afterwards. For Story 4.17, the seven copies in `/tmp/mcpcli-417-v1-private-20261031-attempt2` through `attempt8` were deleted on 2026-10-31; the [cleanup receipt](../../../../mcpcli/_bmad-output/implementation-artifacts/evidence/story-4-17/cleanup-20261031/receipt.json) lists every retained private root.
