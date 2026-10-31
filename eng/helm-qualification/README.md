@@ -1,15 +1,15 @@
 # Reference-composition Helm qualification
 
 The selected application package is the maintained chart in `chart/`. The native
-probe uses Aspire **13.6.1**, `Aspire.Hosting.Kubernetes`
-**13.6.1-preview.1.26506.6**, and the catalog Dapr integration
-**13.6.1-beta.935**. These are the actual tools, replacing the story's historical
+probe uses Aspire **13.6.4**, `Aspire.Hosting.Kubernetes`
+**13.6.4-preview.1.26523.11**, and the catalog Dapr integration
+**13.6.2-beta.959**. These are the actual tools, replacing the story's historical
 13.5.4 identity. No dependency upgrade is part of this qualification.
 
 Native publishing succeeds but drops the `WithDaprSidecar` annotation from all
-seven generated Pod templates. Preserving module Dapr plumbing would require a
+eight generated Pod templates. Preserving module Dapr plumbing would require a
 separate Kubernetes model, which is the AD-1 fallback trigger. `qualify.py`
-repeats that measurement, requires all seven native workloads to exist, retains
+repeats that measurement, requires every enabled native workload to exist, retains
 the generated files and render, and records their hashes and missing annotations
 in `exportDecision`. A build failure or incomplete probe fails qualification.
 No generated native files are patched.
@@ -17,9 +17,19 @@ No generated native files are patched.
 `PlatformApplicationGraph` selects the actual Parties declaration and its
 EventStore, Tenants and Memories closure. `PlatformServerBindings` consumes that
 same neutral metadata before applying its existing local profile.
+The current declarations enable eight workloads, including the internal-only
+`memories/domain` server; the graph and qualification include all eight. The
+separate finite-campaign capacity contract still requires its original seven
+workloads and refuses this graph until its owner admits new capacity. Its budget
+regressions use an explicit historical test fixture and grant no current admission.
 `PlatformDaprBindings` supplies capability names, consumers, environment keys,
 receiver ACL operations and subscriptions to both paths. Hosted selection never
 calls `PlatformLocalProfile`, creates local providers, or generates credentials.
+The probe refuses `aspire deploy` before writing its graph or adding resources.
+The pinned [13.6.4 CLI](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Cli/Commands/DeployCommand.cs)
+passes `--operation publish --step deploy`; the
+[SDK builder](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Hosting/DistributedApplicationBuilder.cs)
+maps that step to `Pipeline:Step`, which the guard checks.
 The chart's `reference-graph.json` is a serialized metadata input from that graph,
 not a second hand-written topology. Its parity with current declarations is
 checked by the C# tests and every native probe. To update it after a declaration
@@ -51,6 +61,12 @@ under `bindings["module/server"].configuration`. Secret and dynamic-secret input
 accept `{name, key}` references only. A non-secret input can be a string, a JSON
 object/array string (flattened into .NET configuration keys),
 `{endpoint: "parameter-name"}`, or `{configMapKeyRef: {name, key}}`.
+ConnectionStrings inputs also accept `{secretKeyRef: {name, key}}` for an
+authenticated connection string held in an existing Secret. ConnectionStrings
+and endpoint leaves (including authority and issuer fields) cannot use ConfigMap
+references; they require validated endpoint parameters or, for ConnectionStrings,
+existing Secret references. The environment writer owns validation of Secret
+connection-string contents, including native TLS and non-local endpoints.
 Nested endpoint and ConfigMap reference leaves resolve recursively, including
 Clock Sources arrays. Literal HTTPS leaves use the same endpoint validation.
 Structured JSON is decoded before validating keys and values; escaped credential
@@ -59,8 +75,10 @@ are compared case-insensitively, matching .NET, and equivalent duplicates fail.
 Structured secret leaves can be supplied as additional existing references in
 `bindings["module/server"].credentials`, keyed by flattened environment name (for
 example `Clock__Sources__0__AuthenticationToken`). They cannot override canonical
-Dapr/security bindings or declared channel/API-token inputs. Distinct app and API
-Secret references are supported and must agree with their respective declared inputs.
+Dapr/security bindings or declared channel/API-token inputs. Additional credential
+names must be credential-shaped extensions of a declared input, matched
+case-insensitively, so arbitrary runtime environment names are refused. Distinct
+app and API Secret references must agree with their respective declared inputs.
 Credential literals inside structured configuration fail.
 Endpoint parameters permit HTTPS or TLS data-service schemes and reject embedded
 credentials, fragments and loopback/local endpoints. PostgreSQL requires the single

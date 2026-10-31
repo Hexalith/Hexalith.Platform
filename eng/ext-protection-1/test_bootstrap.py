@@ -75,6 +75,64 @@ class BootstrapRedirectTests(unittest.TestCase):
 
 
 class PreparedReadinessTests(unittest.TestCase):
+    @staticmethod
+    def script(section, ending):
+        import textwrap
+        source = (Path(__file__).resolve().parents[2] / 'deploy/erasure-root/statefulset.yaml').read_text()
+        return textwrap.dedent(source.split(section, 1)[1].split(ending, 1)[0])
+
+    def test_prepared_startup_requires_exact_memory_and_zero_swap_before_openbao(self):
+        import os
+        import subprocess
+        script = self.script('  start-erasure-root.sh: |\n', '  erasure-root.hcl: |\n')
+        source = (Path(__file__).resolve().parents[2] / 'deploy/erasure-root/statefulset.yaml').read_text()
+        self.assertIn('command: [/bin/sh, /bao/config/start-erasure-root.sh]', source)
+        self.assertNotIn('${', script)
+        fragment = (Path(__file__).resolve().parents[2] / 'deploy/erasure-root/kubelet-noswap.fragment.yaml').read_text()
+        self.assertIn('swapBehavior: NoSwap', fragment)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); cells = root / 'cgroup'; cells.mkdir(); started = root / 'started'
+            bao = root / 'bao'; bao.write_text('#!/bin/sh\nprintf "%s\\n" "$*" > "$ERC_TEST_STARTED"\n'); bao.chmod(0o700)
+            # Only this test copy replaces fixed production kernel paths. There is
+            # no environment variable or writable-path override in the shipped script.
+            fixture = script.replace('/sys/fs/cgroup/', str(cells) + '/')
+            self.assertEqual(script.count('/sys/fs/cgroup/'), 2)
+            for memory, swap, succeeds in [('1073741824', '0', True), ('1073741824', '1', False),
+                                           ('1073741824', '1073741824', False), ('1073741824', 'max', False),
+                                           ('max', '0', False), ('2147483648', '0', False),
+                                           ('268435456', '0', False), (None, '0', False), ('1073741824', None, False)]:
+                for filename, value in [('memory.max', memory), ('memory.swap.max', swap)]:
+                    path = cells / filename
+                    if value is None:
+                        path.unlink(missing_ok=True)
+                    else:
+                        path.write_text(value + '\n')
+                started.unlink(missing_ok=True)
+                result = subprocess.run(['/bin/sh', '-ec', fixture], env=dict(os.environ, PATH=str(root) + os.pathsep + os.defpath,
+                                        ERC_TEST_STARTED=str(started)), capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode == 0, succeeds, (memory, swap, result.stderr))
+                self.assertEqual(started.exists(), succeeds)
+                if succeeds:
+                    self.assertEqual(started.read_text().strip(), 'server -config=/bao/config/erasure-root.hcl')
+                else:
+                    self.assertIn('ERC_MEMORY_AND_SWAP_LIMIT_UNVERIFIED', result.stderr)
+
+    def test_actual_readiness_shell_refuses_wrong_native_health(self):
+        import os
+        import subprocess
+        script = self.script('                - |\n', '            timeoutSeconds:')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bao = root / 'bao'; bao.write_text('#!/bin/sh\nprintf "%s\\n" "$ERC_TEST_HEALTH"\nexit "$ERC_TEST_HEALTH_STATUS"\n'); bao.chmod(0o700)
+            good = {'version': '2.6.2', 'initialized': True, 'sealed': False}
+            vectors = [(good, '0', True), ({**good, 'version': '2.6.1'}, '0', False),
+                       ({**good, 'initialized': False}, '0', False), ({**good, 'sealed': True}, '0', False),
+                       ({'version': '2.6.2', 'initialized': True}, '0', False), (good, '1', False)]
+            for health, status, succeeds in vectors:
+                result = subprocess.run(['/bin/sh', '-ec', script], env=dict(os.environ, PATH=str(root) + os.pathsep + os.defpath,
+                                        ERC_TEST_HEALTH=json.dumps(health), ERC_TEST_HEALTH_STATUS=status), capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode == 0, succeeds, (health, status, result.stderr))
+
     def test_probe_uses_verified_https_native_health_and_never_listening_tcp(self):
         source = (Path(__file__).resolve().parents[2] / 'deploy/erasure-root/statefulset.yaml').read_text()
         probe = source.split('readinessProbe:', 1)[1].split('      volumes:', 1)[0]
@@ -256,6 +314,11 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                     self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)
                 def _missing(self):
                     self.send_response(404); self.end_headers()
+                def _committed(self, stage):
+                    if Native.mode == 'stop-after-' + stage:
+                        self._json({'errors': ['synthetic acknowledgement loss']}, 503)
+                    else:
+                        self.send_response(204); self.end_headers()
                 def do_GET(self): self._dispatch('GET', self._body())
                 def do_POST(self): self._dispatch('POST', self._body())
                 def _dispatch(self, method, body):
@@ -263,17 +326,22 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                     Native.records.append((method, self.path, body))
                     if self.path.endswith('/sys/health'):
                         self._json({'version': '2.6.2', 'initialized': True, 'sealed': False}); return
+                    if self.path.endswith('/sys/mounts'):
+                        mounts = {name + '/': value for name, value in Native.mounts.items()}
+                        if Native.mode == 'mount-mismatch':
+                            mounts['erc-transit/'] = {'type': 'kv', 'options': {}}
+                        self._json({'data': mounts}); return
                     if '/sys/mounts/' in self.path:
                         name = self.path.split('/sys/mounts/', 1)[1].strip('/')
                         if method == 'GET':
                             if Native.mode == 'mount-mismatch' and name == 'erc-transit':
                                 self._json({'type': 'kv', 'options': {}}); return
                             if name not in Native.mounts:
-                                self._missing(); return
-                            self._json(Native.mounts[name]); return
+                                self._json({'errors': ['No secret engine mount at ' + name + '/']}, 400); return
+                            self._json({'data': Native.mounts[name]}); return
                         payload = json.loads(body)
                         Native.mounts[name] = {'type': payload['type'], 'options': payload.get('options') or {}}
-                        self.send_response(204); self.end_headers(); return
+                        self._committed('mount'); return
                     if self.path.endswith('/config') and '/sys/' not in self.path:
                         if method == 'GET':
                             if 'config' not in Native.configs:
@@ -287,10 +355,10 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                             if self.path not in Native.keys:
                                 self._missing(); return
                             self._json({'data': Native.keys[self.path]}); return
-                        Native.keys[self.path] = json.loads(body); self.send_response(204); self.end_headers(); return
+                        Native.keys[self.path] = json.loads(body); self._committed('key'); return
                     if '/sys/policies/acl/' in self.path:
                         if method == 'POST':
-                            Native.policies[self.path] = json.loads(body)['policy']; self.send_response(204); self.end_headers(); return
+                            Native.policies[self.path] = json.loads(body)['policy']; self._committed('policy'); return
                         if Native.mode == 'policy-missing':
                             self._missing(); return
                         if Native.mode == 'policy-mismatch':
@@ -300,7 +368,7 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                         self._json({'policy': Native.policies[self.path]}); return
                     if '/data/tenants/' in self.path:
                         if method == 'POST':
-                            Native.heads[self.path] = json.loads(body)['data']; self.send_response(204); self.end_headers(); return
+                            Native.heads[self.path] = json.loads(body)['data']; self._committed('head'); return
                         if Native.mode == 'head-mismatch':
                             self._json({'data': {'data': {'Epoch': 2}, 'metadata': {'version': 1}}}); return
                         if self.path not in Native.heads:
@@ -346,6 +414,17 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                 resumed = run(True, 'ok', keep=True)
                 self.assertEqual(resumed.returncode, 0, resumed.stdout + resumed.stderr)
                 self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])
+                # Each mutation may commit while its acknowledgement is lost. The
+                # next invocation resumes the exact enrollment without rewriting it.
+                for stage in ('mount', 'key', 'policy', 'head'):
+                    interrupted = run(True, 'stop-after-' + stage)
+                    self.assertEqual(interrupted.returncode, 1, interrupted.stdout + interrupted.stderr)
+                    self.assertTrue(json.loads(interrupted.stdout)['step'].startswith({'key': 'transit-key'}.get(stage, stage) + ':'))
+                    committed_paths = {path for method, path, _ in Native.records if method == 'POST'}
+                    continued = run(True, 'ok', keep=True)
+                    self.assertEqual(continued.returncode, 0, continued.stdout + continued.stderr)
+                    rewritten = {path for method, path, _ in Native.records if method == 'POST'}
+                    self.assertTrue(committed_paths.isdisjoint(rewritten), (stage, committed_paths & rewritten))
                 missing = run(True, 'policy-missing')
                 self.assertEqual(missing.returncode, 1, missing.stdout + missing.stderr)
                 self.assertTrue(json.loads(missing.stdout)['step'].startswith('policy:'))

@@ -28,7 +28,7 @@ public sealed class PlatformHostedPublishingTests
         PlatformCompositionOptions options = PlatformHostedPublishing.ReferenceOptions(Root);
         PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(options);
         IReadOnlyList<PlatformServerBinding> local = PlatformAppModel.Prepare(options);
-        graph.Workloads.Count.ShouldBe(7);
+        graph.Workloads.Count.ShouldBe(8);
         graph.Workloads.Select(w => (w.ResourceId, w.AppId, w.ReadinessEndpoint))
             .ShouldBe(local.Select(w => (w.ResourceId, w.AppId, w.ReadinessEndpoint)));
         // Existing local behavior still binds actual projects, generates channel credentials and retains its Dapr environment.
@@ -54,6 +54,45 @@ public sealed class PlatformHostedPublishingTests
         actual.ShouldNotContain("conversation.echo");
         actual.ShouldNotContain("secretsFile");
         actual.ShouldNotContain("ProjectPath");
+    }
+
+    [Fact]
+    public void HostedPublicRoutesMatchOnlyTheDeclaredPublicServers()
+    {
+        JsonElement description = PlatformHostedPublishing.Describe(PlatformApplicationGraph.Resolve(PlatformHostedPublishing.ReferenceOptions(Root)));
+        Dictionary<string, string[]> expected = new()
+        {
+            ["eventstore/gateway"] = ["/api/v1"],
+            ["tenants/domain"] = [],
+            ["tenants/api"] = ["/api/tenants", "/api/global-administrators", "/api/users/{userId}/tenants"],
+            ["memories/server"] = ["/api/v1"],
+            ["memories/domain"] = [],
+            ["memories/clock"] = [],
+            ["memories/telemetry"] = [],
+            ["parties/domain"] = [],
+        };
+        JsonElement[] workloads = description.GetProperty("workloads").EnumerateArray().ToArray();
+        workloads.Select(w => w.GetProperty("identity").GetString()!).Order().ShouldBe(expected.Keys.Order());
+        foreach (JsonElement workload in workloads)
+            workload.GetProperty("publicRoutes").EnumerateArray().Select(r => r.GetString()!).ShouldBe(expected[workload.GetProperty("identity").GetString()!]);
+    }
+
+    [Fact]
+    public void HostedEntryRefusesThePinnedCliDeployOperationBeforeWritingOrAddingResources()
+    {
+        IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+        {
+            Args = ["--operation", "publish", "--step", "deploy"],
+            AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, ProjectDirectory = Root, DisableDashboard = true,
+        });
+        builder.Configuration["Platform:Hosted:Enabled"] = "true";
+        builder.ExecutionContext.IsPublishMode.ShouldBeTrue();
+        builder.Configuration["Pipeline:Step"].ShouldBe("deploy");
+        string path = Path.Combine(Path.GetTempPath(), "refused-hosted-deploy-" + Guid.NewGuid().ToString("N") + ".json");
+        builder.Configuration["Platform:Hosted:GraphPath"] = path;
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("deploy is forbidden");
+        builder.Resources.ShouldBeEmpty();
+        File.Exists(path).ShouldBeFalse();
     }
 
     [Fact]
@@ -93,7 +132,7 @@ public sealed class PlatformHostedPublishingTests
             PlatformAppModel.ComposeEntry(builder);
             PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(PlatformHostedPublishing.ReferenceOptions(Root));
             JsonElement.DeepEquals(JsonDocument.Parse(File.ReadAllText(path)).RootElement, PlatformHostedPublishing.Describe(graph)).ShouldBeTrue();
-            builder.Resources.Count.ShouldBe(15); // One environment, seven workloads and their native Dapr sidecar resources.
+            builder.Resources.Count.ShouldBe(17); // One environment, eight workloads and their native Dapr sidecar resources.
             builder.Resources.ShouldAllBe(r => r is ContainerResource || r is IDaprSidecarResource || r.Name == "qualification");
             builder.Resources.Single(r => r.Name == "qualification").GetType().Name.ShouldBe("KubernetesEnvironmentResource");
             ContainerResource[] workloads = builder.Resources.OfType<ContainerResource>().ToArray();

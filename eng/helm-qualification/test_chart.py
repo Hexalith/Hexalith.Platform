@@ -21,9 +21,20 @@ def graph():
     return json.loads((CHART / 'reference-graph.json').read_text())
 
 
-def fixture_values():
+def campaign_graph_fixture():
+    """Historical seven-workload test input; current graph drift must still refuse capacity admission."""
+    metadata = graph()
+    removed = {w['appId'] for w in metadata['workloads'] if w['identity'] == 'memories/domain'}
+    metadata['workloads'] = [w for w in metadata['workloads'] if w['appId'] not in removed]
+    for capability in metadata['capabilities']:
+        capability['consumers'] = [app for app in capability['consumers'] if app not in removed]
+    metadata['subscriptions'] = [s for s in metadata['subscriptions'] if s['appId'] not in removed]
+    return metadata
+
+
+def fixture_values(metadata=None):
     """Synthetic qualification bindings; these grant no environment authority."""
-    g = graph()
+    g = graph() if metadata is None else metadata
     ref = {'name': 'fixture-credential', 'key': 'token'}
     values = {
         'mode': 'normal', 'imagePullSecret': 'fixture-registry',
@@ -71,12 +82,17 @@ def fixture_values():
     return values
 
 
-def render(values, chart=CHART, namespace='reference'):
+def render(values, chart=CHART, namespace='reference', *, graph_metadata=None):
     if not HELM:
         raise RuntimeError('Helm 4.2.0+ is required; set HELM_BIN')
     with tempfile.TemporaryDirectory(prefix='h45-render-') as tmp:
         path = Path(tmp) / 'values.json'
         path.write_text(json.dumps(values))
+        if graph_metadata is not None:
+            fixture_chart = Path(tmp) / 'chart'
+            shutil.copytree(chart, fixture_chart)
+            (fixture_chart / 'reference-graph.json').write_text(json.dumps(graph_metadata))
+            chart = fixture_chart
         return subprocess.run([HELM, 'template', 'reference', str(chart), '--namespace', namespace, '-f', str(path)],
                               capture_output=True, text=True, timeout=30)
 
@@ -95,7 +111,7 @@ def expected_environment(workload, values):
         if isinstance(value, dict):
             if 'endpoint' in value:
                 environment[key] = {'name': key, 'value': values['endpoints'][value['endpoint']]}
-            elif 'configMapKeyRef' in value:
+            elif 'configMapKeyRef' in value or 'secretKeyRef' in value:
                 environment[key] = {'name': key, 'valueFrom': value}
             else:
                 for child, leaf in value.items(): flatten(key + '__' + child, leaf)
@@ -121,8 +137,11 @@ def expected_environment(workload, values):
 class ChartTests(unittest.TestCase):
     def test_finite_campaign_resources_replicas_and_sidecars_are_explicit(self):
         import campaign_capacity
-        values = campaign_capacity.configure_application(fixture_values(), graph())
-        _, docs = self.good(values)
+        legacy = campaign_graph_fixture()
+        values = campaign_capacity.configure_application(fixture_values(legacy), legacy)
+        result = render(values, graph_metadata=legacy)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        docs = documents(result.stdout)
         deployments = [d for d in docs if d['kind'] == 'Deployment']
         self.assertEqual(9, sum(d['spec']['replicas'] for d in deployments))
         for d in deployments:
@@ -137,10 +156,10 @@ class ChartTests(unittest.TestCase):
             self.assertEqual('128Mi', pod['metadata']['annotations']['dapr.io/sidecar-memory-limit'])
             self.assertEqual('128Mi', pod['spec']['volumes'][0]['emptyDir']['sizeLimit'])
         values['bindings']['memories/server']['replicas'] = 1
-        self.bad(values, 'finite campaign replica allocation differs')
-        values = campaign_capacity.configure_application(fixture_values(), graph())
+        self.assertIn('finite campaign replica allocation differs', render(values, graph_metadata=legacy).stderr)
+        values = campaign_capacity.configure_application(fixture_values(legacy), legacy)
         values['bindings']['memories/server']['resources']['limits']['cpu'] = '8'
-        self.bad(values, 'finite campaign resources differ')
+        self.assertIn('finite campaign resources differ', render(values, graph_metadata=legacy).stderr)
 
     @classmethod
     def setUpClass(cls):
@@ -398,6 +417,48 @@ class ChartTests(unittest.TestCase):
             values['bindings']['memories/clock']['configuration']['Clock:Sources'] = json.dumps([{'Endpoint': endpoint}])
             self.bad(values)
 
+    def test_connection_strings_accept_only_secret_or_validated_endpoint_references(self):
+        reference = {'name': 'authenticated-data', 'key': 'connection-string'}
+        values = fixture_values()
+        for identity, binding in values['bindings'].items():
+            for key in binding['configuration']:
+                if key.startswith('ConnectionStrings:'):
+                    binding['configuration'][key] = {'secretKeyRef': reference}
+        _, docs = self.good(values)
+        self.assert_complete_services(docs, values)
+        for doc in docs:
+            if doc['kind'] == 'Deployment' and doc['metadata']['name'].startswith('memories'):
+                env = {e['name']: e for e in doc['spec']['template']['spec']['containers'][0]['env']}
+                for key in ('ConnectionStrings__redis', 'ConnectionStrings__falkordb'):
+                    self.assertEqual(env[key]['valueFrom'], {'secretKeyRef': reference})
+        for encode in (lambda value: value, json.dumps):
+            for key, value in [('ConnectionStrings:redis', {'configMapKeyRef': reference}),
+                               ('Authentication:JwtBearer:Authority', {'configMapKeyRef': reference}),
+                               ('Authentication:JwtBearer:Issuer', {'configMapKeyRef': reference}),
+                               ('Clock:Sources', [{'Endpoint': {'configMapKeyRef': reference}}])]:
+                invalid = fixture_values()
+                invalid['bindings']['memories/clock']['configuration'][key] = encode(value)
+                with self.subTest(key=key, encoded=encode is json.dumps):
+                    self.bad(invalid, 'ConnectionStrings and endpoint leaves cannot use configMapKeyRef')
+        invalid = fixture_values()
+        invalid['bindings']['memories/clock']['configuration']['Clock:Sources'] = [{'Endpoint': {'secretKeyRef': reference}}]
+        self.bad(invalid, 'configuration Secret references are allowed only for ConnectionStrings inputs')
+        for ref in ('literal', {'name': 'data'}, {**reference, 'extra': 'value'}):
+            invalid = fixture_values()
+            invalid['bindings']['memories/server']['configuration']['ConnectionStrings:redis'] = {'secretKeyRef': ref}
+            self.bad(invalid, 'existing reference')
+
+    def test_additional_credentials_must_extend_declared_inputs_with_credential_keys(self):
+        for key in ('DAPR_HTTP_PORT', 'ASPNETCORE_ENVIRONMENT', 'DOTNET_STARTUP_HOOKS',
+                    'Undeclared__AuthenticationToken', 'Clock__Sources__0__Name'):
+            values = fixture_values()
+            values['bindings']['memories/clock']['credentials'] = {key: {'name': 'source-token', 'key': 'token'}}
+            with self.subTest(key=key):
+                self.bad(values, 'credentials keys must be credential-shaped extensions of declared inputs')
+        values = fixture_values()
+        values['bindings']['memories/clock']['credentials'] = {'clock__sources__0__authenticationtoken': {'name': 'source-token', 'key': 'token'}}
+        self.good(values)
+
     def test_host_collisions_image_registry_ports_and_integer_replicas(self):
         values = fixture_values()
         values['hostnames']['eventstore/gateway'] = 'SHARED.fixture.invalid.'
@@ -551,6 +612,8 @@ class ChartTests(unittest.TestCase):
     def test_each_validation_rule_fails_with_its_own_message(self):
         component = lambda v: v['environment']['components']['statestore']
         cases = [
+            (lambda v: component(v).update(type='pubsub.redis'), 'component provider differs from capability or is local-only'),
+            (lambda v: v['environment']['components']['llm'].update(type='conversation.echo'), 'component provider differs from capability or is local-only'),
             (lambda v: component(v).update(endpointMetadataKey='invalid-key'), 'provider metadata keys are required'),
             (lambda v: component(v).update(endpointFormat='invalid'), 'unknown endpoint metadata format'),
             (lambda v: component(v)['metadata'].update(enableTLS='false'), 'hosted Redis bindings require native TLS'),
@@ -594,6 +657,14 @@ class ChartTests(unittest.TestCase):
             with self.subTest(case=index): self.bad(values)
         values = fixture_values(); values['gateway']['sectionName'] = 'https.public'
         self.assert_complete_routes(self.good(values)[1], values)
+
+    def test_trust_domains_require_dns_subdomains_before_acl_json_substitution(self):
+        for key in ('trustDomain', 'controlPlaneTrustDomain'):
+            for value in ('', 'a..b', 'public","defaultAction":"allow'):
+                values = fixture_values()
+                values['environment'][key] = value
+                with self.subTest(key=key, value=value):
+                    self.bad(values, 'must be a DNS subdomain')
 
     def test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail(self):
         self.bad({})

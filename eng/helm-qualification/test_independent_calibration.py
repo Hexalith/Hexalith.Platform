@@ -265,7 +265,7 @@ class IndependentCalibrationTests(unittest.TestCase):
                 shutil.rmtree(self.state)
 
     def test_small_prepared_resources_inspection_and_prelaunch_drift_use_original_selection(self):
-        from test_chart import fixture_values, graph
+        from test_chart import fixture_values, campaign_graph_fixture
         pins = json.loads((HERE / 'toolchain.json').read_bytes())
         for tool in self.plan['tools'].values():
             tool['path'] = str(Path(tool['path']).resolve())
@@ -280,7 +280,8 @@ class IndependentCalibrationTests(unittest.TestCase):
             secrets=[], openbaoSeed=self.write('seed.json', {}))
         self.plan['source'] = [{'path': str(HERE / name), 'sha256': lifecycle.sha(HERE / name)} for name in (
             'qualify.py', 'campaign_capacity.py', 'campaign_lifecycle.py', 'campaign_environment.py', 'independent_calibration.py', 'calibration_workload.py')]
-        values = capacity.configure_application(fixture_values(), graph()); values['capacityProfile'] = calibration.PROFILE_ID
+        legacy = campaign_graph_fixture()
+        values = capacity.configure_application(fixture_values(legacy), legacy); values['capacityProfile'] = calibration.PROFILE_ID
         self.plan['inputs'] = {name: [self.write(name + '.json', {})] for name in calibration.INPUT_GROUPS}
         self.plan['inputs'].update(source=self.plan['source'], toolchain=[self.write('pins.json', pins)],
             chart=[{'path': str(p), 'sha256': lifecycle.sha(p)} for p in sorted((HERE / 'chart').rglob('*')) if p.is_file()],
@@ -638,10 +639,11 @@ class IndependentCalibrationTests(unittest.TestCase):
                 workload.execute(config, self.root)
 
     def test_real_chart_has_separate_calibration_identity_and_preserves_security_and_limits(self):
-        from test_chart import fixture_values, graph, render, documents
-        values = capacity.configure_application(fixture_values(), graph())
+        from test_chart import fixture_values, campaign_graph_fixture, render, documents
+        legacy = campaign_graph_fixture()
+        values = capacity.configure_application(fixture_values(legacy), legacy)
         values['capacityProfile'] = calibration.PROFILE_ID
-        result = render(values)
+        result = render(values, graph_metadata=legacy)
         self.assertEqual(0, result.returncode, result.stderr)
         deployments = [d for d in documents(result.stdout) if d['kind'] == 'Deployment']
         self.assertEqual(9, sum(d['spec']['replicas'] for d in deployments))
@@ -655,7 +657,7 @@ class IndependentCalibrationTests(unittest.TestCase):
                 self.assertIn('valueFrom', env['AccessTelemetryQualification__IndependentCalibrationRunId'])
                 self.assertIn('valueFrom', env['AccessTelemetryQualification__IndependentCalibrationPlanHash'])
         values['bindings']['memories/server']['replicas'] = 1
-        self.assertNotEqual(0, render(values).returncode)
+        self.assertNotEqual(0, render(values, graph_metadata=legacy).returncode)
 
     def test_launch_supervises_measurements_without_returning_ready_to_caller(self):
         q = self.runner()

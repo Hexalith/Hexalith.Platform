@@ -50,6 +50,9 @@ public static class PlatformHostedPublishing
     {
         ArgumentNullException.ThrowIfNull(builder);
         if (builder.ExecutionContext.IsRunMode) throw new InvalidOperationException("Hosted qualification is publish-only; select an explicit publish operation.");
+        // Aspire 13.6.4 maps `aspire deploy` to publish mode with --step deploy.
+        if (string.Equals(builder.Configuration["Pipeline:Step"], "deploy", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Hosted qualification is publish-only; deploy is forbidden.");
         if (builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled") || builder.Configuration.GetValue<bool>("Platform:Works:Enabled") || builder.Configuration.GetValue<bool>("Platform:Agents:Enabled"))
             throw new InvalidDataException("Hosted reference publishing cannot combine local composition selections.");
         PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions(builder.AppHostDirectory));

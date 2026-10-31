@@ -1707,3 +1707,10 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
   summary: Move the private Platform host Swagger surface ahead of the HTTP unmatched-endpoint boundary while preserving its human policy.
   evidence: The private Platform host installs its 404-for-unmatched-endpoints boundary ahead of Swagger middleware, so Swagger cannot run. This is real, but belongs to preserved independent host/security changes (host commit6346018797bb0b2ecff470cd7aa701923510297a), not this fixture migration; its native flow uses the Builds-owned seed. Reorder middleware and verify human Swagger access in that owner work.
+
+## Deferred from: code review of spec-5-1-decide-the-staging-evidence-policies (2026-10-31, sixth pass)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-5-1-decide-the-staging-evidence-policies.md`
+  summary: Define the "trusted gate" and the signing writer of promotion-decision records (medium).
+  target_story: 5.6
+  evidence: Sixth-pass Blind BH10. Policy L137, L146, L153 and L251 make the trusted gate open pending decisions, issue attempt order and record completed and superseded closures, and L159-160 make admission verify the decision's authoritative state. The ownership paragraph (L10-13) names only Builds tools and Platform's staging executor and promotion evaluator. The architecture's Records and writers rule accepts a record only when signed by its writer and lists no promotion-decision record. The candidate and attachment policy (Story 2.1) and the vulnerability policy (Story 5.2) use the same undefined term. Settle in Story 5.6, with an architecture correct-course that adds the record and names its writer, before Stories 5.6 and 5.11 implement decision state.

@@ -19,7 +19,8 @@ import campaign_lifecycle as lifecycle
 from test_campaign_capacity import bound_fixture
 from qualify import Qualification
 
-BUILDS = lifecycle.ROOT.parent / 'Hexalith.Builds'
+BUILDS = next(root for root in (lifecycle.ROOT.parent / 'Hexalith.Builds', lifecycle.ROOT / 'references/Hexalith.Builds')
+              if (root / 'Props/Directory.Packages.props').is_file())
 CLI = BUILDS / 'src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll'
 
 

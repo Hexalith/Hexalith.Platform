@@ -74,8 +74,18 @@ class Qualification:
             self._evidence_lock = None
 
     def _initialize(self):
-        for log in self.evidence.glob('[0-9][0-9][0-9]-*.log'):
-            log.unlink()
+        # The directory lock is held before discarding the previous invocation.
+        names = ('qualification.json', 'normal.yaml', 'fixture-values.json',
+                 'native-output', 'native-rendered.yaml')
+        for path in self.evidence.iterdir():
+            if (path.name in names or re.fullmatch(r'[0-9]+-.*[.]log', path.name)
+                    or re.fullmatch(r'admitted-.*[.]json', path.name)
+                    or re.fullmatch(r'resolved-.*-project[.]assets[.]json', path.name)
+                    or re.fullmatch(r'hexalith-reference-.*[.]tgz', path.name)):
+                if path.is_dir() and not path.is_symlink():
+                    shutil.rmtree(path)
+                else:
+                    path.unlink()
         self.record = {'schema': 'hexalith.helm-qualification.v1', 'started': datetime.now(timezone.utc).isoformat(),
                        'status': 'failed', 'commands': [], 'checks': {}, 'cleanup': {},
                        'exclusions': ['OCI publication and attestation', 'off-site restoration', 'staging deployment',
@@ -313,7 +323,9 @@ class Qualification:
                     for item in items:
                         path = Path(item.get('FullPath') or project.parent / item['Identity']).resolve()
                         if kind == 'ProjectReference': pending.append(path)
-                        else: inputs.add(path)
+                        elif not (path.is_relative_to(project.parent) and
+                                  any(part in ('bin', 'obj') for part in path.relative_to(project.parent).parts)):
+                            inputs.add(path)
                 # MSBuildAllProjects omits modern SDK imports; preprocessing lists resolved imports.
                 expanded = self.temp / ('imports-' + hashlib.sha256(str(project).encode()).hexdigest()[:16] + '.xml')
                 self.run(prefix + ['-preprocess:' + str(expanded)], timeout=30)
@@ -324,7 +336,7 @@ class Qualification:
         finally:
             self.env = environment
         # Generated build outputs are derived from the recorded project/import inputs.
-        return {path for path in inputs if not any(part in ('bin', 'obj') for part in path.parts)}
+        return inputs
 
     def source_inventory(self):
         paths = list(CHART.rglob('*')) + list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.cs'))
@@ -342,7 +354,7 @@ class Qualification:
             paths += list((ROOT / 'references' / ('Hexalith.' + owner) / 'module').rglob('*.json'))
         tooling = ROOT / 'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling'
         paths += [p for p in tooling.rglob('*') if p.suffix in ('.cs', '.csproj', '.props', '.targets', '.json')
-                  and not any(part in ('bin', 'obj') for part in p.parts)]
+                  and not any(part in ('bin', 'obj') for part in p.relative_to(tooling).parts)]
         paths += list(self.native_build_inputs())
         return {(str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)): sha(p)
                 for p in sorted(set(paths)) if p.is_file()}

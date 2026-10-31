@@ -183,7 +183,13 @@ def main(argv=None):
 
         def ensure_mount(name, expected_type, options=None):
             path = 'sys/mounts/' + name
-            existing = read_optional(path)
+            # OpenBao 2.6.2 returns an error for GET sys/mounts/<absent>, not
+            # a missing-object 404. The authoritative table names exact mounts.
+            response = call('GET', 'sys/mounts')
+            table = response.get('data') if isinstance(response, dict) else None
+            if not isinstance(table, dict):
+                raise BootstrapStop(step)
+            existing = table.get(name + '/')
             if existing is None:
                 body = {'type': expected_type}
                 if options:

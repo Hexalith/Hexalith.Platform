@@ -93,8 +93,9 @@ def bound_fixture(directory, *, now_ms=None):
 
     for name in capacity.INPUT_GROUPS:
         profile["inputs"][name] = [write(name + ".json", {"fixture": name})]
-    from test_chart import fixture_values, graph
-    profile["inputs"]["values"] = [write("values.json", capacity.configure_application(fixture_values(), graph()))]
+    from test_chart import fixture_values, campaign_graph_fixture
+    legacy = campaign_graph_fixture()
+    profile["inputs"]["values"] = [write("values.json", capacity.configure_application(fixture_values(legacy), legacy))]
     profile["inputs"]["chart"] = [{"path": str(path.resolve()), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                                     for path in sorted((Path(capacity.__file__).parent / "chart").rglob("*")) if path.is_file()]
     profile["inputs"]["toolchain"] = [write("toolchain.json", json.loads((Path(capacity.__file__).parent / "toolchain.json").read_bytes()))]
@@ -362,12 +363,19 @@ class CampaignCapacityTests(unittest.TestCase):
             capacity.verify_initial_admission(self.profile, **original, now_ms=self.now)
 
     def test_chart_configuration_has_explicit_resources_and_nine_pods(self):
-        graph = json.loads((Path(capacity.__file__).parent / "chart/reference-graph.json").read_bytes())
+        from test_chart import campaign_graph_fixture
+        graph = campaign_graph_fixture()
         values = {"bindings": {w["identity"]: {} for w in graph["workloads"]}}
         configured = capacity.configure_application(values, graph)
         self.assertEqual(9, sum(b["replicas"] for b in configured["bindings"].values()))
         self.assertEqual("400m", configured["bindings"]["memories/server"]["resources"]["limits"]["cpu"])
         self.assertEqual({}, values["bindings"]["memories/server"])
+
+    def test_current_eight_workload_graph_requires_new_campaign_capacity_admission(self):
+        from test_chart import fixture_values, graph
+        self.assertEqual(8, len(graph()['workloads']))
+        with self.assertRaisesRegex(capacity.CapacityError, 'application-graph-drifted'):
+            capacity.configure_application(fixture_values(), graph())
 
 
 if __name__ == "__main__":

@@ -101,15 +101,25 @@ class QualifierFailureTests(unittest.TestCase):
             self.assertFalse(record['cleanup']['complete'])
             self.assertTrue(record['cleanup']['temporaryKubeconfigRemoved'])
 
-    def test_new_run_removes_only_prior_numbered_command_logs(self):
+    def test_new_run_removes_prior_qualifier_outputs_and_keeps_other_evidence(self):
         with tempfile.TemporaryDirectory(prefix='h45-log-reuse-') as directory:
             evidence = Path(directory)
-            stale = evidence / '006-curl.log'; stale.write_text('stale')
-            retained = evidence / 'parent-full-suite.log'; retained.write_text('separate evidence')
+            stale_names = ['006-curl.log', '1000-dotnet.log', 'qualification.json', 'admitted-memories.json',
+                           'normal.yaml', 'fixture-values.json', 'native-rendered.yaml',
+                           'resolved-native-project.assets.json', 'resolved-composition-project.assets.json',
+                           'hexalith-reference-0.1.0.tgz', 'hexalith-reference-0.2.0.tgz']
+            retained_names = ['parent-full-suite.log', 'verification.json', 'isolated-verification.json',
+                              'parent-full-suite.json', 'admitted-review.md', 'other-chart-0.1.0.tgz']
+            for name in stale_names + retained_names:
+                (evidence / name).write_text('prior evidence')
+            native = evidence / 'native-output'; native.mkdir(); (native / 'Chart.yaml').write_text('stale')
+            retained_directory = evidence / 'other-output'; retained_directory.mkdir()
             q = qualify.Qualification(evidence)
             try:
-                self.assertFalse(stale.exists())
-                self.assertTrue(retained.exists())
+                for name in stale_names + ['native-output']:
+                    self.assertFalse((evidence / name).exists(), name)
+                for name in retained_names + ['other-output']:
+                    self.assertTrue((evidence / name).exists(), name)
                 self.assertEqual(q.record['commands'], [])
             finally:
                 q.cleanup()
@@ -280,7 +290,7 @@ class QualifierFailureTests(unittest.TestCase):
                     self.assertEqual(q.record['sourceChangedDuringRun'][scenario], [str(expected.relative_to(root))])
 
     def test_source_inventory_refuses_authoritative_and_native_input_mutations(self):
-        families = [*(f'references/Hexalith.{owner}/module/hexalith.module-manifest.v2.json' for owner in ('EventStore', 'Tenants', 'Memories')),
+        families = [*(f'references/Hexalith.{owner}/module/hexalith.module-manifest.v2.json' for owner in ('EventStore', 'Tenants', 'Memories', 'Parties')),
                     'DaprSelfHostedMtls.cs', 'Directory.Build.props', 'Directory.Build.targets',
                     'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs',
                     'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs',
@@ -324,6 +334,34 @@ class QualifierFailureTests(unittest.TestCase):
             with patch.multiple(qualify, ROOT=root, HERE=root / 'eng/helm-qualification'), patch.object(q, 'run', side_effect=run):
                 self.assertEqual(q.native_build_inputs(), {entry, owner, linked, resolver, imported})
 
+    def test_build_input_exclusions_are_relative_to_each_project(self):
+        for ancestor in ('bin', 'obj'):
+            with self.subTest(ancestor=ancestor), self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-build-ancestor-') as directory:
+                root = Path(directory) / ancestor / 'checkout'
+                project = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+                source = project.parent / 'Workload.cs'
+                linked = Path(directory) / ancestor / 'linked/Shared.cs'
+                imported = Path(directory) / ancestor / 'sdk/Sdk.props'
+                generated = [project.parent / name / 'Generated.cs' for name in ('bin', 'obj')]
+                tooling = root / 'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/Resolver.cs'
+                for path in (project, source, linked, imported, tooling, *generated):
+                    path.parent.mkdir(parents=True, exist_ok=True); path.write_text('source')
+                def run(args, **kwargs):
+                    if args[-1].startswith('-preprocess:'):
+                        Path(args[-1].split(':', 1)[1]).write_text(str(imported))
+                        return subprocess.CompletedProcess(args, 0, '', '')
+                    return subprocess.CompletedProcess(args, 0, json.dumps({
+                        'Items': {'Compile': [{'FullPath': str(p)} for p in (source, linked, *generated)]},
+                        'Properties': {'ProjectAssetsFile': str(project.parent / 'obj/project.assets.json')}}), '')
+                with patch.multiple(qualify, ROOT=root, HERE=root / 'eng/helm-qualification', CHART=root / 'eng/helm-qualification/chart'), patch.object(q, 'run', side_effect=run):
+                    self.assertEqual(q.native_build_inputs(), {project, source, linked, imported})
+                    inventory = q.source_inventory()
+                    for path in (project, source, linked, imported, tooling):
+                        key = str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
+                        self.assertIn(key, inventory)
+                    for path in generated:
+                        self.assertNotIn(str(path.relative_to(root)), inventory)
+
     def test_resolved_kubernetes_integration_matches_both_assets_and_retains_hashes(self):
         for mismatch in (None, 'native', 'composition'):
             with self.subTest(mismatch=mismatch), self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-assets-') as directory:
@@ -350,6 +388,25 @@ class QualifierFailureTests(unittest.TestCase):
                             self.assertEqual(captured['version'], expected)
                             self.assertEqual(captured['assetsSha256'], qualify.sha(q.evidence / captured['assetsFile']))
                             self.assertEqual(captured['packageSha512'], 'fixture-package-hash')
+
+    def test_complete_download_with_wrong_checksum_is_not_recorded(self):
+        class CompleteBody(BaseHTTPRequestHandler):
+            def log_message(self, *args): pass
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'complete downloaded body')
+        server = ThreadingHTTPServer(('127.0.0.1', 0), CompleteBody)
+        thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+        try:
+            with self.qualification() as q:
+                q.tools['mismatch'] = {'url': f'http://127.0.0.1:{server.server_port}/data', 'sha256': '0' * 64}
+                with self.assertRaisesRegex(RuntimeError, 'download checksum mismatch: mismatch'):
+                    q.download('mismatch', 'complete')
+                self.assertEqual((q.temp / 'complete').read_bytes(), b'complete downloaded body')
+                self.assertNotIn('mismatch', q.record.get('downloads', {}))
+        finally:
+            server.shutdown(); server.server_close(); thread.join(timeout=2)
 
     def test_trickled_download_has_a_complete_transfer_deadline(self):
         class Trickle(BaseHTTPRequestHandler):

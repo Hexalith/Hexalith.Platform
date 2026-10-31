@@ -16,6 +16,62 @@ public sealed class OpenBaoErasureRootStoreTests
     private readonly ErasureRootInstallation _installation = new("erc", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant"] = "epoch" });
     private static CancellationToken Token => TestContext.Current.CancellationToken;
 
+    [Theory]
+    [InlineData("success")]
+    [InlineData("native-refusal")]
+    [InlineData("invalid-json")]
+    public async Task DecryptRequestBodyIsZeroedAfterSuccessAndFailure(string outcome)
+    {
+        string variable = "ERC_DECRYPT_CLEAR_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, "component-test-credential");
+        MemoryStream? retainedBody = null;
+        byte[] expected = Enumerable.Range(1, 32).Select(value => (byte)value).ToArray();
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((request, _) =>
+            {
+                request.RequestUri!.AbsolutePath.ShouldBe("/v1/transit/decrypt/epoch");
+                retainedBody = (MemoryStream)request.Content!.ReadAsStream(Token);
+                using var document = JsonDocument.Parse(retainedBody.ToArray());
+                document.RootElement.GetProperty("ciphertext").GetString().ShouldBe("vault:v1:private-ciphertext");
+                document.RootElement.GetProperty("context").GetString().ShouldBe("YQ==");
+                // ByteArrayContent's read stream retains its backing body after the request
+                // is disposed. ToArray works on a closed MemoryStream, so this observes the
+                // actual transport buffer after DecryptAsync's finally, without a copy seam.
+                retainedBody.ToArray().Any(value => value != 0).ShouldBeTrue();
+                return outcome switch
+                {
+                    "native-refusal" => ErasureRootTransportHandler.Json("{\"errors\":[\"permission denied\"]}", HttpStatusCode.Forbidden),
+                    "invalid-json" => ErasureRootTransportHandler.Json("not-json"),
+                    _ => ErasureRootTransportHandler.Json(JsonSerializer.Serialize(new { data = new { plaintext = Convert.ToBase64String(expected) } })),
+                };
+            }, readBodyAsString: false);
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
+            if (outcome == "success")
+            {
+                byte[] actual = await store.DecryptAsync("tenant", new("vault:v1:private-ciphertext", "YQ=="), Token);
+                try { actual.ShouldBe(expected); }
+                finally { CryptographicOperations.ZeroMemory(actual); }
+            }
+            else if (outcome == "native-refusal")
+            {
+                await Should.ThrowAsync<InvalidOperationException>(() => store.DecryptAsync("tenant", new("vault:v1:private-ciphertext", "YQ=="), Token));
+            }
+            else
+            {
+                await Should.ThrowAsync<JsonException>(() => store.DecryptAsync("tenant", new("vault:v1:private-ciphertext", "YQ=="), Token));
+            }
+            handler.Calls.ShouldBe(1);
+            retainedBody.ShouldNotBeNull().ToArray().ShouldAllBe(value => value == 0);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(expected);
+            Environment.SetEnvironmentVariable(variable, null);
+        }
+    }
+
     [Fact]
     public async Task NativeDeadlineStillBoundsStalledBodyAfterHeadersComplete()
     {
