@@ -1,0 +1,28 @@
+{
+  "label": "native-bootstrap",
+  "argv": [
+    "python3",
+    "eng/ext-protection-1/probe_erc_native.py",
+    "--bootstrap",
+    "--test-assembly",
+    "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/Hexalith.Platform.Protection.Tests.dll",
+    "--test-assembly-sha256",
+    "b7e9015c35114f96cda2c92ad97f53bd3387b37f03b13bf7f3b0d2e77a010c28",
+    "--runtime-manifest",
+    "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/runtime-manifest.json",
+    "--runtime-manifest-sha256",
+    "3e69b4cdcb3eeb6d2719121f5224958691ad6ddad67b0dc83629802cb51bdb56",
+    "--output",
+    "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/native-bootstrap.result.json"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "startedUtc": "2026-10-31T07:33:18.166496+00:00",
+  "environment": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+  },
+  "finishedUtc": "2026-10-31T07:33:44.767586+00:00",
+  "elapsedSeconds": 26.602,
+  "exitCode": 0,
+  "log": "native-bootstrap.log",
+  "logSha256": "a680085f7c8f5091b768b7152dbf65042e557c57af5d8f47f708620659fc0f3f"
+}

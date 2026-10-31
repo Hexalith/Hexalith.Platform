@@ -1,0 +1,239 @@
+--- before/deploy/erasure-root/bootstrap.py
++++ after/deploy/erasure-root/bootstrap.py
+@@ -75,6 +75,9 @@
+     digest = hashlib.sha256(tenant.encode()).hexdigest()
+     head = enrollment['headMount']
+     transit = enrollment['transitMount']
++    # Native ACL parameter equality requires strings. Keep this exact bounded
++    # version inventory paired with TrimAsync's invariant string request values.
++    versions = ', '.join(json.dumps(str(version)) for version in range(1, 65))
+     grants = (
+         '# tenant ' + tenant + ' scope ' + scope + '\n'
+         'path "' + head + '/data/tenants/' + digest + '" {\n  capabilities = ["read", "update"]\n}\n'
+@@ -85,8 +88,8 @@
+         'path "' + transit + '/keys/' + key + '" {\n  capabilities = ["read"]\n}\n'
+         'path "' + transit + '/keys/' + key + '/rotate" {\n  capabilities = ["update"]\n}\n'
+         'path "' + transit + '/keys/' + key + '/config" {\n  capabilities = ["update"]\n'
+-        '  allowed_parameters = {\n    "min_decryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n'
+-        '    "min_encryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n  }\n}\n'
++        '  allowed_parameters = {\n    "min_decryption_version" = [' + versions + ']\n'
++        '    "min_encryption_version" = [' + versions + ']\n  }\n}\n'
+         'path "' + transit + '/keys/' + key + '/trim" {\n  capabilities = ["update"]\n}\n'
+     )
+     denies = Path(__file__).with_name('custody-policy.hcl').read_text()
+@@ -195,17 +198,28 @@
+                 if options:
+                     body['options'] = options
+                 call('POST', path, body)
++                return True
++            if not same_mount(existing, expected_type, options):
++                raise BootstrapStop(step)
++            return False
++
++        def ensure_config(path, expected, newly_created=False):
++            existing = read_optional(path)
++            data = existing.get('data') if isinstance(existing, dict) else None
++            # Only this invocation's new mount may move from native KV-v2
++            # defaults to the enrolled configuration. An existing mismatch is
++            # still a conflict and must never be silently overwritten.
++            native_defaults = isinstance(data, dict) and type(data.get('max_versions')) is int \
++                and data['max_versions'] == 0 and data.get('cas_required') is False \
++                and data.get('delete_version_after', '0s') == '0s'
++            if data is None or newly_created and native_defaults:
++                call('POST', path, expected)
++                response = call('GET', path)
++                readback = response.get('data') if isinstance(response, dict) else None
++                if not isinstance(readback, dict) or any(readback.get(field) != expected[field] for field in expected):
++                    raise BootstrapStop(step)
+                 return
+-            if not same_mount(existing, expected_type, options):
+-                raise BootstrapStop(step)
+-
+-        def ensure_config(path, expected):
+-            existing = read_optional(path)
+-            data = existing.get('data') if isinstance(existing, dict) else None
+-            if data is None:
+-                call('POST', path, expected)
+-                return
+-            if any(data.get(field) != expected[field] for field in expected):
++            if not isinstance(data, dict) or any(data.get(field) != expected[field] for field in expected):
+                 raise BootstrapStop(step)
+ 
+         step = 'health'
+@@ -216,9 +230,9 @@
+         step = 'mount:' + value['transitMount']
+         ensure_mount(value['transitMount'], 'transit')
+         step = 'mount:' + value['headMount']
+-        ensure_mount(value['headMount'], 'kv', {'version': '2'})
++        head_mount_created = ensure_mount(value['headMount'], 'kv', {'version': '2'})
+         step = 'head-config'
+-        ensure_config(value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True})
++        ensure_config(value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True}, head_mount_created)
+         for _, key in value['nativeKeys'].items():
+             step = 'transit-key:' + key
+             path = value['transitMount'] + '/keys/' + key
+--- before/eng/ext-protection-1/test_bootstrap.py
++++ after/eng/ext-protection-1/test_bootstrap.py
+@@ -258,11 +258,16 @@
+         self.assertIn('path "erc-transit/export/*"', text)
+         self.assertIn('path "erc-transit/backup/*"', text)
+         self.assertIn('path "erc-transit/restore/*"', text)
+-        self.assertIn('"min_decryption_version" = [1, 2,', text)
+-        self.assertIn(', 64]', text)
+-        self.assertIn('"min_encryption_version" = [1, 2,', text)
++        self.assertIn('"min_decryption_version" = ["1", "2",', text)
++        self.assertIn(', "64"]', text)
++        self.assertIn('"min_encryption_version" = ["1", "2",', text)
+         self.assertNotIn('= []', text)
+-        self.assertNotIn(', 65]', text)
++        self.assertNotIn(', "65"]', text)
++        import re
++        for field in ('min_decryption_version', 'min_encryption_version'):
++            versions = re.search('"' + field + r'" = (\[[^\]]*\])', text)
++            self.assertIsNotNone(versions)
++            self.assertEqual(json.loads(versions[1]), [str(version) for version in range(1, 65)])
+         root = Path(__file__).resolve().parents[2] / 'deploy/erasure-root'
+         shared = (root / 'custody-policy.hcl').read_text()
+         self.assertNotIn('tenants/*', shared)
+@@ -341,11 +346,19 @@
+                             self._json({'data': Native.mounts[name]}); return
+                         payload = json.loads(body)
+                         Native.mounts[name] = {'type': payload['type'], 'options': payload.get('options') or {}}
++                        if name == 'erc-heads':
++                            # Real KV-v2 returns these defaults immediately after
++                            # mount creation, rather than a missing config path.
++                            Native.configs['config'] = {'max_versions': 0, 'cas_required': False, 'delete_version_after': '0s'}
++                            if Native.mode == 'fresh-config-conflict':
++                                Native.configs['config']['max_versions'] = 2
+                         self._committed('mount'); return
+                     if self.path.endswith('/config') and '/sys/' not in self.path:
+                         if method == 'GET':
+                             if 'config' not in Native.configs:
+                                 self._missing(); return
++                            if Native.mode == 'config-readback-mismatch' and Native.configs['config']['max_versions'] == 1:
++                                self._json({'data': {'max_versions': 0, 'cas_required': False}}); return
+                             self._json({'data': Native.configs['config']}); return
+                         Native.configs['config'] = json.loads(body); self.send_response(204); self.end_headers(); return
+                     if '/keys/' in self.path:
+@@ -406,14 +419,32 @@
+                 applied = run(True, 'ok')
+                 self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
+                 self.assertEqual(json.loads(applied.stdout)['status'], 'BootstrappedNotQualified')
++                self.assertEqual(Native.configs['config'], {'max_versions': 1, 'cas_required': True})
++                self.assertEqual([method for method, path, _ in Native.records if path.endswith('/erc-heads/config')], ['GET', 'POST', 'GET'])
+                 keys = [json.loads(body) for method, path, body in Native.records if method == 'POST' and '/keys/epoch-' in path]
+                 self.assertEqual(len(keys), 2)
+                 self.assertTrue(all(item['deletion_allowed'] is False for item in keys))
+                 self.assertTrue(Native.policies)
+-                self.assertTrue(all('tenants/*' not in text and 'encrypt/*' not in text and '"min_encryption_version" = [1, 2,' in text for text in Native.policies.values()))
++                self.assertTrue(all('tenants/*' not in text and 'encrypt/*' not in text and '"min_encryption_version" = ["1", "2",' in text for text in Native.policies.values()))
+                 resumed = run(True, 'ok', keep=True)
+                 self.assertEqual(resumed.returncode, 0, resumed.stdout + resumed.stderr)
+                 self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])
++                # Defaults are only initialized on a mount created by this run.
++                # An existing mismatching mount remains an enrollment conflict.
++                for configuration in ({'max_versions': 0, 'cas_required': False}, {'max_versions': 2, 'cas_required': True}):
++                    Native.configs['config'] = configuration
++                    refused = run(True, 'ok', keep=True)
++                    self.assertEqual(refused.returncode, 1, refused.stdout + refused.stderr)
++                    self.assertEqual(json.loads(refused.stdout)['step'], 'head-config')
++                    self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])
++                fresh_conflict = run(True, 'fresh-config-conflict')
++                self.assertEqual(fresh_conflict.returncode, 1, fresh_conflict.stdout + fresh_conflict.stderr)
++                self.assertEqual(json.loads(fresh_conflict.stdout)['step'], 'head-config')
++                self.assertEqual([path for method, path, _ in Native.records if method == 'POST' and path.endswith('/erc-heads/config')], [])
++                unreadback = run(True, 'config-readback-mismatch')
++                self.assertEqual(unreadback.returncode, 1, unreadback.stdout + unreadback.stderr)
++                self.assertEqual(json.loads(unreadback.stdout)['step'], 'head-config')
++                self.assertEqual(Native.keys, {})
+                 # Each mutation may commit while its acknowledgement is lost. The
+                 # next invocation resumes the exact enrollment without rewriting it.
+                 for stage in ('mount', 'key', 'policy', 'head'):
+--- before/tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs
++++ after/tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs
+@@ -56,8 +56,14 @@
+                     if (data.TryGetProperty("max_versions", out var versions) && versions.TryGetInt32(out int maximum)) { maxVersions = maximum; }
+                     if (data.TryGetProperty("cas_required", out var cas) && cas.ValueKind is JsonValueKind.True or JsonValueKind.False) { casRequired = cas.GetBoolean(); }
+                 }
+-                using var output = new FileStream(Path.Combine(diagnostic, "bootstrap-head-config.json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
+-                JsonSerializer.Serialize(output, new { statusCode = (int)response.StatusCode, maxVersions, casRequired });
++                // Keep the first native default observation. Later bootstrap
++                // readback must still reach the server without rewriting it.
++                string observation = Path.Combine(diagnostic, "bootstrap-head-config.json");
++                if (!File.Exists(observation))
++                {
++                    using var output = new FileStream(observation, FileMode.CreateNew, FileAccess.Write, FileShare.None);
++                    JsonSerializer.Serialize(output, new { statusCode = (int)response.StatusCode, maxVersions, casRequired });
++                }
+             }
+             context.Response.StatusCode = (int)response.StatusCode; await response.Content.CopyToAsync(context.Response.Body, context.RequestAborted);
+         });
+--- before/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs
++++ after/tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs
+@@ -104,6 +104,8 @@
+             (HttpMethod.Post, heads + "/metadata/archives/forbidden", new { max_versions = 2 }),
+             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { exportable = true }),
+             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { deletion_allowed = true }),
++            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "0", min_encryption_version = "0" }),
++            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "65", min_encryption_version = "65" }),
+             (HttpMethod.Get, transit + "/export/encryption-key/epoch-a", null),
+             (HttpMethod.Get, transit + "/backup/epoch-a", null),
+             (HttpMethod.Get, "v1/sys/storage/raft/snapshot", null),
+--- before/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs
++++ after/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs
+@@ -328,7 +328,10 @@
+     public async Task TrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
+     {
+         if (epoch <= 1) { throw new ArgumentException("Successor epoch required."); }
+-        byte[] config = JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = epoch, min_encryption_version = epoch });
++        // Match the shipped ACL's bounded string values. Native ACL parameter
++        // matching rejects numeric JSON even though transit accepts that type.
++        string version = epoch.ToString(CultureInfo.InvariantCulture);
++        byte[] config = JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = version, min_encryption_version = version });
+         byte[]? configured = null;
+         byte[]? trim = null;
+         byte[]? trimmed = null;
+--- before/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs
++++ after/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs
+@@ -163,6 +163,41 @@
+             if (conflict) { (await store.CompareExchangeHeadAsync("tenant", 1, "{}"u8.ToArray(), Token)).ShouldBeFalse(); }
+             else { await Should.ThrowAsync<InvalidOperationException>(() => store.CompareExchangeHeadAsync("tenant", 1, "{}"u8.ToArray(), Token)); }
+             handler.Calls.ShouldBe(1);
++        }
++        finally { Environment.SetEnvironmentVariable(variable, null); }
++    }
++
++    [Theory]
++    [InlineData(2)]
++    [InlineData(64)]
++    public async Task TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy(int epoch)
++    {
++        string variable = "ERC_TRIM_ENCODING_" + Guid.NewGuid().ToString("N");
++        Environment.SetEnvironmentVariable(variable, "component-test-credential");
++        var paths = new List<string>();
++        try
++        {
++            using var handler = new ErasureRootTransportHandler((request, body) =>
++            {
++                paths.Add(request.RequestUri!.AbsolutePath);
++                using var json = JsonDocument.Parse(body!);
++                if (paths.Count == 1)
++                {
++                    json.RootElement.GetProperty("min_decryption_version").GetString().ShouldBe(epoch.ToString(System.Globalization.CultureInfo.InvariantCulture));
++                    json.RootElement.GetProperty("min_encryption_version").GetString().ShouldBe(epoch.ToString(System.Globalization.CultureInfo.InvariantCulture));
++                    json.RootElement.EnumerateObject().Count().ShouldBe(2);
++                }
++                else
++                {
++                    json.RootElement.GetProperty("min_available_version").GetInt32().ShouldBe(epoch);
++                    json.RootElement.EnumerateObject().Count().ShouldBe(1);
++                }
++                return ErasureRootTransportHandler.Json("{}");
++            });
++            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
++            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
++            await store.TrimAsync("tenant", epoch, Token);
++            paths.ShouldBe(["/v1/transit/keys/epoch/config", "/v1/transit/keys/epoch/trim"]);
+         }
+         finally { Environment.SetEnvironmentVariable(variable, null); }
+     }

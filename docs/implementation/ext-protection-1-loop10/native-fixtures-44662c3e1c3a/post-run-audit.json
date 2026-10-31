@@ -1,0 +1,132 @@
+{
+  "ownedAttempts": [
+    {
+      "attempt": "native-bootstrap-01.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "a21f3982bbf08d854c650b5975a5e57496a251884470de7ddffbb770630a55fe"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: a21f3982bbf08d854c650b5975a5e57496a251884470de7ddffbb770630a55fe",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    },
+    {
+      "attempt": "native-bootstrap-02.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "e564d86bfb5ab040eb3aa53ca3fffa3edce0232fd8c50f8ece4dad8126f20fe3"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: e564d86bfb5ab040eb3aa53ca3fffa3edce0232fd8c50f8ece4dad8126f20fe3",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    },
+    {
+      "attempt": "native-bootstrap-03.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "64e1e2950ddfbce669debee755028c8c97431b371192703f3bb93ea608ef0577"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: 64e1e2950ddfbce669debee755028c8c97431b371192703f3bb93ea608ef0577",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    },
+    {
+      "attempt": "native-five-01.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "6528f2052e520e8e1d62a6f81c415118395ef0f9b34e2802c932529761b5f62b"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: 6528f2052e520e8e1d62a6f81c415118395ef0f9b34e2802c932529761b5f62b",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    },
+    {
+      "attempt": "native-five-final.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "49210eeee29d1e779ed04d06671dac11c5a492292999e6ef2190ff91e3ccb9ba"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: 49210eeee29d1e779ed04d06671dac11c5a492292999e6ef2190ff91e3ccb9ba",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    },
+    {
+      "attempt": "native-trim-diagnostic.result.json",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "421100732a73716135120f647c4af9e78de167a2fd05765723508148e23df1cc"
+      ],
+      "exitCode": 1,
+      "stderr": "error: no such object: 421100732a73716135120f647c4af9e78de167a2fd05765723508148e23df1cc",
+      "containerAbsent": true,
+      "harnessCleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      }
+    }
+  ],
+  "runtimeClosures": [
+    {
+      "runtime": "/tmp/ext-protection-loop10-native-fixtures-44662c3e1c3a/runtime",
+      "filesVerified": 257,
+      "manifestSha256": "f4303fd749a73bb919834e1630436138a2e9fd6b51d274c3cf2e6d5b8718b077",
+      "completeClosureUnchanged": true
+    },
+    {
+      "runtime": "/tmp/ext-protection-loop10-native-fixtures-44662c3e1c3a/runtime-bootstrap-02",
+      "filesVerified": 257,
+      "manifestSha256": "a4dddef6de657e984a1369529a91faa7597bc9a4dd69358c23746bbaedaefc4a",
+      "completeClosureUnchanged": true
+    },
+    {
+      "runtime": "/tmp/ext-protection-loop10-native-fixtures-44662c3e1c3a/runtime-final",
+      "filesVerified": 257,
+      "manifestSha256": "17a1e3d7cc3d0f24538b9086592abd0303afc5f182baddf774b273811f952785",
+      "completeClosureUnchanged": true
+    }
+  ]
+}

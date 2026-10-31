@@ -1,0 +1,603 @@
+{
+  "schema": "EXT-PROTECTION-1.source-gap-policy-diagnosis.v1",
+  "runId": "545d616d25e0759a22da78d7cc5fab46",
+  "containerName": "ext-protection-1-raft-probe-545d616d25e0759a22da78d7cc5fab46",
+  "ownershipLabel": {
+    "hexalith.ext-protection-1.raft-probe": "545d616d25e0759a22da78d7cc5fab46"
+  },
+  "phase": "Prepared",
+  "image": "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+  "expectedNativeVersion": "2.6.2",
+  "probeSourceSha256": "1c668b8fa41dd609dc59ece1aeb02aa87b5902900309a7704d1a42dad25f6fbf",
+  "serverConfigurationSha256": "625b07b50e71f11661e95bf67e7b6e399036b857431d0ed460c8414e3f8ce644",
+  "scope": "Owned disposable request/ACL comparison only",
+  "productionQualified": false,
+  "g1Qualified": false,
+  "transactionProofExecuted": false,
+  "productionEngineTested": false,
+  "independentErasureAuthorityTested": false,
+  "secretMaterialIncludedInEvidence": false,
+  "hostMemoryErasureProven": false,
+  "observations": {
+    "image-identity": {
+      "verified": true,
+      "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+      "localImageId": "sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641"
+    },
+    "container-isolation": {
+      "verified": true,
+      "network": "none",
+      "storage": "tmpfs",
+      "publishedPorts": false
+    },
+    "native-version": {
+      "verified": true,
+      "version": "2.6.2",
+      "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923"
+    },
+    "startup-raft": {
+      "verified": true,
+      "storageType": "raft",
+      "initialized": false,
+      "sealed": true
+    },
+    "unsealed": {
+      "verified": true,
+      "storageType": "raft",
+      "initialized": true,
+      "sealed": false
+    },
+    "raft-leader": {
+      "verified": true,
+      "leader": true
+    },
+    "transit-mount": {
+      "verified": true
+    },
+    "tenant-key": {
+      "verified": true
+    },
+    "successor-epoch": {
+      "verified": true
+    },
+    "exact-shipped-policy": {
+      "verified": true
+    },
+    "tenant-token": {
+      "verified": true
+    },
+    "request-comparison": {
+      "verified": true,
+      "count": 4
+    }
+  },
+  "commands": [
+    {
+      "stage": "image-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.005000+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.068461+00:00"
+    },
+    {
+      "stage": "container-create",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "create",
+        "--pull=never",
+        "--name",
+        "ext-protection-1-raft-probe-545d616d25e0759a22da78d7cc5fab46",
+        "--label",
+        "hexalith.ext-protection-1.raft-probe=545d616d25e0759a22da78d7cc5fab46",
+        "--network=none",
+        "--read-only",
+        "--log-driver=none",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--user=65532:65532",
+        "--memory=2g",
+        "--memory-swap=2g",
+        "--pids-limit=128",
+        "--env",
+        "BAO_ADDR=http://127.0.0.1:8200",
+        "--env",
+        "GOMAXPROCS=2",
+        "--env",
+        "GOMEMLIMIT=128MiB",
+        "--tmpfs",
+        "/openbao/file:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--tmpfs",
+        "/openbao/logs:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--entrypoint=/bin/sh",
+        "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+        "-ec",
+        "umask 077; mkdir -p /openbao/file/raft; printf %s 'ui = false\napi_addr = \"http://127.0.0.1:8200\"\ncluster_addr = \"https://127.0.0.1:8201\"\nlistener \"tcp\" {\n  address = \"127.0.0.1:8200\"\n  cluster_address = \"127.0.0.1:8201\"\n  tls_disable = true\n  max_request_size = 67108864\n  max_request_json_memory = 134217728\n  max_request_json_strings = 1000000\n}\nstorage \"raft\" {\n  path = \"/openbao/file/raft\"\n  node_id = \"disposable-negative-control\"\n  max_entry_size = 67108864\n  max_transaction_size = 67108864\n}\n' > /tmp/probe.hcl; exec bao server -config=/tmp/probe.hcl"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.068583+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.248763+00:00"
+    },
+    {
+      "stage": "container-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.248915+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.281493+00:00"
+    },
+    {
+      "stage": "container-start",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "start",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.281629+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.480258+00:00"
+    },
+    {
+      "stage": "native-version",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "version"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.480294+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.618664+00:00"
+    },
+    {
+      "stage": "startup-raft",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.618714+00:00",
+      "finishedUtc": "2026-10-31T07:29:00.761290+00:00"
+    },
+    {
+      "stage": "initialize",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "operator",
+        "init",
+        "-format=json",
+        "-key-shares=1",
+        "-key-threshold=1"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:00.761355+00:00",
+      "finishedUtc": "2026-10-31T07:29:07.737437+00:00"
+    },
+    {
+      "stage": "unsealed",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:07.737501+00:00",
+      "finishedUtc": "2026-10-31T07:29:07.963545+00:00"
+    },
+    {
+      "stage": "unsealed-unseal",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "sys/unseal",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:07.963646+00:00",
+      "finishedUtc": "2026-10-31T07:29:08.160341+00:00"
+    },
+    {
+      "stage": "unsealed",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:08.410475+00:00",
+      "finishedUtc": "2026-10-31T07:29:08.628609+00:00"
+    },
+    {
+      "stage": "raft-leader",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/leader"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:08.628694+00:00",
+      "finishedUtc": "2026-10-31T07:29:08.829201+00:00"
+    },
+    {
+      "stage": "transit-mount",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "sys/mounts/erc-transit",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:08.829302+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.009871+00:00"
+    },
+    {
+      "stage": "tenant-key",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "erc-transit/keys/epoch-a",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:09.009941+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.218287+00:00"
+    },
+    {
+      "stage": "successor-epoch",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "erc-transit/keys/epoch-a/rotate",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:09.218378+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.390424+00:00"
+    },
+    {
+      "stage": "exact-shipped-policy",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "sys/policies/acl/source-gap-diagnosis",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:09.390678+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.581953+00:00"
+    },
+    {
+      "stage": "tenant-token",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "auth/token/create",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:09.582018+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.779756+00:00"
+    },
+    {
+      "stage": "bao-json-stdin-number",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "erc-transit/keys/epoch-a/config",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 2,
+      "nativeHttpStatus": 403,
+      "startedUtc": "2026-10-31T07:29:09.779938+00:00",
+      "finishedUtc": "2026-10-31T07:29:09.973705+00:00"
+    },
+    {
+      "stage": "bao-json-stdin-string",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "erc-transit/keys/epoch-a/config",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 2,
+      "nativeHttpStatus": 403,
+      "startedUtc": "2026-10-31T07:29:09.973959+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.169128+00:00"
+    },
+    {
+      "stage": "direct-http-number",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "nc",
+        "-w",
+        "5",
+        "127.0.0.1",
+        "8200"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:10.169199+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.282736+00:00"
+    },
+    {
+      "stage": "direct-http-string",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009",
+        "nc",
+        "-w",
+        "5",
+        "127.0.0.1",
+        "8200"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:10.282934+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.397081+00:00"
+    },
+    {
+      "stage": "cleanup-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:10.397176+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.449721+00:00"
+    },
+    {
+      "stage": "cleanup-remove",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "rm",
+        "--force",
+        "--volumes",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      ],
+      "stdin": "none",
+      "exitCode": 0,
+      "startedUtc": "2026-10-31T07:29:10.449842+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.746098+00:00"
+    },
+    {
+      "stage": "cleanup-verify",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      ],
+      "stdin": "none",
+      "exitCode": 1,
+      "startedUtc": "2026-10-31T07:29:10.746126+00:00",
+      "finishedUtc": "2026-10-31T07:29:10.841664+00:00"
+    }
+  ],
+  "cleanup": {
+    "complete": true,
+    "containerAbsent": true,
+    "containerTmpfsUnmounted": true
+  },
+  "outcome": "Compared",
+  "failure": null,
+  "startedUtc": "2026-10-31T07:28:59.997632+00:00",
+  "diagnosticSourceSha256": "c2a1570e4043c862c649691139394f26eabbd93de85034611337285c2baecc98",
+  "bootstrapSourceSha256": "312cada922fb1110a913779fa13653c0e65ce2c83af371ea357ad1150cfdb28b",
+  "renderedPolicySha256": "d557ce251f007a9edeca81f9da39dfc0f3a99ed704fa109fce85f6ab7693adbc",
+  "comparisons": [
+    {
+      "transport": "bao-json-stdin",
+      "requestVersionType": "number",
+      "httpStatus": 403
+    },
+    {
+      "transport": "bao-json-stdin",
+      "requestVersionType": "string",
+      "httpStatus": 403
+    },
+    {
+      "transport": "direct-http",
+      "requestVersionType": "number",
+      "httpStatus": 403
+    },
+    {
+      "transport": "direct-http",
+      "requestVersionType": "string",
+      "httpStatus": 403
+    }
+  ],
+  "ownedContainerStateBeforeCleanup": {
+    "running": true,
+    "exitCode": 0,
+    "oomKilled": false
+  },
+  "finishedUtc": "2026-10-31T07:29:10.841719+00:00"
+}

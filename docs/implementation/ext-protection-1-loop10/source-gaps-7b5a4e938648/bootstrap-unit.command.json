@@ -1,0 +1,24 @@
+{
+  "label": "bootstrap-unit",
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "eng/ext-protection-1",
+    "-p",
+    "test_bootstrap.py",
+    "-v"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "startedUtc": "2026-10-31T07:31:41.901685+00:00",
+  "environment": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+  },
+  "finishedUtc": "2026-10-31T07:31:45.141356+00:00",
+  "elapsedSeconds": 3.24,
+  "exitCode": 0,
+  "log": "bootstrap-unit.log",
+  "logSha256": "61e13d7a179e254f6a80ad435a7053f39f93015dc7903b38023710201edd2243"
+}

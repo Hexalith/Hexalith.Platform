@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Dapr.Actors.Runtime;
 using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.Server.Security;
@@ -44,10 +45,30 @@ public sealed class OpenBaoBootstrapIntegrationTests
             forwarded.Headers.Add("X-Vault-Token", context.Request.Headers["X-Vault-Token"].ToString());
             if (context.Request.Method == "POST") { using var body = new StreamReader(context.Request.Body); forwarded.Content = new StringContent(await body.ReadToEndAsync(context.RequestAborted), Encoding.UTF8, "application/json"); }
             using var response = await nativeHttp.SendAsync(forwarded, context.RequestAborted);
+            if (context.Request.Method == "GET" && context.Request.Path.Value == "/v1/erc-heads/config"
+                && Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic && Path.IsPathFullyQualified(diagnostic)
+                && diagnostic.StartsWith("/tmp/erc-native-diagnostic-", StringComparison.Ordinal) && new DirectoryInfo(diagnostic).LinkTarget is null)
+            {
+                using var configuration = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(context.RequestAborted));
+                int? maxVersions = null; bool? casRequired = null;
+                if (configuration.RootElement.TryGetProperty("data", out var data))
+                {
+                    if (data.TryGetProperty("max_versions", out var versions) && versions.TryGetInt32(out int maximum)) { maxVersions = maximum; }
+                    if (data.TryGetProperty("cas_required", out var cas) && cas.ValueKind is JsonValueKind.True or JsonValueKind.False) { casRequired = cas.GetBoolean(); }
+                }
+                // Keep the first native default observation. Later bootstrap
+                // readback must still reach the server without rewriting it.
+                string observation = Path.Combine(diagnostic, "bootstrap-head-config.json");
+                if (!File.Exists(observation))
+                {
+                    using var output = new FileStream(observation, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+                    JsonSerializer.Serialize(output, new { statusCode = (int)response.StatusCode, maxVersions, casRequired });
+                }
+            }
             context.Response.StatusCode = (int)response.StatusCode; await response.Content.CopyToAsync(context.Response.Body, context.RequestAborted);
         });
         string directory = Path.Combine(Path.GetTempPath(), "erc-loop6-bootstrap-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(directory);
-        string? runtimeVariable = null;
+        var runtimeVariables = new List<string>();
         try
         {
             await relay.StartAsync(token); string address = relay.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
@@ -69,13 +90,18 @@ public sealed class OpenBaoBootstrapIntegrationTests
             var enrollment = new { address, storeId = installation.StoreId, enrollmentId = installation.EnrollmentId, transitMount = installation.TransitMount, headMount = installation.HeadMount,
                 nativeKeys = installation.NativeKeys, genesisAnchors = states.ToDictionary(pair => pair.Key, pair => pair.Value.ToDictionary(state => state.Key, state => ErasureRootCustody.Hash(state.Value))) };
             string file = Path.Combine(directory, "enrollment.json"); await File.WriteAllBytesAsync(file, JsonSerializer.SerializeToUtf8Bytes(enrollment), token);
-            using var scriptStream = typeof(OpenBaoBootstrapIntegrationTests).Assembly.GetManifestResourceStream("ErcShippedBootstrapScript")!;
-            string script = Path.Combine(directory, "bootstrap.py"); await using (var output = File.Create(script)) { await scriptStream.CopyToAsync(output, token); }
+            await OpenBaoShippedPolicyRenderer.ExtractAsync(directory, token);
+            string script = Path.Combine(directory, "bootstrap.py");
             var start = new ProcessStartInfo("python3") { RedirectStandardOutput = true, RedirectStandardError = true };
-            foreach (string argument in new[] { script, "--enrollment", file, "--credential-reference", "env:ERC_NATIVE_DISPOSABLE_TOKEN", "--apply" }) { start.ArgumentList.Add(argument); }
-            start.Environment["SSL_CERT_FILE"] = ca;
+            foreach (string argument in new[] { script, "--enrollment", file, "--credential-reference", "env:ERC_NATIVE_DISPOSABLE_TOKEN", "--ca-certificate", ca, "--apply" }) { start.ArgumentList.Add(argument); }
             using var process = Process.Start(start)!; string result = await process.StandardOutput.ReadToEndAsync(token); string error = await process.StandardError.ReadToEndAsync(token); await process.WaitForExitAsync(token);
-            process.ExitCode.ShouldBe(0, "Shipped bootstrap refused"); error.ShouldBeEmpty(); JsonDocument.Parse(result).RootElement.GetProperty("status").GetString().ShouldBe("BootstrappedNotQualified");
+            using var bootstrapResult = JsonDocument.Parse(result);
+            if (process.ExitCode != 0)
+            {
+                string? step = bootstrapResult.RootElement.TryGetProperty("step", out var stopped) ? stopped.GetString() : null;
+                throw new InvalidOperationException("ERC_NATIVE_STAGE:Bootstrap-" + (step is not null && Regex.IsMatch(step, "^[A-Za-z0-9:_-]{1,128}$") ? step : "Unknown"));
+            }
+            error.ShouldBeEmpty(); bootstrapResult.RootElement.GetProperty("status").GetString().ShouldBe("BootstrappedNotQualified");
             async Task<JsonElement> BootstrapWrite(string path, object body)
             {
                 using var operation = new HttpRequestMessage(HttpMethod.Post, path); operation.Headers.Add("X-Vault-Token", Environment.GetEnvironmentVariable("ERC_NATIVE_DISPOSABLE_TOKEN"));
@@ -83,22 +109,28 @@ public sealed class OpenBaoBootstrapIntegrationTests
                 using var response = await nativeHttp.SendAsync(operation, token); response.IsSuccessStatusCode.ShouldBeTrue();
                 return JsonDocument.Parse(await response.Content.ReadAsStringAsync(token)).RootElement.Clone();
             }
-            using var policyStream = typeof(OpenBaoBootstrapIntegrationTests).Assembly.GetManifestResourceStream("ErcShippedCustodyPolicy")!;
-            using var policyReader = new StreamReader(policyStream); string policy = await policyReader.ReadToEndAsync(token);
-            string policyName = "erc-script-runtime-" + Guid.NewGuid().ToString("N");
-            _ = await BootstrapWrite("v1/sys/policies/acl/" + policyName, new { policy });
-            var runtimeToken = await BootstrapWrite("v1/auth/token/create", new { policies = new[] { policyName }, no_default_policy = true, ttl = "1h", renewable = false });
-            runtimeVariable = "ERC_SCRIPT_RUNTIME_" + Guid.NewGuid().ToString("N").ToUpperInvariant();
-            Environment.SetEnvironmentVariable(runtimeVariable, runtimeToken.GetProperty("auth").GetProperty("client_token").GetString());
-            if (Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic)
-            {
-                string digest = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(policy)));
-                await File.WriteAllTextAsync(Path.Combine(diagnostic, "policy-bootstrap.json"), JsonSerializer.Serialize(new { shippedPolicySha256 = digest, renderedPolicySha256 = digest,
-                    transitMount = "erc-transit", headMount = "erc-heads", runtimePolicyName = policyName, rootUsedOnlyForBootstrap = true }), token);
-            }
-            var native = new OpenBaoErasureRootStore(nativeHttp, installation, "env:" + runtimeVariable); var authorization = new ErasureRootAuthorizationFixture(); var custody = new ErasureRootCustody(native, installation, authorization);
+            var scopes = installation.NativeKeys.Keys.ToDictionary(tenant => tenant, tenant => CustodyKeyLifecycleActor.GetActorId(tenant) + "|custody-key-lifecycle-candidate-v1");
+            var rendered = await OpenBaoShippedPolicyRenderer.RenderAsync(directory, installation, scopes, token);
+            string fragment = await File.ReadAllTextAsync(Path.Combine(directory, "custody-policy.hcl"), token);
             foreach (var tenant in states)
             {
+                var renderedPolicy = rendered[tenant.Key]; string policyName = renderedPolicy.GetProperty("name").GetString()!, policy = renderedPolicy.GetProperty("policy").GetString()!;
+                // Apply installed this exact policy. Runtime token issuance must not replace it with a shared grant.
+                var runtimeToken = await BootstrapWrite("v1/auth/token/create", new { policies = new[] { policyName }, no_default_policy = true, ttl = "1h", renewable = false });
+                runtimeToken.GetProperty("auth").GetProperty("policies").EnumerateArray().Select(value => value.GetString()).ShouldBe([policyName]);
+                string runtimeVariable = "ERC_SCRIPT_RUNTIME_" + Guid.NewGuid().ToString("N").ToUpperInvariant(); runtimeVariables.Add(runtimeVariable);
+                Environment.SetEnvironmentVariable(runtimeVariable, runtimeToken.GetProperty("auth").GetProperty("client_token").GetString());
+                if (Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic && Path.IsPathFullyQualified(diagnostic)
+                    && diagnostic.StartsWith("/tmp/erc-native-diagnostic-", StringComparison.Ordinal) && new DirectoryInfo(diagnostic).LinkTarget is null)
+                {
+                    using var output = new FileStream(Path.Combine(diagnostic, "policy-bootstrap-" + tenant.Key + ".json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
+                    JsonSerializer.Serialize(output, new { shippedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(fragment))),
+                        renderedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(policy))), transitMount = installation.TransitMount,
+                        headMount = installation.HeadMount, runtimePolicyName = policyName, tenantId = tenant.Key, scope = scopes[tenant.Key], rootUsedOnlyForBootstrap = true });
+                }
+                var native = new OpenBaoErasureRootStore(nativeHttp, installation, "env:" + runtimeVariable); var authorization = new ErasureRootAuthorizationFixture(); var custody = new ErasureRootCustody(native, installation, authorization);
+                string otherTenant = tenant.Key == "tenant-a" ? "tenant-b" : "tenant-a";
+                await Should.ThrowAsync<InvalidOperationException>(() => native.ReadHeadAsync(otherTenant, token));
                 foreach (var state in tenant.Value)
                 {
                     var authority = new ErasureRootTransitionAuthority(custody, authorization, tenant.Key, state.Key);
@@ -115,6 +147,6 @@ public sealed class OpenBaoBootstrapIntegrationTests
             }
             Console.WriteLine(JsonSerializer.Serialize(new { shippedPythonApply = true, tenants = 2, runtimeGenesisScopes = 6, actualLifecycleActors = 2, ordinaryMounts = true, productionQualified = false }));
         }
-        finally { if (runtimeVariable is not null) { Environment.SetEnvironmentVariable(runtimeVariable, null); } await relay.StopAsync(CancellationToken.None); Directory.Delete(directory, true); }
+        finally { foreach (string variable in runtimeVariables) { Environment.SetEnvironmentVariable(variable, null); } await relay.StopAsync(CancellationToken.None); Directory.Delete(directory, true); }
     }
 }

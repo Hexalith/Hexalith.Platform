@@ -10,11 +10,12 @@ namespace Hexalith.Platform.Protection.Tests;
 internal sealed class OpenBaoNativeCustodyFixture : IDisposable
 {
     internal required HttpClient Http { get; init; }
-    internal required OpenBaoErasureRootStore Native { get; init; }
+    internal required IErasureRootStore Native { get; init; }
     internal required ErasureRootCustody Custody { get; init; }
     internal required ErasureRootInstallation Installation { get; init; }
     internal required OpenBaoDisposableNativeHandler Transport { get; init; }
     internal required string RuntimeCredentialReference { get; init; }
+    internal required IReadOnlyDictionary<string, string> RuntimeCredentialReferences { get; init; }
     internal static async Task<OpenBaoNativeCustodyFixture> CreateAsync(CancellationToken token)
     {
         var transport = await OpenBaoDisposableNativeHandler.OpenAsync(token);
@@ -40,27 +41,41 @@ internal sealed class OpenBaoNativeCustodyFixture : IDisposable
             string key = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(pair.Key)));
             await Write("v1/" + installed.HeadMount + "/data/tenants/" + key, new { options = new { cas = 0 }, data = head });
         }
-        using var policyStream = typeof(OpenBaoNativeCustodyFixture).Assembly.GetManifestResourceStream("ErcShippedCustodyPolicy")!;
-        using var policyReader = new StreamReader(policyStream);
-        string shippedPolicy = await policyReader.ReadToEndAsync(token);
-        string policy = shippedPolicy.Replace("erc-transit", installed.TransitMount, StringComparison.Ordinal).Replace("erc-heads", installed.HeadMount, StringComparison.Ordinal);
-        string policyName = "erc-runtime-" + suffix;
-        await Write("v1/sys/policies/acl/" + policyName, new { policy });
-        var tokenResponse = await Write("v1/auth/token/create", new { policies = new[] { policyName }, no_default_policy = true, ttl = "1h", renewable = false });
-        if (!tokenResponse.GetProperty("auth").GetProperty("policies").EnumerateArray().Select(value => value.GetString()).SequenceEqual([policyName]))
-        { throw new InvalidOperationException("Exclusive shipped runtime policy token required."); }
-        if (Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic && Path.IsPathFullyQualified(diagnostic)
-            && diagnostic.StartsWith("/tmp/erc-native-diagnostic-", StringComparison.Ordinal) && new DirectoryInfo(diagnostic).LinkTarget is null)
+        string directory = Path.Combine(Path.GetTempPath(), "erc-native-renderer-" + suffix); Directory.CreateDirectory(directory);
+        var references = new Dictionary<string, string>(StringComparer.Ordinal);
+        var stores = new Dictionary<string, OpenBaoErasureRootStore>(StringComparer.Ordinal);
+        try
         {
-            using var output = new FileStream(Path.Combine(diagnostic, "policy-" + suffix + ".json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
-            JsonSerializer.Serialize(output, new { shippedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(shippedPolicy))),
-                renderedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(policy))), transitMount = installed.TransitMount,
-                headMount = installed.HeadMount, runtimePolicyName = policyName, rootUsedOnlyForBootstrap = true });
+            await OpenBaoShippedPolicyRenderer.ExtractAsync(directory, token);
+            var scopes = installed.NativeKeys.Keys.ToDictionary(tenant => tenant, tenant => CustodyKeyLifecycleActor.GetActorId(tenant) + "|custody-key-lifecycle-candidate-v1");
+            var rendered = await OpenBaoShippedPolicyRenderer.RenderAsync(directory, installed, scopes, token);
+            string fragment = await File.ReadAllTextAsync(Path.Combine(directory, "custody-policy.hcl"), token);
+            foreach (var pair in rendered)
+            {
+                string policy = pair.Value.GetProperty("policy").GetString()!, policyName = pair.Value.GetProperty("name").GetString()!;
+                await Write("v1/sys/policies/acl/" + policyName, new { policy });
+                var tokenResponse = await Write("v1/auth/token/create", new { policies = new[] { policyName }, no_default_policy = true, ttl = "1h", renewable = false });
+                if (!tokenResponse.GetProperty("auth").GetProperty("policies").EnumerateArray().Select(value => value.GetString()).SequenceEqual([policyName]))
+                { throw new InvalidOperationException("Exclusive shipped tenant runtime policy token required."); }
+                string reference = "env:ERC_NATIVE_RUNTIME_" + suffix.ToUpperInvariant() + "_" + pair.Key.Replace('-', '_').ToUpperInvariant();
+                references.Add(pair.Key, reference);
+                Environment.SetEnvironmentVariable(reference[4..], tokenResponse.GetProperty("auth").GetProperty("client_token").GetString());
+                stores.Add(pair.Key, new OpenBaoErasureRootStore(http, installed, reference));
+                if (Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic && Path.IsPathFullyQualified(diagnostic)
+                    && diagnostic.StartsWith("/tmp/erc-native-diagnostic-", StringComparison.Ordinal) && new DirectoryInfo(diagnostic).LinkTarget is null)
+                {
+                    using var output = new FileStream(Path.Combine(diagnostic, "policy-" + suffix + "-" + pair.Key + ".json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
+                    JsonSerializer.Serialize(output, new { shippedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(fragment))),
+                        renderedPolicySha256 = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(policy))), transitMount = installed.TransitMount,
+                        headMount = installed.HeadMount, runtimePolicyName = policyName, tenantId = pair.Key, scope = scopes[pair.Key], rootUsedOnlyForBootstrap = true });
+                }
+            }
         }
-        string runtimeReference = "env:ERC_NATIVE_RUNTIME_" + suffix.ToUpperInvariant();
-        Environment.SetEnvironmentVariable(runtimeReference[4..], tokenResponse.GetProperty("auth").GetProperty("client_token").GetString());
-        var native = new OpenBaoErasureRootStore(http, installed, runtimeReference);
-        return new() { Http = http, Native = native, Installation = installed, Custody = new(native, installed, new ErasureRootAuthorizationFixture()), Transport = transport, RuntimeCredentialReference = runtimeReference };
+        catch { foreach (string reference in references.Values) { Environment.SetEnvironmentVariable(reference[4..], null); } http.Dispose(); throw; }
+        finally { Directory.Delete(directory, true); }
+        var native = new OpenBaoTenantNativeStore(stores);
+        return new() { Http = http, Native = native, Installation = installed, Custody = new(native, installed, new ErasureRootAuthorizationFixture()), Transport = transport,
+            RuntimeCredentialReference = references["tenant-a"], RuntimeCredentialReferences = references };
     }
     internal Task<CustodyKeyRegistration?> RootAsync(string id, string tenant = "tenant-a", CancellationToken token = default)
         => Custody.WrapAsync(new(tenant, id, PlatformKeyPurpose.InteractionRootDek, "explicit-alias", "root-v1", "lifecycle", Installation.StoreId, "custody"), "wrap-" + id, 0, token);
@@ -89,6 +104,8 @@ internal sealed class OpenBaoNativeCustodyFixture : IDisposable
             (HttpMethod.Post, heads + "/metadata/archives/forbidden", new { max_versions = 2 }),
             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { exportable = true }),
             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { deletion_allowed = true }),
+            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "0", min_encryption_version = "0" }),
+            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "65", min_encryption_version = "65" }),
             (HttpMethod.Get, transit + "/export/encryption-key/epoch-a", null),
             (HttpMethod.Get, transit + "/backup/epoch-a", null),
             (HttpMethod.Get, "v1/sys/storage/raft/snapshot", null),
@@ -99,10 +116,29 @@ internal sealed class OpenBaoNativeCustodyFixture : IDisposable
             using var result = await Call(call.Method, call.Path, call.Payload);
             if (result.StatusCode != System.Net.HttpStatusCode.Forbidden) { throw new InvalidOperationException("Shipped policy did not deny the exact forbidden capability."); }
         }
+        foreach (var pair in RuntimeCredentialReferences)
+        {
+            string other = pair.Key == "tenant-a" ? "tenant-b" : "tenant-a";
+            foreach (string path in new[] { heads + "/data/tenants/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(other))),
+                heads + "/data/archives/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(other))) + "/" + new string('A', 64),
+                transit + "/keys/" + Installation.NativeKeys[other] })
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, path);
+                request.Headers.Add("X-Vault-Token", Environment.GetEnvironmentVariable(pair.Value[4..]));
+                using var denied = await Http.SendAsync(request, token);
+                if (denied.StatusCode != System.Net.HttpStatusCode.Forbidden) { throw new InvalidOperationException("Rendered tenant policy crossed the enrolled tenant boundary."); }
+            }
+        }
     }
     public void Dispose()
     {
-        Environment.SetEnvironmentVariable(RuntimeCredentialReference[4..], null);
+        if (Environment.GetEnvironmentVariable("ERC_NATIVE_DIAGNOSTIC_DIRECTORY") is { } diagnostic && Path.IsPathFullyQualified(diagnostic)
+            && diagnostic.StartsWith("/tmp/erc-native-diagnostic-", StringComparison.Ordinal) && new DirectoryInfo(diagnostic).LinkTarget is null)
+        {
+            using var output = new FileStream(Path.Combine(diagnostic, "fixture-" + Installation.TransitMount + ".json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
+            JsonSerializer.Serialize(output, new { transitMount = Installation.TransitMount, headMount = Installation.HeadMount, stages = Transport.PublicStages.TakeLast(30).ToArray() });
+        }
+        foreach (string reference in RuntimeCredentialReferences.Values) { Environment.SetEnvironmentVariable(reference[4..], null); }
         Http.Dispose();
     }
 }

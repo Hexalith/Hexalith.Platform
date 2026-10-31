@@ -2,54 +2,97 @@
   "record": "EXT-PROTECTION-1",
   "loop": 10,
   "status": "in-progress",
+  "scope": "authorized loop-10 resume only",
+  "recordedUtc": "2026-10-31T05:20:31.447097+00:00",
   "acceptedTarget": null,
   "acceptedProfile": null,
   "acceptedDate": null,
   "availability": null,
   "nativeFiveCaseRerun": false,
+  "installed41CaseRun": false,
+  "physicalCopyQualification": false,
+  "externalEvidenceRoot": "/tmp/ext-protection-loop10-resume-27fe4f343c1a",
+  "commands": "ext-protection-loop10-resume-27fe4f343c1a/commands.json",
   "builds": [
     {
-      "project": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
-      "configuration": "Debug",
+      "name": "platform-build",
+      "exitCode": 0,
       "warnings": 0,
       "errors": 0
     },
     {
-      "project": "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
-      "configuration": "Debug",
-      "maxCpuCount": 1,
+      "name": "eventstore-build",
+      "exitCode": 0,
       "warnings": 0,
       "errors": 0
     }
   ],
   "tests": [
     {
-      "dll": "Hexalith.EventStore.Server.Tests.dll",
-      "classes": [
-        "InteractionOccurrenceRegistryActorTests",
-        "PublishedTrustReplacementAuthorityTests",
-        "PublishedTrustOwnerStateAuthorityTests"
-      ],
-      "passed": 146,
-      "failed": 0
-    },
-    {
-      "dll": "Hexalith.Platform.Protection.Tests.dll",
-      "classes": ["ErasureRootUnissuedReplacementTests"],
-      "passed": 1,
-      "failed": 0
-    },
-    {
-      "dll": "Hexalith.Platform.Protection.Tests.dll",
-      "classes": ["OpenBaoErasureRootStoreTests"],
-      "passed": 14,
+      "repository": "platform",
+      "total": 74,
+      "passed": 74,
       "failed": 0,
-      "note": "Does not call DecryptAsync"
+      "errors": 0,
+      "skipped": 0,
+      "xml": "ext-protection-loop10-resume-27fe4f343c1a/platform-tests.xml",
+      "sha256": "ba4e8a26324223904bc9507fa0daab47ccf2e53d2e67fdfb19e3aaf334b84681"
     },
     {
-      "command": "python3 eng/ext-protection-1/test_bootstrap.py",
-      "passed": 10,
-      "failed": 0
+      "repository": "eventstore",
+      "total": 268,
+      "passed": 268,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml": "ext-protection-loop10-resume-27fe4f343c1a/eventstore-tests.xml",
+      "sha256": "8547f448f2caca9c3f662dafd1074154cda51d9eb9b532db8a8278e9f5d2b168"
+    },
+    {
+      "name": "bootstrap-tests",
+      "passed": 12,
+      "failed": 0,
+      "exitCode": 0
+    }
+  ],
+  "runtimeInventories": [
+    {
+      "repository": "platform",
+      "runtime": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/runtime/platform",
+      "files": 257,
+      "manifest": "ext-protection-loop10-resume-27fe4f343c1a/platform-runtime.json",
+      "sha256": "4d2943ca2f4cb0390fb47e411d76d2e8ccd8208b1c7d05c8cadd1457d2770070"
+    },
+    {
+      "repository": "eventstore",
+      "runtime": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/runtime/eventstore",
+      "files": 692,
+      "manifest": "ext-protection-loop10-resume-27fe4f343c1a/eventstore-runtime.json",
+      "sha256": "bc27eea87e4854e7113b93be449071b855da3eae01833cfcbfbcb9cebf553ceb"
+    }
+  ],
+  "selectedSourceInventory": "ext-protection-loop10-resume-27fe4f343c1a/selected-source.json",
+  "sourceBeforeValidationUnchanged": true,
+  "specContextInventory": "ext-protection-loop10-resume-27fe4f343c1a/spec-context.json",
+  "notices": [
+    "Existing redirect HTTPError cleanup ResourceWarning in Python test output",
+    "xUnit -parallel and -xml deprecated-option notices; direct DLL runs passed"
+  ],
+  "confirmedRemainingSourceGaps": [
+    "OpenBaoBootstrapIntegrationTests omits explicit CA argument and adjacent custody-policy.hcl extraction and uses a deny-only runtime policy",
+    "OpenBaoNativeCustodyFixture uses the deny-only shared policy as its runtime grant"
+  ],
+  "preexistingDeferredSourceGap": "R7-BH-7: generic subprocess capture_output accumulates pipes before stdout validation and has no stderr bound; explicitly unchanged and outside this cycle",
+  "unopenedReviewRows": "Review 11 maybe-false/defer rows remain unverified; no new review or counter increment",
+  "newInstalledPrerequisite": "Linux cgroup v2 plus compatible CRI/container cgroup namespace with memory.max=1073741824 and memory.swap.max=0; independently configured kubelet NoSwap; startup verifies fixed paths",
+  "historicalEvidence": [
+    {
+      "path": "initial-handback.md",
+      "sha256": "0a117492653989c149e7507db911b125a7f6ba6b0dc72ca3bad34d165f5e3ac4"
+    },
+    {
+      "path": "initial-verification.json",
+      "sha256": "a1277fcb3c58ffc30c1ead6e76b7dfa023681f93ee89d6d53dfab7c6c5350a0e"
     }
   ]
 }

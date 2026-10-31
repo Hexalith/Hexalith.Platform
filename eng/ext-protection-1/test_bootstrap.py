@@ -258,11 +258,16 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
         self.assertIn('path "erc-transit/export/*"', text)
         self.assertIn('path "erc-transit/backup/*"', text)
         self.assertIn('path "erc-transit/restore/*"', text)
-        self.assertIn('"min_decryption_version" = [1, 2,', text)
-        self.assertIn(', 64]', text)
-        self.assertIn('"min_encryption_version" = [1, 2,', text)
+        self.assertIn('"min_decryption_version" = ["1", "2",', text)
+        self.assertIn(', "64"]', text)
+        self.assertIn('"min_encryption_version" = ["1", "2",', text)
         self.assertNotIn('= []', text)
-        self.assertNotIn(', 65]', text)
+        self.assertNotIn(', "65"]', text)
+        import re
+        for field in ('min_decryption_version', 'min_encryption_version'):
+            versions = re.search('"' + field + r'" = (\[[^\]]*\])', text)
+            self.assertIsNotNone(versions)
+            self.assertEqual(json.loads(versions[1]), [str(version) for version in range(1, 65)])
         root = Path(__file__).resolve().parents[2] / 'deploy/erasure-root'
         shared = (root / 'custody-policy.hcl').read_text()
         self.assertNotIn('tenants/*', shared)
@@ -341,11 +346,19 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                             self._json({'data': Native.mounts[name]}); return
                         payload = json.loads(body)
                         Native.mounts[name] = {'type': payload['type'], 'options': payload.get('options') or {}}
+                        if name == 'erc-heads':
+                            # Real KV-v2 returns these defaults immediately after
+                            # mount creation, rather than a missing config path.
+                            Native.configs['config'] = {'max_versions': 0, 'cas_required': False, 'delete_version_after': '0s'}
+                            if Native.mode == 'fresh-config-conflict':
+                                Native.configs['config']['max_versions'] = 2
                         self._committed('mount'); return
                     if self.path.endswith('/config') and '/sys/' not in self.path:
                         if method == 'GET':
                             if 'config' not in Native.configs:
                                 self._missing(); return
+                            if Native.mode == 'config-readback-mismatch' and Native.configs['config']['max_versions'] == 1:
+                                self._json({'data': {'max_versions': 0, 'cas_required': False}}); return
                             self._json({'data': Native.configs['config']}); return
                         Native.configs['config'] = json.loads(body); self.send_response(204); self.end_headers(); return
                     if '/keys/' in self.path:
@@ -406,14 +419,32 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
                 applied = run(True, 'ok')
                 self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
                 self.assertEqual(json.loads(applied.stdout)['status'], 'BootstrappedNotQualified')
+                self.assertEqual(Native.configs['config'], {'max_versions': 1, 'cas_required': True})
+                self.assertEqual([method for method, path, _ in Native.records if path.endswith('/erc-heads/config')], ['GET', 'POST', 'GET'])
                 keys = [json.loads(body) for method, path, body in Native.records if method == 'POST' and '/keys/epoch-' in path]
                 self.assertEqual(len(keys), 2)
                 self.assertTrue(all(item['deletion_allowed'] is False for item in keys))
                 self.assertTrue(Native.policies)
-                self.assertTrue(all('tenants/*' not in text and 'encrypt/*' not in text and '"min_encryption_version" = [1, 2,' in text for text in Native.policies.values()))
+                self.assertTrue(all('tenants/*' not in text and 'encrypt/*' not in text and '"min_encryption_version" = ["1", "2",' in text for text in Native.policies.values()))
                 resumed = run(True, 'ok', keep=True)
                 self.assertEqual(resumed.returncode, 0, resumed.stdout + resumed.stderr)
                 self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])
+                # Defaults are only initialized on a mount created by this run.
+                # An existing mismatching mount remains an enrollment conflict.
+                for configuration in ({'max_versions': 0, 'cas_required': False}, {'max_versions': 2, 'cas_required': True}):
+                    Native.configs['config'] = configuration
+                    refused = run(True, 'ok', keep=True)
+                    self.assertEqual(refused.returncode, 1, refused.stdout + refused.stderr)
+                    self.assertEqual(json.loads(refused.stdout)['step'], 'head-config')
+                    self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])
+                fresh_conflict = run(True, 'fresh-config-conflict')
+                self.assertEqual(fresh_conflict.returncode, 1, fresh_conflict.stdout + fresh_conflict.stderr)
+                self.assertEqual(json.loads(fresh_conflict.stdout)['step'], 'head-config')
+                self.assertEqual([path for method, path, _ in Native.records if method == 'POST' and path.endswith('/erc-heads/config')], [])
+                unreadback = run(True, 'config-readback-mismatch')
+                self.assertEqual(unreadback.returncode, 1, unreadback.stdout + unreadback.stderr)
+                self.assertEqual(json.loads(unreadback.stdout)['step'], 'head-config')
+                self.assertEqual(Native.keys, {})
                 # Each mutation may commit while its acknowledgement is lost. The
                 # next invocation resumes the exact enrollment without rewriting it.
                 for stage in ('mount', 'key', 'policy', 'head'):

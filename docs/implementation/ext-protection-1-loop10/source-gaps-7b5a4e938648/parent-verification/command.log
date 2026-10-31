@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/parent-verification/verify.py", line 49, in <module>
+    require(frozen is not None and frozen.group() in spec, 'Frozen intent changed')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/parent-verification/verify.py", line 29, in require
+    raise RuntimeError(message)
+RuntimeError: Frozen intent changed

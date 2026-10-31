@@ -1,0 +1,27 @@
+{
+  "initialExecutionDeviation": true,
+  "overlaps": [
+    {
+      "left": "build-protection",
+      "right": "harness-unit",
+      "overlapSeconds": 0.066
+    },
+    {
+      "left": "native-bootstrap-01",
+      "right": "transport-components",
+      "overlapSeconds": 2.354
+    },
+    {
+      "left": "native-five-01",
+      "right": "build-protection-03",
+      "overlapSeconds": 2.823
+    },
+    {
+      "left": "native-five-01",
+      "right": "native-bootstrap-02",
+      "overlapSeconds": 12.502
+    }
+  ],
+  "finalFiveCaseRunSerialized": true,
+  "intervalScope": "Own build/test commands; unrelated concurrent sessions were preserved."
+}

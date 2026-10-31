@@ -1,0 +1,28 @@
+{
+  "label": "transport-components",
+  "argv": [
+    "dotnet",
+    "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/Hexalith.Platform.Protection.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests",
+    "-class",
+    "Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportSafetyTests",
+    "-class",
+    "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests",
+    "-noColor",
+    "-parallelMode",
+    "none",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/transport-components.xml"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "startedUtc": "2026-10-31T07:32:49.494589+00:00",
+  "environment": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+  },
+  "finishedUtc": "2026-10-31T07:32:51.873008+00:00",
+  "elapsedSeconds": 2.378,
+  "exitCode": 0,
+  "log": "transport-components.log",
+  "logSha256": "b38ff07de971d18271cc672717907bc8184bf3633ed606abc46ae4c750e555db"
+}

@@ -1,0 +1,157 @@
+{
+  "scope": "Independent parent handback verification; no additional review cycle",
+  "startedUtc": "2026-10-31T08:25:12.063697+00:00",
+  "finishedUtc": "2026-10-31T08:25:12.449913+00:00",
+  "elapsedSeconds": 0.386,
+  "status": "in-progress",
+  "reviewLoopIteration": 10,
+  "implementationArtifactsVerified": 121,
+  "implementationPacketExactFileSet": true,
+  "historicalFilesVerified": 153,
+  "originalSpecPreservedAsPrefix": true,
+  "frozenIntentAndBaselinesUnchanged": true,
+  "runtimeFilesVerified": 257,
+  "frozenSourceFilesVerified": 4412,
+  "currentDifferencesFromFreeze": [
+    "platform/tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs",
+    "eventstore/package-lock.json",
+    "eventstore/src/Hexalith.EventStore.Client/Routing/VersionedRouteCatalogBuilder.cs",
+    "eventstore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+    "eventstore/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRouteCatalogFilter.cs"
+  ],
+  "changedTaskSourcesMatchTestedSnapshot": true,
+  "fiveCaseBodiesAndCliTransportUnchanged": true,
+  "commandLogsVerified": 11,
+  "recordedCommandOverlaps": [],
+  "originalRegressionFailurePreserved": true,
+  "componentResult": {
+    "total": 44,
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "nativeAttempts": [
+    {
+      "file": "policy-diagnosis.result.json",
+      "outcome": "Compared",
+      "summary": null,
+      "verifiedRuntimePolicies": 0,
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "independentAbsenceCommand": {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+        ],
+        "startedUtc": "2026-10-31T08:25:12.212950+00:00",
+        "finishedUtc": "2026-10-31T08:25:12.270025+00:00",
+        "exitCode": 1,
+        "stdout": "[]",
+        "stderr": "error: no such object: ec09c031d49d317c6e7c7d50d333a4cb535d47d3936d257df31cfd3328b51009"
+      }
+    },
+    {
+      "file": "policy-diagnosis-quoted.result.json",
+      "outcome": "Compared",
+      "summary": null,
+      "verifiedRuntimePolicies": 0,
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "independentAbsenceCommand": {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "612338a11c771952068dad678349c9c7f23d55aa2b2891db04aa28bacb6efc03"
+        ],
+        "startedUtc": "2026-10-31T08:25:12.270213+00:00",
+        "finishedUtc": "2026-10-31T08:25:12.326369+00:00",
+        "exitCode": 1,
+        "stdout": "[]",
+        "stderr": "error: no such object: 612338a11c771952068dad678349c9c7f23d55aa2b2891db04aa28bacb6efc03"
+      }
+    },
+    {
+      "file": "native-bootstrap.result.json",
+      "outcome": "ShippedBootstrapRuntimeGenesisPassed",
+      "summary": {
+        "errors": 0,
+        "failed": 0,
+        "notRun": 0,
+        "skipped": 0,
+        "total": 1
+      },
+      "verifiedRuntimePolicies": 2,
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "independentAbsenceCommand": {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "0538a918e11103eea906d1f2d46538bf8613a891180b6c760cfd618998673ddb"
+        ],
+        "startedUtc": "2026-10-31T08:25:12.326583+00:00",
+        "finishedUtc": "2026-10-31T08:25:12.388832+00:00",
+        "exitCode": 1,
+        "stdout": "[]",
+        "stderr": "error: no such object: 0538a918e11103eea906d1f2d46538bf8613a891180b6c760cfd618998673ddb"
+      }
+    },
+    {
+      "file": "native-five.result.json",
+      "outcome": "NativeCasesPassed",
+      "summary": {
+        "errors": 0,
+        "failed": 0,
+        "notRun": 0,
+        "skipped": 0,
+        "total": 5
+      },
+      "verifiedRuntimePolicies": 10,
+      "cleanup": {
+        "complete": true,
+        "containerAbsent": true,
+        "containerTmpfsUnmounted": true
+      },
+      "independentAbsenceCommand": {
+        "argv": [
+          "docker",
+          "--host",
+          "unix:///var/run/docker.sock",
+          "inspect",
+          "8b6297160bf15ce592c05eaf3575f3bddd5a64c7f815cbada391292c0ffc5317"
+        ],
+        "startedUtc": "2026-10-31T08:25:12.389183+00:00",
+        "finishedUtc": "2026-10-31T08:25:12.449718+00:00",
+        "exitCode": 1,
+        "stdout": "[]",
+        "stderr": "error: no such object: 8b6297160bf15ce592c05eaf3575f3bddd5a64c7f815cbada391292c0ffc5317"
+      }
+    }
+  ],
+  "nativeElapsedSeconds": 2831.681,
+  "remainingObservedAuthorizedSourceGaps": [],
+  "installed41AndPhysicalQualificationEstablished": false
+}

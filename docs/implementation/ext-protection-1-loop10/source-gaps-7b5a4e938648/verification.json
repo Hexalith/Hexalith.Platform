@@ -1,0 +1,338 @@
+{
+  "schema": "EXT-PROTECTION-1.source-gap-continuation.v1",
+  "status": "in-progress",
+  "reviewLoopIteration": 10,
+  "verifiedUtc": "2026-10-31T08:23:08.131093+00:00",
+  "changedFiles": [
+    {
+      "path": "deploy/erasure-root/bootstrap.py",
+      "sha256": "87df9b0685265a485ec4df9f91e7ce27e3dd471048e73741fccfaadb95d23a71"
+    },
+    {
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "sha256": "ca9e71d2dd89359351a391d9c775667bb771a67f9631d46d7d9fa11d78e59c80"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs",
+      "sha256": "5f6306775364901ddbb21c542dc0cb3e93c1cd84bdc146fa73e6accc5d1bd950"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+      "sha256": "04f74bd9de39db6009d6a0de6dfa2db4de6fb6824fa6dce7cd4d9a9200291c2d"
+    },
+    {
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "sha256": "7ba8bce1846e30911f2397ba12e5c7152bab4c1d549b79d542e2139d28f30b9f"
+    },
+    {
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+      "sha256": "76cca2fa52110b06542411d7bfe8b5ee2dc18fe5402dfbc3ad217facc89f6866"
+    }
+  ],
+  "freeze": {
+    "capturedUtc": "2026-10-31T07:32:37.973325+00:00",
+    "runtime": "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime",
+    "runtimeFiles": 257,
+    "manifestSha256": "3e69b4cdcb3eeb6d2719121f5224958691ad6ddad67b0dc83629802cb51bdb56",
+    "assemblySha256": "b7e9015c35114f96cda2c92ad97f53bd3387b37f03b13bf7f3b0d2e77a010c28",
+    "sourceFiles": 4412,
+    "sourceManifestSha256": "c9ca93e7bce6ea02755584b700293345f4109fc5446e3617934a955e10734f29"
+  },
+  "commands": [
+    {
+      "label": "policy-diagnosis",
+      "argv": [
+        "python3",
+        "docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/diagnose_policy.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:28:59.964324+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:29:10.867737+00:00",
+      "elapsedSeconds": 10.905,
+      "exitCode": 0,
+      "log": "policy-diagnosis.log",
+      "logSha256": "988fa1b927504978d8f694ca7c269250696b24625f2518b9be35a869fb2bd17f"
+    },
+    {
+      "label": "policy-diagnosis-quoted",
+      "argv": [
+        "python3",
+        "docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/diagnose_policy.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:30:09.809754+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:30:21.787851+00:00",
+      "elapsedSeconds": 11.978,
+      "exitCode": 0,
+      "log": "policy-diagnosis-quoted.log",
+      "logSha256": "7ae6102475261bea1237e876cd82377d746a791eaa26729cf0c1de291a64640b"
+    },
+    {
+      "label": "bootstrap-prefixed",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-protection-1",
+        "-p",
+        "test_bootstrap.py",
+        "-v"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:30:32.901633+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:30:35.086848+00:00",
+      "elapsedSeconds": 2.185,
+      "exitCode": 1,
+      "log": "bootstrap-prefixed.log",
+      "logSha256": "329bc5ade87f64032876132c2896de0d3ca5114e0e3c19e9cae93e84d88bc770"
+    },
+    {
+      "label": "bootstrap-unit",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-protection-1",
+        "-p",
+        "test_bootstrap.py",
+        "-v"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:31:41.901685+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:31:45.141356+00:00",
+      "elapsedSeconds": 3.24,
+      "exitCode": 0,
+      "log": "bootstrap-unit.log",
+      "logSha256": "61e13d7a179e254f6a80ad435a7053f39f93015dc7903b38023710201edd2243"
+    },
+    {
+      "label": "harness-unit",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/ext-protection-1",
+        "-p",
+        "test_probe_erc_native.py",
+        "-v"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:32:02.752157+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:32:02.819916+00:00",
+      "elapsedSeconds": 0.068,
+      "exitCode": 0,
+      "log": "harness-unit.log",
+      "logSha256": "b1a77bd984238b25c9bd98bd0b6aa192e4ee13964f3f694a64fefe42aa39f47b"
+    },
+    {
+      "label": "build-protection",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+        "--configuration",
+        "Debug",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:32:06.542663+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:32:16.594464+00:00",
+      "elapsedSeconds": 10.052,
+      "exitCode": 0,
+      "log": "build-protection.log",
+      "logSha256": "78389c7f8ebf93555180b241d7b31169041b33fcc5d0ba764ded79ad14ef556c"
+    },
+    {
+      "label": "freeze-runtime",
+      "argv": [
+        "python3",
+        "docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/freeze_runtime.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:32:37.112073+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:32:37.983895+00:00",
+      "elapsedSeconds": 0.872,
+      "exitCode": 0,
+      "log": "freeze-runtime.log",
+      "logSha256": "b2d1808b2fd8e816db590ebfcaac1ec53e7d94b779712121eee0374bd4500384"
+    },
+    {
+      "label": "transport-components",
+      "argv": [
+        "dotnet",
+        "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/Hexalith.Platform.Protection.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests",
+        "-class",
+        "Hexalith.Platform.Protection.Tests.OpenBaoNativeTransportSafetyTests",
+        "-class",
+        "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests",
+        "-noColor",
+        "-parallelMode",
+        "none",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/transport-components.xml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:32:49.494589+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:32:51.873008+00:00",
+      "elapsedSeconds": 2.378,
+      "exitCode": 0,
+      "log": "transport-components.log",
+      "logSha256": "b38ff07de971d18271cc672717907bc8184bf3633ed606abc46ae4c750e555db"
+    },
+    {
+      "label": "native-bootstrap",
+      "argv": [
+        "python3",
+        "eng/ext-protection-1/probe_erc_native.py",
+        "--bootstrap",
+        "--test-assembly",
+        "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/Hexalith.Platform.Protection.Tests.dll",
+        "--test-assembly-sha256",
+        "b7e9015c35114f96cda2c92ad97f53bd3387b37f03b13bf7f3b0d2e77a010c28",
+        "--runtime-manifest",
+        "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/runtime-manifest.json",
+        "--runtime-manifest-sha256",
+        "3e69b4cdcb3eeb6d2719121f5224958691ad6ddad67b0dc83629802cb51bdb56",
+        "--output",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/native-bootstrap.result.json"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:33:18.166496+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T07:33:44.767586+00:00",
+      "elapsedSeconds": 26.602,
+      "exitCode": 0,
+      "log": "native-bootstrap.log",
+      "logSha256": "a680085f7c8f5091b768b7152dbf65042e557c57af5d8f47f708620659fc0f3f"
+    },
+    {
+      "label": "native-five",
+      "argv": [
+        "python3",
+        "eng/ext-protection-1/probe_erc_native.py",
+        "--test-assembly",
+        "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/Hexalith.Platform.Protection.Tests.dll",
+        "--test-assembly-sha256",
+        "b7e9015c35114f96cda2c92ad97f53bd3387b37f03b13bf7f3b0d2e77a010c28",
+        "--runtime-manifest",
+        "/tmp/ext-protection-loop10-source-gaps-7b5a4e938648/runtime/runtime-manifest.json",
+        "--runtime-manifest-sha256",
+        "3e69b4cdcb3eeb6d2719121f5224958691ad6ddad67b0dc83629802cb51bdb56",
+        "--output",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/native-five.result.json"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T07:34:10.999112+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T08:21:33.109557+00:00",
+      "elapsedSeconds": 2842.226,
+      "exitCode": 0,
+      "log": "native-five.log",
+      "logSha256": "33c5151d0db17f49f620622d552f0da3d929e9b3df3f76f284e4d20428ef695b"
+    },
+    {
+      "label": "final-integrity",
+      "argv": [
+        "python3",
+        "docs/implementation/ext-protection-1-loop10/source-gaps-7b5a4e938648/verify_final.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedUtc": "2026-10-31T08:21:50.253104+00:00",
+      "environment": {
+        "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+      },
+      "finishedUtc": "2026-10-31T08:21:51.977767+00:00",
+      "elapsedSeconds": 1.725,
+      "exitCode": 0,
+      "log": "final-integrity.log",
+      "logSha256": "fba6df769420745f082c4dd864eb12834d07e403e8defe9e406a49a42f50a1bb"
+    }
+  ],
+  "commandOverlaps": [],
+  "changedFileWhitespaceIssues": [],
+  "exactCandidatePolicyMatchesShippedRenderer": true,
+  "results": {
+    "bootstrapPreparedTests": 12,
+    "nativeHarnessTests": 7,
+    "directDllComponents": {
+      "total": 44,
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    "shippedNativeBootstrap": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 1
+    },
+    "nativeFive": {
+      "errors": 0,
+      "failed": 0,
+      "notRun": 0,
+      "skipped": 0,
+      "total": 5
+    },
+    "nativeFiveElapsedSeconds": 2831.681
+  },
+  "currentUnrelatedDifferencesFromFreeze": [
+    "platform/tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs",
+    "platform/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs",
+    "eventstore/package-lock.json",
+    "eventstore/src/Hexalith.EventStore.Client/Routing/VersionedRouteCatalogBuilder.cs",
+    "eventstore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+    "eventstore/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRouteCatalogFilter.cs"
+  ],
+  "fullInstalledAndPhysicalQualificationEstablished": false,
+  "remainingObservedAuthorizedSourceGaps": [],
+  "integritySha256": "c9b779743a001da6666b39690f162380e1b2920ae34bae70836785767de5bb83"
+}
