@@ -13,7 +13,7 @@
       "dapr.io/enabled": "true",
       "dapr.io/sidecar-listen-addresses": "127.0.0.1"
     },
-    "creationTimestamp": "2026-10-22T21:57:29Z",
+    "creationTimestamp": "2026-10-31T05:57:24Z",
     "generation": 1,
     "labels": {
       "app.kubernetes.io/name": "eventstore",
@@ -23,7 +23,7 @@
     },
     "name": "dry-eventstore",
     "namespace": "reference",
-    "uid": "be8fbdf6-2a10-4441-b809-a49f1b734c27"
+    "uid": "21f9fed9-0b12-4cc5-bb3d-8802be03c89d"
   },
   "spec": {
     "automountServiceAccountToken": true,
@@ -343,7 +343,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-sgkmp",
+            "name": "kube-api-access-rhwfp",
             "readOnly": true
           }
         ]
@@ -394,7 +394,7 @@
           },
           {
             "name": "DAPR_TRUST_ANCHORS",
-            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAqc2qGTrbyOtsuMZ0q4hzKDAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIyMTQxMTNaFw0yNzEwMjIyMTU2MTNa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQBzj4v47TUk/ZY8\njVSRJktTf4fsgS9EJWmKfh9pNT95WqNCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFE+6AgImB5KnQOTlcclTkjH8EClOMAUGAytl\ncANBAHvNYyG69jS84KYHa0bXWIn0hUOnvvQsT2hoAO2gcSpgHjeUlPbI0vok4lxE\n5WrYqSjBtBf9Pp2QKNWw6DxfDA8=\n-----END CERTIFICATE-----\n"
+            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAlEet1zqcH0c+5erPpfBe4DAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMzEwNTQxMDFaFw0yNzEwMzEwNTU2MDFa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQB/WcTLf95EjFNf\nbA95+8SeCsEGuxrux3frsUpeeQVeG6NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFEB4UPYoBiP+b1JhrGYg5bjesMOpMAUGAytl\ncANBABhBs4kjUK7qFebCv7fQMcCY+Y0sne+J5CpjKXmbGX2P9SfmtbIqRaC9msb8\nI+80LrvQUN2pNXUzLclZZSUgNwY=\n-----END CERTIFICATE-----\n"
           },
           {
             "name": "POD_NAME",
@@ -501,7 +501,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-sgkmp",
+            "name": "kube-api-access-rhwfp",
             "readOnly": true
           }
         ]
@@ -555,7 +555,7 @@
         "name": "environment-components"
       },
       {
-        "name": "kube-api-access-sgkmp",
+        "name": "kube-api-access-rhwfp",
         "projected": {
           "defaultMode": 420,
           "sources": [

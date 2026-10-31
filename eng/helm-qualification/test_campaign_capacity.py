@@ -153,6 +153,11 @@ class CampaignCapacityTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
+        from test_chart import campaign_source_fixture
+        source = campaign_source_fixture(Path(self.temporary.name) / 'historical-runner')
+        location = patch.object(capacity, '__file__', str(source / 'campaign_capacity.py'))
+        location.start()
+        self.addCleanup(location.stop)
         self.profile, self.now, self.write = bound_fixture(self.temporary.name)
 
     def receipt(self, item):

@@ -1,29 +1,32 @@
 {
+    "kind": "Config",
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
-    },
-    "kind": "Secret",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+    "clusters": [
+        {
+            "name": "kind-h45-5f1c67b023b2",
+            "cluster": {
+                "server": "https://127.0.0.1:46501",
+                "certificate-authority-data": "DATA+OMITTED"
             }
-        ],
-        "name": "fixture-credential",
-        "namespace": "reference",
-        "resourceVersion": "944",
-        "uid": "85da9c33-ed6e-4077-842e-0ef4f17c836d"
-    },
-    "type": "Opaque"
+        }
+    ],
+    "users": [
+        {
+            "name": "kind-h45-5f1c67b023b2",
+            "user": {
+                "client-certificate-data": "DATA+OMITTED",
+                "client-key-data": "DATA+OMITTED"
+            }
+        }
+    ],
+    "contexts": [
+        {
+            "name": "kind-h45-5f1c67b023b2",
+            "context": {
+                "cluster": "kind-h45-5f1c67b023b2",
+                "user": "kind-h45-5f1c67b023b2"
+            }
+        }
+    ],
+    "current-context": "kind-h45-5f1c67b023b2"
 }

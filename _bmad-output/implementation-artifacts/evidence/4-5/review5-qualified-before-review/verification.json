@@ -1,0 +1,211 @@
+{
+  "schema": "hexalith.helm-qualification.verification.v1",
+  "recordedAt": "2026-10-31T05:35:25.539679+00:00",
+  "qualificationStatus": "passed",
+  "qualificationSha256": "11ff3735e63726547ef8eb3b9cfedc605d4b0a75f363688cead38a91cd07f1b5",
+  "sourceSnapshot": {
+    "strategy": "current working-tree inputs with complete source hashes",
+    "originalReviewBaseline": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+    "revision": "86d4be9acf7cd75019ba1c8c9b96720533936675",
+    "verificationRevision": "86d4be9acf7cd75019ba1c8c9b96720533936675",
+    "dirtyTreeRecorded": true,
+    "statusPorcelainSha256": "4619c9f01590988ccebd65b83a93108d7c792f61942865edf1ae755c67ce9b41",
+    "submoduleStatusSha256": "018d8852cd0206b831566879e1be65c9be846f247198d8bd09e141aed815d8fb",
+    "inputCount": 2179,
+    "drift": {
+      "added": [],
+      "removed": [],
+      "modified": []
+    },
+    "currentSourceHashesVerifiedAfterBuild": true,
+    "concurrentRevisionNote": "Another workspace session committed 86d4be9acf7cd75019ba1c8c9b96720533936675 during the earlier interrupted attempt. This agent did not stage or commit. The successful run records the resulting revision, remaining dirty status and exact source bytes."
+  },
+  "focusedCompositionTests": [
+    {
+      "label": "hosted-and-parties",
+      "passed": 18,
+      "failed": 2,
+      "skipped": 0,
+      "xml": "review5-focused-hosted-and-parties.xml",
+      "xmlSha256": "aad4fbfe1c7737ef77a812e0ee2fdb6eeb345e29d9cbfb71c8783a335347c7f1",
+      "log": "review5-focused-hosted-and-parties.log",
+      "logSha256": "c4b19bf2a0d5de5f5ebb1fd15a8dddbb92b95e89e81c0fa9c73e42bf51ad2fe3",
+      "failingCases": [
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.SignedPartiesRunUsesTheRunnerJwtSettingsAsync",
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription"
+      ]
+    },
+    {
+      "label": "shared-dapr",
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "review5-focused-shared-dapr.xml",
+      "xmlSha256": "05d53f0da0fc97f0610d540d6290226f282cd1da801fabb66a2f9280d6e3eb26",
+      "log": "review5-focused-shared-dapr.log",
+      "logSha256": "6f7563bdae4094b510949e042ace26943ac23f52c0d48f12b0d14d0d6b214934",
+      "failingCases": []
+    },
+    {
+      "label": "readiness-diagnostics",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "review5-focused-readiness-diagnostics.xml",
+      "xmlSha256": "6187cf894d51ac85b621fe1d942d6875f0566af7d493f577a48522da1df12b78",
+      "log": "review5-focused-readiness-diagnostics.log",
+      "logSha256": "d437b838127275edcc9a9654c81c1a5284689f9c673a5e2c97a605d53f3f4f7e",
+      "failingCases": []
+    }
+  ],
+  "focusedCompositionTotals": {
+    "passed": 59,
+    "failed": 2,
+    "skipped": 0
+  },
+  "repositoryRunnerHosted": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "log": "review5-mtp-hosted.log",
+    "logSha256": "21b30243265063d6703b044b177b840243b919a165204dae075f2d15fd4c3f53",
+    "command": [
+      "dotnet",
+      "test",
+      "--project",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "--no-build",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:UseNuGetDeps=false",
+      "-p:RunAnalyzers=false",
+      "--",
+      "--filter-class",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests"
+    ]
+  },
+  "build": {
+    "result": "passed",
+    "warnings": 1,
+    "errors": 0,
+    "log": "review5-build.log",
+    "logSha256": "c17433f1c9d14e7de64c431f002aff134d9b8367dda400f6e9364194bd2e9f29",
+    "warning": "MSB3026 retried a concurrent McpCli analyzer PDB copy successfully."
+  },
+  "pythonUnitSuite": {
+    "command": [
+      "/usr/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/home/administrator/projects/hexalith/platform/eng/helm-qualification",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "log": "045-python3.log",
+    "logSha256": "ab16a5c157f3ec77859073ef1bfdb4e39deb6ca8859f6c3096b77784c4134e34"
+  },
+  "standalonePythonUnitSuite": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "log": "review5-python-unit.log",
+    "logSha256": "af574088e00e1d817c2700a1fd925d246e9b5cff26e2e37b35477fa795dffd74"
+  },
+  "commandLogIntegrity": {
+    "referenced": 201,
+    "present": 201,
+    "allHashesMatch": true,
+    "unreferencedNumberedLogs": []
+  },
+  "liveQualification": {
+    "admittedWorkloads": 8,
+    "helmApplyOwnershipWorkloads": 8,
+    "unsafePodRejected": true,
+    "recoveryQuiescesAndClosesRoutes": true,
+    "unforcedConflictRefusal": true,
+    "uninstallPreservesEnvironment": true,
+    "preservedEnvironmentFixtureCount": 25
+  },
+  "package": {
+    "file": "hexalith-reference-0.1.0.tgz",
+    "sha256": "25fc4e1470a1218bafbd969eb350b7fe6d48ffa3a736cca730052dbf13706440"
+  },
+  "cleanup": {
+    "complete": true,
+    "ownedCluster": "h45-0196feb8656c",
+    "onlyInvocationOwnedResourcesDeleted": true,
+    "temporaryKubeconfigRemoved": true,
+    "clusterRemovalVerified": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "knownBroaderSuiteLimitations": [
+    "Two unchanged PartiesAdoptionTests local composition fixtures fail in PlatformRoutingCatalog dynamic owner builds because RouteCatalogDeclarationSourceAttribute/RouteOperationContract cannot resolve in Tenants/Memories/Parties. All 13 hosted tests and 41 shared Dapr/readiness cases pass. The failing local pipeline is outside this chart/probe change; see review5-routing-catalog-build.log and focused XML."
+  ],
+  "campaignCompatibility": {
+    "currentEnabledWorkloads": 8,
+    "historicalCapacityWorkloads": 7,
+    "policyChanged": false,
+    "result": "Existing campaign capacity admission refuses the expanded graph. Existing budget and calibration tests use an isolated historical seven-workload chart/source fixture; a direct current-graph refusal regression passes."
+  },
+  "interruptedAttempt": {
+    "record": "review5-static-attempt/qualification.json",
+    "sha256": "b175300568f37db50bdb8c09ad24a25b8737ab2917b68f593cb971ac0c3aa947",
+    "reason": "Agent sent SIGTERM during static_checks after a separate full unit run exposed remaining file-based historical-fixture failures. No cluster was created; temporary credentials/directory were removed. Fixtures were corrected before this complete successful rerun."
+  },
+  "interruptedInventoryAttempt": {
+    "record": "review5-inventory-attempt/qualification.json",
+    "sha256": "0a56731292600db3e5626614037589c8132871f194d855ce4f4d55e0bfb28fbf",
+    "reason": "Agent stopped the still-static run before cluster creation to finish applying the relative generated-output filter to imports. Private-file cleanup completed; the final standalone suite and full qualifier were rerun afterwards."
+  },
+  "localTestCleanup": {
+    "record": "review5-local-test-cleanup.json",
+    "sha256": "4e7bb0419841826cfb7fe89b3501af0d71751ada19b405727fa58bf03ddbf13a"
+  },
+  "exclusions": [
+    "OCI publication and attestation",
+    "off-site restoration",
+    "staging deployment",
+    "application functional readiness with retained images",
+    "future environment policy qualification"
+  ],
+  "matrixAudit": {
+    "Modes": {
+      "result": "passed",
+      "tests": [
+        "test_modes_determinism_and_archive_parity",
+        "test_identity_readiness_and_shared_dapr_security",
+        "test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail"
+      ],
+      "liveChecks": [
+        "recoveryQuiescesAndClosesRoutes",
+        "removalPreservesEnvironment"
+      ]
+    },
+    "Bindings": {
+      "result": "passed",
+      "tests": [
+        "test_connection_strings_accept_only_secret_or_validated_endpoint_references",
+        "test_additional_credentials_must_extend_declared_inputs_with_credential_keys",
+        "test_trust_domains_require_dns_subdomains_before_acl_json_substitution",
+        "test_each_validation_rule_fails_with_its_own_message",
+        "test_values_only_digest_change"
+      ]
+    },
+    "Export boundary": {
+      "result": "passed",
+      "tests": [
+        "HostedEntryRefusesThePinnedCliDeployOperationBeforeWritingOrAddingResources",
+        "HostedPublicRoutesMatchOnlyTheDeclaredPublicServers",
+        "HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput"
+      ],
+      "liveChecks": [
+        "nativeProbeAndGraphParity"
+      ]
+    }
+  }
+}

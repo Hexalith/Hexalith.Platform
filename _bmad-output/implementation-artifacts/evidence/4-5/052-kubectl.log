@@ -1,48 +1,10 @@
-{
-    "apiVersion": "v1",
-    "kind": "PersistentVolumeClaim",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
-        "finalizers": [
-            "kubernetes.io/pvc-protection"
-        ],
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:spec": {
-                        "f:accessModes": {},
-                        "f:resources": {
-                            "f:requests": {
-                                "f:storage": {}
-                            }
-                        }
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
-            }
-        ],
-        "name": "fixture-storage",
-        "namespace": "environment",
-        "resourceVersion": "947",
-        "uid": "121fcb71-0a44-41b0-91b8-39fcb77dc4c1"
-    },
-    "spec": {
-        "accessModes": [
-            "ReadWriteOnce"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "1Mi"
-            }
-        },
-        "storageClassName": "standard",
-        "volumeMode": "Filesystem"
-    },
-    "status": {
-        "phase": "Pending"
-    }
-}
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io serverside-applied
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io serverside-applied
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io serverside-applied

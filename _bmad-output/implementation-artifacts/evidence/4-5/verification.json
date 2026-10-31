@@ -1,160 +1,55 @@
 {
   "schema": "hexalith.helm-qualification.verification.v1",
-  "recordedAt": "2026-10-22T21:59:08.208050+00:00",
+  "recordedAt": "2026-10-31T05:58:51.655817+00:00",
   "qualificationStatus": "passed",
-  "qualificationSha256": "c8e90df9c7b56e35c522fd4c719e5bce58b22cace50827ddc97c699a1e6f9af2",
+  "qualificationSha256": "634f7759575bf8731e8521780f53e824c027bd0a9cd46524252d897542d20439",
   "sourceSnapshot": {
-    "strategy": "current working tree with complete source input hashes",
-    "revision": "04045b679ff329b54a2a2131a32bc4707944087e",
+    "strategy": "current working-tree inputs with complete source hashes",
+    "originalReviewBaseline": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+    "revision": "86d4be9acf7cd75019ba1c8c9b96720533936675",
+    "verificationRevision": "86d4be9acf7cd75019ba1c8c9b96720533936675",
     "dirtyTreeRecorded": true,
-    "statusPorcelainSha256": "576f6d46b3990eb4891f3cb172e4f423e931704d22dd743372182baffb92004b",
-    "submoduleStatusSha256": "0828c75fd4a4fc9edeac1cd0a88d347bdd083854945aaddd64242127f4294c69",
-    "inputCount": 1441,
+    "statusPorcelainSha256": "d46ac2ec5ee67950447c7f6321220d2d074f7bc7b9e18f4a12c31e2456b6d780",
+    "submoduleStatusSha256": "018d8852cd0206b831566879e1be65c9be846f247198d8bd09e141aed815d8fb",
+    "inputCount": 2179,
     "drift": {
       "added": [],
       "removed": [],
       "modified": []
     },
-    "currentSourceHashesVerifiedAfterBuild": true
+    "currentSourceHashesVerifiedAfterBuild": true,
+    "concurrentRevisionNote": "Another workspace session committed 86d4be9acf7cd75019ba1c8c9b96720533936675 during the earlier interrupted attempt. This agent did not stage or commit. The successful run records the resulting revision, remaining dirty status and exact source bytes."
   },
-  "focusedCompositionTests": [
-    {
-      "label": "hosted-and-parties",
-      "command": [
-        "dotnet",
-        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "-class",
-        "*PlatformHostedPublishingTests",
-        "-class",
-        "*PartiesAdoptionTests",
-        "-class",
-        "*PlatformDaprBindingsTests",
-        "-result-xml",
-        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-hosted-and-parties.xml"
-      ],
-      "returncode": 0,
-      "passed": 17,
-      "failed": 0,
-      "skipped": 0,
-      "xml": "review4-focused-hosted-and-parties.xml",
-      "log": "review4-focused-hosted-and-parties.log",
-      "logSha256": "17411d320c2d3b19779f1137f3462911106abf726c8905d2a4f1bd342fa68619",
-      "xmlSha256": "6d98c3b42dde481f697909105b110133f53ab8c58a6f615a27385c3eefe92cf6"
-    },
-    {
-      "label": "shared-dapr",
-      "command": [
-        "dotnet",
-        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "-method",
-        "*FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
-        "-method",
-        "*TimesheetsReceiverGrantsOnlyEstablishedEventStorePostOperations",
-        "-method",
-        "*ResolvedComponentsHaveOnlySelectedConsumersAndEveryReceiverDeniesByDefault",
-        "-method",
-        "*PublisherInventoriesAloneCreateNoSubscriptions",
-        "-method",
-        "*GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations",
-        "-method",
-        "*TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants",
-        "-method",
-        "*ActualOwnerOptionsShareResolvedNamesAndTelemetryStateIsIsolated",
-        "-method",
-        "*ExplicitSubscriptionRendersDeliveryAndDeclaredDeadLetterWithoutPublisherSubscriptions",
-        "-method",
-        "*InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations",
-        "-method",
-        "*ResolvedOptionKeysRejectCaseInsensitiveComponentConflicts",
-        "-method",
-        "*ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
-        "-method",
-        "*ReceiverRendersDeclaredDescendantsBeforeParentFallbacks",
-        "-method",
-        "*IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources",
-        "-method",
-        "*SubscriptionIdentitiesDistinguishConcatenationAndPhysicalAliases",
-        "-method",
-        "*InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources",
-        "-method",
-        "*UnsafeCertificateDirectoryRefusesBeforeAddingResources",
-        "-method",
-        "*ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary",
-        "-result-xml",
-        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-shared-dapr.xml"
-      ],
-      "returncode": 0,
-      "passed": 40,
-      "failed": 0,
-      "skipped": 0,
-      "xml": "review4-focused-shared-dapr.xml",
-      "log": "review4-focused-shared-dapr.log",
-      "logSha256": "8715b76123bfac09542391415bae4c16638308a71d9ce94fda98e74f560684a8",
-      "xmlSha256": "212db560a751ba98e620a4735fe4c8096eef59825ea93b74fc578667435d2b54"
-    },
-    {
-      "label": "readiness-diagnostics",
-      "command": [
-        "dotnet",
-        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "-method",
-        "*UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic",
-        "-result-xml",
-        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-readiness-diagnostics.xml"
-      ],
-      "returncode": 0,
-      "passed": 2,
-      "failed": 0,
-      "skipped": 0,
-      "xml": "review4-focused-readiness-diagnostics.xml",
-      "log": "review4-focused-readiness-diagnostics.log",
-      "logSha256": "d1da0536de53580ebfe670d5a5ff982b77b281ef24fcc63a4d094683401e0319",
-      "xmlSha256": "c10348426a6eed92860096f9545696ce2969044e469bc1bac1d01327867071e9"
-    }
-  ],
-  "focusedCompositionTotals": {
-    "passed": 59,
+  "repositoryRunnerHosted": {
+    "passed": 13,
     "failed": 0,
-    "skipped": 0
+    "skipped": 0,
+    "log": "review6-hosted.log",
+    "logSha256": "3ce3efb7d69c00353c24536b9c636fef52b1ef947337a8a712f01ca0241e85cb",
+    "command": [
+      "dotnet",
+      "test",
+      "--project",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "--no-build",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:UseNuGetDeps=false",
+      "-p:RunAnalyzers=false",
+      "--",
+      "--filter-class",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests"
+    ],
+    "performedAfterReviewPatches": true
   },
-  "buildAndRepositoryRunnerChecks": [
-    {
-      "label": "build",
-      "command": [
-        "dotnet",
-        "build",
-        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-        "--no-restore",
-        "-p:UseHexalithProjectReferences=true",
-        "-p:UseNuGetDeps=false",
-        "-p:RunAnalyzers=false",
-        "-nodeReuse:false",
-        "-m:1"
-      ],
-      "returncode": 0,
-      "log": "review3-build.log",
-      "logSha256": "1d61eaa402ede519c90437b510e5c9066c503fd686165a2e06d3a974c0e86fc8"
-    },
-    {
-      "label": "mtp-hosted",
-      "command": [
-        "dotnet",
-        "test",
-        "--project",
-        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-        "--no-build",
-        "-p:UseHexalithProjectReferences=true",
-        "-p:UseNuGetDeps=false",
-        "-p:RunAnalyzers=false",
-        "--",
-        "--filter-class",
-        "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests"
-      ],
-      "returncode": 0,
-      "log": "review4-mtp-hosted.log",
-      "logSha256": "9eac71fbbf71d278bad2b7ad0c7be95961e527b5a1438020327b64892f916707"
-    }
-  ],
+  "build": {
+    "result": "passed",
+    "warnings": 1,
+    "errors": 0,
+    "log": "review5-build.log",
+    "logSha256": "c17433f1c9d14e7de64c431f002aff134d9b8367dda400f6e9364194bd2e9f29",
+    "warning": "MSB3026 retried a concurrent McpCli analyzer PDB copy successfully.",
+    "performedBeforeReview6": true
+  },
   "pythonUnitSuite": {
     "command": [
       "/usr/bin/python3",
@@ -167,43 +62,62 @@
       "test_*.py",
       "-v"
     ],
-    "passed": 32,
+    "passed": 160,
     "failed": 0,
     "skipped": 0,
-    "log": "033-python3.log",
-    "logSha256": "0b38832d98e916648c7defdd5de81c0cde8ed152019f208e80e40304d8721845"
+    "log": "045-python3.log",
+    "logSha256": "98bcb24b3e530d18652d2dc0bc01ce1d7bae8cc5ca0d4350ab5ee142c44823f9"
   },
   "commandLogIntegrity": {
-    "referenced": 169,
-    "present": 169,
+    "referenced": 201,
+    "present": 201,
     "allHashesMatch": true,
     "unreferencedNumberedLogs": []
   },
   "liveQualification": {
-    "admittedWorkloads": 7,
-    "helmApplyOwnershipWorkloads": 7,
+    "admittedWorkloads": 8,
+    "helmApplyOwnershipWorkloads": 8,
     "unsafePodRejected": true,
     "recoveryQuiescesAndClosesRoutes": true,
     "unforcedConflictRefusal": true,
     "uninstallPreservesEnvironment": true,
-    "preservedEnvironmentFixtureCount": 23
+    "preservedEnvironmentFixtureCount": 25
   },
   "package": {
     "file": "hexalith-reference-0.1.0.tgz",
-    "sha256": "d89cff4fd8c2c2df21d9de2b474ef93f34dbdd76940b65a5d9957b1fe3059b83"
+    "sha256": "ea094c7dd714dfabf0576e20083847cbc727125cc12baf299d782d08c9e4218c"
   },
   "cleanup": {
     "complete": true,
-    "ownedCluster": "h45-1e52851b2eca",
+    "ownedCluster": "h45-5f1c67b023b2",
     "onlyInvocationOwnedResourcesDeleted": true,
     "temporaryKubeconfigRemoved": true,
     "clusterRemovalVerified": true,
     "temporaryDirectoryRemoved": true
   },
   "knownBroaderSuiteLimitations": [
-    "The pre-existing TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync fixture failure reproduced in a broader local selection; it is listed in parent-full-suite.json and remains outside this change.",
-    "Fresh-build dotnet test invocations exhibited the existing MTP handshake/zero-tests issue. A separate zero-warning build and repository-runner --no-build invocation passed all 11 hosted tests; the complete focused selection passed 59 tests with the native xUnit runner."
+    "Two unchanged PartiesAdoptionTests local composition fixtures fail in PlatformRoutingCatalog dynamic owner builds because RouteCatalogDeclarationSourceAttribute/RouteOperationContract cannot resolve in Tenants/Memories/Parties. All 13 hosted tests and 41 shared Dapr/readiness cases pass. The failing local pipeline is outside this chart/probe change; see review5-routing-catalog-build.log and focused XML."
   ],
+  "campaignCompatibility": {
+    "currentEnabledWorkloads": 8,
+    "historicalCapacityWorkloads": 7,
+    "policyChanged": false,
+    "result": "Existing campaign capacity admission refuses the expanded graph. Existing budget and calibration tests use an isolated historical seven-workload chart/source fixture; a direct current-graph refusal regression passes."
+  },
+  "interruptedAttempt": {
+    "record": "review5-static-attempt/qualification.json",
+    "sha256": "b175300568f37db50bdb8c09ad24a25b8737ab2917b68f593cb971ac0c3aa947",
+    "reason": "Agent sent SIGTERM during static_checks after a separate full unit run exposed remaining file-based historical-fixture failures. No cluster was created; temporary credentials/directory were removed. Fixtures were corrected before this complete successful rerun."
+  },
+  "interruptedInventoryAttempt": {
+    "record": "review5-inventory-attempt/qualification.json",
+    "sha256": "0a56731292600db3e5626614037589c8132871f194d855ce4f4d55e0bfb28fbf",
+    "reason": "Agent stopped the still-static run before cluster creation to finish applying the relative generated-output filter to imports. Private-file cleanup completed; the final standalone suite and full qualifier were rerun afterwards."
+  },
+  "localTestCleanup": {
+    "record": "review5-local-test-cleanup.json",
+    "sha256": "4e7bb0419841826cfb7fe89b3501af0d71751ada19b405727fa58bf03ddbf13a"
+  },
   "exclusions": [
     "OCI publication and attestation",
     "off-site restoration",
@@ -211,39 +125,115 @@
     "application functional readiness with retained images",
     "future environment policy qualification"
   ],
-  "notes": "Parent verification after independent review patches. This successful working-tree qualification supersedes Review 3 and earlier package snapshots. All 59 focused C# cases, 11 repository-runner hosted cases, 32 Python cases and the complete live lifecycle passed; historical isolated-source and broader-suite artifacts remain separately labeled.",
   "matrixAudit": {
     "Modes": {
+      "result": "passed",
       "tests": [
         "test_modes_determinism_and_archive_parity",
         "test_identity_readiness_and_shared_dapr_security",
-        "test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail"
+        "test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail",
+        "test_selected_replicas_and_acl_namespace_apply_to_source_and_archive"
       ],
-      "result": "passed",
       "liveChecks": [
         "recoveryQuiescesAndClosesRoutes",
         "removalPreservesEnvironment"
       ]
     },
     "Bindings": {
+      "result": "passed",
       "tests": [
-        "test_scheme_less_authorities_require_native_tls_and_postgresql_states_tls",
-        "test_component_metadata_rejects_objects_and_lists_before_rendering",
-        "test_credential_keys_share_one_denylist_for_configuration_and_metadata",
+        "test_connection_strings_accept_only_secret_or_validated_endpoint_references",
+        "test_additional_credentials_must_extend_declared_inputs_with_credential_keys",
+        "test_trust_domains_require_dns_subdomains_before_acl_json_substitution",
+        "test_each_validation_rule_fails_with_its_own_message",
         "test_values_only_digest_change",
-        "test_each_validation_rule_fails_with_its_own_message"
-      ],
-      "result": "passed"
+        "test_provider_metadata_requires_tls_certificate_verification"
+      ]
     },
     "Export boundary": {
+      "result": "passed",
       "tests": [
-        "HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment",
+        "HostedEntryRefusesThePinnedCliDeployOperationBeforeWritingOrAddingResources",
+        "HostedPublicRoutesMatchOnlyTheDeclaredPublicServers",
         "HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput"
       ],
-      "result": "passed",
       "liveChecks": [
         "nativeProbeAndGraphParity"
       ]
     }
+  },
+  "priorBroaderCompositionVerification": {
+    "record": "review5-qualified-before-review/verification.json",
+    "sha256": "1978d31c721be601d1dae7cd66b302212e9a21f916d713b16b32ede43a747083",
+    "totals": {
+      "passed": 59,
+      "failed": 2,
+      "skipped": 0
+    },
+    "tests": [
+      {
+        "label": "hosted-and-parties",
+        "passed": 18,
+        "failed": 2,
+        "skipped": 0,
+        "xml": "review5-focused-hosted-and-parties.xml",
+        "xmlSha256": "aad4fbfe1c7737ef77a812e0ee2fdb6eeb345e29d9cbfb71c8783a335347c7f1",
+        "log": "review5-focused-hosted-and-parties.log",
+        "logSha256": "c4b19bf2a0d5de5f5ebb1fd15a8dddbb92b95e89e81c0fa9c73e42bf51ad2fe3",
+        "failingCases": [
+          "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.SignedPartiesRunUsesTheRunnerJwtSettingsAsync",
+          "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription"
+        ]
+      },
+      {
+        "label": "shared-dapr",
+        "passed": 39,
+        "failed": 0,
+        "skipped": 0,
+        "xml": "review5-focused-shared-dapr.xml",
+        "xmlSha256": "05d53f0da0fc97f0610d540d6290226f282cd1da801fabb66a2f9280d6e3eb26",
+        "log": "review5-focused-shared-dapr.log",
+        "logSha256": "6f7563bdae4094b510949e042ace26943ac23f52c0d48f12b0d14d0d6b214934",
+        "failingCases": []
+      },
+      {
+        "label": "readiness-diagnostics",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "xml": "review5-focused-readiness-diagnostics.xml",
+        "xmlSha256": "6187cf894d51ac85b621fe1d942d6875f0566af7d493f577a48522da1df12b78",
+        "log": "review5-focused-readiness-diagnostics.log",
+        "logSha256": "d437b838127275edcc9a9654c81c1a5284689f9c673a5e2c97a605d53f3f4f7e",
+        "failingCases": []
+      }
+    ],
+    "note": "Performed before review-6 chart/test/template patches; two unchanged local routing-catalog fixtures remain a recorded limitation."
+  },
+  "priorStandalonePythonUnitSuite": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "log": "review5-python-unit.log",
+    "logSha256": "af574088e00e1d817c2700a1fd925d246e9b5cff26e2e37b35477fa795dffd74"
+  },
+  "reviewPatchVerification": {
+    "focusedRecord": "review6-focused-tests.json",
+    "focusedRecordSha256": "cc75350d74dce601783e09fa8f3204afcd57ad287f71248d4b76b5cf5fa13ef5",
+    "chartTests": 4,
+    "operatorConsumerTests": 19,
+    "allFocusedFilesAndLogsMatch": true,
+    "resolvedFindings": [
+      "R6-BH-1",
+      "R6-VG-1",
+      "R6-IVG-1",
+      "R6-IVG-2",
+      "R6-IVG-other-1"
+    ],
+    "operatorTemplateParity": true,
+    "fullQualificationLog": "review6-qualification.log",
+    "fullQualificationLogSha256": "ffed7ae19e28f0b3b0cccf57ed3b9c963d58f83975c82271b940698c5149ecd8",
+    "parentConfirmedOwnedCleanup": true,
+    "priorPassingQualification": "review5-qualified-before-review/qualification.json"
   }
 }

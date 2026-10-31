@@ -31,6 +31,7 @@
 {{- if and (hasSuffix ".redis" $binding.type) (ne (toString $binding.metadata.enableTLS) "true") -}}{{ fail "hosted Redis bindings require native TLS" }}{{- end -}}
 {{- range $key, $value := $binding.metadata -}}
 {{- if or (kindIs "map" $value) (kindIs "slice" $value) -}}{{ fail "provider metadata values must be scalar" }}{{- end -}}
+{{- if and (eq (lower $key) "skipverify") (ne (lower (toString $value)) "false") -}}{{ fail "provider metadata must not disable TLS certificate verification" }}{{- end -}}
 {{- include "reference.credentialLiteral" $value -}}
 {{- if or (eq (include "reference.isCredentialKey" $key) "true") (eq (lower $key) (lower $binding.endpointMetadataKey)) (eq (lower $key) (lower $binding.credentialMetadataKey)) -}}{{ fail "provider credentials and endpoints require references" }}{{- end -}}
 {{- if regexMatch "(?i)(://|localhost|127[.]|password=|token=)" (toString $value) -}}{{ fail "unsafe provider metadata literal" }}{{- end -}}

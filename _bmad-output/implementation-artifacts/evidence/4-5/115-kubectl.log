@@ -1,29 +1,44 @@
 {
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXBhcnRpZXMtYXBp"
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
+        "creationTimestamp": "2026-10-31T05:57:15Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "reference",
+            "pod-security.kubernetes.io/audit": "restricted",
+            "pod-security.kubernetes.io/enforce": "restricted",
+            "pod-security.kubernetes.io/enforce-version": "v1.35",
+            "pod-security.kubernetes.io/warn": "restricted"
+        },
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
+                    "f:metadata": {
+                        "f:labels": {
+                            "f:pod-security.kubernetes.io/audit": {},
+                            "f:pod-security.kubernetes.io/enforce": {},
+                            "f:pod-security.kubernetes.io/enforce-version": {},
+                            "f:pod-security.kubernetes.io/warn": {}
+                        }
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+                "time": "2026-10-31T05:57:15Z"
             }
         ],
-        "name": "fixture-parties-api",
-        "namespace": "reference",
-        "resourceVersion": "959",
-        "uid": "85cf40e8-653b-4641-8c94-0350a701cc92"
+        "name": "reference",
+        "resourceVersion": "887",
+        "uid": "d5c8b165-4b65-4649-b220-9e78435b7b9f"
     },
-    "type": "Opaque"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

@@ -32,6 +32,16 @@ def campaign_graph_fixture():
     return metadata
 
 
+def campaign_source_fixture(directory):
+    """Isolate the historical capacity test chart and real CLI from the current application package."""
+    directory = Path(directory)
+    shutil.copytree(CHART, directory / 'chart')
+    (directory / 'chart/reference-graph.json').write_text(json.dumps(campaign_graph_fixture()))
+    for source in [*HERE.glob('*.py'), HERE / 'toolchain.json']:
+        shutil.copy2(source, directory / source.name)
+    return directory
+
+
 def fixture_values(metadata=None):
     """Synthetic qualification bindings; these grant no environment authority."""
     g = graph() if metadata is None else metadata
@@ -253,7 +263,7 @@ class ChartTests(unittest.TestCase):
                     'volumes': [{'name': 'tmp', 'emptyDir': {}},
                                 {'name': 'environment-components', 'configMap': {'name': values['environment']['componentConfigMap']}}]}})
 
-    def assert_complete_dapr(self, docs, values):
+    def assert_complete_dapr(self, docs, values, namespace='reference'):
         expected = []
         for capability in graph()['capabilities']:
             binding = values['environment']['components'][capability['name']]
@@ -269,7 +279,7 @@ class ChartTests(unittest.TestCase):
                              'spec': {'type': binding['type'], 'version': 'v1', 'metadata': metadata},
                              'scopes': capability['consumers']})
         for workload in graph()['workloads']:
-            acl = json.loads(json.dumps(workload['accessControl']).replace('__APPLICATION_NAMESPACE__', 'reference')
+            acl = json.loads(json.dumps(workload['accessControl']).replace('__APPLICATION_NAMESPACE__', namespace)
                              .replace('__TRUST_DOMAIN__', values['environment']['trustDomain']))
             expected.append({'apiVersion': 'dapr.io/v1alpha1', 'kind': 'Configuration',
                              'metadata': {'name': 'platform-' + workload['appId']},
@@ -350,6 +360,31 @@ class ChartTests(unittest.TestCase):
                 workload = next(w for w in graph()['workloads'] if w['resourceId'] == d['metadata']['name'])
                 expected = {p.split('{')[0].rstrip('/') or '/' for p in workload['publicRoutes']}
                 self.assertEqual({r['matches'][0]['path']['value'] for r in d['spec']['rules']}, expected)
+
+    def test_selected_replicas_and_acl_namespace_apply_to_source_and_archive(self):
+        namespace = 'selected-application'
+        with tempfile.TemporaryDirectory(prefix='h45-selected-values-') as tmp:
+            subprocess.run([HELM, 'package', str(CHART), '-d', tmp], check=True, capture_output=True)
+            archive = next(Path(tmp).glob('*.tgz'))
+            for replicas in (2, 3):
+                values = fixture_values(); values['replicas'] = replicas
+                rendered = []
+                for chart in (CHART, archive):
+                    with self.subTest(replicas=replicas, chart=str(chart)):
+                        result = render(values, chart, namespace=namespace)
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        docs = documents(result.stdout)
+                        deployments = [d for d in docs if d['kind'] == 'Deployment']
+                        self.assertEqual(len(deployments), len(graph()['workloads']))
+                        for deployment in deployments:
+                            self.assertEqual(deployment['spec']['replicas'], replicas)
+                        self.assert_complete_dapr(docs, values, namespace=namespace)
+                        policies = [policy for d in docs if d['kind'] == 'Configuration'
+                                    for policy in d['spec']['accessControl']['policies']]
+                        self.assertTrue(policies)
+                        self.assertEqual({p['namespace'] for p in policies}, {namespace})
+                        rendered.append(docs)
+                self.assertEqual(rendered[0], rendered[1])
 
     def test_structured_configuration_flattens_and_canonical_dapr_bindings_win(self):
         values = fixture_values()
@@ -569,6 +604,17 @@ class ChartTests(unittest.TestCase):
             values['environment']['components']['statestore']['metadata']['options'] = structured
             with self.subTest(structured=structured):
                 self.bad(values, 'provider metadata values must be scalar')
+
+    def test_provider_metadata_requires_tls_certificate_verification(self):
+        for key in ('skipVerify', 'SKIPVERIFY'):
+            for value in (True, 'true', False, 'false'):
+                values = fixture_values()
+                values['environment']['components']['secretstore']['metadata'][key] = value
+                with self.subTest(key=key, value=value):
+                    if str(value).lower() == 'true':
+                        self.bad(values, 'provider metadata must not disable TLS certificate verification')
+                    else:
+                        self.assert_complete_dapr(self.good(values)[1], values)
 
     def test_large_numeric_leaves_and_component_metadata_keep_integer_notation(self):
         values = fixture_values()

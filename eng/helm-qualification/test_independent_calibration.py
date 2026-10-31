@@ -265,7 +265,8 @@ class IndependentCalibrationTests(unittest.TestCase):
                 shutil.rmtree(self.state)
 
     def test_small_prepared_resources_inspection_and_prelaunch_drift_use_original_selection(self):
-        from test_chart import fixture_values, campaign_graph_fixture
+        from test_chart import fixture_values, campaign_graph_fixture, campaign_source_fixture
+        legacy_chart = campaign_source_fixture(self.root / 'historical-runner') / 'chart'
         pins = json.loads((HERE / 'toolchain.json').read_bytes())
         for tool in self.plan['tools'].values():
             tool['path'] = str(Path(tool['path']).resolve())
@@ -284,7 +285,7 @@ class IndependentCalibrationTests(unittest.TestCase):
         values = capacity.configure_application(fixture_values(legacy), legacy); values['capacityProfile'] = calibration.PROFILE_ID
         self.plan['inputs'] = {name: [self.write(name + '.json', {})] for name in calibration.INPUT_GROUPS}
         self.plan['inputs'].update(source=self.plan['source'], toolchain=[self.write('pins.json', pins)],
-            chart=[{'path': str(p), 'sha256': lifecycle.sha(p)} for p in sorted((HERE / 'chart').rglob('*')) if p.is_file()],
+            chart=[{'path': str(p), 'sha256': lifecycle.sha(p)} for p in sorted(legacy_chart.rglob('*')) if p.is_file()],
             values=[self.write('application-values.json', values)], render=[self.write('render.yaml', b'application-render')],
             applications=[self.write('applications.json', self.plan['environment'])],
             tool=[self.write('tools.json', {k: self.plan[k] for k in ('tools', 'toolFiles', 'assets')})],
@@ -301,7 +302,8 @@ class IndependentCalibrationTests(unittest.TestCase):
             self.assertIn('template', args)
             self.assertEqual(self.plan['tools']['helm']['path'], args[0])  # No native tool is executed.
             return subprocess.CompletedProcess([], 0, 'application-render' if 'reference' in args else 'dapr-render', '')
-        with patch.object(capacity, 'reference', side_effect=retained), \
+        with patch.object(calibration, 'CHART', legacy_chart), \
+             patch.object(capacity, 'reference', side_effect=retained), \
              patch.object(calibration.environment, 'topology', side_effect=lambda *args, **kw: self.postgres_objects()), \
              patch.object(lifecycle, 'monitoring_config'), \
              patch.object(lifecycle, 'monitor_receipt', return_value={'phase': 'preflight', 'target': None, 'expectedFaults': [], 'series': {'postgres.walBytes': None}}), \

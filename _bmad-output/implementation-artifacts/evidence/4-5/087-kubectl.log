@@ -1,0 +1,551 @@
+{
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+        "annotations": {
+            "dapr.io/api-token-secret": "fixture-tenants-api",
+            "dapr.io/app-id": "tenants",
+            "dapr.io/app-port": "8080",
+            "dapr.io/app-protocol": "http",
+            "dapr.io/app-token-secret": "fixture-tenants-app",
+            "dapr.io/config": "platform-tenants",
+            "dapr.io/enable-api-logging": "false",
+            "dapr.io/enabled": "true",
+            "dapr.io/sidecar-listen-addresses": "127.0.0.1"
+        },
+        "creationTimestamp": "2026-10-31T05:57:25Z",
+        "generation": 1,
+        "labels": {
+            "app.kubernetes.io/name": "tenants",
+            "dapr.io/app-id": "tenants",
+            "dapr.io/metrics-enabled": "true",
+            "dapr.io/sidecar-injected": "true"
+        },
+        "name": "dry-tenants",
+        "namespace": "reference",
+        "uid": "c5969637-9eec-4ee9-982c-eb0d0ad6cc00"
+    },
+    "spec": {
+        "automountServiceAccountToken": true,
+        "containers": [
+            {
+                "env": [
+                    {
+                        "name": "APP_API_TOKEN",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-app"
+                            }
+                        }
+                    },
+                    {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:8080"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__AllowInsecureSymmetricKey",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__AllowedAlgorithms",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__Audience",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__Authority",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__Issuer",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__RequireHttpsMetadata",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__SigningKey",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authentication__JwtBearer__ValidAudiences",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__Workload__AllowedCallers",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__Workload__Audience",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Authentication__Workload__MaximumLifetimeSeconds",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "DAPR_API_TOKEN",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-api"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Dapr__DeclarativeSubscriptions",
+                        "value": "true"
+                    },
+                    {
+                        "name": "EventStore__Authentication__Audience",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStore__Authentication__Authority",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "EventStore__Authentication__ClientId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStore__Authentication__Issuer",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "EventStore__Authentication__Password",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
+                    },
+                    {
+                        "name": "EventStore__Authentication__RequireHttpsMetadata",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStore__Authentication__SigningKey",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
+                    },
+                    {
+                        "name": "EventStore__Authentication__Username",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStore__CommandStatus__StateStoreName",
+                        "value": "statestore"
+                    },
+                    {
+                        "name": "EventStore__DataProtection__PersistToStateStore",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStore__DataProtection__StateStoreName",
+                        "value": "statestore"
+                    },
+                    {
+                        "name": "EventStore__ProjectionChanges__PubSubName",
+                        "value": "pubsub"
+                    },
+                    {
+                        "name": "Jwt__SigningKey",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Oidc__Authority",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "Tenants__ApiDaprToken",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-api"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Tenants__AppChannelToken",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-app"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Tenants__BootstrapGlobalAdminEnabled",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Tenants__BootstrapGlobalAdminUserId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Tenants__DaprConfigPath",
+                        "value": "/etc/hexalith/environment/daprconfigpath.yaml"
+                    },
+                    {
+                        "name": "DAPR_HTTP_PORT",
+                        "value": "3500"
+                    },
+                    {
+                        "name": "DAPR_GRPC_PORT",
+                        "value": "50001"
+                    },
+                    {
+                        "name": "APP_PROTOCOL",
+                        "value": "http"
+                    }
+                ],
+                "image": "qualification.invalid/tenants@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "app",
+                "ports": [
+                    {
+                        "containerPort": 8080,
+                        "name": "http",
+                        "protocol": "TCP"
+                    }
+                ],
+                "readinessProbe": {
+                    "failureThreshold": 3,
+                    "httpGet": {
+                        "path": "/ready",
+                        "port": "http",
+                        "scheme": "HTTP"
+                    },
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "timeoutSeconds": 1
+                },
+                "resources": {
+                    "limits": {
+                        "cpu": "1",
+                        "memory": "512Mi"
+                    },
+                    "requests": {
+                        "cpu": "10m",
+                        "memory": "32Mi"
+                    }
+                },
+                "securityContext": {
+                    "allowPrivilegeEscalation": false,
+                    "capabilities": {
+                        "drop": [
+                            "ALL"
+                        ]
+                    },
+                    "readOnlyRootFilesystem": true,
+                    "runAsNonRoot": true,
+                    "runAsUser": 1654,
+                    "seccompProfile": {
+                        "type": "RuntimeDefault"
+                    }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                    {
+                        "mountPath": "/tmp",
+                        "name": "tmp"
+                    },
+                    {
+                        "mountPath": "/etc/hexalith/environment",
+                        "name": "environment-components",
+                        "readOnly": true
+                    },
+                    {
+                        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                        "name": "kube-api-access-dh5kz",
+                        "readOnly": true
+                    }
+                ]
+            },
+            {
+                "args": [
+                    "/daprd",
+                    "--dapr-http-port",
+                    "3500",
+                    "--dapr-grpc-port",
+                    "50001",
+                    "--dapr-internal-grpc-port",
+                    "50002",
+                    "--dapr-listen-addresses",
+                    "127.0.0.1",
+                    "--dapr-public-port",
+                    "3501",
+                    "--app-id",
+                    "tenants",
+                    "--app-protocol",
+                    "http",
+                    "--log-level",
+                    "info",
+                    "--dapr-graceful-shutdown-seconds",
+                    "-1",
+                    "--mode",
+                    "kubernetes",
+                    "--control-plane-address",
+                    "dapr-api.dapr-system.svc.cluster.local:443",
+                    "--sentry-address",
+                    "dapr-sentry.dapr-system.svc.cluster.local:443",
+                    "--app-port",
+                    "8080",
+                    "--enable-metrics",
+                    "--metrics-port",
+                    "9090",
+                    "--config",
+                    "platform-tenants",
+                    "--placement-host-address",
+                    "dapr-placement-server.dapr-system.svc.cluster.local:50005",
+                    "--enable-api-logging=false",
+                    "--enable-mtls"
+                ],
+                "env": [
+                    {
+                        "name": "NAMESPACE",
+                        "value": "reference"
+                    },
+                    {
+                        "name": "DAPR_TRUST_ANCHORS",
+                        "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAlEet1zqcH0c+5erPpfBe4DAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMzEwNTQxMDFaFw0yNzEwMzEwNTU2MDFa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQB/WcTLf95EjFNf\nbA95+8SeCsEGuxrux3frsUpeeQVeG6NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFEB4UPYoBiP+b1JhrGYg5bjesMOpMAUGAytl\ncANBABhBs4kjUK7qFebCv7fQMcCY+Y0sne+J5CpjKXmbGX2P9SfmtbIqRaC9msb8\nI+80LrvQUN2pNXUzLclZZSUgNwY=\n-----END CERTIFICATE-----\n"
+                    },
+                    {
+                        "name": "POD_NAME",
+                        "valueFrom": {
+                            "fieldRef": {
+                                "apiVersion": "v1",
+                                "fieldPath": "metadata.name"
+                            }
+                        }
+                    },
+                    {
+                        "name": "DAPR_CONTROLPLANE_NAMESPACE",
+                        "value": "dapr-system"
+                    },
+                    {
+                        "name": "DAPR_CONTROLPLANE_TRUST_DOMAIN",
+                        "value": "cluster.local"
+                    },
+                    {
+                        "name": "DAPR_API_TOKEN",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-api"
+                            }
+                        }
+                    },
+                    {
+                        "name": "APP_API_TOKEN",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-tenants-app"
+                            }
+                        }
+                    }
+                ],
+                "image": "ghcr.io/dapr/daprd:1.18.7",
+                "imagePullPolicy": "IfNotPresent",
+                "livenessProbe": {
+                    "failureThreshold": 5,
+                    "initialDelaySeconds": 180,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                        "port": 3501
+                    },
+                    "timeoutSeconds": 3
+                },
+                "name": "daprd",
+                "ports": [
+                    {
+                        "containerPort": 3500,
+                        "name": "dapr-http",
+                        "protocol": "TCP"
+                    },
+                    {
+                        "containerPort": 50001,
+                        "name": "dapr-grpc",
+                        "protocol": "TCP"
+                    },
+                    {
+                        "containerPort": 50002,
+                        "name": "dapr-internal",
+                        "protocol": "TCP"
+                    },
+                    {
+                        "containerPort": 9090,
+                        "name": "dapr-metrics",
+                        "protocol": "TCP"
+                    }
+                ],
+                "readinessProbe": {
+                    "failureThreshold": 5,
+                    "httpGet": {
+                        "path": "/v1.0/healthz",
+                        "port": 3501,
+                        "scheme": "HTTP"
+                    },
+                    "initialDelaySeconds": 1,
+                    "periodSeconds": 1,
+                    "successThreshold": 1,
+                    "timeoutSeconds": 1
+                },
+                "resources": {},
+                "securityContext": {
+                    "allowPrivilegeEscalation": false,
+                    "capabilities": {
+                        "drop": [
+                            "ALL"
+                        ]
+                    },
+                    "readOnlyRootFilesystem": true,
+                    "runAsNonRoot": true,
+                    "runAsUser": 1654
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                    {
+                        "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                        "name": "dapr-identity-token",
+                        "readOnly": true
+                    },
+                    {
+                        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                        "name": "kube-api-access-dh5kz",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "enableServiceLinks": true,
+        "imagePullSecrets": [
+            {
+                "name": "fixture-registry"
+            }
+        ],
+        "preemptionPolicy": "PreemptLowerPriority",
+        "priority": 0,
+        "restartPolicy": "Always",
+        "schedulerName": "default-scheduler",
+        "securityContext": {
+            "runAsNonRoot": true,
+            "runAsUser": 1654,
+            "seccompProfile": {
+                "type": "RuntimeDefault"
+            }
+        },
+        "serviceAccount": "default",
+        "serviceAccountName": "default",
+        "terminationGracePeriodSeconds": 30,
+        "tolerations": [
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/not-ready",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            },
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/unreachable",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            }
+        ],
+        "volumes": [
+            {
+                "emptyDir": {},
+                "name": "tmp"
+            },
+            {
+                "configMap": {
+                    "defaultMode": 420,
+                    "name": "fixture-components"
+                },
+                "name": "environment-components"
+            },
+            {
+                "name": "kube-api-access-dh5kz",
+                "projected": {
+                    "defaultMode": 420,
+                    "sources": [
+                        {
+                            "serviceAccountToken": {
+                                "expirationSeconds": 3607,
+                                "path": "token"
+                            }
+                        },
+                        {
+                            "configMap": {
+                                "items": [
+                                    {
+                                        "key": "ca.crt",
+                                        "path": "ca.crt"
+                                    }
+                                ],
+                                "name": "kube-root-ca.crt"
+                            }
+                        },
+                        {
+                            "downwardAPI": {
+                                "items": [
+                                    {
+                                        "fieldRef": {
+                                            "apiVersion": "v1",
+                                            "fieldPath": "metadata.namespace"
+                                        },
+                                        "path": "namespace"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "dapr-identity-token",
+                "projected": {
+                    "defaultMode": 420,
+                    "sources": [
+                        {
+                            "serviceAccountToken": {
+                                "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                "expirationSeconds": 7200,
+                                "path": "token"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "status": {
+        "phase": "Pending",
+        "qosClass": "Burstable"
+    }
+}

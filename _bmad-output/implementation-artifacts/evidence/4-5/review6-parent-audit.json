@@ -1,0 +1,32 @@
+{
+  "schema": "hexalith.helm-qualification.parent-audit.v1",
+  "recordedAt": "2026-10-31T05:58:51.655817+00:00",
+  "status": "passed",
+  "sourceFiles": 2179,
+  "commandLogs": 201,
+  "allSourceAndCommandHashesMatch": true,
+  "matrixTestsPassed": [
+    "test_modes_determinism_and_archive_parity",
+    "test_identity_readiness_and_shared_dapr_security",
+    "test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail",
+    "test_connection_strings_accept_only_secret_or_validated_endpoint_references",
+    "test_additional_credentials_must_extend_declared_inputs_with_credential_keys",
+    "test_trust_domains_require_dns_subdomains_before_acl_json_substitution",
+    "test_each_validation_rule_fails_with_its_own_message",
+    "test_values_only_digest_change",
+    "test_selected_replicas_and_acl_namespace_apply_to_source_and_archive",
+    "test_provider_metadata_requires_tls_certificate_verification"
+  ],
+  "pythonTests": 160,
+  "hostedTests": 13,
+  "operatorTests": 19,
+  "ownedClusterAbsent": true,
+  "privateFilesAbsent": true,
+  "preexistingClustersPresent": true,
+  "package": {
+    "file": "hexalith-reference-0.1.0.tgz",
+    "sha256": "ea094c7dd714dfabf0576e20083847cbc727125cc12baf299d782d08c9e4218c"
+  },
+  "qualificationSha256": "634f7759575bf8731e8521780f53e824c027bd0a9cd46524252d897542d20439",
+  "verificationSha256": "4f31532ac89d98ddf731fcbee7501e399bfa35250c1bece5645691accdec52f0"
+}

@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXBhcnRpZXMtYXBw"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-31T05:57:16Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-31T05:57:16Z"
+            }
+        ],
+        "name": "fixture-parties-app",
+        "namespace": "reference",
+        "resourceVersion": "911",
+        "uid": "2882a328-5b54-4d17-855f-919c9275d1e4"
+    },
+    "type": "Opaque"
+}

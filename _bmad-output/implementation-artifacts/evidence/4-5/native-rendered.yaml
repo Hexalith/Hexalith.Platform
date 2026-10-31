@@ -65,6 +65,28 @@ spec:
       targetPort: 8080
 
 ---
+# Source: apphost/templates/memories-domain-service/service.yaml
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "memories-domain-service-service"
+  labels:
+    app.kubernetes.io/name: "apphost"
+    app.kubernetes.io/component: "memories-domain-service"
+    app.kubernetes.io/instance: "native"
+spec:
+  type: "ClusterIP"
+  selector:
+    app.kubernetes.io/name: "apphost"
+    app.kubernetes.io/component: "memories-domain-service"
+    app.kubernetes.io/instance: "native"
+  ports:
+    - name: "http"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+
+---
 # Source: apphost/templates/memories/service.yaml
 apiVersion: "v1"
 kind: "Service"
@@ -260,6 +282,45 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "apphost"
       app.kubernetes.io/component: "memories-access-telemetry"
+      app.kubernetes.io/instance: "native"
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: "RollingUpdate"
+
+---
+# Source: apphost/templates/memories-domain-service/deployment.yaml
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "memories-domain-service-deployment"
+  labels:
+    app.kubernetes.io/name: "apphost"
+    app.kubernetes.io/component: "memories-domain-service"
+    app.kubernetes.io/instance: "native"
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "apphost"
+        app.kubernetes.io/component: "memories-domain-service"
+        app.kubernetes.io/instance: "native"
+    spec:
+      containers:
+        - image: "qualification.invalid/memories-domain-service@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          name: "memories-domain-service"
+          ports:
+            - name: "http"
+              protocol: "TCP"
+              containerPort: 8080
+          imagePullPolicy: "IfNotPresent"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "apphost"
+      app.kubernetes.io/component: "memories-domain-service"
       app.kubernetes.io/instance: "native"
   replicas: 1
   revisionHistoryLimit: 3

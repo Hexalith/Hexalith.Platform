@@ -1,29 +1,28 @@
 {
     "apiVersion": "v1",
     "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXBhcnRpZXMtYXBp"
+        "fixture": "environment-owned"
     },
-    "kind": "Secret",
+    "kind": "ConfigMap",
     "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
+        "creationTimestamp": "2026-10-31T05:57:15Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
+                    "f:data": {
+                        "f:fixture": {}
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+                "time": "2026-10-31T05:57:15Z"
             }
         ],
-        "name": "fixture-parties-api",
+        "name": "fixture-components",
         "namespace": "reference",
-        "resourceVersion": "959",
-        "uid": "85cf40e8-653b-4641-8c94-0350a701cc92"
-    },
-    "type": "Opaque"
+        "resourceVersion": "895",
+        "uid": "d39ee136-ebc3-4bc5-b3d9-5d8cd88bc28c"
+    }
 }

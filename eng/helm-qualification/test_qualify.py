@@ -343,12 +343,13 @@ class QualifierFailureTests(unittest.TestCase):
                 linked = Path(directory) / ancestor / 'linked/Shared.cs'
                 imported = Path(directory) / ancestor / 'sdk/Sdk.props'
                 generated = [project.parent / name / 'Generated.cs' for name in ('bin', 'obj')]
+                generated_import = project.parent / 'obj/Generated.props'
                 tooling = root / 'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/Resolver.cs'
-                for path in (project, source, linked, imported, tooling, *generated):
+                for path in (project, source, linked, imported, tooling, generated_import, *generated):
                     path.parent.mkdir(parents=True, exist_ok=True); path.write_text('source')
                 def run(args, **kwargs):
                     if args[-1].startswith('-preprocess:'):
-                        Path(args[-1].split(':', 1)[1]).write_text(str(imported))
+                        Path(args[-1].split(':', 1)[1]).write_text(str(imported) + '\n' + str(generated_import))
                         return subprocess.CompletedProcess(args, 0, '', '')
                     return subprocess.CompletedProcess(args, 0, json.dumps({
                         'Items': {'Compile': [{'FullPath': str(p)} for p in (source, linked, *generated)]},
@@ -359,7 +360,7 @@ class QualifierFailureTests(unittest.TestCase):
                     for path in (project, source, linked, imported, tooling):
                         key = str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
                         self.assertIn(key, inventory)
-                    for path in generated:
+                    for path in [*generated, generated_import]:
                         self.assertNotIn(str(path.relative_to(root)), inventory)
 
     def test_resolved_kubernetes_integration_matches_both_assets_and_retains_hashes(self):

@@ -1,39 +1,29 @@
 {
-    "apiVersion": "gateway.networking.k8s.io/v1",
-    "kind": "GatewayClass",
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFwaQ=="
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
-        "generation": 1,
+        "creationTimestamp": "2026-10-31T05:57:16Z",
         "managedFields": [
             {
-                "apiVersion": "gateway.networking.k8s.io/v1",
+                "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:spec": {
-                        "f:controllerName": {}
+                    "f:stringData": {
+                        "f:token": {}
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+                "time": "2026-10-31T05:57:16Z"
             }
         ],
-        "name": "fixture",
-        "resourceVersion": "948",
-        "uid": "0f2da07e-07e5-4cd6-8fa4-6c2983cee5cb"
+        "name": "fixture-memories-api",
+        "namespace": "reference",
+        "resourceVersion": "906",
+        "uid": "4692968f-8112-413f-8f68-14295f0dd5f2"
     },
-    "spec": {
-        "controllerName": "fixture.invalid/unmanaged"
-    },
-    "status": {
-        "conditions": [
-            {
-                "lastTransitionTime": "1970-01-01T00:00:00Z",
-                "message": "Waiting for controller",
-                "reason": "Pending",
-                "status": "Unknown",
-                "type": "Accepted"
-            }
-        ]
-    }
+    "type": "Opaque"
 }

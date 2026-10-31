@@ -1,0 +1,53 @@
+🛠️ Executing step publish
+🛠️ Building AppHost... apphost.cs
+06:28:53 (validate-compute-environments) → Starting validate-compute-environments...
+06:28:53 (validate-compute-environments) ✓ validate-compute-environments completed successfully
+06:28:53 (prepare-deployment-targets-qualification) → Starting prepare-deployment-targets-qualification...
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for eventstore
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants-api
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry-clock
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-domain-service
+06:28:53 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for parties
+06:28:53 (prepare-deployment-targets-qualification) ✓ prepare-deployment-targets-qualification completed successfully
+06:28:53 (validate-kubernetes) → Starting validate-kubernetes...
+06:28:53 (validate-kubernetes) ✓ validate-kubernetes completed successfully
+06:28:53 (before-start) → Starting before-start...
+06:28:53 (before-start) ✓ before-start completed successfully
+06:28:53 (pipeline-execution) → Starting pipeline-execution...
+06:28:53 (process-parameters) → Starting process-parameters...
+06:28:53 (validate-build-only-container-references) → Starting validate-build-only-container-references...
+06:28:53 (validate-build-only-container-references) ✓ validate-build-only-container-references completed successfully
+06:28:53 (process-parameters) ✓ process-parameters completed successfully
+06:28:53 (publish-prereq) → Starting publish-prereq...
+06:28:53 (publish-prereq) ✓ publish-prereq completed successfully
+06:28:53 (publish-qualification) → Starting publish-qualification...
+06:28:53 (publish-qualification) i [INF] Generating Kubernetes output
+06:28:53 (publish-qualification) i [INF] Successfully generated Kubernetes output in '/tmp/h45-7qyx5n3n/native-output'
+06:28:53 (publish-qualification) ✓ publish-qualification completed successfully
+06:28:53 (publish) → Starting publish...
+06:28:53 (publish) ✓ publish completed successfully
+06:28:53 (pipeline-execution) ✓ Completed successfully
+------------------------------------------------------------
+✓ 10/10 steps succeeded • Total time: 80.55ms
+
+Steps Summary:
+                Step timeline:                              0ms                    23.51ms
+                                                            │───────┬──────┬─────┬───────│
+      1.23ms  ✓ validate-compute-environments               │╶─╴                         │
+      8.21ms  ✓   prepare-deployment-targets-qualification  │  ╶─────────╴               │
+      0.67ms  ✓     before-start                            │               ╴            │
+      0.85ms  ✓   validate-kubernetes                       │             ╴              │
+      9.45ms  ✓ pipeline-execution                          │                ╶──────────╴│
+      2.39ms  ✓ process-parameters                          │                 ╶──╴       │
+      0.71ms  ✓   publish-prereq                            │                     ╴      │
+      2.11ms  ✓     publish-qualification                   │                      ╶──╴  │
+      0.63ms  ✓       publish                               │                          ╴ │
+      0.77ms  ✓ validate-build-only-container-references    │                  ╴         │
+
+✓ Pipeline succeeded
+------------------------------------------------------------
+
+

@@ -1714,3 +1714,24 @@
   summary: Define the "trusted gate" and the signing writer of promotion-decision records (medium).
   target_story: 5.6
   evidence: Sixth-pass Blind BH10. Policy L137, L146, L153 and L251 make the trusted gate open pending decisions, issue attempt order and record completed and superseded closures, and L159-160 make admission verify the decision's authoritative state. The ownership paragraph (L10-13) names only Builds tools and Platform's staging executor and promotion evaluator. The architecture's Records and writers rule accepts a record only when signed by its writer and lists no promotion-decision record. The candidate and attachment policy (Story 2.1) and the vulnerability policy (Story 5.2) use the same undefined term. Settle in Story 5.6, with an architecture correct-course that adds the record and names its writer, before Stories 5.6 and 5.11 implement decision state.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: R6-BH-5: The independently committed campaign environment topology validates only regular containers in supplied provider/reporter workloads. Init containers can bypass image, filesystem and resource checks
+  evidence: The independently committed campaign environment topology validates only regular containers in supplied provider/reporter workloads. Init containers can bypass image, filesystem and resource checks; qualify this environment-owned campaign boundary separately from the application chart.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: R6-BH-7: The concurrent v1 operator preparer and verifier use lexical is_relative_to checks without resolving dot segments or parent symlinks. A fresh apparent external path can resolve inside a repository and receive generated credential files. This independently authored operator custody path is outside Helm export qualification.
+  evidence: The concurrent v1 operator preparer and verifier use lexical is_relative_to checks without resolving dot segments or parent symlinks. A fresh apparent external path can resolve inside a repository and receive generated credential files. This independently authored operator custody path is outside Helm export qualification.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: R6-BH-8: The concurrent v1 phase runner checks receipt absence before an ordinary write, with no execution lock in the caller. Two processes can both submit a supposedly single-attempt activation or seed phase
+  evidence: The concurrent v1 phase runner checks receipt absence before an ordinary write, with no execution lock in the caller. Two processes can both submit a supposedly single-attempt activation or seed phase; the separate operator runner needs serialization.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: R6-BH-9: The concurrent v1 gateway path waits for Pod Running then polls HTTP, but request propagates connection-refused/timeouts and the attempted receipt prevents retry. A normal listener startup delay can permanently stop that operator phase
+  evidence: The concurrent v1 gateway path waits for Pod Running then polls HTTP, but request propagates connection-refused/timeouts and the attempted receipt prevents retry. A normal listener startup delay can permanently stop that operator phase; the read-only observation loop needs bounded transient retry.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: R6-BH-10: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner
+  evidence: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner; its separate lifecycle needs an ownership-bound cleanup path.
+

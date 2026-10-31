@@ -331,7 +331,9 @@ class Qualification:
                 self.run(prefix + ['-preprocess:' + str(expanded)], timeout=30)
                 for line in expanded.read_text(encoding='utf-8-sig').splitlines():
                     path = Path(line.strip())
-                    if path.is_absolute() and path.suffix in ('.props', '.targets', '.proj', '.csproj') and path.is_file():
+                    if (path.is_absolute() and path.suffix in ('.props', '.targets', '.proj', '.csproj') and path.is_file()
+                            and not (path.is_relative_to(project.parent) and
+                                     any(part in ('bin', 'obj') for part in path.relative_to(project.parent).parts))):
                         inputs.add(path)
         finally:
             self.env = environment

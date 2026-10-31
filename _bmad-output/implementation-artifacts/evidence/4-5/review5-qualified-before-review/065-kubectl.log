@@ -1,0 +1,39 @@
+{
+    "apiVersion": "gateway.networking.k8s.io/v1",
+    "kind": "GatewayClass",
+    "metadata": {
+        "creationTimestamp": "2026-10-31T05:34:09Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "gateway.networking.k8s.io/v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:controllerName": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-31T05:34:09Z"
+            }
+        ],
+        "name": "fixture",
+        "resourceVersion": "960",
+        "uid": "5a522691-068b-41f8-b184-94831d119d72"
+    },
+    "spec": {
+        "controllerName": "fixture.invalid/unmanaged"
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "1970-01-01T00:00:00Z",
+                "message": "Waiting for controller",
+                "reason": "Pending",
+                "status": "Unknown",
+                "type": "Accepted"
+            }
+        ]
+    }
+}

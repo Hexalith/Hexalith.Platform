@@ -1,1 +1,29 @@
-Error from server (Forbidden): error when creating "STDIN": pods "unsafe-control" is forbidden: violates PodSecurity "restricted:v1.35": privileged (container "unsafe" must not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "unsafe" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "unsafe" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "unsafe" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "unsafe" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXRlbmFudHMtYXBp"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-31T05:57:16Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-31T05:57:16Z"
+            }
+        ],
+        "name": "fixture-tenants-api",
+        "namespace": "reference",
+        "resourceVersion": "912",
+        "uid": "9e1e1ecf-b515-4767-8ace-0f70b7af291e"
+    },
+    "type": "Opaque"
+}

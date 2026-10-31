@@ -1,37 +1,29 @@
 {
-    "apiVersion": "dapr.io/v1alpha1",
-    "kind": "Component",
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFjY2Vzcy10ZWxlbWV0cnktYXBp"
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
-        "generation": 1,
+        "creationTimestamp": "2026-10-31T05:57:15Z",
         "managedFields": [
             {
-                "apiVersion": "dapr.io/v1alpha1",
+                "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:scopes": {},
-                    "f:spec": {
-                        "f:metadata": {},
-                        "f:type": {},
-                        "f:version": {}
+                    "f:stringData": {
+                        "f:token": {}
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+                "time": "2026-10-31T05:57:15Z"
             }
         ],
-        "name": "environment-preserved",
+        "name": "fixture-memories-access-telemetry-api",
         "namespace": "reference",
-        "resourceVersion": "965",
-        "uid": "03260c99-8f5b-4f57-8c31-f7321d4fa551"
+        "resourceVersion": "902",
+        "uid": "2dd009a3-d1c0-4d1a-8003-0f04d34a2566"
     },
-    "scopes": [
-        "environment-owner"
-    ],
-    "spec": {
-        "metadata": [],
-        "type": "secretstores.kubernetes",
-        "version": "v1"
-    }
+    "type": "Opaque"
 }

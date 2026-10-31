@@ -1,0 +1,65 @@
+{
+  "schema": "hexalith.helm-qualification.focused-patch-tests.v1",
+  "recordedAt": "2026-10-31T05:51:21.581922+00:00",
+  "scope": "Review-6 targeted chart and operator-consumer tests; full verification is owned by the parent workflow.",
+  "checks": [
+    {
+      "label": "chart",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "test_chart.ChartTests.test_provider_metadata_requires_tls_certificate_verification",
+        "test_chart.ChartTests.test_selected_replicas_and_acl_namespace_apply_to_source_and_archive",
+        "test_chart.ChartTests.test_modes_determinism_and_archive_parity",
+        "test_chart.ChartTests.test_identity_readiness_and_shared_dapr_security",
+        "-v"
+      ],
+      "environment": {
+        "HELM_BIN": "/tmp/h45-review5-tools/linux-amd64/helm",
+        "PYTHONPATH": "eng/helm-qualification"
+      },
+      "returncode": 0,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "log": "review6-focused-chart.log",
+      "logSha256": "051fbceab820fd187035312b7392a971f732ee06c78a12bce7b38e387d19ac35"
+    },
+    {
+      "label": "operator",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "test_prepare",
+        "test_render",
+        "test_guard_matrix",
+        "-v"
+      ],
+      "environment": {
+        "HELM_BIN": "/tmp/h45-review5-tools/linux-amd64/helm",
+        "PYTHONPATH": "eng/mcpcli-operator-setup"
+      },
+      "returncode": 0,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "log": "review6-focused-operator.log",
+      "logSha256": "e39ae2cf91a1daaf37d607623ffd11ba2bbb3af33546e235365ee09223778f6f"
+    }
+  ],
+  "files": {
+    "eng/helm-qualification/chart/templates/_helpers.tpl": "b8e551932ed25a5e0c69d77f949cc743a266068dfa6fdccc8165e24ee3187dea",
+    "eng/helm-qualification/test_chart.py": "bcff28d5ffc83f4c86984979ba6d3a73053706e04f718876ddb5584c8d964f3e",
+    "eng/mcpcli-operator-setup/chart/templates/_helpers.tpl": "b8e551932ed25a5e0c69d77f949cc743a266068dfa6fdccc8165e24ee3187dea",
+    "eng/mcpcli-operator-setup/chart/templates/application.yaml": "b6da37d3dd124dcba2a8f701262a1ea60e75783408e78df3b7db0c7258f142bb"
+  },
+  "operatorTemplateParity": true,
+  "helm": {
+    "path": "/tmp/h45-review5-tools/linux-amd64/helm",
+    "binarySha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869"
+  }
+}

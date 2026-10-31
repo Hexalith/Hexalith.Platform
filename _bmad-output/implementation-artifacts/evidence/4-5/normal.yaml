@@ -81,6 +81,19 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: memories-domain-service
+spec:
+  selector:
+    app.kubernetes.io/name: memories-domain-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+# Source: hexalith-reference/templates/application.yaml
+apiVersion: v1
+kind: Service
+metadata:
   name: parties
 spec:
   selector:
@@ -141,10 +154,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -336,10 +349,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -500,10 +513,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -660,10 +673,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -871,10 +884,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -1068,10 +1081,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -1225,6 +1238,207 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: memories-domain-service
+  labels:
+    app.kubernetes.io/part-of: hexalith-reference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memories-domain-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memories-domain-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "memories-domain-service"
+        dapr.io/app-port: "8080"
+        dapr.io/app-protocol: http
+        dapr.io/config: "platform-memories-domain-service"
+        dapr.io/app-token-secret: "fixture-memories-domain-service-app"
+        dapr.io/api-token-secret: "fixture-memories-domain-service-api"
+        dapr.io/sidecar-listen-addresses: "127.0.0.1"
+        dapr.io/enable-api-logging: "false"
+    spec:
+      automountServiceAccountToken: true
+      imagePullSecrets:
+        - name: fixture-registry
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: "qualification.invalid/memories-domain-service@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: "/ready"
+              port: http
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1654
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
+          env:
+            
+            - name: APP_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-memories-domain-service-app
+            - name: ASPNETCORE_URLS
+              value: http://0.0.0.0:8080
+            - name: AccessTelemetryLifecycle__AttestationVerificationKey
+              value: fixture
+            - name: AccessTelemetryLifecycle__CapabilityEvidence
+              value: fixture
+            - name: AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned
+              value: fixture
+            - name: AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc
+              value: fixture
+            - name: AccessTelemetryLifecycle__CapacityEvidenceId
+              value: fixture
+            - name: AccessTelemetryLifecycle__ClockSignerKeyEpoch
+              value: fixture
+            - name: AccessTelemetryLifecycle__ComponentProfileHash
+              value: fixture
+            - name: AccessTelemetryLifecycle__ConfigurationEpoch
+              value: fixture
+            - name: AccessTelemetryLifecycle__ConfigurationStoreComponentPath
+              value: /etc/hexalith/environment/configurationstorecomponentpath.yaml
+            - name: AccessTelemetryLifecycle__DeploymentId
+              value: fixture
+            - name: AccessTelemetryLifecycle__Enabled
+              value: fixture
+            - name: AccessTelemetryLifecycle__MarkerKeyGeneration
+              value: fixture
+            - name: AccessTelemetryLifecycle__MarkerKeyReference
+              value: fixture
+            - name: AccessTelemetryLifecycle__PhysicalReclamationEvidenceId
+              value: fixture
+            - name: AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest
+              value: fixture
+            - name: AccessTelemetryLifecycle__RetentionSource
+              value: fixture
+            - name: AccessTelemetryLifecycle__StateStoreComponentPath
+              value: /etc/hexalith/environment/statestorecomponentpath.yaml
+            - name: Authentication__JwtBearer__Audience
+              value: fixture
+            - name: Authentication__JwtBearer__Authority
+              value: https://identity.fixture.invalid/realm
+            - name: Authentication__JwtBearer__Issuer
+              value: https://identity.fixture.invalid/realm
+            - name: Authentication__JwtBearer__RequireHttpsMetadata
+              value: fixture
+            - name: Authentication__JwtBearer__SigningKey
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-credential
+            - name: Authentication__JwtBearer__TenantClaimName
+              value: fixture
+            - name: Authentication__JwtBearer__ValidAlgorithms
+              value: fixture
+            - name: Clock__AllowDevelopmentSources
+              value: fixture
+            - name: Clock__SecretStoreName
+              value: fixture
+            - name: Clock__SignerKeyEpoch
+              value: fixture
+            - name: Clock__SigningKeySecretName
+              value: fixture
+            - name: Clock__SourceAuthenticationTokens
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-credential
+            - name: Clock__Sources
+              value: fixture
+            - name: ConnectionStrings__falkordb
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
+            - name: ConnectionStrings__redis
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
+            - name: Conversation__ProviderApiKey
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-credential
+            - name: DAPR_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-memories-domain-service-api
+            - name: Dapr__DeclarativeSubscriptions
+              value: "true"
+            - name: EmbeddingProviders__Google__ApiBaseUrl
+              value: fixture
+            - name: EmbeddingProviders__Ollama__BaseUrl
+              value: fixture
+            - name: EmbeddingProviders__Ollama__OidcClientId
+              value: fixture
+            - name: EmbeddingProviders__Ollama__OidcScope
+              value: fixture
+            - name: EmbeddingProviders__Ollama__OidcTokenEndpoint
+              value: https://identity.fixture.invalid/realm
+            - name: Embedding__CredentialNamespace
+              value: fixture
+            - name: EventStore__ReadModelStore__StateStoreName
+              value: statestore
+            - name: EventStore__StateStoreName
+              value: statestore
+            - name: IsStubBackfill__Enabled
+              value: fixture
+            - name: Memories__AppChannelToken
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-memories-domain-service-app
+            - name: Memories__DaprApiToken
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: fixture-memories-domain-service-api
+            - name: Memories__LlmComponentPath
+              value: /etc/hexalith/environment/llmcomponentpath.yaml
+            - name: NaturalLanguage__RetryWorkerEnabled
+              value: fixture
+            - name: OrphanSemanticIndex__Enabled
+              value: fixture
+            - name: TenantEventRouting__AutoProvisionRoutedTenants
+              value: fixture
+            - name: WorkflowReplaySafety__Enabled
+              value: fixture
+            - name: retentionSeconds
+              value: fixture
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: environment-components
+              mountPath: /etc/hexalith/environment
+              readOnly: true
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {cpu: "1", memory: 512Mi}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: environment-components
+          configMap:
+            name: fixture-components
+---
+# Source: hexalith-reference/templates/application.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: parties
   labels:
     app.kubernetes.io/part-of: hexalith-reference
@@ -1271,10 +1485,10 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1654
-            capabilities:
-              drop: [ALL]
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop: [ALL]
           env:
             
             - name: APP_API_TOKEN
@@ -1527,6 +1741,7 @@ spec:
 scopes:
   - eventstore
   - memories
+  - memories-domain-service
   - parties
   - tenants
   - tenants-api
@@ -1547,6 +1762,28 @@ spec:
   accessControl:
     defaultAction: deny
     policies:
+    - appId: memories
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/bound/workload
+      trustDomain: fixture.invalid
+    - appId: tenants
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/bound/workload
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/streams/read/workload
+      trustDomain: fixture.invalid
     - appId: tenants-api
       defaultAction: deny
       namespace: reference
@@ -1761,6 +1998,37 @@ spec:
         httpVerb:
         - GET
         name: /v1/access-telemetry/inspect
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-memories-domain-service
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: eventstore
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /admin/operational-index-metadata
+      - action: allow
+        httpVerb:
+        - POST
+        name: /process
       trustDomain: fixture.invalid
     trustDomain: fixture.invalid
 ---

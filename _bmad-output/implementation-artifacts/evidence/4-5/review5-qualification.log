@@ -1,0 +1,20 @@
+RUNNING preflight
+PASSED preflight
+RUNNING native_probe
+PASSED native_probe
+RUNNING static_checks
+PASSED static_checks
+RUNNING create
+PASSED create
+RUNNING environment
+PASSED environment
+RUNNING admission_and_ssa
+PASSED all Pod templates admitted with compliant injected containers
+PASSED unsafe Pod rejected under the same admission identity
+PASSED Helm Apply field ownership verified
+PASSED recovery quiesced every workload and closed public routes
+PASSED unforced Helm SSA conflict refusal verified
+PASSED workload removal preserved separately owned environment fixtures
+PASSED uninstall preserved separately owned environment fixtures
+PASSED admission_and_ssa
+QUALIFICATION PASSED: /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/qualification.json

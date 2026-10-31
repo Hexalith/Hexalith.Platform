@@ -1,29 +1,86 @@
 {
-    "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXRlbmFudHMtYXBpLWFwaQ=="
-    },
-    "kind": "Secret",
+    "apiVersion": "gateway.networking.k8s.io/v1",
+    "kind": "Gateway",
     "metadata": {
-        "creationTimestamp": "2026-10-22T21:57:22Z",
+        "creationTimestamp": "2026-10-31T05:57:15Z",
+        "generation": 1,
         "managedFields": [
             {
-                "apiVersion": "v1",
+                "apiVersion": "gateway.networking.k8s.io/v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
+                    "f:spec": {
+                        "f:gatewayClassName": {},
+                        "f:listeners": {
+                            "k:{\"name\":\"https\"}": {
+                                ".": {},
+                                "f:allowedRoutes": {
+                                    "f:namespaces": {
+                                        "f:from": {}
+                                    }
+                                },
+                                "f:name": {},
+                                "f:port": {},
+                                "f:protocol": {},
+                                "f:tls": {
+                                    "f:certificateRefs": {},
+                                    "f:mode": {}
+                                }
+                            }
+                        }
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T21:57:22Z"
+                "time": "2026-10-31T05:57:15Z"
             }
         ],
-        "name": "fixture-tenants-api-api",
-        "namespace": "reference",
-        "resourceVersion": "962",
-        "uid": "703c06cf-c9b0-4fba-8fc4-7b424a9bd7ba"
+        "name": "fixture-gateway",
+        "namespace": "environment",
+        "resourceVersion": "899",
+        "uid": "bec1c86c-36bf-45b3-8c05-a5a56a5ae32f"
     },
-    "type": "Opaque"
+    "spec": {
+        "gatewayClassName": "fixture",
+        "listeners": [
+            {
+                "allowedRoutes": {
+                    "namespaces": {
+                        "from": "All"
+                    }
+                },
+                "name": "https",
+                "port": 443,
+                "protocol": "HTTPS",
+                "tls": {
+                    "certificateRefs": [
+                        {
+                            "group": "",
+                            "kind": "Secret",
+                            "name": "fixture-certificate"
+                        }
+                    ],
+                    "mode": "Terminate"
+                }
+            }
+        ]
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "1970-01-01T00:00:00Z",
+                "message": "Waiting for controller",
+                "reason": "Pending",
+                "status": "Unknown",
+                "type": "Accepted"
+            },
+            {
+                "lastTransitionTime": "1970-01-01T00:00:00Z",
+                "message": "Waiting for controller",
+                "reason": "Pending",
+                "status": "Unknown",
+                "type": "Programmed"
+            }
+        ]
+    }
 }

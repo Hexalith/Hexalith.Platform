@@ -1,0 +1,101 @@
+{
+  "schema": "hexalith.helm-qualification.review-triage.v1",
+  "originalBaseline": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+  "fullDiff": "/tmp/bmad-4-5-final-all-zsk7ui5f.diff",
+  "supplementalCurrentRunDiff": "/tmp/bmad-4-5-review5-g6a28qlj.diff",
+  "findings": [
+    {
+      "id": "R6-BH-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Real Helm accepts secretstore skipVerify=true; the retained Vault provider maps it to tls.Config.InsecureSkipVerify. Refuse this demonstrated certificate-verification bypass at the metadata boundary and cover safe false plus refused true values."
+    },
+    {
+      "id": "R6-BH-2",
+      "verdict": "low",
+      "route": "reject",
+      "evidence": "Carried from the earlier recorded rejection: equal endpointMetadataKey and credentialMetadataKey can produce invalid provider bindings, but this unusual environment-writer error fails at provider startup. Another guard is not warranted."
+    },
+    {
+      "id": "R6-BH-3",
+      "verdict": "low",
+      "route": "reject",
+      "evidence": "Real Helm accepts a repository containing team//app. Such malformed operator-supplied repositories fail loudly when consumed; extending repository parsing adds validation complexity for an unlikely input typo. Functional image readiness is excluded from this package qualification."
+    },
+    {
+      "id": "R6-BH-4",
+      "verdict": "low",
+      "route": "reject",
+      "evidence": "Real Helm accepts a configured path outside /etc/hexalith/environment; it would fail when the application opens the absent file. Environment writers own the supplied component-file contents, and a new generic path policy would add unsupported semantics without proving functional readiness."
+    },
+    {
+      "id": "R6-BH-5",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The independently committed campaign environment topology validates only regular containers in supplied provider/reporter workloads. Init containers can bypass image, filesystem and resource checks; qualify this environment-owned campaign boundary separately from the application chart."
+    },
+    {
+      "id": "R6-BH-6",
+      "verdict": "low",
+      "route": "reject",
+      "evidence": "Real Helm accepts a 64-character endpoint DNS label. The shared DNS-subdomain helper also validates Kubernetes object references, whose contract differs; a separate authority-label guard adds complexity for an unlikely environment-writer error."
+    },
+    {
+      "id": "R6-BH-7",
+      "verdict": "high",
+      "route": "defer",
+      "evidence": "The concurrent v1 operator preparer and verifier use lexical is_relative_to checks without resolving dot segments or parent symlinks. A fresh apparent external path can resolve inside a repository and receive generated credential files. This independently authored operator custody path is outside Helm export qualification."
+    },
+    {
+      "id": "R6-BH-8",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The concurrent v1 phase runner checks receipt absence before an ordinary write, with no execution lock in the caller. Two processes can both submit a supposedly single-attempt activation or seed phase; the separate operator runner needs serialization."
+    },
+    {
+      "id": "R6-BH-9",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The concurrent v1 gateway path waits for Pod Running then polls HTTP, but request propagates connection-refused/timeouts and the attempted receipt prevents retry. A normal listener startup delay can permanently stop that operator phase; the read-only observation loop needs bounded transient retry."
+    },
+    {
+      "id": "R6-BH-10",
+      "verdict": "medium",
+      "route": "defer",
+      "evidence": "The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner; its separate lifecycle needs an ownership-bound cleanup path."
+    },
+    {
+      "id": "R6-VG-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The first verification reviewer demonstrated that all 22 chart tests pass with ACL namespaces hardcoded to reference. Add source/archive renders in a nondefault release namespace with complete ACL policy assertions. That reviewer disclosed reading spec claims; the independent replacement confirmed this gap."
+    },
+    {
+      "id": "R6-IVG-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "The independent verification reviewer demonstrated that all 22 chart tests pass when the normal replica fallback is constant 1. Add direct source/archive assertions for accepted root replica values 2 and 3 across every normal Deployment."
+    },
+    {
+      "id": "R6-IVG-2",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Independently reproduced the same hardcoded ACL namespace regression gap as R6-VG-1. Group these two findings into the single nondefault namespace assertion patch."
+    },
+    {
+      "id": "R6-IVG-other-1",
+      "verdict": "medium",
+      "route": "patch",
+      "evidence": "Parent reproduced task-chart-template-drift in the synthetic operator render test. validate_profile requires canonical template byte equality, and this change left the tracked helper/application copies stale. Synchronize the two copies after the canonical helper fix and rerun that consumer suite."
+    }
+  ],
+  "edgeCaseFindings": [],
+  "patchesResolved": [
+    "R6-BH-1",
+    "R6-VG-1",
+    "R6-IVG-1",
+    "R6-IVG-2",
+    "R6-IVG-other-1"
+  ],
+  "verification": "review6-parent-audit.json"
+}

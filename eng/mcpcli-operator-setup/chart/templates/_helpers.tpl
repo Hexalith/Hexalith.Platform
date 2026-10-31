@@ -31,6 +31,7 @@
 {{- if and (hasSuffix ".redis" $binding.type) (ne (toString $binding.metadata.enableTLS) "true") -}}{{ fail "hosted Redis bindings require native TLS" }}{{- end -}}
 {{- range $key, $value := $binding.metadata -}}
 {{- if or (kindIs "map" $value) (kindIs "slice" $value) -}}{{ fail "provider metadata values must be scalar" }}{{- end -}}
+{{- if and (eq (lower $key) "skipverify") (ne (lower (toString $value)) "false") -}}{{ fail "provider metadata must not disable TLS certificate verification" }}{{- end -}}
 {{- include "reference.credentialLiteral" $value -}}
 {{- if or (eq (include "reference.isCredentialKey" $key) "true") (eq (lower $key) (lower $binding.endpointMetadataKey)) (eq (lower $key) (lower $binding.credentialMetadataKey)) -}}{{ fail "provider credentials and endpoints require references" }}{{- end -}}
 {{- if regexMatch "(?i)(://|localhost|127[.]|password=|token=)" (toString $value) -}}{{ fail "unsafe provider metadata literal" }}{{- end -}}
@@ -157,10 +158,14 @@ key: {{ .key | quote }}
 {{- define "reference.security" -}}
 allowPrivilegeEscalation: false
 readOnlyRootFilesystem: true
-runAsNonRoot: true
-runAsUser: 1654
+{{ include "reference.podSecurity" . }}
 capabilities:
   drop: [ALL]
+{{- end -}}
+
+{{- define "reference.podSecurity" -}}
+runAsNonRoot: true
+runAsUser: 1654
 seccompProfile:
   type: RuntimeDefault
 {{- end -}}
@@ -203,7 +208,7 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- if kindIs "invalid" $value -}}{{ fail "recursive configuration leaves cannot be null" }}{{- end -}}
 {{- if and (or (kindIs "map" $value) (kindIs "slice" $value)) (empty $value) -}}{{ fail "configuration binding must produce at least one leaf" }}{{- end -}}
 {{- if kindIs "map" $value -}}
-{{- if or (hasKey $value "endpoint") (hasKey $value "configMapKeyRef") -}}
+{{- if or (hasKey $value "endpoint") (hasKey $value "configMapKeyRef") (hasKey $value "secretKeyRef") -}}
 {{- if ne (len $value) 1 -}}{{ fail "reference leaves must contain exactly one reference" }}{{- end -}}
 {{- include "reference.nonCredentialKey" $key -}}
 {{- if hasKey $value "endpoint" -}}
@@ -211,7 +216,12 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- include "reference.endpoint" $endpoint -}}
 {{- include "reference.connectionString" (dict "key" $key "value" $endpoint) -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "value" $endpoint) "environment" .environment "seen" .seen) -}}
+{{- else if hasKey $value "secretKeyRef" -}}
+{{- if not (hasPrefix "connectionstrings__" (lower $key)) -}}{{ fail "configuration Secret references are allowed only for ConnectionStrings inputs" }}{{- end -}}
+{{- include "reference.secretRef" $value.secretKeyRef | trunc 0 -}}
+{{- include "reference.put" (dict "key" $key "entry" (dict "valueFrom" (dict "secretKeyRef" $value.secretKeyRef)) "environment" .environment "seen" .seen) -}}
 {{- else -}}
+{{- if or (hasPrefix "connectionstrings__" (lower $key)) (hasSuffix "endpoint" (lower $key)) (regexMatch "__(authority|issuer)$" (lower $key)) -}}{{ fail "ConnectionStrings and endpoint leaves cannot use configMapKeyRef; use endpoint parameters or ConnectionStrings secretKeyRef" }}{{- end -}}
 {{- include "reference.secretRef" $value.configMapKeyRef | trunc 0 -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "valueFrom" (dict "configMapKeyRef" $value.configMapKeyRef)) "environment" .environment "seen" .seen) -}}
 {{- end -}}
@@ -276,6 +286,13 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- end -}}
 {{- range $key, $reference := $binding.credentials -}}
 {{- if hasKey $reserved (lower (replace ":" "__" $key)) -}}{{ fail "credentials cannot override canonical Dapr/security values" }}{{- end -}}
+{{- if ne (include "reference.isCredentialKey" $key) "true" -}}{{ fail "credentials keys must be credential-shaped extensions of declared inputs" }}{{- end -}}
+{{- $extendsInput := false -}}
+{{- $normalized := lower (replace ":" "__" $key) -}}
+{{- range $input, $_ := $declared -}}
+{{- if hasPrefix (printf "%s__" (lower (replace ":" "__" $input))) $normalized -}}{{- $extendsInput = true -}}{{- end -}}
+{{- end -}}
+{{- if not $extendsInput -}}{{ fail "credentials keys must be credential-shaped extensions of declared inputs" }}{{- end -}}
 {{- include "reference.secretRef" $reference | trunc 0 -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "valueFrom" (dict "secretKeyRef" $reference)) "environment" $env "seen" $seen) -}}
 {{- end -}}
