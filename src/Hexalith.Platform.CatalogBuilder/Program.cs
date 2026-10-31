@@ -27,7 +27,27 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
         as IReadOnlyDictionary<string, string> ?? throw new InvalidDataException($"Owner {source.SourceType.FullName} has no actual receiver method inventory."))
         .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
     foreach (var route in routes)
-        bindings.Add(new(route.RouteId, owner.GetProperty("appId").GetString()!, methods[route.RouteId], route.ContractVersion, false, "*"));
+    {
+        string appId = owner.GetProperty("appId").GetString()!;
+        string method;
+        if (route.Kind == "query" && route.Execution is { TargetKind: "projection-actor", ActorType: "ProjectionActor" }
+            && route.CredentialKind == "workload"
+            && route.Operation == Hexalith.EventStore.Contracts.Authorization.EventStoreOperationIdentifiers.ProjectionQuery)
+        {
+            if (!input.TryGetProperty("gatewayAppId", out var gateway) || gateway.ValueKind != JsonValueKind.String
+                || string.IsNullOrWhiteSpace(gateway.GetString()))
+                throw new InvalidDataException("The declared gateway projection query requires its actual gatewayAppId binding.");
+            appId = gateway.GetString()!;
+            method = "QueryAsync";
+        }
+        else
+        {
+            if (route.Execution?.TargetKind is not null and not "domain-service")
+                throw new InvalidDataException("The owner declaration has no supported installed transport binding.");
+            method = methods[route.RouteId];
+        }
+        bindings.Add(new(route.RouteId, appId, method, route.ContractVersion, false, "*"));
+    }
     foreach (var source in sources)
     {
         if (source.SourceType.GetProperty("Commands", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IEnumerable<CommandIntentDeclaration> commands)
