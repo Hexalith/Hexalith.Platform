@@ -1,0 +1,41 @@
+[
+  {
+    "label": "commit",
+    "path": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-commit.txt",
+    "sha256": "b12c8b6adea5fe80c4d24eadc9bb88c2488bef606245cbf134a6c3005ca4afd5",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-commit.txt",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "log": "/tmp/story33-sdk-pr-lint-commit.log"
+  },
+  {
+    "label": "pr-title",
+    "path": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-pr-title.txt",
+    "sha256": "06f0892de1f9818b64ae13891c415f73815622d2be2b588277e460e1cdeed084",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-pr-title.txt",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "log": "/tmp/story33-sdk-pr-lint-pr-title.log"
+  },
+  {
+    "label": "squash",
+    "path": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-squash.txt",
+    "sha256": "b12c8b6adea5fe80c4d24eadc9bb88c2488bef606245cbf134a6c3005ca4afd5",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-qualification-squash.txt",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "log": "/tmp/story33-sdk-pr-lint-squash.log"
+  }
+]

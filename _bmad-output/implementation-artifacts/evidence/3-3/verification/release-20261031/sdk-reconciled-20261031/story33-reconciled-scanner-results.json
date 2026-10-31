@@ -1,0 +1,30 @@
+{
+  "indexPath": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.EventStore/worktrees/Hexalith.EventStore/index",
+  "indexBefore": "742d0ea8f42ecdd48c86a84e9871e1ed96e16edeac8fbd305385a7ba52ccafda",
+  "indexAfter": "742d0ea8f42ecdd48c86a84e9871e1ed96e16edeac8fbd305385a7ba52ccafda",
+  "unchanged": true,
+  "results": [
+    {
+      "scope": "tracked",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "-method",
+        "Hexalith.EventStore.Server.Tests.Security.SecretsProtectionTests.TrackedReusableContent_DoesNotContainUsableSecrets"
+      ],
+      "exitCode": 0,
+      "log": "/tmp/story33-reconciled-scanner-tracked.log"
+    },
+    {
+      "scope": "all-candidate-files",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "-method",
+        "Hexalith.EventStore.Server.Tests.Security.SecretsProtectionTests.TrackedReusableContent_DoesNotContainUsableSecrets"
+      ],
+      "exitCode": 1,
+      "log": "/tmp/story33-reconciled-scanner-all-candidate-files.log"
+    }
+  ]
+}

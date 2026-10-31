@@ -1,0 +1,37 @@
+{
+  "Hexalith.Parties": {
+    "head": "05aeee0d647a34eab112b6f8282a0810d35b7bf6",
+    "files": {
+      "src/Hexalith.Parties.AppHost/Program.cs": "7372475b9f20c2c426bf3549f20f20362204df8a2a8ff852afc7426694e7c6f1",
+      "src/Hexalith.Parties.AppHost/ReferenceProjectResolver.cs": "f6e9892b3b6ac4fd96395d7b7090b3c819d740ff9b05fc1b6fc5c09877f8e463",
+      "src/Hexalith.Parties.AppHost/DaprComponents/accesscontrol.yaml": "2b9b37de291c0a67f1daf34aaf6b35016568093425d50e9a4d58f5acf031f619",
+      "src/Hexalith.Parties.AppHost/DaprComponents/accesscontrol.eventstore-admin.yaml": "fb476d8a5832272981222c812e280221e4b71e765b11dfa32f4288d5012ca236",
+      "src/Hexalith.Parties.AppHost/DaprComponents/accesscontrol.memories.yaml": "00f702946e2029e2df0f0748783760cf8c32d507c3f713893711dd7aa05e86b2",
+      "src/Hexalith.Parties.AppHost/DaprComponents/accesscontrol.memories-domain-service.yaml": "128b7aa60928b422260dcbaecd93396ff022461d0676a75967cc6014075bd369",
+      "src/Hexalith.Parties/Program.cs": "a09972bdabdbd0bca17b77b81aa41453d6e5efaf28e305fb0413c6e51af3657d",
+      "src/Hexalith.Parties/Extensions/PartiesServiceCollectionExtensions.cs": "dca2ac9e7b36345061f851308f1ad6affe24f6bdedc6f641e4577e159f7ec940",
+      "src/Hexalith.Parties.Mcp/Program.cs": "75fcc0eb7f6f1f0ac3f5f4918aba066496f347e3578b9d6b701c2d96e709f8b1",
+      "src/Hexalith.Parties.UI/Program.cs": "5112110c8ce00ebaa4f3fdf15bb60042909df07441f297f07903d8d52716d257",
+      "tests/Hexalith.Parties.IntegrationTests/Topology/PartyMemoryOwnedRuntimeTests.cs": "330b6dd740cd3f453bede31eacba431c10b7ae95d579633e0d3553462b35c7df",
+      "src/Hexalith.Parties.AppHost/KeycloakRealms/hexalith-realm.json": "6531a4f528a8017380aa4e9c26791fd7b201229cd30f6cbc8ca2d61e4ab65049"
+    }
+  },
+  "Hexalith.EventStore": {
+    "head": "c63071e80624c5904d538e5700560fd2f883f5d5",
+    "files": {
+      "src/Hexalith.EventStore.Admin.UI/AdminUIServiceExtensions.cs": "297141d7af21b38d8c1fa9a8bc6ebf6b5264b2f16c6d7a6e669322e9b2573b46",
+      "src/Hexalith.EventStore.Admin.UI/Services/AdminApiAccessTokenProvider.cs": "451cc3dba435e38ef484d5bf7c8e63cb2a01e0e79c76cabcdb004fb78724ed6b",
+      "samples/Hexalith.EventStore.Sample.BlazorUI/Services/EventStoreApiAccessTokenProvider.cs": "7cf14306cfca459a03ee0bfafa178a6cc34e89a8de6975b5d8e60ccfdb9e3208",
+      "samples/Hexalith.EventStore.Sample.BlazorUI/Services/SampleUiGatewayServiceExtensions.cs": "81f11e0ce580ffda6adf4331f6f07df865daf97f57247dbf315fed2764f8b1ac"
+    }
+  },
+  "Hexalith.Memories": {
+    "head": "7352c6a2d9bc718bf34f861f6a5051293f7bff60",
+    "files": {
+      "src/Hexalith.Memories.Server/Program.cs": "6573bdee6a23c958e62317e39190e44a5704c6139eb135dbef7113cefacbf302",
+      "src/Hexalith.Memories.Server/Hosting/MemoriesServerServiceCollectionExtensions.cs": "f9c1392684129ac5d8169bc85d7068c72e9eb3f41f853f911e1633690091740b",
+      "src/Hexalith.Memories.Server/EventStoreIntegration/EventStoreMemoriesCommandStore.cs": "cc4d2a0e3fef6ae5aa861b3b972369bb335c5694623ff471e025007cb4c7ca25",
+      "src/Hexalith.Memories.Client.Rest/MemoriesClientServiceCollectionExtensions.cs": "24fb90ddc456c748c7facc7dd07fa26dd8f7b85a027e392385276c3c8465521f"
+    }
+  }
+}
