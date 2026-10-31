@@ -1758,4 +1758,3 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: R6-BH-10: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner
   evidence: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner; its separate lifecycle needs an ownership-bound cleanup path.
-

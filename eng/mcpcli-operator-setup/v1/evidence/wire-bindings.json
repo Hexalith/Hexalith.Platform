@@ -1,0 +1,1097 @@
+{
+  "schema": "mcpcli-v1-wire-bindings/v1",
+  "observedAt": "2026-10-31T05:40:01.693234+00:00",
+  "method": "Network-isolated static metadata and compiled member inspection; no application calls.",
+  "assemblies": {
+    "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll": "a79fd909d9d2379d9f766cf381497b2ea956eed319d61168a7e302857bb40b6a",
+    "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Contracts.dll": "32c64b83eef3a84ebf333b035d771830fcea30d9f0886d9d9d596b3259aa33b8",
+    "/home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll": "df80eac648c8eff1a81e2d3bd35c47bee69225b501d31630583607e7332bee89"
+  },
+  "sameTenantsContractImageAndRestoredPackage": false,
+  "compiledMembers": [
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+        "-m",
+        "CommandType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string CommandType\n{\n    get\n    {\n        return \"create-tenant\";\n            // IL_0000: ldstr        \"create-tenant\"  // stack: [string]\n            // IL_0005: ret                           // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+        "-m",
+        "Domain",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string Domain\n{\n    get\n    {\n        return \"tenants\";\n            // IL_0000: ldstr        \"tenants\"  // stack: [string]\n            // IL_0005: ret                     // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+        "-m",
+        "CommandType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string CommandType\n{\n    get\n    {\n        return \"add-user-to-tenant\";\n            // IL_0000: ldstr        \"add-user-to-tenant\"  // stack: [string]\n            // IL_0005: ret                                // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+        "-m",
+        "Domain",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string Domain\n{\n    get\n    {\n        return \"tenants\";\n            // IL_0000: ldstr        \"tenants\"  // stack: [string]\n            // IL_0005: ret                     // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+        "-m",
+        "QueryType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string QueryType\n{\n    get\n    {\n        return \"get-tenant\";\n            // IL_0000: ldstr        \"get-tenant\"  // stack: [string]\n            // IL_0005: ret                        // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+        "-m",
+        "Domain",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string Domain\n{\n    get\n    {\n        return \"tenants\";\n            // IL_0000: ldstr        \"tenants\"  // stack: [string]\n            // IL_0005: ret                     // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+        "-m",
+        "ProjectionType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string ProjectionType\n{\n    get\n    {\n        return \"tenants\";\n            // IL_0000: ldstr        \"tenants\"  // stack: [string]\n            // IL_0005: ret                     // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+        "-m",
+        "QueryType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string QueryType\n{\n    get\n    {\n        return \"get-global-administrators\";\n            // IL_0000: ldstr        \"get-global-administrators\"  // stack: [string]\n            // IL_0005: ret                                       // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+        "-m",
+        "Domain",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string Domain\n{\n    get\n    {\n        return \"global-administrators\";\n            // IL_0000: ldstr        \"global-administrators\"  // stack: [string]\n            // IL_0005: ret                                   // stack: []\n    }\n}"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+        "-m",
+        "ProjectionType",
+        "-S",
+        "Annotated Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "compiledSource": "public static string ProjectionType\n{\n    get\n    {\n        return \"global-administrators\";\n            // IL_0000: ldstr        \"global-administrators\"  // stack: [string]\n            // IL_0005: ret                                   // stack: []\n    }\n}"
+    }
+  ],
+  "compiledShapes": [
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+      "attributes": [
+        "Hexalith.EventStore.Contracts.Rest.RestRoute((Hexalith.EventStore.Contracts.Rest.RestVerb)1, \"{tenantId}\", ApiScope = \"tenants\")",
+        "Hexalith.McpCli.Abstractions.HexalithCommand(\"Create a new tenant with an identifier, a display name and a description (null for none). Only a global administrator can create tenants. The tenant starts active with no members and no configuration; an identifier that already exists is rejected.\", Example = \"{\\\"TenantId\\\":\\\"acme\\\",\\\"Name\\\":\\\"Acme Corporation\\\",\\\"Description\\\":\\\"Production workspace for Acme\\\"}\")"
+      ],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor(string TenantId, string Name, string? Description)",
+          "is_const": false
+        },
+        {
+          "name": "TenantId",
+          "kind": "property",
+          "attributes": [
+            "Hexalith.McpCli.Abstractions.HexalithIdentifier",
+            "System.ComponentModel.Description(\"Identifier of the new tenant: 1 to 256 ASCII letters, digits, '.', '_' or '-', starting and ending with a letter or digit. It is case-sensitive and cannot be changed later.\")"
+          ],
+          "signature": "string TenantId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Name",
+          "kind": "property",
+          "attributes": [
+            "System.ComponentModel.Description(\"Display name of the tenant.\")"
+          ],
+          "signature": "string Name { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Description",
+          "kind": "property",
+          "attributes": [
+            "System.ComponentModel.Description(\"Free-text description of the tenant. The key is required; send null for no description.\")"
+          ],
+          "signature": "string? Description { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Domain",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string Domain { get; }",
+          "is_const": false
+        },
+        {
+          "name": "CommandType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string CommandType { get; }",
+          "is_const": false
+        },
+        {
+          "name": "AggregateId",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string AggregateId { get; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+      "attributes": [
+        "Hexalith.EventStore.Contracts.Rest.RestRoute((Hexalith.EventStore.Contracts.Rest.RestVerb)1, \"{tenantId}/users/{userId}/add\", ApiScope = \"tenants\")",
+        "Hexalith.McpCli.Abstractions.HexalithCommand(\"Add a user to an active tenant with a role. Allowed for a global administrator or a TenantOwner of the tenant; if the tenant has never had a member, any caller may add its first member with any role. A user who is already a member is rejected; use tenants.change-user-role to change an existing member's role.\", Example = \"{\\\"TenantId\\\":\\\"acme\\\",\\\"UserId\\\":\\\"8d3f2a61-5b7e-4c0a-9e21-3f4b6c7d8e90\\\",\\\"Role\\\":\\\"TenantContributor\\\"}\")"
+      ],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor(string TenantId, string UserId, Hexalith.Tenants.Contracts.Enums.TenantRole Role)",
+          "is_const": false
+        },
+        {
+          "name": "TenantId",
+          "kind": "property",
+          "attributes": [
+            "Hexalith.McpCli.Abstractions.HexalithIdentifier",
+            "System.ComponentModel.Description(\"Identifier of the tenant to add the user to.\")"
+          ],
+          "signature": "string TenantId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "UserId",
+          "kind": "property",
+          "attributes": [
+            "Hexalith.McpCli.Abstractions.HexalithIdentifier",
+            "System.ComponentModel.Description(\"Identifier of the user to add: the subject (sub) claim the identity provider issues for that user. It is not checked against the identity provider.\")"
+          ],
+          "signature": "string UserId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Role",
+          "kind": "property",
+          "attributes": [
+            "System.ComponentModel.Description(\"Role to grant. Every role can read the tenant and its members; TenantContributor can also update its name and description; TenantOwner can also manage its members, roles and configuration. Unknown is rejected.\")"
+          ],
+          "signature": "Hexalith.Tenants.Contracts.Enums.TenantRole Role { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Domain",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string Domain { get; }",
+          "is_const": false
+        },
+        {
+          "name": "CommandType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string CommandType { get; }",
+          "is_const": false
+        },
+        {
+          "name": "AggregateId",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string AggregateId { get; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Enums.TenantRole",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Enums.TenantRole",
+      "attributes": [],
+      "members": [
+        {
+          "name": "Unknown",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "TenantOwner",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "TenantContributor",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "TenantReader",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+      "attributes": [
+        "Hexalith.EventStore.Contracts.Rest.RestRoute((Hexalith.EventStore.Contracts.Rest.RestVerb)0, \"{tenantId}\", ApiScope = \"tenants\")",
+        "Hexalith.EventStore.Contracts.Rest.RestQueryBinding((Hexalith.EventStore.Contracts.Rest.RestQueryBindingSource)2, \"tenantId\", (Hexalith.EventStore.Contracts.Rest.RestQueryBindingSource)2, \"tenantId\")",
+        "Hexalith.McpCli.Abstractions.HexalithQuery(\"Read one tenant's full details: name, description, status (Active or Disabled), creation time, members with their roles, and configuration settings. The caller must be a member of the tenant or a global administrator. A missing tenant is reported as not found to a global administrator and as forbidden to anyone else. It is not paged: all members are returned and the pageSize, offset and cursor arguments are not used; to page a long member list, use tenants.get-tenant-users.\", AggregateIdProperty = \"TenantId\", Example = \"{\\\"TenantId\\\":\\\"acme\\\"}\")"
+      ],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor()",
+          "is_const": false
+        },
+        {
+          "name": "TenantId",
+          "kind": "property",
+          "attributes": [
+            "Hexalith.McpCli.Abstractions.HexalithIdentifier",
+            "System.ComponentModel.Description(\"Identifier of the tenant to read. Required; a call without it is rejected.\")"
+          ],
+          "signature": "string TenantId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "QueryType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string QueryType { get; }",
+          "is_const": false
+        },
+        {
+          "name": "Domain",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string Domain { get; }",
+          "is_const": false
+        },
+        {
+          "name": "ProjectionType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string ProjectionType { get; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+      "attributes": [
+        "Hexalith.EventStore.Contracts.Rest.RestRoute((Hexalith.EventStore.Contracts.Rest.RestVerb)0, \"~/api/global-administrators\", ApiScope = \"tenants\")",
+        "Hexalith.EventStore.Contracts.Rest.RestQueryBinding((Hexalith.EventStore.Contracts.Rest.RestQueryBindingSource)1, \"global-administrators\", (Hexalith.EventStore.Contracts.Rest.RestQueryBindingSource)1, \"global-administrators\")"
+      ],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor()",
+          "is_const": false
+        },
+        {
+          "name": "Cursor",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string? Cursor { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "PageSize",
+          "kind": "property",
+          "attributes": [],
+          "signature": "int PageSize { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "QueryType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string QueryType { get; }",
+          "is_const": false
+        },
+        {
+          "name": "Domain",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string Domain { get; }",
+          "is_const": false
+        },
+        {
+          "name": "ProjectionType",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string ProjectionType { get; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.TenantDetail",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Queries.TenantDetail",
+      "attributes": [],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor(string TenantId, string Name, string? Description, Hexalith.Tenants.Contracts.Enums.TenantStatus Status, System.Collections.Generic.IReadOnlyList<Hexalith.Tenants.Contracts.Queries.TenantMember> Members, System.Collections.Generic.IReadOnlyDictionary<string, string> Configuration, System.DateTimeOffset CreatedAt)",
+          "is_const": false
+        },
+        {
+          "name": "TenantId",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string TenantId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Name",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string Name { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Description",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string? Description { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Status",
+          "kind": "property",
+          "attributes": [],
+          "signature": "Hexalith.Tenants.Contracts.Enums.TenantStatus Status { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Members",
+          "kind": "property",
+          "attributes": [],
+          "signature": "System.Collections.Generic.IReadOnlyList<Hexalith.Tenants.Contracts.Queries.TenantMember> Members { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Configuration",
+          "kind": "property",
+          "attributes": [],
+          "signature": "System.Collections.Generic.IReadOnlyDictionary<string, string> Configuration { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "CreatedAt",
+          "kind": "property",
+          "attributes": [],
+          "signature": "System.DateTimeOffset CreatedAt { get; set; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.TenantMember",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Queries.TenantMember",
+      "attributes": [],
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor(string UserId, Hexalith.Tenants.Contracts.Enums.TenantRole Role)",
+          "is_const": false
+        },
+        {
+          "name": "UserId",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string UserId { get; set; }",
+          "is_const": false
+        },
+        {
+          "name": "Role",
+          "kind": "property",
+          "attributes": [],
+          "signature": "Hexalith.Tenants.Contracts.Enums.TenantRole Role { get; set; }",
+          "is_const": false
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Identity.TenantIdentity",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.Tenants.Contracts.Identity.TenantIdentity",
+      "attributes": [],
+      "members": [
+        {
+          "name": "DefaultTenantId",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "Domain",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "GlobalAdministratorsDomain",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        },
+        {
+          "name": "GlobalAdministratorsAggregateId",
+          "kind": "field",
+          "attributes": [],
+          "is_const": true
+        }
+      ]
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "type",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Contracts.dll",
+        "-t",
+        "Hexalith.EventStore.Contracts.Queries.SubmitQueryResponse",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "type": "Hexalith.EventStore.Contracts.Queries.SubmitQueryResponse",
+      "members": [
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [
+            "System.Text.Json.Serialization.JsonConstructor"
+          ],
+          "signature": "void .ctor(string CorrelationId, System.Text.Json.JsonElement Payload, bool Success = true, string? ErrorMessage = null, Hexalith.EventStore.Contracts.Queries.QueryResponseMetadata? Metadata = null)"
+        },
+        {
+          "name": ".ctor",
+          "kind": "constructor",
+          "attributes": [],
+          "signature": "void .ctor(string correlationId, System.Text.Json.JsonElement payload)"
+        },
+        {
+          "name": "CorrelationId",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string CorrelationId { get; set; }"
+        },
+        {
+          "name": "Payload",
+          "kind": "property",
+          "attributes": [],
+          "signature": "System.Text.Json.JsonElement Payload { get; set; }"
+        },
+        {
+          "name": "Success",
+          "kind": "property",
+          "attributes": [],
+          "signature": "bool Success { get; set; }"
+        },
+        {
+          "name": "ErrorMessage",
+          "kind": "property",
+          "attributes": [],
+          "signature": "string? ErrorMessage { get; set; }"
+        },
+        {
+          "name": "Metadata",
+          "kind": "property",
+          "attributes": [],
+          "signature": "Hexalith.EventStore.Contracts.Queries.QueryResponseMetadata? Metadata { get; set; }"
+        }
+      ]
+    }
+  ],
+  "requiredSurfaceComparisons": [
+    {
+      "type": "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Commands.CreateTenant",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Commands.AddUserToTenant",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Enums.TenantRole",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Enums.TenantRole",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.GetTenantQuery",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.GetGlobalAdministratorsQuery",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Queries.TenantDetail",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.TenantDetail",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Queries.TenantMember",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Queries.TenantMember",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    },
+    {
+      "type": "Hexalith.Tenants.Contracts.Identity.TenantIdentity",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "diff",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/tenants/Hexalith.Tenants.Contracts.dll../home/administrator/.nuget/packages/hexalith.tenants.contracts/5.10.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+        "-t",
+        "Hexalith.Tenants.Contracts.Identity.TenantIdentity",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "result": {
+        "title": "Diff: Hexalith.Tenants.Contracts",
+        "versions": "Hexalith.Tenants.Contracts.dll -> Hexalith.Tenants.Contracts.dll",
+        "changes_summary": "no changes"
+      }
+    }
+  ],
+  "sourceHashes": {
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Commands/CreateTenant.cs": "c5af9b6d2c6d4f3e18c42e4013baf92a047eb0112efae40f6cd0225e5e71c8cf",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Commands/AddUserToTenant.cs": "ba3bd661b272c0f476580935e03015be143130c1d4fe3cba670aee673ed51ec8",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Enums/TenantRole.cs": "78dbc4d45629e0dca93c01de9ac9ca0960371fa3a50a6fa4facb12829876291f",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Identity/TenantIdentity.cs": "b32a95619dbb94c03cfa440356e39f826e80567b562a9ba4953c9dbc23d418c0",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Queries/GetTenantQuery.cs": "f080e0142aeef27f9a15e94ede48326e4620d21cfc3bf2a79ce28d85c3a633ea",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Queries/GetGlobalAdministratorsQuery.cs": "e8b4291e6a931a8899792ec28b71c869d8735587f209cae2e86a6c0ec1aa56ad",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/GetTenantQueryHandler.cs": "977bda534905a9e44380ee92c59bf7823729dd63b1aa37c82a2d0adf982ea2f8",
+    "references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/TenantQueryHandlerBase.cs": "7b00868c7066c89efbc1f2eb337fccc7ec132b3083c0e39695ff0f675c3a162d",
+    "references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Queries/SubmitQueryResponse.cs": "47ed1db6a134468056df3e3e4bd442cf03f113695dd4bf77872e9d9a1e4bdeb4",
+    "tools/live-topology/plans/tenants.create-tenant.json": "6ee1c0010695b777b87e961be2ea7515d70033387e093e1cac721b82d5d83c07",
+    "tools/live-topology/plans/tenants.add-user-to-tenant.json": "cac6df1cb86d347d1c6c188525c8db4098ff62466450dabf0a5fa3efe9050757"
+  },
+  "wire": {
+    "commandEndpoint": "/api/v1/commands",
+    "queryEndpoint": "/api/v1/queries",
+    "tenantEnvelope": "system",
+    "domain": "tenants",
+    "aggregateId": "review.tenant",
+    "commands": [
+      {
+        "commandType": "create-tenant",
+        "payload": [
+          "TenantId:string",
+          "Name:string",
+          "Description:string?"
+        ]
+      },
+      {
+        "commandType": "add-user-to-tenant",
+        "payload": [
+          "TenantId:string",
+          "UserId:string",
+          "Role:TenantRole=TenantContributor"
+        ]
+      }
+    ],
+    "query": {
+      "queryType": "get-tenant",
+      "projectionType": "tenants",
+      "payload": [
+        "TenantId:string"
+      ],
+      "result": "payload.tenantId and payload.members[].userId/role (camelCase; string enums)"
+    },
+    "administrator": {
+      "subject": "mcpcli-live-admin",
+      "tenant": "system",
+      "domain": "global-administrators",
+      "aggregateId": "global-administrators",
+      "queryType": "get-global-administrators",
+      "projectionType": "global-administrators",
+      "result": "payload.items[].userId"
+    },
+    "client": "review.operatorSubject; global_admin=false; persisted TenantContributor; separate from bootstrap administrator"
+  },
+  "limits": [
+    "Exact image/package assembly hashes differ. Required-surface comparisons are retained; no byte equivalence is claimed.",
+    "This proves metadata/type/member bindings, not deployed interoperability or persistence.",
+    "Owner source hashes document serialization/read-model mapping; immutable images remain the runtime identities."
+  ]
+}

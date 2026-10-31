@@ -16,6 +16,7 @@ import subprocess
 import sys
 import time
 import tempfile
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE_FILE = ROOT / 'eng/ext-secrets-1/probe_raft_non_revival.py'
@@ -29,6 +30,39 @@ CASES = ('TrimRefusesLeakedOldCiphertextAndRetainsUnrelatedRoot',
          'NativeTenantAndCompleteContextSubstitutionCannotDecrypt')
 ERC_CONFIG = base.CONFIG.replace('  tls_disable = true\n', '  tls_disable = true\n  max_request_size = 67108864\n  max_request_json_memory = 134217728\n  max_request_json_strings = 1000000\n').replace(
     '  node_id = "disposable-negative-control"\n', '  node_id = "disposable-negative-control"\n  max_entry_size = 67108864\n  max_transaction_size = 67108864\n')
+
+
+def read_runtime_policies(directory):
+    """Verify each exact shipped rendered tenant policy without reading a credential."""
+    script = ROOT / 'deploy/erasure-root/bootstrap.py'
+    specification = importlib.util.spec_from_file_location('erc_shipped_native_policy', script)
+    shipped = importlib.util.module_from_spec(specification)
+    specification.loader.exec_module(shipped)
+    fragment_hash = hashlib.sha256(script.with_name('custody-policy.hcl').read_bytes()).hexdigest()
+    policies = []
+    groups = {}
+    for path in sorted(Path(directory).glob('policy-*.json')):
+        if path.is_symlink() or path.stat().st_size > 2048:
+            raise base.Blocked('RuntimePolicyEvidenceInvalid')
+        policy = json.loads(path.read_bytes())
+        fields = {'shippedPolicySha256', 'renderedPolicySha256', 'transitMount', 'headMount', 'runtimePolicyName', 'tenantId', 'scope', 'rootUsedOnlyForBootstrap'}
+        if not isinstance(policy, dict) or set(policy) != fields or policy['rootUsedOnlyForBootstrap'] is not True \
+                or policy['tenantId'] not in ('tenant-a', 'tenant-b') or policy['scope'] != policy['tenantId'] + ':custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1' \
+                or not all(isinstance(policy[key], str) and re.fullmatch('[A-Za-z0-9_-]{1,128}', policy[key]) for key in ('transitMount', 'headMount', 'runtimePolicyName')):
+            raise base.Blocked('RuntimePolicyEvidenceInvalid')
+        enrollment = {'transitMount': policy['transitMount'], 'headMount': policy['headMount'], 'nativeKeys': {'tenant-a': 'epoch-a', 'tenant-b': 'epoch-b'}}
+        expected = shipped.render_policy(enrollment, policy['tenantId'], policy['scope'])
+        if policy['shippedPolicySha256'] != fragment_hash or policy['renderedPolicySha256'] != hashlib.sha256(expected.encode()).hexdigest() \
+                or policy['runtimePolicyName'] != shipped.policy_name(policy['tenantId'], policy['scope']):
+            raise base.Blocked('RuntimePolicyEvidenceInvalid')
+        group = groups.setdefault((policy['transitMount'], policy['headMount']), set())
+        if policy['tenantId'] in group:
+            raise base.Blocked('RuntimePolicyEvidenceInvalid')
+        group.add(policy['tenantId'])
+        policies.append(policy)
+    if any(tenants != {'tenant-a', 'tenant-b'} for tenants in groups.values()):
+        raise base.Blocked('RuntimePolicyEvidenceInvalid')
+    return policies
 
 
 class ErcProbe(base.Probe):
@@ -131,7 +165,7 @@ class ErcProbe(base.Probe):
         self.leader('raft-leader')
         environment = dict(os.environ, ERC_NATIVE_DISPOSABLE_CONTAINER=self.container_id,
                            ERC_NATIVE_DISPOSABLE_NONCE=self.run_id, ERC_NATIVE_DISPOSABLE_TOKEN=self.token)
-        command = ['dotnet', str(self.assembly), '-class', 'Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests', '-noColor']
+        command = ['dotnet', str(self.assembly), '-class', 'Hexalith.Platform.Protection.Tests.OpenBaoErasureRootIntegrationTests', '-noColor', '-parallelMode', 'none']
         if self.bootstrap:
             command[3] = 'Hexalith.Platform.Protection.Tests.OpenBaoBootstrapIntegrationTests'
         elif self.diagnostic:
@@ -143,16 +177,38 @@ class ErcProbe(base.Probe):
             started = time.monotonic()
             with tempfile.TemporaryDirectory(prefix='erc-native-diagnostic-') as diagnostic_directory:
                 environment['ERC_NATIVE_DIAGNOSTIC_DIRECTORY'] = diagnostic_directory
+                case_results = Path(diagnostic_directory) / 'native-tests.xml'
+                command += ['-result-xml', str(case_results)]
                 completed = subprocess.run(command, env=environment, capture_output=True, timeout=3600, check=False)
-                runtime_policies = []
-                for policy_path in sorted(Path(diagnostic_directory).glob('policy-*.json')):
-                    if policy_path.is_symlink() or policy_path.stat().st_size > 2048:
-                        raise base.Blocked('RuntimePolicyEvidenceInvalid')
-                    policy = json.loads(policy_path.read_bytes())
-                    if set(policy) != {'shippedPolicySha256', 'renderedPolicySha256', 'transitMount', 'headMount', 'runtimePolicyName', 'rootUsedOnlyForBootstrap'} or not all(re.fullmatch('[0-9a-f]{64}', policy[key]) for key in ('shippedPolicySha256', 'renderedPolicySha256')) or policy['rootUsedOnlyForBootstrap'] is not True or not all(re.fullmatch('[A-Za-z0-9_-]{1,128}', policy[key]) for key in ('transitMount', 'headMount', 'runtimePolicyName')):
-                        raise base.Blocked('RuntimePolicyEvidenceInvalid')
-                    runtime_policies.append(policy)
-                self.result['runtimePolicies'] = runtime_policies
+                self.result['runtimePolicies'] = read_runtime_policies(diagnostic_directory)
+                self.result['nativeFixtureStages'] = []
+                for path in sorted(Path(diagnostic_directory).glob('fixture-*.json')):
+                    if path.is_symlink() or path.stat().st_size > 8192:
+                        raise base.Blocked('NativeFixtureDiagnosticsInvalid')
+                    fixture = json.loads(path.read_bytes())
+                    if set(fixture) != {'transitMount', 'headMount', 'stages'} \
+                            or not all(re.fullmatch('[A-Za-z0-9_-]{1,128}', fixture[key]) for key in ('transitMount', 'headMount')) \
+                            or not isinstance(fixture['stages'], list) or len(fixture['stages']) > 30 \
+                            or not all(re.fullmatch(r'(?:GET|POST|DELETE):[A-Za-z0-9-]{1,40}:[1-5][0-9]{2}', stage) for stage in fixture['stages']):
+                        raise base.Blocked('NativeFixtureDiagnosticsInvalid')
+                    self.result['nativeFixtureStages'].append(fixture)
+                configuration = Path(diagnostic_directory) / 'bootstrap-head-config.json'
+                if self.bootstrap and configuration.is_file() and not configuration.is_symlink() and configuration.stat().st_size <= 1024:
+                    values = json.loads(configuration.read_bytes())
+                    if set(values) != {'statusCode', 'maxVersions', 'casRequired'} or type(values['statusCode']) is not int or not 100 <= values['statusCode'] <= 599 \
+                            or values['maxVersions'] is not None and type(values['maxVersions']) is not int \
+                            or values['casRequired'] is not None and type(values['casRequired']) is not bool:
+                        raise base.Blocked('BootstrapConfigurationDiagnosticsInvalid')
+                    self.result['bootstrapHeadConfiguration'] = values
+                self.result['safeCaseResults'] = []
+                if case_results.is_file() and not case_results.is_symlink() and case_results.stat().st_size <= 8 * 1024 * 1024:
+                    for test in ET.parse(case_results).iter('test'):
+                        name = test.get('method') or test.get('name', '').rsplit('.', 1)[-1]
+                        if name not in (*CASES, 'BootstrapAndWrapOneRoot', 'ShippedApplyInstallsAllExactRuntimeOwnerGenesis') or test.get('result') not in ('Pass', 'Fail', 'Skip'):
+                            raise base.Blocked('NativeCaseDiagnosticsInvalid')
+                        trace = test.findtext('failure/stack-trace', '')
+                        locations = sorted(set(re.findall(r'OpenBao(?:BootstrapIntegrationTests|ErasureRootIntegrationTests|NativeCustodyFixture|DisposableNativeHandler)\.cs(?:\([0-9]+,0\)|:line\s+[0-9]+)', trace)))[:10]
+                        self.result['safeCaseResults'].append({'case': name, 'outcome': test.get('result'), 'sourceLocations': locations})
                 metadata = Path(diagnostic_directory) / 'native-stage.json'
                 if metadata.is_file() and not metadata.is_symlink() and metadata.stat().st_size <= 4096:
                     safe = json.loads(metadata.read_bytes())
@@ -199,8 +255,9 @@ class ErcProbe(base.Probe):
                 or occurrence_measured[0]['nativeOccurrences'] != 256 or occurrence_measured[0]['nativeOwners'] != 256
                 or occurrence_measured[0]['lookupReadBound'] != 16):
             raise base.Blocked('NativeAuthoritativeOccurrenceGeometryMissing')
-        if len(self.result.get('runtimePolicies', [])) != (1 if self.diagnostic or self.case or self.bootstrap else 5):
+        if len(self.result.get('runtimePolicies', [])) != (2 if self.diagnostic or self.case or self.bootstrap else 10):
             raise base.Blocked('ExclusiveRestrictedRuntimePolicyEvidenceMissing')
+        self.result['runtimeTokensTenantScoped'] = True
         self.mark('native-component-cases', count=1 if self.diagnostic or self.case or self.bootstrap else 5, actualCustodyStore=True, privateEligibility='ExplicitSyntheticTestFixture')
 
     def run(self):

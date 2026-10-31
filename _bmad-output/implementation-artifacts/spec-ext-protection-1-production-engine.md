@@ -1061,3 +1061,11 @@ Reviewers returned before this triage. Repeated trim, volume-loss, mlock, revoca
 | R11-VG-3 | medium | patch | Pre-verified. Owner reads have no foreign-tenant scope case. |
 
 Confirmed patches are R11-VG-1, R11-VG-2, R11-VG-3, and R11-BH-9. Maybe-false medium and high rows are deferred. No bad_spec loopback is started.
+
+## Authorized loop-10 native integration-fixture continuation
+
+The current human request explicitly authorizes fixing the remaining integration-fixture gaps identified in `docs/implementation/ext-protection-1-loop10/README.md` and `parent-audit.json`. This continuation controls this run over older dispatches: supply the explicit CA pin and adjacent `custody-policy.hcl` to `OpenBaoBootstrapIntegrationTests`; use the shipped rendered per-tenant policies for runtime credentials in both that bootstrap fixture and `OpenBaoNativeCustodyFixture`. Runtime credentials must remain tenant scoped. Preserve existing work, loop 9/10 corrections, frozen intent, original baselines and counter 10. Leave R7-BH-7 and unopened review rows deferred. Do not open another review cycle or increment the counter.
+
+Use the recorded serialized Debug/project-reference settings, including the physical Commons path, and run affected test DLLs directly from a fresh inventoried runtime. After repairing the fixtures, actually run the unchanged five-case native suite only against a verified owned disposable OpenBao 2.6.2 harness. Preserve workload sizes, record failures and cleanup, and never substitute component results for native evidence. Verify image/version, ownership and isolation before native operations; if the harness cannot be verified, record that concrete blocker without operating an unverified server.
+
+Record fresh commands, raw logs, source/runtime hashes, results and cleanup under a unique new directory in `docs/implementation/ext-protection-1-loop10/`, preserving every historical evidence file byte. Keep this spec and story `in-progress`; report remaining source gaps and exact installed prerequisites. Do not run Live/OQ, Agents consumers, cluster installation or production OpenBao operations. Do not invent accepted targets, profiles, dates or availability. Do not mutate Git or remote state. Independent installed/physical qualification remains unestablished regardless of fixture results.

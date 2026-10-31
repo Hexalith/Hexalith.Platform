@@ -49,6 +49,37 @@ class NativeHarnessControls(unittest.TestCase):
         self.assertNotIn('ext_protection_1.py', source)
         self.assertNotIn("'snapshot'", source)
 
+    def test_runtime_policy_evidence_requires_both_exact_rendered_tenant_policies(self):
+        script = probe.ROOT / 'deploy/erasure-root/bootstrap.py'
+        specification = importlib.util.spec_from_file_location('erc_native_policy_control', script)
+        shipped = importlib.util.module_from_spec(specification)
+        specification.loader.exec_module(shipped)
+        enrollment = {'transitMount': 'transit-owned', 'headMount': 'heads-owned', 'nativeKeys': {'tenant-a': 'epoch-a', 'tenant-b': 'epoch-b'}}
+        fragment_hash = hashlib.sha256(script.with_name('custody-policy.hcl').read_bytes()).hexdigest()
+        for mutation in (None, 'fragment-only', 'missing-tenant', 'foreign-scope', 'shared-policy', 'duplicate-tenant'):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                for tenant in ('tenant-a', 'tenant-b'):
+                    if mutation == 'missing-tenant' and tenant == 'tenant-b':
+                        continue
+                    scope = tenant + ':custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1'
+                    value = {'shippedPolicySha256': fragment_hash, 'renderedPolicySha256': hashlib.sha256(shipped.render_policy(enrollment, tenant, scope).encode()).hexdigest(),
+                             'transitMount': enrollment['transitMount'], 'headMount': enrollment['headMount'], 'runtimePolicyName': shipped.policy_name(tenant, scope),
+                             'tenantId': tenant, 'scope': scope, 'rootUsedOnlyForBootstrap': True}
+                    if mutation == 'fragment-only':
+                        value['renderedPolicySha256'] = fragment_hash
+                    elif mutation == 'foreign-scope':
+                        value['scope'] = 'tenant-foreign:custody:key-lifecycle-v1|custody-key-lifecycle-candidate-v1'
+                    elif mutation == 'shared-policy':
+                        value['runtimePolicyName'] = 'erc-shared-runtime'
+                    (Path(directory) / ('policy-' + tenant + '.json')).write_text(json.dumps(value))
+                    if mutation == 'duplicate-tenant' and tenant == 'tenant-a':
+                        (Path(directory) / 'policy-duplicate.json').write_text(json.dumps(value))
+                if mutation is None:
+                    self.assertEqual([value['tenantId'] for value in probe.read_runtime_policies(directory)], ['tenant-a', 'tenant-b'])
+                else:
+                    with self.assertRaises(probe.base.Blocked):
+                        probe.read_runtime_policies(directory)
+
     def test_frozen_runtime_tamper_or_manifest_hash_mismatch_refuses_before_docker(self):
         for tamper in ('file', 'manifest-hash'):
             with self.subTest(tamper=tamper), tempfile.TemporaryDirectory() as directory:

@@ -1,0 +1,138 @@
+[
+  {
+    "name": "bootstrap-tests",
+    "argv": [
+      "python3",
+      "eng/ext-protection-1/test_bootstrap.py",
+      "-v"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "elapsedSeconds": 3.087,
+    "environmentPins": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "log": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/bootstrap-tests.log",
+    "logSha256": "3592334ddb46a339917f16bbf38281def89351b6c1185b8c9b736287fbd5eb91",
+    "bundledLog": "ext-protection-loop10-resume-27fe4f343c1a/bootstrap-tests.log.txt",
+    "bundledLogSha256": "3592334ddb46a339917f16bbf38281def89351b6c1185b8c9b736287fbd5eb91"
+  },
+  {
+    "name": "platform-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "elapsedSeconds": 11.302,
+    "environmentPins": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "log": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/platform-build.log",
+    "logSha256": "c6783a97dd7587662342b8c8954bd4a4b574de7a68eca864de0815a41e705836",
+    "bundledLog": "ext-protection-loop10-resume-27fe4f343c1a/platform-build.log.txt",
+    "bundledLogSha256": "c6783a97dd7587662342b8c8954bd4a4b574de7a68eca864de0815a41e705836"
+  },
+  {
+    "name": "eventstore-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-nodeReuse:false",
+      "-m:1",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "exitCode": 0,
+    "elapsedSeconds": 17.388,
+    "environmentPins": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "log": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/eventstore-build.log",
+    "logSha256": "e5de00b6987c5f12383c02f2641b2e71e8961fcf659a400eeedf17535cb910b8",
+    "bundledLog": "ext-protection-loop10-resume-27fe4f343c1a/eventstore-build.log.txt",
+    "bundledLogSha256": "e5de00b6987c5f12383c02f2641b2e71e8961fcf659a400eeedf17535cb910b8"
+  },
+  {
+    "name": "platform-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/ext-protection-loop10-resume-27fe4f343c1a/runtime/platform/Hexalith.Platform.Protection.Tests.dll",
+      "-parallel",
+      "none",
+      "-xml",
+      "/tmp/ext-protection-loop10-resume-27fe4f343c1a/platform-tests.xml",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.CustodyOccurrenceProviderTests",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.ErasureRootUnissuedReplacementTests",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop8AdmissionTests",
+      "-class",
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "elapsedSeconds": 4.459,
+    "environmentPins": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "log": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/platform-tests.log",
+    "logSha256": "25a8e989468b6424ba3cec94126d66fd898dce2331b411c7ff181e7208d78486",
+    "bundledLog": "ext-protection-loop10-resume-27fe4f343c1a/platform-tests.log.txt",
+    "bundledLogSha256": "25a8e989468b6424ba3cec94126d66fd898dce2331b411c7ff181e7208d78486"
+  },
+  {
+    "name": "eventstore-tests",
+    "argv": [
+      "dotnet",
+      "/tmp/ext-protection-loop10-resume-27fe4f343c1a/runtime/eventstore/Hexalith.EventStore.Server.Tests.dll",
+      "-parallel",
+      "none",
+      "-xml",
+      "/tmp/ext-protection-loop10-resume-27fe4f343c1a/eventstore-tests.xml",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustOwnerStateAuthorityTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustDeletionConsumptionAuthorityTests",
+      "-class",
+      "Hexalith.EventStore.Server.Tests.Security.GovernanceScopeGuardTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/eventstore",
+    "exitCode": 0,
+    "elapsedSeconds": 4.263,
+    "environmentPins": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "log": "/tmp/ext-protection-loop10-resume-27fe4f343c1a/eventstore-tests.log",
+    "logSha256": "bd286ad0d9e31f314a9e01f2fb307bbc8c42350f382202435caa24113006a5ac",
+    "bundledLog": "ext-protection-loop10-resume-27fe4f343c1a/eventstore-tests.log.txt",
+    "bundledLogSha256": "bd286ad0d9e31f314a9e01f2fb307bbc8c42350f382202435caa24113006a5ac"
+  }
+]

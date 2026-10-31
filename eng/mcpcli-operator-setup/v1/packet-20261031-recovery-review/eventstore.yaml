@@ -1,0 +1,144 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: eventstore
+  namespace: mcpcli-417-20261031-ae9919ae
+  labels:
+    hexalith.com/operator-task: mcpcli-417-20261031-ae9919ae
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  podReplacementPolicy: Failed
+  podFailurePolicy:
+    rules:
+    - action: FailJob
+      onPodConditions:
+      - type: DisruptionTarget
+        status: 'True'
+    - action: FailJob
+      onExitCodes:
+        operator: NotIn
+        values:
+        - 0
+  template:
+    metadata:
+      labels:
+        hexalith.com/operator-task: mcpcli-417-20261031-ae9919ae
+        app: eventstore
+        dapr.io/app-id: eventstore
+      annotations:
+        dapr.io/enabled: 'true'
+        dapr.io/app-id: eventstore
+        dapr.io/app-port: '8080'
+        dapr.io/config: mcpcli-v1-access
+        dapr.io/app-token-secret: mcpcli-eventstore-app
+        dapr.io/api-token-secret: mcpcli-eventstore-api
+        dapr.io/sidecar-listen-addresses: 127.0.0.1
+        dapr.io/sidecar-cpu-request: 50m
+        dapr.io/sidecar-cpu-limit: 500m
+        dapr.io/sidecar-memory-request: 64Mi
+        dapr.io/sidecar-memory-limit: 256Mi
+    spec:
+      restartPolicy: Never
+      serviceAccountName: mcpcli-v1
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      imagePullSecrets:
+      - name: mcpcli-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        runAsGroup: 1654
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: eventstore
+        image: registry.hexalith.com/eventstore@sha256:c14074f08cf990072912dd6284fc253a900f6a020a0cd11008195aa357528eed
+        ports:
+        - name: http
+          containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: '1'
+            memory: 512Mi
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: DOTNET_ENVIRONMENT
+          value: Development
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:8080
+        - name: Authentication__JwtBearer__Authority
+          value: ''
+        - name: Authentication__JwtBearer__Issuer
+          value: mcpcli-live-tests
+        - name: Authentication__JwtBearer__Audience
+          value: hexalith-eventstore
+        - name: Authentication__JwtBearer__ValidAudiences__0
+          value: hexalith-eventstore
+        - name: Authentication__JwtBearer__AllowedAlgorithms__0
+          value: HS256
+        - name: Authentication__JwtBearer__RequireHttpsMetadata
+          value: 'false'
+        - name: EventStore__DomainService__AppId
+          value: eventstore
+        - name: EventStore__DomainService__ServiceVersion
+          value: v1
+        - name: ASPNETCORE_CONTENTROOT
+          value: /etc/gateway
+        - name: EventStore__DaprConfigPath
+          value: /etc/components/accesscontrol.json
+        - name: EventStore__StateStoreComponentPath
+          value: /etc/components/statestore.json
+        - name: EventStore__PubSubComponentPath
+          value: /etc/components/pubsub.json
+        - name: Authentication__JwtBearer__SigningKey
+          valueFrom:
+            secretKeyRef:
+              name: mcpcli-jwt
+              key: signing-key
+        - name: APP_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: mcpcli-eventstore-app
+              key: token
+        - name: DAPR_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: mcpcli-eventstore-api
+              key: token
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          periodSeconds: 5
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: components
+          mountPath: /etc/components
+          readOnly: true
+        - name: gateway
+          mountPath: /etc/gateway
+          readOnly: true
+      volumes:
+      - name: tmp
+        emptyDir:
+          sizeLimit: 128Mi
+      - name: components
+        configMap:
+          name: component-files
+      - name: gateway
+        configMap:
+          name: gateway-settings

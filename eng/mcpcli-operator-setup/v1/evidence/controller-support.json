@@ -1,0 +1,151 @@
+{
+  "schema": "mcpcli-v1-controller-support/v1",
+  "observedAt": "2026-10-31T06:07:01.861478+00:00",
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443"
+  },
+  "commands": [
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "version",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selected": {
+        "major": "1",
+        "minor": "34",
+        "emulationMajor": "1",
+        "emulationMinor": "34",
+        "minCompatibilityMajor": "1",
+        "minCompatibilityMinor": "33",
+        "gitVersion": "v1.34.9",
+        "gitCommit": "ad7c7374b74c04d07ea041d367ecb1a526bdf758",
+        "gitTreeState": "clean",
+        "buildDate": "2026-06-11T17:37:10Z",
+        "goVersion": "go1.25.11",
+        "compiler": "gc",
+        "platform": "linux/amd64"
+      },
+      "stderr": "Warning: version difference between client (1.36) and server (1.34) exceeds the supported minor version skew of +/-1\n"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "get",
+        "pods",
+        "-n",
+        "kube-system",
+        "-l",
+        "component=kube-controller-manager",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selected": [
+        {
+          "name": "kube-controller-manager-node1",
+          "uid": "24332d18-f997-496a-8468-a2aaf2fac082",
+          "image": "registry.k8s.io/kube-controller-manager:v1.34.9",
+          "useServiceAccountCredentials": true,
+          "controllers": [
+            "--controllers=*,bootstrapsigner,tokencleaner"
+          ]
+        }
+      ],
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "get",
+        "serviceaccount",
+        "job-controller",
+        "-n",
+        "kube-system",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selected": {
+        "name": "job-controller",
+        "namespace": "kube-system",
+        "uid": "e700a8f7-2bb1-4763-922a-81b7b65eff7f"
+      },
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "explain",
+        "job.spec.podReplacementPolicy"
+      ],
+      "exitCode": 0,
+      "selected": "GROUP:      batch\nKIND:       Job\nVERSION:    v1\n\nFIELD: podReplacementPolicy <string>\nENUM:\n    Failed\n    TerminatingOrFailed\n\nDESCRIPTION:\n    podReplacementPolicy specifies when to create replacement Pods. Possible\n    values are: - TerminatingOrFailed means that we recreate pods\n      when they are terminating (has a metadata.deletionTimestamp) or failed.\n    - Failed means to wait until a previously created Pod is fully terminated\n    (has phase\n      Failed or Succeeded) before creating a replacement Pod.\n    \n    When using podFailurePolicy, Failed is the the only allowed value.\n    TerminatingOrFailed and Failed are allowed values when podFailurePolicy is\n    not in use.\n    \n    Possible enum values:\n     - `\"Failed\"` means to wait until a previously created Pod is fully\n    terminated (has phase Failed or Succeeded) before creating a replacement\n    Pod.\n     - `\"TerminatingOrFailed\"` means that we recreate pods when they are\n    terminating (has a metadata.deletionTimestamp) or failed.\n    \n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "explain",
+        "job.spec.podFailurePolicy"
+      ],
+      "exitCode": 0,
+      "selected": "GROUP:      batch\nKIND:       Job\nVERSION:    v1\n\nFIELD: podFailurePolicy <PodFailurePolicy>\n\n\nDESCRIPTION:\n    Specifies the policy of handling failed pods. In particular, it allows to\n    specify the set of actions and conditions which need to be satisfied to take\n    the associated action. If empty, the default behaviour applies - the counter\n    of failed pods, represented by the jobs's .status.failed field, is\n    incremented and it is checked against the backoffLimit. This field cannot be\n    used in combination with restartPolicy=OnFailure.\n    PodFailurePolicy describes how failed pods influence the backoffLimit.\n    \nFIELDS:\n  rules\t<[]PodFailurePolicyRule> -required-\n    A list of pod failure policy rules. The rules are evaluated in order. Once a\n    rule matches a Pod failure, the remaining of the rules are ignored. When no\n    rule matches the Pod failure, the default handling applies - the counter of\n    pod failures is incremented and it is checked against the backoffLimit. At\n    most 20 elements are allowed.\n\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "get",
+        "deployment",
+        "dapr-sidecar-injector",
+        "-n",
+        "dapr-system",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selected": [
+        {
+          "image": "ghcr.io/dapr/injector:1.18.1",
+          "identityEnvironment": {
+            "NATIVE_SIDECAR_ENABLED": "false"
+          }
+        }
+      ],
+      "stderr": ""
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/v1.18.1/pkg/injector/service/injector.go",
+      "sha256": "9b1d02190da4ab9bab543d7a483ca77b5c5f1c94ea0af656bb67bbb9ee5d2c70",
+      "finding": "Default Dapr 1.18.1 allowlist includes kube-system:job-controller."
+    },
+    {
+      "url": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/controllers/job/",
+      "finding": "Single completion/parallelism, Never restart, backoffLimit zero, FailJob failure/disruption policy and Failed replacement policy are the selected controls."
+    }
+  ],
+  "conclusion": "Target Kubernetes 1.34.9 exposes required policy fields and its controller manager uses controller service-account credentials; kube-system/job-controller exists. Use that existing controller without impersonation or injector changes. Actual injection must still be observed on the owned Pod.",
+  "limits": [
+    "No controller identity impersonation, injector modification, application call or deployment performed.",
+    "A Kubernetes Job is not a transactional exactly-once execution guarantee. Terminal/disrupted Pods fail the Job, observations refuse identity changes/duplicates and no bootstrap retry is authorized.",
+    "kubectl 1.36 client emits a supported-skew warning against server 1.34; schema was read from target and client-only dry-run remains limited."
+  ]
+}

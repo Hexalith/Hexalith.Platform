@@ -1,0 +1,156 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: erasure-root-config
+  namespace: erasure-root
+data:
+  start-erasure-root.sh: |
+    #!/bin/sh
+    set -eu
+    # cgroup v2 reports swap separately: 1Gi memory + zero swap = 1Gi combined.
+    # Refuse before OpenBao starts if the independently configured runtime differs.
+    if [ "$(cat /sys/fs/cgroup/memory.max 2>/dev/null)" != "1073741824" ] ||
+       [ "$(cat /sys/fs/cgroup/memory.swap.max 2>/dev/null)" != "0" ]; then
+      echo "ERC_MEMORY_AND_SWAP_LIMIT_UNVERIFIED" >&2
+      exit 1
+    fi
+    exec bao server -config=/bao/config/erasure-root.hcl
+  erasure-root.hcl: |
+    disable_mlock = true
+    ui = false
+    api_addr = "https://erasure-root.erasure-root.svc:8200"
+    cluster_addr = "https://erasure-root-0.erasure-root.erasure-root.svc:8201"
+    listener "tcp" {
+      address = "0.0.0.0:8200"
+      cluster_address = "0.0.0.0:8201"
+      tls_cert_file = "/bao/tls/tls.crt"
+      tls_key_file = "/bao/tls/tls.key"
+      tls_min_version = "tls13"
+      max_request_size = 67108864
+      max_request_json_memory = 134217728
+      max_request_json_strings = 1000000
+    }
+    storage "raft" {
+      path = "/bao/data"
+      node_id = "erasure-root-0"
+      max_entry_size = 67108864
+      max_transaction_size = 67108864
+    }
+    telemetry {
+      disable_hostname = true
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: erasure-root
+  namespace: erasure-root
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: hexalith-erasure-root
+  ports:
+    - name: api
+      port: 8200
+      targetPort: 8200
+    - name: cluster
+      port: 8201
+      targetPort: 8201
+      # Raft only. Client namespaces are not granted 8201.
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: erasure-root
+  namespace: erasure-root
+  labels:
+    velero.io/exclude-from-backup: "true"
+spec:
+  serviceName: erasure-root
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hexalith-erasure-root
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hexalith-erasure-root
+        hexalith.com/custody-class: A1
+        velero.io/exclude-from-backup: "true"
+    spec:
+      serviceAccountName: erasure-root
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 100
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: openbao
+          image: quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641
+          imagePullPolicy: IfNotPresent
+          command: [/bin/sh, /bao/config/start-erasure-root.sh]
+          ports:
+            - containerPort: 8200
+              name: api
+            - containerPort: 8201
+              name: cluster
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: custody
+              mountPath: /bao/data
+            - name: config
+              mountPath: /bao/config
+              readOnly: true
+            - name: tls
+              mountPath: /bao/tls
+              readOnly: true
+            - name: scratch
+              mountPath: /tmp
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  health=$(bao read -address=https://127.0.0.1:8200 -ca-cert=/bao/tls/ca.crt -tls-server-name=erasure-root.erasure-root.svc -format=json sys/health) || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"version"[[:space:]]*:[[:space:]]*"2\.6\.2"' || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"initialized"[[:space:]]*:[[:space:]]*true' || exit 1
+                  printf '%s\n' "$health" | grep -Eq '"sealed"[[:space:]]*:[[:space:]]*false' || exit 1
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: config
+          configMap:
+            name: erasure-root-config
+        - name: tls
+          secret:
+            secretName: erasure-root-tls
+            defaultMode: 0400
+        - name: scratch
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: custody
+        labels:
+          hexalith.com/custody-class: A1
+          velero.io/exclude-from-backup: "true"
+      spec:
+        storageClassName: erasure-root-no-backup
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 5Gi

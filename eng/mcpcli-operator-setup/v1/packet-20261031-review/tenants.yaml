@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tenants
+  namespace: mcpcli-417-20261031-aebefecb
+  labels:
+    hexalith.com/operator-task: mcpcli-417-20261031-aebefecb
+    app: tenants
+    dapr.io/app-id: tenants
+  annotations:
+    dapr.io/enabled: 'true'
+    dapr.io/app-id: tenants
+    dapr.io/app-port: '8080'
+    dapr.io/config: mcpcli-v1-access
+    dapr.io/app-token-secret: mcpcli-tenants-app
+    dapr.io/api-token-secret: mcpcli-tenants-api
+    dapr.io/sidecar-listen-addresses: 127.0.0.1
+    dapr.io/sidecar-cpu-request: 50m
+    dapr.io/sidecar-cpu-limit: 500m
+    dapr.io/sidecar-memory-request: 64Mi
+    dapr.io/sidecar-memory-limit: 256Mi
+spec:
+  restartPolicy: Never
+  serviceAccountName: mcpcli-v1
+  nodeSelector:
+    kubernetes.io/arch: amd64
+  imagePullSecrets:
+  - name: mcpcli-pull
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1654
+    runAsGroup: 1654
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: tenants
+    image: registry.hexalith.com/tenants@sha256:2bc415a61466693bfa7e6c0df1c9aab319b0ef2e82c620897aa9faa1b58f75a5
+    ports:
+    - name: http
+      containerPort: 8080
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: '1'
+        memory: 512Mi
+    env:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: Development
+    - name: DOTNET_ENVIRONMENT
+      value: Development
+    - name: ASPNETCORE_URLS
+      value: http://0.0.0.0:8080
+    - name: Authentication__JwtBearer__Authority
+      value: ''
+    - name: Authentication__JwtBearer__Issuer
+      value: mcpcli-live-tests
+    - name: Authentication__JwtBearer__Audience
+      value: hexalith-eventstore
+    - name: Authentication__JwtBearer__ValidAudiences__0
+      value: hexalith-eventstore
+    - name: Authentication__JwtBearer__AllowedAlgorithms__0
+      value: HS256
+    - name: Authentication__JwtBearer__RequireHttpsMetadata
+      value: 'false'
+    - name: EventStore__DomainService__AppId
+      value: tenants
+    - name: EventStore__DomainService__ServiceVersion
+      value: v1
+    - name: Tenants__BootstrapGlobalAdminEnabled
+      value: 'true'
+    - name: Tenants__BootstrapGlobalAdminUserId
+      value: mcpcli-live-admin
+    - name: Tenants__DaprConfigPath
+      value: /etc/components/accesscontrol.json
+    - name: Authentication__JwtBearer__SigningKey
+      valueFrom:
+        secretKeyRef:
+          name: mcpcli-jwt
+          key: signing-key
+    - name: APP_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: mcpcli-tenants-app
+          key: token
+    - name: DAPR_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: mcpcli-tenants-api
+          key: token
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: http
+      periodSeconds: 5
+      timeoutSeconds: 3
+    volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+    - name: components
+      mountPath: /etc/components
+      readOnly: true
+  volumes:
+  - name: tmp
+    emptyDir:
+      sizeLimit: 128Mi
+  - name: components
+    configMap:
+      name: component-files

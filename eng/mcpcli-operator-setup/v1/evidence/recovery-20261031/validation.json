@@ -1,0 +1,177 @@
+{
+  "schema": "mcpcli-v1-recovery-validation/v1",
+  "observedAt": "2026-10-31T06:11:25.653896+00:00",
+  "reviewSha256": "b852925c1c74ae59f24feeb4719a432b8971583f86f405523b6bb21bff6aaf1b",
+  "namespaceAbsent": true,
+  "results": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "eng/mcpcli-operator-setup/v1",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "test_all_application_jobs_exist_before_first_liveness_and_readiness_after_writer (test_v1.RecoveryTests.test_all_application_jobs_exist_before_first_liveness_and_readiness_after_writer) ... ok\ntest_get_transient_startup_failures_are_bounded_and_retained (test_v1.RecoveryTests.test_get_transient_startup_failures_are_bounded_and_retained) ... ok\ntest_job_and_pod_identity_injection_and_terminal_refusals (test_v1.RecoveryTests.test_job_and_pod_identity_injection_and_terminal_refusals) ... ok\ntest_job_retry_replacement_and_template_boundaries (test_v1.RecoveryTests.test_job_retry_replacement_and_template_boundaries) ... ok\ntest_native_sidecar_and_delayed_controller_pod_resolution (test_v1.RecoveryTests.test_native_sidecar_and_delayed_controller_pod_resolution) ... ok\ntest_post_transport_uncertainty_is_not_retried_and_forward_cli_is_read_only (test_v1.RecoveryTests.test_post_transport_uncertainty_is_not_retried_and_forward_cli_is_read_only) ... ok\ntest_backup_and_provider_refusals (test_v1.V1Tests.test_backup_and_provider_refusals) ... ok\ntest_cli_requires_review_and_preserves_channels_without_external_calls (test_v1.V1Tests.test_cli_requires_review_and_preserves_channels_without_external_calls) ... ok\ntest_filled_control_fixture_parity_and_sensitive_boundaries (test_v1.V1Tests.test_filled_control_fixture_parity_and_sensitive_boundaries) ... ok\ntest_fixture_route_and_bootstrap_refusals (test_v1.V1Tests.test_fixture_route_and_bootstrap_refusals) ... ok\ntest_fresh_private_and_packet_output_refusals (test_v1.V1Tests.test_fresh_private_and_packet_output_refusals) ... ok\ntest_image_and_capability_refusals (test_v1.V1Tests.test_image_and_capability_refusals) ... ok\ntest_kubernetes_transport_failure_is_not_exposed_or_retried (test_v1.V1Tests.test_kubernetes_transport_failure_is_not_exposed_or_retried) ... ok\ntest_manifest_refusal_matrix (test_v1.V1Tests.test_manifest_refusal_matrix) ... ok\ntest_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff (test_v1.V1Tests.test_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff) ... ok\ntest_phase_order_target_and_retry_refusals (test_v1.V1Tests.test_phase_order_target_and_retry_refusals) ... ok\ntest_poll_and_redirect_refusals (test_v1.V1Tests.test_poll_and_redirect_refusals) ... ok\ntest_private_repository_boundary_and_existing_namespace_refuse_without_mutation (test_v1.V1Tests.test_private_repository_boundary_and_existing_namespace_refuse_without_mutation) ... ok\ntest_registry_helper_constraints_and_extension (test_v1.V1Tests.test_registry_helper_constraints_and_extension) ... ok\ntest_review_binding_refusals (test_v1.V1Tests.test_review_binding_refusals) ... ok\ntest_token_expiry_is_capped_by_review_window (test_v1.V1Tests.test_token_expiry_is_capped_by_review_window) ... ok\ntest_missing_administrator_or_membership_stops_before_handoff (test_v1.WriteFailureTests.test_missing_administrator_or_membership_stops_before_handoff) ... ok\ntest_terminal_seed_failure_never_submits_membership_or_replays_command (test_v1.WriteFailureTests.test_terminal_seed_failure_never_submits_membership_or_replays_command) ... ok\ntest_uncertain_writer_is_submitted_once_and_blocks_further_phases (test_v1.WriteFailureTests.test_uncertain_writer_is_submitted_once_and_blocks_further_phases) ... ok\n\n----------------------------------------------------------------------\nRan 24 tests in 1.331s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "eng/mcpcli-operator-setup/v1/phases.py",
+        "--packet",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review",
+        "--review-sha256",
+        "b852925c1c74ae59f24feeb4719a432b8971583f86f405523b6bb21bff6aaf1b"
+      ],
+      "exitCode": 0,
+      "stdout": "Reviewed packet/local inputs verified; no resources applied.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "get",
+        "namespace",
+        "mcpcli-417-20261031-ae9919ae",
+        "--ignore-not-found",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/tenants.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/tenants\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/parties.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/parties\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/eventstore.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/eventstore\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/namespace.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "namespace/mcpcli-417-20261031-ae9919ae\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/infrastructure.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "serviceaccount/mcpcli-v1\nresourcequota/task-bounds\nrole.rbac.authorization.k8s.io/mcpcli-task-secrets\nrolebinding.rbac.authorization.k8s.io/mcpcli-task-secrets\nnetworkpolicy.networking.k8s.io/task-isolation\npersistentvolumeclaim/task-data\nconfigmap/redis-config\nservice/redis\nconfiguration.dapr.io/mcpcli-v1-access\ncomponent.dapr.io/statestore\ncomponent.dapr.io/pubsub\nconfigmap/gateway-settings\nconfigmap/component-files\nservice/eventstore\nservice/tenants\nservice/parties\nservice/eventstore-dapr\nservice/tenants-dapr\nservice/parties-dapr\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/redis.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "pod/redis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "eng/mcpcli-operator-setup/v1"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "sourceHashes": {
+    "prepare.py": "23cefe7b6838a6b160f2f2a2e34a650609c021014f0062affabd8213287f1126",
+    "phases.py": "239d7a62f8fc4d8e8d5c169afe7d5ca8cc37a1ed497e867251e5788d2249ae73",
+    "test_v1.py": "d0cdb825f9013ffa357d621d15ac4ec576f06b9bd89afbd34251b87fd3ac542d",
+    "README.md": "6dbed9bef6c63bbce02242aad383c6f97d79e70d2e6ae77020d0a476663698c1"
+  },
+  "limits": [
+    "24 focused synthetic test methods passed; six public manifests passed client-only dry-run. This is not admission, runtime injection, readiness or persistence proof.",
+    "Original successful infrastructure/empty backup and failed Gateway attempt/cleanup remain preserved. No recovery deployment, application call, mutation replay, Secret resource retrieval or publication executed."
+  ]
+}

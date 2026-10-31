@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mcpcli-417-20261031-aebefecb
+  labels:
+    hexalith.com/operator-task: mcpcli-417-20261031-aebefecb
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted

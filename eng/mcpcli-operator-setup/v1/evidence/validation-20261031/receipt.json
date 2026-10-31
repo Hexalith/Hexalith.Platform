@@ -1,0 +1,64 @@
+{
+  "schema": "mcpcli-v1-local-validation/v1",
+  "observedAt": "2026-10-31T05:41:41.135341+00:00",
+  "results": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "eng/mcpcli-operator-setup/v1",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "01.stdout.log",
+      "stderrFile": "01.stderr.log",
+      "stdout": "",
+      "stderr": "test_backup_and_provider_refusals (test_v1.V1Tests.test_backup_and_provider_refusals) ... ok\ntest_cli_requires_review_and_preserves_channels_without_external_calls (test_v1.V1Tests.test_cli_requires_review_and_preserves_channels_without_external_calls) ... ok\ntest_filled_control_fixture_parity_and_sensitive_boundaries (test_v1.V1Tests.test_filled_control_fixture_parity_and_sensitive_boundaries) ... ok\ntest_fixture_route_and_bootstrap_refusals (test_v1.V1Tests.test_fixture_route_and_bootstrap_refusals) ... ok\ntest_fresh_private_and_packet_output_refusals (test_v1.V1Tests.test_fresh_private_and_packet_output_refusals) ... ok\ntest_image_and_capability_refusals (test_v1.V1Tests.test_image_and_capability_refusals) ... ok\ntest_manifest_refusal_matrix (test_v1.V1Tests.test_manifest_refusal_matrix) ... ok\ntest_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff (test_v1.V1Tests.test_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff) ... ok\ntest_phase_order_target_and_retry_refusals (test_v1.V1Tests.test_phase_order_target_and_retry_refusals) ... ok\ntest_poll_and_redirect_refusals (test_v1.V1Tests.test_poll_and_redirect_refusals) ... ok\ntest_registry_helper_constraints_and_extension (test_v1.V1Tests.test_registry_helper_constraints_and_extension) ... ok\ntest_review_binding_refusals (test_v1.V1Tests.test_review_binding_refusals) ... ok\ntest_token_expiry_is_capped_by_review_window (test_v1.V1Tests.test_token_expiry_is_capped_by_review_window) ... ok\ntest_missing_administrator_or_membership_stops_before_handoff (test_v1.WriteFailureTests.test_missing_administrator_or_membership_stops_before_handoff) ... ok\ntest_terminal_seed_failure_never_submits_membership_or_replays_command (test_v1.WriteFailureTests.test_terminal_seed_failure_never_submits_membership_or_replays_command) ... ok\ntest_uncertain_writer_is_submitted_once_and_blocks_further_phases (test_v1.WriteFailureTests.test_uncertain_writer_is_submitted_once_and_blocks_further_phases) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.592s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "eng/mcpcli-operator-setup/v1/phases.py",
+        "--packet",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-review",
+        "--review-sha256",
+        "79b9b6febc3c6ba8ca9753c1d8a4776f4eef07470fe25dcec3a01b3c84e5cedd"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "02.stdout.log",
+      "stderrFile": "02.stderr.log",
+      "stdout": "Reviewed packet/local inputs verified; no resources applied.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "eng/mcpcli-operator-setup/v1"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "03.stdout.log",
+      "stderrFile": "03.stderr.log",
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "sourceHashes": {
+    "prepare.py": "aac057e8824bf4483cd567d259fd143dff1e75b36a35a451432ef5ef62549299",
+    "phases.py": "6a46eb5d810de108558049d73f013f2aec1c13175c0c255c9f4981035f8e4531",
+    "test_v1.py": "29e833bc9d69f8b3cb0d2287c0f489b72d73900b89eb67e598a256902c47599d",
+    "README.md": "83da57ef3367f3a3b6830a7329e128d8fbceb2c0ef570cc6b536cd8707aa1e31",
+    "evidence/inspect-images.py": "a33562ecfdf4c2f45382a5c4a46035f3e382fb9ca23ead70685a9f3f44994c03"
+  },
+  "limits": [
+    "All runner transport/application scenarios use synthetic transports. No resource application or real bootstrap/seed has run.",
+    "16 focused tests passed. Earlier test fixture error (attempt to edit a read-only backup) was corrected in tests; its diagnostic did not execute external operations."
+  ]
+}

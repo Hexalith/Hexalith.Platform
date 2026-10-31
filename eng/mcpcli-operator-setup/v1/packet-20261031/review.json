@@ -1,0 +1,217 @@
+{
+  "schema": "mcpcli-v1-operator-review/v1",
+  "status": "prepared-for-review",
+  "applyAuthorized": false,
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443",
+    "namespace": "mcpcli-417-20261031-80c56709",
+    "release": "mcpcli-417-20261031-80c56709"
+  },
+  "tenant": "mcpcli-417-20261031-80c56709",
+  "operatorSubject": "mcpcli-417-operator-20261031-80c56709",
+  "createdAt": "2026-10-31T05:24:35.791098+00:00",
+  "expiresAt": "2026-11-01T05:24:35.791098+00:00",
+  "gatewayPort": 18170,
+  "images": {
+    "eventstore": "registry.hexalith.com/eventstore@sha256:c14074f08cf990072912dd6284fc253a900f6a020a0cd11008195aa357528eed",
+    "tenants": "registry.hexalith.com/tenants@sha256:2bc415a61466693bfa7e6c0df1c9aab319b0ef2e82c620897aa9faa1b58f75a5",
+    "parties": "registry.hexalith.com/parties@sha256:85afc9e954146883da56edce78e2ddaf401a47b35241bdceed87dfc20217aceb"
+  },
+  "redisImage": "redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+  "gatewaySourceCommit": "717a06e16c3afd81b904eaf4de646b74b13262d2",
+  "fixtureHashes": {
+    "tests/Hexalith.McpCli.AppHost/Program.cs": "f1d1cfb02e1719e5502b919f8a271c2263fe65b7d483947315fb024094da1cfd",
+    "tests/Hexalith.McpCli.AppHost/appsettings.json": "773ac6d5b7ea2989a41ff768eecca145013a7b1f726c5d5a35f188164086a7ef",
+    "tests/Hexalith.McpCli.AppHost/TopologyConfiguration.cs": "c0da409e86004d2fff0542785be52ed09ff7001e418485febedf79f8ff4a2a81",
+    "tests/Hexalith.McpCli.AppHost/DaprComponents/accesscontrol.yaml": "0e7bfb2578f0fda5b006ece6446d61d828258d4ef14f972e77c720feb077d34d",
+    "tests/Hexalith.McpCli.AppHost/DaprComponents/statestore.yaml": "8a3a6916ec63e0b04fa2ab02548c2994cc6b70496a084559298fb1666d7c23e1",
+    "tests/Hexalith.McpCli.AppHost/DaprComponents/pubsub.yaml": "20e69a4cb0dcd2ab4640aa7d78b3fd9dd0c1c7cb298364da7e95148c29e0147c",
+    "tests/Hexalith.McpCli.Integration.Tests/AspireTopologyFixture.cs": "3cc576b8741941ea303fded808cfc4c9b6200677e79e4f34108d7b2fbeab56c2",
+    "tests/Hexalith.McpCli.Integration.Tests/AdministratorAuthorityBootstrap.cs": "3a87448f80b34b65ab24dfa053bb5de176f028049cca9ccc5d67c8e6034a43aa",
+    "tests/Hexalith.McpCli.Integration.Tests/ProjectionWriterBootstrap.cs": "f75e14470764f189866edaa4223940d086b0ed8d334aff7eb8e82e810ddfe8ed",
+    "tools/live-topology/run-isolated.py": "dfb04b46032180f5eb1179ffc5d26287ca39eaa28b57b19014757bc11d1f53c7"
+  },
+  "imageInspectionSha256": "17d363c99e939afc93ac0a8a4b4107b998ac3a46e3044a234e6214f356ef0bac",
+  "privateManifest": "/tmp/mcpcli-417-v1-private-20261031-attempt2/private-inputs.json",
+  "privateManifestSha256": "45fbc61d86e33d7b2f4e8c0633acc096dc7c4cc0674e93087d103dd23f2aab95",
+  "secretReferences": {
+    "mcpcli-jwt": [
+      "signing-key"
+    ],
+    "mcpcli-eventstore-app": [
+      "token"
+    ],
+    "mcpcli-eventstore-api": [
+      "token"
+    ],
+    "mcpcli-tenants-app": [
+      "token"
+    ],
+    "mcpcli-tenants-api": [
+      "token"
+    ],
+    "mcpcli-parties-app": [
+      "token"
+    ],
+    "mcpcli-parties-api": [
+      "token"
+    ],
+    "mcpcli-redis": [
+      "password",
+      "users.acl"
+    ],
+    "mcpcli-pull": [
+      ".dockerconfigjson"
+    ]
+  },
+  "files": {
+    "tenants.yaml": "29e74b1e8b363a24d93198e3f22f86b93d55bc795f8ffeda10b61b4fb0a2abfa",
+    "parties.yaml": "8b6eea8df710ad8472ae9c0d06409248bbcbb42af3ad20432e0c26dda6c2e46b",
+    "eventstore.yaml": "3485d15a1ae93ad3bd1a0e3d72d4ddf8cdb263a769523cebc52439efa1432a99",
+    "infrastructure.yaml": "93226f55b3dca0731356e8c27e2efef484678865dff2cbc1eade9266a8b666e4"
+  },
+  "inventory": [
+    {
+      "kind": "Namespace",
+      "name": "mcpcli-417-20261031-80c56709",
+      "namespace": null
+    },
+    {
+      "kind": "ServiceAccount",
+      "name": "mcpcli-v1",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Role",
+      "name": "mcpcli-task-secrets",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "RoleBinding",
+      "name": "mcpcli-task-secrets",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "NetworkPolicy",
+      "name": "task-isolation",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "name": "task-data",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "ConfigMap",
+      "name": "redis-config",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Pod",
+      "name": "redis",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Service",
+      "name": "redis",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Configuration",
+      "name": "mcpcli-v1-access",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Component",
+      "name": "statestore",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Component",
+      "name": "pubsub",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "ConfigMap",
+      "name": "gateway-settings",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "ConfigMap",
+      "name": "component-files",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Pod",
+      "name": "eventstore",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Service",
+      "name": "eventstore",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Pod",
+      "name": "tenants",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Service",
+      "name": "tenants",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Pod",
+      "name": "parties",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Service",
+      "name": "parties",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    },
+    {
+      "kind": "Service",
+      "name": "eventstore-dapr",
+      "namespace": "mcpcli-417-20261031-80c56709"
+    }
+  ],
+  "bounds": {
+    "applicationPods": 3,
+    "redisPods": 1,
+    "applicationCpuLimit": "3",
+    "applicationMemoryLimit": "1536Mi",
+    "sidecarCpuLimit": "1500m",
+    "sidecarMemoryLimit": "768Mi",
+    "redisCpuLimit": "1",
+    "redisMemoryLimit": "256Mi",
+    "persistentStorage": "1Gi"
+  },
+  "phases": [
+    "infrastructure",
+    "backup-empty-store",
+    "gateway",
+    "tenants",
+    "observe-administrator",
+    "activate-writer",
+    "parties",
+    "seed-tenant",
+    "handoff",
+    "cleanup"
+  ],
+  "limits": [
+    "No deployment, backup, UID or persisted-state result has been invented.",
+    "No application was started during preparation.",
+    "This packet qualifies neither the full Platform closure nor actual client/timing acceptance."
+  ],
+  "adaptations": [
+    "Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.",
+    "Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.",
+    "Pods restart Never to prevent uncertain bootstrap resubmission.",
+    "Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.",
+    "Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.",
+    "Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task."
+  ]
+}
