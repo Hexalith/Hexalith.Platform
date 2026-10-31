@@ -217,7 +217,8 @@ class V1Tests(unittest.TestCase):
     for phase in phases.PHASES:runner.execute(phase)
    self.assertEqual(3,len(oracle.writes));self.assertEqual(1,sum('backupReference' in w for w in oracle.writes))
    backup=json.loads((runner.journal/'initial-redis-backup.json').read_text());self.assertEqual(0,backup['databaseSize']);self.assertTrue(backup['createdBeforeApplications']);self.assertEqual('redis-unit',backup['redisPodUid'])
-   profile=json.loads((c.private/'operator-home/.eventstore/mcpcli.json').read_text())['profiles']['operator'];payload=json.loads(base64.urlsafe_b64decode(profile['token'].split('.')[1]+'=='))
+   document=json.loads((c.private/'operator-home/.eventstore/mcpcli.json').read_text());profile=document['profiles']['operator'];payload=json.loads(base64.urlsafe_b64decode(profile['token'].split('.')[1]+'=='))
+   self.assertEqual({'version':1,'profiles':{'operator':{'url':'http://127.0.0.1:18170','token':profile['token'],'tenant':c.packet['tenant'],'actor':c.packet['operatorSubject'],'allowTenantOverride':False}}},document)
    self.assertEqual('false',payload['global_admin']);self.assertEqual(['system',c.packet['tenant']],json.loads(payload['tenants']));self.assertEqual(['tenants','party'],json.loads(payload['domains']));self.assertFalse(runner.exists)
    self.assertEqual(7200,payload['exp']-payload['iat'])
    external.assert_not_called()
@@ -641,17 +642,18 @@ class WriteFailureTests(unittest.TestCase):
    self.assertEqual(1,len(attempts));self.assertEqual(set(prepare.APPS)|{'redis'},set(runner.pods));external.assert_not_called()
 
  def test_terminal_seed_failure_never_submits_membership_or_replays_command(self):
-  with Control() as c,patch.object(subprocess,'run') as external:
-   runner,oracle=self.setup_runner(c,'seed');writes=[]
-   def terminal(port,path,credential,body=None):
-    if path=='/api/v1/commands':writes.append(body);return 202,{}
-    if '/status/' in path:return 200,{'status':'Rejected'}
-    return oracle.request(port,path,credential,body)
-   with patch.object(phases,'request',side_effect=terminal):
-    self.refuse('seed-command-terminal-failure',lambda:runner.execute('seed'))
-    self.refuse('phase-already-attempted-do-not-retry',lambda:runner.execute('seed'))
-    self.refuse('required-phase-incomplete',lambda:runner.execute('handoff'))
-   self.assertEqual(['create-tenant'],[w['commandType'] for w in writes]);self.assertFalse((c.private/'operator-home').exists());external.assert_not_called()
+  for status in ('Rejected','PublishFailed','TimedOut'):
+   with self.subTest(status=status),Control() as c,patch.object(subprocess,'run') as external:
+    runner,oracle=self.setup_runner(c,'seed');writes=[]
+    def terminal(port,path,credential,body=None):
+     if path=='/api/v1/commands':writes.append(body);return 202,{}
+     if '/status/' in path:return 200,{'status':status}
+     return oracle.request(port,path,credential,body)
+    with patch.object(phases,'request',side_effect=terminal):
+     self.refuse('seed-command-terminal-failure',lambda:runner.execute('seed'))
+     self.refuse('phase-already-attempted-do-not-retry',lambda:runner.execute('seed'))
+     self.refuse('required-phase-incomplete',lambda:runner.execute('handoff'))
+    self.assertEqual(['create-tenant'],[w['commandType'] for w in writes]);self.assertFalse((c.private/'operator-home').exists());external.assert_not_called()
 
  def test_missing_administrator_or_membership_stops_before_handoff(self):
   original=phases.poll
@@ -669,6 +671,187 @@ class WriteFailureTests(unittest.TestCase):
      self.refuse('observation-deadline-exceeded',lambda:runner.execute('administrator' if case=='administrator' else 'seed'))
      self.refuse('required-phase-incomplete',lambda:runner.execute('writer' if case=='administrator' else 'handoff'))
     self.assertFalse((c.private/'operator-home').exists());self.assertEqual(0 if case=='administrator' else 3,len(oracle.writes));external.assert_not_called()
+
+
+class ReviewPatchTests(unittest.TestCase):
+ refuse=V1Tests.refuse
+ setup_runner=lambda self,c,until:WriteFailureTests.setup_runner(self,c,until)
+
+ def cli(self,c,*args):
+  stdout=io.StringIO();stderr=io.StringIO()
+  with patch('sys.argv',['phases.py','--packet',str(c.directory),'--review-sha256',c.hash,*args]),__import__('contextlib').redirect_stdout(stdout),__import__('contextlib').redirect_stderr(stderr):
+   result=phases.main()
+  return result,stdout.getvalue(),stderr.getvalue()
+
+ def refusal(self,c,code,*args):
+  self.assertEqual((1,'','Phase stopped: '+code+'. Preserve the journal; do not retry uncertain writes.\n'),self.cli(c,*args))
+
+ def test_cleanup_and_forward_ignore_only_fixture_and_evidence_drift(self):
+  for operation in ('cleanup','forward'):
+   with self.subTest(operation=operation),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'cleanup')
+    c.packet['fixtureHashes']={'missing-unconsumed-fixture':'0'*64};c.packet['evidenceHashes']={'missing-unconsumed-evidence':'0'*64};c.save()
+    child=Mock();child.wait.return_value=0
+    @contextmanager
+    def held_forward():yield child
+    with patch.object(phases,'Runner',return_value=runner),patch.object(runner,'forward',side_effect=held_forward):
+     if operation=='cleanup':self.assertEqual((0,'{"phase": "cleanup", "status": "complete"}\n',''),self.cli(c,'--execute-reviewed','--phase','cleanup'))
+     else:
+      result,stdout,stderr=self.cli(c,'--forward')
+      self.assertEqual(1,result);self.assertEqual('Verified owned Gateway forward active on 127.0.0.1:18170. Stop with Ctrl-C.\n',stdout)
+      self.assertEqual('Phase stopped: private-forward-exited. Preserve the journal; do not retry uncertain writes.\n',stderr);child.wait.assert_called_once()
+    external.assert_not_called()
+
+ def test_cleanup_and_forward_still_enforce_all_other_review_bindings(self):
+  for operation in ('cleanup','forward'):
+   for case,code in [('review','review-hash-mismatch'),('runner','runner-changed-after-review'),('helper','runner-helper-changed-after-review'),('scope','review-scope-mismatch'),('expiry','review-expired'),('manifest','manifest-hash-mismatch'),('private-manifest','private-input-manifest-changed'),('private-file','private-input-changed-or-public')]:
+    with self.subTest(operation=operation,case=case),Control() as c,patch.object(subprocess,'run') as external,patch.object(phases,'Runner') as runner:
+     if case=='runner':c.packet['runnerSha256']='0'*64
+     if case=='helper':c.packet['prepareSha256']='0'*64
+     if case=='scope':c.packet['tenant']='other'
+     if case=='expiry':c.packet['expiresAt']=(datetime.now(timezone.utc)-timedelta(seconds=1)).isoformat()
+     c.save()
+     if case=='review':c.hash='0'*64
+     if case=='manifest':(c.directory/'redis.yaml').write_text('changed')
+     if case=='private-manifest':(c.private/'private-inputs.json').write_text('{}')
+     if case=='private-file':Path(c.bundle['secrets']['mcpcli-jwt']['signing-key']).chmod(0o644)
+     args=['--forward'] if operation=='forward' else ['--execute-reviewed','--phase','cleanup']
+     self.refusal(c,code,*args);runner.assert_not_called();external.assert_not_called()
+
+ def test_every_deployment_phase_refuses_fixture_and_evidence_drift_before_runner(self):
+  for phase in phases.PHASES:
+   if phase=='cleanup':continue
+   for case,code in [('fixture','fixture-changed-after-review'),('evidence','evidence-changed-after-review')]:
+    with self.subTest(phase=phase,case=case),Control() as c,patch.object(subprocess,'run') as external,patch.object(phases,'Runner') as runner:
+     if case=='fixture':c.packet['fixtureHashes'][prepare.FIXTURES[0]]='0'*64
+     else:c.packet['evidenceHashes']['images.json']='0'*64
+     c.save();self.refusal(c,code,'--execute-reviewed','--phase',phase);runner.assert_not_called();external.assert_not_called()
+
+ def test_cleanup_mismatched_uid_or_label_never_deletes(self):
+  for case in ('uid','label'):
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'cleanup');original=runner.kube;before=len(runner.mutations)
+    def changed(*args,**kwargs):
+     raw=original(*args,**kwargs)
+     if args[:2]==('get','namespace'):
+      doc=json.loads(raw)
+      if case=='uid':doc['metadata']['uid']='replaced'
+      else:doc['metadata']['labels']={}
+      return json.dumps(doc).encode()
+     return raw
+    with patch.object(runner,'kube',side_effect=changed),patch.object(phases,'Runner',return_value=runner):self.refusal(c,'namespace-uid-or-owner-mismatch','--execute-reviewed','--phase','cleanup')
+    self.assertEqual(before,len(runner.mutations));self.assertFalse((runner.journal/'cleanup.json').exists());external.assert_not_called()
+
+ def test_cleanup_reports_namespace_remaining_after_delete(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,_=self.setup_runner(c,'cleanup');original=runner.kube
+   def retained(*args,**kwargs):
+    if args[:2]==('get','namespace') and '--ignore-not-found' in args:return b'{"metadata":{"uid":"namespace-unit"}}'
+    return original(*args,**kwargs)
+   with patch.object(runner,'kube',side_effect=retained),patch.object(phases,'Runner',return_value=runner):self.refusal(c,'cleanup-incomplete','--execute-reviewed','--phase','cleanup')
+   self.assertEqual(1,sum(m[0]=='delete' for m in runner.mutations));self.assertEqual('uncertain',json.loads((runner.journal/'cleanup.json').read_text())['status']);external.assert_not_called()
+
+ def test_forward_before_handoff_starts_no_process(self):
+  with Control() as c,patch.object(phases.subprocess,'Popen') as process:
+   self.refusal(c,'required-phase-incomplete','--forward');process.assert_not_called()
+
+ def test_gateway_mapping_and_each_forward_preserves_its_own_log(self):
+  with Control() as c:
+   runner,_=self.setup_runner(c,'metadata');child=Mock(pid=12345);child.poll.return_value=None
+   def start(argv,**kwargs):kwargs['stdout'].write('Forwarding from 127.0.0.1:18170 -> 8080\n');kwargs['stdout'].flush();return child
+   with patch.object(phases.socket,'socket') as socket,patch.object(phases.subprocess,'Popen',side_effect=start) as process,patch.object(phases.os,'killpg') as stop:
+    for _ in range(2):
+     with phases.Runner.forward(runner):pass
+    self.assertEqual(2,socket.return_value.__enter__.return_value.bind.call_count);socket.return_value.__enter__.return_value.bind.assert_called_with(('127.0.0.1',18170))
+    for call in process.call_args_list:
+     argv=call.args[0];self.assertEqual('18170:8080',argv[-1]);self.assertIn('pod/eventstore-abc123',argv);self.assertIn('--address=127.0.0.1',argv)
+    logs=list(runner.journal.glob('port-forward-*.log'));self.assertEqual(2,len(logs));self.assertTrue(all('Forwarding from 127.0.0.1:' in p.read_text() for p in logs));self.assertEqual(2,stop.call_count)
+
+ def test_busy_forward_port_never_starts_a_process(self):
+  with Control() as c:
+   runner,_=self.setup_runner(c,'metadata')
+   with patch.object(phases.socket,'socket') as socket,patch.object(phases.subprocess,'Popen') as process:
+    socket.return_value.__enter__.return_value.bind.side_effect=OSError('synthetic port in use')
+    def forward():
+     with phases.Runner.forward(runner):self.fail('busy port opened')
+    self.refuse('private-forward-port-in-use',forward);process.assert_not_called()
+
+ def test_existing_operator_profile_is_preserved(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,_=self.setup_runner(c,'handoff');profile=c.private/'operator-home/.eventstore/mcpcli.json';profile.parent.mkdir(parents=True);profile.write_text('existing-private-profile')
+   with patch.object(phases,'Runner',return_value=runner):self.refusal(c,'operator-profile-already-exists','--execute-reviewed','--phase','handoff')
+   self.assertEqual('existing-private-profile',profile.read_text());self.assertEqual('uncertain',json.loads((runner.journal/'handoff.json').read_text())['status']);external.assert_not_called()
+
+ def test_bootstrap_routing_refusal_makes_no_request_or_forward(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,_=self.setup_runner(c,'startup');original=runner.kube;before=len(runner.mutations)
+   def no_bootstrap(*args,**kwargs):
+    if 'get' in args and 'service' in args:return b'{"spec":{"publishNotReadyAddresses":false}}'
+    return original(*args,**kwargs)
+   with patch.object(runner,'kube',side_effect=no_bootstrap),patch.object(runner,'forward') as forward,patch.object(phases,'request') as request,patch.object(phases,'Runner',return_value=runner):
+    self.refusal(c,'bootstrap-dapr-routing-required','--execute-reviewed','--phase','startup');forward.assert_not_called();request.assert_not_called()
+   self.assertEqual(before,len(runner.mutations));external.assert_not_called()
+
+ def test_uncertain_seed_submission_is_not_replayed_or_followed_by_membership(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,_=self.setup_runner(c,'seed');posts=[]
+   def uncertain(port,path,credential,body=None):posts.append(body);return 504,None
+   with patch.object(phases,'request',side_effect=uncertain),patch.object(phases,'Runner',return_value=runner):
+    self.refusal(c,'seed-command-uncertain-stop','--execute-reviewed','--phase','seed')
+    self.refuse('phase-already-attempted-do-not-retry',lambda:runner.execute('seed'));self.refuse('required-phase-incomplete',lambda:runner.execute('handoff'))
+   self.assertEqual(['create-tenant'],[body['commandType'] for body in posts]);self.assertFalse((runner.journal/'add-user-to-tenant-intent.json').exists());external.assert_not_called()
+
+ def test_private_preparation_resolves_dotdot_and_symlinked_parents(self):
+  for case in ('dotdot','symlink'):
+   with self.subTest(case=case),tempfile.TemporaryDirectory() as root,patch.object(subprocess,'run') as external:
+    root=Path(root);repo=root/'repo';repo.mkdir();alias=root/'alias'
+    if case=='dotdot':alias.mkdir();private=alias/'../repo/private'
+    else:alias.symlink_to(repo,target_is_directory=True);private=alias/'private'
+    with patch.object(prepare,'PLATFORM',repo):self.refuse('fresh-external-private-directory-required',lambda:prepare.prepare(private,root/'packet',auth={}))
+    self.assertEqual([],list(repo.iterdir()));self.assertFalse((root/'packet').exists());external.assert_not_called()
+
+ def test_private_and_public_preparation_paths_cannot_overlap(self):
+  for case in ('identical','private-parent','public-parent','dotdot','symlink'):
+   with self.subTest(case=case),tempfile.TemporaryDirectory() as root,patch.object(subprocess,'run') as external,patch.object(prepare,'private_write') as write,patch.object(prepare,'registry_auth') as auth:
+    root=Path(root);private=root/'new';output=root/'packet'
+    if case=='identical':output=private
+    if case=='private-parent':output=private/'packet'
+    if case=='public-parent':private=output/'private'
+    if case=='dotdot':output=root/'other/../new'
+    if case=='symlink':
+     (root/'alias').symlink_to(root,target_is_directory=True);output=root/'alias/new'
+    before=set(root.iterdir())
+    self.refuse('private-and-packet-directories-overlap',lambda:prepare.prepare(private,output))
+    self.assertEqual(before,set(root.iterdir()));self.assertFalse(private.exists());self.assertFalse(output.exists());write.assert_not_called();auth.assert_not_called();external.assert_not_called()
+
+ def test_private_verification_resolves_dotdot_and_symlinked_parents(self):
+  for case in ('dotdot','symlink'):
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    alias=c.root/'alias'
+    if case=='dotdot':alias.mkdir();path=alias/'../private/private-inputs.json'
+    else:alias.symlink_to(c.private,target_is_directory=True);path=alias/'private-inputs.json'
+    c.packet['privateManifest']=str(path);c.save()
+    with patch.object(phases,'PLATFORM',c.private):self.refuse('private-inputs-inside-repository',c.verify)
+    external.assert_not_called()
+
+ def test_private_credential_cannot_escape_through_a_parent_symlink(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   outside=c.root/'outside';outside.mkdir();secret=outside/'credential';secret.write_text('synthetic');secret.chmod(0o600)
+   (c.private/'escape').symlink_to(outside,target_is_directory=True);escaped=c.private/'escape/credential'
+   c.bundle['files'][str(escaped)]=prepare.digest(secret);prepare.dump(c.private/'private-inputs.json',c.bundle);c.packet['privateManifestSha256']=prepare.digest(c.private/'private-inputs.json');c.save()
+   self.refuse('private-input-changed-or-public',c.verify);external.assert_not_called()
+
+ def test_gateway_capability_is_independent_of_image_inventory_order(self):
+  actual=json.loads((prepare.HERE/'evidence/images.json').read_text());original=json.loads;raw=(prepare.HERE/'evidence/images.json').read_text()
+  def loads(value,*args,**kwargs):return list(reversed(actual)) if value==raw else original(value,*args,**kwargs)
+  with tempfile.TemporaryDirectory() as root,patch.object(json,'loads',side_effect=loads):
+   root=Path(root);packet=prepare.prepare(root/'private',root/'packet',auth={});self.assertEqual('prepared-for-review',packet['status'])
+
+ def test_registry_failure_leaves_no_credentials_or_packet(self):
+  with tempfile.TemporaryDirectory() as root,patch.object(prepare,'registry_auth',side_effect=ValueError('configured-registry-auth-unavailable')):
+   root=Path(root);stdout=io.StringIO();stderr=io.StringIO()
+   with patch('sys.argv',['prepare.py','--private-root',str(root/'private'),'--output',str(root/'packet')]),__import__('contextlib').redirect_stdout(stdout),__import__('contextlib').redirect_stderr(stderr):result=prepare.main()
+   self.assertEqual((1,'','Preparation refused: configured-registry-auth-unavailable\n'),(result,stdout.getvalue(),stderr.getvalue()));self.assertEqual([],list(root.iterdir()))
 
 
 if __name__=='__main__':unittest.main()

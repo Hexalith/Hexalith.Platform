@@ -123,8 +123,11 @@ def validate_manifests(documents,namespace):
 
 def prepare(private_root,output,now=None,auth=None):
  private_root=Path(private_root);output=Path(output)
- require(private_root.is_absolute() and not private_root.exists() and not private_root.is_relative_to(PLATFORM) and not private_root.is_relative_to(MCPCLI),'fresh-external-private-directory-required')
+ require(private_root.is_absolute(),'fresh-external-private-directory-required')
+ private_root=private_root.resolve();output=output.resolve()
+ require(not private_root.exists() and not private_root.is_relative_to(PLATFORM.resolve()) and not private_root.is_relative_to(MCPCLI.resolve()),'fresh-external-private-directory-required')
  require(not output.exists(),'fresh-packet-directory-required')
+ require(not private_root.is_relative_to(output) and not output.is_relative_to(private_root),'private-and-packet-directories-overlap')
  settings=json.loads((MCPCLI/FIXTURES[1]).read_text());validate_fixture(settings)
  images=json.loads((HERE/'evidence/images.json').read_text())
  dns=json.loads((HERE/'evidence/dns-target.json').read_text())
@@ -133,7 +136,8 @@ def prepare(private_root,output,now=None,auth=None):
   dns['hostNetwork'] is True and dns['providerTools']['image']==REDIS and
   dns['providerTools']['selectedCommands']['resolve'][:-1]==DNS_LOOKUP_COMMAND,'observed-dns-and-provider-tools-required')
  require({i['name'] for i in images}==set(APPS) and all(i['reference']==IMAGE_ROOTS[i['name']] and i['os']=='linux' and i['architecture']=='amd64' for i in images),'inspected-images-required')
- require(all(i['markers']['AppChannelToken'] for i in images) and images[0]['markers']['delivery-writer-protocol/activate'] and next(i for i in images if i['name']=='tenants')['markers']['BootstrapGlobalAdminEnabled'],'required-image-capability-missing')
+ require(all(i['markers']['AppChannelToken'] for i in images) and next(i for i in images if i['name']=='eventstore')['markers']['delivery-writer-protocol/activate'] and next(i for i in images if i['name']=='tenants')['markers']['BootstrapGlobalAdminEnabled'],'required-image-capability-missing')
+ auth=auth if auth is not None else registry_auth()
  now=now or datetime.now(timezone.utc);run=now.strftime('%Y%m%d')+'-'+uuid.uuid4().hex[:8];namespace='mcpcli-417-'+run
  tenant=namespace;operator='mcpcli-417-operator-'+run
  private_root.mkdir(mode=0o700,parents=True)
@@ -149,7 +153,7 @@ def prepare(private_root,output,now=None,auth=None):
   secret('mcpcli-'+app+'-app',{'token':secrets.token_urlsafe(48)})
   if app!='eventstore':secret('mcpcli-'+app+'-api',{'token':secrets.token_urlsafe(48)})
  secret('mcpcli-redis',{'password':password,'users.acl':'user default on #'+hashlib.sha256(password.encode()).hexdigest()+' ~* &* +@all\n'})
- secret('mcpcli-pull', {'.dockerconfigjson':json.dumps(auth if auth is not None else registry_auth())})
+ secret('mcpcli-pull', {'.dockerconfigjson':json.dumps(auth)})
  private_manifest=private_root/'private-inputs.json';private_write(private_manifest,json.dumps({'files':values,'secrets':secret_files},indent=2)+'\n')
  documents=[]
  def resource(kind,name,**body):
@@ -250,7 +254,7 @@ def prepare(private_root,output,now=None,auth=None):
   'bounds':{'applicationPods':3,'redisPods':1,'applicationCpuLimit':'3','applicationMemoryLimit':'1536Mi','sidecarCpuLimit':'1500m','sidecarMemoryLimit':'768Mi','redisCpuLimit':'1','redisMemoryLimit':'256Mi','persistentStorage':'1Gi'},
   'phases':['infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','metadata','administrator','writer','seed','handoff','cleanup'],
   'limits':['No deployment, backup, UID or persisted-state result has been invented.','No application was started during preparation.','This packet qualifies neither the full Platform closure nor actual client/timing acceptance.'],
-  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Gateway optional API token is removed only for the strictly 127.0.0.1 local API; eight Secrets retain app-channel/JWT/mTLS and domain API protections. No Gateway Service publishes its local API ports. A real unauthenticated metadata/hostReady check on temporary loopback 18171 precedes writer activation.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Observed node-local resolver 169.254.25.10/32 receives only TCP/UDP 53 egress alongside cluster DNS. The actual provider resolver/policy and bounded DNS reads must succeed before any application Job; sidecar runtime readiness/identity must succeed before persisted queries.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
+  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Gateway optional API token is removed only for the strictly 127.0.0.1 local API; eight Secrets retain app-channel/JWT/mTLS and domain API protections. No Gateway Service publishes its local API ports. A real unauthenticated metadata/hostReady check on temporary loopback 18171 precedes writer activation.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Observed node-local resolver 169.254.25.10/32 receives only TCP/UDP 53 egress alongside cluster DNS. The actual provider resolver/policy and bounded DNS reads must succeed before any application Job; sidecar runtime readiness/identity must succeed before persisted queries.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; writer observes Gateway /ready and all three Pods Ready before seed; handoff rechecks application identities and sidecar readiness.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
  dump(output/'review.json',packet)
  return packet
 

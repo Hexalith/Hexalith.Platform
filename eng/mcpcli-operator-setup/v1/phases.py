@@ -15,6 +15,7 @@ import signal
 import socket
 import stat
 import subprocess
+import tempfile
 import time
 import yaml
 from urllib.error import HTTPError, URLError
@@ -31,23 +32,24 @@ def private_json(path):
  return json.loads(p.read_text())
 
 
-def verify(packet_dir,approved_hash,now=None):
+def verify(packet_dir,approved_hash,now=None,*,phase='verify',forward=False):
  packet_dir=Path(packet_dir);path=packet_dir/'review.json'
  require(digest(path)==approved_hash,'review-hash-mismatch')
  packet=json.loads(path.read_text());target=packet['target']
  require(digest(Path(__file__))==packet['runnerSha256'],'runner-changed-after-review')
  require(hashlib.sha256((Path(__file__).parent/'prepare.py').read_bytes()).hexdigest()==packet['prepareSha256'],'runner-helper-changed-after-review')
- require(all(digest(MCPCLI/name)==sha for name,sha in packet['fixtureHashes'].items()),'fixture-changed-after-review')
- require(all(digest(Path(__file__).parent/'evidence'/name)==sha for name,sha in packet['evidenceHashes'].items()),'evidence-changed-after-review')
+ if phase!='cleanup' and not forward:
+  require(all(digest(MCPCLI/name)==sha for name,sha in packet['fixtureHashes'].items()),'fixture-changed-after-review')
+  require(all(digest(Path(__file__).parent/'evidence'/name)==sha for name,sha in packet['evidenceHashes'].items()),'evidence-changed-after-review')
  require(packet['schema']=='mcpcli-v1-operator-review/v1' and target['context']=='jpiquot@local' and target['api']=='https://192.168.1.30:6443'
   and target['namespace'].startswith('mcpcli-417-') and packet['tenant']==target['namespace'],'review-scope-mismatch')
  require((now or datetime.now(timezone.utc))<datetime.fromisoformat(packet['expiresAt']),'review-expired')
  require(all((packet_dir/name).is_file() and digest(packet_dir/name)==sha for name,sha in packet['files'].items()),'manifest-hash-mismatch')
  require(digest(packet['privateManifest'])==packet['privateManifestSha256'],'private-input-manifest-changed')
- private=private_json(packet['privateManifest']);directory=Path(packet['privateManifest']).parent
- require(not directory.is_relative_to(PLATFORM) and not directory.is_relative_to(MCPCLI),'private-inputs-inside-repository')
+ private=private_json(packet['privateManifest']);directory=Path(packet['privateManifest']).parent.resolve()
+ require(not directory.is_relative_to(PLATFORM.resolve()) and not directory.is_relative_to(MCPCLI.resolve()),'private-inputs-inside-repository')
  for file,sha in private['files'].items():
-  p=Path(file);require(p.is_relative_to(directory) and p.is_file() and not p.is_symlink() and stat.S_IMODE(p.stat().st_mode)==0o600 and digest(p)==sha,'private-input-changed-or-public')
+  p=Path(file);require(p.is_absolute() and p.resolve().is_relative_to(directory) and p.is_file() and not p.is_symlink() and stat.S_IMODE(p.stat().st_mode)==0o600 and digest(p)==sha,'private-input-changed-or-public')
  return packet,private
 
 
@@ -240,8 +242,8 @@ class Runner:
   with socket.socket() as probe:
    try:probe.bind(('127.0.0.1',port))
    except OSError:raise ValueError('private-forward-port-in-use')
-  log=self.journal/('metadata-port-forward.log' if metadata else 'port-forward.log')
-  with log.open('w') as output:
+  with tempfile.NamedTemporaryFile(mode='w',prefix='metadata-port-forward-' if metadata else 'port-forward-',suffix='.log',dir=self.journal,delete=False) as output:
+   log=Path(output.name)
    child=subprocess.Popen(['kubectl','--context=jpiquot@local','-n',self.namespace,'port-forward','--address=127.0.0.1','pod/'+pod['metadata']['name'],str(port)+':'+str(remote_port)],stdout=output,stderr=output,start_new_session=True)
    try:
     poll(lambda:child.poll() is None and 'Forwarding from 127.0.0.1:' in log.read_text(),bool,30)
@@ -348,7 +350,7 @@ class Runner:
       status,_=request(self.port,'/api/v1/commands',credential,body);require(status==202,'seed-command-uncertain-stop')
       def observe():
        response=request(self.port,'/api/v1/commands/status/'+message,credential)
-       require((response[1] or {}).get('status') not in ('Rejected','Failed','TimedOut','DeadLettered'),'seed-command-terminal-failure')
+       require((response[1] or {}).get('status') not in ('Rejected','PublishFailed','TimedOut'),'seed-command-terminal-failure')
        return response
       self.observe(observe,lambda x:x[0]==200 and (x[1] or {}).get('status')=='Completed' and x[1].get('committedEventSequence',0)>0 and x[1].get('eventCount',0)>0,45)
      query={'tenant':'system','domain':'tenants','aggregateId':tenant,'queryType':'get-tenant','projectionType':'tenants','payload':{'TenantId':tenant}}
@@ -372,13 +374,13 @@ class Runner:
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--packet',required=True,type=Path);parser.add_argument('--review-sha256',required=True);parser.add_argument('--phase',choices=('verify',*PHASES),default='verify');parser.add_argument('--execute-reviewed',action='store_true');parser.add_argument('--forward',action='store_true',help='After completed handoff, verify owned Pod and hold the private Gateway forward.');args=parser.parse_args()
  try:
-  packet,private=verify(args.packet,args.review_sha256)
+  packet,private=verify(args.packet,args.review_sha256,phase=args.phase,forward=args.forward)
   if args.forward:
    require(args.phase=='verify' and not args.execute_reviewed,'forward-cannot-execute-phase')
    runner=Runner(args.packet,packet,private);runner.prior('handoff')
    with runner.forward() as child:
     print('Verified owned Gateway forward active on 127.0.0.1:'+str(runner.port)+'. Stop with Ctrl-C.',flush=True);child.wait()
-   return 0
+   raise ValueError('private-forward-exited')
   if args.phase=='verify':print('Reviewed packet/local inputs verified; no resources applied.');return 0
   require(args.execute_reviewed,'deployment-review-required')
   result=Runner(args.packet,packet,private).execute(args.phase);print(json.dumps({'phase':result['phase'],'status':result['status']}));return 0
