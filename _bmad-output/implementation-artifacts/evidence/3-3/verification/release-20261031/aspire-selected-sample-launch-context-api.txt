@@ -1,0 +1,19 @@
+# Aspire.Hosting.ApplicationModel.LaunchConfigurationCallbackContext
+
+Provides the runtime data used to create a launch configuration for a resource.
+
+Package: Aspire.Hosting | Version: 13.6.4 | TFM: net8.0 | Library: lib/net8.0/Aspire.Hosting.dll | Source: NuGet
+
+## Properties
+
+| Name | Return Type | Accessors |
+| ---- | ----------- | --------- |
+| CancellationToken | System.Threading.CancellationToken | get |
+| EnvironmentVariables | System.Collections.Generic.IReadOnlyDictionary&lt;string, string&gt; | get |
+| Mode | string | get |
+| Resource | Aspire.Hosting.ApplicationModel.IResource | get |
+
+Tips:
+type LaunchConfigurationCallbackContext --package Aspire.Hosting --tree             # view type tree
+member -m LaunchConfigurationCallbackContext.Method --package Aspire.Hosting        # dotted member syntax
+diff --package Aspire.Hosting@<prev>..13.6.4 -t LaunchConfigurationCallbackContext  # compare API changes

@@ -1,0 +1,18 @@
+# Aspire.Hosting.ApplicationModel.DebugSupportExtensions
+
+Extension methods for inspecting whether a resource will be launched by an IDE or extension host for debugging rather than started as a plain process by Aspire.
+
+Package: Aspire.Hosting | Version: 13.6.4 | TFM: net8.0 | Library: lib/net8.0/Aspire.Hosting.dll | Source: NuGet
+
+## Method Groups
+
+| Name | Return Type |
+| ---- | ----------- |
+| CreateLaunchConfigurationAsync | System.Threading.Tasks.Task&lt;object&gt; |
+| HasLaunchToolArgsOwnedBy | bool |
+| SupportsDebugging | bool |
+
+Tips:
+member DebugSupportExtensions --package Aspire.Hosting SupportsDebugging:1   # view member detail (source, IL)
+type DebugSupportExtensions --package Aspire.Hosting --tree                  # view type tree
+member -m DebugSupportExtensions.SupportsDebugging --package Aspire.Hosting  # dotted member syntax

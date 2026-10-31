@@ -1,0 +1,46 @@
+{
+  "repositories": [
+    {
+      "repository": "Hexalith.EventStore",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "head": "c02afa0fce310ccdb696232f18829df96cba088e",
+      "branch": "",
+      "status": "M samples/Hexalith.EventStore.Sample.BlazorUI/Program.cs\n M samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs\n M samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs\n M samples/Hexalith.EventStore.Sample/Program.cs\n M src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj\n M src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs\n M src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs\n M src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs\n M src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs\n M src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs\n M src/Hexalith.EventStore.Server/Configuration/ServiceCollectionExtensions.cs\n M src/Hexalith.EventStore.Server/Queries/QueryRouter.cs\n M src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs\n M src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs\n M src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogEndpointExtensions.cs\n M src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs\n M tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj\n?? samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusProjection.cs\n?? samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.Operations.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogAspireExtensions.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComponentObserver.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComposition.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogInvocation.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwner.cs\n?? src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogReceiver.cs\n?? src/Hexalith.EventStore.Aspire/EventStoreRedisBackendAnnotation.cs\n?? src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuthorityComponentPolicy.cs\n?? src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestEndpoint.cs\n?? src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestPolicy.cs\n?? src/Hexalith.EventStore.Contracts/Routing/RouteCatalogProjectionActorPolicy.cs\n?? src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGatewayRegistration.cs\n?? src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogCallerExtensions.cs\n?? src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogExtensions.cs\n?? src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogReceiver.cs\n?? src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogControlEndpointMetadata.cs\n?? tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogModelStateStore.cs\n?? tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeCommand.cs\n?? tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeDeclarations.cs\n?? tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs\n?? tests/Hexalith.EventStore.Sample.Tests/CounterProjectionSchemaTests.cs\n?? tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentCallerEnrollmentTests.cs\n?? tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentGatewayIdentityTests.cs\n?? tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentProjectionActorObservationTests.cs\n?? tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/"
+    },
+    {
+      "repository": "Hexalith.Tenants",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants",
+      "head": "fff6a5cb556ee0012974550c708eb7a871a25001",
+      "branch": "",
+      "status": "M src/Hexalith.Tenants.Api/Program.cs\n M src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj\n M src/Hexalith.Tenants.AppHost/Program.cs\n M tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs\n M tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs\n M tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs\n M tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs\n?? src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs"
+    },
+    {
+      "repository": "Hexalith.Parties",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties",
+      "head": "05aeee0d647a34eab112b6f8282a0810d35b7bf6",
+      "branch": "",
+      "status": ""
+    },
+    {
+      "repository": "Hexalith.Memories",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories",
+      "head": "7352c6a2d9bc718bf34f861f6a5051293f7bff60",
+      "branch": "",
+      "status": ""
+    },
+    {
+      "repository": "Hexalith.Builds",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds",
+      "head": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+      "branch": "",
+      "status": "M Props/Directory.Packages.props\n M Tools/G4PackageQualification.functions.ps1\n M src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs\n M src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj\n M src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs\n M src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs\n?? src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs\n?? src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs\n?? test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs"
+    },
+    {
+      "repository": "Hexalith.Platform",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform",
+      "head": "75bceb22abc60d22d0c4e6f3d7c86795f3e51cc1",
+      "branch": "",
+      "status": "M Hexalith.Platform.slnx\n M _bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md\n M eng/tuple-ci-suites.json\n M src/Hexalith.Platform.CatalogBuilder/Program.cs\n M src/Hexalith.Platform.Composition/Declarations/eventstore.json\n M src/Hexalith.Platform.Composition/Declarations/memories.json\n M src/Hexalith.Platform.Composition/Declarations/provenance.json\n M src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n M src/Hexalith.Platform.Composition/PlatformAppModel.cs\n M src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs\n M src/Hexalith.Platform.Composition/PlatformNativeInvocationAccess.cs\n M src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs\n M src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs\n M src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs\n M src/Hexalith.Platform.Composition/PlatformTenantBootstrapAccess.cs\n M src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj\n M src/Hexalith.Platform.EventStoreHost/Program.cs\n M tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs\n M tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj\n M tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs\n?? eng/Hexalith.Platform.CatalogProof/\n?? src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs\n?? tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs\n?? tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs\n?? tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs"
+    }
+  ]
+}
